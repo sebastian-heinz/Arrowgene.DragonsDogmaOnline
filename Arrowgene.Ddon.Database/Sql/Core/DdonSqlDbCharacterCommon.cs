@@ -1,10 +1,9 @@
-using System;
+#nullable enable
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Threading.Tasks;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -52,20 +51,23 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlSelectStatusInfo = $"SELECT {BuildQueryField(CDataStatusInfoFields)} FROM \"ddon_status_info\" WHERE \"character_common_id\" = @character_common_id;";
         private const string SqlDeleteStatusInfo = "DELETE FROM \"ddon_status_info\" WHERE \"character_common_id\"=@character_common_id;";
 
-        public bool UpdateCharacterCommonBaseInfo(CharacterCommon common)
+        public bool UpdateCharacterCommonBaseInfo(CharacterCommon common, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return UpdateCharacterCommonBaseInfo(connection, common);
-        }
-
-        public bool UpdateCharacterCommonBaseInfo(TCon conn, CharacterCommon common)
-        {
-            int commonUpdateRowsAffected = ExecuteNonQuery(conn, SqlUpdateCharacterCommon, command =>
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
             {
-                AddParameter(command, common);
-            });
+                int commonUpdateRowsAffected = ExecuteNonQuery(connection, SqlUpdateCharacterCommon, command =>
+                {
+                    AddParameter(command, common);
+                });
 
-            return commonUpdateRowsAffected > NoRowsAffected;
+                return commonUpdateRowsAffected > NoRowsAffected;
+            }
+            finally
+            {
+                if (!isTransaction) connection.Dispose();
+            }
         }
 
         public bool UpdateEditInfo(CharacterCommon common)

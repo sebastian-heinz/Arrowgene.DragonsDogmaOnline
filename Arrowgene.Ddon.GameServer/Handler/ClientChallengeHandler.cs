@@ -19,6 +19,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
+            client.SetChallengeCompleted(true);
+            
             Challenge.Response challenge = client.HandleChallenge(packet.Data);
             if (challenge.Error)
             {

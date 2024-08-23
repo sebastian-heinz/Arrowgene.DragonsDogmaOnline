@@ -17,9 +17,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public static uint BEAUTY_PARLOR_GG_PRICE = 0;
-        public static uint BEAUTY_PARLOR_ST_PRICE = 0;
-        public static uint REINCARNATION_GG_PRICE = 0;
+        //TODO: Figure out what the updateTypes actually are.
+
+        public static readonly uint BEAUTY_PARLOR_GG_PRICE = 0;
+        public static readonly uint BEAUTY_PARLOR_ST_PRICE = 0;
+        public static readonly uint REINCARNATION_GG_PRICE = 0;
+        public static readonly uint UNK_TYPE_GG_PRICE = 0;
 
         public override PacketId Id => PacketId.C2S_CHARACTER_EDIT_GET_SHOP_PRICE_REQ;
 
@@ -57,11 +60,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             });
 
+            res.PriceInfo.Add(new CDataCharacterEditPriceInfo()
+            {
+                UpdateType = 3, //Unknown Reincarnation (gender change?)
+                Prices = new List<CDataWalletPoint>()
+                {
+                    new()
+                    {
+                        Type = WalletType.GoldenGemstones,
+                        Value = UNK_TYPE_GG_PRICE,
+                    },
+                }
+            });
+
             client.Send(res);
         }
 
         public static void CheckPrice(byte updateType, WalletType priceType, uint value)
-        {
+        {            
             switch (updateType)
             {
                 case 1:
@@ -70,6 +86,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_SHOP_PRICE_NO_MATCH);
                 case 2:
                     if (priceType == WalletType.GoldenGemstones && value == REINCARNATION_GG_PRICE) return;
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_SHOP_PRICE_NO_MATCH);
+                case 3:
+                    if (priceType == WalletType.GoldenGemstones && value == UNK_TYPE_GG_PRICE) return;
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_SHOP_PRICE_NO_MATCH);
                 default:
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_SHOP_PRICE_NO_MATCH);

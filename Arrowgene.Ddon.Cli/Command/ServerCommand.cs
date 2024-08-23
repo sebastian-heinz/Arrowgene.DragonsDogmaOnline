@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.Cli.Command
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(ServerCommand));
 
-        private Setting _setting;
+        private readonly Setting _setting;
         private DdonLoginServer _loginServer;
         private DdonGameServer _gameServer;
         private DdonWebServer _webServer;
@@ -29,6 +29,12 @@ namespace Arrowgene.Ddon.Cli.Command
 
         public string Description =>
             $"Dragons Dogma Online Server. Ex.:{Environment.NewLine}server start{Environment.NewLine}server stop";
+
+
+        public ServerCommand(Setting setting)
+        {
+            _setting = setting;
+        }
 
 
         public CommandResultType Run(CommandParameter parameter)
@@ -83,22 +89,6 @@ namespace Arrowgene.Ddon.Cli.Command
             Logger.Info($"***{Environment.NewLine}");
 
             bool isService = parameter.Switches.Contains("--service");
-
-            if (_setting == null)
-            {
-                string settingPath = Path.Combine(Util.ExecutingDirectory(), "Files/Arrowgene.Ddon.config.json");
-                _setting = Setting.Load(settingPath);
-                if (_setting == null)
-                {
-                    _setting = new Setting();
-                    _setting.Save(settingPath);
-                    Logger.Info($"Created new settings and saved to:{settingPath}");
-                }
-                else
-                {
-                    Logger.Info($"Loaded settings from:{settingPath}");
-                }
-            }
 
             if (_database == null)
             {

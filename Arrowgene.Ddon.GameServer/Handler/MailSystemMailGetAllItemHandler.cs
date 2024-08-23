@@ -20,7 +20,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 MessageId = request.MessageId,
             };
-            
+
+            bool toItemBag = false;
+            switch (request.StorageType)
+            {
+                case 13: // ItemPost   StorageType = 13
+                    toItemBag = false;
+                    break;
+                case 19: // ItemBag    StorageType = 19
+                    toItemBag = true;
+                    break;
+                case 20: // StorageBox StorageType = 20
+                    toItemBag = false;
+                    break;
+            }
+
             S2CItemUpdateCharacterItemNtc itemUpdateNtc = new S2CItemUpdateCharacterItemNtc()
             {
                 UpdateType = ItemNoticeType.StorePostItemMail
@@ -33,15 +47,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     if (attachment.AttachmentType == SystemMailAttachmentType.Item && !attachment.IsReceived)
                     {
-                        itemUpdateNtc.UpdateItemList.AddRange(
-                            Server.ItemManager.AddItemRaw(
-                                Server, 
-                                client.Character,
-                                (StorageType)request.StorageType, 
-                                attachment.Param1, 
-                                attachment.Param2
+                        if (request.StorageType == 13)
+                        {
+                            itemUpdateNtc.UpdateItemList.AddRange(
+                                Server.ItemManager.AddItem(
+                                    Server,
+                                    client.Character,
+                                    (StorageType)request.StorageType,
+                                    attachment.Param1,
+                                    attachment.Param2
                                 )
                             );
+                        }
+                        else
+                        {
+                            itemUpdateNtc.UpdateItemList.AddRange(Server.ItemManager.AddItem(Server, client.Character, toItemBag, attachment.Param1, attachment.Param2));
+                        }
                     }
                     attachment.IsReceived = true;
                 }

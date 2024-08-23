@@ -186,6 +186,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataMoveItemUIDFromTo.Serializer());
             Create(new CDataNamedEnemyParamClient.Serializer());
             Create(new CDataNormalSkillParam.Serializer());
+            Create(new CDataNpcExtendedFacilityMenuItem.Serializer());
             Create(new CDataOcdActive.Serializer());
             Create(new CDataOrbCategoryStatusSerializer());
             Create(new CDataOrbGainExtendParam.Serializer());
@@ -338,6 +339,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SConnectionLoginReq.Serializer());
             Create(new C2SConnectionMoveInServerReq.Serializer());
             Create(new C2SConnectionMoveOutServerReq.Serializer());
+            Create(new C2SConnectionReserveServerReq.Serializer());
 
             Create(new C2SContextGetSetContextReq.Serializer());
             Create(new C2SContextMasterThrowReq.Serializer());
@@ -451,6 +453,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SMyRoomFurnitureListGetReq.Serializer());
             Create(new C2SMyRoomMyRoomBgmUpdateReq.Serializer());
             Create(new C2SMyRoomUpdatePlanetariumReq.Serializer());
+
+            Create(new C2SNpcGetNpcExtendedFacilityReq.Serializer());
+
             Create(new C2SPartnerPawnPawnLikabilityRewardListGetReq.Serializer());
 
             Create(new C2SPartyPartyBreakupReq.Serializer());
@@ -649,6 +654,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CConnectionLogoutRes.Serializer());
             Create(new S2CConnectionMoveInServerRes.Serializer());
             Create(new S2CConnectionMoveOutServerRes.Serializer());
+            Create(new S2CConnectionReserveServerRes.Serializer());
+            
             Create(new S2CContextGetAllPlayerContextNtc.Serializer());
             Create(new S2CContextGetLobbyPlayerContextNtc.Serializer());
             Create(new S2CContextGetPartyMypawnContextNtc.Serializer());
@@ -710,6 +717,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CGpGetValidChatComGroupRes.Serializer());
             Create(new S2CGpGpEditGetVoiceListRes.Serializer());
             Create(new S2CGpGpCourseGetAvailableListRes.Serializer());
+            Create(new S2CGPCourseExtendNtc.Serializer());
             Create(new S2CGPCourseStartNtc.Serializer());
             Create(new S2CInnGetPenaltyHealStayPriceRes.Serializer());
             Create(new S2CInnGetStayPriceRes.Serializer());
@@ -803,6 +811,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CMyRoomFurnitureListGetRes.Serializer());
             Create(new S2CMyRoomMyRoomBgmUpdateRes.Serializer());
             Create(new S2CMyRoomUpdatePlanetariumRes.Serializer());
+
+            Create(new S2CNpcGetNpcExtendedFacilityRes.Serializer());
+
             Create(new S2CPartnerPawnPawnLikabilityRewardListGetRes.Serializer());
 
             Create(new S2CPartyPartyBreakupNtc.Serializer());

@@ -1,9 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using Arrowgene.Ddon.Database.Deferred;
+#nullable enable
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.Quest;
+using System.Data.Common;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -27,18 +24,15 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlUpdateEquipPoints =
             "UPDATE \"ddon_storage_item\" SET \"equip_points\" = @equip_points " +
             "WHERE \"item_uid\" = @item_uid;";
-        public Item SelectStorageItemByUId(string uId)
-        {
-            using TCon connection = OpenNewConnection();
-            return SelectStorageItemByUId(connection, uId);
-        }
 
-        public Item SelectStorageItemByUId(TCon connection, string uId)
+        public Item SelectStorageItemByUId(string uId, DbConnection connectionIn = null)
         {
-            Item item = null;
-            ExecuteInTransaction(conn =>
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
             {
-                ExecuteReader(conn, SqlSelectStorageItemsByUId,
+                Item item = null;
+                ExecuteReader(connection, SqlSelectStorageItemsByUId,
                     command => {
                         AddParameter(command, "@item_uid", uId);
                     }, reader => {
@@ -53,9 +47,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                             item.EquipPoints = GetUInt32(reader, "equip_points");
                         }
                     });
-            });
-
-            return item;
+                return item;
+            }
+            finally
+            {
+                if (!isTransaction) connection.Dispose();
+            }
         }
 
         public bool InsertIfNotExistsStorageItem(TCon conn, uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item)
@@ -81,121 +78,97 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return InsertIfNotExistsStorageItem(connection, characterId, storageType, slotNo, itemNum, item);
         }
         
-        public bool InsertStorageItem(DbConnection conn, uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item)
+        public bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, DbConnection? connectionIn = null)
         {
-            return ExecuteNonQuery(conn, SqlInsertStorageItem, command =>
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
             {
-                AddParameter(command, "item_uid", item.UId);
-                AddParameter(command, "character_id", characterId);
-                AddParameter(command, "storage_type", (byte) storageType);
-                AddParameter(command, "slot_no", slotNo);
-                AddParameter(command, "item_id", item.ItemId);
-                AddParameter(command, "item_num", itemNum);
-                AddParameter(command, "unk3", item.Unk3);
-                AddParameter(command, "color", item.Color);
-                AddParameter(command, "plus_value", item.PlusValue);
-                AddParameter(command, "equip_points", item.EquipPoints);
-            }) == 1;
+                return ExecuteNonQuery(connection, SqlInsertStorageItem, command =>
+                {
+                    AddParameter(command, "item_uid", item.UId);
+                    AddParameter(command, "character_id", characterId);
+                    AddParameter(command, "storage_type", (byte)storageType);
+                    AddParameter(command, "slot_no", slotNo);
+                    AddParameter(command, "item_id", item.ItemId);
+                    AddParameter(command, "item_num", itemNum);
+                    AddParameter(command, "unk3", item.Unk3);
+                    AddParameter(command, "color", item.Color);
+                    AddParameter(command, "plus_value", item.PlusValue);
+                    AddParameter(command, "equip_points", item.EquipPoints);
+                }) == 1;
+            }
+            finally
+            {
+                if (!isTransaction) connection.Dispose();
+            }
         }
 
-        public bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, bool deferred = false)
+        public bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, DbConnection? connectionIn = null)
         {
-            if (deferred)
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
             {
-                DeferredOperations.Add(new GenericDeferred(
-                    (conn) => InsertStorageItem(conn, characterId, storageType, slotNo, itemNum, item)
-                ));
+                Logger.Debug("Inserting storage item.");
+                if (!InsertIfNotExistsStorageItem(connection, characterId, storageType, slotNo, itemNum, item))
+                {
+                    Logger.Debug("Storage item already exists, replacing.");
+                    return UpdateStorageItem(characterId, storageType, slotNo, itemNum, item, connection);
+                }
                 return true;
             }
-
-            using TCon connection = OpenNewConnection();
-            return InsertStorageItem(connection, characterId, storageType, slotNo, itemNum, item);
-        }
-
-        public bool ReplaceStorageItem(DbConnection conn, uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item)
-        {
-            Logger.Debug("Inserting storage item.");
-            if (!InsertIfNotExistsStorageItem((TCon)conn, characterId, storageType, slotNo, itemNum, item))
+            finally
             {
-                Logger.Debug("Storage item already exists, replacing.");
-                return UpdateStorageItem(conn, characterId, storageType, slotNo, itemNum, item);
+                if (!isTransaction) connection.Dispose();
             }
-            return true;
         }
 
-        public bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, bool deferred = false)
+        public bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo, DbConnection? connectionIn = null)
         {
-            if (deferred)
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
             {
-                DeferredOperations.Add(new GenericDeferred(
-                    (connection) => ReplaceStorageItem(connection, characterId, storageType, slotNo, itemNum, item)
-                ));
-                return true;
+                return ExecuteNonQuery(connection, SqlDeleteStorageItem, command =>
+                {
+                    AddParameter(command, "character_id", characterId);
+                    AddParameter(command, "storage_type", (byte)storageType);
+                    AddParameter(command, "slot_no", slotNo);
+                }) == 1;
             }
-
-            using TCon connection = OpenNewConnection();
-            return ReplaceStorageItem(connection, characterId, storageType, slotNo, itemNum, item);
-        }
-
-        public bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo, bool deferred = false)
-        {
-            if (deferred)
+            finally
             {
-                DeferredOperations.Add(new GenericDeferred(
-                    (connection) => DeleteStorageItem(connection, characterId, storageType, slotNo)
-                ));
-                return true;
+                if (!isTransaction) connection.Dispose();
             }
-
-            return ExecuteNonQuery(SqlDeleteStorageItem, command =>
-            {
-                AddParameter(command, "character_id", characterId);
-                AddParameter(command, "storage_type", (byte) storageType);
-                AddParameter(command, "slot_no", slotNo);
-            }) == 1;
         }
 
-        public bool DeleteStorageItem(DbConnection connection, uint characterId, StorageType storageType, ushort slotNo)
+        public bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, DbConnection? connectionIn = null)
         {
-            return ExecuteNonQuery(connection, SqlDeleteStorageItem, command =>
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
             {
-                AddParameter(command, "character_id", characterId);
-                AddParameter(command, "storage_type", (byte)storageType);
-                AddParameter(command, "slot_no", slotNo);
-            }) == 1;
-        }
-
-        public bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, bool deferred = false)
-        {
-            if (deferred)
-            {
-                DeferredOperations.Add(new GenericDeferred(
-                    (connection) => UpdateStorageItem(connection, characterId, storageType, slotNo, itemNum, item)
-                ));
-                return true;
+                return ExecuteNonQuery(connection, SqlUpdateStorageItem, command =>
+                {
+                    AddParameter(command, "item_uid", item.UId);
+                    AddParameter(command, "character_id", characterId);
+                    AddParameter(command, "storage_type", (byte)storageType);
+                    AddParameter(command, "slot_no", slotNo);
+                    AddParameter(command, "item_id", item.ItemId);
+                    AddParameter(command, "item_num", itemNum);
+                    AddParameter(command, "unk3", item.Unk3);
+                    AddParameter(command, "color", item.Color);
+                    AddParameter(command, "plus_value", item.PlusValue);
+                    AddParameter(command, "equip_points", item.EquipPoints);
+                }) == 1;
             }
-
-            using TCon connection = OpenNewConnection();
-            return UpdateStorageItem(connection, characterId, storageType, slotNo, itemNum, item);
-        }        
-        
-        public bool UpdateStorageItem(DbConnection connection, uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item)
-        {
-            return ExecuteNonQuery(connection, SqlUpdateStorageItem, command =>
+            finally
             {
-                AddParameter(command, "item_uid", item.UId);
-                AddParameter(command, "character_id", characterId);
-                AddParameter(command, "storage_type", (byte) storageType);
-                AddParameter(command, "slot_no", slotNo);
-                AddParameter(command, "item_id", item.ItemId);
-                AddParameter(command, "item_num", itemNum);
-                AddParameter(command, "unk3", item.Unk3);
-                AddParameter(command, "color", item.Color);
-                AddParameter(command, "plus_value", item.PlusValue);
-                AddParameter(command, "equip_points", item.EquipPoints);
-            }) == 1;
+                if (!isTransaction) connection.Dispose();
+            }
         }
-        
+
         public bool UpdateItemEquipPoints(string uid, uint equipPoints)
         {
             using (TCon connection = OpenNewConnection())

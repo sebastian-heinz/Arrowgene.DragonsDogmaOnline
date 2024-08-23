@@ -57,7 +57,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataCraftStartEquipGradeUpUnk0 dummydata = new() // TODO: Figure this out
             {
                 Unk0 = new List<CDataCraftStartEquipGradeUpUnk0Unk0> { dragonAugmentData },
-                DragonAugment = false,    // makes the DragonAugment slot popup appear if set to true.
+                DragonAugment = false, // makes the DragonAugment slot popup appear if set to true.
             };
 
             var res = new S2CCraftStartEquipGradeUpRes();
@@ -138,6 +138,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             break;
                         }
                     }
+
                     gradeupList = itemIDsList.Take(thresholdsExceeded).Select(recipe => new CDataCommonU32(recipe.GradeupItemID)).ToList();
                     upgradableStatus = itemIDsList.Take(thresholdsExceeded).LastOrDefault().Upgradable;
                     gearUpgradeID = gradeupList.Count > 0 ? gradeupList.Last().Value : 0;
@@ -162,7 +163,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         remainingPoints = currentTotalEquipPoint;
                     }
-
                     // Prepare to grade up
                     gradeupList = new() { new CDataCommonU32(gearUpgradeID) };
                     doUpgrade = true;
@@ -189,7 +189,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
                 UpdateCharacterItem(client, equipItemUID, equipItem, charid, updateCharacterItemNtc, CurrentEquipInfo);
                 res = CreateUpgradeResponse(equipItemUID, gearUpgradeID, gradeupList, addEquipPoint, currentTotalEquipPoint, (uint)upgradableStatus, goldRequired, isGreatSuccess,
-                                            CurrentEquipInfo, equipItem.ItemId, canContinue, dummydata);
+                    CurrentEquipInfo, equipItem.ItemId, canContinue, dummydata);
             }
             else
             {
@@ -201,13 +201,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (CraftManager.CanPawnExpUp(leadPawn))
             {
-                CraftManager.HandlePawnExpUp(client, leadPawn, pawnExp, 0);
+                CraftManager.HandlePawnExpUpNtc(client, leadPawn, pawnExp, 0);
+                if (CraftManager.CanPawnRankUp(leadPawn))
+                {
+                    CraftManager.HandlePawnRankUpNtc(client, leadPawn);
+                }
+                Server.Database.UpdatePawnBaseInfo(leadPawn);
             }
-            if (CraftManager.CanPawnRankUp(leadPawn))
-            {
-                CraftManager.HandlePawnRankUp(client, leadPawn);
-            }
-            Server.Database.UpdatePawnBaseInfo(leadPawn);
 
             client.Send(updateCharacterItemNtc);
             return res;
@@ -252,8 +252,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         }
 
         private S2CCraftStartEquipGradeUpRes CreateUpgradeResponse(string equipItemUID, uint gradeUpItemID, List<CDataCommonU32> gradeupList,
-                        uint addEquipPoint, uint currentTotalEquipPoint, uint canUpgrade, uint gold, bool isGreatSuccess, CDataCurrentEquipInfo currentEquip,
-                        uint beforeItemID, bool upgradable, CDataCraftStartEquipGradeUpUnk0 unk1)
+            uint addEquipPoint, uint currentTotalEquipPoint, uint canUpgrade, uint gold, bool isGreatSuccess, CDataCurrentEquipInfo currentEquip,
+            uint beforeItemID, bool upgradable, CDataCraftStartEquipGradeUpUnk0 unk1)
         {
             return new S2CCraftStartEquipGradeUpRes
             {

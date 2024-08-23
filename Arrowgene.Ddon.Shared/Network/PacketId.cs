@@ -1279,8 +1279,8 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId C2S_GP_GP_SHOP_CAN_BUY_REQ = new PacketId(28, 23, 1, "C2S_GP_GP_SHOP_CAN_BUY_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_GP_GP_SHOP_CAN_BUY_RES = new PacketId(28, 23, 2, "S2C_GP_GP_SHOP_CAN_BUY_RES", ServerType.Game, PacketSource.Server); // 課金商品購入可能状態の取得に
         public static readonly PacketId S2C_GP_28_24_16_NTC = new PacketId(28, 24, 16, "S2C_GP_28_24_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_GP_COURSE_START_NTC = new PacketId(28, 25, 16, "S2C_GP_COURSE_START_NTC", ServerType.Game, PacketSource.Server); // S2C_GP_28_25_16_NTC
-        public static readonly PacketId S2C_GP_28_26_16_NTC = new PacketId(28, 26, 16, "S2C_GP_28_26_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_GP_COURSE_START_NTC = new PacketId(28, 25, 16, "S2C_GP_COURSE_START_NTC", ServerType.Game, PacketSource.Server, "S2C_GP_28_25_16_NTC"); // S2C_GP_28_25_16_NTC
+        public static readonly PacketId S2C_GP_COURSE_EXTEND_NTC = new PacketId(28, 26, 16, "S2C_GP_COURSE_EXTEND_NTC", ServerType.Game, PacketSource.Server, "S2C_GP_28_26_16_NTC");
         public static readonly PacketId S2C_GP_28_27_16_NTC = new PacketId(28, 27, 16, "S2C_GP_28_27_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_GP_28_28_16_NTC = new PacketId(28, 28, 16, "S2C_GP_28_28_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_GP_28_29_16_NTC = new PacketId(28, 29, 16, "S2C_GP_28_29_16_NTC", ServerType.Game, PacketSource.Server);
@@ -1387,8 +1387,8 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId C2S_CRAFT_CRAFT_SKILL_ANALYZE_REQ = new PacketId(30, 17, 1, "C2S_CRAFT_CRAFT_SKILL_ANALYZE_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CRAFT_CRAFT_SKILL_ANALYZE_RES = new PacketId(30, 17, 2, "S2C_CRAFT_CRAFT_SKILL_ANALYZE_RES", ServerType.Game, PacketSource.Server); // クラフトスキル分析に
         public static readonly PacketId S2C_CRAFT_FINISH_CRAFT_NTC = new PacketId(30, 18, 16, "S2C_CRAFT_FINISH_CRAFT_NTC", ServerType.Game, PacketSource.Server, "S2C_CRAFT_30_18_16_NTC");
-        public static readonly PacketId S2C_CRAFT_CRAFT_EXP_UP_NTC = new PacketId(30, 19, 16, "S2C_CRAFT_CRAFT_EXP_UP_NTC", ServerType.Game, PacketSource.Server, "S2C_CRAFT_30_19_16_NTC"); // S2C_CRAFT_EXP_UP_NOTICE
-        public static readonly PacketId S2C_CRAFT_CRAFT_RANK_UP_NTC = new PacketId(30, 20, 16, "S2C_CRAFT_CRAFT_RANK_UP_NTC", ServerType.Game, PacketSource.Server, "S2C_CRAFT_30_20_16_NTC"); // S2C_CRAFT_RANK_UP_NOTICE
+        public static readonly PacketId S2C_CRAFT_CRAFT_EXP_UP_NTC = new PacketId(30, 19, 16, "S2C_CRAFT_CRAFT_EXP_UP_NTC", ServerType.Game, PacketSource.Server, "S2C_CRAFT_30_19_16_NTC");
+        public static readonly PacketId S2C_CRAFT_CRAFT_RANK_UP_NTC = new PacketId(30, 20, 16, "S2C_CRAFT_CRAFT_RANK_UP_NTC", ServerType.Game, PacketSource.Server, "S2C_CRAFT_30_20_16_NTC");
         public static readonly PacketId S2C_CRAFT_30_21_16_NTC = new PacketId(30, 21, 16, "S2C_CRAFT_30_21_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_CRAFT_30_22_16_NTC = new PacketId(30, 22, 16, "S2C_CRAFT_30_22_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_CRAFT_30_23_16_NTC = new PacketId(30, 23, 16, "S2C_CRAFT_30_23_16_NTC", ServerType.Game, PacketSource.Server);
@@ -3205,7 +3205,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_GP_GP_SHOP_CAN_BUY_RES);
             AddPacketIdEntry(packetIds, S2C_GP_28_24_16_NTC);
             AddPacketIdEntry(packetIds, S2C_GP_COURSE_START_NTC);
-            AddPacketIdEntry(packetIds, S2C_GP_28_26_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_GP_COURSE_EXTEND_NTC);
             AddPacketIdEntry(packetIds, S2C_GP_28_27_16_NTC);
             AddPacketIdEntry(packetIds, S2C_GP_28_28_16_NTC);
             AddPacketIdEntry(packetIds, S2C_GP_28_29_16_NTC);

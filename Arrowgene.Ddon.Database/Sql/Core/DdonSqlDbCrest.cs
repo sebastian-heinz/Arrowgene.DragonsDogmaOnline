@@ -1,14 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Data.Common;
-using System.Reflection.Metadata.Ecma335;
-using System.Text.RegularExpressions;
-using System.Web;
-using Arrowgene.Ddon.Database.Deferred;
-using Arrowgene.Ddon.Shared.Entity.Structure;
+#nullable enable
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.Quest;
+using System.Collections.Generic;
+using System.Data.Common;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -29,31 +22,25 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private readonly string SqlSelectAllCrestData = $"SELECT {BuildQueryField(CrestFields)} FROM \"ddon_crests\" WHERE " +
                                                        $"\"character_common_id\" = @character_common_id AND \"item_uid\"=@item_uid;";
 
-
-        public bool InsertCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount, bool deferred = false)
+        public bool InsertCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount, DbConnection? connectionIn = null)
         {
-            if (deferred)
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
             {
-                DeferredOperations.Add(new GenericDeferred(
-                    (connection) => InsertCrest(connection, characterCommonId, itemUId, slot, crestId, crestAmount)
-                ));
-                return true;
+                return ExecuteNonQuery(connection, SqlInsertCrestData, command =>
+                {
+                    AddParameter(command, "character_common_id", characterCommonId);
+                    AddParameter(command, "item_uid", itemUId);
+                    AddParameter(command, "slot", slot);
+                    AddParameter(command, "crest_id", crestId);
+                    AddParameter(command, "crest_amount", crestAmount);
+                }) == 1;
             }
-
-            using TCon connection = OpenNewConnection();
-            return InsertCrest(connection, characterCommonId, itemUId, slot, crestId, crestAmount);
-        }
-
-        public bool InsertCrest(DbConnection connection, uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount)
-        {
-            return ExecuteNonQuery(connection, SqlInsertCrestData, command =>
+            finally
             {
-                AddParameter(command, "character_common_id", characterCommonId);
-                AddParameter(command, "item_uid", itemUId);
-                AddParameter(command, "slot", slot);
-                AddParameter(command, "crest_id", crestId);
-                AddParameter(command, "crest_amount", crestAmount);
-            }) == 1;
+                if (!isTransaction) connection.Dispose();
+            }
         }
 
         public bool UpdateCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount)

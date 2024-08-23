@@ -74,16 +74,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            List<uint> pawnIds = new List<uint> { request.CraftMainPawnID };
-            pawnIds.AddRange(request.CraftSupportPawnIDList.Select(p => p.PawnId));
+            Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnID);
+            List<Pawn> pawns = new List<Pawn> { leadPawn };
+            pawns.AddRange(request.CraftSupportPawnIDList.Select(p => Server.CraftManager.FindPawn(client, p.PawnId, true)));
             List<uint> productionSpeedLevels = new List<uint>();
             List<uint> consumableQuantityLevels = new List<uint>();
             List<uint> costPerformanceLevels = new List<uint>();
             List<uint> qualityLevels = new List<uint>();
-
-            foreach (uint pawnId in pawnIds)
+            foreach (Pawn pawn in pawns)
             {
-                Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == pawnId) ?? Server.Database.SelectPawn(pawnId);
                 productionSpeedLevels.Add(CraftManager.GetPawnProductionSpeedLevel(pawn));
                 consumableQuantityLevels.Add(CraftManager.GetPawnConsumableQuantityLevel(pawn));
                 costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
@@ -121,16 +120,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 consumableAdditionalQuantity = request.CreateCount * craftCalculationResult.CalculatedValue;
                 isGreatSuccessConsumableQuantity = craftCalculationResult.IsGreatSuccess;
             }
-            
-            // TODO: check if course bonus provides exp bonus for crafting
-            // TODO: calculate bonus EXP now that remaining time is 0
-            // TODO: Decide whether bonus exp should be calculated when craft is started vs. received
-            bool expBonus = false;
-            uint bonusExp = 0;
-            if (expBonus)
-            {
-                bonusExp = recipe.Exp * request.CreateCount;
-            }
 
             CraftProgress craftProgress = new CraftProgress
             {
@@ -140,26 +129,43 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CraftSupportPawnId2 = request.CraftSupportPawnIDList.ElementAtOrDefault(1)?.PawnId ?? 0,
                 CraftSupportPawnId3 = request.CraftSupportPawnIDList.ElementAtOrDefault(2)?.PawnId ?? 0,
                 RecipeId = request.RecipeID,
-                Exp = recipe.Exp * request.CreateCount,
                 NpcActionId = NpcActionType.NpcActionSmithy,
                 ItemId = recipe.ItemID,
                 Unk0 = request.Unk0,
                 // TODO: implement mechanism to deduct time periodically
                 RemainTime = Server.CraftManager.CalculateRecipeProductionSpeed(recipe.Time, productionSpeedLevels),
-                ExpBonus = expBonus,
-                CreateCount = request.CreateCount,
+                CreateCount = recipe.Num * request.CreateCount,
                 PlusValue = plusValue,
                 GreatSuccess = isGreatSuccessEquipmentQuality || isGreatSuccessConsumableQuantity,
-                BonusExp = bonusExp,
                 AdditionalQuantity = consumableAdditionalQuantity
             };
+
+            // TODO: check if course bonus provides exp bonus for crafting & calculate bonus EXP
+            // TODO: Decide whether bonus exp should be calculated when craft is started vs. received
+            bool expBonus = false;
+            if (CraftManager.CanPawnExpUp(leadPawn))
+            {
+                craftProgress.Exp = recipe.Exp * request.CreateCount;
+                craftProgress.ExpBonus = expBonus;
+                if (expBonus)
+                {
+                    craftProgress.BonusExp = craftProgress.Exp * 2;
+                }
+            }
+            else
+            {
+                craftProgress.Exp = 0;
+                craftProgress.ExpBonus = false;
+                craftProgress.BonusExp = 0;
+            }
+
             Server.Database.InsertPawnCraftProgress(craftProgress);
 
             // Subtract craft price
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,
                             Server.CraftManager.CalculateRecipeCost(recipe.Cost, costPerformanceLevels) * request.CreateCount);
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
-            
+
             client.Send(updateCharacterItemNtc);
             return new S2CCraftStartCraftRes();
         }

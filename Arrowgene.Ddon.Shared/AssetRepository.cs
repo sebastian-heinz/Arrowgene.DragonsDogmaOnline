@@ -148,7 +148,16 @@ namespace Arrowgene.Ddon.Shared
 
         private void RegisterAsset<T>(Action<T> onLoadAction, string key, IAssetDeserializer<T> readerWriter)
         {
-            Load(onLoadAction, key, readerWriter);
+            try
+            {
+                Load(onLoadAction, key, readerWriter);
+            }
+            catch (IOException e)
+            {
+                Logger.Error($"Could not load '{key}'");
+                Logger.Exception(e);
+            }
+
             RegisterFileSystemWatcher(onLoadAction, key, readerWriter);
         }
 
@@ -159,31 +168,23 @@ namespace Arrowgene.Ddon.Shared
             FileSystemInfo info = File.GetAttributes(path).HasFlag(FileAttributes.Directory) ? new DirectoryInfo(path) : new FileInfo(path);
             if (!info.Exists)
             {
-                Logger.Error($"The file or directory '{key}' does not exist");
-                return;
+                throw new IOException($"The file or directory '{key}' does not exist");
             }
 
-            try {
-                if (info is DirectoryInfo)
+            if (info is DirectoryInfo)
+            {
+                foreach (var file in ((DirectoryInfo)info).EnumerateFiles())
                 {
-                    foreach (var file in ((DirectoryInfo)info).EnumerateFiles())
-                    {
-                        T asset = readerWriter.ReadPath(file.FullName);
-                        onLoadAction.Invoke(asset);
-                        OnAssetChanged(file.FullName, asset);
-                    }
-                }
-                else
-                {
-                    T asset = readerWriter.ReadPath(info.FullName);
+                    T asset = readerWriter.ReadPath(file.FullName);
                     onLoadAction.Invoke(asset);
-                    OnAssetChanged(key, asset);
+                    OnAssetChanged(file.FullName, asset);
                 }
             }
-            catch (Exception e)
+            else
             {
-                Logger.Error($"Could not load '{key}', error reading the file contents");
-                Logger.Exception(e);
+                T asset = readerWriter.ReadPath(info.FullName);
+                onLoadAction.Invoke(asset);
+                OnAssetChanged(key, asset);
             }
         }
 
@@ -198,8 +199,6 @@ namespace Arrowgene.Ddon.Shared
             watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName;
             watcher.Changed += (object sender, FileSystemEventArgs e) =>
             {
-                Logger.Debug($"Reloading assets from file '{e.FullPath}'");
-
                 // Try reloading file
                 int attempts = 0;
                 while (true)
@@ -213,8 +212,7 @@ namespace Arrowgene.Ddon.Shared
                     {
                         // File isn't ready yet, so we need to keep on waiting until it is.
                         attempts++;
-                        Logger.Write(LogLevel.Error, $"Failed to reload {e.FullPath}. {attempts} attempts", ex);
-
+                        Logger.Info($"Attempt {attempts} to reload {e.FullPath} unsuccessful.");
                         if (attempts > 10)
                         {
                             Logger.Write(LogLevel.Error,

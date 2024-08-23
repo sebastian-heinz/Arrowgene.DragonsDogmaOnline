@@ -1,15 +1,13 @@
 #nullable enable
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System;
-using System.Collections.Generic;
-using Arrowgene.Ddon.Database;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -17,11 +15,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartEquipColorChangeHandler));
         private readonly ItemManager _itemmanager;
-        private readonly CraftManager _craftManager;
         public CraftStartEquipColorChangeHandler(DdonGameServer server) : base(server)
         {
             _itemmanager = server.ItemManager;
-            _craftManager = Server.CraftManager;
         }
 
         public override S2CCraftStartEquipColorChangeRes Handle(GameClient client, C2SCraftStartEquipColorChangeReq request)
@@ -79,7 +75,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     CurrentEquipInfo.EquipSlot.PawnId = pawnId;
                     characterCommon = client.Character.Pawns.SingleOrDefault(x => x.PawnId == pawnId);
                 }
-                else if(storageType == StorageType.CharacterEquipment)
+                else if (storageType == StorageType.CharacterEquipment)
                 {
                     CurrentEquipInfo.EquipSlot.CharacterId = charid;
                     characterCommon = character;
@@ -87,7 +83,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipColorChang;
                 updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, slotno, 0, 0));
-                
+
                 if (foundItem != null)
                 {
                     (slotno, item, itemnum) = foundItem;
@@ -135,11 +131,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (CraftManager.CanPawnExpUp(leadPawn))
             {
-                CraftManager.HandlePawnExpUp(client, leadPawn, totalExp, 0);
+                CraftManager.HandlePawnExpUpNtc(client, leadPawn, totalExp, 0);
             }
             if (CraftManager.CanPawnRankUp(leadPawn))
             {
-                CraftManager.HandlePawnRankUp(client, leadPawn);
+                CraftManager.HandlePawnRankUpNtc(client, leadPawn);
             }
             Server.Database.UpdatePawnBaseInfo(leadPawn);
             
