@@ -333,14 +333,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 },
             };
 
-        public ExpManager(DdonServer<GameClient> server, GameClientLookup gameClientLookup, GameLogicSetting gameSettings)
+        public ExpManager(DdonGameServer server, GameClientLookup gameClientLookup)
         {
             this._Server = server;
             this._gameClientLookup = gameClientLookup;
-            this._GameSettings = gameSettings;
+            this._GameSettings = server.Setting.GameLogicSetting;
         }
 
-        private DdonServer<GameClient> _Server;
+        private DdonGameServer _Server;
         protected readonly GameClientLookup _gameClientLookup;
         private GameLogicSetting _GameSettings;
 
