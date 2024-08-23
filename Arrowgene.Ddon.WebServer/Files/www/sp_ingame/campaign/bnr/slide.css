@@ -1,5 +1,18 @@
+* {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
 body {
-    background-image: url("image.gif");
-    background-repeat: repeat;
+/*     background-image: url("image.gif");
+    background-repeat: no-repeat !important;
+    background-position: center !important;
+    background-size: auto !important; */
+    padding: 0px !important;
+  }
+
+  img {
+    width: 370px !important;
+    height: 140px !important;
   }
   
