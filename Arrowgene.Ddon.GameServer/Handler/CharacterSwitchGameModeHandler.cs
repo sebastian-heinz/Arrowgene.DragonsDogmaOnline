@@ -37,6 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var storagesA = client.Character.Storage;
             var bbmProgress = client.Character.BbmProgress;
             var walletPointList = client.Character.WalletPointList;
+            var warpPointList = client.Character.ReleasedWarpPoints;
 
             var serverInfo = client.Character.Server;
             if (client.GameMode == GameMode.Normal)
@@ -70,6 +71,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Character.Server = serverInfo;
             client.Character.BbmProgress = bbmProgress;
             client.Character.WalletPointList = walletPointList;
+            client.Character.ReleasedWarpPoints = warpPointList;
             client.Character.OnlineStatus = OnlineStatus.Online;
 
             S2CCharacterSwitchGameModeNtc ntc = new S2CCharacterSwitchGameModeNtc()
