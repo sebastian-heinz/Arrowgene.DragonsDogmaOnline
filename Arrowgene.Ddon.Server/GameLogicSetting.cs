@@ -51,6 +51,10 @@ namespace Arrowgene.Ddon.Server
         [OnDeserialized]
         void OnDeserialized(StreamingContext context)
         {
+            if (RookiesRingBonus < 0)
+            {
+                RookiesRingBonus = 1.0;
+            }
         }
     }
 }

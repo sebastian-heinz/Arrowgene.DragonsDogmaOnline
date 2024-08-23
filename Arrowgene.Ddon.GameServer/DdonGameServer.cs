@@ -63,7 +63,7 @@ namespace Arrowgene.Ddon.GameServer
             ItemManager = new ItemManager();
             CraftManager = new CraftManager(this);
             PartyManager = new PartyManager(assetRepository);
-            ExpManager = new ExpManager(this, ClientLookup);
+            ExpManager = new ExpManager(this, ClientLookup, Setting.GameLogicSetting);
             PPManager = new PlayPointManager(database);
             JobManager = new JobManager(this);
             EquipManager = new EquipManager();

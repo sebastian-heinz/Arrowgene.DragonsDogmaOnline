@@ -534,7 +534,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             {
                 if (expPoint.Type == ExpType.ExperiencePoints)
                 {
-                    server.ExpManager.AddExp(server.Setting.GameLogicSetting, client, client.Character, expPoint.Reward, 2); // I think type 2 means quest
+                    server.ExpManager.AddExp(client, client.Character, expPoint.Reward, 2); // I think type 2 means quest
                 }
                 else if (expPoint.Type == ExpType.PlayPoints)
                 {
