@@ -31,6 +31,5 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 return obj;
             }
         }
-
     }
 }

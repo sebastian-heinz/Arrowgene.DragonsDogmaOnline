@@ -104,9 +104,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 S2CInstanceEnemyGroupDestroyNtc groupDestroyedNtc = new S2CInstanceEnemyGroupDestroyNtc()
                 {
                     LayoutId = packet.Structure.LayoutId,
-                    IsAreaBoss = IsAreaBoss
+                    IsAreaBoss = IsAreaBoss && (client.GameMode == GameMode.Normal)
                 };
                 client.Party.SendToAll(groupDestroyedNtc);
+
+                if (IsAreaBoss && client.GameMode == GameMode.BitterblackMaze)
+                {
+                    foreach (var memberClient in client.Party.Clients)
+                    {
+                        BitterblackMazeManager.HandleTierClear(_gameServer, memberClient, memberClient.Character, stageId);
+                    }
+                }
             }
 
             // TODO: EnemyId and KillNum

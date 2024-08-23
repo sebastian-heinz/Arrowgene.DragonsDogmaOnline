@@ -155,6 +155,66 @@ namespace Arrowgene.Ddon.GameServer.Characters
             /* Lv 119 */ 5000000,
         };
 
+        private static readonly uint[] BBM_EXP_UNTIL_NEXT_LV = new uint[]
+        {
+            /********/ 0,
+            /* LV 1 */ 500,
+            /* LV 2 */ 500,
+            /* LV 3 */ 500,
+            /* LV 4 */ 500,
+            /* LV 5 */ 500,
+            /* LV 6 */ 500,
+            /* LV 7 */ 500,
+            /* LV 8 */ 500,
+            /* LV 9 */ 500,
+            /* LV 10 */ 500,
+            /* LV 11 */ 500,
+            /* LV 12 */ 500,
+            /* LV 13 */ 500,
+            /* LV 14 */ 500,
+            /* LV 15 */ 500,
+            /* LV 16 */ 500,
+            /* LV 17 */ 500,
+            /* LV 18 */ 500,
+            /* LV 19 */ 500,
+            /* LV 20 */ 500,
+            /* LV 21 */ 3000,
+            /* LV 22 */ 3000,
+            /* LV 23 */ 3000,
+            /* LV 24 */ 3000,
+            /* LV 25 */ 3000,
+            /* LV 26 */ 3000,
+            /* LV 27 */ 3000,
+            /* LV 28 */ 3000,
+            /* LV 29 */ 3000,
+            /* LV 30 */ 3000,
+            /* LV 31 */ 3000,
+            /* LV 32 */ 3000,
+            /* LV 33 */ 3000,
+            /* LV 34 */ 3000,
+            /* LV 35 */ 3000,
+            /* LV 36 */ 3000,
+            /* LV 37 */ 3000,
+            /* LV 38 */ 3000,
+            /* LV 39 */ 3000,
+            /* LV 40 */ 5000,
+            /* LV 41 */ 5000,
+            /* LV 42 */ 5000,
+            /* LV 43 */ 5000,
+            /* LV 44 */ 5000,
+            /* LV 45 */ 5000,
+            /* LV 46 */ 5000,
+            /* LV 47 */ 5000,
+            /* LV 48 */ 5000,
+            /* LV 49 */ 5000,
+            /* LV 50 */ 8000,
+            /* LV 51 */ 8000,
+            /* LV 52 */ 8000,
+            /* LV 53 */ 8000,
+            /* LV 54 */ 8000,
+            /* LV 55 */ 8000,
+        };
+
         // E.g. LEVEL_UP_JOB_POINTS_EARNED[3] = 300, meaning you earn 300 JP when you reach Lv 3
         public static readonly uint[] LEVEL_UP_JOB_POINTS_EARNED = new uint[] {0,200,200,300,300,400,400,500,600,700,700,800,1000,1200,1400,1600,1800,2000,2300,2600,2900,3300,3500,3800,3800,4000,4000,4500,4500,5000,5000,5500,5800,5800,6500,6500,6800,6800,8000,8000,9000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,10000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,20000,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
@@ -395,8 +455,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public void AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, byte type = 0)
         {
+            var lvCap = (client.GameMode == GameMode.Normal) ? ExpManager.LV_CAP : BitterblackMazeManager.LevelCap(client.Character.BbmProgress);
+
             CDataCharacterJobData? activeCharacterJobData = characterToAddExpTo.ActiveCharacterJobData;
-            if (activeCharacterJobData != null && activeCharacterJobData.Lv < ExpManager.LV_CAP)
+            if (activeCharacterJobData != null && activeCharacterJobData.Lv < lvCap)
             {
                 // ------
                 // EXP UP
@@ -434,10 +496,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 uint targetLevel = currentLevel;
                 uint addJobPoint = 0;
 
-                while (targetLevel < LV_CAP && activeCharacterJobData.Exp >= ExpManager.TotalExpToLevelUpTo(targetLevel + 1))
+                while (targetLevel < lvCap && activeCharacterJobData.Exp >= ExpManager.TotalExpToLevelUpTo(targetLevel + 1, client.GameMode))
                 {
                     targetLevel++;
-                    addJobPoint+=LEVEL_UP_JOB_POINTS_EARNED[targetLevel];
+
+                    if (client.GameMode == GameMode.Normal)
+                    {
+                        addJobPoint += LEVEL_UP_JOB_POINTS_EARNED[targetLevel];
+                    }
                 }
 
                 if (currentLevel != targetLevel || addJobPoint != 0)
@@ -494,12 +560,89 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public static uint TotalExpToLevelUpTo(uint level)
+        public void ResetExpData(GameClient client, CharacterCommon characterCommon)
         {
+            foreach (var jobData in client.Character.CharacterJobDataList)
+            {
+                if (jobData.Lv == 1 && jobData.Exp == 0)
+                {
+                    // We can skip sending this NTC since the job was never leveled
+                    continue;
+                }
+
+                jobData.Lv = 1;
+                jobData.JobPoint = 0;
+                jobData.Exp = 0;
+
+                CalculateAndAssignStats(characterCommon);
+
+                if (characterCommon is Character)
+                {
+                    S2CJobCharacterJobExpUpNtc expNtc = new S2CJobCharacterJobExpUpNtc();
+                    expNtc.JobId = jobData.Job;
+                    expNtc.AddExp = 0;
+                    expNtc.ExtraBonusExp = 0;
+                    expNtc.TotalExp = jobData.Exp;
+                    client.Send(expNtc);
+
+                    // Inform client of lvl up
+                    S2CJobCharacterJobLevelUpNtc lvlNtc = new S2CJobCharacterJobLevelUpNtc();
+                    lvlNtc.Job = jobData.Job;
+                    lvlNtc.Level = jobData.Lv;
+                    lvlNtc.AddJobPoint = 0;
+                    lvlNtc.TotalJobPoint = 0;
+                    GameStructure.CDataCharacterLevelParam(lvlNtc.CharacterLevelParam, (Character)characterCommon);
+                    client.Send(lvlNtc);
+
+                    // Inform other party members
+                    S2CJobCharacterJobLevelUpMemberNtc lvlMemberNtc = new S2CJobCharacterJobLevelUpMemberNtc();
+                    lvlMemberNtc.CharacterId = ((Character)characterCommon).CharacterId;
+                    lvlMemberNtc.Job = jobData.Job;
+                    lvlMemberNtc.Level = jobData.Lv;
+                    GameStructure.CDataCharacterLevelParam(lvlMemberNtc.CharacterLevelParam, (Character)characterCommon);
+                    client.Party.SendToAllExcept(lvlMemberNtc, client);
+                }
+                else if (characterCommon is Pawn)
+                {
+                    S2CJobPawnJobExpUpNtc expNtc = new S2CJobPawnJobExpUpNtc();
+                    expNtc.JobId = jobData.Job;
+                    expNtc.AddExp = 0;
+                    expNtc.ExtraBonusExp = 0;
+                    expNtc.TotalExp = jobData.Exp;
+                    client.Send(expNtc);
+
+                    // Inform client of lvl up
+                    S2CJobPawnJobLevelUpNtc lvlNtc = new S2CJobPawnJobLevelUpNtc();
+                    lvlNtc.PawnId = ((Pawn)characterCommon).PawnId;
+                    lvlNtc.Job = jobData.Job;
+                    lvlNtc.Level = jobData.Lv;
+                    lvlNtc.AddJobPoint = 0;
+                    lvlNtc.TotalJobPoint = 0;
+                    GameStructure.CDataCharacterLevelParam(lvlNtc.CharacterLevelParam, (Pawn)characterCommon);
+                    client.Send(lvlNtc);
+
+                    // Inform other party members
+                    S2CJobPawnJobLevelUpMemberNtc lvlMemberNtc = new S2CJobPawnJobLevelUpMemberNtc();
+                    lvlMemberNtc.CharacterId = ((Pawn)characterCommon).CharacterId;
+                    lvlMemberNtc.PawnId = ((Pawn)characterCommon).PawnId;
+                    lvlMemberNtc.Job = jobData.Job;
+                    lvlMemberNtc.Level = jobData.Lv;
+                    GameStructure.CDataCharacterLevelParam(lvlMemberNtc.CharacterLevelParam, (Pawn)characterCommon);
+                    client.Party.SendToAllExcept(lvlMemberNtc, client);
+                }
+
+                _Server.Database.UpdateCharacterJobData(characterCommon.CommonId, jobData);
+            }
+        }
+
+        public static uint TotalExpToLevelUpTo(uint level, GameMode gameMode)
+        {
+            var expTable = (gameMode == GameMode.Normal) ? EXP_UNTIL_NEXT_LV : BBM_EXP_UNTIL_NEXT_LV;
+
             uint totalExp = 0;
             for (int i = 1; i < level; i++)
             {
-                totalExp += EXP_UNTIL_NEXT_LV[i];
+                totalExp += expTable[i];
             }
             return totalExp;
         }

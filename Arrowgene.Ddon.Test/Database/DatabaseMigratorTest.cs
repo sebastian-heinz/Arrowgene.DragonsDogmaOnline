@@ -5,6 +5,7 @@ using Arrowgene.Ddon.Database.Sql.Core.Migration;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.BattleContent;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections.Generic;
@@ -186,6 +187,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool CreateCharacter(Character character) { return true; }
         public bool CreateDatabase() { return true; }
         public bool CreatePawn(Pawn pawn) { return true; }
+        public void CreateItems(DbConnection connection, Character character) { }
         public bool DeleteAccount(int accountId) { return true; }
         public int DeleteBazaarExhibition(ulong bazaarId) { return 1; }
         public bool DeleteBoxRewardItem(uint commonId, uint uniqId) { return true; }
@@ -209,6 +211,8 @@ namespace Arrowgene.Ddon.Test.Database
         public bool DeleteSpSkill(uint pawnId, JobId job, byte spSkillId) { return true; }
         public bool DeleteStorage(uint characterId, StorageType storageType) { return true; }
         public bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo, DbConnection? connectionIn = null) { return true; }
+        public void DeleteAllStorageItems(DbConnection connection, uint characterId) { }
+        public void DeleteAllEquipItems(uint commonId, DbConnection? connectionIn = null) { }
         public bool DeleteToken(string token) { return true; }
         public bool DeleteTokenByAccountId(int accountId) { return true; }
         public bool DeleteWalletPoint(uint characterId, WalletType type) { return true; }
@@ -275,7 +279,7 @@ namespace Arrowgene.Ddon.Test.Database
         public BazaarExhibition SelectBazaarExhibitionByBazaarId(ulong bazaarId) { return new BazaarExhibition(); }
         public List<QuestBoxRewards> SelectBoxRewardItems(uint commonId) { return new List<QuestBoxRewards>(); }
         public Character SelectCharacter(uint characterId) { return new Character(); }
-        public List<Character> SelectCharactersByAccountId(int accountId) { return new List<Character>(); }
+        public List<Character> SelectCharactersByAccountId(int accountId, GameMode gameMode) { return new List<Character>(); }
         public List<Character> SelectAllCharacters() { return new List<Character>(); }
         public List<Character> SelectAllCharacters(DbConnection conn) { return new List<Character>(); }
         public List<Connection> SelectConnectionsByAccountId(int accountId) { return new List<Connection>(); }
@@ -293,6 +297,7 @@ namespace Arrowgene.Ddon.Test.Database
         public GameToken SelectToken(string tokenStr) { return new GameToken(); }
         public GameToken SelectTokenByAccountId(int accountId) { return new GameToken(); }
         public List<EquipItem> SelectEquipItemByCharacter(uint characterCommonId) { return new List<EquipItem>(); }
+        public Storages SelectAllStoragesByCharacterId(uint characterId) { return new Storages(new Dictionary<StorageType, ushort>()); }
         public bool SetMeta(DatabaseMeta meta) { return true; }
         public bool SetToken(GameToken token) { return true; }
         public bool UpdateAccount(Account account) { return true; }
@@ -355,6 +360,25 @@ namespace Arrowgene.Ddon.Test.Database
         public bool ReplaceAbilityPreset(uint characterId, CDataPresetAbilityParam preset) {return true; }
         public bool UpdateAbilityPreset(uint characterId, CDataPresetAbilityParam preset) { return true; }
         public bool UpdateCharacterBinaryData(uint characterId, byte[] data) { return true; }
+        public bool InsertBBMCharacterId(uint characterId, uint bbmCharacterId) { return false; }
+        public uint SelectBBMCharacterId(uint characterId) { return 0; }
+        public uint SelectBBMNormalCharacterId(uint bbmCharacterId) { return 0; }
+        public bool InsertBBMProgress(uint characterId, ulong startTime, uint contentId, BattleContentMode contentMode, uint tier, bool killedDeath, ulong lastTicketTime) { return true;  }
+        public bool UpdateBBMProgress(uint characterId, ulong startTime, uint contentId, BattleContentMode contentMode, uint tier, bool killedDeath, ulong lastTicketTime) { return true; }
+        public bool UpdateBBMProgress(uint characterId, BitterblackMazeProgress progress) { return true; }
+        public bool RemoveBBMProgress(uint characterId) { return true; }
+        public BitterblackMazeProgress SelectBBMProgress(uint characterId) { return new BitterblackMazeProgress(); }
+        public bool InsertBBMRewards(uint characterId, uint goldMarks, uint silverMarks, uint redMarks) { return true; }
+        public bool UpdateBBMRewards(uint characterId, BitterblackMazeRewards rewards) { return true; }
+        public bool UpdateBBMRewards(uint characterId, uint goldMarks, uint silverMarks, uint redMarks) { return true; }
+        public bool RemoveBBMRewards(uint characterId) { return true; }
+        public BitterblackMazeRewards SelectBBMRewards(uint characterId) { return new BitterblackMazeRewards(); }
+        public bool InsertBBMContentTreasure(uint characterId, BitterblackMazeTreasure treasure, DbConnection? connectionIn = null) { return true; }
+        public bool InsertBBMContentTreasure(uint characterId, uint contentId, uint amount, DbConnection? connectionIn = null) { return true; }
+        public bool UpdateBBMContentTreasure(uint characterId, BitterblackMazeTreasure treasure) { return true; }
+        public bool UpdateBBMContentTreasure(uint characterId, uint contentId, uint amount) { return true; }
+        public bool RemoveBBMContentTreasure(uint characterId) { return true; }
+        public List<BitterblackMazeTreasure> SelectBBMContentTreasure(uint characterId) { return new List<BitterblackMazeTreasure>(); }
 
         public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
         public void AddParameter(DbCommand command, string name, string value) { }

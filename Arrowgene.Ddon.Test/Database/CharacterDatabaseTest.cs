@@ -28,25 +28,26 @@ namespace Arrowgene.Ddon.Test.Database
             c.LastName = "Bar";
             c.AccountId = account.Id;
             c.Job = JobId.Fighter;
+            c.GameMode = GameMode.Normal;
             c.Storage.AddStorage(StorageType.StorageBoxNormal, new Storage(StorageType.StorageBoxNormal, 100));
 
             Assert.True(database.CreateCharacter(c));
 
-            List<Character> characters = database.SelectCharactersByAccountId(account.Id);
+            List<Character> characters = database.SelectCharactersByAccountId(account.Id, GameMode.Normal);
             Assert.NotEmpty(characters);
             Assert.True(characters.Count == 1);
 
             c.FirstName = "NewName";
             Assert.True(database.UpdateCharacterBaseInfo(c));
 
-            characters = database.SelectCharactersByAccountId(account.Id);
+            characters = database.SelectCharactersByAccountId(account.Id, GameMode.Normal);
             Assert.NotEmpty(characters);
             Assert.True(characters.Count == 1);
             Assert.Equal("NewName", characters[0].FirstName);
 
             Assert.True(database.DeleteCharacter(c.CharacterId));
             
-            characters = database.SelectCharactersByAccountId(account.Id);
+            characters = database.SelectCharactersByAccountId(account.Id, GameMode.Normal);
             Assert.True(characters.Count == 0);
             Assert.Empty(characters);
         }
