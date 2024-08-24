@@ -1,10 +1,4 @@
-﻿COMMIT TRANSACTION;
-
-PRAGMA foreign_keys=OFF;
-
-BEGIN TRANSACTION;
-
-CREATE TABLE "ddon_game_token_new"
+﻿CREATE TABLE "ddon_game_token_new"
 (
     "account_id"   INTEGER PRIMARY KEY NOT NULL,
     "character_id" INTEGER             NOT NULL,
@@ -82,11 +76,3 @@ CREATE TABLE IF NOT EXISTS "ddon_pawn_craft_progress_new"
 INSERT INTO "ddon_pawn_craft_progress_new" SELECT * FROM "ddon_pawn_craft_progress";
 DROP TABLE "ddon_pawn_craft_progress";
 ALTER TABLE "ddon_pawn_craft_progress_new" RENAME TO "ddon_pawn_craft_progress";
-
-PRAGMA foreign_key_check;
-
-COMMIT TRANSACTION;
-
-PRAGMA foreign_keys=ON;
-
-BEGIN TRANSACTION;
