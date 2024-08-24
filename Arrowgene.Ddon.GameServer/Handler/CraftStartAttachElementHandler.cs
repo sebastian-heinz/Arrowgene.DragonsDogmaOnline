@@ -80,7 +80,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnId);
             List<Pawn> pawns = new List<Pawn> { leadPawn };
-            pawns.AddRange(request.CraftSupportPawnIDList.Select(p => Server.CraftManager.FindPawn(client, p.PawnId, true)));
+            pawns.AddRange(request.CraftSupportPawnIDList.Select(p => Server.CraftManager.FindPawn(client, p.PawnId)));
             List<uint> costPerformanceLevels = new List<uint>();
             foreach (Pawn pawn in pawns)
             {
