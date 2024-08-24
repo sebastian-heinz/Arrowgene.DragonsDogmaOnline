@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.Server
 
         /// <summary>
         /// The multiplier applied to the bonus amount of exp rewarded.
-        /// Must be a non-negtive value. If it is < 0.0, a default of 1.0
+        /// Must be a non-negtive value. If it is less than 0.0, a default of 1.0
         /// will be selected.
         /// </summary>
         [DataMember(Order = 3)]
@@ -39,6 +39,12 @@ namespace Arrowgene.Ddon.Server
         [DataMember(Order = 4)]
         public bool NaiveLobbyContextHandling { get; set; }
 
+        /// <summary>
+        /// Determines the maximum amount of consumable items that can be crafted in one go with a pawn.
+        /// The default is a value of 10 which is equivalent to the original game's behavior.
+        /// </summary>
+        [DataMember(Order = 5)] public byte CraftConsumableProductionTimesMax { get; set; }
+
         public GameLogicSetting()
         {
             AdditionalProductionSpeedFactor = 1.0;
@@ -46,6 +52,7 @@ namespace Arrowgene.Ddon.Server
             RookiesRingMaxLevel = 89;
             RookiesRingBonus = 1.0;
             NaiveLobbyContextHandling = true;
+            CraftConsumableProductionTimesMax = 10;
         }
 
         public GameLogicSetting(GameLogicSetting setting)
@@ -55,6 +62,7 @@ namespace Arrowgene.Ddon.Server
             RookiesRingMaxLevel = setting.RookiesRingMaxLevel;
             RookiesRingBonus = setting.RookiesRingBonus;
             NaiveLobbyContextHandling = setting.NaiveLobbyContextHandling;
+            CraftConsumableProductionTimesMax = setting.CraftConsumableProductionTimesMax;
         }
 
         // Note: method is called after the object is completely deserialized - constructors are skipped.
@@ -64,6 +72,18 @@ namespace Arrowgene.Ddon.Server
             if (RookiesRingBonus < 0)
             {
                 RookiesRingBonus = 1.0;
+            }
+            if (AdditionalProductionSpeedFactor < 0)
+            {
+                CraftConsumableProductionTimesMax = 1;
+            }
+            if (AdditionalCostPerformanceFactor < 0)
+            {
+                CraftConsumableProductionTimesMax = 1;
+            }
+            if (CraftConsumableProductionTimesMax < 1)
+            {
+                CraftConsumableProductionTimesMax = 10;
             }
         }
     }

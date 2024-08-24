@@ -81,6 +81,7 @@ namespace Arrowgene.Ddon.Database
         bool UpdateCharacterMatchingProfile(Character character);
         bool UpdateCharacterArisenProfile(Character character);
         bool UpdateMyPawnSlot(uint characterId, uint num);
+        bool UpdateRentalPawnSlot(uint characterId, uint num);
         bool UpdateCharacterBinaryData(uint characterId, byte[] data);
         void CreateItems(DbConnection conn, Character character);
 

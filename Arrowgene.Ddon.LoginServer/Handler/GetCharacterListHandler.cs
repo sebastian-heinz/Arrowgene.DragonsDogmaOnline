@@ -47,7 +47,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 cResponse.CharacterListElement.CurrentJobBaseInfo.Level = (byte) c.ActiveCharacterJobData.Lv;
 
                 List<CDataGPCourseValid> ValidCourses = new List<CDataGPCourseValid>();
-
                 foreach (var ValidCourse in _AssetRepo.GPCourseInfoAsset.ValidCourses)
                 {
                     CDataGPCourseValid cDataGPCourseValid = new CDataGPCourseValid()

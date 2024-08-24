@@ -256,9 +256,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataRewardItem.Serializer());
             Create(new CDataRewardBoxRecord.Serializer());
             Create(new CDataRewardBoxItem.Serializer());
-            Create(new CDataS2CCraftGetCraftSettingResUnk0.Serializer());
+            Create(new CDataRegisteredLegendPawnInfo.Serializer());
             Create(new CDataS2CCraftGetCraftSettingResUnk0Unk6.Serializer());
-            Create(new CDataS2CCraftGetCraftSettingResUnk3.Serializer());
+            Create(new CDataRefiningMaterialInfo.Serializer());
             Create(new CDataS2CCraftStartQualityUpResUnk0.Serializer());
             Create(new CDataS2CEquipEnhancedGetPacksResUnk0.Serializer());
             Create(new CDataS2CEquipEnhancedGetPacksResUnk0Unk6.Serializer());
@@ -310,6 +310,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2LDecideCharacterIdReq.Serializer());
             Create(new C2LGetErrorMessageListReq.Serializer());
             Create(new C2LLoginReq.Serializer());
+            Create(new C2LPingReq.Serializer());
             Create(new C2SActionSetPlayerActionHistoryReq.Serializer());
             Create(new C2SAreaGetAreaBaseInfoListReq.Serializer());
 
@@ -372,6 +373,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SConnectionLoginReq.Serializer());
             Create(new C2SConnectionMoveInServerReq.Serializer());
             Create(new C2SConnectionMoveOutServerReq.Serializer());
+            Create(new C2SConnectionPingReq.Serializer());
             Create(new C2SConnectionReserveServerReq.Serializer());
 
             Create(new C2SContextGetSetContextReq.Serializer());
@@ -516,6 +518,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPartyPartyQuestProgressNtc.Serializer());
 
             Create(new C2SPawnCreatePawnReq.Serializer());
+            Create(new C2SPawnDeleteMyPawnReq.Serializer());
             Create(new C2SPawnGetLostPawnListReq.Serializer());
             Create(new C2SPawnGetMypawnDataReq.Serializer());
             Create(new C2SPawnGetMyPawnListReq.Serializer());
@@ -636,6 +639,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new L2CLoginRes.Serializer());
             Create(new L2CLoginWaitNumNtc.Serializer());
             Create(new L2CNextConnectionServerNtc.Serializer());
+            Create(new L2CPingRes.Serializer());
+            
             Create(new L2CGpCourseGetInfoRes.Serializer());
 
             Create(new S2CActionSetPlayerActionHistoryRes.Serializer());
@@ -718,6 +723,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CConnectionLogoutRes.Serializer());
             Create(new S2CConnectionMoveInServerRes.Serializer());
             Create(new S2CConnectionMoveOutServerRes.Serializer());
+            Create(new S2CConnectionPingRes.Serializer());
             Create(new S2CConnectionReserveServerRes.Serializer());
             
             Create(new S2CContextGetAllPlayerContextNtc.Serializer());
@@ -783,6 +789,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CGpGpCourseGetAvailableListRes.Serializer());
             Create(new S2CGPCourseExtendNtc.Serializer());
             Create(new S2CGPCourseStartNtc.Serializer());
+            Create(new S2CGpCourseEndNtc.Serializer());
             Create(new S2CInnGetPenaltyHealStayPriceRes.Serializer());
             Create(new S2CInnGetStayPriceRes.Serializer());
             Create(new S2CInnStayInnRes.Serializer());
@@ -911,8 +918,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPartyRecvBinaryMsgAllNtc.Serializer());
             Create(new S2CPartyRecvBinaryMsgNtc.Serializer());
 
-            Create(new S2CPawnExtendMainPawnNtc.Serializer());
+            Create(new S2CPawnExtendMainPawnSlotNtc.Serializer());
+            Create(new S2CPawnExtendSupportPawnSlotNtc.Serializer());
             Create(new S2CPawnCreatePawnRes.Serializer());
+            Create(new S2CPawnDeleteMyPawnRes.Serializer());
             Create(new S2CPawnGetPawnProfileNtc.Serializer());
             Create(new S2CPawnHistoryInfoNtc.Serializer());
             Create(new S2CPawnGetPawnTotalScoreInfoNtc.Serializer());

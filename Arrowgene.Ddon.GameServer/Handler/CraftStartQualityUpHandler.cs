@@ -80,6 +80,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             double calculatedOdds = CraftManager.CalculateEquipmentQualityIncreaseRate(qualityLevels);
 
+
             uint plusValue = 0;
             bool isGreatSuccessEquipmentQuality = false;
 

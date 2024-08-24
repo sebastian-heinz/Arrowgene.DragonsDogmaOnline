@@ -72,7 +72,20 @@ namespace Arrowgene.Ddon.Shared.Model
         public Storages Storage;
         public List<CDataEquipItemInfoUnk2> CharacterEquipItemInfoUnk2;
         public List<CDataWalletPoint> WalletPointList;
+        /// <summary>
+        /// num = 0: New character
+        /// num = 1: Complete the main quest "A Servant's Pledge"
+        /// num = 2: Riftstone Shards×10, Available in each area's supplies
+        /// num = 3: Dragonforce Augmentation, Obtain "Master Vessel +1", ×10 Riftstone Shards, "3rd Level of Dragon Power" ○ Main Quest "The Whereabouts of Life" ○ Total Level of the Master is 120 or more ○ Required BO for the Master: 19370 (3rd level)
+        /// </summary>
         public byte MyPawnSlotNum;
+        /// <summary>
+        /// Support Pawns can join a party as long as there is at least one main Pawn in the party. (e.g. 1 main pawn + 2 support pawns)
+        /// num = 0: New character
+        /// num = 3: Complete the main quest "A Servant's Pledge"
+        /// num = 4: Dragonforce Augmentation Obtain "Vessel of Leadership +1" ← "2nd Level of Dragon Power" ○ Complete the main Quest "Awakening of the Gods" ○ Total Level of the Master is 70 or more ○ Required BO for the Master: 4990 (2nd level)
+        /// num = 5: Dragonforce Augmentation Obtain "Commander's Vessel +1" ← "4th Level of Dragon Power" ○ Complete the main quest "White Dragon, Be Eternal" ○ The total level of the Master is 160 or more ○ Required BO for the Master: 70100 (4th level)
+        /// </summary>
         public byte RentalPawnSlotNum;
         public List<CDataOrbPageStatus> OrbStatusList;
         public List<CDataCharacterMsgSet> MsgSetList;

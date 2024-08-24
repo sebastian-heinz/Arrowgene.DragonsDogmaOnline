@@ -9,6 +9,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.Server.Network;
 using System.Linq;
+using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -453,7 +454,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return JobData;
         }
 
-        public void AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, byte type = 0)
+        public void AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, RewardSource rewardType, QuestType questType = QuestType.Unknown)
         {
             var lvCap = (client.GameMode == GameMode.Normal) ? ExpManager.LV_CAP : BitterblackMazeManager.LevelCap(client.Character.BbmProgress);
 
@@ -463,7 +464,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 // ------
                 // EXP UP
 
-                uint extraBonusExp = CalculateExpBonus(characterToAddExpTo, gainedExp);
+                uint extraBonusExp = CalculateExpBonus(characterToAddExpTo, gainedExp, rewardType, questType);
 
                 activeCharacterJobData.Exp += gainedExp;
                 activeCharacterJobData.Exp += extraBonusExp;
@@ -475,7 +476,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     expNtc.AddExp = gainedExp + extraBonusExp;
                     expNtc.ExtraBonusExp = extraBonusExp;
                     expNtc.TotalExp = activeCharacterJobData.Exp;
-                    expNtc.Type = type; // TODO: Figure out
+                    expNtc.Type = (byte) rewardType; // TODO: Figure out
                     client.Send(expNtc);
                 }
                 else if(characterToAddExpTo is Pawn)
@@ -485,7 +486,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     expNtc.AddExp = gainedExp + extraBonusExp;
                     expNtc.ExtraBonusExp = extraBonusExp;
                     expNtc.TotalExp = activeCharacterJobData.Exp;
-                    expNtc.Type = type; // TODO: Figure out
+                    expNtc.Type = (byte) rewardType; // TODO: Figure out
                     client.Send(expNtc);
                 }
 
@@ -673,11 +674,28 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return (uint)result;
         }
 
-        public uint CalculateExpBonus(CharacterCommon characterCommon, uint baseExpAmount)
+        private uint GetCourseExpBonus(CharacterCommon characterCommon, uint baseExpAmount, RewardSource source, QuestType questType)
+        {
+            double multiplier = 0;
+            switch (source)
+            {
+                case RewardSource.Enemy:
+                    multiplier = _Server.GpCourseManager.EnemyExpBonus(characterCommon);
+                    break;
+                case RewardSource.Quest:
+                    multiplier = _Server.GpCourseManager.QuestExpBonus(questType);
+                    break;
+            }
+
+            return (uint) (baseExpAmount * multiplier);
+        }
+
+        public uint CalculateExpBonus(CharacterCommon characterCommon, uint baseExpAmount, RewardSource source, QuestType questType)
         {
             uint bonusAmount = 0;
 
             bonusAmount += GetRookiesRingBonus(characterCommon, baseExpAmount);
+            bonusAmount += GetCourseExpBonus(characterCommon, baseExpAmount, source, questType);
 
             return bonusAmount;
         }

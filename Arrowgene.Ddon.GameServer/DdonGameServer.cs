@@ -64,7 +64,7 @@ namespace Arrowgene.Ddon.GameServer
             CraftManager = new CraftManager(this);
             PartyManager = new PartyManager(assetRepository);
             ExpManager = new ExpManager(this, ClientLookup);
-            PPManager = new PlayPointManager(database);
+            PPManager = new PlayPointManager(this);
             JobManager = new JobManager(this);
             EquipManager = new EquipManager();
             ShopManager = new ShopManager(assetRepository, database);
@@ -74,6 +74,7 @@ namespace Arrowgene.Ddon.GameServer
             RewardManager = new RewardManager(this);
             StampManager = new StampManager(this);
             HubManager = new HubManager(this);
+            GpCourseManager = new GpCourseManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
@@ -102,6 +103,7 @@ namespace Arrowgene.Ddon.GameServer
         public StampManager StampManager { get; }
         public HubManager HubManager { get; }
         public GameRouter Router { get; }
+        public GpCourseManager GpCourseManager { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
 
@@ -115,6 +117,7 @@ namespace Arrowgene.Ddon.GameServer
         public override void Start()
         {
             QuestManager.LoadQuests(this.AssetRepository);
+            GpCourseManager.EvaluateCourses();
             LoadChatHandler();
             LoadPacketHandler();
             base.Start();
@@ -443,6 +446,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PawnTrainingGetTrainingStatusHandler(this));
             AddHandler(new PawnTrainingSetTrainingStatusHandler(this));
             AddHandler(new PawnCreatePawnHandler(this));
+            AddHandler(new PawnDeleteMyPawnHandler(this));
 
             AddHandler(new PhotoPhotoTakeHandler(this));
 

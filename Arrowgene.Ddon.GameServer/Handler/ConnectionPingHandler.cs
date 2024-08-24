@@ -1,28 +1,24 @@
-﻿using Arrowgene.Buffers;
+﻿using System;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class ConnectionPingHandler : PacketHandler<GameClient>
+    // These requests are sent periodically by the client (every ~10 seconds)
+    // after successfully connecting to the server (client._challengeCompleted is true)
+    public class ConnectionPingHandler : PingRequestPacketHandler<GameClient, C2SConnectionPingReq, S2CConnectionPingRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ConnectionPingHandler));
-
 
         public ConnectionPingHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override PacketId Id => PacketId.C2S_CONNECTION_PING_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override S2CConnectionPingRes BuildPingResponse(GameClient client, DateTime now)
         {
-            IBuffer buffer = new StreamBuffer();
-            buffer.WriteUInt32(0, Endianness.Big);
-            buffer.WriteUInt32(0, Endianness.Big);
-            client.Send(new Packet(PacketId.S2C_CONNECTION_PING_RES, buffer.GetAllBytes()));
+            return new S2CConnectionPingRes();
         }
     }
 }

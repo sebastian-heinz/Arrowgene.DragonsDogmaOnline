@@ -8,7 +8,7 @@ using Arrowgene.Networking.Tcp.Server.AsyncEvent;
 
 namespace Arrowgene.Ddon.Server.Network
 {
-    public class Consumer<TClient> : ThreadedBlockingQueueConsumer where TClient : Client
+    public class Consumer<TClient> : ThreadedBlockingQueueConsumer, IDisposable where TClient : Client
     {
         private readonly ServerLogger Logger;
         private readonly Dictionary<PacketId, IPacketHandler<TClient>> _packetHandlerLookup;
@@ -160,6 +160,16 @@ namespace Arrowgene.Ddon.Server.Network
                     Logger.Exception(client, ex);
                 }
             }
+        }
+
+        public void Dispose()
+        {
+            foreach (var handler in _packetHandlerLookup.Values)
+            {
+                handler.Dispose();
+            }
+
+            _fallbackPacketHandler?.Dispose();
         }
     }
 }
