@@ -60,7 +60,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     List<InstancedGatheringItem> instancedGatheringItems = partyMemberClient.InstanceDropItemManager.GetAssets(layoutId, packet.Structure.SetId);
                     if (instancedGatheringItems.Count > 0)
                     {
-                        partyMemberClient.Party.SendToAll(new S2CInstancePopDropItemNtc()
+                        partyMemberClient.Send(new S2CInstancePopDropItemNtc()
                         {
                             LayoutId = packet.Structure.LayoutId,
                             SetId = packet.Structure.SetId,
