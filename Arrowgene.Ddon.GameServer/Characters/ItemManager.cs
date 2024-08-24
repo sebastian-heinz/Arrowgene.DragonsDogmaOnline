@@ -268,7 +268,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 else
                 {
                     // Move to storage box without stack limit if it's not equipment
-                    return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num, connectionIn:connectionIn);
+                    return DoAddItem(server.Database, character, StorageType.StorageBoxNormal, itemId, num, STACK_BOX_MAX, connectionIn:connectionIn);
                 }
             }
         }
@@ -292,7 +292,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 else
                 {
                     // Move to storage box without stack limit if it's not equipment
-                    return DoAddItem(server.Database, character, destinationStorage, itemId, num, connectionIn:connectionIn);
+                    return DoAddItem(server.Database, character, destinationStorage, itemId, num, STACK_BOX_MAX, connectionIn:connectionIn);
                 }
             }
         }
