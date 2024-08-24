@@ -29,6 +29,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             public double PlayerEnemyExpBonus = 0.0;
             public double PawnEnemyExpBonus = 0.0;
             public double WorldQuestExpBonus = 0.0;
+            public double EnemyPlayPointBonus = 0.0;
         };
 
         private void ApplyCourseEffects(uint courseId)
@@ -51,6 +52,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             break;
                         case GPCourseId.WQRewardExpUp:
                             _CourseBonus.WorldQuestExpBonus += (effect.Param0 / 100.0);
+                            break;
+                        case GPCourseId.EnemyPpUp:
+                            _CourseBonus.EnemyPlayPointBonus += (effect.Param0 / 100.0);
                             break;
                     }
                 }
@@ -77,6 +81,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             break;
                         case GPCourseId.WQRewardExpUp:
                             _CourseBonus.WorldQuestExpBonus -= (effect.Param0 / 100.0);
+                            break;
+                        case GPCourseId.EnemyPpUp:
+                            _CourseBonus.EnemyPlayPointBonus -= (effect.Param0 / 100.0);
                             break;
                     }
                 }
@@ -172,6 +179,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     default:
                         return 0;
                 }
+            }
+        }
+
+        public double EnemyPlayPointBonus()
+        {
+            lock (_CourseBonus)
+            {
+                return _CourseBonus.EnemyPlayPointBonus;
             }
         }
     }

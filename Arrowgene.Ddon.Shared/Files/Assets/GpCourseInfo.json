@@ -236,6 +236,19 @@
             "priority_same_time": 70,
             "announce_type": 2,
             "effects": [ 2, 3, 69, 216, 217, 128 ]
+        },
+        {
+            "id": 18,
+            "name": "Bonus Exp Event",
+            "comment": "Exp and PP is tripled",
+            "icon_path": "",
+            "description": "Triples exp and pp gained while the event is active for players and pawns",
+            "url": "",
+            "target": 0,
+            "priority_grp": 100,
+            "priority_same_time": 70,
+            "announce_type": 2,
+            "effects": [ 18, 20, 25, 27, 119 ]
         }
     ],
     "effects": [

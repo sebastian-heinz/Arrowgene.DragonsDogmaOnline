@@ -135,7 +135,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 uint gainedExp = enemyKilled.GetDroppedExperience();
 
                 uint gainedPP = enemyKilled.GetDroppedPlayPoints();
-                uint gainedBonusPP = 0;
 
                 GameClient memberClient;
                 CharacterCommon memberCharacter;
@@ -196,7 +195,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     if (gainedPP > 0)
                     {
-                        _gameServer.PPManager.AddPlayPoint(memberClient, gainedPP, gainedBonusPP, 1);
+                        _gameServer.PPManager.AddPlayPoint(memberClient, gainedPP, 1);
                     }
                 }
                 else if(member is PawnPartyMember)
