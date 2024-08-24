@@ -30,6 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             public double PawnEnemyExpBonus = 0.0;
             public double WorldQuestExpBonus = 0.0;
             public double EnemyPlayPointBonus = 0.0;
+            public bool DisablePartyExpAdjustment = false;
         };
 
         private void ApplyCourseEffects(uint courseId)
@@ -55,6 +56,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             break;
                         case GPCourseId.EnemyPpUp:
                             _CourseBonus.EnemyPlayPointBonus += (effect.Param0 / 100.0);
+                            break;
+                        case GPCourseId.DisablePartyAdjustEnemyExp:
+                            _CourseBonus.DisablePartyExpAdjustment = true;
                             break;
                     }
                 }
@@ -84,6 +88,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             break;
                         case GPCourseId.EnemyPpUp:
                             _CourseBonus.EnemyPlayPointBonus -= (effect.Param0 / 100.0);
+                            break;
+                        case GPCourseId.DisablePartyAdjustEnemyExp:
+                            _CourseBonus.DisablePartyExpAdjustment = false;
                             break;
                     }
                 }
@@ -187,6 +194,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             lock (_CourseBonus)
             {
                 return _CourseBonus.EnemyPlayPointBonus;
+            }
+        }
+
+        public bool DisablePartyExpAdjustment()
+        {
+            lock (_CourseBonus)
+            {
+                return _CourseBonus.DisablePartyExpAdjustment;
             }
         }
     }
