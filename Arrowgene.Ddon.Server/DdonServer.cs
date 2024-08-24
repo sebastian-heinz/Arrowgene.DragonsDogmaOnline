@@ -87,6 +87,7 @@ namespace Arrowgene.Ddon.Server
         public void Stop()
         {
             _server.Stop();
+            _consumer.Dispose();
         }
 
         protected void AddHandler(IPacketHandler<TClient> packetHandler)
