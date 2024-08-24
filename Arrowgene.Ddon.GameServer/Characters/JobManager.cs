@@ -723,14 +723,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
             uint costMax = _Server.CharacterManager.GetMaxAugmentAllocation(character);
             foreach (var presetAbility in preset.AbilityList)
             {
-                Ability ability = character.LearnedAbilities
+                Ability? ability = character.LearnedAbilities
                     .Where(aug => aug.AbilityId == presetAbility.AcquirementNo)
-                    .SingleOrDefault();
-
-                if (ability is null)
-                {
-                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_NOT_YET_LEARN);
-                }
+                    .SingleOrDefault() 
+                    ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_NOT_YET_LEARN);
 
                 cost += SkillGetAcquirableAbilityListHandler.GetAbilityFromId(presetAbility.AcquirementNo).Cost;
 
@@ -740,7 +736,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
             }
             
-            List<Ability> equippedAbilities = character.EquippedAbilitiesDictionary[character.Job];
+            List<Ability?> equippedAbilities = character.EquippedAbilitiesDictionary[character.Job];
 
             for (byte i = 0; i < 10; i++)
             {
@@ -750,9 +746,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
                 else
                 {
-                    Ability ability = character.LearnedAbilities
+                    Ability? ability = character.LearnedAbilities
                     .Where(aug => aug.AbilityId == preset.AbilityList[i].AcquirementNo)
-                    .SingleOrDefault();
+                    .SingleOrDefault() 
+                    ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_NOT_YET_LEARN);
 
                     character.EquippedAbilitiesDictionary[character.Job][i] = ability;
 
