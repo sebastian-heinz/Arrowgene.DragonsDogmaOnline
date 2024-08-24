@@ -13,13 +13,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private static uint PP_MAX = 2000;
 
-        public PlayPointManager(DdonGameServer server, IDatabase database)
+        public PlayPointManager(DdonGameServer server)
         {
-            _Database = database;
             _Server = server;
         }
 
-        protected readonly IDatabase _Database;
         private readonly DdonGameServer _Server;
 
         public void AddPlayPoint(GameClient client, uint gainedPoints, byte type = 1)
@@ -43,7 +41,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 
                 client.Send(ppNtc);
 
-                _Database.UpdateCharacterPlayPointData(client.Character.CharacterId, activeCharacterPlayPoint);
+                _Server.Database.UpdateCharacterPlayPointData(client.Character.CharacterId, activeCharacterPlayPoint);
             }
         }
 
@@ -67,7 +65,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 client.Send(ppNtc);
 
-                _Database.UpdateCharacterPlayPointData(client.Character.CharacterId, activeCharacterPlayPoint);
+                _Server.Database.UpdateCharacterPlayPointData(client.Character.CharacterId, activeCharacterPlayPoint);
             }
         }
     }
