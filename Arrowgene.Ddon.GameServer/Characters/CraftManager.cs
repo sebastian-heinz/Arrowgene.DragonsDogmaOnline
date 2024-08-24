@@ -335,9 +335,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == craftSkillType).Level;
         }
 
-        public static bool IsCraftRankLimitPromotionRecipe(uint recipeId)
+        public static bool IsCraftRankLimitPromotionRecipe(Pawn pawn, uint recipeId)
         {
-            return craftRankLimitPromotionRecipes.ContainsValue(recipeId);
+            return craftRankLimitPromotionRecipes.ContainsKey(pawn.CraftData.CraftRank) && craftRankLimitPromotionRecipes[pawn.CraftData.CraftRank] == recipeId;
         }
 
         public static void PromotePawnRankLimit(Pawn pawn)

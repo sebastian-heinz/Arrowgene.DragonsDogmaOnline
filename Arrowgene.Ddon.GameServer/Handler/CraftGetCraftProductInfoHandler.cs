@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // The lead pawn can only be a pawn owned by the player, no need to search in DB.
             Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnID);
-            if (CraftManager.IsCraftRankLimitPromotionRecipe(craftProgress.RecipeId))
+            if (CraftManager.IsCraftRankLimitPromotionRecipe(leadPawn, craftProgress.RecipeId))
             {
                 CraftManager.PromotePawnRankLimit(leadPawn);
                 // Mandatory to send otherwise the UI gets stuck.
@@ -44,13 +44,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
-                if(CraftManager.CanPawnExpUp(leadPawn))
+                if (CraftManager.CanPawnExpUp(leadPawn))
                 {
                     CraftManager.HandlePawnExpUpNtc(client, leadPawn, craftProgress.Exp, craftProgress.BonusExp);
                     if (CraftManager.CanPawnRankUp(leadPawn))
                     {
                         CraftManager.HandlePawnRankUpNtc(client, leadPawn);
                     }
+
                     Server.Database.UpdatePawnBaseInfo(leadPawn);
                 }
                 else
