@@ -132,11 +132,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (CraftManager.CanPawnExpUp(leadPawn))
             {
                 CraftManager.HandlePawnExpUpNtc(client, leadPawn, totalExp, 0);
+                if (CraftManager.CanPawnRankUp(leadPawn))
+                {
+                    CraftManager.HandlePawnRankUpNtc(client, leadPawn);
+                }
             }
-            if (CraftManager.CanPawnRankUp(leadPawn))
+            else
             {
-                CraftManager.HandlePawnRankUpNtc(client, leadPawn);
+                CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
             }
+
             Server.Database.UpdatePawnBaseInfo(leadPawn);
             
             return res;

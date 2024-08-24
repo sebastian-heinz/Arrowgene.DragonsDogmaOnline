@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint pawnExp = 0;
             ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
             var craftInfo = Server.AssetRepository.CostExpScalingAsset.CostExpScalingInfo[clientItemInfo.Rank]; // TODO: Make a new JSON for Quality, its different from Crests/Dyes.
-            uint totalCost = (uint)(craftInfo.Cost * 1);
+            uint totalCost = (uint)itemRank * 300;
             List<CDataItemUpdateResult> updateResults;
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
 
@@ -160,11 +160,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (CraftManager.CanPawnExpUp(leadPawn))
             {
                 CraftManager.HandlePawnExpUpNtc(client, leadPawn, pawnExp, 0);
+                if (CraftManager.CanPawnRankUp(leadPawn))
+                {
+                    CraftManager.HandlePawnRankUpNtc(client, leadPawn);
+                }
             }
-            if (CraftManager.CanPawnRankUp(leadPawn))
+            else
             {
-                CraftManager.HandlePawnRankUpNtc(client, leadPawn);
+                CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
             }
+
+            Server.Database.UpdatePawnBaseInfo(leadPawn);
 
             client.Send(updateCharacterItemNtc);
             return res;

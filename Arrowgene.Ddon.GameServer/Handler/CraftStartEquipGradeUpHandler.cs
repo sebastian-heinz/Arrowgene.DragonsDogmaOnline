@@ -206,8 +206,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     CraftManager.HandlePawnRankUpNtc(client, leadPawn);
                 }
-                Server.Database.UpdatePawnBaseInfo(leadPawn);
             }
+            else
+            {
+                CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
+            }
+
+            Server.Database.UpdatePawnBaseInfo(leadPawn);
 
             client.Send(updateCharacterItemNtc);
             return res;
