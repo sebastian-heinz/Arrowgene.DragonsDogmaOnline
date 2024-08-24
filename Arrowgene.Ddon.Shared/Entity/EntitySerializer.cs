@@ -784,6 +784,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CGpGpCourseGetAvailableListRes.Serializer());
             Create(new S2CGPCourseExtendNtc.Serializer());
             Create(new S2CGPCourseStartNtc.Serializer());
+            Create(new S2CGpCourseEndNtc.Serializer());
             Create(new S2CInnGetPenaltyHealStayPriceRes.Serializer());
             Create(new S2CInnGetStayPriceRes.Serializer());
             Create(new S2CInnStayInnRes.Serializer());

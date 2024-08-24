@@ -1,8 +1,10 @@
-﻿using Arrowgene.Ddon.Database.Model;
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -50,14 +52,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // client.Send(GameFull.Dump_5);
             //  client.Send(GameFull.Dump_6);
 
-            foreach (var ValidCourse in Server.AssetRepository.GPCourseInfoAsset.ValidCourses)
+            ulong now = (ulong)DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            foreach (var (id, course) in Server.AssetRepository.GPCourseInfoAsset.ValidCourses)
             {
-                S2CGPCourseExtendNtc courseExtendNtc = new S2CGPCourseExtendNtc()
+                if (now >= course.StartTime && now <= course.EndTime)
                 {
-                    CourseID = ValidCourse.Value.Id,
-                    ExpiryTimestamp = ValidCourse.Value.EndTime
-                };
-                client.Send(courseExtendNtc);
+                    S2CGPCourseExtendNtc courseExtendNtc = new S2CGPCourseExtendNtc()
+                    {
+                        CourseID = course.Id,
+                        ExpiryTimestamp = course.EndTime
+                    };
+                    client.Send(courseExtendNtc);
+                }
             }
 
             return new S2CConnectionMoveInServerRes();
