@@ -1,14 +1,15 @@
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class SkillSetPresetAbilityListHandler : GameRequestPacketHandler<C2SSkillSetPresetAbilityListReq, S2CSkillSetPresetAbilityListRes>
+    public class SkillSetPresetAbilityListHandler : GameStructurePacketHandler<C2SSkillSetPresetAbilityListReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillGetPresetAbilityListHandler));
 
@@ -16,25 +17,54 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override S2CSkillSetPresetAbilityListRes Handle(GameClient client, C2SSkillSetPresetAbilityListReq packet)
+        public override void Handle(GameClient client, StructurePacket<C2SSkillSetPresetAbilityListReq> packet)
         {
-            CDataPresetAbilityParam preset = client.Character.AbilityPresets.Where(x => x.PresetNo == packet.PresetNo).FirstOrDefault();
+            // The preset only works properly if the response happens before the notices,
+            // but we need to validate the preset first if we want to use the response to throw a user-facing error.
+            // Since we only have control over the order as a StructurePacketHandler, we have to re-implement the error handling.
 
-            if (preset is null)
+            CDataPresetAbilityParam preset;
+            CharacterCommon targetCharacter;
+            S2CSkillSetPresetAbilityListRes response;
+            try
             {
-                throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_INVALID_PRESET_NO);
-            }
+                preset = client.Character.AbilityPresets
+                .Where(x => x.PresetNo == packet.Structure.PresetNo)
+                .FirstOrDefault()
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_INVALID_PRESET_NO);
 
-            CharacterCommon targetCharacter = client.Character;
-            if (packet.PawnId > 0)
-            {
-                targetCharacter = client.Character.Pawns.Where(x => x.PawnId == packet.PawnId).FirstOrDefault();
-
-                if (targetCharacter is null)
+                targetCharacter = client.Character;
+                if (packet.Structure.PawnId > 0)
                 {
-                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID_SLOT_NO);
+                    targetCharacter = client.Character.Pawns
+                        .Where(x => x.PawnId == packet.Structure.PawnId)
+                        .FirstOrDefault()
+                        ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID_SLOT_NO);
                 }
+
+                Server.JobManager.CheckPreset(Server.Database, client, targetCharacter, preset);
+
+                response = new S2CSkillSetPresetAbilityListRes()
+                {
+                    PawnId = packet.Structure.PawnId,
+                    SetAcquirementParamList = preset.AbilityList
+                };
+            } 
+            catch (ResponseErrorException ex)
+            {
+                response = new S2CSkillSetPresetAbilityListRes();
+                response.Error = (uint)ex.ErrorCode;
+                client.Send(response);
+                return;
             }
+            catch (Exception)
+            {
+                response = new S2CSkillSetPresetAbilityListRes();
+                response.Error = (uint)ErrorCode.ERROR_CODE_FAIL;
+                throw;
+            }
+
+            client.Send(response);
 
             Server.JobManager.SetAbilityPreset(Server.Database, client, targetCharacter, preset);
 
@@ -48,7 +78,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         .Select((x, i) => x.AsCDataContextAcquirementData((byte)(i + 1)))
                         .ToList()
                 });
-            }    
+            }
             else if (targetCharacter is Pawn pawn)
             {
                 client.Send(new S2CSkillSetPresetPawnAbilityNtc()
@@ -60,12 +90,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         .ToList()
                 });
             }
-
-            return new S2CSkillSetPresetAbilityListRes()
-            {
-                PawnId = packet.PawnId,
-                SetAcquirementParamList = preset.AbilityList
-            };
         }
     }
 }

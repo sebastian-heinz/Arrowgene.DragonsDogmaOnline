@@ -716,8 +716,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             return preset;
         }
-    
-        public void SetAbilityPreset(IDatabase database, GameClient client, CharacterCommon character, CDataPresetAbilityParam preset)
+
+        public void CheckPreset(IDatabase database, GameClient client, CharacterCommon character, CDataPresetAbilityParam preset)
         {
             uint cost = 0;
             uint costMax = _Server.CharacterManager.GetMaxAugmentAllocation(character);
@@ -725,7 +725,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 Ability? ability = character.LearnedAbilities
                     .Where(aug => aug.AbilityId == presetAbility.AcquirementNo)
-                    .SingleOrDefault() 
+                    .SingleOrDefault()
                     ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_NOT_YET_LEARN);
 
                 cost += SkillGetAcquirableAbilityListHandler.GetAbilityFromId(presetAbility.AcquirementNo).Cost;
@@ -735,7 +735,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_COST_OVER);
                 }
             }
-            
+        }
+    
+        public void SetAbilityPreset(IDatabase database, GameClient client, CharacterCommon character, CDataPresetAbilityParam preset)
+        {
             List<Ability?> equippedAbilities = character.EquippedAbilitiesDictionary[character.Job];
 
             for (byte i = 0; i < 10; i++)
