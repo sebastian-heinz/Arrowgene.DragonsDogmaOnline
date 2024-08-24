@@ -33,7 +33,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ushort AddStatusID = request.AddStatusID;
             uint pawnExp = 0;
             ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
-            var craftInfo = Server.AssetRepository.CostExpScalingAsset.CostExpScalingInfo[clientItemInfo.Rank]; // TODO: Make a new JSON for Quality, its different from Crests/Dyes.
             uint totalCost = 0;
             List<CDataItemUpdateResult> updateResults;
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
@@ -77,6 +76,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == pawnId) ?? Server.Database.SelectPawn(pawnId);
                 costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
+                qualityLevels.Add(CraftManager.GetPawnEquipmentQualityLevel(pawn));
             }
             double calculatedOdds = CraftManager.CalculateEquipmentQualityIncreaseRate(qualityLevels);
 
