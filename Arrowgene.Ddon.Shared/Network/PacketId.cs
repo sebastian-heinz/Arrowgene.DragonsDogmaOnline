@@ -1281,7 +1281,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_GP_28_24_16_NTC = new PacketId(28, 24, 16, "S2C_GP_28_24_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_GP_COURSE_START_NTC = new PacketId(28, 25, 16, "S2C_GP_COURSE_START_NTC", ServerType.Game, PacketSource.Server, "S2C_GP_28_25_16_NTC"); // S2C_GP_28_25_16_NTC
         public static readonly PacketId S2C_GP_COURSE_EXTEND_NTC = new PacketId(28, 26, 16, "S2C_GP_COURSE_EXTEND_NTC", ServerType.Game, PacketSource.Server, "S2C_GP_28_26_16_NTC");
-        public static readonly PacketId S2C_GP_28_27_16_NTC = new PacketId(28, 27, 16, "S2C_GP_28_27_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_GP_COURSE_END_NTC = new PacketId(28, 27, 16, "S2C_GP_COURSE_END_NTC", ServerType.Game, PacketSource.Server, "S2C_GP_28_27_16_NTC");
         public static readonly PacketId S2C_GP_28_28_16_NTC = new PacketId(28, 28, 16, "S2C_GP_28_28_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_GP_28_29_16_NTC = new PacketId(28, 29, 16, "S2C_GP_28_29_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId C2S_GP_GP_COURSE_EFFECT_MISMATCH_REQ = new PacketId(28, 30, 1, "C2S_GP_GP_COURSE_EFFECT_MISMATCH_REQ", ServerType.Game, PacketSource.Client);
@@ -3206,7 +3206,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_GP_28_24_16_NTC);
             AddPacketIdEntry(packetIds, S2C_GP_COURSE_START_NTC);
             AddPacketIdEntry(packetIds, S2C_GP_COURSE_EXTEND_NTC);
-            AddPacketIdEntry(packetIds, S2C_GP_28_27_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_GP_COURSE_END_NTC);
             AddPacketIdEntry(packetIds, S2C_GP_28_28_16_NTC);
             AddPacketIdEntry(packetIds, S2C_GP_28_29_16_NTC);
             AddPacketIdEntry(packetIds, C2S_GP_GP_COURSE_EFFECT_MISMATCH_REQ);
