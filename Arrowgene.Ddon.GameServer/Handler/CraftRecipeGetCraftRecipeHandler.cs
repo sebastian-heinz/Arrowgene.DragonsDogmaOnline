@@ -23,14 +23,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .Select(recipes => recipes.RecipeList)
                 .SingleOrDefault(new List<CDataMDataCraftRecipe>());
 
-            client.Send(new S2CCraftRecipeGetCraftRecipeRes()
+            foreach (CDataMDataCraftRecipe cDataMDataCraftRecipe in allRecipesInCategory)
+            {
+                // TODO: All furniture recipes by default should be hidden - check which furniture recipes have been unlocked for player via achievements
+                if (cDataMDataCraftRecipe.RecipeID == 270001)
+                {
+                    cDataMDataCraftRecipe.IsHide = false;
+                }
+            }
+
+            client.Send(new S2CCraftRecipeGetCraftRecipeRes
             {
                 Category = packet.Structure.Category,
                 RecipeList = allRecipesInCategory
-                    .Skip((int) packet.Structure.Offset)
+                    .SkipWhile(recipe => recipe.IsHide)
+                    .Skip((int)packet.Structure.Offset)
                     .Take(packet.Structure.Num)
                     .ToList(),
-                IsEnd = (packet.Structure.Offset+packet.Structure.Num) >= allRecipesInCategory.Count
+                IsEnd = (packet.Structure.Offset + packet.Structure.Num) >= allRecipesInCategory.Count
             });
         }
     }

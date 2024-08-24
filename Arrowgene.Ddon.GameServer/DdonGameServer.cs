@@ -179,7 +179,12 @@ namespace Arrowgene.Ddon.GameServer
         {
             SetFallbackHandler(new FallbackHandler<GameClient>(this));
             
-            AddHandler(new AchievementAchievementGetReceivableRewardListHandler(this));
+            AddHandler(new AchievementGetReceivableRewardListHandler(this));
+            AddHandler(new AchievementGetProgressListHandler(this));
+            AddHandler(new AchievementGetRewardListHandler(this));
+            AddHandler(new AchievementGetFurnitureRewardListHandler(this));
+            AddHandler(new AchievementRewardReceiveHandler(this));
+            AddHandler(new AchievementGetCategoryProgressListHandler(this));
 
             AddHandler(new AreaGetAreaBaseInfoListHandler(this));
             AddHandler(new AreaGetAreaMasterInfoHandler(this));
