@@ -443,6 +443,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PawnTrainingGetTrainingStatusHandler(this));
             AddHandler(new PawnTrainingSetTrainingStatusHandler(this));
             AddHandler(new PawnCreatePawnHandler(this));
+            AddHandler(new PawnDeleteMyPawnHandler(this));
 
             AddHandler(new PhotoPhotoTakeHandler(this));
 

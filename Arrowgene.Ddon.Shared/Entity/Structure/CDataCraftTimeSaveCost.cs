@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -6,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
     
         public byte ID { get; set; }
-        public byte Type { get; set; }
+        public WalletType Type { get; set; }
         public uint Price { get; set; }
         public uint Sec { get; set; }
     
@@ -15,7 +16,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override void Write(IBuffer buffer, CDataCraftTimeSaveCost obj)
             {
                 WriteByte(buffer, obj.ID);
-                WriteByte(buffer, obj.Type);
+                WriteByte(buffer, (byte)obj.Type);
                 WriteUInt32(buffer, obj.Price);
                 WriteUInt32(buffer, obj.Sec);
             }
@@ -24,7 +25,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 CDataCraftTimeSaveCost obj = new CDataCraftTimeSaveCost();
                 obj.ID = ReadByte(buffer);
-                obj.Type = ReadByte(buffer);
+                obj.Type = (WalletType)ReadByte(buffer);
                 obj.Price = ReadUInt32(buffer);
                 obj.Sec = ReadUInt32(buffer);
                 return obj;

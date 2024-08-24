@@ -20,6 +20,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public UInt32 RecipeId { get; set; }
         public UInt32 ItemId { get; set; }
         public UInt32 PawnId { get; set; }
+        /// This will never contain Master Craft / Legend Pawn IDs, even though they might have an effect on the analysis.
         public List<CDataCommonU32> AssistPawnIds { get; set; }
         public UInt32 CreateCount { get; set; }
 

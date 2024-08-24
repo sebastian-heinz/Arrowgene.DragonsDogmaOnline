@@ -23,11 +23,11 @@ namespace Arrowgene.Ddon.Shared.Model
                     new() {Type = CraftSkillType.EquipmentQuality, Level = 0},
                     new() {Type = CraftSkillType.ConsumableQuantity, Level = 0},
                     new() {Type = CraftSkillType.CostPerformance, Level = 0},
-                    new() {Type = CraftSkillType.Placeholder6, Level = 0},
-                    new() {Type = CraftSkillType.Placeholder7, Level = 0},
-                    new() {Type = CraftSkillType.Placeholder8, Level = 0},
-                    new() {Type = CraftSkillType.Placeholder9, Level = 0},
-                    new() {Type = CraftSkillType.Placeholder10, Level = 0}
+                    new() {Type = CraftSkillType.ConsumableProductionIsAlwaysGreatSuccess, Level = 0},
+                    new() {Type = CraftSkillType.CreatingHighQualityEquipmentIsAlwaysGreatSuccess, Level = 0},
+                    new() {Type = CraftSkillType.CostPerformanceEffectUpFactor1, Level = 0},
+                    new() {Type = CraftSkillType.CostPerformanceEffectUpFactor2, Level = 0},
+                    new() {Type = CraftSkillType.UnknownEffect10, Level = 0}
                 }
             };
             TrainingStatus = new Dictionary<JobId, byte[]>();

@@ -103,8 +103,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             //character.UnkCharData0 = packet.Structure.CharacterInfo.UnkCharData0;
             //character.UnkCharData1 = packet.Structure.CharacterInfo.UnkCharData1;
 
-            character.MyPawnSlotNum = 2;
-            character.RentalPawnSlotNum = 0;
+            character.MyPawnSlotNum = packet.Structure.CharacterInfo.MyPawnSlotNum;
+            character.RentalPawnSlotNum = packet.Structure.CharacterInfo.RentalPawnSlotNum;
 
             //character.OrbStatusList = packet.Structure.CharacterInfo.OrbStatusList;
             //character.MsgSetList = packet.Structure.CharacterInfo.MsgSetList;

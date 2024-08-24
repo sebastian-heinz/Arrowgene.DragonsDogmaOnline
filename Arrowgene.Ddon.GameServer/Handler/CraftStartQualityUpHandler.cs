@@ -54,7 +54,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Lead pawn is always owned by player.
             Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnID);
             List<Pawn> pawns = new List<Pawn> { leadPawn };
-            pawns.AddRange(request.CraftSupportPawnIDList.Select(p => Server.CraftManager.FindPawn(client, p.PawnId, true)));
+            pawns.AddRange(request.CraftSupportPawnIDList.Select(p => Server.CraftManager.FindPawn(client, p.PawnId)));
             List<uint> consumableQuantityLevels = pawns.Select(CraftManager.GetPawnConsumableQuantityLevel).ToList();
 
             uint plusValue = 0;
