@@ -132,7 +132,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 uint bo = enemyKilled.BloodOrbs;
                 uint ho = enemyKilled.HighOrbs;
-                uint gainedExp = enemyKilled.GetDroppedExperience();
+                uint gainedExp = _gameServer.ExpManager.GetAdjustedExp(client.GameMode, RewardSource.Enemy, client.Party, enemyKilled.GetDroppedExperience(), enemyKilled.Lv);
 
                 uint gainedPP = enemyKilled.GetDroppedPlayPoints();
 

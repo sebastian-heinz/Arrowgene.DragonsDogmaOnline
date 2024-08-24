@@ -10,6 +10,9 @@ using Arrowgene.Logging;
 using Arrowgene.Ddon.Server.Network;
 using System.Linq;
 using Arrowgene.Ddon.Shared.Model.Quest;
+using Arrowgene.Ddon.GameServer.Party;
+using System.IO;
+using System.Text;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -698,6 +701,131 @@ namespace Arrowgene.Ddon.GameServer.Characters
             bonusAmount += GetCourseExpBonus(characterCommon, baseExpAmount, source, questType);
 
             return bonusAmount;
+        }
+
+        private uint PartyLevelRange(PartyGroup party)
+        {
+            uint maxLevel = party.Leader.Client.Character.ActiveCharacterJobData.Lv;
+            uint minLevel = party.Leader.Client.Character.ActiveCharacterJobData.Lv;
+
+            foreach (var member in party.Members)
+            {
+                CharacterCommon characterCommon = null;
+                if (member is PlayerPartyMember)
+                {
+                    var client = ((PlayerPartyMember)member).Client;
+                    characterCommon = client.Character;
+                }
+                else if (member is PawnPartyMember)
+                {
+                    characterCommon = ((PawnPartyMember)member).Pawn;
+                }
+                else
+                {
+                    // Is this possible?
+                    continue;
+                }
+
+                maxLevel = Math.Max(maxLevel, characterCommon.ActiveCharacterJobData.Lv);
+                minLevel = Math.Min(minLevel, characterCommon.ActiveCharacterJobData.Lv);
+            }
+
+            return maxLevel - minLevel;
+        }
+
+        private uint PartyMemberMaxLevel(PartyGroup party)
+        {
+            uint maxLevel = party.Leader.Client.Character.ActiveCharacterJobData.Lv;
+            foreach (var member in party.Members)
+            {
+                CharacterCommon characterCommon = null;
+                if (member is PlayerPartyMember)
+                {
+                    var client = ((PlayerPartyMember)member).Client;
+                    characterCommon = client.Character;
+                }
+                else if (member is PawnPartyMember)
+                {
+                    characterCommon = ((PawnPartyMember)member).Pawn;
+                }
+                else
+                {
+                    // Is this possible?
+                    continue;
+                }
+
+                maxLevel = Math.Max(maxLevel, characterCommon.ActiveCharacterJobData.Lv);
+            }
+
+            return maxLevel;
+        }
+
+        private double CalculatePartyRangeMultipler(GameMode gameMode, PartyGroup party)
+        {
+            if (!_GameSettings.AdjustPartyEnemyExp || gameMode == GameMode.BitterblackMaze)
+            {
+                return 1.0;
+            }
+
+            var range = PartyLevelRange(party);
+
+            double multiplier = 0;
+            foreach (var tier in _GameSettings.AdjustPartyEnemyExpTiers)
+            {
+                if (range >= tier.Item1 && range <= tier.Item2)
+                {
+                    multiplier = tier.Item3;
+                    break;
+                }
+            }
+
+            return multiplier;
+        }
+
+        private double CalculateTargetLvMultiplier(GameMode gameMode, PartyGroup party, uint targetLv)
+        {
+            if (!_GameSettings.AdjustTargetLvEnemyExp || gameMode == GameMode.BitterblackMaze)
+            {
+                return 1.0;
+            }
+
+            var maxLevelInParty = PartyMemberMaxLevel(party);
+            if (maxLevelInParty <= targetLv)
+            {
+                return 1.0;
+            }
+
+            var range = maxLevelInParty - targetLv;
+
+            double multiplier = 0;
+            foreach (var tier in _GameSettings.AdjustTargetLvEnemyExpTiers)
+            {
+                if (range >= tier.Item1 && range <= tier.Item2)
+                {
+                    multiplier = tier.Item3;
+                    break;
+                }
+            }
+
+            return multiplier;
+        }
+
+        public uint GetAdjustedExp(GameMode gameMode, RewardSource source, PartyGroup party, uint baseExpAmount, uint targetLv)
+        {
+            if (_Server.GpCourseManager.DisablePartyExpAdjustment())
+            {
+                return baseExpAmount;
+            }
+
+            double multiplier = 1.0;
+            if (source == RewardSource.Enemy)
+            {
+                var targetMultiplier = CalculateTargetLvMultiplier(gameMode, party, targetLv);
+                var partyRangeMultiplier = CalculatePartyRangeMultipler(gameMode, party);
+                multiplier = Math.Min(partyRangeMultiplier, targetMultiplier);
+            }
+            
+            return (uint)(multiplier * baseExpAmount);
         }
     }
 }

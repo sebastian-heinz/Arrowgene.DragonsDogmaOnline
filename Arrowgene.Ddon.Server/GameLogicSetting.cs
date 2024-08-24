@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Runtime.Serialization;
 
 namespace Arrowgene.Ddon.Server
@@ -45,6 +46,28 @@ namespace Arrowgene.Ddon.Server
         /// </summary>
         [DataMember(Order = 5)] public byte CraftConsumableProductionTimesMax { get; set; }
 
+        /// <summary>
+        /// Configures if party exp is adjusted based on level differences of members.
+        /// </summary>
+        [DataMember(Order = 6)] public bool AdjustPartyEnemyExp { get; set; }
+
+        /// <summary>
+        /// List of the inclusive ranges of (minlv, maxlv, percent). Percent is a value from 0.0 - 1.0
+        /// which is multipled into the base exp amount to determine the adjusted exp.
+        /// </summary>
+        [DataMember(Order = 7)] public List<(uint, uint, double)> AdjustPartyEnemyExpTiers { get; set; }
+
+        /// <summary>
+        /// Configures if exp is adjusted based on level differences of members vs target level.
+        /// </summary>
+        [DataMember(Order = 8)] public bool AdjustTargetLvEnemyExp { get; set; }
+
+        /// <summary>
+        /// List of the inclusive ranges of (minlv, maxlv, percent). Percent is a value from 0.0 - 1.0
+        /// which is multipled into the base exp amount to determine the adjusted exp.
+        /// </summary>
+        [DataMember(Order = 9)] public List<(uint, uint, double)> AdjustTargetLvEnemyExpTiers { get; set; }
+
         public GameLogicSetting()
         {
             AdditionalProductionSpeedFactor = 1.0;
@@ -53,6 +76,26 @@ namespace Arrowgene.Ddon.Server
             RookiesRingBonus = 1.0;
             NaiveLobbyContextHandling = true;
             CraftConsumableProductionTimesMax = 10;
+
+            AdjustPartyEnemyExp = true;
+            AdjustPartyEnemyExpTiers = new List<(uint, uint, double)>()
+            {
+                (0, 2, 1.0),
+                (3, 4, 0.9),
+                (5, 6, 0.8),
+                (7, 8, 0.6),
+                (9, 10, 0.5),
+            };
+
+            AdjustTargetLvEnemyExp = true;
+            AdjustTargetLvEnemyExpTiers = new List<(uint, uint, double)>()
+            {
+                (0, 2, 1.0),
+                (3, 4, 0.9),
+                (5, 6, 0.8),
+                (7, 8, 0.6),
+                (9, 10, 0.5),
+            };
         }
 
         public GameLogicSetting(GameLogicSetting setting)
@@ -63,6 +106,10 @@ namespace Arrowgene.Ddon.Server
             RookiesRingBonus = setting.RookiesRingBonus;
             NaiveLobbyContextHandling = setting.NaiveLobbyContextHandling;
             CraftConsumableProductionTimesMax = setting.CraftConsumableProductionTimesMax;
+            AdjustPartyEnemyExp = setting.AdjustPartyEnemyExp;
+            AdjustPartyEnemyExpTiers = setting.AdjustPartyEnemyExpTiers;
+            AdjustTargetLvEnemyExp = setting.AdjustTargetLvEnemyExp;
+            AdjustTargetLvEnemyExpTiers = setting.AdjustTargetLvEnemyExpTiers;
         }
 
         // Note: method is called after the object is completely deserialized - constructors are skipped.
