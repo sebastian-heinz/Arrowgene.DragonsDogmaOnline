@@ -13,17 +13,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private static uint PP_MAX = 2000;
 
-        public PlayPointManager(IDatabase database)
+        public PlayPointManager(DdonGameServer server, IDatabase database)
         {
-            _database = database;
+            _Database = database;
+            _Server = server;
         }
 
-        protected readonly IDatabase _database;
+        protected readonly IDatabase _Database;
+        private readonly DdonGameServer _Server;
 
-        public void AddPlayPoint(GameClient client, uint gainedPoints, uint extraBonusPoints, byte type = 1)
+        public void AddPlayPoint(GameClient client, uint gainedPoints, byte type = 1)
         {
             CDataJobPlayPoint? activeCharacterPlayPoint = client.Character.ActiveCharacterPlayPointData;
 
+            uint extraBonusPoints = (uint) (_Server.GpCourseManager.EnemyPlayPointBonus() * gainedPoints);
             if (activeCharacterPlayPoint != null && activeCharacterPlayPoint.PlayPoint.PlayPoint < PP_MAX)
             {
                 uint clampedNew = Math.Min(activeCharacterPlayPoint.PlayPoint.PlayPoint + gainedPoints + extraBonusPoints, PP_MAX);
@@ -32,7 +35,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 S2CJobUpdatePlayPointNtc ppNtc = new S2CJobUpdatePlayPointNtc()
                 {
                     JobId = activeCharacterPlayPoint.Job,
-                    UpdatePoint = gainedPoints,
+                    UpdatePoint = gainedPoints + extraBonusPoints,
                     ExtraBonusPoint = extraBonusPoints,
                     TotalPoint = activeCharacterPlayPoint.PlayPoint.PlayPoint,
                     Type = type //Type == 1 (default) is "loud" and will show the UpdatePoint amount to the user, as both a chat log and floating text.
@@ -40,7 +43,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 
                 client.Send(ppNtc);
 
-                _database.UpdateCharacterPlayPointData(client.Character.CharacterId, activeCharacterPlayPoint);
+                _Database.UpdateCharacterPlayPointData(client.Character.CharacterId, activeCharacterPlayPoint);
             }
         }
 
@@ -64,7 +67,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 client.Send(ppNtc);
 
-                _database.UpdateCharacterPlayPointData(client.Character.CharacterId, activeCharacterPlayPoint);
+                _Database.UpdateCharacterPlayPointData(client.Character.CharacterId, activeCharacterPlayPoint);
             }
         }
     }
