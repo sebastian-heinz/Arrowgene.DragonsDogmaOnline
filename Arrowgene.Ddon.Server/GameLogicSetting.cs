@@ -52,8 +52,9 @@ namespace Arrowgene.Ddon.Server
         [DataMember(Order = 6)] public bool AdjustPartyEnemyExp { get; set; }
 
         /// <summary>
-        /// List of the inclusive ranges of (minlv, maxlv, percent). Percent is a value from 0.0 - 1.0
-        /// which is multipled into the base exp amount to determine the adjusted exp.
+        /// List of the inclusive ranges of (minlv, maxlv, ExpMultiplier). ExpMultiplier is a value
+        /// from (0.0 - 1.0) which is multipled into the base exp amount to determine the adjusted exp.
+        /// The minlv and maxlv determine the relative level range that this multiplier should be applied to.
         /// </summary>
         [DataMember(Order = 7)] public List<(uint, uint, double)> AdjustPartyEnemyExpTiers { get; set; }
 
@@ -63,8 +64,9 @@ namespace Arrowgene.Ddon.Server
         [DataMember(Order = 8)] public bool AdjustTargetLvEnemyExp { get; set; }
 
         /// <summary>
-        /// List of the inclusive ranges of (minlv, maxlv, percent). Percent is a value from 0.0 - 1.0
-        /// which is multipled into the base exp amount to determine the adjusted exp.
+        /// List of the inclusive ranges of (minlv, maxlv, ExpMultiplier). ExpMultiplier is a value from
+        /// (0.0 - 1.0) which is multipled into the base exp amount to determine the adjusted exp.
+        /// The minlv and maxlv determine the relative level range that this multiplier should be applied to.
         /// </summary>
         [DataMember(Order = 9)] public List<(uint, uint, double)> AdjustTargetLvEnemyExpTiers { get; set; }
 
