@@ -310,6 +310,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2LDecideCharacterIdReq.Serializer());
             Create(new C2LGetErrorMessageListReq.Serializer());
             Create(new C2LLoginReq.Serializer());
+            Create(new C2LPingReq.Serializer());
             Create(new C2SActionSetPlayerActionHistoryReq.Serializer());
             Create(new C2SAreaGetAreaBaseInfoListReq.Serializer());
 
@@ -372,6 +373,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SConnectionLoginReq.Serializer());
             Create(new C2SConnectionMoveInServerReq.Serializer());
             Create(new C2SConnectionMoveOutServerReq.Serializer());
+            Create(new C2SConnectionPingReq.Serializer());
             Create(new C2SConnectionReserveServerReq.Serializer());
 
             Create(new C2SContextGetSetContextReq.Serializer());
@@ -637,6 +639,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new L2CLoginRes.Serializer());
             Create(new L2CLoginWaitNumNtc.Serializer());
             Create(new L2CNextConnectionServerNtc.Serializer());
+            Create(new L2CPingRes.Serializer());
+            
             Create(new L2CGpCourseGetInfoRes.Serializer());
 
             Create(new S2CActionSetPlayerActionHistoryRes.Serializer());
@@ -719,6 +723,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CConnectionLogoutRes.Serializer());
             Create(new S2CConnectionMoveInServerRes.Serializer());
             Create(new S2CConnectionMoveOutServerRes.Serializer());
+            Create(new S2CConnectionPingRes.Serializer());
             Create(new S2CConnectionReserveServerRes.Serializer());
             
             Create(new S2CContextGetAllPlayerContextNtc.Serializer());
