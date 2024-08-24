@@ -34,9 +34,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint pawnExp = 0;
             ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
             var craftInfo = Server.AssetRepository.CostExpScalingAsset.CostExpScalingInfo[clientItemInfo.Rank]; // TODO: Make a new JSON for Quality, its different from Crests/Dyes.
-            uint totalCost = (uint)itemRank * 300;
+            uint totalCost = 0;
             List<CDataItemUpdateResult> updateResults;
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
+
+            if (itemRank >= 100) // caps at IR 100
+            {
+                totalCost = 30000;
+            }
+            else
+            {
+                totalCost = (uint)itemRank * 300;
+            }
 
             CDataAddStatusParam AddStat = new CDataAddStatusParam()
             {
