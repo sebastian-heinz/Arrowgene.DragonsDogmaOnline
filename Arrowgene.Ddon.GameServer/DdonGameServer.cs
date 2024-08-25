@@ -385,6 +385,8 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new LoadingInfoLoadingGetInfoHandler(this));
 
+            AddHandler(new ChatSendTellMsgHandler(this));
+            
             AddHandler(new LobbyLobbyJoinHandler(this));
             AddHandler(new LobbyLobbyLeaveHandler(this));
             AddHandler(new LobbyLobbyChatMsgHandler(this));

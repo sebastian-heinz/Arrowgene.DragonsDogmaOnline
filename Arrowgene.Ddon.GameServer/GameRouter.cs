@@ -21,10 +21,10 @@ namespace Arrowgene.Ddon.GameServer
         public void Send(ChatResponse response)
         {
             S2CLobbyChatMsgNotice notice = new S2CLobbyChatMsgNotice();
-            notice.Type = (byte) response.Type;
-            notice.Unk2 = response.Unk2;
-            notice.Unk3 = response.Unk3;
-            notice.Unk4 = response.Unk4;
+            notice.Type = response.Type;
+            notice.MessageFlavor = response.MessageFlavor;
+            notice.PhrasesCategory = response.PhrasesCategory;
+            notice.PhrasesIndex = response.PhrasesIndex;
             notice.Message = response.Message;
             notice.CharacterBaseInfo.CharacterId = response.CharacterId;
             notice.CharacterBaseInfo.CharacterName.FirstName = response.FirstName;

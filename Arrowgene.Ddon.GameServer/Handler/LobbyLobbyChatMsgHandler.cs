@@ -1,9 +1,9 @@
 using Arrowgene.Ddon.GameServer.Chat;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -23,10 +23,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ChatMessage message = new ChatMessage(
                 request.Structure.Type,
                 // Unk1?
-                request.Structure.Unk2,
-                request.Structure.Unk3,
-                request.Structure.Unk4,
-                request.Structure.StrMessage
+                request.Structure.MessageFlavor,
+                request.Structure.PhrasesCategory,
+                request.Structure.PhrasesIndex,
+                request.Structure.Message
             );
             _chatManager.Handle(client, message);
             client.Send(new S2CLobbyChatMsgRes());

@@ -36,9 +36,9 @@ namespace Arrowgene.Ddon.GameServer.Chat
             response.LastName = lastName;
             response.CharacterId = 0;
             response.Type = type;
-            response.Unk2 = 0;
-            response.Unk3 = 0;
-            response.Unk4 = 0;
+            response.MessageFlavor = 0;
+            response.PhrasesCategory = 0;
+            response.PhrasesIndex = 0;
             foreach (uint characterId in characterIds)
             {
                 GameClient client = _server.ClientLookup.GetClientByCharacterId(characterId);
@@ -63,9 +63,9 @@ namespace Arrowgene.Ddon.GameServer.Chat
             response.LastName = lastName;
             response.CharacterId = 0;
             response.Type = type;
-            response.Unk2 = 0;
-            response.Unk3 = 0;
-            response.Unk4 = 0;
+            response.MessageFlavor = 0;
+            response.PhrasesCategory = 0;
+            response.PhrasesIndex = 0;
             response.Recipients.AddRange(recipients);
             _router.Send(response);
         }
