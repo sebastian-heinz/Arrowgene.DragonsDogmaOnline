@@ -1050,6 +1050,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CServerGetServerListRes.Serializer());
             Create(new S2CServerGetScreenShotCategoryRes.Serializer());
             Create(new S2CServerWeatherForecastGetRes.Serializer());
+            Create(new S2CServerTimeUpdateNtc.Serializer());
 
             Create(new S2CSkillAbilitySetNtc.Serializer());
             Create(new S2CSkillChangeExSkillRes.Serializer());

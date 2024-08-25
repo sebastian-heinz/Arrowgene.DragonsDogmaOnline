@@ -75,6 +75,7 @@ namespace Arrowgene.Ddon.GameServer
             StampManager = new StampManager(this);
             HubManager = new HubManager(this);
             GpCourseManager = new GpCourseManager(this);
+            WeatherManager = new WeatherManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
@@ -104,6 +105,7 @@ namespace Arrowgene.Ddon.GameServer
         public HubManager HubManager { get; }
         public GameRouter Router { get; }
         public GpCourseManager GpCourseManager { get; }
+        public WeatherManager WeatherManager { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
 

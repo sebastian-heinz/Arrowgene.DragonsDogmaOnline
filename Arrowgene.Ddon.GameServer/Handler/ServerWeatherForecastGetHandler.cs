@@ -10,6 +10,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ServerWeatherForecastGetHandler));
 
+        public static uint IntervalGameHour = 1;
+
         public ServerWeatherForecastGetHandler(DdonGameServer server) : base(server)
         {
         }
@@ -18,14 +20,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             var res = new S2CServerWeatherForecastGetRes()
             {
-                IntervalGameHour = 6, // From pcap data
-                GameDayToEarthMin = 90 // From pcap data
+                IntervalGameHour = IntervalGameHour,
+                GameDayToEarthMin = Server.Setting.GameLogicSetting.GameClockTimescale,
+                ForecastList = Server.WeatherManager.GetForecast()
             };
-
-            res.ForecastList.Add(new CDataWeatherForecast() { Weather = Weather.Fine });
-            res.ForecastList.Add(new CDataWeatherForecast() { Weather = Weather.Cloudy });
-            res.ForecastList.Add(new CDataWeatherForecast() { Weather = Weather.Rainy });
-            res.ForecastList.Add(new CDataWeatherForecast() { Weather = Weather.Fine });
 
             return res;
         }

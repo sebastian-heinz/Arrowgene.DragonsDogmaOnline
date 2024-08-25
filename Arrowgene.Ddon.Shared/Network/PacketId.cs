@@ -275,11 +275,11 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_SERVER_GAME_TIME_GET_BASEINFO_RES = new PacketId(1, 8, 2, "S2C_SERVER_GAME_TIME_GET_BASEINFO_RES", ServerType.Game, PacketSource.Server); // ゲーム内時間、天候、月齢の基本情報取得の結果
         public static readonly PacketId C2S_SERVER_GET_SCREEN_SHOT_CATEGORY_REQ = new PacketId(1, 9, 1, "C2S_SERVER_GET_SCREEN_SHOT_CATEGORY_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_SERVER_GET_SCREEN_SHOT_CATEGORY_RES = new PacketId(1, 9, 2, "S2C_SERVER_GET_SCREEN_SHOT_CATEGORY_RES", ServerType.Game, PacketSource.Server); // スクリーンショットカテゴリの取得
-        public static readonly PacketId S2C_SERVER_1_10_16_NTC = new PacketId(1, 10, 16, "S2C_SERVER_1_10_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_SERVER_1_11_16_NTC = new PacketId(1, 11, 16, "S2C_SERVER_1_11_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_SERVER_1_12_16_NTC = new PacketId(1, 12, 16, "S2C_SERVER_1_12_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_SERVER_1_13_16_NTC = new PacketId(1, 13, 16, "S2C_SERVER_1_13_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_SERVER_1_14_16_NTC = new PacketId(1, 14, 16, "S2C_SERVER_1_14_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_SERVER_TIME_UPDATE_NTC = new PacketId(1, 10, 16, "S2C_SERVER_TIME_UPDATE_NTC", ServerType.Game, PacketSource.Server, "S2C_SERVER_1_10_16_NTC");
+        public static readonly PacketId S2C_SERVER_WEATHER_UPDATE_NTC = new PacketId(1, 11, 16, "S2C_SERVER_WEATHER_UPDATE_NTC", ServerType.Game, PacketSource.Server, "S2C_SERVER_1_11_16_NTC");
+        public static readonly PacketId S2C_SERVER_GAME_TIME_BASEINFO_NTC = new PacketId(1, 12, 16, "S2C_SERVER_GAME_TIME_BASEINFO_NTC", ServerType.Game, PacketSource.Server, "S2C_SERVER_1_12_16_NTC");
+        public static readonly PacketId S2C_SERVER_WEATHER_LOOP_SCHEDULE_NTC = new PacketId(1, 13, 16, "S2C_SERVER_WEATHER_LOOP_SCHEDULE_NTC", ServerType.Game, PacketSource.Server, "S2C_SERVER_1_13_16_NTC");
+        public static readonly PacketId S2C_SERVER_MOON_LOOP_SCHEDULE_NTC = new PacketId(1, 14, 16, "S2C_SERVER_MOON_LOOP_SCHEDULE_NTC", ServerType.Game, PacketSource.Server, "S2C_SERVER_1_14_16_NTC");
 
 // Group: 2 - (CHARACTER)
         public static readonly PacketId C2S_CHARACTER_DECIDE_CHARACTER_ID_REQ = new PacketId(2, 0, 1, "C2S_CHARACTER_DECIDE_CHARACTER_ID_REQ", ServerType.Game, PacketSource.Client);
@@ -2201,11 +2201,11 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_SERVER_GAME_TIME_GET_BASEINFO_RES);
             AddPacketIdEntry(packetIds, C2S_SERVER_GET_SCREEN_SHOT_CATEGORY_REQ);
             AddPacketIdEntry(packetIds, S2C_SERVER_GET_SCREEN_SHOT_CATEGORY_RES);
-            AddPacketIdEntry(packetIds, S2C_SERVER_1_10_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_SERVER_1_11_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_SERVER_1_12_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_SERVER_1_13_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_SERVER_1_14_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_SERVER_TIME_UPDATE_NTC);
+            AddPacketIdEntry(packetIds, S2C_SERVER_WEATHER_UPDATE_NTC);
+            AddPacketIdEntry(packetIds, S2C_SERVER_GAME_TIME_BASEINFO_NTC);
+            AddPacketIdEntry(packetIds, S2C_SERVER_WEATHER_LOOP_SCHEDULE_NTC);
+            AddPacketIdEntry(packetIds, S2C_SERVER_MOON_LOOP_SCHEDULE_NTC);
 
 // Group: 2 - (CHARACTER)
             AddPacketIdEntry(packetIds, C2S_CHARACTER_DECIDE_CHARACTER_ID_REQ);

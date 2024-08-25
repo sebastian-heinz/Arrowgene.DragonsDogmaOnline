@@ -1,13 +1,10 @@
-﻿using System;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class ServerGameTimeGetBaseinfoHandler : StructurePacketHandler<GameClient, C2SServerGameTimeGetBaseInfoReq>
+    public class ServerGameTimeGetBaseinfoHandler : GameRequestPacketHandler<C2SServerGameTimeGetBaseInfoReq, S2CServerGameTimeGetBaseInfoRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ServerGameTimeGetBaseinfoHandler));
 
@@ -15,16 +12,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SServerGameTimeGetBaseInfoReq> packet)
+        public override S2CServerGameTimeGetBaseInfoRes Handle(GameClient client, C2SServerGameTimeGetBaseInfoReq request)
         {
-            client.Send(new S2CServerGameTimeGetBaseInfoRes());
-        }
+            var res = new S2CServerGameTimeGetBaseInfoRes();
+            res.GameTimeBaseInfo.GameTimeOneDayMin = Server.Setting.GameLogicSetting.GameClockTimescale;
+            res.WeatherLoop = Server.WeatherManager.WeatherLoopList;
 
-        // Adapted from the client's code
-        private long calcGameTimeMSec(DateTimeOffset realTime, long originalRealTimeSec, uint gameTimeOneDayMin, uint gameTimeDayHour)
-        {
-            return (1440 * (realTime.Millisecond + 1000 * (realTime.ToUnixTimeSeconds() - originalRealTimeSec)) / gameTimeOneDayMin)
-            % (3600000 * gameTimeDayHour);
+            return res;
         }
     }
 }
