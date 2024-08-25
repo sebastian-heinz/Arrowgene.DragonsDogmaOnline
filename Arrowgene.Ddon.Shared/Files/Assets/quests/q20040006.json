@@ -1,0 +1,126 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "A Grim Pilgrimage",
+    "quest_id": 20040006,
+    "base_level": 26,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 1180
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 990
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 150
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "comment" : "Over Guard",
+                    "item_id": 628,
+                    "num": 1
+                },
+                {
+                    "comment" : "Quality Gala Extract",
+                    "item_id": 9361,
+                    "num": 3
+                },
+                {
+                    "comment" : "Demon Amulet",
+                    "item_id": 9383,
+                    "num": 2					
+                }
+            ]
+        }
+    ],
+   "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 138,
+                "group_id": 1
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x011000",					
+                    "level": 25,
+                    "exp": 250,
+                    "is_boss": false,
+					"hm_present_no": 45					
+                },
+                {
+                    "enemy_id": "0x011000",					
+                    "level": 25,
+                    "exp": 250,
+                    "is_boss": false,
+					"hm_present_no": 45					
+                },
+                {
+                    "enemy_id": "0x011000",					
+                    "level": 25,
+                    "exp": 250,
+                    "is_boss": false,
+					"hm_present_no": 45					
+                },
+                {
+                    "enemy_id": "0x011001",					
+                    "level": 25,
+                    "exp": 250,
+                    "is_boss": false,
+					"hm_present_no": 46					
+                },
+                {
+                    "enemy_id": "0x011001",					
+                    "level": 25,
+                    "exp": 250,
+                    "is_boss": false,
+					"hm_present_no": 46					
+                }
+            ]
+        }
+    ],	
+    "blocks": [
+        {
+            "type": "NewNpcTalkAndOrder",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 1049, "comment": "Spawns Soldier0 NPC"}
+            ],
+            "stage_id": {
+                "id": 1,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "Soldier0",
+            "message_id": 11372
+        },
+        {		
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [0]
+        },
+        {		
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [0]
+        },
+        {			
+            "type": "NewTalkToNpc",
+            "stage_id": {
+                "id": 1,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Soldier0",
+            "message_id": 11842
+        }
+    ]
+}

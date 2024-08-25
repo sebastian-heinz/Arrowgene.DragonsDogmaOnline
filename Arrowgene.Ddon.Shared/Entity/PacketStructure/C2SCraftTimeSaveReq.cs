@@ -12,8 +12,15 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
 
         public uint PawnID { get; set; }
+        /// <summary>
+        /// TODO: Related to CraftSettingHandler => ID of TimeSave data?
+        /// </summary>
         public byte ID { get; set; }
+        /// TODO: Always 1?
         public byte Num { get; set; }
+        /// <summary>
+        /// true while triggered directly from craft item, false when triggered from production status
+        /// </summary>
         public bool IsInit { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SCraftTimeSaveReq>

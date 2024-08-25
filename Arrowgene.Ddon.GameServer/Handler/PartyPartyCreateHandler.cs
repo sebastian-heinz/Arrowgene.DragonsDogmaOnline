@@ -7,6 +7,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -63,6 +64,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     continue;
                 }
+
                 if (!worldQuests.Contains(quest.Key))
                 {
                     party.QuestState.AddNewQuest(quest.Key, 0);

@@ -1,8 +1,8 @@
-using System.Collections.Generic;
-using System.Data.Common;
-using Arrowgene.Ddon.Database.Deferred;
+#nullable enable
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.Quest;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.Data.Common;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -21,6 +21,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlUpdateEquipItem = $"UPDATE \"ddon_equip_item\" SET {BuildQueryUpdate(CDataEquipItemFields)} WHERE \"character_common_id\"=@character_common_id AND \"job\"=@job AND \"equip_type\"=@equip_type AND \"equip_slot\"=@equip_slot;";
         private static readonly string SqlSelectEquipItemByCharacter = $"SELECT {BuildQueryField(CDataEquipItemFields)} FROM \"ddon_equip_item\" WHERE \"character_common_id\"=@character_common_id;";
         private static readonly string SqlDeleteEquipItem = "DELETE FROM \"ddon_equip_item\" WHERE \"character_common_id\"=@character_common_id AND \"job\"=@job AND \"equip_type\"=@equip_type AND \"equip_slot\"=@equip_slot;";
+        private static readonly string SqlDeleteAllEquipItems = "DELETE FROM \"ddon_equip_item\" WHERE \"character_common_id\"=@character_common_id;";
 
         public bool InsertIfNotExistsEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
         {
@@ -49,30 +50,25 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 AddParameter(command, commonId, job, equipType, equipSlot, itemUId);
             }) == 1;
         }
-        
-        public bool ReplaceEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId, bool deferred=false)
+     
+        public bool ReplaceEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId, DbConnection? connectionIn = null)
         {
-            if (deferred)
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
             {
-                DeferredOperations.Add(new GenericDeferred(
-                    (connection) => ReplaceEquipItem(connection, commonId, job, equipType, equipSlot, itemUId)
-                ));
+                Logger.Debug("Inserting equip item.");
+                if (!InsertIfNotExistsEquipItem(connection, commonId, job, equipType, equipSlot, itemUId))
+                {
+                    Logger.Debug("Equip item already exists, replacing.");
+                    return UpdateEquipItem(connection, commonId, job, equipType, equipSlot, itemUId);
+                }
                 return true;
             }
-
-            using TCon connection = OpenNewConnection();
-            return ReplaceEquipItem(connection, commonId, job, equipType, equipSlot, itemUId);
-        }
-        
-        public bool ReplaceEquipItem(DbConnection conn, uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
-        {
-            Logger.Debug("Inserting equip item.");
-            if (!InsertIfNotExistsEquipItem((TCon)conn, commonId, job, equipType, equipSlot, itemUId))
+            finally
             {
-                Logger.Debug("Equip item already exists, replacing.");
-                return UpdateEquipItem((TCon)conn, commonId, job, equipType, equipSlot, itemUId);
+                if (!isTransaction) connection.Dispose();
             }
-            return true;
         }
 
         public bool UpdateEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId)
@@ -89,28 +85,38 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
 
-        public bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, bool deferred = false)
+        public bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, DbConnection? connectionIn = null)
         {
-            if (deferred)
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
             {
-                DeferredOperations.Add(new GenericDeferred(
-                    (connection) => DeleteEquipItem(connection, commonId, job, equipType, equipSlot)
-                ));
-                return true;
+                return ExecuteNonQuery(connection, SqlDeleteEquipItem, command =>
+                {
+                    AddParameter((TCom)command, commonId, job, equipType, equipSlot);
+                }) == 1;
             }
-
-            return ExecuteNonQuery(SqlDeleteEquipItem, command =>
+            finally
             {
-                AddParameter(command, commonId, job, equipType, equipSlot);
-            }) == 1;
+                if (!isTransaction) connection.Dispose();
+            }
         }
 
-        public bool DeleteEquipItem(DbConnection connection, uint commonId, JobId job, EquipType equipType, byte equipSlot)
+        public void DeleteAllEquipItems(uint commonId, DbConnection? connectionIn = null)
         {
-            return ExecuteNonQuery(connection, SqlDeleteEquipItem, command =>
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
             {
-                AddParameter((TCom)command, commonId, job, equipType, equipSlot);
-            }) == 1;
+                ExecuteNonQuery(connection, SqlDeleteAllEquipItems, command =>
+                {
+                    AddParameter(command, "character_common_id", commonId);
+                });
+            }
+            finally
+            {
+                if (!isTransaction) connection.Dispose();
+            }
         }
 
         public List<EquipItem> SelectEquipItemByCharacter(uint characterCommonId)

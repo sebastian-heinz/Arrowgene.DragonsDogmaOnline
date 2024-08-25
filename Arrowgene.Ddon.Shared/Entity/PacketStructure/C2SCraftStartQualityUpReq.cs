@@ -18,13 +18,13 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             Unk3 = new List<CDataCommonU32>();
         }
 
-        public string ItemUID { get; set; } // The gear you want to upgrade UID
-        public string RefineUID { get; set; } // The Rock you're using to upgrade UID 
-        public ushort AddStatusID { get; set; } // Additional Status ID?
+        public string ItemUID { get; set; }
+        public string RefineUID { get; set; } 
+        public ushort AddStatusID { get; set; }
         public List<CDataCraftMaterial> CraftMaterialList { get; set; }
         public uint CraftMainPawnID { get; set; }
         public List<CDataCraftSupportPawnID> CraftSupportPawnIDList { get; set; }
-        public List<CDataCommonU32> Unk3 { get; set; } // Same list seen in GradeUp Request? Potentially crests or Dragonforce?
+        public List<CDataCommonU32> Unk3 { get; set; } // Never populates?
 
         public class Serializer : PacketEntitySerializer<C2SCraftStartQualityUpReq>
         {

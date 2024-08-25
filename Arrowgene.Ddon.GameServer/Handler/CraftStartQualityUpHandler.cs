@@ -25,7 +25,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             string equipItemUID = request.ItemUID;
             Character character = client.Character;
             var ramItem = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
-            var equipItem = ramItem.Item2.Item2;
+            Item equipItem = ramItem.Item2.Item2;
+            uint craftpawnid = request.CraftMainPawnID;
             string RefineMaterialUID = request.RefineUID;
             ushort AddStatusID = request.AddStatusID;
             List<CDataItemUpdateResult> updateResults;
@@ -50,15 +51,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: Revisit AdditionalStatus down the line. It appears it might be apart of a larger system involving craig? 
             // Definitely a potential huge rabbit hole that I think we should deal with in a different PR.
 
-            List<uint> consumableQuantityLevels = new List<uint>();
             // Lead pawn is always owned by player.
-            Pawn leadPawn = client.Character.Pawns.Find(p => p.PawnId == request.CraftMainPawnID);
-            consumableQuantityLevels.Add(CraftManager.GetPawnConsumableQuantityLevel(leadPawn));
-            foreach (uint pawnId in request.CraftSupportPawnIDList.Select(p => p.PawnId))
-            {
-                Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == pawnId) ?? Server.Database.SelectPawn(pawnId);
-                consumableQuantityLevels.Add(CraftManager.GetPawnConsumableQuantityLevel(pawn));
-            }
+            Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnID);
+            List<Pawn> pawns = new List<Pawn> { leadPawn };
+            pawns.AddRange(request.CraftSupportPawnIDList.Select(p => Server.CraftManager.FindPawn(client, p.PawnId)));
+            List<uint> consumableQuantityLevels = pawns.Select(CraftManager.GetPawnConsumableQuantityLevel).ToList();
 
             uint plusValue = 0;
             bool isGreatSuccessEquipmentQuality = false;
@@ -116,13 +113,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
 
                 updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
-                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 0, 0));
+                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, slotno, 0, 0));
 
                 if (foundItem != null)
                 {
                     (slotno, item, itemnum) = foundItem;
-                    Server.ItemManager.UpgradeStorageItem(Server, client, character.CharacterId, storageType, equipItem, (byte)slotno);
-                    updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, (byte)slotno, 1, 1));
+                    Server.ItemManager.UpgradeStorageItem(Server, client, character.CharacterId, storageType, equipItem, slotno);
+                    updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, slotno, 1, 1));
                     client.Send(updateCharacterItemNtc);
                 }
                 else
@@ -139,16 +136,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CurrentEquip = CurrentEquipInfo
             };
 
-            // TODO: Find exp for item recipe
             if (CraftManager.CanPawnExpUp(leadPawn))
             {
-                CraftManager.HandlePawnExpUp(client, leadPawn, 10, 0);
+                // TODO: Find exp for item recipe
+                CraftManager.HandlePawnExpUpNtc(client, leadPawn, 10, 0);
+                if (CraftManager.CanPawnRankUp(leadPawn))
+                {
+                    CraftManager.HandlePawnRankUpNtc(client, leadPawn);
+                }
+                Server.Database.UpdatePawnBaseInfo(leadPawn);
             }
-            if (CraftManager.CanPawnRankUp(leadPawn))
-            {
-                CraftManager.HandlePawnRankUp(client, leadPawn);
-            }
-            Server.Database.UpdatePawnBaseInfo(leadPawn);
 
             return res;
         }

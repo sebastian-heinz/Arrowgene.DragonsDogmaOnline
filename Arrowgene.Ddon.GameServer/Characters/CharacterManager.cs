@@ -1,20 +1,9 @@
-using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Party;
-using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using YamlDotNet.Core.Tokens;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -58,7 +47,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             UpdateCharacterExtendedParams(character);
 
             client.Character = character;
-            client.Character.Server = _Server.AssetRepository.ServerList[0];
+            client.Character.Server = _Server.AssetRepository.ServerList.Where(server => server.Id == _Server.Id).Single();
             client.UpdateIdentity();
 
             SelectPawns(character);
@@ -70,7 +59,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private void SelectPawns(Character character)
         {
-            character.Pawns = _Server.Database.SelectPawnsByCharacterId(character.CharacterId);
+            character.Pawns = _Server.Database.SelectPawnsByCharacterId(character.ContentCharacterId);
 
             for (int i = 0; i < character.Pawns.Count; i++)
             {
@@ -81,7 +70,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 if (pawn.ExtendedParams == null)
                 {
                     // Old DB is in use and new table not populated with required data for character
-                    Logger.Error($"Character: AccountId={character.AccountId}, CharacterId={character.CharacterId}, CommonId={character.CommonId}, PawnCommonId={pawn.CommonId} is missing table entry in 'ddon_orb_gain_extend_param'.");
+                    Logger.Error($"Character: AccountId={character.AccountId}, CharacterId={character.ContentCharacterId}, CommonId={character.CommonId}, PawnCommonId={pawn.CommonId} is missing table entry in 'ddon_orb_gain_extend_param'.");
                 }
                 UpdateCharacterExtendedParams(pawn);
             }

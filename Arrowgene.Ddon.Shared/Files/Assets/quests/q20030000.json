@@ -1,0 +1,129 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "A Nest of Labor and Love",
+    "quest_id": 20030000,
+    "base_level": 30,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1080
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 130
+        },
+        {
+            "type": "exp",
+            "amount": 990
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "comment" : "Deft Gloves",
+                    "item_id": 920,
+                    "num": 1
+                },
+                {
+                    "comment" : "Refreshing Remedys ",					
+                    "item_id": 9375,
+                    "num": 3
+                },
+                {
+                    "comment" : "Throwblast",					
+                    "item_id": 52,
+                    "num": 2					
+                }
+            ]
+        }
+    ],
+   "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 196
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015002",
+                    "level": 30,
+                    "exp": 6500,
+                    "is_boss": true										
+                }
+            ]
+        }
+    ],	
+    "blocks": [
+        {
+            "type": "NewNpcTalkAndOrder",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 1006, "comment": "Spawns WearyHarpy NPC"}
+            ],			
+            "stage_id": {
+                "id": 1,
+                "group_id": 1,
+                "layer_no": 1
+            },				
+            "npc_id": "WearyHarpy",
+            "message_id": 10800
+        },
+        {
+            "type": "DeliverItems",
+            "stage_id": {
+                "id": 1,
+                "group_id": 1
+            },
+            "npc_id": "WearyHarpy",
+            "announce_type": "Accept",
+            "items": [
+                {
+                    "id": 7968,
+                    "amount": 1
+                }
+            ],
+            "message_id": 10737
+        },
+        {
+            "type": "DeliverItems",
+            "stage_id": {
+                "id": 1,
+                "group_id": 1
+            },
+            "npc_id": "WearyHarpy",
+            "announce_type": "Update",
+            "items": [
+                {
+                    "id": 7825,
+                    "amount": 5
+                }
+            ],
+            "message_id": 10737
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Update",
+            "groups": [0]		
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [0]
+        },
+        {			
+            "type": "NewTalkToNpc",
+            "stage_id": {
+                "id": 1,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "WearyHarpy",
+            "message_id": 11842			
+        }
+    ]
+}

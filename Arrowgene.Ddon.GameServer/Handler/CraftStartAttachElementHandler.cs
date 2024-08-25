@@ -1,14 +1,11 @@
+using System;
+using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -45,7 +42,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 relativeSlotNo = EquipManager.DeterminePawnEquipSlot(relativeSlotNo);
                 result.CurrentEquip.EquipSlot.CharacterId = 0;
                 result.CurrentEquip.EquipSlot.PawnId = pawnId;
-
             }
 
             if (storageType == StorageType.CharacterEquipment || storageType == StorageType.PawnEquipment)
@@ -77,25 +73,30 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 });
 
                 // Consume the crest
-                updateCharacterItemNtc.UpdateItemList.AddRange(Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, element.ItemUId, 1));
+                updateCharacterItemNtc.UpdateItemList.AddRange(
+                    Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, element.ItemUId, 1));
             }
-            
+
             updateCharacterItemNtc.UpdateType = ItemNoticeType.StartAttachElement;
             updateCharacterItemNtc.UpdateWalletList.Add(Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, totalCost));
             updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 1, 1));
             client.Send(updateCharacterItemNtc);
 
-            // TODO: Store saved pawn exp
-            S2CCraftCraftExpUpNtc expNtc = new S2CCraftCraftExpUpNtc()
+            Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnId);
+            if (CraftManager.CanPawnExpUp(leadPawn))
             {
-                PawnId = request.CraftMainPawnId,
-                AddExp = totalExp,
-                ExtraBonusExp = 0,
-                TotalExp = totalExp,
-                CraftRankLimit = 0
-            };
-            client.Send(expNtc);
-
+                CraftManager.HandlePawnExpUpNtc(client, leadPawn, totalExp, 0);
+                if (CraftManager.CanPawnRankUp(leadPawn))
+                {
+                    CraftManager.HandlePawnRankUpNtc(client, leadPawn);
+                }
+                Server.Database.UpdatePawnBaseInfo(leadPawn);
+            }
+            else
+            {
+                // Mandatory to send otherwise the UI gets stuck.
+                CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
+            }
             return result;
         }
     }

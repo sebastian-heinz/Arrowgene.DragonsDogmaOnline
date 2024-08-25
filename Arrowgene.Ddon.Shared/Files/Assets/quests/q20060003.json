@@ -1,0 +1,112 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Thugs of the Forest",
+    "quest_id": 20060003,
+    "base_level": 34,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 1120
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 990
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 140
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "comment" : "Custodian Arms",
+                    "item_id": 923,
+                    "num": 1
+                },
+                {
+                    "comment" : "Forest Dwellers Old Key",
+                    "item_id": 9066,
+                    "num": 2
+                },
+                {
+                    "comment" : "Enhanced Lockpick",
+                    "item_id": 9403,
+                    "num": 3					
+                }
+            ]
+        }
+    ],
+   "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 144
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x011111",
+                    "level": 34,
+                    "exp": 300,
+                    "is_boss": false
+        },
+        {
+                    "enemy_id": "0x011111",
+                    "level": 34,
+                    "exp": 300,
+                    "is_boss": false
+        },
+        {
+                    "enemy_id": "0x011112",
+                    "level": 34,
+                    "exp": 300,
+                    "is_boss": false	
+        },
+        {
+                    "enemy_id": "0x011112",
+                    "level": 34,
+                    "exp": 300,
+                    "is_boss": false						
+                }
+            ]
+        }
+    ],	
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",		
+            "stage_id": {
+                "id": 22,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "Ivan",
+            "message_id": 11372
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "groups": [0]		
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [0]
+        },
+        {				
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 22,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Ivan",
+            "message_id": 11842
+        }
+    ]
+}

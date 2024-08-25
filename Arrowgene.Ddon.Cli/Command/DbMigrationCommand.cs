@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Cli.Command
         {
            
             string settingPath = Path.Combine(Util.ExecutingDirectory(), "Files/Arrowgene.Ddon.config.json");
-            Setting settings = Setting.Load(settingPath);
+            Setting settings = Setting.LoadFromFile(settingPath);
             if (settings == null)
             {
                 return CommandResultType.Exit;

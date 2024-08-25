@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             buffer.WriteInt32(0, Endianness.Big); // result
 
             List<CDataCharacterListInfo> characterListResponse = new List<CDataCharacterListInfo>();
-            List<Character> characters = Database.SelectCharactersByAccountId(client.Account.Id);
+            List<Character> characters = Database.SelectCharactersByAccountId(client.Account.Id, GameMode.Normal);
             Logger.Info(client, $"Found: {characters.Count} Characters");
             foreach (Character c in characters)
             {
@@ -47,7 +47,6 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 cResponse.CharacterListElement.CurrentJobBaseInfo.Level = (byte) c.ActiveCharacterJobData.Lv;
 
                 List<CDataGPCourseValid> ValidCourses = new List<CDataGPCourseValid>();
-
                 foreach (var ValidCourse in _AssetRepo.GPCourseInfoAsset.ValidCourses)
                 {
                     CDataGPCourseValid cDataGPCourseValid = new CDataGPCourseValid()

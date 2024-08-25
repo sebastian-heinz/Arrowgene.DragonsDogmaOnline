@@ -1,6 +1,6 @@
-using System.Data.Common;
-using Arrowgene.Ddon.Database.Deferred;
+#nullable enable
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using System.Data.Common;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -48,29 +48,24 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
         
-        public bool ReplaceShortcut(uint characterId, CDataShortCut shortcut, bool deferred = false)
+        public bool ReplaceShortcut(uint characterId, CDataShortCut shortcut, DbConnection? connectionIn = null)
         {
-            if (deferred)
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
             {
-                DeferredOperations.Add(new GenericDeferred(
-                    (connection) => ReplaceShortcut(connection, characterId, shortcut)
-                ));
+                Logger.Debug("Inserting shortcut.");
+                if (!InsertIfNotExistsShortcut((TCon)connection, characterId, shortcut))
+                {
+                    Logger.Debug("Shortcut already exists, replacing.");
+                    return UpdateShortcut((TCon)connection, characterId, shortcut.PageNo, shortcut.ButtonNo, shortcut);
+                }
                 return true;
             }
-
-            using TCon connection = OpenNewConnection();
-            return ReplaceShortcut(connection, characterId, shortcut);
-        }       
-        
-        public bool ReplaceShortcut(DbConnection connection, uint characterId, CDataShortCut shortcut)
-        {
-            Logger.Debug("Inserting shortcut.");
-            if (!InsertIfNotExistsShortcut((TCon)connection, characterId, shortcut))
+            finally
             {
-                Logger.Debug("Shortcut already exists, replacing.");
-                return UpdateShortcut((TCon)connection, characterId, shortcut.PageNo, shortcut.ButtonNo, shortcut);
+                if (!isTransaction) connection.Dispose();
             }
-            return true;
         }
 
         public bool UpdateShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataShortCut updatedShortcut)

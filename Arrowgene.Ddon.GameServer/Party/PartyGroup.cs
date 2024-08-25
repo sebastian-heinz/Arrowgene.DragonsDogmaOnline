@@ -9,6 +9,7 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Party
 {
@@ -26,8 +27,6 @@ namespace Arrowgene.Ddon.GameServer.Party
         private PlayerPartyMember _leader;
         private PlayerPartyMember _host;
         private bool _isBreakup;
-
-        private List<GameClient> _masterClientList;
 
         public InstanceEnemyManager InstanceEnemyManager { get; }
 
@@ -53,8 +52,6 @@ namespace Arrowgene.Ddon.GameServer.Party
             InstanceOmData = new Dictionary<uint, Dictionary<ulong, uint>>();
 
             QuestState = new PartyQuestState();
-
-            _masterClientList = new List<GameClient>();
         }
 
         // Contexts[UID] = ContextData
@@ -284,7 +281,6 @@ namespace Arrowgene.Ddon.GameServer.Party
                 }
 
                 partyMember.JoinState = JoinState.On;
-                if (!_masterClientList.Contains(client)) _masterClientList.Add(client);
                 Logger.Info(client, $"[PartyId:{Id}][Join(GameClient)] joined");
                 return ErrorRes<PlayerPartyMember>.Success(partyMember);
             }
@@ -620,8 +616,9 @@ namespace Arrowgene.Ddon.GameServer.Party
             foreach (GameClient client in Clients)
             {
                 client.InstanceGatheringItemManager.Clear();
+                client.InstanceBbmItemManager.Reset();
                 client.InstanceDropItemManager.Clear();
-                client.Character.EnemyLayoutOwnership.Clear();
+                client.Character.ContextOwnership.Clear();
             }
             OmManager.ResetAllOmData(InstanceOmData);
             QuestState.ResetInstanceQuestState();
@@ -771,7 +768,13 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public int ClientIndex(GameClient client)
         {
-            return _masterClientList.IndexOf(client);
+            if (!Members.Any() || !Clients.Any()) return 0;
+            
+            var ind = Members.FindIndex(member =>
+                member is PlayerPartyMember playerMember
+                && playerMember.Client == client
+            );
+            return ind >= 0 ? ind : ClientIndex(Clients.First());
         }
 
         public bool Contains(CharacterCommon character)

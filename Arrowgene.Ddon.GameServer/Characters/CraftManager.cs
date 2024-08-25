@@ -127,7 +127,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             return Math.Clamp(
                 productionSpeedLevels.Select(level => level * ProductionSpeedIncrementPerLevel + ProductionSpeedMinimumPerPawn).Sum() *
-                _server.Setting.ServerSetting.AdditionalProductionSpeedFactor, 0, 100);
+                _server.Setting.GameLogicSetting.AdditionalProductionSpeedFactor, 0, 100);
         }
 
         public uint CalculateRecipeProductionSpeed(uint recipeTime, List<uint> productionSpeedLevels)
@@ -280,7 +280,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             return Math.Clamp(
                 costPerformanceLevels.Select(level => level * CostPerformanceIncrementPerLevel + CostPerformanceMinimumPerPawn).Sum() *
-                _server.Setting.ServerSetting.AdditionalCostPerformanceFactor, 0, 100);
+                _server.Setting.GameLogicSetting.AdditionalCostPerformanceFactor, 0, 100);
         }
 
         /// <summary>
@@ -342,7 +342,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public static void PromotePawnRankLimit(Pawn pawn)
         {
-            pawn.CraftData.CraftRankLimit = craftRankLimits[pawn.CraftData.CraftRankLimit];
+            if (craftRankLimitPromotionRecipes.ContainsKey(pawn.CraftData.CraftRank))
+            {
+                pawn.CraftData.CraftRankLimit = craftRankLimits[pawn.CraftData.CraftRankLimit];
+            }
         }
 
         public static bool CanPawnRankUp(Pawn pawn)
@@ -353,39 +356,49 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public static uint CalculatePawnRankUp(Pawn pawn)
         {
             uint rankUps = 0;
-            for (int i = (int)pawn.CraftData.CraftRank; i < PawnCraftRankMaxLimit; i++)
+
+            if (CanPawnRankUp(pawn))
             {
-                if (pawn.CraftData.CraftExp >= craftRankExpLimit[i])
+                for (int i = (int)pawn.CraftData.CraftRank; i < pawn.CraftData.CraftRankLimit; i++)
                 {
-                    rankUps++;
-                }
-                else
-                {
-                    break;
+                    if (pawn.CraftData.CraftExp >= craftRankExpLimit[i])
+                    {
+                        rankUps++;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
             }
 
             return rankUps;
         }
 
-        public static void HandlePawnRankUp(GameClient client, Pawn leadPawn)
+        public static void HandlePawnRankUpNtc(GameClient client, Pawn leadPawn)
         {
+            S2CCraftCraftRankUpNtc rankUpNtc = new S2CCraftCraftRankUpNtc
+            {
+                PawnId = leadPawn.PawnId,
+                CraftRank = leadPawn.CraftData.CraftRank
+            };
+            
             uint rankUps = CalculatePawnRankUp(leadPawn);
             if (rankUps > 0)
             {
                 uint rankUpDelta = Math.Clamp(leadPawn.CraftData.CraftRank + rankUps, leadPawn.CraftData.CraftRank, PawnCraftRankMaxLimit) - leadPawn.CraftData.CraftRank;
+                
                 leadPawn.CraftData.CraftRank += rankUpDelta;
                 leadPawn.CraftData.CraftPoint += rankUpDelta;
-                leadPawn.CraftData.CraftExp = Math.Clamp(leadPawn.CraftData.CraftExp, 0, craftRankExpLimit[(int)leadPawn.CraftData.CraftRank]);
-                S2CCraftCraftRankUpNtc rankUpNtc = new S2CCraftCraftRankUpNtc
-                {
-                    PawnId = leadPawn.PawnId,
-                    CraftRank = leadPawn.CraftData.CraftRank,
-                    AddCraftPoints = rankUpDelta,
-                    TotalCraftPoint = leadPawn.CraftData.CraftPoint
-                };
-                client.Send(rankUpNtc);
+
+                rankUpNtc.AddCraftPoints = rankUpDelta;
+                rankUpNtc.CraftRank = leadPawn.CraftData.CraftRank;
+                rankUpNtc.TotalCraftPoint = leadPawn.CraftData.CraftPoint;
+                
+                leadPawn.CraftData.CraftExp = Math.Clamp(leadPawn.CraftData.CraftExp, 0, craftRankExpLimit[(int)leadPawn.CraftData.CraftRankLimit-1]);
             }
+
+            client.Send(rankUpNtc);
         }
 
         public static bool CanPawnExpUp(Pawn pawn)
@@ -393,26 +406,37 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return pawn.CraftData.CraftRank < pawn.CraftData.CraftRankLimit;
         }
 
-        public static void HandlePawnExpUp(GameClient client, Pawn leadPawn, uint exp, uint bonusExp)
+        public static void HandlePawnExpUpNtc(GameClient client, Pawn leadPawn, uint exp, uint bonusExp)
         {
-            uint expUp = 0;
-            uint bonusExpUp = 0;
-            if (CanPawnExpUp(leadPawn))
-            {
-                expUp = exp;
-                bonusExpUp = bonusExp;
-            }
-
             S2CCraftCraftExpUpNtc expNtc = new S2CCraftCraftExpUpNtc()
             {
                 PawnId = leadPawn.PawnId,
-                AddExp = expUp,
-                ExtraBonusExp = bonusExpUp,
-                TotalExp = expUp + bonusExpUp,
                 CraftRankLimit = leadPawn.CraftData.CraftRankLimit
             };
-            leadPawn.CraftData.CraftExp += expNtc.TotalExp;
+            
+            if (CanPawnExpUp(leadPawn))
+            {
+                expNtc.AddExp = exp;
+                expNtc.ExtraBonusExp = bonusExp;
+                expNtc.TotalExp = exp + bonusExp;
+                
+                leadPawn.CraftData.CraftExp += expNtc.TotalExp;
+                
+                leadPawn.CraftData.CraftExp = Math.Clamp(leadPawn.CraftData.CraftExp, 0, craftRankExpLimit[(int)leadPawn.CraftData.CraftRankLimit]);
+            }
+
             client.Send(expNtc);
+        }
+
+        public Pawn FindPawn(GameClient client, uint pawnId)
+        {
+            Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == pawnId);
+            if (pawn == null)
+            {
+                pawn = _server.Database.SelectPawn(pawnId);
+            }
+
+            return pawn;
         }
     }
 }

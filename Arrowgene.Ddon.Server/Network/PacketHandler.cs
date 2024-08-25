@@ -16,5 +16,7 @@ namespace Arrowgene.Ddon.Server.Network
 
         public abstract PacketId Id { get; }
         public abstract void Handle(TClient client, IPacket packet);
+
+        public virtual void Dispose() {}
     }
 }
