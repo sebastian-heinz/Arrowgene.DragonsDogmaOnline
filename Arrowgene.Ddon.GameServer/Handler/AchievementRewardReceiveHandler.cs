@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler;
@@ -19,40 +18,22 @@ public class AchievementRewardReceiveHandler : GameRequestPacketHandler<C2SAchie
     {
         S2CAchievementRewardReceiveRes res = new S2CAchievementRewardReceiveRes();
 
-        res.RewardList = new List<CDataAchieveRewardCommon>
-        {
-            new()
-            {
-                Type = 1,
-                RewardId = 53
-            },
-            new()
-            {
-                Type = 2,
-                RewardId = 27
-            }
-        };
-        res.ReceivedRewardList = new List<CDataAchieveRewardCommon>
-        {
-            new()
-            {
-                Type = 2,
-                RewardId = 63
-            }
-        };
+        // Should be the list of remaining rewards the user has
+        res.RewardList = new List<CDataAchieveRewardCommon>();
+        // Should simply be filled with whatever the user chose based on the request packet
+        res.ReceivedRewardList = new List<CDataAchieveRewardCommon>();
 
         // TODO: look up reward/item ID for a reward ID => then look up potential item's item recipe item ID
         // e.g. RewardId 63 => FurnitureItemId 16126 => Item's Item Recipe Id 16227 => CraftingRecipe.json Recipe ID 270001
-        foreach (CDataAchieveRewardCommon rewardCommon in request.RewardList)
-        {
-            S2CItemAchievementRewardReceiveNtc unlockNtc = new S2CItemAchievementRewardReceiveNtc();
-            unlockNtc.UpdateType = ItemNoticeType.Drop;
-            unlockNtc.ItemNum = 1;
-            unlockNtc.StorageType = StorageType.StorageBoxExpansion;
-            unlockNtc.ItemId = 16227;
-            // TODO: document in some table which recipes have been unlocked
-            client.Send(unlockNtc);
-        }
+        // A user can never receive more than one reward at a time due to how the UI works, even if we are working with lists here
+        S2CItemAchievementRewardReceiveNtc unlockNtc = new S2CItemAchievementRewardReceiveNtc();
+        unlockNtc.Unk0 = 2; // packet dump
+        unlockNtc.Unk1 = 1; // packet dump
+        unlockNtc.Unk2 = 7; // packet dump
+        unlockNtc.ItemId = 16227; // packet dump
+        client.Send(unlockNtc);
+        
+        // TODO: document in some table which recipes have been unlocked
 
         return res;
     }

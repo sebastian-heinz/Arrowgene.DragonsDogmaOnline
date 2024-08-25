@@ -18,35 +18,11 @@ public class AchievementGetFurnitureRewardListHandler : GameRequestPacketHandler
             SortId = 1,
             AchieveIdentifier = new CDataAchievementIdentifier
             {
-                UId = 530,
+                UId = 530, // Bounty Hunter
                 Index = 12
             },
-            FurnitureItemId = 13225,
+            FurnitureItemId = 13225, // Mini Table
             IsReceived = true
-        },
-        new()
-        {
-            RewardId = 63,
-            SortId = 63,
-            AchieveIdentifier = new CDataAchievementIdentifier
-            {
-                UId = 2532,
-                Index = 980
-            },
-            FurnitureItemId = 16126,
-            IsReceived = false
-        },
-        new()
-        {
-            RewardId = 27,
-            SortId = 27,
-            AchieveIdentifier = new CDataAchievementIdentifier
-            {
-                UId = 1267,
-                Index = 370
-            },
-            FurnitureItemId = 13236,
-            IsReceived = false
         }
     };
 

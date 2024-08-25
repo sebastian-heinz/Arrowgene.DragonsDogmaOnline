@@ -10,24 +10,7 @@ public class AchievementGetReceivableRewardListHandler : GameRequestPacketHandle
 {
     private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(AchievementGetReceivableRewardListHandler));
 
-    private static readonly List<CDataAchieveRewardCommon> RewardList = new()
-    {
-        new()
-        {
-            Type = 1,
-            RewardId = 53
-        },
-        new()
-        {
-            Type = 2, // Craft recipe reward
-            RewardId = 63
-        },
-        new()
-        {
-            Type = 2, // Craft recipe reward
-            RewardId = 27
-        }
-    };
+    private static readonly List<CDataAchieveRewardCommon> RewardList = new List<CDataAchieveRewardCommon>();
 
     public AchievementGetReceivableRewardListHandler(DdonGameServer server) : base(server)
     {

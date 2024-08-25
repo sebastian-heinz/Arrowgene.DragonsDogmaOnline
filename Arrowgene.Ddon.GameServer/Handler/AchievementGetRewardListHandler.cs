@@ -10,23 +10,7 @@ public class AchievementGetRewardListHandler : GameRequestPacketHandler<C2SAchie
 {
     private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(AchievementGetRewardListHandler));
 
-    private static readonly List<CDataAchievementRewardProgress> BackgroundProgressList = new()
-    {
-        new()
-        {
-            RewardId = 4,
-            CurrentNum = 10,
-            TargetNum = 10,
-            IsReceived = true
-        },
-        new()
-        {
-            RewardId = 53,
-            CurrentNum = 400,
-            TargetNum = 400,
-            IsReceived = false
-        }
-    };
+    private static readonly List<CDataAchievementRewardProgress> BackgroundProgressList = new List<CDataAchievementRewardProgress>();
 
     public AchievementGetRewardListHandler(DdonGameServer server) : base(server)
     {
