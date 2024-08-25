@@ -1,14 +1,23 @@
 using Arrowgene.Buffers;
 
-namespace Arrowgene.Ddon.Shared.Entity.Structure
-{
-    public class CDataAchievementIdentifier
-    {
-        public uint UId;
-        public uint Index;
-    }
+namespace Arrowgene.Ddon.Shared.Entity.Structure;
 
-    public class CDataAchievementIdentifierSerializer : EntitySerializer<CDataAchievementIdentifier>
+/// <summary>
+///     Achivement identification is based on a unique ID which can be found in the client in
+///     ui\gui_cmn\ui\00_param\achievement.acv.json
+///     e.g. UId 2532 == All You Need Is Love, Category 4 / Collecting
+/// </summary>
+public class CDataAchievementIdentifier
+{
+    public uint UId;
+
+    /// <summary>
+    ///     Achievement UI list index, no correlation to client files
+    /// </summary>
+    public uint Index;
+
+
+    public class Serializer : EntitySerializer<CDataAchievementIdentifier>
     {
         public override void Write(IBuffer buffer, CDataAchievementIdentifier obj)
         {
