@@ -14,22 +14,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        //public override PacketId Id => PacketId.C2S_QUEST_GET_SET_QUEST_INFO_LIST_REQ;
-
-        //public override void Handle(GameClient client, IPacket request)
-        //{
-        //    Packet response = new Packet(PacketId.S2C_QUEST_GET_SET_QUEST_INFO_LIST_RES, PcapData);
-        //    client.Send(response);
-        //}
-
         public override S2CQuestGetSetQuestInfoListRes Handle(GameClient client, C2SQuestGetSetQuestInfoListReq request)
         {
-            Logger.Info($"DistributeId: {request.DistributeId}");
             return new S2CQuestGetSetQuestInfoListRes()
             {
                 DistributeId = request.DistributeId,
-                AreaBaseMinLevel = 15,
-                AreaBaseMaxLevel = 30,
+                AreaBaseMinLevel = 1,
+                AreaBaseMaxLevel = 150,
             };
         }
     }

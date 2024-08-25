@@ -138,21 +138,21 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 //Calculate how long it should last, using an exponential distribution.
                 double rngUniformLength = rnd.NextDouble();
-                uint rngExpLength = (uint)(-Math.Log(rngUniformLength) * meanLength);
+                double rngExpLength = (-Math.Log(rngUniformLength) * meanLength);
 
                 //Round to the next Lestanian hour.
                 uint gameHourSeconds = GameClockTimescale * 60 / 24;
-                rngExpLength = (uint)(Math.Round((double)rngExpLength / gameHourSeconds) * gameHourSeconds);
+                rngExpLength = Math.Round(rngExpLength / gameHourSeconds) * gameHourSeconds;
                 if (rngExpLength == 0) rngExpLength = gameHourSeconds;
 
                 //Add it to the list
                 weatherLoop.Add(new CDataWeatherLoop()
                 {
                     WeatherId = weather,
-                    TimeSec = rngExpLength
+                    TimeSec = (uint)rngExpLength
                 });
 
-                totalLength += rngExpLength;
+                totalLength += (uint)rngExpLength;
 
                 Logger.Debug($"Weather Step {i + 1}/{seqLength}: {weather}, {rngExpLength} seconds");
             }

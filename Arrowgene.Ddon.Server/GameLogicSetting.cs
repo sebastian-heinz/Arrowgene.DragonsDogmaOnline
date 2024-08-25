@@ -119,13 +119,11 @@ namespace Arrowgene.Ddon.Server
             GameClockTimescale = 90;
 
             WeatherSequenceLength = 20;
-
-            //All weathers equally likely. Change every 15 minutes IRL, or 6 hours gametime.
             WeatherStatistics = new List<(uint meanLength, uint weight)>
             {
-                (60 * 45, 1), //Fair
-                (60 * 45, 1), //Cloudy
-                (60 * 45, 1), //Rainy
+                (60 * 30, 1), //Fair
+                (60 * 30, 1), //Cloudy
+                (60 * 30, 1), //Rainy
             };
         }
 
