@@ -604,8 +604,8 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_QUEST_GET_QUEST_SCHEDULE_INFO_RES = new PacketId(11, 11, 2, "S2C_QUEST_GET_QUEST_SCHEDULE_INFO_RES", ServerType.Game, PacketSource.Server); // スケジューラIDからクエストIDの取得
         public static readonly PacketId C2S_QUEST_GET_MAIN_QUEST_COMPLETE_INFO_REQ = new PacketId(11, 12, 1, "C2S_QUEST_GET_MAIN_QUEST_COMPLETE_INFO_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_GET_MAIN_QUEST_COMPLETE_INFO_RES = new PacketId(11, 12, 2, "S2C_QUEST_GET_MAIN_QUEST_COMPLETE_INFO_RES", ServerType.Game, PacketSource.Server); // メインクエストクリア情報の取得に
-        public static readonly PacketId C2S_QUEST_11_13_1_REQ = new PacketId(11, 13, 1, "C2S_QUEST_11_13_1_REQ", ServerType.Game, PacketSource.Client);
-        public static readonly PacketId S2C_QUEST_11_13_2_RES = new PacketId(11, 13, 2, "S2C_QUEST_11_13_2_RES", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId C2S_QUEST_GET_PARTY_BONUS_LIST_REQ = new PacketId(11, 13, 1, "C2S_QUEST_GET_PARTY_BONUS_LIST_REQ", ServerType.Game, PacketSource.Client, "C2S_QUEST_11_13_1_REQ");
+        public static readonly PacketId S2C_QUEST_GET_PARTY_BONUS_LIST_RES = new PacketId(11, 13, 2, "S2C_QUEST_GET_PARTY_BONUS_LIST_RES", ServerType.Game, PacketSource.Server, "S2C_QUEST_11_13_2_RES");
         public static readonly PacketId C2S_QUEST_GET_SET_QUEST_INFO_LIST_REQ = new PacketId(11, 14, 1, "C2S_QUEST_GET_SET_QUEST_INFO_LIST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_GET_SET_QUEST_INFO_LIST_RES = new PacketId(11, 14, 2, "S2C_QUEST_GET_SET_QUEST_INFO_LIST_RES", ServerType.Game, PacketSource.Server); // 新聞用セットクエスト情報リストの取得に
         public static readonly PacketId C2S_QUEST_GET_CYCLE_CONTENTS_NEWS_LIST_REQ = new PacketId(11, 15, 1, "C2S_QUEST_GET_CYCLE_CONTENTS_NEWS_LIST_REQ", ServerType.Game, PacketSource.Client);
@@ -2529,8 +2529,8 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_QUEST_GET_QUEST_SCHEDULE_INFO_RES);
             AddPacketIdEntry(packetIds, C2S_QUEST_GET_MAIN_QUEST_COMPLETE_INFO_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_GET_MAIN_QUEST_COMPLETE_INFO_RES);
-            AddPacketIdEntry(packetIds, C2S_QUEST_11_13_1_REQ);
-            AddPacketIdEntry(packetIds, S2C_QUEST_11_13_2_RES);
+            AddPacketIdEntry(packetIds, C2S_QUEST_GET_PARTY_BONUS_LIST_REQ);
+            AddPacketIdEntry(packetIds, S2C_QUEST_GET_PARTY_BONUS_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_QUEST_GET_SET_QUEST_INFO_LIST_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_GET_SET_QUEST_INFO_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_QUEST_GET_CYCLE_CONTENTS_NEWS_LIST_REQ);
