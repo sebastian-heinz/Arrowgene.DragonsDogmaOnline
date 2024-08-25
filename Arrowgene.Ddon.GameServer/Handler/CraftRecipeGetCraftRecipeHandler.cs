@@ -23,14 +23,25 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .Select(recipes => recipes.RecipeList)
                 .SingleOrDefault(new List<CDataMDataCraftRecipe>());
 
-            client.Send(new S2CCraftRecipeGetCraftRecipeRes()
+            // TODO: All furniture & ensemble recipes available via achievements by default should be hidden in the JSON, here we must check which recipes the player has unlocked via achievements
+            foreach (CDataMDataCraftRecipe cDataMDataCraftRecipe in allRecipesInCategory)
+            {
+                // Currently 270000 represents Mini Table, i.e. Achievement #530 Bounty Hunter
+                if (cDataMDataCraftRecipe.RecipeID == 270000)
+                {
+                    cDataMDataCraftRecipe.IsHide = false;
+                }
+            }
+
+            client.Send(new S2CCraftRecipeGetCraftRecipeRes
             {
                 Category = packet.Structure.Category,
                 RecipeList = allRecipesInCategory
-                    .Skip((int) packet.Structure.Offset)
+                    .SkipWhile(recipe => recipe.IsHide)
+                    .Skip((int)packet.Structure.Offset)
                     .Take(packet.Structure.Num)
                     .ToList(),
-                IsEnd = (packet.Structure.Offset+packet.Structure.Num) >= allRecipesInCategory.Count
+                IsEnd = (packet.Structure.Offset + packet.Structure.Num) >= allRecipesInCategory.Count
             });
         }
     }

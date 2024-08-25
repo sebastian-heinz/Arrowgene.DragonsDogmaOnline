@@ -550,7 +550,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_ITEM_EXTEND_EQUIP_SLOT_NTC = new PacketId(10, 11, 16, "S2C_ITEM_EXTEND_EQUIP_SLOT_NTC", ServerType.Game, PacketSource.Server, "S2C_ITEM_10_11_16_NTC");
         public static readonly PacketId S2C_ITEM_UPDATE_CHARACTER_ITEM_NTC = new PacketId(10, 12, 16, "S2C_ITEM_UPDATE_CHARACTER_ITEM_NTC", ServerType.Game, PacketSource.Server, "S2C_ITEM_10_12_16_NTC");
         public static readonly PacketId S2C_ITEM_10_13_16_NTC = new PacketId(10, 13, 16, "S2C_ITEM_10_13_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_ITEM_10_14_16_NTC = new PacketId(10, 14, 16, "S2C_ITEM_10_14_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_ITEM_ACHIEVEMENT_REWARD_RECEIVE_NTC = new PacketId(10, 14, 16, "S2C_ITEM_CRAFT_RECIPE_UNLOCK_NTC", ServerType.Game, PacketSource.Server, "S2C_ITEM_10_14_16_NTC");
         public static readonly PacketId C2S_ITEM_GET_PAY_COST_REQ = new PacketId(10, 15, 1, "C2S_ITEM_GET_PAY_COST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_ITEM_GET_PAY_COST_RES = new PacketId(10, 15, 2, "S2C_ITEM_GET_PAY_COST_RES", ServerType.Game, PacketSource.Server); // 代価
         public static readonly PacketId C2S_ITEM_GET_VALUABLE_ITEM_LIST_REQ = new PacketId(10, 16, 1, "C2S_ITEM_GET_VALUABLE_ITEM_LIST_REQ", ServerType.Game, PacketSource.Client);
@@ -1224,8 +1224,8 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId C2S_ACHIEVEMENT_27_6_1_REQ = new PacketId(27, 6, 1, "C2S_ACHIEVEMENT_27_6_1_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_ACHIEVEMENT_27_6_2_RES = new PacketId(27, 6, 2, "S2C_ACHIEVEMENT_27_6_2_RES", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_ACHIEVEMENT_27_7_16_NTC = new PacketId(27, 7, 16, "S2C_ACHIEVEMENT_27_7_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_ACHIEVEMENT_27_8_16_NTC = new PacketId(27, 8, 16, "S2C_ACHIEVEMENT_27_8_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_ACHIEVEMENT_27_9_16_NTC = new PacketId(27, 9, 16, "S2C_ACHIEVEMENT_27_9_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_ACHIEVEMENT_ACHIEVEMENT_COMPLETE_NTC = new PacketId(27, 8, 16, "S2C_ACHIEVEMENT_ACHIEVEMENT_COMPLETE_NTC", ServerType.Game, PacketSource.Server, "S2C_ACHIEVEMENT_27_8_16_NTC");
+        public static readonly PacketId S2C_ACHIEVEMENT_ACHIEVEMENT_RECEIVABLE_REWARD_NTC = new PacketId(27, 9, 16, "S2C_ACHIEVEMENT_ACHIEVEMENT_RECEIVABLE_REWARD_NTC", ServerType.Game, PacketSource.Server, "S2C_ACHIEVEMENT_27_9_16_NTC");
         public static readonly PacketId C2S_ACHIEVEMENT_ACHIEVEMENT_GET_CATEGORY_PROGRESS_LIST_REQ = new PacketId(27, 10, 1, "C2S_ACHIEVEMENT_ACHIEVEMENT_GET_CATEGORY_PROGRESS_LIST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_ACHIEVEMENT_ACHIEVEMENT_GET_CATEGORY_PROGRESS_LIST_RES = new PacketId(27, 10, 2, "S2C_ACHIEVEMENT_ACHIEVEMENT_GET_CATEGORY_PROGRESS_LIST_RES", ServerType.Game, PacketSource.Server); // 指定カテゴリのアチーブメント進捗リストの取得に
 
@@ -2475,7 +2475,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_ITEM_EXTEND_EQUIP_SLOT_NTC);
             AddPacketIdEntry(packetIds, S2C_ITEM_UPDATE_CHARACTER_ITEM_NTC);
             AddPacketIdEntry(packetIds, S2C_ITEM_10_13_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_ITEM_10_14_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_ITEM_ACHIEVEMENT_REWARD_RECEIVE_NTC);
             AddPacketIdEntry(packetIds, C2S_ITEM_GET_PAY_COST_REQ);
             AddPacketIdEntry(packetIds, S2C_ITEM_GET_PAY_COST_RES);
             AddPacketIdEntry(packetIds, C2S_ITEM_GET_VALUABLE_ITEM_LIST_REQ);
@@ -3149,8 +3149,8 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, C2S_ACHIEVEMENT_27_6_1_REQ);
             AddPacketIdEntry(packetIds, S2C_ACHIEVEMENT_27_6_2_RES);
             AddPacketIdEntry(packetIds, S2C_ACHIEVEMENT_27_7_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_ACHIEVEMENT_27_8_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_ACHIEVEMENT_27_9_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_ACHIEVEMENT_ACHIEVEMENT_COMPLETE_NTC);
+            AddPacketIdEntry(packetIds, S2C_ACHIEVEMENT_ACHIEVEMENT_RECEIVABLE_REWARD_NTC);
             AddPacketIdEntry(packetIds, C2S_ACHIEVEMENT_ACHIEVEMENT_GET_CATEGORY_PROGRESS_LIST_REQ);
             AddPacketIdEntry(packetIds, S2C_ACHIEVEMENT_ACHIEVEMENT_GET_CATEGORY_PROGRESS_LIST_RES);
 
