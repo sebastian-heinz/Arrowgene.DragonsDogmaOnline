@@ -1,5 +1,6 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using System.Collections.Generic;
 
@@ -14,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             SetQuestList = new List<CDataSetQuestInfoList>();
         }
 
-        public uint DistributeId { get; set; }
+        public QuestAreaId DistributeId { get; set; }
         public List<CDataSetQuestInfoList> SetQuestList { get; set; }
         public ushort AreaBaseMinLevel { get; set; }
         public ushort AreaBaseMaxLevel { get; set; }
@@ -24,7 +25,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, S2CQuestGetSetQuestInfoListRes obj)
             {
                 WriteServerResponse(buffer, obj);
-                WriteUInt32(buffer, obj.DistributeId);
+                WriteUInt32(buffer, (uint)obj.DistributeId);
                 WriteEntityList<CDataSetQuestInfoList>(buffer, obj.SetQuestList);
                 WriteUInt16(buffer, obj.AreaBaseMinLevel);
                 WriteUInt16(buffer, obj.AreaBaseMaxLevel);
@@ -34,7 +35,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 S2CQuestGetSetQuestInfoListRes obj = new S2CQuestGetSetQuestInfoListRes();
                 ReadServerResponse(buffer, obj);
-                obj.DistributeId = ReadUInt32(buffer);
+                obj.DistributeId = (QuestAreaId)ReadUInt32(buffer);
                 obj.SetQuestList = ReadEntityList<CDataSetQuestInfoList>(buffer);
                 obj.AreaBaseMinLevel = ReadUInt16(buffer);
                 obj.AreaBaseMaxLevel = ReadUInt16(buffer);
