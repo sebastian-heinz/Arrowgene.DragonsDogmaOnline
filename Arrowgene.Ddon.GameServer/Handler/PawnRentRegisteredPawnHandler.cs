@@ -55,6 +55,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_REGISTERD_DATA_NOT_FOUND);
             }
 
+            // TODO: Add pawn to rented pawn list for player
+            // TODO: Store snapshot in DB
             client.Character.RentedPawns.Add(pawn);
 
             return new S2CPawnRentRegisteredPawnRes()

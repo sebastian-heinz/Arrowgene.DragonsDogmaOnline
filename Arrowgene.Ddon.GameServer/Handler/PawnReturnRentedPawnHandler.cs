@@ -14,6 +14,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CPawnReturnRentedPawnRes Handle(GameClient client, C2SPawnReturnRentedPawnReq request)
         {
+            // TODO: Remove pawn from rented pawn list for character
+            // TODO: Remove snapshot from DB
             // TODO: Save Feedback in the database
             client.Character.RemovedRentedPawnBySlotNo(request.SlotNo);
 

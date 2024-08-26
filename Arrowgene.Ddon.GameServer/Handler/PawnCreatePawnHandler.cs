@@ -107,7 +107,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             pawn.Server = client.Character.Server;
 
             pawn.Equipment = client.Character.Storage.GetPawnEquipment(request.SlotNo - 1);
-            Server.CharacterManager.UpdateCharacterExtendedParams(pawn, true);
 
             client.Character.Pawns.Add(pawn);
 
