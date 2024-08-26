@@ -62,7 +62,7 @@ namespace Arrowgene.Ddon.GameServer
             ChatManager = new ChatManager(this, Router);
             ItemManager = new ItemManager();
             CraftManager = new CraftManager(this);
-            PartyManager = new PartyManager(assetRepository);
+            PartyManager = new PartyManager(this);
             ExpManager = new ExpManager(this, ClientLookup);
             PPManager = new PlayPointManager(this);
             JobManager = new JobManager(this);

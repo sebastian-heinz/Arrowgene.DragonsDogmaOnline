@@ -16,6 +16,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CServerGameTimeGetBaseInfoRes Handle(GameClient client, C2SServerGameTimeGetBaseInfoReq request)
         {
             var res = new S2CServerGameTimeGetBaseInfoRes();
+            res.GameTimeBaseInfo.OriginalGameTimeSec = WeatherManager.OriginalGameTimeSec;
+            res.GameTimeBaseInfo.OriginalRealTimeSec = WeatherManager.OriginalRealTimeSec;
             res.GameTimeBaseInfo.GameTimeOneDayMin = Server.Setting.GameLogicSetting.GameClockTimescale;
             res.WeatherLoop = Server.WeatherManager.WeatherLoopList;
 

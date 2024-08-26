@@ -1,10 +1,7 @@
 using Arrowgene.Ddon.Database.Model;
-using Arrowgene.Ddon.GameServer.Handler;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
 {
@@ -14,7 +11,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
         public override string Key => "time";
         public override string HelpText => "usage: `/time` - Print details about the time/weather/moon";
 
-        private DdonGameServer _server;
+        private readonly DdonGameServer _server;
 
         public TimeCommand(DdonGameServer server)
         {
@@ -25,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
         {
             StringBuilder sb = new StringBuilder();
 
-            long OriginalRealTimeSec = 0x55DDD470;
+            long OriginalRealTimeSec = WeatherManager.OriginalRealTimeSec;
 
             DateTimeOffset now = DateTimeOffset.UtcNow;
             ulong secondsElapsed = (ulong)(now.ToUnixTimeSeconds() - OriginalRealTimeSec);

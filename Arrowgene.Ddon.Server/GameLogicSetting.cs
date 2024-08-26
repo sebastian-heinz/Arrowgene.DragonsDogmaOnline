@@ -85,7 +85,7 @@ namespace Arrowgene.Ddon.Server
         /// meanLength: Average length of the weather, in seconds, when it gets rolled.
         /// weight: Relative weight of rolling that weather. Set to 0 to disable.
         /// </summary>
-        [DataMember(Order = 12)] public List<(uint meanLength, uint weight)> WeatherStatistics { get; set; }
+        [DataMember(Order = 12)] public List<(uint MeanLength, uint Weight)> WeatherStatistics { get; set; }
 
         public GameLogicSetting()
         {
@@ -119,7 +119,7 @@ namespace Arrowgene.Ddon.Server
             GameClockTimescale = 90;
 
             WeatherSequenceLength = 20;
-            WeatherStatistics = new List<(uint meanLength, uint weight)>
+            WeatherStatistics = new List<(uint MeanLength, uint Weight)>
             {
                 (60 * 30, 1), //Fair
                 (60 * 30, 1), //Cloudy

@@ -18,9 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             return new S2CQuestGetSetQuestInfoListRes()
             {
-                DistributeId = request.DistributeId,
-                AreaBaseMinLevel = 1,
-                AreaBaseMaxLevel = 150,
+                DistributeId = request.DistributeId            
             };
         }
     }
