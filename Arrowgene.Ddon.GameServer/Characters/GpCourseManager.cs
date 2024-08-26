@@ -32,6 +32,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             public double EnemyPlayPointBonus = 0.0;
             public double PawnCraftBonus = 0.0;
             public bool DisablePartyExpAdjustment = false;
+            public double EnemyBloodOrbMultiplier = 0.0;
         };
 
         private void ApplyCourseEffects(uint courseId)
@@ -63,6 +64,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             break;
                         case GPCourseId.DisablePartyAdjustEnemyExp:
                             _CourseBonus.DisablePartyExpAdjustment = true;
+                            break;
+                        case GPCourseId.BloodOrbUp:
+                            _CourseBonus.EnemyBloodOrbMultiplier += (effect.Param0 / 100.0);
                             break;
                     }
                 }
@@ -98,6 +102,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             break;
                         case GPCourseId.DisablePartyAdjustEnemyExp:
                             _CourseBonus.DisablePartyExpAdjustment = false;
+                            break;
+                        case GPCourseId.BloodOrbUp:
+                            _CourseBonus.EnemyBloodOrbMultiplier -= (effect.Param0 / 100.0);
                             break;
                     }
                 }
@@ -217,6 +224,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             lock (_CourseBonus)
             {
                 return _CourseBonus.DisablePartyExpAdjustment;
+            }
+        }
+
+        public double EnemyBloodOrbBonus()
+        {
+            lock (_CourseBonus)
+            {
+                return _CourseBonus.EnemyBloodOrbMultiplier;
             }
         }
     }
