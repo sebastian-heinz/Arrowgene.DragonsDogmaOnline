@@ -292,6 +292,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new CraftStartEquipColorChangeHandler(this));
             AddHandler(new CraftStartAttachElementHandler(this));
             AddHandler(new CraftStartDetachElementHandler(this));
+            AddHandler(new CraftGetEquipRareTypeItemsHandler(this));
+            AddHandler(new CraftEquipEnhancedEnhanceItemHandler(this));
 
             AddHandler(new DailyMissionListGetHandler(this));
             AddHandler(new DispelGetDispelItemSettingsHandler(this));

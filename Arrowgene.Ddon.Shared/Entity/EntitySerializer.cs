@@ -266,6 +266,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataS2CCraftGetCraftSettingResUnk0Unk6.Serializer());
             Create(new CDataRefiningMaterialInfo.Serializer());
             Create(new CDataS2CCraftStartQualityUpResUnk0.Serializer());
+            Create(new CDataCraftEquipEnhancedEnhanceItemReqUnk0.Serializer());
+            Create(new CDataCraftEquipEnhancedEnhanceItemReqUnk1.Serializer());
             Create(new CDataS2CEquipEnhancedGetPacksResUnk0.Serializer());
             Create(new CDataS2CEquipEnhancedGetPacksResUnk0Unk6.Serializer());
             Create(new CDataS2CEquipEnhancedGetPacksResUnk0Unk9.Serializer());
@@ -413,6 +415,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCraftStartEquipColorChangeRes.Serializer());
             Create(new C2SCraftStartAttachElementReq.Serializer());
             Create(new C2SCraftStartDetachElementReq.Serializer());
+            Create(new C2SCraftGetEquipRareTypeItemsReq.Serializer());
+            Create(new C2SCraftEquipEnhancedEnhanceItemReq.Serializer());         
 
             Create(new C2SDispelGetDispelItemSettingsReq.Serializer());
             Create(new C2SDispelGetDispelItemListReq.Serializer());
@@ -780,6 +784,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCraftStartDetachElementRes.Serializer());
             Create(new S2CCraftFinishCraftNtc.Serializer());
             Create(new S2CCraftCraftExpUpNtc.Serializer());
+            Create(new S2CCraftGetEquipRareTypeItemsRes.Serializer());
+            Create(new S2CCraftEquipEnhancedEnhanceItemRes.Serializer());
 
             Create(new S2CDispelGetDispelItemSettingsRes.Serializer());
             Create(new S2CDispelGetDispelItemListRes.Serializer());
