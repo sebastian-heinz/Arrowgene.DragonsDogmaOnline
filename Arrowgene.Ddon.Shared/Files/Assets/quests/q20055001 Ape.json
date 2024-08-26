@@ -7,7 +7,6 @@
   "base_level": 15,
   "minimum_item_rank": 0,
   "discoverable": false,
-  "parent_quest_id": 20055001,
   "rewards": [
     {
       "type": "wallet",
