@@ -24,7 +24,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<(Pawn pawn, CDataCharacterSearchParam ownerName)> pawnInfo = new List<(Pawn pawn, CDataCharacterSearchParam ownerName)>();
             Server.Database.ExecuteInTransaction(connection =>
             {
-                var pawnIds = Server.Database.SelectAllPlayerPawns(connection);
+                // var pawnIds = Server.Database.SelectAllPlayerPawns(connection);
+                var pawnIds = Server.Database.SelectRandomPlayerPawns(connection, 100);
                 foreach (var pawnId in pawnIds)
                 {
                     var pawn = Server.Database.SelectPawn(connection, pawnId);

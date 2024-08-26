@@ -94,8 +94,10 @@ namespace Arrowgene.Ddon.Database
         List<Pawn> SelectPawnsByCharacterId(uint characterId);
         List<Pawn> SelectPawnsByCharacterId(DbConnection conn, uint characterId);
         List<uint> SelectOfficialPawns();
-        List<uint> SelectAllPlayerPawns();
-        List<uint> SelectAllPlayerPawns(DbConnection connection);
+        List<uint> SelectAllPlayerPawns(uint limit = 100);
+        List<uint> SelectAllPlayerPawns(DbConnection connection, uint limit = 100);
+        List<uint> SelectRandomPlayerPawns(uint limit = 100);
+        List<uint> SelectRandomPlayerPawns(DbConnection connection, uint limit = 100);
         bool DeletePawn(uint pawnId);
         bool UpdatePawnBaseInfo(Pawn pawn);
         uint GetPawnOwnerCharacterId(uint pawnId);

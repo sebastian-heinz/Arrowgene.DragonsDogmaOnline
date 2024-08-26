@@ -44,7 +44,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             + "WHERE \"character_id\" = @character_id";
         private const string SqlDeletePawn = "DELETE FROM \"ddon_character_common\" WHERE EXISTS (SELECT 1 FROM \"ddon_pawn\" WHERE \"ddon_character_common\".\"character_common_id\"=\"ddon_pawn\".\"character_common_id\" AND \"ddon_pawn\".\"pawn_id\"=@pawn_id)";
         private const string SqlSelectOfficialPawns = @"SELECT * FROM ddon_pawn WHERE is_official_pawn=1;";
-        private const string SqlSelectAllPlayerPawns = @"SELECT * FROM ddon_pawn WHERE is_official_pawn=0;";
+        private const string SqlSelectAllPlayerPawns = @"SELECT * FROM ddon_pawn WHERE is_official_pawn=0 LIMIT @limit;";
+        private const string SqlSelectRandomPlayerPawns = @"SELECT * FROM ddon_pawn ORDER BY RANDOM() LIMIT @limit;";
         private const string SqlSelectPawnOwnerId = $"SELECT * FROM ddon_pawn WHERE \"pawn_id\" = @pawn_id;";
 
         private readonly string SqlInsertPawnReaction = $"INSERT INTO \"ddon_pawn_reaction\" ({BuildQueryField(CDataPawnReactionFields)}) VALUES ({BuildQueryInsert(CDataPawnReactionFields)});";
@@ -99,17 +100,39 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return pawn;
         }
 
-        public List<uint> SelectAllPlayerPawns()
+        public List<uint> SelectAllPlayerPawns(uint limit = 100)
         {
             using TCon connection = OpenNewConnection();
-            return SelectAllPlayerPawns(connection);
+            return SelectAllPlayerPawns(connection, limit);
         }
 
-        public List<uint> SelectAllPlayerPawns(DbConnection connection)
+        public List<uint> SelectAllPlayerPawns(DbConnection connection, uint limit = 100)
         {
             List<uint> pawns = new List<uint>();
             ExecuteReader(connection, SqlSelectAllPlayerPawns,
-                command => { },
+                command => { AddParameter(command, "@limit", limit); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        uint pawnId = GetUInt32(reader, "pawn_id");
+                        pawns.Add(pawnId);
+                    }
+                });
+            return pawns;
+        }
+
+        public List<uint> SelectRandomPlayerPawns(uint limit = 100)
+        {
+            using TCon connection = OpenNewConnection();
+            return SelectRandomPlayerPawns(connection, limit);
+        }
+
+        public List<uint> SelectRandomPlayerPawns(DbConnection connection, uint limit = 100)
+        {
+            List<uint> pawns = new List<uint>();
+            ExecuteReader(connection, SqlSelectRandomPlayerPawns,
+                command => { AddParameter(command, "@limit", limit); },
                 reader =>
                 {
                     while (reader.Read())
