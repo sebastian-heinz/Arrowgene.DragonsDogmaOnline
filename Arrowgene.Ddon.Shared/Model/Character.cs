@@ -130,5 +130,19 @@ namespace Arrowgene.Ddon.Shared.Model
         }
 
         public CharacterStampBonus StampBonus { get; set; }
+
+        public CDataCommunityCharacterBaseInfo GetCommunityCharacterBaseInfo()
+        {
+            return new CDataCommunityCharacterBaseInfo
+            {
+                CharacterId = CharacterId,
+                CharacterName = new CDataCharacterName
+                {
+                    FirstName = FirstName,
+                    LastName = LastName,
+                },
+                ClanName = ""
+            };
+        }
     }
 }

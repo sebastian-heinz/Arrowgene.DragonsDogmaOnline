@@ -3,7 +3,6 @@ using Arrowgene.Ddon.GameServer.Chat;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.GameServer
 {
@@ -13,23 +12,32 @@ namespace Arrowgene.Ddon.GameServer
     /// </summary>
     public class GameRouter
     {
-        public void Send<TResStruct>(Client client, TResStruct res) where TResStruct : class, IPacketStructure, new ()
+        public void Send<TResStruct>(Client client, TResStruct res) where TResStruct : class, IPacketStructure, new()
         {
             client.Send(res);
         }
 
         public void Send(ChatResponse response)
         {
-            S2CLobbyChatMsgNotice notice = new S2CLobbyChatMsgNotice();
-            notice.Type = response.Type;
-            notice.MessageFlavor = response.MessageFlavor;
-            notice.PhrasesCategory = response.PhrasesCategory;
-            notice.PhrasesIndex = response.PhrasesIndex;
-            notice.Message = response.Message;
-            notice.CharacterBaseInfo.CharacterId = response.CharacterId;
-            notice.CharacterBaseInfo.CharacterName.FirstName = response.FirstName;
-            notice.CharacterBaseInfo.CharacterName.LastName = response.LastName;
-            notice.CharacterBaseInfo.ClanName = response.ClanName;
+            S2CLobbyChatMsgNotice notice = new S2CLobbyChatMsgNotice
+            {
+                HandleId = response.HandleId,
+                Type = response.Type,
+                MessageFlavor = response.MessageFlavor,
+                PhrasesCategory = response.PhrasesCategory,
+                PhrasesIndex = response.PhrasesIndex,
+                Message = response.Message,
+                CharacterBaseInfo =
+                {
+                    CharacterId = response.CharacterId,
+                    CharacterName =
+                    {
+                        FirstName = response.FirstName,
+                        LastName = response.LastName
+                    },
+                    ClanName = response.ClanName
+                }
+            };
             foreach (GameClient client in Unique(response.Recipients))
             {
                 client.Send(notice);
@@ -50,7 +58,7 @@ namespace Arrowgene.Ddon.GameServer
 
             return clients;
         }
-        
+
         private List<T> Unique<T>(List<T> clients)
         {
             HashSet<T> unique = new HashSet<T>(clients);

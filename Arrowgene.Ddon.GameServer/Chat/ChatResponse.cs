@@ -31,6 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Chat
         {
             return new ChatResponse()
             {
+                HandleId = message.HandleId,
                 Deliver = true,
                 Message = message.Message,
                 FirstName = client.Character.FirstName,
@@ -46,6 +47,7 @@ namespace Arrowgene.Ddon.GameServer.Chat
 
         public ChatResponse()
         {
+            HandleId = 0;
             Recipients = new List<GameClient>();
             Deliver = true;
             Type = LobbyChatMsgType.Say;
@@ -59,6 +61,7 @@ namespace Arrowgene.Ddon.GameServer.Chat
             ClanName = "";
         }
 
+        public uint HandleId { get; set; }
         public List<GameClient> Recipients { get; }
         public bool Deliver { get; set; }
         public LobbyChatMsgType Type { get; set; }
