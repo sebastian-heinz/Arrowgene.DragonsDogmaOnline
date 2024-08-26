@@ -33,18 +33,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ushort AddStatusID = request.AddStatusID;
             uint pawnExp = 0;
             ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
-            uint totalCost = 0;
+            uint totalCost = Math.Min(100, (uint)itemRank) * 300;
             List<CDataItemUpdateResult> updateResults;
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-
-            if (itemRank >= 100) // caps at IR 100
-            {
-                totalCost = 30000;
-            }
-            else
-            {
-                totalCost = (uint)itemRank * 300;
-            }
 
             CDataAddStatusParam AddStat = new CDataAddStatusParam()
             {
@@ -67,16 +58,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // Lead pawn is always owned by player.
             Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnID);
+            List<Pawn> pawns = new List<Pawn> { leadPawn };
+            pawns.AddRange(request.CraftSupportPawnIDList.Select(p => Server.CraftManager.FindPawn(client, p.PawnId)));
             List<uint> qualityLevels = new List<uint>();
-            List<uint> pawnIds = new List<uint> { leadPawn.PawnId };
-            pawnIds.AddRange(request.CraftSupportPawnIDList.Select(p => p.PawnId));
             List<uint> costPerformanceLevels = new List<uint>();
 
-            foreach (uint pawnId in pawnIds)
+            foreach (Pawn pawn in pawns)
             {
-                Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == pawnId) ?? Server.Database.SelectPawn(pawnId);
-                costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
-                qualityLevels.Add(CraftManager.GetPawnEquipmentQualityLevel(pawn));
+                if (pawn != null)
+                {
+                    costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
+                    qualityLevels.Add(CraftManager.GetPawnEquipmentQualityLevel(pawn));
+                }
+                else
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID, "Couldn't find the Pawn ID.");
+                }
+
             }
             double calculatedOdds = CraftManager.CalculateEquipmentQualityIncreaseRate(qualityLevels);
 

@@ -8,7 +8,6 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-#nullable disable
 
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -78,20 +77,25 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            Pawn leadPawn = client.Character.Pawns.Find(p => p.PawnId == request.CraftMainPawnID);
-
-            List<uint> pawnIds = new List<uint> { leadPawn.PawnId };
-            pawnIds.AddRange(request.CraftSupportPawnIDList.Select(p => p.PawnId));
+            Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnID);
+            List<Pawn> pawns = new List<Pawn> { leadPawn };
+            pawns.AddRange(request.CraftSupportPawnIDList.Select(p => Server.CraftManager.FindPawn(client, p.PawnId)));
             List<uint> enhancementLevels = new List<uint>();
             List<uint> costPerformanceLevels = new List<uint>();
             List<uint> qualityLevels = new List<uint>();
 
-            foreach (uint pawnId in pawnIds)
+            foreach (Pawn pawn in pawns)
             {
-                Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == pawnId) ?? Server.Database.SelectPawn(pawnId);
-                enhancementLevels.Add(CraftManager.GetPawnEquipmentEnhancementLevel(pawn));
-                costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
-                qualityLevels.Add(CraftManager.GetPawnEquipmentQualityLevel(pawn));
+                if (pawn != null)
+                {
+                    enhancementLevels.Add(CraftManager.GetPawnEquipmentEnhancementLevel(pawn));
+                    costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
+                    qualityLevels.Add(CraftManager.GetPawnEquipmentQualityLevel(pawn));
+                }
+                else
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID, "Couldn't find the Pawn ID.");
+                }
             }
 
             double calculatedOdds = CraftManager.CalculateEquipmentQualityIncreaseRate(qualityLevels);

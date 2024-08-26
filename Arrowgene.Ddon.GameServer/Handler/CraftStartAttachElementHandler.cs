@@ -84,7 +84,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<uint> costPerformanceLevels = new List<uint>();
             foreach (Pawn pawn in pawns)
             {
-                costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
+                if (pawn != null)
+                {
+                    costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
+                }
+                else
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID, "Couldn't find the Pawn ID.");
+                }
             }
             
             updateCharacterItemNtc.UpdateType = ItemNoticeType.StartAttachElement;

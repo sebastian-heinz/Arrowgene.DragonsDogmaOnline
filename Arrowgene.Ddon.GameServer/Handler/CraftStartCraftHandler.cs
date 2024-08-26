@@ -83,10 +83,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<uint> qualityLevels = new List<uint>();
             foreach (Pawn pawn in pawns)
             {
-                productionSpeedLevels.Add(CraftManager.GetPawnProductionSpeedLevel(pawn));
-                consumableQuantityLevels.Add(CraftManager.GetPawnConsumableQuantityLevel(pawn));
-                costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
-                qualityLevels.Add(CraftManager.GetPawnEquipmentQualityLevel(pawn));
+                if (pawn != null)
+                {
+                    productionSpeedLevels.Add(CraftManager.GetPawnProductionSpeedLevel(pawn));
+                    consumableQuantityLevels.Add(CraftManager.GetPawnConsumableQuantityLevel(pawn));
+                    costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
+                    qualityLevels.Add(CraftManager.GetPawnEquipmentQualityLevel(pawn));
+                }
+                else
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID, "Couldn't find the Pawn ID.");
+                }
             }
 
             double calculatedOdds = CraftManager.CalculateEquipmentQualityIncreaseRate(qualityLevels);

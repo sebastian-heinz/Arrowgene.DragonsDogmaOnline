@@ -113,15 +113,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint totalCost = craftInfo.Cost;
             uint totalExp = craftInfo.Exp;
 
-            Pawn leadPawn = client.Character.Pawns.Find(p => p.PawnId == request.CraftMainPawnID);
-            List<uint> pawnIds = new List<uint> { leadPawn.PawnId };
-            pawnIds.AddRange(request.CraftSupportPawnIDList.Select(p => p.PawnId));
+            Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnID);
+            List<Pawn> pawns = new List<Pawn> { leadPawn };
+            pawns.AddRange(request.CraftSupportPawnIDList.Select(p => Server.CraftManager.FindPawn(client, p.PawnId)));
             List<uint> costPerformanceLevels = new List<uint>();
 
-            foreach (uint pawnId in pawnIds)
+            foreach (Pawn pawn in pawns)
             {
-                Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == pawnId) ?? Server.Database.SelectPawn(pawnId);
-                costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
+                if (pawn != null)
+                {
+                    costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
+                }
+                else
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID, "Couldn't find the Pawn ID.");
+                }
             }
 
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,

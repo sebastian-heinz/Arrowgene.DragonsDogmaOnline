@@ -150,9 +150,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public static CraftCalculationResult CalculateEquipmentQuality(Item refineMaterialItem, uint calculatedOdds, byte itemRank=0)
         {
             // TODO: Figure out actual formula + lower/upper bounds client uses
-            // Based on season 1 evidence:
-            //  3x lvl 45 1x lvl 44 => 79% 
-            // 1x lvl44, 3x lvl 1 => 63
             // EXP has a base value and scales based on IR, standard always 2, Quality and WD share until above IR10, Quality stays 100 and WD goes up to 350 cap with IR35.
 
             byte greatSuccessValue = 1;
@@ -168,20 +165,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     case 8036 or 8068:
                         RandomQuality = 2;
                         greatSuccessValue = 3;
-                        exp = CalculateQualityExp(itemRank, false);
+                        exp = CalculateQualityExp(itemRank, false, false);
                         break;
                     // WhiteDragon Rocks (Tier3)
                     case 8052 or 8084:
                         RandomQuality = 2;
                         greatSuccessValue = 3;
                         greatSuccessOdds = 25;
-                        exp = CalculateQualityExp(itemRank, true);
+                        exp = CalculateQualityExp(itemRank, true, false);
                         break;
                     // Standard Rocks (Tier1)
                     case 8035 or 8067:
                         RandomQuality = 1;
                         greatSuccessValue = 2;
-                        exp = 2;
+                        exp = CalculateQualityExp(itemRank, false, true);
                         break;
                 }
             }
@@ -201,11 +198,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
             };
         }
 
-        public static uint CalculateQualityExp(byte itemRank, bool isTier3)
+        public static uint CalculateQualityExp(byte itemRank, bool isTier3, bool isTier1)
         {
             uint baseExp = 10;
             uint maxExp = isTier3 ? 350u : 100u; // Tier3 caps at 350, Tier2 caps at 100
-
+            if (isTier1)
+            {
+                maxExp = 2;
+                return maxExp;
+            }
             return Math.Min(baseExp * itemRank, maxExp);
         }
 
@@ -291,27 +292,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
             if (_server.AssetRepository.PawnCostReductionAsset.PawnCostReductionInfo.TryGetValue(total, out PawnCostReductionInfo costReductionInfo))
             {
                 int numberOfPawns = costPerformanceLevels.Count;
-                float selectedCostRate;
 
                 switch (numberOfPawns)
                 {
                     case 1:
-                        selectedCostRate = costReductionInfo.CostRate1; // TODO: Figure out wtf CostRate2/3/4 Do.
-                        break;                                          // If theres 1 Pawn this stuff is accurate, I'm struggling to figure out
-                    case 2:                                             // how to get a 2nd/3rd/4th Pawns calculations accurate based on this dump.
-                        selectedCostRate = costReductionInfo.CostRate2;
-                        break;
+                        return costReductionInfo.CostRate1; // TODO: Figure out wtf CostRate2/3/4 Do.
+                    case 2:                                                 //If theres 1 Pawn this stuff is accurate, I'm struggling to figure out.
+                         return costReductionInfo.CostRate2;     //how to get a 2nd/3rd/4th Pawns calculations accurate based on this dump.
                     case 3:
-                        selectedCostRate = costReductionInfo.CostRate3;
-                        break;
+                        return costReductionInfo.CostRate3;
                     case 4:
-                        selectedCostRate = costReductionInfo.CostRate4;
-                        break;
+                        return costReductionInfo.CostRate4;
                     default:
                         throw new ArgumentOutOfRangeException($"Number of pawns {numberOfPawns} is out of expected range (1-4).");
                 }
-
-                return selectedCostRate;
             }
             else
             {
