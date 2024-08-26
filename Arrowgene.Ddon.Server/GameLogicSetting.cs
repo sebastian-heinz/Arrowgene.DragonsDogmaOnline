@@ -70,6 +70,23 @@ namespace Arrowgene.Ddon.Server
         /// </summary>
         [DataMember(Order = 9)] public List<(uint, uint, double)> AdjustTargetLvEnemyExpTiers { get; set; }
 
+        /// <summary>
+        /// The number of real world minutes that make up an in-game day.
+        /// </summary>
+        [DataMember(Order = 10)] public uint GameClockTimescale { get; set; }
+
+        /// <summary>
+        /// Use a poisson process to randomly generate a weather cycle containing this many events, using the statistics in WeatherStatistics.
+        /// </summary>
+        [DataMember(Order = 11)] public uint WeatherSequenceLength { get; set; }
+
+        /// <summary>
+        /// Statistics that drive semirandom weather generation. List is expected to be in (Fair, Cloudy, Rainy) order.
+        /// meanLength: Average length of the weather, in seconds, when it gets rolled.
+        /// weight: Relative weight of rolling that weather. Set to 0 to disable.
+        /// </summary>
+        [DataMember(Order = 12)] public List<(uint MeanLength, uint Weight)> WeatherStatistics { get; set; }
+
         public GameLogicSetting()
         {
             AdditionalProductionSpeedFactor = 1.0;
@@ -98,6 +115,16 @@ namespace Arrowgene.Ddon.Server
                 (7, 8, 0.6),
                 (9, 10, 0.5),
             };
+
+            GameClockTimescale = 90;
+
+            WeatherSequenceLength = 20;
+            WeatherStatistics = new List<(uint MeanLength, uint Weight)>
+            {
+                (60 * 30, 1), //Fair
+                (60 * 30, 1), //Cloudy
+                (60 * 30, 1), //Rainy
+            };
         }
 
         public GameLogicSetting(GameLogicSetting setting)
@@ -112,6 +139,9 @@ namespace Arrowgene.Ddon.Server
             AdjustPartyEnemyExpTiers = setting.AdjustPartyEnemyExpTiers;
             AdjustTargetLvEnemyExp = setting.AdjustTargetLvEnemyExp;
             AdjustTargetLvEnemyExpTiers = setting.AdjustTargetLvEnemyExpTiers;
+            GameClockTimescale = setting.GameClockTimescale;
+            WeatherSequenceLength = setting.WeatherSequenceLength;
+            WeatherStatistics = setting.WeatherStatistics;
         }
 
         // Note: method is called after the object is completely deserialized - constructors are skipped.
@@ -133,6 +163,10 @@ namespace Arrowgene.Ddon.Server
             if (CraftConsumableProductionTimesMax < 1)
             {
                 CraftConsumableProductionTimesMax = 10;
+            }
+            if (GameClockTimescale <= 0)
+            {
+                GameClockTimescale = 90;
             }
         }
     }

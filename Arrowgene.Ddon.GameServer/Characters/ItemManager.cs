@@ -699,12 +699,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public ClientItemInfo LookupInfoByItem(DdonGameServer server, Item item)
         {
-            var id = item.ItemId;
-            if (!server.AssetRepository.ClientItemInfos.ContainsKey(id))
+            return LookupInfoByItemID(server, item.ItemId);
+        }
+
+        public ClientItemInfo LookupInfoByItemID(DdonGameServer server, uint itemID)
+        {
+            if (!server.AssetRepository.ClientItemInfos.ContainsKey(itemID))
             {
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INTERNAL_ERROR);
             }
-            return server.AssetRepository.ClientItemInfos[id];
+            return server.AssetRepository.ClientItemInfos[itemID];
         }
 
         public static bool SendToItemBag(uint storageType)
