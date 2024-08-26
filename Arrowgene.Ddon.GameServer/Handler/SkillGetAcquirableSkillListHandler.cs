@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System.Linq;
@@ -19,9 +20,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             return new S2CSkillGetAcquirableSkillListRes()
             {
                 SkillParamList = (client.GameMode == GameMode.Normal) ?
-                    client.Character.AcquirableSkills[request.Job] :
+                    client.Character.AcquirableSkills[request.Job]
+                        .Where(x => !SkillData.IsUnlockableSkill(request.Job, x.SkillNo, 1) || IsSkillUnlocked(client.Character, request.Job, x.SkillNo))
+                        .ToList() :
                     SkillData.AllSkills.Where(x => x.Job == request.Job).ToList()
             };
+        }
+
+        private bool IsSkillUnlocked(Character character, JobId jobId, uint skillNo)
+        {
+            return character.UnlockedCustomSkills[jobId].Contains(skillNo);
         }
     }
 }

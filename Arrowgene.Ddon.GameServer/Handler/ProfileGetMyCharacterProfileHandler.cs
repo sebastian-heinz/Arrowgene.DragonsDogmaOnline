@@ -19,6 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 HistoryElementList = Server.AchievementManager.GetArisenAchievementHistory(client),
                 AchieveCategoryStatusList = Server.AchievementManager.GetCategoryStatus(client),
                 OrbStatusList = Server.OrbUnlockManager.GetOrbPageStatus(client.Character),
+                JobOrbTreeStatusList = Server.JobOrbUnlockManager.GetJobOrbTreeStatus(client.Character),
                 AbilityCostMax = Server.CharacterManager.GetMaxAugmentAllocation(client.Character)
             };
         }

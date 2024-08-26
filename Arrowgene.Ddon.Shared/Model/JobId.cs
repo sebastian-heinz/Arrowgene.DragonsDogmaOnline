@@ -79,5 +79,25 @@ namespace Arrowgene.Ddon.Shared.Model
         {
             return JobTrainingReleaseIds[jobId];
         }
+
+        private static Dictionary<JobId, ContentsRelease> SkillAugmentationReleaseIds = new Dictionary<JobId, ContentsRelease>()
+        {
+            [JobId.Fighter] = ContentsRelease.FighterWarSkillAugmentation,
+            [JobId.Seeker] = ContentsRelease.SeekerWarSkillAugmentation,
+            [JobId.Hunter] = ContentsRelease.HunterWarSkillAugmentation,
+            [JobId.Priest] = ContentsRelease.PriestWarSkillAugmentation,
+            [JobId.ShieldSage] = ContentsRelease.ShieldSageWarSkillAugmentation,
+            [JobId.Sorcerer] = ContentsRelease.SorcererWarSkillAugmentation,
+            [JobId.Warrior] = ContentsRelease.WarriorWarSkillAugmentation,
+            [JobId.ElementArcher] = ContentsRelease.ElementArcherWarSkillAugmentation,
+            [JobId.Alchemist] = ContentsRelease.AlchemistWarSkillAugmentation,
+            [JobId.SpiritLancer] = ContentsRelease.SpiritLancerWarSkillAugmentation,
+            [JobId.HighScepter] = ContentsRelease.HighScepterWarSkillAugmentation,
+        };
+
+        public static ContentsRelease SkillAugmentationReleaseId(this JobId jobId)
+        {
+            return SkillAugmentationReleaseIds[jobId];
+        }
     }
 }
