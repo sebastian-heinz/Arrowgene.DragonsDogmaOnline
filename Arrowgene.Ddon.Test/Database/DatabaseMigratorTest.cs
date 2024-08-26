@@ -291,6 +291,7 @@ namespace Arrowgene.Ddon.Test.Database
         public CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId) { return new CDataOrbGainExtendParam(); }
         public List<CDataReleaseOrbElement> SelectOrbReleaseElementFromDragonForceAugmentation(uint commonId) { return new List<CDataReleaseOrbElement>(); }
         public Pawn SelectPawn(uint pawnId) { return new Pawn(); }
+        public Pawn SelectPawn(DbConnection connection, uint pawnId) { return new Pawn(); }
         public List<Pawn> SelectPawnsByCharacterId(uint characterId) { return new List<Pawn>(); }
         public List<Pawn> SelectPawnsByCharacterId(DbConnection conn, uint characterId) { return new List<Pawn>(); }
         public List<ReleasedWarpPoint> SelectReleasedWarpPoints(uint characterId) { return new List<ReleasedWarpPoint>(); }
@@ -386,8 +387,10 @@ namespace Arrowgene.Ddon.Test.Database
         public List<BitterblackMazeTreasure> SelectBBMContentTreasure(uint characterId) { return new List<BitterblackMazeTreasure>(); }
         public List<uint> SelectOfficialPawns() { return new List<uint>(); }
         public List<uint> SelectAllPlayerPawns() { return new List<uint>(); }
+        public List<uint> SelectAllPlayerPawns(DbConnection connection) { return new List<uint>(); }
         public uint GetPawnOwnerCharacterId(uint pawnId) { return 0; }
         public CDataCharacterSearchParam SelectCharacterNameById(uint characterId) { return new CDataCharacterSearchParam(); }
+        public CDataCharacterSearchParam SelectCharacterNameById(DbConnection connection, uint characterId) { return new CDataCharacterSearchParam(); }
 
         public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
         public void AddParameter(DbCommand command, string name, string value) { }

@@ -21,13 +21,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             var result = new S2CPawnGetRegisteredPawnListRes();
             
-            var pawnIds = Server.Database.SelectAllPlayerPawns();
+            List<(Pawn pawn, CDataCharacterSearchParam ownerName)> pawnInfo = new List<(Pawn pawn, CDataCharacterSearchParam ownerName)>();
+            Server.Database.ExecuteInTransaction(connection =>
+            {
+                var pawnIds = Server.Database.SelectAllPlayerPawns(connection);
+                foreach (var pawnId in pawnIds)
+                {
+                    var pawn = Server.Database.SelectPawn(connection, pawnId);
+                    var ownerName = Server.Database.SelectCharacterNameById(connection, pawn.CharacterId);
+                    pawnInfo.Add((pawn, ownerName));
+                }
+            });
 
             var searchParams = request.SearchParam;
-            foreach (var pawnId in pawnIds)
+            foreach (var (pawn, ownerName) in pawnInfo)
             {
-                var pawn = Server.Database.SelectPawn(pawnId);
-
                 if (pawn.CharacterId == client.Character.CharacterId)
                 {
                     continue;
@@ -38,14 +46,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     var firstName = searchParams.OwnerCharacterName.FirstName;
                     var lastName = searchParams.OwnerCharacterName.LastName;
 
-                    var nameInfo = Server.Database.SelectCharacterNameById(pawn.CharacterId);
-
-                    if (!nameInfo.FirstName.Contains(firstName, StringComparison.OrdinalIgnoreCase))
+                    if (!ownerName.FirstName.Contains(firstName, StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
                     }
 
-                    if (!nameInfo.LastName.Contains(lastName, StringComparison.OrdinalIgnoreCase))
+                    if (!ownerName.LastName.Contains(lastName, StringComparison.OrdinalIgnoreCase))
                     {
                         continue;
                     }

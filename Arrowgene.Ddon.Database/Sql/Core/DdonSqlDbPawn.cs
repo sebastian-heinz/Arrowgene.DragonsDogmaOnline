@@ -79,17 +79,22 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public Pawn SelectPawn(uint pawnId)
         {
+            using TCon connection = OpenNewConnection();
+            return SelectPawn(connection, pawnId);
+        }
+
+        public Pawn SelectPawn(DbConnection connection, uint pawnId)
+        {
             Pawn pawn = null;
-            ExecuteInTransaction(conn => {
-                ExecuteReader(conn, SqlSelectAllPawnData,
-                command => { AddParameter(command, "@pawn_id", pawnId); }, reader =>
-                {
-                    if (reader.Read())
-                    {
-                        pawn = ReadAllPawnData(reader);
-                        QueryPawnData(conn, pawn);
-                    }
-                });
+            ExecuteReader(connection, SqlSelectAllPawnData,
+            command => { AddParameter(command, "@pawn_id", pawnId); },
+            reader =>
+            {
+                 if (reader.Read())
+                 {
+                     pawn = ReadAllPawnData(reader);
+                     QueryPawnData(connection, pawn);
+                 }
             });
             return pawn;
         }
@@ -100,7 +105,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return SelectAllPlayerPawns(connection);
         }
 
-        public List<uint> SelectAllPlayerPawns(TCon connection)
+        public List<uint> SelectAllPlayerPawns(DbConnection connection)
         {
             List<uint> pawns = new List<uint>();
             ExecuteReader(connection, SqlSelectAllPlayerPawns,

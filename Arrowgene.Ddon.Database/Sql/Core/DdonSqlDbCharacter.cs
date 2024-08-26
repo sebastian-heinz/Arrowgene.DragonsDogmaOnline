@@ -598,7 +598,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return SelectCharacterNameById(connection, characterId);
         }
 
-        public CDataCharacterSearchParam SelectCharacterNameById(TCon connection, uint characterId)
+        public CDataCharacterSearchParam SelectCharacterNameById(DbConnection connection, uint characterId)
         {
             CDataCharacterSearchParam result = new CDataCharacterSearchParam();
             ExecuteReader(connection, SqlSelectCharacterNameByCharacterId,
