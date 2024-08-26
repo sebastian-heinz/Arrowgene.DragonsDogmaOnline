@@ -442,17 +442,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
 
             uint expUp = exp;
-            double totalExp = 0;
+            double totalAddedExp = 0;
             uint bonusExpUp = 0;
             if (BonusExpMultiplier > 0)
             {
-                totalExp = expUp * BonusExpMultiplier;
-                bonusExpUp = (uint)totalExp - exp;
-                totalExp = expUp + bonusExpUp;
+                totalAddedExp = expUp * BonusExpMultiplier;
+                bonusExpUp = (uint)totalAddedExp - exp;
+                totalAddedExp = expUp + bonusExpUp;
             }
             else
             {
-                totalExp = expUp + bonusExpUp;
+                totalAddedExp = expUp + bonusExpUp;
             }
 
             S2CCraftCraftExpUpNtc expNtc = new S2CCraftCraftExpUpNtc()
@@ -463,9 +463,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             
             if (CanPawnExpUp(leadPawn))
             {
-                expNtc.AddExp = exp;
+                expNtc.AddExp = (uint)totalAddedExp; // this has to be totaladded to show exp in the correct format.
                 expNtc.ExtraBonusExp = bonusExpUp;
-                expNtc.TotalExp = (uint)totalExp;
+                expNtc.TotalExp = (uint)totalAddedExp; // presumably this should be pawns literal TotalEXP, but my testing had me level up several times.
                 
                 leadPawn.CraftData.CraftExp += expNtc.TotalExp;
                 
