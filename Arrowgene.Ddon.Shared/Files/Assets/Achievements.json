@@ -6095,7 +6095,7 @@
             "id": 1091,
             "name": "Seed of Life",
             "type": "OrbDevote",
-            "param": "HpMax",
+            "param": "AllJobsHpMax",
             "count": 1,
             "reward": 0,
             "sort_id": 610
@@ -6105,7 +6105,7 @@
             "id": 1092,
             "name": "Tree of Life",
             "type": "OrbDevote",
-            "param": "HpMax",
+            "param": "AllJobsHpMax",
             "count": 20,
             "reward": 0,
             "sort_id": 611
@@ -6125,7 +6125,7 @@
             "id": 1093,
             "name": "Tireless Worker",
             "type": "OrbDevote",
-            "param": "StaminaMax",
+            "param": "AllJobsStaminaMax",
             "count": 1,
             "reward": 0,
             "sort_id": 613
@@ -6135,7 +6135,7 @@
             "id": 1094,
             "name": "Constant Labourer",
             "type": "OrbDevote",
-            "param": "StaminaMax",
+            "param": "AllJobsStaminaMax",
             "count": 28,
             "reward": 0,
             "sort_id": 614

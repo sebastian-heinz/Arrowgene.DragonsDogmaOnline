@@ -29,10 +29,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // CDataCharacterJobData CharacterJobData = client.Character.CharacterJobDataList.Where(cjd => cjd.Job == client.Character.Job).Single();
             foreach (var Job in (JobId[]) JobId.GetValues(typeof(JobId)))
             {
+                if (Job == JobId.None)
+                {
+                    continue;
+                }
+
                 Response.TreeStatusList.Add(new CDataJobOrbTreeStatus()
                 {
                     JobId = Job,
-                    IsReleased = false,
+                    IsReleased = true,
                     Rate = 0.0f
                 });
             }

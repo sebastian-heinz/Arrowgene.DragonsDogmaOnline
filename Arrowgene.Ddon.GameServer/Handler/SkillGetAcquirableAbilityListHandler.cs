@@ -36,8 +36,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // Player characters come in as CharacterId == 0.
                 // Pawns seem to not need the information from this query. The UI still is populated by the skills
                 // acquired by the player character (is this intended?).
-                List<SecretAbility> UnlockedAbilities = Server.Database.SelectAllUnlockedSecretAbilities(client.Character.CommonId);
-                response.AbilityParamList = SkillData.AllSecretAbilities.Where(x => UnlockedAbilities.Contains((SecretAbility)x.AbilityNo)).ToList();
+                List<AbilityId> UnlockedAbilities = Server.Database.SelectAllUnlockedSecretAbilities(client.Character.CommonId);
+                response.AbilityParamList = SkillData.AllSecretAbilities.Where(x => UnlockedAbilities.Contains((AbilityId)x.AbilityNo)).ToList();
             }
 
             return response;

@@ -233,8 +233,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataJobBaseInfo.Serializer());
             Create(new CDataJobChangeInfo.Serializer());
             Create(new CDataJobChangeJobResUnk0.Serializer());
+
             Create(new CDataJobExpMode.Serializer());
             Create(new CDataJobOrbDevoteElement.Serializer());
+            Create(new CDataJobOrbDevoteElementUnk0.Serializer());
             Create(new CDataJobOrbTreeStatus.Serializer());
             Create(new CDataJobPlayPoint.Serializer());
             Create(new CDataJobValueShopItem.Serializer());
@@ -739,6 +741,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SJobJobValueShopBuyItemReq.Serializer());
             Create(new C2SJobJobValueShopGetLineupReq.Serializer());
             Create(new C2SJobOrbTreeGetJobOrbTreeGetAllJobOrbElementListReq.Serializer());
+            Create(new C2SJobOrbTreeReleaseJobOrbElementReq.Serializer());
             Create(new C2SJobUpdateExpModeReq.Serializer());
 
             Create(new C2SLoadingInfoLoadingGetInfoReq.Serializer());
@@ -1346,6 +1349,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CJobJobValueShopGetLineupRes.Serializer());
             Create(new S2CJobOrbTreeGetJobOrbTreeGetAllJobOrbElementListRes.Serializer());
             Create(new S2CJobOrbTreeGetJobOrbTreeStatusListRes.Serializer());
+            Create(new S2CJobOrbTreeReleaseJobOrbElementRes.Serializer());
             Create(new S2CJobPawnJobExpUpNtc.Serializer());
             Create(new S2CJobPawnJobLevelUpMemberNtc.Serializer());
             Create(new S2CJobPawnJobLevelUpNtc.Serializer());
