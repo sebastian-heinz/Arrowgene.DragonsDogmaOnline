@@ -1,13 +1,16 @@
+#nullable enable
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
@@ -27,7 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             _Server = server;
         }
 
-        public void SetJob(GameClient client, CharacterCommon common, JobId jobId)
+        public (IPacketStructure jobRes, IPacketStructure itemNtc, IPacketStructure jobNtc) SetJob(GameClient client, CharacterCommon common, JobId jobId, DbConnection? connectionIn = null)
         {
             // TODO: Reject job change if there's no primary and secondary weapon for the new job in storage
             // (or give a lvl 1 weapon for free?)
@@ -36,8 +39,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             common.Job = jobId;
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, oldJobId, jobId, EquipType.Performance));
-            updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, oldJobId, jobId, EquipType.Visual));
+            updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, oldJobId, jobId, EquipType.Performance, connectionIn));
+            updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, oldJobId, jobId, EquipType.Visual, connectionIn));
             client.Send(updateCharacterItemNtc);
 
             CDataCharacterJobData? activeCharacterJobData = common.ActiveCharacterJobData;
@@ -89,13 +92,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 changeJobNotice.EquipJobItemList = jobItems;
                 // TODO: Unk0
 
-                foreach (GameClient otherClient in _Server.ClientLookup.GetAll())
-                {
-                    otherClient.Send(changeJobNotice);
-                }
-
                 updateCharacterItemNtc.UpdateType = ItemNoticeType.ChangeJob;
-                client.Send(updateCharacterItemNtc);
 
                 S2CJobChangeJobRes changeJobResponse = new S2CJobChangeJobRes();
                 changeJobResponse.CharacterJobData = activeCharacterJobData;
@@ -111,7 +108,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 changeJobResponse.Unk0.Unk0 = (byte)jobId;
                 changeJobResponse.Unk0.Unk1 = character.Storage.GetAllStoragesAsCDataCharacterItemSlotInfoList();
 
-                client.Send(changeJobResponse);
+                return (changeJobResponse, updateCharacterItemNtc, changeJobNotice);
             }
             else if (common is Pawn)
             {
@@ -127,13 +124,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 changeJobNotice.LearnNormalSkillParamList = normalSkills;
                 changeJobNotice.EquipJobItemList = jobItems;
                 // TODO: Unk0
-                foreach (GameClient otherClient in _Server.ClientLookup.GetAll())
-                {
-                    otherClient.Send(changeJobNotice);
-                }
 
                 updateCharacterItemNtc.UpdateType = ItemNoticeType.ChangePawnJob;
-                client.Send(updateCharacterItemNtc);
 
                 S2CJobChangePawnJobRes changeJobResponse = new S2CJobChangePawnJobRes();
                 changeJobResponse.PawnId = pawn.PawnId;
@@ -147,7 +139,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 // changeJobResponse.Unk0.Unk1 = pawn.Storage.getAllStoragesAsCDataCharacterItemSlotInfoList(); // TODO: What
                 changeJobResponse.TrainingStatus = pawn.TrainingStatus.GetValueOrDefault(pawn.Job, new byte[64]);
                 changeJobResponse.SpSkillList = pawn.SpSkills.GetValueOrDefault(pawn.Job, new List<CDataSpSkill>());
-                client.Send(changeJobResponse);
+
+                return (changeJobResponse, updateCharacterItemNtc, changeJobNotice);
             }
             else
             {
@@ -155,7 +148,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        private List<CDataItemUpdateResult> SwapEquipmentAndStorage(GameClient client, CharacterCommon common, JobId oldJobId, JobId newJobId, EquipType equipType)
+        private List<CDataItemUpdateResult> SwapEquipmentAndStorage(GameClient client, CharacterCommon common, JobId oldJobId, JobId newJobId, EquipType equipType, DbConnection? connectionIn = null)
         {
             List<CDataItemUpdateResult> itemUpdateResultList = new List<CDataItemUpdateResult>();
             List<Item?> oldEquipment = common.Equipment.GetItems(equipType);
@@ -172,7 +165,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // TODO: Attempt moving into other storages if the storage box is full
                     try
                     {
-                        List<CDataItemUpdateResult> moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, equipmentStorageSlot, 1, client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0);
+                        List<CDataItemUpdateResult> moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, equipmentStorageSlot, 1, client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0, connectionIn);
                         itemUpdateResultList.AddRange(moveResult);
                     }
                     catch (ResponseErrorException ex)
@@ -183,7 +176,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             // This should probably return an error response instead? Logging and handling gracefully prevents messy situations, but may be undesirable
                             Logger.Error($"Failed to unequip item {oldEquipmentItem.UId} from {equipType} slot {equipSlot} of {oldJobId}. The item wasn't in the {common.Equipment.Storage.Type} slot {equipmentStorageSlot}");
                             common.EquipmentTemplate.SetEquipItem(null, oldJobId, equipType, equipSlot);
-                            _Server.Database.DeleteEquipItem(common.CommonId, oldJobId, equipType, equipSlot);
+                            _Server.Database.DeleteEquipItem(common.CommonId, oldJobId, equipType, equipSlot, connectionIn);
                         }
                         else
                         {
@@ -208,7 +201,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                                 ushort laterSlot = common.Equipment.GetStorageSlot(equipType, (byte)jewelrySlot);
                                 try
                                 {
-                                    _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, laterSlot, 1, client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0);
+                                    _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, laterSlot, 1, client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0, connectionIn);
                                 }
                                 catch (ResponseErrorException ex)
                                 {
@@ -230,7 +223,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     {
                         try
                         {
-                            moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, client.Character.Storage.GetStorage(searchStorageType), newEquipmentTemplateItem.UId, 1, common.Equipment.Storage, equipmentStorageSlot);
+                            moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, client.Character.Storage.GetStorage(searchStorageType), newEquipmentTemplateItem.UId, 1, common.Equipment.Storage, equipmentStorageSlot, connectionIn);
                             itemUpdateResultList.AddRange(moveResult);
                             break;
                         }
@@ -255,12 +248,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         // Handle the item not being in storage anymore.
                         // Remove from template and unequip whatever was in that slot (if anything)
                         common.EquipmentTemplate.SetEquipItem(null, newJobId, equipType, equipSlot);
-                        _Server.Database.DeleteEquipItem(common.CommonId, oldJobId, equipType, equipSlot);
+                        _Server.Database.DeleteEquipItem(common.CommonId, oldJobId, equipType, equipSlot, connectionIn);
 
                         try
                         {
                             // TODO: Attempt moving into other storages if the storage box is full
-                            moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, equipmentStorageSlot, 1, client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0);
+                            moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, equipmentStorageSlot, 1, client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0, connectionIn);
                             itemUpdateResultList.AddRange(moveResult);
                         }
                         catch(ResponseErrorException ex)
@@ -279,7 +272,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             // Persist job change in DB
-            _Server.Database.UpdateCharacterCommonBaseInfo(common);
+            _Server.Database.UpdateCharacterCommonBaseInfo(common, connectionIn);
 
             return itemUpdateResultList;
         }
@@ -723,21 +716,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             return preset;
         }
-    
-        public void SetAbilityPreset(IDatabase database, GameClient client, CharacterCommon character, CDataPresetAbilityParam preset)
+
+        public void CheckPreset(IDatabase database, GameClient client, CharacterCommon character, CDataPresetAbilityParam preset)
         {
             uint cost = 0;
             uint costMax = _Server.CharacterManager.GetMaxAugmentAllocation(character);
             foreach (var presetAbility in preset.AbilityList)
             {
-                Ability ability = character.LearnedAbilities
+                Ability? ability = character.LearnedAbilities
                     .Where(aug => aug.AbilityId == presetAbility.AcquirementNo)
-                    .SingleOrDefault();
-
-                if (ability is null)
-                {
-                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_NOT_YET_LEARN);
-                }
+                    .SingleOrDefault()
+                    ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_NOT_YET_LEARN);
 
                 cost += SkillGetAcquirableAbilityListHandler.GetAbilityFromId(presetAbility.AcquirementNo).Cost;
 
@@ -746,8 +735,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_COST_OVER);
                 }
             }
-            
-            List<Ability> equippedAbilities = character.EquippedAbilitiesDictionary[character.Job];
+        }
+    
+        public void SetAbilityPreset(IDatabase database, GameClient client, CharacterCommon character, CDataPresetAbilityParam preset)
+        {
+            List<Ability?> equippedAbilities = character.EquippedAbilitiesDictionary[character.Job];
 
             for (byte i = 0; i < 10; i++)
             {
@@ -757,9 +749,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
                 else
                 {
-                    Ability ability = character.LearnedAbilities
+                    Ability? ability = character.LearnedAbilities
                     .Where(aug => aug.AbilityId == preset.AbilityList[i].AcquirementNo)
-                    .SingleOrDefault();
+                    .SingleOrDefault() 
+                    ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_NOT_YET_LEARN);
 
                     character.EquippedAbilitiesDictionary[character.Job][i] = ability;
 

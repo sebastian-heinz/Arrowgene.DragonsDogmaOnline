@@ -53,8 +53,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // The invited player doesn't move to the new party leader's server until this packet is sent
             // Why this wasn't included in the Response packet directly beats me
             S2CPartyPartyInviteAcceptNtc inviteAcceptNtc = new S2CPartyPartyInviteAcceptNtc();
-            inviteAcceptNtc.ServerId =
-                Server.AssetRepository.ServerList[0].Id; // TODO: Get from config, or from DdonGameServer instance
+            inviteAcceptNtc.ServerId = (ushort) Server.Id;
             inviteAcceptNtc.PartyId = party.Id;
             inviteAcceptNtc.StageId = party.Leader.Client.Character.Stage.Id;
             inviteAcceptNtc.PositionId = 0; // TODO: Figure what this is about

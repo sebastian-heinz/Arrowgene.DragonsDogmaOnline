@@ -59,7 +59,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private void SelectPawns(Character character)
         {
-            character.Pawns = _Server.Database.SelectPawnsByCharacterId(character.CharacterId);
+            character.Pawns = _Server.Database.SelectPawnsByCharacterId(character.ContentCharacterId);
 
             for (int i = 0; i < character.Pawns.Count; i++)
             {
@@ -70,7 +70,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 if (pawn.ExtendedParams == null)
                 {
                     // Old DB is in use and new table not populated with required data for character
-                    Logger.Error($"Character: AccountId={character.AccountId}, CharacterId={character.CharacterId}, CommonId={character.CommonId}, PawnCommonId={pawn.CommonId} is missing table entry in 'ddon_orb_gain_extend_param'.");
+                    Logger.Error($"Character: AccountId={character.AccountId}, CharacterId={character.ContentCharacterId}, CommonId={character.CommonId}, PawnCommonId={pawn.CommonId} is missing table entry in 'ddon_orb_gain_extend_param'.");
                 }
                 UpdateCharacterExtendedParams(pawn);
             }

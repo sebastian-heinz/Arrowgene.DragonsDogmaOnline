@@ -64,7 +64,7 @@ namespace Arrowgene.Ddon.GameServer
             CraftManager = new CraftManager(this);
             PartyManager = new PartyManager(assetRepository);
             ExpManager = new ExpManager(this, ClientLookup);
-            PPManager = new PlayPointManager(database);
+            PPManager = new PlayPointManager(this);
             JobManager = new JobManager(this);
             EquipManager = new EquipManager();
             ShopManager = new ShopManager(assetRepository, database);
@@ -73,6 +73,8 @@ namespace Arrowgene.Ddon.GameServer
             BazaarManager = new BazaarManager(this);
             RewardManager = new RewardManager(this);
             StampManager = new StampManager(this);
+            HubManager = new HubManager(this);
+            GpCourseManager = new GpCourseManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
@@ -99,7 +101,9 @@ namespace Arrowgene.Ddon.GameServer
         public BazaarManager BazaarManager { get; }
         public RewardManager RewardManager { get; }
         public StampManager StampManager { get; }
+        public HubManager HubManager { get; }
         public GameRouter Router { get; }
+        public GpCourseManager GpCourseManager { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
 
@@ -113,6 +117,7 @@ namespace Arrowgene.Ddon.GameServer
         public override void Start()
         {
             QuestManager.LoadQuests(this.AssetRepository);
+            GpCourseManager.EvaluateCourses();
             LoadChatHandler();
             LoadPacketHandler();
             base.Start();
@@ -174,7 +179,12 @@ namespace Arrowgene.Ddon.GameServer
         {
             SetFallbackHandler(new FallbackHandler<GameClient>(this));
             
-            AddHandler(new AchievementAchievementGetReceivableRewardListHandler(this));
+            AddHandler(new AchievementGetReceivableRewardListHandler(this));
+            AddHandler(new AchievementGetProgressListHandler(this));
+            AddHandler(new AchievementGetRewardListHandler(this));
+            AddHandler(new AchievementGetFurnitureRewardListHandler(this));
+            AddHandler(new AchievementRewardReceiveHandler(this));
+            AddHandler(new AchievementGetCategoryProgressListHandler(this));
 
             AddHandler(new AreaGetAreaBaseInfoListHandler(this));
             AddHandler(new AreaGetAreaMasterInfoHandler(this));
@@ -184,7 +194,18 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new AreaGetSpotInfoListHandler(this));
 
             AddHandler(new BattleContentInfoListHandler(this));
-            
+            AddHandler(new BattleContentGetContentStatusFromOmHandler(this));
+            AddHandler(new BattleContentContentEntryHandler(this));
+            AddHandler(new BattleContentInstantClearInfoHandler(this));
+            AddHandler(new BattleContentPartyMemberInfoHandler(this));
+            AddHandler(new BattleContentPartyMemberInfoUpdateHandler(this));
+            AddHandler(new BattleContentContentFirstPhaseChangeHandler(this));
+            AddHandler(new BattleContentCharacterInfoHandler(this));
+            AddHandler(new BattleContentRewardListHandler(this));
+            AddHandler(new BattleContentResetInfoHandler(this));
+            AddHandler(new BattleContentGetRewardHandler(this));
+            AddHandler(new BattleContentContentResetHandler(this));
+
             AddHandler(new BazaarCancelHandler(this));
             AddHandler(new BazaarExhibitHandler(this));
             AddHandler(new BazaarGetCharacterListHandler(this));
@@ -224,6 +245,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new CharacterPawnDeadHandler(this));
             AddHandler(new CharacterPawnDownCancelHandler(this));
             AddHandler(new CharacterPawnDownHandler(this));
+            AddHandler(new CharacterSwitchGameModeHandler(this));
+            AddHandler(new CharacterCreateModeCharacterEditHandler(this));
 
             AddHandler(new ClanClanBaseGetInfoHandler(this));
             AddHandler(new ClanClanConciergeGetListHandler(this));
@@ -344,6 +367,10 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ItemUseJobItemsHandler(this));
             AddHandler(new ItemGetValuableItemListHandler(this));
             AddHandler(new ItemGetPostItemListHandler(this));
+            AddHandler(new ItemGetDefaultStorageEmptySlotNumHandler(this));
+            AddHandler(new ItemEmbodyPayCostHandler(this));
+            AddHandler(new ItemGetSpecifiedHavingItemListHandler(this));
+            AddHandler(new ItemEmbodyItemsHandler(this));
 
             AddHandler(new JobChangeJobHandler(this));
             AddHandler(new JobChangePawnJobHandler(this));
@@ -424,6 +451,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PawnTrainingGetTrainingStatusHandler(this));
             AddHandler(new PawnTrainingSetTrainingStatusHandler(this));
             AddHandler(new PawnCreatePawnHandler(this));
+            AddHandler(new PawnDeleteMyPawnHandler(this));
 
             AddHandler(new PhotoPhotoTakeHandler(this));
 

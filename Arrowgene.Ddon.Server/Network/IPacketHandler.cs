@@ -1,8 +1,9 @@
-﻿using Arrowgene.Ddon.Shared.Network;
+﻿using System;
+using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Server.Network
 {
-    public interface IPacketHandler<TClient> where TClient : Client
+    public interface IPacketHandler<TClient> : IDisposable where TClient : Client
     {
         void Handle(TClient client, IPacket packet);
         PacketId Id { get; }

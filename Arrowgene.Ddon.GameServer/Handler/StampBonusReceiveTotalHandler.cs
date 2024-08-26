@@ -22,16 +22,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            _gameServer.Database.ClearDeferred();
-
             var totalStamps = _gameServer.StampManager.GetTotalStampAssets().Where(x => x.StampNum == client.Character.StampBonus.TotalStamp);
 
             _gameServer.StampManager.HandleStampBonuses(client, totalStamps);
 
             //This is misusing the dumped data but the client accepts it.
             client.Send(new Packet(PacketId.S2C_STAMP_BONUS_RECIEVE_TOTAL_RES, GameFull.data_Dump_701));
-
-            _gameServer.Database.ExecuteDeferred();
         }
     }
 } 

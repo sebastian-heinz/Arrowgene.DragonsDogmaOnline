@@ -21,12 +21,11 @@ namespace Arrowgene.Ddon.Shared.Model
         DominionPoints = 10, // DP
         AdventurePassPoints = 11, // BP
         UnknownTickets = 12, // 枚
-        CustomMadeServiceTickets = 13, // 枚 Evoticket => not testable, unsure
+        BitterblackMazeResetTicket = 13,
         GoldenDragonMark = 14, // 個
         SilverDragonMark = 15, // 個
         RedDragonMark = 16 // 個
         // Play Points
         // Clan Points
-        // Bitterblack Maze Reset Ticket
     }
 }

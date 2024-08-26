@@ -35,6 +35,7 @@
 
     <ItemGroup>
         <ContentWithTargetPath Remove="files\database\script\abilitypresets_migration_sqlite.sql" />
+        <ContentWithTargetPath Remove="files\database\script\bitterblack_maze_migration.sql" />
         <ContentWithTargetPath Remove="files\database\script\crest_migration.sql" />
         <ContentWithTargetPath Remove="Files\Database\Script\equippoints_migration.sql" />
         <ContentWithTargetPath Remove="Files\Database\Script\equip_migration_sqlite.sql" />
@@ -55,6 +56,9 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="Files\Database\Script\binarydata_migration.sql">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Files\Database\Script\bitterblack_maze_migration.sql">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="Files\Database\Script\crest_migration.sql">
@@ -83,6 +87,12 @@
         </None>
         <None Update="Files\Database\Script\migration_stamp_sqlite.sql">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Files\Database\Script\AddMissingOnDeleteCascades_migration.sql">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Files\Database\Script\AddMissingOnDeleteCascades_migration.sql">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
 

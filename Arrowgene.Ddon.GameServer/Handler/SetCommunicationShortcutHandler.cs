@@ -1,4 +1,3 @@
-using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -20,10 +19,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SSetCommunicationShortcutReq> request)
         {
             S2CSetCommunicationShortcutRes response = new S2CSetCommunicationShortcutRes();
-            foreach(CDataCommunicationShortCut shortcut in request.Structure.CommunicationShortCutList)
+
+            Server.Database.ExecuteInTransaction(connection =>
             {
-                Server.Database.ReplaceCommunicationShortcut(client.Character.CharacterId, shortcut, true);
-            }
+                foreach (CDataCommunicationShortCut shortcut in request.Structure.CommunicationShortCutList)
+                {
+                    Server.Database.ReplaceCommunicationShortcut(client.Character.CharacterId, shortcut, connection);
+                }
+            });
+
             client.Character.CommunicationShortCutList = request.Structure.CommunicationShortCutList;
             client.Send(response);
         }

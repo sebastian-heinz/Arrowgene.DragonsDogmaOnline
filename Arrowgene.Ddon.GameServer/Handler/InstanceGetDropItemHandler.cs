@@ -1,13 +1,10 @@
-using System.Collections.Generic;
-using System.Linq;
-using Arrowgene.Ddon.Database.Deferred;
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -34,12 +31,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 UpdateType = ItemNoticeType.Drop
             };
 
-            foreach (CDataGatheringItemGetRequest gatheringItemRequest in packet.Structure.GatheringItemGetRequestList)
+            Server.Database.ExecuteInTransaction(connection =>
             {
-                InstancedGatheringItem dropItem = items[(int) gatheringItemRequest.SlotNo];
-                Server.ItemManager.GatherItem(Server, client.Character, ntc, dropItem, gatheringItemRequest.Num);
-            }
-
+                foreach (CDataGatheringItemGetRequest gatheringItemRequest in packet.Structure.GatheringItemGetRequestList)
+                {
+                    InstancedGatheringItem dropItem = items[(int)gatheringItemRequest.SlotNo];
+                    Server.ItemManager.GatherItem(Server, client.Character, ntc, dropItem, gatheringItemRequest.Num, connection);
+                }
+            });
+            
             client.Send(ntc);
         }
     }

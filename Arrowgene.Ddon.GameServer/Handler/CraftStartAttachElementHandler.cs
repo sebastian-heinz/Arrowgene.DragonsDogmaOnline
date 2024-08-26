@@ -97,7 +97,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // Mandatory to send otherwise the UI gets stuck.
                 CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
             }
-
             return result;
         }
     }

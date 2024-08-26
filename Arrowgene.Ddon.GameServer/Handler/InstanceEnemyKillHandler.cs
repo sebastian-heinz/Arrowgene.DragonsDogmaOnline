@@ -55,18 +55,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
             else
             {
                 enemyKilled = client.Party.InstanceEnemyManager.GetAssets(StageId.FromStageLayoutId(layoutId), (byte) subGroupId)[(int)packet.Structure.SetId];
-                List<InstancedGatheringItem> instancedGatheringItems = client.InstanceDropItemManager.GetAssets(layoutId, packet.Structure.SetId);
-                if (instancedGatheringItems.Count > 0)
-                {
-                    client.Party.SendToAll(new S2CInstancePopDropItemNtc()
+                foreach (var partyMemberClient in client.Party.Clients)
+                {    
+                    List<InstancedGatheringItem> instancedGatheringItems = partyMemberClient.InstanceDropItemManager.GetAssets(layoutId, packet.Structure.SetId);
+                    if (instancedGatheringItems.Count > 0)
                     {
-                        LayoutId = packet.Structure.LayoutId,
-                        SetId = packet.Structure.SetId,
-                        MdlType = enemyKilled.DropsTable.MdlType,
-                        PosX = packet.Structure.DropPosX,
-                        PosY = packet.Structure.DropPosY,
-                        PosZ = packet.Structure.DropPosZ
-                    });
+                        partyMemberClient.Send(new S2CInstancePopDropItemNtc()
+                        {
+                            LayoutId = packet.Structure.LayoutId,
+                            SetId = packet.Structure.SetId,
+                            MdlType = enemyKilled.DropsTable.MdlType,
+                            PosX = packet.Structure.DropPosX,
+                            PosY = packet.Structure.DropPosY,
+                            PosZ = packet.Structure.DropPosZ
+                        });
+                    }
                 }
             }
 
@@ -104,9 +107,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 S2CInstanceEnemyGroupDestroyNtc groupDestroyedNtc = new S2CInstanceEnemyGroupDestroyNtc()
                 {
                     LayoutId = packet.Structure.LayoutId,
-                    IsAreaBoss = IsAreaBoss
+                    IsAreaBoss = IsAreaBoss && (client.GameMode == GameMode.Normal)
                 };
                 client.Party.SendToAll(groupDestroyedNtc);
+
+                if (IsAreaBoss && client.GameMode == GameMode.BitterblackMaze)
+                {
+                    foreach (var memberClient in client.Party.Clients)
+                    {
+                        BitterblackMazeManager.HandleTierClear(_gameServer, memberClient, memberClient.Character, stageId);
+                    }
+                }
             }
 
             // TODO: EnemyId and KillNum
@@ -121,10 +132,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 uint bo = enemyKilled.BloodOrbs;
                 uint ho = enemyKilled.HighOrbs;
-                uint gainedExp = enemyKilled.GetDroppedExperience();
+                uint gainedExp = _gameServer.ExpManager.GetAdjustedExp(client.GameMode, RewardSource.Enemy, client.Party, enemyKilled.GetDroppedExperience(), enemyKilled.Lv);
 
                 uint gainedPP = enemyKilled.GetDroppedPlayPoints();
-                uint gainedBonusPP = 0;
 
                 GameClient memberClient;
                 CharacterCommon memberCharacter;
@@ -185,7 +195,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     if (gainedPP > 0)
                     {
-                        _gameServer.PPManager.AddPlayPoint(memberClient, gainedPP, gainedBonusPP, 1);
+                        _gameServer.PPManager.AddPlayPoint(memberClient, gainedPP, 1);
                     }
                 }
                 else if(member is PawnPartyMember)
@@ -203,7 +213,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (gainedExp > 0)
                 {
-                    _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp);
+                    _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp, RewardSource.Enemy);
                 }
             }
         }

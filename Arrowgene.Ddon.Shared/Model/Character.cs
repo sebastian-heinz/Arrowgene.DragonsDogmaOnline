@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model.BattleContent;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 
 namespace Arrowgene.Ddon.Shared.Model
@@ -30,11 +31,39 @@ namespace Arrowgene.Ddon.Shared.Model
             StampBonus = new CharacterStampBonus();
             AbilityPresets = new List<CDataPresetAbilityParam>();
             BinaryData = new byte[C2SBinarySaveSetCharacterBinSaveDataReq.ARRAY_SIZE];
+            LastSeenLobby = new Dictionary<uint, uint>();
+            BbmProgress = new BitterblackMazeProgress();
         }
 
         public int AccountId { get; set; }
         public DateTime Created { get; set; }
+
+        /**
+         * @brief ContentCharacter is used when there is an alias mapping between one
+         * "main character id" (the one the player logs in as) and a particular content or gamemode.
+         * To support other game modes, such as Bitterblack Maze, internally the server creates
+         * a second character as a majority of the tables overlap. When we switch to the BBM
+         * game mode, it still thinks we are the original character we logged in as. This is where
+         * ContentCharacterId comes into play. Paritculary we need this for Database operations
+         * when selecting between different tables depending on the game mode.
+         */
+        public uint ContentCharacterId
+        {
+            get
+            {
+                if (this.GameMode == GameMode.BitterblackMaze)
+                {
+                    return this.BbmCharacterId;
+                }
+                else
+                {
+                    return this.CharacterId;
+                }
+            }
+        }
+
         public uint CharacterId;
+        public uint BbmCharacterId;
         public uint UserId;
         public uint Version;
         public string FirstName;
@@ -43,7 +72,20 @@ namespace Arrowgene.Ddon.Shared.Model
         public Storages Storage;
         public List<CDataEquipItemInfoUnk2> CharacterEquipItemInfoUnk2;
         public List<CDataWalletPoint> WalletPointList;
+        /// <summary>
+        /// num = 0: New character
+        /// num = 1: Complete the main quest "A Servant's Pledge"
+        /// num = 2: Riftstone Shards×10, Available in each area's supplies
+        /// num = 3: Dragonforce Augmentation, Obtain "Master Vessel +1", ×10 Riftstone Shards, "3rd Level of Dragon Power" ○ Main Quest "The Whereabouts of Life" ○ Total Level of the Master is 120 or more ○ Required BO for the Master: 19370 (3rd level)
+        /// </summary>
         public byte MyPawnSlotNum;
+        /// <summary>
+        /// Support Pawns can join a party as long as there is at least one main Pawn in the party. (e.g. 1 main pawn + 2 support pawns)
+        /// num = 0: New character
+        /// num = 3: Complete the main quest "A Servant's Pledge"
+        /// num = 4: Dragonforce Augmentation Obtain "Vessel of Leadership +1" ← "2nd Level of Dragon Power" ○ Complete the main Quest "Awakening of the Gods" ○ Total Level of the Master is 70 or more ○ Required BO for the Master: 4990 (2nd level)
+        /// num = 5: Dragonforce Augmentation Obtain "Commander's Vessel +1" ← "4th Level of Dragon Power" ○ Complete the main quest "White Dragon, Be Eternal" ○ The total level of the Master is 160 or more ○ Required BO for the Master: 70100 (4th level)
+        /// </summary>
         public byte RentalPawnSlotNum;
         public List<CDataOrbPageStatus> OrbStatusList;
         public List<CDataCharacterMsgSet> MsgSetList;
@@ -56,11 +98,17 @@ namespace Arrowgene.Ddon.Shared.Model
         public byte ArisenProfileShareRange;
         public List<CDataPresetAbilityParam> AbilityPresets;
         public byte[] BinaryData;
+        public GameMode GameMode {  get; set; }
+
+        public Dictionary<uint, uint> LastSeenLobby { get; set; }
 
         public List<Pawn> Pawns { get; set; }
 
         public uint FavWarpSlotNum { get; set; }
         public List<ReleasedWarpPoint> ReleasedWarpPoints { get; set; }
+
+        public BitterblackMazeProgress BbmProgress;
+        public uint NextBBMStageId {  get; set; }
 
         public uint MaxBazaarExhibits { get; set; }
 

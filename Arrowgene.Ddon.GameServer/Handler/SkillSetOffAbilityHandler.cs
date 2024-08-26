@@ -32,7 +32,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             return new S2CSkillSetOffAbilityRes()
             {
-                SlotNo = packet.SlotNo
+                SlotNo = (byte)(client.Character.EquippedAbilitiesDictionary[client.Character.Job]
+                .Where(x => x != null)
+                .Count()+1)
             };
         }
     }

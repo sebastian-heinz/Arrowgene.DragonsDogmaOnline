@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -42,20 +44,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             OnlineStatus = OnlineStatus.Online
                         }
                     );
-
-                    S2CContextGetLobbyPlayerContextNtc lobbyPlayerContextNtc = new S2CContextGetLobbyPlayerContextNtc();
-                    GameStructure.S2CContextGetLobbyPlayerContextNtc(lobbyPlayerContextNtc, otherClient.Character);
-                    alreadyPresentPlayerContextNtcs.Add(lobbyPlayerContextNtc);
                 }
             }
 
             client.Send(alreadyPresentUsersNtc);
-
-            foreach (S2CContextGetLobbyPlayerContextNtc alreadyPresentPlayerContextNtc in
-                    alreadyPresentPlayerContextNtcs)
-            {
-                client.Send(alreadyPresentPlayerContextNtc);
-            }
 
             // Notify already present players of the new player
             S2CUserListJoinNtc newUserNtc = new S2CUserListJoinNtc();
@@ -73,14 +65,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 },
             };
 
-            S2CContextGetLobbyPlayerContextNtc newUserContextNtc = new S2CContextGetLobbyPlayerContextNtc();
-            GameStructure.S2CContextGetLobbyPlayerContextNtc(newUserContextNtc, client.Character);
             foreach (GameClient otherClient in Server.ClientLookup.GetAll())
             {
                 if (otherClient != client)
                 {
                     otherClient.Send(newUserNtc);
-                    otherClient.Send(newUserContextNtc);
                 }
             }
 

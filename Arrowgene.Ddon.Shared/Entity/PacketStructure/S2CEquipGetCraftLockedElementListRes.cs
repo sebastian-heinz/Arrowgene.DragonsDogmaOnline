@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -15,6 +14,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             LockedElementList = new List<CDataItemEquipElement>();
         }
 
+        /// <summary>
+        /// Handles "locking" or disallowing the quality-related aspects of an item.
+        /// Blocks the upgrade process for an item in the possession of the player.
+        /// Blocks the destruction (not mounting) of a crest in a specific slot of an item.
+        /// </summary>
         public List<CDataItemEquipElement> LockedElementList { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CEquipGetCraftLockedElementListRes>

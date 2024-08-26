@@ -1,34 +1,25 @@
-using Arrowgene.Ddon.Database;
-using Arrowgene.Ddon.Database.Deferred;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Network;
-using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Server.Network
 {
-    public abstract class StructurePacketHandler<TClient, TReqStruct> : IPacketHandler<TClient>
+    public abstract class StructurePacketHandler<TClient, TReqStruct> : PacketHandler<TClient>
         where TClient : Client
         where TReqStruct : class, IPacketStructure, new()
     {
-        protected StructurePacketHandler(DdonServer<TClient> server)
+        protected StructurePacketHandler(DdonServer<TClient> server) : base(server)
         {
-            Server = server;
-            Database = server.Database;
             // Create a instance to obtain PacketId information.
             Id = new TReqStruct().Id;
         }
 
-        public PacketId Id { get; }
-        protected DdonServer<TClient> Server { get; }
-        protected IDatabase Database { get; }
-
+        public override PacketId Id { get; }
+        
         public abstract void Handle(TClient client, StructurePacket<TReqStruct> packet);
 
-        public void Handle(TClient client, IPacket packet)
+        public override void Handle(TClient client, IPacket packet)
         {
-            Server.Database.ClearDeferred();
             Handle(client, new StructurePacket<TReqStruct>(packet));
-            Server.Database.ExecuteDeferred();
         }
     }
 }
