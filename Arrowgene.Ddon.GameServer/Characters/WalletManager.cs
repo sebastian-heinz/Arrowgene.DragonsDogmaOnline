@@ -77,22 +77,22 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return UpdateWalletPoint;
         }
 
-        public bool RemoveFromWalletNtc(Client Client, Character Character, WalletType Type, uint Amount, DbConnection? connectionIn = null)
+        public bool RemoveFromWalletNtc(Client client, Character character, WalletType walletType, uint amount, DbConnection? connectionIn = null)
         {
-            CDataUpdateWalletPoint UpdateWalletPoint = RemoveFromWallet(Character, Type, Amount, connectionIn);
+            client.Send(RemoveFromWalletNtc2(character, walletType, amount, connectionIn));
+            return true;
+        }
 
-            if(UpdateWalletPoint == null)
-            {
-                return false;
-            }
+        public S2CItemUpdateCharacterItemNtc RemoveFromWalletNtc2(Character character, WalletType walletType, uint amount, DbConnection? connectionIn = null)
+        {
+            CDataUpdateWalletPoint UpdateWalletPoint = RemoveFromWallet(character, walletType, amount, connectionIn) ??
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_WALLET, $"Unable to remove {amount} from {walletType}");
 
             S2CItemUpdateCharacterItemNtc UpdateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             UpdateCharacterItemNtc.UpdateType = 0;
             UpdateCharacterItemNtc.UpdateWalletList.Add(UpdateWalletPoint);
 
-            Client.Send(UpdateCharacterItemNtc);
-
-            return true;
+            return UpdateCharacterItemNtc;
         }
 
         public uint GetWalletAmount(Character Character, WalletType Type)

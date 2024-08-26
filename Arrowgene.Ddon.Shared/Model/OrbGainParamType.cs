@@ -1,26 +1,57 @@
+using System.Collections.Generic;
+
 namespace Arrowgene.Ddon.Shared.Model
 {
     public enum OrbGainParamType : byte
     {
         None = 0x0,
-        HpMax = 0x1,
-        StaminaMax = 0x2,
-        PhysicalAttack = 0x3,
-        PhysicalDefence = 0x4,
-        MagicalAttack = 0x5,
-        MagicalDefence = 0x6,
-        Rim = 0x7,
-        Gold = 0x8,
-        AbilityCost = 0x9,
-        AccessorySlot = 0xa,
-        PawnAdventureNum = 0xb,
-        PawnCraftNum = 0xc,
-        MainPawnLostRate = 0xd,
-        MainPawnSlot = 0xe,
-        SupportPawnSlot = 0xf,
-        UseItemSlot = 0x10,
-        MaterialItemSlot = 0x11,
-        EquipItemSlot = 0x12,
-        SecretAbility = 0x13,
+        AllJobsHpMax = 1,
+        AllJobsStaminaMax = 2,
+        AllJobsPhysicalAttack = 3,
+        AllJobsPhysicalDefence = 4,
+        AllJobsMagicalAttack = 5,
+        AllJobsMagicalDefence = 6,
+        Rim = 7,
+        Gold = 8,
+        AbilityCost = 9,
+        AccessorySlot = 10,
+        PawnAdventureNum = 11,
+        PawnCraftNum = 12,
+        MainPawnLostRate = 13,
+        MainPawnSlot = 14,
+        SupportPawnSlot = 15,
+        UseItemSlot = 16,
+        MaterialItemSlot = 17,
+        EquipItemSlot = 18,
+        SecretAbility = 19,
+        JobHpMax = 20,
+        JobStaminaMax = 21,
+        JobPhysicalAttack = 22,
+        JobPhysicalDefence = 23,
+        JobMagicalAttack = 24,
+        JobMagicalDefence = 25,
+        JobAbility = 26,
+        JobCustomSkill = 27,
+        BlessingOfAugments = 28, // TODO: Rename this when figuring out what it does
+        BlessingOfTheWhiteDragon = 29,
+        JobItemSlot = 30,
+    }
+
+    public static class OrbGainParamTypeExtensions
+    {
+        private static readonly HashSet<OrbGainParamType> JobOnlyParams = new HashSet<OrbGainParamType>()
+        {
+            OrbGainParamType.JobHpMax,
+            OrbGainParamType.JobStaminaMax,
+            OrbGainParamType.JobPhysicalAttack,
+            OrbGainParamType.JobPhysicalDefence,
+            OrbGainParamType.JobMagicalAttack,
+            OrbGainParamType.JobMagicalDefence
+        };
+
+        public static bool IsJobOnlyParam(this OrbGainParamType type)
+        {
+            return JobOnlyParams.Contains(type);
+        }
     }
 }

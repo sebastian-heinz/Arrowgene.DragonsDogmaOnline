@@ -6,7 +6,6 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataJobOrbTreeStatus
     {
-    
         public JobId JobId { get; set; }
         public bool IsReleased { get; set; }
         public float Rate { get; set; }

@@ -27,6 +27,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         public AddendumModule AddendumModule { get; private set; } = new AddendumModule();
         public MonsterCautionSpotModule MonsterCautionSpotModule { get; private set; } = new MonsterCautionSpotModule();
         public InstanceEnemyPropertyGeneratorModule InstanceEnemyPropertyGeneratorModule { get; private set; } = new InstanceEnemyPropertyGeneratorModule();
+        public SkillAugmentationModule SkillAugmentationModule { get; private set; } = new SkillAugmentationModule();
 
         public GameServerScriptManager(DdonGameServer server) : base(server.AssetRepository.AssetsPath, ".")
         {
@@ -43,6 +44,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
             AddModule(NpcExtendedFacilityModule);
             AddModule(PointModifierModule);
             AddModule(InstanceEnemyPropertyGeneratorModule);
+            AddModule(SkillAugmentationModule);
 
             // World Manage Quests have some dependency on Caution Spots, so load caution spots first
             // to prevent unecssary quest relod on server load
