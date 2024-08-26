@@ -30,6 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             public double PawnEnemyExpBonus = 0.0;
             public double WorldQuestExpBonus = 0.0;
             public double EnemyPlayPointBonus = 0.0;
+            public double PawnCraftBonus = 0.0;
             public bool DisablePartyExpAdjustment = false;
         };
 
@@ -56,6 +57,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             break;
                         case GPCourseId.EnemyPpUp:
                             _CourseBonus.EnemyPlayPointBonus += (effect.Param0 / 100.0);
+                            break;
+                        case GPCourseId.PawnCraftExpUp:
+                            _CourseBonus.PawnCraftBonus += (effect.Param0 / 100.0);
                             break;
                         case GPCourseId.DisablePartyAdjustEnemyExp:
                             _CourseBonus.DisablePartyExpAdjustment = true;
@@ -88,6 +92,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             break;
                         case GPCourseId.EnemyPpUp:
                             _CourseBonus.EnemyPlayPointBonus -= (effect.Param0 / 100.0);
+                            break;
+                        case GPCourseId.PawnCraftExpUp:
+                            _CourseBonus.PawnCraftBonus += (effect.Param0 / 100.0);
                             break;
                         case GPCourseId.DisablePartyAdjustEnemyExp:
                             _CourseBonus.DisablePartyExpAdjustment = false;
@@ -194,6 +201,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             lock (_CourseBonus)
             {
                 return _CourseBonus.EnemyPlayPointBonus;
+            }
+        }
+
+        public double PawnCraftBonus()
+        {
+            lock (_CourseBonus)
+            {
+                return _CourseBonus.PawnCraftBonus;
             }
         }
 

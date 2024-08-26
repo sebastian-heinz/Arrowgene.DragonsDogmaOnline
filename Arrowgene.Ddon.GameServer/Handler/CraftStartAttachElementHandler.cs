@@ -53,7 +53,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             var craftInfo = Server.AssetRepository.CostExpScalingAsset.CostExpScalingInfo[clientItemInfo.Rank];
             uint totalCost = (uint)(craftInfo.Cost * request.CraftElementList.Count);
-            uint totalExp = (uint)(craftInfo.Exp * request.CraftElementList.Count);
+            uint pawnExp = (uint)(craftInfo.Exp * request.CraftElementList.Count);
 
             updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 0, 0));
             foreach (var element in request.CraftElementList)
@@ -104,7 +104,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             
             if (CraftManager.CanPawnExpUp(leadPawn))
             {
-                CraftManager.HandlePawnExpUpNtc(client, leadPawn, totalExp, 0);
+                double BonusExpMultiplier = Server.GpCourseManager.PawnCraftBonus();
+                CraftManager.HandlePawnExpUpNtc(client, leadPawn, pawnExp, BonusExpMultiplier);
                 if (CraftManager.CanPawnRankUp(leadPawn))
                 {
                     CraftManager.HandlePawnRankUpNtc(client, leadPawn);

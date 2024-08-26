@@ -438,15 +438,23 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return pawn.CraftData.CraftRank < pawn.CraftData.CraftRankLimit;
         }
 
-        public static void HandlePawnExpUpNtc(GameClient client, Pawn leadPawn, uint exp, uint bonusExp)
+        public static void HandlePawnExpUpNtc(GameClient client, Pawn leadPawn, uint exp, double BonusExpMultiplier)
         {
-            uint expUp = 0;
+
+            uint expUp = exp;
+            double totalExp = 0;
             uint bonusExpUp = 0;
-            if (CanPawnExpUp(leadPawn))
+            if (BonusExpMultiplier > 0)
             {
-                expUp = exp;
-                bonusExpUp = bonusExp;
+                totalExp = expUp * BonusExpMultiplier;
+                bonusExpUp = (uint)totalExp - exp;
+                totalExp = expUp + bonusExpUp;
             }
+            else
+            {
+                totalExp = expUp + bonusExpUp;
+            }
+
             S2CCraftCraftExpUpNtc expNtc = new S2CCraftCraftExpUpNtc()
             {
                 PawnId = leadPawn.PawnId,
@@ -456,8 +464,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             if (CanPawnExpUp(leadPawn))
             {
                 expNtc.AddExp = exp;
-                expNtc.ExtraBonusExp = bonusExp;
-                expNtc.TotalExp = exp + bonusExp;
+                expNtc.ExtraBonusExp = bonusExpUp;
+                expNtc.TotalExp = (uint)totalExp;
                 
                 leadPawn.CraftData.CraftExp += expNtc.TotalExp;
                 

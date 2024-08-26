@@ -111,7 +111,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             var craftInfo = Server.AssetRepository.CostExpScalingAsset.CostExpScalingInfo[clientItemInfo.Rank];
             uint totalCost = craftInfo.Cost;
-            uint totalExp = craftInfo.Exp;
+            uint pawnExp = craftInfo.Exp;
 
             Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnID);
             List<Pawn> pawns = new List<Pawn> { leadPawn };
@@ -137,7 +137,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (CraftManager.CanPawnExpUp(leadPawn))
             {
-                CraftManager.HandlePawnExpUpNtc(client, leadPawn, totalExp, 0);
+                double BonusExpMultiplier = Server.GpCourseManager.PawnCraftBonus();
+                CraftManager.HandlePawnExpUpNtc(client, leadPawn, pawnExp, BonusExpMultiplier);
                 if (CraftManager.CanPawnRankUp(leadPawn))
                 {
                     CraftManager.HandlePawnRankUpNtc(client, leadPawn);
