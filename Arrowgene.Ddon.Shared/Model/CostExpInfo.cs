@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
-    public class ElementAttachInfo
+    public class CostExpInfo
     {
         public uint Exp { get; set; }
         public uint Cost { get; set; }

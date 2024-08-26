@@ -9,16 +9,19 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
+
 namespace Arrowgene.Ddon.GameServer.Handler
 {
     public class CraftStartEquipGradeUpHandler : GameRequestPacketHandler<C2SCraftStartEquipGradeUpReq, S2CCraftStartEquipGradeUpRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartEquipGradeUpHandler));
         private readonly ItemManager _itemManager;
+        private readonly CraftManager _craftManager;
 
         public CraftStartEquipGradeUpHandler(DdonGameServer server) : base(server)
         {
             _itemManager = Server.ItemManager;
+            _craftManager = Server.CraftManager;
         }
 
         public override S2CCraftStartEquipGradeUpRes Handle(GameClient client, C2SCraftStartEquipGradeUpReq request)
@@ -26,7 +29,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             string equipItemUID = request.EquipItemUID;
             Character character = client.Character;
             var ramItem = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
-            var equipItem = ramItem.Item2.Item2;
+            Item equipItem = ramItem.Item2.Item2;
             uint charid = client.Character.CharacterId;
             uint craftpawnid = request.CraftMainPawnID;
 
@@ -40,7 +43,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             UpgradableStatus upgradableStatus = recipeData.Upgradable;
             uint pawnExp = recipeData.Exp;
             bool canContinue = true;
-            bool isGreatSuccess = Random.Shared.Next(5) == 0;
             bool doUpgrade = false;
             uint currentTotalEquipPoint = equipItem.EquipPoints;
 
@@ -75,19 +77,36 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            // TODO: make use of pawn crafting skills instead
-            uint addEquipPoint = (uint)((isGreatSuccess ? 300 : 180) * (0.8 + (Random.Shared.NextDouble() * 0.4)));
+            Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnID);
+            List<Pawn> pawns = new List<Pawn> { leadPawn };
+            pawns.AddRange(request.CraftSupportPawnIDList.Select(p => Server.CraftManager.FindPawn(client, p.PawnId)));
+            List<uint> enhancementLevels = new List<uint>();
+            List<uint> costPerformanceLevels = new List<uint>();
+            List<uint> qualityLevels = new List<uint>();
+
+            foreach (Pawn pawn in pawns)
+            {
+                if (pawn != null)
+                {
+                    enhancementLevels.Add(CraftManager.GetPawnEquipmentEnhancementLevel(pawn));
+                    costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
+                    qualityLevels.Add(CraftManager.GetPawnEquipmentQualityLevel(pawn));
+                }
+                else
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID, "Couldn't find the Pawn ID.");
+                }
+            }
+
+            double calculatedOdds = CraftManager.CalculateEquipmentQualityIncreaseRate(qualityLevels);
+            CraftCalculationResult enhnacementResult = _craftManager.CalculateEquipmentEnhancement(enhancementLevels, (uint)calculatedOdds);
+            bool isGreatSuccess = enhnacementResult.IsGreatSuccess;
+            uint addEquipPoint = enhnacementResult.CalculatedValue;
 
             currentTotalEquipPoint += addEquipPoint;
 
-            // Subtract less Gold if support pawn is used and add slightly more points
-            if (request.CraftSupportPawnIDList.Count > 0)
-            {
-                goldRequired = (uint)(goldRequired * 0.95);
-                currentTotalEquipPoint = (uint)(currentTotalEquipPoint * 1.5); // Fake stuff until pawn craft levels
-            }
-
-            var updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, goldRequired);
+            CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,
+                            Server.CraftManager.CalculateRecipeCost(recipeData.Cost, costPerformanceLevels));
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
             ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
@@ -98,8 +117,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint[] thresholds = { 350, 700, 1000, 1500, 800 };
 
             // Determine the required points based on the current star level
-            int requiredPoints = currentStars >= 0 && currentStars < thresholds.Length
-                ? (int)thresholds[currentStars]
+            uint requiredPoints = currentStars >= 0 && currentStars < thresholds.Length 
+                ? thresholds[currentStars] 
                 : throw new InvalidOperationException("Invalid star level");
 
             if (recipeData.AllowMultiGrade)
@@ -129,24 +148,31 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     gearUpgradeID = gradeupList.Count > 0 ? gradeupList.Last().Value : 0;
                 }
             }
+
             else
             {
                 if (currentTotalEquipPoint >= requiredPoints)
                 {
-                    int nextThresholdIndex = currentStars + 1;
-                    if (nextThresholdIndex < thresholds.Length && remainingPoints >= thresholds[nextThresholdIndex])
-                    {
-                        // Cap the remainingPoints to 1 point short of the next threshold
-                        remainingPoints = thresholds[nextThresholdIndex] - 1;
-                    }
+                    currentTotalEquipPoint -= requiredPoints;
 
+                    if (currentStars < 4)
+                    {
+                        int nextThresholdIndex = currentStars + 1;
+                        uint nextThreshold = thresholds[nextThresholdIndex];
+
+                        // Cap remaining points or just update them based on the next threshold
+                        remainingPoints = Math.Min(currentTotalEquipPoint, nextThreshold - 1);
+                    }
+                    else
+                    {
+                        remainingPoints = currentTotalEquipPoint;
+                    }
+                    // Prepare to grade up
                     gradeupList = new() { new CDataCommonU32(gearUpgradeID) };
                     doUpgrade = true;
                 }
             }
-
-
-            if (upgradableStatus == UpgradableStatus.No) // This should handle a "True" state because I pull it from the Recipe directly.
+            if (upgradableStatus == UpgradableStatus.No)
             {
                 canContinue = false;
             }
@@ -177,17 +203,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 res = CreateEquipPointResponse(equipItemUID, addEquipPoint, currentTotalEquipPoint, goldRequired, isGreatSuccess, CurrentEquipInfo, canContinue, dummydata);
             }
 
-            // Lead pawn is always owned by player.
-            Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnID);
             if (CraftManager.CanPawnExpUp(leadPawn))
             {
-                CraftManager.HandlePawnExpUpNtc(client, leadPawn, pawnExp, 0);
+                double BonusExpMultiplier = Server.GpCourseManager.PawnCraftBonus();
+                CraftManager.HandlePawnExpUpNtc(client, leadPawn, pawnExp, BonusExpMultiplier);
                 if (CraftManager.CanPawnRankUp(leadPawn))
                 {
                     CraftManager.HandlePawnRankUpNtc(client, leadPawn);
                 }
-                Server.Database.UpdatePawnBaseInfo(leadPawn);
             }
+            else
+            {
+                CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
+            }
+
+            Server.Database.UpdatePawnBaseInfo(leadPawn);
 
             client.Send(updateCharacterItemNtc);
             return res;
@@ -273,7 +303,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<CDataMDataCraftGradeupRecipe> recipeFamily = new List<CDataMDataCraftGradeupRecipe>();
             recipeFamily.Add(startingRecipe);
             CDataMDataCraftGradeupRecipe? node = startingRecipe;
-            //Search forwards
             while (node is not null)
             {
                 node = Server.AssetRepository.CraftingGradeUpRecipesAsset
@@ -286,7 +315,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     recipeFamily.Add(node);
                 }
             }
-
             recipeFamily = recipeFamily.OrderBy(x => x.RecipeID).ToList();
             //recipeFamily.ForEach(x => Logger.Debug($"Found recipe family: {startingRecipe.RecipeID} -> {x.RecipeID}"));
             return recipeFamily;

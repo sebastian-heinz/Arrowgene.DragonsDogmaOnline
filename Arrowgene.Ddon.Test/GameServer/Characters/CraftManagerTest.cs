@@ -58,8 +58,8 @@ public class CraftManagerTest
     {
         List<uint> enhancementLevels = new List<uint> { 45, 1, 1, 1 };
 
-        CraftCalculationResult result = _craftManager.CalculateEquipmentEnhancement(enhancementLevels);
-
+        CraftCalculationResult result = _craftManager.CalculateEquipmentEnhancement(enhancementLevels, 0); // not sure what this is used for but I updated this function,
+                                                                                                        // so adding a dummy value for calculatedOdds (greatsuccess stuff)
         Assert.True(result.CalculatedValue >= 150);
     }
 
