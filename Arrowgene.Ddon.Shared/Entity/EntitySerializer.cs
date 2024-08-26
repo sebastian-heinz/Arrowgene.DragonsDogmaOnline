@@ -71,6 +71,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataCharacterName.Serializer());
             Create(new CDataCharacterReleaseElement.Serializer());
             Create(new CDataCharacterSearchParam.Serializer());
+            Create(new CDataCharacterSearchParameter.Serializer()); // Yes there are two structs with similar names
             Create(new CDataCharacterEditPriceInfo.Serializer());
             Create(new CDataClanMemberInfo.Serializer());
             Create(new CDataClanParam.Serializer());
@@ -133,6 +134,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataBazaarItemNumOfExhibitionInfo.Serializer());
             Create(new CDataChangeEquipJobItem.Serializer());
             Create(new CDataCharacterEditPrice.Serializer());
+            Create(new CDataDragonAbility.Serializer());
             Create(new CDataEquipItemInfo.Serializer());
             Create(new CDataEquipJobItem.Serializer());
             Create(new CDataErrorMessage.Serializer());
@@ -233,6 +235,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataPawnReaction.Serializer());
             Create(new CDataPawnTotalScore.Serializer());
             Create(new CDataPawnTrainingPreparationInfoToAdvice.Serializer());
+            Create(new CDataPawnSearchParameter.Serializer());
+            Create(new CDataRegisterdPawnList.Serializer());
             Create(new CDataPlayPointDataSerializer());
             Create(new CDataPresetAbilityParam.Serializer());
             Create(new CDataPriorityQuest.Serializer());
@@ -259,6 +263,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataQuestProgressWork.Serializer());
             Create(new CDataQuestSetInfo.Serializer());
             Create(new CDataQuestTalkInfo.Serializer());
+            Create(new CDataRentedPawnList.Serializer());
             Create(new CDataRewardItem.Serializer());
             Create(new CDataRewardBoxRecord.Serializer());
             Create(new CDataRewardBoxItem.Serializer());
@@ -551,9 +556,16 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPawnTrainingGetPreparetionInfoToAdviceReq.Serializer());
             Create(new C2SPawnTrainingGetTrainingStatusReq.Serializer());
             Create(new C2SPawnTrainingSetTrainingStatusReq.Serializer());
+            Create(new C2SPawnGetRegisteredPawnListReq.Serializer());
+            Create(new C2SPawnGetOfficialPawnListReq.Serializer());
+            Create(new C2SPawnRentRegisteredPawnReq.Serializer());
+            Create(new C2SPawnGetRentedPawnDataReq.Serializer());
+            Create(new C2SPawnJoinPartyRentedPawnReq.Serializer());
+            Create(new C2SPawnReturnRentedPawnReq.Serializer());
 
             Create(new C2SProfileGetCharacterProfileReq.Serializer());
             Create(new C2SProfileGetMyCharacterProfileReq.Serializer());
+            
 
             Create(new C2SPhotoPhotoTakeNtc.Serializer());
 
@@ -753,6 +765,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CContextGetLobbyPlayerContextNtc.Serializer());
             Create(new S2CContextGetPartyMypawnContextNtc.Serializer());
             Create(new S2CContextGetPartyPlayerContextNtc.Serializer());
+            Create(new S2CContextGetPartyRentedPawnContextNtc.Serializer());
             Create(new S2CContextGetSetContextRes.Serializer());
             Create(new S2CContextMasterChangeNtc.Serializer());
             Create(new S2CContextMasterInfoNtc.Serializer());
@@ -760,6 +773,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CContextMasterThrowRes.Serializer());
             Create(new S2CContextSetContextBaseNtc.Serializer());
             Create(new S2CContextSetContextNtc.Serializer());
+
             Create(new S2CCraftGetCraftIRCollectionValueListRes.Serializer());
             Create(new S2CCraftGetCraftProgressListRes.Serializer());
             Create(new C2SCraftGetCraftProductInfoRes.Serializer());
@@ -947,7 +961,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPawnCreatePawnRes.Serializer());
             Create(new S2CPawnDeleteMyPawnRes.Serializer());
             Create(new S2CPawnGetPawnProfileNtc.Serializer());
-            Create(new S2CPawnHistoryInfoNtc.Serializer());
+            Create(new S2CPawnGetPawnHistoryInfoNtc.Serializer());
             Create(new S2CPawnGetPawnTotalScoreInfoNtc.Serializer());
             Create(new S2CPawnGetPawnOrbDevoteInfoNtc.Serializer());
             Create(new S2CPawnJoinPartyPawnNtc.Serializer());
@@ -967,6 +981,14 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPawnTrainingGetPreparetionInfoToAdviceRes.Serializer());
             Create(new S2CPawnTrainingGetTrainingStatusRes.Serializer());
             Create(new S2CPawnTrainingSetTrainingStatusRes.Serializer());
+            Create(new S2CPawnGetRegisteredPawnListRes.Serializer());
+            Create(new S2CPawnGetOfficialPawnListRes.Serializer());
+            Create(new S2CPawnRentRegisteredPawnRes.Serializer());
+            Create(new S2CPawnGetRentedPawnListRes.Serializer());
+            Create(new S2CPawnGetRentedPawnDataRes.Serializer());
+            Create(new S2CPawnJoinPartyRentedPawnRes.Serializer());
+            Create(new S2CPawnReturnRentedPawnRes.Serializer());
+
             Create(new S2CProfileGetCharacterProfileRes.Serializer());
             Create(new S2CProfileGetMyCharacterProfileRes.Serializer());
 
