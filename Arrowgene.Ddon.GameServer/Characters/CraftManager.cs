@@ -475,14 +475,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
             client.Send(expNtc);
         }
 
-        public Pawn FindPawn(GameClient client, uint pawnId, bool checkRented = false)
+        public Pawn FindPawn(GameClient client, uint pawnId)
         {
             Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == pawnId);
             if (pawn == null)
             {
-                //TODO: Change this to instead check Character.RentedPawns when that merges.
+                pawn = client.Character.RentedPawns.Find(p => p.PawnId == pawnId);
             }
-
             return pawn;
         }
     }
