@@ -29,12 +29,18 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             // Data structure serializers
             Create(new C2SActionSetPlayerActionHistoryReqElement.Serializer()); // TODO naming convention C2S -> not a packet
+            
+            Create(new CDataAchieveRewardCommon.Serializer());
+            Create(new CDataAchievementIdentifier.Serializer());
+            Create(new CDataAchievementProgress.Serializer());
+            Create(new CDataAchievementRewardProgress.Serializer());
+            Create(new CDataAchievementFurnitureReward.Serializer());
+            
             Create(new CData_772E80.Serializer());
             Create(new CDataSpSkill.Serializer());
             Create(new CDataAbilityLevelParam.Serializer());
             Create(new CDataAbilityParam.Serializer());
             Create(new CDataAchieveCategoryStatus.Serializer());
-            Create(new CDataAchievementIdentifierSerializer());
             Create(new CDataAllPlayerContext.Serializer());
             Create(new CDataAreaBaseInfo.Serializer());
             Create(new CDataAreaRank.Serializer());
@@ -313,6 +319,13 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2LPingReq.Serializer());
             Create(new C2SActionSetPlayerActionHistoryReq.Serializer());
             Create(new C2SAreaGetAreaBaseInfoListReq.Serializer());
+            
+            Create(new C2SAchievementGetReceivableRewardListReq.Serializer());
+            Create(new C2SAchievementGetProgressListReq.Serializer());
+            Create(new C2SAchievementGetRewardListReq.Serializer());
+            Create(new C2SAchievementGetFurnitureRewardListReq.Serializer());
+            Create(new C2SAchievementRewardReceiveReq.Serializer());
+            Create(new C2SAchievementGetCategoryProgressListReq.Serializer());
 
             Create(new C2SBattleContentGetContentStatusFromOmReq.Serializer());
             Create(new C2SBattleContentInfoListReq.Serializer());
@@ -419,6 +432,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SEquipUpdateHidePawnHeadArmorReq.Serializer());
             Create(new C2SEquipUpdateHidePawnLanternReq.Serializer());
 
+            Create(new C2SAchievementReceivableRewardNtc.Serializer());
+            Create(new C2SAchievementCompleteNtc.Serializer());
+            
             Create(new C2SEventEndNtc.Serializer());
             Create(new C2SEventStartNtc.Serializer());
 
@@ -645,6 +661,13 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new S2CActionSetPlayerActionHistoryRes.Serializer());
             Create(new S2CAreaGetAreaBaseInfoListRes.Serializer());
+            
+            Create(new S2CAchievementGetReceivableRewardListRes.Serializer());
+            Create(new S2CAchievementGetProgressListRes.Serializer());
+            Create(new S2CAchievementGetRewardListRes.Serializer());
+            Create(new S2CAchievementGetFurnitureRewardListRes.Serializer());
+            Create(new S2CAchievementRewardReceiveRes.Serializer());
+            Create(new S2CAchievementGetCategoryProgressListRes.Serializer());
 
             Create(new S2CBattleContentGetContentStatusFromOmRes.Serializer());
             Create(new S2CBattleContentInfoListRes.Serializer());
@@ -815,6 +838,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CInstanceEnemyGroupDestroyNtc.Serializer());
             Create(new S2CInstanceEnemyGroupResetNtc.Serializer());
 
+            Create(new S2CItemAchievementRewardReceiveNtc.Serializer());
             Create(new S2CItemConsumeStorageItemRes.Serializer());
             Create(new S2CItemExtendItemSlotNtc.Serializer());
             Create(new S2CItemGetStorageItemListRes.Serializer());
