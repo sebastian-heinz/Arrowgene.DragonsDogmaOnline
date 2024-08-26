@@ -51,7 +51,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             else
             {
                 var processState = partyQuestState.GetProcessState(questId, processNo);
-                
+
                 var quest = QuestManager.GetQuest(questId);
                 res.QuestProcessState = quest.StateMachineExecute(Server, client, processState, out questProgressState);
 
@@ -59,6 +59,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (questProgressState == QuestProgressState.Accepted && quest.QuestType == QuestType.World)
                 {
+                    // A Quest has started, setting the HasStarted on the quest in QuestState
+                    partyQuestState.SetHasStarted(quest.QuestId, true);
+
                     foreach (var memberClient in client.Party.Clients)
                     {
                         var questProgress = Server.Database.GetQuestProgressById(memberClient.Character.CommonId, quest.QuestId);

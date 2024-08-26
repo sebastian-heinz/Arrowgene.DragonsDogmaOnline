@@ -30,13 +30,14 @@ namespace Arrowgene.Ddon.GameServer.Party
         public QuestId QuestId { get; set; }
         public QuestType QuestType { get; set; }
         public QuestProgressState State { get; set; }
-        public uint Step {  get; set; }
+        public bool HasStarted { get; set; }
+        public uint Step { get; set; }
 
-        public Dictionary<ushort, QuestProcessState> ProcessState {  get; set; }
-        public Dictionary<StageId, Dictionary<uint, List<InstancedEnemy>>> QuestEnemies {  get; set; }
+        public Dictionary<ushort, QuestProcessState> ProcessState { get; set; }
+        public Dictionary<StageId, Dictionary<uint, List<InstancedEnemy>>> QuestEnemies { get; set; }
         public Dictionary<StageId, ushort> CurrentSubgroup { get; set; }
 
-        public Dictionary<uint, QuestDeliveryRecord> DeliveryRecords {  get; set; }
+        public Dictionary<uint, QuestDeliveryRecord> DeliveryRecords { get; set; }
 
         public QuestState()
         {
@@ -106,24 +107,36 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         private Dictionary<QuestId, QuestState> ActiveQuests { get; set; }
         private Dictionary<StageId, List<QuestId>> QuestLookupTable { get; set; }
-        private List<QuestId> CompletedWorldQuests {  get; set; }
+        private List<QuestId> CompletedWorldQuests { get; set; }
+        private HashSet<uint> InactiveAlternateQuestsGroups { get; set; }
+        private HashSet<QuestId> ActiveAlternateQuests {  get; set; }
 
         public PartyQuestState()
         {
             ActiveQuests = new Dictionary<QuestId, QuestState>();
             QuestLookupTable = new Dictionary<StageId, List<QuestId>>();
             CompletedWorldQuests = new List<QuestId>();
+            InactiveAlternateQuestsGroups = new HashSet<uint>();
+            ActiveAlternateQuests = new();
+
+            QuestManager.CopyQuestGroupIds(InactiveAlternateQuestsGroups);
         }
 
-        public void AddNewQuest(Quest quest, uint step = 0)
+        public void SetHasStarted(QuestId questId, bool hasStarted)
         {
-            lock (ActiveQuests) 
+            ActiveQuests[questId].HasStarted = hasStarted;
+        }
+
+        public void AddNewQuest(Quest quest, uint step = 0, bool questStarted = false)
+        {
+            lock (ActiveQuests)
             {
                 ActiveQuests[quest.QuestId] = new QuestState()
                 {
                     QuestId = quest.QuestId,
                     QuestType = quest.QuestType,
-                    Step = step
+                    Step = step,
+                    HasStarted = questStarted
                 };
 
                 foreach (var location in quest.Locations)
@@ -236,10 +249,28 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
-        public void AddNewQuest(QuestId questId, uint step)
+        public void AddNewAltQuest(uint questGroupId)
         {
+            var questId = QuestManager.GetRandomAltQuest(questGroupId);
+
+            AddNewQuest(questId, 0, false);
+        }
+
+        public void AddNewQuest(QuestId questId, uint step, bool questStarted)
+        {
+
             var quest = QuestManager.GetQuest(questId);
-            AddNewQuest(quest, step);
+
+            // If we are adding a new alt quest, remove the quest group id from the list.
+            if (quest.IsAlternateQuest && InactiveAlternateQuestsGroups.Contains((uint)quest.QuestGroupId))
+            {
+
+                InactiveAlternateQuestsGroups.Remove((uint)quest.QuestGroupId);
+                ActiveAlternateQuests.Add(quest.QuestId);
+
+            }
+
+            AddNewQuest(quest, step, questStarted);
         }
 
         public void RemoveQuest(QuestId questId)
@@ -248,6 +279,13 @@ namespace Arrowgene.Ddon.GameServer.Party
             lock (ActiveQuests)
             {
                 ActiveQuests.Remove(questId);
+
+                // Ensure adding of selected quest's group id to be eligible for reroll.
+                 if(quest.IsAlternateQuest)
+                {
+                    InactiveAlternateQuestsGroups.Add((uint)quest.QuestGroupId);
+                    ActiveAlternateQuests.Remove(quest.QuestId);
+                }
 
                 foreach (var location in quest.Locations)
                 {
@@ -268,7 +306,8 @@ namespace Arrowgene.Ddon.GameServer.Party
 
                 // Save the quest if it was a world quest
                 // so we can add it back on instance reset
-                if (quest.QuestType == QuestType.World)
+                // Don't add alt quests to completed world quests. Rerolls are handled independently
+                if (quest.QuestType == QuestType.World && !quest.IsAlternateQuest)
                 {
                     CompletedWorldQuests.Add(questId);
                 }
@@ -291,7 +330,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
                 if (quest.NextQuestId != 0)
                 {
-                    AddNewQuest(quest.NextQuestId, 0);
+                    AddNewQuest(quest.NextQuestId, 0, false);
                 }
             }
         }
@@ -328,7 +367,7 @@ namespace Arrowgene.Ddon.GameServer.Party
         {
             lock(ActiveQuests)
             {
-                return ActiveQuests.ContainsKey(questId);    
+                return ActiveQuests.ContainsKey(questId);
             }
         }
 
@@ -399,12 +438,36 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
+        private void RerollUnfoundAltQuests()
+        {
+            foreach (var quest in ActiveAlternateQuests)
+            {
+                switch (ActiveQuests[quest].HasStarted)
+                {
+                    case true:
+                        continue;
+                    case false:
+                        RemoveQuest(quest);
+                        continue;
+                }
+            }
+
+            // See available group ids to choose from, then loop over and add a random quest from each.
+
+            foreach (var groupId in InactiveAlternateQuestsGroups)
+            {
+                AddNewAltQuest(groupId);
+            }
+        }
+
         public void ResetInstanceQuestState()
         {
+            RerollUnfoundAltQuests();
+
             // Add all world quests
             foreach (var questId in CompletedWorldQuests)
             {
-                AddNewQuest(questId, 0);
+                AddNewQuest(questId, 0, false);
             }
 
             CompletedWorldQuests.Clear();

@@ -67,6 +67,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public List<QuestLayoutFlagSetInfo> QuestLayoutFlagSetInfo;
         public List<QuestLayoutFlag> QuestLayoutFlags;
         public Dictionary<uint, QuestEnemyGroup> EnemyGroups { get; set; }
+        public bool IsAlternateQuest { get; set; }
+        public uint ? QuestGroupId { get; set; }
 
         public Quest(QuestId questId, QuestId questScheduleId, QuestType questType, bool isDiscoverable = false)
         {
@@ -87,6 +89,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             QuestLayoutFlagSetInfo = new List<QuestLayoutFlagSetInfo>();
             QuestLayoutFlags = new List<QuestLayoutFlag>();
             EnemyGroups = new Dictionary<uint, QuestEnemyGroup>();
+            IsAlternateQuest = false;
 
             Processes = new List<QuestProcess>();
         }

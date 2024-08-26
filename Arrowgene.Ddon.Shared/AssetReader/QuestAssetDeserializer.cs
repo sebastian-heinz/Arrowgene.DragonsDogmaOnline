@@ -8,11 +8,7 @@ using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using System;
 using Arrowgene.Ddon.Shared.Model.Quest;
-using YamlDotNet.Core.Tokens;
-using System.Linq.Expressions;
-using System.Reflection.Metadata.Ecma335;
-using System.Text.RegularExpressions;
-using System.Text.Json.Nodes;
+
 
 namespace Arrowgene.Ddon.Shared.AssetReader
 {
@@ -83,6 +79,13 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             assetData.BaseLevel = jQuest.GetProperty("base_level").GetUInt16();
             assetData.MinimumItemRank = jQuest.GetProperty("minimum_item_rank").GetByte();
             assetData.Discoverable = jQuest.GetProperty("discoverable").GetBoolean();
+
+            // For the purpose of setting up alternate quests.
+            assetData.QuestGroupId = null;
+            if (jQuest.TryGetProperty("quest_group_id", out JsonElement AltQuestId))
+            {
+                assetData.QuestGroupId = AltQuestId.GetUInt32();
+            }
 
             assetData.NextQuestId = 0;
             if (jQuest.TryGetProperty("next_quest", out JsonElement jNextQuest))

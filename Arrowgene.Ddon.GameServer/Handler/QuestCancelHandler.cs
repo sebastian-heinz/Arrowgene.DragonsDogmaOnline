@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             var quest = QuestManager.GetQuest(questId);
             Server.Database.RemoveQuestProgress(client.Character.CommonId, quest.QuestId, quest.QuestType);
-
+            
             bool isPriority = Server.Database.DeletePriorityQuest(client.Character.CommonId, questId);
 
             if (client.Party.Leader.Client == client) //Only the leader should be able to inform the party quest state.

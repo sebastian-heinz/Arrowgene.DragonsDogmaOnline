@@ -28,6 +28,19 @@ namespace Arrowgene.Ddon.GameServer.Characters
         }
 
         private static Dictionary<QuestId, Quest> gQuests = new Dictionary<QuestId, Quest>();
+        private static Dictionary<uint, Dictionary<QuestId, Quest>> altQuestsGroups = new();
+        private static Dictionary<QuestId, uint> altQuestLookup = new();
+        public static readonly HashSet<uint> questGroupIds = new();
+
+        public static void CopyQuestGroupIds(HashSet<uint> InactiveAlternateQuestsGroups)
+        {
+
+            for (int i = 0; i < questGroupIds.Count; i++)
+            {
+                InactiveAlternateQuestsGroups.Add(questGroupIds.ElementAt(i));
+            }
+
+        }
 
         public static void LoadQuests(AssetRepository assetRepository)
         {
@@ -43,7 +56,54 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // Load Quests defined in files
             foreach (var questAsset in assetRepository.QuestAssets.Quests)
             {
+
+                // Check if this quest has a group quest id - if so then handle it separately
+
+                if (questAsset.QuestGroupId is not null) 
+                {
+                    Quest alternateQuest = GenericQuest.FromAsset(questAsset);
+                    alternateQuest.IsAlternateQuest = true;
+                    alternateQuest.QuestGroupId = questAsset.QuestGroupId;
+
+                    // Add an entry to the dictionary if it doesn't exist then add the quest id and quest
+                    if (!altQuestsGroups.ContainsKey((uint)questAsset.QuestGroupId))
+                    {
+                        altQuestsGroups[(uint)alternateQuest.QuestGroupId] = new Dictionary<QuestId, Quest>();
+                        altQuestsGroups[(uint)questAsset.QuestGroupId].Add(alternateQuest.QuestId, alternateQuest);
+
+                        // Add to the quest lookup for easier finding of quests for explicit search.
+                        altQuestLookup[alternateQuest.QuestId] = (uint)alternateQuest.QuestGroupId;
+
+                        continue;
+                    }
+
+                    // Add quest id and quest
+                    altQuestsGroups[(uint)questAsset.QuestGroupId].Add(alternateQuest.QuestId, alternateQuest);
+
+                    // Add to the quest lookup for explicit searches.
+                    altQuestLookup[alternateQuest.QuestId] = (uint)alternateQuest.QuestGroupId;
+
+                    continue;
+                }
+
                 gQuests[questAsset.QuestId] = GenericQuest.FromAsset(questAsset);
+            }
+
+
+            var allAltQuestsInDictionary = altQuestsGroups.Keys.ToArray();
+
+            for (int i = 0; i < allAltQuestsInDictionary.Length; i++)
+            {
+                // Create a reliable source of all quest IDs
+                questGroupIds.Add(allAltQuestsInDictionary[i]);
+
+                Logger.Info($"Alt Group Id Listed: {allAltQuestsInDictionary[i]}");
+                var questKeys = altQuestsGroups[allAltQuestsInDictionary[i]].Keys.ToArray();
+
+                for(int j = 0; j < questKeys.Length; j++)
+                {
+                    Logger.Info($"Quest entry: {questKeys[j]}");
+                }
             }
         }
 
@@ -71,8 +131,27 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return results;
         }
 
+        public static QuestId GetRandomAltQuest(uint questGroupId)
+        {
+            // Get random index value to choose a version.
+            int randomIndex = new Random().Next(altQuestsGroups[questGroupId].Count);
+
+            QuestId questKey = altQuestsGroups[questGroupId].ElementAt(randomIndex).Key;
+
+            return questKey;
+
+        }
+
         public static Quest GetQuest(QuestId questId)
         {
+
+            if (altQuestLookup.ContainsKey(questId))
+            {
+                uint groupIdKey = altQuestLookup[questId];
+
+                return altQuestsGroups[groupIdKey][questId];
+            }
+
             if (!gQuests.ContainsKey(questId))
             {
                 return null;

@@ -53,7 +53,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var quests = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All);
             foreach (var quest in quests)
             {
-                party.QuestState.AddNewQuest(quest.QuestId, quest.Step);
+                party.QuestState.AddNewQuest(quest.QuestId, quest.Step, true);
             }
 
             var worldQuests = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.World).Select(x => x.QuestId).ToList();
@@ -65,7 +65,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
                 if (!worldQuests.Contains(quest.Key))
                 {
-                    party.QuestState.AddNewQuest(quest.Key, 0);
+                    party.QuestState.AddNewQuest(quest.Key, 0, false);
                 }
             }
 
