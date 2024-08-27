@@ -7,6 +7,7 @@
   "minimum_item_rank": 0,
   "discoverable": true,
   "area_id": "BetlandPlains",
+  "news_image": 43,
   "rewards": [
     {
       "type": "exp",

@@ -1,18 +1,13 @@
+using Arrowgene.Ddon.Shared.Asset;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
+using Arrowgene.Logging;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Logging;
-using Arrowgene.Ddon.Shared.Asset;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using System;
-using Arrowgene.Ddon.Shared.Model.Quest;
-using YamlDotNet.Core.Tokens;
-using System.Linq.Expressions;
-using System.Reflection.Metadata.Ecma335;
-using System.Text.RegularExpressions;
-using System.Text.Json.Nodes;
 
 namespace Arrowgene.Ddon.Shared.AssetReader
 {

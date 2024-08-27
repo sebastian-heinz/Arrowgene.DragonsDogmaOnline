@@ -7,6 +7,7 @@
   "minimum_item_rank": 0,
   "discoverable": false,
   "area_id": "MysreeGrove",
+  "news_image": 564,
   "rewards": [
     {
       "type": "wallet",

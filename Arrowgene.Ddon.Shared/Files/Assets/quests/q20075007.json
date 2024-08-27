@@ -7,6 +7,7 @@
   "minimum_item_rank": 0,
   "discoverable": false,
   "area_id": "NorthernBetlandPlains",
+  "news_image": 513,
   "rewards": [
     {
       "type": "wallet",

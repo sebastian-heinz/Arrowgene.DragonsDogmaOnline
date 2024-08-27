@@ -5,8 +5,9 @@
   "quest_id": 20000002,
   "base_level": 9,
   "minimum_item_rank": 0,
-  "area_id": "HidellPlains",
   "discoverable": true,
+  "area_id": "HidellPlains",
+  "news_image": 5,
   "rewards": [
     {
       "type": "exp",

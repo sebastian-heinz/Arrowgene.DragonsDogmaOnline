@@ -343,7 +343,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 ImageId = NewsImageId, // Optional, client has its own defaults if you fail to provide one.
                 BaseLevel = BaseLevel,
                 IsDiscovery = true, // If false, hides quest details from the news report.
-                EndDistributionDate = uint.MaxValue,
+                EndDistributionDate = uint.MaxValue, // ulong.MaxValue causes some math on the client to overflow and report it as ending soon, so we use uint here.
                 ContentJoinItemRank = (ushort)(OrderConditions.Find(x => x.Type == QuestOrderConditionType.ItemRank)?.Param01 ?? 0),
                 RandomRewardNum = RandomRewardNum(),
                 SelectRewardItemIdList = GetQuestSelectableRewards().Select(x => new CDataCommonU32(x.ItemId)).ToList(),

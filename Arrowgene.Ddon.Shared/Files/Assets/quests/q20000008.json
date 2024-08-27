@@ -7,6 +7,7 @@
   "minimum_item_rank": 0,
   "discoverable": true,
   "area_id": "HidellPlains",
+  "news_image": 11,
   "rewards": [
     {
       "type": "exp",
