@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data.Common;
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 
@@ -12,7 +13,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly string[] PawnFields = new string[]
         {
-            "character_common_id", "character_id", "name", "hm_type", "pawn_type", "training_points", "available_training", "craft_exp", "craft_rank", "craft_rank_limit", "craft_points", "production_speed_level", "equipment_enhancement_level", "equipment_quality_level", "consumable_quantity_level", "cost_performance_level"
+            "character_common_id", "character_id", "name", "hm_type", "pawn_type", "training_points", "available_training", "craft_exp", "craft_rank", "craft_rank_limit", "craft_points", "production_speed_level", "equipment_enhancement_level", "equipment_quality_level", "consumable_quantity_level", "cost_performance_level", "is_official_pawn"
         };
 
         protected static readonly string[] CDataPawnReactionFields = new string[]
@@ -41,7 +42,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             + "LEFT JOIN \"ddon_edit_info\" ON \"ddon_edit_info\".\"character_common_id\" = \"ddon_pawn\".\"character_common_id\" "
             + "LEFT JOIN \"ddon_status_info\" ON \"ddon_status_info\".\"character_common_id\" = \"ddon_pawn\".\"character_common_id\" "
             + "WHERE \"character_id\" = @character_id";
-        private const string SqlDeletePawn = "DELETE FROM \"ddon_character_common\" WHERE EXISTS (SELECT 1 FROM \"ddon_pawn\" WHERE \"pawn_id\"=@pawn_id);";
+        private const string SqlDeletePawn = "DELETE FROM \"ddon_character_common\" WHERE EXISTS (SELECT 1 FROM \"ddon_pawn\" WHERE \"ddon_character_common\".\"character_common_id\"=\"ddon_pawn\".\"character_common_id\" AND \"ddon_pawn\".\"pawn_id\"=@pawn_id)";
+        private const string SqlSelectOfficialPawns = @"SELECT * FROM ddon_pawn WHERE is_official_pawn=1;";
+        private const string SqlSelectAllPlayerPawns = @"SELECT * FROM ddon_pawn WHERE is_official_pawn=0 LIMIT @limit;";
+        private const string SqlSelectRandomPlayerPawns = @"SELECT * FROM ddon_pawn ORDER BY RANDOM() LIMIT @limit;";
+        private const string SqlSelectPawnOwnerId = $"SELECT * FROM ddon_pawn WHERE \"pawn_id\" = @pawn_id;";
 
         private readonly string SqlInsertPawnReaction = $"INSERT INTO \"ddon_pawn_reaction\" ({BuildQueryField(CDataPawnReactionFields)}) VALUES ({BuildQueryInsert(CDataPawnReactionFields)});";
         private readonly string SqlInsertIfNotExistsPawnReaction = $"INSERT INTO \"ddon_pawn_reaction\" ({BuildQueryField(CDataPawnReactionFields)}) SELECT {BuildQueryInsert(CDataPawnReactionFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_pawn_reaction\" WHERE \"pawn_id\"=@pawn_id AND \"reaction_type\"=@reaction_type);";
@@ -75,20 +80,90 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public Pawn SelectPawn(uint pawnId)
         {
-            Pawn pawn = null;
-            ExecuteInTransaction(conn => {
-                ExecuteReader(conn, SqlSelectAllPawnData,
-                command => { AddParameter(command, "@pawn_id", pawnId); }, reader =>
-                {
-                    if (reader.Read())
-                    {
-                        pawn = ReadAllPawnData(reader);
-                    }
-                });
+            using TCon connection = OpenNewConnection();
+            return SelectPawn(connection, pawnId);
+        }
 
-                QueryPawnData(conn, pawn);
+        public Pawn SelectPawn(DbConnection connection, uint pawnId)
+        {
+            Pawn pawn = null;
+            ExecuteReader(connection, SqlSelectAllPawnData,
+            command => { AddParameter(command, "@pawn_id", pawnId); },
+            reader =>
+            {
+                 if (reader.Read())
+                 {
+                     pawn = ReadAllPawnData(reader);
+                     QueryPawnData(connection, pawn);
+                 }
             });
             return pawn;
+        }
+
+        public List<uint> SelectAllPlayerPawns(uint limit = 100)
+        {
+            using TCon connection = OpenNewConnection();
+            return SelectAllPlayerPawns(connection, limit);
+        }
+
+        public List<uint> SelectAllPlayerPawns(DbConnection connection, uint limit = 100)
+        {
+            List<uint> pawns = new List<uint>();
+            ExecuteReader(connection, SqlSelectAllPlayerPawns,
+                command => { AddParameter(command, "@limit", limit); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        uint pawnId = GetUInt32(reader, "pawn_id");
+                        pawns.Add(pawnId);
+                    }
+                });
+            return pawns;
+        }
+
+        public List<uint> SelectRandomPlayerPawns(uint limit = 100)
+        {
+            using TCon connection = OpenNewConnection();
+            return SelectRandomPlayerPawns(connection, limit);
+        }
+
+        public List<uint> SelectRandomPlayerPawns(DbConnection connection, uint limit = 100)
+        {
+            List<uint> pawns = new List<uint>();
+            ExecuteReader(connection, SqlSelectRandomPlayerPawns,
+                command => { AddParameter(command, "@limit", limit); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        uint pawnId = GetUInt32(reader, "pawn_id");
+                        pawns.Add(pawnId);
+                    }
+                });
+            return pawns;
+        }
+
+        public uint GetPawnOwnerCharacterId(uint pawnId)
+        {
+            using TCon connection = OpenNewConnection();
+            return GetPawnOwnerCharacterId(connection, pawnId);
+        }
+
+        public uint GetPawnOwnerCharacterId(TCon connection, uint pawnId)
+        {
+            uint ownerCharacterId = 0;
+            ExecuteReader(connection, SqlSelectPawnOwnerId,
+            command => { AddParameter(command, "@pawn_id", pawnId); },
+            reader =>
+            {
+                if (reader.Read())
+                {
+                    ownerCharacterId = GetUInt32(reader, "character_id");
+                }
+            });
+
+            return ownerCharacterId;
         }
 
         public List<Pawn> SelectPawnsByCharacterId(uint characterId)
@@ -117,6 +192,28 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             {
                 QueryPawnData(conn, pawn);
             }
+            return pawns;
+        }
+
+        public List<uint> SelectOfficialPawns()
+        {
+            using TCon connection = OpenNewConnection();
+            return SelectOfficialPawns(connection);
+        }
+
+        public List<uint> SelectOfficialPawns(TCon connection)
+        {
+            List<uint> pawns = new List<uint>();
+            ExecuteReader(connection, SqlSelectOfficialPawns,
+                command => {},
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        uint pawnId = GetUInt32(reader, "pawn_id");
+                        pawns.Add(pawnId);
+                    }
+                });
             return pawns;
         }
 
@@ -380,10 +477,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             pawn.CharacterId = GetUInt32(reader, "character_id");
             pawn.Name = GetString(reader, "name");
             pawn.HmType = GetByte(reader, "hm_type");
-            pawn.PawnType = GetByte(reader, "pawn_type");
+            pawn.PawnType = (PawnType) GetByte(reader, "pawn_type");
             pawn.TrainingPoints = GetUInt32(reader, "training_points");
             pawn.AvailableTraining = GetUInt32(reader, "available_training");
-            
+            pawn.IsOfficialPawn = GetBoolean(reader, "is_official_pawn");
+
             pawn.CraftData.CraftExp = GetUInt32(reader, "craft_exp");
             pawn.CraftData.CraftRank = GetUInt32(reader, "craft_rank");
             pawn.CraftData.CraftRankLimit = GetUInt32(reader, "craft_rank_limit");
@@ -394,7 +492,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == CraftSkillType.EquipmentQuality).Level = GetUInt32(reader, "equipment_quality_level");
             pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == CraftSkillType.ConsumableQuantity).Level = GetUInt32(reader, "consumable_quantity_level");
             pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == CraftSkillType.CostPerformance).Level = GetUInt32(reader, "cost_performance_level");
-
+            
             return pawn;
         }
 
@@ -406,10 +504,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@character_id", pawn.CharacterId);
             AddParameter(command, "@name", pawn.Name);
             AddParameter(command, "@hm_type", pawn.HmType);
-            AddParameter(command, "@pawn_type", pawn.PawnType);
+            AddParameter(command, "@pawn_type", (byte) pawn.PawnType);
             AddParameter(command, "@training_points", pawn.TrainingPoints);
             AddParameter(command, "@available_training", pawn.AvailableTraining);
-            
+            AddParameter(command, "@is_official_pawn", false);
+
             AddParameter(command, "@craft_exp", pawn.CraftData.CraftExp);
             AddParameter(command, "@craft_rank", pawn.CraftData.CraftRank);
             AddParameter(command, "@craft_rank_limit", pawn.CraftData.CraftRankLimit);

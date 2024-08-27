@@ -1,18 +1,17 @@
-using System.Security.AccessControl;
-using System;
-using System.Linq;
-using System.Collections.Generic;
+using Arrowgene.Ddon.LoginServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using Arrowgene.Ddon.Shared.Entity;
-using Arrowgene.Ddon.LoginServer.Dump;
-using Arrowgene.Ddon.Shared;
-using Arrowgene.Ddon.Shared.Model.Quest;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
@@ -36,6 +35,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             character.CharacterId = packet.Structure.CharacterInfo.CharacterId;
             character.UserId = packet.Structure.CharacterInfo.UserId;
             character.Version = packet.Structure.CharacterInfo.Version;
+            character.GameMode = GameMode.Normal;
             character.FirstName = packet.Structure.CharacterInfo.FirstName;
             character.LastName = packet.Structure.CharacterInfo.LastName;
             character.EditInfo = packet.Structure.CharacterInfo.EditInfo;
@@ -103,8 +103,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             //character.UnkCharData0 = packet.Structure.CharacterInfo.UnkCharData0;
             //character.UnkCharData1 = packet.Structure.CharacterInfo.UnkCharData1;
 
-            character.MyPawnSlotNum = 2;
-            character.RentalPawnSlotNum = 0;
+            character.MyPawnSlotNum = packet.Structure.CharacterInfo.MyPawnSlotNum;
+            character.RentalPawnSlotNum = packet.Structure.CharacterInfo.RentalPawnSlotNum;
 
             //character.OrbStatusList = packet.Structure.CharacterInfo.OrbStatusList;
             //character.MsgSetList = packet.Structure.CharacterInfo.MsgSetList;
@@ -493,7 +493,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     Value = 0
                 },
                 new CDataWalletPoint() {
-                    Type = WalletType.CustomMadeServiceTickets,
+                    Type = WalletType.BitterblackMazeResetTicket,
                     Value = 0
                 },
                 new CDataWalletPoint() {
@@ -568,10 +568,10 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     ExpMode = ExpMode.Experience, // EXP
                     PlayPoint = 0
                 }
-            }).ToList().ForEach(x => { 
-                Database.ReplaceCharacterPlayPointData(character.CharacterId, x);
+            }).ToList().ForEach((Action<CDataJobPlayPoint>)(x => {
+                Database.ReplaceCharacterPlayPointData((uint)character.CharacterId, x);
                 character.PlayPointList.Add(x);
-            });
+            }));
 
             // Default unlock some secret abilities based on server admin desires
             foreach (var ability in _AssetRepository.SecretAbilitiesAsset.DefaultSecretAbilities)
@@ -583,6 +583,16 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             if (!Database.InsertQuestProgress(character.CommonId, QuestId.ResolutionsAndOmens, QuestType.Main, 0))
             {
                 Logger.Error("Failed to seed first MSQ for player");
+            }
+
+            if (!Database.InsertBBMProgress(character.CharacterId, 0, 0, 0, 0, false, 0))
+            {
+                Logger.Error("Failed to insert BBM progress");
+            }
+
+            if (!Database.InsertBBMRewards(character.CharacterId, 0, 0, 0))
+            {
+                Logger.Error("Failed to insert BBM rewards");
             }
 
             L2CCreateCharacterDataNtc ntc = new L2CCreateCharacterDataNtc();

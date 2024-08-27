@@ -40,8 +40,8 @@ namespace Arrowgene.Ddon.Shared.Csv
             string key = properties[1];
             string msgJp = properties[2];
             string msgEn = properties[3];
-            string gmdPath = properties[4];
-            string arcPath = properties[5];
+            string gmdPath = Util.ToArcPath(properties[4]); // Normalize paths
+            string arcPath = Util.ToArcPath(properties[5]); // Normalize paths
             string arcName = properties[6];
             if (!uint.TryParse(properties[7], out uint readIndex)) return null;
 

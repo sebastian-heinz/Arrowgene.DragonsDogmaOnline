@@ -23,7 +23,8 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
         private static readonly uint DefaultAmount = 10000;
         private static readonly HashSet<WalletType> DefaultWalletTypes = new HashSet<WalletType> {
             WalletType.Gold,
-            WalletType.RiftPoints
+            WalletType.RiftPoints,
+            WalletType.BloodOrbs
         };
 
         public override AccountStateType AccountState => AccountStateType.User;

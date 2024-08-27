@@ -1,28 +1,24 @@
 using System;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Entity;
-using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
-    public class ClientPingHandler : PacketHandler<LoginClient>
+    // These requests are sent periodically by the client (every ~10 seconds)
+    // after successfully connecting to the server (client._challengeCompleted is true)
+    public class ClientPingHandler : PingRequestPacketHandler<LoginClient, C2LPingReq, L2CPingRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClientPingHandler));
-
 
         public ClientPingHandler(DdonLoginServer server) : base(server)
         {
         }
 
-        public override PacketId Id => PacketId.C2L_PING_REQ;
-
-        public override void Handle(LoginClient client, IPacket packet)
+        public override L2CPingRes BuildPingResponse(LoginClient client, DateTime now)
         {
-            client.PingTime = DateTime.UtcNow;
-            ServerRes res = new ServerRes(PacketId.L2C_PING_RES);
-            client.Send(res);
+            return new L2CPingRes();
         }
     }
 }

@@ -113,7 +113,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             int levelDifference = targetLevel > targetJobData.Lv ? (int)(targetLevel - targetJobData.Lv) : 0;
 
             targetJobData.Lv = targetLevel;
-            targetJobData.Exp = ExpManager.TotalExpToLevelUpTo(targetLevel);
+            targetJobData.Exp = ExpManager.TotalExpToLevelUpTo(targetLevel, client.GameMode);
 
             //Handle job points
             uint cumulativeJobPoints = 0;

@@ -1,19 +1,10 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Xml.Linq;
 using Arrowgene.Ddon.Database;
-using Arrowgene.Ddon.Database.Model;
-using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-using YamlDotNet.Serialization.NodeDeserializers;
-using static Arrowgene.Ddon.Server.Network.Challenge;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -65,8 +56,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     CurrentPage.CategoryStatusList.Add(new CDataOrbCategoryStatus()
                     {
-                        CategoryId = (byte) (GroupNo == GroupNo.Group5 ? 0 : GroupNo),
-                        ReleaseNum = (byte) PageCompletionTotals[PageNo][GroupNo]
+                        CategoryId = (byte)(GroupNo == GroupNo.Group5 ? 0 : GroupNo),
+                        ReleaseNum = (byte)PageCompletionTotals[PageNo][GroupNo]
                     });
                 }
             }
@@ -86,9 +77,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             var Upgrades = _Database.SelectOrbReleaseElementFromDragonForceAugmentation(Character.CommonId);
             foreach (var Upgrade in Upgrades)
             {
-                Results.Add(new CDataItemUpdateResult() {
+                Results.Add(new CDataItemUpdateResult()
+                {
                     UpdateItemNum = 1,
-                    ItemList = new CDataItemList() {
+                    ItemList = new CDataItemList()
+                    {
                         ItemNum = Upgrade.ElementId,
                         SlotNo = (byte)Upgrade.ElementId,
                         EquipCharacterID = Character.CommonId
@@ -132,12 +125,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 case OrbGainParamType.MainPawnSlot:
                     obj.MainPawnSlot += (ushort)upgrade.Amount;
                     // When the player unlocks this, the total number will be increased to 3.
-                    // TODO: Is there an NTC for this?
-                    _Database.UpdateMyPawnSlot(client.Character.CharacterId, 3);
-                    client.Character.MyPawnSlotNum = 3;
+                    client.Character.MyPawnSlotNum += (byte)upgrade.Amount;
+                    _Database.UpdateMyPawnSlot(client.Character.CharacterId, client.Character.MyPawnSlotNum);
                     break;
                 case OrbGainParamType.SupportPawnSlot:
                     obj.SupportPawnSlot += (ushort)upgrade.Amount;
+                    client.Character.RentalPawnSlotNum += (byte)upgrade.Amount;
+                    _Database.UpdateRentalPawnSlot(client.Character.CharacterId, client.Character.RentalPawnSlotNum);
                     break;
                 case OrbGainParamType.UseItemSlot:
                     obj.UseItemSlot += (ushort)upgrade.Amount;
@@ -148,9 +142,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 case OrbGainParamType.EquipItemSlot:
                     obj.EquipItemSlot += (ushort)upgrade.Amount;
                     break;
-                // Unhandeled
+                // TODO: OrbGainParamType.PawnAdventureNum Unhandled
                 case OrbGainParamType.PawnAdventureNum:
+                // TODO: OrbGainParamType.PawnCraftNum Unhandled => this might be a relic from pre season 3
                 case OrbGainParamType.PawnCraftNum:
+                // TODO: OrbGainParamType.MainPawnLostRate
                 case OrbGainParamType.MainPawnLostRate:
                     break;
                 case OrbGainParamType.SecretAbility:
@@ -180,13 +176,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     _CharacterManager.UpdateCharacterExtendedParamsNtc(client, character);
                     break;
                 case OrbGainParamType.MainPawnSlot:
-                    client.Send(new S2CPawnExtendMainPawnNtc() { TotalNum = 3, AddNum = 1 });
+                    client.Send(new S2CPawnExtendMainPawnSlotNtc() { TotalNum = client.Character.MyPawnSlotNum, AddNum = (byte)upgrade.Amount });
                     break;
                 case OrbGainParamType.SupportPawnSlot:
+                    client.Send(new S2CPawnExtendSupportPawnSlotNtc() { TotalNum = client.Character.RentalPawnSlotNum, AddNum = (byte)upgrade.Amount });
                     break;
                 case OrbGainParamType.AbilityCost:
-                    // Handeled by S2CSkillGetAbilityCostRes
-                    // Handeled by S2CProfileGetMyCharacterProfileRes
+                    // Handled by S2CSkillGetAbilityCostRes
+                    // Handled by S2CProfileGetMyCharacterProfileRes
                     break;
                 case OrbGainParamType.MainPawnLostRate:
                 case OrbGainParamType.UseItemSlot:
@@ -240,12 +237,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             if (character is Character)
             {
-                upgrade = GetPlayerUpgrade(client, (Character) character, elementId);
+                upgrade = GetPlayerUpgrade(client, (Character)character, elementId);
             }
             else
             {
                 upgrade = GetPawnUpgrade(client, (Pawn)character, elementId);
-
             }
 
             if (upgrade == null)
@@ -350,7 +346,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             public OrbGainParamType GainType { get; private set; }
-            public uint Amount { get; private set;}
+            public uint Amount { get; private set; }
             public LvlUpRestrictionType LvlUpRestrictionType { get; private set; }
             public uint LvlUpCost { get; private set; }
             public SecretAbility SecretAbility { get; private set; }
@@ -386,6 +382,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 return this;
             }
+
             public DragonForceUpgrade HasPageUnlockRestriction()
             {
                 this.LvlUpRestrictionType = LvlUpRestrictionType.PageUnlocked;
@@ -410,14 +407,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 this.GainType = OrbGainParamType.SecretAbility;
                 this.SecretAbility = Type;
-                this.Amount = (uint) Type;
+                this.Amount = (uint)Type;
                 return this;
             }
 
             public DragonForceUpgrade Location(PageNo PageNo, GroupNo GroupNo, uint IndexNo)
             {
-                this.PageNo = (uint) PageNo;
-                this.GroupNo = (uint) GroupNo;
+                this.PageNo = (uint)PageNo;
+                this.GroupNo = (uint)GroupNo;
                 this.IndexNo = IndexNo;
                 this.Category = GroupNo2Category(GroupNo);
                 return this;
@@ -481,6 +478,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static readonly Dictionary<uint, DragonForceUpgrade> gPlayerDragonForceUpgrades = new Dictionary<uint, DragonForceUpgrade>()
         {
             #region PAGE1
+
             [0x01] = new DragonForceUpgrade()
                 .Location(PageNo.Page1, GroupNo.Group5, 1)
                 .HasPageUnlockRestriction()
@@ -633,9 +631,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .Location(PageNo.Page1, GroupNo.Group4, 8)
                 .HasOrbUnlockRestriction(30)
                 .Unlocks(OrbGainParamType.PhysicalDefence, 3),
+
             #endregion
 
             #region PAGE2
+
             [0x06] = new DragonForceUpgrade()
                 .Location(PageNo.Page2, GroupNo.Group5, 1)
                 .HasPageUnlockRestriction()
@@ -788,9 +788,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .Location(PageNo.Page2, GroupNo.Group4, 8)
                 .HasOrbUnlockRestriction(160)
                 .Unlocks(OrbGainParamType.PhysicalDefence, 2),
+
             #endregion
 
             #region PAGE3
+
             [0x0b] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group5, 1)
                 .HasPageUnlockRestriction()
@@ -943,9 +945,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .Location(PageNo.Page3, GroupNo.Group4, 8)
                 .HasOrbUnlockRestriction(550)
                 .Unlocks(OrbGainParamType.PhysicalDefence, 2),
+
             #endregion
 
             #region PAGE4
+
             [0x10] = new DragonForceUpgrade()
                 .Location(PageNo.Page4, GroupNo.Group5, 1)
                 .HasPageUnlockRestriction()
@@ -1098,12 +1102,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .Location(PageNo.Page4, GroupNo.Group4, 8)
                 .HasOrbUnlockRestriction(1800)
                 .Unlocks(OrbGainParamType.PhysicalDefence, 3)
+
             #endregion
         };
 
         private static readonly Dictionary<uint, DragonForceUpgrade> gPawnDragonForceUpgrades = new Dictionary<uint, DragonForceUpgrade>()
         {
             #region PAGE1
+
             [0x95] = new DragonForceUpgrade()
                 .Location(PageNo.Page1, GroupNo.Group5, 1)
                 .HasPageUnlockRestriction()
@@ -1256,9 +1262,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .Location(PageNo.Page1, GroupNo.Group4, 8)
                 .HasOrbUnlockRestriction(25)
                 .Unlocks(OrbGainParamType.PhysicalDefence, 3),
+
             #endregion
 
             #region PAGE2
+
             [0x9a] = new DragonForceUpgrade()
                 .Location(PageNo.Page2, GroupNo.Group5, 1)
                 .HasPageUnlockRestriction()
@@ -1411,9 +1419,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .Location(PageNo.Page2, GroupNo.Group4, 8)
                 .HasOrbUnlockRestriction(100)
                 .Unlocks(OrbGainParamType.PhysicalDefence, 2),
+
             #endregion
 
             #region PAGE3
+
             [0x9f] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group5, 1)
                 .HasPageUnlockRestriction()
@@ -1566,11 +1576,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .Location(PageNo.Page3, GroupNo.Group4, 8)
                 .HasOrbUnlockRestriction(550)
                 .Unlocks(OrbGainParamType.PhysicalDefence, 3),
+
             #endregion
 
             #region PAGE4
 
-             [0xa4] = new DragonForceUpgrade()
+            [0xa4] = new DragonForceUpgrade()
                 .Location(PageNo.Page4, GroupNo.Group5, 1)
                 .HasPageUnlockRestriction()
                 .Unlocks(OrbGainParamType.AccessorySlot, 1),
@@ -1722,6 +1733,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .Location(PageNo.Page4, GroupNo.Group4, 8)
                 .HasOrbUnlockRestriction(1600)
                 .Unlocks(OrbGainParamType.PhysicalDefence, 3)
+
             #endregion
         };
     }

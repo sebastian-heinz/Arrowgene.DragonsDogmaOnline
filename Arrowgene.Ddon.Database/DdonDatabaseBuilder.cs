@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.Database
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonDatabaseBuilder));
         private const string DefaultSchemaFile = "Script/schema_sqlite.sql";
 
-        public const uint Version = 11;
+        public const uint Version = 14;
 
         public static IDatabase Build(DatabaseSetting settings)
         {
@@ -48,15 +48,20 @@ namespace Arrowgene.Ddon.Database
 
         public static string AdaptSQLiteSchemaToPostgreSQL(string schema)
         {
-            schema = Regex.Replace(schema, "(\\s)DATETIME(\\s|,)", "$1TIMESTAMP WITH TIME ZONE$2");
-            schema = Regex.Replace(schema, "(\\s)INTEGER PRIMARY KEY AUTOINCREMENT(\\s|,)", "$1SERIAL PRIMARY KEY$2");
-            schema = Regex.Replace(schema, "(\\s)BLOB(\\s|,)", "$1BYTEA$2");
+            schema = Regex.Replace(schema, @"(\s)DATETIME(\s|,)", "$1TIMESTAMP WITH TIME ZONE$2", RegexOptions.IgnoreCase);
+            schema = Regex.Replace(schema, @"(\s)INTEGER PRIMARY KEY AUTOINCREMENT(\s|,)", "$1SERIAL PRIMARY KEY$2", RegexOptions.IgnoreCase);
+            schema = Regex.Replace(schema, @"(\s)BLOB(\s|,)", "$1BYTEA$2", RegexOptions.IgnoreCase);
+            // Dangerous and requires super-user privileges, but rough one-line equivalent
+            schema = Regex.Replace(schema, @"PRAGMA(\s*)foreign_keys=(\s*)(OFF|0)(\s*);", "SET session_replication_role='replica';", RegexOptions.IgnoreCase);
+            schema = Regex.Replace(schema, @"PRAGMA(\s*)foreign_keys=(\s*)(ON|1)(\s*);", "SET session_replication_role='origin';", RegexOptions.IgnoreCase);
             return schema;
         }
 
         public static string AdaptSQLiteSchemaToMariaDB(string schema)
         {
-            schema = Regex.Replace(schema, "(\\s)AUTOINCREMENT(\\s|,)", "$1AUTO_INCREMENT$2");
+            schema = Regex.Replace(schema, @"(\s)AUTOINCREMENT(\s|,)", "$1AUTO_INCREMENT$2", RegexOptions.IgnoreCase);
+            schema = Regex.Replace(schema, @"PRAGMA(\s*)foreign_keys=(\s*)(OFF|0)(\s*);", "SET FOREIGN_KEY_CHECKS=0;", RegexOptions.IgnoreCase);
+            schema = Regex.Replace(schema, @"PRAGMA(\s*)foreign_keys=(\s*)(ON|1)(\s*);", "SET FOREIGN_KEY_CHECKS=1;", RegexOptions.IgnoreCase);
             return schema;
         }
 

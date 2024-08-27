@@ -17,14 +17,26 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(EquipManager));
 
         private static readonly List<EquipSlot> EnsembleSlots = new List<EquipSlot>()
-            {
-                EquipSlot.ArmorLeg,
-                EquipSlot.ArmorHelm,
-                EquipSlot.ArmorArm,
-                EquipSlot.WearBody,
-                EquipSlot.WearLeg,
-                EquipSlot.Accessory
-            };
+        {
+            EquipSlot.ArmorLeg,
+            EquipSlot.ArmorHelm,
+            EquipSlot.ArmorArm,
+            EquipSlot.WearBody,
+            EquipSlot.WearLeg,
+            EquipSlot.Accessory
+        };
+
+        private static readonly List<EquipSlot> ItemRankSlots = new List<EquipSlot>()
+        {
+            EquipSlot.WepMain,
+            EquipSlot.ArmorHelm,
+            EquipSlot.ArmorBody,
+            EquipSlot.WearBody,
+            EquipSlot.ArmorArm,
+            EquipSlot.ArmorLeg,
+            EquipSlot.WearLeg,
+            EquipSlot.Accessory
+        };
 
         private static readonly byte SLOTS = EquipmentTemplate.TOTAL_EQUIP_SLOTS;
 
@@ -55,7 +67,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             foreach (CDataChangeEquipJobItem changeEquipJobItem in changeEquipJobItems)
             {
-                if(changeEquipJobItem.EquipJobItemUId.Length == 0)
+                if (changeEquipJobItem.EquipJobItemUId.Length == 0)
                 {
                     // UNEQUIP
                     // Remove from equipment
@@ -73,9 +85,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             // Send packets informing of the update
             List<CDataEquipJobItem> equippedJobItems = characterToEquipTo.EquipmentTemplate.JobItemsAsCDataEquipJobItem(characterToEquipTo.Job);
-            if(characterToEquipTo is Character character)
+            if (characterToEquipTo is Character character)
             {
-                client.Send(new S2CEquipChangeCharacterEquipJobItemRes() 
+                client.Send(new S2CEquipChangeCharacterEquipJobItemRes()
                 {
                     EquipJobItemList = equippedJobItems
                 });
@@ -85,10 +97,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     CharacterId = character.CharacterId,
                     EquipJobItemList = equippedJobItems
                 });
-            } 
+            }
             else if (characterToEquipTo is Pawn pawn)
             {
-                client.Send(new S2CEquipChangePawnEquipJobItemRes() 
+                client.Send(new S2CEquipChangePawnEquipJobItemRes()
                 {
                     PawnId = pawn.PawnId,
                     EquipJobItemList = equippedJobItems
@@ -146,6 +158,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // Set in equipment template
                     //TODO: Move this lookup to memory instead of the DB if possible.
                     characterToEquipTo.EquipmentTemplate.SetEquipItem(server.Database.SelectStorageItemByUId(itemUId), characterToEquipTo.Job, equipType, equipSlot);
+
                     server.Database.ReplaceEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, itemUId, connectionIn);
                     
                     // Update storage, swapping if needed
@@ -243,6 +256,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             throw new ResponseErrorException(ErrorCode.ERROR_CODE_FAIL); //TODO: Find a better code.
         }
+
         public void GetEquipTypeandSlot(Equipment equipment, string uid, out EquipType equipType, out byte equipSlot)
         {
             for (int i = 0; i < SLOTS * 2; i++)
@@ -257,7 +271,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
             throw new Exception("Item not found");
         }
-    
+
         public List<(EquipType, EquipSlot)> CleanGenderedEquipTemplates(DdonGameServer server, CharacterCommon character, DbConnection? connectionIn = null)
         {
             List<(EquipType, EquipSlot)> forceRemovals = new List<(EquipType, EquipSlot)>();
@@ -288,6 +302,70 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return forceRemovals;
+        }
+
+        private bool CharacterHasEnsembleEquipped(DdonGameServer server, CharacterCommon characterCommon)
+        {
+            foreach (EquipSlot slot in EnsembleSlots)
+            {
+                var equip = characterCommon.EquipmentTemplate.GetEquipItem(characterCommon.Job, EquipType.Performance, slot);
+                if (equip == null)
+                {
+                    continue;
+                }
+
+                var itemInfo = server.ItemManager.LookupInfoByItemID(server, equip.ItemId);
+                if (itemInfo.SubCategory == ItemSubCategory.EquipEnsemble)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public uint CalculateItemRank(DdonGameServer server, CharacterCommon characterCommon)
+        {
+            uint itemRank = 0;
+
+            if (CharacterHasEnsembleEquipped(server, characterCommon))
+            {
+                var mainHand = characterCommon.EquipmentTemplate.GetEquipItem(characterCommon.Job, EquipType.Performance, EquipSlot.WepMain);
+                itemRank = server.ItemManager.LookupInfoByItemID(server, mainHand.ItemId).Rank;
+
+                foreach (EquipSlot slot in EnsembleSlots)
+                {
+                    var equip = characterCommon.EquipmentTemplate.GetEquipItem(characterCommon.Job, EquipType.Performance, slot);
+                    if (equip == null)
+                    {
+                        continue;
+                    }
+
+                    var itemInfo = server.ItemManager.LookupInfoByItemID(server, equip.ItemId);
+                    if (itemInfo.SubCategory == ItemSubCategory.EquipEnsemble)
+                    {
+                        itemRank += itemInfo.Rank;
+                        break;
+                    }
+                }
+
+                itemRank = itemRank / 2;
+            }
+            else
+            {
+                foreach (EquipSlot slot in ItemRankSlots)
+                {
+                    var equip = characterCommon.EquipmentTemplate.GetEquipItem(characterCommon.Job, EquipType.Performance, slot);
+                    if (equip != null)
+                    {
+                        var itemInfo = server.ItemManager.LookupInfoByItemID(server, equip.ItemId);
+                        itemRank += itemInfo.Rank;
+                    }
+                }
+
+                itemRank = itemRank / 8;
+            }
+
+            return itemRank > 0 ? itemRank : 1;
         }
     }
 }
