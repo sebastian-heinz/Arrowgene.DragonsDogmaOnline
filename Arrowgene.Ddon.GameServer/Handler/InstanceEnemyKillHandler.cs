@@ -128,9 +128,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             foreach(PartyMember member in client.Party.Members)
             {
-                if (member.JoinState != JoinState.On) continue; //Only fully joined members get rewards.
+                if (member.JoinState != JoinState.On) continue; // Only fully joined members get rewards.
 
-                uint bo = enemyKilled.BloodOrbs;
                 uint ho = enemyKilled.HighOrbs;
                 uint gainedExp = _gameServer.ExpManager.GetAdjustedExp(client.GameMode, RewardSource.Enemy, client.Party, enemyKilled.GetDroppedExperience(), enemyKilled.Lv);
 
@@ -160,11 +159,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         // Drop BO
                         CDataWalletPoint boWallet = memberClient.Character.WalletPointList.Where(wp => wp.Type == WalletType.BloodOrbs).Single();
-                        boWallet.Value += bo;
+
+                        uint gainedBo = enemyKilled.BloodOrbs;
+                        uint bonusBo = (uint)(enemyKilled.BloodOrbs * _gameServer.GpCourseManager.EnemyBloodOrbBonus());
+                        boWallet.Value += gainedBo + bonusBo;
 
                         CDataUpdateWalletPoint boUpdateWalletPoint = new CDataUpdateWalletPoint();
                         boUpdateWalletPoint.Type = WalletType.BloodOrbs;
-                        boUpdateWalletPoint.AddPoint = (int) bo;
+                        boUpdateWalletPoint.AddPoint = (int)(gainedBo + bonusBo);
+                        boUpdateWalletPoint.ExtraBonusPoint = bonusBo;
                         boUpdateWalletPoint.Value = boWallet.Value;
                         updateCharacterItemNtc.UpdateWalletList.Add(boUpdateWalletPoint);
 
@@ -204,7 +207,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     memberClient = _gameServer.ClientLookup.GetClientByCharacterId(pawn.CharacterId);
                     memberCharacter = pawn;
 
-                    if (memberClient.Character.Stage.Id != stageId.Id) continue; //Only nearby allies get XP.
+                    if (memberClient.Character.Stage.Id != stageId.Id || pawn.IsRented)
+                    {
+                        // Only nearby allies get XP
+                        // and non-rented pawns
+                        continue;
+                    }
                 }
                 else
                 {

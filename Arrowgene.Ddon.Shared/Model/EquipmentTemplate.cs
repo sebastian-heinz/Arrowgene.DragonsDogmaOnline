@@ -53,6 +53,11 @@ namespace Arrowgene.Ddon.Shared.Model
             return equipment[job][equipType][slot-1];
         }
 
+        public Item? GetEquipItem(JobId job, EquipType equipType, EquipSlot slot)
+        {
+            return GetEquipItem(job, equipType, (byte) slot);
+        }
+
         public Item? SetEquipItem(Item? newItem, JobId job, EquipType equipType, byte slot) {
             Item? oldItem = GetEquipItem(job, equipType, slot);
             equipment[job][equipType][slot-1] = newItem;

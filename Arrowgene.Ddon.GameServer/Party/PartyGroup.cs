@@ -47,7 +47,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             // TODO
             Contexts = new Dictionary<ulong, Tuple<CDataContextSetBase, CDataContextSetAdditional>>();
 
-            InstanceEnemyManager = new InstanceEnemyManager(partyManager.assetRepository);
+            InstanceEnemyManager = new InstanceEnemyManager(_partyManager.Server);
 
             InstanceOmData = new Dictionary<uint, Dictionary<ulong, uint>>();
 

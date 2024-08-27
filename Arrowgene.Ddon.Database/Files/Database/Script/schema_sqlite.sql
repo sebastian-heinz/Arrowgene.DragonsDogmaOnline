@@ -91,6 +91,7 @@ CREATE TABLE IF NOT EXISTS "ddon_pawn"
     "equipment_quality_level"     INTEGER                           NOT NULL,
     "consumable_quantity_level"   INTEGER                           NOT NULL,
     "cost_performance_level"      INTEGER                           NOT NULL,
+    "is_official_pawn"            BOOLEAN                           NOT NULL,
     CONSTRAINT "fk_ddon_pawn_character_common_id" FOREIGN KEY ("character_common_id") REFERENCES "ddon_character_common" ("character_common_id") ON DELETE CASCADE,
     CONSTRAINT "fk_ddon_pawn_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
