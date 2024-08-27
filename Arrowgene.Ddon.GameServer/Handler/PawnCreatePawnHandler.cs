@@ -72,7 +72,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 HideEquipLantern = request.PawnInfo.HideEquipLantern,
                 Job = request.PawnInfo.JobId,
                 HmType = 1,
-                PawnType = 1,
+                PawnType = PawnType.Main,
                 ExtendedParams = new CDataOrbGainExtendParam(),
                 Server = client.Character.Server,
                 CraftData = new CDataPawnCraftData
@@ -104,6 +104,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             pawn = Server.Database.SelectPawnsByCharacterId(client.Character.CharacterId).Find(x => x.PawnId == pawn.PawnId);
             Server.CharacterManager.UpdateCharacterExtendedParams(pawn, true);
+            pawn.Server = client.Character.Server;
 
             pawn.Equipment = client.Character.Storage.GetPawnEquipment(request.SlotNo - 1);
 

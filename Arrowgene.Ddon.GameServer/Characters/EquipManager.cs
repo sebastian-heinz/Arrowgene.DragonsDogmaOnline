@@ -17,14 +17,26 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(EquipManager));
 
         private static readonly List<EquipSlot> EnsembleSlots = new List<EquipSlot>()
-            {
-                EquipSlot.ArmorLeg,
-                EquipSlot.ArmorHelm,
-                EquipSlot.ArmorArm,
-                EquipSlot.WearBody,
-                EquipSlot.WearLeg,
-                EquipSlot.Accessory
-            };
+        {
+            EquipSlot.ArmorLeg,
+            EquipSlot.ArmorHelm,
+            EquipSlot.ArmorArm,
+            EquipSlot.WearBody,
+            EquipSlot.WearLeg,
+            EquipSlot.Accessory
+        };
+
+        private static readonly List<EquipSlot> ItemRankSlots = new List<EquipSlot>()
+        {
+            EquipSlot.WepMain,
+            EquipSlot.ArmorHelm,
+            EquipSlot.ArmorBody,
+            EquipSlot.WearBody,
+            EquipSlot.ArmorArm,
+            EquipSlot.ArmorLeg,
+            EquipSlot.WearLeg,
+            EquipSlot.Accessory
+        };
 
         private static readonly byte SLOTS = EquipmentTemplate.TOTAL_EQUIP_SLOTS;
 
@@ -290,6 +302,70 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return forceRemovals;
+        }
+
+        private bool CharacterHasEnsembleEquipped(DdonGameServer server, CharacterCommon characterCommon)
+        {
+            foreach (EquipSlot slot in EnsembleSlots)
+            {
+                var equip = characterCommon.EquipmentTemplate.GetEquipItem(characterCommon.Job, EquipType.Performance, slot);
+                if (equip == null)
+                {
+                    continue;
+                }
+
+                var itemInfo = server.ItemManager.LookupInfoByItemID(server, equip.ItemId);
+                if (itemInfo.SubCategory == ItemSubCategory.EquipEnsemble)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public uint CalculateItemRank(DdonGameServer server, CharacterCommon characterCommon)
+        {
+            uint itemRank = 0;
+
+            if (CharacterHasEnsembleEquipped(server, characterCommon))
+            {
+                var mainHand = characterCommon.EquipmentTemplate.GetEquipItem(characterCommon.Job, EquipType.Performance, EquipSlot.WepMain);
+                itemRank = server.ItemManager.LookupInfoByItemID(server, mainHand.ItemId).Rank;
+
+                foreach (EquipSlot slot in EnsembleSlots)
+                {
+                    var equip = characterCommon.EquipmentTemplate.GetEquipItem(characterCommon.Job, EquipType.Performance, slot);
+                    if (equip == null)
+                    {
+                        continue;
+                    }
+
+                    var itemInfo = server.ItemManager.LookupInfoByItemID(server, equip.ItemId);
+                    if (itemInfo.SubCategory == ItemSubCategory.EquipEnsemble)
+                    {
+                        itemRank += itemInfo.Rank;
+                        break;
+                    }
+                }
+
+                itemRank = itemRank / 2;
+            }
+            else
+            {
+                foreach (EquipSlot slot in ItemRankSlots)
+                {
+                    var equip = characterCommon.EquipmentTemplate.GetEquipItem(characterCommon.Job, EquipType.Performance, slot);
+                    if (equip != null)
+                    {
+                        var itemInfo = server.ItemManager.LookupInfoByItemID(server, equip.ItemId);
+                        itemRank += itemInfo.Rank;
+                    }
+                }
+
+                itemRank = itemRank / 8;
+            }
+
+            return itemRank > 0 ? itemRank : 1;
         }
     }
 }

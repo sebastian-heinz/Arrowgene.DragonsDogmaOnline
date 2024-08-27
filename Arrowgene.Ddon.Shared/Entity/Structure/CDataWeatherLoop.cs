@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -6,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataWeatherLoop(byte weatherId, uint timeSec)
         {
-            WeatherId=weatherId;
+            WeatherId= (Weather)weatherId;
             TimeSec=timeSec;
         }
 
@@ -16,21 +17,21 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             TimeSec=0;
         }
 
-        public byte WeatherId { get; set; }
+        public Weather WeatherId { get; set; }
         public uint TimeSec { get; set; }
 
         public class Serializer : EntitySerializer<CDataWeatherLoop>
         {
             public override void Write(IBuffer buffer, CDataWeatherLoop obj)
             {
-                WriteByte(buffer, obj.WeatherId);
+                WriteByte(buffer, (byte)obj.WeatherId);
                 WriteUInt32(buffer, obj.TimeSec);
             }
 
             public override CDataWeatherLoop Read(IBuffer buffer)
             {
                 CDataWeatherLoop obj = new CDataWeatherLoop();
-                obj.WeatherId = ReadByte(buffer);
+                obj.WeatherId = (Weather)ReadByte(buffer);
                 obj.TimeSec = ReadUInt32(buffer);
                 return obj;
             }

@@ -19,13 +19,19 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public uint CharacterId { get; set; } // Always the player character id?
         public uint PawnId { get; set; }
+
+        // CDataPawnProfile
+        //     CDataCommunityCharacterBaseInfo
+        //     CDataArisenProfile
+        //     Comment
+        //     RentalCost
         public uint OwnerCharacterId { get; set; }
         public string OwnerFirstName { get; set; }
         public string OwnerLastName { get; set; }
         public string OwnerClanName { get; set; }
         public CDataArisenProfile PawnProfile { get; set; }
-        public string Unk7 { get; set; } // Probably a profile description
-        public uint Unk8 { get; set; } // Probably a profile setting
+        public string Unk7 { get; set; } // Probably a profile description (Comment)
+        public uint Unk8 { get; set; } // Probably a profile setting (RentalCost)
 
         public class Serializer : PacketEntitySerializer<S2CPawnGetPawnProfileNtc>
         {

@@ -46,7 +46,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 if (CraftManager.CanPawnExpUp(leadPawn))
                 {
-                    CraftManager.HandlePawnExpUpNtc(client, leadPawn, craftProgress.Exp, craftProgress.BonusExp);
+                    double BonusExpMultiplier = Server.GpCourseManager.PawnCraftBonus();
+                    CraftManager.HandlePawnExpUpNtc(client, leadPawn, craftProgress.Exp, BonusExpMultiplier);
                     if (CraftManager.CanPawnRankUp(leadPawn))
                     {
                         CraftManager.HandlePawnRankUpNtc(client, leadPawn);

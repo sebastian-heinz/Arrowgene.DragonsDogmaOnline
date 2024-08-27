@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
@@ -50,9 +51,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 result.CurrentEquip.EquipSlot.EquipType = EquipManager.GetEquipTypeFromSlotNo(relativeSlotNo);
             }
 
-            var craftInfo = Server.AssetRepository.ElementAttachInfoAsset.ElementAttachInfo[clientItemInfo.Rank];
+            var craftInfo = Server.AssetRepository.CostExpScalingAsset.CostExpScalingInfo[clientItemInfo.Rank];
             uint totalCost = (uint)(craftInfo.Cost * request.CraftElementList.Count);
-            uint totalExp = (uint)(craftInfo.Exp * request.CraftElementList.Count);
+            uint pawnExp = (uint)(craftInfo.Exp * request.CraftElementList.Count);
 
             updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 0, 0));
             foreach (var element in request.CraftElementList)
@@ -73,30 +74,49 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 });
 
                 // Consume the crest
-                updateCharacterItemNtc.UpdateItemList.AddRange(
-                    Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, element.ItemUId, 1));
+                updateCharacterItemNtc.UpdateItemList.AddRange(Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, element.ItemUId, 1));
             }
 
+
+            Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnId);
+            List<Pawn> pawns = new List<Pawn> { leadPawn };
+            pawns.AddRange(request.CraftSupportPawnIDList.Select(p => Server.CraftManager.FindPawn(client, p.PawnId)));
+            List<uint> costPerformanceLevels = new List<uint>();
+            foreach (Pawn pawn in pawns)
+            {
+                if (pawn != null)
+                {
+                    costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
+                }
+                else
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID, "Couldn't find the Pawn ID.");
+                }
+            }
+            
             updateCharacterItemNtc.UpdateType = ItemNoticeType.StartAttachElement;
-            updateCharacterItemNtc.UpdateWalletList.Add(Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, totalCost));
+            CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,
+                            Server.CraftManager.CalculateRecipeCost(totalCost, costPerformanceLevels));
+            updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
             updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 1, 1));
             client.Send(updateCharacterItemNtc);
 
-            Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnId);
+            
             if (CraftManager.CanPawnExpUp(leadPawn))
             {
-                CraftManager.HandlePawnExpUpNtc(client, leadPawn, totalExp, 0);
+                double BonusExpMultiplier = Server.GpCourseManager.PawnCraftBonus();
+                CraftManager.HandlePawnExpUpNtc(client, leadPawn, pawnExp, BonusExpMultiplier);
                 if (CraftManager.CanPawnRankUp(leadPawn))
                 {
                     CraftManager.HandlePawnRankUpNtc(client, leadPawn);
                 }
-                Server.Database.UpdatePawnBaseInfo(leadPawn);
             }
             else
             {
-                // Mandatory to send otherwise the UI gets stuck.
                 CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
             }
+
+            Server.Database.UpdatePawnBaseInfo(leadPawn);
             return result;
         }
     }
