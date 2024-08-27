@@ -260,7 +260,7 @@ namespace Arrowgene.Ddon.Cli.Command
 
                             if (string.IsNullOrEmpty(newMsg))
                             {
-                                Logger.Error(
+                                Logger.Info(
                                     $"csv message is empty, skipping (ArcPath:{arcPath}, GmdPath:{gmdPath}, Key:{entry.Key}. Msg:{entry.Msg})");
                                 continue;
                             }

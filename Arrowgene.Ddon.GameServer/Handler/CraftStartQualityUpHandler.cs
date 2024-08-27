@@ -26,9 +26,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Character character = client.Character;
             var ramItem = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
             Item equipItem = ramItem.Item2.Item2;
+            ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
+            byte itemRank = itemInfo.Rank;
             uint craftpawnid = request.CraftMainPawnID;
             string RefineMaterialUID = request.RefineUID;
             ushort AddStatusID = request.AddStatusID;
+            uint pawnExp = 0;
+            ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
+            uint totalCost = Math.Min(100, (uint)itemRank) * 300;
             List<CDataItemUpdateResult> updateResults;
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
 
@@ -54,17 +59,38 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Lead pawn is always owned by player.
             Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnID);
             List<Pawn> pawns = new List<Pawn> { leadPawn };
-            pawns.AddRange(request.CraftSupportPawnIDList.Select(p => Server.CraftManager.FindPawn(client, p.PawnId, true)));
-            List<uint> consumableQuantityLevels = pawns.Select(CraftManager.GetPawnConsumableQuantityLevel).ToList();
+            pawns.AddRange(request.CraftSupportPawnIDList.Select(p => Server.CraftManager.FindPawn(client, p.PawnId)));
+            List<uint> qualityLevels = new List<uint>();
+            List<uint> costPerformanceLevels = new List<uint>();
+
+            foreach (Pawn pawn in pawns)
+            {
+                if (pawn != null)
+                {
+                    costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
+                    qualityLevels.Add(CraftManager.GetPawnEquipmentQualityLevel(pawn));
+                }
+                else
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID, "Couldn't find the Pawn ID.");
+                }
+
+            }
+            double calculatedOdds = CraftManager.CalculateEquipmentQualityIncreaseRate(qualityLevels);
+
 
             uint plusValue = 0;
             bool isGreatSuccessEquipmentQuality = false;
+
+            //TODO: Need to calculate the Gold cost and remove it. Cost is based on the Equipments IR.
+            // Probably do what Crests do and make a JSON for it?
             if (!string.IsNullOrEmpty(RefineMaterialUID))
             {
                 Item refineMaterialItem = Server.Database.SelectStorageItemByUId(RefineMaterialUID);
-                CraftCalculationResult craftCalculationResult = CraftManager.CalculateEquipmentQuality(refineMaterialItem, consumableQuantityLevels);
+                CraftCalculationResult craftCalculationResult = CraftManager.CalculateEquipmentQuality(refineMaterialItem, (uint)calculatedOdds, itemRank);
                 plusValue = craftCalculationResult.CalculatedValue;
                 isGreatSuccessEquipmentQuality = craftCalculationResult.IsGreatSuccess;
+                pawnExp = craftCalculationResult.Exp;
 
                 try
                 {
@@ -120,7 +146,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     (slotno, item, itemnum) = foundItem;
                     Server.ItemManager.UpgradeStorageItem(Server, client, character.CharacterId, storageType, equipItem, slotno);
                     updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, slotno, 1, 1));
-                    client.Send(updateCharacterItemNtc);
                 }
                 else
                 {
@@ -128,6 +153,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_STORAGE_TYPE, $"Item with UID {equipItemUID} not found in {storageType}");
                 }
             }
+
+            CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,
+                                         Server.CraftManager.CalculateRecipeCost(totalCost, costPerformanceLevels));
+            updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
             var res = new S2CCraftStartQualityUpRes()
             {
@@ -138,15 +167,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (CraftManager.CanPawnExpUp(leadPawn))
             {
-                // TODO: Find exp for item recipe
-                CraftManager.HandlePawnExpUpNtc(client, leadPawn, 10, 0);
+                double BonusExpMultiplier = Server.GpCourseManager.PawnCraftBonus();
+                CraftManager.HandlePawnExpUpNtc(client, leadPawn, pawnExp, BonusExpMultiplier);
                 if (CraftManager.CanPawnRankUp(leadPawn))
                 {
                     CraftManager.HandlePawnRankUpNtc(client, leadPawn);
                 }
-                Server.Database.UpdatePawnBaseInfo(leadPawn);
+            }
+            else
+            {
+                CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
             }
 
+            Server.Database.UpdatePawnBaseInfo(leadPawn);
+
+            client.Send(updateCharacterItemNtc);
             return res;
         }
     }

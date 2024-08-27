@@ -12,16 +12,16 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public uint StageNo { get; set; }
         public bool IsBase { get; set; }
         public List<CDataCommonU32> StageFeatureList { get; set; }
-        public List<object> Unk0 { get; set; } // This is stage ID of something
-        public List<object> Unk1 { get; set; }
+        public List<CDataStageAreaChangeResUnk0> Unk0 { get; set; } // This is stage ID of something
+        public List<CDataStageAreaChangeResUnk1> Unk1 { get; set; }
 
         public S2CStageAreaChangeRes()
         {
             StageNo=0;
             IsBase=false;
             StageFeatureList=new List<CDataCommonU32>();
-            Unk0 = new List<object>();
-            Unk1 = new List<object>();
+            Unk0 = new List<CDataStageAreaChangeResUnk0>();
+            Unk1 = new List<CDataStageAreaChangeResUnk1>();
         }
 
         public class Serializer : PacketEntitySerializer<S2CStageAreaChangeRes>
@@ -33,9 +33,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteUInt32(buffer, obj.StageNo);
                 WriteBool(buffer, obj.IsBase);
                 WriteEntityList(buffer, obj.StageFeatureList);
-                // TODO: Unk0 and Unk1
-                WriteMtArray(buffer, obj.Unk0, (buf, objEntry) => { });
-                WriteMtArray(buffer, obj.Unk1, (buf, objEntry) => { });
+                WriteEntityList(buffer, obj.Unk0);
+                WriteEntityList(buffer, obj.Unk1);
             }
 
             public override S2CStageAreaChangeRes Read(IBuffer buffer)
@@ -45,9 +44,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.StageNo = ReadUInt32(buffer);
                 obj.IsBase = ReadBool(buffer);
                 obj.StageFeatureList = ReadEntityList<CDataCommonU32>(buffer);
-                // TODO: Unk0 and Unk1
-                obj.Unk0 = new List<object>();
-                obj.Unk1 = new List<object>();
+                obj.Unk0 = ReadEntityList<CDataStageAreaChangeResUnk0>(buffer);
+                obj.Unk1 = ReadEntityList<CDataStageAreaChangeResUnk1>(buffer);
                 return obj;
             }
         }

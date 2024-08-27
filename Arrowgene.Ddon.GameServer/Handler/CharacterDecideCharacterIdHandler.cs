@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -32,13 +33,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
             client.Send(contentsReleaseElementNotice);
 
-            foreach (var ValidCourse in Server.AssetRepository.GPCourseInfoAsset.ValidCourses)
+            ulong now = (ulong)DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            foreach (var (id, course) in Server.AssetRepository.GPCourseInfoAsset.ValidCourses)
             {
-                client.Send(new S2CGPCourseStartNtc()
+                if (now >= course.StartTime && now <= course.EndTime)
                 {
-                    CourseID = ValidCourse.Value.Id,
-                    ExpiryTimestamp = ValidCourse.Value.EndTime
-                });
+                    client.Send(new S2CGPCourseStartNtc()
+                    {
+                        CourseID = course.Id,
+                        ExpiryTimestamp = course.EndTime
+                    });
+                }
             }
         }
 
@@ -58,7 +63,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             new CDataCharacterReleaseElement(ContentsRelease.RathniteFoothillsWorldQuests),
             new CDataCharacterReleaseElement(ContentsRelease.DressEquipment),
             new CDataCharacterReleaseElement(ContentsRelease.FeryanaWildernessWorldQuests),
-            // new CDataCharacterReleaseElement(ContentsRelease.LestaniaNews),
+            new CDataCharacterReleaseElement(ContentsRelease.LestaniaNews),
             // new CDataCharacterReleaseElement(ContentsRelease.MandragoraBreeding),
             new CDataCharacterReleaseElement(ContentsRelease.JobTrainingLog),
             new CDataCharacterReleaseElement(ContentsRelease.YourRoomsTerrace),

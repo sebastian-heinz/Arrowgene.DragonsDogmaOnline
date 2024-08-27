@@ -32,7 +32,7 @@ public static class GameStructure
         CharacterCommon character)
     {
         cDataCharacterListElement.ServerId = character.Server.Id;
-        cDataCharacterListElement.OnlineStatus = 0;
+        cDataCharacterListElement.OnlineStatus = character.OnlineStatus;
         CDataJobBaseInfo(cDataCharacterListElement.CurrentJobBaseInfo, character.Job,
             (byte)character.ActiveCharacterJobData.Lv);
         CDataJobBaseInfo(cDataCharacterListElement.EntryJobBaseInfo, character.Job,

@@ -30,8 +30,7 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public uint ItemId { get; set; }
 
-        // Directly correlated with C2SCraftStartCraftReq Unk0
-        public ushort Unk0 { get; set; }
+        public ushort AdditionalStatusId { get; set; }
         public uint RemainTime { get; set; }
         public bool ExpBonus { get; set; }
         public uint CreateCount { get; set; }

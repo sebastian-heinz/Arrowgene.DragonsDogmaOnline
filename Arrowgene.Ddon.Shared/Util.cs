@@ -433,5 +433,18 @@ namespace Arrowgene.Ddon.Shared
 
             return dst;
         }
+
+        /// <summary>
+        /// Path inside .arc files use `\` to separate directories.
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string ToArcPath(string path)
+        {
+            path = path.Replace('/', '\\');
+            path = path.Replace(Path.DirectorySeparatorChar, '\\');
+            path = path.Replace(Path.AltDirectorySeparatorChar, '\\');
+            return path;
+        }
     }
 }

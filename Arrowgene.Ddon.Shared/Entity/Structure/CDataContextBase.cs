@@ -38,7 +38,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public bool HideEquipHead { get; set; }
         public bool HideEquipLantern { get; set; }
         public byte HmType { get; set; }
-        public byte PawnType { get; set; }
+        public PawnType PawnType { get; set; }
         public uint CharacterId { get; set; }
         public bool SetWaitFlag { get; set; }
         public List<CDataContextNormalSkillData> ContextNormalSkillList { get; set; }
@@ -70,7 +70,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteBool(buffer, obj.HideEquipHead);
                 WriteBool(buffer, obj.HideEquipLantern);
                 WriteByte(buffer, obj.HmType);
-                WriteByte(buffer, obj.PawnType);
+                WriteByte(buffer, (byte) obj.PawnType);
                 WriteUInt32(buffer, obj.CharacterId);
                 WriteBool(buffer, obj.SetWaitFlag);
                 WriteEntityList<CDataContextNormalSkillData>(buffer, obj.ContextNormalSkillList);
@@ -102,7 +102,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.HideEquipHead = ReadBool(buffer);
                 obj.HideEquipLantern = ReadBool(buffer);
                 obj.HmType = ReadByte(buffer);
-                obj.PawnType = ReadByte(buffer);
+                obj.PawnType = (PawnType) ReadByte(buffer);
                 obj.CharacterId = ReadUInt32(buffer);
                 obj.SetWaitFlag = ReadBool(buffer);
                 obj.ContextNormalSkillList = ReadEntityList<CDataContextNormalSkillData>(buffer);

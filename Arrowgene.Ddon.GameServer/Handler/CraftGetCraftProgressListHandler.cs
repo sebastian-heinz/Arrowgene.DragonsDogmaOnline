@@ -19,8 +19,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CCraftGetCraftProgressListRes res = new S2CCraftGetCraftProgressListRes();
 
-            // TODO: unsure what this is for, "topping" sounds like the sorting in the UI?..
-            uint toppingCounter = 1;
             foreach (Pawn pawn in client.Character.Pawns)
             {
                 res.CraftMyPawnList.Add(new CDataCraftPawnList()
@@ -55,13 +53,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         CraftMainPawnInfo = leadPawn,
                         CraftSupportPawnInfoList = supportPawns,
-                        CraftMasterPawnInfoList = new List<CDataCraftPawnInfo>(),
+                        CraftMasterLegendPawnInfoList = new List<CDataCraftPawnInfo>(),
                         RecipeId = craftProgress.RecipeId,
                         Exp = craftProgress.Exp,
                         NpcActionId = craftProgress.NpcActionId,
                         ItemId = craftProgress.ItemId,
-                        ToppingId = toppingCounter++,
-                        Unk0 = craftProgress.Unk0,
+                        ToppingId = 0,
+                        AdditionalStatusId = craftProgress.AdditionalStatusId,
                         RemainTime = craftProgress.RemainTime,
                         ExpBonus = craftProgress.ExpBonus,
                         CreateCount = craftProgress.CreateCount

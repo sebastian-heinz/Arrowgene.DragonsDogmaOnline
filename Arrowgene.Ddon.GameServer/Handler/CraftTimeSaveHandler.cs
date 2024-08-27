@@ -21,7 +21,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             craftProgress.RemainTime = 0;
             Server.Database.UpdatePawnCraftProgress(craftProgress);
 
-            Server.WalletManager.RemoveFromWalletNtc(client, client.Character, WalletType.GoldenGemstones, 1);
+            // TODO: Fetch the actual cost via the ID in the req which points to some time save config sent also via craft setting handler
+            Server.WalletManager.RemoveFromWalletNtc(client, client.Character, WalletType.GoldenGemstones, packet.Structure.Num);
 
             client.Send(new S2CCraftTimeSaveRes { PawnID = packet.Structure.PawnID, RemainTime = 0 });
             client.Send(new S2CCraftFinishCraftNtc { PawnId = packet.Structure.PawnID });
