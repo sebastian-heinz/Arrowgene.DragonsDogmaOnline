@@ -75,6 +75,7 @@ namespace Arrowgene.Ddon.GameServer.Chat
             _router.Send(response);
         }
         
+        // TODO: add support for sending tell messages across worlds - requires some form of access to available worlds and their associated clients
         public void SendTellMessage(uint handleId, CDataCommunityCharacterBaseInfo senderCharacterInfo, CDataCommunityCharacterBaseInfo receiverCharacterInfo, C2SChatSendTellMsgReq request, GameClient sender, GameClient receiver)
         {
             ChatResponse senderChatResponse = GetTellChatResponse(handleId, receiverCharacterInfo, request);
