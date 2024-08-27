@@ -1,19 +1,18 @@
 using Arrowgene.Buffers;
-using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class C2SLobbyChatMsgReq : IPacketStructure
+    public class C2SChatSendTellMsgReq : IPacketStructure
     {
-        public PacketId Id => PacketId.C2S_LOBBY_LOBBY_CHAT_MSG_REQ;
+        public PacketId Id => PacketId.C2S_CHAT_SEND_TELL_MSG_REQ;
 
-        public LobbyChatMsgType Type { get; set; }
+        public C2SChatSendTellMsgReq()
+        {
+        }
 
-        /// <summary>
-        /// Seemingly always 0?
-        /// </summary>
-        public uint Unk1 { get; set; } // Target ID?
+        public CDataCommunityCharacterBaseInfo CharacterInfo { get; set; }
 
         /// <summary>
         /// Note that My Phrases are interpreted as regular message & emotes do not use this packet
@@ -38,37 +37,27 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public string Message { get; set; }
 
-        public C2SLobbyChatMsgReq()
+        public class Serializer : PacketEntitySerializer<C2SChatSendTellMsgReq>
         {
-            Type = 0;
-            Unk1 = 0;
-            MessageFlavor = 0;
-            PhrasesCategory = 0;
-            PhrasesIndex = 0;
-            Message = string.Empty;
-        }
-
-        public class Serializer : PacketEntitySerializer<C2SLobbyChatMsgReq>
-        {
-            public override void Write(IBuffer buffer, C2SLobbyChatMsgReq obj)
+            public override void Write(IBuffer buffer, C2SChatSendTellMsgReq obj)
             {
-                WriteByte(buffer, (byte)obj.Type);
-                WriteUInt32(buffer, obj.Unk1);
+                WriteEntity<CDataCommunityCharacterBaseInfo>(buffer, obj.CharacterInfo);
                 WriteByte(buffer, obj.MessageFlavor);
                 WriteUInt32(buffer, obj.PhrasesCategory);
                 WriteUInt32(buffer, obj.PhrasesIndex);
                 WriteMtString(buffer, obj.Message);
             }
 
-            public override C2SLobbyChatMsgReq Read(IBuffer buffer)
+            public override C2SChatSendTellMsgReq Read(IBuffer buffer)
             {
-                C2SLobbyChatMsgReq obj = new C2SLobbyChatMsgReq();
-                obj.Type = (LobbyChatMsgType)ReadByte(buffer);
-                obj.Unk1 = ReadUInt32(buffer);
+                C2SChatSendTellMsgReq obj = new C2SChatSendTellMsgReq();
+
+                obj.CharacterInfo = ReadEntity<CDataCommunityCharacterBaseInfo>(buffer);
                 obj.MessageFlavor = ReadByte(buffer);
                 obj.PhrasesCategory = ReadUInt32(buffer);
                 obj.PhrasesIndex = ReadUInt32(buffer);
                 obj.Message = ReadMtString(buffer);
+
                 return obj;
             }
         }
