@@ -62,7 +62,7 @@ namespace Arrowgene.Ddon.GameServer
             ChatManager = new ChatManager(this, Router);
             ItemManager = new ItemManager();
             CraftManager = new CraftManager(this);
-            PartyManager = new PartyManager(assetRepository);
+            PartyManager = new PartyManager(this);
             ExpManager = new ExpManager(this, ClientLookup);
             PPManager = new PlayPointManager(this);
             JobManager = new JobManager(this);
@@ -75,6 +75,7 @@ namespace Arrowgene.Ddon.GameServer
             StampManager = new StampManager(this);
             HubManager = new HubManager(this);
             GpCourseManager = new GpCourseManager(this);
+            WeatherManager = new WeatherManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
@@ -104,6 +105,7 @@ namespace Arrowgene.Ddon.GameServer
         public HubManager HubManager { get; }
         public GameRouter Router { get; }
         public GpCourseManager GpCourseManager { get; }
+        public WeatherManager WeatherManager { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
 
@@ -454,6 +456,11 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PawnTrainingSetTrainingStatusHandler(this));
             AddHandler(new PawnCreatePawnHandler(this));
             AddHandler(new PawnDeleteMyPawnHandler(this));
+            AddHandler(new PawnGetRegisteredPawnListHandler(this));
+            AddHandler(new PawnGetOfficialPawnListHandler(this));
+            AddHandler(new PawnRentRegisteredPawnHandler(this));
+            AddHandler(new PawnJoinPartyRentedPawnHandler(this));
+            AddHandler(new PawnReturnRentedPawnHandler(this));
 
             AddHandler(new PhotoPhotoTakeHandler(this));
 
@@ -496,6 +503,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestDeliverItemHandler(this));
             AddHandler(new QuestDecideDeliveryItemHandler(this));
             AddHandler(new QuestCancelHandler(this));
+            AddHandler(new QuestGetPartyBonusListHandler(this));
 
 			AddHandler(new EntryBoardEntryBoardList(this));
 			AddHandler(new EntryBoardEntryBoardItemCreate(this));

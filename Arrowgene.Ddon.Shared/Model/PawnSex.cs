@@ -1,15 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
-    public class ElementAttachInfo
+    public enum PawnSex : byte
     {
-        public uint Exp { get; set; }
-        public uint Cost { get; set; }
-        public uint ItemLevel { get; set; }
+        Unknown = 0,
+        Male = 1,
+        Female = 2,
+        Any = 3,
     }
 }

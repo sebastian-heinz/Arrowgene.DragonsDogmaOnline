@@ -15,7 +15,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartEquipColorChangeHandler));
         private readonly ItemManager _itemmanager;
-
         public CraftStartEquipColorChangeHandler(DdonGameServer server) : base(server)
         {
             _itemmanager = server.ItemManager;
@@ -29,6 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<CDataCraftColorant> colorList = request.CraftColorantList;
             var ramItem = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
             var equipItem = ramItem.Item2.Item2;
+            ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
             byte color = request.Color;
             List<CDataCraftColorant> colorlist = new List<CDataCraftColorant>(); // this is probably for consuming the dye
             uint craftpawnid = request.CraftMainPawnID;
@@ -96,38 +96,61 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         slotno
                     );
                     updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, slotno, 1, 1));
-                    client.Send(updateCharacterItemNtc);
                 }
             }
             else
             {
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_STORAGE_TYPE, $"Item with UID {equipItemUID} not found in {storageType}");
             }
-
-            // TODO: Potentially the packets changed in S3.
-
+            
             var res = new S2CCraftStartEquipColorChangeRes()
-            {
-                ColorNo = color,
-                CurrentEquipInfo = CurrentEquipInfo
-            };
+                {
+                    ColorNo = color,
+                    CurrentEquipInfo = CurrentEquipInfo
+                };
+
+            var craftInfo = Server.AssetRepository.CostExpScalingAsset.CostExpScalingInfo[clientItemInfo.Rank];
+            uint totalCost = craftInfo.Cost;
+            uint pawnExp = craftInfo.Exp;
 
             Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnID);
+            List<Pawn> pawns = new List<Pawn> { leadPawn };
+            pawns.AddRange(request.CraftSupportPawnIDList.Select(p => Server.CraftManager.FindPawn(client, p.PawnId)));
+            List<uint> costPerformanceLevels = new List<uint>();
+
+            foreach (Pawn pawn in pawns)
+            {
+                if (pawn != null)
+                {
+                    costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
+                }
+                else
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID, "Couldn't find the Pawn ID.");
+                }
+            }
+
+            CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,
+                            Server.CraftManager.CalculateRecipeCost(totalCost, costPerformanceLevels));
+            updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
+            client.Send(updateCharacterItemNtc);
+
             if (CraftManager.CanPawnExpUp(leadPawn))
             {
-                CraftManager.HandlePawnExpUpNtc(client, leadPawn, 10, 0);
+                double BonusExpMultiplier = Server.GpCourseManager.PawnCraftBonus();
+                CraftManager.HandlePawnExpUpNtc(client, leadPawn, pawnExp, BonusExpMultiplier);
                 if (CraftManager.CanPawnRankUp(leadPawn))
                 {
                     CraftManager.HandlePawnRankUpNtc(client, leadPawn);
                 }
-                Server.Database.UpdatePawnBaseInfo(leadPawn);
             }
             else
             {
-                // Mandatory to send otherwise the UI gets stuck.
                 CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
             }
 
+            Server.Database.UpdatePawnBaseInfo(leadPawn);
+            
             return res;
         }
     }

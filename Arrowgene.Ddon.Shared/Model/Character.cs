@@ -25,6 +25,7 @@ namespace Arrowgene.Ddon.Shared.Model
             MatchingProfile = new CDataMatchingProfile();
             ArisenProfile = new CDataArisenProfile();
             Pawns = new List<Pawn>();
+            RentedPawns = new List<Pawn>();
             ReleasedWarpPoints = new List<ReleasedWarpPoint>();
             OnlineStatus = OnlineStatus.Offline;
             ContextOwnership = new Dictionary<ulong, bool>();
@@ -103,6 +104,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public Dictionary<uint, uint> LastSeenLobby { get; set; }
 
         public List<Pawn> Pawns { get; set; }
+        public List<Pawn> RentedPawns {  get; set; }
 
         public uint FavWarpSlotNum { get; set; }
         public List<ReleasedWarpPoint> ReleasedWarpPoints { get; set; }
@@ -120,6 +122,16 @@ namespace Arrowgene.Ddon.Shared.Model
         public Pawn PawnBySlotNo(byte SlotNo)
         {
             return Pawns[SlotNo-1];
+        }
+
+        public Pawn RentedPawnBySlotNo(byte slotNo)
+        {
+            return RentedPawns[slotNo - 1];
+        }
+
+        public void RemovedRentedPawnBySlotNo(byte slotNo)
+        {
+            RentedPawns.RemoveAt(slotNo - 1);
         }
 
         public Dictionary<ulong, bool> ContextOwnership { get; set; }
