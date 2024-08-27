@@ -1,116 +1,122 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "Echoing Footsteps in the Cave",
-    "quest_id": 20050005,
-    "base_level": 19,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Echoing Footsteps in the Cave",
+  "quest_id": 20050005,
+  "base_level": 19,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "MysreeForest",
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 620
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 100
+    },
+    {
+      "type": "exp",
+      "amount": 870
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 620
+          "item_id": 8403,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 100
+          "item_id": 43,
+          "num": 2
         },
         {
-            "type": "exp",
-            "amount": 870
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 8403,
-                    "num": 1
-                },
-                {
-                    "item_id": 43,
-                    "num": 2
-                },
-                {
-                    "item_id": 44,
-                    "num": 2					
-                }
-            ]
-        },
-        {
-            "type": "random",
-            "loot_pool": [
-                {
-                    "item_id": 34,
-                    "num": 9,
-                    "chance": 1.0
-                }
-            ]
+          "item_id": 44,
+          "num": 2
         }
-    ],
-    "enemy_groups" : [
+      ]
+    },
+    {
+      "type": "random",
+      "loot_pool": [
         {
-            "stage_id": {
-                "id": 67,
-                "group_id": 2
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015502",
-                    "level": 19,
-                    "exp": 3000,
-                    "is_boss": true
-                },
-                {
-                    "enemy_id": "0x015504",
-                    "level": 12,
-                    "exp": 90,
-                    "is_boss": false
-                },
-                {
-                    "enemy_id": "0x015504",
-                    "level": 12,
-                    "exp": 90,
-                    "is_boss": false
-                }
-            ]
+          "item_id": 34,
+          "num": 9,
+          "chance": 1.0
         }
-    ],
-    "blocks": [
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 67,
+        "group_id": 2
+      },
+      "enemies": [
         {
-            "type": "NewNpcTalkAndOrder",
-            "flags": [
-				{"type": "QstLayout", "action": "Set", "value": 1058, "comment": "Spawns Knight NPC"}
-            ],			
-            "stage_id": {
-                "id": 1,
-                "group_id": 1,
-                "layer_no": 1				
-            },
-            "npc_id": "WhiteKnight1",
-            "message_id": 11830
+          "enemy_id": "0x015502",
+          "level": 19,
+          "exp": 3000,
+          "is_boss": true
         },
         {
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Accept",
-            "groups": [0]
+          "enemy_id": "0x015504",
+          "level": 12,
+          "exp": 90,
+          "is_boss": false
         },
         {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {
-            "type": "NewTalkToNpc",
-            "stage_id": {
-                "id": 1,
-                "group_id": 1,
-                "layer_no": 1				
-            },
-            "announce_type": "Update",
-            "npc_id": "WhiteKnight1",
-            "message_id": 11835
+          "enemy_id": "0x015504",
+          "level": 12,
+          "exp": 90,
+          "is_boss": false
         }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1058,
+          "comment": "Spawns Knight NPC"
+        }
+      ],
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "WhiteKnight1",
+      "message_id": 11830
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "WhiteKnight1",
+      "message_id": 11835
+    }
+  ]
 }

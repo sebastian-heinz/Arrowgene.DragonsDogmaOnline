@@ -23,24 +23,24 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 
         public uint QuestScheduleId { get; set; }
         public uint QuestId { get; set; }
-        public ulong Unk0 { get; set; } // OrderDate?
-        public ulong Unk1 { get; set; } // EndDistributionDate?
+        public ulong OrderDate { get; set; }
+        public ulong EndDistributionDate { get; set; }
         public uint ImageId { get; set; }
         public uint BaseLevel { get; set; }
         public ushort ContentJoinItemRank { get; set; }
         public uint DiscoverRewardItemId { get; set; }
-        List<CDataWalletPoint> DiscoverRewardWalletPoint { get; set; }
-        List<CDataQuestExp> DiscoverRewardExp { get; set; }
+        public List<CDataWalletPoint> DiscoverRewardWalletPoint { get; set; }
+        public List<CDataQuestExp> DiscoverRewardExp { get; set; }
         public uint QuickPartyPopularity { get; set; }
-        List<CDataCommonU32> SelectRewardItemIdList { get; set; }
+        public List<CDataCommonU32> SelectRewardItemIdList { get; set; }
         public byte RandomRewardNum { get; set; }
         public byte ChargeRewardNum { get; set; }
         public ushort CompleteNum { get; set; }
         public bool IsDiscovery { get; set; }
-        List<CDataQuestEnemyInfo> QuestEnemyInfoList { get; set; }
-        List<CDataQuestLayoutFlagSetInfo> QuestLayoutFlagSetInfoList { get; set; }
-        List<CDataDeliveryItem> DeliveryItemList { get; set; }
-        List<CDataQuestOrderConditionParam> QuestOrderConditionParamList { get; set; }
+        public List<CDataQuestEnemyInfo> QuestEnemyInfoList { get; set; }
+        public List<CDataQuestLayoutFlagSetInfo> QuestLayoutFlagSetInfoList { get; set; }
+        public List<CDataDeliveryItem> DeliveryItemList { get; set; }
+        public List<CDataQuestOrderConditionParam> QuestOrderConditionParamList { get; set; }
 
         public class Serializer : EntitySerializer<CDataSetQuestInfoList>
         {
@@ -48,8 +48,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 WriteUInt32(buffer, obj.QuestScheduleId);
                 WriteUInt32(buffer, obj.QuestId);
-                WriteUInt64(buffer, obj.Unk0);
-                WriteUInt64(buffer, obj.Unk1);
+                WriteUInt64(buffer, obj.OrderDate);
+                WriteUInt64(buffer, obj.EndDistributionDate);
                 WriteUInt32(buffer, obj.ImageId);
                 WriteUInt32(buffer, obj.BaseLevel);
                 WriteUInt16(buffer, obj.ContentJoinItemRank);
@@ -73,8 +73,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 CDataSetQuestInfoList obj = new CDataSetQuestInfoList();
                 obj.QuestScheduleId = ReadUInt32(buffer);
                 obj.QuestId = ReadUInt32(buffer);
-                obj.Unk0 = ReadUInt64(buffer);
-                obj.Unk1 = ReadUInt64(buffer);
+                obj.OrderDate = ReadUInt64(buffer);
+                obj.EndDistributionDate = ReadUInt64(buffer);
                 obj.ImageId = ReadUInt32(buffer);
                 obj.BaseLevel = ReadUInt32(buffer);
                 obj.ContentJoinItemRank = ReadUInt16(buffer);

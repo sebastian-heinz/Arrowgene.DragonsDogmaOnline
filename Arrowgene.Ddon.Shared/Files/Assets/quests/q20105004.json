@@ -1,70 +1,71 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "The Keeper of the Woods",
-    "quest_id": 20105004,
-    "base_level": 45,
-    "minimum_item_rank": 0,
-    "discoverable": false,
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Keeper of the Woods",
+  "quest_id": 20105004,
+  "base_level": 45,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DeenanWoods",
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1410
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 230
+    },
+    {
+      "type": "exp",
+      "amount": 2070
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 1410
+          "item_id": 7888,
+          "num": 2
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 230
+          "item_id": 9418,
+          "num": 1
         },
         {
-            "type": "exp",
-            "amount": 2070
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 7888,
-                    "num": 2
-                },
-                {
-                    "item_id": 9418,
-                    "num": 1
-                },
-                {
-                    "item_id": 52,
-                    "num": 3
-                }
-            ]
+          "item_id": 52,
+          "num": 3
         }
-    ],
-    "enemy_groups" : [
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 109,
+        "group_id": 7
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 109,
-                "group_id": 7
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015100",
-                    "level": 45,
-                    "exp": 13000,
-                    "is_boss": true					
-                }
-            ]
+          "enemy_id": "0x015100",
+          "level": 45,
+          "exp": 13000,
+          "is_boss": true
         }
-    ],
-    "blocks": [
-        {
-            "type": "DiscoverEnemy",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Accept",
-            "reset_group": false,
-            "groups": [0]
-        }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
 }

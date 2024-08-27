@@ -1,6 +1,10 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model.Quest;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -16,10 +20,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CQuestGetSetQuestInfoListRes Handle(GameClient client, C2SQuestGetSetQuestInfoListReq request)
         {
-            return new S2CQuestGetSetQuestInfoListRes()
+            var res = new S2CQuestGetSetQuestInfoListRes()
             {
-                DistributeId = request.DistributeId            
+                DistributeId = request.DistributeId
             };
+
+            res.SetQuestList = QuestManager.GetQuestsByType(QuestType.World)
+                .Where(x => QuestManager.IsWorldQuest(x.Key)
+                    && x.Value.QuestAreaId == request.DistributeId
+                    && client.Party.QuestState.HasActiveQuest(x.Key))
+                .Select(x => x.Value.ToCDataSetQuestInfoList())
+                .ToList();
+
+            return res;
         }
     }
 }

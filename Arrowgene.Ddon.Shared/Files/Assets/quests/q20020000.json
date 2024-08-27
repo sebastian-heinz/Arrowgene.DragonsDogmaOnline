@@ -6,6 +6,7 @@
     "base_level": 15,
     "minimum_item_rank": 0,
     "discoverable": true,
+    "area_id": "BetlandPlains",
     "rewards": [
         {
             "type": "wallet",

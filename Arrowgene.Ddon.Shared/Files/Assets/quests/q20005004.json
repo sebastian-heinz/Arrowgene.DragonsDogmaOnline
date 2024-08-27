@@ -1,75 +1,76 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "Whispers of the Dark",
-    "quest_id": 20005004,
-    "base_level": 13,
-    "minimum_item_rank": 0,
-    "discoverable": false,
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Whispers of the Dark",
+  "quest_id": 20005004,
+  "base_level": 13,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "HidellPlains",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 600
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 420
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 60
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "exp",
-            "amount": 600
+          "comment": "Palm Flower",
+          "item_id": 83,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 420
+          "comment": "Pickaxe",
+          "item_id": 57,
+          "num": 3
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 60
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "comment" : "Palm Flower",
-                    "item_id": 83,
-                    "num": 1
-                },
-                {
-                    "comment" : "Pickaxe",
-                    "item_id": 57,
-                    "num": 3
-                },
-                {
-                    "comment" : "Recovery Decoction",
-                    "item_id": 9373,
-                    "num": 2					
-                }
-            ]
+          "comment": "Recovery Decoction",
+          "item_id": 9373,
+          "num": 2
         }
-    ],
-    "enemy_groups" : [
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 88,
+        "group_id": 4
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 88,
-                "group_id": 4
-            },
-            "enemies": [
-                {
-                    "comment" : "Wight",
-                    "enemy_id": "0x015600",
-                    "named_enemy_params_id": 53,
-                    "level": 13,
-                    "exp": 2140,
-                    "is_boss": true			
-                }
-            ]
+          "comment": "Wight",
+          "enemy_id": "0x015600",
+          "named_enemy_params_id": 53,
+          "level": 13,
+          "exp": 2140,
+          "is_boss": true
         }
-    ],
-    "blocks": [
-        {
-            "type": "DiscoverEnemy",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Accept",
-            "reset_group": false,
-            "groups": [0]
-        }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
 }

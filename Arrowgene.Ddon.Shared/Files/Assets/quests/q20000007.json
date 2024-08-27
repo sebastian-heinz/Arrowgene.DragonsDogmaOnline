@@ -1,133 +1,134 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "Crackdown on Store Vandals",
-    "quest_id": 20000007,
-    "base_level": 8,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Crackdown on Store Vandals",
+  "quest_id": 20000007,
+  "base_level": 8,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "HidellPlains",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 310
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 260
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 30
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "exp",
-            "amount": 310
+          "item_id": 9739,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 260
-        },
-        {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 30
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 9739,
-                    "num": 1
-                },
-                {
-                    "item_id": 37,
-                    "num": 2
-                }
-            ]
+          "item_id": 37,
+          "num": 2
         }
-    ],
-    "enemy_groups": [
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "comment": "GroupId: 0",
+      "stage_id": {
+        "id": 161,
+        "group_id": 0
+      },
+      "enemies": [
         {
-            "comment": "GroupId: 0",
-            "stage_id": {
-                "id": 161,
-                "group_id": 0
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x011002",
-                    "level": 3,
-                    "exp": 140,
-                    "is_boss": false,
-                    "hm_present_no": 47
-                },
-                {
-                    "enemy_id": "0x011002",
-                    "level": 3,
-                    "exp": 140,
-                    "is_boss": false,
-                    "hm_present_no": 47
-                },
-                {
-                    "enemy_id": "0x010200",
-                    "level": 3,
-                    "exp": 94,
-                    "is_boss": false
-                }
-            ]
+          "enemy_id": "0x011002",
+          "level": 3,
+          "exp": 140,
+          "is_boss": false,
+          "hm_present_no": 47
         },
         {
-            "comment": "GroupId: 1",
-            "stage_id": {
-                "id": 161,
-                "group_id": 2
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x011002",
-                    "level": 9,
-                    "exp": 140,
-                    "is_boss": false,
-                    "hm_present_no": 47
-                },
-                {
-                    "enemy_id": "0x011002",
-                    "level": 9,
-                    "exp": 140,
-                    "is_boss": false,
-                    "hm_present_no": 47
-                }
-            ]
+          "enemy_id": "0x011002",
+          "level": 3,
+          "exp": 140,
+          "is_boss": false,
+          "hm_present_no": 47
+        },
+        {
+          "enemy_id": "0x010200",
+          "level": 3,
+          "exp": 94,
+          "is_boss": false
         }
-    ],
-    "blocks": [
+      ]
+    },
+    {
+      "comment": "GroupId: 1",
+      "stage_id": {
+        "id": 161,
+        "group_id": 2
+      },
+      "enemies": [
         {
-            "type": "NpcTalkAndOrder",
-            "stage_id": {
-                "id": 23,
-                "group_id": 0
-            },
-            "npc_id": "Eterna",
-            "message_id": 10980
+          "enemy_id": "0x011002",
+          "level": 9,
+          "exp": 140,
+          "is_boss": false,
+          "hm_present_no": 47
         },
         {
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Accept",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Update",
-            "groups": [1]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [1]
-        },
-        {
-            "type": "TalkToNpc",
-            "stage_id": {
-                "id": 23,
-                "group_id": 0
-            },
-            "announce_type": "Update",
-            "npc_id": "Eterna",
-            "message_id": 10983
+          "enemy_id": "0x011002",
+          "level": 9,
+          "exp": 140,
+          "is_boss": false,
+          "hm_present_no": 47
         }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 23,
+        "group_id": 0
+      },
+      "npc_id": "Eterna",
+      "message_id": 10980
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "groups": [ 1 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [ 1 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 23,
+        "group_id": 0
+      },
+      "announce_type": "Update",
+      "npc_id": "Eterna",
+      "message_id": 10983
+    }
+  ]
 }

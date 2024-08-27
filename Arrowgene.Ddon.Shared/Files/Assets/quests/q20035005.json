@@ -1,82 +1,83 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "The Apes of Mayhem",
-    "quest_id": 20035005,
-    "base_level": 30,
-    "minimum_item_rank": 0,
-    "discoverable": false,
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Apes of Mayhem",
+  "quest_id": 20035005,
+  "base_level": 30,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DoweValley",
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 990
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 160
+    },
+    {
+      "type": "exp",
+      "amount": 1150
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 990
+          "item_id": 605,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 160
+          "item_id": 9411,
+          "num": 2
         },
         {
-            "type": "exp",
-            "amount": 1150
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 605,
-                    "num": 1
-                },
-                {
-                    "item_id": 9411,
-                    "num": 2
-                },
-                {
-                    "item_id": 52,
-                    "num": 3
-                }
-            ]
+          "item_id": 52,
+          "num": 3
         }
-    ],
-    "enemy_groups" : [
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 212
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 1,
-                "group_id": 212
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015502",
-                    "level": 31,
-                    "exp": 5500,
-                    "is_boss": true
+          "enemy_id": "0x015502",
+          "level": 31,
+          "exp": 5500,
+          "is_boss": true
         },
         {
-                    "enemy_id": "0x015504",
-                    "level": 28,
-                    "exp": 300,
-                    "is_boss": false
+          "enemy_id": "0x015504",
+          "level": 28,
+          "exp": 300,
+          "is_boss": false
         },
         {
-                    "enemy_id": "0x015504",
-                    "level": 28,
-                    "exp": 300,
-                    "is_boss": false					
-                }
-            ]
+          "enemy_id": "0x015504",
+          "level": 28,
+          "exp": 300,
+          "is_boss": false
         }
-    ],
-    "blocks": [
-        {
-            "type": "DiscoverEnemy",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Accept",
-            "reset_group": false,
-            "groups": [0]
-        }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
 }

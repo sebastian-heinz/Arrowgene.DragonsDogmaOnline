@@ -84,6 +84,19 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             assetData.MinimumItemRank = jQuest.GetProperty("minimum_item_rank").GetByte();
             assetData.Discoverable = jQuest.GetProperty("discoverable").GetBoolean();
 
+            assetData.QuestAreaId = QuestAreaId.None;
+            if (jQuest.TryGetProperty("area_id", out JsonElement jAreaId)
+                && Enum.TryParse(jAreaId.GetString(), true, out QuestAreaId areaId))
+            {
+                assetData.QuestAreaId = areaId;
+            }
+
+            assetData.NewsImageId = 0;
+            if (jQuest.TryGetProperty("news_image", out JsonElement jNewsImage))
+            {
+                assetData.NewsImageId = jNewsImage.GetUInt32();
+            }
+
             assetData.NextQuestId = 0;
             if (jQuest.TryGetProperty("next_quest", out JsonElement jNextQuest))
             {

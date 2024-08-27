@@ -1,112 +1,113 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "The Mystery of the Wasted Ruins",
-    "quest_id": 20010005,
-    "base_level": 19,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Mystery of the Wasted Ruins",
+  "quest_id": 20010005,
+  "base_level": 19,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "BreyaCoast",
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 620
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 80
+    },
+    {
+      "type": "exp",
+      "amount": 620
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 620
+          "comment": "Power of Pawn",
+          "item_id": 84,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 80
+          "comment": "Lestania Wine",
+          "item_id": 9409,
+          "num": 2
         },
         {
-            "type": "exp",
-            "amount": 620
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "comment" : "Power of Pawn",					
-                    "item_id": 84,
-                    "num": 1
-                },
-                {
-                    "comment" : "Lestania Wine",					
-                    "item_id": 9409,
-                    "num": 2
-                },
-                {
-                    "comment" : "Antidote",					
-                    "item_id": 37,
-                    "num": 3					
-                }
-            ]
+          "comment": "Antidote",
+          "item_id": 37,
+          "num": 3
         }
-    ],
-    "enemy_groups" : [
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 34,
+        "group_id": 0
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 34,
-                "group_id": 0
-            },			
-            "enemies": [
-                {
-                    "comment" : "Mist Fighter",					
-                    "enemy_id": "0x011030",
-                    "level": 19,
-                    "exp": 85,
-                    "hm_present_no": 68
-                },
-                {
-                    "comment" : "Mist Fighter",
-                    "enemy_id": "0x011030",				
-                    "level": 19,
-                    "exp": 85,
-                    "hm_present_no": 68
-                },
-                {
-                    "comment" : "Mist Priest",
-                    "enemy_id": "0x011032",				
-                    "level": 19,
-                    "exp": 85,
-                    "hm_present_no": 70
-                },
-                {
-                    "comment" : "Mist Priest",
-                    "enemy_id": "0x011032",				
-                    "level": 19,
-                    "exp": 85,
-                    "hm_present_no": 70					
-                }
-            ]
+          "comment": "Mist Fighter",
+          "enemy_id": "0x011030",
+          "level": 19,
+          "exp": 85,
+          "hm_present_no": 68
+        },
+        {
+          "comment": "Mist Fighter",
+          "enemy_id": "0x011030",
+          "level": 19,
+          "exp": 85,
+          "hm_present_no": 68
+        },
+        {
+          "comment": "Mist Priest",
+          "enemy_id": "0x011032",
+          "level": 19,
+          "exp": 85,
+          "hm_present_no": 70
+        },
+        {
+          "comment": "Mist Priest",
+          "enemy_id": "0x011032",
+          "level": 19,
+          "exp": 85,
+          "hm_present_no": 70
         }
-    ],
-    "blocks": [
-        {
-            "type": "NpcTalkAndOrder",
-            "stage_id": {
-                "id": 1
-            },
-            "npc_id": "Freud",
-            "message_id": 10800
-        },
-        {
-            "type": "DiscoverEnemy",
-            "announce_type": "Accept",
-            "groups": [0]
-        },
-        {			
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {
-            "type": "TalkToNpc",
-            "stage_id": {
-                "id": 1
-        },
-            "announce_type": "Update",
-            "npc_id": "Freud",
-            "message_id": 10805
-        }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 1
+      },
+      "npc_id": "Freud",
+      "message_id": 10800
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Freud",
+      "message_id": 10805
+    }
+  ]
 }

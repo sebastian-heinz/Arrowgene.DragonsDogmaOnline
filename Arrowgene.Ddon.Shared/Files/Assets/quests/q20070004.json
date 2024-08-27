@@ -1,106 +1,112 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "The Perfect Warrior",
-    "quest_id": 20070004,
-    "base_level": 45,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Perfect Warrior",
+  "quest_id": 20070004,
+  "base_level": 45,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "NorthernBetlandPlains",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1480
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1480
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 190
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "exp",
-            "amount": 1480
+          "item_id": 9062,
+          "num": 3
         },
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 1480
+          "item_id": 9414,
+          "num": 2
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 190
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 9062,
-                    "num": 3
-                },
-                {
-                    "item_id": 9414,
-                    "num": 2
-                },
-                {
-                    "item_id": 9411,
-                    "num": 1					
-                }
-            ]
+          "item_id": 9411,
+          "num": 1
         }
-    ],
-    "enemy_groups" : [
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 68,
+        "group_id": 9
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 68,
-                "group_id": 9
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015800",
-                    "level": 44,
-                    "exp": 1000,
-                    "is_boss": false
-					},
-					{
-                    "enemy_id": "0x015800",
-                    "level": 44,
-                    "exp": 1000,
-                    "is_boss": false
-					},
-					{
-                    "enemy_id": "0x015820",
-                    "level": 45,
-                    "exp": 1200,
-                    "is_boss": false								
-                }
-            ]
+          "enemy_id": "0x015800",
+          "level": 44,
+          "exp": 1000,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015800",
+          "level": 44,
+          "exp": 1000,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015820",
+          "level": 45,
+          "exp": 1200,
+          "is_boss": false
         }
-    ],	
-    "blocks": [
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
         {
-            "type": "NewNpcTalkAndOrder",
-            "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 1066, "comment": "Spawns Lent NPC"}
-            ],
-            "stage_id": {
-                "id": 1,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "npc_id": "Lent",
-            "message_id": 11372
-        },
-        {
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Accept",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {			
-            "type": "NewTalkToNpc",
-            "stage_id": {
-                "id": 1,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Update",
-            "npc_id": "Lent",
-            "message_id": 11842
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1066,
+          "comment": "Spawns Lent NPC"
         }
-    ]
+      ],
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Lent",
+      "message_id": 11372
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Lent",
+      "message_id": 11842
+    }
+  ]
 }

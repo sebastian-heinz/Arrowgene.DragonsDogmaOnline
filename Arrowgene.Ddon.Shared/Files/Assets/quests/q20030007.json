@@ -1,94 +1,95 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "The Spectator",
-    "quest_id": 20030007,
-    "base_level": 31,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Spectator",
+  "quest_id": 20030007,
+  "base_level": 31,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "DoweValley",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1430
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1020
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 160
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "exp",
-            "amount": 1430
+          "comment": "Faerie Band",
+          "item_id": 9564,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 1020
+          "comment": "Conqueror Amulet",
+          "item_id": 9381,
+          "num": 2
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 160
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "comment" : "Faerie Band",
-                    "item_id": 9564,
-                    "num": 1
-                },
-                {
-                    "comment" : "Conqueror Amulet",
-                    "item_id": 9381,
-                    "num": 2
-                },
-                {
-                    "comment" : "Wine-Boiled Mushroom",
-                    "item_id": 9411,
-                    "num": 2					
-                }
-            ]
+          "comment": "Wine-Boiled Mushroom",
+          "item_id": 9411,
+          "num": 2
         }
-    ],
-   "enemy_groups" : [
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 166,
+        "group_id": 4
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 166,
-                "group_id": 4
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015200",
-                    "level": 31,
-                    "exp": 6800,
-                    "is_boss": true										
-                }
-            ]
+          "enemy_id": "0x015200",
+          "level": 31,
+          "exp": 6800,
+          "is_boss": true
         }
-    ],	
-    "blocks": [
-        {
-            "type": "NpcTalkAndOrder",
-            "stage_id": {
-                "id": 51,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "npc_id": "Chester0",
-            "message_id": 11372
-        },
-        {
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Accept",
-            "groups": [0]		
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {				
-            "type": "TalkToNpc",
-            "stage_id": {
-                "id": 51,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Update",
-            "npc_id": "Chester0",
-            "message_id": 11842
-        }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 51,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Chester0",
+      "message_id": 11372
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 51,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Chester0",
+      "message_id": 11842
+    }
+  ]
 }
