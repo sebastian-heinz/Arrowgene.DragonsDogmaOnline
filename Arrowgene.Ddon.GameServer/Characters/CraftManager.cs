@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -10,6 +12,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
     {
         public uint CalculatedValue { get; set; }
         public bool IsGreatSuccess { get; set; }
+        public uint Exp { get; set; }
     }
 
     public class CraftManager
@@ -60,7 +63,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
         /// </summary>
         private const uint EquipmentQualityMinimumPerPawn = 4;
 
-        private const double EquipmentQualityIncrementPerLevel = (EquipmentQualityMaximumTotal / CraftPawnsMax - EquipmentQualityMinimumPerPawn) / CraftSkillLevelMax;
+        /// <summary>
+        /// This calc is totally made up, but workable.
+        /// Added a multiplication of 2 since the returned value was always exceptionally low, making it scale really badly.
+        /// </summary>
+        private const double EquipmentQualityIncrementPerLevel = 2 * (EquipmentQualityMaximumTotal - EquipmentQualityMinimumPerPawn * CraftPawnsMax) / (CraftSkillLevelMax * CraftPawnsMax);
 
         /// <summary>
         /// Minimum enhancement points at 150 total based on video evidence.
@@ -96,18 +103,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private const double ConsumableQuantityIncrementPerLevel = (ConsumableQuantityMaximumTotal / CraftPawnsMax - ConsumableQuantityMinimumPerPawn) / CraftSkillLevelMax;
 
-        /// <summary>
-        /// Randomly chosen maximum of 50% reduction.
-        /// </summary>
-        private const uint CostPerformanceMaximumTotal = 50;
-
-        /// <summary>
-        /// Randomly chosen minimum of 4% reduction added per pawn.
-        /// </summary>
-        private const uint CostPerformanceMinimumPerPawn = 4;
-
-        private const double CostPerformanceIncrementPerLevel = (CostPerformanceMaximumTotal / CraftPawnsMax - CostPerformanceMinimumPerPawn) / CraftSkillLevelMax;
-
         private readonly DdonGameServer _server;
 
         public CraftManager(DdonGameServer server)
@@ -141,7 +136,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         #region equipment quality
 
-        public static double GetEquipmentQualityIncreaseRate(List<uint> equipmentQualityLevels)
+        public static double CalculateEquipmentQualityIncreaseRate(List<uint> equipmentQualityLevels)
         {
             return Math.Clamp(equipmentQualityLevels.Select(level => level * EquipmentQualityIncrementPerLevel + EquipmentQualityMinimumPerPawn).Sum(), 0, 100);
         }
@@ -152,16 +147,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
         /// <param name="refineMaterialItem"></param>
         /// <param name="equipmentQualityLevels"></param>
         /// <returns></returns>
-        public static CraftCalculationResult CalculateEquipmentQuality(Item refineMaterialItem, List<uint> equipmentQualityLevels)
+        public static CraftCalculationResult CalculateEquipmentQuality(Item refineMaterialItem, uint calculatedOdds, byte itemRank=0)
         {
             // TODO: Figure out actual formula + lower/upper bounds client uses
-            // Based on season 1 evidence:
-            //  3x lvl 45 1x lvl 44 => 79% 
-            // 1x lvl44, 3x lvl 1 => 63
+            // EXP has a base value and scales based on IR, standard always 2, Quality and WD share until above IR10, Quality stays 100 and WD goes up to 350 cap with IR35.
 
             byte greatSuccessValue = 1;
             int greatSuccessOdds = GreatSuccessOddsDefault;
             byte RandomQuality = 0;
+            uint exp = 0;
 
             if (refineMaterialItem != null)
             {
@@ -171,22 +165,25 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     case 8036 or 8068:
                         RandomQuality = 2;
                         greatSuccessValue = 3;
+                        exp = CalculateQualityExp(itemRank, false, false);
                         break;
                     // WhiteDragon Rocks (Tier3)
                     case 8052 or 8084:
                         RandomQuality = 2;
                         greatSuccessValue = 3;
-                        greatSuccessOdds = 5;
+                        greatSuccessOdds = 25;
+                        exp = CalculateQualityExp(itemRank, true, false);
                         break;
                     // Standard Rocks (Tier1)
                     case 8035 or 8067:
                         RandomQuality = 1;
                         greatSuccessValue = 2;
+                        exp = CalculateQualityExp(itemRank, false, true);
                         break;
                 }
             }
 
-            var isGreatSuccess = CalculateIsGreatSuccess(greatSuccessOdds);
+            var isGreatSuccess = CalculateIsGreatSuccess(greatSuccessOdds, calculatedOdds);
 
             if (isGreatSuccess)
             {
@@ -196,8 +193,21 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return new CraftCalculationResult()
             {
                 CalculatedValue = RandomQuality,
-                IsGreatSuccess = isGreatSuccess
+                IsGreatSuccess = isGreatSuccess,
+                Exp = exp
             };
+        }
+
+        public static uint CalculateQualityExp(byte itemRank, bool isTier3, bool isTier1)
+        {
+            uint baseExp = 10;
+            uint maxExp = isTier3 ? 350u : 100u; // Tier3 caps at 350, Tier2 caps at 100
+            if (isTier1)
+            {
+                maxExp = 2;
+                return maxExp;
+            }
+            return Math.Min(baseExp * itemRank, maxExp);
         }
 
         #endregion
@@ -214,7 +224,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return GetEquipmentEnhancementPoints(equipmentEnhancementLevels) * EquipmentEnhancementGreatSuccessFactor;
         }
 
-        public CraftCalculationResult CalculateEquipmentEnhancement(List<uint> equipmentEnhancementLevels)
+        public CraftCalculationResult CalculateEquipmentEnhancement(List<uint> equipmentEnhancementLevels, uint calculatedOdds)
         {
             // TODO: Figure out actual formula + lower/upper bounds client uses
             // Based on season 1 evidence:
@@ -223,7 +233,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // According to wikis: 150 + (levelValue - 1 ) * 1.73 => mostly season 1
 
             double equipmentEnhancementPoints = GetEquipmentEnhancementPoints(equipmentEnhancementLevels);
-            bool isGreatSuccess = CalculateIsGreatSuccess();
+            bool isGreatSuccess = CalculateIsGreatSuccess(GreatSuccessOddsDefault, calculatedOdds);
             equipmentEnhancementPoints *= isGreatSuccess ? EquipmentEnhancementGreatSuccessFactor : 1;
             return new CraftCalculationResult()
             {
@@ -249,7 +259,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         /// <summary>
         /// Takes craft rank and craft skill level of all pawns into account and allows to push the minimum chance to 50% to add up to 3 additional items.
         /// </summary>
-        public static CraftCalculationResult CalculateConsumableQuantity(List<uint> consumableQuantityLevels)
+        public static CraftCalculationResult CalculateConsumableQuantity(List<uint> consumableQuantityLevels, uint calculatedOdds)
         {
             // TODO: Figure out actual formula + lower/upper bounds client uses
             double consumableQuantityChance = GetAdditionalConsumableQuantityRate(consumableQuantityLevels);
@@ -259,7 +269,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 quantity += Random.Shared.Next(100) < consumableQuantityChance ? ConsumableQuantityMaximumQuantityPerPawn : 0;
             }
 
-            bool isGreatSuccess = CalculateIsGreatSuccess();
+            bool isGreatSuccess = CalculateIsGreatSuccess(GreatSuccessOddsDefault, calculatedOdds);
             if (isGreatSuccess)
             {
                 quantity++;
@@ -278,9 +288,29 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public double GetCraftCostReductionRate(List<uint> costPerformanceLevels)
         {
-            return Math.Clamp(
-                costPerformanceLevels.Select(level => level * CostPerformanceIncrementPerLevel + CostPerformanceMinimumPerPawn).Sum() *
-                _server.Setting.GameLogicSetting.AdditionalCostPerformanceFactor, 0, 100);
+            uint total = costPerformanceLevels[0];
+            if (_server.AssetRepository.PawnCostReductionAsset.PawnCostReductionInfo.TryGetValue(total, out PawnCostReductionInfo costReductionInfo))
+            {
+                int numberOfPawns = costPerformanceLevels.Count;
+
+                switch (numberOfPawns)
+                {
+                    case 1:
+                        return costReductionInfo.CostRate1; // TODO: Figure out wtf CostRate2/3/4 Do.
+                    case 2:                                                 //If theres 1 Pawn this stuff is accurate, I'm struggling to figure out.
+                         return costReductionInfo.CostRate2;     //how to get a 2nd/3rd/4th Pawns calculations accurate based on this dump.
+                    case 3:
+                        return costReductionInfo.CostRate3;
+                    case 4:
+                        return costReductionInfo.CostRate4;
+                    default:
+                        throw new ArgumentOutOfRangeException($"Number of pawns {numberOfPawns} is out of expected range (1-4).");
+                }
+            }
+            else
+            {
+                throw new KeyNotFoundException($"No cost reduction information found for total level: {total}");
+            }
         }
 
         /// <summary>
@@ -291,19 +321,21 @@ namespace Arrowgene.Ddon.GameServer.Characters
         /// <returns></returns>
         public uint CalculateRecipeCost(uint recipeCost, List<uint> costPerformanceLevels)
         {
-            // TODO: Figure out actual formula + lower/upper bounds client uses
-            // Based on season 1 evidence:
-            //  1x lvl 2, 3x lvl 1 == 16% maximum
-            double costPerformanceFactor = (100 - GetCraftCostReductionRate(costPerformanceLevels)) / 100;
-            return (uint)Math.Clamp(recipeCost * costPerformanceFactor, 0, recipeCost);
+            double discountValue = GetCraftCostReductionRate(costPerformanceLevels) / 100;
+            double finalCost = discountValue * recipeCost;
+            return (uint)finalCost;
         }
 
         #endregion
 
-        public static bool CalculateIsGreatSuccess(int odds = GreatSuccessOddsDefault)
+        public static bool CalculateIsGreatSuccess(int baseOdds, uint calculatedOdds)
         {
-            return Random.Shared.Next(odds) == 0;
+            int adjustedOdds = baseOdds + (int)calculatedOdds;
+            int roll = Random.Shared.Next(100);
+
+            return roll < adjustedOdds;
         }
+
 
         public static uint GetPawnProductionSpeedLevel(Pawn pawn)
         {
@@ -335,9 +367,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == craftSkillType).Level;
         }
 
-        public static bool IsCraftRankLimitPromotionRecipe(uint recipeId)
+        public static bool IsCraftRankLimitPromotionRecipe(Pawn pawn, uint recipeId)
         {
-            return craftRankLimitPromotionRecipes.ContainsValue(recipeId);
+            return craftRankLimitPromotionRecipes.ContainsKey(pawn.CraftData.CraftRank) && craftRankLimitPromotionRecipes[pawn.CraftData.CraftRank] == recipeId;
         }
 
         public static void PromotePawnRankLimit(Pawn pawn)
@@ -406,8 +438,23 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return pawn.CraftData.CraftRank < pawn.CraftData.CraftRankLimit;
         }
 
-        public static void HandlePawnExpUpNtc(GameClient client, Pawn leadPawn, uint exp, uint bonusExp)
+        public static void HandlePawnExpUpNtc(GameClient client, Pawn leadPawn, uint exp, double BonusExpMultiplier)
         {
+
+            uint expUp = exp;
+            double totalAddedExp = 0;
+            uint bonusExpUp = 0;
+            if (BonusExpMultiplier > 0)
+            {
+                totalAddedExp = expUp * BonusExpMultiplier;
+                bonusExpUp = (uint)totalAddedExp - exp;
+                totalAddedExp = expUp + bonusExpUp;
+            }
+            else
+            {
+                totalAddedExp = expUp + bonusExpUp;
+            }
+
             S2CCraftCraftExpUpNtc expNtc = new S2CCraftCraftExpUpNtc()
             {
                 PawnId = leadPawn.PawnId,
@@ -416,9 +463,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             
             if (CanPawnExpUp(leadPawn))
             {
-                expNtc.AddExp = exp;
-                expNtc.ExtraBonusExp = bonusExp;
-                expNtc.TotalExp = exp + bonusExp;
+                expNtc.AddExp = (uint)totalAddedExp; // this has to be totaladded to show exp in the correct format.
+                expNtc.ExtraBonusExp = bonusExpUp;
+                expNtc.TotalExp = (uint)totalAddedExp; // presumably this should be pawns literal TotalEXP, but my testing had me level up several times.
                 
                 leadPawn.CraftData.CraftExp += expNtc.TotalExp;
                 
@@ -428,14 +475,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
             client.Send(expNtc);
         }
 
-        public Pawn FindPawn(GameClient client, uint pawnId, bool fallbackToDatabase=false)
+        public Pawn FindPawn(GameClient client, uint pawnId)
         {
             Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == pawnId);
             if (pawn == null)
             {
-                pawn = _server.Database.SelectPawn(pawnId);
+                pawn = client.Character.RentedPawns.Find(p => p.PawnId == pawnId);
             }
-
             return pawn;
         }
     }

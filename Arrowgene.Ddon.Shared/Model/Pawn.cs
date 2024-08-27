@@ -23,14 +23,15 @@ namespace Arrowgene.Ddon.Shared.Model
                     new() {Type = CraftSkillType.EquipmentQuality, Level = 0},
                     new() {Type = CraftSkillType.ConsumableQuantity, Level = 0},
                     new() {Type = CraftSkillType.CostPerformance, Level = 0},
-                    new() {Type = CraftSkillType.Placeholder6, Level = 0},
-                    new() {Type = CraftSkillType.Placeholder7, Level = 0},
-                    new() {Type = CraftSkillType.Placeholder8, Level = 0},
-                    new() {Type = CraftSkillType.Placeholder9, Level = 0},
-                    new() {Type = CraftSkillType.Placeholder10, Level = 0}
+                    new() {Type = CraftSkillType.ConsumableProductionIsAlwaysGreatSuccess, Level = 0},
+                    new() {Type = CraftSkillType.CreatingHighQualityEquipmentIsAlwaysGreatSuccess, Level = 0},
+                    new() {Type = CraftSkillType.CostPerformanceEffectUpFactor1, Level = 0},
+                    new() {Type = CraftSkillType.CostPerformanceEffectUpFactor2, Level = 0},
+                    new() {Type = CraftSkillType.UnknownEffect10, Level = 0}
                 }
             };
             TrainingStatus = new Dictionary<JobId, byte[]>();
+            IsRented = false;
         }
         
         public Pawn(uint ownerCharacterId):this()
@@ -51,7 +52,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public string Name { get; set; }
         
         public byte HmType { get; set; }
-        public byte PawnType { get; set; }
+        public PawnType PawnType { get; set; }
 
         public List<CDataPawnReaction> PawnReactionList { get; set; }
         public CDataPawnCraftData CraftData { get; set; }
@@ -60,5 +61,26 @@ namespace Arrowgene.Ddon.Shared.Model
         public Dictionary<JobId, List<CDataSpSkill>> SpSkills { get; set; }
         public uint TrainingPoints { get; set; } // Training xp?
         public uint AvailableTraining { get; set; } // Training lv?
+        public bool IsOfficialPawn {  get; set; }
+        public bool IsRented {  get; set; }
+
+        public CDataPawnInfo AsCDataPawnInfo()
+        {
+            return new CDataPawnInfo()
+            {
+                Name = Name,
+                EditInfo = EditInfo,
+                Version = 0,
+                MaxHp = StatusInfo.MaxHP,
+                MaxStamina = StatusInfo.MaxStamina,
+                JobId = ActiveCharacterJobData.Job,
+                CharacterJobDataList = CharacterJobDataList,
+                CharacterEquipDataList = new List<CDataCharacterEquipData>() { new CDataCharacterEquipData { Equips = Equipment.AsCDataEquipItemInfo(EquipType.Performance) } },
+                CharacterEquipViewDataList = new List<CDataCharacterEquipData>() { new CDataCharacterEquipData { Equips = Equipment.AsCDataEquipItemInfo(EquipType.Visual) } },
+                HideEquipHead = HideEquipHead,
+                HideEquipLantern = HideEquipLantern,
+                PawnType = PawnType,
+            };
+        }
     }
 }

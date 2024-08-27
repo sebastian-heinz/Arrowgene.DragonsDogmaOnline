@@ -39,7 +39,6 @@ namespace Arrowgene.Ddon.Shared.Model
             }
         }
 
-
         public Dictionary<JobId, Dictionary<EquipType, List<Item?>>> GetAllEquipment()
         {
             return equipment;
@@ -52,6 +51,11 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public Item? GetEquipItem(JobId job, EquipType equipType, byte slot) {
             return equipment[job][equipType][slot-1];
+        }
+
+        public Item? GetEquipItem(JobId job, EquipType equipType, EquipSlot slot)
+        {
+            return GetEquipItem(job, equipType, (byte) slot);
         }
 
         public Item? SetEquipItem(Item? newItem, JobId job, EquipType equipType, byte slot) {

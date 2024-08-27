@@ -112,7 +112,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataCraftSkillAnalyzeResult equipmentQualityAnalysisResult = new CDataCraftSkillAnalyzeResult
             {
                 SkillType = CraftSkillType.EquipmentQuality,
-                Rate = (byte)CraftManager.GetEquipmentQualityIncreaseRate(equipmentQualityLevel)
+                Rate = (byte)CraftManager.CalculateEquipmentQualityIncreaseRate(equipmentQualityLevel)
             };
             return equipmentQualityAnalysisResult;
         }

@@ -8,8 +8,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.S2C_GP_COURSE_START_NTC;
 
-        public UInt32 CourseID { get; set; }
-        public UInt64 ExpiryTimestamp { get; set; }
+        public uint CourseID { get; set; }
+        public ulong ExpiryTimestamp { get; set; }
+        public uint AnnounceType {  get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CGPCourseStartNtc>
         {
@@ -17,6 +18,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 WriteUInt32(buffer, obj.CourseID);
                 WriteUInt64(buffer, obj.ExpiryTimestamp);
+                WriteUInt32(buffer, obj.AnnounceType);
             }
 
             public override S2CGPCourseStartNtc Read(IBuffer buffer)
@@ -24,6 +26,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 S2CGPCourseStartNtc obj = new S2CGPCourseStartNtc();
                 obj.CourseID = ReadUInt32(buffer);
                 obj.ExpiryTimestamp = ReadUInt64(buffer);
+                obj.AnnounceType = ReadUInt32(buffer);
                 return obj;
             }
         }

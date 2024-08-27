@@ -48,8 +48,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<CDataItemUpdateResult> itemUpdateResults = _itemManager.AddItem(Server, client.Character, sendToItemBag, boughtListing.ItemId, boughtAmount);
             boughtAmount = (uint)itemUpdateResults.Select(result => result.UpdateItemNum).Sum();
 
-            var totalPrice = boughtAmount * packet.Price;
-
             if (boughtAmount > 0)
             {
                 client.Send(new S2CItemUpdateCharacterItemNtc()
@@ -58,9 +56,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 });
             }
 
-            if (totalPrice > 0)
+            if (packet.Price > 0)
             {
-                _playPointManager.RemovePlayPoint(client, boughtAmount * packet.Price);
+                _playPointManager.RemovePlayPoint(client, packet.Price);
             }
 
             return new S2CJobJobValueShopBuyItemRes()
