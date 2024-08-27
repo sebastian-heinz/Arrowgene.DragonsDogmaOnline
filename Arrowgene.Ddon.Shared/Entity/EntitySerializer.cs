@@ -502,6 +502,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SJobJobValueShopGetLineupReq.Serializer());
             Create(new C2SJobJobValueShopBuyItemReq.Serializer());
 
+            
+            Create(new C2SChatSendTellMsgReq.Serializer());
+            
             Create(new C2SLobbyChatMsgReq.Serializer());
             Create(new C2SLobbyJoinReq.Serializer());
             Create(new C2SLobbyLeaveReq.Serializer());
@@ -913,6 +916,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CJobPawnJobLevelUpMemberNtc.Serializer());
             Create(new S2CJobPawnJobLevelUpNtc.Serializer());
             Create(new S2CJobUpdateExpModeRes.Serializer());
+            
+            Create(new S2CChatSendTellMsgRes.Serializer());
+            
             Create(new S2CLobbyChatMsgRes.Serializer());
             Create(new S2CLobbyChatMsgNotice.Serializer());
             Create(new S2CLobbyJoinRes.Serializer());
