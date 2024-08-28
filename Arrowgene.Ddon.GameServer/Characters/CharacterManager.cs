@@ -13,6 +13,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public static readonly uint BASE_HEALTH = 760U;
         public static readonly uint BASE_STAMINA = 450U;
+        public static readonly uint BBM_BASE_HEALTH = 990U;
+        public static readonly uint BBM_BASE_STAMINA = 589U;
+
         public static readonly uint DEFAULT_RING_COUNT = 1;
         public static readonly uint BASE_ABILITY_COST_AMOUNT = 15;
 
