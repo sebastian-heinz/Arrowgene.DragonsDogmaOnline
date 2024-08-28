@@ -1,120 +1,127 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "From One Thing to Another",
-    "quest_id": 20070006,
-    "base_level": 44,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "From One Thing to Another",
+  "quest_id": 20070006,
+  "base_level": 44,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "NorthernBetlandPlains",
+  "news_image": 504,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1740
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 190
+    },
+    {
+      "type": "exp",
+      "amount": 960
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 1740
+          "item_id": 7940,
+          "num": 2
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 190
+          "item_id": 9417,
+          "num": 2
         },
         {
-            "type": "exp",
-            "amount": 960
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 7940,
-                    "num": 2
-                },
-                {
-                    "item_id": 9417,
-                    "num": 2
-                },
-                {
-                    "item_id": 9066,
-                    "num": 2					
-                }
-            ]
-        },
-        {
-            "type": "random",
-            "loot_pool": [
-                {
-                    "item_id": 7553,
-                    "num": 1,
-                    "chance": 1.0
-                }
-            ]
+          "item_id": 9066,
+          "num": 2
         }
-    ],
-    "enemy_groups" : [
+      ]
+    },
+    {
+      "type": "random",
+      "loot_pool": [
         {
-            "stage_id": {
-                "id": 130,
-                "group_id": 0
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015604",
-                    "level": 44,
-                    "exp": 14500,
-                    "is_boss": true
-                }
-            ]
+          "item_id": 7553,
+          "num": 1,
+          "chance": 1.0
         }
-    ],
-    "blocks": [
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 130,
+        "group_id": 0
+      },
+      "enemies": [
         {
-            "type": "NewNpcTalkAndOrder",
-            "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 1068, "comment": "Spawns LightlyEquippedSoldier NPC"}
-            ],
-            "stage_id": {
-                "id": 130,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "npc_id": "LightlyEquippedSoldier",
-            "message_id": 11372
-        },
-        {
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Accept",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {
-            "type": "DeliverItems",
-            "stage_id": {
-                "id": 130,
-                "group_id": 1
-            },
-            "npc_id": "LightlyEquippedSoldier",
-            "announce_type": "Update",
-            "items": [
-                {
-                    "id": 7553,
-                    "amount": 3
-                }
-            ],
-            "message_id": 10737			
-        },
-        {
-            "type": "NewTalkToNpc",
-            "stage_id": {
-                "id": 130,
-                "group_id": 1,
-                "layer_no": 1				
-            },
-            "announce_type": "Update",
-            "npc_id": "LightlyEquippedSoldier",
-            "message_id": 11835
+          "enemy_id": "0x015604",
+          "level": 44,
+          "exp": 14500,
+          "is_boss": true
         }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1068,
+          "comment": "Spawns LightlyEquippedSoldier NPC"
+        }
+      ],
+      "stage_id": {
+        "id": 130,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "LightlyEquippedSoldier",
+      "message_id": 11372
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 130,
+        "group_id": 1
+      },
+      "npc_id": "LightlyEquippedSoldier",
+      "announce_type": "Update",
+      "items": [
+        {
+          "id": 7553,
+          "amount": 3
+        }
+      ],
+      "message_id": 10737
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 130,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "LightlyEquippedSoldier",
+      "message_id": 11835
+    }
+  ]
 }

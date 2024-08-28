@@ -1,7 +1,6 @@
-using System.Collections.Generic;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Asset
 {
@@ -22,6 +21,8 @@ namespace Arrowgene.Ddon.Shared.Asset
         public QuestId QuestId { get; set; }
         public QuestId NextQuestId { get; set; }
         public QuestId QuestScheduleId { get; set; }
+        public QuestAreaId QuestAreaId { get; set; }
+        public uint NewsImageId { get; set; }
         public ushort BaseLevel { get; set; }
         public byte MinimumItemRank { get; set; }
         public ExpType ExpType { get; set; }

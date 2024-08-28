@@ -51,6 +51,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public readonly bool IsDiscoverable;
         public readonly QuestType QuestType;
         public readonly QuestId QuestScheduleId;
+        public QuestAreaId QuestAreaId { get; set; }
+        public uint NewsImageId { get; set; }
         public uint BaseLevel { get; set; }
         public ushort MinimumItemRank { get; set; }
         public QuestId NextQuestId { get; protected set; }
@@ -332,6 +334,41 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return result;
         }
 
+        public virtual CDataSetQuestInfoList ToCDataSetQuestInfoList()
+        {
+            var result = new CDataSetQuestInfoList()
+            {
+                QuestScheduleId = (uint)QuestScheduleId,
+                QuestId = (uint)QuestId,
+                ImageId = NewsImageId, // Optional, client has its own defaults if you fail to provide one.
+                BaseLevel = BaseLevel,
+                IsDiscovery = true, // If false, hides quest details from the news report.
+                EndDistributionDate = uint.MaxValue, // ulong.MaxValue causes some math on the client to overflow and report it as ending soon, so we use uint here.
+                ContentJoinItemRank = (ushort)(OrderConditions.Find(x => x.Type == QuestOrderConditionType.ItemRank)?.Param01 ?? 0),
+                RandomRewardNum = RandomRewardNum(),
+                SelectRewardItemIdList = GetQuestSelectableRewards().Select(x => new CDataCommonU32(x.ItemId)).ToList(),
+                DiscoverRewardWalletPoint = WalletRewards,
+                DiscoverRewardExp = ExpRewards,
+                QuestLayoutFlagSetInfoList = QuestLayoutFlagSetInfo.Select(x => x.AsCDataQuestLayoutFlagSetInfo()).ToList(),
+                QuestEnemyInfoList = EnemyGroups.Values.SelectMany(group => group.Enemies.Select(enemy => new CDataQuestEnemyInfo()
+                {
+                    GroupId = enemy.UINameId,
+                    Unk0 = 0, // Seemingly always 0 in the pcaps
+                    Lv = enemy.Lv,
+                    IsPartyRecommend = enemy.IsBossGauge
+                }))
+                .ToList(),
+                QuestOrderConditionParamList = GetQuestOrderConditions(),
+                DeliveryItemList = DeliveryItems.Select(x => new CDataDeliveryItem()
+                {
+                    ItemId = x.ItemId,
+                    Unk0 = (ushort)x.Amount
+                })
+                .ToList()
+            };
+
+            return result;
+        }
         public abstract List<CDataQuestProcessState> StateMachineExecute(DdonGameServer server, GameClient client, QuestProcessState processState, out QuestProgressState questProgressState);
 
         public virtual void SendProgressWorkNotices(GameClient client, StageId stageId, uint subGroupId)

@@ -1,18 +1,13 @@
+using Arrowgene.Ddon.Shared.Asset;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
+using Arrowgene.Logging;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Logging;
-using Arrowgene.Ddon.Shared.Asset;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using System;
-using Arrowgene.Ddon.Shared.Model.Quest;
-using YamlDotNet.Core.Tokens;
-using System.Linq.Expressions;
-using System.Reflection.Metadata.Ecma335;
-using System.Text.RegularExpressions;
-using System.Text.Json.Nodes;
 
 namespace Arrowgene.Ddon.Shared.AssetReader
 {
@@ -83,6 +78,19 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             assetData.BaseLevel = jQuest.GetProperty("base_level").GetUInt16();
             assetData.MinimumItemRank = jQuest.GetProperty("minimum_item_rank").GetByte();
             assetData.Discoverable = jQuest.GetProperty("discoverable").GetBoolean();
+
+            assetData.QuestAreaId = QuestAreaId.None;
+            if (jQuest.TryGetProperty("area_id", out JsonElement jAreaId)
+                && Enum.TryParse(jAreaId.GetString(), true, out QuestAreaId areaId))
+            {
+                assetData.QuestAreaId = areaId;
+            }
+
+            assetData.NewsImageId = 0;
+            if (jQuest.TryGetProperty("news_image", out JsonElement jNewsImage))
+            {
+                assetData.NewsImageId = jNewsImage.GetUInt32();
+            }
 
             assetData.NextQuestId = 0;
             if (jQuest.TryGetProperty("next_quest", out JsonElement jNextQuest))

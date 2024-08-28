@@ -1,118 +1,125 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "Expedition Preparations",
-    "quest_id": 20100000,
-    "base_level": 41,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Expedition Preparations",
+  "quest_id": 20100000,
+  "base_level": 41,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "DeenanWoods",
+  "news_image": 564,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1890
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1350
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 210
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "exp",
-            "amount": 1890
+          "item_id": 7837,
+          "num": 3
         },
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 1350
+          "item_id": 9413,
+          "num": 2
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 210
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 7837,
-                    "num": 3
-                },
-                {
-                    "item_id": 9413,
-                    "num": 2
-                },
-                {
-                    "item_id": 9419,
-                    "num": 1					
-                }
-            ]
+          "item_id": 9419,
+          "num": 1
         }
-    ],
-   "enemy_groups" : [
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 113,
+        "group_id": 2
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 113,
-                "group_id": 2
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015505",
-                    "level": 41,
-                    "exp": 10000,
-                    "is_boss": true
+          "enemy_id": "0x015505",
+          "level": 41,
+          "exp": 10000,
+          "is_boss": true
         },
         {
-                    "enemy_id": "0x010209",
-                    "level": 40,
-                    "exp": 750,
-                    "is_boss": false
+          "enemy_id": "0x010209",
+          "level": 40,
+          "exp": 750,
+          "is_boss": false
         },
         {
-                    "enemy_id": "0x010209",
-                    "level": 40,
-                    "exp": 750,
-                    "is_boss": false
+          "enemy_id": "0x010209",
+          "level": 40,
+          "exp": 750,
+          "is_boss": false
         },
         {
-                    "enemy_id": "0x010209",
-                    "level": 40,
-                    "exp": 750,
-                    "is_boss": false
+          "enemy_id": "0x010209",
+          "level": 40,
+          "exp": 750,
+          "is_boss": false
         },
         {
-                    "enemy_id": "0x010209",
-                    "level": 40,
-                    "exp": 750,
-                    "is_boss": false					
-                }
-            ]
+          "enemy_id": "0x010209",
+          "level": 40,
+          "exp": 750,
+          "is_boss": false
         }
-    ],	
-    "blocks": [
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
         {
-            "type": "NewNpcTalkAndOrder",
-            "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 1079, "comment": "Spawns Lise0 NPC"}
-            ],			
-            "stage_id": {
-                "id": 113,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "npc_id": "Lise0",
-            "message_id": 11372
-        },
-        {
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Accept",
-            "groups": [0]		
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {				
-            "type": "NewTalkToNpc",
-            "stage_id": {
-                "id": 113,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Update",
-            "npc_id": "Lise0",
-            "message_id": 11842
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1079,
+          "comment": "Spawns Lise0 NPC"
         }
-    ]
+      ],
+      "stage_id": {
+        "id": 113,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Lise0",
+      "message_id": 11372
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 113,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Lise0",
+      "message_id": 11842
+    }
+  ]
 }
