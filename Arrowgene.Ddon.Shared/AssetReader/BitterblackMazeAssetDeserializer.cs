@@ -13,6 +13,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
+using static Arrowgene.Ddon.Shared.Asset.BitterblackMazeAsset;
 
 namespace Arrowgene.Ddon.Shared.AssetReader
 {
@@ -63,6 +64,21 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     });
 
                     asset.Stages[configElement.StageId] = configElement;
+                }
+            }
+
+            var lootRanges = document.RootElement.GetProperty("loot_ranges").EnumerateArray();
+            foreach (var lootRange in lootRanges)
+            {
+                var record = new LootRange()
+                {
+                    NormalRange = (lootRange.GetProperty("normal").GetProperty("min").GetUInt32(), lootRange.GetProperty("normal").GetProperty("max").GetUInt32()),
+                    SealedRange = (lootRange.GetProperty("sealed").GetProperty("min").GetUInt32(), lootRange.GetProperty("sealed").GetProperty("max").GetUInt32())
+                };
+
+                foreach (var id in lootRange.GetProperty("stage_ids").EnumerateArray())
+                {
+                    asset.LootRanges[id.GetUInt32()] = record;
                 }
             }
 
