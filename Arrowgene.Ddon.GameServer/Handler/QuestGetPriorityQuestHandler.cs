@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var priorityQuests = Server.Database.GetPriorityQuests(partyLeader.Client.Character.CommonId);
             foreach (var questId in priorityQuests)
             {
-                var quest = QuestManager.GetQuest(questId);
+                var quest = client.Party.QuestState.GetQuest(questId);
                 var questState = client.Party.QuestState.GetQuestState(quest);
                 if (questState == null)
                 {

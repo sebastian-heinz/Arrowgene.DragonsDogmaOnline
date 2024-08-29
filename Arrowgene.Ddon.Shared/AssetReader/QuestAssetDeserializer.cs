@@ -81,10 +81,10 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             assetData.Discoverable = jQuest.GetProperty("discoverable").GetBoolean();
 
             // For the purpose of setting up alternate quests.
-            assetData.QuestGroupId = null;
-            if (jQuest.TryGetProperty("quest_group_id", out JsonElement AltQuestId))
+            assetData.VariantId = null;
+            if (jQuest.TryGetProperty("variantId", out JsonElement AltQuestId))
             {
-                assetData.QuestGroupId = AltQuestId.GetUInt32();
+                assetData.VariantId = AltQuestId.GetUInt32();
             }
 
             assetData.NextQuestId = 0;

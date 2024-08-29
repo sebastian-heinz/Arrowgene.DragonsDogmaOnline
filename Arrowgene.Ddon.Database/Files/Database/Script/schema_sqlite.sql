@@ -551,6 +551,7 @@ CREATE TABLE IF NOT EXISTS "ddon_quest_progress"
     "quest_type"          INTEGER NOT NULL,
     "quest_id"            INTEGER NOT NULL,
     "step"                INTEGER NOT NULL,
+    "variant_id"          INTEGER NOT NULL,  
     CONSTRAINT "fk_ddon_quest_progress_character_common_id" FOREIGN KEY ("character_common_id") REFERENCES "ddon_character_common" ("character_common_id") ON DELETE CASCADE
 );
 

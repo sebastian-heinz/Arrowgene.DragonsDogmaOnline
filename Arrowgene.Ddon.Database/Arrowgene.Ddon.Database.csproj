@@ -39,6 +39,7 @@
         <ContentWithTargetPath Remove="files\database\script\crest_migration.sql" />
         <ContentWithTargetPath Remove="Files\Database\Script\equippoints_migration.sql" />
         <ContentWithTargetPath Remove="Files\Database\Script\equip_migration_sqlite.sql" />
+        <ContentWithTargetPath Remove="Files\Database\Script\migration_quest_variant.sql" />
         <ContentWithTargetPath Remove="Files\Database\Script\migration_rented_pawn.sql" />
         <ContentWithTargetPath Remove="Files\Database\Script\pawncraftingdata_migration.sql" />
         <ContentWithTargetPath Remove="Files\Database\Script\schema_sqlite.sql" />
@@ -97,6 +98,9 @@
         </None>
         <None Update="Files\Database\Script\AddMissingOnDeleteCascades_migration.sql">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Files\Database\Script\migration_quest_variant.sql">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>
 

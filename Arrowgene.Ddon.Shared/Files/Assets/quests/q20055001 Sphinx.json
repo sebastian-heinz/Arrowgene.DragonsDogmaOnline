@@ -1,9 +1,9 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "World",
-  "comment": "A Strange Bird Dances In the Forest",
+  "comment": "A Strange Bird Dances In the Forest (alt quests carry the same title and questid. AKA they got lazy.)",
   "quest_id": 20055001,
-  "quest_group_id": 1000,
+  "variantId": 1020304,
   "base_level": 18,
   "minimum_item_rank": 0,
   "discoverable": false,

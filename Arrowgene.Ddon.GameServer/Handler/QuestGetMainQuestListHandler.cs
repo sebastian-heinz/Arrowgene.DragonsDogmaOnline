@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CQuestGetMainQuestNtc ntc = new S2CQuestGetMainQuestNtc();
             foreach (var questId in client.Party.QuestState.GetActiveQuestIds())
             {
-                var quest = QuestManager.GetQuest(questId);
+                var quest = client.Party.QuestState.GetQuest(questId);
                 if (quest.QuestType == QuestType.Main)
                 {
                     var questState = client.Party.QuestState.GetQuestState(questId);

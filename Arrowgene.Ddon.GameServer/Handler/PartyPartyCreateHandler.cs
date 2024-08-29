@@ -54,6 +54,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var quests = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All);
             foreach (var quest in quests)
             {
+
+                if (quest.VariantId != 0)
+                {
+                    Logger.Debug($"Getting quest progress. Adding {quest.QuestId} with variant {quest.VariantId}");
+                    party.QuestState.AddNewQuest(quest.QuestId, quest.Step, true, (uint)quest.VariantId);
+                    continue;
+                }
+                
                 party.QuestState.AddNewQuest(quest.QuestId, quest.Step, true);
             }
 

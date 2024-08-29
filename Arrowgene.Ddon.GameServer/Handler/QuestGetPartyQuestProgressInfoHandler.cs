@@ -36,7 +36,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             foreach (var questId in client.Party.QuestState.GetActiveQuestIds())
             {
-                var quest = QuestManager.GetQuest(questId);
+                var quest = client.Party.QuestState.GetQuest(questId);
                 var questState = client.Party.QuestState.GetQuestState(questId);
                 pcap.QuestOrderList.Add(quest.ToCDataQuestOrderList(questState.Step));
             }

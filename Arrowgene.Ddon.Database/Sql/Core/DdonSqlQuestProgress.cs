@@ -1,8 +1,6 @@
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Data.Common;
-using System.Xml;
 using Arrowgene.Ddon.Shared.Model.Quest;
+using System.Collections.Generic;
+using System.Data.Common;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -14,13 +12,18 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         /* ddon_quest_progress */
         protected static readonly string[] QuestProgressFields = new string[]
         {
+            "character_common_id", "quest_type", "quest_id", "step", "variant_id"
+        };
+
+        protected static readonly string[] QuestProgressFieldsUpdate = new string[]
+        {
             "character_common_id", "quest_type", "quest_id", "step"
         };
 
         private readonly string SqlInsertQuestProgress = $"INSERT INTO \"ddon_quest_progress\" ({BuildQueryField(QuestProgressFields)}) VALUES ({BuildQueryInsert(QuestProgressFields)});";
         private readonly string SqlDeleteQuestProgress = $"DELETE FROM \"ddon_quest_progress\" WHERE \"character_common_id\"=@character_common_id AND \"quest_type\"=@quest_type AND \"quest_id\"=@quest_id;";
 
-        private readonly string SqlUpdateQuestProgress = $"UPDATE \"ddon_quest_progress\" SET {BuildQueryUpdate(QuestProgressFields)} WHERE \"character_common_id\"=@character_common_id AND \"quest_type\"=@quest_type AND \"quest_id\"=@quest_id;";
+        private readonly string SqlUpdateQuestProgress = $"UPDATE \"ddon_quest_progress\" SET \"step\"=@step WHERE \"character_common_id\"=@character_common_id AND \"quest_type\"=@quest_type AND \"quest_id\"=@quest_id;";
 
         private readonly string SqlSelectQuestProgressByType = $"SELECT {BuildQueryField(QuestProgressFields)} FROM \"ddon_quest_progress\" WHERE +" +
                                                                $"\"character_common_id\" = @character_common_id AND \"quest_type\" = @quest_type;";
@@ -49,10 +52,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             ExecuteInTransaction(conn =>
             {
                 ExecuteReader(conn, SqlSelectQuestProgressByType,
-                    command => {
+                    command =>
+                    {
                         AddParameter(command, "@character_common_id", characterCommonId);
                         AddParameter(command, "@quest_type", (uint)questType);
-                    }, reader => {
+                    }, reader =>
+                    {
                         while (reader.Read())
                         {
                             var result = ReadQuestProgress(reader);
@@ -71,9 +76,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             ExecuteInTransaction(conn =>
             {
                 ExecuteReader(conn, SqlSelectAllQuestProgress,
-                    command => {
+                    command =>
+                    {
                         AddParameter(command, "@character_common_id", characterCommonId);
-                    }, reader => {
+                    }, reader =>
+                    {
                         while (reader.Read())
                         {
                             var result = ReadQuestProgress(reader);
@@ -125,26 +132,28 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return ExecuteNonQuery(connection, SqlDeleteQuestProgress, command =>
             {
                 AddParameter(command, "character_common_id", characterCommonId);
-                AddParameter(command, "quest_type", (uint) questType);
-                AddParameter(command, "quest_id", (uint) questId);
+                AddParameter(command, "quest_type", (uint)questType);
+                AddParameter(command, "quest_id", (uint)questId);
             }) == 1;
         }
 
-        public bool InsertQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step)
+        public bool InsertQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step, uint variantId=0)
         {
             using TCon connection = OpenNewConnection();
-            return InsertQuestProgress(connection, characterCommonId, questId, questType, step);
+            return InsertQuestProgress(connection, characterCommonId, questId, questType, step, variantId);
         }
 
-        public bool InsertQuestProgress(TCon connection, uint characterCommonId, QuestId questId, QuestType questType, uint step)
+        public bool InsertQuestProgress(TCon connection, uint characterCommonId, QuestId questId, QuestType questType, uint step, uint variantId=0)
         {
-            return ExecuteNonQuery(connection, SqlInsertQuestProgress, command =>
-            {
-                AddParameter(command, "character_common_id", characterCommonId);
-                AddParameter(command, "quest_id", (uint)questId);
-                AddParameter(command, "quest_type", (uint)questType);
-                AddParameter(command, "step", (uint) step);
-            }) == 1;
+                return ExecuteNonQuery(connection, SqlInsertQuestProgress, command =>
+                {
+                    AddParameter(command, "character_common_id", characterCommonId);
+                    AddParameter(command, "quest_id", (uint)questId);
+                    AddParameter(command, "quest_type", (uint)questType);
+                    AddParameter(command, "step", (uint)step);
+                    AddParameter(command, "variant_id", variantId);
+
+                }) == 1;
         }
 
         public bool UpdateQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step)
@@ -155,7 +164,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool UpdateQuestProgress(TCon connection, uint characterCommonId, QuestId questId, QuestType questType, uint step)
         {
-            return ExecuteNonQuery(connection, SqlUpdateQuestProgress, command => 
+            return ExecuteNonQuery(connection, SqlUpdateQuestProgress, command =>
             {
                 AddParameter(command, "character_common_id", characterCommonId);
                 AddParameter(command, "quest_id", (uint)questId);
@@ -171,6 +180,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             obj.QuestId = (QuestId)GetUInt32(reader, "quest_id");
             obj.QuestType = (QuestType)GetUInt32(reader, "quest_type");
             obj.Step = GetUInt32(reader, "step");
+            obj.VariantId = GetUInt32(reader, "variant_id");
             return obj;
         }
     }
