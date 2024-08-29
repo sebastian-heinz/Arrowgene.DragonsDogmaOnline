@@ -16,6 +16,7 @@ namespace Arrowgene.Ddon.Shared.Asset
             RareItemAppraisalList = new List<CDataCommonU32>();
             ItemTakeawayList = new List<CDataCommonU32>();
             StageProgressionList = new List<CDataBattleContentStageProgression>();
+            LootRanges = new Dictionary<uint, LootRange>();
 
             LowQualityWeapons = new Dictionary<JobId, List<uint>>();
             HighQualityWeapons = new Dictionary<JobId, List<uint>>();
@@ -25,7 +26,15 @@ namespace Arrowgene.Ddon.Shared.Asset
             HighQualityOther = new List<uint>();
         }
 
+        public class LootRange
+        {
+            public (uint Min, uint Max) NormalRange;
+            public (uint Min, uint Max) SealedRange;
+        }
+
+
         public Dictionary<StageId, BitterblackMazeConfig> Stages { get; set; }
+        public Dictionary<uint, LootRange> LootRanges { get; set; }
         public Dictionary<JobId, Dictionary<EquipType, List<Item>>> StarterEquipment {  get; set; }
         public Dictionary<JobId, List<Item>> StarterJobEquipment { get; set; }
         public List<CDataCommonU32> RareItemAppraisalList { get; set; }

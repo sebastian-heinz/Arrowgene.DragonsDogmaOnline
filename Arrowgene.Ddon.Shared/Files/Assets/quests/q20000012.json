@@ -1,103 +1,105 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "Seeking Peace",
-    "quest_id": 20000012,
-    "base_level": 42,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Seeking Peace",
+  "quest_id": 20000012,
+  "base_level": 42,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "HidellPlains",
+  "news_image": 13,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 2420
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1380
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 270
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "exp",
-            "amount": 2420
+          "comment": "Crest of Greater Power",
+          "item_id": 9196,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 1380
+          "comment": "Superior Healing Elixir",
+          "item_id": 7553,
+          "num": 3
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 270
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "comment" : "Crest of Greater Power",
-                    "item_id": 9196,
-                    "num": 1
-                },
-                {
-                    "comment" : "Superior Healing Elixir",
-                    "item_id": 7553,
-                    "num": 3
-                },
-                {
-                    "comment" : "Witch's Brew",
-                    "item_id": 9421,
-                    "num": 1                    
-                }
-            ]
+          "comment": "Witch's Brew",
+          "item_id": 9421,
+          "num": 1
         }
-    ],
-    "enemy_groups" : [
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 290
+      },
+      "starting_index": 2,
+      "enemies": [
         {
-            "stage_id": {
-                "id": 1,
-                "group_id": 290
-            },
-            "starting_index": 2,
-            "enemies": [
-                {
-                    "comment" : "Armored Cyclops (Club)",
-                    "enemy_id": "0x015003",
-                    "named_enemy_params_id": 54,
-                    "level": 40,
-                    "exp": 37420,
-                    "is_boss": true         
-                }
-            ]
+          "comment": "Armored Cyclops (Club)",
+          "enemy_id": "0x015003",
+          "named_enemy_params_id": 54,
+          "level": 40,
+          "exp": 37420,
+          "is_boss": true
         }
-    ],
-    "blocks": [
-        {
-            "type": "NpcTalkAndOrder",
-            "stage_id": {
-                "id": 3
-            },
-            "npc_id": "Joseph",
-            "message_id": 11368     
-        },
-        {
-            "type": "DiscoverEnemy",
-            "announce_type": "Accept",
-            "groups": [0]
-        },
-        {           
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "reset_group": false,
-            "groups": [0]       
-        },
-        {
-            "type": "TalkToNpc",
-            "stage_id": {
-                "id": 50
-            },
-            "announce_type": "Update",
-            "npc_id": "Brandon",            
-            "message_id": 11809
-        },
-        {           
-            "type": "TalkToNpc",
-            "stage_id": {
-                "id": 3
-            },
-            "announce_type": "Update",
-            "npc_id": "Joseph",
-            "message_id": 11812
-        }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 3
+      },
+      "npc_id": "Joseph",
+      "message_id": 11368
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 50
+      },
+      "announce_type": "Update",
+      "npc_id": "Brandon",
+      "message_id": 11809
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 3
+      },
+      "announce_type": "Update",
+      "npc_id": "Joseph",
+      "message_id": 11812
+    }
+  ]
 }

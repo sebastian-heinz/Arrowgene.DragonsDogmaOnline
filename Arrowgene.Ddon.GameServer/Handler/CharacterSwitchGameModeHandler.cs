@@ -458,6 +458,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             Server.CharacterManager.UpdateCharacterExtendedParams(bbmCharacter, true);
+
+            bbmCharacter.GreenHp = CharacterManager.BBM_BASE_HEALTH;
+            bbmCharacter.WhiteHp = CharacterManager.BBM_BASE_HEALTH;
             if (!Database.CreateCharacter(bbmCharacter))
             {
                 return null;

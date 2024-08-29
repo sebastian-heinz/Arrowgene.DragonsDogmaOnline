@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.GameServer.Chat
                 Deliver = true,
                 Message = message,
                 Type = LobbyChatMsgType.ManagementAlertC,
-                Recipients = {client}
+                Recipients = { client }
             };
         }
 
@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Chat
                 Deliver = true,
                 Message = message,
                 Type = LobbyChatMsgType.System,
-                Recipients = {client}
+                Recipients = { client }
             };
         }
 
@@ -31,27 +31,29 @@ namespace Arrowgene.Ddon.GameServer.Chat
         {
             return new ChatResponse()
             {
+                HandleId = message.HandleId,
                 Deliver = true,
                 Message = message.Message,
                 FirstName = client.Character.FirstName,
                 LastName = client.Character.LastName,
                 CharacterId = client.Character.CharacterId,
                 Type = message.Type,
-                Unk2 = message.Unk2,
-                Unk3 = message.Unk3,
-                Unk4 = message.Unk4,
-                Recipients = {client}
+                MessageFlavor = message.MessageFlavor,
+                PhrasesCategory = message.PhrasesCategory,
+                PhrasesIndex = message.PhrasesIndex,
+                Recipients = { client }
             };
         }
 
         public ChatResponse()
         {
+            HandleId = 0;
             Recipients = new List<GameClient>();
             Deliver = true;
             Type = LobbyChatMsgType.Say;
-            Unk2 = 0;
-            Unk3 = 0;
-            Unk4 = 0;
+            MessageFlavor = 0;
+            PhrasesCategory = 0;
+            PhrasesIndex = 0;
             CharacterId = 0;
             Message = "";
             FirstName = "";
@@ -59,12 +61,13 @@ namespace Arrowgene.Ddon.GameServer.Chat
             ClanName = "";
         }
 
+        public uint HandleId { get; set; }
         public List<GameClient> Recipients { get; }
         public bool Deliver { get; set; }
         public LobbyChatMsgType Type { get; set; }
-        public byte Unk2 { get; set; }
-        public uint Unk3 { get; set; }
-        public uint Unk4 { get; set; }
+        public byte MessageFlavor { get; set; }
+        public uint PhrasesCategory { get; set; }
+        public uint PhrasesIndex { get; set; }
         public string Message { get; set; }
         public uint CharacterId { get; set; }
         public string FirstName { get; set; }
