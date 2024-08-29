@@ -95,7 +95,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
             // For the purpose of setting up alternate quests.
             assetData.VariantId = null;
-            if (jQuest.TryGetProperty("variantId", out JsonElement AltQuestId))
+            if (jQuest.TryGetProperty("variant_id", out JsonElement AltQuestId))
             {
                 assetData.VariantId = AltQuestId.GetUInt32();
             }

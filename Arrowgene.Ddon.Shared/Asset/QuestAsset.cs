@@ -35,7 +35,6 @@ namespace Arrowgene.Ddon.Shared.Asset
         public List<QuestLayoutFlag> QuestLayoutFlags { get; set; }
         public List<QuestLayoutFlagSetInfo> QuestLayoutSetInfoFlags { get; set; }
         public Dictionary<uint, QuestEnemyGroup> EnemyGroups {  get; set; }
-        //public uint ? QuestGroupId { get; set; }
         public uint ? VariantId { get; set; }
 
         public QuestAssetData()
