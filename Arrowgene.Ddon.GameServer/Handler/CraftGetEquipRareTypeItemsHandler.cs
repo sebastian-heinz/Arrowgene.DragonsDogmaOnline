@@ -25,6 +25,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             
             List<CDataCommonU32> Test = new List<CDataCommonU32>();
+            Test.Add(new CDataCommonU32 { Value = request.Unk0 });
+            Test.Add(new CDataCommonU32 { Value = request.Unk1 });
+            // No idea if this is what I'm meant to do, but it isn't causing crashes/errors?
+            // I've tried sending just an empty list, but no behaviour changes.
 
             var res = new S2CCraftGetEquipRareTypeItemsRes()
             {

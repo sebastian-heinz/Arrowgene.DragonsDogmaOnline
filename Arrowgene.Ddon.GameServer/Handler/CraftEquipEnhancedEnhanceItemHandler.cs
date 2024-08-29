@@ -49,9 +49,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataAddStatusParam AddStat2 = new CDataAddStatusParam() // 6 star test
             {
                 IsAddStat1 = 2,
-                IsAddStat2 = true,
-                AdditionalStatus1 = 27,
-                AdditionalStatus2 = 27,
+                IsAddStat2 = false,
+                AdditionalStatus1 = 0,
+                AdditionalStatus2 = 0,
             };
             List<CDataAddStatusParam> AddStatList = new List<CDataAddStatusParam>()
             {

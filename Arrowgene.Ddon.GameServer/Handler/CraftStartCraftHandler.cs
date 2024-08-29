@@ -45,7 +45,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ushort AddStatusID = request.AdditionalStatusId;
             CDataAddStatusParam AddStat = new CDataAddStatusParam()
             {
-                IsAddStat1 = false,
+                IsAddStat1 = 0,
                 IsAddStat2 = false,
                 AdditionalStatus1 = 0,
                 AdditionalStatus2 = 0,
