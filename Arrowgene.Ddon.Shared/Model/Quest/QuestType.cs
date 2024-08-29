@@ -2,7 +2,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 {
     public enum QuestType : uint
     {
-        Unknown = 0,
+        All = 0,
         Light = 1,
         Set = 2,
         Main = 3,
@@ -16,8 +16,10 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         Unk1 = 11, // Queried when logging in
 
         // Pseudo Categories
-        World = 1,
-        All
+        Board = 1,
+        World = 1, // World should be Set Quest (2) not light
+        Personal = 4,
+        
 
 #if false
 // Seems game has 2 different sets of quest IDs

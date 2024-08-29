@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Logger.Debug($"QuestId={questId}, KeyId={packet.Structure.KeyId} ProgressCharacterId={packet.Structure.ProgressCharacterId}, QuestScheduleId={packet.Structure.QuestScheduleId}, ProcessNo={packet.Structure.ProcessNo}\n");
 
-            if (!partyQuestState.HasQuest(questId))
+            if (QuestManager.GetQuest(questId) == null)
             {
                 // Tell the quest state machine that for these static quest packets
                 // these processes are terminated
@@ -88,6 +88,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         {
                             Logger.Error($"Failed to insert progress for the quest {quest.QuestId}");
                         }
+                    }
+                }
+                else if (questProgressState == QuestProgressState.Accepted && quest.QuestType == QuestType.Personal)
+                {
+                    // Add a new personal quest record for the player
+                    if (!Server.Database.InsertQuestProgress(client.Character.CommonId, quest.QuestId, quest.QuestType, 0))
+                    {
+                        Logger.Error($"Failed to insert progress for the quest {quest.QuestId}");
                     }
                 }
 

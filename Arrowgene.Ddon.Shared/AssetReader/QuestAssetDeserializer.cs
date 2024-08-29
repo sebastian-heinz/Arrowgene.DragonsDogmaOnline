@@ -89,6 +89,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 assetData.QuestAreaId = areaId;
             }
 
+            assetData.StageId = StageId.Invalid;
+            if (questType == QuestType.Personal)
+            {
+                assetData.StageId = ParseStageId(jQuest.GetProperty("stage_id"));
+            }
+
             assetData.NewsImageId = 0;
             if (jQuest.TryGetProperty("news_image", out JsonElement jNewsImage))
             {

@@ -9,21 +9,21 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         }
     
         public CDataQuestOrderList Param { get; set; }
-        public byte EnableCancel { get; set; }
+        public bool EnableCancel { get; set; }
     
         public class Serializer : EntitySerializer<CDataTutorialQuestOrderList>
         {
             public override void Write(IBuffer buffer, CDataTutorialQuestOrderList obj)
             {
                 WriteEntity<CDataQuestOrderList>(buffer, obj.Param);
-                WriteByte(buffer, obj.EnableCancel);
+                WriteBool(buffer, obj.EnableCancel);
             }
         
             public override CDataTutorialQuestOrderList Read(IBuffer buffer)
             {
                 CDataTutorialQuestOrderList obj = new CDataTutorialQuestOrderList();
                 obj.Param = ReadEntity<CDataQuestOrderList>(buffer);
-                obj.EnableCancel = ReadByte(buffer);
+                obj.EnableCancel = ReadBool(buffer);
                 return obj;
             }
         }
