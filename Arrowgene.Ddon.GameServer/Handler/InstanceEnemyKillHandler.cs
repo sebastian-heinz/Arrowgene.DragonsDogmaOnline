@@ -200,6 +200,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         _gameServer.PPManager.AddPlayPoint(memberClient, gainedPP, 1);
                     }
+
+                    if (gainedExp > 0)
+                    {
+                        _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp, RewardSource.Enemy);
+                    }
                 }
                 else if(member is PawnPartyMember)
                 {
@@ -213,15 +218,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         // and non-rented pawns
                         continue;
                     }
+
+                    uint pawnExp = gainedExp;
+                    if (_gameServer.ExpManager.RequiresPawnCatchup(client.GameMode, client.Party, pawn))
+                    {
+                        pawnExp = _gameServer.ExpManager.GetAdjustedPawnExp(client.GameMode, RewardSource.Enemy, client.Party, pawn, enemyKilled.GetDroppedExperience(), enemyKilled.Lv);
+                    }
+
+                    if (pawnExp > 0)
+                    {
+                        _gameServer.ExpManager.AddExp(memberClient, memberCharacter, pawnExp, RewardSource.Enemy);
+                    }
                 }
                 else
                 {
                     throw new Exception("Unknown member type");
-                }
-
-                if (gainedExp > 0)
-                {
-                    _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp, RewardSource.Enemy);
                 }
             }
         }
