@@ -504,6 +504,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestDecideDeliveryItemHandler(this));
             AddHandler(new QuestCancelHandler(this));
             AddHandler(new QuestGetPartyBonusListHandler(this));
+            AddHandler(new QuestGetMobHuntQuestListHandler(this));
 
 			AddHandler(new EntryBoardEntryBoardList(this));
 			AddHandler(new EntryBoardEntryBoardItemCreate(this));
