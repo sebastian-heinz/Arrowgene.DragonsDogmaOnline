@@ -387,6 +387,8 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new LoadingInfoLoadingGetInfoHandler(this));
 
+            AddHandler(new ChatSendTellMsgHandler(this));
+            
             AddHandler(new LobbyLobbyJoinHandler(this));
             AddHandler(new LobbyLobbyLeaveHandler(this));
             AddHandler(new LobbyLobbyChatMsgHandler(this));
@@ -502,6 +504,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestDecideDeliveryItemHandler(this));
             AddHandler(new QuestCancelHandler(this));
             AddHandler(new QuestGetPartyBonusListHandler(this));
+            AddHandler(new QuestGetMobHuntQuestListHandler(this));
 
 			AddHandler(new EntryBoardEntryBoardList(this));
 			AddHandler(new EntryBoardEntryBoardItemCreate(this));

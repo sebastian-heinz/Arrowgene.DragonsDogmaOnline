@@ -10,6 +10,7 @@ using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -54,12 +55,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Add back equipment
             client.Character.Equipment = client.Character.Storage.GetCharacterEquipment();
 
-            // Set current job back to level 1 stats
-            var jobResults = Server.JobManager.SetJob(client, client.Character, client.Character.Job);
-            client.Send((S2CJobChangeJobNtc) jobResults.jobNtc);
-
             // Reset EXP
             Server.ExpManager.ResetExpData(client, client.Character);
+
+            // Set current job back to level 1 stats
+            var jobResults = Server.JobManager.SetJob(client, client.Character, client.Character.Job);
+            foreach (var otherClient in Server.ClientLookup.GetAll())
+            {
+                otherClient.Send((S2CJobChangeJobNtc)jobResults.jobNtc);
+            }
+            client.Send((S2CJobChangeJobNtc)jobResults.jobNtc);
+            client.Send((S2CItemUpdateCharacterItemNtc)jobResults.itemNtc);
 
             // Reset progress
             client.Character.BbmProgress.StartTime = 0;

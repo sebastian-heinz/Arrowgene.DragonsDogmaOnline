@@ -1,70 +1,72 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "The Evil in the Dark Night",
-    "quest_id": 20075006,
-    "base_level": 43,
-    "minimum_item_rank": 0,
-    "discoverable": false,
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Evil in the Dark Night",
+  "quest_id": 20075006,
+  "base_level": 43,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "NorthernBetlandPlains",
+  "news_image": 142,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1410
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 280
+    },
+    {
+      "type": "exp",
+      "amount": 1700
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 1410
+          "item_id": 9292,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 280
+          "item_id": 9411,
+          "num": 2
         },
         {
-            "type": "exp",
-            "amount": 1700
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 9292,
-                    "num": 1
-                },
-                {
-                    "item_id": 9411,
-                    "num": 2
-                },
-                {
-                    "item_id": 9390,
-                    "num": 1
-                }
-            ]
+          "item_id": 9390,
+          "num": 1
         }
-    ],
-    "enemy_groups" : [
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 315
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 1,
-                "group_id": 315
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015600",
-                    "level": 44,
-                    "exp": 12500,
-                    "is_boss": true					
-                }
-            ]
+          "enemy_id": "0x015600",
+          "level": 44,
+          "exp": 12500,
+          "is_boss": true
         }
-    ],
-    "blocks": [
-        {
-            "type": "DiscoverEnemy",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Accept",
-            "reset_group": false,
-            "groups": [0]
-        }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
 }

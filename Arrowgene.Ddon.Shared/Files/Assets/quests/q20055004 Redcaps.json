@@ -3,10 +3,11 @@
   "type": "World",
   "comment": "The Abductors’ True Nature",
   "quest_id": 20055004,
-  "variantId": 7456284,
   "base_level": 19,
   "minimum_item_rank": 0,
   "discoverable": false,
+  "area_id": "MysreeForest",
+  "news_image": 111,
   "rewards": [
     {
       "type": "wallet",
@@ -85,5 +86,10 @@
       "reset_group": false,
       "groups": [ 0 ]
     }
+  ],
+  ],
+  ],
+  "groups": [ 0 ]
+}
   ]
 }

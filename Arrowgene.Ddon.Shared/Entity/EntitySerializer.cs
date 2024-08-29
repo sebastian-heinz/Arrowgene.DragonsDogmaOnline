@@ -264,10 +264,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataQuestProgressWork.Serializer());
             Create(new CDataQuestSetInfo.Serializer());
             Create(new CDataQuestTalkInfo.Serializer());
+            Create(new CDataQuestMobHuntQuestInfo.Serializer());
             Create(new CDataSetQuestInfoList.Serializer());
             Create(new CDataSetQuestBonusList.Serializer());
-
             Create(new CDataRentedPawnList.Serializer());
+
             Create(new CDataRewardItem.Serializer());
             Create(new CDataRewardBoxRecord.Serializer());
             Create(new CDataRewardBoxItem.Serializer());
@@ -502,6 +503,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SJobJobValueShopGetLineupReq.Serializer());
             Create(new C2SJobJobValueShopBuyItemReq.Serializer());
 
+            
+            Create(new C2SChatSendTellMsgReq.Serializer());
+            
             Create(new C2SLobbyChatMsgReq.Serializer());
             Create(new C2SLobbyJoinReq.Serializer());
             Create(new C2SLobbyLeaveReq.Serializer());
@@ -597,6 +601,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SQuestQuestCancelReq.Serializer());
             Create(new C2SQuestGetSetQuestInfoListReq.Serializer());
             Create(new C2SQuestGetPartyBonusListReq.Serializer());
+            Create(new C2SQuestGetMobHuntQuestListReq.Serializer());
 
             Create(new C2SServerGameTimeGetBaseInfoReq.Serializer());
             Create(new C2SServerGetRealTimeReq.Serializer());
@@ -913,6 +918,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CJobPawnJobLevelUpMemberNtc.Serializer());
             Create(new S2CJobPawnJobLevelUpNtc.Serializer());
             Create(new S2CJobUpdateExpModeRes.Serializer());
+            
+            Create(new S2CChatSendTellMsgRes.Serializer());
+            
             Create(new S2CLobbyChatMsgRes.Serializer());
             Create(new S2CLobbyChatMsgNotice.Serializer());
             Create(new S2CLobbyJoinRes.Serializer());
@@ -1044,6 +1052,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CQuestSendLeaderWaitOrderQuestListNtc.Serializer());
             Create(new S2CQuestSendLeaderWaitOrderQuestListRes.Serializer());
             Create(new S2CQuestSetPriorityQuestRes.Serializer());
+            Create(new S2CQuestGetMobHuntQuestListRes.Serializer());
 
             Create(new S2CServerGameTimeGetBaseInfoRes.Serializer());
             Create(new S2CServerGetRealTimeRes.Serializer());

@@ -19,6 +19,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
         {
             var quest = new GenericQuest(questAsset.QuestId, questAsset.QuestScheduleId, questAsset.Type, questAsset.Discoverable);
 
+            quest.QuestAreaId = questAsset.QuestAreaId;
+            quest.NewsImageId = questAsset.NewsImageId;
+
             quest.BaseLevel = questAsset.BaseLevel;
             quest.MinimumItemRank = questAsset.MinimumItemRank;
             quest.NextQuestId = questAsset.NextQuestId;

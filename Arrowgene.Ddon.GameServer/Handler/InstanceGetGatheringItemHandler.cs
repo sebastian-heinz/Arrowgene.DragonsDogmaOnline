@@ -80,6 +80,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         connection);
                 });
                 client.Send(equipResult.itemNtc);
+
+                // TODO: Can this be optimized? So only players who need to see
+                //       get the update?
+                foreach (var otherClient in Server.ClientLookup.GetAll())
+                {
+                    otherClient.Send(equipResult.equipNtc);
+                }
             }
         }
     }

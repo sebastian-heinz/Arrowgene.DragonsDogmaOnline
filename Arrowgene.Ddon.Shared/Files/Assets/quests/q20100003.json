@@ -1,112 +1,119 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "The Wicked Pursuer",
-    "quest_id": 20100003,
-    "base_level": 43,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Wicked Pursuer",
+  "quest_id": 20100003,
+  "base_level": 43,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "DeenanWoods",
+  "news_image": 562,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1410
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 220
+    },
+    {
+      "type": "exp",
+      "amount": 1980
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 1410
+          "item_id": 7948,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 220
+          "item_id": 9416,
+          "num": 2
         },
         {
-            "type": "exp",
-            "amount": 1980
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 7948,
-                    "num": 1
-                },
-                {
-                    "item_id": 9416,
-                    "num": 2
-                },
-                {
-                    "item_id": 9388,
-                    "num": 1
-                }
-            ]
+          "item_id": 9388,
+          "num": 1
         }
-    ],
-    "enemy_groups" : [
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 114,
+        "group_id": 1
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 114,
-                "group_id": 1
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015301",
-                    "level": 42,
-                    "exp": 10500,
-                    "is_boss": false
-                },
-                {
-                    "enemy_id": "0x015504",
-                    "level": 41,
-                    "exp": 750,
-                    "is_boss": false
-                },
-                {
-                    "enemy_id": "0x015504",
-                    "level": 41,
-                    "exp": 750,
-                    "is_boss": false
-                },
-                {
-                    "enemy_id": "0x015504",
-                    "level": 41,
-                    "exp": 750,
-                    "is_boss": false
-                }
-            ]
+          "enemy_id": "0x015301",
+          "level": 42,
+          "exp": 10500,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015504",
+          "level": 41,
+          "exp": 750,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015504",
+          "level": 41,
+          "exp": 750,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015504",
+          "level": 41,
+          "exp": 750,
+          "is_boss": false
         }
-    ],
-    "blocks": [
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
         {
-            "type": "NewNpcTalkAndOrder",
-            "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 1082, "comment": "Spawns StrangeMan NPC"}
-            ],
-            "stage_id": {
-                "id": 114,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "npc_id": "StrangeMan",
-            "message_id": 11372
-        },
-        {
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Accept",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {
-            "type": "NewTalkToNpc",
-            "stage_id": {
-                "id": 114,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Update",
-            "npc_id": "StrangeMan",
-            "message_id": 11835
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1082,
+          "comment": "Spawns StrangeMan NPC"
         }
-    ]
+      ],
+      "stage_id": {
+        "id": 114,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "StrangeMan",
+      "message_id": 11372
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 114,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "StrangeMan",
+      "message_id": 11835
+    }
+  ]
 }

@@ -7,6 +7,8 @@
   "base_level": 31,
   "minimum_item_rank": 0,
   "discoverable": false,
+  "area_id": "MysreeForest",
+  "news_image": 111,
   "rewards": [
     {
       "type": "wallet",
