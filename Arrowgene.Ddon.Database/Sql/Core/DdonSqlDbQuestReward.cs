@@ -73,7 +73,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         while (reader.Read())
                         {
                             var result = ReadDatabaseQuestBoxReward(reader);
-                            Console.WriteLine($"returning variant id in database is: {result.VariantId}");
                             results.Add(result);
                         }
                     });
