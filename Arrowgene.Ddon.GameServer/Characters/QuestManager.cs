@@ -72,8 +72,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     continue;
                 }
 
-                Logger.Debug($"Adding quest {questAsset.QuestId} to gQuests");
-
                 gQuests[questAsset.QuestId] = GenericQuest.FromAsset(questAsset);
             }
 
