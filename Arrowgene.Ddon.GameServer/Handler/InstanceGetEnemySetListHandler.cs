@@ -46,6 +46,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 RandomSeed = CryptoRandom.Instance.GetRandomUInt32(),
             };
 
+            client.Party.InstanceEnemyManager.SetInstanceSubgroupId(stageId, subGroupId);
             if (IsQuestControlled && quest != null)
             {
                 response.QuestId = (uint) quest.QuestId;
@@ -54,8 +55,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     PositionIndex = (byte)(enemy.Index),
                     EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
                 }).ToList();
-
-                client.Party.QuestState.SetInstanceSubgroupId(quest, stageId, subGroupId);
             }
             else
             {

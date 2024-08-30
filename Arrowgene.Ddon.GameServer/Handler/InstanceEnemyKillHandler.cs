@@ -30,17 +30,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             CDataStageLayoutId layoutId = packet.Structure.LayoutId;
             StageId stageId = StageId.FromStageLayoutId(layoutId);
-            ushort subGroupId = 0;
+            ushort subGroupId = client.Party.InstanceEnemyManager.GetInstanceSubgroupId(stageId);
 
             Quest quest = null;
             bool IsQuestControlled = false;
             foreach (var questId in client.Party.QuestState.StageQuests(stageId))
             {
                 quest = QuestManager.GetQuest(questId);
-                var qSubGroupId = client.Party.QuestState.GetInstanceSubgroupId(quest, stageId);
-                if (client.Party.QuestState.HasEnemiesInCurrentStageGroup(quest, stageId, qSubGroupId))
+                if (client.Party.QuestState.HasEnemiesInCurrentStageGroup(quest, stageId, subGroupId))
                 {
-                    subGroupId = qSubGroupId;
                     IsQuestControlled = true;
                     break;
                 }

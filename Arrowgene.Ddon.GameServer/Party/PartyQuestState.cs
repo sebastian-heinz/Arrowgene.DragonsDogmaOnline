@@ -34,8 +34,6 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public Dictionary<ushort, QuestProcessState> ProcessState {  get; set; }
         public Dictionary<StageId, Dictionary<uint, List<InstancedEnemy>>> QuestEnemies {  get; set; }
-        public Dictionary<StageId, ushort> CurrentSubgroup { get; set; }
-
         public Dictionary<uint, QuestDeliveryRecord> DeliveryRecords {  get; set; }
 
         public QuestState()
@@ -43,7 +41,6 @@ namespace Arrowgene.Ddon.GameServer.Party
             ProcessState = new Dictionary<ushort, QuestProcessState>();
             QuestEnemies = new Dictionary<StageId, Dictionary<uint, List<InstancedEnemy>>>();
             DeliveryRecords = new Dictionary<uint, QuestDeliveryRecord>();
-            CurrentSubgroup = new Dictionary<StageId, ushort>();
         }
 
         public uint UpdateDeliveryRequest(uint itemId, uint amount)
@@ -212,28 +209,6 @@ namespace Arrowgene.Ddon.GameServer.Party
         {
             var quest = QuestManager.GetQuest(questId);
             return GetInstancedEnemy(quest, stageId, subGroupId, index);
-        }
-
-        public void SetInstanceSubgroupId(Quest quest, StageId stageId, ushort subgroupId)
-        {
-            lock (ActiveQuests)
-            {
-                var questState = ActiveQuests[quest.QuestId];
-                questState.CurrentSubgroup[stageId] = subgroupId;
-            }
-        }
-
-        public ushort GetInstanceSubgroupId(Quest quest, StageId stageId)
-        {
-            lock (ActiveQuests)
-            {
-                var questState = ActiveQuests[quest.QuestId];
-                if (!questState.CurrentSubgroup.ContainsKey(stageId))
-                {
-                    return 0;
-                }
-                return questState.CurrentSubgroup[stageId];
-            }
         }
 
         public void AddNewQuest(QuestId questId, uint step)
