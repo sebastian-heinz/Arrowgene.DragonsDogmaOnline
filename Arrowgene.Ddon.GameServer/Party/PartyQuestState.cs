@@ -257,18 +257,10 @@ namespace Arrowgene.Ddon.GameServer.Party
                 }
                 return questState.CurrentSubgroup[stageId];
             }
-        }
-
-        //public uint GetNewVariantQuest(QuestId questId)
-        //{
-        //    return QuestManager.GetRandomVariantQuest(questId);
-
-        //}
+        }  
 
         public void AddNewQuest(QuestId questId, uint step, bool questStarted, uint variantId)
         {
-            //Logger.Info($"Specifically adding new quest for {questId} on variant {variantId}");
-
             Quest quest = QuestManager.GetQuest(questId, variantId);
 
             if (VariantQuests.Contains(questId))
@@ -280,10 +272,6 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public void AddNewQuest(QuestId questId, uint step, bool questStarted)
         {
-            //Logger.Debug($"AddNewQuest - called with {questId}");
-
-            //Logger.Debug($"Is {questId} contained within ActiveVariantQuests? ---->>>>>>>> {ActiveVariantQuests.ContainsKey(questId)}");
-
             // Trying to add a new variant quest before properly removing it will cause an exception.
 
             if (ActiveVariantQuests.ContainsKey(questId))
@@ -294,16 +282,13 @@ namespace Arrowgene.Ddon.GameServer.Party
             Quest quest;
 
             // If the quest we are trying to add is a variant quest, then roll and get a random version.
-            if (VariantQuests.Contains(questId)) // && !ActiveVariantQuests.ContainsKey(questId))
+            if (VariantQuests.Contains(questId))
             {
-                //Logger.Debug($"VariantQuests contains {questId}!!!");
                 quest = QuestManager.GetQuest(questId, QuestManager.GetRandomVariantQuest(questId));
-                //Logger.Debug($"Got back {quest.QuestId} with variantId {quest.VariantId}");
             }
             else
             {
                 quest = GetQuest(questId);
-                //Logger.Debug($"Quest Returned: {quest.QuestId}");
             }
 
             // If we are adding a new variant quest, then log the variant id for further reference
@@ -312,15 +297,6 @@ namespace Arrowgene.Ddon.GameServer.Party
                 Logger.Debug($"Adding to ActiveVariantQuest -> quest: {quest.QuestId} -> variantId: {quest.VariantId}");
                 ActiveVariantQuests.Add(quest.QuestId, (uint)quest.VariantId);
             }
-
-            // If we are adding a new alt quest, remove the quest group id from the list.
-            //if (quest.IsVariantQuest && InactiveAlternateQuestsGroups.Contains((uint)quest.QuestGroupId))
-            //{
-
-            //    InactiveAlternateQuestsGroups.Remove((uint)quest.QuestGroupId);
-            //    ActiveVariantQuests.Add(quest.QuestId);
-
-            //}
 
             AddNewQuest(quest, step, questStarted);
         }
@@ -331,13 +307,6 @@ namespace Arrowgene.Ddon.GameServer.Party
             lock (ActiveQuests)
             {
                 ActiveQuests.Remove(questId);
-
-                // Ensure adding of selected quest's group id to be eligible for reroll.
-                // if(quest.IsVariantQuest)
-                //{
-                //    InactiveAlternateQuestsGroups.Add((uint)quest.QuestGroupId);
-                //    ActiveVariantQuests.Remove(quest.QuestId);
-                //}
 
                 if (ActiveVariantQuests.ContainsKey(questId))
                 {
