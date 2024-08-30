@@ -294,7 +294,6 @@ namespace Arrowgene.Ddon.GameServer.Party
             // If we are adding a new variant quest, then log the variant id for further reference
             if (quest.IsVariantQuest)
             {
-                Logger.Debug($"Adding to ActiveVariantQuest -> quest: {quest.QuestId} -> variantId: {quest.VariantId}");
                 ActiveVariantQuests.Add(quest.QuestId, (uint)quest.VariantId);
             }
 
@@ -310,10 +309,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
                 if (ActiveVariantQuests.ContainsKey(questId))
                 {
-                    Logger.Debug($"Number of activeVariantQuests BEFORE --->>> {ActiveVariantQuests.Count}");
                     ActiveVariantQuests.Remove(questId);
-                    Logger.Debug($"Removed variant quest {questId}");
-                    Logger.Debug($"Number of activeVariantQuests AFTER --->>> {ActiveVariantQuests.Count}");
                 }
 
                 foreach (var location in quest.Locations)
