@@ -4,8 +4,6 @@ DELETE FROM "ddon_priority_quests" WHERE "quest_id" = 2005501;
 
 DELETE FROM "ddon_reward_box" WHERE "quest_id" = 2005501;
 
-DELETE FROM "ddon_reward_box" WHERE "quest_id" = 2005501;
-
 DELETE FROM "ddon_completed_quests" WHERE "quest_id" = 2005501;
 
 ALTER TABLE "ddon_quest_progress"
