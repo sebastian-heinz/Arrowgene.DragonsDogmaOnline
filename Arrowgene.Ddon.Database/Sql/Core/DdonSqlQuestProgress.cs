@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         /* ddon_quest_progress */
         protected static readonly string[] QuestProgressFields = new string[]
         {
-            "character_common_id", "quest_type", "quest_id", "step", "variant_id"
+            "character_common_id", "quest_type", "quest_id", "step", "variant_quest_id"
         };
 
         protected static readonly string[] QuestProgressFieldsUpdate = new string[]
@@ -151,7 +151,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     AddParameter(command, "quest_id", (uint)questId);
                     AddParameter(command, "quest_type", (uint)questType);
                     AddParameter(command, "step", (uint)step);
-                    AddParameter(command, "variant_id", variantId);
+                    AddParameter(command, "variant_quest_id", variantId);
 
                 }) == 1;
         }
@@ -180,7 +180,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             obj.QuestId = (QuestId)GetUInt32(reader, "quest_id");
             obj.QuestType = (QuestType)GetUInt32(reader, "quest_type");
             obj.Step = GetUInt32(reader, "step");
-            obj.VariantId = GetUInt32(reader, "variant_id");
+            obj.VariantId = GetUInt32(reader, "variant_quest_id");
             return obj;
         }
     }

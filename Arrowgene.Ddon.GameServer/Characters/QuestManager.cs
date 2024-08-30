@@ -20,11 +20,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
         }
 
         private static Dictionary<QuestId, Quest> gQuests = new Dictionary<QuestId, Quest>();
-        //private static Dictionary<QuestId, Quest> VariantQuests = new Dictionary<QuestId, Quest>();
         private static readonly Dictionary<QuestId, Dictionary<uint, Quest>> variantQuests = new();
         private static readonly HashSet<QuestId> AvailableVariantQuests = new();
-        //private static Dictionary<QuestId, uint> altQuestLookup = new();
-        //public static readonly HashSet<uint> questGroupIds = new();
 
         public static HashSet<QuestId> GetAllVariantQuestIds()
         {
@@ -42,8 +39,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // gQuests[QuestId.TheGreatAlchemist] = new Mq000025_TheGreatAlchemist();
             // gQuests[QuestId.HopesBitterEnd] = new Mq030260_HopesBitterEnd();
 
-            HashSet<uint> allVariantQuestIds = new();
-
             // Load Quests defined in files
             foreach (var questAsset in assetRepository.QuestAssets.Quests)
             {
@@ -60,30 +55,19 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                     Quest alternateQuest = GenericQuest.FromAsset(questAsset);
                     alternateQuest.IsVariantQuest = true;
-                    alternateQuest.VariantId = questAsset.VariantId;
-
-                    // Ensure variant ids are unique. Throw early to not clog up the logs.
-                    try
-                    {
-                        allVariantQuestIds.Add((uint)alternateQuest.VariantId);
-                    }
-                    catch (Exception)
-                    {
-                        Logger.Error($"Multiple quests are using variant id {alternateQuest.VariantId}. Please ensure all are unique.");
-                        throw;
-                    }
+                    alternateQuest.VariantId = (uint)questAsset.VariantId;
 
                     // Add an entry to the dictionary if it doesn't exist then add the variant id and quest
                     if (!variantQuests.ContainsKey(questAsset.QuestId))
                     {
                         variantQuests[alternateQuest.QuestId] = new Dictionary<uint, Quest>();
-                        variantQuests[questAsset.QuestId].Add((uint)alternateQuest.VariantId, alternateQuest);
+                        variantQuests[questAsset.QuestId].Add(alternateQuest.VariantId, alternateQuest);
 
                         continue;
                     }
 
                     // Add quest id and quest
-                    variantQuests[questAsset.QuestId].Add((uint)alternateQuest.VariantId, alternateQuest);
+                    variantQuests[questAsset.QuestId].Add(alternateQuest.VariantId, alternateQuest);
 
                     continue;
                 }
@@ -91,13 +75,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 gQuests[questAsset.QuestId] = GenericQuest.FromAsset(questAsset);
             }
 
-
             var variantQuestKeys = variantQuests.Keys.ToArray();
 
             for (int i = 0; i < variantQuestKeys.Length; i++)
             {
-                // Create a reliable source of all variant quests
 
+                // Store of all variant ids under the generic quest id
+                HashSet<uint> allVariantQuestIds = new();
+
+                // Create a reliable source of all variant quests, also checks if they are unique
                 AvailableVariantQuests.Add(variantQuestKeys[i]);
 
                 Logger.Info($"Quest Group Listed: {variantQuestKeys[i]}");
@@ -106,6 +92,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 for (int j = 0; j < variantIds.Length; j++)
                 {
                     Logger.Info($"Variant entry: {variantIds[j]}");
+
+                    // Ensure variant ids are unique. Throw early to not clog up the logs.
+                    try
+                    {
+                        allVariantQuestIds.Add(variantIds[j]);
+                    }
+                    catch (Exception)
+                    {
+                        Logger.Error($"Multiple quests are using variant id {variantIds[j]}. Please ensure all are unique.");
+                        throw;
+                    }
                 }
             }
         }
@@ -160,7 +157,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // If a variant is specified, return the variant quest.
             if (variantId is not null)
             {
-                //Logger.Debug("Variant Quest found. Returning quest variant.");
                 return variantQuests[questId][(uint)variantId];
             }
 

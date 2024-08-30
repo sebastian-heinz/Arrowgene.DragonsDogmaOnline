@@ -75,7 +75,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                         if (quest.IsVariantQuest)
                         {
-                            if (!Server.Database.InsertQuestProgress(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, 0, (uint)quest.VariantId))
+                            if (!Server.Database.InsertQuestProgress(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, 0, quest.VariantId))
                             {
                                 Logger.Error($"Failed to insert progress for the quest {quest.QuestId}");
                             }
