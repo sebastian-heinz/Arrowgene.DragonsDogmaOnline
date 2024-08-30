@@ -68,6 +68,17 @@ namespace Arrowgene.Ddon.Shared.Model
             }
         }
 
+        public void Clear(List<StorageType> storageTypes)
+        {
+            foreach (var (type, storage) in storages)
+            {
+                if (storageTypes.Contains(type))
+                {
+                    storage.Clear();
+                }
+            }
+        }
+
         public Equipment GetCharacterEquipment()
         {
             return new Equipment(GetStorage(StorageType.CharacterEquipment), 0);

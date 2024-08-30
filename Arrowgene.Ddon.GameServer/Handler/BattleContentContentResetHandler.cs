@@ -26,8 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CBattleContentContentResetRes Handle(GameClient client, C2SBattleContentContentResetReq request)
         {
             // Reset Inventory
-            var updateItemList = RemoveAllItemsFromInventory(client.Character, client.Character.Storage, ItemManager.ItemBagStorageTypes);
-            client.Character.Storage.Clear();
+            var updateItemList = Server.ItemManager.RemoveAllItemsFromInventory(client.Character, client.Character.Storage, ItemManager.ItemBagStorageTypes);
 
             // Flush Storage
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
@@ -80,27 +79,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Send(ntc2);
 
             return new S2CBattleContentContentResetRes();
-        }
-
-        private List<CDataItemUpdateResult> RemoveAllItemsFromInventory(Character character, Storages storages, List<StorageType> storageTypes)
-        {
-            var results = new List<CDataItemUpdateResult>();
-            foreach (var storageType in storageTypes)
-            {
-                for (int i = 0; i < character.Storage.GetStorage(storageType).Items.Count; i++)
-                {
-                    ushort slotNo = (ushort)(i + 1);
-
-                    var storageItem = storages.GetStorage(storageType).GetItem(slotNo);
-                    if (storageItem != null)
-                    {
-                        results.Add(Server.ItemManager.CreateItemUpdateResult(null, storageItem.Item1, storageType, slotNo, 0, 0));
-                        results.Add(Server.ItemManager.CreateItemUpdateResult(null, storageItem.Item1, storageType, slotNo, 0, storageItem.Item2));
-                    }
-                }
-            }
-
-            return results;
         }
     }
 }
