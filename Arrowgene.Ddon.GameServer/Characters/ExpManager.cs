@@ -486,6 +486,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 else if(characterToAddExpTo is Pawn)
                 {
                     S2CJobPawnJobExpUpNtc expNtc = new S2CJobPawnJobExpUpNtc();
+                    expNtc.PawnId = ((Pawn)characterToAddExpTo).PawnId;
                     expNtc.JobId = activeCharacterJobData.Job;
                     expNtc.AddExp = gainedExp + extraBonusExp;
                     expNtc.ExtraBonusExp = extraBonusExp;
