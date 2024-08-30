@@ -52,11 +52,11 @@ namespace Arrowgene.Ddon.Server
         [DataMember(Order = 6)] public bool AdjustPartyEnemyExp { get; set; }
 
         /// <summary>
-        /// List of the inclusive ranges of (minlv, maxlv, ExpMultiplier). ExpMultiplier is a value
+        /// List of the inclusive ranges of (MinLv, Maxlv, ExpMultiplier). ExpMultiplier is a value
         /// from (0.0 - 1.0) which is multipled into the base exp amount to determine the adjusted exp.
         /// The minlv and maxlv determine the relative level range that this multiplier should be applied to.
         /// </summary>
-        [DataMember(Order = 7)] public List<(uint, uint, double)> AdjustPartyEnemyExpTiers { get; set; }
+        [DataMember(Order = 7)] public List<(uint MinLv, uint MaxLv, double ExpMultiplier)> AdjustPartyEnemyExpTiers { get; set; }
 
         /// <summary>
         /// Configures if exp is adjusted based on level differences of members vs target level.
@@ -64,11 +64,11 @@ namespace Arrowgene.Ddon.Server
         [DataMember(Order = 8)] public bool AdjustTargetLvEnemyExp { get; set; }
 
         /// <summary>
-        /// List of the inclusive ranges of (minlv, maxlv, ExpMultiplier). ExpMultiplier is a value from
+        /// List of the inclusive ranges of (MinLv, Maxlv, ExpMultiplier). ExpMultiplier is a value from
         /// (0.0 - 1.0) which is multipled into the base exp amount to determine the adjusted exp.
         /// The minlv and maxlv determine the relative level range that this multiplier should be applied to.
         /// </summary>
-        [DataMember(Order = 9)] public List<(uint, uint, double)> AdjustTargetLvEnemyExpTiers { get; set; }
+        [DataMember(Order = 9)] public List<(uint MinLv, uint MaxLv, double ExpMultiplier)> AdjustTargetLvEnemyExpTiers { get; set; }
 
         /// <summary>
         /// The number of real world minutes that make up an in-game day.
@@ -87,6 +87,22 @@ namespace Arrowgene.Ddon.Server
         /// </summary>
         [DataMember(Order = 12)] public List<(uint MeanLength, uint Weight)> WeatherStatistics { get; set; }
 
+        /// <summary>
+        /// Configures if the Pawn Exp Catchup mechanic is enabled. This mechanic still rewards the player pawn EXP when the pawn is outside
+        /// the allowed level range and a lower level than the owner.
+        /// </summary>
+        [DataMember(Order = 13)] public bool EnablePawnCatchup { get; set; }
+
+        /// <summary>
+        /// If the flag EnablePawnCatchup=true, this is the multiplier value used when calculating exp to catch the pawns level back up to the player.
+        /// </summary>
+        [DataMember(Order = 14)] public double PawnCatchupMultiplier { get; set; }
+
+        /// <summary>
+        /// If the flag EnablePawnCatchup=true, this is the range of level that the pawn falls behind the player before the catchup mechanic kicks in.
+        /// </summary>
+        [DataMember(Order = 15)] public uint PawnCatchupLvDiff { get; set; }
+
         public GameLogicSetting()
         {
             AdditionalProductionSpeedFactor = 1.0;
@@ -97,7 +113,7 @@ namespace Arrowgene.Ddon.Server
             CraftConsumableProductionTimesMax = 10;
 
             AdjustPartyEnemyExp = true;
-            AdjustPartyEnemyExpTiers = new List<(uint, uint, double)>()
+            AdjustPartyEnemyExpTiers = new List<(uint MinLv, uint MaxLv, double ExpMultiplier)>()
             {
                 (0, 2, 1.0),
                 (3, 4, 0.9),
@@ -107,7 +123,7 @@ namespace Arrowgene.Ddon.Server
             };
 
             AdjustTargetLvEnemyExp = true;
-            AdjustTargetLvEnemyExpTiers = new List<(uint, uint, double)>()
+            AdjustTargetLvEnemyExpTiers = new List<(uint MinLv, uint MaxLv, double ExpMultiplier)>()
             {
                 (0, 2, 1.0),
                 (3, 4, 0.9),
@@ -115,6 +131,10 @@ namespace Arrowgene.Ddon.Server
                 (7, 8, 0.6),
                 (9, 10, 0.5),
             };
+
+            EnablePawnCatchup = true;
+            PawnCatchupMultiplier = 1.5;
+            PawnCatchupLvDiff = 5;
 
             GameClockTimescale = 90;
 
@@ -142,6 +162,9 @@ namespace Arrowgene.Ddon.Server
             GameClockTimescale = setting.GameClockTimescale;
             WeatherSequenceLength = setting.WeatherSequenceLength;
             WeatherStatistics = setting.WeatherStatistics;
+            EnablePawnCatchup = setting.EnablePawnCatchup;
+            PawnCatchupMultiplier = setting.PawnCatchupMultiplier;
+            PawnCatchupLvDiff = setting.PawnCatchupLvDiff;
         }
 
         // Note: method is called after the object is completely deserialized - constructors are skipped.
@@ -167,6 +190,10 @@ namespace Arrowgene.Ddon.Server
             if (GameClockTimescale <= 0)
             {
                 GameClockTimescale = 90;
+            }
+            if (PawnCatchupMultiplier < 0)
+            {
+                PawnCatchupMultiplier = 1.0;
             }
         }
     }
