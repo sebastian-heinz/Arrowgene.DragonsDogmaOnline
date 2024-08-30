@@ -44,8 +44,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
 
                 // Separate all variant quests to its own dictionary for separate handling.
-
-                if (questAsset.VariantId is not null)
+                // This also ensures these quests are not in gQuests before processing.
+                if (questAsset.VariantId is not null && !gQuests.ContainsKey(questAsset.QuestId))
                 {
                     if (questAsset.VariantId == 0)
                     {
@@ -72,6 +72,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     continue;
                 }
 
+                Logger.Debug($"Adding quest {questAsset.QuestId} to gQuests");
+
                 gQuests[questAsset.QuestId] = GenericQuest.FromAsset(questAsset);
             }
 
@@ -79,7 +81,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             for (int i = 0; i < variantQuestKeys.Length; i++)
             {
-
                 // Store of all variant ids under the generic quest id
                 HashSet<uint> allVariantQuestIds = new();
 
@@ -93,7 +94,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     Logger.Info($"Variant entry: {variantIds[j]}");
 
-                    // Ensure variant ids are unique. Throw early to not clog up the logs.
+                    // Ensure variant ids are unique.
                     try
                     {
                         allVariantQuestIds.Add(variantIds[j]);
