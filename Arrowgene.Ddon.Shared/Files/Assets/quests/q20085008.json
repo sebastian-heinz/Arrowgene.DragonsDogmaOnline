@@ -1,0 +1,71 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Dead Lord's Retainers",
+    "quest_id": 20085008,
+    "base_level": 57,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+  "area_id": "EasternZandora",		
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1880
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 300
+        },
+        {
+            "type": "exp",
+            "amount": 2630
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 7887,
+                    "num": 1
+                },
+                {
+                    "item_id": 8022,
+                    "num": 1
+                },
+                {
+                    "item_id": 41,
+                    "num": 3
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 92,
+                "group_id": 11
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015850",
+                    "level": 58,
+                    "exp": 22000,
+                    "is_boss": true				
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "DiscoverEnemy",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Accept",
+            "reset_group": false,
+            "groups": [0]
+        }
+    ]
+}

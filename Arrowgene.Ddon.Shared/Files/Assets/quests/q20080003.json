@@ -1,0 +1,203 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Perilous Labyrinth",
+    "quest_id": 20080003,
+    "base_level": 57,
+    "minimum_item_rank": 0,
+    "discoverable": true,	
+  "area_id": "EasternZandora",	
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 2250
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1880
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 300
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 7943,
+                    "num": 1
+                },
+                {
+                    "item_id": 9796,
+                    "num": 1
+                },
+                {					
+                    "item_id": 9441,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 92,
+                "group_id": 19
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010607",
+                    "level": 57,
+                    "exp": 1200
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 92,
+                "group_id": 8
+            },
+            "starting_index": 1,
+            "enemies": [
+                {
+                    "enemy_id": "0x010607",
+                    "level": 57,
+                    "exp": 1200
+                },
+                {
+                    "enemy_id": "0x010206",
+                    "level": 57,
+                    "exp": 1200
+                },
+                {
+                    "enemy_id": "0x010206",
+                    "level": 57,
+                    "exp": 1200
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 92,
+                "group_id": 12
+            },
+            "starting_index": 1,
+            "enemies": [
+                {
+                    "enemy_id": "0x015202",
+                    "level": 58,
+                    "exp": 24000,
+                    "is_boss": true					
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NewNpcTalkAndOrder",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 1071, "comment": "Spawns NPC"}
+                    ],
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 1,
+                        "layer_no": 1
+                    },
+                    "npc_id": "Soldier0",
+                    "message_id": 11372
+                },
+                {
+                    "type": "MyQstFlags",
+                    "announce_type": "Accept",
+                    "set_flags": [1],
+                    "check_flags": [2, 3, 4]
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 1,
+                        "layer_no": 1
+                    },
+                    "announce_type": "Update",
+                    "npc_id": "Soldier0",
+                    "message_id": 11842
+                }
+            ]
+        },
+        {
+            "comment": "Process1 (Shadow Group 1)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [0]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "set_flags": [2]
+                }
+            ]
+        },
+        {
+            "comment": "Process2 (Shadow Group 2)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "groups": [1]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [1]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "set_flags": [3]
+                }
+            ]
+        },
+        {
+            "comment": "Process3 (Chimera Group 3)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "groups": [2]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [2]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "set_flags": [4]
+                }
+            ]
+        }
+    ]
+}
