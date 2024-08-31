@@ -1,15 +1,12 @@
-using System.Threading.Tasks;
-using System;
-using System.Threading;
-using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
-using Arrowgene.Logging;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.GameServer.Characters;
-using System.Collections.Generic;
+using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
