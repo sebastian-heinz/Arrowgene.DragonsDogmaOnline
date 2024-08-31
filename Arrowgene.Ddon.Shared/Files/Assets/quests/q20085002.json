@@ -1,0 +1,120 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Journey to Death",
+    "quest_id": 20085002,
+    "base_level": 46,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+  "area_id": "EasternZandora",	
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1290
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 200
+        },
+        {
+            "type": "exp",
+            "amount": 1290
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 7889,
+                    "num": 1
+                },
+                {
+                    "item_id": 9363,
+                    "num": 3
+                },
+                {
+                    "item_id": 41,
+                    "num": 1					
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "loot_pool": [
+                {
+                    "item_id": 9363,
+                    "num": 2,
+                    "chance": 1.0
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 449
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010311",
+                    "level": 48,
+                    "exp": 2200,
+                    "is_boss": false				
+        },
+        {
+                    "enemy_id": "0x010302",
+                    "level": 46,
+                    "exp": 1200,
+                    "is_boss": false				
+        },
+        {
+                    "enemy_id": "0x010302",
+                    "level": 46,
+                    "exp": 1200,
+                    "is_boss": false
+        },
+        {					
+                    "enemy_id": "0x010311",
+                    "level": 48,
+                    "exp": 2200,
+                    "is_boss": false				
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 61,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "Lara",
+            "message_id": 11372
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [0]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 61,
+                "group_id": 1,
+                "layer_no": 1				
+            },
+            "announce_type": "Update",
+            "npc_id": "Lara",
+            "message_id": 11835
+        }
+    ]
+}
