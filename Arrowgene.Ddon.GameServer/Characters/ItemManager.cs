@@ -25,6 +25,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private static readonly uint STACK_BOX_MAX = 999;
 
+        public static readonly List<StorageType> AllItemStorages = Enum.GetValues(typeof(StorageType)).Cast<StorageType>().ToList();
         public static readonly List<StorageType> ItemBagStorageTypes = new List<StorageType> { 
             StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob, 
             StorageType.KeyItems 
@@ -740,6 +741,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             var results = new List<CDataItemUpdateResult>();
             foreach (var storageType in storageTypes)
             {
+                if (!character.Storage.HasStorage(storageType))
+                {
+                    continue;
+                }
+
                 for (int i = 0; i < character.Storage.GetStorage(storageType).Items.Count; i++)
                 {
                     ushort slotNo = (ushort)(i + 1);
@@ -752,10 +758,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     }
 
                     character.Storage.GetStorage(storageType).SetItem(null, 0, slotNo);
-                    if (connection != null)
-                    {
-                        _Server.Database.DeleteStorageItem(character.ContentCharacterId, storageType, slotNo, connection);
-                    }
+                    _Server.Database.DeleteStorageItem(character.ContentCharacterId, storageType, slotNo, connection);
                 }
             }
 

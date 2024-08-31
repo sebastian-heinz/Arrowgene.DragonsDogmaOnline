@@ -55,6 +55,11 @@ namespace Arrowgene.Ddon.Shared.Model
             return storages[storageType];
         }
 
+        public bool HasStorage(StorageType storageType)
+        {
+            return storages.ContainsKey(storageType);
+        }
+
         public void AddStorage(StorageType storageType, Storage storage)
         {
             storages[storageType] = storage;

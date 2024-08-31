@@ -25,24 +25,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CBattleContentContentResetRes Handle(GameClient client, C2SBattleContentContentResetReq request)
         {
-            // Reset Inventory
-            var updateItemList = Server.ItemManager.RemoveAllItemsFromInventory(client.Character, client.Character.Storage, ItemManager.ItemBagStorageTypes);
-
-            // Flush Storage
-            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
-            {
-                UpdateType = ItemNoticeType.SwitchingStorage,
-                UpdateItemList = updateItemList
-            };
-            client.Send(updateCharacterItemNtc);
-
             // Add back equipment templates
             client.Character.EquipmentTemplate = new EquipmentTemplate(Server.AssetRepository.BitterblackMazeAsset.GenerateStarterEquipment(), Server.AssetRepository.BitterblackMazeAsset.GenerateStarterJobEquipment());
 
+            List<CDataItemUpdateResult> updateItemList = null;
             Server.Database.ExecuteInTransaction(connection =>
             {
-                // Delete all existing storage items
-                Server.Database.DeleteAllStorageItems(connection, client.Character.ContentCharacterId);
+                // Remove all items from the player inventory
+                updateItemList = Server.ItemManager.RemoveAllItemsFromInventory(client.Character, client.Character.Storage, ItemManager.AllItemStorages, connection);
 
                 // Remove items equipped in the database
                 Server.Database.DeleteAllEquipItems(client.Character.CommonId, connection);
@@ -50,6 +40,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // Recreate starting items for player
                 Server.Database.CreateItems(connection, client.Character);
             });
+
+            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
+            {
+                UpdateType = ItemNoticeType.SwitchingStorage,
+                UpdateItemList = updateItemList
+            };
+            client.Send(updateCharacterItemNtc);
 
             // Add back equipment
             client.Character.Equipment = client.Character.Storage.GetCharacterEquipment();
