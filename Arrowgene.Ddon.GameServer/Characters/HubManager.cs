@@ -67,10 +67,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             uint id = client.Character.CharacterId;
-            HashSet<GameClient> targetClients = new HashSet<GameClient>()
-            {
-                client
-            };
+            HashSet<GameClient> targetClients = new HashSet<GameClient>();
             HashSet<GameClient> gatherClients = new HashSet<GameClient>();
 
             if (HubMembers.ContainsKey(previousStageId))
