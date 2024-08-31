@@ -1,21 +1,24 @@
 using Arrowgene.Ddon.GameServer;
 using Arrowgene.Ddon.GameServer.GatheringItems;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Shared.Model;
 using System;
 using System.Collections.Generic;
 
 public class InstanceEnemyManager : InstanceAssetManager<byte, Enemy, InstancedEnemy>
 {
-    private readonly DdonGameServer _server;
+    private readonly DdonGameServer _Server;
+    private Dictionary<StageId, ushort> _CurrentSubgroup { get; set; }
 
     public InstanceEnemyManager(DdonGameServer server) : base()
     {
-        _server = server;
+        _Server = server;
+        _CurrentSubgroup  = new Dictionary<StageId, ushort>();
     }
 
     protected override List<Enemy> FetchAssetsFromRepository(StageId stage, byte subGroupId)
     {
-        return _server.AssetRepository.EnemySpawnAsset.Enemies.GetValueOrDefault((stage, subGroupId)) ?? new List<Enemy>();
+        return _Server.AssetRepository.EnemySpawnAsset.Enemies.GetValueOrDefault((stage, subGroupId)) ?? new List<Enemy>();
     }
 
     protected override List<InstancedEnemy> InstanceAssets(List<Enemy> originals)
@@ -23,7 +26,7 @@ public class InstanceEnemyManager : InstanceAssetManager<byte, Enemy, InstancedE
         List<InstancedEnemy> filteredEnemyList = new List<InstancedEnemy>();
 
         // Calculate current game time
-        long gameTimeMSec = _server.WeatherManager.RealTimeToGameTimeMS(DateTimeOffset.UtcNow);
+        long gameTimeMSec = _Server.WeatherManager.RealTimeToGameTimeMS(DateTimeOffset.UtcNow);
 
         foreach (Enemy original in originals)
         {
@@ -42,5 +45,34 @@ public class InstanceEnemyManager : InstanceAssetManager<byte, Enemy, InstancedE
             }
         }
         return filteredEnemyList;
+    }
+
+    public ushort GetInstanceSubgroupId(StageId stageId)
+    {
+        lock (_CurrentSubgroup)
+        {
+            if (!_CurrentSubgroup.ContainsKey(stageId))
+            {
+                return 0;
+            }
+            return _CurrentSubgroup[stageId];
+        }
+    }
+
+    public void SetInstanceSubgroupId(StageId stageId, ushort subgroupId)
+    {
+        lock (_CurrentSubgroup)
+        {
+            _CurrentSubgroup[stageId] = subgroupId;
+        }
+    }
+
+    public override void Clear()
+    {
+        base.Clear();
+        lock (_CurrentSubgroup)
+        {
+            _CurrentSubgroup.Clear();
+        }
     }
 }
