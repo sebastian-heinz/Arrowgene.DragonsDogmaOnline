@@ -1,0 +1,69 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "ExtremeMission",
+    "comment": "Earth's Fury (EM7)",
+    "quest_id": 50203000,
+    "base_level": 75,
+    "minimum_item_rank": 52,
+    "discoverable": false,
+    "mission_params": {
+        "group": 2,
+        "minimum_members": 1,
+        "playtime": 3600,
+        "solo_only": true,
+        "max_pawns": 3,
+        "phase_groups": [124, 5, 124]
+    },
+    "order_conditions": [
+        {"type": "ClearExtremeMission", "Param1": 50202000}
+    ],
+    "rewards": [
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 15940,
+                    "num": 3
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "comment": "Boss",
+            "stage_id": {
+                "id": 459,
+                "group_id": 1
+            },
+            "enemies": [
+                {
+                    "comment": "Wisened Tarasque",
+                    "enemy_id": "0x080600",
+                    "level": 75,
+                    "exp": 0,
+                    "is_boss": true
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "blocks": [
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Start",
+                    "groups": [0]
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "comment": "Wait for fight to start",
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+                }
+            ]
+        }
+    ]
+}

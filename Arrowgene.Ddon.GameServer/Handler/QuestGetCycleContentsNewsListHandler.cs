@@ -1,4 +1,4 @@
-﻿using Arrowgene.Buffers;
+using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -7,12 +7,12 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestGetCycleContentsNewsList : PacketHandler<GameClient>
+    public class QuestGetCycleContentsNewsListHandler : PacketHandler<GameClient>
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetCycleContentsNewsList));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetCycleContentsNewsListHandler));
 
 
-        public QuestGetCycleContentsNewsList(DdonGameServer server) : base(server)
+        public QuestGetCycleContentsNewsListHandler(DdonGameServer server) : base(server)
         {
         }
 

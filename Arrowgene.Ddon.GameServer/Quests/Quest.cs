@@ -69,6 +69,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public List<QuestDeliveryItem> DeliveryItems { get; protected set; }
         public List<QuestLayoutFlagSetInfo> QuestLayoutFlagSetInfo;
         public List<QuestLayoutFlag> QuestLayoutFlags;
+        public QuestMissionParams MissionParams { get; protected set; }
         public Dictionary<uint, QuestEnemyGroup> EnemyGroups { get; set; }
         public bool IsVariantQuest { get; set; }
         public uint VariantId { get; set; }
@@ -94,6 +95,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             EnemyGroups = new Dictionary<uint, QuestEnemyGroup>();
             IsVariantQuest = false;
             VariantId = 0;
+            MissionParams = new QuestMissionParams();
             Processes = new List<QuestProcess>();
         }
 
@@ -213,7 +215,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 BaseLevel = BaseLevel,
                 ContentJoinItemRank = MinimumItemRank,
                 IsClientOrder = step > 0,
-                IsEnable = true,
                 BaseExp = ExpRewards,
                 BaseWalletPoints = WalletRewards,
                 FixedRewardItemList = GetQuestFixedRewards(),
@@ -353,6 +354,44 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return result;
         }
 
+        public virtual CDataTimeGainQuestList ToCDataTimeGainQuestList(uint step)
+        {
+            var result = new CDataTimeGainQuestList()
+            {
+                Param = ToCDataQuestList(step),
+                PlayTimeInSec = MissionParams.PlaytimeInSeconds,
+                IsNoTimeup = (MissionParams.PlaytimeInSeconds == 0),
+                Unk0 = false, // Could also be IsNoTimeUp?
+                IsJoinCharacter = !MissionParams.IsSolo,
+                IsJoinPawn = MissionParams.MaxPawns > 0,
+                Unk1 = false,
+                JoinPawnNum = (byte) MissionParams.MaxPawns,
+            };
+            result.Restrictions.RestrictArmor = !MissionParams.ArmorAllowed;
+            result.Restrictions.RestrictJewlery = !MissionParams.JewelryAllowed;
+
+#if false
+            // Figure out what these fields do
+            result.Restrictions.Unk0 = 2;
+            result.Restrictions.Unk1List.Add(new CDataCommonU32() { Value = 1 });
+            result.Restrictions.Unk2List.Add(new CDataTimeGainQuestUnk1Unk2() { Unk0 = 3, Unk1 = true });
+            result.Restrictions.Unk5List.Add(new CDataCommonU8() { Value = 2 });
+#endif
+
+
+            foreach (var reward in result.Param.FixedRewardItemList)
+            {
+                result.RewardItemDetailList.Add(new CDataRewardItemDetail()
+                {
+                    ItemId = reward.ItemId,
+                    Num = reward.Num,
+                    Type = 12 // What does this type mean?
+                });
+            }
+
+            return result;
+        }
+
         public virtual CDataSetQuestInfoList ToCDataSetQuestInfoList()
         {
             var result = new CDataSetQuestInfoList()
@@ -388,6 +427,30 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             return result;
         }
+
+        public virtual CDataContentsPlayStartData ToCDataContentsPlayStartData(uint step = 0)
+        {
+            return new CDataContentsPlayStartData()
+            {
+                QuestId = (uint) QuestId,
+                QuestScheudleId = (uint) QuestScheduleId,
+                BaseLevel = BaseLevel,
+                QuestEnemyInfoList = EnemyGroups.Values.SelectMany(group => group.Enemies.Select(enemy => new CDataQuestEnemyInfo()
+                {
+                    GroupId = enemy.UINameId,
+                    Unk0 = 0, // Seemingly always 0 in the pcaps
+                    Lv = enemy.Lv,
+                    IsPartyRecommend = enemy.IsBossGauge
+                }))
+                .ToList(),
+                QuestLayoutFlagSetInfoList = QuestLayoutFlagSetInfo.Select(x => x.AsCDataQuestLayoutFlagSetInfo()).ToList(),
+                QuestProcessStateList = GetProcessState(step, out uint announceNoCount),
+                Unk0 = true,
+                Unk1 = false,
+                Unk2 = true
+            };
+        }
+
         public abstract List<CDataQuestProcessState> StateMachineExecute(DdonGameServer server, GameClient client, QuestProcessState processState, out QuestProgressState questProgressState);
 
         public virtual void SendProgressWorkNotices(GameClient client, StageId stageId, uint subGroupId)

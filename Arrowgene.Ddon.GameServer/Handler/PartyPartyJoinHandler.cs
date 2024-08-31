@@ -19,7 +19,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPartyPartyJoinReq> packet)
         {
-            S2CPartyPartyJoinRes res = new S2CPartyPartyJoinRes();
+            S2CPartyPartyJoinRes res = new S2CPartyPartyJoinRes()
+            {
+                ContentNumber = Server.ExmManager.GetContentIdForCharacter(client.Character)
+            };
+
+            if (res.ContentNumber != 0)
+            {
+                Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Contents);
+            }
 
             PartyGroup party = Server.PartyManager.GetParty(packet.Structure.PartyId);
             if (party == null)

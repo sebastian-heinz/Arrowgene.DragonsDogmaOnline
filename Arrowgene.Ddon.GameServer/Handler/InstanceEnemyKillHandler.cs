@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
@@ -57,13 +58,33 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             InstancedEnemy enemyKilled = client.Party.InstanceEnemyManager.GetInstanceEnemy(stageId, (byte)packet.Structure.SetId);
-            enemyKilled.IsKilled = true;
+            if (enemyKilled.RepopCount > 0 && enemyKilled.RepopNum < enemyKilled.RepopCount)
+            {
+                enemyKilled.RepopNum += 1;
+
+                S2CInstanceEnemyRepopNtc repopNtc = new S2CInstanceEnemyRepopNtc()
+                {
+                    LayoutId = layoutId,
+                    WaitSecond = enemyKilled.RepopWaitSecond,
+                    EnemyData = new CDataLayoutEnemyData()
+                    {
+                        PositionIndex = (byte) packet.Structure.SetId,
+                        EnemyInfo = enemyKilled.asCDataStageLayoutEnemyPresetEnemyInfoClient()
+                    }
+                };
+                client.Send(repopNtc);
+            }
+            else
+            {
+                enemyKilled.IsKilled = true;
+            }
+            
 
             foreach (var partyMemberClient in client.Party.Clients)
             {
                 // If the enemy is quest controlled, then either get from the quest loot drop, or the general one.
                 List<InstancedGatheringItem> instancedGatheringItems = IsQuestControlled ?
-                            partyMemberClient.InstanceQuestDropManager.GenerateEnemyLoot(enemyKilled, packet.Structure.LayoutId, packet.Structure.SetId) :
+                            partyMemberClient.InstanceQuestDropManager.GenerateEnemyLoot(quest, enemyKilled, packet.Structure.LayoutId, packet.Structure.SetId) :
                             partyMemberClient.InstanceDropItemManager.GetAssets(layoutId, packet.Structure.SetId);
 
                 // If the roll was unlucky, there is a chance that no bag will show.

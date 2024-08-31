@@ -8,6 +8,7 @@ using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
@@ -51,6 +52,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Param = quest.ToCDataQuestList(questState == null ? 0 : questState.Step),
                 });
             }
+
+            // Add Debug Quest
+            var debugQuest = QuestManager.GetQuest(70000001);
+            res.SetQuestList.Add(new CDataSetQuestList()
+            {
+                Detail = new CDataSetQuestDetail()
+                {
+                    IsDiscovery = false,
+                    ClearCount = 0
+                },
+                Param = debugQuest.ToCDataQuestList(0),
+            });
 
             S2CQuestGetSetQuestListNtc ntc = new S2CQuestGetSetQuestListNtc()
             { 

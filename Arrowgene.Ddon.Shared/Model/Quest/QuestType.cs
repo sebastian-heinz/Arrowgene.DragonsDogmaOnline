@@ -19,8 +19,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         Board = 1,
         World = 1, // World should be Set Quest (2) not light
         Personal = 4,
-        
-
+        ExtremeMission = TimeGain, // Unsure if this is the proper category
 #if false
 // Seems game has 2 different sets of quest IDs
 // which one is the right one to use???

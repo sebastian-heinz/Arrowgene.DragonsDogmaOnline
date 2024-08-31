@@ -1,6 +1,9 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -23,6 +26,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Logger.Error(client, "Could not leave party, does not exist");
                 // todo return error
                 return;
+            }
+
+            if (Server.ExmManager.GetContentIdForCharacter(client.Character) != 0)
+            {
+                Server.ExmManager.RemoveCharacterFromContentGroup(client.Character);
+
+                Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Online);
             }
 
             party.Leave(client);
