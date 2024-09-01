@@ -1,5 +1,6 @@
 #nullable enable
 using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -14,10 +15,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
 {
     public class ItemManager
     {
+        private DdonGameServer _Server;
+        public ItemManager(DdonGameServer server)
+        {
+            _Server = server;
+        }
+
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ItemManager));
 
         private static readonly uint STACK_BOX_MAX = 999;
 
+        public static readonly List<StorageType> AllItemStorages = Enum.GetValues(typeof(StorageType)).Cast<StorageType>().ToList();
         public static readonly List<StorageType> ItemBagStorageTypes = new List<StorageType> { 
             StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob, 
             StorageType.KeyItems 
@@ -726,6 +734,35 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_STORAGE_TYPE, $"Unexpected destination when exchanging items {storageType}");
             }
             return toBag;
+        }
+
+        public List<CDataItemUpdateResult> RemoveAllItemsFromInventory(Character character, Storages storages, List<StorageType> storageTypes, DbConnection connection = null)
+        {
+            var results = new List<CDataItemUpdateResult>();
+            foreach (var storageType in storageTypes)
+            {
+                if (!character.Storage.HasStorage(storageType))
+                {
+                    continue;
+                }
+
+                for (int i = 0; i < character.Storage.GetStorage(storageType).Items.Count; i++)
+                {
+                    ushort slotNo = (ushort)(i + 1);
+
+                    var storageItem = storages.GetStorage(storageType).GetItem(slotNo);
+                    if (storageItem != null)
+                    {
+                        results.Add(_Server.ItemManager.CreateItemUpdateResult(null, storageItem.Item1, storageType, slotNo, 0, 0));
+                        results.Add(_Server.ItemManager.CreateItemUpdateResult(null, storageItem.Item1, storageType, slotNo, 0, storageItem.Item2));
+                    }
+
+                    character.Storage.GetStorage(storageType).SetItem(null, 0, slotNo);
+                    _Server.Database.DeleteStorageItem(character.ContentCharacterId, storageType, slotNo, connection);
+                }
+            }
+
+            return results;
         }
     }
 

@@ -60,7 +60,7 @@ namespace Arrowgene.Ddon.GameServer
             ClientLookup = new GameClientLookup();
             ChatLogHandler = new ChatLogHandler();
             ChatManager = new ChatManager(this, Router);
-            ItemManager = new ItemManager();
+            ItemManager = new ItemManager(this);
             CraftManager = new CraftManager(this);
             PartyManager = new PartyManager(this);
             ExpManager = new ExpManager(this, ClientLookup);

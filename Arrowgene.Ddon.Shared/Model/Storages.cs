@@ -55,6 +55,11 @@ namespace Arrowgene.Ddon.Shared.Model
             return storages[storageType];
         }
 
+        public bool HasStorage(StorageType storageType)
+        {
+            return storages.ContainsKey(storageType);
+        }
+
         public void AddStorage(StorageType storageType, Storage storage)
         {
             storages[storageType] = storage;
@@ -65,6 +70,17 @@ namespace Arrowgene.Ddon.Shared.Model
             foreach (var (type, storage) in storages)
             {
                 storage.Clear();
+            }
+        }
+
+        public void Clear(List<StorageType> storageTypes)
+        {
+            foreach (var (type, storage) in storages)
+            {
+                if (storageTypes.Contains(type))
+                {
+                    storage.Clear();
+                }
             }
         }
 
