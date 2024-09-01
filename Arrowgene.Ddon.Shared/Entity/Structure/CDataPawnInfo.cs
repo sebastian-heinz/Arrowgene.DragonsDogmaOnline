@@ -29,7 +29,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint Version { get; set; }
         public string Name { get; set; }
         public CDataEditInfo EditInfo { get; set; }
-        public byte State { get; set; }
+        public PawnState State { get; set; }
         public uint MaxHp { get; set; }
         public uint MaxStamina { get; set; }
         public JobId JobId { get; set; }
@@ -66,7 +66,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.Version);
                 WriteMtString(buffer, obj.Name);
                 WriteEntity<CDataEditInfo>(buffer, obj.EditInfo);
-                WriteByte(buffer, obj.State);
+                WriteByte(buffer, (byte) obj.State);
                 WriteUInt32(buffer, obj.MaxHp);
                 WriteUInt32(buffer, obj.MaxStamina);
                 WriteByte(buffer, (byte) obj.JobId);
@@ -103,7 +103,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.Version = ReadUInt32(buffer);
                 obj.Name = ReadMtString(buffer);
                 obj.EditInfo = ReadEntity<CDataEditInfo>(buffer);
-                obj.State = ReadByte(buffer);
+                obj.State = (PawnState) ReadByte(buffer);
                 obj.MaxHp = ReadUInt32(buffer);
                 obj.MaxStamina = ReadUInt32(buffer);
                 obj.JobId = (JobId) ReadByte(buffer);

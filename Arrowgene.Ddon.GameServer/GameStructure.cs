@@ -4,8 +4,6 @@ using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.Server.Network;
 
 namespace Arrowgene.Ddon.GameServer;
 
@@ -114,7 +112,7 @@ public static class GameStructure
         cDataPawnInfo.Version = 0;
         cDataPawnInfo.Name = pawn.Name;
         cDataPawnInfo.EditInfo = pawn.EditInfo;
-        cDataPawnInfo.State = 0; // TODO: ?
+        cDataPawnInfo.State = pawn.PawnState;
         cDataPawnInfo.MaxHp = pawn.StatusInfo.MaxHP;
         cDataPawnInfo.MaxStamina = pawn.StatusInfo.MaxStamina;
         cDataPawnInfo.JobId = pawn.Job;
