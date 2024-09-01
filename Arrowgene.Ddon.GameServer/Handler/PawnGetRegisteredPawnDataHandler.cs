@@ -40,7 +40,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 break;
             }
 
-            res.PawnInfo = pawn.AsCDataPawnInfo();
+            GameStructure.CDataPawnInfo(res.PawnInfo, pawn);
 
             return res;
         }
