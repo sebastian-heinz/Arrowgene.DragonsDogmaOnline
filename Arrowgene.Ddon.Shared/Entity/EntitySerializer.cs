@@ -991,6 +991,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPawnGetPawnTotalScoreRes.Serializer());
             Create(new S2CPawnGetRegisteredPawnDataRes.Serializer());
             Create(new S2CPawnJoinPartyMypawnRes.Serializer());
+            Create(new S2CPawnPawnLostNtc.Serializer());
             Create(new S2CPawnPawnLostRes.Serializer());
             Create(new S2CPawnSpSkillDeleteStockSkillRes.Serializer());
             Create(new S2CPawnSpSkillGetActiveSkillRes.Serializer());
