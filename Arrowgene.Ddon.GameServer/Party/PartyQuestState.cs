@@ -152,6 +152,15 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
+        public bool HasEnemiesInCurrentStageGroup(Quest quest, StageId stageId)
+        {
+            lock (ActiveQuests)
+            {
+                var questState = ActiveQuests[quest.QuestId];
+                return questState.QuestEnemies.ContainsKey(stageId);
+            }
+        }
+
         public bool HasEnemiesInCurrentStageGroup(Quest quest, StageId stageId, uint subGroupId)
         {
             lock (ActiveQuests)
