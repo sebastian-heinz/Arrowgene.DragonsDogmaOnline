@@ -3,44 +3,38 @@ using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class S2CInstanceSetOmInstantKeyValueRes : IPacketStructure
+    public class S2CInstanceSetOmInstantKeyValueRes : ServerResponse
     {
-        public PacketId Id => PacketId.S2C_INSTANCE_SET_OM_INSTANT_KEY_VALUE_RES;
+        public override PacketId Id => PacketId.S2C_INSTANCE_SET_OM_INSTANT_KEY_VALUE_RES;
         
         public S2CInstanceSetOmInstantKeyValueRes()
         {
             StageId = 0;
         }
 
-        public S2CInstanceSetOmInstantKeyValueRes(C2SInstanceSetOmInstantKeyValueReq reqData)
-        {
-            ReqData = reqData;
-        }
-
         public uint StageId { get; set; }
-        public C2SInstanceSetOmInstantKeyValueReq ReqData { get; set; }
-        
+        public ulong Key {  get; set; }
+        public uint Value {  get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CInstanceSetOmInstantKeyValueRes>
         {
             public override void Write(IBuffer buffer, S2CInstanceSetOmInstantKeyValueRes obj)
             {
-                WriteUInt64(buffer, 0);
-                C2SInstanceSetOmInstantKeyValueReq reqData = obj.ReqData;
+                WriteServerResponse(buffer, obj);
                 WriteUInt32(buffer, obj.StageId);
-                WriteUInt64(buffer, reqData.Data0);
-                WriteUInt32(buffer, reqData.Data1);
-                WriteByteArray(buffer, obj.ResData);
+                WriteUInt64(buffer, obj.Key);
+                WriteUInt32(buffer, obj.Value);
             }
 
             public override S2CInstanceSetOmInstantKeyValueRes Read(IBuffer buffer)
             {
                 S2CInstanceSetOmInstantKeyValueRes obj = new S2CInstanceSetOmInstantKeyValueRes();
+                ReadServerResponse(buffer, obj);
+                obj.StageId = ReadUInt32(buffer);
+                obj.Key = ReadUInt64(buffer);
+                obj.Value = ReadUInt32(buffer);
                 return obj;
             }
         }
-
-        private readonly byte[] ResData = { 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0 };
-
     }
 }

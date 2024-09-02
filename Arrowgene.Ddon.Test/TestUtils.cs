@@ -1,8 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using Arrowgene.Logging;
-using Xunit.Abstractions;
 
 namespace Arrowgene.Ddon.Test
 {
@@ -14,6 +12,11 @@ namespace Arrowgene.Ddon.Test
             var codeBasePath = Uri.UnescapeDataString(codeBaseUrl.AbsolutePath);
             var dirPath = Path.GetDirectoryName(codeBasePath);
             return Path.Combine(dirPath, "TestFiles", relativePath);
+        }
+
+        public static string GetTestFileAsString(string relativePath)
+        {
+            return File.ReadAllText(GetTestPath(relativePath));
         }
     }
 }

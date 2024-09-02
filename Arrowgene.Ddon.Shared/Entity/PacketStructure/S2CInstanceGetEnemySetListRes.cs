@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public CDataStageLayoutId LayoutId { get; set; }
         public byte SubGroupId { get; set; }
-         public uint RandomSeed { get; set; }
+        public uint RandomSeed { get; set; }
         public uint QuestId { get; set; }
         public List<CDataLayoutEnemyData> EnemyList { get; set; }
         public List<CDataDropItemSetInfo> DropItemSetList { get; set; }

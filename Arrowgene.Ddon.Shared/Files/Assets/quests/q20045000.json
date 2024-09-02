@@ -1,0 +1,72 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Bright One-Eyed",
+  "quest_id": 20045000,
+  "base_level": 28,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "VoldenMines",
+  "news_image": 95,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 920
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 140
+    },
+    {
+      "type": "exp",
+      "amount": 1290
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 1017,
+          "num": 1
+        },
+        {
+          "item_id": 9402,
+          "num": 2
+        },
+        {
+          "item_id": 9397,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 72,
+        "group_id": 14
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015020",
+          "level": 28,
+          "exp": 4500,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

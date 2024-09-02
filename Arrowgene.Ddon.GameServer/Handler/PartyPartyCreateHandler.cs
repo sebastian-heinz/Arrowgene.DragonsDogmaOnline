@@ -1,10 +1,14 @@
-﻿using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -29,20 +33,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            ErrorRes<PlayerPartyMember> invite = party.Invite(client, client);
-            if (invite.HasError)
+            ErrorRes<PlayerPartyMember> host = party.AddHost(client);
+            if (host.HasError)
             {
-                Logger.Error(client, "failed to invite to new party");
-                res.Error = (uint)invite.ErrorCode;
-                client.Send(res);
-                return;
-            }
-
-            ErrorRes<PlayerPartyMember> accept = party.Accept(client);
-            if (accept.HasError)
-            {
-                Logger.Error(client, "failed to accept new party");
-                res.Error = (uint)accept.ErrorCode;
+                Logger.Error(client, "failed to create and join new party");
+                res.Error = (uint)host.ErrorCode;
                 client.Send(res);
                 return;
             }
@@ -54,6 +49,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 res.Error = (uint)join.ErrorCode;
                 client.Send(res);
                 return;
+            }
+
+            var quests = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All);
+            foreach (var quest in quests)
+            {
+                party.QuestState.AddNewQuest(quest.QuestId, quest.Step);
+            }
+
+            var worldQuests = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.World).Select(x => x.QuestId).ToList();
+            foreach (var quest in QuestManager.GetQuestsByType(QuestType.World))
+            {
+                if (QuestManager.IsBoardQuest(quest.Key))
+                {
+                    continue;
+                }
+
+                if (!worldQuests.Contains(quest.Key))
+                {
+                    party.QuestState.AddNewQuest(quest.Key, 0);
+                }
             }
 
             S2CPartyPartyJoinNtc ntc = new S2CPartyPartyJoinNtc();

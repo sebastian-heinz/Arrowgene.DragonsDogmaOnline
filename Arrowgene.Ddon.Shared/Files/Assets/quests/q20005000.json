@@ -1,0 +1,72 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Sky Concealing Wings",
+  "quest_id": 20005000,
+  "base_level": 14,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "HidellPlains",
+  "news_image": 6,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 460
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 90
+    },
+    {
+      "type": "exp",
+      "amount": 800
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 8948,
+          "num": 1
+        },
+        {
+          "item_id": 7810,
+          "num": 1
+        },
+        {
+          "item_id": 9407,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 30
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015302",
+          "level": 14,
+          "exp": 2780,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

@@ -1,0 +1,82 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Mystery of Mysree Limestone Cave",
+  "quest_id": 20055002,
+  "base_level": 34,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "MysreeForest",
+  "news_image": 536,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1120
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 170
+    },
+    {
+      "type": "exp",
+      "amount": 1570
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 7865,
+          "num": 3
+        },
+        {
+          "item_id": 9397,
+          "num": 2
+        },
+        {
+          "item_id": 9376,
+          "num": 3
+        }
+      ]
+    },
+    {
+      "type": "random",
+      "loot_pool": [
+        {
+          "item_id": 35,
+          "num": 9,
+          "chance": 1.0
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 159,
+        "group_id": 13
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015040",
+          "level": 34,
+          "exp": 7500,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

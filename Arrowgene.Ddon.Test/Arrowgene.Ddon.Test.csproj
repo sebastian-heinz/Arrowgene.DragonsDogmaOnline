@@ -10,6 +10,12 @@
         <IsPackable>false</IsPackable>
         <LangVersion>10</LangVersion>
     </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    </PropertyGroup>
     <Import Project="./../SetSourceRevision.targets" />
     <ItemGroup>
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.1" />
@@ -26,6 +32,8 @@
     </ItemGroup>
     <ItemGroup>
         <ProjectReference Include="..\Arrowgene.Ddon.Client\Arrowgene.Ddon.Client.csproj" />
+        <ProjectReference Include="..\Arrowgene.Ddon.Cli\Arrowgene.Ddon.Cli.csproj" />
+        <ProjectReference Include="..\Arrowgene.Ddon.GameServer\Arrowgene.Ddon.GameServer.csproj" />
         <ProjectReference Include="..\Arrowgene.Ddon.Server\Arrowgene.Ddon.Server.csproj" />
     </ItemGroup>
     <ItemGroup>

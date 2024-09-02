@@ -1,0 +1,96 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The King of Bones",
+  "quest_id": 20025007,
+  "base_level": 38,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "BetlandPlains",
+  "news_image": 511,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1250
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 200
+    },
+    {
+      "type": "exp",
+      "amount": 1500
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 9286,
+          "num": 1
+        },
+        {
+          "item_id": 9398,
+          "num": 3
+        },
+        {
+          "item_id": 9401,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 40,
+        "group_id": 2
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x010301",
+          "level": 38,
+          "exp": 540,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010301",
+          "level": 38,
+          "exp": 540,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010308",
+          "level": 38,
+          "exp": 540,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010308",
+          "level": 38,
+          "exp": 540,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010308",
+          "level": 38,
+          "exp": 540,
+          "is_boss": false
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

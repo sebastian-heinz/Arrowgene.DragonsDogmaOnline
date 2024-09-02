@@ -1,0 +1,72 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Guardian of Green Leaves",
+  "quest_id": 20065001,
+  "base_level": 40,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "MysreeGrove",
+  "news_image": 567,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1320
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 210
+    },
+    {
+      "type": "exp",
+      "amount": 1840
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 7900,
+          "num": 2
+        },
+        {
+          "item_id": 9390,
+          "num": 1
+        },
+        {
+          "item_id": 9410,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 112,
+        "group_id": 4
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015031",
+          "level": 40,
+          "exp": 12000,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

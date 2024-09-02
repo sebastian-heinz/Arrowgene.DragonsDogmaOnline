@@ -1,0 +1,275 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "An Assistant's Assistant",
+  "quest_id": 20000003,
+  "base_level": 8,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "HidellPlains",
+  "news_image": 15,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 310
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 520
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 30
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 458,
+          "num": 1
+        },
+        {
+          "item_id": 36,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "processes": [
+    {
+      "comment": "process 0",
+      "blocks": [
+        {
+          "type": "NpcTalkAndOrder",
+          "stage_id": {
+            "id": 3,
+            "group_id": 0
+          },
+          "npc_id": "Klaus0",
+          "message_id": 10722
+        },
+        {
+          "type": "MyQstFlags",
+          "announce_type": "Accept",
+          "set_flags": [ 9 ],
+          "check_flags": [ 1, 2, 3, 4, 5, 6, 7, 8 ]
+        },
+        {
+          "type": "TalkToNpc",
+          "stage_id": {
+            "id": 3,
+            "group_id": 0
+          },
+          "npc_id": "Klaus0",
+          "message_id": 10730
+        },
+        {
+          "type": "TalkToNpc",
+          "announce_type": "Update",
+          "stage_id": {
+            "id": 66,
+            "group_id": 0
+          },
+          "npc_id": "Talcott",
+          "message_id": 14775
+        },
+        {
+          "type": "TalkToNpc",
+          "announce_type": "Update",
+          "stage_id": {
+            "id": 3,
+            "group_id": 0
+          },
+          "npc_id": "Klaus0",
+          "message_id": 10731
+        }
+      ]
+    },
+    {
+      "comment": "process 1",
+      "blocks": [
+        {
+          "type": "MyQstFlags",
+          "check_flags": [ 9 ]
+        },
+        {
+          "type": "TalkToNpc",
+          "stage_id": {
+            "id": 2,
+            "group_id": 0
+          },
+          "npc_id": "Cameron0",
+          "message_id": 11772
+        },
+        {
+          "type": "MyQstFlags",
+          "announce_type": "Update",
+          "set_flags": [ 1 ]
+        }
+      ]
+    },
+    {
+      "comment": "process 2",
+      "blocks": [
+        {
+          "type": "MyQstFlags",
+          "check_flags": [ 9 ]
+        },
+        {
+          "type": "TalkToNpc",
+          "stage_id": {
+            "id": 2,
+            "group_id": 0
+          },
+          "npc_id": "Tonio",
+          "message_id": 11771
+        },
+        {
+          "type": "MyQstFlags",
+          "announce_type": "Update",
+          "set_flags": [ 2 ]
+        }
+      ]
+    },
+    {
+      "comment": "process 3",
+      "blocks": [
+        {
+          "type": "MyQstFlags",
+          "check_flags": [ 9 ]
+        },
+        {
+          "type": "TalkToNpc",
+          "stage_id": {
+            "id": 2,
+            "group_id": 0
+          },
+          "npc_id": "Kittredge",
+          "message_id": 10727
+        },
+        {
+          "type": "MyQstFlags",
+          "announce_type": "Update",
+          "set_flags": [ 3 ]
+        }
+      ]
+    },
+    {
+      "comment": "process 4",
+      "blocks": [
+        {
+          "type": "MyQstFlags",
+          "check_flags": [ 9 ]
+        },
+        {
+          "type": "TalkToNpc",
+          "stage_id": {
+            "id": 2,
+            "group_id": 0
+          },
+          "npc_id": "Morris",
+          "message_id": 10726
+        },
+        {
+          "type": "MyQstFlags",
+          "announce_type": "Update",
+          "set_flags": [ 4 ]
+        }
+      ]
+    },
+    {
+      "comment": "process 5",
+      "blocks": [
+        {
+          "type": "MyQstFlags",
+          "check_flags": [ 9 ]
+        },
+        {
+          "type": "TalkToNpc",
+          "stage_id": {
+            "id": 2,
+            "group_id": 0
+          },
+          "npc_id": "Nancy",
+          "message_id": 10728
+        },
+        {
+          "type": "MyQstFlags",
+          "announce_type": "Update",
+          "set_flags": [ 5 ]
+        }
+      ]
+    },
+    {
+      "comment": "process 6",
+      "blocks": [
+        {
+          "type": "MyQstFlags",
+          "check_flags": [ 9 ]
+        },
+        {
+          "type": "TalkToNpc",
+          "stage_id": {
+            "id": 2,
+            "group_id": 0
+          },
+          "npc_id": "Ferguson",
+          "message_id": 10725
+        },
+        {
+          "type": "MyQstFlags",
+          "announce_type": "Update",
+          "set_flags": [ 6 ]
+        }
+      ]
+    },
+    {
+      "comment": "process 7",
+      "blocks": [
+        {
+          "type": "MyQstFlags",
+          "check_flags": [ 9 ]
+        },
+        {
+          "type": "TalkToNpc",
+          "stage_id": {
+            "id": 2,
+            "group_id": 0
+          },
+          "npc_id": "Colette",
+          "message_id": 10733
+        },
+        {
+          "type": "MyQstFlags",
+          "announce_type": "Update",
+          "set_flags": [ 7 ]
+        }
+      ]
+    },
+    {
+      "comment": "process 8",
+      "blocks": [
+        {
+          "type": "MyQstFlags",
+          "check_flags": [ 9 ]
+        },
+        {
+          "type": "TalkToNpc",
+          "stage_id": {
+            "id": 2,
+            "group_id": 0
+          },
+          "npc_id": "Vicelot",
+          "message_id": 11770
+        },
+        {
+          "type": "MyQstFlags",
+          "announce_type": "Update",
+          "set_flags": [ 8 ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The One-Eyed Guardian",
+  "quest_id": 20025001,
+  "base_level": 38,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "BetlandPlains",
+  "news_image": 55,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1250
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 200
+    },
+    {
+      "type": "exp",
+      "amount": 1460
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 9260,
+          "num": 1
+        },
+        {
+          "item_id": 9420,
+          "num": 1
+        },
+        {
+          "item_id": 9417,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 74,
+        "group_id": 2
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015002",
+          "level": 38,
+          "exp": 6500,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

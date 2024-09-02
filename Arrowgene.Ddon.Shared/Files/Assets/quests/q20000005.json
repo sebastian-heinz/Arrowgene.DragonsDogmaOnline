@@ -1,0 +1,132 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Mysterious Monolith",
+  "quest_id": 20000005,
+  "base_level": 18,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "HidellPlains",
+  "news_image": 555,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 830
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 590
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 70
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Vigorous Legs",
+          "item_id": 8378,
+          "num": 1
+        },
+        {
+          "comment": "Superior Gala Extract",
+          "item_id": 61,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 146,
+        "group_id": 8
+      },
+      "enemies": [
+        {
+          "comment": "Alchemized Goblin Fighter",
+          "enemy_id": "0x011121",
+          "named_enemy_params_id": 53,
+          "level": 18,
+          "exp": 384
+        },
+        {
+          "comment": "Alchemized Goblin Fighter",
+          "enemy_id": "0x011121",
+          "named_enemy_params_id": 53,
+          "level": 18,
+          "exp": 384
+        },
+        {
+          "comment": "Alchemized Goblin Fighter",
+          "enemy_id": "0x011121",
+          "named_enemy_params_id": 53,
+          "level": 18,
+          "exp": 384
+        },
+        {
+          "comment": "Alchemized Wolf",
+          "enemy_id": "0x010207",
+          "level": 18,
+          "exp": 384
+        },
+        {
+          "comment": "Alchemized Wolf",
+          "enemy_id": "0x010207",
+          "level": 18,
+          "exp": 384
+        },
+        {
+          "comment": "Alchemized Wolf",
+          "enemy_id": "0x010207",
+          "level": 18,
+          "exp": 384
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Freya",
+      "message_id": 10756,
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 987
+        }
+      ]
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Freya",
+      "message_id": 10759
+    }
+  ]
+}

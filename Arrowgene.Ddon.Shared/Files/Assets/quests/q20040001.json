@@ -1,0 +1,114 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Mysterious Living Treasure",
+  "quest_id": 20040001,
+  "base_level": 30,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "VoldenMines",
+  "news_image": 93,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 990
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 820
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 130
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Red Chromium",
+          "item_id": 7879,
+          "num": 3
+        },
+        {
+          "comment": "Interventive",
+          "item_id": 9374,
+          "num": 3
+        },
+        {
+          "comment": "Mellow Ale",
+          "item_id": 9413,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 72,
+        "group_id": 18
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x010450",
+          "level": 30,
+          "exp": 500,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010450",
+          "level": 30,
+          "exp": 500,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010450",
+          "level": 30,
+          "exp": 500,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010450",
+          "level": 30,
+          "exp": 500,
+          "is_boss": false
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 80,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Cromwell",
+      "message_id": 11372
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 80,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Cromwell",
+      "message_id": 11842
+    }
+  ]
+}

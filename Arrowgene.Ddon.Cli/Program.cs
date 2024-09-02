@@ -26,7 +26,6 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using Arrowgene.Ddon.Cli.Command;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
@@ -70,16 +69,11 @@ namespace Arrowgene.Ddon.Cli
         private readonly Dictionary<string, ICommand> _commands;
         private ICommand _lastCommand;
         private readonly object _consoleLock;
-        private readonly DirectoryInfo _logDir;
+        private Setting _setting;
+        private DirectoryInfo _logDir;
 
         private Program()
         {
-            _logDir = new DirectoryInfo(Path.Combine(Util.ExecutingDirectory(), "Logs"));
-            if (!_logDir.Exists)
-            {
-                Directory.CreateDirectory(_logDir.FullName);
-            }
-
             _lastCommand = null;
             _consoleLock = new object();
             _commands = new Dictionary<string, ICommand>();
@@ -91,26 +85,45 @@ namespace Arrowgene.Ddon.Cli
         private void LoadCommands()
         {
             AddCommand(new ShowCommand());
-            AddCommand(new ServerCommand());
+            AddCommand(new ServerCommand(_setting));
             AddCommand(new HelpCommand(_commands));
             AddCommand(new ClientCommand());
             AddCommand(new PacketCommand());
+            AddCommand(new DbMigrationCommand());
         }
 
         private void RunArguments(string[] arguments)
         {
             LogProvider.Start();
-            if (arguments.Length <= 0)
+
+            CommandParameter parameter = ParseParameter(arguments);
+
+            string settingArgument = parameter.SwitchMap.GetValueOrDefault("--config", "Files/Arrowgene.Ddon.config.json");                
+            string settingPath = Path.Combine(Util.ExecutingDirectory(), settingArgument);
+            string settingLogMessage;
+            _setting = Setting.LoadFromFile(settingPath);
+            if (_setting == null)
             {
-                Logger.Error("No Arguments Provided");
-                return;
+                _setting = new Setting();
+                _setting.Save(settingPath);
+                settingLogMessage = $"Created new settings and saved to:{settingPath}";
             }
+            else
+            {
+                settingLogMessage = $"Loaded settings from:{settingPath}";
+            }
+
+            _logDir = new DirectoryInfo(Path.Combine(Util.ExecutingDirectory(), _setting.LogPath));
+            if (!_logDir.Exists)
+            {
+                Directory.CreateDirectory(_logDir.FullName);
+            }
+            Logger.Info(settingLogMessage);
 
             LoadCommands();
             ShowCopyright();
-            CommandParameter parameter = ParseParameter(arguments);
             CommandResultType result = ProcessArguments(parameter);
-            
+
             if (result != CommandResultType.Exit)
             {
                 Logger.Info("Press `e'-key to exit.");
@@ -125,7 +138,7 @@ namespace Arrowgene.Ddon.Cli
             {
                 _lastCommand.Shutdown();
             }
-            
+
             // Wait for logs to be flushed to console
             Thread.Sleep(1000);
             LogProvider.Stop();
@@ -269,15 +282,16 @@ namespace Arrowgene.Ddon.Cli
         {
             Log log = e.Log;
             LogLevel logLevel = log.LogLevel;
-            
-            
+
+
             if (logLevel == LogLevel.Debug || logLevel == LogLevel.Info)
             {
-                if(log.LoggerIdentity.StartsWith("Arrowgene.WebServer.Server.Kestrel"))
+                if (log.LoggerIdentity.StartsWith("Arrowgene.WebServer.Server.Kestrel"))
                 {
                     // ignore internal web server logs
-                    return; 
+                    return;
                 }
+
                 if (log.LoggerIdentity.StartsWith("Arrowgene.WebServer.Route.WebRouter"))
                 {
                     // ignore web route logs
@@ -346,7 +360,7 @@ namespace Arrowgene.Ddon.Cli
                         consoleColor = ConsoleColor.DarkRed;
                         break;
                 }
-                
+
                 if (logLevel == LogLevel.Error)
                 {
                     consoleColor = ConsoleColor.Red;
@@ -374,7 +388,7 @@ namespace Arrowgene.Ddon.Cli
                 Console.ForegroundColor = consoleColor;
                 Console.WriteLine(text);
                 Console.ResetColor();
-                
+
                 // TODO perhaps some buffering and only flush after X logs
                 string filePath = Path.Combine(_logDir.FullName, $"{log.DateTime:yyyy-MM-dd}.log.txt");
                 using StreamWriter sw = new StreamWriter(filePath, append: true);

@@ -39,12 +39,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            res.PartyId = party.Id;
-            client.Send(res);
+            var partyLeader = party.Leader.Client.Character;
 
             S2CPartyPartyJoinNtc ntc = new S2CPartyPartyJoinNtc();
             ntc.HostCharacterId = party.Host.Client.Character.CharacterId;
-            ntc.LeaderCharacterId = party.Leader.Client.Character.CharacterId;
+            ntc.LeaderCharacterId = partyLeader.CharacterId;
             foreach (PartyMember member in party.Members)
             {
                 ntc.PartyMembers.Add(member.GetCDataPartyMember());
@@ -52,13 +51,35 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             party.SendToAll(ntc);
 
-
-            // Send party player context NTCs to the new member
-            foreach (PartyMember member in party.Members)
+            S2CContextGetPartyPlayerContextNtc newMemberContext = join.Value.GetS2CContextGetParty_ContextNtcEx();
+            if (partyLeader.CommonId != client.Character.CommonId)
             {
-                party.SendToAll(member.GetS2CContextGetParty_ContextNtc());
-                // TODO only new member or all ?
+                // Update player position when joining from a different stage
+                client.Character.StageNo = partyLeader.StageNo;
+                client.Character.Stage = partyLeader.Stage;
+                newMemberContext.Context.Base.StageNo = (int) partyLeader.StageNo;
             }
+
+            if (party.Clients.Count > 0)
+            {
+                // Send existing party player context NTCs to the new member
+                foreach (PartyMember member in party.Members)
+                {
+                    if (member.MemberIndex == join.Value.MemberIndex)
+                    {
+                        // Skip ourselves
+                        continue;
+                    }
+                    client.Send(member.GetS2CContextGetParty_ContextNtc());
+                }
+
+                // Send new members to all existing party members
+                // client.Party.SendToAllExcept(newMemberContext, client);
+                client.Party.SendToAll(newMemberContext);
+            }
+
+            res.PartyId = party.Id;
+            client.Send(res);
 
             Logger.Info(client, $"joined PartyId:{party.Id}");
         }

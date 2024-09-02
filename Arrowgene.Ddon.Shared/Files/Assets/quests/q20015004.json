@@ -1,0 +1,93 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Seaside Mystery",
+  "quest_id": 20015004,
+  "base_level": 34,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "BreyaCoast",
+  "news_image": 537,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1120
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 930
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 130
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Scroll of Great Sorcery",
+          "item_id": 8009,
+          "num": 2
+        },
+        {
+          "comment": "Grilled Mushroom",
+          "item_id": 9415,
+          "num": 1
+        },
+        {
+          "comment": "Throwing Skull",
+          "item_id": 9397,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 98,
+        "group_id": 7
+      },
+      "enemies": [
+        {
+          "comment": "Blue Newt",
+          "enemy_id": "0x010460",
+          "level": 34,
+          "exp": 463
+        },
+        {
+          "comment": "Blue Newt",
+          "enemy_id": "0x010460",
+          "level": 34,
+          "exp": 463
+        },
+        {
+          "comment": "Blue Newt",
+          "enemy_id": "0x010460",
+          "level": 34,
+          "exp": 463
+        },
+        {
+          "comment": "Blue Newt",
+          "enemy_id": "0x010460",
+          "level": 34,
+          "exp": 463
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

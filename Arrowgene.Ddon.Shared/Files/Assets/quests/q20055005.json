@@ -1,0 +1,73 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Fluttering Calls of Death",
+  "quest_id": 20055005,
+  "base_level": 32,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "MysreeForest",
+  "news_image": 109,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1050
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 210
+    },
+    {
+      "type": "exp",
+      "amount": 1470
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 818,
+          "num": 1
+        },
+        {
+          "item_id": 9412,
+          "num": 2
+        },
+        {
+          "item_id": 9401,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 79,
+        "group_id": 2
+      },
+      "enemies": [
+        {
+          "comment": "Sphinx",
+          "enemy_id": "0x015302",
+          "level": 32,
+          "exp": 7500,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

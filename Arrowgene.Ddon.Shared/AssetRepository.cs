@@ -7,7 +7,10 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Json;
-using System.Text.Json;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Asset;
+using Arrowgene.Ddon.Shared.AssetReader;
+using System.Linq;
 
 namespace Arrowgene.Ddon.Shared
 {
@@ -18,15 +21,30 @@ namespace Arrowgene.Ddon.Shared
         public const string ItemListKey = "itemlist.csv";
 
         // Server data
-        public const string EnemySpawnsKey = "EnemySpawn.csv";
+        public const string NamedParamsKey = "named_param.ndp.json";
+        public const string EnemySpawnsKey = "EnemySpawn.json";
         public const string GatheringItemsKey = "GatheringItem.csv";
         public const string MyPawnAssetKey = "MyPawn.csv";
         public const string MyRoomAssetKey = "MyRoom.csv";
         public const string ArisenAssetKey = "Arisen.csv";
+        public const string PawnStartGearKey = "PawnStartGear.csv";
         public const string StorageKey = "Storage.csv";
         public const string StorageItemKey = "StorageItem.csv";
         public const string ShopKey = "Shop.json";
         public const string ServerListKey = "GameServerList.csv";
+        public const string WarpPointsKey = "WarpPoints.csv";
+        public const string CraftingRecipesKey = "CraftingRecipes.json";
+        public const string CraftingRecipesGradeUpKey = "CraftingRecipesGradeUp.json";
+        public const string LearnedNormalSkillsKey = "LearnedNormalSkills.json";
+        public const string GPCourseInfoKey = "GpCourseInfo.json";
+        public const string SecretAbilityKey = "DefaultSecretAbilities.json";
+        public const string CostExpScalingInfoKey = "CostExpScalingInfo.json";
+        public const string QuestAssestKey = "quests";
+        public const string JobValueShopKey = "JobValueShop.csv";
+        public const string StampBonusKey = "StampBonus.csv";
+        public const string SpecialShopKey = "SpecialShops.json";
+        public const string PawnCostReductionKey = "PawnCostReduction.json"; 
+        public const string BitterblackMazeKey = "BitterblackMaze.json";
 
         private static readonly ILogger Logger = LogProvider.Logger(typeof(AssetRepository));
 
@@ -47,75 +65,134 @@ namespace Arrowgene.Ddon.Shared
             _fileSystemWatchers = new Dictionary<string, FileSystemWatcher>();
 
             ClientErrorCodes = new List<CDataErrorMessage>();
-            ClientItemInfos = new List<ClientItemInfo>();
-            EnemySpawns = new List<EnemySpawn>();
-            GatheringItems = new List<GatheringItem>();
+            ClientItemInfos = new Dictionary<uint, ClientItemInfo>();
+            NamedParamAsset = new Dictionary<uint, NamedParam>();
+            EnemySpawnAsset = new EnemySpawnAsset();
+            GatheringItems = new Dictionary<(StageId, uint), List<GatheringItem>>();
             ServerList = new List<CDataGameServerListInfo>();
             MyPawnAsset = new List<MyPawnCsv>();
             MyRoomAsset = new List<MyRoomCsv>();
             ArisenAsset = new List<ArisenCsv>();
+            PawnStartGearAsset = new List<PawnStartGearCsv>();
             StorageAsset = new List<CDataCharacterItemSlotInfo>();
             StorageItemAsset = new List<Tuple<StorageType, uint, Item>>();
             ShopAsset = new List<Shop>();
+            WarpPoints = new List<WarpPoint>();
+            CraftingRecipesAsset = new List<S2CCraftRecipeGetCraftRecipeRes>();
+            CraftingGradeUpRecipesAsset = new List<S2CCraftRecipeGetCraftGradeupRecipeRes>();
+            LearnedNormalSkillsAsset = new LearnedNormalSkillsAsset();
+            GPCourseInfoAsset = new GPCourseInfoAsset();
+            SecretAbilitiesAsset = new SecretAbilityAsset();
+            QuestAssets = new QuestAsset();
+            JobValueShopAsset = new List<(JobId, CDataJobValueShopItem)>();
+            CostExpScalingAsset = new CostExpScalingAsset();
+            SpecialShopAsset = new SpecialShopAsset();
+            PawnCostReductionAsset = new PawnCostReductionAsset();
+            BitterblackMazeAsset = new BitterblackMazeAsset();
         }
 
-        public List<CDataErrorMessage> ClientErrorCodes { get; }
-        public List<ClientItemInfo> ClientItemInfos { get; set; } // May be incorrect, or incomplete
-        public List<EnemySpawn> EnemySpawns { get; }
-        public List<GatheringItem> GatheringItems { get; }
-        public List<CDataGameServerListInfo> ServerList { get; }
-        public List<MyPawnCsv> MyPawnAsset { get; }
-        public List<MyRoomCsv> MyRoomAsset { get; }
-        public List<ArisenCsv> ArisenAsset { get; }
-        public List<CDataCharacterItemSlotInfo> StorageAsset { get; }
-        public List<Tuple<StorageType, uint, Item>> StorageItemAsset { get; }
-        public List<Shop> ShopAsset { get; }
+        public List<CDataErrorMessage> ClientErrorCodes { get; private set; }
+        public Dictionary<uint, ClientItemInfo> ClientItemInfos { get; private set; } // May be incorrect, or incomplete
+        public Dictionary<uint, NamedParam> NamedParamAsset { get; private set; }
+        public EnemySpawnAsset EnemySpawnAsset { get; private set; }
+        public Dictionary<(StageId, uint), List<GatheringItem>> GatheringItems { get; private set; }
+        public List<CDataGameServerListInfo> ServerList { get; private set; }
+        public List<MyPawnCsv> MyPawnAsset { get; private set; }
+        public List<MyRoomCsv> MyRoomAsset { get; private set; }
+        public List<ArisenCsv> ArisenAsset { get; private set; }
+        public List<PawnStartGearCsv> PawnStartGearAsset { get; private set; }
+        public List<CDataCharacterItemSlotInfo> StorageAsset { get; private set; }
+        public List<Tuple<StorageType, uint, Item>> StorageItemAsset { get; private set; }
+        public List<Shop> ShopAsset { get; private set; }
+        public List<WarpPoint> WarpPoints { get; private set; }
+        public List<S2CCraftRecipeGetCraftRecipeRes> CraftingRecipesAsset { get; private set; }
+        public List<S2CCraftRecipeGetCraftGradeupRecipeRes> CraftingGradeUpRecipesAsset { get; private set; }
+        public LearnedNormalSkillsAsset LearnedNormalSkillsAsset { get; set; }
+        public GPCourseInfoAsset GPCourseInfoAsset { get; private set; }
+        public SecretAbilityAsset SecretAbilitiesAsset { get; private set; }
+        public CostExpScalingAsset CostExpScalingAsset { get; private set; }
+        public QuestAsset QuestAssets {  get; set; }
+        public List<(JobId, CDataJobValueShopItem)> JobValueShopAsset { get; private set; }
+        public List<CDataStampBonusAsset> StampBonusAsset { get; private set; }
+        public SpecialShopAsset SpecialShopAsset { get; private set; }
+        public PawnCostReductionAsset PawnCostReductionAsset { get; private set; }
+        public BitterblackMazeAsset BitterblackMazeAsset { get; private set; }
 
         public void Initialize()
         {
-            RegisterAsset(ClientErrorCodes, ClientErrorCodesKey, new ClientErrorCodeCsv());
-            RegisterAsset(ClientItemInfos, ItemListKey, new ClientItemInfoCsv());
-            RegisterAsset(EnemySpawns, EnemySpawnsKey, new EnemySpawnCsv());
-            RegisterAsset(GatheringItems, GatheringItemsKey, new GatheringItemCsv());
-            RegisterAsset(MyPawnAsset, MyPawnAssetKey, new MyPawnCsvReader());
-            RegisterAsset(MyRoomAsset, MyRoomAssetKey, new MyRoomCsvReader());
-            RegisterAsset(ArisenAsset, ArisenAssetKey, new ArisenCsvReader());
-            RegisterAsset(ServerList, ServerListKey, new GameServerListInfoCsv());
-            RegisterAsset(StorageAsset, StorageKey, new StorageCsv());
-            RegisterAsset(StorageItemAsset, StorageItemKey, new StorageItemCsv());
-            RegisterAsset(ShopAsset, ShopKey, new JsonReaderWriter<Shop>());
+            RegisterAsset(value => ClientErrorCodes = value, ClientErrorCodesKey, new ClientErrorCodeCsv());
+            RegisterAsset(value => ClientItemInfos = value.ToDictionary(key => key.ItemId, val => val), ItemListKey, new ClientItemInfoCsv());
+            RegisterAsset(value => NamedParamAsset = value, NamedParamsKey, new NamedParamAssetDeserializer());
+            RegisterAsset(value => EnemySpawnAsset = value, EnemySpawnsKey, new EnemySpawnAssetDeserializer(this.NamedParamAsset));
+            RegisterAsset(value => GatheringItems = value, GatheringItemsKey, new GatheringItemCsv());
+            RegisterAsset(value => MyPawnAsset = value, MyPawnAssetKey, new MyPawnCsvReader());
+            RegisterAsset(value => MyRoomAsset = value, MyRoomAssetKey, new MyRoomCsvReader());
+            RegisterAsset(value => ArisenAsset = value, ArisenAssetKey, new ArisenCsvReader());
+            RegisterAsset(value => PawnStartGearAsset = value, PawnStartGearKey, new PawnStartGearCsvReader());
+            RegisterAsset(value => ServerList = value, ServerListKey, new GameServerListInfoCsv());
+            RegisterAsset(value => StorageAsset = value, StorageKey, new StorageCsv());
+            RegisterAsset(value => StorageItemAsset = value, StorageItemKey, new StorageItemCsv());
+            RegisterAsset(value => ShopAsset = value, ShopKey, new JsonReaderWriter<List<Shop>>());
+            RegisterAsset(value => WarpPoints = value, WarpPointsKey, new WarpPointCsv());
+            RegisterAsset(value => CraftingRecipesAsset = value, CraftingRecipesKey, new JsonReaderWriter<List<S2CCraftRecipeGetCraftRecipeRes>>());
+            RegisterAsset(value => CraftingGradeUpRecipesAsset = value, CraftingRecipesGradeUpKey, new JsonReaderWriter<List<S2CCraftRecipeGetCraftGradeupRecipeRes>>());
+            RegisterAsset(value => LearnedNormalSkillsAsset = value, LearnedNormalSkillsKey, new LearnedNormalSkillsDeserializer());
+            RegisterAsset(value => GPCourseInfoAsset = value, GPCourseInfoKey, new GPCourseInfoDeserializer());
+            RegisterAsset(value => SecretAbilitiesAsset = value, SecretAbilityKey, new SecretAbilityDeserializer());
+            RegisterAsset(value => JobValueShopAsset = value, JobValueShopKey, new JobValueShopCsv());
+            RegisterAsset(value => StampBonusAsset = value, StampBonusKey, new StampBonusCsv());
+            RegisterAsset(value => CostExpScalingAsset = value, CostExpScalingInfoKey, new CostExpScalingAssetDeserializer());
+            RegisterAsset(value => SpecialShopAsset = value, SpecialShopKey, new SpecialShopDeserializer());
+            RegisterAsset(value => PawnCostReductionAsset = value, PawnCostReductionKey, new PawnCostReductionAssetDeserializer());
+            RegisterAsset(value => BitterblackMazeAsset = value, BitterblackMazeKey, new BitterblackMazeAssetDeserializer());
+
+            var questAssetDeserializer = new QuestAssetDeserializer(this.NamedParamAsset);
+            questAssetDeserializer.LoadQuestsFromDirectory(Path.Combine(_directory.FullName, QuestAssestKey), QuestAssets);
         }
 
-        private void RegisterAsset<T>(List<T> list, string key, IAssetDeserializer<T> readerWriter)
+        private void RegisterAsset<T>(Action<T> onLoadAction, string key, IAssetDeserializer<T> readerWriter)
         {
-            Load(list, key, readerWriter);
-            RegisterFileSystemWatcher(list, key, readerWriter);
-        }
-
-        private void Load<T>(List<T> list, string key, IAssetDeserializer<T> readerWriter)
-        {
-            string path = Path.Combine(_directory.FullName, key);
-            FileInfo file = new FileInfo(path);
-            if (!file.Exists)
+            try
             {
-                Logger.Error($"Could not load '{key}', file does not exist");
+                Load(onLoadAction, key, readerWriter);
             }
-
-            try {
-                List<T> assets = readerWriter.ReadPath(file.FullName);
-
-                list.Clear();
-                list.AddRange(assets);
-                OnAssetChanged(key, list);
-            }
-            catch (Exception e)
+            catch (IOException e)
             {
-                Logger.Error($"Could not load '{key}', error reading the file contents");
+                Logger.Error($"Could not load '{key}'");
                 Logger.Exception(e);
             }
+
+            RegisterFileSystemWatcher(onLoadAction, key, readerWriter);
         }
 
-        private void RegisterFileSystemWatcher<T>(List<T> list, string key, IAssetDeserializer<T> readerWriter)
+        private void Load<T>(Action<T> onLoadAction, string key, IAssetDeserializer<T> readerWriter)
+        {
+            string path = Path.Combine(_directory.FullName, key);
+
+            FileSystemInfo info = File.GetAttributes(path).HasFlag(FileAttributes.Directory) ? new DirectoryInfo(path) : new FileInfo(path);
+            if (!info.Exists)
+            {
+                throw new IOException($"The file or directory '{key}' does not exist");
+            }
+
+            if (info is DirectoryInfo)
+            {
+                foreach (var file in ((DirectoryInfo)info).EnumerateFiles())
+                {
+                    T asset = readerWriter.ReadPath(file.FullName);
+                    onLoadAction.Invoke(asset);
+                    OnAssetChanged(file.FullName, asset);
+                }
+            }
+            else
+            {
+                T asset = readerWriter.ReadPath(info.FullName);
+                onLoadAction.Invoke(asset);
+                OnAssetChanged(key, asset);
+            }
+        }
+
+        private void RegisterFileSystemWatcher<T>(Action<T> onLoadAction, string key, IAssetDeserializer<T> readerWriter)
         {
             if (_fileSystemWatchers.ContainsKey(key))
             {
@@ -123,25 +200,23 @@ namespace Arrowgene.Ddon.Shared
             }
 
             FileSystemWatcher watcher = new FileSystemWatcher(_directory.FullName, key);
-            watcher.NotifyFilter = NotifyFilters.LastWrite;
+            watcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName;
             watcher.Changed += (object sender, FileSystemEventArgs e) =>
             {
-                Logger.Debug($"Reloading assets from file '{e.FullPath}'");
                 // Try reloading file
                 int attempts = 0;
                 while (true)
                 {
                     try
                     {
-                        Load(list, key, readerWriter);
+                        Load(onLoadAction, key, readerWriter);
                         break;
                     }
                     catch (IOException ex)
                     {
                         // File isn't ready yet, so we need to keep on waiting until it is.
                         attempts++;
-                        Logger.Write(LogLevel.Error, $"Failed to reload {e.FullPath}. {attempts} attempts", ex);
-
+                        Logger.Info($"Attempt {attempts} to reload {e.FullPath} unsuccessful.");
                         if (attempts > 10)
                         {
                             Logger.Write(LogLevel.Error,

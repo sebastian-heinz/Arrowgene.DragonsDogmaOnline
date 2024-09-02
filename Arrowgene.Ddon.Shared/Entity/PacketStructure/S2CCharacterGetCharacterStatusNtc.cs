@@ -18,6 +18,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             EquipDataList = new List<CDataEquipItemInfo>();
             VisualEquipDataList = new List<CDataEquipItemInfo>();
             EquipJobItemList = new List<CDataEquipJobItem>();
+            EquipElementParams = new List<CDataEquipElementParam>();
         }
 
         public uint CharacterId { get; set; }
@@ -28,6 +29,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataEquipItemInfo> EquipDataList { get; set; }
         public List<CDataEquipItemInfo> VisualEquipDataList { get; set; }
         public List<CDataEquipJobItem> EquipJobItemList { get; set; }
+        public List<CDataEquipElementParam> EquipElementParams { get; set; }
         public bool HideHead { get; set; }
         public bool HideLantern { get; set; }
         public uint JewelryNum { get; set; }
@@ -44,6 +46,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteEntityList<CDataEquipItemInfo>(buffer, obj.EquipDataList);
                 WriteEntityList<CDataEquipItemInfo>(buffer, obj.VisualEquipDataList);
                 WriteEntityList<CDataEquipJobItem>(buffer, obj.EquipJobItemList);
+                WriteEntityList<CDataEquipElementParam>(buffer, obj.EquipElementParams);
                 WriteBool(buffer, obj.HideHead);
                 WriteBool(buffer, obj.HideLantern);
                 WriteUInt32(buffer, obj.JewelryNum);
@@ -60,6 +63,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.EquipDataList = ReadEntityList<CDataEquipItemInfo>(buffer);
                 obj.VisualEquipDataList = ReadEntityList<CDataEquipItemInfo>(buffer);
                 obj.EquipJobItemList = ReadEntityList<CDataEquipJobItem>(buffer);
+                obj.EquipElementParams = ReadEntityList<CDataEquipElementParam>(buffer);
                 obj.HideHead = ReadBool(buffer);
                 obj.HideLantern = ReadBool(buffer);
                 obj.JewelryNum = ReadUInt32(buffer);

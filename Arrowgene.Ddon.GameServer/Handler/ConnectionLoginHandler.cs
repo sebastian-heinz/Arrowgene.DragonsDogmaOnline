@@ -1,16 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class ConnectionLoginHandler : GameStructurePacketHandler<C2SConnectionLoginReq>
+    public class ConnectionLoginHandler : GameRequestPacketHandler<C2SConnectionLoginReq, S2CConnectionLoginRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ConnectionLoginHandler));
 
@@ -18,26 +16,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SConnectionLoginReq> packet)
+        public override S2CConnectionLoginRes Handle(GameClient client, C2SConnectionLoginReq request)
         {
             client.SetChallengeCompleted(true);
 
             Logger.Debug(client,
-                $"Received SessionKey:{packet.Structure.SessionKey} for platform:{packet.Structure.PlatformType}");
+                $"Received SessionKey:{request.SessionKey} for platform:{request.PlatformType}");
 
             S2CConnectionLoginRes res = new S2CConnectionLoginRes();
-            GameToken token = Database.SelectToken(packet.Structure.SessionKey);
+            GameToken token = Database.SelectToken(request.SessionKey);
             if (token == null)
             {
-                Logger.Error(client, $"SessionKey:{packet.Structure.SessionKey} not found");
-                res.Error = 1;
-                client.Send(res);
-                return;
+                Logger.Error(client, $"SessionKey:{request.SessionKey} not found");
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_COG_ANALIZE_SESSION_KEY);
             }
 
             if (!Database.DeleteTokenByAccountId(token.AccountId))
             {
-                Logger.Error(client, $"Failed to delete session key from DB:{packet.Structure.SessionKey}");
+                Logger.Error(client, $"Failed to delete session key from DB:{request.SessionKey}");
             }
 
 
@@ -45,12 +41,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (account == null)
             {
                 Logger.Error(client, $"AccountId:{token.AccountId} not found");
-                res.Error = 1;
-                client.Send(res);
-                return;
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_FAIL);
             }
 
-            DateTime now = DateTime.Now;
+            DateTime now = DateTime.UtcNow;
 
             List<Connection> connections = Database.SelectConnectionsByAccountId(account.Id);
             if (connections.Count > 0)
@@ -60,19 +54,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     if (con.Type == ConnectionType.GameServer)
                     {
                         Logger.Error(client, $"game server connection already exists");
-                        res.Error = 1;
-                        client.Send(res);
-                        return;
+                        throw new ResponseErrorException(ErrorCode.ERROR_CODE_AUTH_DUPLICATE_DATA);
                     }
                 }
             }
-            
+
             // Order Important,
             // account need to be only assigned after
             // verification that no connection exists, and before
             // registering the connection
             client.Account = account;
-            
+
             Connection connection = new Connection();
             connection.ServerId = Server.Id;
             connection.AccountId = account.Id;
@@ -81,29 +73,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (!Database.InsertConnection(connection))
             {
                 Logger.Error(client, $"Failed to register game connection");
-                res.Error = 1;
-                client.Send(res);
-                return;
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_NET_NOT_CONNECT_GAME_SERVER);
             }
 
-            Character character = Database.SelectCharacter(token.CharacterId);
+            Character character = Server.CharacterManager.SelectCharacter(client, token.CharacterId);
             if (character == null)
             {
                 Logger.Error(client, $"CharacterId:{token.CharacterId} not found");
-                res.Error = 1;
-                client.Send(res);
-                return;
-            }
-
-
-            client.Character = character;
-            client.Character.Server = Server.AssetRepository.ServerList[0];
-            client.UpdateIdentity();
-
-            client.Character.Pawns = Database.SelectPawnsByCharacterId(token.CharacterId);
-            foreach (Pawn pawn in client.Character.Pawns)
-            {
-                pawn.Server = client.Character.Server;
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_CHARACTER_DATA_INVALID_CHARACTER_ID);
             }
 
             Logger.Info(client, "Logged Into GameServer");
@@ -114,16 +91,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (!Database.UpdateAccount(client.Account))
             {
                 Logger.Error(client, "Failed to update OneTimeToken");
-                res.Error = 1;
-                client.Send(res);
-                return;
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_AUTH_SESSION_KEY_GENERATE);
             }
 
 
             Logger.Debug(client, $"Updated OneTimeToken:{client.Account.LoginToken}");
 
             res.OneTimeToken = client.Account.LoginToken;
-            client.Send(res);
+
+            return res;
         }
     }
 }

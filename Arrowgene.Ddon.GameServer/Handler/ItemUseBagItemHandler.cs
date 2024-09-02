@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // TODO: Send S2CItemUseBagItemNtc?
 
-            var tuple = client.Character.Storage.getStorage(DestinationStorageType).Items
+            var tuple = client.Character.Storage.GetStorage(DestinationStorageType).Items
                 .Select((x, index) => new {item = x, slot = index+1})
                 .Where(tuple => tuple.item?.Item1.UId == req.Structure.ItemUId)
                 .First();
@@ -38,8 +38,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             itemNum--;
 
-            S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
-            ntc.UpdateType = 3;
+            S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc()
+            {
+                UpdateType = ItemNoticeType.UseBag
+            };
 
             CDataItemUpdateResult ntcData0 = new CDataItemUpdateResult();
             ntcData0.ItemList.ItemUId = item.UId;
@@ -51,25 +53,25 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntcData0.ItemList.Color = item.Color; // ?
             ntcData0.ItemList.PlusValue = item.PlusValue; // ?
             ntcData0.ItemList.Bind = false;
-            ntcData0.ItemList.EquipPoint = 0;
+            ntcData0.ItemList.EquipPoint = item.EquipPoints;
             ntcData0.ItemList.EquipCharacterID = 0;
             ntcData0.ItemList.EquipPawnID = 0;
-            ntcData0.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
-            ntcData0.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
             ntcData0.ItemList.EquipElementParamList = item.EquipElementParamList;
-            ntcData0.UpdateItemNum = -1;
+            ntcData0.ItemList.AddStatusParamList = item.AddStatusParamList;
+            ntcData0.ItemList.Unk2List = item.Unk2List;
+            ntcData0.UpdateItemNum = - (int) req.Structure.Amount;
             ntc.UpdateItemList.Add(ntcData0);
 
             if(itemNum == 0)
             {
                 // Delete item when ItemNum reaches 0 to free up the slot
-                client.Character.Storage.setStorageItem(null, 0, DestinationStorageType, slotNo);
-                Server.Database.DeleteStorageItem(client.Character.CharacterId, DestinationStorageType, slotNo);
+                client.Character.Storage.GetStorage(DestinationStorageType).SetItem(null, 0, slotNo);
+                Server.Database.DeleteStorageItem(client.Character.ContentCharacterId, DestinationStorageType, slotNo);
             }
             else
             {
-                client.Character.Storage.setStorageItem(item, itemNum, DestinationStorageType, slotNo);
-                Server.Database.ReplaceStorageItem(client.Character.CharacterId, DestinationStorageType, slotNo, item.UId, itemNum);
+                client.Character.Storage.GetStorage(DestinationStorageType).SetItem(item, itemNum, slotNo);
+                Server.Database.ReplaceStorageItem(client.Character.ContentCharacterId, DestinationStorageType, slotNo, itemNum, item);
             }
 
             client.Send(ntc);

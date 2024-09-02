@@ -1,0 +1,86 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Fort’s Supply Problems",
+  "quest_id": 20020000,
+  "base_level": 15,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "BetlandPlains",
+  "news_image": 49,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 750
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 60
+    },
+    {
+      "type": "exp",
+      "amount": 240
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 83,
+          "num": 1
+        },
+        {
+          "item_id": 59,
+          "num": 3
+        },
+        {
+          "item_id": 57,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 66
+      },
+      "npc_id": "Vanessa0",
+      "message_id": 10800
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 66,
+        "group_id": 1
+      },
+      "npc_id": "Vanessa0",
+      "announce_type": "Accept",
+      "items": [
+        {
+          "id": 7552,
+          "amount": 3
+        }
+      ],
+      "message_id": 10737
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 66,
+        "group_id": 1
+      },
+      "npc_id": "Vanessa0",
+      "announce_type": "Update",
+      "items": [
+        {
+          "id": 7861,
+          "amount": 3
+        }
+      ],
+      "message_id": 10737
+    }
+  ]
+}

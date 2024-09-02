@@ -24,10 +24,10 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public string OnlineId { get; set; }
         public uint AbilityCostMax { get; set; }
         public List<CDataAchieveCategoryStatus> AchieveCategoryStatusList { get; set; }
-        public List<CDataOrbPageStatus> OrbStatusList { get; set; }
-        public List<CDataJobOrbTreeStatus> JobOrbTreeStatusList { get; set; }
-        public List<CDataJobOrbTreeStatus> Unk0 { get; set; } // Probably High Orbs
-        
+        public List<CDataOrbPageStatus> OrbStatusList { get; set; } // Dragon Force Augmentation (Jobs/Dragon Force)
+        public List<CDataJobOrbTreeStatus> JobOrbTreeStatusList { get; set; } // Skill Augmentation (Jobs/Dragon Force)
+        public List<CDataJobOrbTreeStatus> Unk0 { get; set; } // Special Skill Augmentation (Jobs/Dragon Force)
+
 
         public class Serializer : PacketEntitySerializer<S2CProfileGetMyCharacterProfileRes>
         {

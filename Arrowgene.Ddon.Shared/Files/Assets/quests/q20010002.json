@@ -1,0 +1,129 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Waterfall of Mystery",
+  "quest_id": 20010002,
+  "base_level": 30,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "BreyaCoast",
+  "news_image": 531,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 990
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 990
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 130
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Mystic Bangles",
+          "item_id": 815,
+          "num": 1
+        },
+        {
+          "comment": "Mellow Ale",
+          "item_id": 9413,
+          "num": 1
+        },
+        {
+          "comment": "Healing Elixir",
+          "item_id": 7552,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 993,
+          "comment": "Spawns Akim NPC"
+        }
+      ],
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Akim",
+      "message_id": 11372
+    },
+    {
+      "type": "CollectItem",
+      "announce_type": "Accept",
+      "stage_id": {
+        "id": 98,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1134,
+          "comment": "Spawns Glowing Item"
+        }
+      ]
+    },
+    {
+      "type": "CollectItem",
+      "announce_type": "Update",
+      "stage_id": {
+        "id": 98,
+        "group_id": 2,
+        "layer_no": 1
+      },
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1135,
+          "comment": "Spawns Glowing Item"
+        }
+      ]
+    },
+    {
+      "type": "CollectItem",
+      "announce_type": "Update",
+      "stage_id": {
+        "id": 98,
+        "group_id": 3,
+        "layer_no": 1
+      },
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1136,
+          "comment": "Spawns Glowing Item"
+        }
+      ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Akim",
+      "message_id": 11842
+    }
+  ]
+}

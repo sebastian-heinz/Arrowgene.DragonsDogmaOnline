@@ -21,8 +21,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SJobChangePawnJobReq> packet)
         {
+            (S2CJobChangePawnJobRes jobRes, S2CItemUpdateCharacterItemNtc itemNtc, S2CJobChangePawnJobNtc jobNtc) jobResult = (null, null, null);
+
             Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
-            jobManager.SetJob(Server, client, pawn, packet.Structure.JobId);
+            Server.Database.ExecuteInTransaction(connection =>
+            {
+                jobResult = ((S2CJobChangePawnJobRes, S2CItemUpdateCharacterItemNtc, S2CJobChangePawnJobNtc))
+                jobManager.SetJob(client, pawn, packet.Structure.JobId, connection);
+            });
+
+            foreach (GameClient otherClient in Server.ClientLookup.GetAll())
+            {
+                otherClient.Send(jobResult.jobNtc);
+            }
+            client.Send(jobResult.itemNtc);
+            client.Send(jobResult.jobRes);
         }
     }
 }

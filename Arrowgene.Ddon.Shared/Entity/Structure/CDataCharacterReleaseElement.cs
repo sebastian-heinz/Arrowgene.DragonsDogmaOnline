@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -7,6 +8,11 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public CDataCharacterReleaseElement()
         {
             ReleaseElementNo=0;
+        }
+
+        public CDataCharacterReleaseElement(ContentsRelease ReleaseElement)
+        {
+            ReleaseElementNo = (uint) ReleaseElement;
         }
 
         public uint ReleaseElementNo { get; set; }

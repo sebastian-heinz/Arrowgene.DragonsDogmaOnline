@@ -1,14 +1,11 @@
-using Arrowgene.Buffers;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterCharacterGoldenReviveHandler : StructurePacketHandler<GameClient, C2SCharacterCharacterGoldenReviveReq>
+    public class CharacterCharacterGoldenReviveHandler : GameRequestPacketHandler<C2SCharacterCharacterGoldenReviveReq, S2CCharacterCharacterGoldenReviveRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterCharacterGoldenReviveHandler));
 
@@ -16,12 +13,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCharacterCharacterGoldenReviveReq> packet)
+        public override S2CCharacterCharacterGoldenReviveRes Handle(GameClient client, C2SCharacterCharacterGoldenReviveReq packet)
         {
             S2CCharacterCharacterGoldenReviveRes res = new S2CCharacterCharacterGoldenReviveRes();
-            res.GP = 69;
 
-            client.Send(res);
+            var amount = Server.WalletManager.GetWalletAmount(client.Character, WalletType.GoldenGemstones);
+            res.GP = amount - 1;
+            Server.WalletManager.RemoveFromWalletNtc(client, client.Character, WalletType.GoldenGemstones, 1);
+
+            return res;
         }
     }
 }

@@ -1,0 +1,73 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Knights' Bitter Enemy",
+  "quest_id": 20005010,
+  "base_level": 12,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "HidellPlains",
+  "news_image": 5,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 390
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 70
+    },
+    {
+      "type": "exp",
+      "amount": 590
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 95,
+          "num": 1
+        },
+        {
+          "item_id": 58,
+          "num": 3
+        },
+        {
+          "item_id": 10047,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 26
+      },
+      "enemies": [
+        {
+          "comment": "Cyclops",
+          "enemy_id": "0x015000",
+          "level": 12,
+          "exp": 1860,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

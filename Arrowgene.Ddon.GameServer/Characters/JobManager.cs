@@ -1,26 +1,51 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+#nullable enable
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
     public class JobManager
     {
-        public void SetJob(DdonServer<GameClient> server, GameClient client, CharacterCommon common, JobId jobId)
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(JobManager));
+        private readonly DdonGameServer _Server;
+
+        private static readonly List<EquipSlot> JEWELRY_SLOTS = new List<EquipSlot>
         {
+            EquipSlot.Jewelry1, EquipSlot.Jewelry2, EquipSlot.Jewelry3, EquipSlot.Jewelry4, EquipSlot.Jewelry5,
+        };
+
+        public JobManager(DdonGameServer server)
+        {
+            _Server = server;
+        }
+
+        public (IPacketStructure jobRes, IPacketStructure itemNtc, IPacketStructure jobNtc) SetJob(GameClient client, CharacterCommon common, JobId jobId, DbConnection? connectionIn = null)
+        {
+            // TODO: Reject job change if there's no primary and secondary weapon for the new job in storage
+            // (or give a lvl 1 weapon for free?)
+
+            JobId oldJobId = common.Job;
             common.Job = jobId;
 
-            server.Database.UpdateCharacterCommonBaseInfo(common);
+            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
+            updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, oldJobId, jobId, EquipType.Performance, connectionIn));
+            updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, oldJobId, jobId, EquipType.Visual, connectionIn));
+            client.Send(updateCharacterItemNtc);
 
             CDataCharacterJobData? activeCharacterJobData = common.ActiveCharacterJobData;
 
-            if(activeCharacterJobData == null)
+            if (activeCharacterJobData == null)
             {
                 activeCharacterJobData = new CDataCharacterJobData();
                 activeCharacterJobData.Job = jobId;
@@ -29,37 +54,34 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 activeCharacterJobData.Lv = 1;
                 // TODO: All the other stats
                 common.CharacterJobDataList.Add(activeCharacterJobData);
-                server.Database.ReplaceCharacterJobData(common.CommonId, activeCharacterJobData);
+                _Server.Database.ReplaceCharacterJobData(common.CommonId, activeCharacterJobData);
             }
 
-            // TODO: Figure out if it should send all equips or just the ones for the current job
-            List<CDataEquipItemInfo> equipItemInfos = common.Equipment.getEquipmentAsCDataEquipItemInfo(common.Job, EquipType.Performance)
-                .Union(common.Equipment.getEquipmentAsCDataEquipItemInfo(common.Job, EquipType.Visual))
+            // TODO: Figure out if CDataEquipItemInfo should be the equipment templates or just the currently equipped items
+            List<CDataEquipItemInfo> equipItemInfos = common.Equipment.AsCDataEquipItemInfo(EquipType.Performance)
+                .Union(common.Equipment.AsCDataEquipItemInfo(EquipType.Visual))
                 .ToList();
-            List<CDataCharacterEquipInfo> characterEquipList = common.Equipment.getEquipmentAsCDataCharacterEquipInfo(common.Job, EquipType.Performance)
-                .Union(common.Equipment.getEquipmentAsCDataCharacterEquipInfo(common.Job, EquipType.Visual))
+            List<CDataCharacterEquipInfo> characterEquipList = common.Equipment.AsCDataCharacterEquipInfo(EquipType.Performance)
+                .Union(common.Equipment.AsCDataCharacterEquipInfo(EquipType.Visual))
                 .ToList();
 
             List<CDataSetAcquirementParam> skills = common.EquippedCustomSkillsDictionary[jobId]
-                .Select((x, idx) => x?.AsCDataSetAcquirementParam((byte)(idx+1)))
+                .Select((x, idx) => x?.AsCDataSetAcquirementParam((byte)(idx + 1)))
                 .Where(x => x != null)
                 .ToList();
             List<CDataSetAcquirementParam> abilities = common.EquippedAbilitiesDictionary[jobId]
-                .Select((x, idx) => x?.AsCDataSetAcquirementParam((byte)(idx+1)))
+                .Select((x, idx) => x?.AsCDataSetAcquirementParam((byte)(idx + 1)))
                 .Where(x => x != null)
                 .ToList();
             List<CDataLearnNormalSkillParam> normalSkills = common.LearnedNormalSkills
+                .Where(x => x.Job == common.Job)
                 .Select(x => new CDataLearnNormalSkillParam(x))
                 .ToList();
-            List<CDataEquipJobItem> jobItems = common.Equipment.getJobItemsAsCDataEquipJobItem(common.Job);
+            List<CDataEquipJobItem> jobItems = common.EquipmentTemplate.JobItemsAsCDataEquipJobItem(common.Job);
 
-            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            // TODO: Move previous job equipment to storage box, and move new job equipment from storage box
-
-            if(common is Character)
+            if (common is Character)
             {
                 Character character = (Character) common;
-
                 S2CJobChangeJobNtc changeJobNotice = new S2CJobChangeJobNtc();
                 changeJobNotice.CharacterId = character.CharacterId;
                 changeJobNotice.CharacterJobData = activeCharacterJobData;
@@ -69,14 +91,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 changeJobNotice.LearnNormalSkillParamList = normalSkills;
                 changeJobNotice.EquipJobItemList = jobItems;
                 // TODO: Unk0
-                
-                foreach(GameClient otherClient in server.ClientLookup.GetAll())
-                {
-                    otherClient.Send(changeJobNotice);
-                }
 
-                updateCharacterItemNtc.UpdateType = 0x28;
-                client.Send(updateCharacterItemNtc);
+                updateCharacterItemNtc.UpdateType = ItemNoticeType.ChangeJob;
 
                 S2CJobChangeJobRes changeJobResponse = new S2CJobChangeJobRes();
                 changeJobResponse.CharacterJobData = activeCharacterJobData;
@@ -89,14 +105,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     .Where(x => x.Job == jobId)
                     .Select(x => x.PlayPoint)
                     .FirstOrDefault(new CDataPlayPointData());
-                changeJobResponse.Unk0.Unk0 = (byte) jobId;
-                changeJobResponse.Unk0.Unk1 = character.Storage.getAllStoragesAsCDataCharacterItemSlotInfoList();
-            
-                client.Send(changeJobResponse);
+                changeJobResponse.Unk0.Unk0 = (byte)jobId;
+                changeJobResponse.Unk0.Unk1 = character.Storage.GetAllStoragesAsCDataCharacterItemSlotInfoList();
+
+                return (changeJobResponse, updateCharacterItemNtc, changeJobNotice);
             }
-            else if(common is Pawn)
+            else if (common is Pawn)
             {
-                Pawn pawn = (Pawn) common;
+                Pawn pawn = (Pawn)common;
 
                 S2CJobChangePawnJobNtc changeJobNotice = new S2CJobChangePawnJobNtc();
                 changeJobNotice.CharacterId = pawn.CharacterId;
@@ -108,13 +124,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 changeJobNotice.LearnNormalSkillParamList = normalSkills;
                 changeJobNotice.EquipJobItemList = jobItems;
                 // TODO: Unk0
-                foreach(GameClient otherClient in server.ClientLookup.GetAll())
-                {
-                    otherClient.Send(changeJobNotice);
-                }
 
-                updateCharacterItemNtc.UpdateType = 0x29;
-                client.Send(updateCharacterItemNtc);
+                updateCharacterItemNtc.UpdateType = ItemNoticeType.ChangePawnJob;
 
                 S2CJobChangePawnJobRes changeJobResponse = new S2CJobChangePawnJobRes();
                 changeJobResponse.PawnId = pawn.PawnId;
@@ -124,11 +135,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 changeJobResponse.SetAbilityParamList = abilities;
                 changeJobResponse.LearnNormalSkillParamList = normalSkills;
                 changeJobResponse.EquipJobItemList = jobItems;
-                changeJobResponse.Unk0.Unk0 = (byte) jobId;
+                changeJobResponse.Unk0.Unk0 = (byte)jobId;
                 // changeJobResponse.Unk0.Unk1 = pawn.Storage.getAllStoragesAsCDataCharacterItemSlotInfoList(); // TODO: What
-                // changeJobResponse.Unk1 // TODO: its the same thing as in CDataPawnInfo
-                changeJobResponse.SpSkillList = pawn.SpSkillList;
-                client.Send(changeJobResponse);
+                changeJobResponse.TrainingStatus = pawn.TrainingStatus.GetValueOrDefault(pawn.Job, new byte[64]);
+                changeJobResponse.SpSkillList = pawn.SpSkills.GetValueOrDefault(pawn.Job, new List<CDataSpSkill>());
+
+                return (changeJobResponse, updateCharacterItemNtc, changeJobNotice);
             }
             else
             {
@@ -136,12 +148,141 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        private List<CDataItemUpdateResult> SwapEquipmentAndStorage(GameClient client, CharacterCommon common, JobId oldJobId, JobId newJobId, EquipType equipType, DbConnection? connectionIn = null)
+        {
+            List<CDataItemUpdateResult> itemUpdateResultList = new List<CDataItemUpdateResult>();
+            List<Item?> oldEquipment = common.Equipment.GetItems(equipType);
+            List<Item?> newEquipmentTemplate = common.EquipmentTemplate.GetEquipment(newJobId, equipType);
+            for (int i = 0; i < newEquipmentTemplate.Count; i++)
+            {
+                byte equipSlot = (byte)(i+1);
+                ushort equipmentStorageSlot = common.Equipment.GetStorageSlot(equipType, equipSlot);
+                Item? oldEquipmentItem = oldEquipment[i];
+                Item? newEquipmentTemplateItem = newEquipmentTemplate[i];
+                if(oldEquipmentItem != null && newEquipmentTemplateItem == null)
+                {
+                    // Unequip item if the new job has no item equipped in this slot
+                    // TODO: Attempt moving into other storages if the storage box is full
+                    try
+                    {
+                        List<CDataItemUpdateResult> moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, equipmentStorageSlot, 1, client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0, connectionIn);
+                        itemUpdateResultList.AddRange(moveResult);
+                    }
+                    catch (ResponseErrorException ex)
+                    {
+                        if (ex.ErrorCode == ErrorCode.ERROR_CODE_CHARACTER_ITEM_NOT_FOUND)
+                        {
+                            // Handle the item not being in equipment storage
+                            // This should probably return an error response instead? Logging and handling gracefully prevents messy situations, but may be undesirable
+                            Logger.Error($"Failed to unequip item {oldEquipmentItem.UId} from {equipType} slot {equipSlot} of {oldJobId}. The item wasn't in the {common.Equipment.Storage.Type} slot {equipmentStorageSlot}");
+                            common.EquipmentTemplate.SetEquipItem(null, oldJobId, equipType, equipSlot);
+                            _Server.Database.DeleteEquipItem(common.CommonId, oldJobId, equipType, equipSlot, connectionIn);
+                        }
+                        else
+                        {
+                            throw ex;
+                        }
+                    }
+                }
+                else if (newEquipmentTemplateItem != null && newEquipmentTemplateItem.UId != oldEquipmentItem?.UId)
+                {
+                    // Equip item to a slot, if said item is not already equipped. Search item in multiple storages
+                    List<CDataItemUpdateResult>? moveResult = null;
+
+                    //Search ahead for jewelry and remove in advance.
+                    if (JEWELRY_SLOTS.Contains((EquipSlot)equipSlot))
+                    {
+                        foreach (EquipSlot jewelrySlot in JEWELRY_SLOTS)
+                        {
+                            if ((byte)jewelrySlot <= equipSlot) continue;
+                            Item? oldJewelryItem = oldEquipment[(int)jewelrySlot - 1];
+                            if (oldJewelryItem != null && newEquipmentTemplateItem.UId == oldJewelryItem?.UId)
+                            {
+                                ushort laterSlot = common.Equipment.GetStorageSlot(equipType, (byte)jewelrySlot);
+                                try
+                                {
+                                    _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, laterSlot, 1, client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0, connectionIn);
+                                }
+                                catch (ResponseErrorException ex)
+                                {
+                                    if (ex.ErrorCode == ErrorCode.ERROR_CODE_CHARACTER_ITEM_NOT_FOUND)
+                                    {
+                                        // Do nothing, the slot is empty. Nothing to unequip
+                                    }
+                                    else
+                                    {
+                                        throw ex;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    foreach (StorageType searchStorageType in ItemManager.BothStorageTypes)
+                    {
+                        try
+                        {
+                            moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, client.Character.Storage.GetStorage(searchStorageType), newEquipmentTemplateItem.UId, 1, common.Equipment.Storage, equipmentStorageSlot, connectionIn);
+                            itemUpdateResultList.AddRange(moveResult);
+                            break;
+                        }
+                        catch (ResponseErrorException ex)
+                        {
+                            if (ex.ErrorCode == ErrorCode.ERROR_CODE_CHARACTER_ITEM_NOT_FOUND)
+                            {
+                                // Do nothing, item to equip not in this storage type.
+                                // Even if it's not found in any of the StorageTypes of the loop, this isn't an error.
+                                // It simply means that the player had an item equipped that was sold/discarded/etc
+                                // since they switched jobs.
+                            }
+                            else
+                            {
+                                throw ex;
+                            }
+                        }
+                    }
+
+                    if (moveResult == null)
+                    {
+                        // Handle the item not being in storage anymore.
+                        // Remove from template and unequip whatever was in that slot (if anything)
+                        common.EquipmentTemplate.SetEquipItem(null, newJobId, equipType, equipSlot);
+                        _Server.Database.DeleteEquipItem(common.CommonId, oldJobId, equipType, equipSlot, connectionIn);
+
+                        try
+                        {
+                            // TODO: Attempt moving into other storages if the storage box is full
+                            moveResult = _Server.ItemManager.MoveItem(_Server, client.Character, common.Equipment.Storage, equipmentStorageSlot, 1, client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0, connectionIn);
+                            itemUpdateResultList.AddRange(moveResult);
+                        }
+                        catch(ResponseErrorException ex)
+                        {
+                            if (ex.ErrorCode == ErrorCode.ERROR_CODE_CHARACTER_ITEM_NOT_FOUND)
+                            {
+                                // Do nothing, the slot is empty. Nothing to unequip
+                            }
+                            else
+                            {
+                                throw ex;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Persist job change in DB
+            _Server.Database.UpdateCharacterCommonBaseInfo(common, connectionIn);
+
+            return itemUpdateResultList;
+        }
+
         public void UnlockSkill(IDatabase database, GameClient client, CharacterCommon character, JobId job, uint skillId, byte skillLv)
         {
             // Check if there is a learned skill of the same ID (This unlock is a level upgrade)
             CustomSkill lowerLevelSkill = character.LearnedCustomSkills.Where(skill => skill != null && skill.Job == job && skill.SkillId == skillId).SingleOrDefault();
 
-            if(lowerLevelSkill == null)
+            if (lowerLevelSkill == null)
             {
                 // Add new skill
                 CustomSkill newSkill = new CustomSkill()
@@ -161,12 +302,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             // EX Skills
-            if(skillLv == 9)
+            if (skillLv == 9)
             {
                 // EX T Skill
-                uint exSkillTId = skillId+100;
+                uint exSkillTId = skillId + 100;
                 CDataSkillParam? exSkillT = SkillGetAcquirableSkillListHandler.AllSkills.Where(skill => skill.Job == job && skill.SkillNo == exSkillTId).SingleOrDefault();
-                if(exSkillT != null)
+                if (exSkillT != null)
                 {
                     // Add new skill
                     CustomSkill newExSkillT = new CustomSkill()
@@ -179,12 +320,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     database.InsertLearnedCustomSkill(character.CommonId, newExSkillT);
                 }
             }
-            else if(skillLv == 10)
+            else if (skillLv == 10)
             {
                 // EX P Skill
-                uint exSkillPId = skillId+200;
+                uint exSkillPId = skillId + 200;
                 CDataSkillParam? exSkillP = SkillGetAcquirableSkillListHandler.AllSkills.Where(skill => skill.Job == job && skill.SkillNo == exSkillPId).SingleOrDefault();
-                if(exSkillP != null)
+                if (exSkillP != null)
                 {
                     // Add new skill
                     CustomSkill newExSkillP = new CustomSkill()
@@ -210,7 +351,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             learnedSkillCharacterJobData.JobPoint -= jpCost;
             database.UpdateCharacterJobData(character.CommonId, learnedSkillCharacterJobData);
 
-            if(character is Character)
+            if (character is Character)
             {
                 client.Send(new S2CSkillLearnSkillRes()
                 {
@@ -219,17 +360,55 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     SkillId = skillId,
                     SkillLv = skillLv
                 });
+
+                //Find on the palletes (if any) where the skill is set and notify party. Can occur at two locations (Main + Secondary) for players.
+                List<CustomSkill?> equippedCustomSkillList = character.EquippedCustomSkillsDictionary[job];
+                var slotIndices = Enumerable.Range(0, equippedCustomSkillList.Count)
+                    .Where(i => equippedCustomSkillList[i] != null && equippedCustomSkillList[i].SkillId == skillId)
+                    .ToList();
+                foreach (int slotIndex in slotIndices)
+                {
+                    client.Party.SendToAll(new S2CSkillCustomSkillSetNtc()
+                    {
+                        CharacterId = ((Character)character).CharacterId,
+                        ContextAcquirementData = new CDataContextAcquirementData()
+                        {
+                            SlotNo = (byte)(slotIndex + 1),
+                            AcquirementNo = skillId,
+                            AcquirementLv = skillLv
+                        }
+                    });
+                }       
             }
-            else if(character is Pawn)
+            else if (character is Pawn)
             {
                 client.Send(new S2CSkillLearnPawnSkillRes()
                 {
-                    PawnId = ((Pawn) character).PawnId,
+                    PawnId = ((Pawn)character).PawnId,
                     Job = job,
                     NewJobPoint = learnedSkillCharacterJobData.JobPoint,
                     SkillId = skillId,
                     SkillLv = skillLv
                 });
+
+                //Find on the palletes (if any) where the skill is set. 
+                List<CustomSkill?> equippedCustomSkillList = character.EquippedCustomSkillsDictionary[job];
+                var slotIndices = Enumerable.Range(0, equippedCustomSkillList.Count)
+                    .Where(i => equippedCustomSkillList[i] != null && equippedCustomSkillList[i].SkillId == skillId)
+                    .ToList();
+                foreach (int slotIndex in slotIndices)
+                {
+                    client.Party.SendToAll(new S2CSkillPawnCustomSkillSetNtc()
+                    {
+                        PawnId = ((Pawn)character).PawnId,
+                        ContextAcquirementData = new CDataContextAcquirementData()
+                        {
+                            SlotNo = (byte)(slotIndex + 1),
+                            AcquirementNo = skillId,
+                            AcquirementLv = skillLv
+                        }
+                    });
+                }
             }
         }
 
@@ -239,9 +418,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             int paletteMask = slotNo & 0x10;
             for (int i = 0; i < character.EquippedCustomSkillsDictionary[job].Count; i++)
             {
-                byte removedSkillSlotNo = (byte)(i+1);
+                byte removedSkillSlotNo = (byte)(i + 1);
                 CustomSkill removedSkill = character.EquippedCustomSkillsDictionary[job][i];
-                if (removedSkill != null && removedSkill.Job == job && removedSkill.SkillId == skillId && (removedSkillSlotNo&0x10) == paletteMask)
+                if (removedSkill != null && removedSkill.Job == job && removedSkill.SkillId == skillId && (removedSkillSlotNo & 0x10) == paletteMask)
                 {
                     character.EquippedCustomSkillsDictionary[job][i] = null;
                     database.DeleteEquippedCustomSkill(character.CommonId, job, removedSkillSlotNo);
@@ -250,25 +429,25 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             // Add skill to the requested slot
             CustomSkill skill = character.LearnedCustomSkills.Where(skill => skill.Job == job && skill.SkillId == skillId).Single();
-            character.EquippedCustomSkillsDictionary[job][slotNo-1] = skill;
+            character.EquippedCustomSkillsDictionary[job][slotNo - 1] = skill;
             database.ReplaceEquippedCustomSkill(character.CommonId, slotNo, skill);
 
             // Inform party members of the change
-            if(job == character.Job)
+            if (job == character.Job)
             {
-                if(character is Character)
+                if (character is Character)
                 {
                     client.Party.SendToAll(new S2CSkillCustomSkillSetNtc()
                     {
-                        CharacterId = ((Character) character).CharacterId,
+                        CharacterId = ((Character)character).CharacterId,
                         ContextAcquirementData = skill.AsCDataContextAcquirementData(slotNo)
                     });
                 }
-                else if(character is Pawn)
+                else if (character is Pawn)
                 {
                     client.Party.SendToAll(new S2CSkillPawnCustomSkillSetNtc()
                     {
-                        PawnId = ((Pawn) character).PawnId,
+                        PawnId = ((Pawn)character).PawnId,
                         ContextAcquirementData = skill.AsCDataContextAcquirementData(slotNo)
                     });
                 }
@@ -286,13 +465,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
             CustomSkill affectedSkill = character.LearnedCustomSkills
                 .Where(skill => skill.Job == job && skill.SkillId == GetBaseSkillId(skillId))
                 .Single();
-            
+
             List<byte> affectedSlots = new List<byte>();
-            for(int i=0; i<character.EquippedCustomSkillsDictionary[job].Count; i++)
+            for (int i = 0; i < character.EquippedCustomSkillsDictionary[job].Count; i++)
             {
                 CustomSkill? equippedSkill = character.EquippedCustomSkillsDictionary[job][i];
-                byte slotNo = (byte)(i+1);
-                if(equippedSkill != null && GetBaseSkillId(equippedSkill.SkillId) == GetBaseSkillId(affectedSkill.SkillId))
+                byte slotNo = (byte)(i + 1);
+                if (equippedSkill != null && GetBaseSkillId(equippedSkill.SkillId) == GetBaseSkillId(affectedSkill.SkillId))
                 {
                     SetSkill(database, client, character, exSkill.Job, slotNo, exSkill.SkillId, exSkill.SkillLv);
                     affectedSlots.Add(slotNo);
@@ -308,7 +487,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public void RemoveSkill(IDatabase database, CharacterCommon character, JobId job, byte slotNo)
         {
-            character.EquippedCustomSkillsDictionary[job][slotNo-1] = null;
+            character.EquippedCustomSkillsDictionary[job][slotNo - 1] = null;
 
             // TODO: Error handling
             database.DeleteEquippedCustomSkill(character.CommonId, job, slotNo);
@@ -317,17 +496,128 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // From what I tested it doesn't seem to be necessary
         }
 
+        public void UnlockLearnedNormalSkill(AssetRepository assetRepo, IDatabase database, GameClient client, CharacterCommon character, JobId job, uint skillIndex)
+        {
+            CDataCharacterJobData characterJobData = character.CharacterJobDataList.Where(cjd => cjd.Job == job).Single();
+
+            Dictionary<JobId, List<LearnedNormalSkill>> learnedNormalSkillsMap = assetRepo.LearnedNormalSkillsAsset.LearnedNormalSkills;
+
+            if (!learnedNormalSkillsMap.ContainsKey(job) || skillIndex == 0 || ((skillIndex - 1) > learnedNormalSkillsMap[job].Count()))
+            {
+                // Something strange happened, either there is a new job (unlikely)
+                // or there is a missing skill, or someone tried to craft a custom
+                // packet to the server. Return back an error packet to the client.
+                Logger.Error("Illegal request to unlock 'Learned Normal/Core Skill'");
+
+                var S2CResult = new S2CSkillLearnNormalSkillRes()
+                {
+                    Error = 0xabaddeed
+                };
+
+                client.Send(S2CResult);
+                return;
+            }
+
+            LearnedNormalSkill Skill = learnedNormalSkillsMap[job][(int)(skillIndex - 1)];
+            if (characterJobData.JobPoint < Skill.JpCost || characterJobData.Lv < Skill.RequiredLevel)
+            {
+                // This shouldn't happen, but if it does, don't learn the skill and
+                // return an error packet to the client.
+                Logger.Error("Illegal request to unlock 'Learned Normal/Core Skill'");
+
+                var S2CResult = new S2CSkillLearnNormalSkillRes()
+                {
+                    Error = 0xabaddeed
+                };
+
+                client.Send(S2CResult);
+                return;
+            }
+
+            foreach (uint SkillNo in Skill.SkillNo)
+            {
+                List<CDataNormalSkillParam> matches = character.LearnedNormalSkills.Where(skill => skill != null && skill.Job == job && skill.SkillNo == SkillNo).ToList();
+                if (matches.Count() == 0)
+                {
+
+                    CDataNormalSkillParam newSkill = new CDataNormalSkillParam()
+                    {
+                        Job = job,
+                        Index = skillIndex, // 1, 2, 3 based offset from packet
+                        SkillNo = SkillNo,  // Skill ID
+                        PreSkillNo = 0
+                    };
+
+                    character.LearnedNormalSkills.Add(newSkill);
+                    database.InsertIfNotExistsNormalSkillParam(character.CommonId, newSkill);
+                }
+            }
+
+            // Subtract Job points and update the DB with the new result
+            characterJobData.JobPoint -= Skill.JpCost;
+            database.UpdateCharacterJobData(character.CommonId, characterJobData);
+
+            if (character is Character)
+            {
+                client.Send(new S2CSkillLearnNormalSkillRes()
+                {
+                    Job = job,
+                    SkillIndex = skillIndex,
+                    NewJobPoint = characterJobData.JobPoint,
+                });
+
+                //Notify other members of the new skill.
+                client.Party.SendToAll(new S2CSkillNormalSkillLearnNtc()
+                {
+                    CharacterId = ((Character)character).CharacterId,
+                    NormalSkillData = new CDataContextNormalSkillData()
+                    {
+                        SkillIndex = (byte)skillIndex
+                    }
+                });
+            }
+            else
+            {
+                client.Send(new S2CSkillLearnPawnNormalSkillRes()
+                {
+                    PawnId = ((Pawn)character).PawnId,
+                    Job = job,
+                    SkillIndex = skillIndex,
+                    NewJobPoint = characterJobData.JobPoint,
+                });
+
+                //Notify other members of the new skill.
+                client.Party.SendToAll(new S2CSkillPawnNormalSkillLearnNtc()
+                {
+                    PawnId = ((Pawn)character).PawnId,
+                    NormalSkillData = new CDataContextNormalSkillData()
+                    {
+                        SkillIndex = (byte)skillIndex
+                    }
+                });
+            }
+        }
+
         public void UnlockAbility(IDatabase database, GameClient client, CharacterCommon character, JobId job, uint abilityId, byte abilityLv)
         {
-            // Check if there is a learned ability of the same ID (This unlock is a level upgrade)
-            Ability lowerLevelAbility = character.LearnedAbilities.Where(aug => aug != null && aug.Job == job && aug.AbilityId == abilityId).SingleOrDefault();
+            //The job passed to this function can lie. 
+            //By using the Augment search, you can buy augments from other jobs while passing a job parameter from the character's *current* job.
+            //As such, always look up the ID to make sure you know what job it's really coming from.
 
-            if(lowerLevelAbility == null)
+            CDataAbilityParam abilityData = SkillGetAcquirableAbilityListHandler.GetAbilityFromId(abilityId);
+            JobId owningJob = abilityData.Job;
+
+            Logger.Debug($"Unlocking/upgrading ability {owningJob.ToString()}: {abilityId}");
+
+            // Check if there is a learned ability of the same ID (This unlock is a level upgrade)
+            Ability lowerLevelAbility = character.LearnedAbilities.Where(aug => aug != null && aug.AbilityId == abilityId).SingleOrDefault();
+
+            if (lowerLevelAbility == null)
             {
                 // New ability
                 Ability newAbility = new Ability()
                 {
-                    Job = job,
+                    Job = owningJob,
                     AbilityId = abilityId,
                     AbilityLv = abilityLv
                 };
@@ -341,36 +631,30 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 database.UpdateLearnedAbility(character.CommonId, lowerLevelAbility);
             }
 
-            uint jpCost = SkillGetAcquirableAbilityListHandler.AllAbilities
-                .Where(aug => aug.Job == job && aug.AbilityNo == abilityId)
-                .SelectMany(aug => aug.Params)
-                .Where(augParams => augParams.Lv == abilityLv)
-                .Select(augParams => augParams.RequireJobPoint)
-                .Single();
+            uint jpCost = abilityData.Params.Where(x => x.Lv == abilityLv).Single().RequireJobPoint;
 
-            // TODO: Check that this doesn't end up negative
-            CDataCharacterJobData learnedAbilityCharacterJobData = job == 0
+            CDataCharacterJobData learnedAbilityCharacterJobData = owningJob == 0
                 ? character.ActiveCharacterJobData // Secret Augments -> Use current job's JP TODO: Verify if this is the correct behaviour
-                : character.CharacterJobDataList.Where(jobData => jobData.Job == job).Single(); // Job Augments -> Use that job's JP
+                : character.CharacterJobDataList.Where(jobData => jobData.Job == owningJob).Single(); // Job Augments -> Use that job's JP
             learnedAbilityCharacterJobData.JobPoint -= jpCost;
             database.UpdateCharacterJobData(character.CommonId, learnedAbilityCharacterJobData);
 
-            if(character is Character)
+            if (character is Character)
             {
                 client.Send(new S2CSkillLearnAbilityRes()
                 {
-                    Job = job,
+                    Job = learnedAbilityCharacterJobData.Job,
                     NewJobPoint = learnedAbilityCharacterJobData.JobPoint,
                     AbilityId = abilityId,
                     AbilityLv = abilityLv
                 });
             }
-            else if(character is Pawn)
+            else if (character is Pawn)
             {
                 client.Send(new S2CSkillLearnPawnAbilityRes()
                 {
-                    PawnId = ((Pawn) character).PawnId,
-                    Job = job,
+                    PawnId = ((Pawn)character).PawnId,
+                    Job = learnedAbilityCharacterJobData.Job,
                     NewJobPoint = learnedAbilityCharacterJobData.JobPoint,
                     AbilityId = abilityId,
                     AbilityLv = abilityLv
@@ -379,72 +663,125 @@ namespace Arrowgene.Ddon.GameServer.Characters
         }
 
         public Ability SetAbility(IDatabase database, GameClient client, CharacterCommon character, JobId abilityJob, byte slotNo, uint abilityId, byte abilityLv)
-        {
+        {            
             Ability ability = character.LearnedAbilities
-                .Where(aug => aug.Job == abilityJob && aug.AbilityId == abilityId && aug.AbilityLv == abilityLv)
-                .Single();
+                .Where(aug =>aug.AbilityId == abilityId)
+                .SingleOrDefault();
 
-            character.EquippedAbilitiesDictionary[character.Job][slotNo-1] = ability;
+            if (ability is null)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_NOT_YET_LEARN);
+            }
+
+            character.EquippedAbilitiesDictionary[character.Job][slotNo - 1] = ability;
 
             database.ReplaceEquippedAbility(character.CommonId, character.Job, slotNo, ability);
 
             // Inform party members of the change
-            if(character is Character)
-            {
-                client.Party.SendToAll(new S2CSkillAbilitySetNtc()
-                {
-                    CharacterId = ((Character) character).CharacterId,
-                    ContextAcquirementData = ability.AsCDataContextAcquirementData(slotNo)
-                });
-            }
-            else if(character is Pawn)
-            {
-                client.Party.SendToAll(new S2CSkillPawnAbilitySetNtc()
-                {
-                    PawnId = ((Pawn) character).PawnId,
-                    ContextAcquirementData = ability.AsCDataContextAcquirementData(slotNo)
-                });
-            }
+            AbilitySetNotifyParty(client, character, ability, slotNo);
 
             return ability;
         }
 
         public void RemoveAbility(IDatabase database, CharacterCommon character, byte slotNo)
         {
-            // TODO: Performance
             List<Ability> equippedAbilities = character.EquippedAbilitiesDictionary[character.Job];
-            lock(equippedAbilities)
-            {
-                byte removedAbilitySlotNo = Byte.MaxValue;
-                for(int i=0; i<equippedAbilities.Count; i++)
-                {
-                    Ability equippedAbility = equippedAbilities[i];
-                    byte equippedAbilitySlotNo = (byte)(i+1);
-                    if(character.Job == character.Job && equippedAbilitySlotNo == slotNo)
-                    {
-                        equippedAbilities[i] = null;
-                        removedAbilitySlotNo = equippedAbilitySlotNo;
-                        break;
-                    }
-                }
 
-                for(int i=0; i<equippedAbilities.Count; i++)
+            equippedAbilities[slotNo - 1] = null; //Mark ability as null.
+            equippedAbilities.RemoveAll(x => x is null); //Squash list.
+            equippedAbilities.AddRange(Enumerable.Repeat<Ability>(null, 10 - equippedAbilities.Count)); //Resize back to 10.
+
+            database.ReplaceEquippedAbilities(character.CommonId, character.Job, equippedAbilities);
+        }
+
+        public bool UnlockSecretAbility(CharacterCommon Character, SecretAbility secretAbilityType)
+        {
+            return _Server.Database.InsertSecretAbilityUnlock(Character.CommonId, secretAbilityType);
+        }
+
+        public static CDataPresetAbilityParam MakePresetAbilityParam(CharacterCommon character, List<Ability> abilities, byte presetNo, string presetName = "")
+        {
+            CDataPresetAbilityParam preset = new CDataPresetAbilityParam()
+            {
+                PresetNo = presetNo,
+                PresetName = presetName,
+            };
+
+            byte i = 1;
+            foreach (Ability ability in abilities)
+            {
+                if (ability is null) continue;
+                preset.AbilityList.Add(ability.AsCDataSetAcquirementParam(i++));
+            }
+
+            return preset;
+        }
+
+        public void CheckPreset(IDatabase database, GameClient client, CharacterCommon character, CDataPresetAbilityParam preset)
+        {
+            uint cost = 0;
+            uint costMax = _Server.CharacterManager.GetMaxAugmentAllocation(character);
+            foreach (var presetAbility in preset.AbilityList)
+            {
+                Ability? ability = character.LearnedAbilities
+                    .Where(aug => aug.AbilityId == presetAbility.AcquirementNo)
+                    .SingleOrDefault()
+                    ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_NOT_YET_LEARN);
+
+                cost += SkillGetAcquirableAbilityListHandler.GetAbilityFromId(presetAbility.AcquirementNo).Cost;
+
+                if (cost > costMax)
                 {
-                    Ability equippedAbility = equippedAbilities[i];
-                    byte equippedAbilitySlotNo = (byte)(i+1);
-                    if(character.Job == character.Job)
-                    {
-                        if(equippedAbilitySlotNo > removedAbilitySlotNo)
-                        {
-                            equippedAbilitySlotNo--;
-                        }
-                    }
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_COST_OVER);
+                }
+            }
+        }
+    
+        public void SetAbilityPreset(IDatabase database, GameClient client, CharacterCommon character, CDataPresetAbilityParam preset)
+        {
+            List<Ability?> equippedAbilities = character.EquippedAbilitiesDictionary[character.Job];
+
+            for (byte i = 0; i < 10; i++)
+            {
+                if (i >= preset.AbilityList.Count)
+                {
+                    equippedAbilities[i] = null;
+                }
+                else
+                {
+                    Ability? ability = character.LearnedAbilities
+                    .Where(aug => aug.AbilityId == preset.AbilityList[i].AcquirementNo)
+                    .SingleOrDefault() 
+                    ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_NOT_YET_LEARN);
+
+                    character.EquippedAbilitiesDictionary[character.Job][i] = ability;
+
+                    AbilitySetNotifyParty(client, character, ability, (byte)(i + 1));
                 }
             }
 
+            //We wait until the end to do all of the DB updating in a single transaction.
             database.ReplaceEquippedAbilities(character.CommonId, character.Job, equippedAbilities);
+        }
 
-            // Same as skills, i haven't found an Ability off NTC. It may not be required
+        private void AbilitySetNotifyParty(GameClient client, CharacterCommon character, Ability ability, byte slotNo)
+        {
+            if (character is Character)
+            {
+                client.Party.SendToAll(new S2CSkillAbilitySetNtc()
+                {
+                    CharacterId = ((Character)character).CharacterId,
+                    ContextAcquirementData = ability.AsCDataContextAcquirementData(slotNo)
+                });
+            }
+            else if (character is Pawn)
+            {
+                client.Party.SendToAll(new S2CSkillPawnAbilitySetNtc()
+                {
+                    PawnId = ((Pawn)character).PawnId,
+                    ContextAcquirementData = ability.AsCDataContextAcquirementData(slotNo)
+                });
+            }
         }
     }
 }

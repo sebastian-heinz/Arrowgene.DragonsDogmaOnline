@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Arrowgene.Ddon.GameServer.Enemy;
+using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Crypto;
@@ -7,6 +7,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -14,11 +15,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceGetEnemySetListHandler));
 
-        private readonly EnemyManager _enemyManager;
-
         public InstanceGetEnemySetListHandler(DdonGameServer server) : base(server)
         {
-            _enemyManager = server.EnemyManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceGetEnemySetListReq> request)
@@ -27,24 +25,56 @@ namespace Arrowgene.Ddon.GameServer.Handler
             byte subGroupId = request.Structure.SubGroupId;
             client.Character.Stage = stageId;
 
-   
-            List<EnemySpawn> spawns = _enemyManager.GetAssets(stageId, subGroupId);
-            
-            // TODO test
-            // spawns.AddRange(_enemyManager.GetSpawns(new StageId(1,0,15), 0));
+            Logger.Info($"GroupId={request.Structure.LayoutId.GroupId}, SubGroupId={request.Structure.SubGroupId}, LayerNo={request.Structure.LayoutId.LayerNo}");
 
-            S2CInstanceGetEnemySetListRes response = new S2CInstanceGetEnemySetListRes();
-            response.LayoutId = stageId.ToStageLayoutId();
-            response.SubGroupId = subGroupId;
-            response.RandomSeed = CryptoRandom.Instance.GetRandomUInt32();
-
-            for (byte i = 0; i < spawns.Count; i++)
+            Quest quest = null;
+            bool IsQuestControlled = false;
+            foreach (var questId in client.Party.QuestState.StageQuests(stageId))
             {
-                EnemySpawn spawn = spawns[i];
-                CDataLayoutEnemyData enemy = new CDataLayoutEnemyData();
-                enemy.PositionIndex = i;
-                enemy.EnemyInfo = spawn.Enemy;
-                response.EnemyList.Add(enemy);
+                quest = QuestManager.GetQuest(questId);
+                if (client.Party.QuestState.HasEnemiesInCurrentStageGroup(quest, stageId, subGroupId))
+                {
+                    IsQuestControlled = true;
+                    break;
+                }
+            }
+
+            S2CInstanceGetEnemySetListRes response = new S2CInstanceGetEnemySetListRes()
+            {
+                LayoutId = stageId.ToStageLayoutId(),
+                SubGroupId = subGroupId,
+                RandomSeed = CryptoRandom.Instance.GetRandomUInt32(),
+            };
+
+            client.Party.InstanceEnemyManager.SetInstanceSubgroupId(stageId, subGroupId);
+            if (IsQuestControlled && quest != null)
+            {
+                response.QuestId = (uint) quest.QuestId;
+                response.EnemyList = client.Party.QuestState.GetInstancedEnemies(quest, stageId, subGroupId).Select(enemy => new CDataLayoutEnemyData()
+                {
+                    PositionIndex = (byte)(enemy.Index),
+                    EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
+                }).ToList();
+            }
+            else
+            {
+                response.EnemyList = client.Party.InstanceEnemyManager.GetAssets(stageId, subGroupId).Select((enemy, index) => new CDataLayoutEnemyData()
+                {
+                    PositionIndex = (byte)index,
+                    EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
+                })
+                .ToList();
+            }
+
+            if (subGroupId > 0)
+            {
+                S2CInstanceEnemySubGroupAppearNtc subgroupNtc = new S2CInstanceEnemySubGroupAppearNtc()
+                {
+                    SubGroupId = subGroupId,
+                    LayoutId = stageId.ToStageLayoutId(),
+                };
+
+                client.Party.SendToAll(subgroupNtc);
             }
 
             client.Send(response);

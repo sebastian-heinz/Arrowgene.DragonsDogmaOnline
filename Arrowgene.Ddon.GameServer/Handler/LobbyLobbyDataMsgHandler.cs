@@ -1,4 +1,6 @@
-using Arrowgene.Buffers;
+using System.Collections.Generic;
+using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -11,60 +13,51 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(LobbyLobbyDataMsgHandler));
 
+        private readonly PartyManager _PartyManager;
+
         public LobbyLobbyDataMsgHandler(DdonGameServer server) : base(server)
         {
+            _PartyManager = server.PartyManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SLobbyLobbyDataMsgReq> packet)
         {
             // In the pcaps ive only seen 3.4.16 packets whose RpcPacket length is either of these
             S2CLobbyLobbyDataMsgNotice res = new S2CLobbyLobbyDataMsgNotice();
-            res.Type = packet.Structure.Type; // I haven't seen any values other than 0x02
+            res.Type = packet.Structure.Type;
             res.CharacterId = client.Character.CharacterId; // Has to be overwritten since the request has the id set to 0
             res.RpcPacket = packet.Structure.RpcPacket;
             res.OnlineStatus = client.Character.OnlineStatus;
 
-            foreach (GameClient otherClient in Server.Clients)
+            if(!StageManager.IsHubArea(client.Character.Stage))
             {
-                if (otherClient != client)
+                // We stick this in a seperate if statement so if the client
+                // is not in a party, we don't enter into the else condition
+                if (client.Party != null)
                 {
-                    otherClient.Send(res);
+                    client.Party.SendToAllExcept(res, client);
                 }
             }
-            
-            if(packet.Structure.RpcPacket.Length > 52)
+            else
             {
-                IBuffer rpcPacketBuffer = new StreamBuffer(packet.Structure.RpcPacket);
-                rpcPacketBuffer.SetPositionStart();
+                // We are in one of the common areas where players can see eachother
+                foreach (GameClient otherClient in Server.ClientLookup.GetAll())
+                {
+                    if (otherClient == null || otherClient == client || otherClient.Character == null)
+                    {
+                        continue;
+                    }
 
-                // nNetMsgData::Head::deserialize
-                uint sessionId = rpcPacketBuffer.ReadUInt32(Endianness.Big); // NetMsgData.Head.SessionId
-                ulong rpcId = rpcPacketBuffer.ReadUInt64(Endianness.Big); // NetMsgData.Head.RpcId
-                uint msgIdFull = rpcPacketBuffer.ReadUInt32(Endianness.Big); // NetMsgData.Head.MsgIdFull
-                uint searchId = rpcPacketBuffer.ReadUInt32(Endianness.Big); // NetMsgData.Head.SearchId, seems to either a PawnId or 0
-                
-                // There is theoretically a nNetMsgData::Base, but i cant even see the code that deserializes it in the client
-
-                // nNetMsgData::CtrlBase::deserialize
-                rpcPacketBuffer.ReadUInt64(Endianness.Big); // nNetMsgData::CtrlBase::stMsgCtrlBaseData.mUniqueId ?
-
-                // Apparently all received 3.4.16s:
-                //  - Have searchID of 0 (aren't related to pawns)
-                //  - Have CtrlBaseData.mUniqueId of 0x8000000000000001
-
-                // nNetMsgData::CtrlAction::deserialize
-                bool isEnemy = rpcPacketBuffer.ReadBool(); // NetMsgData.CtrlAction.IsEnemy
-                bool isCharacter = rpcPacketBuffer.ReadBool(); // NetMsgData.CtrlAction.IsCharacter
-                bool isHuman = rpcPacketBuffer.ReadBool(); // NetMsgData.CtrlAction.IsHuman
-                bool isEnemyLarge = rpcPacketBuffer.ReadBool(); // NetMsgData.CtrlAction.IsEnemyLarge
-
-                // From now on, the contents (subpackets) depend on MsgId, a set of flags
-                if((msgIdFull & 1) != 0) { // This is incomplete, msgIdFull is converted through a function first, (0x5FE8D0) but should work for most cases
-                    client.Character.X = rpcPacketBuffer.ReadDouble(Endianness.Big);
-                    client.Character.Y = rpcPacketBuffer.ReadFloat(Endianness.Big);
-                    client.Character.Z = rpcPacketBuffer.ReadDouble(Endianness.Big);
+                    if (client.Character.Stage.Id == otherClient.Character.Stage.Id || _PartyManager.ClientsInSameParty(client, otherClient))
+                    {
+                        otherClient.Send(res);
+                    }
                 }
+
             }
+
+            // Handle additional packet contents
+            RpcHandler.Handle(client, packet.Structure.Type, packet.Structure.RpcPacket);
         }
     }
 }

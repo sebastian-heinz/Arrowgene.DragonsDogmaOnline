@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             LearnNormalSkillParamList=new List<CDataLearnNormalSkillParam>();
             EquipJobItemList=new List<CDataEquipJobItem>();
             Unk0=new CDataJobChangeJobResUnk0();
-            Unk1 = new byte[64];
+            TrainingStatus = new byte[64];
             SpSkillList = new List<CDataSpSkill>();
         }
 
@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataLearnNormalSkillParam> LearnNormalSkillParamList { get; set; }
         public List<CDataEquipJobItem> EquipJobItemList { get; set; }
         public CDataJobChangeJobResUnk0 Unk0 { get; set; }
-        public byte[] Unk1 { get; set; }
+        public byte[] TrainingStatus { get; set; }
         public List<CDataSpSkill> SpSkillList { get; set; }
 
 
@@ -47,7 +47,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteEntityList<CDataLearnNormalSkillParam>(buffer, obj.LearnNormalSkillParamList);
                 WriteEntityList<CDataEquipJobItem>(buffer, obj.EquipJobItemList);
                 WriteEntity<CDataJobChangeJobResUnk0>(buffer, obj.Unk0);
-                WriteByteArray(buffer, obj.Unk1);
+                WriteByteArray(buffer, obj.TrainingStatus);
                 WriteEntityList<CDataSpSkill>(buffer, obj.SpSkillList);
             }
 
@@ -63,7 +63,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.LearnNormalSkillParamList = ReadEntityList<CDataLearnNormalSkillParam>(buffer);
                 obj.EquipJobItemList = ReadEntityList<CDataEquipJobItem>(buffer);
                 obj.Unk0 = ReadEntity<CDataJobChangeJobResUnk0>(buffer);
-                obj.Unk1 = ReadByteArray(buffer, 64);
+                obj.TrainingStatus = ReadByteArray(buffer, 64);
                 obj.SpSkillList = ReadEntityList<CDataSpSkill>(buffer);
                 return obj;
             }

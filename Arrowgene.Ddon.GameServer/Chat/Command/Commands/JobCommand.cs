@@ -1,10 +1,10 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
 using Arrowgene.Ddon.Database.Model;
+using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Network;
+using System;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
 {
@@ -15,11 +15,11 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
         public override string Key => "job";
         public override string HelpText => "usage: `/job [job]`";
 
-        private DdonGameServer _server;
+        private JobChangeJobHandler _jobChangeHandler;
 
         public JobCommand(DdonGameServer server)
         {
-            _server = server;
+            _jobChangeHandler = new JobChangeJobHandler(server);
         }
 
         public override void Execute(string[] command, GameClient client, ChatMessage message, List<ChatResponse> responses)
@@ -72,7 +72,12 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             }
             else
             {
-                _server.JobManager.SetJob(_server, client, client.Character, (JobId) job);
+                _jobChangeHandler.Handle(client,
+                    new StructurePacket<C2SJobChangeJobReq>(
+                        new C2SJobChangeJobReq()
+                        {
+                            JobId = (JobId)job
+                        }));
             }
         }
     }

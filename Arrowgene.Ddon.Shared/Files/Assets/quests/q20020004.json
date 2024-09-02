@@ -1,0 +1,92 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Liz’s Lost Property",
+  "quest_id": 20020004,
+  "base_level": 41,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "BetlandPlains",
+  "news_image": 527,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1150
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1380
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 180
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 7983,
+          "num": 3
+        },
+        {
+          "item_id": 9362,
+          "num": 3
+        },
+        {
+          "item_id": 9398,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 999,
+          "comment": "Spawns Lise0 NPC"
+        }
+      ],
+      "stage_id": {
+        "id": 66,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Lise0",
+      "message_id": 11372
+    },
+    {
+      "type": "CollectItem",
+      "announce_type": "Accept",
+      "stage_id": {
+        "id": 118,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1145,
+          "comment": "Spawns Glowing Item"
+        }
+      ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 66,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Lise0",
+      "message_id": 11842
+    }
+  ]
+}

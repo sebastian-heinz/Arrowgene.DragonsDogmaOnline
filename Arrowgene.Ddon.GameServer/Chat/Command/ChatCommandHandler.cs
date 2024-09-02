@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.GameServer.Chat.Command.Commands;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Chat.Command
@@ -19,13 +18,24 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command
         public ChatCommandHandler(DdonGameServer server)
         {
             _commands = new Dictionary<string, ChatCommand>();
+            AddCommand(new HelpCommand(_commands));
             AddCommand(new TestCommand());
-            AddCommand(new EnemyCommand());
+            AddCommand(new RepopCommand(server));
             AddCommand(new InfoCommand());
             AddCommand(new JobCommand(server));
             AddCommand(new MotherlodeCommand(server));
             AddCommand(new VersionCommand());
             AddCommand(new PartyInviteCommand(server));
+            AddCommand(new ReleaseCommand(server));
+            AddCommand(new OmDataCommand(server));
+            AddCommand(new SetLevelCommand(server));
+            AddCommand(new GiveItemCommand(server));
+            AddCommand(new FinishQuestCommand(server));
+            AddCommand(new GivePawnCommand(server));
+            AddCommand(new SkipTutorialCommand(server));
+            AddCommand(new GivePowerfulItemsCommand(server));
+            AddCommand(new WarpCommand(server));
+            AddCommand(new TimeCommand(server));
         }
 
         public void AddCommand(ChatCommand command)

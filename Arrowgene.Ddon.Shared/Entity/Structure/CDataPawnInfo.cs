@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             ContextSkillList = new List<CDataContextAcquirementData>();
             ContextAbilityList = new List<CDataContextAcquirementData>();
             ExtendParam = new CDataOrbGainExtendParam();
-            Unk0 = new byte[64];
+            TrainingStatus = new byte[64];
             Unk1 = new CData_772E80();
             SpSkillList = new List<CDataSpSkill>();
         }
@@ -52,11 +52,11 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public List<CDataContextAcquirementData> ContextAbilityList { get; set; }
         public uint AbilityCostMax { get; set; }
         public CDataOrbGainExtendParam ExtendParam { get; set; }
-        public byte PawnType { get; set; }
+        public PawnType PawnType { get; set; }
         public byte ShareRange { get; set; }
         public uint Likability { get; set; }
-        public byte[] Unk0 { get; set; }
-        public CData_772E80 Unk1 { get; set; }
+        public byte[] TrainingStatus { get; set; }
+        public CData_772E80 Unk1 { get; set; } // Dragon abilities?
         public List<CDataSpSkill> SpSkillList { get; set; }
 
         public class Serializer : EntitySerializer<CDataPawnInfo>
@@ -89,10 +89,10 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteEntityList<CDataContextAcquirementData>(buffer, obj.ContextAbilityList);
                 WriteUInt32(buffer, obj.AbilityCostMax);
                 WriteEntity<CDataOrbGainExtendParam>(buffer, obj.ExtendParam);
-                WriteByte(buffer, obj.PawnType);
+                WriteByte(buffer, (byte) obj.PawnType);
                 WriteByte(buffer, obj.ShareRange);
                 WriteUInt32(buffer, obj.Likability);
-                WriteByteArray(buffer, obj.Unk0);
+                WriteByteArray(buffer, obj.TrainingStatus);
                 WriteEntity<CData_772E80>(buffer, obj.Unk1);
                 WriteEntityList<CDataSpSkill>(buffer, obj.SpSkillList);
             }
@@ -126,10 +126,10 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.ContextAbilityList = ReadEntityList<CDataContextAcquirementData>(buffer);
                 obj.AbilityCostMax = ReadUInt32(buffer);
                 obj.ExtendParam = ReadEntity<CDataOrbGainExtendParam>(buffer);
-                obj.PawnType = ReadByte(buffer);
+                obj.PawnType = (PawnType) ReadByte(buffer);
                 obj.ShareRange = ReadByte(buffer);
                 obj.Likability = ReadUInt32(buffer);
-                obj.Unk0 = ReadByteArray(buffer, 64);
+                obj.TrainingStatus = ReadByteArray(buffer, 64);
                 obj.Unk1 = ReadEntity<CData_772E80>(buffer);
                 obj.SpSkillList = ReadEntityList<CDataSpSkill>(buffer);
                 return obj ;

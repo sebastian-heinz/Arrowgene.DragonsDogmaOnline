@@ -1,0 +1,271 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "The Castle of Dusk",
+    "quest_id": 10,
+    "next_quest": 11,
+    "base_level": 35,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 6800
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 5300
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 700
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 977,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 1001,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 1011,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 69,
+                "group_id": 19
+            },
+            "starting_index": 2,
+            "enemies": [
+                {
+                    "enemy_id": "0x015709",
+                    "level": 36,
+                    "exp": 1336,
+                    "named_enemy_params_id": 148,
+                    "is_boss": true
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1
+                    },
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1215, "quest_id": 70000001, "comment": "Mysial"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1219, "quest_id": 70000001, "comment": "Iris"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1293, "quest_id": 70000001, "comment": "The White Dragon (Dead)"}
+                    ],
+                    "npc_id": "Leo0",
+                    "message_id": 7840
+                },
+                {
+                    "type": "TalkToNpc",
+                    "announce_type": "Accept",
+                    "type": "TalkToNpc",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 1237, "comment": "Spawns Gerd in the Audience Chamber"}
+                    ],
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1
+                    },
+                    "npc_id": "Klaus0",
+                    "message_id": 7845
+                },
+                {
+                    "type": "TalkToNpc",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "hand_items": [
+                        {"id": 1030, "amount": 1}
+                    ],
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1
+                    },
+                    "npc_id": "Leo0",
+                    "message_id": 7847
+                },
+                {
+                    "type": "PartyGather",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "stage_id": {
+                        "id": 1
+                    },
+                    "location": {
+                        "x": 3353,
+                        "y": 10072,
+                        "z": -35198
+                    }
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "StageNo", "Param1": 403}
+                    ],
+                    "result_commands": [
+                        {"type": "StageJump", "Param1": 403, "Param2":  0}
+                    ]
+                },
+                {
+                    "type": "PlayEvent",
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 1308, "comment": "WhiteKnights"},
+                        {"type": "MyQst", "action": "Set", "value": 1, "comment": "Start WhiteKnight NPC State Machines"}
+                    ],
+                    "stage_id": {
+                        "id": 69
+                    },
+                    "event_id": 0
+                },
+                {
+                    "type": "PartyGather",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 69
+                    },
+                    "location": {
+                        "x": -23,
+                        "y": -4530,
+                        "z": 7319
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 69
+                    },
+                    "event_id": 5
+                },
+                {
+                    "type": "KillGroup",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 983, "comment": "Spawns Gerd and Knights"},
+                        {"type": "QstLayout", "action": "Set", "value": 276, "comment": "Holy Grail"},
+                        {"type": "QstLayout", "action": "Set", "value": 1291, "comment": "Barrier"},
+                        {"type": "QstLayout", "action": "Set", "value": 1315, "comment": "Locks player in boss room"},
+                        {"type": "QstLayout", "action": "Set", "value": 913, "comment": "Locks player in boss room"},
+                        {"type": "MyQst", "action": "Set", "value": 95, "comment": "Makes NPCs fight"}
+                    ],
+                    "announce_type": "Update",
+                    "groups": [0]
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 1315, "comment": "Locks player in boss romm"},
+                        {"type": "QstLayout", "action": "Clear", "value": 913, "comment": "Locks player in boss romm"},
+                        {"type": "QstLayout", "action": "Clear", "value": 983, "comment": "Spawns Gerd and Knights"},
+                        {"type": "QstLayout", "action": "Clear", "value": 1308, "comment": "WhiteKnights"},
+                        {"type": "QstLayout", "action": "Set", "value": 1237, "comment": "Spawns Gerd in the Audience Chamber"}
+                    ],
+                    "stage_id": {
+                        "id": 69
+                    },
+                    "event_id": 10
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 276, "comment": "Holy Grail"},
+                        {"type": "QstLayout", "action": "Clear", "value": 1291, "comment": "Barrier"}
+
+                    ],
+                    "stage_id": {
+                        "id": 69
+                    },
+                    "event_id": 15
+                },
+                {
+                    "type": "TalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1
+                    },
+                    "npc_id": "Mysial0",
+                    "message_id": 7863
+                }
+            ]
+        },
+        {
+            "comment": "Process 1",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+                },
+                {
+                    "type": "IsStageNo",
+                    "show_marker": false,
+                    "stage_id": {
+                        "id": 69
+                    }
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "stage_id": {
+                        "id": 69,
+                        "group_id": 6,
+                        "layer_no": 1
+                    },
+                    "npc_id": "504",
+                    "message_id": 13782
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "stage_id": {
+                        "id": 69,
+                        "group_id": 6,
+                        "layer_no": 2
+                    },
+                    "npc_id": "505",
+                    "message_id": 13784
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "stage_id": {
+                        "id": 69,
+                        "group_id": 6,
+                        "layer_no": 3
+                    },
+                    "npc_id": "506",
+                    "message_id": 13786
+                }
+            ]
+        }
+    ]
+}

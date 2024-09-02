@@ -1,0 +1,7 @@
+[mysqld]
+sql_mode="STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION,ANSI_QUOTES"
+
+[mariadb]
+log_warnings=3
+general_log
+general_log_file=/tmp/queries.log

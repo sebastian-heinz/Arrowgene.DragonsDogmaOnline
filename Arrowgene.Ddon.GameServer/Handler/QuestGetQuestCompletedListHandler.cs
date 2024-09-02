@@ -1,13 +1,16 @@
-﻿using Arrowgene.Buffers;
+using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model.Quest;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestGetQuestCompletedListHandler : PacketHandler<GameClient>
+    public class QuestGetQuestCompletedListHandler : GameRequestPacketHandler<C2SQuestGetQuestCompleteListReq, S2CQuestGetQuestCompleteListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetQuestCompletedListHandler));
 
@@ -16,17 +19,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_QUEST_GET_QUEST_COMPLETE_LIST_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override S2CQuestGetQuestCompleteListRes Handle(GameClient client, C2SQuestGetQuestCompleteListReq packet)
         {
-            IBuffer buffer = new StreamBuffer();
-            buffer.WriteUInt32(0);
-            buffer.WriteUInt32(0);
-            buffer.WriteUInt32(0);
-            Packet p = new Packet(PacketId.S2C_QUEST_GET_QUEST_COMPLETE_LIST_RES, buffer.GetAllBytes());
-            client.Send(p);
-           // client.Send(GameFull.Dump_126);
+            // client.Send(GameFull.Dump_126);
+            var result = new S2CQuestGetQuestCompleteListRes()
+            {
+                QuestType = packet.QuestType
+            };
+
+            var completedQuests = Server.Database.GetCompletedQuestsByType(client.Character.CommonId, (QuestType) packet.QuestType);
+            foreach (var completedQuest in completedQuests)
+            {
+                result.QuestIdList.Add(new CDataQuestId()
+                {
+                    QuestId = (uint) completedQuest.QuestId
+                });
+            }
+
+            return result;
         }
     }
 }

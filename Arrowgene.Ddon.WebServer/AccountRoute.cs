@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Database.Model;
@@ -33,6 +34,52 @@ namespace Arrowgene.Ddon.WebServer
             public string Token { get; set; }
         }
 
+        private class AccountVerification
+        {
+            public bool Error { get; set; }
+            public string Message { get; set; }
+            public string Username { get; set; }
+            public string Password { get; set; }
+
+            public AccountVerification(string username, string password)
+            {
+                Username = username;
+                Password = password;
+
+                // Very simple data checks on the parameters.
+
+                if (Username.Trim().Length == 0)
+                {
+                    Error = true;
+                    Message = "Account ID cannot be empty";
+                    return;
+                }
+
+                // Disallow any whitespace.
+
+                if (Regex.IsMatch(Username, @"\s"))
+                {
+                    Error = true;
+                    Message = "Account ID cannot contain spaces";
+                    return;
+                }
+
+                if (Password.Trim().Length == 0)
+                {
+                    Error = true;
+                    Message = "Password cannot be empty";
+                    return;
+                }
+
+                if (Regex.IsMatch(Password, @"\s"))
+                {
+                    Error = true;
+                    Message = "Password cannot contain spaces";
+                    return;
+                }
+            }
+        }
+
         public AccountRoute(IDatabase database)
         {
             _database = database;
@@ -47,9 +94,12 @@ namespace Arrowgene.Ddon.WebServer
             }
 
             AccountResponse res = new AccountResponse();
+            AccountVerification accountCheck = new(req.Account, req.Password);
+
             switch (req.Action)
             {
                 case "login":
+
                     string token = CreateToken(req.Account, req.Password);
                     if (token == null)
                     {
@@ -61,6 +111,13 @@ namespace Arrowgene.Ddon.WebServer
                     res.Token = token;
                     break;
                 case "create":
+
+                    if (accountCheck.Error)
+                    {
+                        res.Error = accountCheck.Message;
+                        break;
+                    }
+
                     Account account = CreateAccount(req.Account, $"{req.Account}@dd.on", req.Password);
                     if (account == null)
                     {
@@ -107,7 +164,7 @@ namespace Arrowgene.Ddon.WebServer
             }
 
             account.LoginToken = GameToken.GenerateLoginToken();
-            account.LoginTokenCreated = DateTime.Now;
+            account.LoginTokenCreated = DateTime.UtcNow;
             _database.UpdateAccount(account);
             return account.LoginToken;
         }

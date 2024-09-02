@@ -1,0 +1,246 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Transporter's Tragedy",
+  "quest_id": 20000002,
+  "base_level": 9,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "HidellPlains",
+  "news_image": 5,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 320
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 320
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 30
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 963,
+          "num": 1
+        },
+        {
+          "item_id": 36,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "processes": [
+    {
+      "comment": "process 0",
+      "blocks": [
+        {
+          "type": "NewNpcTalkAndOrder",
+          "stage_id": {
+            "id": 1,
+            "group_id": 1,
+            "layer_no": 1
+          },
+          "npc_id": "WhiteKnight0",
+          "message_id": 8629,
+          "flags": [
+            {
+              "type": "QstLayout",
+              "action": "Set",
+              "value": 986
+            }
+          ]
+        },
+        {
+          "type": "MyQstFlags",
+          "announce_type": "Accept",
+          "set_flags": [ 6 ],
+          "check_flags": [ 1, 2, 3, 4, 5 ]
+        },
+        {
+          "type": "NewTalkToNpc",
+          "stage_id": {
+            "id": 1,
+            "group_id": 1,
+            "layer_no": 1
+          },
+          "npc_id": "WhiteKnight0",
+          "message_id": 8633
+        }
+      ]
+    },
+    {
+      "comment": "process 1",
+      "blocks": [
+        {
+          "type": "MyQstFlags",
+          "check_flags": [ 6 ]
+        },
+        {
+          "type": "TalkToNpc",
+          "stage_id": {
+            "id": 25
+          },
+          "npc_id": "Bob",
+          "message_id": 8630
+        },
+        {
+          "type": "MyQstFlags",
+          "announce_type": "Update",
+          "set_flags": [ 1 ]
+        }
+      ]
+    },
+    {
+      "comment": "process 2",
+      "blocks": [
+        {
+          "type": "MyQstFlags",
+          "check_flags": [ 6 ]
+        },
+        {
+          "type": "CollectItem",
+          "stage_id": {
+            "id": 1,
+            "group_id": 2,
+            "layer_no": 1
+          },
+          "flags": [
+            {
+              "type": "QstLayout",
+              "action": "Set",
+              "value": 1125
+            }
+          ]
+        },
+        {
+          "type": "MyQstFlags",
+          "announce_type": "Update",
+          "flags": [
+            {
+              "type": "QstLayout",
+              "action": "Clear",
+              "value": 1125
+            }
+          ],
+          "set_flags": [ 2 ]
+        }
+      ]
+    },
+    {
+      "comment": "process 3",
+      "blocks": [
+        {
+          "type": "MyQstFlags",
+          "check_flags": [ 6 ]
+        },
+        {
+          "type": "CollectItem",
+          "stage_id": {
+            "id": 1,
+            "group_id": 3,
+            "layer_no": 1
+          },
+          "flags": [
+            {
+              "type": "QstLayout",
+              "action": "Set",
+              "value": 1126
+            }
+          ]
+        },
+        {
+          "type": "MyQstFlags",
+          "announce_type": "Update",
+          "set_flags": [ 3 ],
+          "flags": [
+            {
+              "type": "QstLayout",
+              "action": "Clear",
+              "value": 1126
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "comment": "process 4",
+      "blocks": [
+        {
+          "type": "MyQstFlags",
+          "check_flags": [ 6 ]
+        },
+        {
+          "type": "CollectItem",
+          "stage_id": {
+            "id": 1,
+            "group_id": 4,
+            "layer_no": 1
+          },
+          "flags": [
+            {
+              "type": "QstLayout",
+              "action": "Set",
+              "value": 1127
+            }
+          ]
+        },
+        {
+          "type": "MyQstFlags",
+          "announce_type": "Update",
+          "set_flags": [ 4 ],
+          "flags": [
+            {
+              "type": "QstLayout",
+              "action": "Clear",
+              "value": 1127
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "comment": "process 5",
+      "blocks": [
+        {
+          "type": "MyQstFlags",
+          "check_flags": [ 6 ]
+        },
+        {
+          "type": "CollectItem",
+          "stage_id": {
+            "id": 1,
+            "group_id": 5,
+            "layer_no": 1
+          },
+          "flags": [
+            {
+              "type": "QstLayout",
+              "action": "Set",
+              "value": 1128
+            }
+          ]
+        },
+        {
+          "type": "MyQstFlags",
+          "announce_type": "Update",
+          "set_flags": [ 5 ],
+          "flags": [
+            {
+              "type": "QstLayout",
+              "action": "Clear",
+              "value": 1128
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

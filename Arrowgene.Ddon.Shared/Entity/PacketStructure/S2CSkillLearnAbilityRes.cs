@@ -1,6 +1,7 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
+using System;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
@@ -9,8 +10,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public override PacketId Id => PacketId.S2C_SKILL_LEARN_ABILITY_RES;
 
         public JobId Job { get; set; }
-        public uint NewJobPoint { get; set; }
-        public uint AbilityId { get; set; }
+        public UInt32 NewJobPoint { get; set; }
+        public UInt32 AbilityId { get; set; }
         public byte AbilityLv { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CSkillLearnAbilityRes>

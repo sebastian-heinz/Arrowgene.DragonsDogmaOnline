@@ -1,9 +1,13 @@
-﻿using Arrowgene.Buffers;
+using Arrowgene.Buffers;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using YamlDotNet.Serialization;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -20,12 +24,34 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            IBuffer buffer = new StreamBuffer();
-            buffer.WriteInt32(0);
-            buffer.WriteInt32(0);
-            buffer.WriteUInt32(0);
-            client.Send(new Packet(PacketId.S2C_QUEST_GET_PRIORITY_QUEST_RES, buffer.GetAllBytes()));
-            //client.Send(GameFull.Dump_144);
+            // client.Send(GameFull.Dump_144);
+            S2CQuestGetPriorityQuestRes res = new S2CQuestGetPriorityQuestRes();
+
+            var partyLeader = client.Party.Leader;
+
+            CDataPriorityQuestSetting setting = new CDataPriorityQuestSetting();
+            setting.CharacterId = partyLeader.Client.Character.CharacterId;
+
+            var priorityQuests = Server.Database.GetPriorityQuests(partyLeader.Client.Character.CommonId);
+            foreach (var questId in priorityQuests)
+            {
+                var quest = QuestManager.GetQuest(questId);
+                var questState = client.Party.QuestState.GetQuestState(quest);
+                if (questState == null)
+                {
+                    // Quest State should not be null, but don't crash
+                    // Just delete the quest from priority list
+                    Server.Database.DeletePriorityQuest(partyLeader.Client.Character.CommonId, questId);
+                    Logger.Error($"Client {partyLeader.Client.Character.CommonId} has priority quest for quest state which doesn't exist");
+                    continue;
+                }
+
+                setting.PriorityQuestList.Add(quest.ToCDataPriorityQuest(questState.Step));
+            }
+
+            res.PriorityQuestSettingsList.Add(setting);
+
+            client.Send(res);
         }
     }
 }

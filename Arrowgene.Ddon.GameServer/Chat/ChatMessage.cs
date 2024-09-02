@@ -8,20 +8,11 @@ namespace Arrowgene.Ddon.GameServer.Chat
         {
         }
 
-        public ChatMessage(LobbyChatMsgType messageType, byte unk2, uint unk3, uint unk4, string message)
-        {
-            Type = messageType;
-            Unk2 = unk2;
-            Unk3 = unk3;
-            Unk4 = unk4;
-            Message = message;
-            Deliver = true;
-        }
-
-        public LobbyChatMsgType Type { get; }
-        public byte Unk2 { get; set; }
-        public uint Unk3 { get; set; }
-        public uint Unk4 { get; set; }
+        public uint HandleId { get; set; }
+        public LobbyChatMsgType Type { get; set; }
+        public byte MessageFlavor { get; set; }
+        public uint PhrasesCategory { get; set; }
+        public uint PhrasesIndex { get; set; }
         public string Message { get; set; }
         public bool Deliver { get; set; }
     }

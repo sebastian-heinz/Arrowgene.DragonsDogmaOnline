@@ -1,0 +1,286 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Flowers Bathed In Light",
+  "quest_id": 20050004,
+  "base_level": 19,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "MysreeForest",
+  "news_image": 112,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 520
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 620
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 80
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Wizard Ring",
+          "item_id": 8948,
+          "num": 1
+        },
+        {
+          "comment": "Conquerors Periapt",
+          "item_id": 42,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1057,
+          "comment": "Spawns Dalia NPC"
+        }
+      ],
+      "stage_id": {
+        "id": 67,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Dalia",
+      "message_id": 11372
+    },
+    {
+      "type": "CollectItem",
+      "announce_type": "Accept",
+      "stage_id": {
+        "id": 67,
+        "group_id": 2,
+        "layer_no": 1
+      },
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1181,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1182,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1183,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1184,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1185,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1824,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1825,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1826,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1827,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1828,
+          "comment": "Spawns Glowing Item"
+        }
+      ]
+    },
+    {
+      "type": "CollectItem",
+      "announce_type": "Update",
+      "stage_id": {
+        "id": 67,
+        "group_id": 3,
+        "layer_no": 1
+      },
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1181,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1182,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1183,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1184,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1185,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1824,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1825,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1826,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1827,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1828,
+          "comment": "Spawns Glowing Item"
+        }
+      ]
+    },
+    {
+      "type": "CollectItem",
+      "announce_type": "Update",
+      "stage_id": {
+        "id": 67,
+        "group_id": 4,
+        "layer_no": 1
+      },
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1181,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1182,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1183,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1184,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1185,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1824,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1825,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1826,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1827,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1828,
+          "comment": "Spawns Glowing Item"
+        }
+      ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 67,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Dalia",
+      "message_id": 11842
+    }
+  ]
+}

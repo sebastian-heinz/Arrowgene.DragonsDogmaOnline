@@ -34,11 +34,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteBool(buffer, obj.IsPawn);
                 WriteBool(buffer, obj.IsPlayEntry);
                 WriteByte(buffer, (byte) obj.JoinState);
-                for (int i = 0; i < obj.AnyValueList.Length; i++)
-                {
-                    WriteByte(buffer, obj.AnyValueList[i]);
-                }
-
+                WriteByteArray(buffer, obj.AnyValueList);
                 WriteByte(buffer, obj.SessionStatus);
             }
 
@@ -53,11 +49,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.IsPawn = ReadBool(buffer);
                 obj.IsPlayEntry = ReadBool(buffer);
                 obj.JoinState = (JoinState) ReadByte(buffer);
-                for (int i = 0; i < obj.AnyValueList.Length; i++)
-                {
-                    obj.AnyValueList[i] = ReadByte(buffer);
-                }
-
+                obj.AnyValueList = ReadByteArray(buffer, obj.AnyValueList.Length);
                 obj.SessionStatus = ReadByte(buffer);
                 return obj;
             }

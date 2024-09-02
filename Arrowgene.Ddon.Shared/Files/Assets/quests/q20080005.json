@@ -1,0 +1,102 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Wings of Darkness",
+    "quest_id": 20080005,
+    "base_level": 48,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+  "area_id": "EasternZandora",		
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1580
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 290
+        },
+        {
+            "type": "exp",
+            "amount": 2580
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 7818,
+                    "num": 1
+                },
+                {
+                    "item_id": 9403,
+                    "num": 3
+                },
+                {
+                    "item_id": 41,
+                    "num": 3
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "loot_pool": [
+                {
+                    "item_id": 34,
+                    "num": 9,
+                    "chance": 1.0
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 477
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015320",
+                    "level": 48,
+                    "exp": 14000,
+                    "is_boss": true							
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 61,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "Salamis",
+            "message_id": 11372
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [0]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 61,
+                "group_id": 1,
+                "layer_no": 1				
+            },
+            "announce_type": "Update",
+            "npc_id": "Salamis",
+            "message_id": 11835
+        }
+    ]
+}

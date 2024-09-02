@@ -1,36 +1,57 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Arrowgene.Ddon.GameServer.GatheringItems;
+using System.Runtime.InteropServices;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class InstanceGetGatheringItemListHandler : StructurePacketHandler<GameClient, C2SInstanceGetGatheringItemListReq>
+    public class InstanceGetGatheringItemListHandler : GameStructurePacketHandler<C2SInstanceGetGatheringItemListReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceGetGatheringItemListHandler));
 
-        private readonly GatheringItemManager gatheringItemManager;
+        // TODO: Different chances for each gathering item type
+        private static readonly double BREAK_CHANCE = 0.1;
 
         public InstanceGetGatheringItemListHandler(DdonGameServer server) : base(server)
         {
-            this.gatheringItemManager = server.GatheringItemManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceGetGatheringItemListReq> req)
         {
-            List<GatheringItem> gatheringItems = client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, req.Structure.PosId);
+            bool isGatheringItemBreak = false;
+            if(!client.InstanceGatheringItemManager.HasAssetsInstanced(req.Structure.LayoutId, req.Structure.PosId) && req.Structure.GatheringItemUId.Length > 0 && Random.Shared.NextDouble() < BREAK_CHANCE)
+            {
+                isGatheringItemBreak = true;
+
+                S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
+                ntc.UpdateItemList.AddRange(Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.ItemBagStorageTypes, req.Structure.GatheringItemUId, 1));
+                client.Send(ntc);
+            }
+
+            List<InstancedGatheringItem> gatheringItems = new List<InstancedGatheringItem>();
+
+            uint posId = req.Structure.PosId;
+            var stageId = req.Structure.LayoutId.AsStageId();
+            if (StageManager.IsBitterBlackMazeStageId(stageId))
+            {
+                gatheringItems.AddRange(client.InstanceBbmItemManager.FetchBitterblackItems(Server, client, stageId, posId));
+            }
+            else
+            {
+                gatheringItems.AddRange(client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, posId));
+            }
 
             S2CInstanceGetGatheringItemListRes res = new S2CInstanceGetGatheringItemListRes();
             res.LayoutId = req.Structure.LayoutId;
             res.PosId = req.Structure.PosId;
-            res.GatheringItemUId = "PROBANDO"; // TODO: Find out somehow what gathering item was used and send it back
-            res.IsGatheringItemBreak = false; // TODO: False by default. True if lockpick?, or random if other gathering item. Update broken item by sending S2CItemUpdateCharacterItemNtc
+            res.GatheringItemUId = req.Structure.GatheringItemUId;
+            res.IsGatheringItemBreak = isGatheringItemBreak;
             res.Unk0 = false;
             res.Unk1 = new List<CDataGatheringItemListUnk1>();
             res.ItemList = gatheringItems
@@ -39,7 +60,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     SlotNo = (uint) index,
                     ItemId = asset.ItemId,
                     ItemNum = asset.ItemNum,
-                    Unk3 = asset.Unk3,
+                    Quality = asset.Quality,
                     IsHidden = asset.IsHidden
                 })
                 .ToList();

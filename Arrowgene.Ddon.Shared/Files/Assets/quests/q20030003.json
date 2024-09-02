@@ -1,0 +1,96 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Timeless Castle",
+  "quest_id": 20030003,
+  "base_level": 40,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "DoweValley",
+  "news_image": 71,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1840
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1320
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 260
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Crest of Incineration",
+          "item_id": 9258,
+          "num": 1
+        },
+        {
+          "comment": "Exquisite Fried Meat",
+          "item_id": 9416,
+          "num": 2
+        },
+        {
+          "comment": "Three-Herb Salad",
+          "item_id": 9410,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 69,
+        "group_id": 10
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015709",
+          "level": 40,
+          "exp": 13500,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 42,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Urda",
+      "message_id": 11372
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 42,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Urda",
+      "message_id": 11842
+    }
+  ]
+}

@@ -1,12 +1,9 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
@@ -26,14 +23,31 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SEquipChangeCharacterEquipReq> packet)
         {
-            equipManager.HandleChangeEquipList(Server, client, client.Character, packet.Structure.ChangeCharacterEquipList, 0x24, StorageType.ItemBagEquipment, () => {
-                client.Send(new S2CEquipChangeCharacterEquipRes()
-                {
-                    CharacterEquipList = packet.Structure.ChangeCharacterEquipList
-                    // TODO: Unk0
-                });
+            (S2CItemUpdateCharacterItemNtc itemNtc, S2CEquipChangeCharacterEquipNtc equipNtc) equipResult = (null, null);
+
+            Server.Database.ExecuteInTransaction(connection =>
+            {
+                equipResult = ((S2CItemUpdateCharacterItemNtc, S2CEquipChangeCharacterEquipNtc))equipManager.HandleChangeEquipList(
+                    Server, client, 
+                    client.Character, 
+                    packet.Structure.ChangeCharacterEquipList, 
+                    ItemNoticeType.ChangeEquip, 
+                    new List<StorageType>() { StorageType.ItemBagEquipment }, 
+                    connection);
+            });
+
+            client.Send(equipResult.itemNtc);
+
+            foreach (Client otherClient in Server.ClientLookup.GetAll())
+            {
+                otherClient.Send(equipResult.equipNtc); //TODO: Investigate if we need to send this to *everyone*.
+            }
+
+            client.Send(new S2CEquipChangeCharacterEquipRes()
+            {
+                CharacterEquipList = packet.Structure.ChangeCharacterEquipList
+                // TODO: Unk0
             });
         }
     }
-
 }

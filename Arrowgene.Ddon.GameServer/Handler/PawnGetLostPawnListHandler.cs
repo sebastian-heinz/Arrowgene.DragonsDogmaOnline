@@ -1,10 +1,11 @@
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model.Quest;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -18,7 +19,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPawnGetLostPawnListReq> req)
         {
-            client.Send(new S2CPawnGetLostPawnListRes());
+            var res = new S2CPawnGetLostPawnListRes();
+            client.Send(res);
         }
     }
 }

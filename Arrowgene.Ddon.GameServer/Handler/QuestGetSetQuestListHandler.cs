@@ -1,32 +1,70 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Dump;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Asset;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections;
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestGetSetQuestListHandler : PacketHandler<GameClient>
+    public class QuestGetSetQuestListHandler : GameStructurePacketHandler<C2SQuestGetSetQuestListReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetQuestPartyBonusListHandler));
-
 
         public QuestGetSetQuestListHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override PacketId Id => PacketId.C2S_QUEST_GET_SET_QUEST_LIST_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override void Handle(GameClient client, StructurePacket<C2SQuestGetSetQuestListReq> packet)
         {
-            IBuffer buffer = new StreamBuffer();
-            buffer.WriteUInt32(0);
-            buffer.WriteUInt32(0);
-            buffer.WriteUInt32(0);
-            Packet p = new Packet(PacketId.S2C_QUEST_GET_SET_QUEST_LIST_RES, buffer.GetAllBytes());
-            client.Send(p);
-           // client.Send(GameFull.Dump_132);
+            // client.Send(GameFull.Dump_132);
+
+            S2CQuestGetSetQuestListRes res = new S2CQuestGetSetQuestListRes();
+            foreach (var questId in client.Party.QuestState.GetActiveQuestIds())
+            {
+                var quest = QuestManager.GetQuest(questId);
+                if (quest.QuestType == QuestType.World)
+                {
+
+                    var questStats = Server.Database.GetCompletedQuestsById(client.Party.Leader.Client.Character.CommonId, quest.QuestId);
+                    var questState = client.Party.QuestState.GetQuestState(questId);
+                    /**
+                     * World quests get added here instead of QuestGetWorldManageQuestListHandler because
+                     * "World Manage Quests" are different from "World Quests". World manage quests appear
+                     * to control the state of the game world (doors, paths, gates, etc.). World quests
+                     * are random fetch, deliver and kill type quests.
+                     */
+                    res.SetQuestList.Add(new CDataSetQuestList()
+                    {
+                        Detail = new CDataSetQuestDetail() 
+                        { 
+                            IsDiscovery = (questStats == null) ? quest.IsDiscoverable : true,
+                            ClearCount = (questStats == null) ? 0 : questStats.ClearCount
+                        },
+                        Param = quest.ToCDataQuestList(questState.Step),
+                    });
+                }
+            }
+
+            S2CQuestGetSetQuestListNtc ntc = new S2CQuestGetSetQuestListNtc()
+            { 
+                SelectCharacterId = client.Party.Leader.Client.Character.CharacterId,
+                SetQuestList = res.SetQuestList
+            };
+
+            client.Party.SendToAll(ntc);
+
+
+            client.Send(res);
         }
     }
 }

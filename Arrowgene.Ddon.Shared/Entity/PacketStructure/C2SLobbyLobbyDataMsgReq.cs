@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -9,12 +10,12 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public C2SLobbyLobbyDataMsgReq()
         {
-            Type=0;
-            CharacterId=0;
-            RpcPacket=new byte[0];
+            Type = 0;
+            CharacterId = 0;
+            RpcPacket = new byte[0];
         }
 
-        public byte Type { get; set; }
+        public RpcMsgType Type { get; set; }
         public uint CharacterId { get; set; }
         public byte[] RpcPacket { get; set; }
 
@@ -22,7 +23,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
             public override void Write(IBuffer buffer, C2SLobbyLobbyDataMsgReq obj)
             {
-                WriteByte(buffer, obj.Type);
+                WriteByte(buffer, (byte) obj.Type);
                 WriteUInt32(buffer, obj.CharacterId);
                 WriteInt32(buffer, obj.RpcPacket.Length);
                 WriteByteArray(buffer, obj.RpcPacket);
@@ -31,7 +32,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override C2SLobbyLobbyDataMsgReq Read(IBuffer buffer)
             {
                 C2SLobbyLobbyDataMsgReq obj = new C2SLobbyLobbyDataMsgReq();
-                obj.Type = ReadByte(buffer);
+                obj.Type = (RpcMsgType) ReadByte(buffer);
                 obj.CharacterId = ReadUInt32(buffer);
                 int rpcPacketLength = ReadInt32(buffer);
                 obj.RpcPacket = ReadByteArray(buffer, rpcPacketLength);

@@ -1,13 +1,12 @@
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class GpGetGpHandler : PacketHandler<GameClient>
+    public class GpGetGpHandler : GameStructurePacketHandler<C2SGpGetGpReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(GpGetGpHandler));
 
@@ -16,11 +15,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_GP_GET_GP_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override void Handle(GameClient client, StructurePacket<C2SGpGetGpReq> request)
         {
-            client.Send(GameFull.Dump_704);
+            var amount = Server.WalletManager.GetWalletAmount(client.Character, Shared.Model.WalletType.GoldenGemstones);
+
+            client.Send(new S2CGpGetGpRes()
+            {
+                GP = amount,
+                UseLimit = 0, ///TODO: Investigate.
+                RealTime = DateTimeOffset.Now
+            });
         }
     }
 }

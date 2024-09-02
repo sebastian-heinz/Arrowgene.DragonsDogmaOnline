@@ -1,0 +1,84 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Malice in the Dark",
+  "quest_id": 20010004,
+  "base_level": 15,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "BreyaCoast",
+  "news_image": 24,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 490
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 60
+    },
+    {
+      "type": "exp",
+      "amount": 490
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Amethyst",
+          "item_id": 7897,
+          "num": 3
+        },
+        {
+          "comment": "Waking Draught",
+          "item_id": 9366,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 91
+      },
+      "starting_index": 5,
+      "enemies": [
+        {
+          "comment": "Mist Fighter",
+          "enemy_id": "0x011030",
+          "level": 15,
+          "exp": 94,
+          "hm_present_no": 68
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 47
+      },
+      "npc_id": "Rudolfo",
+      "message_id": 10800
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 47
+      },
+      "announce_type": "Update",
+      "npc_id": "Rudolfo",
+      "message_id": 10805
+    }
+  ]
+}

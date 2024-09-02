@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint SlotNo { get; set; }
         public uint ItemId { get; set; }
         public uint ItemNum { get; set; }
-        public uint Unk3 { get; set; }
+        public uint Quality { get; set; }
         public bool IsHidden { get; set; }
 
         public class Serializer : EntitySerializer<CDataGatheringItemElement>
@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.SlotNo);
                 WriteUInt32(buffer, obj.ItemId);
                 WriteUInt32(buffer, obj.ItemNum);
-                WriteUInt32(buffer, obj.Unk3);
+                WriteUInt32(buffer, obj.Quality);
                 WriteBool(buffer, obj.IsHidden);
             }
         
@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.SlotNo = ReadUInt32(buffer);
                 obj.ItemId = ReadUInt32(buffer);
                 obj.ItemNum = ReadUInt32(buffer);
-                obj.Unk3 = ReadUInt32(buffer);
+                obj.Quality = ReadUInt32(buffer);
                 obj.IsHidden = ReadBool(buffer);
                 return obj;
             }

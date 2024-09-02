@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -25,7 +26,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         public override void Handle(LoginClient client, StructurePacket<C2LLoginReq> packet)
         {
-            DateTime now = DateTime.Now;
+            DateTime now = DateTime.UtcNow;
             client.SetChallengeCompleted(true);
 
             string oneTimeToken = packet.Structure.OneTimeToken;
@@ -102,9 +103,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 List<Connection> connections = Database.SelectConnectionsByAccountId(account.Id);
                 if (connections.Count > 0)
                 {
-                    // todo check connection age?
                     Logger.Error(client, $"Already logged in");
-                    res.Error = 1;
+                    res.Error = (uint) ErrorCode.ERROR_CODE_AUTH_MULTIPLE_LOGIN;
                     client.Send(res);
                     return;
                 }

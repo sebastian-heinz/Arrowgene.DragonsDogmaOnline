@@ -1,0 +1,94 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "From the Waters Depths",
+  "quest_id": 20015000,
+  "base_level": 15,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "BreyaCoast",
+  "news_image": 22,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 490
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 410
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 60
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Silken Sand",
+          "item_id": 7845,
+          "num": 3
+        },
+        {
+          "comment": "Terry Cloth",
+          "item_id": 9367,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 95
+      },
+      "enemies": [
+        {
+          "comment": "Giant Saurian",
+          "enemy_id": "0x010401",
+          "level": 15,
+          "exp": 65
+        },
+        {
+          "comment": "Giant Saurian",
+          "enemy_id": "0x010401",
+          "level": 15,
+          "exp": 65
+        },
+        {
+          "comment": "Giant Saurian",
+          "enemy_id": "0x010401",
+          "level": 15,
+          "exp": 65
+        },
+        {
+          "comment": "Giant Saurian",
+          "enemy_id": "0x010401",
+          "level": 15,
+          "exp": 65
+        },
+        {
+          "comment": "Giant Saurian",
+          "enemy_id": "0x010401",
+          "level": 15,
+          "exp": 65
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

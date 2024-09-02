@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.Shared.Csv
     /// <summary>
     /// https://www.rfc-editor.org/rfc/rfc4180
     /// </summary>
-    public abstract class CsvReaderWriter<T> : IAssetDeserializer<T>
+    public abstract class CsvReaderWriter<T> : IAssetDeserializer<List<T>>
     {
         private const int BufferSize = 128;
         private static readonly ILogger Logger = LogProvider.Logger(typeof(CsvReaderWriter<T>));

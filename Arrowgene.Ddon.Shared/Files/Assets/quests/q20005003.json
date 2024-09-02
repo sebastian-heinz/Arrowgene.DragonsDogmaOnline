@@ -1,0 +1,72 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Dweller In The Darkness",
+  "quest_id": 20005003,
+  "base_level": 15,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "HidellPlains",
+  "news_image": 544,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 540
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 90
+    },
+    {
+      "type": "exp",
+      "amount": 720
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 845,
+          "num": 1
+        },
+        {
+          "item_id": 631,
+          "num": 1
+        },
+        {
+          "item_id": 9403,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 85,
+        "group_id": 4
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015502",
+          "level": 15,
+          "exp": 2780,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

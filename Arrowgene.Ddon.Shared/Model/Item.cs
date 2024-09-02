@@ -25,48 +25,41 @@ namespace Arrowgene.Ddon.Shared.Model
         }
         
         public uint ItemId { get; set; }
-        public byte Unk3 { get; set; } // QualityParam?
+        public byte Unk3 { get; set; } // This is safety setting.
         public byte Color { get; set; }
-        public byte PlusValue { get; set; }
-        public List<CDataWeaponCrestData> WeaponCrestDataList { get; set; }
-        public List<CDataArmorCrestData> ArmorCrestDataList { get; set; }
+        public byte PlusValue { get; set; } // This is Equipment Quality, +0/1/2/3/
+        public uint EquipPoints { get; set; }
         public List<CDataEquipElementParam> EquipElementParamList { get; set; }
+        public List<CDataAddStatusParam> AddStatusParamList { get; set; } // Actually LimitBreak/Bonus from Craig I guess.
+        public List<CDataEquipItemInfoUnk2> Unk2List { get; set; } // Am thinking this might be addstatus but struggling to get this to work ingame.
 
         private string _uid;
 
         public Item()
         {
-            WeaponCrestDataList = new List<CDataWeaponCrestData>();
-            ArmorCrestDataList = new List<CDataArmorCrestData>();
             EquipElementParamList = new List<CDataEquipElementParam>();
+            AddStatusParamList = new List<CDataAddStatusParam>();
+            Unk2List = new List<CDataEquipItemInfoUnk2>();
+        }
+
+        public Item(Item obj)
+        {
+            this._uid = UpdateUId();
+            this.ItemId = obj.ItemId;
+            this.Unk3 = obj.Unk3;
+            this.Color = obj.Color;
+            this.PlusValue = obj.PlusValue;
+            this.EquipPoints = obj.EquipPoints;
+            // TODO: Make a copy constructor for these
+            this.EquipElementParamList = obj.EquipElementParamList;
+            this.AddStatusParamList = obj.AddStatusParamList;
+            this.Unk2List = obj.Unk2List;
         }
 
         public string UpdateUId()
         {
-            IncrementalHash hash = IncrementalHash.CreateHash(HashAlgorithmName.MD5); // It's for comparison, who cares, it's fast.
-            hash.AppendData(BitConverter.GetBytes(ItemId));
-            hash.AppendData(BitConverter.GetBytes(Unk3));
-            hash.AppendData(BitConverter.GetBytes(Color));
-            hash.AppendData(BitConverter.GetBytes(PlusValue));
-            foreach (var weaponCrestData in WeaponCrestDataList)
-            {
-                hash.AppendData(BitConverter.GetBytes(weaponCrestData.SlotNo));
-                hash.AppendData(BitConverter.GetBytes(weaponCrestData.CrestId));
-                hash.AppendData(BitConverter.GetBytes(weaponCrestData.Add));
-            }
-            foreach (var armorCrestData in ArmorCrestDataList)
-            {
-                hash.AppendData(BitConverter.GetBytes(armorCrestData.u0));
-                hash.AppendData(BitConverter.GetBytes(armorCrestData.u1));
-                hash.AppendData(BitConverter.GetBytes(armorCrestData.u2));
-                hash.AppendData(BitConverter.GetBytes(armorCrestData.u3));
-            }
-            foreach (var equipElementParam in EquipElementParamList)
-            {
-                hash.AppendData(BitConverter.GetBytes(equipElementParam.SlotNo));
-                hash.AppendData(BitConverter.GetBytes(equipElementParam.ItemId));
-            }
-            this._uid = BitConverter.ToString(hash.GetHashAndReset()).Replace("-", string.Empty).Substring(0, UIdLength);
+            Random rnd = new Random();
+            this._uid = $"{rnd.Next():X08}";
             return this._uid;
         }
     }

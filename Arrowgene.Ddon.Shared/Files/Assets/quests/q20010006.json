@@ -1,0 +1,129 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Along the Faraway Sea",
+  "quest_id": 20010006,
+  "base_level": 18,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "BreyaCoast",
+  "news_image": 22,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 830
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 590
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 90
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Custom Longbow",
+          "item_id": 77,
+          "num": 1
+        },
+        {
+          "comment": "Antidote",
+          "item_id": 37,
+          "num": 3
+        },
+        {
+          "comment": "Eyedrop",
+          "item_id": 39,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 994,
+          "comment": "Spawns Travelling NPC"
+        }
+      ],
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "TravelingFemaleHunter",
+      "message_id": 11372
+    },
+    {
+      "type": "CollectItem",
+      "announce_type": "Accept",
+      "stage_id": {
+        "id": 1,
+        "group_id": 2,
+        "layer_no": 1
+      },
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1140,
+          "comment": "Spawns Glowing Item"
+        }
+      ]
+    },
+    {
+      "type": "CollectItem",
+      "announce_type": "Update",
+      "stage_id": {
+        "id": 1,
+        "group_id": 3,
+        "layer_no": 1
+      },
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1141,
+          "comment": "Spawns Glowing Item"
+        }
+      ]
+    },
+    {
+      "type": "CollectItem",
+      "announce_type": "Update",
+      "stage_id": {
+        "id": 1,
+        "group_id": 4,
+        "layer_no": 1
+      },
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1142,
+          "comment": "Spawns Glowing Item"
+        }
+      ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "TravelingFemaleHunter",
+      "message_id": 11842
+    }
+  ]
+}

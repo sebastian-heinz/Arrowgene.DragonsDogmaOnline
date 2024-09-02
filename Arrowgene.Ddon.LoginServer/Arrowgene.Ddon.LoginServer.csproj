@@ -9,8 +9,15 @@
         <Copyright>Copyright © 2019-2022 DDON Team</Copyright>
         <LangVersion>10</LangVersion>
     </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    </PropertyGroup>
     <Import Project="./../SetSourceRevision.targets" />
     <ItemGroup>
+      <ProjectReference Include="..\Arrowgene.Ddon.GameServer\Arrowgene.Ddon.GameServer.csproj" />
       <ProjectReference Include="..\Arrowgene.Ddon.Server\Arrowgene.Ddon.Server.csproj" />
     </ItemGroup>
     <ItemGroup>

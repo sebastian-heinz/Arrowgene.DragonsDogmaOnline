@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Context;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -16,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceEnemyGroupLeaveNtc> packet)
         {
-            // I don't know what we're supposed to do with this info            
+            ContextManager.DelegateMaster(client, packet.Structure.LayoutId);
         }
     }
 }

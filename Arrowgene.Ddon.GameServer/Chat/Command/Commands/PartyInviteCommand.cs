@@ -1,10 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
 {
@@ -31,13 +30,13 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             if (command.Length == 0)
             {
                 // check expected length before accessing
-                responses.Add(ChatResponse.CommandError(client, "no arguments provided"));
+                responses.Add(ChatResponse.CommandError(client, "No arguments provided."));
                 return;
             }
 
             if (!client.Party.GetPlayerPartyMember(client).IsLeader)
             {
-                responses.Add(ChatResponse.CommandError(client, "only the leader can send invites"));
+                responses.Add(ChatResponse.CommandError(client, "Only the party leader can invite players."));
                 return;
             }
 
@@ -47,11 +46,11 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                 var tuple = client.Character.Pawns
                     .Select((pawn, index) => new {pawn = pawn, pawnNumber = (byte)(index+1)})
                     .Where(tuple => tuple.pawn.Name == command[0])
-                    .SingleOrDefault();
+                    .FirstOrDefault();
 
                 if (tuple == null)
                 {
-                    responses.Add(ChatResponse.CommandError(client, "no pawn found by that name"));
+                    responses.Add(ChatResponse.CommandError(client, "No pawn was found by that name."));
                     return;
                 }
 
@@ -66,16 +65,24 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
 
                 if (targetClient == null)
                 {
-                    responses.Add(ChatResponse.CommandError(client, "no player found by that name"));
+                    responses.Add(ChatResponse.CommandError(client, "No player was found by that name."));
                     return;
                 }
+
+                if (targetClient == client)
+                {
+                    responses.Add(ChatResponse.CommandError(client, "You cannot invite yourself."));
+                    return;
+                }
+
+                //TODO: Revisit how to check if a player can actually receive an invite or not.
 
                 _inviteCharacterHandler.Handle(client, new StructurePacket<C2SPartyPartyInviteCharacterReq>(new C2SPartyPartyInviteCharacterReq()
                 {
                     CharacterId = targetClient.Character.CharacterId
                 }));
 
-                responses.Add(ChatResponse.ServerMessage(client, "invite sent to "+targetClient.Character.FirstName+" "+targetClient.Character.LastName));
+                responses.Add(ChatResponse.ServerMessage(client, $"Party invite sent to {targetClient.Character.FirstName} {targetClient.Character.LastName}."));
             }
         }
     }

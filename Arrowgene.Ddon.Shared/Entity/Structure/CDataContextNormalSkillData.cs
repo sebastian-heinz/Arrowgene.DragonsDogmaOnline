@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -8,27 +9,37 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 
         public CDataContextNormalSkillData(CDataNormalSkillParam normalSkillParam)
         {
-            SkillNo = (byte) normalSkillParam.SkillNo;
+            SkillIndex = (byte) normalSkillParam.Index;
+        }
+
+        public static List<CDataContextNormalSkillData> FromCDataNormalSkillParams(List<CDataNormalSkillParam> skillParams)
+        {
+            List<CDataContextNormalSkillData> obj = new List<CDataContextNormalSkillData>();
+            foreach (var skillParam in skillParams)
+            {
+                obj.Add(new CDataContextNormalSkillData(skillParam));
+            }
+            return obj;
         }
 
         public CDataContextNormalSkillData()
         {
-            SkillNo=0;
+            SkillIndex=0;
         }
 
-        public byte SkillNo;
+        public byte SkillIndex;
 
         public class Serializer : EntitySerializer<CDataContextNormalSkillData>
         {
             public override void Write(IBuffer buffer, CDataContextNormalSkillData obj)
             {
-                WriteByte(buffer, obj.SkillNo);
+                WriteByte(buffer, obj.SkillIndex);
             }
 
             public override CDataContextNormalSkillData Read(IBuffer buffer)
             {
                 CDataContextNormalSkillData obj = new CDataContextNormalSkillData();
-                obj.SkillNo = ReadByte(buffer);
+                obj.SkillIndex = ReadByte(buffer);
                 return obj;
             }
         }

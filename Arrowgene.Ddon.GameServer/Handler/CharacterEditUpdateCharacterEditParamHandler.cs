@@ -1,12 +1,11 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterEditUpdateCharacterEditParamHandler : GameStructurePacketHandler<C2SCharacterEditUpdateCharacterEditParamReq>
+    public class CharacterEditUpdateCharacterEditParamHandler : GameRequestPacketHandler<C2SCharacterEditUpdateCharacterEditParamReq, S2CCharacterEditUpdateCharacterEditParamRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterEditUpdateCharacterEditParamHandler));
 
@@ -14,12 +13,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCharacterEditUpdateCharacterEditParamReq> packet)
+        public override S2CCharacterEditUpdateCharacterEditParamRes Handle(GameClient client, C2SCharacterEditUpdateCharacterEditParamReq packet)
         {
-            // TODO: Substract GG/Tickets
-            client.Character.EditInfo = packet.Structure.EditInfo;
+            CharacterEditGetShopPriceHandler.CheckPrice(packet.UpdateType, packet.EditPrice.PointType, packet.EditPrice.Value);
+
+            Server.WalletManager.RemoveFromWalletNtc(client, client.Character,
+                            packet.EditPrice.PointType, packet.EditPrice.Value);
+
+            client.Character.EditInfo = packet.EditInfo;
             Server.Database.UpdateEditInfo(client.Character);
-            client.Send(new S2CCharacterEditUpdateCharacterEditParamRes());
+
             foreach(Client other in Server.ClientLookup.GetAll()) {
                 other.Send(new S2CCharacterEditUpdateEditParamNtc() {
                     CharacterId = client.Character.CharacterId,
@@ -27,6 +30,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     EditInfo = client.Character.EditInfo
                 });
             }
+
+            return new S2CCharacterEditUpdateCharacterEditParamRes();
         }
     }
 }

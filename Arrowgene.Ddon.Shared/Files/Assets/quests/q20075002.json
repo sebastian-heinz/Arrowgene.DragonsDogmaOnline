@@ -1,0 +1,72 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Raging Demonic Bird",
+  "quest_id": 20075002,
+  "base_level": 45,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "NorthernBetlandPlains",
+  "news_image": 142,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1480
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 230
+    },
+    {
+      "type": "exp",
+      "amount": 2070
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 7877,
+          "num": 2
+        },
+        {
+          "item_id": 9421,
+          "num": 1
+        },
+        {
+          "item_id": 9401,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 309
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015301",
+          "level": 45,
+          "exp": 13000,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

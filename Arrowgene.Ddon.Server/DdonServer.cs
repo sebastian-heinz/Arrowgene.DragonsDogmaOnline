@@ -25,6 +25,7 @@ using System.Collections.Generic;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 using Arrowgene.Networking.Tcp.Server.AsyncEvent;
@@ -40,11 +41,15 @@ namespace Arrowgene.Ddon.Server
         private readonly AsyncEventServer _server;
         private readonly ServerSetting _setting;
 
-        public DdonServer(ServerSetting setting, IDatabase database, AssetRepository assetRepository)
+        public readonly ServerType Type;
+
+        public DdonServer(ServerType type, ServerSetting setting, IDatabase database, AssetRepository assetRepository)
         {
             LogProvider.ConfigureNamespace(GetType().Namespace, setting);
             Logger = LogProvider.Logger<ServerLogger>(GetType());
             
+            Type = type;
+
             _setting = setting;
             AssetRepository = assetRepository;
             Database = database;
@@ -82,11 +87,17 @@ namespace Arrowgene.Ddon.Server
         public void Stop()
         {
             _server.Stop();
+            _consumer.Dispose();
         }
 
         protected void AddHandler(IPacketHandler<TClient> packetHandler)
         {
             _consumer.AddHandler(packetHandler);
+        }
+
+        protected void SetFallbackHandler(IPacketHandler<TClient> packetHandler)
+        {
+            _consumer.SetFallbackHandler(packetHandler);
         }
 
         protected abstract void ClientConnected(TClient client);

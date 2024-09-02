@@ -1,26 +1,37 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Logging;
 using System.Collections.Generic;
+using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using System.Threading;
+using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.GameServer.Party;
 
 public class PartyManager
 {
-    public const uint MaxNumParties = 100;
+    public const uint MaxNumParties = 1000;
     public const uint InvalidPartyId = 0;
     public const ushort InvitationTimeoutSec = 30;
 
 
     private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyManager));
 
+    public readonly DdonGameServer Server;
+
     private readonly ConcurrentStack<uint> _idPool;
     private readonly ConcurrentDictionary<uint, PartyGroup> _parties;
     private readonly ConcurrentDictionary<GameClient, PartyInvitation> _invites;
 
-    public PartyManager()
+    public PartyManager(DdonGameServer server)
     {
+        Server = server;
         _idPool = new ConcurrentStack<uint>();
         for (uint i = 1; i < MaxNumParties + 1; i++)
         {
@@ -33,18 +44,42 @@ public class PartyManager
 
     public bool InviteParty(GameClient invitee, GameClient host, PartyGroup party)
     {
-        PartyInvitation invitation = new PartyInvitation();
-        invitation.Invitee = invitee;
-        invitation.Host = host;
-        invitation.Party = party;
-        invitation.Date = DateTime.Now;
+        if (_invites.TryRemove(invitee, out PartyInvitation existingInvite))
+        {
+            existingInvite.CancelTimer();
+        }
+
+        PartyInvitation invitation = new PartyInvitation
+        {
+            Invitee = invitee,
+            Host = host,
+            Party = party,
+            Date = DateTime.UtcNow
+        };
+
         if (!_invites.TryAdd(invitee, invitation))
         {
             Logger.Error(invitee, $"Already has pending invite)");
             return false;
         }
 
+        invitation.StartTimer(RemoveExpiredInvite, InvitationTimeoutSec + 2);
+
         return true;
+    }
+
+    private void RemoveExpiredInvite(PartyInvitation invitation) 
+    {
+        if (_invites.ContainsKey(invitation.Invitee) && _invites.TryRemove(invitation.Invitee, out _))
+        {
+            var ntc = new S2CPartyPartyInviteCancelNtc
+            {
+                ErrorCode = ErrorCode.ERROR_CODE_PARTY_INVITE_CANCEL_REASON_TIMEOUT
+            };
+            invitation.Invitee.Send(ntc);
+
+            Logger.Info(invitation.Invitee, "Invitation removed due to timeout.");
+        }
     }
 
     public PartyInvitation GetPartyInvitation(GameClient client)
@@ -138,5 +173,31 @@ public class PartyManager
         }
 
         Logger.Info($"Free party IDs: {_idPool.Count}/{MaxNumParties}");
+    }
+
+    public bool ClientsInSameParty(GameClient clientA, GameClient clientB)
+    {
+        if (clientA.Party == null || clientB.Party == null)
+        {
+            return false;
+        }
+
+        return (clientA.Party.Id == clientB.Party.Id);
+    }
+
+    public void CleanupOnExit(GameClient client)
+    {
+        if (client.Party != null)
+        {
+            client.Party.Leave(client);
+
+            Logger.Info(client, $"Left PartyId:{client.Party.Id}");
+
+            S2CPartyPartyLeaveNtc partyLeaveNtc = new S2CPartyPartyLeaveNtc();
+            partyLeaveNtc.CharacterId = client.Character.CharacterId;
+            client.Party.SendToAllExcept(partyLeaveNtc, client);
+
+            client.Send(new S2CPartyPartyLeaveRes());
+        }
     }
 }

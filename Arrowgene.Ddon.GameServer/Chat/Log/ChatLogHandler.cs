@@ -29,5 +29,13 @@ namespace Arrowgene.Ddon.GameServer.Chat.Log
             ChatMessageLogEntry logEntry = new ChatMessageLogEntry(client.Character, message);
             _chatMessageLog.Add(logEntry);
         }
+
+        public void AddEntry(uint characterId, string firstName, string lastName, ChatMessage message)
+        {
+            Logger.Info("Chat message: "+message.Message);
+            
+            ChatMessageLogEntry logEntry = new ChatMessageLogEntry(characterId, firstName, lastName, message);
+            _chatMessageLog.Add(logEntry);
+        }
     }
 }

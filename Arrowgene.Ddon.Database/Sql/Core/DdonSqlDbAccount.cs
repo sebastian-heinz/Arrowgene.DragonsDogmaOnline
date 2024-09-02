@@ -1,24 +1,26 @@
 using System;
 using System.Data.Common;
+using System.Text;
 using Arrowgene.Ddon.Database.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
-    public abstract partial class DdonSqlDb<TCon, TCom> : SqlDb<TCon, TCom>
+    public abstract partial class DdonSqlDb<TCon, TCom, TReader> : SqlDb<TCon, TCom, TReader>
         where TCon : DbConnection
         where TCom : DbCommand
+        where TReader : DbDataReader
     {
         private static readonly string[] AccountFields = new string[]
         {
             "name", "normal_name", "hash", "mail", "mail_verified", "mail_verified_at", "mail_token", "password_token", "login_token", "login_token_created", "state", "last_login", "created"
         };
-        
-        private static readonly string SqlInsertAccount = $"INSERT INTO `account` ({BuildQueryField(AccountFields)}) VALUES ({BuildQueryInsert(AccountFields)});";
-        private static readonly string SqlSelectAccountById = $"SELECT `id`, {BuildQueryField(AccountFields)} FROM `account` WHERE `id`=@id;";
-        private static readonly string SqlSelectAccountByName = $"SELECT `id`, {BuildQueryField(AccountFields)} FROM `account` WHERE `normal_name`=@normal_name;";
-        private static readonly string SqlSelectAccountByLoginToken = $"SELECT `id`, {BuildQueryField(AccountFields)} FROM `account` WHERE `login_token`=@login_token;";
-        private static readonly string SqlUpdateAccount = $"UPDATE `account` SET {BuildQueryUpdate(AccountFields)} WHERE `id`=@id;";
-        private const string SqlDeleteAccount = "DELETE FROM `account` WHERE `id`=@id;";
+
+        private static readonly string SqlInsertAccount = $"INSERT INTO \"account\" ({BuildQueryField(AccountFields)}) VALUES ({BuildQueryInsert(AccountFields)});";
+        private static readonly string SqlSelectAccountById = $"SELECT \"id\", {BuildQueryField(AccountFields)} FROM \"account\" WHERE \"id\"=@id;";
+        private static readonly string SqlSelectAccountByName = $"SELECT \"id\", {BuildQueryField(AccountFields)} FROM \"account\" WHERE \"normal_name\"=@normal_name;";
+        private static readonly string SqlSelectAccountByLoginToken = $"SELECT \"id\", {BuildQueryField(AccountFields)} FROM \"account\" WHERE \"login_token\"=@login_token;";
+        private static readonly string SqlUpdateAccount = $"UPDATE \"account\" SET {BuildQueryUpdate(AccountFields)} WHERE \"id\"=@id;";
+        private const string SqlDeleteAccount = "DELETE FROM \"account\" WHERE \"id\"=@id;";
 
         public Account CreateAccount(string name, string mail, string hash)
         {
@@ -28,7 +30,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             account.Mail = mail;
             account.Hash = hash;
             account.State = AccountStateType.User;
-            account.Created = DateTime.Now;
+            account.Created = DateTime.UtcNow;
+            account.MailToken = Convert.ToBase64String(Encoding.UTF8.GetBytes(mail));
+            account.PasswordToken = Convert.ToBase64String(Encoding.UTF8.GetBytes(name));
+            account.LoginToken = Convert.ToBase64String(Encoding.UTF8.GetBytes(name));
+            account.LoginTokenCreated = DateTime.UtcNow;
+            account.MailVerifiedAt = DateTime.SpecifyKind(DateTime.MinValue, DateTimeKind.Utc);
+            account.LastAuthentication = DateTime.UtcNow;
+            Logger.Info($"Creating account: {account}");
             int rowsAffected = ExecuteNonQuery(SqlInsertAccount, command =>
             {
                 AddParameter(command, "@name", account.Name);
@@ -50,11 +59,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 return null;
             }
 
-            account.Id = (int) autoIncrement;
-            
+            account.Id = (int)autoIncrement;
+
             return account;
         }
-        
+
         public Account SelectAccountByName(string accountName)
         {
             accountName = accountName.ToLowerInvariant();
@@ -128,7 +137,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return rowsAffected > NoRowsAffected;
         }
 
-        private Account ReadAccount(DbDataReader reader)
+        private Account ReadAccount(TReader reader)
         {
             Account account = new Account();
             account.Id = GetInt32(reader, "id");
@@ -142,7 +151,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             account.PasswordToken = GetStringNullable(reader, "password_token");
             account.LoginToken = GetStringNullable(reader, "login_token");
             account.LoginTokenCreated = GetDateTimeNullable(reader, "login_token_created");
-            account.State = (AccountStateType) GetInt32(reader, "state");
+            account.State = (AccountStateType)GetInt32(reader, "state");
             account.LastAuthentication = GetDateTimeNullable(reader, "last_login");
             account.Created = GetDateTime(reader, "created");
             return account;

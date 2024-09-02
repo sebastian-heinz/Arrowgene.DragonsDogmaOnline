@@ -1,20 +1,20 @@
-using System;
+#nullable enable
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Threading.Tasks;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
-    public abstract partial class DdonSqlDb<TCon, TCom> : SqlDb<TCon, TCom>
+    public abstract partial class DdonSqlDb<TCon, TCom, TReader> : SqlDb<TCon, TCom, TReader>
         where TCon : DbConnection
         where TCom : DbCommand
+        where TReader : DbDataReader
     {
         private static readonly string[] CharacterCommonFields = new string[]
         {
-            "job", "hide_equip_head", "hide_equip_lantern", "jewelry_slot_num"
+            "job", "hide_equip_head", "hide_equip_lantern"
         };
 
         private static readonly string[] CDataEditInfoFields = new string[]
@@ -35,50 +35,51 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         // Im not convinced most of these fields have to be stored in DB
         private static readonly string[] CDataStatusInfoFields = new string[]
         {
-            "character_common_id", "hp", "stamina", "revive_point", "max_hp", "max_stamina", "white_hp", "gain_hp", "gain_stamina",
-            "gain_attack", "gain_defense", "gain_magic_attack", "gain_magic_defense"
+            "character_common_id", "revive_point", "hp", "white_hp"
         };
 
+        private readonly string SqlInsertCharacterCommon = $"INSERT INTO \"ddon_character_common\" ({BuildQueryField(CharacterCommonFields)}) VALUES ({BuildQueryInsert(CharacterCommonFields)});";
+        private readonly string SqlUpdateCharacterCommon = $"UPDATE \"ddon_character_common\" SET {BuildQueryUpdate(CharacterCommonFields)} WHERE \"character_common_id\" = @character_common_id;";
 
-        private readonly string SqlInsertCharacterCommon = $"INSERT INTO `ddon_character_common` ({BuildQueryField(CharacterCommonFields)}) VALUES ({BuildQueryInsert(CharacterCommonFields)});";
-        private readonly string SqlUpdateCharacterCommon = $"UPDATE `ddon_character_common` SET {BuildQueryUpdate(CharacterCommonFields)} WHERE `character_common_id` = @character_common_id;";
+        private readonly string SqlInsertEditInfo = $"INSERT INTO \"ddon_edit_info\" ({BuildQueryField(CDataEditInfoFields)}) VALUES ({BuildQueryInsert(CDataEditInfoFields)});";
+        private static readonly string SqlUpdateEditInfo = $"UPDATE \"ddon_edit_info\" SET {BuildQueryUpdate(CDataEditInfoFields)} WHERE \"character_common_id\" = @character_common_id;";
+        private static readonly string SqlSelectEditInfo = $"SELECT {BuildQueryField(CDataEditInfoFields)} FROM \"ddon_edit_info\" WHERE \"character_common_id\" = @character_common_id;";
+        private const string SqlDeleteEditInfo = "DELETE FROM \"ddon_edit_info\" WHERE \"character_common_id\"=@character_common_id;";
 
-        private readonly string SqlInsertEditInfo = $"INSERT INTO `ddon_edit_info` ({BuildQueryField(CDataEditInfoFields)}) VALUES ({BuildQueryInsert(CDataEditInfoFields)});";
-        private static readonly string SqlUpdateEditInfo = $"UPDATE `ddon_edit_info` SET {BuildQueryUpdate(CDataEditInfoFields)} WHERE `character_common_id` = @character_common_id;";
-        private static readonly string SqlSelectEditInfo = $"SELECT {BuildQueryField(CDataEditInfoFields)} FROM `ddon_edit_info` WHERE `character_common_id` = @character_common_id;";
-        private const string SqlDeleteEditInfo = "DELETE FROM `ddon_edit_info` WHERE `character_common_id`=@character_common_id;";
+        private readonly string SqlInsertStatusInfo = $"INSERT INTO \"ddon_status_info\" ({BuildQueryField(CDataStatusInfoFields)}) VALUES ({BuildQueryInsert(CDataStatusInfoFields)});";
+        private static readonly string SqlUpdateStatusInfo = $"UPDATE \"ddon_status_info\" SET {BuildQueryUpdate(CDataStatusInfoFields)} WHERE \"character_common_id\" = @character_common_id;";
+        private static readonly string SqlSelectStatusInfo = $"SELECT {BuildQueryField(CDataStatusInfoFields)} FROM \"ddon_status_info\" WHERE \"character_common_id\" = @character_common_id;";
+        private const string SqlDeleteStatusInfo = "DELETE FROM \"ddon_status_info\" WHERE \"character_common_id\"=@character_common_id;";
 
-        private readonly string SqlInsertStatusInfo = $"INSERT INTO `ddon_status_info` ({BuildQueryField(CDataStatusInfoFields)}) VALUES ({BuildQueryInsert(CDataStatusInfoFields)});";
-        private static readonly string SqlUpdateStatusInfo = $"UPDATE `ddon_status_info` SET {BuildQueryUpdate(CDataStatusInfoFields)} WHERE `character_common_id` = @character_common_id;";
-        private static readonly string SqlSelectStatusInfo = $"SELECT {BuildQueryField(CDataStatusInfoFields)} FROM `ddon_status_info` WHERE `character_common_id` = @character_common_id;";
-        private const string SqlDeleteStatusInfo = "DELETE FROM `ddon_status_info` WHERE `character_common_id`=@character_common_id;";
-
-        public bool UpdateCharacterCommonBaseInfo(CharacterCommon common)
+        public bool UpdateCharacterCommonBaseInfo(CharacterCommon common, DbConnection? connectionIn = null)
         {
-            return UpdateCharacterCommonBaseInfo(null, common);
-        }
-
-        public bool UpdateCharacterCommonBaseInfo(TCon conn, CharacterCommon common)
-        {
-            int commonUpdateRowsAffected = ExecuteNonQuery(conn, SqlUpdateCharacterCommon, command =>
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
             {
-                AddParameter(command, "@character_common_id", common.CommonId);
-                AddParameter(command, common);
-            });
+                int commonUpdateRowsAffected = ExecuteNonQuery(connection, SqlUpdateCharacterCommon, command =>
+                {
+                    AddParameter(command, common);
+                });
 
-            return commonUpdateRowsAffected > NoRowsAffected;
+                return commonUpdateRowsAffected > NoRowsAffected;
+            }
+            finally
+            {
+                if (!isTransaction) connection.Dispose();
+            }
         }
 
         public bool UpdateEditInfo(CharacterCommon common)
         {
-            return UpdateEditInfo(null, common);
+            using TCon connection = OpenNewConnection();
+            return UpdateEditInfo(connection, common);
         }
 
         public bool UpdateEditInfo(TCon conn, CharacterCommon common)
         {
             int commonUpdateRowsAffected = ExecuteNonQuery(conn, SqlUpdateEditInfo, command =>
             {
-                AddParameter(command, "@character_common_id", common.CommonId);
                 AddParameter(command, common);
             });
 
@@ -87,14 +88,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool UpdateStatusInfo(CharacterCommon common)
         {
-            return UpdateStatusInfo(null, common);
+            using TCon connection = OpenNewConnection();
+            return UpdateStatusInfo(connection, common);
         }
 
         public bool UpdateStatusInfo(TCon conn, CharacterCommon common)
         {
             int commonUpdateRowsAffected = ExecuteNonQuery(conn, SqlUpdateStatusInfo, command =>
             {
-                AddParameter(command, "@character_common_id", common.CommonId);
                 AddParameter(command, common);
             });
 
@@ -102,7 +103,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         }
 
 
-        private void QueryCharacterCommonData(TCon conn, CharacterCommon common)
+        private void QueryCharacterCommonData(DbConnection conn, CharacterCommon common)
         {
             // Job data
             ExecuteReader(conn, SqlSelectCharacterJobDataByCharacter,
@@ -116,7 +117,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             // Equips
             ExecuteReader(conn, SqlSelectEquipItemByCharacter,
-                command => { AddParameter(command, "@character_common_id", common.CommonId); }, 
+                command => { AddParameter(command, "@character_common_id", common.CommonId); },
                 reader =>
                 {
                     while (reader.Read())
@@ -125,22 +126,42 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         JobId job = (JobId) GetByte(reader, "job");
                         EquipType equipType = (EquipType) GetByte(reader, "equip_type");
                         byte equipSlot = GetByte(reader, "equip_slot");
-                        ExecuteReader(conn, SqlSelectItem,
-                            command2 => { AddParameter(command2, "@uid", UId); },
-                            reader2 => 
+
+                        using TCon connection = OpenNewConnection();
+                        ExecuteReader(connection, SqlSelectStorageItemsByUId,
+                            command2 => { AddParameter(command2, "@item_uid", UId); },
+                            reader2 =>
                             {
-                                if(reader2.Read())
+                                if (reader2.Read())
                                 {
-                                    Item item = ReadItem(reader2);
-                                    common.Equipment.SetEquipItem(item, job, equipType, equipSlot);
+                                    var item = new Item();
+                                    item.UId = GetString(reader2, "item_uid");
+                                    item.ItemId = GetUInt32(reader2, "item_id");
+                                    item.Unk3 = GetByte(reader2, "unk3");
+                                    item.Color = GetByte(reader2, "color");
+                                    item.PlusValue = GetByte(reader2, "plus_value");
+                                    item.EquipPoints = GetUInt32(reader2, "equip_points");
+                                    ExecuteReader(connection, SqlSelectAllCrestData,
+                                        command3 => {
+                                            AddParameter(command3, "character_common_id", common.CommonId);
+                                            AddParameter(command3, "item_uid", item.UId);
+                                        }, reader4 => {
+                                        while (reader4.Read())
+                                        {
+                                            var result = ReadCrestData(reader4);
+                                            item.EquipElementParamList.Add(result.ToCDataEquipElementParam());
+                                        }
+                                    });
+
+                                    common.EquipmentTemplate.SetEquipItem(item, job, equipType, equipSlot);
                                 }
                             });
                     }
-                });            
+                });
 
             // Job Items
             ExecuteReader(conn, SqlSelectEquipJobItemsByCharacter,
-                command => { AddParameter(command, "@character_common_id", common.CommonId); }, 
+                command => { AddParameter(command, "@character_common_id", common.CommonId); },
                 reader =>
                 {
                     while (reader.Read())
@@ -148,14 +169,22 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         string UId = GetString(reader, "item_uid");
                         JobId job = (JobId) GetByte(reader, "job");
                         byte equipSlot = GetByte(reader, "equip_slot");
-                        ExecuteReader(conn, SqlSelectItem,
-                            command2 => { AddParameter(command2, "@uid", UId); },
-                            reader2 => 
+
+                        using TCon connection = OpenNewConnection();
+                        ExecuteReader(connection, SqlSelectStorageItemsByUId,
+                            command2 => { AddParameter(command2, "@item_uid", UId); },
+                            reader2 =>
                             {
                                 if(reader2.Read())
                                 {
-                                    Item item = ReadItem(reader2);
-                                    common.Equipment.SetJobItem(item, job, equipSlot);
+                                    var item = new Item();
+                                    item.UId = GetString(reader2, "item_uid");
+                                    item.ItemId = GetUInt32(reader2, "item_id");
+                                    item.Unk3 = GetByte(reader2, "unk3");
+                                    item.Color = GetByte(reader2, "color");
+                                    item.PlusValue = GetByte(reader2, "plus_value");
+                                    item.EquipPoints = GetUInt32(reader2, "equip_points");
+                                    common.EquipmentTemplate.SetJobItem(item, job, equipSlot);
                                 }
                             });
                     }
@@ -207,6 +236,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         common.LearnedAbilities.Add(ReadLearnedAbility(reader));
                     }
                 });
+
+
             ExecuteReader(conn, SqlSelectEquippedAbilities,
                 command => { AddParameter(command, "@character_common_id", common.CommonId); },
                 reader =>
@@ -228,23 +259,17 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             foreach(CDataCharacterJobData characterJobData in common.CharacterJobDataList)
             {
-                ExecuteNonQuery(conn, SqlReplaceCharacterJobData, command =>
-                {
-                    AddParameter(command, common.CommonId, characterJobData);
-                });
+                ReplaceCharacterJobData(conn, common.CommonId, characterJobData);
             }
 
             foreach(CDataNormalSkillParam normalSkillParam in common.LearnedNormalSkills)
             {
-                ExecuteNonQuery(conn, SqlReplaceNormalSkillParam, command =>
-                {
-                    AddParameter(command, common.CommonId, normalSkillParam);
-                });
+                ReplaceNormalSkillParam(conn, common.CommonId, normalSkillParam);
             }
 
             foreach(CustomSkill learnedSkills in common.LearnedCustomSkills)
             {
-                ExecuteNonQuery(conn, SqlInsertLearnedCustomSkill, command => 
+                ExecuteNonQuery(conn, SqlInsertLearnedCustomSkill, command =>
                 {
                     AddParameter(command, common.CommonId, learnedSkills);
                 });
@@ -258,10 +283,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     byte slotNo = (byte)(i+1);
                     if(skill != null)
                     {
-                        ExecuteNonQuery(conn, SqlReplaceEquippedCustomSkill, command =>
-                        {
-                            AddParameter(command, common.CommonId, slotNo, skill);
-                        });
+                        ReplaceEquippedCustomSkill(conn, common.CommonId, slotNo, skill);
                     }
                 }
             }
@@ -283,10 +305,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     byte slotNo = (byte)(i+1);
                     if(ability != null)
                     {
-                        ExecuteNonQuery(conn, SqlReplaceEquippedAbility, command =>
-                        {
-                            AddParameter(command, common.CommonId, equippedToJob, slotNo, ability);
-                        });
+                        ReplaceEquippedAbility(conn, common.CommonId, equippedToJob, slotNo, ability);
                     }
                 }
             }
@@ -296,9 +315,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             common.CommonId = GetUInt32(reader, "character_common_id");
             common.Job = (JobId) GetByte(reader, "job");
-            common.JewelrySlotNum = GetByte(reader, "jewelry_slot_num");
             common.HideEquipHead = GetBoolean(reader, "hide_equip_head");
             common.HideEquipLantern = GetBoolean(reader, "hide_equip_lantern");
+            common.JewelrySlotNum = 0;
 
             common.EditInfo.Sex = GetByte(reader, "sex");
             common.EditInfo.Voice = GetByte(reader, "voice");
@@ -372,18 +391,18 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             common.EditInfo.Muscle = GetUInt16(reader, "muscle");
             common.EditInfo.MotionFilter = GetUInt16(reader, "motion_filter");
 
-            common.StatusInfo.HP = GetUInt32(reader, "hp");
-            common.StatusInfo.Stamina = GetUInt32(reader, "stamina");
+            // CDataStatusInfoFields
             common.StatusInfo.RevivePoint = GetByte(reader, "revive_point");
-            common.StatusInfo.MaxHP = GetUInt32(reader, "max_hp");
-            common.StatusInfo.MaxStamina = GetUInt32(reader, "max_stamina");
+            common.StatusInfo.HP = GetUInt32(reader, "hp");
             common.StatusInfo.WhiteHP = GetUInt32(reader, "white_hp");
-            common.StatusInfo.GainHP = GetUInt32(reader, "gain_hp");
-            common.StatusInfo.GainStamina = GetUInt32(reader, "gain_stamina");
-            common.StatusInfo.GainAttack = GetUInt32(reader, "gain_attack");
-            common.StatusInfo.GainDefense = GetUInt32(reader, "gain_defense");
-            common.StatusInfo.GainMagicAttack = GetUInt32(reader, "gain_magic_attack");
-            common.StatusInfo.GainMagicDefense = GetUInt32(reader, "gain_magic_defense");
+
+            if (common.StatusInfo.HP == 0 || common.StatusInfo.WhiteHP == 0)
+            {
+                // TODO: Figure out why this is happening
+                Logger.Error($"Unexpected: Character CommonId={common.CommonId} has a health value of 0 stored in the DB");
+                common.StatusInfo.HP = 760;
+                common.StatusInfo.WhiteHP = 760;
+            }
         }
 
         private void AddParameter(TCom command, CharacterCommon common)
@@ -391,7 +410,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             // CharacterCommonFields
             AddParameter(command, "@character_common_id", common.CommonId);
             AddParameter(command, "@job", (byte) common.Job);
-            AddParameter(command, "@jewelry_slot_num", common.JewelrySlotNum);
             AddParameter(command, "@hide_equip_head", common.HideEquipHead);
             AddParameter(command, "@hide_equip_lantern", common.HideEquipLantern);
             // CDataEditInfoFields
@@ -467,18 +485,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@muscle", common.EditInfo.Muscle);
             AddParameter(command, "@motion_filter", common.EditInfo.MotionFilter);
             // CDataStatusInfoFields
-            AddParameter(command, "@hp", common.StatusInfo.HP);
-            AddParameter(command, "@stamina", common.StatusInfo.Stamina);
             AddParameter(command, "@revive_point", common.StatusInfo.RevivePoint);
-            AddParameter(command, "@max_hp", common.StatusInfo.MaxHP);
-            AddParameter(command, "@max_stamina", common.StatusInfo.MaxStamina);
-            AddParameter(command, "@white_hp", common.StatusInfo.WhiteHP);
-            AddParameter(command, "@gain_hp", common.StatusInfo.GainHP);
-            AddParameter(command, "@gain_stamina", common.StatusInfo.GainStamina);
-            AddParameter(command, "@gain_attack", common.StatusInfo.GainAttack);
-            AddParameter(command, "@gain_defense", common.StatusInfo.GainDefense);
-            AddParameter(command, "@gain_magic_attack", common.StatusInfo.GainMagicAttack);
-            AddParameter(command, "@gain_magic_defense", common.StatusInfo.GainMagicDefense);
+            AddParameter(command, "@hp", common.GreenHp);
+            AddParameter(command, "@white_hp", common.WhiteHp);
         }
     }
 }

@@ -1,0 +1,90 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Footsteps in the Halls",
+  "quest_id": 20035002,
+  "base_level": 33,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DoweValley",
+  "news_image": 75,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1080
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 140
+    },
+    {
+      "type": "exp",
+      "amount": 1080
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 9659,
+          "num": 1
+        },
+        {
+          "item_id": 9397,
+          "num": 3
+        },
+        {
+          "item_id": 9375,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 69,
+        "group_id": 18
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x010309",
+          "level": 36,
+          "exp": 350,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010309",
+          "level": 36,
+          "exp": 350,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010309",
+          "level": 34,
+          "exp": 266,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010309",
+          "level": 34,
+          "exp": 266,
+          "is_boss": false
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

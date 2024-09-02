@@ -1,0 +1,72 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Huge Armored Creature Appears!",
+  "quest_id": 20025005,
+  "base_level": 34,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "BetlandPlains",
+  "news_image": 521,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1120
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 200
+    },
+    {
+      "type": "exp",
+      "amount": 1430
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 8007,
+          "num": 2
+        },
+        {
+          "item_id": 9410,
+          "num": 3
+        },
+        {
+          "item_id": 9417,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 120,
+        "group_id": 3
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015002",
+          "level": 34,
+          "exp": 6450,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

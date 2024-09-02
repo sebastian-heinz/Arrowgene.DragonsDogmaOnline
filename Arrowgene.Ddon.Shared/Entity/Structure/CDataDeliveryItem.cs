@@ -5,7 +5,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure;
 public class CDataDeliveryItem
 {
     public uint ItemId { get; set; }
-    // One of these is num
+    // One of these is item num, another probably need num
     public ushort Unk0 { get; set; }
     public ushort Unk1 { get; set; }
     public ushort Unk2 { get; set; }

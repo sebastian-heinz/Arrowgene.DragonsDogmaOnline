@@ -4,9 +4,10 @@ using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
-    public abstract partial class DdonSqlDb<TCon, TCom> : SqlDb<TCon, TCom>
+    public abstract partial class DdonSqlDb<TCon, TCom, TReader> : SqlDb<TCon, TCom, TReader>
         where TCon : DbConnection
         where TCom : DbCommand
+        where TReader : DbDataReader
     {
 
         private static readonly string[] LearnedAbilityFields = new string[]
@@ -14,9 +15,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "character_common_id", "job", "ability_id", "ability_lv"
         };
 
-        private readonly string SqlInsertLearnedAbility = $"INSERT INTO `ddon_learned_ability` ({BuildQueryField(LearnedAbilityFields)}) VALUES ({BuildQueryInsert(LearnedAbilityFields)});";
-        private readonly string SqlUpdateLearnedAbility = $"UPDATE `ddon_learned_ability` SET {BuildQueryUpdate(LearnedAbilityFields)} WHERE `character_common_id`=@character_common_id AND `job`=@job AND `ability_id`=@ability_id;";
-        private static readonly string SqlSelectLearnedAbilities = $"SELECT {BuildQueryField(LearnedAbilityFields)} FROM `ddon_learned_ability` WHERE `character_common_id`=@character_common_id;";
+        private readonly string SqlInsertLearnedAbility = $"INSERT INTO \"ddon_learned_ability\" ({BuildQueryField(LearnedAbilityFields)}) VALUES ({BuildQueryInsert(LearnedAbilityFields)});";
+        private readonly string SqlUpdateLearnedAbility = $"UPDATE \"ddon_learned_ability\" SET {BuildQueryUpdate(LearnedAbilityFields)} WHERE \"character_common_id\"=@character_common_id AND \"job\"=@job AND \"ability_id\"=@ability_id;";
+        private static readonly string SqlSelectLearnedAbilities = $"SELECT {BuildQueryField(LearnedAbilityFields)} FROM \"ddon_learned_ability\" WHERE \"character_common_id\"=@character_common_id;";
         
         public bool InsertLearnedAbility(uint commonId, Ability ability)
         {

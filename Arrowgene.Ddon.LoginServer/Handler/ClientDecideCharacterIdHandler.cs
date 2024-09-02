@@ -1,7 +1,6 @@
-using System.Collections.Generic;
+using System;
+using System.Linq;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
@@ -9,18 +8,17 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
-    public class ClientDecideCharacterIdHandler : StructurePacketHandler<LoginClient, C2LDecideCharacterIdReq>
+    public class ClientDecideCharacterIdHandler : LoginStructurePacketHandler<C2LDecideCharacterIdReq>
     {
         private static readonly ServerLogger Logger =
             LogProvider.Logger<ServerLogger>(typeof(ClientDecideCharacterIdHandler));
 
-        private AssetRepository _assets;
+        private static int LoadBalanceServerIndex = 0;
+        private static object LoadBalanceLock = new object();
 
         public ClientDecideCharacterIdHandler(DdonLoginServer server) : base(server)
         {
-            _assets = server.AssetRepository;
-
-            foreach (CDataGameServerListInfo serverListInfo in _assets.ServerList)
+            foreach (CDataGameServerListInfo serverListInfo in Server.AssetRepository.ServerList)
             {
                 Logger.Info(
                     $"Asset GameServer Entry:{serverListInfo.Id} \"{serverListInfo.Name}\" {serverListInfo.Addr}:{serverListInfo.Port}");
@@ -29,19 +27,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         public override void Handle(LoginClient client, StructurePacket<C2LDecideCharacterIdReq> packet)
         {
-            Logger.Debug(client,
-                $"C2L_DECIDE_CHARACTER_ID_REQ:\n" +
-                $"    CharacterId: {packet.Structure.CharacterId}\n" +
-                $"    ClientVersion: {packet.Structure.ClientVersion}\n" +
-                $"    Type: {packet.Structure.Type}\n" +
-                $"    RotationServerId: {packet.Structure.RotationServerId}\n" +
-                $"    WaitNum: {packet.Structure.WaitNum}\n" +
-                $"    Counter: {packet.Structure.Counter}\n"
-            );
-
             client.SelectedCharacterId = packet.Structure.CharacterId;
-            Logger.Debug(client, $"Decided CharacterId: {client.SelectedCharacterId}");
-
 
             L2CDecideCharacterIdRes res = new L2CDecideCharacterIdRes();
             res.CharacterId = packet.Structure.CharacterId;
@@ -49,34 +35,24 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             client.Send(res);
 
             // This is NOT required to get in game (can be commented out entirely).
+            // Causes a "Server is busy, 100 people waiting message" if L2CNextConnectionServerNtc isn't sent
             L2CLoginWaitNumNtc waitNumNtc = new L2CLoginWaitNumNtc();
             waitNumNtc.Unknown = 100;
             client.Send(waitNumNtc);
 
+            // TODO: Figure out packet.Structure.RotationServerId. Always a 2?
 
-            List<CDataGameServerListInfo> serverLists = new List<CDataGameServerListInfo>(_assets.ServerList);
-
-            CDataGameServerListInfo serverList;
-            // if (serverLists.Count > packet.Structure.RotationServerId)
-            // {
-            //     serverList = serverLists[packet.Structure.RotationServerId];
-            // }
-            // else
-            // TODO figure out RotationServerId, at the moment always value 2?
-            if (serverLists.Count > 0)
-            {
-                serverList = serverLists[0];
-            }
-            else
-            {
-                Logger.Error(client, "Server List not available in asset repository");
-                return;
+            CDataGameServerListInfo serverListInfo;
+            lock(LoadBalanceLock)
+            {   
+                serverListInfo = Server.AssetRepository.ServerList[LoadBalanceServerIndex];
+                LoadBalanceServerIndex = (LoadBalanceServerIndex + 1) % Server.AssetRepository.ServerList.Count;
             }
 
-            Logger.Info(client, $"Connecting To: {serverList.Addr}:{serverList.Port}");
+            Logger.Info(client, $"Connecting To: {serverListInfo.Addr}:{serverListInfo.Port}");
 
             L2CNextConnectionServerNtc serverNtc = new L2CNextConnectionServerNtc();
-            serverNtc.ServerList = serverList;
+            serverNtc.ServerList = serverListInfo;
             serverNtc.Counter = packet.Structure.Counter;
             client.Send(serverNtc);
         }

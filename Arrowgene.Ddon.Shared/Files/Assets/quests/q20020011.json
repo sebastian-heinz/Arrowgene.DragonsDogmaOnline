@@ -1,0 +1,120 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Reclaiming the Route",
+  "quest_id": 20020011,
+  "base_level": 34,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "BetlandPlains",
+  "news_image": 525,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1120
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1120
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 140
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 7902,
+          "num": 3
+        },
+        {
+          "item_id": 9403,
+          "num": 3
+        },
+        {
+          "item_id": 9416,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 120,
+        "group_id": 2
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x010309",
+          "level": 34,
+          "exp": 400,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010309",
+          "level": 34,
+          "exp": 400,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015801",
+          "level": 34,
+          "exp": 400,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015801",
+          "level": 34,
+          "exp": 400,
+          "is_boss": false
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1005,
+          "comment": "Spawns ArisenCorpsRegimentalSoldier10"
+        }
+      ],
+      "stage_id": {
+        "id": 66,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "ArisenCorpsRegimentalSoldier10",
+      "message_id": 11372
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 66,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "ArisenCorpsRegimentalSoldier10",
+      "message_id": 11842
+    }
+  ]
+}
