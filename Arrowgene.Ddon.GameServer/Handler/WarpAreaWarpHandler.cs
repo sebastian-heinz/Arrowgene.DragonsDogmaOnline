@@ -20,6 +20,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SWarpAreaWarpReq> packet)
         {
+            Logger.Info($"Warping to {packet.Structure.WarpPointId}");
+
             uint price = packet.Structure.Price; // TODO: Don't trust packet.Structure.Price and check its price server side
 
             CDataWalletPoint walletPoint = client.Character.WalletPointList.Where(wp => wp.Type == WalletType.RiftPoints).Single();

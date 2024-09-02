@@ -420,6 +420,11 @@ namespace Arrowgene.Ddon.GameServer.Party
             return true;
         }
 
+        public bool IsComplete(QuestId questId)
+        {
+            return CompletedWorldQuests.Contains(questId);
+        }
+
         public bool CompletePartyQuestProgress(DdonGameServer server, PartyGroup party, QuestId questId)
         {
             Quest quest = QuestManager.GetQuest(questId);
