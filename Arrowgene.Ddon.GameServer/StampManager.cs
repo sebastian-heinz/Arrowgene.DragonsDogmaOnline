@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -14,10 +15,18 @@ namespace Arrowgene.Ddon.GameServer
             Server = server;
         }
 
-        public static int MAX_DAILY_STAMP = 8;
-        public static int TOTAL_STAMP_SLOT = 10;
-        public static int DAILY_STAMP_GRACE_PERIOD = 1; //Login every X days or lose your consecutive stamp.
-        public static int STAMP_RESET_HOUR = 20; //5AM JST = 8PM UTC = 1 PM PST = 4 PM EST
+        public static readonly int MAX_DAILY_STAMP = 8;
+        private static readonly int TOTAL_STAMP_SLOT = 10;
+
+        /// <summary>
+        /// Grace period *after* their their regular daily reset.
+        /// </summary>
+        private static readonly TimeSpan DAILY_STAMP_GRACE_PERIOD = new TimeSpan(1, 0, 0, 0);
+
+        /// <summary>
+        /// JST hour of the reset.
+        /// </summary>
+        private static readonly int STAMP_RESET_HOUR = 5;
 
         private DdonGameServer Server;
 
@@ -28,17 +37,17 @@ namespace Arrowgene.Ddon.GameServer
 
         public List<CDataStampBonusAsset> GetTotalStampAssets()
         {
-            return Server.AssetRepository.StampBonusAsset.Where(x => x.StampNum > 8).OrderBy(x => x.StampNum).ToList(); ;
+            return Server.AssetRepository.StampBonusAsset.Where(x => x.StampNum > MAX_DAILY_STAMP).OrderBy(x => x.StampNum).ToList(); ;
         }
 
         public List<CDataStampBonusAsset> GetTotalStampAssetsWindow(ushort totalStamps)
         {
             var totalList = GetTotalStampAssets();
 
-            //Return only the ten stamps surrounding the current position.
+            // Return only the ten stamps surrounding the current position.
             if (totalList.Count > TOTAL_STAMP_SLOT)
             {
-                //Find position of the last stamp checkpoint we've passed.
+                // Find position of the last stamp checkpoint we've passed.
                 int position = totalList.FindLastIndex(x => x.StampNum <= totalStamps);
 
                 if (position == -1) return totalList.Take(TOTAL_STAMP_SLOT).ToList();
@@ -67,8 +76,8 @@ namespace Arrowgene.Ddon.GameServer
             {
                 foreach (var bonus in entry.StampBonus)
                 {
-                    //Currency
-                    //Only the first five (GP, RP, BO, Silver Tickets, GP) seem to be valid items for display.
+                    // Currency
+                    // Only the first five (GP, RP, BO, Silver Tickets, GP) seem to be valid items for display.
                     if (bonus.BonusType <= 5)
                     {
                         totalWallet.Add(Server.WalletManager.AddToWallet(client.Character, (WalletType)bonus.BonusType, bonus.BonusValue));
@@ -93,24 +102,49 @@ namespace Arrowgene.Ddon.GameServer
 
         static public bool CanResetConsecutiveStamp(CharacterStampBonus stampData)
         {
-            DateTime lastReset = GetLastStampReset();
-            DateTime lastStamp = stampData.LastStamp;
-            return (lastReset - lastStamp).TotalDays >= (DAILY_STAMP_GRACE_PERIOD + 1);
-        }
-
-        static private DateTime GetLastStampReset()
-        {
-            DateTime lastReset = DateTime.Today.AddHours(STAMP_RESET_HOUR); 
-            if (lastReset > DateTime.Now)
-            {
-                lastReset = lastReset.AddDays(-1);
-            }
-            return lastReset;
+            return SpanSinceLastStampReset(stampData.LastStamp) > DAILY_STAMP_GRACE_PERIOD;
         }
 
         static public bool CanStamp(DateTime lastStamp)
         {
-            return lastStamp < GetLastStampReset();
+            return SpanSinceLastStampReset(lastStamp).TotalSeconds < 0;
+        }
+
+        public void UpdateStamp(Character character)
+        {
+            DateTime utcNow = DateTime.UtcNow;
+            TimeZoneInfo jstZone = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
+            DateTime jstNow = TimeZoneInfo.ConvertTimeFromUtc(utcNow, jstZone);
+
+            character.StampBonus.LastStamp = jstNow;
+            character.StampBonus.ConsecutiveStamp += 1;
+            character.StampBonus.TotalStamp += 1;
+
+            Server.Database.UpdateCharacterStampData(character.CharacterId, character.StampBonus);
+        }
+
+        /// <summary>
+        /// Calculate the timespan from/until the reset.
+        /// If negative, their stamp reset hasn't happened yet.
+        /// If positive, their stamp reset may have happened.
+        /// </summary>
+        static private TimeSpan SpanSinceLastStampReset(DateTime lastStamp)
+        {
+            DateTime utcNow = DateTime.UtcNow;
+            TimeZoneInfo jstZone = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");
+            DateTime jstNow = TimeZoneInfo.ConvertTimeFromUtc(utcNow, jstZone);
+
+            DateTime lastStampReset; // Always in JST
+            if (lastStamp.Hour < STAMP_RESET_HOUR)
+            {
+                lastStampReset = lastStamp.Date.AddHours(STAMP_RESET_HOUR);
+            }
+            else
+            {
+                lastStampReset = lastStamp.Date.AddDays(1).AddHours(STAMP_RESET_HOUR);
+            }
+
+            return jstNow - lastStampReset;
         }
     }
 }

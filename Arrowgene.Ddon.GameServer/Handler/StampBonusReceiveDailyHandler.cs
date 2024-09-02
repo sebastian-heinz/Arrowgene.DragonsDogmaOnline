@@ -23,11 +23,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, IPacket packet)
         {
             //Update stamp bonus data.
-            client.Character.StampBonus.LastStamp = DateTime.Now;
-            client.Character.StampBonus.ConsecutiveStamp += 1;
-            client.Character.StampBonus.TotalStamp += 1;
 
-            _gameServer.Database.UpdateCharacterStampData(client.Character.CharacterId, client.Character.StampBonus);
+            _gameServer.StampManager.UpdateStamp(client.Character);
 
             var dailyStamps = _gameServer.StampManager.GetDailyStampAssets().Where(x => x.StampNum == client.Character.StampBonus.ConsecutiveStamp);
 
