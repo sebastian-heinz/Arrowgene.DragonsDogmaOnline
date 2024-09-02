@@ -649,8 +649,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SSetCommunicationShortcutReq.Serializer());
             Create(new C2SStageAreaChangeReq.Serializer());
             Create(new C2SStageGetStageListReq.Serializer());
-            Create(new C2STraningRoomGetEnemyListReq.Serializer());
-            Create(new C2STrainingRoomSetEnemyReq.Serializer());
+            Create(new C2SInstanceTraningRoomGetEnemyListReq.Serializer());
+            Create(new C2SInstanceTraningRoomSetEnemyReq.Serializer());
             Create(new C2SWarpAreaWarpReq.Serializer());
             Create(new C2SWarpGetFavoriteWarpPointListReq.Serializer());
             Create(new C2SWarpGetReleaseWarpPointListReq.Serializer());
@@ -1113,8 +1113,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CShopGetShopGoodsListRes.Serializer());
             Create(new S2CStageAreaChangeRes.Serializer());
             Create(new S2CStageGetStageListRes.Serializer());
-            Create(new S2CTraningRoomGetEnemyListRes.Serializer());
-            Create(new S2CTraningRoomSetEnemyRes.Serializer());
+            Create(new S2CInstanceTraningRoomGetEnemyListRes.Serializer());
+            Create(new S2CInstanceTraningRoomSetEnemyRes.Serializer());
             Create(new S2CUserListJoinNtc.Serializer());
             Create(new S2CUserListLeaveNtc.Serializer());
             Create(new S2CWarpAreaWarpRes.Serializer());

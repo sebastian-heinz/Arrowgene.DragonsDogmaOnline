@@ -21,6 +21,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         private readonly DdonGameServer _gameServer;
 
+        private readonly HashSet<uint> _ignoreKillsInStageIds = new HashSet<uint>()
+        {
+            349, //White Dragon Temple, Training Room
+        };
+
         public InstanceEnemyKillHandler(DdonGameServer server) : base(server)
         {
             _gameServer = server;
@@ -31,6 +36,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataStageLayoutId layoutId = packet.Structure.LayoutId;
             StageId stageId = StageId.FromStageLayoutId(layoutId);
             ushort subGroupId = client.Party.InstanceEnemyManager.GetInstanceSubgroupId(stageId);
+
+            // The training room uses special handling to produce enemies that don't exist in the QuestState or InstanceEnemyManager.
+            // Return an empty response here to not break the rest of the handling.
+            if (_ignoreKillsInStageIds.Contains(stageId.Id))
+            {
+                client.Send(new S2CInstanceEnemyKillRes());
+                return;
+            }
 
             Quest quest = null;
             bool IsQuestControlled = false;

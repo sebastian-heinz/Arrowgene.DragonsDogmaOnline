@@ -5,9 +5,9 @@ using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class S2CTraningRoomGetEnemyListRes : ServerResponse
+    public class S2CInstanceTraningRoomGetEnemyListRes : ServerResponse
     {
-        public S2CTraningRoomGetEnemyListRes()
+        public S2CInstanceTraningRoomGetEnemyListRes()
         {
             InfoList = new List<CDataTraningRoomEnemyHeader>();
             MaxLv = 100;
@@ -18,19 +18,19 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataTraningRoomEnemyHeader> InfoList { get; set; }
         public uint MaxLv { get; set; }
         
-        public class Serializer : PacketEntitySerializer<S2CTraningRoomGetEnemyListRes>
+        public class Serializer : PacketEntitySerializer<S2CInstanceTraningRoomGetEnemyListRes>
         {
 
-            public override void Write(IBuffer buffer, S2CTraningRoomGetEnemyListRes obj)
+            public override void Write(IBuffer buffer, S2CInstanceTraningRoomGetEnemyListRes obj)
             {
                 WriteServerResponse(buffer, obj);
                 WriteEntityList<CDataTraningRoomEnemyHeader>(buffer, obj.InfoList);
                 WriteUInt32(buffer, obj.MaxLv);
             }
 
-            public override S2CTraningRoomGetEnemyListRes Read(IBuffer buffer)
+            public override S2CInstanceTraningRoomGetEnemyListRes Read(IBuffer buffer)
             {
-                S2CTraningRoomGetEnemyListRes obj = new S2CTraningRoomGetEnemyListRes();
+                S2CInstanceTraningRoomGetEnemyListRes obj = new S2CInstanceTraningRoomGetEnemyListRes();
                 ReadServerResponse(buffer, obj);
                 obj.InfoList = ReadEntityList<CDataTraningRoomEnemyHeader>(buffer);
                 obj.MaxLv = ReadUInt32(buffer);
