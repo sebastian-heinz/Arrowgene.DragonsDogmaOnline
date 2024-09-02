@@ -196,7 +196,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     if (gainedPP > 0)
                     {
-                        _gameServer.PPManager.AddPlayPoint(memberClient, gainedPP, 1);
+                        _gameServer.PPManager.AddPlayPoint(memberClient, gainedPP, type: 1);
                     }
 
                     if (gainedExp > 0)
