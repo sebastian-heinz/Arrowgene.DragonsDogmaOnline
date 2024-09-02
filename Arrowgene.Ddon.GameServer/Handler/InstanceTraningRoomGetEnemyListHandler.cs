@@ -10,22 +10,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetQuestCompletedListHandler));
 
-        public static readonly CDataStageLayoutId TrainingRoomLayout = new CDataStageLayoutId(349, 0, 1);
 
         public InstanceTraningRoomGetEnemyListHandler(DdonGameServer server) : base(server)
         {
         }
 
         public override S2CInstanceTraningRoomGetEnemyListRes Handle(GameClient client, C2SInstanceTraningRoomGetEnemyListReq request)
-        {
-            // TODO: Figure out a better way to do this.
-            // If the reset notice is too soon before the repop notice (in InstanceTraningRoomSetEnemyHandler),
-            // the repop sometimes fails to happen.
-            client.Party.SendToAll(new S2CInstanceEnemyGroupResetNtc()
-            {
-                LayoutId = TrainingRoomLayout
-            });
-
+        {   
+            // These OptionIds are intepreted in InstanceTraningRoomSetEnemyHandler.
             return new S2CInstanceTraningRoomGetEnemyListRes()
             {
                 MaxLv = 100,
