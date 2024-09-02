@@ -387,6 +387,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     LayoutId = enemyGroup.StageId.ToStageLayoutId()
                 };
 
+                client.Party.InstanceEnemyManager.ResetEnemyNode(enemyGroup.StageId);
                 client.Party.SendToAll(resetNtc);
             }
         }
