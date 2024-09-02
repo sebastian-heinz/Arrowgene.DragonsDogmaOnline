@@ -1,11 +1,18 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataMyMandragora
     {
-        public uint Unk0 { get; set; }
-        public byte Unk1 { get; set; }
+        /// <summary>
+        /// Determines the species, i.e. which mandragora is rendered and shown as "Current" in the journal
+        /// </summary>
+        public uint SpeciesIndex { get; set; }
+        /// <summary>
+        /// When changing appearance, the journal UI jumps to the correct category
+        /// </summary>
+        public MandragoraSpeciesCategory SpeciesCategory { get; set; }
         public uint MandragoraId { get; set; }
         public string MandragoraName { get; set; }
         public uint Unk4 { get; set; }
@@ -17,8 +24,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             public override void Write(IBuffer buffer, CDataMyMandragora obj)
             {
-                WriteUInt32(buffer, obj.Unk0);
-                WriteByte(buffer, obj.Unk1);
+                WriteUInt32(buffer, obj.SpeciesIndex);
+                WriteByte(buffer, (byte)obj.SpeciesCategory);
                 WriteUInt32(buffer, obj.MandragoraId);
                 WriteMtString(buffer, obj.MandragoraName);
                 WriteUInt32(buffer, obj.Unk4);
@@ -30,8 +37,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataMyMandragora Read(IBuffer buffer)
             {
                 CDataMyMandragora obj = new CDataMyMandragora();
-                obj.Unk0 = ReadUInt32(buffer);
-                obj.Unk1 = ReadByte(buffer);
+                obj.SpeciesIndex = ReadUInt32(buffer);
+                obj.SpeciesCategory = (MandragoraSpeciesCategory)ReadByte(buffer);
                 obj.MandragoraId = ReadUInt32(buffer);
                 obj.MandragoraName = ReadMtString(buffer);
                 obj.Unk4 = ReadUInt32(buffer);

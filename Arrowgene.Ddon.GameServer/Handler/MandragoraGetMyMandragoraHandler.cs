@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -41,13 +42,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 new CDataMyMandragora()
                 {
-                    Unk0 = 1,
-                    Unk1 = 1,
+                    SpeciesIndex = 3,
+                    SpeciesCategory = MandragoraSpeciesCategory.Normal,
                     MandragoraId = 1,
                     MandragoraName = "Scoperta",
                     Unk4 = 0,
                     Unk5 = 0,
-                    Unk6 = 1,
+                    Unk6 = 6,
                     Unk7 = new CDataMyMandragoraUnk1Unk7
                     {
                         Unk0 = 1,
@@ -58,8 +59,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 },
                 new CDataMyMandragora
                 {
-                    Unk0 = 1,
-                    Unk1 = 1,
+                    SpeciesIndex = 101,
+                    SpeciesCategory = MandragoraSpeciesCategory.Chilli,
                     MandragoraId = 2,
                     MandragoraName = "Creazione",
                     Unk4 = 0,
@@ -75,8 +76,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 },
                 new CDataMyMandragora
                 {
-                    Unk0 = 0,
-                    Unk1 = 0,
+                    SpeciesIndex = 1,
+                    SpeciesCategory = MandragoraSpeciesCategory.Normal,
                     MandragoraId = 3,
                     MandragoraName = "Strano",
                     Unk4 = 0,
@@ -126,79 +127,79 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             res.MandragoraCultivationMaterialMaxMaybe = 20;
 
-            res.MandragoraBreedTypeList = new List<CDataMyMandragoraBreedType>
+            res.MandragoraSpeciesCategoryList = new List<CDataMyMandragoraSpeciesCategory>
             {
-                new CDataMyMandragoraBreedType
+                new CDataMyMandragoraSpeciesCategory
                 {
-                    BreedId = 1,
-                    BreedName = "ノーマル種",
-                    DiscoveredBreedNumMaybe = 1
+                    SpeciesCategory = MandragoraSpeciesCategory.Normal,
+                    CategoryName = "Normal Species",
+                    DiscoveredSpeciesNumMaybe = 1
                 },
-                new CDataMyMandragoraBreedType
+                new CDataMyMandragoraSpeciesCategory
                 {
-                    BreedId = 2,
-                    BreedName = "チリ種",
-                    DiscoveredBreedNumMaybe = 0
+                    SpeciesCategory = MandragoraSpeciesCategory.Chilli,
+                    CategoryName = "Chilli Species",
+                    DiscoveredSpeciesNumMaybe = 5
                 },
-                new CDataMyMandragoraBreedType
+                new CDataMyMandragoraSpeciesCategory
                 {
-                    BreedId = 4,
-                    BreedName = "アルビノ種",
-                    DiscoveredBreedNumMaybe = 0
+                    SpeciesCategory = MandragoraSpeciesCategory.Albino,
+                    CategoryName = "Albino Species",
+                    DiscoveredSpeciesNumMaybe = 0
                 },
-                new CDataMyMandragoraBreedType
+                new CDataMyMandragoraSpeciesCategory
                 {
-                    BreedId = 6,
-                    BreedName = "チャコ種",
-                    DiscoveredBreedNumMaybe = 0
+                    SpeciesCategory = MandragoraSpeciesCategory.Charcoal,
+                    CategoryName = "Charcoal Species",
+                    DiscoveredSpeciesNumMaybe = 0
                 },
-                new CDataMyMandragoraBreedType
+                new CDataMyMandragoraSpeciesCategory
                 {
-                    BreedId = 9,
-                    BreedName = "ベジ種",
-                    DiscoveredBreedNumMaybe = 0
+                    SpeciesCategory = MandragoraSpeciesCategory.Veggie,
+                    CategoryName = "Veggie Species",
+                    DiscoveredSpeciesNumMaybe = 0
                 },
-                new CDataMyMandragoraBreedType
+                new CDataMyMandragoraSpeciesCategory
                 {
-                    BreedId = 3,
-                    BreedName = "鎧亜種",
-                    DiscoveredBreedNumMaybe = 0
+                    SpeciesCategory = MandragoraSpeciesCategory.Armored,
+                    CategoryName = "Armored Species",
+                    DiscoveredSpeciesNumMaybe = 0
                 },
-                new CDataMyMandragoraBreedType
+                new CDataMyMandragoraSpeciesCategory
                 {
-                    BreedId = 5,
-                    BreedName = "衣亜種",
-                    DiscoveredBreedNumMaybe = 0
+                    SpeciesCategory = MandragoraSpeciesCategory.Clothed,
+                    CategoryName = "Clothed Species",
+                    DiscoveredSpeciesNumMaybe = 0
                 },
-                new CDataMyMandragoraBreedType
+                new CDataMyMandragoraSpeciesCategory
                 {
-                    BreedId = 7,
-                    BreedName = "花亜種",
-                    DiscoveredBreedNumMaybe = 0
+                    SpeciesCategory = MandragoraSpeciesCategory.Flowering,
+                    CategoryName = "Flowering Species",
+                    DiscoveredSpeciesNumMaybe = 0
                 },
-                new CDataMyMandragoraBreedType
+                new CDataMyMandragoraSpeciesCategory
                 {
-                    BreedId = 8,
-                    BreedName = "蛮亜種",
-                    DiscoveredBreedNumMaybe = 0
+                    SpeciesCategory = MandragoraSpeciesCategory.Barbarian,
+                    CategoryName = "Barbarian Species",
+                    DiscoveredSpeciesNumMaybe = 0
                 },
-                new CDataMyMandragoraBreedType
+                new CDataMyMandragoraSpeciesCategory
                 {
-                    BreedId = 11,
-                    BreedName = "巻亜種",
-                    DiscoveredBreedNumMaybe = 0
+                    SpeciesCategory = MandragoraSpeciesCategory.Scroll,
+                    CategoryName = "Scroll Species",
+                    DiscoveredSpeciesNumMaybe = 0
                 },
-                new CDataMyMandragoraBreedType
+                new CDataMyMandragoraSpeciesCategory
                 {
-                    BreedId = 10,
-                    BreedName = "鉢亜種",
-                    DiscoveredBreedNumMaybe = 0
+                    SpeciesCategory = MandragoraSpeciesCategory.Helmet,
+                    CategoryName = "Helmet Species",
+                    DiscoveredSpeciesNumMaybe = 0
                 },
-                new CDataMyMandragoraBreedType
+                new CDataMyMandragoraSpeciesCategory
                 {
-                    BreedId = 99,
-                    BreedName = "特別種",
-                    DiscoveredBreedNumMaybe = 0
+                    SpeciesCategory = MandragoraSpeciesCategory.Special,
+                    CategoryName = "Special Species",
+                    DiscoveredSpeciesNumMaybe = 0
                 }
             };
 
@@ -206,27 +207,27 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 new CDataMyMandragoraRarityLevel
                 {
-                    RarityId = 1,
+                    RarityId = MandragoraRarity.LimitedRare,
                     Rarity = "Limited Rare"
                 },
                 new CDataMyMandragoraRarityLevel
                 {
-                    RarityId = 2,
+                    RarityId = MandragoraRarity.Common,
                     Rarity = "Common"
                 },
                 new CDataMyMandragoraRarityLevel
                 {
-                    RarityId = 3,
+                    RarityId = MandragoraRarity.Uncommon,
                     Rarity = "Uncommon"
                 },
                 new CDataMyMandragoraRarityLevel
                 {
-                    RarityId = 4,
+                    RarityId = MandragoraRarity.Rare,
                     Rarity = "Rare"
                 },
                 new CDataMyMandragoraRarityLevel
                 {
-                    RarityId = 5,
+                    RarityId = MandragoraRarity.MysticRare,
                     Rarity = "Mystic Rare"
                 }
             };

@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataMyMandragoraUnk3> Unk3 { get; set; }
         public List<CDataMyMandragoraFertilizerItem> MandragoraFertilizerItemList { get; set; }
         public uint MandragoraCultivationMaterialMaxMaybe;
-        public List<CDataMyMandragoraBreedType> MandragoraBreedTypeList { get; set; }
+        public List<CDataMyMandragoraSpeciesCategory> MandragoraSpeciesCategoryList { get; set; }
         public List<CDataMyMandragoraRarityLevel> RarityLevelList { get; set; }
         public List<CDataCommonU8> FreeMandragoraIdListMaybe { get; set; }
         public uint Unk9;
@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             MandragoraCraftCategoriesMaybe = new List<CDataMyMandragoraCraftCategory>();
             Unk3 = new List<CDataMyMandragoraUnk3>();
             MandragoraFertilizerItemList = new List<CDataMyMandragoraFertilizerItem>();
-            MandragoraBreedTypeList = new List<CDataMyMandragoraBreedType>();
+            MandragoraSpeciesCategoryList = new List<CDataMyMandragoraSpeciesCategory>();
             RarityLevelList = new List<CDataMyMandragoraRarityLevel>();
             FreeMandragoraIdListMaybe = new List<CDataCommonU8>();
         }
@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteEntityList<CDataMyMandragoraUnk3>(buffer, obj.Unk3);
                 WriteEntityList<CDataMyMandragoraFertilizerItem>(buffer, obj.MandragoraFertilizerItemList);
                 WriteUInt32(buffer, obj.MandragoraCultivationMaterialMaxMaybe);
-                WriteEntityList<CDataMyMandragoraBreedType>(buffer, obj.MandragoraBreedTypeList);
+                WriteEntityList<CDataMyMandragoraSpeciesCategory>(buffer, obj.MandragoraSpeciesCategoryList);
                 WriteEntityList<CDataMyMandragoraRarityLevel>(buffer, obj.RarityLevelList);
                 WriteEntityList<CDataCommonU8>(buffer, obj.FreeMandragoraIdListMaybe);
                 WriteUInt32(buffer, obj.Unk9);
@@ -62,7 +62,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.Unk3 = ReadEntityList<CDataMyMandragoraUnk3>(buffer);
                 obj.MandragoraFertilizerItemList = ReadEntityList<CDataMyMandragoraFertilizerItem>(buffer);
                 obj.MandragoraCultivationMaterialMaxMaybe = ReadUInt32(buffer);
-                obj.MandragoraBreedTypeList = ReadEntityList<CDataMyMandragoraBreedType>(buffer);
+                obj.MandragoraSpeciesCategoryList = ReadEntityList<CDataMyMandragoraSpeciesCategory>(buffer);
                 obj.RarityLevelList = ReadEntityList<CDataMyMandragoraRarityLevel>(buffer);
                 obj.FreeMandragoraIdListMaybe = ReadEntityList<CDataCommonU8>(buffer);
                 obj.Unk9 = ReadUInt32(buffer);

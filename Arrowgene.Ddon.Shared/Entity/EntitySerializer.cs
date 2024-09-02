@@ -218,8 +218,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataMyMandragoraCraftCategory.Serializer());
             Create(new CDataMyMandragoraUnk3.Serializer());
             Create(new CDataMyMandragoraFertilizerItem.Serializer());
-            Create(new CDataMyMandragoraBreedType.Serializer());
+            Create(new CDataMyMandragoraSpeciesCategory.Serializer());
+            Create(new CDataMyMandragoraSpecies.Serializer());
             Create(new CDataMyMandragoraRarityLevel.Serializer());
+            Create(new CDataMyMandragoraCraftRecipe.Serializer());
+            Create(new CDataMyMandragoraCraftRecipeUnk4.Serializer());
             
             Create(new CDataMyRoomOption.Serializer());
             Create(new CDataFurnitureLayout.Serializer());
@@ -569,6 +572,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SMailSystemMailDeleteReq.Serializer());
 
             Create(new C2SMandragoraGetMyMandragoraReq.Serializer());
+            Create(new C2SMandragoraGetSpeciesCategoryListReq.Serializer());
+            Create(new C2SMandragoraGetSpeciesListReq.Serializer());
+            Create(new C2SMandragoraGetCraftRecipeListReq.Serializer());
             Create(new C2SMyRoomFurnitureListGetReq.Serializer());
             Create(new C2SMyRoomMyRoomBgmUpdateReq.Serializer());
             Create(new C2SMyRoomUpdatePlanetariumReq.Serializer());
@@ -1015,6 +1021,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CMailSystemMailSendNtc.Serializer());
 
             Create(new S2CMandragoraGetMyMandragoraRes.Serializer());
+            Create(new S2CMandragoraGetSpeciesCategoryListRes.Serializer());
+            Create(new S2CMandragoraGetSpeciesListRes.Serializer());
+            Create(new S2CMandragoraGetCraftRecipeListRes.Serializer());
             Create(new S2CMyRoomFurnitureListGetRes.Serializer());
             Create(new S2CMyRoomMyRoomBgmUpdateRes.Serializer());
             Create(new S2CMyRoomUpdatePlanetariumRes.Serializer());

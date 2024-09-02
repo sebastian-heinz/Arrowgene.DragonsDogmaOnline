@@ -409,6 +409,9 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new MailSystemMailDeleteHandler(this));
 
             AddHandler(new MandragoraGetMyMandragoraHandler(this));
+            AddHandler(new MandragoraGetSpeciesCategoryListHandler(this));
+            AddHandler(new MandragoraGetSpeciesListHandler(this));
+            AddHandler(new MandragoraGetCraftRecipeListHandler(this));
 
             AddHandler(new MyRoomFurnitureListGetHandler(this));
             AddHandler(new MyRoomMyRoomBgmUpdateHandler(this));
