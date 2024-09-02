@@ -5,29 +5,29 @@ using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class S2CPartnerPawnPawnLikabilityRewardListGetRes : ServerResponse
+    public class S2CPartnerPawnPawnLikabilityRewardGetRes : ServerResponse
     {
-        public override PacketId Id => PacketId.S2C_PARTNER_PAWN_PAWN_LIKABILITY_REWARD_LIST_GET_RES;
+        public override PacketId Id => PacketId.S2C_PARTNER_PAWN_PAWN_LIKABILITY_REWARD_GET_RES;
 
         public List<CDataPartnerPawnReward> RewardList { get; set; }
 
-        public S2CPartnerPawnPawnLikabilityRewardListGetRes()
+        public S2CPartnerPawnPawnLikabilityRewardGetRes()
         {
             RewardList = new List<CDataPartnerPawnReward>();
         }
 
-        public class Serializer : PacketEntitySerializer<S2CPartnerPawnPawnLikabilityRewardListGetRes>
+        public class Serializer : PacketEntitySerializer<S2CPartnerPawnPawnLikabilityRewardGetRes>
         {
-            public override void Write(IBuffer buffer, S2CPartnerPawnPawnLikabilityRewardListGetRes obj)
+            public override void Write(IBuffer buffer, S2CPartnerPawnPawnLikabilityRewardGetRes obj)
             {
                 WriteServerResponse(buffer, obj);
 
                 WriteEntityList<CDataPartnerPawnReward>(buffer, obj.RewardList);
             }
 
-            public override S2CPartnerPawnPawnLikabilityRewardListGetRes Read(IBuffer buffer)
+            public override S2CPartnerPawnPawnLikabilityRewardGetRes Read(IBuffer buffer)
             {
-                S2CPartnerPawnPawnLikabilityRewardListGetRes obj = new S2CPartnerPawnPawnLikabilityRewardListGetRes();
+                S2CPartnerPawnPawnLikabilityRewardGetRes obj = new S2CPartnerPawnPawnLikabilityRewardGetRes();
 
                 ReadServerResponse(buffer, obj);
 

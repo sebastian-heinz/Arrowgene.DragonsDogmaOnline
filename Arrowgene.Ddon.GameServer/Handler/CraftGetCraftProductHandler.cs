@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -33,6 +34,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
             craftGetCraftProductRes.UpdateItemList.AddRange(itemUpdateResult);
             
             Server.Database.DeletePawnCraftProgress(client.Character.CharacterId, request.CraftMainPawnID);
+
+            client.Character.Pawns.First(p => p.PawnId == request.CraftMainPawnID).State = PawnState.None;
+            Pawn supportPawn1 = client.Character.Pawns.FirstOrDefault(p => p.PawnId == craftProgress.CraftSupportPawnId1, null);
+            if (supportPawn1 != null)
+            {
+                supportPawn1.State = PawnState.None;
+            }
+            Pawn supportPawn2 = client.Character.Pawns.FirstOrDefault(p => p.PawnId == craftProgress.CraftSupportPawnId2, null);
+            if (supportPawn2 != null)
+            {
+                supportPawn2.State = PawnState.None;
+            }
+            Pawn supportPawn3 = client.Character.Pawns.FirstOrDefault(p => p.PawnId == craftProgress.CraftSupportPawnId3, null);
+            if (supportPawn3 != null)
+            {
+                supportPawn3.State = PawnState.None;
+            }
 
             return craftGetCraftProductRes;
         }

@@ -22,14 +22,17 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             ContextAbilityList = new List<CDataContextAcquirementData>();
             ExtendParam = new CDataOrbGainExtendParam();
             TrainingStatus = new byte[64];
-            Unk1 = new CData_772E80();
+            PawnTrainingProfile = new CDataPawnTrainingProfile();
             SpSkillList = new List<CDataSpSkill>();
         }
 
         public uint Version { get; set; }
         public string Name { get; set; }
         public CDataEditInfo EditInfo { get; set; }
-        public byte State { get; set; }
+        /// <summary>
+        /// TODO: Update this appropriately and store in DB whenever a packet manipulates the state
+        /// </summary>
+        public PawnState State { get; set; }
         public uint MaxHp { get; set; }
         public uint MaxStamina { get; set; }
         public JobId JobId { get; set; }
@@ -56,7 +59,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public byte ShareRange { get; set; }
         public uint Likability { get; set; }
         public byte[] TrainingStatus { get; set; }
-        public CData_772E80 Unk1 { get; set; } // Dragon abilities?
+        public CDataPawnTrainingProfile PawnTrainingProfile { get; set; }
         public List<CDataSpSkill> SpSkillList { get; set; }
 
         public class Serializer : EntitySerializer<CDataPawnInfo>
@@ -66,7 +69,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.Version);
                 WriteMtString(buffer, obj.Name);
                 WriteEntity<CDataEditInfo>(buffer, obj.EditInfo);
-                WriteByte(buffer, obj.State);
+                WriteByte(buffer, (byte) obj.State);
                 WriteUInt32(buffer, obj.MaxHp);
                 WriteUInt32(buffer, obj.MaxStamina);
                 WriteByte(buffer, (byte) obj.JobId);
@@ -93,7 +96,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteByte(buffer, obj.ShareRange);
                 WriteUInt32(buffer, obj.Likability);
                 WriteByteArray(buffer, obj.TrainingStatus);
-                WriteEntity<CData_772E80>(buffer, obj.Unk1);
+                WriteEntity<CDataPawnTrainingProfile>(buffer, obj.PawnTrainingProfile);
                 WriteEntityList<CDataSpSkill>(buffer, obj.SpSkillList);
             }
 
@@ -103,7 +106,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.Version = ReadUInt32(buffer);
                 obj.Name = ReadMtString(buffer);
                 obj.EditInfo = ReadEntity<CDataEditInfo>(buffer);
-                obj.State = ReadByte(buffer);
+                obj.State = (PawnState) ReadByte(buffer);
                 obj.MaxHp = ReadUInt32(buffer);
                 obj.MaxStamina = ReadUInt32(buffer);
                 obj.JobId = (JobId) ReadByte(buffer);
@@ -130,7 +133,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.ShareRange = ReadByte(buffer);
                 obj.Likability = ReadUInt32(buffer);
                 obj.TrainingStatus = ReadByteArray(buffer, 64);
-                obj.Unk1 = ReadEntity<CData_772E80>(buffer);
+                obj.PawnTrainingProfile = ReadEntity<CDataPawnTrainingProfile>(buffer);
                 obj.SpSkillList = ReadEntityList<CDataSpSkill>(buffer);
                 return obj ;
             }

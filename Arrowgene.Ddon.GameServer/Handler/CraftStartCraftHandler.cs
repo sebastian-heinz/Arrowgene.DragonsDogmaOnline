@@ -167,6 +167,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             Server.Database.InsertPawnCraftProgress(craftProgress);
+            foreach (Pawn pawn in pawns)
+            {
+                pawn.State = PawnState.Craft;
+            }
 
             // Subtract craft price
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,

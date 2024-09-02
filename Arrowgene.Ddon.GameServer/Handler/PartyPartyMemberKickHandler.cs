@@ -1,4 +1,5 @@
-﻿using Arrowgene.Ddon.GameServer.Party;
+﻿using System.Linq;
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -43,6 +44,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (member.Value is PlayerPartyMember playerMember)
             {
                 playerMember.Client.Send(ntc);
+            }           
+            if (member.Value is PawnPartyMember pawnMember)
+            {
+                Pawn p = client.Character.Pawns.FirstOrDefault(p => p.PawnId == pawnMember.PawnId, null);
+                if (p != null)
+                {
+                    p.State = PawnState.None;
+                }
             }
 
             client.Send(res);
