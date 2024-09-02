@@ -451,6 +451,15 @@ namespace Arrowgene.Ddon.GameServer.Party
                     server.Database.InsertQuestProgress(memberClient.Character.CommonId, nextQuest.QuestId, nextQuest.QuestType, 0);
                 }
 
+                if (!memberClient.Character.CompletedQuests.ContainsKey(quest.QuestId))
+                {
+                    memberClient.Character.CompletedQuests.Add(questId, new CompletedQuest()
+                    {
+                        QuestId = quest.QuestId,
+                        QuestType = quest.QuestType,
+                        ClearCount = 1,
+                    });
+                }
                 server.Database.InsertIfNotExistCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType);
             }
 

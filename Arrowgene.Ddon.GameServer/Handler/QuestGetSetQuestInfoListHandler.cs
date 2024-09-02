@@ -64,8 +64,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return res;
             }
 
-            // TODO: Mirror this serverside so it doesn't require a database query for each tab.
-            var completedQuests = Server.Database.GetCompletedQuestsByType(client.Character.CommonId, QuestType.World);
+            var completedQuests = client.Character.CompletedQuests.Values.Where(x => x.QuestType == QuestType.World);
 
             res.SetQuestList = QuestManager.GetQuestsByType(QuestType.World)
                 .Where(x => QuestManager.IsWorldQuest(x.Key)
