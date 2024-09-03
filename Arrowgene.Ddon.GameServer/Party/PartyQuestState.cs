@@ -310,10 +310,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
                 if (ActiveVariantQuests.ContainsKey(questId))
                 {
-                    Logger.Debug($"Number of activeVariantQuests BEFORE --->>> {ActiveVariantQuests.Count}");
                     ActiveVariantQuests.Remove(questId);
-                    Logger.Debug($"Removed variant quest {questId}");
-                    Logger.Debug($"Number of activeVariantQuests AFTER --->>> {ActiveVariantQuests.Count}");
                 }
 
                 foreach (var location in quest.Locations)

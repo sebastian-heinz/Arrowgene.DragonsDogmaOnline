@@ -108,7 +108,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 };
 
                 //checking if the file has spawntime, if yes we convert the time and pass it along to enemy.cs
-                    if(enemySchemaIndexes.ContainsKey("SpawnTime"))
+                if (enemySchemaIndexes.ContainsKey("SpawnTime"))
                     {
                         string SpawnTimeGet = row[enemySchemaIndexes["SpawnTime"]].GetString();
                         ConvertSpawnTimeToMilliseconds(SpawnTimeGet, out long start, out long end);

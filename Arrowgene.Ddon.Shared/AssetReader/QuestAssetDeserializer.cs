@@ -23,7 +23,8 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             this.namedParams = namedParams;
         }
 
-        public bool LoadQuestsFromDirectory(string path, QuestAsset questAssets)
+        //public bool LoadQuestsFromDirectory(string path, QuestAsset questAssets, DropItemsAsset dropItemsAsset)
+        public bool LoadQuestsFromDirectory(string path, QuestAsset questAssets)//, QuestDropItemAsset questLootDrops)
         {
             DirectoryInfo info = new DirectoryInfo(path);
             if (!info.Exists)
@@ -135,7 +136,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             }
 
             ParseRewards(assetData, jQuest);
-            
+
             if (!ParseOrderCondition(assetData, jQuest))
             {
                 return false;
@@ -553,7 +554,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             }
 
                             questBlock.QuestOrderDetails.QuestType = questType;
-                            questBlock.QuestOrderDetails.QuestId = (QuestId) jblock.GetProperty("quest_id").GetUInt32();
+                            questBlock.QuestOrderDetails.QuestId = (QuestId)jblock.GetProperty("quest_id").GetUInt32();
                         }
                         break;
                     case QuestBlockType.MyQstFlags:
@@ -606,7 +607,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                             if (jblock.TryGetProperty("quest_id", out JsonElement jQuestId))
                             {
-                                questBlock.OmInteractEvent.QuestId = (QuestId) jQuestId.GetUInt32();
+                                questBlock.OmInteractEvent.QuestId = (QuestId)jQuestId.GetUInt32();
                             }
 
                             questBlock.OmInteractEvent.QuestType = questType;
@@ -836,6 +837,39 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         isRequired = jIsRequired.GetBoolean();
                     }
 
+                    
+                    // Look for custom drops here
+                    bool customDropItems = false;
+
+                    // Setting default values in case a custom table is defined.
+                    DropsTable customTable = new()
+                    {
+                        Id = 0,
+                        MdlType = 0,
+                    };
+
+                    if (enemy.TryGetProperty("drop_items", out JsonElement itemsList))
+                    {
+                        customDropItems = true;
+                        var list = itemsList.EnumerateArray();
+
+                        foreach (var items in list)
+                        {
+                            GatheringItem dropItems = new()
+                            {
+                                ItemId = items.GetProperty("item_id").GetUInt32(),
+                                ItemNum = items.GetProperty("item_min").GetUInt32(),
+                                MaxItemNum = items.GetProperty("item_max").GetUInt32(),
+                                Quality = items.GetProperty("quality").GetUInt32(),
+                                IsHidden = false,
+                                DropChance = items.GetProperty("drop_chance").GetDouble()
+                            };
+
+                            customTable.Items.Add(dropItems);
+                        }
+
+                    }
+
                     var questEnemy = new InstancedEnemy()
                     {
                         EnemyId = Convert.ToUInt32(enemy.GetProperty("enemy_id").GetString(), 16),
@@ -850,7 +884,18 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     };
 
                     ApplyOptionalEnemyKeys(enemy, questEnemy);
+
                     // ApplyEnemyDropTable
+                    if (customDropItems)
+                    {
+                        questEnemy.DropsTable = customTable;
+                    }
+                    else
+                    {
+                        // Get default drops for this enemy id and level.
+                        DropsTable lootTable = AssetRepository.QuestDropItemAsset.GetDropTable(questEnemy.EnemyId, questEnemy.Lv);
+                        questEnemy.DropsTable = lootTable;
+                    }
 
                     enemyGroup.Enemies.Add(questEnemy);
                 }

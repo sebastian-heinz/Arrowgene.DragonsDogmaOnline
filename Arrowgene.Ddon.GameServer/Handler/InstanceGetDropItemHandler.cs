@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -18,8 +19,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceGetDropItemReq> packet)
         {
-            List<InstancedGatheringItem> items = client.InstanceDropItemManager.GetAssets(packet.Structure.LayoutId, packet.Structure.SetId);
-            
+            List<InstancedGatheringItem> items;
+            if (client.InstanceQuestDropManager.IsQuestDrop(packet.Structure.LayoutId, packet.Structure.SetId))
+            {
+                items = client.InstanceQuestDropManager.FetchEnemyLoot(packet.Structure.LayoutId, packet.Structure.SetId);
+            }
+            else
+            {
+                items = client.InstanceDropItemManager.GetAssets(packet.Structure.LayoutId, packet.Structure.SetId);
+            }
+
+
             S2CInstanceGetDropItemRes res = new S2CInstanceGetDropItemRes();
             res.LayoutId = packet.Structure.LayoutId;
             res.SetId = packet.Structure.SetId;

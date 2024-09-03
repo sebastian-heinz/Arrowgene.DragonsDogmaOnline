@@ -49,8 +49,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
             InstancedEnemy enemyKilled;
             if (IsQuestControlled && quest != null)
             {
-                // TODO: Add drops to Quest Monsters
+                // Quest monster drops on kill handled here
                 enemyKilled = client.Party.QuestState.GetInstancedEnemy(quest, stageId, subGroupId, packet.Structure.SetId);
+
+                foreach (var partyMemberClient in client.Party.Clients)
+                {
+                    List<InstancedGatheringItem> instancedGatheringItems = partyMemberClient.InstanceQuestDropManager.RollEnemyLoot(enemyKilled, packet.Structure.LayoutId, packet.Structure.SetId);
+
+                    if (instancedGatheringItems.Count > 0)
+                    {
+                        partyMemberClient.Send(new S2CInstancePopDropItemNtc()
+                        {
+                            LayoutId = packet.Structure.LayoutId,
+                            SetId = packet.Structure.SetId,
+                            MdlType = enemyKilled.DropsTable.MdlType,
+                            PosX = packet.Structure.DropPosX,
+                            PosY = packet.Structure.DropPosY,
+                            PosZ = packet.Structure.DropPosZ
+                        });
+                    }
+                }
             }
             else
             {
