@@ -45,14 +45,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 // Separate all variant quests to its own dictionary for separate handling.
                 // This also ensures these quests are not in gQuests before processing.
-                if (questAsset.VariantId is not null && !gQuests.ContainsKey(questAsset.QuestId))
+                if (questAsset.VariantId != 0 && !gQuests.ContainsKey(questAsset.QuestId))
                 {
-                    if (questAsset.VariantId == 0)
-                    {
-                        Logger.Error($"Variant Id being 0 is a reserved value, please reassign to another number.");
-                        continue;
-                    }
-
+                  
                     Quest alternateQuest = GenericQuest.FromAsset(questAsset);
                     alternateQuest.IsVariantQuest = true;
                     alternateQuest.VariantId = (uint)questAsset.VariantId;
@@ -143,20 +138,37 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return results;
         }
 
-        public static uint GetRandomVariantQuest(QuestId baseQuest)
+        public static uint GetRandomVariantId(QuestId baseQuest)
         {
             // Get random index value to choose a quest version.
-            int randomIndex = new Random().Next(variantQuests[baseQuest].Count);
+            int randomIndex = Random.Shared.Next(variantQuests[baseQuest].Count);
+
             uint variantId = variantQuests[baseQuest].ElementAt(randomIndex).Key;
+
             return variantId;
         }
 
-        public static Quest GetQuest(QuestId questId, uint? variantId = null)
+        public static Quest GetRewardQuest(QuestId questId, uint variantId)
+        {
+            // Mostly for reward calls. If somehow the variantId is not valid,
+            // return the first quest found with the questId within VariantQuests
+            Quest quest = GetQuest(questId, variantId);
+
+            if(quest is null)
+            {
+                // Check for variant quest
+                return variantQuests[questId].First().Value;
+            }
+
+            return quest;
+        }
+
+        public static Quest GetQuest(QuestId questId, uint variantId = 0)
         {
             // If a variant is specified, return the variant quest.
-            if (variantId is not null)
+            if (variantId != 0)
             {
-                return variantQuests[questId][(uint)variantId];
+                return variantQuests[questId][variantId];
             }
 
             if (!gQuests.ContainsKey(questId))
