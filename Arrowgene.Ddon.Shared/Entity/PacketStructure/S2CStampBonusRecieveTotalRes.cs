@@ -17,9 +17,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override S2CStampBonusRecieveTotalRes Read(IBuffer buffer)
             {
                 S2CStampBonusRecieveTotalRes obj = new S2CStampBonusRecieveTotalRes();
-
                 ReadServerResponse(buffer, obj);
-
                 return obj;
             }
         }

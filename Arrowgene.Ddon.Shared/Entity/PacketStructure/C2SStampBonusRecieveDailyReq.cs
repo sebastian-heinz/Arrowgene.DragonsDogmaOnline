@@ -3,7 +3,7 @@ using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    internal class C2SStampBonusRecieveDailyReq : IPacketStructure
+    public class C2SStampBonusRecieveDailyReq : IPacketStructure
     {
         public PacketId Id => PacketId.C2S_STAMP_BONUS_RECIEVE_DAILY_REQ;
 

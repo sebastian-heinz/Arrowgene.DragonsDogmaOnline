@@ -1,14 +1,12 @@
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class StampBonusCheckHandler : PacketHandler<GameClient>
+    public class StampBonusCheckHandler : GameRequestPacketHandler<C2SStampBonusCheckReq, S2CStampBonusCheckRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(StampBonusCheckHandler));
 
@@ -19,9 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             _gameServer = server;
         }
 
-        public override PacketId Id => PacketId.C2S_STAMP_BONUS_CHECK_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override S2CStampBonusCheckRes Handle(GameClient client, C2SStampBonusCheckReq request)
         {
             bool canDaily = _gameServer.StampManager.CanDailyStamp(client.Character.StampBonus);
             bool canTotal = _gameServer.StampManager.CanTotalStamp(client.Character.StampBonus);
@@ -40,7 +36,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Unk0 = 1,
                     Unk1 = 0,
                 });
-                client.Send(res);
+                return res;
             }
             else if (canDaily)
             {
@@ -54,17 +50,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Unk0 = 1,
                     Unk1 = 0,
                 });
-                client.Send(res);
+                return res;
             }
             else
             {
-                client.Send(new S2CStampBonusCheckRes()
+                return new S2CStampBonusCheckRes()
                 {
                     IsRecieveBonusDaily = byte.MaxValue,
                     IsRecieveBonusTotal = byte.MaxValue,
-                });
+                };
             }
-            
         }
     }
 }
