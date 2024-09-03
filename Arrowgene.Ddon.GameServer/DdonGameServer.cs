@@ -60,7 +60,7 @@ namespace Arrowgene.Ddon.GameServer
             ClientLookup = new GameClientLookup();
             ChatLogHandler = new ChatLogHandler();
             ChatManager = new ChatManager(this, Router);
-            ItemManager = new ItemManager();
+            ItemManager = new ItemManager(this);
             CraftManager = new CraftManager(this);
             PartyManager = new PartyManager(this);
             ExpManager = new ExpManager(this, ClientLookup);
@@ -358,6 +358,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new InstanceCharacterStartBadStatusHandler(this));
             AddHandler(new InstancePlTouchOmHandler(this));
             AddHandler(new InstanceGetOmInstantKeyValueAllHandler(this));
+            AddHandler(new InstanceTraningRoomGetEnemyListHandler(this));
+            AddHandler(new InstanceTraningRoomSetEnemyHandler(this));
 
             AddHandler(new ItemConsumeStorageItemHandler(this));
             AddHandler(new ItemGetStorageItemListHandler(this));

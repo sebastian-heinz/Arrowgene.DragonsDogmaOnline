@@ -1,21 +1,28 @@
 using Arrowgene.Ddon.GameServer;
 using Arrowgene.Ddon.GameServer.GatheringItems;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Shared.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public class InstanceEnemyManager : InstanceAssetManager<byte, Enemy, InstancedEnemy>
 {
-    private readonly DdonGameServer _server;
+    private readonly DdonGameServer _Server;
+    private Dictionary<StageId, ushort> _CurrentSubgroup { get; set; }
+
+    private Dictionary<StageId, Dictionary<uint, InstancedEnemy>> _EnemyData;
 
     public InstanceEnemyManager(DdonGameServer server) : base()
     {
-        _server = server;
+        _Server = server;
+        _CurrentSubgroup  = new Dictionary<StageId, ushort>();
+        _EnemyData = new Dictionary<StageId, Dictionary<uint, InstancedEnemy>>();
     }
 
     protected override List<Enemy> FetchAssetsFromRepository(StageId stage, byte subGroupId)
     {
-        return _server.AssetRepository.EnemySpawnAsset.Enemies.GetValueOrDefault((stage, subGroupId)) ?? new List<Enemy>();
+        return _Server.AssetRepository.EnemySpawnAsset.Enemies.GetValueOrDefault((stage, subGroupId)) ?? new List<Enemy>();
     }
 
     protected override List<InstancedEnemy> InstanceAssets(List<Enemy> originals)
@@ -23,7 +30,7 @@ public class InstanceEnemyManager : InstanceAssetManager<byte, Enemy, InstancedE
         List<InstancedEnemy> filteredEnemyList = new List<InstancedEnemy>();
 
         // Calculate current game time
-        long gameTimeMSec = _server.WeatherManager.RealTimeToGameTimeMS(DateTimeOffset.UtcNow);
+        long gameTimeMSec = _Server.WeatherManager.RealTimeToGameTimeMS(DateTimeOffset.UtcNow);
 
         foreach (Enemy original in originals)
         {
@@ -42,5 +49,82 @@ public class InstanceEnemyManager : InstanceAssetManager<byte, Enemy, InstancedE
             }
         }
         return filteredEnemyList;
+    }
+
+    public void SetInstanceEnemy(StageId stageId, byte index, InstancedEnemy enemy)
+    {
+        lock (_EnemyData)
+        {
+            if (!_EnemyData.ContainsKey(stageId))
+            {
+                _EnemyData[stageId] = new Dictionary<uint, InstancedEnemy>();
+            }
+
+            if (!_EnemyData[stageId].ContainsKey(index))
+            {
+                _EnemyData[stageId][index] = enemy;
+            }
+        }
+    }
+
+    public InstancedEnemy GetInstanceEnemy(StageId stageId, byte index)
+    {
+        lock (_EnemyData)
+        {
+            if (!_EnemyData.ContainsKey(stageId))
+            {
+                return null;
+            }
+
+            if (!_EnemyData[stageId].ContainsKey(index))
+            {
+                return null;
+            }
+            return _EnemyData[stageId][index];
+        }
+    }
+
+    public List<InstancedEnemy> GetInstancedEnemies(StageId stageId)
+    {
+        lock (_EnemyData)
+        {
+            if (!_EnemyData.ContainsKey(stageId))
+            {
+                return new List<InstancedEnemy>();
+            }
+            return _EnemyData[stageId].Select(x => x.Value).ToList();
+        }
+    }
+
+    public bool HasInstanceEnemy(StageId stageId, byte index)
+    {
+        lock (_EnemyData)
+        {
+            if (!_EnemyData.ContainsKey(stageId))
+            {
+                return false;
+            }
+            return _EnemyData[stageId].ContainsKey(index);
+        }
+    }
+
+    public void ResetEnemyNode(StageId stageId)
+    {
+        lock (_EnemyData)
+        {
+            if (_EnemyData.ContainsKey(stageId))
+            {
+                _EnemyData[stageId].Clear();
+            }
+        }
+    }
+
+    public override void Clear()
+    {
+        base.Clear();
+        lock (_EnemyData)
+        {
+            _EnemyData.Clear();
+        }
     }
 }

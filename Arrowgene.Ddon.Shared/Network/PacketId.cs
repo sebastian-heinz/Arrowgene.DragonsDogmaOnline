@@ -890,10 +890,10 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_INSTANCE_ENEMY_GROUP_RESET_NTC = new PacketId(13, 32, 16, "S2C_INSTANCE_ENEMY_GROUP_RESET_NTC", ServerType.Game, PacketSource.Server, "S2C_INSTANCE_13_32_16_NTC");
         public static readonly PacketId S2C_INSTANCE_ENEMY_SUB_GROUP_APPEAR_NTC = new PacketId(13, 33, 16, "S2C_INSTANCE_ENEMY_SUB_GROUP_APPEAR_NTC", ServerType.Game, PacketSource.Server, "S2C_INSTANCE_13_33_16_NTC");
         public static readonly PacketId S2C_INSTANCE_GATHERING_ENEMY_APPEAR_NTC = new PacketId(13, 34, 16, "S2C_INSTANCE_GATHERING_ENEMY_APPEAR_NTC", ServerType.Game, PacketSource.Server, "S2C_INSTANCE_13_34_16_NTC");
-        public static readonly PacketId S2C_INSTANCE_13_35_16_NTC = new PacketId(13, 35, 16, "S2C_INSTANCE_13_35_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_INSTANCE_13_35_16_NTC = new PacketId(13, 35, 16, "S2C_INSTANCE_13_35_16_NTC", ServerType.Game, PacketSource.Server); // DUNGEON CLEAR large text popup.
         public static readonly PacketId S2C_INSTANCE_13_36_16_NTC = new PacketId(13, 36, 16, "S2C_INSTANCE_13_36_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_INSTANCE_13_37_16_NTC = new PacketId(13, 37, 16, "S2C_INSTANCE_13_37_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_INSTANCE_13_38_16_NTC = new PacketId(13, 38, 16, "S2C_INSTANCE_13_38_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_INSTANCE_13_37_16_NTC = new PacketId(13, 37, 16, "S2C_INSTANCE_13_37_16_NTC", ServerType.Game, PacketSource.Server); // Ghidra says this does nothing.
+        public static readonly PacketId S2C_INSTANCE_13_38_16_NTC = new PacketId(13, 38, 16, "S2C_INSTANCE_13_38_16_NTC", ServerType.Game, PacketSource.Server); // Ghidra says this does nothing.
         public static readonly PacketId S2C_INSTANCE_POP_DROP_ITEM_NTC = new PacketId(13, 39, 16, "S2C_INSTANCE_POP_DROP_ITEM_NTC", ServerType.Game, PacketSource.Server, "S2C_INSTANCE_13_39_16_NTC");
         public static readonly PacketId S2C_INSTANCE_ENEMY_REPOP_NTC = new PacketId(13, 40, 16, "S2C_INSTANCE_ENEMY_REPOP_NTC", ServerType.Game, PacketSource.Server, "S2C_INSTANCE_13_40_16_NTC");
         public static readonly PacketId S2C_INSTANCE_ENCOUNTER_PAWN_NTC = new PacketId(13, 41, 16, "S2C_INSTANCE_ENCOUNTER_PAWN_NTC", ServerType.Game, PacketSource.Server, "S2C_INSTANCE_13_41_16_NTC");
