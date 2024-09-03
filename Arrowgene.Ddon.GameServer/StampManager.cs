@@ -1,7 +1,8 @@
-using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace Arrowgene.Ddon.GameServer
 {
     public class StampManager
     {
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(StampManager));
+
         public StampManager(DdonGameServer server)
         {
             Server = server;
@@ -102,12 +105,12 @@ namespace Arrowgene.Ddon.GameServer
 
         static public bool CanResetConsecutiveStamp(CharacterStampBonus stampData)
         {
-            return SpanSinceLastStampReset(stampData.LastStamp) > DAILY_STAMP_GRACE_PERIOD;
+            return RelativeSpanToReset(stampData.LastStamp) > DAILY_STAMP_GRACE_PERIOD;
         }
 
         static public bool CanStamp(DateTime lastStamp)
         {
-            return SpanSinceLastStampReset(lastStamp).TotalSeconds < 0;
+            return RelativeSpanToReset(lastStamp).TotalSeconds > 0;
         }
 
         public void UpdateStamp(Character character)
@@ -126,9 +129,9 @@ namespace Arrowgene.Ddon.GameServer
         /// <summary>
         /// Calculate the timespan from/until the reset.
         /// If negative, their stamp reset hasn't happened yet.
-        /// If positive, their stamp reset may have happened.
+        /// If positive, their stamp reset has happened.
         /// </summary>
-        static private TimeSpan SpanSinceLastStampReset(DateTime lastStamp)
+        static private TimeSpan RelativeSpanToReset(DateTime lastStamp)
         {
             DateTime utcNow = DateTime.UtcNow;
             TimeZoneInfo jstZone = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");

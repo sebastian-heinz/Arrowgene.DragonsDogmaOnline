@@ -1,8 +1,10 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -21,36 +23,48 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
-            bool canTotal = _gameServer.StampManager.CanTotalStamp(client.Character.StampBonus);
             bool canDaily = _gameServer.StampManager.CanDailyStamp(client.Character.StampBonus);
+            bool canTotal = _gameServer.StampManager.CanTotalStamp(client.Character.StampBonus);
 
-            if (canDaily)
+            var stampBonusList = _gameServer.StampManager.GetDailyStampAssets().Select(x => x.StampBonus.First()).ToList();
+
+            if (canTotal)
+            {
+                var res = new S2CStampBonusCheckRes()
+                {
+                    IsRecieveBonusDaily = 0,
+                    IsRecieveBonusTotal = 0,
+                };
+                res.StampCheck.Add(new CDataStampCheck()
+                {
+                    Unk0 = 1,
+                    Unk1 = 0,
+                });
+                client.Send(res);
+            }
+            else if (canDaily)
+            {
+                var res = new S2CStampBonusCheckRes()
+                {
+                    IsRecieveBonusDaily = 1,
+                    IsRecieveBonusTotal = 0,
+                };
+                res.StampCheck.Add(new CDataStampCheck()
+                {
+                    Unk0 = 1,
+                    Unk1 = 0,
+                });
+                client.Send(res);
+            }
+            else
             {
                 client.Send(new S2CStampBonusCheckRes()
                 {
-                    SuppressTotal = !canTotal,
-                    SuppressDaily = !canDaily,
-                    Unk0 = 1,
-                    Unk1 = 0,
-                    Unk2 = 1,
-                    Unk3 = 77,
-                    Unk4 = 257
+                    IsRecieveBonusDaily = byte.MaxValue,
+                    IsRecieveBonusTotal = byte.MaxValue,
                 });
             }
-            else 
-            {
-                //For whatever reason, suppresses the icon over Ophelia's head.
-                client.Send(new S2CStampBonusCheckRes() 
-                {
-                    Unk0 = 0,
-                    Unk1 = ushort.MaxValue,
-                    SuppressDaily = true,
-                    SuppressTotal = true,
-                    Unk2 = 1,
-                    Unk3 = 77,
-                    Unk4 = 257
-                });
-            }  
+            
         }
     }
 }
