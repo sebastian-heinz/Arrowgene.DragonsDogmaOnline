@@ -68,7 +68,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
             return new List<InstancedGatheringItem>();
         }
 
-        public List<InstancedGatheringItem> RollEnemyLoot(InstancedEnemy enemy, CDataStageLayoutId layoutId, uint setId)
+        public List<InstancedGatheringItem> GenerateEnemyLoot(InstancedEnemy enemy, CDataStageLayoutId layoutId, uint setId)
         {   
             uint dropEntryId = GetDropId(layoutId, setId);
 
