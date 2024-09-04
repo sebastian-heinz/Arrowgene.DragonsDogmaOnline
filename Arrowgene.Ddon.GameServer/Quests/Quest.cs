@@ -347,8 +347,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 ContentJoinItemRank = (ushort)(OrderConditions.Find(x => x.Type == QuestOrderConditionType.ItemRank)?.Param01 ?? 0),
                 RandomRewardNum = RandomRewardNum(),
                 SelectRewardItemIdList = GetQuestSelectableRewards().Select(x => new CDataCommonU32(x.ItemId)).ToList(),
-                DiscoverRewardWalletPoint = WalletRewards,
-                DiscoverRewardExp = ExpRewards,
+                //DiscoverRewardWalletPoint = WalletRewards, // These are not the same as the regular rewards?
+                //DiscoverRewardExp = ExpRewards, // These are not the same as the regular rewards?
                 QuestLayoutFlagSetInfoList = QuestLayoutFlagSetInfo.Select(x => x.AsCDataQuestLayoutFlagSetInfo()).ToList(),
                 QuestEnemyInfoList = EnemyGroups.Values.SelectMany(group => group.Enemies.Select(enemy => new CDataQuestEnemyInfo()
                 {
