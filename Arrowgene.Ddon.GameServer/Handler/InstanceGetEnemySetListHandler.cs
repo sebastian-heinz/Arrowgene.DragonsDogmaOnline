@@ -49,25 +49,31 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (IsQuestControlled && quest != null)
             {
                 response.QuestId = (uint) quest.QuestId;
-                response.EnemyList = client.Party.QuestState.GetInstancedEnemies(quest, stageId, subGroupId).Select(enemy => new CDataLayoutEnemyData()
-                {
-                    PositionIndex = (byte)(enemy.Index),
-                    EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
-                }).ToList();
 
-                client.Party.QuestState.SetInstanceSubgroupId(quest, stageId, subGroupId);
+                foreach (var enemy in client.Party.QuestState.GetInstancedEnemies(quest, stageId, subGroupId))
+                {
+                    response.EnemyList.Add(new CDataLayoutEnemyData()
+                    {
+                        PositionIndex = enemy.Index,
+                        EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
+                    });
+                    client.Party.InstanceEnemyManager.SetInstanceEnemy(stageId, enemy.Index, enemy);
+                }
             }
             else
             {
-                response.EnemyList = client.Party.InstanceEnemyManager.GetAssets(stageId, subGroupId).Select((enemy, index) => new CDataLayoutEnemyData()
+                foreach (var asset in client.Party.InstanceEnemyManager.GetAssets(stageId, subGroupId).Select((Enemy, Index) => new {Index, Enemy}))
                 {
-                    PositionIndex = (byte)index,
-                    EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
-                })
-                .ToList();
+                    response.EnemyList.Add(new CDataLayoutEnemyData()
+                    {
+                        PositionIndex = (byte) asset.Index,
+                        EnemyInfo = asset.Enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
+                    });
+                    client.Party.InstanceEnemyManager.SetInstanceEnemy(stageId, (byte) asset.Index, asset.Enemy);
+                }
             }
 
-            if (subGroupId > 0)
+            if (subGroupId > 0 && response.EnemyList.Count > 0)
             {
                 S2CInstanceEnemySubGroupAppearNtc subgroupNtc = new S2CInstanceEnemySubGroupAppearNtc()
                 {

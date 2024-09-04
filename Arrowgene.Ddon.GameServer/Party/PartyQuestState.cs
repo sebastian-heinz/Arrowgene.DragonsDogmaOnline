@@ -33,18 +33,15 @@ namespace Arrowgene.Ddon.GameServer.Party
         public bool HasStarted { get; set; }
         public uint Step { get; set; }
 
-        public Dictionary<ushort, QuestProcessState> ProcessState { get; set; }
-        public Dictionary<StageId, Dictionary<uint, List<InstancedEnemy>>> QuestEnemies { get; set; }
-        public Dictionary<StageId, ushort> CurrentSubgroup { get; set; }
-
-        public Dictionary<uint, QuestDeliveryRecord> DeliveryRecords { get; set; }
+        public Dictionary<ushort, QuestProcessState> ProcessState {  get; set; }
+        public Dictionary<StageId, Dictionary<uint, List<InstancedEnemy>>> QuestEnemies {  get; set; }
+        public Dictionary<uint, QuestDeliveryRecord> DeliveryRecords {  get; set; }
 
         public QuestState()
         {
             ProcessState = new Dictionary<ushort, QuestProcessState>();
             QuestEnemies = new Dictionary<StageId, Dictionary<uint, List<InstancedEnemy>>>();
             DeliveryRecords = new Dictionary<uint, QuestDeliveryRecord>();
-            CurrentSubgroup = new Dictionary<StageId, ushort>();
         }
 
         public uint UpdateDeliveryRequest(uint itemId, uint amount)
@@ -178,6 +175,15 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
+        public bool HasEnemiesInCurrentStageGroup(Quest quest, StageId stageId)
+        {
+            lock (ActiveQuests)
+            {
+                var questState = ActiveQuests[quest.QuestId];
+                return questState.QuestEnemies.ContainsKey(stageId);
+            }
+        }
+
         public bool HasEnemiesInCurrentStageGroup(Quest quest, StageId stageId, uint subGroupId)
         {
             lock (ActiveQuests)
@@ -236,28 +242,6 @@ namespace Arrowgene.Ddon.GameServer.Party
             var quest = GetQuest(questId);
             return GetInstancedEnemy(quest, stageId, subGroupId, index);
         }
-
-        public void SetInstanceSubgroupId(Quest quest, StageId stageId, ushort subgroupId)
-        {
-            lock (ActiveQuests)
-            {
-                var questState = ActiveQuests[quest.QuestId];
-                questState.CurrentSubgroup[stageId] = subgroupId;
-            }
-        }
-
-        public ushort GetInstanceSubgroupId(Quest quest, StageId stageId)
-        {
-            lock (ActiveQuests)
-            {
-                var questState = ActiveQuests[quest.QuestId];
-                if (!questState.CurrentSubgroup.ContainsKey(stageId))
-                {
-                    return 0;
-                }
-                return questState.CurrentSubgroup[stageId];
-            }
-        }  
 
         public void AddNewQuest(QuestId questId, uint step, bool questStarted, uint variantId)
         {
@@ -635,7 +619,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                 }
                 else if (expPoint.Type == ExpType.PlayPoints)
                 {
-                    server.PPManager.AddPlayPoint(client, expPoint.Reward, 2);
+                    server.PPManager.AddPlayPoint(client, expPoint.Reward, type: 2);
                 }
             }
         }

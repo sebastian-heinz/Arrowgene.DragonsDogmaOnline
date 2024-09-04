@@ -55,6 +55,7 @@ namespace Arrowgene.Ddon.Shared.Model
 
         /// TODO combine into a location class ?
         public StageId Stage { get; set; }
+
         public uint StageNo { get; set; }
         public double X { get; set; }
         public float Y { get; set; }

@@ -21,6 +21,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         private readonly DdonGameServer _gameServer;
 
+        private readonly HashSet<uint> _ignoreKillsInStageIds = new HashSet<uint>()
+        {
+            349, //White Dragon Temple, Training Room
+        };
+
         public InstanceEnemyKillHandler(DdonGameServer server) : base(server)
         {
             _gameServer = server;
@@ -30,24 +35,31 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             CDataStageLayoutId layoutId = packet.Structure.LayoutId;
             StageId stageId = StageId.FromStageLayoutId(layoutId);
-            ushort subGroupId = 0;
+
+            // The training room uses special handling to produce enemies that don't exist in the QuestState or InstanceEnemyManager.
+            // Return an empty response here to not break the rest of the handling.
+            if (_ignoreKillsInStageIds.Contains(stageId.Id))
+            {
+                client.Send(new S2CInstanceEnemyKillRes());
+                return;
+            }
 
             Quest quest = null;
             bool IsQuestControlled = false;
             foreach (var questId in client.Party.QuestState.StageQuests(stageId))
             {
                 quest = client.Party.QuestState.GetQuest(questId);
-                var qSubGroupId = client.Party.QuestState.GetInstanceSubgroupId(quest, stageId);
-                if (client.Party.QuestState.HasEnemiesInCurrentStageGroup(quest, stageId, qSubGroupId))
+                if (client.Party.QuestState.HasEnemiesInCurrentStageGroup(quest, stageId))
                 {
-                    subGroupId = qSubGroupId;
                     IsQuestControlled = true;
                     break;
                 }
             }
 
-            InstancedEnemy enemyKilled;
-            if (IsQuestControlled && quest != null)
+            InstancedEnemy enemyKilled = client.Party.InstanceEnemyManager.GetInstanceEnemy(stageId, (byte) packet.Structure.SetId);
+            enemyKilled.IsKilled = true;
+
+            if (!IsQuestControlled)
             {
                 // Quest monster drops on kill handled here
                 enemyKilled = client.Party.QuestState.GetInstancedEnemy(quest, stageId, subGroupId, packet.Structure.SetId);
@@ -77,7 +89,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 enemyKilled = client.Party.InstanceEnemyManager.GetAssets(StageId.FromStageLayoutId(layoutId), (byte) subGroupId)[(int)packet.Structure.SetId];
                 foreach (var partyMemberClient in client.Party.Clients)
-                {    
+                {
                     List<InstancedGatheringItem> instancedGatheringItems = partyMemberClient.InstanceDropItemManager.GetAssets(layoutId, packet.Structure.SetId);
                     if (instancedGatheringItems.Count > 0)
                     {
@@ -94,25 +106,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            enemyKilled.IsKilled = true;
-
-            List<InstancedEnemy> group;
-            if (IsQuestControlled && quest != null)
-            {
-                group = client.Party.QuestState.GetInstancedEnemies(quest.QuestId, stageId, subGroupId);
-            }
-            else
-            {
-                group = client.Party.InstanceEnemyManager.GetAssets(StageId.FromStageLayoutId(layoutId), (byte) subGroupId);
-            }
+            List<InstancedEnemy> group = client.Party.InstanceEnemyManager.GetInstancedEnemies(stageId);
 
             bool groupDestroyed = group.Where(x => x.IsRequired).All(x => x.IsKilled);
             if (groupDestroyed)
             {
-                if (IsQuestControlled && quest != null)
-                {
-                    quest.SendProgressWorkNotices(client, stageId, subGroupId);
-                }
 
                 bool IsAreaBoss = false;
                 foreach (var enemy in group)
@@ -219,7 +217,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     if (gainedPP > 0)
                     {
-                        _gameServer.PPManager.AddPlayPoint(memberClient, gainedPP, 1);
+                        _gameServer.PPManager.AddPlayPoint(memberClient, gainedPP, type: 1);
                     }
 
                     if (gainedExp > 0)

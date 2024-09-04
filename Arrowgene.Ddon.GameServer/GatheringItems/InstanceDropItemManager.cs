@@ -15,8 +15,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
 
         protected override List<GatheringItem> FetchAssetsFromRepository(StageId stage, uint setId)
         {
-            List<InstancedEnemy> enemiesInSet = _client.Party.InstanceEnemyManager.GetAssets(stage, 0);
-
+            List<InstancedEnemy> enemiesInSet =  _client.Party.InstanceEnemyManager.GetAssets(stage, (byte) setId);
             if(enemiesInSet != null && setId < enemiesInSet.Count)
             {
                 Enemy enemy = enemiesInSet[(int) setId];

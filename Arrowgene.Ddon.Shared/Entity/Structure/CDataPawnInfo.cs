@@ -56,7 +56,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public byte ShareRange { get; set; }
         public uint Likability { get; set; }
         public byte[] TrainingStatus { get; set; }
-        public CData_772E80 Unk1 { get; set; }
+        public CData_772E80 Unk1 { get; set; } // Dragon abilities?
         public List<CDataSpSkill> SpSkillList { get; set; }
 
         public class Serializer : EntitySerializer<CDataPawnInfo>
