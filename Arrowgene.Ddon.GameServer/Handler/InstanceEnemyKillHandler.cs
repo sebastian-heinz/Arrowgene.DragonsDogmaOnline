@@ -59,10 +59,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             InstancedEnemy enemyKilled = client.Party.InstanceEnemyManager.GetInstanceEnemy(stageId, (byte) packet.Structure.SetId);
             enemyKilled.IsKilled = true;
 
-            if (!IsQuestControlled)
+            if (IsQuestControlled)
             {
                 // Quest monster drops on kill handled here
-                enemyKilled = client.Party.QuestState.GetInstancedEnemy(quest, stageId, subGroupId, packet.Structure.SetId);
 
                 foreach (var partyMemberClient in client.Party.Clients)
                 {
@@ -87,7 +86,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
-                enemyKilled = client.Party.InstanceEnemyManager.GetAssets(StageId.FromStageLayoutId(layoutId), (byte) subGroupId)[(int)packet.Structure.SetId];
                 foreach (var partyMemberClient in client.Party.Clients)
                 {
                     List<InstancedGatheringItem> instancedGatheringItems = partyMemberClient.InstanceDropItemManager.GetAssets(layoutId, packet.Structure.SetId);
