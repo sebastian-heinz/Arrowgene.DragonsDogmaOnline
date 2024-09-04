@@ -459,8 +459,13 @@ namespace Arrowgene.Ddon.GameServer.Party
                         QuestType = quest.QuestType,
                         ClearCount = 1,
                     });
+                    server.Database.InsertIfNotExistCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType);
                 }
-                server.Database.InsertIfNotExistCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType);
+                else
+                {
+                    uint clearCount = ++memberClient.Character.CompletedQuests[quest.QuestId].ClearCount;
+                    server.Database.ReplaceCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, clearCount);
+                }
             }
 
             // Remove the quest data from the party object
