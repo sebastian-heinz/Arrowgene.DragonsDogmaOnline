@@ -54,8 +54,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 foreach (var partyMemberClient in client.Party.Clients)
                 {
+                    // Get the possible loot. This also stores the items entry within the QuestEnemyDropsTable for further reference.
+                    // All references are cleared when in a safe zone.
                     List<InstancedGatheringItem> instancedGatheringItems = partyMemberClient.InstanceQuestDropManager.RollEnemyLoot(enemyKilled, packet.Structure.LayoutId, packet.Structure.SetId);
 
+                    // If the roll was unlucky, there is a chance that no bag will show.
                     if (instancedGatheringItems.Count > 0)
                     {
                         partyMemberClient.Send(new S2CInstancePopDropItemNtc()

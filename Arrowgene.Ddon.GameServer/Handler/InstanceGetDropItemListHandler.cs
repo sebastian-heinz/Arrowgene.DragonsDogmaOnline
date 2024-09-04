@@ -22,15 +22,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceGetDropItemListReq> packet)
         {
-            List<InstancedGatheringItem> items;
-
-            if (client.InstanceQuestDropManager.IsQuestDrop(packet.Structure.LayoutId, packet.Structure.SetId))
-            {
-                items = client.InstanceQuestDropManager.FetchEnemyLoot(packet.Structure.LayoutId, packet.Structure.SetId);
-            } else
-            {
-                items = client.InstanceDropItemManager.GetAssets(packet.Structure.LayoutId, packet.Structure.SetId);
-            }
+            // This call is for when a bag is opened. Get the correct drops stored from the kill handler.
+            List<InstancedGatheringItem> items = client.InstanceQuestDropManager.IsQuestDrop(packet.Structure.LayoutId, packet.Structure.SetId) ?
+                client.InstanceQuestDropManager.FetchEnemyLoot() : client.InstanceDropItemManager.GetAssets(packet.Structure.LayoutId, packet.Structure.SetId);
 
             client.Send(new S2CInstanceGetDropItemListRes()
             {

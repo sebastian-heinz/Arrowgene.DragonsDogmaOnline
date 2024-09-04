@@ -19,21 +19,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceGetDropItemReq> packet)
         {
-            List<InstancedGatheringItem> items;
-            if (client.InstanceQuestDropManager.IsQuestDrop(packet.Structure.LayoutId, packet.Structure.SetId))
-            {
-                items = client.InstanceQuestDropManager.FetchEnemyLoot(packet.Structure.LayoutId, packet.Structure.SetId);
-            }
-            else
-            {
-                items = client.InstanceDropItemManager.GetAssets(packet.Structure.LayoutId, packet.Structure.SetId);
-            }
+            // This call is for when an item is claimed from a bag. This also needs to drops stored from the enemy.
+            List<InstancedGatheringItem> items = client.InstanceQuestDropManager.IsQuestDrop(packet.Structure.LayoutId, packet.Structure.SetId) ?
+                client.InstanceQuestDropManager.FetchEnemyLoot() : client.InstanceDropItemManager.GetAssets(packet.Structure.LayoutId, packet.Structure.SetId);
 
+            S2CInstanceGetDropItemRes res = new()
+            {
+                LayoutId = packet.Structure.LayoutId,
+                SetId = packet.Structure.SetId,
+                GatheringItemGetRequestList = packet.Structure.GatheringItemGetRequestList
+            };
 
-            S2CInstanceGetDropItemRes res = new S2CInstanceGetDropItemRes();
-            res.LayoutId = packet.Structure.LayoutId;
-            res.SetId = packet.Structure.SetId;
-            res.GatheringItemGetRequestList = packet.Structure.GatheringItemGetRequestList;
             client.Send(res);
 
             S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc()
