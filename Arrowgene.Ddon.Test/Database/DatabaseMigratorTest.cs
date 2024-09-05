@@ -270,6 +270,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool ReplaceShortcut(uint characterId, CDataShortCut shortcut, DbConnection? connectionIn = null) { return true; }
         public bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, DbConnection? connectionIn = null) { return true; }
         public bool ReplaceWalletPoint(uint characterId, CDataWalletPoint walletPoint) { return true; }
+        public bool ReplaceCompletedQuest(uint characterCommonId, QuestId questId, QuestType questType, uint count) { return true; }
         public Account SelectAccountById(int accountId) { return new Account(); }
         public Account SelectAccountByLoginToken(string loginToken) { return new Account(); }
         public Account SelectAccountByName(string accountName) { return new Account(); }

@@ -13,6 +13,7 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -47,7 +48,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntc.QuestDefine = pcap.QuestDefine; // Recover quest log data to be able to accept quests
 
             // pcap.MainQuestIdList; (this will add back all missing functionality which depends on complete MSQ)
-            var completedMsq = Server.Database.GetCompletedQuestsByType(client.Character.CommonId, QuestType.Main);
+            var completedMsq = client.Character.CompletedQuests.Values.Where(x => x.QuestType == QuestType.Main);
             foreach (var msq in completedMsq)
             {
                 ntc.MainQuestIdList.Add(new CDataQuestId() { QuestId = (uint) msq.QuestId });

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model.BattleContent;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
@@ -34,6 +35,7 @@ namespace Arrowgene.Ddon.Shared.Model
             BinaryData = new byte[C2SBinarySaveSetCharacterBinSaveDataReq.ARRAY_SIZE];
             LastSeenLobby = new Dictionary<uint, uint>();
             BbmProgress = new BitterblackMazeProgress();
+            CompletedQuests = new Dictionary<QuestId, CompletedQuest>();
         }
 
         public int AccountId { get; set; }
@@ -113,6 +115,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint NextBBMStageId {  get; set; }
 
         public uint MaxBazaarExhibits { get; set; }
+        public Dictionary<QuestId, CompletedQuest> CompletedQuests { get; set; }
 
         // ---
 
