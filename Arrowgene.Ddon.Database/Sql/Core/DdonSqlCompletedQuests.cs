@@ -21,6 +21,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                                                          $"\"character_common_id\" = @character_common_id AND \"quest_id\" = @quest_id);";
         private readonly string SqlSelectCompletedQuestByType = $"SELECT {BuildQueryField(CompletedQuestsFields)} FROM \"ddon_completed_quests\" WHERE \"character_common_id\" = @character_common_id AND \"quest_type\" = @quest_type;";
         private readonly string SqlSelectCompletedQuestById = $"SELECT {BuildQueryField(CompletedQuestsFields)} FROM \"ddon_completed_quests\" WHERE \"character_common_id\" = @character_common_id AND \"quest_id\" = @quest_id;";
+        private readonly string SqlUpdateCompletedQuestId = $"UPDATE \"ddon_completed_quests\" SET \"clear_count\" = @clear_count WHERE \"character_common_id\" = @character_common_id AND \"quest_id\" = @quest_id;";
 
         public List<CompletedQuest> GetCompletedQuestsByType(uint characterCommonId, QuestType questType)
         {
@@ -101,6 +102,32 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 AddParameter(command, "quest_id", (uint) questId);
                 AddParameter(command, "quest_type", (uint) questType);
                 AddParameter(command, "clear_count", 1);
+            }) == 1;
+        }
+
+        public bool ReplaceCompletedQuest(uint characterCommonId, QuestId questId, QuestType questType, uint count = 1)
+        {
+            using TCon connection = OpenNewConnection();
+            return ReplaceCompletedQuest(connection, characterCommonId, questId, questType, count);
+        }
+
+        public bool ReplaceCompletedQuest(TCon connection, uint characterCommonId, QuestId questId, QuestType questType, uint count = 1)
+        {
+            if (!InsertIfNotExistCompletedQuest(connection, characterCommonId, questId, questType))
+            {
+                return UpdateCompletedQuest(connection, characterCommonId, questId, questType, count);
+            }
+            return true;
+        }
+
+        private bool UpdateCompletedQuest(TCon connection, uint characterCommonId, QuestId questId, QuestType questType, uint count = 1)
+        {
+            return ExecuteNonQuery(connection, SqlUpdateCompletedQuestId, command =>
+            {
+                AddParameter(command, "character_common_id", characterCommonId);
+                AddParameter(command, "quest_id", (uint)questId);
+                AddParameter(command, "quest_type", (uint)questType);
+                AddParameter(command, "clear_count", count);
             }) == 1;
         }
     }

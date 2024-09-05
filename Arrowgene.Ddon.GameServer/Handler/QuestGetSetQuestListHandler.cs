@@ -34,8 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var quest = client.Party.QuestState.GetQuest(questId);
                 if (quest.QuestType == QuestType.World)
                 {
-
-                    var questStats = Server.Database.GetCompletedQuestsById(client.Party.Leader.Client.Character.CommonId, quest.QuestId);
+                    var questStats = client.Party.Leader.Client.Character.CompletedQuests.GetValueOrDefault(quest.QuestId);
                     var questState = client.Party.QuestState.GetQuestState(questId);
                     /**
                      * World quests get added here instead of QuestGetWorldManageQuestListHandler because

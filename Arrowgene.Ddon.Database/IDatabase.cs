@@ -424,6 +424,13 @@ namespace Arrowgene.Ddon.Database
             QuestType questType
         );
 
+        bool ReplaceCompletedQuest(
+            uint characterCommonId,
+            QuestId questId,
+            QuestType questType,
+            uint count = 1
+        );
+
         // Quest Progress
         bool InsertQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step, uint variantId=0);
         bool UpdateQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step);

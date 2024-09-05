@@ -1,9 +1,11 @@
 using Arrowgene.Ddon.Shared.Csv;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -372,6 +374,28 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         character.AbilityPresets.Add(ReadAbilityPreset(reader));
                     }
                 });
+
+            // Quest Completion
+            foreach (var questType in Enum.GetValues(typeof(QuestType)).Cast<QuestType>())
+            {
+                ExecuteReader(conn, SqlSelectCompletedQuestByType,
+                   command => {
+                       AddParameter(command, "@character_common_id", character.CommonId);
+                       AddParameter(command, "@quest_type", (uint)questType);
+                   }, reader => {
+                       while (reader.Read())
+                       {
+                           var quest = new CompletedQuest()
+                           {
+                               QuestId = (QuestId)GetUInt32(reader, "quest_id"),
+                               QuestType = questType,
+                               ClearCount = GetUInt32(reader, "clear_count")
+                           };
+
+                           character.CompletedQuests.TryAdd(quest.QuestId, quest);
+                       }
+                   });
+            }
         }
 
         public bool UpdateMyPawnSlot(uint characterId, uint num)

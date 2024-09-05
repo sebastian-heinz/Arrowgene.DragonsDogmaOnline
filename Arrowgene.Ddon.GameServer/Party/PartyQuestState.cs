@@ -516,6 +516,11 @@ namespace Arrowgene.Ddon.GameServer.Party
             return true;
         }
 
+        public bool IsComplete(QuestId questId)
+        {
+            return CompletedWorldQuests.Contains(questId);
+        }
+
         public bool CompletePartyQuestProgress(DdonGameServer server, PartyGroup party, QuestId questId)
         {
             Quest quest = GetQuest(questId);
@@ -542,7 +547,21 @@ namespace Arrowgene.Ddon.GameServer.Party
                     server.Database.InsertQuestProgress(memberClient.Character.CommonId, nextQuest.QuestId, nextQuest.QuestType, 0);
                 }
 
-                server.Database.InsertIfNotExistCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType);
+                if (!memberClient.Character.CompletedQuests.ContainsKey(quest.QuestId))
+                {
+                    memberClient.Character.CompletedQuests.Add(questId, new CompletedQuest()
+                    {
+                        QuestId = quest.QuestId,
+                        QuestType = quest.QuestType,
+                        ClearCount = 1,
+                    });
+                    server.Database.InsertIfNotExistCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType);
+                }
+                else
+                {
+                    uint clearCount = ++memberClient.Character.CompletedQuests[quest.QuestId].ClearCount;
+                    server.Database.ReplaceCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, clearCount);
+                }
             }
 
             // Remove the quest data from the party object

@@ -7,6 +7,7 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -27,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 QuestType = packet.QuestType
             };
 
-            var completedQuests = Server.Database.GetCompletedQuestsByType(client.Character.CommonId, (QuestType) packet.QuestType);
+            var completedQuests = client.Character.CompletedQuests.Values.Where(x => x.QuestType == (QuestType)packet.QuestType);
             foreach (var completedQuest in completedQuests)
             {
                 result.QuestIdList.Add(new CDataQuestId()
