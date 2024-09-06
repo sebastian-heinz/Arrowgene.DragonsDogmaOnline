@@ -13,7 +13,6 @@ public class CDataRewardBoxRecord
 
     public UInt32 ListNo { get; set; }
     public UInt32 QuestId {  get; set; }
-    public uint VariantId { get; set; }
     public List<CDataRewardBoxItem> RewardItemList { get; set; }
 
     public class Serializer : EntitySerializer<CDataRewardBoxRecord>

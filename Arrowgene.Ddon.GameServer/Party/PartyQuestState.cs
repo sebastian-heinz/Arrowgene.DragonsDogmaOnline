@@ -268,7 +268,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             // If the quest we are trying to add is a variant quest, then roll and get a random version.
             if (VariantQuests.Contains(questId))
             {
-                quest = QuestManager.GetQuest(questId, QuestManager.GetRandomVariantQuest(questId));
+                quest = QuestManager.GetQuest(questId, QuestManager.GetRandomVariantId(questId));
             }
             else
             {
@@ -279,6 +279,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             if (quest.IsVariantQuest)
             {
                 ActiveVariantQuests.Add(quest.QuestId, quest.VariantId);
+                ActiveVariantQuests.Add(quest.QuestId, (uint)quest.VariantId);
             }
 
             AddNewQuest(quest, step, questStarted);

@@ -486,8 +486,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         {
             List<CDataRewardBoxItem> results = new List<CDataRewardBoxItem>();
 
-            var quest = rewards.VariantId == 0 ? QuestManager.GetQuest(rewards.QuestId) 
-                : QuestManager.GetQuest(rewards.QuestId, rewards.VariantId);
+            Quest quest = QuestManager.GetRewardQuest(rewards.QuestId, rewards.VariantId);
 
             foreach (var reward in quest.SelectableRewards)
             {

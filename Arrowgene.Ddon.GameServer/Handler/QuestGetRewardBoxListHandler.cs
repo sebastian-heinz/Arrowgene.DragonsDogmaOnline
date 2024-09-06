@@ -37,8 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     ListNo = listNo,
                     QuestId = (uint)boxReward.QuestId,
-                    RewardItemList = Quest.AsCDataRewardBoxItems(boxReward),
-                    VariantId = boxReward.VariantId
+                    RewardItemList = Quest.AsCDataRewardBoxItems(boxReward)
                 });
 
                 listNo += 1;
