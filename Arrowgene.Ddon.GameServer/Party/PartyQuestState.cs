@@ -279,7 +279,6 @@ namespace Arrowgene.Ddon.GameServer.Party
             if (quest.IsVariantQuest)
             {
                 ActiveVariantQuests.Add(quest.QuestId, quest.VariantId);
-                ActiveVariantQuests.Add(quest.QuestId, (uint)quest.VariantId);
             }
 
             AddNewQuest(quest, step, questStarted);
