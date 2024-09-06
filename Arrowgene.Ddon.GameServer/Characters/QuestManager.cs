@@ -22,6 +22,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static Dictionary<QuestId, Quest> gQuests = new Dictionary<QuestId, Quest>();
         private static readonly Dictionary<QuestId, Dictionary<uint, Quest>> variantQuests = new();
         private static readonly HashSet<QuestId> AvailableVariantQuests = new();
+        private static Dictionary<uint, List<Quest>> gPersonalQuests = new Dictionary<uint, List<Quest>>();
+        private static Dictionary<QuestAreaId, List<Quest>> gWorldQuests = new Dictionary<QuestAreaId, List<Quest>>();
 
         public static HashSet<QuestId> GetAllVariantQuestIds()
         {
@@ -30,24 +32,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public static void LoadQuests(AssetRepository assetRepository)
         {
-            // TODO: Load additional quests from file?
-            // TODO: Once everything is comfortably understood, we can probably serialize
-            // TODO: the quest data and load it from file when the server starts instead
-
-            // Main Quests
-            // gQuests[QuestId.TheSlumberingGod] = new Mq000002_TheSlumberingGod();
-            // gQuests[QuestId.TheGreatAlchemist] = new Mq000025_TheGreatAlchemist();
-            // gQuests[QuestId.HopesBitterEnd] = new Mq030260_HopesBitterEnd();
+            // TODO: Quests should probably operate on the distribuition ID instead of quest id so the global list can still contain all quests
+            // TODO: Then quests can be distributed to different lists for faster lookup (like world by area id or personal by stageno)
 
             // Load Quests defined in files
             foreach (var questAsset in assetRepository.QuestAssets.Quests)
             {
-
                 // Separate all variant quests to its own dictionary for separate handling.
                 // This also ensures these quests are not in gQuests before processing.
                 if (questAsset.VariantId != 0 && !gQuests.ContainsKey(questAsset.QuestId))
                 {
-                  
                     Quest alternateQuest = GenericQuest.FromAsset(questAsset);
                     alternateQuest.IsVariantQuest = true;
                     alternateQuest.VariantId = (uint)questAsset.VariantId;
@@ -57,21 +51,38 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     {
                         variantQuests[alternateQuest.QuestId] = new Dictionary<uint, Quest>();
                         variantQuests[questAsset.QuestId].Add(alternateQuest.VariantId, alternateQuest);
-
                         continue;
                     }
 
                     // Add quest id and quest
                     variantQuests[questAsset.QuestId].Add(alternateQuest.VariantId, alternateQuest);
-
-                    continue;
                 }
+                else
+                {
+                    gQuests[questAsset.QuestId] = GenericQuest.FromAsset(questAsset);
 
-                gQuests[questAsset.QuestId] = GenericQuest.FromAsset(questAsset);
+                    var quest = gQuests[questAsset.QuestId];
+                    if (quest.QuestType == QuestType.Personal)
+                    {
+                        uint stageNo = (uint)StageManager.ConvertIdToStageNo(quest.StageId);
+                        if (!gPersonalQuests.ContainsKey(stageNo))
+                        {
+                            gPersonalQuests[stageNo] = new List<Quest>();
+                        }
+                        gPersonalQuests[stageNo].Add(quest);
+                    }
+                    else if (quest.QuestType == QuestType.World)
+                    {
+                        if (!gWorldQuests.ContainsKey(quest.QuestAreaId))
+                        {
+                            gWorldQuests[quest.QuestAreaId] = new List<Quest>();
+                        }
+                        gWorldQuests[quest.QuestAreaId].Add(quest);
+                    }
+                }
             }
 
             var variantQuestKeys = variantQuests.Keys.ToArray();
-
             for (int i = 0; i < variantQuestKeys.Length; i++)
             {
                 // Store of all variant ids under the generic quest id
@@ -136,6 +147,36 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return results;
+        }
+
+        public static List<Quest> GetWorldQuestsByAreaId(QuestAreaId areaId)
+        {
+            if (!gWorldQuests.ContainsKey(areaId))
+            {
+                return new List<Quest>();
+            }
+
+            return gWorldQuests[areaId];
+        }
+
+        public static List<QuestId> GetWorldQuestIdsByAreaId(QuestAreaId areaId)
+        {
+            if (!gWorldQuests.ContainsKey(areaId))
+            {
+                return new List<QuestId>();
+            }
+
+            return gWorldQuests[areaId].Select(x => x.QuestId).ToList();
+        }
+
+        public static List<Quest> GetPersonalQuestsByStageNo(uint stageNo)
+        {
+            if (!gPersonalQuests.ContainsKey(stageNo))
+            {
+                return new List<Quest>();
+            }
+
+            return gPersonalQuests[stageNo];
         }
 
         public static uint GetRandomVariantId(QuestId baseQuest)
@@ -3231,9 +3272,29 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return (((uint)questId) >= 40000000) && (((uint)questId) < 50000000);
         }
 
+        public static bool IsBoardQuest(Quest quest)
+        {
+            return IsBoardQuest(quest.QuestId);
+        }
+
+        public static bool IsPersonalQuest(QuestId questId)
+        {
+            return (((uint)questId) >= 60000000) && (((uint)questId) < 70000000);
+        }
+
+        public static bool IsPersonalQuest(Quest quest)
+        {
+            return IsPersonalQuest(quest.QuestId);
+        }
+
         public static bool IsWorldQuest(QuestId questId)
         {
             return (((uint)questId) >= 20000000) && (((uint)questId) < 30000000);
+        }
+
+        public static bool IsWorldQuest(Quest quest)
+        {
+            return IsWorldQuest(quest.QuestId);
         }
     }
 }

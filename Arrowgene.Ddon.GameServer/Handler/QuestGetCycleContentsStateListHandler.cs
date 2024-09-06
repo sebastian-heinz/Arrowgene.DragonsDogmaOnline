@@ -54,6 +54,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ntc.MainQuestIdList.Add(new CDataQuestId() { QuestId = (uint) msq.QuestId });
             }
 
+            var personalQuestInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.Personal);
+            foreach (var questProgress in personalQuestInProgress)
+            {
+                var quest = QuestManager.GetQuest(questProgress.QuestId);
+                var tutorialQuest = quest.ToCDataTutorialQuestOrderList(questProgress.Step);
+                ntc.TutorialQuestOrderList.Add(tutorialQuest);
+            }
+
             if (client.Party != null)
             {
                 var priorityQuests = Server.Database.GetPriorityQuests(client.Party.Leader.Client.Character.CommonId);

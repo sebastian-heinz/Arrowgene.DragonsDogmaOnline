@@ -310,6 +310,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataTimeLimitedQuestOrderList.Serializer());
             Create(new CDataTraningRoomEnemyHeader.Serializer());
             Create(new CDataTutorialQuestOrderList.Serializer());
+            Create(new CDataTutorialQuestList.Serializer());
             Create(new CDataUpdateMatchingProfileInfo.Serializer());
             Create(new CDataUpdateWalletPoint.Serializer());
             Create(new CDataURLInfoSerializer());
@@ -1028,6 +1029,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CQuestGetLotQuestListRes.Serializer());
             Create(new S2CQuestGetMainQuestListRes.Serializer());
             Create(new S2CQuestGetMainQuestNtc.Serializer());
+            Create(new S2CQuestGetTutorialQuestListRes.Serializer());
             Create(new S2CQuestGetPartyQuestProgressInfoRes.Serializer());
             Create(new S2CQuestGetSetQuestListRes.Serializer());
             Create(new S2CQuestGetSetQuestListNtc.Serializer());

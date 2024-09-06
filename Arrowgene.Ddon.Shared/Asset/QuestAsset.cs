@@ -22,6 +22,7 @@ namespace Arrowgene.Ddon.Shared.Asset
         public QuestId NextQuestId { get; set; }
         public QuestId QuestScheduleId { get; set; }
         public QuestAreaId QuestAreaId { get; set; }
+        public StageId StageId {  get; set; }
         public uint NewsImageId { get; set; }
         public ushort BaseLevel { get; set; }
         public byte MinimumItemRank { get; set; }

@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     return (StageNo)stageInfo.StageNo;
             }
 
-            return 0; // TODO: Maybe throw an exception?
+            return 0;
         }
 
         public static StageNo ConvertIdToStageNo(StageId stageId)

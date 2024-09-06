@@ -52,6 +52,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public readonly QuestType QuestType;
         public readonly QuestId QuestScheduleId;
         public QuestAreaId QuestAreaId { get; set; }
+        public StageId StageId {  get; set; }
         public uint NewsImageId { get; set; }
         public uint BaseLevel { get; set; }
         public ushort MinimumItemRank { get; set; }
@@ -222,6 +223,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             quest.QuestProcessStateList = GetProcessState(step, out uint announceNoCount);
 
+            for (uint i = 0; i < announceNoCount; i++)
+            {
+                quest.QuestAnnounceList.Add(new CDataQuestAnnounce() { AnnounceNo = i });
+            }
+
             foreach (var questLayoutFlag in QuestLayoutFlags)
             {
                 quest.QuestLayoutFlagList.Add(questLayoutFlag.AsCDataQuestLayoutFlag());
@@ -273,11 +279,21 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return quest;
         }
 
-        public virtual CDataTutorialQuestOrderList ToCDataTutorialQuestOrderList(uint step)
+        public virtual CDataTutorialQuestOrderList ToCDataTutorialQuestOrderList(uint step, bool enableCancel = false)
         {
             return new CDataTutorialQuestOrderList()
             {
-                Param = ToCDataQuestOrderList(step)
+                Param = ToCDataQuestOrderList(step),
+                EnableCancel = enableCancel
+            };
+        }
+
+        public virtual CDataTutorialQuestList ToCDataTutorialQuestList(uint step, bool enableCancel = false)
+        {
+            return new CDataTutorialQuestList()
+            {
+                Param = ToCDataQuestList(step),
+                EnableCancel = enableCancel
             };
         }
 
