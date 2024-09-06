@@ -297,6 +297,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // Equipment is a special case. It can't be stacked, even on the storage box. So we limit in there too
                     return DoAddItem(server.Database, character, destinationStorage, itemId, num, clientItemInfo.StackLimit, plusvalue, connectionIn);
                 }
+                if (destinationStorage == StorageType.ItemPost) // Item Post doesn't combine stacks.
+                {
+                    return DoAddItemNoStack(server.Database, character, destinationStorage, itemId, num, plusvalue, connectionIn);
+                }
                 else
                 {
                     // Move to storage box without stack limit if it's not equipment
@@ -372,6 +376,62 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 result.ItemList.AddStatusParamList = item.AddStatusParamList;
                 result.ItemList.Unk2List = item.Unk2List;
                 result.UpdateItemNum = (int) addedItems;
+                results.Add(result);
+            }
+            return results;
+        }
+
+        // TODO: Maybe make this more smoothly a part of the existing DoAddItem.
+        private List<CDataItemUpdateResult> DoAddItemNoStack(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, byte plusvalue = 0, DbConnection? connectionIn = null)
+        {
+            // Add to existing stacks or make new stacks until there are no more items to add
+            // The stack limit is specified by the stackLimit arg
+            List<CDataItemUpdateResult> results = new List<CDataItemUpdateResult>();
+            uint itemsToAdd = num;
+            while (itemsToAdd > 0)
+            {
+                uint oldItemNum = 0;
+                uint newItemNum = num;
+                uint addedItems = newItemNum - oldItemNum;
+                itemsToAdd -= addedItems;
+
+                Storage destinationStorage = character.Storage.GetStorage(destinationStorageType);
+                Item? item = new Item()
+                {
+                    ItemId = itemId,
+                    Unk3 = 0,
+                    Color = 0,
+                    PlusValue = plusvalue,
+                    EquipPoints = 0,
+                    EquipElementParamList = new List<CDataEquipElementParam>(),
+                    AddStatusParamList = new List<CDataAddStatusParam>(),
+                    Unk2List = new List<CDataEquipItemInfoUnk2>()
+                };
+                ushort slot = destinationStorage.AddItem(item, newItemNum);
+
+                database.ReplaceStorageItem(character.ContentCharacterId, destinationStorageType, slot, newItemNum, item, connectionIn);
+                if (BitterblackMazeManager.IsMazeReward(item.ItemId))
+                {
+                    item = BitterblackMazeManager.ApplyCrest(database, character, item, connectionIn);
+                }
+
+                CDataItemUpdateResult result = new CDataItemUpdateResult();
+                result.ItemList.ItemUId = item.UId;
+                result.ItemList.ItemId = item.ItemId;
+                result.ItemList.ItemNum = newItemNum;
+                result.ItemList.Unk3 = item.Unk3;
+                result.ItemList.StorageType = destinationStorageType;
+                result.ItemList.SlotNo = slot;
+                result.ItemList.Color = item.Color;
+                result.ItemList.PlusValue = item.PlusValue;
+                result.ItemList.Bind = false;
+                result.ItemList.EquipPoint = item.EquipPoints;
+                result.ItemList.EquipCharacterID = 0;
+                result.ItemList.EquipPawnID = 0;
+                result.ItemList.EquipElementParamList = item.EquipElementParamList;
+                result.ItemList.AddStatusParamList = item.AddStatusParamList;
+                result.ItemList.Unk2List = item.Unk2List;
+                result.UpdateItemNum = (int)addedItems;
                 results.Add(result);
             }
             return results;

@@ -1,26 +1,26 @@
 {
     "state_machine": "GenericStateMachine",
     "type": "World",
-    "comment": "The Barren Black Wings",
-    "quest_id": 20085005,
-    "base_level": 47,
+    "comment": "The Accursed Wanderer",
+    "quest_id": 20095007,
+    "base_level": 56,
     "minimum_item_rank": 0,
     "discoverable": true,
-  "area_id": "EasternZandora",		
+  "area_id": "ZandoraWastelands",	
     "rewards": [
+        {
+            "type": "exp",
+            "amount": 5590
+        },
         {
             "type": "wallet",
             "wallet_type": "Gold",
-            "amount": 1550
+            "amount": 3750
         },
         {
             "type": "wallet",
             "wallet_type": "RiftPoints",
-            "amount": 280
-        },
-        {
-            "type": "exp",
-            "amount": 2530
+            "amount": 330
         },
         {
             "type": "select",
@@ -34,18 +34,8 @@
                     "num": 1
                 },
                 {
-                    "item_id": 41,
-                    "num": 3
-                }
-            ]
-        },
-        {
-            "type": "random",
-            "loot_pool": [
-                {
-                    "item_id": 34,
-                    "num": 9,
-                    "chance": 1.0
+                    "item_id": 7744,
+                    "num": 1					
                 }
             ]
         }
@@ -54,27 +44,39 @@
         {
             "stage_id": {
                 "id": 1,
-                "group_id": 459
+                "group_id": 391
             },
             "enemies": [
                 {
-                    "enemy_id": "0x015303",
-                    "level": 47,
-                    "exp": 13000,
-                    "is_boss": true							
+                    "enemy_id": "0x015040",
+                    "level": 54,
+                    "exp": 25000,
+                    "is_boss": true
+        },
+        {
+                    "enemy_id": "0x011132",
+                    "level": 50,
+                    "exp": 1400,
+                    "is_boss": false
+        },
+        {
+                    "enemy_id": "0x011132",
+                    "level": 50,
+                    "exp": 1400,
+                    "is_boss": false					
                 }
             ]
         }
-    ],
+    ],	
     "blocks": [
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {
-                "id": 61,
+                "id": 55,
                 "group_id": 1,
                 "layer_no": 1
             },
-            "npc_id": "Sonya",
+            "npc_id": "Bayard",
             "message_id": 11372
         },
         {
@@ -87,16 +89,16 @@
             "announce_type": "Update",
             "groups": [0]
         },
-        {
+        {		
             "type": "TalkToNpc",
             "stage_id": {
-                "id": 61,
+                "id": 55,
                 "group_id": 1,
-                "layer_no": 1				
+                "layer_no": 1
             },
             "announce_type": "Update",
-            "npc_id": "Sonya",
-            "message_id": 11835
+            "npc_id": "Bayard",
+            "message_id": 11842
         }
     ]
 }

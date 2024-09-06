@@ -53,6 +53,8 @@ The JSON for the state machine is split into 4 major parts.
     "base_level": int,
     "minimum_item_rank": int,
     "discoverable": bool,
+    "area_id": string,
+    "news_image": int,
     "rewards": [],
     "enemy_groups": [],
     "blocks": []
@@ -144,6 +146,8 @@ Each file should start with the following generic format.
     "base_level": int,
     "minimum_item_rank": int,
     "discoverable": bool,
+    "area_id": string,
+    "news_image": int,
     "rewards": [],
     "enemy_groups": [],
     "blocks": []
@@ -163,11 +167,59 @@ First fill in the common items using the values we collected from the wiki. Ques
     "base_level": 12,
     "minimum_item_rank": 0,
     "discoverable": false,
+    "area_id": "HidellPlains",
+    "news_image": 5,
     "rewards": [],
     "enemy_groups": [],
     "blocks": []
 }
 ```
+
+The `area_id` field controls what category the quest appears under for Lestania News. In this case, the quest appears in Hidell Plains. You can also use "None" to hide the quest from the news. Similarly, if the quest does appear in Lestania News, you should provide a news image index. If none is provided, a default is used by the client, but the default only includes Hidell Plains images, so you should manually choose one.
+
+| Min ID     | Max ID | Image Description                                                    |
+|:---------:|:-----:|:-----------------------------------------------------------|
+| 0     |       | Locked, used for quests with hidden info.
+| 1     | 16    | Hidell Plains + White Dragon Temple
+| 21    | 29    | Breya Coast
+| 41    | 57    | Betland Plains + Temple of Purification
+| 61    | 75    | Dowe Valley + Dreed Castle
+| 81    | 96    | Volden Mines + Tunnels
+| 101   | 114   | Mysree Forest + Glowworm Cave
+| 121   | 128   | Mysree Grove
+| 141   | 154   | Northern Betland Plains + Gardnox Fort
+| 161   | 171   | Zandora Wasteland
+| 181   | 193   | Eastern Zandora + Mergoda Security District
+| 201   | 211   | Deenan Woods + Erte Deenan
+| 221   | 235   | Mergoda Ruins
+| 241   | 249   | Bloodbane Isle
+| 261   | 266   | Elan Water Grove
+| 281   | 285   | Farana Plains
+| 301   | 305   | Kingall Canyon
+| 321   | 326   | Morrow Forest
+| 330   | 345   | Acre Selund
+| 347   |       | Acre Selund
+| 501   | 505   | Generic Wells
+| 511   | 516   | Generic Cellars
+| 521   | 527   | Generic Waterways
+| 531   | 538   | Generic Caves
+| 541   | 548   | Generic Catacombs
+| 551   | 555   | Generic Arks
+| 561   | 567   | Generic Terraces
+| 571   | 573   | Generic Chapels
+| 581   | 583   | Generic Caves (S2)
+| 591   | 593   | Generic Waterways (S2)
+| 603   |       | Tower of Ivanos
+| 611   | 615   | Generic Ruins
+| 621   | 623   | Generic Wells (S2)
+| 641   | 643   | Generic Catacombs (S2)
+| 650   |       | Hollow of Beginnings
+| 660   | 662   | Generic Infected Forests
+| 670   | 679   | Acre Selund Interiors
+| 681   |       | Firefall Lava Caves
+| 683   |       | Generic Cave (S3)
+| 900   | 902   | Text Banners: Disaster/Rare Species/Bounty
+
 
 #### Adding Rewards
 
@@ -309,6 +361,8 @@ Finally, your file should look like below. Save the file, reload the server and 
     "base_level": 12,
     "minimum_item_rank": 0,
     "discoverable": false,
+    "area_id": "HidellPlains",
+    "news_image": 5,
     "rewards": [
         {
             "type": "wallet",
