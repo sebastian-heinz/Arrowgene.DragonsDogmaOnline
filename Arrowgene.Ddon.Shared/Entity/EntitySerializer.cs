@@ -303,6 +303,9 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new CDataStampBonus.Serializer());
             Create(new CDataStampBonusAsset.Serializer());
+            Create(new CDataStampBonusDaily.Serializer());
+            Create(new CDataStampBonusTotal.Serializer());
+            Create(new CDataStampCheck.Serializer());
 
             Create(new CDataTimeLimitedQuestOrderList.Serializer());
             Create(new CDataTraningRoomEnemyHeader.Serializer());
@@ -649,6 +652,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SSetCommunicationShortcutReq.Serializer());
             Create(new C2SStageAreaChangeReq.Serializer());
             Create(new C2SStageGetStageListReq.Serializer());
+            Create(new C2SStampBonusCheckReq.Serializer());
+            Create(new C2SStampBonusGetListReq.Serializer());
+            Create(new C2SStampBonusRecieveDailyReq.Serializer());
+            Create(new C2SStampBonusRecieveTotalReq.Serializer());
+
             Create(new C2SInstanceTraningRoomGetEnemyListReq.Serializer());
             Create(new C2SInstanceTraningRoomSetEnemyReq.Serializer());
             Create(new C2SWarpAreaWarpReq.Serializer());
@@ -1147,6 +1155,8 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new S2CStampBonusGetListRes.Serializer());
             Create(new S2CStampBonusCheckRes.Serializer());
+            Create(new S2CStampBonusRecieveDailyRes.Serializer());
+            Create(new S2CStampBonusRecieveTotalRes.Serializer());
 
             Create(new S2CBinarySaveSetCharacterBinSaveDataRes.Serializer());
 

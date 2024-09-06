@@ -21,6 +21,7 @@ namespace Arrowgene.Ddon.Shared.Csv
 
             obj.StampBonus.Add(new CDataStampBonus()
             {
+                Unk0 = 1,
                 BonusType = type,
                 BonusValue = value
             });
