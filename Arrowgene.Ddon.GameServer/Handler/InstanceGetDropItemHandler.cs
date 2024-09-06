@@ -19,9 +19,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceGetDropItemReq> packet)
         {
-            // This call is for when an item is claimed from a bag. This also needs to drops stored from the enemy.
-            List<InstancedGatheringItem> items = client.InstanceQuestDropManager.IsQuestDrop(packet.Structure.LayoutId, packet.Structure.SetId) ?
-                client.InstanceQuestDropManager.FetchEnemyLoot() : client.InstanceDropItemManager.GetAssets(packet.Structure.LayoutId, packet.Structure.SetId);
+            // This call is for when an item is claimed from a bag. It needs the drops rolled from the enemy to keep track of the items left.
+
+            List<InstancedGatheringItem> items;
+
+            if (client.InstanceQuestDropManager.IsQuestDrop(packet.Structure.LayoutId, packet.Structure.SetId))
+            {
+                items = client.InstanceQuestDropManager.FetchEnemyLoot();
+            } else
+            {
+                items = client.InstanceDropItemManager.GetAssets(packet.Structure.LayoutId, packet.Structure.SetId);
+            }
 
             S2CInstanceGetDropItemRes res = new()
             {

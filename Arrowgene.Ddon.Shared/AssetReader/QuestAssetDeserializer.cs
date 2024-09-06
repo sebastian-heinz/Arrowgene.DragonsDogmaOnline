@@ -17,14 +17,15 @@ namespace Arrowgene.Ddon.Shared.AssetReader
         private static readonly ILogger Logger = LogProvider.Logger(typeof(QuestAssetDeserializer));
 
         private Dictionary<uint, NamedParam> namedParams;
+        private QuestDropItemAsset questDrops;
 
-        public QuestAssetDeserializer(Dictionary<uint, NamedParam> namedParams)
+        public QuestAssetDeserializer(Dictionary<uint, NamedParam> namedParams, QuestDropItemAsset questDrops)
         {
             this.namedParams = namedParams;
+            this.questDrops = questDrops;
         }
 
-        //public bool LoadQuestsFromDirectory(string path, QuestAsset questAssets, DropItemsAsset dropItemsAsset)
-        public bool LoadQuestsFromDirectory(string path, QuestAsset questAssets)//, QuestDropItemAsset questLootDrops)
+        public bool LoadQuestsFromDirectory(string path, QuestAsset questAssets)
         {
             DirectoryInfo info = new DirectoryInfo(path);
             if (!info.Exists)
@@ -893,7 +894,8 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     else
                     {
                         // Get default drops for this enemy id and level.
-                        DropsTable lootTable = AssetRepository.QuestDropItemAsset.GetDropTable(questEnemy.EnemyId, questEnemy.Lv);
+                        DropsTable lootTable = questDrops.GetDropTable(questEnemy.EnemyId, questEnemy.Lv);
+
                         questEnemy.DropsTable = lootTable;
                     }
 

@@ -45,19 +45,6 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
             return false;
         }
 
-        //public List<InstancedGatheringItem> FetchEnemyLoot(CDataStageLayoutId layoutId, uint setId)
-        //{
-        //    // Do a last backup check before fetching loot in case IsQuestDrop somehow wasn't called befoer this.
-        //    if (LastDropIdQuery == 0)
-        //    {
-        //        bool check = IsQuestDrop(layoutId, setId);
-
-        //        if (!check) return null;
-        //    }
-
-        //    return FetchEnemyLoot();
-        //}
-
         public List<InstancedGatheringItem> FetchEnemyLoot()
         {
             if (QuestEnemyDropsTable.ContainsKey(LastDropIdQuery))
