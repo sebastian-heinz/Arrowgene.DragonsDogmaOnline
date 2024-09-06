@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Shared.Model;
 
@@ -18,7 +19,8 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
             if(enemiesInSet != null && setId < enemiesInSet.Count)
             {
                 Enemy enemy = enemiesInSet[(int) setId];
-                if(enemy.DropsTable != null)
+
+                if (enemy.DropsTable != null)
                 {
                     return enemy.DropsTable.Items;
                 }

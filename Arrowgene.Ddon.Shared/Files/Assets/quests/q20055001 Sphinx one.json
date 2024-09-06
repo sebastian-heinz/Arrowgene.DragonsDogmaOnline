@@ -50,7 +50,7 @@
       },
       "enemies": [
         {
-          "comment": "Young Dread Ape",
+          "comment": "Sphinx",
           "enemy_id": "0x015302",
           "named_enemy_params_id": 459,
           "level": 18,

@@ -278,7 +278,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             // If we are adding a new variant quest, then log the variant id for further reference
             if (quest.IsVariantQuest)
             {
-                ActiveVariantQuests.Add(quest.QuestId, (uint)quest.VariantId);
+                ActiveVariantQuests.Add(quest.QuestId, quest.VariantId);
             }
 
             AddNewQuest(quest, step, questStarted);
