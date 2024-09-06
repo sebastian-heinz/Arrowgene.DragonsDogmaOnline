@@ -77,7 +77,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     if (!ret.IsDiscovery)
                     {
-                        ret.DiscoverRewardItemId = ret.SelectRewardItemIdList.FirstOrDefault()?.Value ?? 0 ;
                         ret.SelectRewardItemIdList = new List<CDataCommonU32>();
                     }
 
