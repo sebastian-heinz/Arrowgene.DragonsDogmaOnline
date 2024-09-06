@@ -31,7 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             bool IsQuestControlled = false;
             foreach (var questId in client.Party.QuestState.StageQuests(stageId))
             {
-                quest = QuestManager.GetQuest(questId);
+                quest = client.Party.QuestState.GetQuest(questId);
                 if (client.Party.QuestState.HasEnemiesInCurrentStageGroup(quest, stageId, subGroupId))
                 {
                     IsQuestControlled = true;

@@ -59,7 +59,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var priorityQuests = Server.Database.GetPriorityQuests(client.Party.Leader.Client.Character.CommonId);
                 foreach (var questId in priorityQuests)
                 {
-                    var quest = QuestManager.GetQuest(questId);
+                    var quest = client.Party.QuestState.GetQuest(questId);
                     ntc.PriorityQuestList.Add(new CDataPriorityQuest()
                     {
                         QuestId = (uint)quest.QuestId,

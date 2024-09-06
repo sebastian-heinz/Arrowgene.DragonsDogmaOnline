@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 
+
 namespace Arrowgene.Ddon.Shared.AssetReader
 {
     public class QuestAssetDeserializer
@@ -90,6 +91,16 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             if (jQuest.TryGetProperty("news_image", out JsonElement jNewsImage))
             {
                 assetData.NewsImageId = jNewsImage.GetUInt32();
+            }
+
+            // For the purpose of setting up alternate quests.
+
+            if (jQuest.TryGetProperty("variant_id", out JsonElement AltQuestId))
+            {
+                assetData.VariantId = AltQuestId.GetUInt32();
+            } else
+            {
+                assetData.VariantId = 0;
             }
 
             assetData.NextQuestId = 0;

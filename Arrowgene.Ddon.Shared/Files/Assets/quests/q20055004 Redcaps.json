@@ -3,6 +3,7 @@
   "type": "World",
   "comment": "The Abductors’ True Nature",
   "quest_id": 20055004,
+  "variant_id": 121231,
   "base_level": 19,
   "minimum_item_rank": 0,
   "discoverable": false,

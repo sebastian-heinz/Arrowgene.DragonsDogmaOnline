@@ -31,7 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CQuestGetSetQuestListRes res = new S2CQuestGetSetQuestListRes();
             foreach (var questId in client.Party.QuestState.GetActiveQuestIds())
             {
-                var quest = QuestManager.GetQuest(questId);
+                var quest = client.Party.QuestState.GetQuest(questId);
                 if (quest.QuestType == QuestType.World)
                 {
                     var questStats = client.Party.Leader.Client.Character.CompletedQuests.GetValueOrDefault(quest.QuestId);

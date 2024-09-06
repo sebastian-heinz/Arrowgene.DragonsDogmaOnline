@@ -51,19 +51,35 @@ namespace Arrowgene.Ddon.GameServer.Handler
             else
             {
                 var processState = partyQuestState.GetProcessState(questId, processNo);
-                
-                var quest = QuestManager.GetQuest(questId);
+
+                var quest = client.Party.QuestState.GetQuest(questId);
                 res.QuestProcessState = quest.StateMachineExecute(Server, client, processState, out questProgressState);
 
                 partyQuestState.UpdateProcessState(questId, res.QuestProcessState);
 
                 if (questProgressState == QuestProgressState.Accepted && quest.QuestType == QuestType.World)
                 {
+                    // A Quest has started, setting the HasStarted on the quest in QuestState
+                    partyQuestState.SetHasStarted(quest.QuestId, true);
+
                     foreach (var memberClient in client.Party.Clients)
                     {
                         var questProgress = Server.Database.GetQuestProgressById(memberClient.Character.CommonId, quest.QuestId);
+
                         if (questProgress != null)
                         {
+                            continue;
+                        }
+
+                        // Handle new variant quests and the specific quest being added to this list with the variant id.
+
+                        if (quest.IsVariantQuest)
+                        {
+                            if (!Server.Database.InsertQuestProgress(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, 0, quest.VariantId))
+                            {
+                                Logger.Error($"Failed to insert progress for the quest {quest.QuestId}");
+                            }
+
                             continue;
                         }
 

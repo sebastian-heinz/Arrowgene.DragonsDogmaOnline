@@ -247,7 +247,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertNormalSkillParam(uint commonId, CDataNormalSkillParam normalSkillParam) { return true; }
         public bool InsertPawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus) { return true; }
         public bool InsertPriorityQuest(uint characterCommonId, QuestId questId) { return true; }
-        public bool InsertQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step) { return true; }
+        public bool InsertQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step, uint variantId=0) { return true; }
         public bool InsertReleasedWarpPoint(uint characterId, ReleasedWarpPoint ReleasedWarpPoint) { return true; }
         public bool InsertSecretAbilityUnlock(uint commonId, SecretAbility secretAbility) { return true; }
         public bool InsertShortcut(uint characterId, CDataShortCut shortcut) { return true; }

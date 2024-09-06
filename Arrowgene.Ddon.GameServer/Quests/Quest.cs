@@ -69,6 +69,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public List<QuestLayoutFlagSetInfo> QuestLayoutFlagSetInfo;
         public List<QuestLayoutFlag> QuestLayoutFlags;
         public Dictionary<uint, QuestEnemyGroup> EnemyGroups { get; set; }
+        public bool IsVariantQuest { get; set; }
+        public uint VariantId { get; set; }
 
         public Quest(QuestId questId, QuestId questScheduleId, QuestType questType, bool isDiscoverable = false)
         {
@@ -89,7 +91,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
             QuestLayoutFlagSetInfo = new List<QuestLayoutFlagSetInfo>();
             QuestLayoutFlags = new List<QuestLayoutFlag>();
             EnemyGroups = new Dictionary<uint, QuestEnemyGroup>();
-
+            IsVariantQuest = false;
+            VariantId = 0;
             Processes = new List<QuestProcess>();
         }
 
@@ -483,7 +486,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         {
             List<CDataRewardBoxItem> results = new List<CDataRewardBoxItem>();
 
-            var quest = QuestManager.GetQuest(rewards.QuestId);
+            Quest quest = QuestManager.GetRewardQuest(rewards.QuestId, rewards.VariantId);
 
             foreach (var reward in quest.SelectableRewards)
             {
@@ -515,7 +518,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
         {
             QuestBoxRewards obj = new QuestBoxRewards()
             {
-                QuestId = QuestId
+                QuestId = QuestId,
+                VariantId = VariantId
             };
 
             foreach (var reward in ItemRewards)

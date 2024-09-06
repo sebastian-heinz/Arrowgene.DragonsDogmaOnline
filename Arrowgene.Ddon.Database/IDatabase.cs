@@ -432,18 +432,8 @@ namespace Arrowgene.Ddon.Database
         );
 
         // Quest Progress
-        bool InsertQuestProgress(
-            uint characterCommonId,
-            QuestId questId,
-            QuestType questType,
-            uint step
-        );
-        bool UpdateQuestProgress(
-            uint characterCommonId,
-            QuestId questId,
-            QuestType questType,
-            uint step
-        );
+        bool InsertQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step, uint variantId=0);
+        bool UpdateQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step);
         bool RemoveQuestProgress(uint characterCommonId, QuestId questId, QuestType questType);
         List<QuestProgress> GetQuestProgressByType(uint characterCommonId, QuestType questType);
         QuestProgress GetQuestProgressById(uint characterCommonId, QuestId questId);

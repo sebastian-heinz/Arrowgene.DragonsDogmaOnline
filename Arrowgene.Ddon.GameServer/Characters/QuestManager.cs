@@ -1,21 +1,13 @@
-using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Quests;
-using Arrowgene.Ddon.GameServer.Quests.MainQuests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
-using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text.Json;
-using YamlDotNet.Core.Events;
-using YamlDotNet.Core.Tokens;
-using static Arrowgene.Ddon.GameServer.Characters.QuestManager;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -28,6 +20,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
         }
 
         private static Dictionary<QuestId, Quest> gQuests = new Dictionary<QuestId, Quest>();
+        private static readonly Dictionary<QuestId, Dictionary<uint, Quest>> variantQuests = new();
+        private static readonly HashSet<QuestId> AvailableVariantQuests = new();
+
+        public static HashSet<QuestId> GetAllVariantQuestIds()
+        {
+            return AvailableVariantQuests;
+        }
 
         public static void LoadQuests(AssetRepository assetRepository)
         {
@@ -43,7 +42,62 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // Load Quests defined in files
             foreach (var questAsset in assetRepository.QuestAssets.Quests)
             {
+
+                // Separate all variant quests to its own dictionary for separate handling.
+                // This also ensures these quests are not in gQuests before processing.
+                if (questAsset.VariantId != 0 && !gQuests.ContainsKey(questAsset.QuestId))
+                {
+                  
+                    Quest alternateQuest = GenericQuest.FromAsset(questAsset);
+                    alternateQuest.IsVariantQuest = true;
+                    alternateQuest.VariantId = (uint)questAsset.VariantId;
+
+                    // Add an entry to the dictionary if it doesn't exist then add the variant id and quest
+                    if (!variantQuests.ContainsKey(questAsset.QuestId))
+                    {
+                        variantQuests[alternateQuest.QuestId] = new Dictionary<uint, Quest>();
+                        variantQuests[questAsset.QuestId].Add(alternateQuest.VariantId, alternateQuest);
+
+                        continue;
+                    }
+
+                    // Add quest id and quest
+                    variantQuests[questAsset.QuestId].Add(alternateQuest.VariantId, alternateQuest);
+
+                    continue;
+                }
+
                 gQuests[questAsset.QuestId] = GenericQuest.FromAsset(questAsset);
+            }
+
+            var variantQuestKeys = variantQuests.Keys.ToArray();
+
+            for (int i = 0; i < variantQuestKeys.Length; i++)
+            {
+                // Store of all variant ids under the generic quest id
+                HashSet<uint> allVariantQuestIds = new();
+
+                // Create a reliable source of all variant quests, also checks if they are unique
+                AvailableVariantQuests.Add(variantQuestKeys[i]);
+
+                Logger.Info($"Quest Group Listed: {variantQuestKeys[i]}");
+                var variantIds = variantQuests[variantQuestKeys[i]].Keys.ToArray();
+
+                for (int j = 0; j < variantIds.Length; j++)
+                {
+                    Logger.Info($"Variant entry: {variantIds[j]}");
+
+                    // Ensure variant ids are unique.
+                    try
+                    {
+                        allVariantQuestIds.Add(variantIds[j]);
+                    }
+                    catch (Exception)
+                    {
+                        Logger.Error($"Multiple quests are using variant id {variantIds[j]}. Please ensure all are unique.");
+                        throw;
+                    }
+                }
             }
         }
 
@@ -68,15 +122,60 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
             }
 
+            // Go over the variant quest collection, get a single quest per questId regardless of the variant id
+
+            foreach (var quests in variantQuests)
+            {
+                QuestId questId = quests.Key;
+                Quest quest = variantQuests[questId].First().Value;
+
+                if (quest.QuestType == type)
+                {
+                    results.Add(new KeyValuePair<QuestId, Quest>(questId, quest));
+                }
+            }
+
             return results;
         }
 
-        public static Quest GetQuest(QuestId questId)
+        public static uint GetRandomVariantId(QuestId baseQuest)
         {
+            // Get random index value to choose a quest version.
+            int randomIndex = Random.Shared.Next(variantQuests[baseQuest].Count);
+
+            uint variantId = variantQuests[baseQuest].ElementAt(randomIndex).Key;
+
+            return variantId;
+        }
+
+        public static Quest GetRewardQuest(QuestId questId, uint variantId)
+        {
+            // Mostly for reward calls. If somehow the variantId is not valid,
+            // return the first quest found with the questId within VariantQuests
+            Quest quest = GetQuest(questId, variantId);
+
+            if(quest is null)
+            {
+                // Check for variant quest
+                return variantQuests[questId].First().Value;
+            }
+
+            return quest;
+        }
+
+        public static Quest GetQuest(QuestId questId, uint variantId = 0)
+        {
+            // If a variant is specified, return the variant quest.
+            if (variantId != 0)
+            {
+                return variantQuests[questId][variantId];
+            }
+
             if (!gQuests.ContainsKey(questId))
             {
                 return null;
             }
+
             return gQuests[questId];
         }
 
@@ -112,17 +211,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
             public static CDataQuestOrderConditionParam MinimumLevelRestriction(uint level)
             {
-                return new CDataQuestOrderConditionParam() { Type = 0x1, Param01 = (int) level };
+                return new CDataQuestOrderConditionParam() { Type = 0x1, Param01 = (int)level };
             }
 
             public static CDataQuestOrderConditionParam MinimumVocationRestriction(JobId jobId, uint level)
             {
-                return new CDataQuestOrderConditionParam() { Type = 0x2, Param01 = (int)jobId, Param02 = (int) level};
+                return new CDataQuestOrderConditionParam() { Type = 0x2, Param01 = (int)jobId, Param02 = (int)level };
             }
 
             public static CDataQuestOrderConditionParam Solo()
             {
-                return new CDataQuestOrderConditionParam() { Type = 0x3};
+                return new CDataQuestOrderConditionParam() { Type = 0x3 };
             }
 
             public static CDataQuestOrderConditionParam MainQuestCompletionRestriction(QuestId questId)
@@ -137,7 +236,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             public static CDataQuestOrderConditionParam ClearPersonalQuestRestriction(QuestId questId, int param02 = 0)
             {
-                return new CDataQuestOrderConditionParam() { Type = 0x7, Param01 = (int) questId, Param02 = param02 };
+                return new CDataQuestOrderConditionParam() { Type = 0x7, Param01 = (int)questId, Param02 = param02 };
             }
         }
 
@@ -145,7 +244,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             return new CDataQuestProcessState()
             {
-                ProcessNo = processNo, SequenceNo = sequenceNo, BlockNo = blockNo,
+                ProcessNo = processNo,
+                SequenceNo = sequenceNo,
+                BlockNo = blockNo,
                 ResultCommandList = resultCommands,
                 CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(checkCommands)
             };
@@ -2205,7 +2306,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              */
             public static CDataQuestCommand UpdateAnnounce(QuestAnnounceType announceType = QuestAnnounceType.Accept, int param02 = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.UpdateAnnounce, Param01 = (int) announceType, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.UpdateAnnounce, Param01 = (int)announceType, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
             /**
@@ -2861,7 +2962,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              */
             public static CDataQuestCommand EventExecCont(StageNo stageNo, int eventNo, StageNo jumpStageNo, int jumpStartPosNo)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.EventExecCont, Param01 = (int)stageNo, Param02 = eventNo, Param03 = (int) jumpStageNo, Param04 = jumpStartPosNo };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.EventExecCont, Param01 = (int)stageNo, Param02 = eventNo, Param03 = (int)jumpStageNo, Param04 = jumpStartPosNo };
             }
 
             /**
@@ -3101,7 +3202,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              */
             public static CDataQuestProgressWork KilledTargetEnemySetGroup(int flagNo, StageNo stageNo, int groupNo, int work04 = 0)
             {
-                return new CDataQuestProgressWork() { CommandNo = (uint) QuestNotifyCommand.KilledTargetEnemySetGroup, Work01 = flagNo, Work02 = (int)stageNo, Work03 = groupNo, Work04 = work04 };
+                return new CDataQuestProgressWork() { CommandNo = (uint)QuestNotifyCommand.KilledTargetEnemySetGroup, Work01 = flagNo, Work02 = (int)stageNo, Work03 = groupNo, Work04 = work04 };
             }
 
             /**
@@ -3121,7 +3222,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              */
             public static CDataQuestProgressWork KilledTargetEnemySetGroup1(NpcId npcId, int work02 = 0, int work03 = 0, int work04 = 0)
             {
-                return new CDataQuestProgressWork() { CommandNo = (uint)QuestNotifyCommand.FulfillDeliverItem, Work01 = (int) npcId, Work02 = work02, Work03 = work03, Work04 = work04 };
+                return new CDataQuestProgressWork() { CommandNo = (uint)QuestNotifyCommand.FulfillDeliverItem, Work01 = (int)npcId, Work02 = work02, Work03 = work03, Work04 = work04 };
             }
         }
 

@@ -145,7 +145,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 return new List<CDataQuestProcessState>();
             }
 
-            var process = Processes[processState.ProcessNo];
+            var process = Processes[processState.ProcessNo];           
             if ((processState.BlockNo) >= process.Blocks.Count)
             {
                 questProgressState = QuestProgressState.Unknown;
@@ -158,11 +158,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 questProgressState = QuestProgressState.Complete;
             }
             else if (questBlock.IsCheckpoint)
-            {
+            {               
                 questProgressState = QuestProgressState.Checkpoint;
             }
             else if (questBlock.AnnounceType == QuestAnnounceType.Accept)
-            {
+            {                
                 questProgressState = QuestProgressState.Accepted;
             }
             else
