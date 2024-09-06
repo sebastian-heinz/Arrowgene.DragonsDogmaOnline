@@ -32,6 +32,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public static void LoadQuests(AssetRepository assetRepository)
         {
+            // TODO: Quests should probably operate on the distribuition ID instead of quest id so the global list can still contain all quests
+            // TODO: Then quests can be distributed to different lists for faster lookup (like world by area id or personal by stageno)
+
             // Load Quests defined in files
             foreach (var questAsset in assetRepository.QuestAssets.Quests)
             {
@@ -53,33 +56,33 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                     // Add quest id and quest
                     variantQuests[questAsset.QuestId].Add(alternateQuest.VariantId, alternateQuest);
-                    continue;
                 }
-
-                gQuests[questAsset.QuestId] = GenericQuest.FromAsset(questAsset);
-
-                var quest = gQuests[questAsset.QuestId];
-                if (quest.QuestType == QuestType.Personal)
+                else
                 {
-                    uint stageNo = (uint)StageManager.ConvertIdToStageNo(quest.StageId);
-                    if (!gPersonalQuests.ContainsKey(stageNo))
+                    gQuests[questAsset.QuestId] = GenericQuest.FromAsset(questAsset);
+
+                    var quest = gQuests[questAsset.QuestId];
+                    if (quest.QuestType == QuestType.Personal)
                     {
-                        gPersonalQuests[stageNo] = new List<Quest>();
+                        uint stageNo = (uint)StageManager.ConvertIdToStageNo(quest.StageId);
+                        if (!gPersonalQuests.ContainsKey(stageNo))
+                        {
+                            gPersonalQuests[stageNo] = new List<Quest>();
+                        }
+                        gPersonalQuests[stageNo].Add(quest);
                     }
-                    gPersonalQuests[stageNo].Add(quest);
-                }
-                else if (quest.QuestType == QuestType.World)
-                {
-                    if (!gWorldQuests.ContainsKey(quest.QuestAreaId))
+                    else if (quest.QuestType == QuestType.World)
                     {
-                        gWorldQuests[quest.QuestAreaId] = new List<Quest>();
+                        if (!gWorldQuests.ContainsKey(quest.QuestAreaId))
+                        {
+                            gWorldQuests[quest.QuestAreaId] = new List<Quest>();
+                        }
+                        gWorldQuests[quest.QuestAreaId].Add(quest);
                     }
-                    gWorldQuests[quest.QuestAreaId].Add(quest);
                 }
             }
 
             var variantQuestKeys = variantQuests.Keys.ToArray();
-
             for (int i = 0; i < variantQuestKeys.Length; i++)
             {
                 // Store of all variant ids under the generic quest id
