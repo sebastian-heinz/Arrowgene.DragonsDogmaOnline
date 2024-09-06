@@ -1,17 +1,21 @@
 {
     "state_machine": "GenericStateMachine",
     "type": "World",
-    "comment": "The Barren Black Wings",
-    "quest_id": 20085005,
-    "base_level": 47,
+    "comment": "A Thirst for Knowledge",
+    "quest_id": 20095001,
+    "base_level": 49,
     "minimum_item_rank": 0,
     "discoverable": true,
-  "area_id": "EasternZandora",		
+  "area_id": "ZandoraWastelands",	
     "rewards": [
+        {
+            "type": "exp",
+            "amount": 2450
+        },
         {
             "type": "wallet",
             "wallet_type": "Gold",
-            "amount": 1550
+            "amount": 1610
         },
         {
             "type": "wallet",
@@ -19,33 +23,19 @@
             "amount": 280
         },
         {
-            "type": "exp",
-            "amount": 2530
-        },
-        {
             "type": "select",
             "loot_pool": [
                 {
-                    "item_id": 7959,
+                    "item_id": 9159,
                     "num": 1
                 },
                 {
-                    "item_id": 7745,
-                    "num": 1
-                },
-                {
-                    "item_id": 41,
+                    "item_id": 9401,
                     "num": 3
-                }
-            ]
-        },
-        {
-            "type": "random",
-            "loot_pool": [
+                },
                 {
-                    "item_id": 34,
-                    "num": 9,
-                    "chance": 1.0
+                    "item_id": 7554,
+                    "num": 3					
                 }
             ]
         }
@@ -53,28 +43,31 @@
     "enemy_groups" : [
         {
             "stage_id": {
-                "id": 1,
-                "group_id": 459
+                "id": 77,
+                "group_id": 17
             },
             "enemies": [
                 {
-                    "enemy_id": "0x015303",
-                    "level": 47,
-                    "exp": 13000,
-                    "is_boss": true							
+                    "enemy_id": "0x015202",
+                    "level": 50,
+                    "exp": 20000,
+                    "is_boss": true					
                 }
             ]
         }
-    ],
+    ],	
     "blocks": [
         {
-            "type": "NpcTalkAndOrder",
+            "type": "NewNpcTalkAndOrder",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 1656, "comment": "Spawns Marquis NPC"}				
+            ],
             "stage_id": {
-                "id": 61,
+                "id": 1,
                 "group_id": 1,
                 "layer_no": 1
             },
-            "npc_id": "Sonya",
+            "npc_id": "Marquis",
             "message_id": 11372
         },
         {
@@ -87,16 +80,16 @@
             "announce_type": "Update",
             "groups": [0]
         },
-        {
-            "type": "TalkToNpc",
+        {		
+            "type": "NewTalkToNpc",
             "stage_id": {
-                "id": 61,
+                "id": 1,
                 "group_id": 1,
-                "layer_no": 1				
+                "layer_no": 1
             },
             "announce_type": "Update",
-            "npc_id": "Sonya",
-            "message_id": 11835
+            "npc_id": "Marquis",
+            "message_id": 11842
         }
     ]
 }
