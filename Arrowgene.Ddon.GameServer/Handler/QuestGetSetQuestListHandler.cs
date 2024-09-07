@@ -71,7 +71,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     continue;
                 }
 
-                var quest = client.Party.QuestState.GetQuest(questId);
+                var quest = QuestManager.GetQuest(questId);
                 var questStats = client.Party.Leader.Client.Character.CompletedQuests.GetValueOrDefault(quest.QuestId);
 
                 res.SetQuestList.Add(new CDataSetQuestList()
