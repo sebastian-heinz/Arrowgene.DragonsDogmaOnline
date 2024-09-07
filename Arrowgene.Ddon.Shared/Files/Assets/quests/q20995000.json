@@ -6,7 +6,7 @@
     "base_level": 60,
     "minimum_item_rank": 0,
     "discoverable": true,
-	"area_id": "MergodaRuins",	
+    "area_id": "MergodaRuins",
     "rewards": [
         {
             "type": "exp",
@@ -35,7 +35,7 @@
                 },
                 {
                     "item_id": 7802,
-                    "num": 1					
+                    "num": 1
                 }
             ]
         }
@@ -51,19 +51,19 @@
                     "enemy_id": "0x015711",
                     "level": 60,
                     "exp": 45000,
-                    "named_enemy_params_id": 634,					
+                    "named_enemy_params_id": 634,
                     "is_boss": true
-        },
-        {
+                },
+                {
                     "enemy_id": "0x015711",
                     "level": 60,
                     "exp": 45000,
-                    "named_enemy_params_id": 633,					
-                    "is_boss": true			
+                    "named_enemy_params_id": 633,
+                    "is_boss": true
                 }
             ]
         }
-    ],		
+    ],
     "blocks": [
         {
             "type": "NpcTalkAndOrder",
@@ -80,7 +80,7 @@
             "announce_type": "Accept",
             "groups": [0]
         },
-        {			
+        {
             "type": "KillGroup",
             "announce_type": "Update",
             "groups": [0]
@@ -94,7 +94,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Actaeon",
-            "message_id": 11842			
+            "message_id": 11842
         }
     ]
 }
