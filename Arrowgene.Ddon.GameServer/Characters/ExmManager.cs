@@ -5,9 +5,11 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.GameServer.Characters
@@ -20,6 +22,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private Dictionary<uint, ulong> _CharacterIdToContentId;
         private Dictionary<ulong, HashSet<uint>> _ContentIdToCharacterIds;
         private Dictionary<ulong, Quest> _ContentIdToQuest;
+        private uint EntryItemIdCounter;
+        private Stack<uint> _FreeEntryItemIds;
 
         public ExmManager(DdonGameServer server)
         {
@@ -28,6 +32,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             _CharacterIdToContentId = new Dictionary<uint, ulong>();
             _ContentIdToCharacterIds = new Dictionary<ulong, HashSet<uint>>();
             _ContentIdToQuest = new Dictionary<ulong, Quest>();
+
+            // ID tracking
+            EntryItemIdCounter = 1;
+            _FreeEntryItemIds = new Stack<uint>();
+            _FreeEntryItemIds.Push(EntryItemIdCounter);
         }
 
         public bool HasContentId(ulong contentId)
@@ -117,6 +126,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     _ContentIdToCharacterIds.Remove(id);
                 }
                 _ContentIdToQuest.Remove(id);
+
+                var data = _ContentData[id];
+                ReclaimEntryItemId(data.Id);
 
                 return _ContentData.Remove(id);
             }
@@ -238,6 +250,27 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     return null;
                 }
                 return _ContentIdToQuest[id];
+            }
+        }
+
+        public uint GenerateEntryItemId()
+        {
+            lock (_FreeEntryItemIds)
+            {
+                if (_FreeEntryItemIds.Count == 0)
+                {
+                    EntryItemIdCounter = EntryItemIdCounter + 1;
+                    _FreeEntryItemIds.Push(EntryItemIdCounter);
+                }
+                return _FreeEntryItemIds.Pop();
+            }
+        }
+
+        private void ReclaimEntryItemId(uint id)
+        {
+            lock (_FreeEntryItemIds)
+            {
+                _FreeEntryItemIds.Push(id);
             }
         }
     }

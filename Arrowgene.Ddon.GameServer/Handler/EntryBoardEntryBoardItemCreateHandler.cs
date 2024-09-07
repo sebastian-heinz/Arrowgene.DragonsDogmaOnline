@@ -32,7 +32,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             result.EntryItem.Param = request.CreateParam;
             result.EntryItem.PartyLeaderCharacterId = client.Character.CharacterId;
             result.EntryItem.TimeOut = 3600;
-            result.EntryItem.Id = Random.Shared.NextU32();
+            result.EntryItem.Id = Server.ExmManager.GenerateEntryItemId();
             result.EntryItem.Param.MinEntryNum = 1;
 
             var member = new CDataEntryMemberData()
