@@ -205,11 +205,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
 
                 _ContentIdToCharacterIds[id].Remove(characterId);
-
-                if (_ContentIdToCharacterIds[id].Count == 0)
-                {
-                    RemoveGroupForContent(id);
-                }
             }
 
             return true;

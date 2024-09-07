@@ -28,15 +28,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            if (Server.ExmManager.GetContentIdForCharacter(client.Character) != 0)
+            if (party.ContentId != 0)
             {
                 Server.ExmManager.RemoveCharacterFromContentGroup(client.Character);
-
-                Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Online);
             }
+            Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Online);
 
             party.Leave(client);
             Logger.Info(client, $"Left PartyId:{party.Id}");
+
+            if (party.ContentId != 0 && party.MemberCount() == 0)
+            {
+                Server.ExmManager.RemoveGroupForContent(party.ContentId);
+            }
 
             S2CPartyPartyLeaveNtc partyLeaveNtc = new S2CPartyPartyLeaveNtc();
             partyLeaveNtc.CharacterId = client.Character.CharacterId;

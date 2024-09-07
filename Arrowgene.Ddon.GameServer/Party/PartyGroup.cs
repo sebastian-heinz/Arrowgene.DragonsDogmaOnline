@@ -27,6 +27,8 @@ namespace Arrowgene.Ddon.GameServer.Party
         private PlayerPartyMember _leader;
         private PlayerPartyMember _host;
         private bool _isBreakup;
+        
+        public readonly ulong ContentId;
 
         public InstanceEnemyManager InstanceEnemyManager { get; }
 
@@ -34,13 +36,14 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public Dictionary<uint, Dictionary<ulong, uint>> InstanceOmData { get; }
 
-        public PartyGroup(uint id, PartyManager partyManager)
+        public PartyGroup(uint id, PartyManager partyManager, ulong contentId)
         {
             MaxSlots = MaxPartyMember;
             _lock = new object();
             _slots = new PartyMember[MaxSlots];
             _partyManager = partyManager;
             _isBreakup = false;
+            ContentId = contentId;
 
             Id = id;
 
@@ -265,13 +268,17 @@ namespace Arrowgene.Ddon.GameServer.Party
             lock (_lock)
             {
                 PlayerPartyMember partyMember = GetPlayerPartyMember(client);
-                if (partyMember == null)
+                if (partyMember == null && MemberCount() > 0)
                 {
                     Logger.Error(client, $"[PartyId:{Id}][Join(GameClient)] has no slot");
                     return ErrorRes<PlayerPartyMember>.Fail;
                 }
-
-                client.Party = this;
+                else if (partyMember == null)
+                {
+                    AddHost(client);
+                    partyMember = GetPlayerPartyMember(client);
+                }
+                
                 if (_leader == null && _host == null)
                 {
                     // first to join the party
@@ -279,6 +286,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                     _leader = partyMember;
                     _host = partyMember;
                 }
+                client.Party = this;
 
                 partyMember.JoinState = JoinState.On;
                 Logger.Info(client, $"[PartyId:{Id}][Join(GameClient)] joined");

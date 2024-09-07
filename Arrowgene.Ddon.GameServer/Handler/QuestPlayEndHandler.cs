@@ -34,21 +34,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             var ntc = new S2CQuestPlayEndNtc();
             ntc.ContentsPlayEnd.RewardItemDetailList = quest.ToCDataTimeGainQuestList(0).RewardItemDetailList;
-            client.Send(ntc);
-
-            // PacketId.S2C_QUEST_11_117_16_NTC
-            // ushort
-            // ushort
-            // byte
-
-            // PacketId.C2S_QUEST_11_60_16_NTC
-
-            // TODO: Clean up state from ExmManager?
+            client.Party.SendToAll(ntc);
 
             return new S2CQuestPlayEndRes();
-
-            // Send S2CQuestPlayEndNtc (S2C_QUEST_11_45_16_NTC)
-            // Send 0x7f4e10
         }
     }
 }

@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -19,15 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPartyPartyJoinReq> packet)
         {
-            S2CPartyPartyJoinRes res = new S2CPartyPartyJoinRes()
-            {
-                ContentNumber = Server.ExmManager.GetContentIdForCharacter(client.Character)
-            };
-
-            if (res.ContentNumber != 0)
-            {
-                Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Contents);
-            }
+            S2CPartyPartyJoinRes res = new S2CPartyPartyJoinRes();
 
             PartyGroup party = Server.PartyManager.GetParty(packet.Structure.PartyId);
             if (party == null)
@@ -45,6 +38,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 res.Error = (uint)join.ErrorCode;
                 client.Send(res);
                 return;
+            }
+
+            res.ContentNumber = party.ContentId;
+            if (res.ContentNumber != 0)
+            {
+                Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Contents);
+            }
+
+            var characterContentId = Server.ExmManager.GetContentIdForCharacter(client.Character);
+            if (party.ContentId != 0 && characterContentId != party.ContentId)
+            {
+                Server.ExmManager.AddCharacterToContentGroup(party.ContentId, client.Character);
             }
 
             var partyLeader = party.Leader.Client.Character;

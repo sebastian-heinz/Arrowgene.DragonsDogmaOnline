@@ -33,8 +33,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             client.Send(new S2CEntryBoardEntryBoardItemReadyRes());
 
-            PartyGroup party = Server.PartyManager.NewParty();
-            ErrorRes<PlayerPartyMember> host = party.AddHost(client);
+            PartyGroup party = Server.PartyManager.NewParty(contentId);
 
             S2CPartyPartyInviteAcceptNtc inviteAcceptNtc = new S2CPartyPartyInviteAcceptNtc();
             inviteAcceptNtc.ServerId = (ushort)Server.Id;

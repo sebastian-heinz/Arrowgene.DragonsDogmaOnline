@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 CharacterId = client.Character.CharacterId
             };
-            client.Send(ntc);
+            client.Party.SendToAll(ntc);
         }
     }
 }

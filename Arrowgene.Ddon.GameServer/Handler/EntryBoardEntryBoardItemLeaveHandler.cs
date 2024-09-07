@@ -46,6 +46,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 leaderClient.Send(new S2CEntryBoardEntryBoardItemLeaveNtc());
             }
 
+            Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Online);
+
             return new S2CEntryBoardEntryBoardItemLeaveRes();
         }
     }
