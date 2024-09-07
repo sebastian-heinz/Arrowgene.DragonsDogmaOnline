@@ -127,4 +127,9 @@ public class InstanceEnemyManager : InstanceAssetManager<byte, Enemy, InstancedE
             _EnemyData.Clear();
         }
     }
+
+    public ushort GetSubgroup(StageId stageId)
+    {
+        return _CurrentSubgroup.GetValueOrDefault(stageId);
+    }
 }
