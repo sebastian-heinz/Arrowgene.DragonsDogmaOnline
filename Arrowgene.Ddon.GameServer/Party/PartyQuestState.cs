@@ -104,10 +104,10 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         private Dictionary<QuestId, QuestState> ActiveQuests { get; set; }
         private Dictionary<StageId, List<QuestId>> QuestLookupTable { get; set; }
-        private List<QuestId> CompletedWorldQuests { get; set; }
         private Dictionary<QuestId, uint> ActiveVariantQuests { get; set; }
         // For the purposes of each party quest state knowing the possible variant quests
         private HashSet<QuestId> VariantQuests { get; set; }
+        private List<QuestId> CompletedWorldQuests { get; set; }
 
         public PartyQuestState()
         {
@@ -306,43 +306,46 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
-        public void CancelQuest(QuestId questId)
+        public void RemoveInactiveWorldQuests()
         {
-            lock (CompletedWorldQuests)
+            lock (ActiveQuests)
             {
-                var quest = GetQuest(questId);
-                RemoveQuest(questId);
-
-                // Save the quest if it was a world quest
-                // so we can add it back on instance reset
-                // Don't add alt quests to completed world quests. Rerolls are handled independently
-                if (quest.QuestType == QuestType.World && !quest.IsVariantQuest)
+                var questsToRemove = new List<QuestId>();
+                foreach (var (questId, quest) in ActiveQuests)
                 {
-                    CompletedWorldQuests.Add(questId);
+                    if (quest.QuestType == QuestType.World && quest.Step == 0)
+                    {
+                        questsToRemove.Add(questId);
+                    }
+                }
+
+                foreach (var questId in questsToRemove)
+                {
+                    ActiveQuests.Remove(questId);
                 }
             }
         }
 
+        public void CancelQuest(QuestId questId)
+        {
+            var quest = GetQuest(questId);
+            RemoveQuest(questId);
+        }
+
         public void CompleteQuest(QuestId questId)
         {
-            lock (CompletedWorldQuests)
+            var quest = GetQuest(questId);
+            RemoveQuest(questId);
+
+            if (quest.NextQuestId != 0)
             {
-                var quest = GetQuest(questId);
-                RemoveQuest(questId);
-
-                // Save the quest if it was a world quest
-                // so we can add it back on instance reset
-                // Don't add alt quests to completed world quests. Rerolls are handled independently
-                if (quest.QuestType == QuestType.World && !quest.IsVariantQuest)
-                {
-                    CompletedWorldQuests.Add(questId);
-                }
-
-                if (quest.NextQuestId != 0)
-                {
-                    AddNewQuest(quest.NextQuestId, 0, false);
-                }
+                AddNewQuest(quest.NextQuestId, 0, false);
             }
+        }
+
+        public bool IsCompletedWorldQuest(QuestId questId)
+        {
+            return CompletedWorldQuests.Contains(questId);
         }
 
         public List<QuestId> GetActiveQuestIds()
@@ -480,14 +483,6 @@ namespace Arrowgene.Ddon.GameServer.Party
         public void ResetInstanceQuestState()
         {
             RerollUnfoundAltQuests();
-
-            // Add all world quests
-            foreach (var questId in CompletedWorldQuests)
-            {
-                AddNewQuest(questId, 0, false);
-            }
-
-            CompletedWorldQuests.Clear();
         }
 
         public bool UpdatePartyQuestProgress(DdonGameServer server, PartyGroup party, QuestId questId)
@@ -514,11 +509,6 @@ namespace Arrowgene.Ddon.GameServer.Party
             questState.Step += 1;
 
             return true;
-        }
-
-        public bool IsComplete(QuestId questId)
-        {
-            return CompletedWorldQuests.Contains(questId);
         }
 
         public bool CompletePartyQuestProgress(DdonGameServer server, PartyGroup party, QuestId questId)

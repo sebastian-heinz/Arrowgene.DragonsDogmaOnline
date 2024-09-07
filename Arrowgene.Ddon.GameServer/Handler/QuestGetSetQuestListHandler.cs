@@ -14,6 +14,8 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -31,17 +33,47 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // client.Send(GameFull.Dump_132);
 
             S2CQuestGetSetQuestListRes res = new S2CQuestGetSetQuestListRes();
+
+            // Remove all world quests which have no progress made
+            client.Party.QuestState.RemoveInactiveWorldQuests();
+
+            /**
+             * World quests get added here instead of QuestGetWorldManageQuestListHandler because
+             * "World Manage Quests" are different from "World Quests". World manage quests appear
+             * to control the state of the game world (doors, paths, gates, etc.). World quests
+             * are random fetch, deliver and kill type quests.
+             */
+
+            var activeQuestIds = client.Party.QuestState.GetActiveQuestIds().Where(x => QuestManager.IsWorldQuest(x)).ToHashSet();
+            foreach (var activeQuestId in activeQuestIds)
+            {
+                var quest = client.Party.QuestState.GetQuest(activeQuestId);
+                var questStats = client.Party.Leader.Client.Character.CompletedQuests.GetValueOrDefault(quest.QuestId);
+                var questState = client.Party.QuestState.GetQuestState(quest);
+
+                res.SetQuestList.Add(new CDataSetQuestList()
+                {
+                    Detail = new CDataSetQuestDetail()
+                    {
+                        IsDiscovery = (questStats == null) ? quest.IsDiscoverable : true,
+                        ClearCount = (questStats == null) ? 0 : questStats.ClearCount
+                    },
+                    Param = quest.ToCDataQuestList(questState.Step),
+                });
+            }
+
+            // Populate rest of quests for the area
             foreach (var questId in QuestManager.GetWorldQuestIdsByAreaId(packet.Structure.DistributeId))
             {
+                if (activeQuestIds.Contains(questId))
+                {
+                    // Skip quests already populated
+                    continue;
+                }
+
                 var quest = client.Party.QuestState.GetQuest(questId);
                 var questStats = client.Party.Leader.Client.Character.CompletedQuests.GetValueOrDefault(quest.QuestId);
-                var questState = client.Party.QuestState.GetQuestState(questId);
-                /**
-                 * World quests get added here instead of QuestGetWorldManageQuestListHandler because
-                 * "World Manage Quests" are different from "World Quests". World manage quests appear
-                 * to control the state of the game world (doors, paths, gates, etc.). World quests
-                 * are random fetch, deliver and kill type quests.
-                 */
+
                 res.SetQuestList.Add(new CDataSetQuestList()
                 {
                     Detail = new CDataSetQuestDetail() 
@@ -49,8 +81,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         IsDiscovery = (questStats == null) ? quest.IsDiscoverable : true,
                         ClearCount = (questStats == null) ? 0 : questStats.ClearCount
                     },
-                    Param = quest.ToCDataQuestList(questState == null ? 0 : questState.Step),
+                    Param = quest.ToCDataQuestList(0),
                 });
+                client.Party.QuestState.AddNewQuest(quest, 0, false);
             }
 
             // Add Debug Quest
@@ -72,7 +105,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
 
             client.Party.SendToAll(ntc);
-
 
             client.Send(res);
         }
