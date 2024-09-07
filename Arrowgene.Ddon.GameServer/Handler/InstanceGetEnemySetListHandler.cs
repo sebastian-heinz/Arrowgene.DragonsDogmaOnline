@@ -5,6 +5,7 @@ using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Crypto;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Linq;
@@ -46,6 +47,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 RandomSeed = CryptoRandom.Instance.GetRandomUInt32(),
             };
 
+            bool notifyStrongEnemy = false;
             if (IsQuestControlled && quest != null)
             {
                 response.QuestId = (uint) quest.QuestId;
@@ -58,6 +60,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
                     });
                     client.Party.InstanceEnemyManager.SetInstanceEnemy(stageId, enemy.Index, enemy);
+
+                    if (enemy.NotifyStrongEnemy)
+                    {
+                        notifyStrongEnemy = true;
+                    }
                 }
             }
             else
@@ -70,7 +77,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         EnemyInfo = asset.Enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
                     });
                     client.Party.InstanceEnemyManager.SetInstanceEnemy(stageId, (byte) asset.Index, asset.Enemy);
+
+                    if (asset.Enemy.NotifyStrongEnemy)
+                    {
+                        notifyStrongEnemy = true;
+                    }
                 }
+            }
+
+            if (notifyStrongEnemy)
+            {
+                // TODO: Send NTC which creates popup
             }
 
             if (subGroupId > 0 && response.EnemyList.Count > 0)

@@ -1,6 +1,8 @@
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,10 +57,14 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
             return new List<InstancedGatheringItem>();
         }
 
-        public List<InstancedGatheringItem> GenerateEnemyLoot(InstancedEnemy enemy, CDataStageLayoutId layoutId, uint setId)
-        {   
-            uint dropEntryId = GetDropId(layoutId, setId);
+        public List<InstancedGatheringItem> GenerateEnemyLoot(Quest quest, InstancedEnemy enemy, CDataStageLayoutId layoutId, uint setId)
+        {
+            if (quest.QuestType == QuestType.ExtremeMission)
+            {
+                return new List<InstancedGatheringItem>();
+            }
 
+            uint dropEntryId = GetDropId(layoutId, setId);
             if (!QuestEnemyDropsTable.ContainsKey(dropEntryId))
             {
                 // Check to see if a drop table exists
@@ -72,8 +78,8 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
                     return items;
                 }
             }
-                // Return an empty list of gathering items for no loot.
-                return new List<InstancedGatheringItem>();
+            // Return an empty list of gathering items for no loot.
+            return new List<InstancedGatheringItem>();
         }
 
         public void Clear()

@@ -37,6 +37,7 @@ namespace Arrowgene.Ddon.Shared.Asset
         public List<QuestLayoutFlagSetInfo> QuestLayoutSetInfoFlags { get; set; }
         public Dictionary<uint, QuestEnemyGroup> EnemyGroups {  get; set; }
         public uint VariantId { get; set; }
+        public QuestMissionParams MissionParams {  get; set; }
 
         public QuestAssetData()
         {
@@ -47,6 +48,7 @@ namespace Arrowgene.Ddon.Shared.Asset
             QuestLayoutSetInfoFlags = new List<QuestLayoutFlagSetInfo>();
             EnemyGroups = new Dictionary<uint, QuestEnemyGroup>();
             OrderConditions = new List<QuestOrderCondition>();
+            MissionParams = new QuestMissionParams();
         }
     }
 }

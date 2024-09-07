@@ -528,6 +528,29 @@ namespace Arrowgene.Ddon.GameServer.Party
             var questState = party.QuestState.GetQuestState(quest);
             foreach (var memberClient in party.Clients)
             {
+                // Special case for Exteme Missions where there is no state saved
+                // Tracking completion matters for progress and weekly reward limits
+                if (quest.QuestType == QuestType.ExtremeMission)
+                {
+                    var completedQuests = memberClient.Character.CompletedQuests;
+                    if (!completedQuests.ContainsKey(quest.QuestId))
+                    {
+                        completedQuests.Add(quest.QuestId, new CompletedQuest()
+                        {
+                            QuestId = quest.QuestId,
+                            QuestType = quest.QuestType,
+                            ClearCount = 1,
+                        });
+                    }
+                    else
+                    {
+                        completedQuests[quest.QuestId].ClearCount += 1;
+                    }
+                        
+                    server.Database.ReplaceCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, completedQuests[quest.QuestId].ClearCount);
+                    continue;
+                }
+
                 var result = server.Database.GetQuestProgressById(memberClient.Character.CommonId, quest.QuestId);
                 if (result == null)
                 {

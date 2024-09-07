@@ -39,6 +39,7 @@ namespace Arrowgene.Ddon.Shared.Model
             SpawnTimeEnd = enemy.SpawnTimeEnd;
             Experience = enemy.Experience;
             DropsTable = enemy.DropsTable;
+            NotifyStrongEnemy = enemy.NotifyStrongEnemy;
         }
 
         public uint Id { get; set; }
@@ -66,6 +67,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public long SpawnTimeEnd { get; set; }
         public uint Experience { get; set; }
         public DropsTable DropsTable { get; set; }
+        public bool NotifyStrongEnemy { get; set; }
         public uint UINameId { get 
             {
                 return NameMap.GetValueOrDefault(EnemyId);

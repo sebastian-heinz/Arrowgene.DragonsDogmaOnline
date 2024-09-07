@@ -32,6 +32,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             quest.ResetPlayerAfterQuest = questAsset.ResetPlayerAfterQuest;
             quest.OrderConditions = questAsset.OrderConditions;
             quest.StageId = questAsset.StageId;
+            quest.MissionParams = questAsset.MissionParams;
 
             quest.ExpRewards.Add(new CDataQuestExp()
             {
@@ -162,8 +163,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
             {               
                 questProgressState = QuestProgressState.Checkpoint;
             }
-            else if (questBlock.AnnounceType == QuestAnnounceType.Accept)
-            {                
+            else if (questBlock.AnnounceType == QuestAnnounceType.Accept || questBlock.AnnounceType == QuestAnnounceType.Start)
+            {
                 questProgressState = QuestProgressState.Accepted;
             }
             else
@@ -266,7 +267,35 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     case QuestAnnounceType.Update:
                         resultCommands.Add(QuestManager.ResultCommand.UpdateAnnounce());
                         break;
+                    case QuestAnnounceType.Start:
+                        // resultCommands.Add(QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Start));
+                        resultCommands.Add(QuestManager.ResultCommand.StartMissionAnnounce());
+                        resultCommands.Add(QuestManager.ResultCommand.Unknown(127));
+                        resultCommands.Add(QuestManager.ResultCommand.StartContentsTimer());
+                        break;
+                    default:
+                        resultCommands.Add(QuestManager.ResultCommand.SetAnnounce(questBlock.AnnounceType));
+                        break;
                 }
+            }
+
+            if (questBlock.Announcements.GeneralAnnounceId != 0)
+            {
+                resultCommands.Add(QuestManager.ResultCommand.CallGeneralAnnounce(0, questBlock.Announcements.GeneralAnnounceId));
+            }
+
+            if (questBlock.Announcements.StageStart != 0)
+            {
+                resultCommands.Add(QuestManager.ResultCommand.StageAnnounce(0, questBlock.Announcements.StageStart));
+            }
+            else if (questBlock.Announcements.StageClear != 0)
+            {
+                resultCommands.Add(QuestManager.ResultCommand.StageAnnounce(1, questBlock.Announcements.StageClear));
+            }
+
+            if (questBlock.Announcements.EndContentsPurpose != 0)
+            {
+                resultCommands.Add(QuestManager.ResultCommand.AddEndContentsPurpose(questBlock.Announcements.EndContentsPurpose, 0));
             }
 
             foreach (var item in questBlock.HandPlayerItems)

@@ -37,6 +37,3 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
     }
 }
-
-
-

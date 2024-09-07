@@ -1,0 +1,69 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "ExtremeMission",
+    "comment": "Agent of Corruption (EM5)",
+    "quest_id": 50201000,
+    "base_level": 65,
+    "minimum_item_rank": 22,
+    "discoverable": false,
+    "mission_params": {
+        "group": 2,
+        "minimum_members": 1,
+        "playtime": 3600,
+        "solo_only": true,
+        "max_pawns": 3,
+        "phase_groups": [113, 5, 113]
+    },
+    "order_conditions": [
+        {"type": "ClearExtremeMission", "Param1": 50104000}
+    ],
+    "rewards": [
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 11780,
+                    "num": 3
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "comment": "Boss",
+            "stage_id": {
+                "id": 433,
+                "group_id": 1
+            },
+            "enemies": [
+                {
+                    "comment": "Scourge",
+                    "enemy_id": "0x071310",
+                    "level": 65,
+                    "exp": 0,
+                    "is_boss": true
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "blocks": [
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Start",
+                    "groups": [0]
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "comment": "Wait for fight to start",
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+                }
+            ]
+        }
+    ]
+}

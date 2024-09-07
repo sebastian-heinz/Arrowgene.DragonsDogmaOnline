@@ -38,7 +38,7 @@ public static class GameStructure
         CDataJobBaseInfo(cDataCharacterListElement.EntryJobBaseInfo, character.Job,
             (byte)character.ActiveCharacterJobData.Lv);
         cDataCharacterListElement.MatchingProfile = "";
-        cDataCharacterListElement.unk2 = 0;
+        cDataCharacterListElement.unk2 = 1;
     }
 
     public static void CDataCommunityCharacterBaseInfo(

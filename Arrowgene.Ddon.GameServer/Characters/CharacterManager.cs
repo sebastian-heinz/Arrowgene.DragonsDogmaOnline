@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System.Linq;
@@ -80,6 +81,24 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     Logger.Error($"Character: AccountId={character.AccountId}, CharacterId={character.ContentCharacterId}, CommonId={character.CommonId}, PawnCommonId={pawn.CommonId} is missing table entry in 'ddon_orb_gain_extend_param'.");
                 }
                 UpdateCharacterExtendedParams(pawn);
+            }
+        }
+
+        public void UpdateOnlineStatus(GameClient client, Character character, OnlineStatus onlineStatus)
+        {
+            client.Character.OnlineStatus = onlineStatus;
+            var charUpdateNtc = new S2CCharacterCommunityCharacterStatusUpdateNtc();
+            charUpdateNtc.UpdateCharacterList.Add(ContactListManager.CharacterToListEml(client.Character));
+            charUpdateNtc.UpdateMatchingProfileList.Add(new CDataUpdateMatchingProfileInfo()
+            {
+                CharacterId = client.Character.CharacterId,
+                Comment = client.Character.MatchingProfile.Comment,
+            });
+
+            // TODO: Is there a reduced set of clients we can send this to?
+            foreach (var memberClient in _Server.ClientLookup.GetAll())
+            {
+                memberClient.Send(charUpdateNtc);
             }
         }
 
