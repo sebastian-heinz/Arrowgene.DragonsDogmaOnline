@@ -64,19 +64,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var tutorialQuestInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.Tutorial);
             foreach (var questProgress in tutorialQuestInProgress)
             {
-                if (!QuestManager.IsQuestEnabled(questProgress.QuestId))
+                if (!QuestManager.IsQuestEnabled(questProgress.QuestScheduleId))
                 {
                     continue;
                 }
 
-                var quest = QuestManager.GetQuest(questProgress.QuestId);
+                var quest = QuestManager.GetQuestByScheduleId(questProgress.QuestScheduleId);
                 var tutorialQuest = quest.ToCDataTutorialQuestOrderList(questProgress.Step);
                 ntc.TutorialQuestOrderList.Add(tutorialQuest);
             }
 
             if (client.Party != null)
             {
-                var priorityQuests = Server.Database.GetPriorityQuests(client.Party.Leader.Client.Character.CommonId);
+                var priorityQuests = Server.Database.GetPriorityQuestScheduleIds(client.Party.Leader.Client.Character.CommonId);
                 foreach (var questId in priorityQuests)
                 {
                     if (!QuestManager.IsQuestEnabled(questId))
@@ -84,7 +84,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         continue;
                     }
 
-                    var quest = QuestManager.GetQuest(questId);
+                    var quest = QuestManager.GetQuestByScheduleId(questId);
                     ntc.PriorityQuestList.Add(new CDataPriorityQuest()
                     {
                         QuestId = (uint)quest.QuestId,

@@ -433,16 +433,16 @@ namespace Arrowgene.Ddon.Database
         );
 
         // Quest Progress
-        bool InsertQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step, uint variantId=0);
-        bool UpdateQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step);
-        bool RemoveQuestProgress(uint characterCommonId, QuestId questId, QuestType questType);
+        bool InsertQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType, uint step);
+        bool UpdateQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType, uint step);
+        bool RemoveQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType);
         List<QuestProgress> GetQuestProgressByType(uint characterCommonId, QuestType questType);
-        QuestProgress GetQuestProgressById(uint characterCommonId, QuestId questId);
+        QuestProgress GetQuestProgressById(uint characterCommonId, uint questScheduleId);
 
         // Quest Priority
-        bool InsertPriorityQuest(uint characterCommonId, QuestId questId);
-        List<QuestId> GetPriorityQuests(uint characterCommonId);
-        bool DeletePriorityQuest(uint characterCommonId, QuestId questId);
+        bool InsertPriorityQuest(uint characterCommonId, uint questScheduleId);
+        List<uint> GetPriorityQuestScheduleIds(uint characterCommonId);
+        bool DeletePriorityQuest(uint characterCommonId, uint questScheduleId);
 
         // System mail
         long InsertSystemMailAttachment(SystemMailAttachment attachment);

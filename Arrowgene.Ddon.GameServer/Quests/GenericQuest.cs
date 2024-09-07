@@ -110,7 +110,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return quest;
         }
 
-        public GenericQuest(QuestId questId, QuestId questScheduleId, QuestType questType, bool discoverable) : base(questId, questScheduleId, questType, discoverable)
+        public GenericQuest(QuestId questId, uint questScheduleId, QuestType questType, bool discoverable) : base(questId, questScheduleId, questType, discoverable)
         {
             QuestLayoutFlagSetInfo = new List<QuestLayoutFlagSetInfo>();
         }
@@ -133,7 +133,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
             else
             {
-                var proccessState = client.Party.QuestState.GetProcessState(QuestId, 0);
+                var proccessState = client.Party.QuestState.GetProcessState(QuestScheduleId, 0);
                 // We need to signal the current block
                 client.Party.SendToAll(new S2CQuestQuestProgressWorkSaveNtc()
                 {

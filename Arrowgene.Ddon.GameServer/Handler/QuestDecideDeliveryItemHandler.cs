@@ -28,9 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ProcessNo = packet.Structure.ProcessNo,
             };
 
-            QuestId questId = (QuestId)packet.Structure.QuestScheduleId;
-            var questState = client.Party.QuestState.GetQuestState(questId);
-
+            var questState = client.Party.QuestState.GetQuestState(packet.Structure.QuestScheduleId);
             if (questState.DeliveryRequestComplete())
             {
 

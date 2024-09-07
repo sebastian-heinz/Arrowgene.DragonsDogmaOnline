@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.GameServer.Party
         private PlayerPartyMember _leader;
         private PlayerPartyMember _host;
         private bool _isBreakup;
-        
+
         public readonly ulong ContentId;
         public bool ContentInProgress;
 
@@ -618,6 +618,7 @@ namespace Arrowgene.Ddon.GameServer.Party
         {
             InstanceEnemyManager.Clear();
             Contexts.Clear();
+            QuestState.ResetInstance();
             foreach (GameClient client in Clients)
             {
                 client.InstanceGatheringItemManager.Clear();
@@ -628,7 +629,6 @@ namespace Arrowgene.Ddon.GameServer.Party
                 client.Character.ContextOwnership.Clear();
             }
             OmManager.ResetAllOmData(InstanceOmData);
-            QuestState.ResetInstance();
         }
 
         public PartyMember GetPartyMemberByCharacter(CharacterCommon characterCommon)
@@ -782,7 +782,7 @@ namespace Arrowgene.Ddon.GameServer.Party
         public int ClientIndex(GameClient client)
         {
             if (!Members.Any() || !Clients.Any()) return 0;
-            
+
             var ind = Members.FindIndex(member =>
                 member is PlayerPartyMember playerMember
                 && playerMember.Client == client
