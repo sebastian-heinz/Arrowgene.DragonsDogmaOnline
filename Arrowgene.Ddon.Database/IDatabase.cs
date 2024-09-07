@@ -140,7 +140,7 @@ namespace Arrowgene.Ddon.Database
         bool DeleteSpSkill(uint pawnId, JobId job, byte spSkillId);
 
         // CharacterJobData
-        bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData);
+        bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData, DbConnection? connectionIn = null);
         bool UpdateCharacterJobData(uint commonId, CDataCharacterJobData updatedCharacterJobData);
 
         // Wallet Points

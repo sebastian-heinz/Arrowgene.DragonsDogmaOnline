@@ -259,7 +259,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             foreach(CDataCharacterJobData characterJobData in common.CharacterJobDataList)
             {
-                ReplaceCharacterJobData(conn, common.CommonId, characterJobData);
+                ReplaceCharacterJobData(common.CommonId, characterJobData, conn);
             }
 
             foreach(CDataNormalSkillParam normalSkillParam in common.LearnedNormalSkills)
