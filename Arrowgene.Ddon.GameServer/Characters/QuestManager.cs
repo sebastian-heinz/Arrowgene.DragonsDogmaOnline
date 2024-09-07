@@ -191,17 +191,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public static Quest GetRewardQuest(QuestId questId, uint variantId)
         {
-            // Mostly for reward calls. If somehow the variantId is not valid,
-            // return the first quest found with the questId within VariantQuests
-            Quest quest = GetQuest(questId, variantId);
-
-            if(quest is null)
-            {
-                // Check for variant quest
-                return variantQuests[questId].First().Value;
-            }
-
-            return quest;
+            return GetQuest(questId, variantId);
         }
 
         public static Quest GetQuest(QuestId questId, uint variantId = 0)

@@ -72,7 +72,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .Select(x =>
                 {
                     var ret = x.Value.ToCDataSetQuestInfoList();
-                    ret.CompleteNum = (ushort)(client.Party.QuestState.IsComplete(x.Key) ? 1 : 0); // Completed in the current instance, hides rewards.
+                    ret.CompleteNum = (ushort)(client.Party.QuestState.IsCompletedWorldQuest(x.Key) ? 1 : 0); // Completed in the current instance, hides rewards.
                     ret.IsDiscovery = x.Value.IsDiscoverable || (completedQuests.Where(y => y.QuestId == x.Key).FirstOrDefault()?.ClearCount ?? 0) > 0;
 
                     if (!ret.IsDiscovery)
