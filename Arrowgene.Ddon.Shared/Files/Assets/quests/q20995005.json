@@ -6,7 +6,7 @@
     "base_level": 55,
     "minimum_item_rank": 0,
     "discoverable": true,
-	"area_id": "MergodaRuins",	
+    "area_id": "MergodaRuins",
     "rewards": [
         {
             "type": "exp",
@@ -35,7 +35,7 @@
                 },
                 {
                     "item_id": 7555,
-                    "num": 2					
+                    "num": 2
                 }
             ]
         }
@@ -52,33 +52,33 @@
                     "level": 55,
                     "exp": 21000,
                     "is_boss": true
-        },
-        {
+                },
+                {
                     "enemy_id": "0x010606",
                     "level": 55,
                     "exp": 1500,
                     "is_boss": false
-        },
-        {
+                },
+                {
                     "enemy_id": "0x010606",
                     "level": 55,
                     "exp": 1500,
                     "is_boss": false
-        },
-        {
+                },
+                {
                     "enemy_id": "0x010606",
                     "level": 55,
                     "exp": 1500,
-                    "is_boss": false					
+                    "is_boss": false
                 }
             ]
         }
-    ],		
+    ],
     "blocks": [
         {
             "type": "NewNpcTalkAndOrder",
             "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 1620, "comment": "Spawns Eunike NPC"}				
+                {"type": "QstLayout", "action": "Set", "value": 1620, "comment": "Spawns Eunike NPC"}
             ],
             "stage_id": {
                 "id": 76,
@@ -93,7 +93,7 @@
             "announce_type": "Accept",
             "groups": [0]
         },
-        {			
+        {
             "type": "KillGroup",
             "announce_type": "Update",
             "groups": [0]
@@ -107,7 +107,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Eunike",
-            "message_id": 11842			
+            "message_id": 11842
         }
     ]
 }

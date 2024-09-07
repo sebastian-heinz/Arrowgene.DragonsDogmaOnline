@@ -6,7 +6,7 @@
     "base_level": 50,
     "minimum_item_rank": 0,
     "discoverable": true,
-  "area_id": "MergodaRuins",	
+    "area_id": "MergodaRuins",
     "rewards": [
         {
             "type": "wallet",
@@ -29,13 +29,13 @@
                     "item_id": 7833,
                     "num": 2
                 },
-                {					
+                {
                     "item_id": 7554,
                     "num": 3
                 },
-                {				
+                {
                     "item_id": 41,
-                    "num": 1					
+                    "num": 1
                 }
             ]
         }
@@ -44,7 +44,7 @@
         {
             "type": "NewNpcTalkAndOrder",
             "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 1627, "comment": "Spawns 禁域守の神官 NPC"}				
+                {"type": "QstLayout", "action": "Set", "value": 1627, "comment": "Spawns 禁域守の神官 NPC"}
             ],
             "stage_id": {
                 "id": 76,

@@ -6,6 +6,7 @@
     "base_level": 65,
     "minimum_item_rank": 0,
     "discoverable": false,
+	"area_id": "MergodaRuins",
     "rewards": [
         {
             "type": "wallet",
@@ -47,10 +48,12 @@
             },
             "enemies": [
                 {
+                    "comment": "Infected Gorecyclops",
                     "enemy_id": "0x015012",
                     "level": 65,
                     "exp": 45000,
-                    "is_boss": true					
+                    "is_boss": true,
+                    "infection_type": 2
                 }
             ]
         }

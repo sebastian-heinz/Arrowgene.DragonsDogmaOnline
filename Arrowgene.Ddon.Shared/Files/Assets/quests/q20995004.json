@@ -6,7 +6,7 @@
     "base_level": 53,
     "minimum_item_rank": 0,
     "discoverable": true,
-	"area_id": "MergodaRuins",	
+    "area_id": "MergodaRuins",
     "rewards": [
         {
             "type": "exp",
@@ -35,7 +35,7 @@
                 },
                 {
                     "item_id": 7554,
-                    "num": 3					
+                    "num": 3
                 }
             ]
         }
@@ -51,16 +51,16 @@
                     "enemy_id": "0x015103",
                     "level": 53,
                     "exp": 16000,
-                    "is_boss": true						
+                    "is_boss": true
                 }
             ]
         }
-    ],		
+    ],
     "blocks": [
         {
             "type": "NewNpcTalkAndOrder",
             "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 1619, "comment": "Spawns 亡都の錬金術師 NPC"}				
+                {"type": "QstLayout", "action": "Set", "value": 1619, "comment": "Spawns 亡都の錬金術師 NPC"}
             ],
             "stage_id": {
                 "id": 76,
@@ -75,7 +75,7 @@
             "announce_type": "Accept",
             "groups": [0]
         },
-        {			
+        {
             "type": "KillGroup",
             "announce_type": "Update",
             "groups": [0]
@@ -89,7 +89,7 @@
             },
             "announce_type": "Update",
             "npc_id": "4740",
-            "message_id": 11842			
+            "message_id": 11842
         }
     ]
 }

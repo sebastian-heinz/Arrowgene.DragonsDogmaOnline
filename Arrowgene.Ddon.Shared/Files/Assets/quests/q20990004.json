@@ -6,7 +6,7 @@
     "base_level": 53,
     "minimum_item_rank": 0,
     "discoverable": true,
-	"area_id": "MergodaRuins",	
+    "area_id": "MergodaRuins",
     "rewards": [
         {
             "type": "exp",
@@ -51,11 +51,11 @@
                     "enemy_id": "0x015102",
                     "level": 54,
                     "exp": 18500,
-                    "is_boss": true								
+                    "is_boss": true
                 }
             ]
         }
-    ],		
+    ],
     "blocks": [
         {
             "type": "NpcTalkAndOrder",
@@ -72,7 +72,7 @@
             "announce_type": "Accept",
             "groups": [0]
         },
-        {			
+        {
             "type": "KillGroup",
             "announce_type": "Update",
             "groups": [0]
@@ -86,7 +86,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Metrophanes",
-            "message_id": 11842			
+            "message_id": 11842
         }
     ]
 }
