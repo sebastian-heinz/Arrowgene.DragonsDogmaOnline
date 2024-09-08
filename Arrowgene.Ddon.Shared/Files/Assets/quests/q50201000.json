@@ -41,7 +41,9 @@
                     "enemy_id": "0x071310",
                     "level": 65,
                     "exp": 0,
-                    "is_boss": true
+                    "is_boss": true,
+                    "infection_type": 1,
+                    "named_enemy_params_id": 1674
                 }
             ]
         }
