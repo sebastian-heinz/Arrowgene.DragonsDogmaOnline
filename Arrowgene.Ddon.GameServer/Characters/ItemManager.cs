@@ -7,9 +7,14 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using YamlDotNet.Core.Tokens;
+using YamlDotNet.Core;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -26,31 +31,31 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static readonly uint STACK_BOX_MAX = 999;
 
         public static readonly List<StorageType> AllItemStorages = Enum.GetValues(typeof(StorageType)).Cast<StorageType>().ToList();
-        public static readonly List<StorageType> ItemBagStorageTypes = new List<StorageType> { 
-            StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob, 
-            StorageType.KeyItems 
+        public static readonly List<StorageType> ItemBagStorageTypes = new List<StorageType> {
+            StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob,
+            StorageType.KeyItems
         };
-        public static readonly List<StorageType> BoxStorageTypes = new List<StorageType> { 
-            StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, 
-            StorageType.StorageChestDrawer1, StorageType.StorageChestDrawer2, StorageType.StorageChestDrawer3 
+        public static readonly List<StorageType> BoxStorageTypes = new List<StorageType> {
+            StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion,
+            StorageType.StorageChestDrawer1, StorageType.StorageChestDrawer2, StorageType.StorageChestDrawer3
         };
         public static readonly List<StorageType> BothStorageTypes = ItemBagStorageTypes.Concat(BoxStorageTypes).ToList();
-        public static readonly List<StorageType> EquipmentStorages = new List<StorageType> { 
-            StorageType.CharacterEquipment, StorageType.PawnEquipment, 
-            StorageType.ItemBagEquipment, 
-            StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, 
-            StorageType.StorageChestDrawer1, StorageType.StorageChestDrawer2, StorageType.StorageChestDrawer3 
+        public static readonly List<StorageType> EquipmentStorages = new List<StorageType> {
+            StorageType.CharacterEquipment, StorageType.PawnEquipment,
+            StorageType.ItemBagEquipment,
+            StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion,
+            StorageType.StorageChestDrawer1, StorageType.StorageChestDrawer2, StorageType.StorageChestDrawer3
         };
-        public static readonly List<StorageType> BbmEmbodyStorages = new List<StorageType> { StorageType.StorageBoxNormal, StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob};
+        public static readonly List<StorageType> BbmEmbodyStorages = new List<StorageType> { StorageType.StorageBoxNormal, StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob };
 
-        private static readonly Dictionary<uint, (WalletType Type, uint Quantity)> ItemIdWalletTypeAndQuantity = new Dictionary<uint, (WalletType Type, uint Amount)>() { 
+        private static readonly Dictionary<uint, (WalletType Type, uint Quantity)> ItemIdWalletTypeAndQuantity = new Dictionary<uint, (WalletType Type, uint Amount)>() {
             {7789, (WalletType.Gold, 1)},
             {7790, (WalletType.Gold, 10)},
             {7791, (WalletType.Gold, 100)},
             {7792, (WalletType.RiftPoints,1)},
             {7793, (WalletType.RiftPoints,10)},
             {7794, (WalletType.RiftPoints,100)},
-            {7795, (WalletType.BloodOrbs,1)}, // Doesn't show up 
+            {7795, (WalletType.BloodOrbs,1)}, // Doesn't show up
             {7796, (WalletType.BloodOrbs,10)}, // Doesn't show up
             {7797, (WalletType.BloodOrbs,100)}, // Doesn't show up
             {18742, (WalletType.HighOrbs,1)},
@@ -67,6 +72,69 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {11262,(WalletType.ResetCraftSkills,1)}
             // TODO: Find all items that add wallet points
         };
+
+        private static readonly Dictionary<uint, uint> AbilityItems = new Dictionary<uint, uint>()
+        {
+            {16100, 448}, // 習得の書【友癒】,Book of Acquisition (Companion Healing),
+            {16101, 449}, // 習得の書【重歩 軽】,Book of Acquisition (Heavy Steps: Light),
+            {16102, 450},// 習得の書【穿歩 軽】,Book of Acquisition (Deft Footing: Light),
+            {16103, 451}, // 習得の書【延泉 軽】,Book of Acquisition (Extended Springs: Light),
+            {16104, 452}, // 習得の書【探採 軽】,Book of Acquisition (Gathering: Light),
+            {16105, 453}, // 習得の書【薬効 軽】,Book of Acquisition (Efficacy: Light),
+            {16106, 454}, // 習得の書【効延 軽】,Book of Acquisition (Effect Extension: Light),
+            {16107, 455}, // 習得の書【巧掘 軽】,Book of Acquisition (Expert Excavator: Light),
+            {16108, 456}, // 習得の書【流断 軽】,Book of Acquisition (Flow: Light),
+            {16109, 457}, // 習得の書【宝眼 軽】,Book of Acquisition (Treasure Eye: Light),
+            {16110, 458}, // 習得の書【根性 軽】,Book of Acquisition (Willpower: Light),
+            {16111, 459}, // 習得の書【安着 軽】,Book of Acquisition (Safe Landing: Light),
+            {19199, 248}, // 習得の書【抗毒】,Book of Acquisition (Resist Poison),
+            {19200, 249}, // 習得の書【抗遅】,Book of Acquisition (Anti-slow),
+            {19201, 250}, // 習得の書【抗眠】,Book of Acquisition (Anti-sleep),
+            {19202, 251}, // 習得の書【抗絶】,Book of Acquisition (Anti-stun),
+            {19203, 252}, // 習得の書【抗水】,Book of Acquisition (Anti-drench),
+            {19204, 253}, // 習得の書【抗油】,Book of Acquisition (Anti-oil),
+            {19205, 254}, // 習得の書【抗封】,Book of Acquisition (Anti-seal),
+            {19206, 255}, // 習得の書【抗軟】,Book of Acquisition (Anti-subdue),
+            {19207, 256}, // 習得の書【抗石】,Book of Acquisition (Anti-petrify),
+            {19208, 257}, // 習得の書【抗金】,Book of Acquisition (Anti-goldify),
+            {19209, 258}, // 習得の書【親炎】,Book of Acquisition (Close to Fire),
+            {19210, 259}, // 習得の書【親氷】,Book of Acquisition (Close to Ice),
+            {19211, 260}, // 習得の書【親雷】,Book of Acquisition (Close to Thunder),
+            {19212, 261}, // 習得の書【親聖】,Book of Acquisition (Close to Holy),
+            {19213, 262}, // 習得の書【親闇】,Book of Acquisition (Close to Dark),
+            {19214, 263}, // 習得の書【制毒】,Book of Acquisition (Control Poison),
+            {19215, 264}, // 習得の書【制遅】,Book of Acquisition (Control Slow),
+            {19216, 265}, // 習得の書【制眠】,Book of Acquisition (Control Sleep),
+            {19217, 266}, // 習得の書【制絶】,Book of Acquisition (Control Stun),
+            {19218, 267}, // 習得の書【速乾】,Book of Acquisition (Quick Drying),
+            {19219, 268}, // 習得の書【速清】,Book of Acquisition (Quick Clean),
+            {19220, 269}, // 習得の書【縮封】,Book of Acquisition (Quick Seal),
+            {19221, 270}, // 習得の書【縮軟】,Book of Acquisition (Reduce Subdue),
+            {19222, 273}, // 習得の書【縮焼】,Book of Acquisition (Reduce Tar),
+            {19223, 274}, // 習得の書【縮凍】,Book of Acquisition (Reduce Freeze),
+            {19224, 275}, // 習得の書【縮霧】,Book of Acquisition (Reduce Blind),
+            {19225, 276}, // 習得の書【縮炎】,Book of Acquisition (Reduce Fire),
+            {19226, 277}, // 習得の書【縮氷】,Book of Acquisition (Reduce Ice),
+            {19227, 278}, // 習得の書【縮雷】,Book of Acquisition (Reduce Thunder),
+            {19228, 279}, // 習得の書【縮聖】,Book of Acquisition (Reduce Holy),
+            {19229, 280}, // 習得の書【縮闇】,Book of Acquisition (Reduce Dark),
+            {19230, 281}, // 習得の書【縮攻】,Book of Acquisition (Reduce Physical Attack Down),
+            {19231, 282}, // 習得の書【縮防】,Book of Acquisition (Reduce Defense Down),
+            {19232, 283}, // 習得の書【縮念】,Book of Acquisition (Reduce Magick Attack Down),
+            {19233, 284}, // 習得の書【縮衰】,Book of Acquisition (Reduce Magick Defense Down),
+            {19234, 271}, // 習得の書【縮石】,Book of Acquisition (Reduce Petrify),
+            {19235, 272}, // 習得の書【縮金】,Book of Acquisition (Reduce Goldify),
+        };
+
+        public bool IsSecretAbilityItem(uint itemId)
+        {
+            return AbilityItems.ContainsKey(itemId);
+        }
+
+        public uint GetAbilityId(uint itemId)
+        {
+            return AbilityItems[itemId];
+        }
 
         public bool IsItemWalletPoint(uint itemId)
         {
@@ -117,7 +185,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             if(ItemIdWalletTypeAndQuantity.ContainsKey(gatheringItem.ItemId)) {
                 var walletTypeAndQuantity = ItemIdWalletTypeAndQuantity[gatheringItem.ItemId];
                 uint totalQuantityToAdd = walletTypeAndQuantity.Quantity * gatheringItem.ItemNum;
-                
+
                 CDataWalletPoint characterWalletPoint = character.WalletPointList.Where(wp => wp.Type == walletTypeAndQuantity.Type).First();
                 characterWalletPoint.Value += totalQuantityToAdd; // TODO: Cap to maximum for that wallet
 
@@ -128,7 +196,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 walletUpdate.AddPoint = (int) totalQuantityToAdd;
                 walletUpdate.Value = characterWalletPoint.Value;
                 ntc.UpdateWalletList.Add(walletUpdate);
-                
+
                 gatheringItem.ItemNum -= pickedGatherItems;
             } else {
                 List<CDataItemUpdateResult> results = AddItem(server, character, true, gatheringItem.ItemId, pickedGatherItems, connectionIn:connectionIn);
@@ -332,7 +400,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 uint newItemNum = Math.Min(stackLimit, oldItemNum + itemsToAdd);
                 uint addedItems = newItemNum - oldItemNum;
                 itemsToAdd -= addedItems;
-                
+
                 Storage destinationStorage = character.Storage.GetStorage(destinationStorageType);
                 if (item == null)
                 {
@@ -466,7 +534,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             storage.SetItem(item, num, slotNo);
 
             server.Database.InsertStorageItem(character.ContentCharacterId, storage.Type, slotNo, num, item, connectionIn);
-            
+
             foreach (var crest in item.EquipElementParamList)
             {
                 server.Database.InsertCrest(character.CommonId, item.UId, crest.SlotNo, crest.CrestId, crest.Add, connectionIn);
