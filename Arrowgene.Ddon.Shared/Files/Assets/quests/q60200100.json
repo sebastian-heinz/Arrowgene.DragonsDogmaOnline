@@ -1,6 +1,6 @@
 {
     "state_machine": "GenericStateMachine",
-    "type": "Personal",
+    "type": "Tutorial",
     "comment": "Skill Augmentation: Fighter Trial I",
     "quest_id": 60200100,
     "next_quest": 0,

@@ -1,6 +1,6 @@
 {
     "state_machine": "GenericStateMachine",
-    "type": "Personal",
+    "type": "Tutorial",
     "comment": "Seeking the Master: Fighter",
     "quest_id": 60000050,
     "next_quest": 0,

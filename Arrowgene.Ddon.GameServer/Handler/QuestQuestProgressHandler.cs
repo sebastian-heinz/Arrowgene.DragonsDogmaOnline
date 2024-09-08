@@ -90,7 +90,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         }
                     }
                 }
-                else if (questProgressState == QuestProgressState.Accepted && quest.QuestType == QuestType.Personal)
+                else if (questProgressState == QuestProgressState.Accepted && quest.QuestType == QuestType.Tutorial)
                 {
                     // Add a new personal quest record for the player
                     if (!Server.Database.InsertQuestProgress(client.Character.CommonId, quest.QuestId, quest.QuestType, 0))
