@@ -102,7 +102,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             List<InstancedEnemy> group = client.Party.InstanceEnemyManager.GetInstancedEnemies(stageId);
-
             bool groupDestroyed = group.Where(x => x.IsRequired).All(x => x.IsKilled);
             if (groupDestroyed)
             {

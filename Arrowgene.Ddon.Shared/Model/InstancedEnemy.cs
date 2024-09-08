@@ -17,14 +17,12 @@ namespace Arrowgene.Ddon.Shared.Model
         public InstancedEnemy(InstancedEnemy enemy) : base (enemy)
         {
             IsKilled = false;
-            Index = enemy.Index;
             IsRequired = enemy.IsRequired;
             RepopWaitSecond = enemy.RepopWaitSecond;
         }
 
         public bool IsRequired { get; set; }
         public bool IsKilled { get; set; }
-        public byte Index {  get; set; }
         public uint RepopWaitSecond {  get; set; }
     }
 }

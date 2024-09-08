@@ -40,6 +40,8 @@ namespace Arrowgene.Ddon.Shared.Model
             Experience = enemy.Experience;
             DropsTable = enemy.DropsTable;
             NotifyStrongEnemy = enemy.NotifyStrongEnemy;
+            Index = enemy.Index;
+            Subgroup = enemy.Subgroup;
         }
 
         public uint Id { get; set; }
@@ -73,6 +75,9 @@ namespace Arrowgene.Ddon.Shared.Model
                 return NameMap.GetValueOrDefault(EnemyId);
             } 
         }
+
+        public byte Index { get; set; }
+        public byte Subgroup { get; set; }
 
         public uint GetDroppedExperience()
         {

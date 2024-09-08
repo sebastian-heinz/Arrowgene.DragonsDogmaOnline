@@ -82,7 +82,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     row[enemySchemaIndexes["GroupId"]].GetUInt32()
                 );
                 byte subGroupId = row[enemySchemaIndexes["SubGroupId"]].GetByte();
-                List<Enemy> enemies = asset.Enemies.GetValueOrDefault((layoutId, subGroupId)) ?? new List<Enemy>();
+                List<Enemy> enemies = asset.Enemies.GetValueOrDefault((layoutId, (byte)0)) ?? new List<Enemy>();
                 Enemy enemy = new Enemy()
                 {
                     EnemyId = ParseHexUInt(row[enemySchemaIndexes["EnemyId"]].GetString()),
@@ -105,6 +105,9 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     BloodOrbs = row[enemySchemaIndexes["BloodOrbs"]].GetUInt32(),
                     HighOrbs = row[enemySchemaIndexes["HighOrbs"]].GetUInt32(),
                     Experience = row[enemySchemaIndexes["Experience"]].GetUInt32(),
+
+                    Index = (byte)enemies.Count,
+                    Subgroup = subGroupId,
                 };
 
                 //checking if the file has spawntime, if yes we convert the time and pass it along to enemy.cs
@@ -130,7 +133,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     enemy.DropsTable = asset.DropsTables[(uint) dropsTableId];
                 }
                 enemies.Add(enemy);
-                asset.Enemies[(layoutId, subGroupId)] = enemies;
+                asset.Enemies[(layoutId, 0)] = enemies;
             }
 
             return asset;

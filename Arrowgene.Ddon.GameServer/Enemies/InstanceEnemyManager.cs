@@ -11,18 +11,19 @@ public class InstanceEnemyManager : InstanceAssetManager<byte, Enemy, InstancedE
     private readonly DdonGameServer _Server;
     private Dictionary<StageId, ushort> _CurrentSubgroup { get; set; }
 
-    private Dictionary<StageId, Dictionary<uint, InstancedEnemy>> _EnemyData;
+    private Dictionary<StageId, Dictionary<byte, InstancedEnemy>> _EnemyData;
 
     public InstanceEnemyManager(DdonGameServer server) : base()
     {
         _Server = server;
         _CurrentSubgroup  = new Dictionary<StageId, ushort>();
-        _EnemyData = new Dictionary<StageId, Dictionary<uint, InstancedEnemy>>();
+        _EnemyData = new Dictionary<StageId, Dictionary<byte, InstancedEnemy>>();
     }
 
-    protected override List<Enemy> FetchAssetsFromRepository(StageId stage, byte subGroupId)
+    protected override List<Enemy> FetchAssetsFromRepository(StageId stage, byte setId)
     {
-        return _Server.AssetRepository.EnemySpawnAsset.Enemies.GetValueOrDefault((stage, subGroupId)) ?? new List<Enemy>();
+        // SetId is not used here, because the enemy data structure is flat, but the interface demands we have it.
+        return _Server.AssetRepository.EnemySpawnAsset.Enemies.GetValueOrDefault((stage, (byte)0)) ?? new List<Enemy>();
     }
 
     protected override List<InstancedEnemy> InstanceAssets(List<Enemy> originals)
@@ -57,7 +58,7 @@ public class InstanceEnemyManager : InstanceAssetManager<byte, Enemy, InstancedE
         {
             if (!_EnemyData.ContainsKey(stageId))
             {
-                _EnemyData[stageId] = new Dictionary<uint, InstancedEnemy>();
+                _EnemyData[stageId] = new Dictionary<byte, InstancedEnemy>();
             }
 
             if (!_EnemyData[stageId].ContainsKey(index))

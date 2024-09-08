@@ -69,16 +69,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
-                foreach (var asset in client.Party.InstanceEnemyManager.GetAssets(stageId, subGroupId).Select((Enemy, Index) => new {Index, Enemy}))
+                foreach (var asset in client.Party.InstanceEnemyManager.GetAssets(stageId, 0)
+                    .Where(x => x.Subgroup == subGroupId))
                 {
                     response.EnemyList.Add(new CDataLayoutEnemyData()
                     {
-                        PositionIndex = (byte) asset.Index,
-                        EnemyInfo = asset.Enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
+                        PositionIndex = asset.Index,
+                        EnemyInfo = asset.asCDataStageLayoutEnemyPresetEnemyInfoClient()
                     });
-                    client.Party.InstanceEnemyManager.SetInstanceEnemy(stageId, (byte) asset.Index, asset.Enemy);
+                    client.Party.InstanceEnemyManager.SetInstanceEnemy(stageId, asset.Index, asset);
 
-                    if (asset.Enemy.NotifyStrongEnemy)
+                    if (asset.NotifyStrongEnemy)
                     {
                         notifyStrongEnemy = true;
                     }
