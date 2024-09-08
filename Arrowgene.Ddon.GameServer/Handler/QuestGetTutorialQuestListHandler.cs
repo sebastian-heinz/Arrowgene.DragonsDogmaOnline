@@ -24,11 +24,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 StageNo = request.StageNo,
             };
 
-            var completedQuests = Server.Database.GetCompletedQuestsByType(client.Character.CommonId, QuestType.Personal);
+            var completedQuests = Server.Database.GetCompletedQuestsByType(client.Character.CommonId, QuestType.Tutorial);
 
             // This handler should return personal quests which have not been started
             // yet when the player enters the StageNo
-            foreach (var quest in QuestManager.GetPersonalQuestsByStageNo(request.StageNo))
+            foreach (var quest in QuestManager.GetTutorialQuestsByStageNo(request.StageNo))
             {
                 uint stageNo = (uint) StageManager.ConvertIdToStageNo(quest.StageId);
                 if (stageNo != request.StageNo)

@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static Dictionary<QuestId, Quest> gQuests = new Dictionary<QuestId, Quest>();
         private static readonly Dictionary<QuestId, Dictionary<uint, Quest>> variantQuests = new();
         private static readonly HashSet<QuestId> AvailableVariantQuests = new();
-        private static Dictionary<uint, List<Quest>> gPersonalQuests = new Dictionary<uint, List<Quest>>();
+        private static Dictionary<uint, List<Quest>> gTutorialQuests = new Dictionary<uint, List<Quest>>();
         private static Dictionary<QuestAreaId, List<Quest>> gWorldQuests = new Dictionary<QuestAreaId, List<Quest>>();
 
         public static HashSet<QuestId> GetAllVariantQuestIds()
@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public static void LoadQuests(AssetRepository assetRepository)
         {
             // TODO: Quests should probably operate on the distribuition ID instead of quest id so the global list can still contain all quests
-            // TODO: Then quests can be distributed to different lists for faster lookup (like world by area id or personal by stageno)
+            // TODO: Then quests can be distributed to different lists for faster lookup (like world by area id or tutorial by stageno)
 
             // Load Quests defined in files
             foreach (var questAsset in assetRepository.QuestAssets.Quests)
@@ -62,14 +62,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     gQuests[questAsset.QuestId] = GenericQuest.FromAsset(questAsset);
 
                     var quest = gQuests[questAsset.QuestId];
-                    if (quest.QuestType == QuestType.Personal)
+                    if (quest.QuestType == QuestType.Tutorial)
                     {
                         uint stageNo = (uint)StageManager.ConvertIdToStageNo(quest.StageId);
-                        if (!gPersonalQuests.ContainsKey(stageNo))
+                        if (!gTutorialQuests.ContainsKey(stageNo))
                         {
-                            gPersonalQuests[stageNo] = new List<Quest>();
+                            gTutorialQuests[stageNo] = new List<Quest>();
                         }
-                        gPersonalQuests[stageNo].Add(quest);
+                        gTutorialQuests[stageNo].Add(quest);
                     }
                     else if (quest.QuestType == QuestType.World)
                     {
@@ -169,14 +169,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return gWorldQuests[areaId].Select(x => x.QuestId).ToList();
         }
 
-        public static List<Quest> GetPersonalQuestsByStageNo(uint stageNo)
+        public static List<Quest> GetTutorialQuestsByStageNo(uint stageNo)
         {
-            if (!gPersonalQuests.ContainsKey(stageNo))
+            if (!gTutorialQuests.ContainsKey(stageNo))
             {
                 return new List<Quest>();
             }
 
-            return gPersonalQuests[stageNo];
+            return gTutorialQuests[stageNo];
         }
 
         public static uint GetRandomVariantId(QuestId baseQuest)
@@ -260,12 +260,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new CDataQuestOrderConditionParam() { Type = 0x6, Param01 = (int)questId };
             }
 
-            public static CDataQuestOrderConditionParam ClearPersonalQuestRestriction(int param01, int param02 = 0)
+            public static CDataQuestOrderConditionParam ClearTutorialQuestRestriction(int param01, int param02 = 0)
             {
                 return new CDataQuestOrderConditionParam() { Type = 0x7, Param01 = param01, Param02 = param02 };
             }
 
-            public static CDataQuestOrderConditionParam ClearPersonalQuestRestriction(QuestId questId, int param02 = 0)
+            public static CDataQuestOrderConditionParam ClearTutorialQuestRestriction(QuestId questId, int param02 = 0)
             {
                 return new CDataQuestOrderConditionParam() { Type = 0x7, Param01 = (int)questId, Param02 = param02 };
             }
@@ -3267,14 +3267,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return IsBoardQuest(quest.QuestId);
         }
 
-        public static bool IsPersonalQuest(QuestId questId)
+        public static bool IsTutorialQuest(QuestId questId)
         {
             return (((uint)questId) >= 60000000) && (((uint)questId) < 70000000);
         }
 
-        public static bool IsPersonalQuest(Quest quest)
+        public static bool IsTutorialQuest(Quest quest)
         {
-            return IsPersonalQuest(quest.QuestId);
+            return IsTutorialQuest(quest.QuestId);
         }
 
         public static bool IsWorldQuest(QuestId questId)

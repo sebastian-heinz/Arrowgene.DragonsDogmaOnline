@@ -12,6 +12,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
@@ -54,8 +55,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ntc.MainQuestIdList.Add(new CDataQuestId() { QuestId = (uint) msq.QuestId });
             }
 
-            var personalQuestInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.Personal);
-            foreach (var questProgress in personalQuestInProgress)
+            var completedTutorials = client.Character.CompletedQuests.Values.Where(x => x.QuestType == QuestType.Tutorial);
+            foreach (var tut in completedTutorials)
+            {
+                ntc.TutorialQuestIdList.Add(new CDataQuestId() { QuestId = (uint) tut.QuestId});
+            }
+
+            var tutorialQuestInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.Tutorial);
+            foreach (var questProgress in tutorialQuestInProgress)
             {
                 var quest = QuestManager.GetQuest(questProgress.QuestId);
                 var tutorialQuest = quest.ToCDataTutorialQuestOrderList(questProgress.Step);
