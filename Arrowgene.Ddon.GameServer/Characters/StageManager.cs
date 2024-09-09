@@ -50,7 +50,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             61, // Golden Tankard Inn
             66, // Gritten Fort
             78, // Pawn Cathedral
-            98, // Hobolic Cave
+            95, // Hobolic Cave
             137, // Mysree Grove Shrine
             139, // Zandora Wastelands Shrine
             141, // Breya Coast (Summer Event Hub Area)
