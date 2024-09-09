@@ -1,32 +1,62 @@
 using Arrowgene.Ddon.GameServer;
 using Arrowgene.Ddon.GameServer.GatheringItems;
-using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Shared.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-public class InstanceEnemyManager : InstanceAssetManager<byte, Enemy, InstancedEnemy>
+public class InstanceEnemyManager : InstanceAssetManager<Enemy, InstancedEnemy>
 {
     private readonly DdonGameServer _Server;
     private Dictionary<StageId, ushort> _CurrentSubgroup { get; set; }
 
-    private Dictionary<StageId, Dictionary<byte, InstancedEnemy>> _EnemyData;
+    private Dictionary<StageId, Dictionary<int, InstancedEnemy>> _EnemyData;
 
     public InstanceEnemyManager(DdonGameServer server) : base()
     {
         _Server = server;
         _CurrentSubgroup  = new Dictionary<StageId, ushort>();
-        _EnemyData = new Dictionary<StageId, Dictionary<byte, InstancedEnemy>>();
+        _EnemyData = new Dictionary<StageId, Dictionary<int, InstancedEnemy>>();
     }
 
-    protected override List<Enemy> FetchAssetsFromRepository(StageId stage, byte setId)
+    protected override InstancedEnemy InstanceAssets(Enemy original)
     {
-        // SetId is not used here, because the enemy data structure is flat, but the interface demands we have it.
-        return _Server.AssetRepository.EnemySpawnAsset.Enemies.GetValueOrDefault((stage, (byte)0)) ?? new List<Enemy>();
+        long gameTimeMSec = _Server.WeatherManager.RealTimeToGameTimeMS(DateTimeOffset.UtcNow);
+
+        if (original.SpawnTimeEnd < original.SpawnTimeStart)
+        {
+            // Morning range is 0 (midnight) to end time, Evening range is start time and onwards
+            if (gameTimeMSec <= original.SpawnTimeEnd || gameTimeMSec >= original.SpawnTimeStart)
+            {
+                return new InstancedEnemy(original);
+            }
+        }
+        else if (gameTimeMSec >= original.SpawnTimeStart && gameTimeMSec <= original.SpawnTimeEnd)
+        {
+            return new InstancedEnemy(original);
+        }
+        return null;
     }
 
-    protected override List<InstancedEnemy> InstanceAssets(List<Enemy> originals)
+    protected override Enemy FetchAssetsFromRepository(StageId stage, int setId)
+    {
+        var enemiesInStage = _Server.AssetRepository.EnemySpawnAsset.Enemies.GetValueOrDefault(stage) ?? new List<Enemy>();
+        if (enemiesInStage.Count > setId)
+        {
+            return enemiesInStage[setId];
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    protected override IEnumerable<Enemy> FetchAssetsFromRepository(StageId stage)
+    {
+        return _Server.AssetRepository.EnemySpawnAsset.Enemies.GetValueOrDefault(stage) ?? new List<Enemy>();
+    }
+
+    protected override List<InstancedEnemy> InstanceAssets(IEnumerable<Enemy> originals)
     {
         List<InstancedEnemy> filteredEnemyList = new List<InstancedEnemy>();
 
@@ -58,7 +88,7 @@ public class InstanceEnemyManager : InstanceAssetManager<byte, Enemy, InstancedE
         {
             if (!_EnemyData.ContainsKey(stageId))
             {
-                _EnemyData[stageId] = new Dictionary<byte, InstancedEnemy>();
+                _EnemyData[stageId] = new Dictionary<int, InstancedEnemy>();
             }
 
             if (!_EnemyData[stageId].ContainsKey(index))

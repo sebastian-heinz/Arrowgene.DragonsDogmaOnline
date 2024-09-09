@@ -1,9 +1,10 @@
-using System;
-using System.Collections.Generic;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
 {
@@ -48,7 +49,9 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                     LayerNo = layerNo,
                     GroupId = groupId
                 };
-                List<InstancedEnemy> enemySpawns = client.Party.InstanceEnemyManager.GetAssets(enemyGroup, subGroupId);
+                List<InstancedEnemy> enemySpawns = client.Party.InstanceEnemyManager.GetAssets(enemyGroup)
+                    .Where(x => x.Subgroup == subGroupId)
+                    .ToList();
 
                 if (enemySpawns.Count <= positionIndex)
                 {

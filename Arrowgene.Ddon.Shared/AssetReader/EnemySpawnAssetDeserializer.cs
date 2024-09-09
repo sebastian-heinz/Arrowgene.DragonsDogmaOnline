@@ -82,7 +82,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     row[enemySchemaIndexes["GroupId"]].GetUInt32()
                 );
                 byte subGroupId = row[enemySchemaIndexes["SubGroupId"]].GetByte();
-                List<Enemy> enemies = asset.Enemies.GetValueOrDefault((layoutId, (byte)0)) ?? new List<Enemy>();
+                List<Enemy> enemies = asset.Enemies.GetValueOrDefault(layoutId) ?? new List<Enemy>();
                 Enemy enemy = new Enemy()
                 {
                     EnemyId = ParseHexUInt(row[enemySchemaIndexes["EnemyId"]].GetString()),
@@ -133,7 +133,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     enemy.DropsTable = asset.DropsTables[(uint) dropsTableId];
                 }
                 enemies.Add(enemy);
-                asset.Enemies[(layoutId, 0)] = enemies;
+                asset.Enemies[layoutId] = enemies;
             }
 
             return asset;

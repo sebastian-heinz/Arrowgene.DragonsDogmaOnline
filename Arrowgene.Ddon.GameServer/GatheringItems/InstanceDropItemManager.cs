@@ -1,6 +1,6 @@
-using System;
-using System.Collections.Generic;
 using Arrowgene.Ddon.Shared.Model;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.GatheringItems
 {
@@ -13,9 +13,9 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
             this._client = client;
         }
 
-        protected override List<GatheringItem> FetchAssetsFromRepository(StageId stage, uint setId)
+        protected override List<GatheringItem> FetchAssetsFromRepository(StageId stage, int setId)
         {
-            List<InstancedEnemy> enemiesInSet =  _client.Party.InstanceEnemyManager.GetAssets(stage, 0);
+            List<InstancedEnemy> enemiesInSet =  _client.Party.InstanceEnemyManager.GetAssets(stage);
             if(enemiesInSet != null && setId < enemiesInSet.Count)
             {
                 Enemy enemy = enemiesInSet[(int) setId];
@@ -26,6 +26,12 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
                 }
             }
             return new List<GatheringItem>();
+        }
+
+        protected override IEnumerable<List<GatheringItem>> FetchAssetsFromRepository(StageId stage)
+        {
+            List<InstancedEnemy> enemiesInSet = _client.Party.InstanceEnemyManager.GetAssets(stage);
+            return enemiesInSet.Select(x => x.DropsTable.Items);
         }
     }
 }
