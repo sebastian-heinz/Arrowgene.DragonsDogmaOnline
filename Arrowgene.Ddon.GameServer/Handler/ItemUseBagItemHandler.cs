@@ -8,6 +8,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.GameServer.Characters;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -16,9 +17,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ItemUseBagItemHandler));
 
         private static readonly StorageType DestinationStorageType = StorageType.ItemBagConsumable;
+        private DdonGameServer _Server;
 
         public ItemUseBagItemHandler(DdonGameServer server) : base(server)
         {
+            _Server = server;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SItemUseBagItemReq> req)
@@ -42,6 +45,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 UpdateType = ItemNoticeType.UseBag
             };
+
+            if (_Server.ItemManager.IsSecretAbilityItem(item.ItemId))
+            {
+                _Server.JobManager.UnlockSecretAbility(client, client.Character, (SecretAbility) _Server.ItemManager.GetAbilityId(item.ItemId));
+            }
 
             CDataItemUpdateResult ntcData0 = new CDataItemUpdateResult();
             ntcData0.ItemList.ItemUId = item.UId;

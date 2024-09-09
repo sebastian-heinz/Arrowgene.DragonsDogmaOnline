@@ -150,7 +150,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 case OrbGainParamType.MainPawnLostRate:
                     break;
                 case OrbGainParamType.SecretAbility:
-                    _JobManager.UnlockSecretAbility(character, upgrade.SecretAbility);
+                    _JobManager.UnlockSecretAbility(client, character, upgrade.SecretAbility);
                     break;
                 case OrbGainParamType.Rim:
                     _WalletManager.AddToWalletNtc(client, client.Character, WalletType.RiftPoints, upgrade.Amount);

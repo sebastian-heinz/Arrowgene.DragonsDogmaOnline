@@ -55,15 +55,6 @@
                     "groups": [0]
                 }
             ]
-        },
-        {
-            "blocks": [
-                {
-                    "comment": "Wait for fight to start",
-                    "type": "MyQstFlags",
-                    "check_flags": [1]
-                }
-            ]
         }
     ]
 }
