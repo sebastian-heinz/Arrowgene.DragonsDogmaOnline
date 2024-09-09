@@ -7,6 +7,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
+using System.CodeDom.Compiler;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Quests
@@ -80,6 +81,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                                 {
                                     var enemyGroup = quest.EnemyGroups[groupId];
                                     quest.Locations.Add(new QuestLocation() { StageId = enemyGroup.StageId, SubGroupId = (ushort) enemyGroup.SubGroupId });
+                                    quest.UniqueEnemyGroups.Add(enemyGroup.StageId);
                                 }
                             }
                             break;
@@ -191,6 +193,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     var enemies = EnemyGroups[enemyGroupId];
                     client.Party.QuestState.SetInstanceEnemies(this, enemies.StageId, (ushort)enemies.SubGroupId, new List<InstancedEnemy>());
                 }
+            }
+
+            if (questBlock.BlockType == QuestBlockType.ExtendTime && client.Party.ContentId != 0)
+            {
+                var newEndTime = server.ExmManager.ExtendTimer(client.Party.ContentId, questBlock.TimeAmount);
+                client.Party.SendToAll(new S2CQuestPlayAddTimerNtc() { PlayEndDateTime = newEndTime });
             }
 
             foreach (var item in questBlock.HandPlayerItems)
@@ -329,6 +337,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     {
                         checkCommands.Add(QuestManager.CheckCommand.Prt(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.PartyGatherPoint.x, questBlock.PartyGatherPoint.y, questBlock.PartyGatherPoint.z));
                         resultCommands.Add(QuestManager.ResultCommand.Prt(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.PartyGatherPoint.x, questBlock.PartyGatherPoint.y, questBlock.PartyGatherPoint.z));
+                    }
+                    break;
+                case QuestBlockType.IsGatherPartyInStage:
+                    {
+                        checkCommands.Add(QuestManager.CheckCommand.IsGatherPartyInStage(StageManager.ConvertIdToStageNo(questBlock.StageId)));
                     }
                     break;
                 case QuestBlockType.DiscoverEnemy:
@@ -560,6 +573,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     /* handled generically for all blocks */
                     break;
                 case QuestBlockType.DestroyGroup:
+                    /* This is a pseudo block handeled at the state machine level */
+                    break;
+                case QuestBlockType.ExtendTime:
                     /* This is a pseudo block handeled at the state machine level */
                     break;
                 case QuestBlockType.DummyBlock:

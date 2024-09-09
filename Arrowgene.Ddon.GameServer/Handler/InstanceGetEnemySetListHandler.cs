@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -30,8 +31,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             bool IsQuestControlled = false;
             foreach (var questId in client.Party.QuestState.StageQuests(stageId))
             {
-                quest = client.Party.QuestState.GetQuest(questId);
-                if (client.Party.QuestState.HasEnemiesInCurrentStageGroup(quest, stageId, subGroupId))
+                quest = QuestManager.GetQuest(questId);
+                if (quest.HasEnemiesInInCurrentStage(stageId))
                 {
                     IsQuestControlled = true;
                     break;

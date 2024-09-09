@@ -21,12 +21,27 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
+        private readonly Dictionary<uint, ContentsType> gContentMapping = new Dictionary<uint, ContentsType>()
+        {
+            {1, ContentsType.ExtremeMission}, // Seneka (WDT)
+            {2, ContentsType.ExtremeMission}, // Issac (WDT)
+            {3, ContentsType.ExtremeMission},
+            {4, ContentsType.ClanDungeon}, // Clan Dungeon
+            {5, ContentsType.ExtremeMission}, 
+            {6, ContentsType.ExtremeMission}, // Nayajiku (Lookout Castle)
+            {7, ContentsType.ExtremeMission}, // Doris (Mergado)
+            {8, ContentsType.ExtremeMission},
+            {9, ContentsType.ExtremeMission}, // Alan (WDT)
+            {10, ContentsType.ChainDungeon}, // Travers (WDT)
+            // May be more...
+        };
+
         public override S2CQuestGetEndContentsGroupRes Handle(GameClient client, C2SQuestGetEndContentsGroupReq request)
         {
             // var pcap0 = new S2CQuestGetEndContentsGroupRes.Serializer().Read(pcap0_data);
             var results = new S2CQuestGetEndContentsGroupRes()
             {
-                ContentsType = ContentsType.End,
+                ContentsType = gContentMapping.ContainsKey(request.GroupId) ? gContentMapping[request.GroupId] : ContentsType.ExtremeMission,
                 GroupId = request.GroupId
             };
 

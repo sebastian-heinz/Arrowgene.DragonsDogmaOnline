@@ -9,10 +9,10 @@
     "mission_params": {
         "group": 2,
         "minimum_members": 1,
-        "playtime": 3600,
+        "playtime": 1200,
         "solo_only": true,
         "max_pawns": 3,
-        "phase_groups": [113, 5, 113]
+        "phase_groups": []
     },
     "order_conditions": [
         {"type": "ClearExtremeMission", "Param1": 50104000}
@@ -52,6 +52,12 @@
         {
             "blocks": [
                 {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 433
+                    }
+                },
+                {
                     "type": "KillGroup",
                     "announce_type": "Start",
                     "groups": [0]
@@ -61,9 +67,21 @@
         {
             "blocks": [
                 {
-                    "comment": "Wait for fight to start",
-                    "type": "MyQstFlags",
-                    "check_flags": [1]
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "NoticeInterruptContents"}
+                    ],
+                    "result_commands": [
+                        {"type": "SetCheckPoint"}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "result_commands": [
+                        {"type": "ReturnCheckPointEx", "Param": 0},
+                        {"type": "ReturnCheckPointEx", "Param": 1},
+                        {"type": "EndEndQuest"}
+                    ]
                 }
             ]
         }

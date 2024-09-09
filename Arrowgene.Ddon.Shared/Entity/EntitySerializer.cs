@@ -77,6 +77,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataClanParam.Serializer());
             Create(new CDataClanServerParam.Serializer());
             Create(new CDataClanUserParam.Serializer());
+            Create(new CDataClearTimePointBonus.Serializer());
             Create(new CDataCommonU8.Serializer());
             Create(new CDataCommonU32.Serializer());
             Create(new CDataCommonU64.Serializer());
@@ -145,6 +146,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataEntryItem.Serializer());
             Create(new CDataEntryItemParam.Serializer());
             Create(new CDataEntryMemberData.Serializer());
+            Create(new CDataRaidBossPlayStartData.Serializer());
+            Create(new CDataRaidBossEnemyParam.Serializer());
 
             Create(new CDataEquipItemInfo.Serializer());
             Create(new CDataEquipJobItem.Serializer());
@@ -165,6 +168,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataGPCourseInfoSerializer());
             Create(new CDataGPCourseEffectParamSerializer());
             Create(new CDataGPCourseAvailableSerializer());
+            Create(new CDataHasRegionBreakReward.Serializer());
             Create(new CDataHistoryElement.Serializer());
             Create(new CDataItemEquipElement.Serializer());
             Create(new CDataItemEquipElementParam.Serializer());
@@ -643,6 +647,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SQuestPlayEndReq.Serializer());
             Create(new C2SQuestGetAdventureGuideQuestNtcReq.Serializer());
             Create(new C2SQuestGetEndContentsRecruitListReq.Serializer());
+            Create(new C2SQuestPlayInterruptReq.Serializer());
 
             Create(new C2SServerGameTimeGetBaseInfoReq.Serializer());
             Create(new C2SServerGetRealTimeReq.Serializer());
@@ -944,6 +949,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CItemGetEmbodyPayCostRes.Serializer());
             Create(new S2CItemGetSpecifiedHavingItemListRes.Serializer());
             Create(new S2CItemEmbodyItemsRes.Serializer());
+            Create(new S2CItemSwitchStorageNtc.Serializer());
 
             Create(new S2CJob_33_3_16_Ntc.Serializer());
             Create(new S2CJobChangeJobNtc.Serializer());
@@ -1113,12 +1119,17 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CQuestPlayEntryNtc.Serializer());
             Create(new S2CQuestPlayerStartRes.Serializer());
             Create(new S2CQuestTimeGainQuestPlayStartNtc.Serializer());
+            Create(new S2CQuestRaidBossPlayStartNtc.Serializer());
             Create(new S2CQuestPlayStartTimerRes.Serializer());
             Create(new S2CQuestPlayStartTimerNtc.Serializer());
             Create(new S2CQuestPlayEndRes.Serializer());
             Create(new S2CQuestPlayEndNtc.Serializer());
             Create(new S2CQuestGetAdventureGuideQuestNtcRes.Serializer());
             Create(new S2CQuestGetEndContentsRecruitListRes.Serializer());
+            Create(new S2CQuestPlayInterruptRes.Serializer());
+            Create(new S2CQuestPlayInterruptNtc.Serializer());
+            Create(new S2CQuestPlayTimeupNtc.Serializer());
+            Create(new S2CQuestPlayAddTimerNtc.Serializer());
 
             Create(new S2CQuestSendLeaderQuestOrderConditionInfoNtc.Serializer());
             Create(new S2CQuestSendLeaderQuestOrderConditionInfoRes.Serializer());
@@ -1142,6 +1153,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CSituationDataEndNtc.Serializer());
             Create(new S2C_63_7_16_NTC.Serializer());
             Create(new S2C_63_10_16_NTC.Serializer());
+            Create(new S2C_63_11_16_NTC.Serializer());
 
             Create(new S2CSkillAbilitySetNtc.Serializer());
             Create(new S2CSkillChangeExSkillRes.Serializer());

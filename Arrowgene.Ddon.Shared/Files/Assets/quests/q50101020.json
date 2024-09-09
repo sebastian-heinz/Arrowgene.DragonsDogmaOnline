@@ -9,10 +9,10 @@
     "mission_params": {
         "group": 1,
         "minimum_members": 1,
-        "playtime": 3600,
+        "playtime": 1200,
         "solo_only": true,
         "max_pawns": 3,
-        "phase_groups": [733, 0, 733]
+        "phase_groups": []
     },
     "order_conditions": [
         {"type": "MainQuestCompleted", "Param1": 30}
@@ -372,7 +372,7 @@
         {
             "blocks": [
                 {
-                    "type": "IsStageNo",
+                    "type": "IsGatherPartyInStage",
                     "stage_id": {
                         "id": 293
                     }

@@ -29,12 +29,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CQuestPlayEndRes Handle(GameClient client, C2SQuestPlayEndReq request)
         {
-            var groupId = Server.ExmManager.GetContentIdForCharacter(client.Character);
-            var quest = Server.ExmManager.GetQuestForContent(groupId);
+            var contentId = client.Party.ContentId;
+            Server.ExmManager.CancelTimer(contentId);
 
+            var quest = Server.ExmManager.GetQuestForContent(contentId);
+            
             var ntc = new S2CQuestPlayEndNtc();
             ntc.ContentsPlayEnd.RewardItemDetailList = quest.ToCDataTimeGainQuestList(0).RewardItemDetailList;
             client.Party.SendToAll(ntc);
+
+            client.Party.ContentInProgress = false;
 
             return new S2CQuestPlayEndRes();
         }

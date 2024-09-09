@@ -514,6 +514,8 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             questBlock.PartyGatherPoint.z = jLocation.GetProperty("z").GetInt32();
                         }
                         break;
+                    case QuestBlockType.IsGatherPartyInStage:
+                        break;
                     case QuestBlockType.DiscoverEnemy:
                     case QuestBlockType.SeekOutEnemiesAtMarkedLocation:
                     case QuestBlockType.KillGroup:
@@ -674,6 +676,11 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                                     Amount = item.GetProperty("amount").GetUInt32()
                                 });
                             }
+                        }
+                        break;
+                    case QuestBlockType.ExtendTime:
+                        {
+                            questBlock.TimeAmount = jblock.GetProperty("amount").GetUInt32();
                         }
                         break;
                     case QuestBlockType.PlayEvent:

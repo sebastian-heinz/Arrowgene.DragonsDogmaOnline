@@ -29,6 +29,7 @@ namespace Arrowgene.Ddon.GameServer.Party
         private bool _isBreakup;
         
         public readonly ulong ContentId;
+        public bool ContentInProgress;
 
         public InstanceEnemyManager InstanceEnemyManager { get; }
 

@@ -7,6 +7,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -71,6 +72,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public List<QuestLayoutFlag> QuestLayoutFlags;
         public QuestMissionParams MissionParams { get; protected set; }
         public Dictionary<uint, QuestEnemyGroup> EnemyGroups { get; set; }
+        public HashSet<StageId> UniqueEnemyGroups { get; protected set; }
         public bool IsVariantQuest { get; set; }
         public uint VariantId { get; set; }
 
@@ -93,6 +95,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             QuestLayoutFlagSetInfo = new List<QuestLayoutFlagSetInfo>();
             QuestLayoutFlags = new List<QuestLayoutFlag>();
             EnemyGroups = new Dictionary<uint, QuestEnemyGroup>();
+            UniqueEnemyGroups = new HashSet<StageId>();
             IsVariantQuest = false;
             VariantId = 0;
             MissionParams = new QuestMissionParams();
@@ -378,15 +381,18 @@ namespace Arrowgene.Ddon.GameServer.Quests
             result.Restrictions.Unk5List.Add(new CDataCommonU8() { Value = 2 });
 #endif
 
-
+            // Rewards for EXM seem to show up independently
             foreach (var reward in result.Param.FixedRewardItemList)
             {
-                result.RewardItemDetailList.Add(new CDataRewardItemDetail()
+                for (var i = 0; i < reward.Num; i++)
                 {
-                    ItemId = reward.ItemId,
-                    Num = reward.Num,
-                    Type = 12
-                });
+                    result.RewardItemDetailList.Add(new CDataRewardItemDetail()
+                    {
+                        ItemId = reward.ItemId,
+                        Num = 1,
+                        Type = 12
+                    });
+                }
             }
 
             return result;
@@ -451,6 +457,22 @@ namespace Arrowgene.Ddon.GameServer.Quests
             };
         }
 
+        public virtual CDataRaidBossPlayStartData ToCDataRaidBossPlayStartData(uint step = 0)
+        {
+            return new CDataRaidBossPlayStartData()
+            {
+                CommonData = ToCDataContentsPlayStartData(step),
+                ClearTimePointBonusList = new List<CDataClearTimePointBonus>()
+                {
+                    new CDataClearTimePointBonus() {Ratio = 1, Seconds = 100}
+                },
+                RaidBossEnemyParam = new CDataRaidBossEnemyParam()
+                {
+                    RaidBossId = 1
+                }
+            };
+        }
+
         public abstract List<CDataQuestProcessState> StateMachineExecute(DdonGameServer server, GameClient client, QuestProcessState processState, out QuestProgressState questProgressState);
 
         public virtual void SendProgressWorkNotices(GameClient client, StageId stageId, uint subGroupId)
@@ -474,6 +496,36 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
         }
 
+        public virtual void ResetEnemiesForStage(GameClient client, StageId stageId)
+        {
+            foreach (var (groupId, group) in EnemyGroups)
+            {
+                if (group.StageId.Id == stageId.Id)
+                {
+                    S2CInstanceEnemyGroupResetNtc resetNtc = new S2CInstanceEnemyGroupResetNtc()
+                    {
+                        LayoutId = group.StageId.ToStageLayoutId()
+                    };
+
+                    client.Party.InstanceEnemyManager.ResetEnemyNode(group.StageId);
+                    client.Party.SendToAll(resetNtc);
+                }
+            }
+        }
+
+        public virtual void HandleAreaChange(GameClient client, StageId stageId)
+        {
+            ResetEnemiesForStage(client, stageId);
+
+            // client.Party.SendToAll(new S2C_63_11_16_NTC() { StageNo = res.StageNo });
+            // TODO: Figure out what these do
+            // client.Party.SendToAll(new S2CSituationDataStartNtc() { Unk0 = 1 });
+#if false
+                var pcap2 = new S2CSituationDataUpdateObjectivesNtc.Serializer().Read(pcap2_data);
+                client.Party.SendToAll(pcap2);
+#endif
+        }
+
         public virtual void DestroyEnemiesForBlock(GameClient client, QuestBlock questBlock)
         {
             foreach (var groupId in questBlock.EnemyGroupIds)
@@ -487,6 +539,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
                 client.Party.SendToAll(destroyNtc);
             }
+        }
+
+        public bool HasEnemiesInInCurrentStage(StageId stageId)
+        {
+            return UniqueEnemyGroups.Contains(stageId);
         }
 
         public virtual void PopulateStartingEnemyData(PartyQuestState partyQuestState)
