@@ -4,6 +4,10 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataQuestContents
     {
+        /// <summary>
+        /// 1 = Hunt
+        /// 2 = Delivery
+        /// </summary>
         public byte Type { get; set; }
         public int Param01 { get; set; }
         public int Param02 { get; set; }

@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         /// 2 = Clan Board?
         /// </summary>
         public uint BoardType { get; set; }
-        public uint Unk0 { get; set; } // Possibly BoardId
+        public uint Unk0 { get; set; }
 
         public class Serializer : EntitySerializer<CDataLightQuestDetail>
         {
