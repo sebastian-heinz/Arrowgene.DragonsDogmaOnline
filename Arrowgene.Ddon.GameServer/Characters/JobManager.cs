@@ -55,7 +55,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 activeCharacterJobData.Lv = 1;
                 // TODO: All the other stats
                 common.CharacterJobDataList.Add(activeCharacterJobData);
-                _Server.Database.ReplaceCharacterJobData(common.CommonId, activeCharacterJobData);
+                _Server.Database.ReplaceCharacterJobData(common.CommonId, activeCharacterJobData, connectionIn);
             }
 
             // TODO: Figure out if CDataEquipItemInfo should be the equipment templates or just the currently equipped items
