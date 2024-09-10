@@ -362,6 +362,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new InstanceGetOmInstantKeyValueAllHandler(this));
             AddHandler(new InstanceTraningRoomGetEnemyListHandler(this));
             AddHandler(new InstanceTraningRoomSetEnemyHandler(this));
+            AddHandler(new Instance_13_46_16_Handler(this));
+            AddHandler(new Instance_13_47_16_Handler(this));
 
             AddHandler(new ItemConsumeStorageItemHandler(this));
             AddHandler(new ItemGetStorageItemListHandler(this));
