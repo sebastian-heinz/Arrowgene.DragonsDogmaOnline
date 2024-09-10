@@ -226,16 +226,16 @@
         },
         {
             "id": 17,
-            "name": "Arrowgene QOL Course",
+            "name": "Arrowgene Blessing",
             "comment": "Example of custom made course effect.",
             "icon_path": "",
-            "description": "Allows item boxes to be used outside the main city, enable expanded storage tabs and allows craft items to be consumed from the storage box.",
+            "description": "Allows players to use infinite revive refresh, item boxes to be used outside the main city, enable expanded storage tabs and allows craft items to be consumed from the storage box.",
             "url": "",
             "target": 0,
             "priority_grp": 100,
             "priority_same_time": 70,
             "announce_type": 2,
-            "effects": [ 2, 3, 69, 216, 217, 128 ]
+            "effects": [ 1, 2, 3, 69, 216, 217, 128 ]
         },
         {
             "id": 18,

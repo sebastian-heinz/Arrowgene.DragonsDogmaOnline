@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Buffers;
@@ -46,18 +47,33 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 cResponse.CharacterListElement.CurrentJobBaseInfo.Job = c.Job;
                 cResponse.CharacterListElement.CurrentJobBaseInfo.Level = (byte) c.ActiveCharacterJobData.Lv;
 
+                ulong now = (ulong)DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
                 List<CDataGPCourseValid> ValidCourses = new List<CDataGPCourseValid>();
                 foreach (var ValidCourse in _AssetRepo.GPCourseInfoAsset.ValidCourses)
                 {
+                    if (now > ValidCourse.Value.EndTime)
+                    {
+                        continue;
+                    }
+
                     CDataGPCourseValid cDataGPCourseValid = new CDataGPCourseValid()
                     {
                         Id = c.CharacterId,
                         CourseId = ValidCourse.Value.Id,
                         NameA = _AssetRepo.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].Name, // Course Name
                         NameB = _AssetRepo.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].IconPath, // Link to a icon
-                        StartTime = ValidCourse.Value.StartTime,
-                        EndTime = ValidCourse.Value.EndTime,
                     };
+
+                    if ((now >= ValidCourse.Value.StartTime) && (now <= ValidCourse.Value.EndTime))
+                    {
+                        cDataGPCourseValid.StartTime = ValidCourse.Value.StartTime;
+                        cDataGPCourseValid.EndTime = ValidCourse.Value.EndTime;
+                    }
+                    else
+                    {
+                        cDataGPCourseValid.StartTime = ValidCourse.Value.StartTime;
+                    }
 
                     ValidCourses.Add(cDataGPCourseValid);
                 }
