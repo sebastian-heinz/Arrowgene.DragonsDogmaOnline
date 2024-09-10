@@ -668,6 +668,14 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public void UpdatePriorityQuestList(DdonGameServer server, PartyGroup party)
         {
+            if (party.Leader is null)
+            {
+                party.SendToAll( new S2CQuestSetPriorityQuestNtc()
+                {
+                    CharacterId = party.Clients.First().Character.CharacterId
+                });
+            }
+
             var leaderClient = party.Leader.Client;
 
             S2CQuestSetPriorityQuestNtc prioNtc = new S2CQuestSetPriorityQuestNtc()

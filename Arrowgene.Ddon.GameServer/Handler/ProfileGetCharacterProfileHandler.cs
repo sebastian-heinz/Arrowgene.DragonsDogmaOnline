@@ -19,6 +19,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             GameClient targetClient = Server.ClientLookup.GetClientByCharacterId(request.CharacterId);
 
+            if (targetClient is null)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_CHARACTER_DATA_INVALID_CHARACTER_ID);
+            }
+
             S2CCharacterGetCharacterStatusNtc ntc = new S2CCharacterGetCharacterStatusNtc();
             ntc.CharacterId = targetClient.Character.CharacterId;
             ntc.StatusInfo = targetClient.Character.StatusInfo;

@@ -169,9 +169,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Server.Database.InsertPawnCraftProgress(craftProgress);
 
             // Subtract craft price
+            // TODO: This can apparently return null, but we can't throw an error here because we've already committed a bunch of stuff to the DB.
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,
                             Server.CraftManager.CalculateRecipeCost(recipe.Cost, costPerformanceLevels) * request.CreateCount);
-            updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
+            if (updateWalletPoint != null)
+            {
+                updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
+            }
 
             client.Send(updateCharacterItemNtc);
             return new S2CCraftStartCraftRes();
