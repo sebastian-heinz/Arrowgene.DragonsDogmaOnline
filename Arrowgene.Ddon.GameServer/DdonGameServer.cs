@@ -412,6 +412,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new MandragoraGetSpeciesCategoryListHandler(this));
             AddHandler(new MandragoraGetSpeciesListHandler(this));
             AddHandler(new MandragoraGetCraftRecipeListHandler(this));
+            AddHandler(new MandragoraBeginCraftHandler(this));
 
             AddHandler(new MyRoomFurnitureListGetHandler(this));
             AddHandler(new MyRoomMyRoomBgmUpdateHandler(this));

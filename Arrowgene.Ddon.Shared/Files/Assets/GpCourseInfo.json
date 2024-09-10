@@ -9,7 +9,7 @@
     ],
     "valid_courses": [
         {
-            "course_id": 17,
+            "course_id": 15,
             "start_time": 1440993600,
             "end_time": 4103413199,
             "comment": "Course 17 valid until the year 2100"

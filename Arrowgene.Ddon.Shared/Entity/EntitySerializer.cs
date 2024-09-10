@@ -212,6 +212,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataMatchingProfileSerializer());
             
             Create(new CDataMyMandragoraFurnitureItem.Serializer());
+            Create(new CDataMyMandragoraBeginCraftFertilizerItem.Serializer());
+            Create(new CDataMyMandragoraBeginCraftResUnk0.Serializer());
+            Create(new CDataMyMandragoraBeginCraftResUnk0Unk7.Serializer());
+            Create(new CDataMyMandragoraBeginCraftResUnk0Unk7Unk2.Serializer());
             Create(new CDataMyMandragora.Serializer());
             Create(new CDataMyMandragoraUnk1Unk7.Serializer());
             Create(new CDataMyMandragoraUnk1Unk7Unk2.Serializer());
@@ -575,6 +579,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SMandragoraGetSpeciesCategoryListReq.Serializer());
             Create(new C2SMandragoraGetSpeciesListReq.Serializer());
             Create(new C2SMandragoraGetCraftRecipeListReq.Serializer());
+            Create(new C2SMandragoraBeginCraftReq.Serializer());
             Create(new C2SMyRoomFurnitureListGetReq.Serializer());
             Create(new C2SMyRoomMyRoomBgmUpdateReq.Serializer());
             Create(new C2SMyRoomUpdatePlanetariumReq.Serializer());
@@ -1024,6 +1029,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CMandragoraGetSpeciesCategoryListRes.Serializer());
             Create(new S2CMandragoraGetSpeciesListRes.Serializer());
             Create(new S2CMandragoraGetCraftRecipeListRes.Serializer());
+            Create(new S2CMandragoraBeginCraftRes.Serializer());
             Create(new S2CMyRoomFurnitureListGetRes.Serializer());
             Create(new S2CMyRoomMyRoomBgmUpdateRes.Serializer());
             Create(new S2CMyRoomUpdatePlanetariumRes.Serializer());

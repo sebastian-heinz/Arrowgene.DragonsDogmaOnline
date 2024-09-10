@@ -26,9 +26,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 new CDataMyMandragoraCraftRecipe
                 {
-                    RecipeId = 1,
+                    RecipeId = 123,
                     ItemId = 17923, // Bonus Dungeon Ticket XP
-                    Time = 30,
+                    Time = 64800,
                     Unk3 = 3000,
                     Unk4 = new List<CDataMyMandragoraCraftRecipeUnk4>
                     {
@@ -53,6 +53,126 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             ItemId = 7896,
                             Num = 5,
                             SortNo = 2,
+                            IsSp = false
+                        }
+                    }
+                },
+                new CDataMyMandragoraCraftRecipe
+                {
+                    RecipeId = 456,
+                    ItemId = 17924, // Bonus Dungeon Ticket RIM
+                    Time = 64800,
+                    Unk3 = 3000,
+                    Unk4 = new List<CDataMyMandragoraCraftRecipeUnk4>
+                    {
+                        new CDataMyMandragoraCraftRecipeUnk4
+                        {
+                            Unk0 = 1,
+                            Unk1 = 1
+                        }
+                    },
+                    Unk5 = true,
+                    CraftMaterialList = new List<CDataMDataCraftMaterial>
+                    {
+                        new CDataMDataCraftMaterial
+                        {
+                            ItemId = 17881,
+                            Num = 1,
+                            SortNo = 1,
+                            IsSp = false
+                        },
+                        new CDataMDataCraftMaterial
+                        {
+                            ItemId = 14190,
+                            Num = 1,
+                            SortNo = 2,
+                            IsSp = false
+                        },
+                        new CDataMDataCraftMaterial
+                        {
+                            ItemId = 7896,
+                            Num = 3,
+                            SortNo = 3,
+                            IsSp = false
+                        }
+                    }
+                },
+                new CDataMyMandragoraCraftRecipe
+                {
+                    RecipeId = 789,
+                    ItemId = 18663, // Mandragora Leaf
+                    Time = 64800,
+                    Unk3 = 3000,
+                    Unk4 = new List<CDataMyMandragoraCraftRecipeUnk4>
+                    {
+                        new CDataMyMandragoraCraftRecipeUnk4
+                        {
+                            Unk0 = 1,
+                            Unk1 = 1
+                        }
+                    },
+                    Unk5 = false,
+                    CraftMaterialList = new List<CDataMDataCraftMaterial>
+                    {
+                        new CDataMDataCraftMaterial
+                        {
+                            ItemId = 7824,
+                            Num = 1,
+                            SortNo = 1,
+                            IsSp = false
+                        },
+                        new CDataMDataCraftMaterial
+                        {
+                            ItemId = 17886,
+                            Num = 1,
+                            SortNo = 2,
+                            IsSp = false
+                        },
+                        new CDataMDataCraftMaterial
+                        {
+                            ItemId = 17884,
+                            Num = 2,
+                            SortNo = 3,
+                            IsSp = false
+                        }
+                    }
+                },
+                new CDataMyMandragoraCraftRecipe
+                {
+                    RecipeId = 101112,
+                    ItemId = 18664, // Mandragora Twig
+                    Time = 64800,
+                    Unk3 = 3000,
+                    Unk4 = new List<CDataMyMandragoraCraftRecipeUnk4>
+                    {
+                        new CDataMyMandragoraCraftRecipeUnk4
+                        {
+                            Unk0 = 1,
+                            Unk1 = 1
+                        }
+                    },
+                    Unk5 = true,
+                    CraftMaterialList = new List<CDataMDataCraftMaterial>
+                    {
+                        new CDataMDataCraftMaterial
+                        {
+                            ItemId = 7824,
+                            Num = 1,
+                            SortNo = 1,
+                            IsSp = false
+                        },
+                        new CDataMDataCraftMaterial
+                        {
+                            ItemId = 17886,
+                            Num = 1,
+                            SortNo = 2,
+                            IsSp = false
+                        },
+                        new CDataMDataCraftMaterial
+                        {
+                            ItemId = 18507,
+                            Num = 2,
+                            SortNo = 3,
                             IsSp = false
                         }
                     }
