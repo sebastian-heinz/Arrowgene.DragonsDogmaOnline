@@ -714,6 +714,11 @@ namespace Arrowgene.Ddon.GameServer.Party
                     }
                 }
 
+                if (slotIndex == InvalidSlotIndex)
+                {
+                    return slotIndex;
+                }
+
                 partyMember.MemberIndex = slotIndex;
                 _slots[slotIndex] = partyMember;
             }
