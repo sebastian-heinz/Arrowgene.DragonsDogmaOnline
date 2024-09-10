@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading;
 
@@ -30,7 +31,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
             public double PawnEnemyExpBonus = 0.0;
             public double WorldQuestExpBonus = 0.0;
             public double EnemyPlayPointBonus = 0.0;
+            public double PawnCraftBonus = 0.0;
             public bool DisablePartyExpAdjustment = false;
+            public double EnemyBloodOrbMultiplier = 0.0;
+            public bool InfiniteRevive = false;
         };
 
         private void ApplyCourseEffects(uint courseId)
@@ -57,8 +61,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         case GPCourseId.EnemyPpUp:
                             _CourseBonus.EnemyPlayPointBonus += (effect.Param0 / 100.0);
                             break;
+                        case GPCourseId.PawnCraftExpUp:
+                            _CourseBonus.PawnCraftBonus += (effect.Param0 / 100.0);
+                            break;
                         case GPCourseId.DisablePartyAdjustEnemyExp:
                             _CourseBonus.DisablePartyExpAdjustment = true;
+                            break;
+                        case GPCourseId.BloodOrbUp:
+                            _CourseBonus.EnemyBloodOrbMultiplier += (effect.Param0 / 100.0);
+                            break;
+                        case GPCourseId.InfiniteRevive:
+                            _CourseBonus.InfiniteRevive = true;
                             break;
                     }
                 }
@@ -89,8 +102,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         case GPCourseId.EnemyPpUp:
                             _CourseBonus.EnemyPlayPointBonus -= (effect.Param0 / 100.0);
                             break;
+                        case GPCourseId.PawnCraftExpUp:
+                            _CourseBonus.PawnCraftBonus += (effect.Param0 / 100.0);
+                            break;
                         case GPCourseId.DisablePartyAdjustEnemyExp:
                             _CourseBonus.DisablePartyExpAdjustment = false;
+                            break;
+                        case GPCourseId.BloodOrbUp:
+                            _CourseBonus.EnemyBloodOrbMultiplier -= (effect.Param0 / 100.0);
+                            break;
+                        case GPCourseId.InfiniteRevive:
+                            _CourseBonus.InfiniteRevive = false;
                             break;
                     }
                 }
@@ -197,11 +219,35 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        public double PawnCraftBonus()
+        {
+            lock (_CourseBonus)
+            {
+                return _CourseBonus.PawnCraftBonus;
+            }
+        }
+
         public bool DisablePartyExpAdjustment()
         {
             lock (_CourseBonus)
             {
                 return _CourseBonus.DisablePartyExpAdjustment;
+            }
+        }
+
+        public double EnemyBloodOrbBonus()
+        {
+            lock (_CourseBonus)
+            {
+                return _CourseBonus.EnemyBloodOrbMultiplier;
+            }
+        }
+
+        public bool InfiniteReviveRefresh()
+        {
+            lock (_CourseBonus)
+            {
+                return _CourseBonus.InfiniteRevive;
             }
         }
     }

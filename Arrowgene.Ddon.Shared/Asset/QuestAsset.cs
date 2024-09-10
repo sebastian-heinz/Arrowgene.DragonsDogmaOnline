@@ -1,7 +1,6 @@
-using System.Collections.Generic;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Asset
 {
@@ -22,6 +21,9 @@ namespace Arrowgene.Ddon.Shared.Asset
         public QuestId QuestId { get; set; }
         public QuestId NextQuestId { get; set; }
         public QuestId QuestScheduleId { get; set; }
+        public QuestAreaId QuestAreaId { get; set; }
+        public StageId StageId {  get; set; }
+        public uint NewsImageId { get; set; }
         public ushort BaseLevel { get; set; }
         public byte MinimumItemRank { get; set; }
         public ExpType ExpType { get; set; }
@@ -34,6 +36,8 @@ namespace Arrowgene.Ddon.Shared.Asset
         public List<QuestLayoutFlag> QuestLayoutFlags { get; set; }
         public List<QuestLayoutFlagSetInfo> QuestLayoutSetInfoFlags { get; set; }
         public Dictionary<uint, QuestEnemyGroup> EnemyGroups {  get; set; }
+        public uint VariantId { get; set; }
+        public QuestMissionParams MissionParams {  get; set; }
 
         public QuestAssetData()
         {
@@ -44,6 +48,7 @@ namespace Arrowgene.Ddon.Shared.Asset
             QuestLayoutSetInfoFlags = new List<QuestLayoutFlagSetInfo>();
             EnemyGroups = new Dictionary<uint, QuestEnemyGroup>();
             OrderConditions = new List<QuestOrderCondition>();
+            MissionParams = new QuestMissionParams();
         }
     }
 }

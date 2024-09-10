@@ -50,8 +50,6 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public List<CDataQuestLayoutFlagSetInfo> QuestLayoutFlagSetInfoList { get; set; }
         public List<CDataDeliveryItem> DeliveryItemList { get; set; }
         public bool IsClientOrder {  get; set; }
-        public bool IsEnable { get; set; }
-        // public bool CanProgress { get; set; }
 
         public class Serializer : EntitySerializer<CDataQuestList>
         {

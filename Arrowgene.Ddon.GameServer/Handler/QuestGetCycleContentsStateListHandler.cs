@@ -12,7 +12,9 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -47,10 +49,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntc.QuestDefine = pcap.QuestDefine; // Recover quest log data to be able to accept quests
 
             // pcap.MainQuestIdList; (this will add back all missing functionality which depends on complete MSQ)
-            var completedMsq = Server.Database.GetCompletedQuestsByType(client.Character.CommonId, QuestType.Main);
+            var completedMsq = client.Character.CompletedQuests.Values.Where(x => x.QuestType == QuestType.Main);
             foreach (var msq in completedMsq)
             {
                 ntc.MainQuestIdList.Add(new CDataQuestId() { QuestId = (uint) msq.QuestId });
+            }
+
+            var completedTutorials = client.Character.CompletedQuests.Values.Where(x => x.QuestType == QuestType.Tutorial);
+            foreach (var tut in completedTutorials)
+            {
+                ntc.TutorialQuestIdList.Add(new CDataQuestId() { QuestId = (uint) tut.QuestId});
+            }
+
+            var tutorialQuestInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.Tutorial);
+            foreach (var questProgress in tutorialQuestInProgress)
+            {
+                var quest = QuestManager.GetQuest(questProgress.QuestId);
+                var tutorialQuest = quest.ToCDataTutorialQuestOrderList(questProgress.Step);
+                ntc.TutorialQuestOrderList.Add(tutorialQuest);
             }
 
             if (client.Party != null)
@@ -58,7 +74,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var priorityQuests = Server.Database.GetPriorityQuests(client.Party.Leader.Client.Character.CommonId);
                 foreach (var questId in priorityQuests)
                 {
-                    var quest = QuestManager.GetQuest(questId);
+                    var quest = client.Party.QuestState.GetQuest(questId);
                     ntc.PriorityQuestList.Add(new CDataPriorityQuest()
                     {
                         QuestId = (uint)quest.QuestId,

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model.BattleContent;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
@@ -25,6 +26,7 @@ namespace Arrowgene.Ddon.Shared.Model
             MatchingProfile = new CDataMatchingProfile();
             ArisenProfile = new CDataArisenProfile();
             Pawns = new List<Pawn>();
+            RentedPawns = new List<Pawn>();
             ReleasedWarpPoints = new List<ReleasedWarpPoint>();
             OnlineStatus = OnlineStatus.Offline;
             ContextOwnership = new Dictionary<ulong, bool>();
@@ -33,6 +35,7 @@ namespace Arrowgene.Ddon.Shared.Model
             BinaryData = new byte[C2SBinarySaveSetCharacterBinSaveDataReq.ARRAY_SIZE];
             LastSeenLobby = new Dictionary<uint, uint>();
             BbmProgress = new BitterblackMazeProgress();
+            CompletedQuests = new Dictionary<QuestId, CompletedQuest>();
         }
 
         public int AccountId { get; set; }
@@ -103,6 +106,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public Dictionary<uint, uint> LastSeenLobby { get; set; }
 
         public List<Pawn> Pawns { get; set; }
+        public List<Pawn> RentedPawns {  get; set; }
 
         public uint FavWarpSlotNum { get; set; }
         public List<ReleasedWarpPoint> ReleasedWarpPoints { get; set; }
@@ -111,6 +115,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint NextBBMStageId {  get; set; }
 
         public uint MaxBazaarExhibits { get; set; }
+        public Dictionary<QuestId, CompletedQuest> CompletedQuests { get; set; }
 
         // ---
 
@@ -122,6 +127,16 @@ namespace Arrowgene.Ddon.Shared.Model
             return Pawns[SlotNo-1];
         }
 
+        public Pawn RentedPawnBySlotNo(byte slotNo)
+        {
+            return RentedPawns[slotNo - 1];
+        }
+
+        public void RemovedRentedPawnBySlotNo(byte slotNo)
+        {
+            RentedPawns.RemoveAt(slotNo - 1);
+        }
+
         public Dictionary<ulong, bool> ContextOwnership { get; set; }
 
         public CDataJobPlayPoint? ActiveCharacterPlayPointData
@@ -130,5 +145,19 @@ namespace Arrowgene.Ddon.Shared.Model
         }
 
         public CharacterStampBonus StampBonus { get; set; }
+
+        public CDataCommunityCharacterBaseInfo GetCommunityCharacterBaseInfo()
+        {
+            return new CDataCommunityCharacterBaseInfo
+            {
+                CharacterId = CharacterId,
+                CharacterName = new CDataCharacterName
+                {
+                    FirstName = FirstName,
+                    LastName = LastName,
+                },
+                ClanName = ""
+            };
+        }
     }
 }

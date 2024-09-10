@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System.Linq;
@@ -13,6 +14,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public static readonly uint BASE_HEALTH = 760U;
         public static readonly uint BASE_STAMINA = 450U;
+        public static readonly uint BBM_BASE_HEALTH = 990U;
+        public static readonly uint BBM_BASE_STAMINA = 589U;
+
         public static readonly uint DEFAULT_RING_COUNT = 1;
         public static readonly uint BASE_ABILITY_COST_AMOUNT = 15;
 
@@ -28,12 +32,22 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public Character SelectCharacter(GameClient client, uint characterId)
         {
+            Character character = SelectCharacter(characterId);
+            client.Character = character;
+            client.UpdateIdentity();
+
+            return character;
+        }
+
+        public Character SelectCharacter(uint characterId)
+        {
             Character character = _Server.Database.SelectCharacter(characterId);
             if (character == null)
             {
                 return null;
             }
 
+            character.Server = _Server.AssetRepository.ServerList.Where(server => server.Id == _Server.Id).Single();
             character.Equipment = character.Storage.GetCharacterEquipment();
 
             character.ExtendedParams = _Server.Database.SelectOrbGainExtendParam(character.CommonId);
@@ -46,13 +60,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             UpdateCharacterExtendedParams(character);
 
-            client.Character = character;
-            client.Character.Server = _Server.AssetRepository.ServerList.Where(server => server.Id == _Server.Id).Single();
-            client.UpdateIdentity();
-
             SelectPawns(character);
-
-            // TODO: Query things like main quest?
 
             return character;
         }
@@ -73,6 +81,24 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     Logger.Error($"Character: AccountId={character.AccountId}, CharacterId={character.ContentCharacterId}, CommonId={character.CommonId}, PawnCommonId={pawn.CommonId} is missing table entry in 'ddon_orb_gain_extend_param'.");
                 }
                 UpdateCharacterExtendedParams(pawn);
+            }
+        }
+
+        public void UpdateOnlineStatus(GameClient client, Character character, OnlineStatus onlineStatus)
+        {
+            client.Character.OnlineStatus = onlineStatus;
+            var charUpdateNtc = new S2CCharacterCommunityCharacterStatusUpdateNtc();
+            charUpdateNtc.UpdateCharacterList.Add(ContactListManager.CharacterToListEml(client.Character));
+            charUpdateNtc.UpdateMatchingProfileList.Add(new CDataUpdateMatchingProfileInfo()
+            {
+                CharacterId = client.Character.CharacterId,
+                Comment = client.Character.MatchingProfile.Comment,
+            });
+
+            // TODO: Is there a reduced set of clients we can send this to?
+            foreach (var memberClient in _Server.ClientLookup.GetAll())
+            {
+                memberClient.Send(charUpdateNtc);
             }
         }
 

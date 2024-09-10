@@ -259,7 +259,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             foreach(CDataCharacterJobData characterJobData in common.CharacterJobDataList)
             {
-                ReplaceCharacterJobData(conn, common.CommonId, characterJobData);
+                ReplaceCharacterJobData(common.CommonId, characterJobData, conn);
             }
 
             foreach(CDataNormalSkillParam normalSkillParam in common.LearnedNormalSkills)
@@ -395,6 +395,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             common.StatusInfo.RevivePoint = GetByte(reader, "revive_point");
             common.StatusInfo.HP = GetUInt32(reader, "hp");
             common.StatusInfo.WhiteHP = GetUInt32(reader, "white_hp");
+
+            if (common.StatusInfo.HP == 0 || common.StatusInfo.WhiteHP == 0)
+            {
+                // TODO: Figure out why this is happening
+                Logger.Error($"Unexpected: Character CommonId={common.CommonId} has a health value of 0 stored in the DB");
+                common.StatusInfo.HP = 760;
+                common.StatusInfo.WhiteHP = 760;
+            }
         }
 
         private void AddParameter(TCom command, CharacterCommon common)

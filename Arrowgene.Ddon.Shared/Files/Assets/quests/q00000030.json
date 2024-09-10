@@ -43,10 +43,10 @@
                         "id": 3
                     },
                     "event_id": 100
-				},
+                },
                 {
                     "type": "PlayEvent",
-					"announce_type": "Accept",
+                    "announce_type": "Accept",
                     "stage_id": {
                         "id": 76
                     },

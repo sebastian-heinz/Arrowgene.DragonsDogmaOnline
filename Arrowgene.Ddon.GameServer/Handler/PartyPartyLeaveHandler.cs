@@ -1,6 +1,9 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -25,8 +28,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
+            if (party.ContentId != 0)
+            {
+                Server.ExmManager.RemoveCharacterFromContentGroup(client.Character);
+            }
+            Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Online);
+
             party.Leave(client);
             Logger.Info(client, $"Left PartyId:{party.Id}");
+
+            if (party.ContentId != 0 && party.MemberCount() == 0)
+            {
+                Server.ExmManager.RemoveGroupForContent(party.ContentId);
+            }
 
             S2CPartyPartyLeaveNtc partyLeaveNtc = new S2CPartyPartyLeaveNtc();
             partyLeaveNtc.CharacterId = client.Character.CharacterId;

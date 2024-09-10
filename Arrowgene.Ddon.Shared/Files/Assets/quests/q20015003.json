@@ -1,75 +1,77 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "An Unexpected Encounter",
-    "quest_id": 20015003,
-    "base_level": 19,
-    "minimum_item_rank": 0,
-    "discoverable": false,
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "An Unexpected Encounter",
+  "quest_id": 20015003,
+  "base_level": 19,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "BreyaCoast",
+  "news_image": 23,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 870
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 620
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 120
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "exp",
-            "amount": 870
+          "comment": "Nostalgia Waistguard",
+          "item_id": 8353,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 620
+          "comment": "Absorbent Cloth",
+          "item_id": 9368,
+          "num": 3
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 120
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "comment" : "Nostalgia Waistguard",
-                    "item_id": 8353,
-                    "num": 1
-                },
-                {
-                    "comment" : "Absorbent Cloth",
-                    "item_id": 9368,
-                    "num": 3
-                },
-                {
-                    "comment" : "Superior Healing Potion",
-                    "item_id": 35,
-                    "num": 3					
-                }
-            ]
+          "comment": "Superior Healing Potion",
+          "item_id": 35,
+          "num": 3
         }
-    ],
-    "enemy_groups" : [
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 105
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 1,
-                "group_id": 105
-            },
-            "enemies": [
-                {
-                    "comment" : "Young Chimera",
-                    "enemy_id": "0x015200",
-                    "named_enemy_params_id": 459,					
-                    "level": 19,
-                    "exp": 1053,
-					"is_boss": true	
-                }
-            ]
+          "comment": "Young Chimera",
+          "enemy_id": "0x015200",
+          "named_enemy_params_id": 459,
+          "level": 19,
+          "exp": 1053,
+          "is_boss": true
         }
-    ],
-    "blocks": [
-        {
-            "type": "DiscoverEnemy",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Accept",
-            "reset_group": false,
-            "groups": [0]
-        }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
 }

@@ -1,8 +1,11 @@
+using Arrowgene.Ddon.Shared.Csv;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -65,6 +68,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private const string SqlDeleteCharacter = "DELETE FROM \"ddon_character_common\" WHERE EXISTS (SELECT 1 FROM \"ddon_character\" WHERE \"ddon_character_common\".\"character_common_id\"=\"ddon_character\".\"character_common_id\" AND \"character_id\"=@character_id);";
         private const string SqlUpdateMyPawnSlot = "UPDATE \"ddon_character\" SET \"my_pawn_slot_num\"=@my_pawn_slot_num WHERE \"character_id\"=@character_id;";
         private const string SqlUpdateRentalPawnSlot = "UPDATE \"ddon_character\" SET \"rental_pawn_slot_num\"=@rental_pawn_slot_num WHERE \"character_id\"=@character_id;";
+        private const string SqlSelectCharacterNameByCharacterId = "SELECT \"first_name\", \"last_name\" FROM \"ddon_character\" WHERE \"character_id\"=@character_id;";
 
 
         private readonly string SqlInsertCharacterMatchingProfile = $"INSERT INTO \"ddon_character_matching_profile\" ({BuildQueryField(CDataMatchingProfileFields)}) VALUES ({BuildQueryInsert(CDataMatchingProfileFields)});";
@@ -370,6 +374,28 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         character.AbilityPresets.Add(ReadAbilityPreset(reader));
                     }
                 });
+
+            // Quest Completion
+            foreach (var questType in Enum.GetValues(typeof(QuestType)).Cast<QuestType>())
+            {
+                ExecuteReader(conn, SqlSelectCompletedQuestByType,
+                   command => {
+                       AddParameter(command, "@character_common_id", character.CommonId);
+                       AddParameter(command, "@quest_type", (uint)questType);
+                   }, reader => {
+                       while (reader.Read())
+                       {
+                           var quest = new CompletedQuest()
+                           {
+                               QuestId = (QuestId)GetUInt32(reader, "quest_id"),
+                               QuestType = questType,
+                               ClearCount = GetUInt32(reader, "clear_count")
+                           };
+
+                           character.CompletedQuests.TryAdd(quest.QuestId, quest);
+                       }
+                   });
+            }
         }
 
         public bool UpdateMyPawnSlot(uint characterId, uint num)
@@ -588,6 +614,28 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 });
 
             return storages;
+        }
+
+        public CDataCharacterSearchParam SelectCharacterNameById(uint characterId)
+        {
+            using TCon connection = OpenNewConnection();
+            return SelectCharacterNameById(connection, characterId);
+        }
+
+        public CDataCharacterSearchParam SelectCharacterNameById(DbConnection connection, uint characterId)
+        {
+            CDataCharacterSearchParam result = new CDataCharacterSearchParam();
+            ExecuteReader(connection, SqlSelectCharacterNameByCharacterId,
+                command => { AddParameter(command, "@character_id", characterId); },
+                reader =>
+                {
+                    if (reader.Read())
+                    {
+                        result.FirstName = GetString(reader, "first_name");
+                        result.LastName = GetString(reader, "last_name");
+                    }
+                });
+            return result;
         }
 
         private Character ReadAllCharacterData(TReader reader)

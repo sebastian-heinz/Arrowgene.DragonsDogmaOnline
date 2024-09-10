@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
@@ -21,6 +22,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         private readonly DdonGameServer _gameServer;
 
+        private readonly HashSet<uint> _ignoreKillsInStageIds = new HashSet<uint>()
+        {
+            349, //White Dragon Temple, Training Room
+        };
+
         public InstanceEnemyKillHandler(DdonGameServer server) : base(server)
         {
             _gameServer = server;
@@ -30,68 +36,77 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             CDataStageLayoutId layoutId = packet.Structure.LayoutId;
             StageId stageId = StageId.FromStageLayoutId(layoutId);
-            ushort subGroupId = 0;
+
+            // The training room uses special handling to produce enemies that don't exist in the QuestState or InstanceEnemyManager.
+            // Return an empty response here to not break the rest of the handling.
+            if (_ignoreKillsInStageIds.Contains(stageId.Id))
+            {
+                client.Send(new S2CInstanceEnemyKillRes());
+                return;
+            }
 
             Quest quest = null;
             bool IsQuestControlled = false;
             foreach (var questId in client.Party.QuestState.StageQuests(stageId))
             {
-                quest = QuestManager.GetQuest(questId);
-                var qSubGroupId = client.Party.QuestState.GetInstanceSubgroupId(quest, stageId);
-                if (client.Party.QuestState.HasEnemiesInCurrentStageGroup(quest, stageId, qSubGroupId))
+                quest = client.Party.QuestState.GetQuest(questId);
+                if (client.Party.QuestState.HasEnemiesInCurrentStageGroup(quest, stageId))
                 {
-                    subGroupId = qSubGroupId;
                     IsQuestControlled = true;
                     break;
                 }
             }
 
-            InstancedEnemy enemyKilled;
-            if (IsQuestControlled && quest != null)
+            InstancedEnemy enemyKilled = client.Party.InstanceEnemyManager.GetInstanceEnemy(stageId, (byte)packet.Structure.SetId);
+            if (enemyKilled.RepopCount > 0 && enemyKilled.RepopNum < enemyKilled.RepopCount)
             {
-                // TODO: Add drops to Quest Monsters
-                enemyKilled = client.Party.QuestState.GetInstancedEnemy(quest, stageId, subGroupId, packet.Structure.SetId);
+                enemyKilled.RepopNum += 1;
+
+                S2CInstanceEnemyRepopNtc repopNtc = new S2CInstanceEnemyRepopNtc()
+                {
+                    LayoutId = layoutId,
+                    WaitSecond = enemyKilled.RepopWaitSecond,
+                    EnemyData = new CDataLayoutEnemyData()
+                    {
+                        PositionIndex = (byte) packet.Structure.SetId,
+                        EnemyInfo = enemyKilled.asCDataStageLayoutEnemyPresetEnemyInfoClient()
+                    }
+                };
+                client.Send(repopNtc);
             }
             else
             {
-                enemyKilled = client.Party.InstanceEnemyManager.GetAssets(StageId.FromStageLayoutId(layoutId), (byte) subGroupId)[(int)packet.Structure.SetId];
-                foreach (var partyMemberClient in client.Party.Clients)
-                {    
-                    List<InstancedGatheringItem> instancedGatheringItems = partyMemberClient.InstanceDropItemManager.GetAssets(layoutId, packet.Structure.SetId);
-                    if (instancedGatheringItems.Count > 0)
+                enemyKilled.IsKilled = true;
+            }
+            
+
+            foreach (var partyMemberClient in client.Party.Clients)
+            {
+                // If the enemy is quest controlled, then either get from the quest loot drop, or the general one.
+                List<InstancedGatheringItem> instancedGatheringItems = IsQuestControlled ?
+                            partyMemberClient.InstanceQuestDropManager.GenerateEnemyLoot(quest, enemyKilled, packet.Structure.LayoutId, packet.Structure.SetId) :
+                            partyMemberClient.InstanceDropItemManager.GetAssets(layoutId, packet.Structure.SetId);
+
+                // If the roll was unlucky, there is a chance that no bag will show.
+                if (instancedGatheringItems.Count > 0)
+                {
+                    partyMemberClient.Send(new S2CInstancePopDropItemNtc()
                     {
-                        partyMemberClient.Send(new S2CInstancePopDropItemNtc()
-                        {
-                            LayoutId = packet.Structure.LayoutId,
-                            SetId = packet.Structure.SetId,
-                            MdlType = enemyKilled.DropsTable.MdlType,
-                            PosX = packet.Structure.DropPosX,
-                            PosY = packet.Structure.DropPosY,
-                            PosZ = packet.Structure.DropPosZ
-                        });
-                    }
+                        LayoutId = packet.Structure.LayoutId,
+                        SetId = packet.Structure.SetId,
+                        MdlType = enemyKilled.DropsTable.MdlType,
+                        PosX = packet.Structure.DropPosX,
+                        PosY = packet.Structure.DropPosY,
+                        PosZ = packet.Structure.DropPosZ
+                    });
                 }
             }
 
-            enemyKilled.IsKilled = true;
-
-            List<InstancedEnemy> group;
-            if (IsQuestControlled && quest != null)
-            {
-                group = client.Party.QuestState.GetInstancedEnemies(quest.QuestId, stageId, subGroupId);
-            }
-            else
-            {
-                group = client.Party.InstanceEnemyManager.GetAssets(StageId.FromStageLayoutId(layoutId), (byte) subGroupId);
-            }
+            List<InstancedEnemy> group = client.Party.InstanceEnemyManager.GetInstancedEnemies(stageId);
 
             bool groupDestroyed = group.Where(x => x.IsRequired).All(x => x.IsKilled);
             if (groupDestroyed)
             {
-                if (IsQuestControlled && quest != null)
-                {
-                    quest.SendProgressWorkNotices(client, stageId, subGroupId);
-                }
 
                 bool IsAreaBoss = false;
                 foreach (var enemy in group)
@@ -121,16 +136,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             // TODO: EnemyId and KillNum
-            client.Send(new S2CInstanceEnemyKillRes() {
+            client.Send(new S2CInstanceEnemyKillRes()
+            {
                 EnemyId = enemyKilled.Id,
                 KillNum = 1
             });
 
-            foreach(PartyMember member in client.Party.Members)
+            foreach (PartyMember member in client.Party.Members)
             {
-                if (member.JoinState != JoinState.On) continue; //Only fully joined members get rewards.
+                if (member.JoinState != JoinState.On) continue; // Only fully joined members get rewards.
 
-                uint bo = enemyKilled.BloodOrbs;
                 uint ho = enemyKilled.HighOrbs;
                 uint gainedExp = _gameServer.ExpManager.GetAdjustedExp(client.GameMode, RewardSource.Enemy, client.Party, enemyKilled.GetDroppedExperience(), enemyKilled.Lv);
 
@@ -138,9 +153,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 GameClient memberClient;
                 CharacterCommon memberCharacter;
-                if(member is PlayerPartyMember)
+                if (member is PlayerPartyMember)
                 {
-                    memberClient = ((PlayerPartyMember) member).Client;
+                    memberClient = ((PlayerPartyMember)member).Client;
                     memberCharacter = memberClient.Character;
 
                     if (memberCharacter.Stage.Id != stageId.Id) continue; // Only nearby allies get XP.
@@ -156,15 +171,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
 
-                    if(enemyKilled.BloodOrbs > 0)
+                    if (enemyKilled.BloodOrbs > 0)
                     {
                         // Drop BO
                         CDataWalletPoint boWallet = memberClient.Character.WalletPointList.Where(wp => wp.Type == WalletType.BloodOrbs).Single();
-                        boWallet.Value += bo;
+
+                        uint gainedBo = enemyKilled.BloodOrbs;
+                        uint bonusBo = (uint)(enemyKilled.BloodOrbs * _gameServer.GpCourseManager.EnemyBloodOrbBonus());
+                        boWallet.Value += gainedBo + bonusBo;
 
                         CDataUpdateWalletPoint boUpdateWalletPoint = new CDataUpdateWalletPoint();
                         boUpdateWalletPoint.Type = WalletType.BloodOrbs;
-                        boUpdateWalletPoint.AddPoint = (int) bo;
+                        boUpdateWalletPoint.AddPoint = (int)(gainedBo + bonusBo);
+                        boUpdateWalletPoint.ExtraBonusPoint = bonusBo;
                         boUpdateWalletPoint.Value = boWallet.Value;
                         updateCharacterItemNtc.UpdateWalletList.Add(boUpdateWalletPoint);
 
@@ -172,7 +191,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         Server.Database.UpdateWalletPoint(memberClient.Character.CharacterId, boWallet);
                     }
 
-                    if(enemyKilled.HighOrbs > 0)
+                    if (enemyKilled.HighOrbs > 0)
                     {
                         // Drop HO
                         CDataWalletPoint hoWallet = memberClient.Character.WalletPointList.Where(wp => wp.Type == WalletType.HighOrbs).Single();
@@ -180,7 +199,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                         CDataUpdateWalletPoint hoUpdateWalletPoint = new CDataUpdateWalletPoint();
                         hoUpdateWalletPoint.Type = WalletType.HighOrbs;
-                        hoUpdateWalletPoint.AddPoint = (int) ho;
+                        hoUpdateWalletPoint.AddPoint = (int)ho;
                         hoUpdateWalletPoint.Value = hoWallet.Value;
                         updateCharacterItemNtc.UpdateWalletList.Add(hoUpdateWalletPoint);
 
@@ -188,32 +207,48 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         Server.Database.UpdateWalletPoint(memberClient.Character.CharacterId, hoWallet);
                     }
 
-                    if(updateCharacterItemNtc.UpdateItemList.Count != 0 || updateCharacterItemNtc.UpdateWalletList.Count != 0)
+                    if (updateCharacterItemNtc.UpdateItemList.Count != 0 || updateCharacterItemNtc.UpdateWalletList.Count != 0)
                     {
                         memberClient.Send(updateCharacterItemNtc);
                     }
 
                     if (gainedPP > 0)
                     {
-                        _gameServer.PPManager.AddPlayPoint(memberClient, gainedPP, 1);
+                        _gameServer.PPManager.AddPlayPoint(memberClient, gainedPP, type: 1);
+                    }
+
+                    if (gainedExp > 0)
+                    {
+                        _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp, RewardSource.Enemy);
                     }
                 }
-                else if(member is PawnPartyMember)
+                else if (member is PawnPartyMember)
                 {
-                    Pawn pawn = ((PawnPartyMember) member).Pawn;
+                    Pawn pawn = ((PawnPartyMember)member).Pawn;
                     memberClient = _gameServer.ClientLookup.GetClientByCharacterId(pawn.CharacterId);
                     memberCharacter = pawn;
 
-                    if (memberClient.Character.Stage.Id != stageId.Id) continue; //Only nearby allies get XP.
+                    if (memberClient.Character.Stage.Id != stageId.Id || pawn.IsRented)
+                    {
+                        // Only nearby allies get XP
+                        // and non-rented pawns
+                        continue;
+                    }
+
+                    uint pawnExp = gainedExp;
+                    if (_gameServer.ExpManager.RequiresPawnCatchup(client.GameMode, client.Party, pawn))
+                    {
+                        pawnExp = _gameServer.ExpManager.GetAdjustedPawnExp(client.GameMode, RewardSource.Enemy, client.Party, pawn, enemyKilled.GetDroppedExperience(), enemyKilled.Lv);
+                    }
+
+                    if (pawnExp > 0)
+                    {
+                        _gameServer.ExpManager.AddExp(memberClient, memberCharacter, pawnExp, RewardSource.Enemy);
+                    }
                 }
                 else
                 {
                     throw new Exception("Unknown member type");
-                }
-
-                if (gainedExp > 0)
-                {
-                    _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp, RewardSource.Enemy);
                 }
             }
         }

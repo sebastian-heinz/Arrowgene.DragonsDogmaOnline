@@ -13,6 +13,7 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.GameServer.Party;
 using System.IO;
 using System.Text;
+using System.Buffers.Text;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -457,7 +458,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return JobData;
         }
 
-        public void AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, RewardSource rewardType, QuestType questType = QuestType.Unknown)
+        public void AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, RewardSource rewardType, QuestType questType = QuestType.All)
         {
             var lvCap = (client.GameMode == GameMode.Normal) ? ExpManager.LV_CAP : BitterblackMazeManager.LevelCap(client.Character.BbmProgress);
 
@@ -485,6 +486,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 else if(characterToAddExpTo is Pawn)
                 {
                     S2CJobPawnJobExpUpNtc expNtc = new S2CJobPawnJobExpUpNtc();
+                    expNtc.PawnId = ((Pawn)characterToAddExpTo).PawnId;
                     expNtc.JobId = activeCharacterJobData.Job;
                     expNtc.AddExp = gainedExp + extraBonusExp;
                     expNtc.ExtraBonusExp = extraBonusExp;
@@ -772,9 +774,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             double multiplier = 0;
             foreach (var tier in _GameSettings.AdjustPartyEnemyExpTiers)
             {
-                if (range >= tier.Item1 && range <= tier.Item2)
+                if (range >= tier.MinLv && range <= tier.MaxLv)
                 {
-                    multiplier = tier.Item3;
+                    multiplier = tier.ExpMultiplier;
                     break;
                 }
             }
@@ -800,9 +802,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             double multiplier = 0;
             foreach (var tier in _GameSettings.AdjustTargetLvEnemyExpTiers)
             {
-                if (range >= tier.Item1 && range <= tier.Item2)
+                if (range >= tier.MinLv && range <= tier.MaxLv)
                 {
-                    multiplier = tier.Item3;
+                    multiplier = tier.ExpMultiplier;
                     break;
                 }
             }
@@ -825,6 +827,94 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 multiplier = Math.Min(partyRangeMultiplier, targetMultiplier);
             }
             
+            return (uint)(multiplier * baseExpAmount);
+        }
+
+        private uint GetMaxAllowedPartyRange()
+        {
+            if (_GameSettings.AdjustPartyEnemyExpTiers.Count == 0)
+            {
+                return 0;
+            }
+
+            uint min = _GameSettings.AdjustPartyEnemyExpTiers[0].MinLv;
+            uint max = _GameSettings.AdjustPartyEnemyExpTiers[0].MaxLv;
+
+            foreach (var tier in _GameSettings.AdjustPartyEnemyExpTiers)
+            {
+                min = Math.Min(min, tier.MinLv);
+                max = Math.Max(max, tier.MaxLv);
+            }
+
+            return max - min;
+        }
+
+        public bool RequiresPawnCatchup(GameMode gameMode, PartyGroup party, Pawn pawn)
+        {
+            if (!_GameSettings.EnablePawnCatchup || gameMode == GameMode.BitterblackMaze)
+            {
+                return false;
+            }
+
+            foreach (var client in party.Clients)
+            {
+                if (pawn.CharacterId == client.Character.CharacterId)
+                {
+                    if (pawn.ActiveCharacterJobData.Lv >= client.Character.ActiveCharacterJobData.Lv)
+                    {
+                        return false;
+                    }
+                    else if (client.Character.ActiveCharacterJobData.Lv - pawn.ActiveCharacterJobData.Lv > _GameSettings.PawnCatchupLvDiff)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private double CalculatePawnCatchupTargetLvMultiplier(GameMode gameMode, Pawn pawn, uint targetLv)
+        {
+            if (!_GameSettings.AdjustTargetLvEnemyExp || gameMode == GameMode.BitterblackMaze)
+            {
+                return 1.0;
+            }
+
+            if (pawn.ActiveCharacterJobData.Lv <= targetLv)
+            {
+                return 1.0;
+            }
+
+            var range = pawn.ActiveCharacterJobData.Lv - targetLv;
+
+            double multiplier = 0;
+            foreach (var tier in _GameSettings.AdjustTargetLvEnemyExpTiers)
+            {
+                if (range >= tier.MinLv && range <= tier.MaxLv)
+                {
+                    multiplier = tier.ExpMultiplier;
+                    break;
+                }
+            }
+
+            return multiplier;
+        }
+
+        public uint GetAdjustedPawnExp(GameMode gameMode, RewardSource source, PartyGroup party, Pawn pawn, uint baseExpAmount, uint targetLv)
+        {
+            if (!_GameSettings.EnablePawnCatchup || gameMode == GameMode.BitterblackMaze)
+            {
+                return baseExpAmount;
+            }
+
+            var targetMultiplier = CalculatePawnCatchupTargetLvMultiplier(gameMode, pawn, targetLv);
+            var multiplier = _GameSettings.PawnCatchupMultiplier * targetMultiplier;
+
             return (uint)(multiplier * baseExpAmount);
         }
     }

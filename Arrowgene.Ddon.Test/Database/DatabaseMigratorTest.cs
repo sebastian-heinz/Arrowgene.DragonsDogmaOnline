@@ -247,7 +247,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertNormalSkillParam(uint commonId, CDataNormalSkillParam normalSkillParam) { return true; }
         public bool InsertPawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus) { return true; }
         public bool InsertPriorityQuest(uint characterCommonId, QuestId questId) { return true; }
-        public bool InsertQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step) { return true; }
+        public bool InsertQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step, uint variantId=0) { return true; }
         public bool InsertReleasedWarpPoint(uint characterId, ReleasedWarpPoint ReleasedWarpPoint) { return true; }
         public bool InsertSecretAbilityUnlock(uint commonId, SecretAbility secretAbility) { return true; }
         public bool InsertShortcut(uint characterId, CDataShortCut shortcut) { return true; }
@@ -257,7 +257,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, DbConnection? connectionIn = null) { return true; }
         public bool InsertWalletPoint(uint characterId, CDataWalletPoint walletPoint) { return true; }
         public bool RemoveQuestProgress(uint characterCommonId, QuestId questId, QuestType questType) { return true; }
-        public bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData) { return true; }
+        public bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData, DbConnection? connectionIn = null) { return true; }
         public bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut, DbConnection? connectionIn = null) { return true; }
         public bool ReplaceEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId, DbConnection? connectionIn = null) { return true; }
         public bool ReplaceEquipJobItem(string itemUId, uint commonId, JobId job, ushort slotNo) { return true; }
@@ -270,6 +270,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool ReplaceShortcut(uint characterId, CDataShortCut shortcut, DbConnection? connectionIn = null) { return true; }
         public bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, DbConnection? connectionIn = null) { return true; }
         public bool ReplaceWalletPoint(uint characterId, CDataWalletPoint walletPoint) { return true; }
+        public bool ReplaceCompletedQuest(uint characterCommonId, QuestId questId, QuestType questType, uint count) { return true; }
         public Account SelectAccountById(int accountId) { return new Account(); }
         public Account SelectAccountByLoginToken(string loginToken) { return new Account(); }
         public Account SelectAccountByName(string accountName) { return new Account(); }
@@ -291,6 +292,7 @@ namespace Arrowgene.Ddon.Test.Database
         public CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId) { return new CDataOrbGainExtendParam(); }
         public List<CDataReleaseOrbElement> SelectOrbReleaseElementFromDragonForceAugmentation(uint commonId) { return new List<CDataReleaseOrbElement>(); }
         public Pawn SelectPawn(uint pawnId) { return new Pawn(); }
+        public Pawn SelectPawn(DbConnection connection, uint pawnId) { return new Pawn(); }
         public List<Pawn> SelectPawnsByCharacterId(uint characterId) { return new List<Pawn>(); }
         public List<Pawn> SelectPawnsByCharacterId(DbConnection conn, uint characterId) { return new List<Pawn>(); }
         public List<ReleasedWarpPoint> SelectReleasedWarpPoints(uint characterId) { return new List<ReleasedWarpPoint>(); }
@@ -384,6 +386,14 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateBBMContentTreasure(uint characterId, uint contentId, uint amount) { return true; }
         public bool RemoveBBMContentTreasure(uint characterId) { return true; }
         public List<BitterblackMazeTreasure> SelectBBMContentTreasure(uint characterId) { return new List<BitterblackMazeTreasure>(); }
+        public List<uint> SelectOfficialPawns() { return new List<uint>(); }
+        public List<uint> SelectAllPlayerPawns(uint limit = 100) { return new List<uint>(); }
+        public List<uint> SelectAllPlayerPawns(DbConnection connection, uint limit = 100) { return new List<uint>(); }
+        public List<uint> SelectRandomPlayerPawns(uint limit = 100) { return new List<uint>(); }
+        public List<uint> SelectRandomPlayerPawns(DbConnection connection, uint limit = 100) { return new List<uint>(); }
+        public uint GetPawnOwnerCharacterId(uint pawnId) { return 0; }
+        public CDataCharacterSearchParam SelectCharacterNameById(uint characterId) { return new CDataCharacterSearchParam(); }
+        public CDataCharacterSearchParam SelectCharacterNameById(DbConnection connection, uint characterId) { return new CDataCharacterSearchParam(); }
 
         public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
         public void AddParameter(DbCommand command, string name, string value) { }
@@ -406,7 +416,9 @@ namespace Arrowgene.Ddon.Test.Database
         public float GetFloat(DbDataReader reader, string column) { return 0; }
         public string GetString(DbDataReader reader, string column) { return ""; }
         public bool GetBoolean(DbDataReader reader, string column) { return false; }
-        public byte[] GetBytes(DbDataReader reader, string column, int size) { return null; }        
+        public byte[] GetBytes(DbDataReader reader, string column, int size) { return null; }
+        public List<CDataRegisterdPawnList> SelectRegisteredPawns(Character searchingCharacter, CDataPawnSearchParameter searchParams) { return new List<CDataRegisterdPawnList>(); }
+        public List<CDataRegisterdPawnList> SelectRegisteredPawns(DbConnection conn, Character searchingCharacter, CDataPawnSearchParameter searchParams) { return new List<CDataRegisterdPawnList>(); }
     }
 
     class MockMigrationStrategy : IMigrationStrategy

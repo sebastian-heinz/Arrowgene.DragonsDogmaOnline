@@ -91,6 +91,7 @@ CREATE TABLE IF NOT EXISTS "ddon_pawn"
     "equipment_quality_level"     INTEGER                           NOT NULL,
     "consumable_quantity_level"   INTEGER                           NOT NULL,
     "cost_performance_level"      INTEGER                           NOT NULL,
+    "is_official_pawn"            BOOLEAN                           NOT NULL,
     CONSTRAINT "fk_ddon_pawn_character_common_id" FOREIGN KEY ("character_common_id") REFERENCES "ddon_character_common" ("character_common_id") ON DELETE CASCADE,
     CONSTRAINT "fk_ddon_pawn_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
@@ -541,6 +542,7 @@ CREATE TABLE IF NOT EXISTS "ddon_reward_box"
     "random_reward1_index" INTEGER                           NOT NULL,
     "random_reward2_index" INTEGER                           NOT NULL,
     "random_reward3_index" INTEGER                           NOT NULL,
+    "variant_quest_id"     INTEGER                           NOT NULL DEFAULT 0,
     CONSTRAINT "fk_ddon_reward_box_character_common_id" FOREIGN KEY ("character_common_id") REFERENCES "ddon_character_common" ("character_common_id") ON DELETE CASCADE
 );
 
@@ -550,6 +552,7 @@ CREATE TABLE IF NOT EXISTS "ddon_quest_progress"
     "quest_type"          INTEGER NOT NULL,
     "quest_id"            INTEGER NOT NULL,
     "step"                INTEGER NOT NULL,
+    "variant_quest_id"          INTEGER NOT NULL,  
     CONSTRAINT "fk_ddon_quest_progress_character_common_id" FOREIGN KEY ("character_common_id") REFERENCES "ddon_character_common" ("character_common_id") ON DELETE CASCADE
 );
 

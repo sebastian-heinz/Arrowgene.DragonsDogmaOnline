@@ -3,7 +3,9 @@
         "rotunda": [
             {
                 "content_id": 2,
-                "next_content_ids": [3],
+                "next_content_ids": [
+                    3
+                ],
                 "tier": 1,
                 "name": "Bitterblack Maze Rotunda: Netherworld 1",
                 "stage_id": {
@@ -11,11 +13,17 @@
                     "group_id": 26,
                     "layer_no": 0
                 },
-                "destinations": [610, 611, 612]
+                "destinations": [
+                    610,
+                    611,
+                    612
+                ]
             },
             {
                 "content_id": 3,
-                "next_content_ids": [4],
+                "next_content_ids": [
+                    4
+                ],
                 "tier": 2,
                 "name": "Bitterblack Maze Rotunda: Netherworld 2",
                 "stage_id": {
@@ -23,7 +31,11 @@
                     "group_id": 26,
                     "layer_no": 0
                 },
-                "destinations": [614, 615, 616]
+                "destinations": [
+                    614,
+                    615,
+                    616
+                ]
             },
             {
                 "content_id": 4,
@@ -35,13 +47,22 @@
                     "group_id": 26,
                     "layer_no": 0
                 },
-                "destinations": [617, 618, 619, 620, 621, 622]
+                "destinations": [
+                    617,
+                    618,
+                    619,
+                    620,
+                    621,
+                    622
+                ]
             }
         ],
         "abyss": [
             {
                 "content_id": 10,
-                "next_content_ids": [11],
+                "next_content_ids": [
+                    11
+                ],
                 "tier": 1,
                 "name": "Bitterblack Maze Abyss: Netherworld 1",
                 "stage_id": {
@@ -49,11 +70,17 @@
                     "group_id": 27,
                     "layer_no": 0
                 },
-                "destinations": [686, 687, 688]
+                "destinations": [
+                    686,
+                    687,
+                    688
+                ]
             },
             {
                 "content_id": 11,
-                "next_content_ids": [12],
+                "next_content_ids": [
+                    12
+                ],
                 "tier": 2,
                 "name": "Bitterblack Maze Abyss: Netherworld 2",
                 "stage_id": {
@@ -61,11 +88,17 @@
                     "group_id": 26,
                     "layer_no": 0
                 },
-                "destinations": [689, 690, 691]
+                "destinations": [
+                    689,
+                    690,
+                    691
+                ]
             },
             {
                 "content_id": 12,
-                "next_content_ids": [13],
+                "next_content_ids": [
+                    13
+                ],
                 "tier": 3,
                 "name": "Bitterblack Maze Abyss: Netherworld 3",
                 "stage_id": {
@@ -73,7 +106,11 @@
                     "group_id": 26,
                     "layer_no": 0
                 },
-                "destinations": [692, 693, 694]
+                "destinations": [
+                    692,
+                    693,
+                    694
+                ]
             },
             {
                 "content_id": 13,
@@ -85,7 +122,14 @@
                     "group_id": 26,
                     "layer_no": 0
                 },
-                "destinations": [695, 696, 697, 715, 716, 717]
+                "destinations": [
+                    695,
+                    696,
+                    697,
+                    715,
+                    716,
+                    717
+                ]
             }
         ]
     },
@@ -129,57 +173,57 @@
             "job": "ShieldSage",
             "equipment": [
                 {
-                    "comment": "94,バトルシールド,Battle Shield,",
+                    "comment": "94,\u30d0\u30c8\u30eb\u30b7\u30fc\u30eb\u30c9,Battle Shield,",
                     "item_id": 94,
                     "slot": 1
                 },
                 {
-                    "comment": "88,スパイクロッド,Spike Rod,",
+                    "comment": "88,\u30b9\u30d1\u30a4\u30af\u30ed\u30c3\u30c9,Spike Rod,",
                     "item_id": 88,
                     "slot": 2
                 },
                 {
-                    "comment": "8168,了知のヘルム,Intellect Helm,",
+                    "comment": "8168,\u4e86\u77e5\u306e\u30d8\u30eb\u30e0,Intellect Helm,",
                     "item_id": 8168,
                     "slot": 3
                 },
                 {
-                    "comment": "8273,エリートドレープ,Elite Drapes,",
+                    "comment": "8273,\u30a8\u30ea\u30fc\u30c8\u30c9\u30ec\u30fc\u30d7,Elite Drapes,",
                     "item_id": 8273,
                     "slot": 4
                 },
                 {
-                    "comment": "500,トラベラーズシャツ,Traveler's Shirt,",
+                    "comment": "500,\u30c8\u30e9\u30d9\u30e9\u30fc\u30ba\u30b7\u30e3\u30c4,Traveler's Shirt,",
                     "item_id": 500,
                     "slot": 5
                 },
                 {
-                    "comment": "8473,エリートグラブ,Elite Gloves,",
+                    "comment": "8473,\u30a8\u30ea\u30fc\u30c8\u30b0\u30e9\u30d6,Elite Gloves,",
                     "item_id": 8473,
                     "slot": 6
                 },
                 {
-                    "comment": "8373,エリートレッグス,Elite Legs,",
+                    "comment": "8373,\u30a8\u30ea\u30fc\u30c8\u30ec\u30c3\u30b0\u30b9,Elite Legs,",
                     "item_id": 8373,
                     "slot": 7
                 },
                 {
-                    "comment": "508,レザーパンツ,Leather Pants,",
+                    "comment": "508,\u30ec\u30b6\u30fc\u30d1\u30f3\u30c4,Leather Pants,",
                     "item_id": 508,
                     "slot": 8
                 },
                 {
-                    "comment": "513,スカラークローク,Scholar Cloak,",
+                    "comment": "513,\u30b9\u30ab\u30e9\u30fc\u30af\u30ed\u30fc\u30af,Scholar Cloak,",
                     "item_id": 513,
                     "slot": 9
                 },
                 {
-                    "comment": "8931,ほたる石のピアス,Fluorite Earrings,",
+                    "comment": "8931,\u307b\u305f\u308b\u77f3\u306e\u30d4\u30a2\u30b9,Fluorite Earrings,",
                     "item_id": 8931,
                     "slot": 10
                 },
                 {
-                    "comment": "8934,草紋のリング,Grass Signet Ring,",
+                    "comment": "8934,\u8349\u7d0b\u306e\u30ea\u30f3\u30b0,Grass Signet Ring,",
                     "item_id": 8934,
                     "slot": 11
                 },
@@ -196,7 +240,7 @@
                     "slot": 14
                 },
                 {
-                    "comment": "9467,匠のランタン,Artisan's Lantern,",
+                    "comment": "9467,\u5320\u306e\u30e9\u30f3\u30bf\u30f3,Artisan's Lantern,",
                     "item_id": 9467,
                     "slot": 15
                 }
@@ -206,7 +250,7 @@
             "job": "Alchemist",
             "equipment": [
                 {
-                    "comment": "132,ソリトゥス,Solitus,",
+                    "comment": "132,\u30bd\u30ea\u30c8\u30a5\u30b9,Solitus,",
                     "item_id": 132,
                     "slot": 1
                 },
@@ -216,47 +260,47 @@
                     "slot": 2
                 },
                 {
-                    "comment": "8168,了知のヘルム,Intellect Helm,",
+                    "comment": "8168,\u4e86\u77e5\u306e\u30d8\u30eb\u30e0,Intellect Helm,",
                     "item_id": 8168,
                     "slot": 3
                 },
                 {
-                    "comment": "8273,エリートドレープ,Elite Drapes,",
+                    "comment": "8273,\u30a8\u30ea\u30fc\u30c8\u30c9\u30ec\u30fc\u30d7,Elite Drapes,",
                     "item_id": 8273,
                     "slot": 4
                 },
                 {
-                    "comment": "500,トラベラーズシャツ,Traveler's Shirt,",
+                    "comment": "500,\u30c8\u30e9\u30d9\u30e9\u30fc\u30ba\u30b7\u30e3\u30c4,Traveler's Shirt,",
                     "item_id": 500,
                     "slot": 5
                 },
                 {
-                    "comment": "8473,エリートグラブ,Elite Gloves,",
+                    "comment": "8473,\u30a8\u30ea\u30fc\u30c8\u30b0\u30e9\u30d6,Elite Gloves,",
                     "item_id": 8473,
                     "slot": 6
                 },
                 {
-                    "comment": "8373,エリートレッグス,Elite Legs,",
+                    "comment": "8373,\u30a8\u30ea\u30fc\u30c8\u30ec\u30c3\u30b0\u30b9,Elite Legs,",
                     "item_id": 8373,
                     "slot": 7
                 },
                 {
-                    "comment": "508,レザーパンツ,Leather Pants,",
+                    "comment": "508,\u30ec\u30b6\u30fc\u30d1\u30f3\u30c4,Leather Pants,",
                     "item_id": 508,
                     "slot": 8
                 },
                 {
-                    "comment": "513,スカラークローク,Scholar Cloak,",
+                    "comment": "513,\u30b9\u30ab\u30e9\u30fc\u30af\u30ed\u30fc\u30af,Scholar Cloak,",
                     "item_id": 513,
                     "slot": 9
                 },
                 {
-                    "comment": "8931,ほたる石のピアス,Fluorite Earrings,",
+                    "comment": "8931,\u307b\u305f\u308b\u77f3\u306e\u30d4\u30a2\u30b9,Fluorite Earrings,",
                     "item_id": 8931,
                     "slot": 10
                 },
                 {
-                    "comment": "8934,草紋のリング,Grass Signet Ring,",
+                    "comment": "8934,\u8349\u7d0b\u306e\u30ea\u30f3\u30b0,Grass Signet Ring,",
                     "item_id": 8934,
                     "slot": 11
                 },
@@ -273,7 +317,7 @@
                     "slot": 14
                 },
                 {
-                    "comment": "9467,匠のランタン,Artisan's Lantern,",
+                    "comment": "9467,\u5320\u306e\u30e9\u30f3\u30bf\u30f3,Artisan's Lantern,",
                     "item_id": 9467,
                     "slot": 15
                 }
@@ -283,7 +327,7 @@
             "job": "HighScepter",
             "equipment": [
                 {
-                    "comment": "20028,シミター,Scimitar,",
+                    "comment": "20028,\u30b7\u30df\u30bf\u30fc,Scimitar,",
                     "item_id": 20028,
                     "slot": 1
                 },
@@ -292,47 +336,47 @@
                     "slot": 2
                 },
                 {
-                    "comment": "8168,了知のヘルム,Intellect Helm,",
+                    "comment": "8168,\u4e86\u77e5\u306e\u30d8\u30eb\u30e0,Intellect Helm,",
                     "item_id": 8168,
                     "slot": 3
                 },
                 {
-                    "comment": "8273,エリートドレープ,Elite Drapes,",
+                    "comment": "8273,\u30a8\u30ea\u30fc\u30c8\u30c9\u30ec\u30fc\u30d7,Elite Drapes,",
                     "item_id": 8273,
                     "slot": 4
                 },
                 {
-                    "comment": "500,トラベラーズシャツ,Traveler's Shirt,",
+                    "comment": "500,\u30c8\u30e9\u30d9\u30e9\u30fc\u30ba\u30b7\u30e3\u30c4,Traveler's Shirt,",
                     "item_id": 500,
                     "slot": 5
                 },
                 {
-                    "comment": "8473,エリートグラブ,Elite Gloves,",
+                    "comment": "8473,\u30a8\u30ea\u30fc\u30c8\u30b0\u30e9\u30d6,Elite Gloves,",
                     "item_id": 8473,
                     "slot": 6
                 },
                 {
-                    "comment": "8373,エリートレッグス,Elite Legs,",
+                    "comment": "8373,\u30a8\u30ea\u30fc\u30c8\u30ec\u30c3\u30b0\u30b9,Elite Legs,",
                     "item_id": 8373,
                     "slot": 7
                 },
                 {
-                    "comment": "508,レザーパンツ,Leather Pants,",
+                    "comment": "508,\u30ec\u30b6\u30fc\u30d1\u30f3\u30c4,Leather Pants,",
                     "item_id": 508,
                     "slot": 8
                 },
                 {
-                    "comment": "513,スカラークローク,Scholar Cloak,",
+                    "comment": "513,\u30b9\u30ab\u30e9\u30fc\u30af\u30ed\u30fc\u30af,Scholar Cloak,",
                     "item_id": 513,
                     "slot": 9
                 },
                 {
-                    "comment": "8931,ほたる石のピアス,Fluorite Earrings,",
+                    "comment": "8931,\u307b\u305f\u308b\u77f3\u306e\u30d4\u30a2\u30b9,Fluorite Earrings,",
                     "item_id": 8931,
                     "slot": 10
                 },
                 {
-                    "comment": "8934,草紋のリング,Grass Signet Ring,",
+                    "comment": "8934,\u8349\u7d0b\u306e\u30ea\u30f3\u30b0,Grass Signet Ring,",
                     "item_id": 8934,
                     "slot": 11
                 },
@@ -349,7 +393,7 @@
                     "slot": 14
                 },
                 {
-                    "comment": "9467,匠のランタン,Artisan's Lantern,",
+                    "comment": "9467,\u5320\u306e\u30e9\u30f3\u30bf\u30f3,Artisan's Lantern,",
                     "item_id": 9467,
                     "slot": 15
                 }
@@ -359,7 +403,7 @@
             "job": "Seeker",
             "equipment": [
                 {
-                    "comment": "101,スリットダガー,Slit Daggers",
+                    "comment": "101,\u30b9\u30ea\u30c3\u30c8\u30c0\u30ac\u30fc,Slit Daggers",
                     "item_id": 101,
                     "slot": 1
                 },
@@ -368,47 +412,47 @@
                     "slot": 2
                 },
                 {
-                    "comment": "8198,プレートコイフ,Plate Coif,",
+                    "comment": "8198,\u30d7\u30ec\u30fc\u30c8\u30b3\u30a4\u30d5,Plate Coif,",
                     "item_id": 8198,
                     "slot": 3
                 },
                 {
-                    "comment": "8298,バトルジャケット,Battle Jacket,",
+                    "comment": "8298,\u30d0\u30c8\u30eb\u30b8\u30e3\u30b1\u30c3\u30c8,Battle Jacket,",
                     "item_id": 8298,
                     "slot": 4
                 },
                 {
-                    "comment": "500,トラベラーズシャツ,Traveler's Shirt,",
+                    "comment": "500,\u30c8\u30e9\u30d9\u30e9\u30fc\u30ba\u30b7\u30e3\u30c4,Traveler's Shirt,",
                     "item_id": 500,
                     "slot": 5
                 },
                 {
-                    "comment": "8498,アイアンマニカ,Iron Manicae",
+                    "comment": "8498,\u30a2\u30a4\u30a2\u30f3\u30de\u30cb\u30ab,Iron Manicae",
                     "item_id": 8498,
                     "slot": 6
                 },
                 {
-                    "comment": "8398,傭兵のレッグガード,Mercenary Leg-Guards,",
+                    "comment": "8398,\u50ad\u5175\u306e\u30ec\u30c3\u30b0\u30ac\u30fc\u30c9,Mercenary Leg-Guards,",
                     "item_id": 8398,
                     "slot": 7
                 },
                 {
-                    "comment": "508,レザーパンツ,Leather Pants,",
+                    "comment": "508,\u30ec\u30b6\u30fc\u30d1\u30f3\u30c4,Leather Pants,",
                     "item_id": 508,
                     "slot": 8
                 },
                 {
-                    "comment": "513,スカラークローク,Scholar Cloak,",
+                    "comment": "513,\u30b9\u30ab\u30e9\u30fc\u30af\u30ed\u30fc\u30af,Scholar Cloak,",
                     "item_id": 513,
                     "slot": 9
                 },
                 {
-                    "comment": "8931,ほたる石のピアス,Fluorite Earrings,",
+                    "comment": "8931,\u307b\u305f\u308b\u77f3\u306e\u30d4\u30a2\u30b9,Fluorite Earrings,",
                     "item_id": 8931,
                     "slot": 10
                 },
                 {
-                    "comment": "8934,草紋のリング,Grass Signet Ring,",
+                    "comment": "8934,\u8349\u7d0b\u306e\u30ea\u30f3\u30b0,Grass Signet Ring,",
                     "item_id": 8934,
                     "slot": 11
                 },
@@ -425,7 +469,7 @@
                     "slot": 14
                 },
                 {
-                    "comment": "9467,匠のランタン,Artisan's Lantern,",
+                    "comment": "9467,\u5320\u306e\u30e9\u30f3\u30bf\u30f3,Artisan's Lantern,",
                     "item_id": 9467,
                     "slot": 15
                 }
@@ -435,7 +479,7 @@
             "job": "Hunter",
             "equipment": [
                 {
-                    "comment": "76,コンポジットロングボウ,Composite Longbow,",
+                    "comment": "76,\u30b3\u30f3\u30dd\u30b8\u30c3\u30c8\u30ed\u30f3\u30b0\u30dc\u30a6,Composite Longbow,",
                     "item_id": 76,
                     "slot": 1
                 },
@@ -444,47 +488,47 @@
                     "slot": 2
                 },
                 {
-                    "comment": "8198,プレートコイフ,Plate Coif,",
+                    "comment": "8198,\u30d7\u30ec\u30fc\u30c8\u30b3\u30a4\u30d5,Plate Coif,",
                     "item_id": 8198,
                     "slot": 3
                 },
                 {
-                    "comment": "8298,バトルジャケット,Battle Jacket,",
+                    "comment": "8298,\u30d0\u30c8\u30eb\u30b8\u30e3\u30b1\u30c3\u30c8,Battle Jacket,",
                     "item_id": 8298,
                     "slot": 4
                 },
                 {
-                    "comment": "500,トラベラーズシャツ,Traveler's Shirt,",
+                    "comment": "500,\u30c8\u30e9\u30d9\u30e9\u30fc\u30ba\u30b7\u30e3\u30c4,Traveler's Shirt,",
                     "item_id": 500,
                     "slot": 5
                 },
                 {
-                    "comment": "8498,アイアンマニカ,Iron Manicae",
+                    "comment": "8498,\u30a2\u30a4\u30a2\u30f3\u30de\u30cb\u30ab,Iron Manicae",
                     "item_id": 8498,
                     "slot": 6
                 },
                 {
-                    "comment": "8398,傭兵のレッグガード,Mercenary Leg-Guards,",
+                    "comment": "8398,\u50ad\u5175\u306e\u30ec\u30c3\u30b0\u30ac\u30fc\u30c9,Mercenary Leg-Guards,",
                     "item_id": 8398,
                     "slot": 7
                 },
                 {
-                    "comment": "508,レザーパンツ,Leather Pants,",
+                    "comment": "508,\u30ec\u30b6\u30fc\u30d1\u30f3\u30c4,Leather Pants,",
                     "item_id": 508,
                     "slot": 8
                 },
                 {
-                    "comment": "513,スカラークローク,Scholar Cloak,",
+                    "comment": "513,\u30b9\u30ab\u30e9\u30fc\u30af\u30ed\u30fc\u30af,Scholar Cloak,",
                     "item_id": 513,
                     "slot": 9
                 },
                 {
-                    "comment": "8931,ほたる石のピアス,Fluorite Earrings,",
+                    "comment": "8931,\u307b\u305f\u308b\u77f3\u306e\u30d4\u30a2\u30b9,Fluorite Earrings,",
                     "item_id": 8931,
                     "slot": 10
                 },
                 {
-                    "comment": "8934,草紋のリング,Grass Signet Ring,",
+                    "comment": "8934,\u8349\u7d0b\u306e\u30ea\u30f3\u30b0,Grass Signet Ring,",
                     "item_id": 8934,
                     "slot": 11
                 },
@@ -501,7 +545,7 @@
                     "slot": 14
                 },
                 {
-                    "comment": "9467,匠のランタン,Artisan's Lantern,",
+                    "comment": "9467,\u5320\u306e\u30e9\u30f3\u30bf\u30f3,Artisan's Lantern,",
                     "item_id": 9467,
                     "slot": 15
                 }
@@ -511,7 +555,7 @@
             "job": "SpiritLancer",
             "equipment": [
                 {
-                    "comment": "14737,ノービススピア,Novice Spear,",
+                    "comment": "14737,\u30ce\u30fc\u30d3\u30b9\u30b9\u30d4\u30a2,Novice Spear,",
                     "item_id": 14737,
                     "slot": 1
                 },
@@ -520,47 +564,47 @@
                     "slot": 2
                 },
                 {
-                    "comment": "8198,プレートコイフ,Plate Coif,",
+                    "comment": "8198,\u30d7\u30ec\u30fc\u30c8\u30b3\u30a4\u30d5,Plate Coif,",
                     "item_id": 8198,
                     "slot": 3
                 },
                 {
-                    "comment": "8298,バトルジャケット,Battle Jacket,",
+                    "comment": "8298,\u30d0\u30c8\u30eb\u30b8\u30e3\u30b1\u30c3\u30c8,Battle Jacket,",
                     "item_id": 8298,
                     "slot": 4
                 },
                 {
-                    "comment": "500,トラベラーズシャツ,Traveler's Shirt,",
+                    "comment": "500,\u30c8\u30e9\u30d9\u30e9\u30fc\u30ba\u30b7\u30e3\u30c4,Traveler's Shirt,",
                     "item_id": 500,
                     "slot": 5
                 },
                 {
-                    "comment": "8498,アイアンマニカ,Iron Manicae",
+                    "comment": "8498,\u30a2\u30a4\u30a2\u30f3\u30de\u30cb\u30ab,Iron Manicae",
                     "item_id": 8498,
                     "slot": 6
                 },
                 {
-                    "comment": "8398,傭兵のレッグガード,Mercenary Leg-Guards,",
+                    "comment": "8398,\u50ad\u5175\u306e\u30ec\u30c3\u30b0\u30ac\u30fc\u30c9,Mercenary Leg-Guards,",
                     "item_id": 8398,
                     "slot": 7
                 },
                 {
-                    "comment": "508,レザーパンツ,Leather Pants,",
+                    "comment": "508,\u30ec\u30b6\u30fc\u30d1\u30f3\u30c4,Leather Pants,",
                     "item_id": 508,
                     "slot": 8
                 },
                 {
-                    "comment": "513,スカラークローク,Scholar Cloak,",
+                    "comment": "513,\u30b9\u30ab\u30e9\u30fc\u30af\u30ed\u30fc\u30af,Scholar Cloak,",
                     "item_id": 513,
                     "slot": 9
                 },
                 {
-                    "comment": "8931,ほたる石のピアス,Fluorite Earrings,",
+                    "comment": "8931,\u307b\u305f\u308b\u77f3\u306e\u30d4\u30a2\u30b9,Fluorite Earrings,",
                     "item_id": 8931,
                     "slot": 10
                 },
                 {
-                    "comment": "8934,草紋のリング,Grass Signet Ring,",
+                    "comment": "8934,\u8349\u7d0b\u306e\u30ea\u30f3\u30b0,Grass Signet Ring,",
                     "item_id": 8934,
                     "slot": 11
                 },
@@ -577,7 +621,7 @@
                     "slot": 14
                 },
                 {
-                    "comment": "9467,匠のランタン,Artisan's Lantern,",
+                    "comment": "9467,\u5320\u306e\u30e9\u30f3\u30bf\u30f3,Artisan's Lantern,",
                     "item_id": 9467,
                     "slot": 15
                 }
@@ -587,57 +631,57 @@
             "job": "Fighter",
             "equipment": [
                 {
-                    "comment": "64,メイス,Mace,",
+                    "comment": "64,\u30e1\u30a4\u30b9,Mace,",
                     "item_id": 64,
                     "slot": 1
                 },
                 {
-                    "comment": "69,ペルテー,Pelta,",
+                    "comment": "69,\u30da\u30eb\u30c6\u30fc,Pelta,",
                     "item_id": 69,
                     "slot": 2
                 },
                 {
-                    "comment": "425,ブロンズサーリット,Bronze Sallet,",
+                    "comment": "425,\u30d6\u30ed\u30f3\u30ba\u30b5\u30fc\u30ea\u30c3\u30c8,Bronze Sallet,",
                     "item_id": 425,
                     "slot": 3
                 },
                 {
-                    "comment": "8223,ハーフキュイラス,Half Cuirass,",
+                    "comment": "8223,\u30cf\u30fc\u30d5\u30ad\u30e5\u30a4\u30e9\u30b9,Half Cuirass,",
                     "item_id": 8223,
                     "slot": 4
                 },
                 {
-                    "comment": "500,トラベラーズシャツ,Traveler's Shirt,",
+                    "comment": "500,\u30c8\u30e9\u30d9\u30e9\u30fc\u30ba\u30b7\u30e3\u30c4,Traveler's Shirt,",
                     "item_id": 500,
                     "slot": 5
                 },
                 {
-                    "comment": "8423,ブロンズガントレット,Bronze Gauntlet,",
+                    "comment": "8423,\u30d6\u30ed\u30f3\u30ba\u30ac\u30f3\u30c8\u30ec\u30c3\u30c8,Bronze Gauntlet,",
                     "item_id": 8423,
                     "slot": 6
                 },
                 {
-                    "comment": "8323,ブロンズサバトン,Bronze Sabatons,",
+                    "comment": "8323,\u30d6\u30ed\u30f3\u30ba\u30b5\u30d0\u30c8\u30f3,Bronze Sabatons,",
                     "item_id": 8323,
                     "slot": 7
                 },
                 {
-                    "comment": "508,レザーパンツ,Leather Pants,",
+                    "comment": "508,\u30ec\u30b6\u30fc\u30d1\u30f3\u30c4,Leather Pants,",
                     "item_id": 508,
                     "slot": 8
                 },
                 {
-                    "comment": "513,スカラークローク,Scholar Cloak,",
+                    "comment": "513,\u30b9\u30ab\u30e9\u30fc\u30af\u30ed\u30fc\u30af,Scholar Cloak,",
                     "item_id": 513,
                     "slot": 9
                 },
                 {
-                    "comment": "8931,ほたる石のピアス,Fluorite Earrings,",
+                    "comment": "8931,\u307b\u305f\u308b\u77f3\u306e\u30d4\u30a2\u30b9,Fluorite Earrings,",
                     "item_id": 8931,
                     "slot": 10
                 },
                 {
-                    "comment": "8934,草紋のリング,Grass Signet Ring,",
+                    "comment": "8934,\u8349\u7d0b\u306e\u30ea\u30f3\u30b0,Grass Signet Ring,",
                     "item_id": 8934,
                     "slot": 11
                 },
@@ -654,7 +698,7 @@
                     "slot": 14
                 },
                 {
-                    "comment": "9467,匠のランタン,Artisan's Lantern,",
+                    "comment": "9467,\u5320\u306e\u30e9\u30f3\u30bf\u30f3,Artisan's Lantern,",
                     "item_id": 9467,
                     "slot": 15
                 }
@@ -664,7 +708,7 @@
             "job": "Warrior",
             "equipment": [
                 {
-                    "comment": "124,ジャッジハンマー,Judge's Hammer,",
+                    "comment": "124,\u30b8\u30e3\u30c3\u30b8\u30cf\u30f3\u30de\u30fc,Judge's Hammer,",
                     "item_id": 124,
                     "slot": 1
                 },
@@ -674,47 +718,47 @@
                     "slot": 2
                 },
                 {
-                    "comment": "425,ブロンズサーリット,Bronze Sallet,",
+                    "comment": "425,\u30d6\u30ed\u30f3\u30ba\u30b5\u30fc\u30ea\u30c3\u30c8,Bronze Sallet,",
                     "item_id": 425,
                     "slot": 3
                 },
                 {
-                    "comment": "8223,ハーフキュイラス,Half Cuirass,",
+                    "comment": "8223,\u30cf\u30fc\u30d5\u30ad\u30e5\u30a4\u30e9\u30b9,Half Cuirass,",
                     "item_id": 8223,
                     "slot": 4
                 },
                 {
-                    "comment": "500,トラベラーズシャツ,Traveler's Shirt,",
+                    "comment": "500,\u30c8\u30e9\u30d9\u30e9\u30fc\u30ba\u30b7\u30e3\u30c4,Traveler's Shirt,",
                     "item_id": 500,
                     "slot": 5
                 },
                 {
-                    "comment": "8423,ブロンズガントレット,Bronze Gauntlet,",
+                    "comment": "8423,\u30d6\u30ed\u30f3\u30ba\u30ac\u30f3\u30c8\u30ec\u30c3\u30c8,Bronze Gauntlet,",
                     "item_id": 8423,
                     "slot": 6
                 },
                 {
-                    "comment": "8323,ブロンズサバトン,Bronze Sabatons,",
+                    "comment": "8323,\u30d6\u30ed\u30f3\u30ba\u30b5\u30d0\u30c8\u30f3,Bronze Sabatons,",
                     "item_id": 8323,
                     "slot": 7
                 },
                 {
-                    "comment": "508,レザーパンツ,Leather Pants,",
+                    "comment": "508,\u30ec\u30b6\u30fc\u30d1\u30f3\u30c4,Leather Pants,",
                     "item_id": 508,
                     "slot": 8
                 },
                 {
-                    "comment": "513,スカラークローク,Scholar Cloak,",
+                    "comment": "513,\u30b9\u30ab\u30e9\u30fc\u30af\u30ed\u30fc\u30af,Scholar Cloak,",
                     "item_id": 513,
                     "slot": 9
                 },
                 {
-                    "comment": "8931,ほたる石のピアス,Fluorite Earrings,",
+                    "comment": "8931,\u307b\u305f\u308b\u77f3\u306e\u30d4\u30a2\u30b9,Fluorite Earrings,",
                     "item_id": 8931,
                     "slot": 10
                 },
                 {
-                    "comment": "8934,草紋のリング,Grass Signet Ring,",
+                    "comment": "8934,\u8349\u7d0b\u306e\u30ea\u30f3\u30b0,Grass Signet Ring,",
                     "item_id": 8934,
                     "slot": 11
                 },
@@ -731,7 +775,7 @@
                     "slot": 14
                 },
                 {
-                    "comment": "9467,匠のランタン,Artisan's Lantern,",
+                    "comment": "9467,\u5320\u306e\u30e9\u30f3\u30bf\u30f3,Artisan's Lantern,",
                     "item_id": 9467,
                     "slot": 15
                 }
@@ -741,7 +785,7 @@
             "job": "Priest",
             "equipment": [
                 {
-                    "comment": "83,パームフラワー,Palm Flower,",
+                    "comment": "83,\u30d1\u30fc\u30e0\u30d5\u30e9\u30ef\u30fc,Palm Flower,",
                     "item_id": 83,
                     "slot": 1
                 },
@@ -751,47 +795,47 @@
                     "slot": 2
                 },
                 {
-                    "comment": "8148,マジシャンフード,Magician's Hood,",
+                    "comment": "8148,\u30de\u30b8\u30b7\u30e3\u30f3\u30d5\u30fc\u30c9,Magician's Hood,",
                     "item_id": 8148,
                     "slot": 3
                 },
                 {
-                    "comment": "8248,マジシャンコート,Magician's Coat,",
+                    "comment": "8248,\u30de\u30b8\u30b7\u30e3\u30f3\u30b3\u30fc\u30c8,Magician's Coat,",
                     "item_id": 8248,
                     "slot": 4
                 },
                 {
-                    "comment": "500,トラベラーズシャツ,Traveler's Shirt,",
+                    "comment": "500,\u30c8\u30e9\u30d9\u30e9\u30fc\u30ba\u30b7\u30e3\u30c4,Traveler's Shirt,",
                     "item_id": 500,
                     "slot": 5
                 },
                 {
-                    "comment": "4126,マジシャンズバングル,Magician's Bangles,",
+                    "comment": "4126,\u30de\u30b8\u30b7\u30e3\u30f3\u30ba\u30d0\u30f3\u30b0\u30eb,Magician's Bangles,",
                     "item_id": 4126,
                     "slot": 6
                 },
                 {
-                    "comment": "8348,碧落の腰巻,Sky Blue Waistguard,",
+                    "comment": "8348,\u78a7\u843d\u306e\u8170\u5dfb,Sky Blue Waistguard,",
                     "item_id": 8348,
                     "slot": 7
                 },
                 {
-                    "comment": "508,レザーパンツ,Leather Pants,",
+                    "comment": "508,\u30ec\u30b6\u30fc\u30d1\u30f3\u30c4,Leather Pants,",
                     "item_id": 508,
                     "slot": 8
                 },
                 {
-                    "comment": "513,スカラークローク,Scholar Cloak,",
+                    "comment": "513,\u30b9\u30ab\u30e9\u30fc\u30af\u30ed\u30fc\u30af,Scholar Cloak,",
                     "item_id": 513,
                     "slot": 9
                 },
                 {
-                    "comment": "8931,ほたる石のピアス,Fluorite Earrings,",
+                    "comment": "8931,\u307b\u305f\u308b\u77f3\u306e\u30d4\u30a2\u30b9,Fluorite Earrings,",
                     "item_id": 8931,
                     "slot": 10
                 },
                 {
-                    "comment": "8934,草紋のリング,Grass Signet Ring,",
+                    "comment": "8934,\u8349\u7d0b\u306e\u30ea\u30f3\u30b0,Grass Signet Ring,",
                     "item_id": 8934,
                     "slot": 11
                 },
@@ -808,7 +852,7 @@
                     "slot": 14
                 },
                 {
-                    "comment": "9467,匠のランタン,Artisan's Lantern,",
+                    "comment": "9467,\u5320\u306e\u30e9\u30f3\u30bf\u30f3,Artisan's Lantern,",
                     "item_id": 9467,
                     "slot": 15
                 }
@@ -818,7 +862,7 @@
             "job": "Sorcerer",
             "equipment": [
                 {
-                    "comment": "108,パームトゥリーズ,Palm Trees,",
+                    "comment": "108,\u30d1\u30fc\u30e0\u30c8\u30a5\u30ea\u30fc\u30ba,Palm Trees,",
                     "item_id": 108,
                     "slot": 1
                 },
@@ -828,47 +872,47 @@
                     "slot": 2
                 },
                 {
-                    "comment": "8148,マジシャンフード,Magician's Hood,",
+                    "comment": "8148,\u30de\u30b8\u30b7\u30e3\u30f3\u30d5\u30fc\u30c9,Magician's Hood,",
                     "item_id": 8148,
                     "slot": 3
                 },
                 {
-                    "comment": "8248,マジシャンコート,Magician's Coat,",
+                    "comment": "8248,\u30de\u30b8\u30b7\u30e3\u30f3\u30b3\u30fc\u30c8,Magician's Coat,",
                     "item_id": 8248,
                     "slot": 4
                 },
                 {
-                    "comment": "500,トラベラーズシャツ,Traveler's Shirt,",
+                    "comment": "500,\u30c8\u30e9\u30d9\u30e9\u30fc\u30ba\u30b7\u30e3\u30c4,Traveler's Shirt,",
                     "item_id": 500,
                     "slot": 5
                 },
                 {
-                    "comment": "4126,マジシャンズバングル,Magician's Bangles,",
+                    "comment": "4126,\u30de\u30b8\u30b7\u30e3\u30f3\u30ba\u30d0\u30f3\u30b0\u30eb,Magician's Bangles,",
                     "item_id": 4126,
                     "slot": 6
                 },
                 {
-                    "comment": "8348,碧落の腰巻,Sky Blue Waistguard,",
+                    "comment": "8348,\u78a7\u843d\u306e\u8170\u5dfb,Sky Blue Waistguard,",
                     "item_id": 8348,
                     "slot": 7
                 },
                 {
-                    "comment": "508,レザーパンツ,Leather Pants,",
+                    "comment": "508,\u30ec\u30b6\u30fc\u30d1\u30f3\u30c4,Leather Pants,",
                     "item_id": 508,
                     "slot": 8
                 },
                 {
-                    "comment": "513,スカラークローク,Scholar Cloak,",
+                    "comment": "513,\u30b9\u30ab\u30e9\u30fc\u30af\u30ed\u30fc\u30af,Scholar Cloak,",
                     "item_id": 513,
                     "slot": 9
                 },
                 {
-                    "comment": "8931,ほたる石のピアス,Fluorite Earrings,",
+                    "comment": "8931,\u307b\u305f\u308b\u77f3\u306e\u30d4\u30a2\u30b9,Fluorite Earrings,",
                     "item_id": 8931,
                     "slot": 10
                 },
                 {
-                    "comment": "8934,草紋のリング,Grass Signet Ring,",
+                    "comment": "8934,\u8349\u7d0b\u306e\u30ea\u30f3\u30b0,Grass Signet Ring,",
                     "item_id": 8934,
                     "slot": 11
                 },
@@ -885,7 +929,7 @@
                     "slot": 14
                 },
                 {
-                    "comment": "9467,匠のランタン,Artisan's Lantern,",
+                    "comment": "9467,\u5320\u306e\u30e9\u30f3\u30bf\u30f3,Artisan's Lantern,",
                     "item_id": 9467,
                     "slot": 15
                 }
@@ -895,7 +939,7 @@
             "job": "ElementArcher",
             "equipment": [
                 {
-                    "comment": "115,ブロンツァボーゲン,Bronze Bogen,",
+                    "comment": "115,\u30d6\u30ed\u30f3\u30c4\u30a1\u30dc\u30fc\u30b2\u30f3,Bronze Bogen,",
                     "item_id": 115,
                     "slot": 1
                 },
@@ -905,47 +949,47 @@
                     "slot": 2
                 },
                 {
-                    "comment": "8148,マジシャンフード,Magician's Hood,",
+                    "comment": "8148,\u30de\u30b8\u30b7\u30e3\u30f3\u30d5\u30fc\u30c9,Magician's Hood,",
                     "item_id": 8148,
                     "slot": 3
                 },
                 {
-                    "comment": "8248,マジシャンコート,Magician's Coat,",
+                    "comment": "8248,\u30de\u30b8\u30b7\u30e3\u30f3\u30b3\u30fc\u30c8,Magician's Coat,",
                     "item_id": 8248,
                     "slot": 4
                 },
                 {
-                    "comment": "500,トラベラーズシャツ,Traveler's Shirt,",
+                    "comment": "500,\u30c8\u30e9\u30d9\u30e9\u30fc\u30ba\u30b7\u30e3\u30c4,Traveler's Shirt,",
                     "item_id": 500,
                     "slot": 5
                 },
                 {
-                    "comment": "4126,マジシャンズバングル,Magician's Bangles,",
+                    "comment": "4126,\u30de\u30b8\u30b7\u30e3\u30f3\u30ba\u30d0\u30f3\u30b0\u30eb,Magician's Bangles,",
                     "item_id": 4126,
                     "slot": 6
                 },
                 {
-                    "comment": "8348,碧落の腰巻,Sky Blue Waistguard,",
+                    "comment": "8348,\u78a7\u843d\u306e\u8170\u5dfb,Sky Blue Waistguard,",
                     "item_id": 8348,
                     "slot": 7
                 },
                 {
-                    "comment": "508,レザーパンツ,Leather Pants,",
+                    "comment": "508,\u30ec\u30b6\u30fc\u30d1\u30f3\u30c4,Leather Pants,",
                     "item_id": 508,
                     "slot": 8
                 },
                 {
-                    "comment": "513,スカラークローク,Scholar Cloak,",
+                    "comment": "513,\u30b9\u30ab\u30e9\u30fc\u30af\u30ed\u30fc\u30af,Scholar Cloak,",
                     "item_id": 513,
                     "slot": 9
                 },
                 {
-                    "comment": "8931,ほたる石のピアス,Fluorite Earrings,",
+                    "comment": "8931,\u307b\u305f\u308b\u77f3\u306e\u30d4\u30a2\u30b9,Fluorite Earrings,",
                     "item_id": 8931,
                     "slot": 10
                 },
                 {
-                    "comment": "8934,草紋のリング,Grass Signet Ring,",
+                    "comment": "8934,\u8349\u7d0b\u306e\u30ea\u30f3\u30b0,Grass Signet Ring,",
                     "item_id": 8934,
                     "slot": 11
                 },
@@ -962,105 +1006,256 @@
                     "slot": 14
                 },
                 {
-                    "comment": "9467,匠のランタン,Artisan's Lantern,",
+                    "comment": "9467,\u5320\u306e\u30e9\u30f3\u30bf\u30f3,Artisan's Lantern,",
                     "item_id": 9467,
                     "slot": 15
                 }
             ]
         }
     ],
+    "loot_ranges": [
+        {
+            "comment": "Rotunda 1",
+            "stage_ids": [603, 610, 611, 612],
+            "normal": {"min": 3, "max": 4},
+            "sealed": {"min": 4, "max": 5}
+        },
+        {
+            "comment": "Rotunda 2",
+            "stage_ids": [604, 614, 615, 616],
+            "normal": {"min": 4, "max": 5},
+            "sealed": {"min": 5, "max": 6}
+        },
+        {
+            "comment": "Rotunda 3",
+            "stage_ids": [605, 617, 618, 619, 620, 621, 622],
+            "normal": {"min": 6, "max": 10},
+            "sealed": {"min": 7, "max": 10}
+        },
+        {
+            "comment": "Abyss 1",
+            "stage_ids": [682, 686, 687, 688],
+            "normal": {"min": 3, "max": 4},
+            "sealed": {"min": 5, "max": 6}
+        },
+        {
+            "comment": "Abyss 2",
+            "stage_ids": [683, 689, 690, 691],
+            "normal": {"min": 5, "max": 6},
+            "sealed": {"min": 6, "max": 7}
+        },
+        {
+            "comment": "Abyss 3",
+            "stage_ids": [684, 692, 693, 694],
+            "normal": {"min": 7, "max": 11},
+            "sealed": {"min": 8, "max": 11}
+        },
+        {
+            "comment": "Abyss 4",
+            "stage_ids": [685, 695, 696, 697, 715, 716, 717],
+            "normal": {"min": 10, "max": 11},
+            "sealed": {"min": 11, "max": 11}
+        }
+    ],
     "chest_loot": {
         "other": {
             "low_quality": [
-                492,
-                2104,
-                953,
-                2565,
-                955,
-                2567,
-                956,
-                2568,
-                957,
-                2569,
-                958,
-                2570,
-                959,
-                2571,
-                960,
-                2572,
-                8523,
-                8524,
-                9604,
-                9605,
-                9609,
-                9610,
-                9614,
-                9615,
-                9619,
-                9620,
-                9624,
-                9625,
-                9629,
-                9630,
-                9634,
-                9635,
-                9639,
-                9640,
-                9644,
-                9645,
-                10441,
-                10442,
-                13595,
-                13596,
-                17956,
-                17957,
-                17958,
-                961,
-                2573,
-                962,
-                2574,
-                965,
-                2577,
-                966,
-                2578,
-                968,
-                2580,
-                8528,
-                8529,
-                9679,
-                9680,
-                9684,
-                9685,
-                9689,
-                9690,
-                9694,
-                9695,
-                9699,
-                9700,
-                9704,
-                9705,
-                9709,
-                9710,
-                9714,
-                9715,
-                9719,
-                9720,
-                9724,
-                9725,
-                9729,
-                9730,
-                9734,
-                9735,
-                10476,
-                10477,
-                13610,
-                13611,
-                20761,
-                21339,
-                21340,
-                21341,
-                21342,
-                21343,
+                496,
+                2108,
+                501,
+                2113,
+                502,
+                2114,
+                503,
+                2115,
+                518,
+                2130,
+                974,
+                2586,
+                975,
+                2587,
+                976,
+                2588,
+                977,
+                2589,
+                979,
+                2591,
+                980,
+                2592,
+                981,
+                2593,
+                982,
+                2594,
+                983,
+                2595,
+                984,
+                2596,
+                985,
+                2597,
+                987,
+                2599,
+                988,
+                2600,
+                989,
+                2601,
+                991,
+                2603,
+                992,
+                2604,
+                1025,
+                2637,
+                8548,
+                8549,
+                8553,
+                8554,
+                8558,
+                8559,
+                8563,
+                8564,
+                8573,
+                8574,
+                8583,
+                8584,
+                8588,
+                8589,
+                8593,
+                8594,
+                8598,
+                8599,
+                8603,
+                8604,
+                8608,
+                8609,
+                8618,
+                8619,
+                8623,
+                8624,
+                8628,
+                8629,
+                8633,
+                8634,
+                8638,
+                8639,
+                8648,
+                8649,
+                9900,
+                10518,
+                10519,
+                13600,
+                13601,
+                14151,
+                14153,
+                14155,
+                14157,
+                14159,
+                14161,
+                17954,
+                19135,
+                19136,
+                19137,
+                19138,
+                19139,
+                19140,
+                19605,
+                19606,
+                19609,
+                19610,
+                507,
+                2119,
+                516,
+                2128,
+                519,
+                2131,
+                677,
+                2289,
+                941,
+                2553,
+                993,
+                2605,
+                994,
+                2606,
+                996,
+                2608,
+                997,
+                2609,
+                998,
+                2610,
+                1000,
+                2612,
+                1001,
+                2613,
+                1002,
+                2614,
+                1003,
+                2615,
+                1004,
+                2616,
+                1005,
+                2617,
+                1006,
+                2618,
+                8673,
+                8674,
+                8678,
+                8679,
+                8683,
+                8684,
+                8688,
+                8689,
+                8693,
+                8694,
+                8698,
+                8699,
+                8703,
+                8704,
+                8708,
+                8709,
+                8713,
+                8714,
+                8718,
+                8719,
+                8728,
+                8729,
+                8733,
+                8734,
+                8738,
+                8739,
+                8743,
+                8744,
+                8748,
+                8749,
+                8753,
+                8754,
+                8758,
+                8759,
+                8773,
+                8774,
+                8778,
+                8779,
+                9674,
+                9675,
+                9901,
+                10496,
+                10497,
+                13615,
+                13616,
+                14152,
+                14154,
+                14156,
+                14158,
+                14160,
+                14162,
+                17955,
+                19141,
+                19142,
+                19143,
+                19144,
+                19145,
+                19146,
+                19607,
+                19608,
+                19611,
+                19612,
                 486,
                 2098,
                 515,
@@ -1171,126 +1366,254 @@
                 13836
             ],
             "high_quality": [
-                3127,
-                4150,
-                5173,
-                3588,
-                4611,
-                5634,
-                3590,
-                4613,
-                5636,
-                3591,
-                4614,
-                5637,
-                3592,
-                4615,
-                5638,
-                3593,
-                4616,
-                5639,
-                3594,
-                4617,
-                5640,
-                3595,
-                4618,
-                5641,
-                8525,
-                8526,
-                8527,
-                9606,
-                9607,
-                9608,
-                9611,
-                9612,
-                9613,
-                9616,
-                9617,
-                9618,
-                9621,
-                9622,
-                9623,
-                9626,
-                9627,
-                9628,
-                9631,
-                9632,
-                9633,
-                9636,
-                9637,
-                9638,
-                9641,
-                9642,
-                9643,
-                9646,
-                9647,
-                9648,
-                10443,
-                10444,
-                10445,
-                13597,
-                13598,
-                13599,
-                3596,
-                4619,
-                5642,
-                3597,
-                4620,
-                5643,
-                3600,
-                4623,
-                5646,
-                3601,
-                4624,
-                5647,
-                3603,
-                4626,
-                5649,
-                8530,
-                8531,
-                8532,
-                9681,
-                9682,
-                9683,
-                9686,
-                9687,
-                9688,
-                9691,
-                9692,
-                9693,
-                9696,
-                9697,
-                9698,
-                9701,
-                9702,
-                9703,
-                9706,
-                9707,
-                9708,
-                9711,
-                9712,
-                9713,
-                9716,
-                9717,
-                9718,
-                9721,
-                9722,
-                9723,
-                9726,
-                9727,
-                9728,
-                9731,
-                9732,
-                9733,
-                9736,
-                9737,
-                9738,
-                10478,
-                10479,
-                10480,
-                13612,
-                13613,
-                13614,
+                3131,
+                4154,
+                5177,
+                3136,
+                4159,
+                5182,
+                3137,
+                4160,
+                5183,
+                3138,
+                4161,
+                5184,
+                3153,
+                4176,
+                5199,
+                3609,
+                4632,
+                5655,
+                3610,
+                4633,
+                5656,
+                3611,
+                4634,
+                5657,
+                3612,
+                4635,
+                5658,
+                3614,
+                4637,
+                5660,
+                3615,
+                4638,
+                5661,
+                3616,
+                4639,
+                5662,
+                3617,
+                4640,
+                5663,
+                3618,
+                4641,
+                5664,
+                3619,
+                4642,
+                5665,
+                3620,
+                4643,
+                5666,
+                3622,
+                4645,
+                5668,
+                3623,
+                4646,
+                5669,
+                3624,
+                4647,
+                5670,
+                3626,
+                4649,
+                5672,
+                3627,
+                4650,
+                5673,
+                3660,
+                4683,
+                5706,
+                8550,
+                8551,
+                8552,
+                8555,
+                8556,
+                8557,
+                8560,
+                8561,
+                8562,
+                8565,
+                8566,
+                8567,
+                8575,
+                8576,
+                8577,
+                8585,
+                8586,
+                8587,
+                8590,
+                8591,
+                8592,
+                8595,
+                8596,
+                8597,
+                8600,
+                8601,
+                8602,
+                8605,
+                8606,
+                8607,
+                8610,
+                8611,
+                8612,
+                8620,
+                8621,
+                8622,
+                8625,
+                8626,
+                8627,
+                8630,
+                8631,
+                8632,
+                8635,
+                8636,
+                8637,
+                8640,
+                8641,
+                8642,
+                8650,
+                8651,
+                8652,
+                10520,
+                10521,
+                10522,
+                13602,
+                13603,
+                13604,
+                19501,
+                19503,
+                20436,
+                20438,
+                3142,
+                4165,
+                5188,
+                3151,
+                4174,
+                5197,
+                3154,
+                4177,
+                5200,
+                3312,
+                4335,
+                5358,
+                3576,
+                4599,
+                5622,
+                3628,
+                4651,
+                5674,
+                3629,
+                4652,
+                5675,
+                3631,
+                4654,
+                5677,
+                3632,
+                4655,
+                5678,
+                3633,
+                4656,
+                5679,
+                3635,
+                4658,
+                5681,
+                3636,
+                4659,
+                5682,
+                3637,
+                4660,
+                5683,
+                3638,
+                4661,
+                5684,
+                3639,
+                4662,
+                5685,
+                3640,
+                4663,
+                5686,
+                3641,
+                4664,
+                5687,
+                8675,
+                8676,
+                8677,
+                8680,
+                8681,
+                8682,
+                8685,
+                8686,
+                8687,
+                8690,
+                8691,
+                8692,
+                8695,
+                8696,
+                8697,
+                8700,
+                8701,
+                8702,
+                8705,
+                8706,
+                8707,
+                8710,
+                8711,
+                8712,
+                8715,
+                8716,
+                8717,
+                8720,
+                8721,
+                8722,
+                8730,
+                8731,
+                8732,
+                8735,
+                8736,
+                8737,
+                8740,
+                8741,
+                8742,
+                8745,
+                8746,
+                8747,
+                8750,
+                8751,
+                8752,
+                8755,
+                8756,
+                8757,
+                8760,
+                8761,
+                8762,
+                8775,
+                8776,
+                8777,
+                8780,
+                8781,
+                8782,
+                9676,
+                9677,
+                9678,
+                10498,
+                10499,
+                10500,
+                13617,
+                13618,
+                13619,
+                19502,
+                19504,
+                20437,
+                20439,
                 3121,
                 4144,
                 5167,
@@ -3478,25 +3801,15 @@
                     9873,
                     10042,
                     10043,
-                    10216,
                     10217,
-                    10196,
                     10197,
-                    10201,
                     10202,
-                    10206,
                     10207,
-                    10211,
                     10212,
-                    10166,
                     10167,
-                    10176,
                     10177,
-                    10181,
                     10182,
-                    10186,
                     10187,
-                    10191,
                     10192,
                     11072,
                     11073,
@@ -3504,7 +3817,6 @@
                     11078,
                     11082,
                     11083,
-                    11511,
                     11512,
                     70,
                     1682,
@@ -3631,11 +3943,8 @@
                     9352,
                     9356,
                     9357,
-                    10316,
                     10317,
-                    10321,
                     10322,
-                    10326,
                     10327,
                     11102,
                     11103,
@@ -3643,25 +3952,15 @@
                     11108,
                     11112,
                     11113,
-                    11307,
                     11308,
-                    11312,
                     11313,
-                    11317,
                     11318,
-                    11322,
                     11323,
-                    11327,
                     11328,
-                    11332,
                     11333,
-                    11536,
                     11537,
-                    12141,
                     12142,
-                    12151,
                     12152,
-                    12156,
                     12157
                 ],
                 "Hunter": [
@@ -3722,23 +4021,14 @@
                     203,
                     1815,
                     9879,
-                    10346,
                     10347,
-                    10331,
                     10332,
-                    10336,
                     10337,
-                    10341,
                     10342,
-                    10713,
                     10714,
-                    10718,
                     10719,
-                    10723,
                     10724,
-                    10728,
                     10729,
-                    10738,
                     10739,
                     11117,
                     11118,
@@ -3805,25 +4095,15 @@
                     230,
                     1842,
                     9882,
-                    10396,
                     10397,
-                    10381,
                     10382,
-                    10386,
                     10387,
-                    10391,
                     10392,
-                    10634,
                     10635,
-                    10639,
                     10640,
-                    10644,
                     10645,
-                    10649,
                     10650,
-                    11178,
                     11179,
-                    10659,
                     10660,
                     11147,
                     11148,
@@ -3831,7 +4111,6 @@
                     11153,
                     11157,
                     11158,
-                    11556,
                     11557
                 ],
                 "ShieldSage": [
@@ -3892,23 +4171,14 @@
                     275,
                     1887,
                     9876,
-                    10301,
                     10302,
-                    10286,
                     10287,
-                    10291,
                     10292,
-                    10296,
                     10297,
-                    10743,
                     10744,
-                    10753,
                     10754,
-                    10758,
                     10759,
-                    10763,
                     10764,
-                    10768,
                     10769,
                     11087,
                     11088,
@@ -3916,11 +4186,8 @@
                     11093,
                     11097,
                     11098,
-                    11234,
                     11235,
-                    11239,
                     11240,
-                    11526,
                     11527,
                     90,
                     1702,
@@ -4043,11 +4310,8 @@
                     1941,
                     332,
                     1944,
-                    10401,
                     10402,
-                    10406,
                     10407,
-                    10411,
                     10412,
                     11162,
                     11163,
@@ -4055,11 +4319,8 @@
                     11168,
                     11172,
                     11173,
-                    11561,
                     11562,
-                    12516,
                     12517,
-                    12521,
                     12522
                 ],
                 "Warrior": [
@@ -4105,21 +4366,13 @@
                     1997,
                     388,
                     2000,
-                    10271,
                     10272,
-                    10677,
                     10678,
-                    11337,
                     11338,
-                    11342,
                     11343,
-                    11352,
                     11353,
-                    11357,
                     11358,
-                    11362,
                     11363,
-                    11521,
                     11522
                 ],
                 "ElementArcher": [
@@ -4179,9 +4432,7 @@
                     1970,
                     361,
                     1973,
-                    10366,
                     10367,
-                    10376,
                     10377,
                     11132,
                     11133,
@@ -4189,7 +4440,6 @@
                     11138,
                     11142,
                     11143,
-                    11551,
                     11552
                 ],
                 "Alchemist": [
@@ -4225,19 +4475,12 @@
                     2021,
                     413,
                     2025,
-                    10351,
                     10352,
-                    11546,
                     11547,
-                    12281,
                     12282,
-                    12286,
                     12287,
-                    12291,
                     12292,
-                    12296,
                     12297,
-                    12301,
                     12302
                 ],
                 "SpiritLancer": [
@@ -4347,35 +4590,20 @@
                     10044,
                     10045,
                     10046,
-                    10218,
                     10219,
-                    10220,
                     10198,
-                    10199,
                     10200,
-                    10203,
                     10204,
-                    10205,
                     10208,
-                    10209,
                     10210,
-                    10213,
                     10214,
-                    10215,
                     10168,
-                    10169,
                     10170,
-                    10178,
                     10179,
-                    10180,
                     10183,
-                    10184,
                     10185,
-                    10188,
                     10189,
-                    10190,
                     10193,
-                    10194,
                     10195,
                     11074,
                     11075,
@@ -4386,9 +4614,7 @@
                     11084,
                     11085,
                     11086,
-                    11513,
                     11514,
-                    11515,
                     12785,
                     2705,
                     3728,
@@ -4569,15 +4795,10 @@
                     9358,
                     9359,
                     9360,
-                    10318,
                     10319,
-                    10320,
                     10323,
-                    10324,
                     10325,
-                    10328,
                     10329,
-                    10330,
                     11104,
                     11105,
                     11106,
@@ -4587,37 +4808,21 @@
                     11114,
                     11115,
                     11116,
-                    11309,
                     11310,
-                    11311,
                     11314,
-                    11315,
                     11316,
-                    11319,
                     11320,
-                    11321,
                     11324,
-                    11325,
                     11326,
-                    11329,
                     11330,
-                    11331,
                     11334,
-                    11335,
                     11336,
-                    11538,
                     11539,
-                    11540,
                     12143,
-                    12144,
                     12145,
-                    12153,
                     12154,
-                    12155,
                     12158,
-                    12159,
                     12160,
-                    12165,
                     12788
                 ],
                 "Hunter": [
@@ -4705,33 +4910,19 @@
                     2838,
                     3861,
                     4884,
-                    10348,
                     10349,
-                    10350,
                     10333,
-                    10334,
                     10335,
-                    10338,
                     10339,
-                    10340,
                     10343,
-                    10344,
                     10345,
-                    10715,
                     10716,
-                    10717,
                     10720,
-                    10721,
                     10722,
-                    10725,
                     10726,
-                    10727,
                     10730,
-                    10731,
                     10732,
-                    10740,
                     10741,
-                    10742,
                     11119,
                     11120,
                     11121,
@@ -4741,9 +4932,7 @@
                     11129,
                     11130,
                     11131,
-                    11543,
                     11544,
-                    11545,
                     12789
                 ],
                 "Priest": [
@@ -4831,35 +5020,20 @@
                     2865,
                     3888,
                     4911,
-                    10398,
                     10399,
-                    10400,
                     10383,
-                    10384,
                     10385,
-                    10388,
                     10389,
-                    10390,
                     10393,
-                    10394,
                     10395,
-                    10636,
                     10637,
-                    10638,
                     10641,
-                    10642,
                     10643,
-                    10646,
                     10647,
-                    10648,
                     10651,
-                    10652,
                     10653,
-                    11180,
                     11181,
-                    11182,
                     10661,
-                    10662,
                     10663,
                     11149,
                     11150,
@@ -4870,9 +5044,7 @@
                     11159,
                     11160,
                     11161,
-                    11558,
                     11559,
-                    11560,
                     12791
                 ],
                 "ShieldSage": [
@@ -4960,33 +5132,19 @@
                     2910,
                     3933,
                     4956,
-                    10303,
                     10304,
-                    10305,
                     10288,
-                    10289,
                     10290,
-                    10293,
                     10294,
-                    10295,
                     10298,
-                    10299,
                     10300,
-                    10745,
                     10746,
-                    10747,
                     10755,
-                    10756,
                     10757,
-                    10760,
                     10761,
-                    10762,
                     10765,
-                    10766,
                     10767,
-                    10770,
                     10771,
-                    10772,
                     11089,
                     11090,
                     11091,
@@ -4996,15 +5154,10 @@
                     11099,
                     11100,
                     11101,
-                    11236,
                     11237,
-                    11238,
                     11241,
-                    11242,
                     11243,
-                    11528,
                     11529,
-                    11530,
                     12787,
                     2725,
                     3748,
@@ -5185,15 +5338,10 @@
                     2967,
                     3990,
                     5013,
-                    10403,
                     10404,
-                    10405,
                     10408,
-                    10409,
                     10410,
-                    10413,
                     10414,
-                    10415,
                     11164,
                     11165,
                     11166,
@@ -5203,19 +5351,12 @@
                     11174,
                     11175,
                     11176,
-                    11563,
                     11564,
-                    11565,
                     12515,
-                    12518,
                     12519,
-                    12520,
                     12523,
-                    12524,
                     12525,
-                    12528,
                     12529,
-                    12530,
                     12792
                 ],
                 "Warrior": [
@@ -5282,36 +5423,21 @@
                     3023,
                     4046,
                     5069,
-                    10273,
                     10274,
-                    10275,
                     10679,
-                    10680,
                     10681,
-                    11339,
                     11340,
-                    11341,
                     11344,
-                    11345,
                     11346,
-                    11354,
                     11355,
-                    11356,
                     11359,
-                    11360,
                     11361,
-                    11364,
                     11365,
-                    11366,
                     11523,
-                    11524,
                     11525,
                     11975,
-                    11978,
                     11979,
-                    11980,
-                    11985,
-                    12786
+                    11985
                 ],
                 "ElementArcher": [
                     2749,
@@ -5398,11 +5524,8 @@
                     2996,
                     4019,
                     5042,
-                    10368,
                     10369,
-                    10370,
                     10378,
-                    10379,
                     10380,
                     11134,
                     11135,
@@ -5413,15 +5536,10 @@
                     11144,
                     11145,
                     11146,
-                    11553,
                     11554,
-                    11555,
                     12375,
-                    12380,
                     12388,
-                    12389,
-                    12390,
-                    12790
+                    12390
                 ],
                 "Alchemist": [
                     2763,
@@ -5472,27 +5590,16 @@
                     3048,
                     4071,
                     5094,
-                    10353,
                     10354,
-                    10355,
                     11548,
-                    11549,
                     11550,
-                    12283,
                     12284,
-                    12285,
                     12288,
-                    12289,
                     12290,
-                    12293,
                     12294,
-                    12295,
                     12298,
-                    12299,
                     12300,
-                    12303,
-                    12304,
-                    12305
+                    12304
                 ],
                 "SpiritLancer": [
                     14744,

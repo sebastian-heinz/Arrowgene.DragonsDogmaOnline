@@ -150,7 +150,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 case OrbGainParamType.MainPawnLostRate:
                     break;
                 case OrbGainParamType.SecretAbility:
-                    _JobManager.UnlockSecretAbility(character, upgrade.SecretAbility);
+                    _JobManager.UnlockSecretAbility(client, character, upgrade.SecretAbility);
                     break;
                 case OrbGainParamType.Rim:
                     _WalletManager.AddToWalletNtc(client, client.Character, WalletType.RiftPoints, upgrade.Amount);
@@ -1546,35 +1546,35 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             [0x101] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group4, 1)
-                .HasOrbUnlockRestriction(300)
+                .HasOrbUnlockRestriction(280)
                 .Unlocks(OrbGainParamType.PhysicalAttack, 1),
             [0x102] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group4, 2)
-                .HasOrbUnlockRestriction(480)
+                .HasOrbUnlockRestriction(320)
                 .Unlocks(OrbGainParamType.StaminaMax, 15),
             [0x103] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group4, 3)
-                .HasOrbUnlockRestriction(500)
+                .HasOrbUnlockRestriction(400)
                 .Unlocks(OrbGainParamType.PhysicalDefence, 2),
             [0x104] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group4, 4)
-                .HasOrbUnlockRestriction(580)
+                .HasOrbUnlockRestriction(380)
                 .Unlocks(OrbGainParamType.StaminaMax, 20),
             [0x105] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group4, 5)
-                .HasOrbUnlockRestriction(600)
+                .HasOrbUnlockRestriction(420)
                 .Unlocks(OrbGainParamType.PhysicalDefence, 2),
             [0x106] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group4, 6)
-                .HasOrbUnlockRestriction(500)
+                .HasOrbUnlockRestriction(450)
                 .Unlocks(OrbGainParamType.PhysicalAttack, 2),
             [0x107] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group4, 7)
-                .HasOrbUnlockRestriction(750)
+                .HasOrbUnlockRestriction(320)
                 .Unlocks(OrbGainParamType.StaminaMax, 15),
             [0x108] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group4, 8)
-                .HasOrbUnlockRestriction(550)
+                .HasOrbUnlockRestriction(500)
                 .Unlocks(OrbGainParamType.PhysicalDefence, 3),
 
             #endregion

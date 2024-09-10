@@ -1,18 +1,15 @@
+using Arrowgene.Ddon.Shared.Asset;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
+using Arrowgene.Logging;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Logging;
-using Arrowgene.Ddon.Shared.Asset;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using System;
-using Arrowgene.Ddon.Shared.Model.Quest;
-using YamlDotNet.Core.Tokens;
-using System.Linq.Expressions;
-using System.Reflection.Metadata.Ecma335;
-using System.Text.RegularExpressions;
-using System.Text.Json.Nodes;
+using static Arrowgene.Ddon.Shared.Csv.GmdCsv;
+
 
 namespace Arrowgene.Ddon.Shared.AssetReader
 {
@@ -21,10 +18,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
         private static readonly ILogger Logger = LogProvider.Logger(typeof(QuestAssetDeserializer));
 
         private Dictionary<uint, NamedParam> namedParams;
+        private QuestDropItemAsset questDrops;
 
-        public QuestAssetDeserializer(Dictionary<uint, NamedParam> namedParams)
+        public QuestAssetDeserializer(Dictionary<uint, NamedParam> namedParams, QuestDropItemAsset questDrops)
         {
             this.namedParams = namedParams;
+            this.questDrops = questDrops;
         }
 
         public bool LoadQuestsFromDirectory(string path, QuestAsset questAssets)
@@ -84,6 +83,35 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             assetData.MinimumItemRank = jQuest.GetProperty("minimum_item_rank").GetByte();
             assetData.Discoverable = jQuest.GetProperty("discoverable").GetBoolean();
 
+            assetData.QuestAreaId = QuestAreaId.None;
+            if (jQuest.TryGetProperty("area_id", out JsonElement jAreaId)
+                && Enum.TryParse(jAreaId.GetString(), true, out QuestAreaId areaId))
+            {
+                assetData.QuestAreaId = areaId;
+            }
+
+            assetData.StageId = StageId.Invalid;
+            if (questType == QuestType.Tutorial)
+            {
+                assetData.StageId = ParseStageId(jQuest.GetProperty("stage_id"));
+            }
+
+            assetData.NewsImageId = 0;
+            if (jQuest.TryGetProperty("news_image", out JsonElement jNewsImage))
+            {
+                assetData.NewsImageId = jNewsImage.GetUInt32();
+            }
+
+            // For the purpose of setting up alternate quests.
+
+            if (jQuest.TryGetProperty("variant_id", out JsonElement AltQuestId))
+            {
+                assetData.VariantId = AltQuestId.GetUInt32();
+            } else
+            {
+                assetData.VariantId = 0;
+            }
+
             assetData.NextQuestId = 0;
             if (jQuest.TryGetProperty("next_quest", out JsonElement jNextQuest))
             {
@@ -118,8 +146,19 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 assetData.ResetPlayerAfterQuest = true;
             }
 
+            if (questType == QuestType.ExtremeMission)
+            {
+                if (!jQuest.TryGetProperty("mission_params", out JsonElement jMissionParams))
+                {
+                    Logger.Error($"Unable to create the quest '{assetData.QuestId}'. Missing 'mission_params'. Skipping.");
+                    return false;
+                }
+
+                ParseMissionParams(assetData, jMissionParams);
+            }
+
             ParseRewards(assetData, jQuest);
-            
+
             if (!ParseOrderCondition(assetData, jQuest))
             {
                 return false;
@@ -341,6 +380,8 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     questBlock.AnnounceType = announceType;
                 }
 
+                ParseAnnoucementSubtypes(questBlock, jblock);
+
                 questBlock.IsCheckpoint = false;
                 if (jblock.TryGetProperty("checkpoint", out JsonElement jCheckpoint))
                 {
@@ -537,7 +578,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             }
 
                             questBlock.QuestOrderDetails.QuestType = questType;
-                            questBlock.QuestOrderDetails.QuestId = (QuestId) jblock.GetProperty("quest_id").GetUInt32();
+                            questBlock.QuestOrderDetails.QuestId = (QuestId)jblock.GetProperty("quest_id").GetUInt32();
                         }
                         break;
                     case QuestBlockType.MyQstFlags:
@@ -590,7 +631,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                             if (jblock.TryGetProperty("quest_id", out JsonElement jQuestId))
                             {
-                                questBlock.OmInteractEvent.QuestId = (QuestId) jQuestId.GetUInt32();
+                                questBlock.OmInteractEvent.QuestId = (QuestId)jQuestId.GetUInt32();
                             }
 
                             questBlock.OmInteractEvent.QuestType = questType;
@@ -723,6 +764,35 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             return new StageId(id, layerNo, groupId);
         }
 
+        private void ParseAnnoucementSubtypes(QuestBlock questBlock, JsonElement jBlock)
+        {
+            var announcements = questBlock.Announcements;
+
+            announcements.GeneralAnnounceId = 0;
+            if (jBlock.TryGetProperty("general_announce", out JsonElement jGeneralAnnounce))
+            {
+                announcements.GeneralAnnounceId = jGeneralAnnounce.GetInt32();
+            }
+
+            announcements.StageStart = 0;
+            if (jBlock.TryGetProperty("stage_start", out JsonElement jStageStart))
+            {
+                announcements.StageStart = jStageStart.GetInt32();
+            }
+
+            announcements.StageClear = 0;
+            if (jBlock.TryGetProperty("stage_clear", out JsonElement jStageClear))
+            {
+                announcements.StageClear = jStageClear.GetInt32();
+            }
+
+            announcements.EndContentsPurpose = 0;
+            if (jBlock.TryGetProperty("end_contents_announce", out JsonElement jEndContentsPurpose))
+            {
+                announcements.EndContentsPurpose = jEndContentsPurpose.GetInt32();
+            }
+        }
+
         private QuestFlag ParseQuestFlag(JsonElement jFlag)
         {
             QuestFlag questFlag = new QuestFlag();
@@ -749,6 +819,69 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             questFlag.Value = jFlag.GetProperty("value").GetInt32();
 
             return questFlag;
+        }
+
+        private bool ParseMissionParams(QuestAssetData assetData, JsonElement jMissionParams)
+        {
+
+            if (!jMissionParams.TryGetProperty("group", out JsonElement jGroup))
+            {
+                Logger.Error($"Missing required member 'group' from ExtremeMission config.");
+                return false;
+            }
+            assetData.MissionParams.Group = jGroup.GetUInt32();
+
+            if (!jMissionParams.TryGetProperty("phase_groups", out JsonElement jPhaseGroups))
+            {
+                Logger.Error($"Missing required member 'phase_groups' from ExtremeMission config.");
+                return false;
+            }
+            
+            foreach (var element in jPhaseGroups.EnumerateArray())
+            {
+                assetData.MissionParams.QuestPhaseGroupIdList.Add(new CDataCommonU32() { Value = element.GetUInt32() });
+            }
+
+            assetData.MissionParams.SortieMinimum = 4;
+            if (jMissionParams.TryGetProperty("minimum_members", out JsonElement jMinimumMembers))
+            {
+                assetData.MissionParams.SortieMinimum = jMinimumMembers.GetUInt32();
+            }
+
+            assetData.MissionParams.PlaytimeInSeconds = 1200;
+            if (jMissionParams.TryGetProperty("playtime", out JsonElement jPlaytime))
+            {
+                assetData.MissionParams.PlaytimeInSeconds = jPlaytime.GetUInt32();
+            }
+
+            assetData.MissionParams.IsSolo = false;
+            if (jMissionParams.TryGetProperty("solo_only", out JsonElement jIsSoloOnly))
+            {
+                assetData.MissionParams.IsSolo = jIsSoloOnly.GetBoolean();
+            }
+
+            assetData.MissionParams.MaxPawns = 3;
+            if (jMissionParams.TryGetProperty("max_pawns", out JsonElement jMaxPawns))
+            {
+                assetData.MissionParams.MaxPawns = jMaxPawns.GetUInt32();
+            }
+
+            assetData.MissionParams.ArmorAllowed = true;
+            assetData.MissionParams.JewelryAllowed = true;
+            if (jMissionParams.TryGetProperty("restrictions", out JsonElement jRestrictions))
+            {
+                if (jMissionParams.TryGetProperty("armor", out JsonElement jArmorAllowed))
+                {
+                    assetData.MissionParams.ArmorAllowed = jArmorAllowed.GetBoolean();
+                }
+
+                if (jMissionParams.TryGetProperty("jewelry", out JsonElement jJewelryAllowed))
+                {
+                    assetData.MissionParams.JewelryAllowed = jJewelryAllowed.GetBoolean();
+                }
+            }
+
+            return true;
         }
 
         private bool ParseEnemyGroups(QuestAssetData assetData, JsonElement quest)
@@ -820,6 +953,44 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         isRequired = jIsRequired.GetBoolean();
                     }
 
+                    uint repopWaitSecond = 0;
+                    if (enemy.TryGetProperty("repop_wait_second", out JsonElement jRepopWaitSecond))
+                    {
+                        repopWaitSecond = jRepopWaitSecond.GetUInt32();
+                    }
+
+                    // Look for custom drops here
+                    bool customDropItems = false;
+
+                    // Setting default values in case a custom table is defined.
+                    DropsTable customTable = new()
+                    {
+                        Id = 0,
+                        MdlType = 0,
+                    };
+
+                    if (enemy.TryGetProperty("drop_items", out JsonElement itemsList))
+                    {
+                        customDropItems = true;
+                        var list = itemsList.EnumerateArray();
+
+                        foreach (var items in list)
+                        {
+                            GatheringItem dropItems = new()
+                            {
+                                ItemId = items.GetProperty("item_id").GetUInt32(),
+                                ItemNum = items.GetProperty("item_min").GetUInt32(),
+                                MaxItemNum = items.GetProperty("item_max").GetUInt32(),
+                                Quality = items.GetProperty("quality").GetUInt32(),
+                                IsHidden = false,
+                                DropChance = items.GetProperty("drop_chance").GetDouble()
+                            };
+
+                            customTable.Items.Add(dropItems);
+                        }
+
+                    }
+
                     var questEnemy = new InstancedEnemy()
                     {
                         EnemyId = Convert.ToUInt32(enemy.GetProperty("enemy_id").GetString(), 16),
@@ -830,11 +1001,24 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         Scale = 100,
                         EnemyTargetTypesId = (byte)(isRequired ? 4 : 1),
                         Index = index,
-                        IsRequired = isRequired
+                        IsRequired = isRequired,
+                        RepopWaitSecond = repopWaitSecond,
                     };
 
                     ApplyOptionalEnemyKeys(enemy, questEnemy);
+
                     // ApplyEnemyDropTable
+                    if (customDropItems)
+                    {
+                        questEnemy.DropsTable = customTable;
+                    }
+                    else
+                    {
+                        // Get default drops for this enemy id and level.
+                        DropsTable lootTable = questDrops.GetDropTable(questEnemy.EnemyId, questEnemy.Lv);
+
+                        questEnemy.DropsTable = lootTable;
+                    }
 
                     enemyGroup.Enemies.Add(questEnemy);
                 }

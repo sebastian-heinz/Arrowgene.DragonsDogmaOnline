@@ -11,5 +11,4 @@ public class EnemySpawnAsset
 
     public Dictionary<(StageId, byte), List<Enemy>> Enemies { get; set; }
     public Dictionary<uint, DropsTable> DropsTables { get; set; }
-
 }

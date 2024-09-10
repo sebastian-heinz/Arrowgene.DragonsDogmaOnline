@@ -10,6 +10,7 @@ using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Security.Cryptography;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -24,25 +25,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CBattleContentContentResetRes Handle(GameClient client, C2SBattleContentContentResetReq request)
         {
-            // Reset Inventory
-            var updateItemList = RemoveAllItemsFromInventory(client.Character, client.Character.Storage, ItemManager.ItemBagStorageTypes);
-            client.Character.Storage.Clear();
-
-            // Flush Storage
-            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
-            {
-                UpdateType = ItemNoticeType.SwitchingStorage,
-                UpdateItemList = updateItemList
-            };
-            client.Send(updateCharacterItemNtc);
-
             // Add back equipment templates
             client.Character.EquipmentTemplate = new EquipmentTemplate(Server.AssetRepository.BitterblackMazeAsset.GenerateStarterEquipment(), Server.AssetRepository.BitterblackMazeAsset.GenerateStarterJobEquipment());
 
+            List<CDataItemUpdateResult> updateItemList = null;
             Server.Database.ExecuteInTransaction(connection =>
             {
-                // Delete all existing storage items
-                Server.Database.DeleteAllStorageItems(connection, client.Character.ContentCharacterId);
+                // Remove all items from the player inventory
+                updateItemList = Server.ItemManager.RemoveAllItemsFromInventory(client.Character, client.Character.Storage, ItemManager.AllItemStorages, connection);
 
                 // Remove items equipped in the database
                 Server.Database.DeleteAllEquipItems(client.Character.CommonId, connection);
@@ -51,15 +41,27 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Server.Database.CreateItems(connection, client.Character);
             });
 
+            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
+            {
+                UpdateType = ItemNoticeType.SwitchingStorage,
+                UpdateItemList = updateItemList
+            };
+            client.Send(updateCharacterItemNtc);
+
             // Add back equipment
             client.Character.Equipment = client.Character.Storage.GetCharacterEquipment();
 
-            // Set current job back to level 1 stats
-            var jobResults = Server.JobManager.SetJob(client, client.Character, client.Character.Job);
-            client.Send((S2CJobChangeJobNtc) jobResults.jobNtc);
-
             // Reset EXP
             Server.ExpManager.ResetExpData(client, client.Character);
+
+            // Set current job back to level 1 stats
+            var jobResults = Server.JobManager.SetJob(client, client.Character, client.Character.Job);
+            foreach (var otherClient in Server.ClientLookup.GetAll())
+            {
+                otherClient.Send((S2CJobChangeJobNtc)jobResults.jobNtc);
+            }
+            client.Send((S2CJobChangeJobNtc)jobResults.jobNtc);
+            client.Send((S2CItemUpdateCharacterItemNtc)jobResults.itemNtc);
 
             // Reset progress
             client.Character.BbmProgress.StartTime = 0;
@@ -74,27 +76,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Send(ntc2);
 
             return new S2CBattleContentContentResetRes();
-        }
-
-        private List<CDataItemUpdateResult> RemoveAllItemsFromInventory(Character character, Storages storages, List<StorageType> storageTypes)
-        {
-            var results = new List<CDataItemUpdateResult>();
-            foreach (var storageType in storageTypes)
-            {
-                for (int i = 0; i < character.Storage.GetStorage(storageType).Items.Count; i++)
-                {
-                    ushort slotNo = (ushort)(i + 1);
-
-                    var storageItem = storages.GetStorage(storageType).GetItem(slotNo);
-                    if (storageItem != null)
-                    {
-                        results.Add(Server.ItemManager.CreateItemUpdateResult(null, storageItem.Item1, storageType, slotNo, 0, 0));
-                        results.Add(Server.ItemManager.CreateItemUpdateResult(null, storageItem.Item1, storageType, slotNo, 0, storageItem.Item2));
-                    }
-                }
-            }
-
-            return results;
         }
     }
 }

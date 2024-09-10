@@ -80,20 +80,30 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<uint> productionSpeedLevels = new List<uint>();
             List<uint> consumableQuantityLevels = new List<uint>();
             List<uint> costPerformanceLevels = new List<uint>();
+            List<uint> qualityLevels = new List<uint>();
             foreach (Pawn pawn in pawns)
             {
-                productionSpeedLevels.Add(CraftManager.GetPawnProductionSpeedLevel(pawn));
-                consumableQuantityLevels.Add(CraftManager.GetPawnConsumableQuantityLevel(pawn));
-                costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
+                if (pawn != null)
+                {
+                    productionSpeedLevels.Add(CraftManager.GetPawnProductionSpeedLevel(pawn));
+                    consumableQuantityLevels.Add(CraftManager.GetPawnConsumableQuantityLevel(pawn));
+                    costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
+                    qualityLevels.Add(CraftManager.GetPawnEquipmentQualityLevel(pawn));
+                }
+                else
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID, "Couldn't find the Pawn ID.");
+                }
             }
 
+            double calculatedOdds = CraftManager.CalculateEquipmentQualityIncreaseRate(qualityLevels);
             uint plusValue = 0;
             bool isGreatSuccessEquipmentQuality = false;
             bool canPlusValue = !itemInfo.SubCategory.HasValue || !BannedSubCategories.Contains(itemInfo.SubCategory.Value);
             if (canPlusValue && !string.IsNullOrEmpty(request.RefineMaterialUID))
             {
                 Item refineMaterialItem = Server.Database.SelectStorageItemByUId(request.RefineMaterialUID);
-                CraftCalculationResult craftCalculationResult = CraftManager.CalculateEquipmentQuality(refineMaterialItem, consumableQuantityLevels);
+                CraftCalculationResult craftCalculationResult = CraftManager.CalculateEquipmentQuality(refineMaterialItem, (uint)calculatedOdds);
                 plusValue = craftCalculationResult.CalculatedValue;
                 isGreatSuccessEquipmentQuality = craftCalculationResult.IsGreatSuccess;
 
@@ -113,7 +123,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             bool isGreatSuccessConsumableQuantity = false;
             if (itemInfo.StorageType == StorageType.ItemBagConsumable)
             {
-                CraftCalculationResult craftCalculationResult = CraftManager.CalculateConsumableQuantity(consumableQuantityLevels);
+                CraftCalculationResult craftCalculationResult = CraftManager.CalculateConsumableQuantity(consumableQuantityLevels, (uint)calculatedOdds);
                 consumableAdditionalQuantity = request.CreateCount * craftCalculationResult.CalculatedValue;
                 isGreatSuccessConsumableQuantity = craftCalculationResult.IsGreatSuccess;
             }
@@ -160,7 +170,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // Subtract craft price
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,
-                Server.CraftManager.CalculateRecipeCost(recipe.Cost, costPerformanceLevels) * request.CreateCount);
+                            Server.CraftManager.CalculateRecipeCost(recipe.Cost, costPerformanceLevels) * request.CreateCount);
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
             client.Send(updateCharacterItemNtc);

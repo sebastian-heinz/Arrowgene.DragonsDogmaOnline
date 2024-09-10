@@ -1,0 +1,102 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Barren Black Wings",
+    "quest_id": 20085005,
+    "base_level": 47,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+  "area_id": "EasternZandora",		
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1550
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 280
+        },
+        {
+            "type": "exp",
+            "amount": 2530
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 7959,
+                    "num": 1
+                },
+                {
+                    "item_id": 7745,
+                    "num": 1
+                },
+                {
+                    "item_id": 41,
+                    "num": 3
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "loot_pool": [
+                {
+                    "item_id": 34,
+                    "num": 9,
+                    "chance": 1.0
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 459
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015303",
+                    "level": 47,
+                    "exp": 13000,
+                    "is_boss": true							
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 61,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "Sonya",
+            "message_id": 11372
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [0]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 61,
+                "group_id": 1,
+                "layer_no": 1				
+            },
+            "announce_type": "Update",
+            "npc_id": "Sonya",
+            "message_id": 11835
+        }
+    ]
+}

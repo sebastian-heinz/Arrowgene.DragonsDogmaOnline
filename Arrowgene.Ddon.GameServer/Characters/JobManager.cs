@@ -11,6 +11,7 @@ using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Data.Entity;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
@@ -54,7 +55,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 activeCharacterJobData.Lv = 1;
                 // TODO: All the other stats
                 common.CharacterJobDataList.Add(activeCharacterJobData);
-                _Server.Database.ReplaceCharacterJobData(common.CommonId, activeCharacterJobData);
+                _Server.Database.ReplaceCharacterJobData(common.CommonId, activeCharacterJobData, connectionIn);
             }
 
             // TODO: Figure out if CDataEquipItemInfo should be the equipment templates or just the currently equipped items
@@ -694,9 +695,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
             database.ReplaceEquippedAbilities(character.CommonId, character.Job, equippedAbilities);
         }
 
-        public bool UnlockSecretAbility(CharacterCommon Character, SecretAbility secretAbilityType)
+        public void UnlockSecretAbility(GameClient client, CharacterCommon character, SecretAbility secretAbilityType)
         {
-            return _Server.Database.InsertSecretAbilityUnlock(Character.CommonId, secretAbilityType);
+            // MSG_GROUP_TYPE_GET_SECRET_ABILITY = 0x30,
+            if (_Server.Database.InsertSecretAbilityUnlock(character.CommonId, secretAbilityType))
+            {
+                var newAbility = new Ability()
+                {
+                    Job = 0,
+                    AbilityId = (uint)secretAbilityType,
+                    AbilityLv = 1
+                };
+                character.LearnedAbilities.Add(newAbility);
+                _Server.Database.InsertLearnedAbility(character.CommonId, newAbility);
+            }
         }
 
         public static CDataPresetAbilityParam MakePresetAbilityParam(CharacterCommon character, List<Ability> abilities, byte presetNo, string presetName = "")

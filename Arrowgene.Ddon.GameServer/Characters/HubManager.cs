@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,27 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private readonly DdonGameServer Server;
         private readonly Dictionary<uint, HashSet<GameClient>> HubMembers;
+
+        public HashSet<GameClient> GetClientsInHub(StageId stageId)
+        {
+            return GetClientsInHub(stageId.Id);
+        }
+
+        public HashSet<GameClient> GetClientsInHub(uint stageId)
+        {
+            if (Server.Setting.GameLogicSetting.NaiveLobbyContextHandling)
+            {
+                return Server.ClientLookup.GetAll().Distinct().ToHashSet();
+            }
+            else
+            {
+                if (!HubMembers.ContainsKey(stageId))
+                {
+                    return new HashSet<GameClient>();
+                }
+                return HubMembers[stageId];
+            }
+        }
 
         // The server maintains an authoritative list of who's in each hub stage.
         // Hub stages are defined in StageManager.HubStageIds.

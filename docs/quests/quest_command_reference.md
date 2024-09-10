@@ -2545,9 +2545,12 @@ ReturnCheckPoint(int processNo, int param02 = 0, int param03 = 0, int param04 = 
 ```
 
 ### CallGeneralAnnounce
+
+![](images/general_announce_type_0.png)
+
 ```
 /**
- * @brief
+ * @brief Pops up notification text.
  * @param type
  * @param msgNo
  */
@@ -2697,9 +2700,12 @@ ReturnAnnounce(int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 
 ```
 
 ### AddEndContentsPurpose
+
+![](images/end_contents_update.png)
+
 ```
 /**
- * @brief
+ * @brief Prints an update message.
  * @param announceNo
  * @param type
  */
@@ -2831,11 +2837,14 @@ StartMissionAnnounce(int param01 = 0, int param02 = 0, int param03 = 0, int para
 ```
 
 ### StageAnnounce
+
+![](images/stage_announce_clear.png)
+
 ```
 /**
- * @brief
- * @param type
- * @param num
+ * @brief Pops up stage x start/clear
+ * @param type 0 = Start, 1 = Clear
+ * @param num The stage number to print
  */
 StageAnnounce(int type, int num, int param03 = 0, int param04 = 0);
 ```

@@ -1,12 +1,12 @@
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class StampBonusCheckHandler : PacketHandler<GameClient>
+    public class StampBonusCheckHandler : GameRequestPacketHandler<C2SStampBonusCheckReq, S2CStampBonusCheckRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(StampBonusCheckHandler));
 
@@ -17,40 +17,52 @@ namespace Arrowgene.Ddon.GameServer.Handler
             _gameServer = server;
         }
 
-        public override PacketId Id => PacketId.C2S_STAMP_BONUS_CHECK_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override S2CStampBonusCheckRes Handle(GameClient client, C2SStampBonusCheckReq request)
         {
-            bool canTotal = _gameServer.StampManager.CanTotalStamp(client.Character.StampBonus);
             bool canDaily = _gameServer.StampManager.CanDailyStamp(client.Character.StampBonus);
+            bool canTotal = _gameServer.StampManager.CanTotalStamp(client.Character.StampBonus);
 
-            if (canDaily)
+            var stampBonusList = _gameServer.StampManager.GetDailyStampAssets().Select(x => x.StampBonus.First()).ToList();
+
+            // TODO: Investigate the proper expectations of the return packet.
+            // These values produce the desired behavior (notifications when necessary, silence otherwise),
+            // but are otherwise totally arbitrary.
+            if (canTotal)
             {
-                client.Send(new S2CStampBonusCheckRes()
+                var res = new S2CStampBonusCheckRes()
                 {
-                    SuppressTotal = !canTotal,
-                    SuppressDaily = !canDaily,
+                    IsRecieveBonusDaily = 0,
+                    IsRecieveBonusTotal = 0,
+                };
+                res.StampCheck.Add(new CDataStampCheck()
+                {
                     Unk0 = 1,
                     Unk1 = 0,
-                    Unk2 = 1,
-                    Unk3 = 77,
-                    Unk4 = 257
                 });
+                return res;
             }
-            else 
+            else if (canDaily)
             {
-                //For whatever reason, suppresses the icon over Ophelia's head.
-                client.Send(new S2CStampBonusCheckRes() 
+                var res = new S2CStampBonusCheckRes()
                 {
-                    Unk0 = 0,
-                    Unk1 = ushort.MaxValue,
-                    SuppressDaily = true,
-                    SuppressTotal = true,
-                    Unk2 = 1,
-                    Unk3 = 77,
-                    Unk4 = 257
+                    IsRecieveBonusDaily = 1,
+                    IsRecieveBonusTotal = 0,
+                };
+                res.StampCheck.Add(new CDataStampCheck()
+                {
+                    Unk0 = 1,
+                    Unk1 = 0,
                 });
-            }  
+                return res;
+            }
+            else
+            {
+                return new S2CStampBonusCheckRes()
+                {
+                    IsRecieveBonusDaily = byte.MaxValue,
+                    IsRecieveBonusTotal = byte.MaxValue,
+                };
+            }
         }
     }
 }

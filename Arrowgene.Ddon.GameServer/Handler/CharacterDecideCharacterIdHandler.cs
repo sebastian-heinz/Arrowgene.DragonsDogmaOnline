@@ -63,7 +63,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             new CDataCharacterReleaseElement(ContentsRelease.RathniteFoothillsWorldQuests),
             new CDataCharacterReleaseElement(ContentsRelease.DressEquipment),
             new CDataCharacterReleaseElement(ContentsRelease.FeryanaWildernessWorldQuests),
-            // new CDataCharacterReleaseElement(ContentsRelease.LestaniaNews),
+            new CDataCharacterReleaseElement(ContentsRelease.LestaniaNews),
             // new CDataCharacterReleaseElement(ContentsRelease.MandragoraBreeding),
             new CDataCharacterReleaseElement(ContentsRelease.JobTrainingLog),
             new CDataCharacterReleaseElement(ContentsRelease.YourRoomsTerrace),
@@ -87,7 +87,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             new CDataCharacterReleaseElement(ContentsRelease.MyrmidonsPledge),
             new CDataCharacterReleaseElement(ContentsRelease.AdventureBroker), // This was called "PartyMenu" or "冒険仲介係"
             new CDataCharacterReleaseElement(ContentsRelease.MatchingProfile),
-            // new CDataCharacterReleaseElement(ContentsRelease.QuickParty),
+            // new CDataCharacterReleaseElement(ContentsRelease.QuickParty), // Also unlocks board for EM
             new CDataCharacterReleaseElement(ContentsRelease.OrbEnemy),
             new CDataCharacterReleaseElement(ContentsRelease.WarSkillAugmentation),
             new CDataCharacterReleaseElement(ContentsRelease.FighterWarSkillAugmentation),

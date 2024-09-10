@@ -41,7 +41,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
             return _instancedAssetsDictionary[(stageId, subGroupId)];
         }
 
-        public void Clear()
+        public virtual void Clear()
         {
             _instancedAssetsDictionary.Clear();
         }

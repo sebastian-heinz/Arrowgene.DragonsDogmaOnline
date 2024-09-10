@@ -23,16 +23,15 @@ public class PartyManager
 
     private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyManager));
 
-    public readonly AssetRepository assetRepository;
+    public readonly DdonGameServer Server;
 
     private readonly ConcurrentStack<uint> _idPool;
     private readonly ConcurrentDictionary<uint, PartyGroup> _parties;
     private readonly ConcurrentDictionary<GameClient, PartyInvitation> _invites;
 
-    public PartyManager(AssetRepository assetRepository)
+    public PartyManager(DdonGameServer server)
     {
-        this.assetRepository = assetRepository;
-
+        Server = server;
         _idPool = new ConcurrentStack<uint>();
         for (uint i = 1; i < MaxNumParties + 1; i++)
         {
@@ -130,7 +129,7 @@ public class PartyManager
         return true;
     }
 
-    public PartyGroup NewParty()
+    public PartyGroup NewParty(ulong contentId = 0)
     {
         if (!_idPool.TryPop(out uint partyId))
         {
@@ -144,7 +143,7 @@ public class PartyManager
             }
         }
 
-        PartyGroup party = new PartyGroup(partyId, this);
+        PartyGroup party = new PartyGroup(partyId, this, contentId);
         if (!_parties.TryAdd(partyId, party))
         {
             Logger.Error("Could not create party, failed to add new party (!_parties.TryAdd(partyId, party))");

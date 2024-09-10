@@ -1,70 +1,72 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "The Silver Fiend",
-    "quest_id": 20065003,
-    "base_level": 41,
-    "minimum_item_rank": 0,
-    "discoverable": false,
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Silver Fiend",
+  "quest_id": 20065003,
+  "base_level": 41,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "MysreeGrove",
+  "news_image": 125,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1350
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 180
+    },
+    {
+      "type": "exp",
+      "amount": 1350
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 1350
+          "item_id": 7851,
+          "num": 3
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 180
+          "item_id": 9419,
+          "num": 1
         },
         {
-            "type": "exp",
-            "amount": 1350
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 7851,
-                    "num": 3
-                },
-                {
-                    "item_id": 9419,
-                    "num": 1
-                },
-                {
-                    "item_id": 9401,
-                    "num": 3
-                }
-            ]
+          "item_id": 9401,
+          "num": 3
         }
-    ],
-    "enemy_groups" : [
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 149
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 1,
-                "group_id": 149
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015505",
-                    "level": 41,
-                    "exp": 12500,
-                    "is_boss": true					
-                }
-            ]
+          "enemy_id": "0x015505",
+          "level": 41,
+          "exp": 12500,
+          "is_boss": true
         }
-    ],
-    "blocks": [
-        {
-            "type": "DiscoverEnemy",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Accept",
-            "reset_group": false,
-            "groups": [0]
-        }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
 }

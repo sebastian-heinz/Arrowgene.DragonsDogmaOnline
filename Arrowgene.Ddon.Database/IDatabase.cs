@@ -1,4 +1,8 @@
 #nullable enable
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Data.Common;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Database.Sql.Core.Migration;
 using Arrowgene.Ddon.Shared.Entity;
@@ -6,10 +10,6 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.BattleContent;
 using Arrowgene.Ddon.Shared.Model.Quest;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Common;
 
 namespace Arrowgene.Ddon.Database
 {
@@ -19,7 +19,12 @@ namespace Arrowgene.Ddon.Database
         void Execute(DbConnection conn, string sql);
         bool ExecuteInTransaction(Action<DbConnection> action);
         int ExecuteNonQuery(DbConnection conn, string query, Action<DbCommand> action);
-        void ExecuteReader(DbConnection conn, string sql, Action<DbCommand> commandAction, Action<DbDataReader> readAction);
+        void ExecuteReader(
+            DbConnection conn,
+            string sql,
+            Action<DbCommand> commandAction,
+            Action<DbDataReader> readAction
+        );
 
         // Generic functions for getting/setting
         void AddParameter(DbCommand command, string name, object? value, DbType type);
@@ -66,7 +71,10 @@ namespace Arrowgene.Ddon.Database
         Storages SelectAllStoragesByCharacterId(uint characterId);
 
         // CharacterCommon
-        bool UpdateCharacterCommonBaseInfo(CharacterCommon common, DbConnection? connectionIn = null);
+        bool UpdateCharacterCommonBaseInfo(
+            CharacterCommon common,
+            DbConnection? connectionIn = null
+        );
         bool UpdateEditInfo(CharacterCommon character);
         bool UpdateStatusInfo(CharacterCommon character);
 
@@ -84,21 +92,40 @@ namespace Arrowgene.Ddon.Database
         bool UpdateRentalPawnSlot(uint characterId, uint num);
         bool UpdateCharacterBinaryData(uint characterId, byte[] data);
         void CreateItems(DbConnection conn, Character character);
+        CDataCharacterSearchParam SelectCharacterNameById(uint characterId);
+        CDataCharacterSearchParam SelectCharacterNameById(
+            DbConnection connection,
+            uint characterId
+        );
 
         // Pawn
         bool CreatePawn(Pawn pawn);
         Pawn SelectPawn(uint pawnId);
+        Pawn SelectPawn(DbConnection connection, uint pawnId);
         List<Pawn> SelectPawnsByCharacterId(uint characterId);
         List<Pawn> SelectPawnsByCharacterId(DbConnection conn, uint characterId);
+        List<uint> SelectOfficialPawns();
+        List<uint> SelectAllPlayerPawns(uint limit = 100);
+        List<uint> SelectAllPlayerPawns(DbConnection connection, uint limit = 100);
+        List<CDataRegisterdPawnList> SelectRegisteredPawns(
+            Character searchingCharacter,
+            CDataPawnSearchParameter searchParams
+        );
+        List<CDataRegisterdPawnList> SelectRegisteredPawns(
+            DbConnection conn,
+            Character searchingCharacter,
+            CDataPawnSearchParameter searchParams
+        );
         bool DeletePawn(uint pawnId);
         bool UpdatePawnBaseInfo(Pawn pawn);
+        uint GetPawnOwnerCharacterId(uint pawnId);
 
         // Pawn Training Status
         bool ReplacePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
         bool InsertPawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
         bool InsertIfNotExistsPawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
         bool UpdatePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
-        
+
         #region Pawn craft progress
         bool ReplacePawnCraftProgress(CraftProgress craftProgress);
         bool InsertPawnCraftProgress(CraftProgress craftProgress);
@@ -107,26 +134,36 @@ namespace Arrowgene.Ddon.Database
         bool DeletePawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId);
         CraftProgress SelectPawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId);
         #endregion
-        
+
         // Pawn Sp Skills
         bool InsertSpSkill(uint pawnId, JobId job, CDataSpSkill spSkill);
         bool DeleteSpSkill(uint pawnId, JobId job, byte spSkillId);
 
         // CharacterJobData
-        bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData);
+        bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData, DbConnection? connectionIn = null);
         bool UpdateCharacterJobData(uint commonId, CDataCharacterJobData updatedCharacterJobData);
 
         // Wallet Points
         bool InsertWalletPoint(uint characterId, CDataWalletPoint walletPoint);
         bool ReplaceWalletPoint(uint characterId, CDataWalletPoint walletPoint);
-        bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint, DbConnection? connectionIn = null);
+        bool UpdateWalletPoint(
+            uint characterId,
+            CDataWalletPoint updatedWalletPoint,
+            DbConnection? connectionIn = null
+        );
 
         bool DeleteWalletPoint(uint characterId, WalletType type);
 
         // Released Warp Points
         List<ReleasedWarpPoint> SelectReleasedWarpPoints(uint characterId);
-        bool InsertIfNotExistsReleasedWarpPoint(uint characterId, ReleasedWarpPoint ReleasedWarpPoint);
-        bool InsertIfNotExistsReleasedWarpPoints(uint characterId, List<ReleasedWarpPoint> ReleasedWarpPoint);
+        bool InsertIfNotExistsReleasedWarpPoint(
+            uint characterId,
+            ReleasedWarpPoint ReleasedWarpPoint
+        );
+        bool InsertIfNotExistsReleasedWarpPoints(
+            uint characterId,
+            List<ReleasedWarpPoint> ReleasedWarpPoint
+        );
         bool InsertReleasedWarpPoint(uint characterId, ReleasedWarpPoint ReleasedWarpPoint);
         bool ReplaceReleasedWarpPoint(uint characterId, ReleasedWarpPoint ReleasedWarpPoint);
         bool UpdateReleasedWarpPoint(uint characterId, ReleasedWarpPoint updatedReleasedWarpPoint);
@@ -139,19 +176,70 @@ namespace Arrowgene.Ddon.Database
         bool DeleteStorage(uint characterId, StorageType storageType);
 
         // Storage Item
-        bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, DbConnection? connectionIn = null);
-        bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, DbConnection? connectionIn = null);
-        bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo, DbConnection? connectionIn = null);
-        bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, DbConnection? connectionIn = null);
+        bool InsertStorageItem(
+            uint characterId,
+            StorageType storageType,
+            ushort slotNo,
+            uint itemNum,
+            Item item,
+            DbConnection? connectionIn = null
+        );
+        bool ReplaceStorageItem(
+            uint characterId,
+            StorageType storageType,
+            ushort slotNo,
+            uint itemNum,
+            Item item,
+            DbConnection? connectionIn = null
+        );
+        bool DeleteStorageItem(
+            uint characterId,
+            StorageType storageType,
+            ushort slotNo,
+            DbConnection? connectionIn = null
+        );
+        bool UpdateStorageItem(
+            uint characterId,
+            StorageType storageType,
+            ushort slotNo,
+            uint itemNum,
+            Item item,
+            DbConnection? connectionIn = null
+        );
         public void DeleteAllStorageItems(DbConnection connection, uint characterId);
 
         bool UpdateItemEquipPoints(string itemUID, uint EquipPoints);
 
         // Equip
-        bool InsertEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
-        bool ReplaceEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId, DbConnection? connectionIn = null);
-        bool UpdateEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId);
-        bool DeleteEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, DbConnection? connectionIn = null);
+        bool InsertEquipItem(
+            uint commonId,
+            JobId job,
+            EquipType equipType,
+            byte equipSlot,
+            string itemUId
+        );
+        bool ReplaceEquipItem(
+            uint commonId,
+            JobId job,
+            EquipType equipType,
+            byte equipSlot,
+            string itemUId,
+            DbConnection? connectionIn = null
+        );
+        bool UpdateEquipItem(
+            uint commonId,
+            JobId job,
+            EquipType equipType,
+            byte equipSlot,
+            string itemUId
+        );
+        bool DeleteEquipItem(
+            uint commonId,
+            JobId job,
+            EquipType equipType,
+            byte equipSlot,
+            DbConnection? connectionIn = null
+        );
         void DeleteAllEquipItems(uint commonId, DbConnection? connectionIn = null);
         List<EquipItem> SelectEquipItemByCharacter(uint characterCommonId);
 
@@ -165,16 +253,39 @@ namespace Arrowgene.Ddon.Database
         bool UpdateLearnedCustomSkill(uint commonId, CustomSkill updatedSkill);
         bool InsertEquippedCustomSkill(uint commonId, byte slotNo, CustomSkill skill);
         bool ReplaceEquippedCustomSkill(uint commonId, byte slotNo, CustomSkill skill);
-        bool UpdateEquippedCustomSkill(uint commonId, JobId oldJob, byte oldSlotNo, byte slotNo, CustomSkill skill);
+        bool UpdateEquippedCustomSkill(
+            uint commonId,
+            JobId oldJob,
+            byte oldSlotNo,
+            byte slotNo,
+            CustomSkill skill
+        );
         bool DeleteEquippedCustomSkill(uint commonId, JobId job, byte slotNo);
 
         // Abilities
         bool InsertLearnedAbility(uint commonId, Ability ability);
         bool UpdateLearnedAbility(uint commonId, Ability ability);
-        bool InsertEquippedAbility(uint commonId, JobId equipptedToJob, byte slotNo, Ability ability);
-        bool ReplaceEquippedAbility(uint commonId, JobId equipptedToJob, byte slotNo, Ability ability);
+        bool InsertEquippedAbility(
+            uint commonId,
+            JobId equipptedToJob,
+            byte slotNo,
+            Ability ability
+        );
+        bool ReplaceEquippedAbility(
+            uint commonId,
+            JobId equipptedToJob,
+            byte slotNo,
+            Ability ability
+        );
         bool ReplaceEquippedAbilities(uint commonId, JobId equippedToJob, List<Ability> abilities);
-        bool UpdateEquippedAbility(uint commonId, JobId oldEquippedToJob, byte oldSlotNo, JobId equipptedToJob, byte slotNo, Ability ability);
+        bool UpdateEquippedAbility(
+            uint commonId,
+            JobId oldEquippedToJob,
+            byte oldSlotNo,
+            JobId equipptedToJob,
+            byte slotNo,
+            Ability ability
+        );
         bool DeleteEquippedAbility(uint commonId, JobId equippedToJob, byte slotNo);
         bool DeleteEquippedAbilities(uint commonId, JobId equippedToJob);
         bool ReplaceAbilityPreset(uint characterId, CDataPresetAbilityParam preset);
@@ -184,23 +295,52 @@ namespace Arrowgene.Ddon.Database
         List<SecretAbility> SelectAllUnlockedSecretAbilities(uint commonId);
 
         // (Learned) Normal Skills / Learned Core Skills
-        bool InsertIfNotExistsNormalSkillParam(uint commonId, CDataNormalSkillParam normalSkillParam);
+        bool InsertIfNotExistsNormalSkillParam(
+            uint commonId,
+            CDataNormalSkillParam normalSkillParam
+        );
         bool InsertNormalSkillParam(uint commonId, CDataNormalSkillParam normalSkillParam);
         bool ReplaceNormalSkillParam(uint commonId, CDataNormalSkillParam normalSkillParam);
-        bool UpdateNormalSkillParam(uint commonId, JobId job, uint skillNo, CDataNormalSkillParam normalSkillParam);
+        bool UpdateNormalSkillParam(
+            uint commonId,
+            JobId job,
+            uint skillNo,
+            CDataNormalSkillParam normalSkillParam
+        );
         bool DeleteNormalSkillParam(uint commonId, JobId job, uint skillNo);
         List<CDataNormalSkillParam> SelectNormalSkillParam(uint commonId, JobId job);
 
         // Shortcut
         bool InsertShortcut(uint characterId, CDataShortCut shortcut);
-        bool ReplaceShortcut(uint characterId, CDataShortCut shortcut, DbConnection? connectionIn = null);
-        bool UpdateShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataShortCut updatedShortcut);
+        bool ReplaceShortcut(
+            uint characterId,
+            CDataShortCut shortcut,
+            DbConnection? connectionIn = null
+        );
+        bool UpdateShortcut(
+            uint characterId,
+            uint oldPageNo,
+            uint oldButtonNo,
+            CDataShortCut updatedShortcut
+        );
         bool DeleteShortcut(uint characterId, uint pageNo, uint buttonNo);
 
         // CommunicationShortcut
-        bool InsertCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut);
-        bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut, DbConnection? connectionIn = null);
-        bool UpdateCommunicationShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataCommunicationShortCut updatedCommunicationShortcut);
+        bool InsertCommunicationShortcut(
+            uint characterId,
+            CDataCommunicationShortCut communicationShortcut
+        );
+        bool ReplaceCommunicationShortcut(
+            uint characterId,
+            CDataCommunicationShortCut communicationShortcut,
+            DbConnection? connectionIn = null
+        );
+        bool UpdateCommunicationShortcut(
+            uint characterId,
+            uint oldPageNo,
+            uint oldButtonNo,
+            CDataCommunicationShortCut updatedCommunicationShortcut
+        );
         bool DeleteCommunicationShortcut(uint characterId, uint pageNo, uint buttonNo);
 
         // GameToken
@@ -216,12 +356,24 @@ namespace Arrowgene.Ddon.Database
         bool DeleteConnection(int serverId, int accountId);
         bool DeleteConnectionsByAccountId(int accountId);
         bool DeleteConnectionsByServerId(int serverId);
-        
+
         // ContactList
-        int InsertContact(uint requestingCharacterId, uint requestedCharacterId, ContactListStatus status,
-            ContactListType type, bool requesterFavorite, bool requestedFavorite);
-        int UpdateContact(uint requestingCharacterId, uint requestedCharacterId, ContactListStatus status,
-            ContactListType type, bool requesterFavorite, bool requestedFavorite);
+        int InsertContact(
+            uint requestingCharacterId,
+            uint requestedCharacterId,
+            ContactListStatus status,
+            ContactListType type,
+            bool requesterFavorite,
+            bool requestedFavorite
+        );
+        int UpdateContact(
+            uint requestingCharacterId,
+            uint requestedCharacterId,
+            ContactListStatus status,
+            ContactListType type,
+            bool requesterFavorite,
+            bool requestedFavorite
+        );
         int DeleteContact(uint requestingCharacterId, uint requestedCharacterId);
         int DeleteContactById(uint id);
         List<ContactListEntity> SelectContactsByCharacterId(uint characterId);
@@ -229,8 +381,16 @@ namespace Arrowgene.Ddon.Database
         ContactListEntity SelectContactListById(uint id);
 
         // Dragon Force Augmentation
-        bool InsertIfNotExistsDragonForceAugmentation(uint commonId, uint elementId, uint pageNo, uint groupNo, uint indexNo);
-        List<CDataReleaseOrbElement> SelectOrbReleaseElementFromDragonForceAugmentation(uint commonId);
+        bool InsertIfNotExistsDragonForceAugmentation(
+            uint commonId,
+            uint elementId,
+            uint pageNo,
+            uint groupNo,
+            uint indexNo
+        );
+        List<CDataReleaseOrbElement> SelectOrbReleaseElementFromDragonForceAugmentation(
+            uint commonId
+        );
         bool InsertGainExtendParam(uint commonId, CDataOrbGainExtendParam Param);
         bool UpdateOrbGainExtendParam(uint commonId, CDataOrbGainExtendParam Param);
         CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId);
@@ -241,8 +401,14 @@ namespace Arrowgene.Ddon.Database
         int DeleteBazaarExhibition(ulong bazaarId);
         BazaarExhibition SelectBazaarExhibitionByBazaarId(ulong bazaarId);
         List<BazaarExhibition> FetchCharacterBazaarExhibitions(uint characterId);
-        List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdExcludingOwn(uint itemId, uint excludedCharacterId);
-        List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdsExcludingOwn(List<uint> itemIds, uint excludedCharacterId);
+        List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdExcludingOwn(
+            uint itemId,
+            uint excludedCharacterId
+        );
+        List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdsExcludingOwn(
+            List<uint> itemIds,
+            uint excludedCharacterId
+        );
 
         // Rewards
         bool InsertBoxRewardItems(uint commonId, QuestBoxRewards rewards);
@@ -252,10 +418,21 @@ namespace Arrowgene.Ddon.Database
         // Completed Quests
         List<CompletedQuest> GetCompletedQuestsByType(uint characterCommonId, QuestType questType);
         CompletedQuest GetCompletedQuestsById(uint characterCommonId, QuestId questId);
-        bool InsertIfNotExistCompletedQuest(uint characterCommonId, QuestId questId, QuestType questType);
+        bool InsertIfNotExistCompletedQuest(
+            uint characterCommonId,
+            QuestId questId,
+            QuestType questType
+        );
+
+        bool ReplaceCompletedQuest(
+            uint characterCommonId,
+            QuestId questId,
+            QuestType questType,
+            uint count = 1
+        );
 
         // Quest Progress
-        bool InsertQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step);
+        bool InsertQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step, uint variantId=0);
         bool UpdateQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step);
         bool RemoveQuestProgress(uint characterCommonId, QuestId questId, QuestType questType);
         List<QuestProgress> GetQuestProgressByType(uint characterCommonId, QuestType questType);
@@ -278,17 +455,45 @@ namespace Arrowgene.Ddon.Database
 
         // System mail attachments
         List<SystemMailAttachment> SelectAttachmentsForSystemMail(ulong messageId);
-        bool UpdateSystemMailAttachmentReceivedStatus(ulong messageId, ulong attachmentId, bool isReceived);
+        bool UpdateSystemMailAttachmentReceivedStatus(
+            ulong messageId,
+            ulong attachmentId,
+            bool isReceived
+        );
         bool DeleteSystemMailAttachment(ulong messageId);
 
         // Additional Status
-        bool InsertIfNotExistsAddStatus(string itemUid, uint characterId, byte isAddStat1, byte isAddStat2, ushort addStat1, ushort addStat2);
-        bool InsertAddStatus(string itemUid, uint characterId, byte isAddStat1, byte isAddStat2, ushort addStat1, ushort addStat2);
+        bool InsertIfNotExistsAddStatus(
+            string itemUid,
+            uint characterId,
+            byte isAddStat1,
+            byte isAddStat2,
+            ushort addStat1,
+            ushort addStat2
+        );
+        bool InsertAddStatus(
+            string itemUid,
+            uint characterId,
+            byte isAddStat1,
+            byte isAddStat2,
+            ushort addStat1,
+            ushort addStat2
+        );
         List<CDataAddStatusParam> GetAddStatusByUID(string itemUid);
-        bool UpdateAddStatus(string itemUid, uint characterId, byte isAddStat1, byte isAddStat2, ushort addStat1, ushort addStat2);
+        bool UpdateAddStatus(
+            string itemUid,
+            uint characterId,
+            byte isAddStat1,
+            byte isAddStat2,
+            ushort addStat1,
+            ushort addStat2
+        );
 
         // Play points
-        bool ReplaceCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData);
+        bool ReplaceCharacterPlayPointData(
+            uint id,
+            CDataJobPlayPoint updatedCharacterPlayPointData
+        );
         bool UpdateCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData);
 
         // Stamps
@@ -296,8 +501,21 @@ namespace Arrowgene.Ddon.Database
         public bool UpdateCharacterStampData(uint id, CharacterStampBonus stampData);
 
         // Crests
-        bool InsertCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount, DbConnection? connectionIn = null);
-        bool UpdateCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount);
+        bool InsertCrest(
+            uint characterCommonId,
+            string itemUId,
+            uint slot,
+            uint crestId,
+            uint crestAmount,
+            DbConnection? connectionIn = null
+        );
+        bool UpdateCrest(
+            uint characterCommonId,
+            string itemUId,
+            uint slot,
+            uint crestId,
+            uint crestAmount
+        );
         bool RemoveCrest(uint characterCommonId, string itemUId, uint slot);
         List<Crest> GetCrests(uint characterCommonId, string itemUId);
 
@@ -305,8 +523,24 @@ namespace Arrowgene.Ddon.Database
         bool InsertBBMCharacterId(uint characterId, uint bbmCharacterId);
         uint SelectBBMCharacterId(uint characterId);
         uint SelectBBMNormalCharacterId(uint bbmCharacterId);
-        bool InsertBBMProgress(uint characterId, ulong startTime, uint contentId, BattleContentMode contentMode, uint tier, bool killedDeath, ulong lastTicketTime);
-        bool UpdateBBMProgress(uint characterId, ulong startTime, uint contentId, BattleContentMode contentMode, uint tier, bool killedDeath, ulong lastTicketTime);
+        bool InsertBBMProgress(
+            uint characterId,
+            ulong startTime,
+            uint contentId,
+            BattleContentMode contentMode,
+            uint tier,
+            bool killedDeath,
+            ulong lastTicketTime
+        );
+        bool UpdateBBMProgress(
+            uint characterId,
+            ulong startTime,
+            uint contentId,
+            BattleContentMode contentMode,
+            uint tier,
+            bool killedDeath,
+            ulong lastTicketTime
+        );
         bool UpdateBBMProgress(uint characterId, BitterblackMazeProgress progress);
         BitterblackMazeProgress SelectBBMProgress(uint characterId);
         bool RemoveBBMProgress(uint characterId);
@@ -319,8 +553,17 @@ namespace Arrowgene.Ddon.Database
         BitterblackMazeRewards SelectBBMRewards(uint characterId);
 
         // Bitterblack Maze Treasure
-        bool InsertBBMContentTreasure(uint characterId, BitterblackMazeTreasure treasure, DbConnection? connectionIn = null);
-        bool InsertBBMContentTreasure(uint characterId, uint contentId, uint amount, DbConnection? connectionIn = null);
+        bool InsertBBMContentTreasure(
+            uint characterId,
+            BitterblackMazeTreasure treasure,
+            DbConnection? connectionIn = null
+        );
+        bool InsertBBMContentTreasure(
+            uint characterId,
+            uint contentId,
+            uint amount,
+            DbConnection? connectionIn = null
+        );
         bool UpdateBBMContentTreasure(uint characterId, BitterblackMazeTreasure treasure);
         bool UpdateBBMContentTreasure(uint characterId, uint contentId, uint amount);
         bool RemoveBBMContentTreasure(uint characterId);

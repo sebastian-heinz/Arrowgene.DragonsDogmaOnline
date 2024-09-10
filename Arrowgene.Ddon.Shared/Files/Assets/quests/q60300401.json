@@ -1,0 +1,64 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Seeking the Master: High Scepter",
+    "quest_id": 60300401,
+    "next_quest": 0,
+    "base_level": 18,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {"id": 584},
+    "order_conditions": [
+        {
+            "type": "MinimumVocationLevel",
+            "Param1": 11,
+            "Param2": 18
+        }
+    ],
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 300
+        },
+        {
+            "type": "exp",
+            "amount": 2500
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 20047,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 584,
+                "group_id": 1
+            },
+            "npc_id": "Yumit",
+            "message_id": 28177
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 464,
+                "group_id": 1
+            },
+            "announce_type": "Accept",
+            "npc_id": "Kirsty0",
+            "message_id": 28179
+        }
+    ]
+}
