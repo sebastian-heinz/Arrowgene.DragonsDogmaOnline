@@ -736,8 +736,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private uint PartyLevelRange(PartyGroup party)
         {
-            uint maxLevel = party.Leader.Client.Character.ActiveCharacterJobData.Lv;
-            uint minLevel = party.Leader.Client.Character.ActiveCharacterJobData.Lv;
+            var firstMember = party.Clients.First();
+            uint maxLevel = firstMember.Character.ActiveCharacterJobData.Lv;
+            uint minLevel = firstMember.Character.ActiveCharacterJobData.Lv;
 
             foreach (var member in party.Members)
             {
@@ -766,7 +767,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private uint PartyMemberMaxLevel(PartyGroup party)
         {
-            uint maxLevel = party.Leader.Client.Character.ActiveCharacterJobData.Lv;
+            uint maxLevel = party.Clients.First().Character.ActiveCharacterJobData.Lv;
             foreach (var member in party.Members)
             {
                 CharacterCommon characterCommon = null;
