@@ -670,10 +670,7 @@ namespace Arrowgene.Ddon.GameServer.Party
         {
             if (party.Leader is null)
             {
-                party.SendToAll( new S2CQuestSetPriorityQuestNtc()
-                {
-                    CharacterId = party.Clients.First().Character.CharacterId
-                });
+                return;
             }
 
             var leaderClient = party.Leader.Client;

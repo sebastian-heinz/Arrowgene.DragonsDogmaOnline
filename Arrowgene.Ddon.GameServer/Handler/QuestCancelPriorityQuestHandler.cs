@@ -30,7 +30,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Server.Database.DeletePriorityQuest(client.Character.CommonId, questId);
 
-            client.Party.QuestState.UpdatePriorityQuestList(Server, client.Party);
+            // The UI responds and sends this request even if you're not the leader,
+            // but we probably shouldn't let non-leaders mess with the PartyQuestState.
+            if (client.Party.Leader is not null && client.Party.Leader.Client == client)
+            {
+                client.Party.QuestState.UpdatePriorityQuestList(Server, client.Party);
+            }
 
             return new S2CQuestCancelPriorityQuestRes()
             {

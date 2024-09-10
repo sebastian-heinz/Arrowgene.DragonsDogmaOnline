@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SInstance_13_47_16_Ntc> packet)
         {
-            Logger.Debug($"{packet.Structure.Unk0}.{packet.Structure.Unk1}.{packet.Structure.Unk2}.{packet.Structure.Unk3}.{packet.Structure.Unk4}.{packet.Structure.Unk5}");
+            Logger.Debug($"{packet.Structure.Unk0}\t{packet.Structure.Unk3}.{packet.Structure.Unk4}.{packet.Structure.Unk5}");
             // TODO: Identify this packet.
         }
     }
