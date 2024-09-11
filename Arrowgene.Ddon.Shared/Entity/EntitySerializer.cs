@@ -1097,6 +1097,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CQuestLeaderQuestProgressRequestNtc.Serializer());
             Create(new S2CQuestPartyQuestProgressNtc.Serializer());
             Create(new S2CQuestQuestOrderRes.Serializer());
+            Create(new S2CQuestQuestOrderNtc.Serializer());
             Create(new S2CQuestQuestProgressNtc.Serializer());
             Create(new S2CQuestQuestProgressRes.Serializer());
             Create(new S2CQuestCompleteNtc.Serializer());
