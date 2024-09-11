@@ -71,12 +71,16 @@ public class InstanceEnemyManager : InstanceAssetManager<Enemy, InstancedEnemy>
                 // Morning range is 0 (midnight) to end time, Evening range is start time and onwards
                 if(gameTimeMSec <= original.SpawnTimeEnd || gameTimeMSec >= original.SpawnTimeStart)
                 {
-                    filteredEnemyList.Add(new InstancedEnemy(original));
+                    var enemy = new InstancedEnemy(original);
+                    enemy.Index = (byte)filteredEnemyList.Count;
+                    filteredEnemyList.Add(enemy);
                 }
             }
             else if(gameTimeMSec >= original.SpawnTimeStart && gameTimeMSec <= original.SpawnTimeEnd)
             {
-                filteredEnemyList.Add(new InstancedEnemy(original));
+                var enemy = new InstancedEnemy(original);
+                enemy.Index = (byte)filteredEnemyList.Count;
+                filteredEnemyList.Add(enemy);
             }
         }
         return filteredEnemyList;

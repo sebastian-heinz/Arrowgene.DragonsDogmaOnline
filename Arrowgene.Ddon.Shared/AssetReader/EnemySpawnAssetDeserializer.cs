@@ -106,7 +106,6 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     HighOrbs = row[enemySchemaIndexes["HighOrbs"]].GetUInt32(),
                     Experience = row[enemySchemaIndexes["Experience"]].GetUInt32(),
 
-                    Index = (byte)enemies.Count,
                     Subgroup = subGroupId,
                 };
 
