@@ -36,7 +36,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (isPriority)
                 {
-                    client.Party.QuestState.UpdatePriorityQuestList(Server, client.Party);
+                    client.Party.QuestState.UpdatePriorityQuestList(Server, client, client.Party);
                 }
             }
             

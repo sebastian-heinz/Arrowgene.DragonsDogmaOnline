@@ -28,12 +28,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: Move this to a function or lookup class
             List<Pawn> pawns = owner.Character.Pawns.Concat(client.Character.RentedPawns).ToList();
 
-            if (!pawns.Any())
-            {
-                throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_NOT_FOUNDED);
-            }
-
-            Pawn pawn = pawns.Where(pawn => pawn.PawnId == packet.PawnId).First();
+            Pawn pawn = pawns
+                .Where(pawn => pawn.PawnId == packet.PawnId)
+                .FirstOrDefault() ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_NOT_FOUNDED);
 
             var res = new S2CPawnGetPartyPawnDataRes();
             res.CharacterId = pawn.CharacterId;

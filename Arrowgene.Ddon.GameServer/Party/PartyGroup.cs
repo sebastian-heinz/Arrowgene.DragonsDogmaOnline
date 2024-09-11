@@ -716,7 +716,8 @@ namespace Arrowgene.Ddon.GameServer.Party
 
                 if (slotIndex == InvalidSlotIndex)
                 {
-                    return slotIndex;
+                    Logger.Error($"[PartyId:{Id}][TakeSlot] (no empty slot)");
+                    return InvalidSlotIndex;
                 }
 
                 partyMember.MemberIndex = slotIndex;
