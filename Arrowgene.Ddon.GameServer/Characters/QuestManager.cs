@@ -23,6 +23,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static readonly Dictionary<QuestId, Dictionary<uint, Quest>> variantQuests = new();
         private static readonly HashSet<QuestId> AvailableVariantQuests = new();
         private static Dictionary<uint, List<Quest>> gTutorialQuests = new Dictionary<uint, List<Quest>>();
+        private static Dictionary<uint, List<Quest>> gPersonalQuests = new Dictionary<uint, List<Quest>>();
+        private static Dictionary<uint, List<Quest>> gLightQuests = new Dictionary<uint, List<Quest>>();
         private static Dictionary<QuestAreaId, List<Quest>> gWorldQuests = new Dictionary<QuestAreaId, List<Quest>>();
 
         public static HashSet<QuestId> GetAllVariantQuestIds()
@@ -78,6 +80,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             gWorldQuests[quest.QuestAreaId] = new List<Quest>();
                         }
                         gWorldQuests[quest.QuestAreaId].Add(quest);
+                    }
+                    else if (quest.QuestType == QuestType.Light)
+                    {
+                        uint stageNo = (uint)StageManager.ConvertIdToStageNo(quest.StageId);
+                        if (!gLightQuests.ContainsKey(stageNo))
+                        {
+                            gLightQuests[stageNo] = new List<Quest>();
+                        }
+                        gLightQuests[stageNo].Add(quest);
                     }
                 }
             }
@@ -177,6 +188,21 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return gTutorialQuests[stageNo];
+        }
+
+        public static List<Quest> GetLightQuestsByStageNo(uint stageNo)
+        {
+            var foo = gLightQuests.Values.SelectMany(x => x).ToList();
+            Logger.Info($"Fetching light quests for stage {stageNo}: {foo.Count}.");
+
+            return foo;
+
+            if (!gLightQuests.ContainsKey(stageNo))
+            {
+                return new List<Quest>();
+            }
+
+            return gLightQuests[stageNo];
         }
 
         public static uint GetRandomVariantId(QuestId baseQuest)
@@ -386,7 +412,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             /**
              * @brief
-             * @param enemyId
+             * @param enemyNameId (NOT enemyId)
              * @param enemyLv
              * @param enemyNum
              */

@@ -157,6 +157,17 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 ParseMissionParams(assetData, jMissionParams);
             }
 
+            if (questType == QuestType.Light)
+            {
+                if (!jQuest.TryGetProperty("light_quest_details", out JsonElement jLightQuestDetails))
+                {
+                    Logger.Error($"Unable to create the quest '{assetData.QuestId}'. Missing 'light_quest_details'. Skipping.");
+                    return false;
+                }
+
+                ParseLightQuestDetails(assetData, jLightQuestDetails);
+            }
+
             ParseRewards(assetData, jQuest);
 
             if (!ParseOrderCondition(assetData, jQuest))
@@ -711,9 +722,33 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         break;
                     case QuestBlockType.KillTargetEnemies:
                         {
-                            questBlock.TargetEnemy.EnemyId = Convert.ToUInt32(jblock.GetProperty("enemy_id").GetString(), 16);
+                            // The KillTargetEnemies/EmDieLight machinery expects to be given enemy name IDs, not raw enemy IDs.
+                            // Quest writers can provide either; if they give a hex number it will be converted to the proper enemy name ID automatically. 
+                            var enemyIdString = jblock.GetProperty("enemy_id").GetString();
+                            if (enemyIdString.Contains('x'))
+                            {
+                                var enemyId = Convert.ToUInt32(enemyIdString, 16);
+                                questBlock.TargetEnemy.EnemyId = Enemy.NameMap[enemyId];
+                            }
+                            else
+                            {
+                                questBlock.TargetEnemy.EnemyId = Convert.ToUInt32(enemyIdString);
+                            }
+
                             questBlock.TargetEnemy.Level = jblock.GetProperty("level").GetUInt32();
                             questBlock.TargetEnemy.Amount = jblock.GetProperty("amount").GetUInt32();
+                        }
+                        break;
+                    case QuestBlockType.DeliverItemsLight:
+                        {
+                            foreach (var item in jblock.GetProperty("items").EnumerateArray())
+                            {
+                                questBlock.DeliveryRequests.Add(new QuestItem()
+                                {
+                                    ItemId = item.GetProperty("id").GetUInt32(),
+                                    Amount = item.GetProperty("amount").GetUInt32()
+                                });
+                            }
                         }
                         break;
                     case QuestBlockType.Raw:
@@ -1258,6 +1293,32 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         break;
                 }
             }
+        }
+   
+        private bool ParseLightQuestDetails(QuestAssetData assetData, JsonElement jLightQuestDetails)
+        {
+            if(!jLightQuestDetails.TryGetProperty("area_id", out JsonElement jAreaId))
+            {
+                Logger.Error($"Missing required member 'area_id' from LightQuest config.");
+                return false;
+            }
+            assetData.LightQuestDetail.AreaId = jAreaId.GetUInt32();
+
+            if (!jLightQuestDetails.TryGetProperty("board_type", out JsonElement jBoardType))
+            {
+                Logger.Error($"Missing required member 'board_type' from LightQuest config.");
+                return false;
+            }
+            assetData.LightQuestDetail.BoardType = jAreaId.GetUInt32();
+
+            if (!jLightQuestDetails.TryGetProperty("board_id", out JsonElement jBoardId))
+            {
+                Logger.Error($"Missing required member 'board_id' from LightQuest config.");
+                return false;
+            }
+            assetData.LightQuestDetail.BaseAreaPoint = jAreaId.GetUInt32();
+
+            return true;
         }
     }
 }

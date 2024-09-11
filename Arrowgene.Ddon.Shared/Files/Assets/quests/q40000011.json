@@ -1,0 +1,50 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "comment": "Would've Gone There",
+  "quest_id": 40000011,
+  "base_level": 1,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "light_quest_details": {
+    "area_id": 1,
+    "board_type": 1,
+    "board_id": 1
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 63
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 250
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 63
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "DeliverItemsLight",
+      "announce_type": "Accept",
+      "items": [
+        {
+          "id": 7836,
+          "amount": 1
+        }
+      ]
+    }
+  ]
+}

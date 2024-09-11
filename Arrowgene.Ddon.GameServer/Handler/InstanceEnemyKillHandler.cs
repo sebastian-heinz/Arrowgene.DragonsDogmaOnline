@@ -166,6 +166,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         gainedExp = 0;
                     }
 
+                    memberClient.Party.QuestState.HandleEnemyHuntRequests(memberClient, enemyKilled);
+
                     S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
 
                     if (enemyKilled.BloodOrbs > 0)

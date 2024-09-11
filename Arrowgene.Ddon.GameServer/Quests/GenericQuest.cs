@@ -34,6 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             quest.OrderConditions = questAsset.OrderConditions;
             quest.StageId = questAsset.StageId;
             quest.MissionParams = questAsset.MissionParams;
+            quest.LightQuestDetail = questAsset.LightQuestDetail;
 
 
             foreach (var pointReward in questAsset.PointRewards)
@@ -86,12 +87,27 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             }
                             break;
                         case QuestBlockType.DeliverItems:
+                        case QuestBlockType.DeliverItemsLight:
                             foreach (var request in block.DeliveryRequests)
                             {
                                 quest.DeliveryItems.Add(new QuestDeliveryItem()
                                 {
                                     ItemId = request.ItemId,
                                     Amount = request.Amount,
+                                });
+                            }
+                            break;
+                        case QuestBlockType.KillTargetEnemies:
+                            if (block.TargetEnemy.EnemyId > 0)
+                            {
+                                quest.EnemyHunts.Add(new QuestEnemyHunt()
+                                {
+                                    ProcessNo = process.ProcessNo,
+                                    SequenceNo = 0,
+                                    BlockNo = block.BlockNo,
+                                    EnemyId = block.TargetEnemy.EnemyId,
+                                    MinimumLevel = block.TargetEnemy.Level,
+                                    Amount = block.TargetEnemy.Amount,
                                 });
                             }
                             break;
@@ -250,6 +266,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             List<CDataQuestCommand> resultCommands = new List<CDataQuestCommand>();
             List<CDataQuestCommand> checkCommands = new List<CDataQuestCommand>();
+            List<CDataQuestProgressWork> workCommands = new List<CDataQuestProgressWork>();
 
             ParseQuestFlags(questBlock.QuestFlags, resultCommands, checkCommands);
 
@@ -472,6 +489,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         foreach (var item in questBlock.DeliveryRequests)
                         {
                             checkCommands.Add(QuestManager.CheckCommand.DeliverItem((int)item.ItemId, (int)item.Amount, questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
+                            workCommands.Add(new CDataQuestProgressWork()
+                            {
+                                CommandNo = (uint)QuestNotifyCommand.FulfillDeliverItem,
+                                Work01 = 0,
+                                Work02 = 1,
+                                Work03 = 2,
+                                Work04 = 3,
+                            });
                         }
                         resultCommands.Add(QuestManager.ResultCommand.SetDeliverInfo(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
                     }
@@ -567,6 +592,23 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     {
                         // Handles kill x amount of monster type quests
                         checkCommands.Add(QuestManager.CheckCommand.EmDieLight((int)questBlock.TargetEnemy.EnemyId, (int)questBlock.TargetEnemy.Level, (int)questBlock.TargetEnemy.Amount));
+                        workCommands.Add(
+                            new CDataQuestProgressWork()
+                            {
+                                CommandNo = (uint)QuestNotifyCommand.KilledEnemyLight,
+                                Work01 = (int)questBlock.TargetEnemy.EnemyId,
+                                Work02 = (int)questBlock.TargetEnemy.Level,
+                                Work03 = 0,
+                                Work04 = 0,
+                            });
+                    }
+                    break;
+                case QuestBlockType.DeliverItemsLight:
+                    {
+                        foreach (var item in questBlock.DeliveryRequests)
+                        {
+                            checkCommands.Add(QuestManager.CheckCommand.DeliverItem((int)item.ItemId, (int)item.Amount, 0, 0));
+                        }
                     }
                     break;
                 case QuestBlockType.Raw:
@@ -593,6 +635,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             resultCommands.AddRange(questBlock.ResultCommands);
 
             result.ResultCommandList = resultCommands;
+            result.WorkList = workCommands;
 
             List<List<CDataQuestCommand>> complexCheckCommands = new List<List<CDataQuestCommand>>();
             if (checkCommands.Count > 0)

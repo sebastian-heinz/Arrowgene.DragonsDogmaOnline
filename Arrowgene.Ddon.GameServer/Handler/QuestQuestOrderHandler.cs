@@ -1,20 +1,11 @@
-using System;
-using System.Buffers.Text;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestQuestOrderHandler : GameStructurePacketHandler<C2SQuestQuestOrderReq>
+    public class QuestQuestOrderHandler : GameRequestPacketHandler<C2SQuestQuestOrderReq, S2CQuestQuestOrderRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestQuestOrderHandler));
 
@@ -22,23 +13,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SQuestQuestOrderReq> packet)
+        public override S2CQuestQuestOrderRes Handle(GameClient client, C2SQuestQuestOrderReq request)
         {
             var res = new S2CQuestQuestOrderRes();
 
-            QuestId questId = (QuestId)packet.Structure.QuestScheduleId;
+            QuestId questId = (QuestId)request.QuestScheduleId;
             var quest = client.Party.QuestState.GetQuest(questId);
             if (client.Party.QuestState.GetActiveQuestIds().Contains(questId))
             {
-                var questState = client.Party.QuestState.GetQuestState(questId);
-                res.QuestProcessStateList = quest.ToCDataQuestList(questState.Step).QuestProcessStateList;
-            }
-            else
-            {
-                Logger.Debug($"Quest q{questId} inactive.");
+                return res;
             }
 
-            client.Send(res);
+            client.Party.QuestState.AddNewQuest(questId, 0, false);
+            res.QuestProcessStateList.AddRange(quest.ToCDataQuestList(0).QuestProcessStateList);
+
+            return res;
+
+            // TODO: Investigate why the quest board UI fails to update promptly.
         }
     }
 }

@@ -32,6 +32,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         PlayEvent,
         KillTargetEnemies,
         ExtendTime,
+        DeliverItemsLight,
         Raw,
         DummyBlock,
         DummyBlockNoProgress,

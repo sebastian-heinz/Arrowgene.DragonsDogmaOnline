@@ -1,21 +1,17 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Dump;
-using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -67,6 +63,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var quest = QuestManager.GetQuest(questProgress.QuestId);
                 var tutorialQuest = quest.ToCDataTutorialQuestOrderList(questProgress.Step);
                 ntc.TutorialQuestOrderList.Add(tutorialQuest);
+            }
+
+            var lightQuestInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.Light);
+            foreach (var questProgress in lightQuestInProgress)
+            {
+                var quest = QuestManager.GetQuest(questProgress.QuestId);
+                var lightQuest = quest.ToCDataLightQuestOrderList(questProgress.Step);
+                ntc.LightQuestOrderList.Add(lightQuest);
             }
 
             if (client.Party != null)

@@ -2,16 +2,11 @@ using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -57,45 +52,50 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 partyQuestState.UpdateProcessState(questId, res.QuestProcessState);
 
-                if (questProgressState == QuestProgressState.Accepted && quest.QuestType == QuestType.World)
+                if (questProgressState == QuestProgressState.Accepted)
                 {
-                    // A Quest has started, setting the HasStarted on the quest in QuestState
-                    partyQuestState.SetHasStarted(quest.QuestId, true);
-
-                    foreach (var memberClient in client.Party.Clients)
+                    switch (quest.QuestType)
                     {
-                        var questProgress = Server.Database.GetQuestProgressById(memberClient.Character.CommonId, quest.QuestId);
+                        case QuestType.World:
+                            // A Quest has started, setting the HasStarted on the quest in QuestState
+                            partyQuestState.SetHasStarted(quest.QuestId, true);
 
-                        if (questProgress != null)
-                        {
-                            continue;
-                        }
+                            foreach (var memberClient in client.Party.Clients)
+                            {
+                                var questProgress = Server.Database.GetQuestProgressById(memberClient.Character.CommonId, quest.QuestId);
 
-                        // Handle new variant quests and the specific quest being added to this list with the variant id.
+                                if (questProgress != null)
+                                {
+                                    continue;
+                                }
 
-                        if (quest.IsVariantQuest)
-                        {
-                            if (!Server.Database.InsertQuestProgress(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, 0, quest.VariantId))
+                                // Handle new variant quests and the specific quest being added to this list with the variant id.
+
+                                if (quest.IsVariantQuest)
+                                {
+                                    if (!Server.Database.InsertQuestProgress(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, 0, quest.VariantId))
+                                    {
+                                        Logger.Error($"Failed to insert progress for the quest {quest.QuestId}");
+                                    }
+
+                                    continue;
+                                }
+
+                                // Add a new world quest record for the player
+                                if (!Server.Database.InsertQuestProgress(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, 0))
+                                {
+                                    Logger.Error($"Failed to insert progress for the quest {quest.QuestId}");
+                                }
+                            }
+                            break;
+                        case QuestType.Tutorial:
+                        case QuestType.Light:
+                            // Add a new personal quest record for the player
+                            if (!Server.Database.InsertQuestProgress(client.Character.CommonId, quest.QuestId, quest.QuestType, 0))
                             {
                                 Logger.Error($"Failed to insert progress for the quest {quest.QuestId}");
                             }
-
-                            continue;
-                        }
-
-                        // Add a new world quest record for the player
-                        if (!Server.Database.InsertQuestProgress(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, 0))
-                        {
-                            Logger.Error($"Failed to insert progress for the quest {quest.QuestId}");
-                        }
-                    }
-                }
-                else if (questProgressState == QuestProgressState.Accepted && quest.QuestType == QuestType.Tutorial)
-                {
-                    // Add a new personal quest record for the player
-                    if (!Server.Database.InsertQuestProgress(client.Character.CommonId, quest.QuestId, quest.QuestType, 0))
-                    {
-                        Logger.Error($"Failed to insert progress for the quest {quest.QuestId}");
+                            break;
                     }
                 }
 

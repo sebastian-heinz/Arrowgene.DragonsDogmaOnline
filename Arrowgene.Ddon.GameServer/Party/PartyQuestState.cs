@@ -25,8 +25,21 @@ namespace Arrowgene.Ddon.GameServer.Party
         public uint AmountRequired { get; set; }
     }
 
+    public class QuestEnemyHuntRecord
+    {
+        public ushort ProcessNo { get; set; }
+        public ushort SequenceNo { get; set; }
+        public ushort BlockNo { get; set; }
+        public uint EnemyId { get; set; }
+        public uint MinimumLevel { get; set; }
+        public uint AmountHunted { get; set; }
+        public uint AmountRequired { get; set; }
+    }
+
     public class QuestState
     {
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestState));
+
         public QuestId QuestId { get; set; }
         public QuestType QuestType { get; set; }
         public QuestProgressState State { get; set; }
@@ -36,12 +49,14 @@ namespace Arrowgene.Ddon.GameServer.Party
         public Dictionary<ushort, QuestProcessState> ProcessState {  get; set; }
         public Dictionary<StageId, Dictionary<uint, List<InstancedEnemy>>> QuestEnemies {  get; set; }
         public Dictionary<uint, QuestDeliveryRecord> DeliveryRecords {  get; set; }
+        public Dictionary<uint, QuestEnemyHuntRecord> HuntRecords { get; set; }
 
         public QuestState()
         {
             ProcessState = new Dictionary<ushort, QuestProcessState>();
             QuestEnemies = new Dictionary<StageId, Dictionary<uint, List<InstancedEnemy>>>();
             DeliveryRecords = new Dictionary<uint, QuestDeliveryRecord>();
+            HuntRecords = new Dictionary<uint, QuestEnemyHuntRecord>();
         }
 
         public uint UpdateDeliveryRequest(uint itemId, uint amount)
@@ -50,7 +65,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             {
                 if (!DeliveryRecords.ContainsKey(itemId))
                 {
-                    // TODO: throw an exception?
+                    Logger.Error($"Missing delivery record {itemId} for quest {QuestId}");
                     return uint.MaxValue;
                 }
 
@@ -60,7 +75,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
                 if (deliveryRecord.AmountDelivered > deliveryRecord.AmountRequired)
                 {
-                    // This should never happen
+                    Logger.Error($"Delivery overage {itemId} for quest {QuestId}");
                     return uint.MaxValue;
                 }
 
@@ -93,6 +108,46 @@ namespace Arrowgene.Ddon.GameServer.Party
                     }
                 }
                 return true;
+            }
+        }
+
+        public void AddHuntRequest(QuestEnemyHunt hunt)
+        {
+            lock (HuntRecords)
+            {
+                HuntRecords[hunt.EnemyId] = new QuestEnemyHuntRecord()
+                {
+                    ProcessNo = hunt.ProcessNo,
+                    SequenceNo = hunt.SequenceNo,
+                    BlockNo = hunt.BlockNo,
+
+                    EnemyId = hunt.EnemyId,
+                    MinimumLevel = hunt.MinimumLevel,
+                    AmountRequired = hunt.Amount,
+                    AmountHunted = 0
+                };
+            }
+        }
+
+        public QuestEnemyHuntRecord? UpdateHuntRequest(Enemy enemy)
+        {
+            var enemyId = enemy.UINameId;
+            lock (HuntRecords)
+            {
+                if (!HuntRecords.ContainsKey(enemyId))
+                {
+                    return null;
+                }
+
+                var huntRecord = HuntRecords[enemyId];
+
+                if (enemy.Lv < huntRecord.MinimumLevel)
+                {
+                    return null;
+                }
+
+                huntRecord.AmountHunted++;
+                return huntRecord;
             }
         }
     }
@@ -165,6 +220,10 @@ namespace Arrowgene.Ddon.GameServer.Party
                 foreach (var request in quest.DeliveryItems)
                 {
                     ActiveQuests[quest.QuestId].AddDeliveryRequest(request.ItemId, request.Amount);
+                }
+                foreach (var request in quest.EnemyHunts)
+                {
+                    ActiveQuests[quest.QuestId].AddHuntRequest(request);
                 }
 
                 // Initialize Process State Table
@@ -699,6 +758,34 @@ namespace Arrowgene.Ddon.GameServer.Party
                 CompletedWorldQuests.Clear();
 
                 RerollUnfoundAltQuests();
+            }
+        }
+    
+        public void HandleEnemyHuntRequests(GameClient client, Enemy enemy)
+        {
+            foreach (var quest in ActiveQuests)
+            {
+                QuestEnemyHuntRecord huntRecord = quest.Value.UpdateHuntRequest(enemy);
+
+                if (huntRecord != null)
+                {
+                    S2CQuestQuestProgressWorkSaveNtc ntc = new()
+                    {
+                        QuestScheduleId = (uint)QuestManager.GetQuest(quest.Key).QuestScheduleId,
+                        ProcessNo = huntRecord.ProcessNo,
+                        SequenceNo = huntRecord.SequenceNo,
+                        BlockNo = huntRecord.BlockNo
+                    };
+                    ntc.WorkList.Add(new CDataQuestProgressWork()
+                    {
+                        CommandNo = (uint)QuestNotifyCommand.KilledEnemyLight,
+                        Work01 = (int)huntRecord.EnemyId,
+                        Work02 = (int)huntRecord.MinimumLevel,
+                        Work03 = (int)huntRecord.AmountHunted
+                    });
+
+                    client.Send(ntc);
+                }
             }
         }
     }

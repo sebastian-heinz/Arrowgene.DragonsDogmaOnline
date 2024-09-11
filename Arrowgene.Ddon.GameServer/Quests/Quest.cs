@@ -43,6 +43,16 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public uint Amount {  get; set; }
     }
 
+    public class QuestEnemyHunt
+    {
+        public ushort ProcessNo { get; set; }
+        public ushort SequenceNo { get; set; }
+        public ushort BlockNo { get; set; }
+        public uint EnemyId { get; set; }
+        public uint MinimumLevel { get; set; }
+        public uint Amount { get; set; }
+    }
+
     public abstract class Quest
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Quest));
@@ -68,9 +78,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public List<CDataCharacterReleaseElement> ContentsReleaseRewards { get; protected set; }
         public List<QuestLocation> Locations { get; protected set; }
         public List<QuestDeliveryItem> DeliveryItems { get; protected set; }
+        public List<QuestEnemyHunt> EnemyHunts { get; protected set; }
         public List<QuestLayoutFlagSetInfo> QuestLayoutFlagSetInfo;
         public List<QuestLayoutFlag> QuestLayoutFlags;
         public QuestMissionParams MissionParams { get; protected set; }
+        public CDataLightQuestDetail LightQuestDetail { get; protected set; }
         public Dictionary<uint, QuestEnemyGroup> EnemyGroups { get; set; }
         public HashSet<StageId> UniqueEnemyGroups { get; protected set; }
         public bool IsVariantQuest { get; set; }
@@ -92,6 +104,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             ContentsReleaseRewards = new List<CDataCharacterReleaseElement>();
             Locations = new List<QuestLocation>();
             DeliveryItems = new List<QuestDeliveryItem>();
+            EnemyHunts = new List<QuestEnemyHunt>();
             QuestLayoutFlagSetInfo = new List<QuestLayoutFlagSetInfo>();
             QuestLayoutFlags = new List<QuestLayoutFlag>();
             EnemyGroups = new Dictionary<uint, QuestEnemyGroup>();
@@ -100,6 +113,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             VariantId = 0;
             MissionParams = new QuestMissionParams();
             Processes = new List<QuestProcess>();
+            LightQuestDetail = new CDataLightQuestDetail();
         }
 
         private List<CDataQuestProcessState> GetProcessState(uint step, out uint announceNoCount)
@@ -292,6 +306,15 @@ namespace Arrowgene.Ddon.GameServer.Quests
             };
         }
 
+        public virtual CDataLightQuestOrderList ToCDataLightQuestOrderList(uint step)
+        {
+            return new CDataLightQuestOrderList()
+            {
+                Param = ToCDataQuestOrderList(step),
+                Detail = LightQuestDetail
+            };
+        }
+
         public virtual CDataTutorialQuestList ToCDataTutorialQuestList(uint step, bool enableCancel = false)
         {
             return new CDataTutorialQuestList()
@@ -330,31 +353,34 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         public virtual CDataLightQuestList ToCDataLightQuestList(uint step)
         {
-            var result = new CDataLightQuestList()
-            {
-                Param = ToCDataQuestList(step),
-                Contents = new CDataQuestContents()
-                {
-                    Type = 2,
-                    Param01 = 0x011200,
-                    Param02 = 2,
-                    Param03 = 2,
-                    Param04 = 0,
-                    Unk0 = 6,
-                    Unk1 = 6,
-                },
-                Detail = new CDataLightQuestDetail()
-                {
-                    AreaId = (uint)QuestAreaId.HidellPlains,
-                    BaseAreaPoint = 25,
-                    BoardType = 1, // 1 == Normal, 2 == Clan?
-                    OrderLimit = 25,
-                    ClearNum = 0,
-                    GetCP = 25 // This is reward area points
-                }
-            };
+            CDataQuestList param = ToCDataQuestList(step);
 
-            return result;
+            CDataQuestContents contents = new CDataQuestContents();
+            CDataQuestCommand process = param.QuestProcessStateList.FirstOrDefault()?.CheckCommandList.FirstOrDefault()?.ResultCommandList.FirstOrDefault();
+            if (process is not null)
+            {
+                if (process.Command == (ushort)QuestCheckCommand.EmDieLight)
+                {
+                    contents.Type = 1;
+                }
+                else if (process.Command == (ushort)QuestCheckCommand.DeliverItem)
+                {
+                    contents.Type = 2;
+                }
+                contents.Param01 = process.Param01;
+                contents.Param02 = process.Param02;
+                contents.Param03 = process.Param03;
+                contents.Param04 = process.Param04;
+                contents.Unk0 = 0;
+                contents.Unk1 = 1;
+            }
+
+            return new CDataLightQuestList()
+            {
+                Param = param,
+                Contents = contents,
+                Detail = LightQuestDetail
+            };
         }
 
         public virtual CDataTimeGainQuestList ToCDataTimeGainQuestList(uint step)

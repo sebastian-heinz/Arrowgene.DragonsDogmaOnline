@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 
         // Pseudo Categories
         Board = 1,
-        World = 1, // World should be Set Quest (2) not light
+        World = 2, // World should be Set Quest (2) not light
         // Personal = 4, (some personal quests are tutorial (4), others are board (1))
         ExtremeMission = TimeGain, // Unsure if this is the proper category
 #if false
