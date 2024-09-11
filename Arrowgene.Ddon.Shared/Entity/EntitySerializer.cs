@@ -957,6 +957,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CJobGetPlayPointListRes.Serializer());
             Create(new S2CJobJobValueShopGetLineupRes.Serializer());
             Create(new S2CJobJobValueShopBuyItemRes.Serializer());
+            Create(new S2CUpdateCharacterJobPointNtc.Serializer());
+            Create(new S2CJobPawnJobPointNtc.Serializer());
 
             Create(new S2COrbDevoteGetReleaseOrbElementListRes.Serializer());
             Create(new S2CJobOrbTreeGetJobOrbTreeStatusListRes.Serializer());
