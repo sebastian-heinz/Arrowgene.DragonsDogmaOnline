@@ -190,21 +190,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return gTutorialQuests[stageNo];
         }
 
-        public static List<Quest> GetLightQuestsByStageNo(uint stageNo)
-        {
-            var foo = gLightQuests.Values.SelectMany(x => x).ToList();
-            Logger.Info($"Fetching light quests for stage {stageNo}: {foo.Count}.");
-
-            return foo;
-
-            if (!gLightQuests.ContainsKey(stageNo))
-            {
-                return new List<Quest>();
-            }
-
-            return gLightQuests[stageNo];
-        }
-
         public static uint GetRandomVariantId(QuestId baseQuest)
         {
             // Get random index value to choose a quest version.

@@ -42,8 +42,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 pawn.StageNo = res.StageNo;
             }
 
-            Logger.Info($"StageNo: {client.Character.StageNo} StageId: {packet.StageId}");
-
             if (StageManager.IsSafeArea(client.Character.Stage))
             {
                 res.IsBase = true;
