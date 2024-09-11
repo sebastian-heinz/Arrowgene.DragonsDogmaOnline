@@ -47,7 +47,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         BeForevermoreWhiteDragon = 30,
 
         // Seems like quest names and IDs got out of sync when this list was made
-        Unknown20010 = 20010,
+        TheStormThatBroughtATragedy = 20010,
         TheStormThatBoughtATragedy = 20020,
         TheGirlWhoLostHerMemories = 20030,
         TheCorruptionAndTheKnights = 20040,
