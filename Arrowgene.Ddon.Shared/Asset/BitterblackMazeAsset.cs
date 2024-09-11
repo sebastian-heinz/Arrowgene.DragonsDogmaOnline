@@ -24,14 +24,19 @@ namespace Arrowgene.Ddon.Shared.Asset
             HighQualityArmors = new Dictionary<BitterblackMazeEquipmentClass, List<uint>>();
             LowQualityOther = new List<uint>();
             HighQualityOther = new List<uint>();
+            RotundaRare = new List<uint>();
+            AbyssRare = new List<uint>();
+            ChestTrash = new List<(uint ItemId, uint Amount)>();
         }
 
         public class LootRange
         {
             public (uint Min, uint Max) NormalRange;
             public (uint Min, uint Max) SealedRange;
+            public double RareChance { get; set; }
+            public double JewelryChance { get; set; }
+            public (uint Gold, uint Silver, uint Red) Marks { get; set; }
         }
-
 
         public Dictionary<StageId, BitterblackMazeConfig> Stages { get; set; }
         public Dictionary<uint, LootRange> LootRanges { get; set; }
@@ -47,6 +52,10 @@ namespace Arrowgene.Ddon.Shared.Asset
         public Dictionary<BitterblackMazeEquipmentClass, List<uint>> HighQualityArmors { get; set; }
         public List<uint> LowQualityOther {  get; set; }
         public List<uint> HighQualityOther {  get; set; }
+
+        public List<uint> RotundaRare { get; set; }
+        public List<uint> AbyssRare { get; set; }
+        public List<(uint ItemId, uint Amount)> ChestTrash { get; set; }
 
         public Dictionary<JobId, Dictionary<EquipType, List<Item>>> GenerateStarterEquipment()
         {

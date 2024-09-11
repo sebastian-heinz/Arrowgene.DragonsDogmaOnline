@@ -275,6 +275,13 @@ namespace Arrowgene.Ddon.GameServer.Party
                 quest = GetQuest(questId);
             }
 
+            if (quest == null)
+            {
+                // Might be progress from removed quest (or one in development).
+                Logger.Error($"Unable to locate quest data for {questId}");
+                return;
+            }
+
             // If we are adding a new variant quest, then log the variant id for further reference
             if (quest.IsVariantQuest)
             {

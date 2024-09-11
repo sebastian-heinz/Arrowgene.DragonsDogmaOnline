@@ -73,7 +73,10 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 var record = new LootRange()
                 {
                     NormalRange = (lootRange.GetProperty("normal").GetProperty("min").GetUInt32(), lootRange.GetProperty("normal").GetProperty("max").GetUInt32()),
-                    SealedRange = (lootRange.GetProperty("sealed").GetProperty("min").GetUInt32(), lootRange.GetProperty("sealed").GetProperty("max").GetUInt32())
+                    SealedRange = (lootRange.GetProperty("sealed").GetProperty("min").GetUInt32(), lootRange.GetProperty("sealed").GetProperty("max").GetUInt32()),
+                    JewelryChance  = lootRange.GetProperty("jewelry_chance").GetDouble(),
+                    RareChance = lootRange.GetProperty("rare_chance").GetDouble(),
+                    Marks = (lootRange.GetProperty("marks").GetProperty("gold").GetUInt32(), lootRange.GetProperty("marks").GetProperty("silver").GetUInt32(), lootRange.GetProperty("marks").GetProperty("red").GetUInt32())
                 };
 
                 foreach (var id in lootRange.GetProperty("stage_ids").EnumerateArray())
@@ -187,6 +190,22 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 {
                     items.Add(itemId.GetUInt32());
                 }
+            }
+
+            var jRareLoot = document.RootElement.GetProperty("chest_loot").GetProperty("rare");
+            foreach (var quality in jRareLoot.EnumerateObject())
+            {
+                List<uint> items = quality.NameEquals("rotunda") ? asset.RotundaRare : asset.AbyssRare;
+                foreach (var itemId in quality.Value.EnumerateArray())
+                {
+                    items.Add(itemId.GetUInt32());
+                }
+            }
+
+            var jTrashLoot = document.RootElement.GetProperty("chest_loot").GetProperty("trash");
+            foreach (var drop in jTrashLoot.EnumerateArray())
+            {
+                asset.ChestTrash.Add((drop.GetProperty("id").GetUInt32(), drop.GetProperty("max_amount").GetUInt32()));
             }
 
             return asset;
