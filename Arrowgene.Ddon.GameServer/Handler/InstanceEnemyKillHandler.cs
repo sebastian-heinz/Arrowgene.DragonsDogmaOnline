@@ -39,7 +39,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // The training room uses special handling to produce enemies that don't exist in the QuestState or InstanceEnemyManager.
             // Return an empty response here to not break the rest of the handling.
-            if (_ignoreKillsInStageIds.Contains(stageId.Id))
+            if (_ignoreKillsInStageIds.Contains(stageId.Id) || packet.Structure.IsNoBattleReward)
             {
                 client.Send(new S2CInstanceEnemyKillRes());
                 return;
@@ -78,7 +78,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 enemyKilled.IsKilled = true;
             }
-            
 
             foreach (var partyMemberClient in client.Party.Clients)
             {
