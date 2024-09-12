@@ -114,7 +114,7 @@ public static class GameStructure
         cDataPawnInfo.Version = 0;
         cDataPawnInfo.Name = pawn.Name;
         cDataPawnInfo.EditInfo = pawn.EditInfo;
-        cDataPawnInfo.State = 0; // TODO: ?
+        cDataPawnInfo.State = pawn.State;
         cDataPawnInfo.MaxHp = pawn.StatusInfo.MaxHP;
         cDataPawnInfo.MaxStamina = pawn.StatusInfo.MaxStamina;
         cDataPawnInfo.JobId = pawn.Job;
@@ -159,7 +159,7 @@ public static class GameStructure
         cDataPawnInfo.ShareRange = 1;
         cDataPawnInfo.Likability = 2;
         cDataPawnInfo.TrainingStatus = pawn.TrainingStatus.GetValueOrDefault(pawn.Job, new byte[64]);
-        cDataPawnInfo.Unk1 = new CData_772E80() {Unk0 = 0x7530, Unk1 = 0x3, Unk2 = 0x3, Unk3 = 0x1, Unk4 = 0x3};
+        cDataPawnInfo.PawnTrainingProfile = new CDataPawnTrainingProfile() {TrainingExp = 1422, DialogCount = 1, DialogCountMax = 3, AttackFrequencyAndDistance = 5, TrainingLv = 5};
         cDataPawnInfo.SpSkillList = pawn.SpSkills.GetValueOrDefault(pawn.Job, new List<CDataSpSkill>());
     }
 

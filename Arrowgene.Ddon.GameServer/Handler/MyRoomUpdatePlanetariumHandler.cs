@@ -1,14 +1,10 @@
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
-using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class MyRoomUpdatePlanetariumHandler : StructurePacketHandler<GameClient, C2SMyRoomUpdatePlanetariumReq>
+    public class MyRoomUpdatePlanetariumHandler : GameRequestPacketHandler<C2SMyRoomUpdatePlanetariumReq, S2CMyRoomUpdatePlanetariumRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(MyRoomUpdatePlanetariumHandler));
 
@@ -16,11 +12,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SMyRoomUpdatePlanetariumReq> req)
+        public override S2CMyRoomUpdatePlanetariumRes Handle(GameClient client, C2SMyRoomUpdatePlanetariumReq request)
         {
             S2CMyRoomUpdatePlanetariumRes res = new S2CMyRoomUpdatePlanetariumRes();
-            res.ItemId = req.Structure;
-            client.Send(res);
+
+            // TODO: similar to BGM this might have to be returned as part of furniture list 
+            
+            return res;
         }
     }
 }

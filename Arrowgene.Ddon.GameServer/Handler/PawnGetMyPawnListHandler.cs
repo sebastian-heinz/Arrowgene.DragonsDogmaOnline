@@ -25,27 +25,34 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint index = 1;
             foreach (Pawn pawn in client.Character.Pawns)
             {
-                CDataPawnList pawnListData = new CDataPawnList()
+                CDataPawnList pawnListData = new CDataPawnList
                 {
                     PawnId = (int)pawn.PawnId,
                     SlotNo = index++,
                     Name = pawn.Name,
                     Sex = pawn.EditInfo.Sex,
-                    PawnListData = new CDataPawnListData()
+                    PawnState = pawn.State,
+                    ShareRange = 1,
+                    PawnListData = new CDataPawnListData
                     {
                         Job = pawn.Job,
                         Level = pawn.ActiveCharacterJobData.Lv,
                         CraftRank = pawn.CraftData.CraftRank,
-                        PawnCraftSkillList = pawn.CraftData.PawnCraftSkillList
+                        PawnCraftSkillList = pawn.CraftData.PawnCraftSkillList,
                         // TODO: CommentSize, LatestReturnDate
-                    }
+                        CommentSize = 0,
+                        LatestReturnDate = 0
+                    },
                     // TODO: PawnState, ShareRange, Unk0, Unk1, Unk2
+                    Unk0 = 6,
+                    TrainingExp = 1422,
+                    Unk2 = 0
                 };
                 pawnList.Add(pawnListData);
             }
 
             // TODO: PartnerInfo
-            CDataPartnerPawnInfo partnerInfo = new CDataPartnerPawnInfo()
+            CDataPartnerPawnData partnerInfo = new CDataPartnerPawnData()
             {
                 PawnId = client.Character.Pawns.FirstOrDefault()?.PawnId ?? 0,
                 Likability = 1,

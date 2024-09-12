@@ -64,6 +64,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint AvailableTraining { get; set; } // Training lv?
         public bool IsOfficialPawn {  get; set; }
         public bool IsRented {  get; set; }
+        public PawnState State {  get; set; }
 
         public CDataPawnInfo AsCDataPawnInfo()
         {
