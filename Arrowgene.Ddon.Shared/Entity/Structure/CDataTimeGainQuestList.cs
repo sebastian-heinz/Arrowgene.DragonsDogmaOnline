@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             Param = new CDataQuestList();
             RewardItemDetailList = new List<CDataRewardItemDetail>();
             Restrictions = new CDataTimeGainQuestRestrictions();
-            Unk2List = new List<CDataTimeGainQuestUnk2>();
+            RequiredItemsList = new List<CDataTimeGainQuestUnk2>();
         }
 
         public CDataQuestList Param { get; set; }
@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public byte JoinPawnNum { get; set; }
         public List<CDataRewardItemDetail> RewardItemDetailList {  get; set; }
         public CDataTimeGainQuestRestrictions Restrictions {  get; set; }
-        public List<CDataTimeGainQuestUnk2> Unk2List {  get; set; }
+        public List<CDataTimeGainQuestUnk2> RequiredItemsList {  get; set; }
 
         public class Serializer : EntitySerializer<CDataTimeGainQuestList>
         {
@@ -41,7 +41,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteByte(buffer, obj.JoinPawnNum);
                 WriteEntityList(buffer, obj.RewardItemDetailList);
                 WriteEntity(buffer, obj.Restrictions);
-                WriteEntityList(buffer, obj.Unk2List);
+                WriteEntityList(buffer, obj.RequiredItemsList);
             }
 
             public override CDataTimeGainQuestList Read(IBuffer buffer)
@@ -57,7 +57,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.JoinPawnNum = ReadByte(buffer);
                 obj.RewardItemDetailList = ReadEntityList<CDataRewardItemDetail>(buffer);
                 obj.Restrictions = ReadEntity<CDataTimeGainQuestRestrictions>(buffer);
-                obj.Unk2List = ReadEntityList<CDataTimeGainQuestUnk2>(buffer);
+                obj.RequiredItemsList = ReadEntityList<CDataTimeGainQuestUnk2>(buffer);
                 return obj;
             }
         }

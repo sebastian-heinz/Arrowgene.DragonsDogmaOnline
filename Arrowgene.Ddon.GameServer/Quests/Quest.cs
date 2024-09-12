@@ -385,7 +385,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 {
                     ItemId = reward.ItemId,
                     Num = reward.Num,
-                    Type = 12 // What does this type mean?
+                    Type = 12
                 });
             }
 

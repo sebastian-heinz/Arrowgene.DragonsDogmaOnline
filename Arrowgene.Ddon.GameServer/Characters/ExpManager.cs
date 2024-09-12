@@ -566,6 +566,35 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        public void AddJp(GameClient client, CharacterCommon characterToJpExpTo, uint gainedJp, RewardSource rewardType, QuestType questType = QuestType.All)
+        {
+            CDataCharacterJobData? activeCharacterJobData = characterToJpExpTo.ActiveCharacterJobData;
+            activeCharacterJobData.JobPoint += gainedJp;
+
+            if (characterToJpExpTo is Character)
+            {
+                S2CUpdateCharacterJobPointNtc jpNtc = new S2CUpdateCharacterJobPointNtc();
+                jpNtc.Job = characterToJpExpTo.Job;
+                jpNtc.AddJobPoint = gainedJp;
+                jpNtc.ExtraBonusJobPoint = 0;
+                jpNtc.TotalJobPoint = activeCharacterJobData.JobPoint;
+                client.Send(jpNtc);
+            }
+            else
+            {
+                S2CJobPawnJobPointNtc jpNtc = new S2CJobPawnJobPointNtc();
+                jpNtc.PawnId = ((Pawn)characterToJpExpTo).PawnId;
+                jpNtc.Job = characterToJpExpTo.Job;
+                jpNtc.AddJobPoint = gainedJp;
+                jpNtc.ExtraBonusJobPoint = 0;
+                jpNtc.TotalJobPoint = activeCharacterJobData.JobPoint;
+                client.Send(jpNtc);
+            }
+
+            // PERSIST CHANGES IN DB
+            _Server.Database.UpdateCharacterJobData(characterToJpExpTo.CommonId, activeCharacterJobData);
+        }
+
         public void ResetExpData(GameClient client, CharacterCommon characterCommon)
         {
             foreach (var jobData in client.Character.CharacterJobDataList)

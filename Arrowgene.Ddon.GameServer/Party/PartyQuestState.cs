@@ -655,6 +655,10 @@ namespace Arrowgene.Ddon.GameServer.Party
                 {
                     server.ExpManager.AddExp(client, client.Character, expPoint.Reward, RewardSource.Quest, quest.QuestType);
                 }
+                else if (expPoint.Type == ExpType.JobPoints)
+                {
+                    server.ExpManager.AddJp(client, client.Character, expPoint.Reward, RewardSource.Quest, quest.QuestType);
+                }
                 else if (expPoint.Type == ExpType.PlayPoints)
                 {
                     server.PPManager.AddPlayPoint(client, expPoint.Reward, type: 2);

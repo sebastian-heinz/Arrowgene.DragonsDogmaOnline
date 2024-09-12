@@ -34,11 +34,15 @@ namespace Arrowgene.Ddon.GameServer.Quests
             quest.StageId = questAsset.StageId;
             quest.MissionParams = questAsset.MissionParams;
 
-            quest.ExpRewards.Add(new CDataQuestExp()
+
+            foreach (var pointReward in questAsset.PointRewards)
             {
-                Type = questAsset.ExpType,
-                Reward = questAsset.ExpReward
-            });
+                quest.ExpRewards.Add(new CDataQuestExp()
+                {
+                    Type = pointReward.ExpType,
+                    Reward = pointReward.ExpReward
+                });
+            }
 
             foreach (var walletReward in questAsset.RewardCurrency)
             {

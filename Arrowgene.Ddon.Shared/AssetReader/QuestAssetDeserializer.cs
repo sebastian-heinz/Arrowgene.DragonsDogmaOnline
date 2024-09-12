@@ -321,12 +321,25 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         }
                         break;
                     case "exp":
-                        assetData.ExpType = ExpType.ExperiencePoints;
-                        assetData.ExpReward = reward.GetProperty("amount").GetUInt32();
+                        assetData.PointRewards.Add(new PointReward()
+                        {
+                            ExpType = ExpType.ExperiencePoints,
+                            ExpReward = reward.GetProperty("amount").GetUInt32()
+                        });
                         break;
                     case "pp":
-                        assetData.ExpType = ExpType.PlayPoints;
-                        assetData.ExpReward = reward.GetProperty("amount").GetUInt32();
+                        assetData.PointRewards.Add(new PointReward()
+                        {
+                            ExpType = ExpType.PlayPoints,
+                            ExpReward = reward.GetProperty("amount").GetUInt32()
+                        });
+                        break;
+                    case "jp":
+                        assetData.PointRewards.Add(new PointReward()
+                        {
+                            ExpType = ExpType.JobPoints,
+                            ExpReward = reward.GetProperty("amount").GetUInt32()
+                        });
                         break;
                     case "wallet":
                         if (!Enum.TryParse(reward.GetProperty("wallet_type").GetString(), true, out WalletType walletType))
