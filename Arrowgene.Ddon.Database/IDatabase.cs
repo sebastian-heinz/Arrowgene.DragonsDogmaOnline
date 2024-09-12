@@ -128,7 +128,7 @@ namespace Arrowgene.Ddon.Database
 
         #region Pawn craft progress
         bool ReplacePawnCraftProgress(CraftProgress craftProgress);
-        bool InsertPawnCraftProgress(CraftProgress craftProgress);
+        bool InsertPawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);
         bool InsertIfNotExistsPawnCraftProgress(CraftProgress craftProgress);
         bool UpdatePawnCraftProgress(CraftProgress craftProgress);
         bool DeletePawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId);

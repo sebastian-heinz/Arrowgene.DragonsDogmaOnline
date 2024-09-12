@@ -322,7 +322,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdatePawnBaseInfo(Pawn pawn) { return true; }
         public bool UpdatePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus) { return true; }
         public bool ReplacePawnCraftProgress(CraftProgress craftProgress) { return true; }
-        public bool InsertPawnCraftProgress(CraftProgress craftProgress) { return true; }
+        public bool InsertPawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null) { return true; }
         public bool InsertIfNotExistsPawnCraftProgress(CraftProgress craftProgress) { return true; }
         public bool UpdatePawnCraftProgress(CraftProgress craftProgress) { return true; }
         public bool DeletePawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId) { return true; }
