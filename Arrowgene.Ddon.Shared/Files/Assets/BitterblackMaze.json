@@ -1016,48 +1016,97 @@
     "loot_ranges": [
         {
             "comment": "Rotunda 1",
+            "jewelry_chance": 1.0,
+            "rare_chance": 0.1,
             "stage_ids": [603, 610, 611, 612],
             "normal": {"min": 3, "max": 4},
-            "sealed": {"min": 4, "max": 5}
+            "sealed": {"min": 4, "max": 5},
+            "marks": {"gold": 1, "silver": 5, "red": 15}
         },
         {
             "comment": "Rotunda 2",
+            "jewelry_chance": 1.0,
+            "rare_chance": 0.01,
             "stage_ids": [604, 614, 615, 616],
             "normal": {"min": 4, "max": 5},
-            "sealed": {"min": 5, "max": 6}
+            "sealed": {"min": 5, "max": 6},
+            "marks": {"gold": 1, "silver": 5, "red": 15}
         },
         {
             "comment": "Rotunda 3",
+            "jewelry_chance": 1.0,
+            "rare_chance": 0.01,
             "stage_ids": [605, 617, 618, 619, 620, 621, 622],
             "normal": {"min": 6, "max": 10},
-            "sealed": {"min": 7, "max": 10}
+            "sealed": {"min": 7, "max": 10},
+            "marks": {"gold": 1, "silver": 5, "red": 15}
         },
         {
             "comment": "Abyss 1",
+            "jewelry_chance": 1.0,
+            "rare_chance": 0.01,
             "stage_ids": [682, 686, 687, 688],
             "normal": {"min": 3, "max": 4},
-            "sealed": {"min": 5, "max": 6}
+            "sealed": {"min": 5, "max": 6},
+            "marks": {"gold": 1, "silver": 5, "red": 15}
         },
         {
             "comment": "Abyss 2",
+            "jewelry_chance": 1.0,
+            "rare_chance": 0.01,
             "stage_ids": [683, 689, 690, 691],
             "normal": {"min": 5, "max": 6},
-            "sealed": {"min": 6, "max": 7}
+            "sealed": {"min": 6, "max": 7},
+            "marks": {"gold": 1, "silver": 5, "red": 15}
         },
         {
             "comment": "Abyss 3",
+            "jewelry_chance": 1.0,
+            "rare_chance": 0.01,
             "stage_ids": [684, 692, 693, 694],
             "normal": {"min": 7, "max": 11},
-            "sealed": {"min": 8, "max": 11}
+            "sealed": {"min": 8, "max": 11},
+            "marks": {"gold": 1, "silver": 5, "red": 15}
         },
         {
             "comment": "Abyss 4",
+            "jewelry_chance": 1.0,
+            "rare_chance": 0.01,
             "stage_ids": [685, 695, 696, 697, 715, 716, 717],
             "normal": {"min": 10, "max": 11},
-            "sealed": {"min": 11, "max": 11}
+            "sealed": {"min": 11, "max": 11},
+            "marks": {"gold": 1, "silver": 5, "red": 15}
         }
     ],
     "chest_loot": {
+        "rare": {
+            "rotunda": [
+                21396,
+                21397,
+                21398,
+                21399,
+                21400,
+                21401,
+                21402,
+                21403
+            ],
+            "abyss": [
+                24601,
+                24605,
+                24609,
+                24614,
+                24615,
+                24616,
+                24617,
+                24618
+            ]
+        },
+        "trash": [
+            {"id": 55,   "max_amount": 5, "comment": "Lantern Kindling"},
+            {"id": 9361, "max_amount": 2, "comment": "Quality Gala Extract"},
+            {"id": 41,   "max_amount": 1, "comment": "Panacea"},
+            {"id": 7552, "max_amount": 2, "comment": "Healing Elixer"}
+        ],
         "other": {
             "low_quality": [
                 496,
