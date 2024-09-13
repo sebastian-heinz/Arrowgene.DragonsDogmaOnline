@@ -182,7 +182,7 @@ namespace Arrowgene.Ddon.GameServer
         private void LoadPacketHandler()
         {
             SetFallbackHandler(new FallbackHandler<GameClient>(this));
-            
+
             AddHandler(new AchievementGetReceivableRewardListHandler(this));
             AddHandler(new AchievementGetProgressListHandler(this));
             AddHandler(new AchievementGetRewardListHandler(this));
@@ -209,6 +209,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new BattleContentResetInfoHandler(this));
             AddHandler(new BattleContentGetRewardHandler(this));
             AddHandler(new BattleContentContentResetHandler(this));
+
 
             AddHandler(new BazaarCancelHandler(this));
             AddHandler(new BazaarExhibitHandler(this));
@@ -238,10 +239,10 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new CharacterPawnGoldenReviveHandler(this));
             AddHandler(new CharacterPawnPointReviveHandler(this));
             AddHandler(new CharacterSetOnlineStatusHandler(this));
-			AddHandler(new CharacterEditGetShopPriceHandler(this));
-			AddHandler(new CharacterEditUpdateCharacterEditParamHandler(this));
+            AddHandler(new CharacterEditGetShopPriceHandler(this));
+            AddHandler(new CharacterEditUpdateCharacterEditParamHandler(this));
             AddHandler(new CharacterEditUpdateCharacterEditParamExHandler(this));
-			AddHandler(new CharacterEditUpdatePawnEditParamHandler(this));
+            AddHandler(new CharacterEditUpdatePawnEditParamHandler(this));
             AddHandler(new CharacterEditUpdatePawnEditParamExHandler(this));
             AddHandler(new CharacterCharacterDeadHandler(this));
             AddHandler(new CharacterCharacterDownCancelHandler(this));
@@ -284,6 +285,24 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new CraftRecipeGetCraftRecipeHandler(this));
             AddHandler(new CraftStartCraftHandler(this));
             AddHandler(new CraftSkillUpHandler(this));
+
+            AddHandler(new GpShopDisplayTypeHandler(this));
+            AddHandler(new GpCogGetIdHandler(this));
+            AddHandler(new GpGetCapToGpChangeListHandler(this));
+            AddHandler(new GpChangeCapToGpHandler(this));
+            AddHandler(new GpCourseGetValidListHandler(this));
+            AddHandler(new GpShopGetBuyHistoryHandler(this));
+            AddHandler(new GpCourseUseFromAvailableHandler(this));
+            AddHandler(new GpGetCapHandler(this));
+
+            AddHandler(new GachaListHandler(this));
+            AddHandler(new BoxGachaListHandler(this));
+            AddHandler(new BoxGachaBuyHandler(this));
+            AddHandler(new GachaBuyHandler(this));
+            AddHandler(new BoxGachaDrawInfoHandler(this));
+
+            AddHandler(new EventCodeInputHandler(this));
+
             AddHandler(new CraftGetCraftProductInfoHandler(this));
             AddHandler(new CraftCancelCraftHandler(this));
             AddHandler(new CraftTimeSaveHandler(this));
@@ -379,6 +398,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ItemEmbodyPayCostHandler(this));
             AddHandler(new ItemGetSpecifiedHavingItemListHandler(this));
             AddHandler(new ItemEmbodyItemsHandler(this));
+            AddHandler(new ItemGetItemStorageInfoHandler(this));
 
             AddHandler(new JobChangeJobHandler(this));
             AddHandler(new JobChangePawnJobHandler(this));
@@ -467,6 +487,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PawnRentRegisteredPawnHandler(this));
             AddHandler(new PawnJoinPartyRentedPawnHandler(this));
             AddHandler(new PawnReturnRentedPawnHandler(this));
+            AddHandler(new GetFreeRentalPawnListHandler(this));
 
             AddHandler(new PhotoPhotoTakeHandler(this));
 
@@ -576,8 +597,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new StageGetStageListHandler(this));
 
             AddHandler(new StampBonusCheckHandler(this));
-			AddHandler(new StampBonusGetListHandler(this));
-			AddHandler(new StampBonusReceiveDailyHandler(this));
+            AddHandler(new StampBonusGetListHandler(this));
+            AddHandler(new StampBonusReceiveDailyHandler(this));
             AddHandler(new StampBonusReceiveTotalHandler(this));
 
             AddHandler(new WarpAreaWarpHandler(this));

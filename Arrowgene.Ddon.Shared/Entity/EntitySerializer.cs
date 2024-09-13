@@ -159,12 +159,29 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataGoodsParam.Serializer());
             Create(new CDataGoodsParamUnk7.Serializer());
             Create(new CDataGatheringItemElement.Serializer());
+            
+            Create(new CDataGPCourseAvailable.Serializer());
             Create(new CDataGPDetail.Serializer());
             Create(new CDataGPPeriod.Serializer());
-            Create(new CDataGPCourseValidSerializer());
+            Create(new CDataGPCourseValid.Serializer());
             Create(new CDataGPCourseInfoSerializer());
             Create(new CDataGPCourseEffectParamSerializer());
-            Create(new CDataGPCourseAvailableSerializer());
+            Create(new CDataGPShopDisplayType.Serializer());
+            Create(new CDataGPShopBuyHistoryElement.Serializer());
+            
+            Create(new CDataGachaInfo.Serializer());
+            Create(new CDataGachaDrawGroupInfo.Serializer());
+            Create(new CDataGachaSettlementInfo.Serializer());
+            Create(new CDataGachaDrawInfo.Serializer());
+            Create(new CDataGachaItemInfo.Serializer());
+            Create(new CDataBoxGachaInfo.Serializer());
+            Create(new CDataBoxGachaItemInfo.Serializer());
+            Create(new CDataBoxGachaSettlementInfo.Serializer());
+            
+            Create(new CDataGameItemStorageInfo.Serializer());
+            Create(new CDataGameItemStorage.Serializer());
+            
+            
             Create(new CDataHistoryElement.Serializer());
             Create(new CDataItemEquipElement.Serializer());
             Create(new CDataItemEquipElementParam.Serializer());
@@ -233,12 +250,17 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataPartyMemberMinimum.Serializer());
             Create(new CDataPartyPlayerContext.Serializer());
             Create(new CDataPartyQuestProgressInfo.Serializer());
+            
             Create(new CDataPawnCraftData.Serializer());
             Create(new CDataPawnCraftSkill.Serializer());
             Create(new CDataPawnEquipInfo.Serializer());
             Create(new CDataPawnFeedback.Serializer());
             Create(new CDataPawnHistory.Serializer());
             Create(new CDataPawnHp.Serializer());
+            Create(new CDataFreeRentalPawnList.Serializer());
+            
+            Create(new CDataCAPtoGPChangeElement.Serializer());
+            
             Create(new CDataPawnJobChangeInfo.Serializer());
             Create(new CDataPawnInfo.Serializer());
             Create(new CDataPawnList.Serializer());
@@ -248,6 +270,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataPawnTrainingPreparationInfoToAdvice.Serializer());
             Create(new CDataPawnSearchParameter.Serializer());
             Create(new CDataRegisterdPawnList.Serializer());
+            
             Create(new CDataPlayPointDataSerializer());
             Create(new CDataPresetAbilityParam.Serializer());
             Create(new CDataPriorityQuest.Serializer());
@@ -482,12 +505,31 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SEventEndNtc.Serializer());
             Create(new C2SEventStartNtc.Serializer());
 
+            
             Create(new C2SGpGetGpReq.Serializer());
             Create(new C2SGpGetGpDetailReq.Serializer());
             Create(new C2SGpGetGpPeriodReq.Serializer());
             Create(new C2SGpGetValidChatComGroupReq.Serializer());
             Create(new C2SGpGpEditGetVoiceListReq.Serializer());
 
+            Create(new C2SGpShopDisplayGetTypeReq.Serializer());
+            Create(new C2SGpCogGetIdReq.Serializer());
+            Create(new C2SGpGetCapToGpChangeListReq.Serializer());
+            Create(new C2SGpChangeCapToGpReq.Serializer());
+            Create(new C2SGpCourseGetAvailableListReq.Serializer());
+            Create(new C2SGpCourseGetValidListReq.Serializer());
+            Create(new C2SGpShopGetBuyHistoryReq.Serializer());
+            Create(new C2SGpCourseUseFromAvailableReq.Serializer());
+            Create(new C2SGpGetCapReq.Serializer());
+            
+            Create(new C2SGachaListReq.Serializer());
+            Create(new C2SBoxGachaListReq.Serializer());
+            Create(new C2SBoxGachaBuyReq.Serializer());
+            Create(new C2SBoxGachaDrawInfoReq.Serializer());
+            Create(new C2SGachaBuyReq.Serializer());
+            
+            Create(new C2SEventCodeInputReq.Serializer());
+            
             Create(new C2SInnGetPenaltyHealStayPriceReq.Serializer());
             Create(new C2SInnGetStayPriceReq.Serializer());
             Create(new C2SInnStayInnReq.Serializer());
@@ -527,6 +569,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SItemGetSpecifiedHavingItemListReq.Serializer());
             Create(new C2SItemEmbodyItemsReq.Serializer());
             Create(new CDataItemEmbodyItem.Serializer());
+            Create(new C2SItemGetItemStorageInfoReq.Serializer());
 
             Create(new C2SJobChangeJobReq.Serializer());
             Create(new C2SJobChangePawnJobReq.Serializer());
@@ -608,6 +651,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPawnReturnRentedPawnReq.Serializer());
             Create(new C2SPawnGetNoraPawnListReq.Serializer());
 
+            Create(new C2SGetFreeRentalPawnListReq.Serializer());
+                
             Create(new C2SProfileGetCharacterProfileReq.Serializer());
             Create(new C2SProfileGetMyCharacterProfileReq.Serializer());
             
@@ -892,6 +937,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CEquipUpdateHidePawnHeadArmorRes.Serializer());
             Create(new S2CEquipUpdateHidePawnLanternRes.Serializer());
             Create(new S2CExtendEquipSlotNtc.Serializer());
+            
             Create(new S2CGpGetGpRes.Serializer());
             Create(new S2CGpGetGpDetailRes.Serializer());
             Create(new S2CGpGetGpPeriodRes.Serializer());
@@ -901,6 +947,23 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CGPCourseExtendNtc.Serializer());
             Create(new S2CGPCourseStartNtc.Serializer());
             Create(new S2CGpCourseEndNtc.Serializer());
+            Create(new S2CGpShopDisplayGetTypeRes.Serializer());
+            Create(new S2CGpCogGetIdRes.Serializer());
+            Create(new S2CGpGetCapToGpChangeListRes.Serializer());
+            Create(new S2CGpChangeCapToGpRes.Serializer());
+            Create(new S2CGpCourseGetValidListRes.Serializer());
+            Create(new S2CGpShopGetBuyHistoryRes.Serializer());
+            Create(new S2CGpCourseUseFromAvailableRes.Serializer());
+            Create(new S2CGpGetCapRes.Serializer());
+            
+            Create(new S2CGachaListRes.Serializer());
+            Create(new S2CBoxGachaListRes.Serializer());
+            Create(new S2CBoxGachaBuyRes.Serializer());
+            Create(new S2CBoxGachaDrawInfoRes.Serializer());
+            Create(new S2CGachaBuyRes.Serializer());
+            
+            Create(new S2CEventCodeInputRes.Serializer());
+            
             Create(new S2CInnGetPenaltyHealStayPriceRes.Serializer());
             Create(new S2CInnGetStayPriceRes.Serializer());
             Create(new S2CInnStayInnRes.Serializer());
@@ -944,6 +1007,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CItemGetEmbodyPayCostRes.Serializer());
             Create(new S2CItemGetSpecifiedHavingItemListRes.Serializer());
             Create(new S2CItemEmbodyItemsRes.Serializer());
+            Create(new S2CItemGetItemStorageInfoRes.Serializer());
 
             Create(new S2CJob_33_3_16_Ntc.Serializer());
             Create(new S2CJobChangeJobNtc.Serializer());
@@ -1069,6 +1133,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPawnReturnRentedPawnRes.Serializer());
             Create(new S2CPawnGetNoraPawnListRes.Serializer());
 
+            Create(new S2CGetFreeRentalPawnListRes.Serializer());
+            
             Create(new S2CProfileGetCharacterProfileRes.Serializer());
             Create(new S2CProfileGetMyCharacterProfileRes.Serializer());
 
