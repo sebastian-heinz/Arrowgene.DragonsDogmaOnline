@@ -631,7 +631,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                 client.Character.ContextOwnership.Clear();
             }
             OmManager.ResetAllOmData(InstanceOmData);
-            QuestState.ResetInstanceQuestState();
+            QuestState.ResetInstance();
         }
 
         public PartyMember GetPartyMemberByCharacter(CharacterCommon characterCommon)
