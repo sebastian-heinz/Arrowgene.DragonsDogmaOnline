@@ -9,10 +9,10 @@
     "mission_params": {
         "group": 1,
         "minimum_members": 1,
-        "playtime": 3600,
+        "playtime": 1500,
         "solo_only": true,
         "max_pawns": 3,
-        "phase_groups": [419, 0, 419]
+        "phase_groups": []
     },
     "order_conditions": [
         {"type": "ClearExtremeMission", "Param1": 50101020}
@@ -26,17 +26,7 @@
                     "num": 3
                 }
             ]
-        },
-        {
-            "type": "fixed",
-            "loot_pool": [
-                {
-                    "item_id": 9378,
-                    "num": 3
-                }
-            ]
         }
-
     ],
     "enemy_groups" : [
         {
@@ -216,7 +206,7 @@
         {
             "blocks": [
                 {
-                    "type": "IsStageNo",
+                    "type": "IsGatherPartyInStage",
                     "stage_id": {
                         "id": 286
                     }
@@ -229,6 +219,7 @@
                 },
                 {
                     "type": "KillGroup",
+                    "announce_type": "Start",
                     "stage_start": 1,
                     "groups": [0]
                 },

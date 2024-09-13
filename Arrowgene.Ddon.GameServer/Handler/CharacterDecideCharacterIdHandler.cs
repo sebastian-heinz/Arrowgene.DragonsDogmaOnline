@@ -87,7 +87,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             new CDataCharacterReleaseElement(ContentsRelease.MyrmidonsPledge),
             new CDataCharacterReleaseElement(ContentsRelease.AdventureBroker), // This was called "PartyMenu" or "冒険仲介係"
             new CDataCharacterReleaseElement(ContentsRelease.MatchingProfile),
-            // new CDataCharacterReleaseElement(ContentsRelease.QuickParty), // Also unlocks board for EM
+            new CDataCharacterReleaseElement(ContentsRelease.QuickParty), // Also unlocks board for EM
             new CDataCharacterReleaseElement(ContentsRelease.OrbEnemy),
             new CDataCharacterReleaseElement(ContentsRelease.WarSkillAugmentation),
             new CDataCharacterReleaseElement(ContentsRelease.FighterWarSkillAugmentation),

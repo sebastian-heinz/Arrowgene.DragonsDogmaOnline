@@ -34,6 +34,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 
         public bool ShouldStageJump {  get; set; }
         public bool IsCheckpoint { get; set; }
+        public uint TimeAmount {  get; set; }
 
         public QuestEvent QuestEvent {  get; set; }
         public QuestCameraEvent QuestCameraEvent { get; set; }

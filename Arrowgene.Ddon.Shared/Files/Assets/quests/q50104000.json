@@ -9,10 +9,10 @@
     "mission_params": {
         "group": 1,
         "minimum_members": 1,
-        "playtime": 3600,
+        "playtime": 1200,
         "solo_only": true,
         "max_pawns": 3,
-        "phase_groups": [421, 0, 421]
+        "phase_groups": []
     },
     "order_conditions": [
         {"type": "ClearExtremeMission", "Param1": 50103020}
@@ -155,7 +155,7 @@
         {
             "blocks": [
                 {
-                    "type": "IsStageNo",
+                    "type": "IsGatherPartyInStage",
                     "stage_id": {
                         "id": 288
                     }

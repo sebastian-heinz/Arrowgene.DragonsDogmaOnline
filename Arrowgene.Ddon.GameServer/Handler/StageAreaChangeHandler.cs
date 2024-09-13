@@ -74,6 +74,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
+            if (client.Party.ContentInProgress)
+            {
+                var quest = Server.ExmManager.GetQuestForContent(client.Party.ContentId);
+                if (quest != null)
+                {
+                    quest.HandleAreaChange(client, client.Character.Stage);
+                }
+            }
+
             return res;
         }
     }

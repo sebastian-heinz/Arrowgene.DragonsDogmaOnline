@@ -1,9 +1,13 @@
+using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.GameServer.Quests;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
+using Arrowgene.Logging;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Linq;
@@ -11,6 +15,8 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using YamlDotNet.Core.Tokens;
+using static Arrowgene.Ddon.GameServer.Characters.ExmManager;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -22,8 +28,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private Dictionary<uint, ulong> _CharacterIdToContentId;
         private Dictionary<ulong, HashSet<uint>> _ContentIdToCharacterIds;
         private Dictionary<ulong, Quest> _ContentIdToQuest;
+        private Dictionary<ulong, TimerState> _ContentTimers;
         private uint EntryItemIdCounter;
         private Stack<uint> _FreeEntryItemIds;
+
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ExmManager));
+
+        internal class TimerState
+        {
+            public DateTime TimeStart {  get; set; }
+            public TimeSpan Duration {  get; set; }
+            public Timer Timer { get; set; }
+        }
 
         public ExmManager(DdonGameServer server)
         {
@@ -32,6 +48,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             _CharacterIdToContentId = new Dictionary<uint, ulong>();
             _ContentIdToCharacterIds = new Dictionary<ulong, HashSet<uint>>();
             _ContentIdToQuest = new Dictionary<ulong, Quest>();
+            _ContentTimers = new Dictionary<ulong, TimerState>();
 
             // ID tracking
             EntryItemIdCounter = 1;
@@ -108,29 +125,34 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return GetEntryItemDataForCharacter(character.CharacterId);
         }
 
-        public bool RemoveGroupForContent(ulong id)
+        public bool RemoveGroupForContent(ulong contentId)
         {
             lock (_ContentData)
             {
-                if (!_ContentData.ContainsKey(id))
+                if (!_ContentData.ContainsKey(contentId))
                 {
                     return false;
                 }
 
-                if (_ContentIdToCharacterIds.ContainsKey(id))
+                if (_ContentTimers.ContainsKey(contentId))
                 {
-                    foreach (var characterId in _ContentIdToCharacterIds[id])
+                    CancelTimer(contentId);
+                }
+
+                if (_ContentIdToCharacterIds.ContainsKey(contentId))
+                {
+                    foreach (var characterId in _ContentIdToCharacterIds[contentId])
                     {
                         _CharacterIdToContentId.Remove(characterId);
                     }
-                    _ContentIdToCharacterIds.Remove(id);
+                    _ContentIdToCharacterIds.Remove(contentId);
                 }
-                _ContentIdToQuest.Remove(id);
+                _ContentIdToQuest.Remove(contentId);
 
-                var data = _ContentData[id];
+                var data = _ContentData[contentId];
                 ReclaimEntryItemId(data.Id);
 
-                return _ContentData.Remove(id);
+                return _ContentData.Remove(contentId);
             }
         }
 
@@ -266,6 +288,52 @@ namespace Arrowgene.Ddon.GameServer.Characters
             lock (_FreeEntryItemIds)
             {
                 _FreeEntryItemIds.Push(id);
+            }
+        }
+
+        public void StartTimer(ulong contentId, GameClient client, uint playtimeInSeconds)
+        {
+            lock (_ContentData)
+            {
+                _ContentTimers[contentId] = new TimerState();
+
+                var timerState = _ContentTimers[contentId];
+                timerState.Duration = TimeSpan.FromSeconds(playtimeInSeconds);
+                timerState.TimeStart = DateTime.Now;
+                timerState.Timer = new Timer(task =>
+                {
+                    TimeSpan alreadyElapsed = DateTime.Now.Subtract(timerState.TimeStart);
+                    if (alreadyElapsed > timerState.Duration)
+                    {
+                        Logger.Info($"Timer expired for ContentId={contentId}");
+                        client.Party.SendToAll(new S2CQuestPlayTimeupNtc());
+                        CancelTimer(contentId);
+                    }
+                }, null, 0, 1000);
+                Logger.Info($"Starting {playtimeInSeconds} second timer for ContentId={contentId}");
+            }
+        }
+
+        public ulong ExtendTimer(ulong contentId, uint amountInSeconds)
+        {
+            lock (_ContentTimers)
+            {
+                Logger.Info($"Extending time by {amountInSeconds} seconds for ContentId={contentId}");
+                _ContentTimers[contentId].Duration += TimeSpan.FromSeconds(amountInSeconds);
+                return (ulong) ((DateTimeOffset)(_ContentTimers[contentId].TimeStart + _ContentTimers[contentId].Duration)).ToUnixTimeSeconds();
+            }
+        }
+
+        public void CancelTimer(ulong contentId)
+        {
+            lock (_ContentData)
+            {
+                if (_ContentTimers.ContainsKey(contentId))
+                {
+                    Logger.Info($"Canceling timer for ContentId={contentId}");
+                    _ContentTimers[contentId].Timer.Dispose();
+                    _ContentTimers.Remove(contentId);
+                }
             }
         }
     }

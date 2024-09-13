@@ -9,10 +9,10 @@
     "mission_params": {
         "group": 1,
         "minimum_members": 1,
-        "playtime": 3600,
+        "playtime": 600,
         "solo_only": true,
         "max_pawns": 3,
-        "phase_groups": [438, 0, 438]
+        "phase_groups": []
     },
     "order_conditions": [
         {"type": "SoloWithPawns"},
@@ -302,7 +302,7 @@
         {
             "blocks": [
                 {
-                    "type": "IsStageNo",
+                    "type": "IsGatherPartyInStage",
                     "stage_id": {
                         "id": 452
                     }
@@ -315,6 +315,7 @@
                 },
                 {
                     "type": "KillGroup",
+                    "announce_type": "Start",
                     "stage_start": 1,
                     "groups": [0]
                 },

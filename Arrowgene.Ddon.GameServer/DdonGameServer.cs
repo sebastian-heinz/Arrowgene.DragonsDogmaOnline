@@ -515,6 +515,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestPlayStartHandler(this));
             AddHandler(new QuestPlayStartTimerHandler(this));
             AddHandler(new QuestPlayEndHandler(this));
+            AddHandler(new QuestPlayInterruptHandler(this));
             AddHandler(new QuestGetEndContentsRecruitListHandler(this));
 
 			AddHandler(new EntryBoardEntryBoardListHandler(this));
