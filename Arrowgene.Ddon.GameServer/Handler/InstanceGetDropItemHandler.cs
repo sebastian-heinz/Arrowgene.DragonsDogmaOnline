@@ -1,4 +1,3 @@
-using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -28,7 +27,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 items = client.InstanceQuestDropManager.FetchEnemyLoot();
             } else
             {
-                items = client.InstanceDropItemManager.GetAssets(packet.Structure.LayoutId, packet.Structure.SetId);
+                items = client.InstanceDropItemManager.GetAssets(packet.Structure.LayoutId, (int)packet.Structure.SetId);
             }
 
             S2CInstanceGetDropItemRes res = new()

@@ -22,9 +22,9 @@ namespace Arrowgene.Ddon.Shared.Model
             RepopWaitSecond = enemy.RepopWaitSecond;
         }
 
+        public byte Index { get; set; }
         public bool IsRequired { get; set; }
         public bool IsKilled { get; set; }
-        public byte Index {  get; set; }
         public uint RepopWaitSecond {  get; set; }
     }
 }

@@ -1,14 +1,11 @@
 #nullable enable
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using Microsoft.VisualBasic;
-using System;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -42,7 +39,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                     else
                     {
-                        gatheredItem = client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, req.Structure.PosId)[(int)gatheringItemRequest.SlotNo];
+                        gatheredItem = client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, (int)req.Structure.PosId)[(int)gatheringItemRequest.SlotNo];
                     }
 
                     Server.ItemManager.GatherItem(Server, client.Character, ntc, gatheredItem, gatheringItemRequest.Num, connection);

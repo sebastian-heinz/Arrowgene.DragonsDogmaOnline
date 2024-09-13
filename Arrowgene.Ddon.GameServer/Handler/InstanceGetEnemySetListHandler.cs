@@ -1,11 +1,9 @@
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Crypto;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Linq;
@@ -69,16 +67,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
-                foreach (var asset in client.Party.InstanceEnemyManager.GetAssets(stageId, subGroupId).Select((Enemy, Index) => new {Index, Enemy}))
+                var instancedEnemyList = client.Party.InstanceEnemyManager.GetAssets(stageId)
+                    .Where(x => x.Subgroup == subGroupId);
+                foreach (var asset in instancedEnemyList)
                 {
                     response.EnemyList.Add(new CDataLayoutEnemyData()
                     {
-                        PositionIndex = (byte) asset.Index,
-                        EnemyInfo = asset.Enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
+                        PositionIndex = asset.Index,
+                        EnemyInfo = asset.asCDataStageLayoutEnemyPresetEnemyInfoClient()
                     });
-                    client.Party.InstanceEnemyManager.SetInstanceEnemy(stageId, (byte) asset.Index, asset.Enemy);
+                    client.Party.InstanceEnemyManager.SetInstanceEnemy(stageId, asset.Index, asset);
 
-                    if (asset.Enemy.NotifyStrongEnemy)
+                    if (asset.NotifyStrongEnemy)
                     {
                         notifyStrongEnemy = true;
                     }

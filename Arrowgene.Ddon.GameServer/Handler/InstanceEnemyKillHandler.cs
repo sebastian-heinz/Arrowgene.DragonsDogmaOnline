@@ -6,7 +6,6 @@ using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
@@ -84,7 +83,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // If the enemy is quest controlled, then either get from the quest loot drop, or the general one.
                 List<InstancedGatheringItem> instancedGatheringItems = IsQuestControlled ?
                             partyMemberClient.InstanceQuestDropManager.GenerateEnemyLoot(quest, enemyKilled, packet.Structure.LayoutId, packet.Structure.SetId) :
-                            partyMemberClient.InstanceDropItemManager.GetAssets(layoutId, packet.Structure.SetId);
+                            partyMemberClient.InstanceDropItemManager.GetAssets(layoutId, (int)packet.Structure.SetId);
 
                 // If the roll was unlucky, there is a chance that no bag will show.
                 if (instancedGatheringItems.Count > 0)
@@ -102,7 +101,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             List<InstancedEnemy> group = client.Party.InstanceEnemyManager.GetInstancedEnemies(stageId);
-
             bool groupDestroyed = group.Where(x => x.IsRequired).All(x => x.IsKilled);
             if (groupDestroyed)
             {

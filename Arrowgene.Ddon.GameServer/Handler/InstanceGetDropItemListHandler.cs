@@ -1,12 +1,8 @@
-using Arrowgene.Ddon.GameServer.Party;
-using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,7 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 items = client.InstanceQuestDropManager.FetchEnemyLoot();
             } else
             {
-                items = client.InstanceDropItemManager.GetAssets(packet.Structure.LayoutId, packet.Structure.SetId);
+                items = client.InstanceDropItemManager.GetAssets(packet.Structure.LayoutId, (int)packet.Structure.SetId);
             }
 
             client.Send(new S2CInstanceGetDropItemListRes()

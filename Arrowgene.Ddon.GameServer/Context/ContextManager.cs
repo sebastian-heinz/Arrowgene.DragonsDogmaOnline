@@ -79,7 +79,7 @@ namespace Arrowgene.Ddon.GameServer.Context
 
         public static List<ulong> CreateEnemyUIDs(InstanceEnemyManager enemyManager, CDataStageLayoutId stageLayoutId)
         {   
-            List<InstancedEnemy> enemies = enemyManager.GetAssets(stageLayoutId, 0);
+            List<InstancedEnemy> enemies = enemyManager.GetAssets(stageLayoutId);
 
             List<ulong> results = new List<ulong>();
             for (int i = 0; i < enemies.Count(); i++)
