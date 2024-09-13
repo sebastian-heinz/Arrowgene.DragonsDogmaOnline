@@ -107,13 +107,13 @@ namespace Arrowgene.Ddon.GameServer.Party
         private Dictionary<QuestId, uint> ActiveVariantQuests { get; set; }
         // For the purposes of each party quest state knowing the possible variant quests
         private HashSet<QuestId> VariantQuests { get; set; }
-        private List<QuestId> CompletedWorldQuests { get; set; }
+        public HashSet<QuestId> CompletedWorldQuests { get; set; }
 
         public PartyQuestState()
         {
             ActiveQuests = new Dictionary<QuestId, QuestState>();
             QuestLookupTable = new Dictionary<StageId, List<QuestId>>();
-            CompletedWorldQuests = new List<QuestId>();
+            CompletedWorldQuests = new HashSet<QuestId>();
             ActiveVariantQuests = new Dictionary<QuestId, uint>();
             VariantQuests = QuestManager.GetAllVariantQuestIds();
         }
@@ -196,6 +196,12 @@ namespace Arrowgene.Ddon.GameServer.Party
         {
             lock (ActiveQuests)
             {
+                if (!ActiveQuests.ContainsKey(quest.QuestId))
+                {
+                    Logger.Error($"No state for '{quest.QuestId}' present. Returning empty enemy list.");
+                    return new List<InstancedEnemy>();
+                }
+
                 if (!ActiveQuests[quest.QuestId].QuestEnemies.ContainsKey(stageId))
                 {
                     return new List<InstancedEnemy>();
@@ -324,7 +330,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
                 foreach (var questId in questsToRemove)
                 {
-                    ActiveQuests.Remove(questId);
+                    RemoveQuest(questId);
                 }
             }
         }
@@ -339,6 +345,11 @@ namespace Arrowgene.Ddon.GameServer.Party
         {
             var quest = GetQuest(questId);
             RemoveQuest(questId);
+
+            if (QuestManager.IsWorldQuest(questId))
+            {
+                CompletedWorldQuests.Add(questId);
+            }
 
             if (quest.NextQuestId != 0)
             {
@@ -481,11 +492,6 @@ namespace Arrowgene.Ddon.GameServer.Party
                             continue;
                     }
             }
-        }
-
-        public void ResetInstanceQuestState()
-        {
-            RerollUnfoundAltQuests();
         }
 
         public bool UpdatePartyQuestProgress(DdonGameServer server, PartyGroup party, QuestId questId)
@@ -684,6 +690,16 @@ namespace Arrowgene.Ddon.GameServer.Party
                 prioNtc.PriorityQuestList.Add(priorityQuest.ToCDataPriorityQuest(questState.Step));
             }
             party.SendToAll(prioNtc);
+        }
+
+        public void ResetInstance()
+        {
+            lock (ActiveQuests)
+            {
+                CompletedWorldQuests.Clear();
+
+                RerollUnfoundAltQuests();
+            }
         }
     }
 }

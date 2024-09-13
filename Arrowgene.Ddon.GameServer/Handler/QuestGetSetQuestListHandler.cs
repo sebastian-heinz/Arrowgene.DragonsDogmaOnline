@@ -65,9 +65,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Populate rest of quests for the area
             foreach (var questId in QuestManager.GetWorldQuestIdsByAreaId(packet.Structure.DistributeId))
             {
-                if (activeQuestIds.Contains(questId))
+                if (activeQuestIds.Contains(questId) || client.Party.QuestState.IsCompletedWorldQuest(questId))
                 {
-                    // Skip quests already populated
+                    // Skip quests already populated or completed
                     continue;
                 }
 
