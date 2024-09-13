@@ -763,6 +763,11 @@ namespace Arrowgene.Ddon.GameServer.Party
     
         public void HandleEnemyHuntRequests(GameClient client, Enemy enemy)
         {
+            if (client.Character.GameMode != GameMode.Normal)
+            {
+                return;
+            }
+
             foreach (var quest in ActiveQuests)
             {
                 QuestEnemyHuntRecord huntRecord = quest.Value.UpdateHuntRequest(enemy);
