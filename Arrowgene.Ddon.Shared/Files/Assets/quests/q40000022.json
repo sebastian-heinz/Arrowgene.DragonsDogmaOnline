@@ -1,30 +1,30 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "Light",
-  "quest_id": 40000011,
-  "base_level": 1,
+  "quest_id": 40000022,
+  "base_level": 33,
   "minimum_item_rank": 0,
   "discoverable": false,
-  "comment": "Would've Gone There",
+  "comment": "Travel Safety",
   "light_quest_details": {
-    "area_id": 1,
+    "area_id": 8,
     "board_type": 1,
-    "board_id": 1
+    "board_id": 10
   },
   "rewards": [
     {
       "type": "exp",
-      "amount": 62
+      "amount": 1807
     },
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 70
+      "amount": 6356
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 7
+      "amount": 942
     }
   ],
   "blocks": [
@@ -37,14 +37,11 @@
       ]
     },
     {
-      "type": "DeliverItemsLight",
+      "type": "KillTargetEnemies",
       "announce_type": "Accept",
-      "items": [
-        {
-          "id": 7836,
-          "amount": 3
-        }
-      ]
+      "enemy_id": "52",
+      "level": 33,
+      "amount": 3
     }
   ]
 }

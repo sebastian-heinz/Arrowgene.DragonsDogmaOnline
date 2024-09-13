@@ -1316,7 +1316,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 Logger.Error($"Missing required member 'board_id' from LightQuest config.");
                 return false;
             }
-            assetData.LightQuestDetail.BaseAreaPoint = jAreaId.GetUInt32();
+            assetData.LightQuestDetail.BaseAreaPoint = jBoardId.GetUInt32();
 
             return true;
         }

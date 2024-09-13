@@ -1,30 +1,30 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "Light",
-  "quest_id": 40000011,
-  "base_level": 1,
+  "quest_id": 40000069,
+  "base_level": 10,
   "minimum_item_rank": 0,
   "discoverable": false,
-  "comment": "Would've Gone There",
+  "comment": "White Wings: Elimination (Breya Coast)",
   "light_quest_details": {
-    "area_id": 1,
+    "area_id": 2,
     "board_type": 1,
-    "board_id": 1
+    "board_id": 2
   },
   "rewards": [
     {
       "type": "exp",
-      "amount": 62
+      "amount": 714
     },
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 70
+      "amount": 416
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 7
+      "amount": 200
     }
   ],
   "blocks": [
@@ -37,14 +37,11 @@
       ]
     },
     {
-      "type": "DeliverItemsLight",
+      "type": "KillTargetEnemies",
       "announce_type": "Accept",
-      "items": [
-        {
-          "id": 7836,
-          "amount": 3
-        }
-      ]
+      "enemy_id": "8",
+      "level": 10,
+      "amount": 3
     }
   ]
 }

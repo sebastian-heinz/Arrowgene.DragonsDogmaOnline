@@ -1,30 +1,30 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "Light",
-  "quest_id": 40000011,
-  "base_level": 1,
+  "quest_id": 40000053,
+  "base_level": 31,
   "minimum_item_rank": 0,
   "discoverable": false,
-  "comment": "Would've Gone There",
+  "comment": "Drinking Necessities",
   "light_quest_details": {
     "area_id": 1,
     "board_type": 1,
-    "board_id": 1
+    "board_id": 3
   },
   "rewards": [
     {
       "type": "exp",
-      "amount": 62
+      "amount": 1182
     },
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 70
+      "amount": 3815
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 7
+      "amount": 608
     }
   ],
   "blocks": [
@@ -41,7 +41,7 @@
       "announce_type": "Accept",
       "items": [
         {
-          "id": 7836,
+          "id": 7995,
           "amount": 3
         }
       ]

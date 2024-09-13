@@ -1,11 +1,11 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "Light",
-  "quest_id": 40000011,
+  "quest_id": 40000015,
   "base_level": 1,
   "minimum_item_rank": 0,
   "discoverable": false,
-  "comment": "Would've Gone There",
+  "comment": "Capitivated",
   "light_quest_details": {
     "area_id": 1,
     "board_type": 1,
@@ -41,7 +41,7 @@
       "announce_type": "Accept",
       "items": [
         {
-          "id": 7836,
+          "id": 7961,
           "amount": 3
         }
       ]

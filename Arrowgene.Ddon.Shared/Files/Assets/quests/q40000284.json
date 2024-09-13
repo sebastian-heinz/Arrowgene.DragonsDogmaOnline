@@ -1,30 +1,30 @@
 {
   "state_machine": "GenericStateMachine",
   "type": "Light",
-  "quest_id": 40000011,
-  "base_level": 1,
+  "quest_id": 40000284,
+  "base_level": 43,
   "minimum_item_rank": 0,
   "discoverable": false,
-  "comment": "Would've Gone There",
+  "comment": "No Trespassers!!!",
   "light_quest_details": {
-    "area_id": 1,
+    "area_id": 10,
     "board_type": 1,
-    "board_id": 1
+    "board_id": 15
   },
   "rewards": [
     {
       "type": "exp",
-      "amount": 62
+      "amount": 6338
     },
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 70
+      "amount": 12225
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 7
+      "amount": 1329
     }
   ],
   "blocks": [
@@ -37,14 +37,11 @@
       ]
     },
     {
-      "type": "DeliverItemsLight",
+      "type": "KillTargetEnemies",
       "announce_type": "Accept",
-      "items": [
-        {
-          "id": 7836,
-          "amount": 3
-        }
-      ]
+      "enemy_id": "167",
+      "level": 43,
+      "amount": 3
     }
   ]
 }
