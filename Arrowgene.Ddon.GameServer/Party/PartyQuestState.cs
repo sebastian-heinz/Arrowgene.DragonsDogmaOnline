@@ -666,8 +666,13 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
-        public void UpdatePriorityQuestList(DdonGameServer server, PartyGroup party)
+        public void UpdatePriorityQuestList(DdonGameServer server, GameClient requestingClient, PartyGroup party)
         {
+            if (party.Leader is null || requestingClient != party.Leader.Client)
+            {
+                return;
+            }
+
             var leaderClient = party.Leader.Client;
 
             S2CQuestSetPriorityQuestNtc prioNtc = new S2CQuestSetPriorityQuestNtc()

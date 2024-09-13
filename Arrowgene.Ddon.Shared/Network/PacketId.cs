@@ -902,8 +902,10 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_INSTANCE_GET_EX_OM_INFO_RES = new PacketId(13, 43, 2, "S2C_INSTANCE_GET_EX_OM_INFO_RES", ServerType.Game, PacketSource.Server); // 拡張OM情報取得に
         public static readonly PacketId C2S_INSTANCE_CHARACTER_START_BAD_STATUS_NTC = new PacketId(13, 44, 16, "C2S_INSTANCE_CHARACTER_START_BAD_STATUS_NTC", ServerType.Game, PacketSource.Client, "C2S_INSTANCE_13_44_16"); //When you gain a status effect?
         public static readonly PacketId C2S_INSTANCE_CHARACTER_END_BAD_STATUS_NTC = new PacketId(13, 45, 16, "C2S_INSTANCE_CHARACTER_END_BAD_STATUS_NTC", ServerType.Game, PacketSource.Client, "C2S_INSTANCE_13_45_16"); //When you lose a status effect?
+        public static readonly PacketId C2S_INSTANCE_13_46_16_NTC = new PacketId(13, 46, 16, "C2S_INSTANCE_13_46_16_NTC", ServerType.Game, PacketSource.Client);
+        public static readonly PacketId C2S_INSTANCE_13_47_16_NTC = new PacketId(13, 47, 16, "C2S_INSTANCE_13_47_16_NTC", ServerType.Game, PacketSource.Client); 
 
-// Group: 14 - (WARP)
+        // Group: 14 - (WARP)
         public static readonly PacketId C2S_WARP_RELEASE_WARP_POINT_REQ = new PacketId(14, 0, 1, "C2S_WARP_RELEASE_WARP_POINT_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_WARP_RELEASE_WARP_POINT_RES = new PacketId(14, 0, 2, "S2C_WARP_RELEASE_WARP_POINT_RES", ServerType.Game, PacketSource.Server); // ワープポイント解放要求に
         public static readonly PacketId S2C_WARP_14_0_16_NTC = new PacketId(14, 0, 16, "S2C_WARP_14_0_16_NTC", ServerType.Game, PacketSource.Server);

@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Server.Database.DeletePriorityQuest(client.Character.CommonId, questId);
 
-            client.Party.QuestState.UpdatePriorityQuestList(Server, client.Party);
+            client.Party.QuestState.UpdatePriorityQuestList(Server, client, client.Party);
 
             return new S2CQuestCancelPriorityQuestRes()
             {

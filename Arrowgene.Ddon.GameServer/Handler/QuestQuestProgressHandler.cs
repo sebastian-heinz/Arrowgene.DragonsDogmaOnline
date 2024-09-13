@@ -159,7 +159,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Party.SendToAll(completeNtc);
 
             // Update the priority quest list
-            client.Party.QuestState.UpdatePriorityQuestList(Server, client.Party);
+            client.Party.QuestState.UpdatePriorityQuestList(Server, client.Party.Leader.Client, client.Party);
 
             if (quest.ResetPlayerAfterQuest)
             {
