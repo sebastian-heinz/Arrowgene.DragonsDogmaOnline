@@ -5,6 +5,22 @@ using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.GatheringItems
 {
+    /// <summary>
+    /// Interface for managing various objects that appear in instances:
+    ///     Enemies, via InstanceEnemyManager, <Enemy,InstancedEnemy>
+    ///     Gatherable items, via InstanceGatheringItemManager, <List<GatheringItem>, List<InstancedGatheringItem>>
+    ///     Dropped items, via InstanceDropItemManager, <List<GatheringItem>, List<InstancedGatheringItem>>
+    ///     
+    /// Notably does not cover enemies associated with quests.
+    /// 
+    /// Each object is associated uniquely with a stageLayoutId and an index, 
+    /// which may also be referred to as setId, posId, or PositionIndex, among other terms.
+    /// 
+    /// Enemies and dropped items are paired at the same stageLayoutId and index.
+    /// An enemy spawned at (foo, bar) will have its drops instanced at (foo, bar) in the other manager.
+    /// 
+    /// For enemies, the index is NOT the spawn subgroup, but the position index.
+    /// </summary>
     public abstract class InstanceAssetManager<TItem, TAssetItem>
     {
         public InstanceAssetManager()
