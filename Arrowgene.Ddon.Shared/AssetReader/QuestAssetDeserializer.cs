@@ -255,6 +255,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     case "fixed":
                     case "random":
                     case "select":
+                    case "TimeBased":
                         if (!Enum.TryParse(reward.GetProperty("type").GetString(), true, out QuestRewardType questRewardType))
                         {
                             continue;
@@ -297,17 +298,14 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         }
                         else if (questRewardType == QuestRewardType.Fixed)
                         {
-                            var item = reward.GetProperty("loot_pool").EnumerateArray().ToList()[0];
-                            rewardItem = new QuestFixedRewardItem()
+                            rewardItem = new QuestFixedRewardItem();
+                            foreach (var item in reward.GetProperty("loot_pool").EnumerateArray())
                             {
-                                LootPool = new List<LootPoolItem>()
+                                rewardItem.LootPool.Add(new FixedLootPoolItem()
                                 {
-                                    new FixedLootPoolItem()
-                                    {
-                                        ItemId = item.GetProperty("item_id").GetUInt32(),
-                                        Num = item.GetProperty("num").GetUInt16(),
-                                    }
-                                }
+                                    ItemId = item.GetProperty("item_id").GetUInt32(),
+                                    Num = item.GetProperty("num").GetUInt16(),
+                                });
                             };
                         }
                         else
@@ -866,6 +864,23 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             if (jMissionParams.TryGetProperty("minimum_members", out JsonElement jMinimumMembers))
             {
                 assetData.MissionParams.SortieMinimum = jMinimumMembers.GetUInt32();
+            }
+
+            assetData.MissionParams.SortieMaximum = 4;
+            if (jMissionParams.TryGetProperty("minimum_members", out JsonElement jMaximumMembers))
+            {
+                assetData.MissionParams.SortieMaximum = jMaximumMembers.GetUInt32();
+            }
+
+            assetData.MissionParams.LootDistribution = QuestLootDistribution.Normal;
+            if (jMissionParams.TryGetProperty("loot_distribution", out JsonElement jLootDistribution))
+            {
+                if (!Enum.TryParse(jLootDistribution.GetString(), true, out QuestLootDistribution lootDistribution))
+                {
+                    Logger.Error("Invalid 'loot_distribution' from ExtremeMission config.");
+                    return false;
+                }
+                assetData.MissionParams.LootDistribution = lootDistribution;
             }
 
             assetData.MissionParams.PlaytimeInSeconds = 1200;

@@ -118,6 +118,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             var item = LootPool[ItemIndex];
             return new CDataRewardBoxItem()
             {
+                UID = item.GetUID(),
                 ItemId = item.ItemId,
                 Num = item.Num,
                 Type = (byte)RewardType
@@ -129,6 +130,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             var item = LootPool[index];
             return new CDataRewardBoxItem()
             {
+                UID = item.GetUID(),
                 ItemId = item.ItemId,
                 Num = item.Num,
                 Type = (byte)RewardType

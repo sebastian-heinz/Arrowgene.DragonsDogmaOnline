@@ -381,17 +381,35 @@ namespace Arrowgene.Ddon.GameServer.Quests
             result.Restrictions.Unk5List.Add(new CDataCommonU8() { Value = 2 });
 #endif
 
+            HashSet<uint> items = new HashSet<uint>();
             // Rewards for EXM seem to show up independently
             foreach (var reward in result.Param.FixedRewardItemList)
             {
-                for (var i = 0; i < reward.Num; i++)
+                if (MissionParams.LootDistribution == QuestLootDistribution.TimeBased)
                 {
-                    result.RewardItemDetailList.Add(new CDataRewardItemDetail()
+                    if (!items.Contains(reward.ItemId))
                     {
-                        ItemId = reward.ItemId,
-                        Num = 1,
-                        Type = 12
-                    });
+                        // Show 1 of each item as exact value is unknown
+                        result.RewardItemDetailList.Add(new CDataRewardItemDetail()
+                        {
+                            ItemId = reward.ItemId,
+                            Num = 1,
+                            Type = 12
+                        });
+                        items.Add(reward.ItemId);
+                    }
+                }
+                else
+                {
+                    for (var i = 0; i < reward.Num; i++)
+                    {
+                        result.RewardItemDetailList.Add(new CDataRewardItemDetail()
+                        {
+                            ItemId = reward.ItemId,
+                            Num = 1,
+                            Type = 12
+                        });
+                    }
                 }
             }
 

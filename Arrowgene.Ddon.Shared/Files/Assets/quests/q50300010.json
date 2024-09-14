@@ -1,0 +1,484 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "ExtremeMission",
+    "comment": "The Dragon Awakened (Grand Mission)",
+    "quest_id": 50300010,
+    "base_level": 80,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "mission_params": {
+        "group": 9,
+        "minimum_members": 1,
+        "maximum_members": 8,
+        "playtime": 900,
+        "solo_only": true,
+        "max_pawns": 3,
+        "loot_distribution": "TimeBased",
+        "phase_groups": []
+    },
+    "order_conditions": [
+    ],
+    "rewards": [
+            {
+                "type": "random",
+                "loot_pool": [
+                    {
+                        "item_id": 15998,
+                        "num": 1,
+                        "chance": 0.35
+                    },
+                    {
+                        "item_id": 15998,
+                        "num": 2,
+                        "chance": 0.25
+                    },
+                    {
+                        "item_id": 15998,
+                        "num": 4,
+                        "chance": 0.20
+                    },
+                    {
+                        "item_id": 15998,
+                        "num": 12,
+                        "chance": 0.15
+                    },
+                    {
+                        "item_id": 15998,
+                        "num": 16,
+                        "chance": 0.10
+                    },
+                    {
+                        "item_id": 15998,
+                        "num": 20,
+                        "chance": 0.05
+                    }
+                ]
+            },
+            {
+                "type": "random",
+                "loot_pool": [
+                    {
+                        "item_id": 15999,
+                        "num": 0,
+                        "chance": 0.35
+                    },
+                    {
+                        "item_id": 15999,
+                        "num": 1,
+                        "chance": 0.20
+                    },
+                    {
+                        "item_id": 15999,
+                        "num": 2,
+                        "chance": 0.25
+                    },
+                    {
+                        "item_id": 15999,
+                        "num": 4,
+                        "chance": 0.20
+                    },
+                    {
+                        "item_id": 15999,
+                        "num": 8,
+                        "chance": 0.15
+                    },
+                    {
+                        "item_id": 15999,
+                        "num": 10,
+                        "chance": 0.05
+                    }
+                ]
+            },
+            {
+                "type": "random",
+                "loot_pool": [
+                    {
+                        "item_id": 16000,
+                        "num": 0,
+                        "chance": 0.60
+                    },
+                    {
+                        "item_id": 16000,
+                        "num": 1,
+                        "chance": 0.20
+                    },
+                    {
+                        "item_id": 16000,
+                        "num": 2,
+                        "chance": 0.15
+                    },
+                    {
+                        "item_id": 16000,
+                        "num": 3,
+                        "chance": 0.05
+                    }
+                ]
+            }
+    ],
+    "enemy_groups" : [
+        {
+            "comment": "Boss",
+            "stage_id": {
+                "id": 381,
+                "group_id": 0
+            },
+            "enemies": [
+                {
+                    "comment": "Spirit Dragon Willmia",
+                    "enemy_id": "0x080400",
+                    "level": 80,
+                    "exp": 0,
+                    "is_boss": true,
+                    "named_enemy_params_id": 1707
+                }
+            ]
+        },
+        {
+            "comment": "Adds (Towers)",
+            "stage_id": {
+                "id": 381,
+                "group_id": 2
+            },
+            "starting_index": 4,
+            "enemies": [
+                {
+                    "comment": "Dragon Crystal of Evil Sealing",
+                    "enemy_id": "0x030104",
+                    "level": 80,
+                    "exp": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1710,
+                    "start_think_tbl_no": 2,
+                    "is_manual_set": true,
+                    "is_required": false,
+                    "repop_count": 50,
+                    "repop_wait_second": 0
+                },
+                {
+                    "comment": "Dragon Crystal of Evil Sealing",
+                    "enemy_id": "0x030104",
+                    "level": 80,
+                    "exp": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1710,
+                    "start_think_tbl_no": 2,
+                    "is_manual_set": true,
+                    "is_required": false,
+                    "repop_count": 50,
+                    "repop_wait_second": 0
+                },
+                {
+                    "comment": "Dragon Crystal of Power Sapping",
+                    "enemy_id": "0x030104",
+                    "level": 80,
+                    "exp": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1711,
+                    "start_think_tbl_no": 2,
+                    "is_manual_set": true,
+                    "is_required": false,
+                    "repop_count": 50,
+                    "repop_wait_second": 0
+                },
+                {
+                    "comment": "Dragon Crystal of Power Sapping",
+                    "enemy_id": "0x030104",
+                    "level": 80,
+                    "exp": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1711,
+                    "start_think_tbl_no": 2,
+                    "is_manual_set": true,
+                    "is_required": false,
+                    "repop_count": 50,
+                    "repop_wait_second": 0
+                }
+            ]
+        },
+        {
+            "comment": "Adds (Towers)",
+            "stage_id": {
+                "id": 381,
+                "group_id": 2
+            },
+            "placement_type": "Manual",
+            "enemies": [
+                {
+                    "comment": "Dragon Crystal of Evil Sapping",
+                    "enemy_id": "0x030104",
+                    "level": 80,
+                    "exp": 0,
+                    "index": 11,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1711,
+                    "start_think_tbl_no": 2,
+                    "is_manual_set": true,
+                    "is_required": false,
+                    "repop_count": 50,
+                    "repop_wait_second": 0
+                },
+                {
+                    "comment": "Dragon Crystal of Evil Sealing",
+                    "enemy_id": "0x030104",
+                    "level": 80,
+                    "exp": 0,
+                    "index": 12,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1710,
+                    "start_think_tbl_no": 2,
+                    "is_manual_set": true,
+                    "is_required": false,
+                    "repop_count": 50,
+                    "repop_wait_second": 0
+                },
+                {
+                    "comment": "Dragon Crystal of Power Sapping",
+                    "enemy_id": "0x030104",
+                    "level": 80,
+                    "exp": 0,
+                    "index": 15,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1711,
+                    "start_think_tbl_no": 2,
+                    "is_manual_set": true,
+                    "is_required": false,
+                    "repop_count": 50,
+                    "repop_wait_second": 0
+                },
+                {
+                    "comment": "Dragon Crystal of Power Sealing",
+                    "enemy_id": "0x030104",
+                    "level": 80,
+                    "exp": 0,
+                    "index": 16,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1710,
+                    "start_think_tbl_no": 2,
+                    "is_manual_set": true,
+                    "is_required": false,
+                    "repop_count": 50,
+                    "repop_wait_second": 0
+                },
+                {
+                    "comment": "Dragon Crystal of Power Sapping",
+                    "enemy_id": "0x030104",
+                    "level": 80,
+                    "exp": 0,
+                    "index": 17,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1711,
+                    "start_think_tbl_no": 2,
+                    "is_manual_set": true,
+                    "is_required": false,
+                    "repop_count": 50,
+                    "repop_wait_second": 0
+                },
+                {
+                    "comment": "Dragon Crystal of Power Sapping",
+                    "enemy_id": "0x030104",
+                    "level": 80,
+                    "exp": 0,
+                    "index": 18,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1711,
+                    "start_think_tbl_no": 2,
+                    "is_manual_set": true,
+                    "is_required": false,
+                    "repop_count": 50,
+                    "repop_wait_second": 0
+                },
+                {
+                    "comment": "Dragon Crystal of Power Sapping",
+                    "enemy_id": "0x030104",
+                    "level": 80,
+                    "exp": 0,
+                    "index": 19,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1711,
+                    "start_think_tbl_no": 2,
+                    "is_manual_set": true,
+                    "is_required": false,
+                    "repop_count": 50,
+                    "repop_wait_second": 0
+                },
+                {
+                    "comment": "Dragon Crystal of Power Sealing",
+                    "enemy_id": "0x030104",
+                    "level": 80,
+                    "exp": 0,
+                    "index": 20,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1710,
+                    "start_think_tbl_no": 2,
+                    "is_manual_set": true,
+                    "is_required": false,
+                    "repop_count": 50,
+                    "repop_wait_second": 0
+                },
+                {
+                    "comment": "Dragon Crystal of Power Sapping",
+                    "enemy_id": "0x030104",
+                    "level": 80,
+                    "exp": 0,
+                    "index": 21,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1711,
+                    "start_think_tbl_no": 2,
+                    "is_manual_set": true,
+                    "is_required": false,
+                    "repop_count": 50,
+                    "repop_wait_second": 0
+                }
+            ]
+        },
+        {
+            "comment": "Adds (Gimick)",
+            "stage_id": {
+                "id": 381,
+                "group_id": 1
+            },
+            "enemies": [
+                {
+                    "comment": "Memory of Sighs",
+                    "enemy_id": "0x030105",
+                    "level": 80,
+                    "exp": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1701,
+                    "repop_count": 50,
+                    "repop_wait_second": 45
+                },
+                {
+                    "comment": "Memory of Sighs",
+                    "enemy_id": "0x030105",
+                    "level": 80,
+                    "exp": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1701,
+                    "repop_count": 50,
+                    "repop_wait_second": 45
+                }
+            ]
+        },
+        {
+            "comment": "Adds (Gimick)",
+            "stage_id": {
+                "id": 381,
+                "group_id": 1
+            },
+            "starting_index": 2,
+            "enemies": [
+                {
+                    "comment": "Memory of Sighs",
+                    "enemy_id": "0x030105",
+                    "level": 80,
+                    "exp": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1701,
+                    "repop_count": 50,
+                    "repop_wait_second": 45
+                },
+                {
+                    "comment": "Memory of Sighs",
+                    "enemy_id": "0x030105",
+                    "level": 80,
+                    "exp": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1701,
+                    "repop_count": 50,
+                    "repop_wait_second": 45
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "blocks": [
+                {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 381
+                    }
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Start",
+                    "groups": [0]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 381
+                    },
+                    "event_id": 5
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 80}
+                    ]
+                },
+                {
+                    "comment": "Spawn Crystals",
+                    "type": "SpawnGroup",
+                    "check_commands": [
+                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 70}
+                    ],
+                    "groups": [3]
+                },
+                {
+                    "type": "DestroyGroup",
+                    "groups": [3]
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 40}
+                    ]
+                },
+                {
+                    "comment": "Spawn Crystals",
+                    "type": "SpawnGroup",
+                    "check_commands": [
+                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 30}
+                    ],
+                    "groups": [4]
+                },
+                {
+                    "type": "DestroyGroup",
+                    "groups": [4]
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 55}
+                    ]
+                },
+                {
+                    "comment": "Spawn Towers",
+                    "type": "KillGroup",
+                    "groups": [1]
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 20}
+                    ]
+                },
+                {
+                    "comment": "Spawn Towers",
+                    "type": "KillGroup",
+                    "groups": [2]
+                }
+            ]
+        }
+    ]
+}
