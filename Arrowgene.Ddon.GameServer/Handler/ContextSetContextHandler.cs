@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ContextManager.SetContext(client.Party, context.Item1.UniqueId, context);
             ContextManager.AssignMaster(client, packet.Structure.Base.UniqueId, index);
 
-            Logger.Debug($"C2SSetContextNtc: ContextId: {context.Item1.ContextId}, UniqueId: 0x{context.Item1.UniqueId:x16}, Context: {context.Item2.MasterIndex}/{index}");
+            Logger.Debug($"C2SSetContextNtc: ContextId: {context.Item1.ContextId}, UniqueId: 0x{context.Item1.UniqueId:x16}");
         }
     }
 }
