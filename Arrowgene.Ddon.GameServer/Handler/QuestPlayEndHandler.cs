@@ -2,8 +2,10 @@ using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -30,12 +32,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CQuestPlayEndRes Handle(GameClient client, C2SQuestPlayEndReq request)
         {
             var contentId = client.Party.ContentId;
-            Server.ExmManager.CancelTimer(contentId);
+            var timeData = Server.ExmManager.CancelTimer(contentId);
 
             var quest = Server.ExmManager.GetQuestForContent(contentId);
-            
+
             var ntc = new S2CQuestPlayEndNtc();
             ntc.ContentsPlayEnd.RewardItemDetailList = quest.ToCDataTimeGainQuestList(0).RewardItemDetailList;
+            ntc.ContentsPlayEnd.PlayTimeMillSec = (uint) timeData.Elapsed.Milliseconds;
             client.Party.SendToAll(ntc);
 
             client.Party.ContentInProgress = false;

@@ -35,7 +35,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
             quest.StageId = questAsset.StageId;
             quest.MissionParams = questAsset.MissionParams;
 
-
             foreach (var pointReward in questAsset.PointRewards)
             {
                 quest.ExpRewards.Add(new CDataQuestExp()

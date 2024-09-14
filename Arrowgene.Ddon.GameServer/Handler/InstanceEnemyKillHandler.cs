@@ -38,7 +38,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // The training room uses special handling to produce enemies that don't exist in the QuestState or InstanceEnemyManager.
             // Return an empty response here to not break the rest of the handling.
-            if (_ignoreKillsInStageIds.Contains(stageId.Id) || packet.Structure.IsNoBattleReward)
+            if (_ignoreKillsInStageIds.Contains(stageId.Id))
             {
                 client.Send(new S2CInstanceEnemyKillRes());
                 return;
@@ -76,28 +76,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             else
             {
                 enemyKilled.IsKilled = true;
-            }
-
-            foreach (var partyMemberClient in client.Party.Clients)
-            {
-                // If the enemy is quest controlled, then either get from the quest loot drop, or the general one.
-                List<InstancedGatheringItem> instancedGatheringItems = IsQuestControlled ?
-                            partyMemberClient.InstanceQuestDropManager.GenerateEnemyLoot(quest, enemyKilled, packet.Structure.LayoutId, packet.Structure.SetId) :
-                            partyMemberClient.InstanceDropItemManager.GetAssets(layoutId, (int)packet.Structure.SetId);
-
-                // If the roll was unlucky, there is a chance that no bag will show.
-                if (instancedGatheringItems.Count > 0)
-                {
-                    partyMemberClient.Send(new S2CInstancePopDropItemNtc()
-                    {
-                        LayoutId = packet.Structure.LayoutId,
-                        SetId = packet.Structure.SetId,
-                        MdlType = enemyKilled.DropsTable.MdlType,
-                        PosX = packet.Structure.DropPosX,
-                        PosY = packet.Structure.DropPosY,
-                        PosZ = packet.Structure.DropPosZ
-                    });
-                }
             }
 
             List<InstancedEnemy> group = client.Party.InstanceEnemyManager.GetInstancedEnemies(stageId);
@@ -138,6 +116,33 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 EnemyId = enemyKilled.Id,
                 KillNum = 1
             });
+
+            if (packet.Structure.IsNoBattleReward)
+            {
+                return;
+            }
+
+            foreach (var partyMemberClient in client.Party.Clients)
+            {
+                // If the enemy is quest controlled, then either get from the quest loot drop, or the general one.
+                List<InstancedGatheringItem> instancedGatheringItems = IsQuestControlled ?
+                            partyMemberClient.InstanceQuestDropManager.GenerateEnemyLoot(quest, enemyKilled, packet.Structure.LayoutId, packet.Structure.SetId) :
+                            partyMemberClient.InstanceDropItemManager.GetAssets(layoutId, (int)packet.Structure.SetId);
+
+                // If the roll was unlucky, there is a chance that no bag will show.
+                if (instancedGatheringItems.Count > 0)
+                {
+                    partyMemberClient.Send(new S2CInstancePopDropItemNtc()
+                    {
+                        LayoutId = packet.Structure.LayoutId,
+                        SetId = packet.Structure.SetId,
+                        MdlType = enemyKilled.DropsTable.MdlType,
+                        PosX = packet.Structure.DropPosX,
+                        PosY = packet.Structure.DropPosY,
+                        PosZ = packet.Structure.DropPosZ
+                    });
+                }
+            }
 
             foreach (PartyMember member in client.Party.Members)
             {

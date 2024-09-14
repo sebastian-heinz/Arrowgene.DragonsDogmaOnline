@@ -324,7 +324,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public void CancelTimer(ulong contentId)
+        public (TimeSpan Elapsed, TimeSpan MaximumDuration) CancelTimer(ulong contentId)
         {
             lock (_ContentData)
             {
@@ -332,8 +332,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     Logger.Info($"Canceling timer for ContentId={contentId}");
                     _ContentTimers[contentId].Timer.Dispose();
+
+                    var timerState = _ContentTimers[contentId];
+
+                    TimeSpan elapsed = DateTime.Now.Subtract(timerState.TimeStart);
+                    var results = (elapsed, timerState.Duration);
                     _ContentTimers.Remove(contentId);
+                    return results;
                 }
+                return (TimeSpan.Zero, TimeSpan.Zero);
             }
         }
     }

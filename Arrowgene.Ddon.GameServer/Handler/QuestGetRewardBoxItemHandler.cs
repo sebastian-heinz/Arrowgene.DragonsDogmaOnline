@@ -47,7 +47,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 UpdateType = 0
             };
 
-
             foreach (var boxReward in packet.GetRewardBoxItemList)
             {
                 var reward = rewards.Single(x => x.UID == boxReward.UID);
@@ -57,7 +56,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     var result = Server.WalletManager.AddToWallet(client.Character, walletType, amount);
                     updateCharacterItemNtc.UpdateWalletList.Add(result);
                 }
-                else
+                else if (reward.Num > 0)
                 {
                     var result = Server.ItemManager.AddItem(Server, client.Character, false, reward.ItemId, reward.Num);
                     updateCharacterItemNtc.UpdateItemList.AddRange(result);
