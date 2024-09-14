@@ -1,5 +1,5 @@
 using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Quests;
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -9,7 +9,7 @@ using Arrowgene.Logging;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Arrowgene.Ddon.GameServer.Party
+namespace Arrowgene.Ddon.GameServer.Quests
 {
     public class QuestProcessState
     {
@@ -46,9 +46,9 @@ namespace Arrowgene.Ddon.GameServer.Party
         public bool HasStarted { get; set; }
         public uint Step { get; set; }
 
-        public Dictionary<ushort, QuestProcessState> ProcessState {  get; set; }
-        public Dictionary<StageId, Dictionary<uint, List<InstancedEnemy>>> QuestEnemies {  get; set; }
-        public Dictionary<uint, QuestDeliveryRecord> DeliveryRecords {  get; set; }
+        public Dictionary<ushort, QuestProcessState> ProcessState { get; set; }
+        public Dictionary<StageId, Dictionary<uint, List<InstancedEnemy>>> QuestEnemies { get; set; }
+        public Dictionary<uint, QuestDeliveryRecord> DeliveryRecords { get; set; }
         public Dictionary<uint, QuestEnemyHuntRecord> HuntRecords { get; set; }
 
         public QuestState()
@@ -129,7 +129,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
-        public QuestEnemyHuntRecord? UpdateHuntRequest(Enemy enemy)
+        public QuestEnemyHuntRecord UpdateHuntRequest(Enemy enemy)
         {
             var enemyId = enemy.UINameId;
             lock (HuntRecords)
@@ -152,10 +152,10 @@ namespace Arrowgene.Ddon.GameServer.Party
         }
     }
 
-    public class PartyQuestState
+    public class QuestStateManager
     {
 
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyQuestState));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestStateManager));
 
         private Dictionary<QuestId, QuestState> ActiveQuests { get; set; }
         private Dictionary<StageId, List<QuestId>> QuestLookupTable { get; set; }
@@ -164,7 +164,7 @@ namespace Arrowgene.Ddon.GameServer.Party
         private HashSet<QuestId> VariantQuests { get; set; }
         public HashSet<QuestId> CompletedWorldQuests { get; set; }
 
-        public PartyQuestState()
+        public QuestStateManager()
         {
             ActiveQuests = new Dictionary<QuestId, QuestState>();
             QuestLookupTable = new Dictionary<StageId, List<QuestId>>();
@@ -310,7 +310,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
             if (VariantQuests.Contains(questId))
             {
-                ActiveVariantQuests[questId] = (uint)quest.VariantId;
+                ActiveVariantQuests[questId] = quest.VariantId;
                 AddNewQuest(quest, step, questStarted);
             }
         }
@@ -604,7 +604,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                     {
                         completedQuests[quest.QuestId].ClearCount += 1;
                     }
-                        
+
                     server.Database.ReplaceCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, completedQuests[quest.QuestId].ClearCount);
                     continue;
                 }
@@ -760,7 +760,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                 RerollUnfoundAltQuests();
             }
         }
-    
+
         public void HandleEnemyHuntRequests(GameClient client, Enemy enemy)
         {
             if (client.Character.GameMode != GameMode.Normal)

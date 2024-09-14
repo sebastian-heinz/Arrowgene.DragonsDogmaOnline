@@ -1,5 +1,4 @@
 using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -572,7 +571,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return UniqueEnemyGroups.Contains(stageId);
         }
 
-        public virtual void PopulateStartingEnemyData(PartyQuestState partyQuestState)
+        public virtual void PopulateStartingEnemyData(QuestStateManager partyQuestState)
         {
             var questState = partyQuestState.GetQuestState(this.QuestId);
             foreach (var processState in questState.ProcessState.Values)

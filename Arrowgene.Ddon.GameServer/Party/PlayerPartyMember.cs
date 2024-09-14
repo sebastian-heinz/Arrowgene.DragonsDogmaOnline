@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
@@ -7,6 +8,8 @@ namespace Arrowgene.Ddon.GameServer.Party;
 public class PlayerPartyMember : PartyMember
 {
     public GameClient Client { get; set; }
+
+    public QuestStateManager QuestState { get; set; }
 
     public override CDataPartyMember GetCDataPartyMember()
     {

@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.GameServer.Context;
 using Arrowgene.Ddon.GameServer.Instance;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
@@ -33,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public InstanceEnemyManager InstanceEnemyManager { get; }
 
-        public PartyQuestState QuestState { get; }
+        public QuestStateManager QuestState { get; }
 
         public Dictionary<uint, Dictionary<ulong, uint>> InstanceOmData { get; }
 
@@ -55,7 +56,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
             InstanceOmData = new Dictionary<uint, Dictionary<ulong, uint>>();
 
-            QuestState = new PartyQuestState();
+            QuestState = new QuestStateManager();
         }
 
         // Contexts[UID] = ContextData

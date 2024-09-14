@@ -137,7 +137,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Send(res);
         }
 
-        private void CompleteQuest(Quest quest, GameClient client, PartyGroup party, PartyQuestState partyQuestState)
+        private void CompleteQuest(Quest quest, GameClient client, PartyGroup party, QuestStateManager partyQuestState)
         {
             // Distribute rewards to the party
             partyQuestState.DistributePartyQuestRewards(Server, party, quest.QuestId);
