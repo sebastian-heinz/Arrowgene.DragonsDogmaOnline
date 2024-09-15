@@ -854,22 +854,29 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 Logger.Error($"Missing required member 'phase_groups' from ExtremeMission config.");
                 return false;
             }
-            
+
             foreach (var element in jPhaseGroups.EnumerateArray())
             {
                 assetData.MissionParams.QuestPhaseGroupIdList.Add(new CDataCommonU32() { Value = element.GetUInt32() });
             }
 
-            assetData.MissionParams.SortieMinimum = 4;
+            if (!jMissionParams.TryGetProperty("board_id", out JsonElement jBoardId))
+            {
+                Logger.Error($"Missing required member 'board_id' from ExtremeMission config.");
+                return false;
+            }
+            assetData.MissionParams.BoardId = jBoardId.GetUInt64();
+
+            assetData.MissionParams.MinimumMembers = 4;
             if (jMissionParams.TryGetProperty("minimum_members", out JsonElement jMinimumMembers))
             {
-                assetData.MissionParams.SortieMinimum = jMinimumMembers.GetUInt32();
+                assetData.MissionParams.MinimumMembers = jMinimumMembers.GetUInt32();
             }
 
-            assetData.MissionParams.SortieMaximum = 4;
-            if (jMissionParams.TryGetProperty("minimum_members", out JsonElement jMaximumMembers))
+            assetData.MissionParams.MaximumMembers = 4;
+            if (jMissionParams.TryGetProperty("maximum_members", out JsonElement jMaximumMembers))
             {
-                assetData.MissionParams.SortieMaximum = jMaximumMembers.GetUInt32();
+                assetData.MissionParams.MaximumMembers = jMaximumMembers.GetUInt32();
             }
 
             assetData.MissionParams.LootDistribution = QuestLootDistribution.Normal;

@@ -274,12 +274,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                     Logger.Error(client, $"[PartyId:{Id}][Join(GameClient)] has no slot");
                     return ErrorRes<PlayerPartyMember>.Fail;
                 }
-                else if (partyMember == null)
-                {
-                    AddHost(client);
-                    partyMember = GetPlayerPartyMember(client);
-                }
-                
+
                 if (_leader == null && _host == null)
                 {
                     // first to join the party

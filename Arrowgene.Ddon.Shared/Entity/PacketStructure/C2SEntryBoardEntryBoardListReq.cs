@@ -11,22 +11,22 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public C2SEntryBoardEntryBoardListReq()
         {
-            Unk0List = new List<CDataCommonU64>(); // List of Entry ID's?
+            BoardIdList = new List<CDataCommonU64>(); // List of Board ID's?
         }
 
-        public List<CDataCommonU64> Unk0List {  get; set; }
+        public List<CDataCommonU64> BoardIdList {  get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SEntryBoardEntryBoardListReq>
         {
             public override void Write(IBuffer buffer, C2SEntryBoardEntryBoardListReq obj)
             {
-                WriteEntityList(buffer, obj.Unk0List);
+                WriteEntityList(buffer, obj.BoardIdList);
             }
 
             public override C2SEntryBoardEntryBoardListReq Read(IBuffer buffer)
             {
                 C2SEntryBoardEntryBoardListReq obj = new C2SEntryBoardEntryBoardListReq();
-                obj.Unk0List = ReadEntityList<CDataCommonU64>(buffer);
+                obj.BoardIdList = ReadEntityList<CDataCommonU64>(buffer);
                 return obj;
             }
         }

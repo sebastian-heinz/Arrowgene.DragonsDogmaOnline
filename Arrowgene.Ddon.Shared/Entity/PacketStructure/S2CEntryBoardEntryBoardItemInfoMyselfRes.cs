@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             EntryItem = new CDataEntryItem();
         }
 
-        public ulong ContentId { get; set; }
+        public ulong BoardId { get; set; }
         public CDataEntryItem EntryItem { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CEntryBoardEntryBoardItemInfoMyselfRes>
@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, S2CEntryBoardEntryBoardItemInfoMyselfRes obj)
             {
                 WriteServerResponse(buffer, obj);
-                WriteUInt64(buffer, obj.ContentId);
+                WriteUInt64(buffer, obj.BoardId);
                 WriteEntity(buffer, obj.EntryItem);
             }
 
@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 S2CEntryBoardEntryBoardItemInfoMyselfRes obj = new S2CEntryBoardEntryBoardItemInfoMyselfRes();
                 ReadServerResponse(buffer, obj);
-                obj.ContentId = ReadUInt64(buffer);
+                obj.BoardId = ReadUInt64(buffer);
                 obj.EntryItem = ReadEntity<CDataEntryItem>(buffer);
                 return obj;
             }

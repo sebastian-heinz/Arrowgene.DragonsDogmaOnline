@@ -8,9 +8,10 @@
     "discoverable": false,
     "mission_params": {
         "group": 2,
+        "board_id": 17230073186,
         "minimum_members": 1,
         "playtime": 900,
-        "solo_only": true,
+        "solo_only": false,
         "max_pawns": 3,
         "phase_groups": []
     },

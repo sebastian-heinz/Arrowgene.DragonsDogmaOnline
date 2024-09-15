@@ -15,8 +15,9 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             QuestPhaseGroupIdList = new List<CDataCommonU32>();
         }
 
-        public uint SortieMinimum { get; set; }
-        public uint SortieMaximum { get; set; }
+        public ulong BoardId {  get; set; }
+        public uint MinimumMembers { get; set; }
+        public uint MaximumMembers { get; set; }
         public uint PlaytimeInSeconds { get; set; }
         public bool IsSolo { get; set; }
         public uint MaxPawns { get; set; }

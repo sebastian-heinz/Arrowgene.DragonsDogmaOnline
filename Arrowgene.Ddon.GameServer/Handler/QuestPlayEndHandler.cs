@@ -31,17 +31,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CQuestPlayEndRes Handle(GameClient client, C2SQuestPlayEndReq request)
         {
-            var contentId = client.Party.ContentId;
-            var timeData = Server.ExmManager.CancelTimer(contentId);
-
-            var quest = Server.ExmManager.GetQuestForContent(contentId);
+            var timeData = Server.ContentManager.CancelTimer(client.Party.Id);
+            var quest = QuestManager.GetQuestByBoardId(client.Party.ContentId);
 
             var ntc = new S2CQuestPlayEndNtc();
             ntc.ContentsPlayEnd.RewardItemDetailList = quest.ToCDataTimeGainQuestList(0).RewardItemDetailList;
             ntc.ContentsPlayEnd.PlayTimeMillSec = (uint) timeData.Elapsed.Milliseconds;
             client.Party.SendToAll(ntc);
-
-            client.Party.ContentInProgress = false;
 
             return new S2CQuestPlayEndRes();
         }

@@ -4,7 +4,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataEntryBoardListParam
     {
-        public ulong EntryId {  get; set; } // Board Entry ID?
+        public ulong BoardId {  get; set; } // Board Entry ID?
         public ushort SortieMin { get; set; }
         public ushort NoPartyMembers { get; set; }
         public ushort Unk3 { get; set; }
@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             public override void Write(IBuffer buffer, CDataEntryBoardListParam obj)
             {
-                WriteUInt64(buffer, obj.EntryId);
+                WriteUInt64(buffer, obj.BoardId);
                 WriteUInt16(buffer, obj.SortieMin);
                 WriteUInt16(buffer, obj.NoPartyMembers);
                 WriteUInt16(buffer, obj.Unk3);
@@ -31,7 +31,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataEntryBoardListParam Read(IBuffer buffer)
             {
                 CDataEntryBoardListParam obj = new CDataEntryBoardListParam();
-                obj.EntryId = ReadUInt64(buffer);
+                obj.BoardId = ReadUInt64(buffer);
                 obj.SortieMin = ReadUInt16(buffer);
                 obj.NoPartyMembers = ReadUInt16(buffer);
                 obj.Unk3 = ReadUInt16(buffer);
