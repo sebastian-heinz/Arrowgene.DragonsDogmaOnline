@@ -62,6 +62,7 @@ namespace Arrowgene.Ddon.Cli
 
             PacketId.S2C_CONTEXT_MASTER_CHANGE_NTC,
             PacketId.C2S_CONTEXT_GET_SET_CONTEXT_REQ,
+            PacketId.C2S_CONTEXT_SET_CONTEXT_NTC,
             PacketId.S2C_CONTEXT_SET_CONTEXT_NTC,
             PacketId.S2C_CONTEXT_SET_CONTEXT_BASE_NTC,
 
