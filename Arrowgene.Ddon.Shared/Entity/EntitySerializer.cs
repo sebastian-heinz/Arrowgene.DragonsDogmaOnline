@@ -146,6 +146,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataEntryItem.Serializer());
             Create(new CDataEntryItemParam.Serializer());
             Create(new CDataEntryMemberData.Serializer());
+            Create(new CDataEntryBoardItemSearchParameter.Serializer());
             Create(new CDataRaidBossPlayStartData.Serializer());
             Create(new CDataRaidBossEnemyParam.Serializer());
 
@@ -479,6 +480,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SEntryBoardEntryBoardItemLeaveReq.Serializer());
             Create(new C2SEntryBoardEntryBoardItemInfoMyselfReq.Serializer());
             Create(new C2SEntryBoardEntryBoardItemInfoChangeReq.Serializer());
+            Create(new C2SEntryBoardEntryBoardItemInviteReq.Serializer());
+            Create(new C2SEntryBoardEntryBoardItemReq.Serializer());
+            Create(new C2SEntryBoardEntryBoardItemEntryReq.Serializer());
+            Create(new C2SEntryBoardEntryBoardItemListReq.Serializer());
+            Create(new C2SEntryBoardEntryBoardItemRecreateReq.Serializer());
 
             Create(new C2SAchievementReceivableRewardNtc.Serializer());
             Create(new C2SAchievementCompleteNtc.Serializer());
@@ -648,6 +654,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SQuestGetAdventureGuideQuestNtcReq.Serializer());
             Create(new C2SQuestGetEndContentsRecruitListReq.Serializer());
             Create(new C2SQuestPlayInterruptReq.Serializer());
+            Create(new C2SQuestGetQuestScheduleInfoReq.Serializer());
+            Create(new C2SQuestPlayInterruptAnswerReq.Serializer());
 
             Create(new C2SServerGameTimeGetBaseInfoReq.Serializer());
             Create(new C2SServerGetRealTimeReq.Serializer());
@@ -877,6 +885,13 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CEntryBoardEntryBoardItemInfoMyselfRes.Serializer());
             Create(new S2CEntryBoardEntryBoardItemInfoChangeRes.Serializer());
             Create(new S2CEntryBoardEntryBoardItemInfoChangeNtc.Serializer());
+            Create(new S2CEntryBoardEntryBoardItemInviteRes.Serializer());
+            Create(new S2CEntryBoardEntryBoardItemInviteNtc.Serializer());
+            Create(new S2CEntryBoardEntryBoardItemRes.Serializer());
+            Create(new S2CEntryBoardEntryBoardItemEntryRes.Serializer());
+            Create(new S2CEntryBoardEntryBoardItemListRes.Serializer());
+            Create(new S2CEntryBoardEntryBoardItemRecreateRes.Serializer());
+            Create(new S2CEntryBoardEntryBoardItemRecreateNtc.Serializer());
 
             Create(new S2CEquipChangeCharacterEquipJobItemNtc.Serializer());
             Create(new S2CEquipChangeCharacterEquipJobItemRes.Serializer());
@@ -1130,6 +1145,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CQuestPlayInterruptNtc.Serializer());
             Create(new S2CQuestPlayTimeupNtc.Serializer());
             Create(new S2CQuestPlayAddTimerNtc.Serializer());
+            Create(new S2CQuestPlayEntryCancelNtc.Serializer());
+            Create(new S2CQuestPlayInterruptAnswerRes.Serializer());
+            Create(new S2CQuestPlayInterruptAnswerNtc.Serializer());
 
             Create(new S2CQuestSendLeaderQuestOrderConditionInfoNtc.Serializer());
             Create(new S2CQuestSendLeaderQuestOrderConditionInfoRes.Serializer());
@@ -1138,6 +1156,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CQuestSetPriorityQuestRes.Serializer());
             Create(new S2CQuestGetMobHuntQuestListRes.Serializer());
             Create(new S2CQuestGetEndContentsGroupRes.Serializer());
+            Create(new S2CQuestGetQuestScheduleInfoRes.Serializer());
 
             Create(new S2CSeason62_26_16Ntc.Serializer());
 

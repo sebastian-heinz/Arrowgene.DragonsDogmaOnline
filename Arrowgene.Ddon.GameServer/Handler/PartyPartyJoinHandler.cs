@@ -46,12 +46,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Contents);
             }
 
-            var characterContentId = Server.ExmManager.GetContentIdForCharacter(client.Character);
-            if (party.ContentId != 0 && characterContentId != party.ContentId)
-            {
-                Server.ExmManager.AddCharacterToContentGroup(party.ContentId, client.Character);
-            }
-
             var partyLeader = party.Leader.Client.Character;
 
             S2CPartyPartyJoinNtc ntc = new S2CPartyPartyJoinNtc();

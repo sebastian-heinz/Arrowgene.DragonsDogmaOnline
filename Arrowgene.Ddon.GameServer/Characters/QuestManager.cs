@@ -7,6 +7,8 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
@@ -24,6 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static readonly HashSet<QuestId> AvailableVariantQuests = new();
         private static Dictionary<uint, List<Quest>> gTutorialQuests = new Dictionary<uint, List<Quest>>();
         private static Dictionary<QuestAreaId, List<Quest>> gWorldQuests = new Dictionary<QuestAreaId, List<Quest>>();
+        private static readonly Dictionary<ulong, Quest> gExtremeQuests = new Dictionary<ulong, Quest>();
 
         public static HashSet<QuestId> GetAllVariantQuestIds()
         {
@@ -78,6 +81,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             gWorldQuests[quest.QuestAreaId] = new List<Quest>();
                         }
                         gWorldQuests[quest.QuestAreaId].Add(quest);
+                    }
+                    else if (quest.QuestType == QuestType.ExtremeMission)
+                    {
+                        gExtremeQuests[quest.MissionParams.BoardId] = quest;
                     }
                 }
             }
@@ -167,6 +174,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return gWorldQuests[areaId].Select(x => x.QuestId).ToList();
+        }
+
+        public static Quest GetQuestByBoardId(ulong boardId)
+        {
+            if (!gExtremeQuests.ContainsKey(boardId))
+            {
+                return null;
+            }
+            return gExtremeQuests[boardId];
         }
 
         public static List<Quest> GetTutorialQuestsByStageNo(uint stageNo)

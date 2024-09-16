@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -24,17 +25,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // var result = new S2CEntryBoardEntryBoardListRes.Serializer().Read(GameFull.Dump_709.AsBuffer());
 
             var result = new S2CEntryBoardEntryBoardListRes();
-            foreach (var contentId in request.Unk0List.Select(x => x.Value).ToList())
+            foreach (var boardId in request.BoardIdList.Select(x => x.Value).ToList())
             {
-                if (Server.ExmManager.HasContentId(contentId))
+                var quest = QuestManager.GetQuestByBoardId(boardId);
+                foreach (var group in Server.BoardManager.GetGroupsForBoardId(boardId))
                 {
-                    var data = Server.ExmManager.GetEntryItemDataForContent(contentId);
                     var contentParams = new CDataEntryBoardListParam()
                     {
-                        EntryId = contentId,
-                        SortieMin = 1,
-                        NoPartyMembers = (ushort) data.EntryMemberList.Count,
-                        TimeOut = 3600, // TODO: Figure this out from some config?
+                        BoardId = group.BoardId,
+                        SortieMin = 1, // TODO: Can client populate this from somewhere?
+                        NoPartyMembers = (ushort) group.Members.Count(),
+                        TimeOut = 3600, // TODO: Get time ellapsed until recruitment ends and populate this to match?
                     };
                     result.EntryList.Add(contentParams);
                 }

@@ -28,19 +28,28 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
+
             if (party.ContentId != 0)
             {
-                Server.ExmManager.RemoveCharacterFromContentGroup(client.Character);
+                var data = Server.BoardManager.GetGroupDataForCharacter(client.Character);
+                if (!data.IsInRecreate)
+                {
+                    Server.BoardManager.RemoveCharacterFromGroup(client.Character);
+                    Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Online);
+                }
+                else
+                {
+                    Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.EntryBoard);
+                }
             }
-            Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Online);
+            else
+            {
+                Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Online);
+            }
+            
 
             party.Leave(client);
             Logger.Info(client, $"Left PartyId:{party.Id}");
-
-            if (party.ContentId != 0 && party.MemberCount() == 0)
-            {
-                Server.ExmManager.RemoveGroupForContent(party.ContentId);
-            }
 
             S2CPartyPartyLeaveNtc partyLeaveNtc = new S2CPartyPartyLeaveNtc();
             partyLeaveNtc.CharacterId = client.Character.CharacterId;

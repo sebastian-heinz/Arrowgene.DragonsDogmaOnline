@@ -16,9 +16,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CQuestPlayInterruptRes Handle(GameClient client, C2SQuestPlayInterruptReq request)
         {
+            if (client.Party.Clients.Count > 1)
+            {
+                Server.ContentManager.InitatePartyAbandonVote(client.Party, 60);
+                Server.ContentManager.VoteToAbandon(client.Character, client.Party.Id, true);
+            }
+
             client.Party.SendToAll(new S2CQuestPlayInterruptNtc()
             {
-                CharacterId = client.Character.CharacterId,
                 DeadlineSec = 60
             });
 

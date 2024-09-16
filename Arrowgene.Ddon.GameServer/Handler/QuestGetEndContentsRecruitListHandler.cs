@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -25,7 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     QuestScheduleId = (uint) quest.QuestScheduleId,
                     QuestId = (uint) quest.QuestId,
-                    GroupsRecruiting = Server.ExmManager.NumGroupsRecruitingForContent(quest.QuestId),
+                    GroupsRecruiting = (uint) Server.BoardManager.GetGroupsForBoardId(quest.MissionParams.BoardId).Where(x => !x.ContentInProgress).ToList().Count
                 });
             }
 

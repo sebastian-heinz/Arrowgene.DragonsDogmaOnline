@@ -20,15 +20,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CEntryBoardEntryBoardItemForceStartRes Handle(GameClient client, C2SEntryBoardEntryBoardItemForceStartReq request)
         {
             // var pcap = new S2CEntryBoardEntryBoardItemForceStartRes.Serializer().Read(GameFull.Dump_711.AsBuffer());
-            var data = Server.ExmManager.GetEntryItemDataForCharacter(client.Character);
 
-            // ALlows the menu to transition
-            var ntc = new S2CEntryBoardEntryBoardItemReadyNtc()
+            var data = Server.BoardManager.GetGroupDataForCharacter(client.Character);
+
+            foreach (var characterId in data.Members)
             {
-                MaxMember = data.Param.MaxEntryNum,
-                TimeOut = data.TimeOut
-            };
-            client.Send(ntc);
+                var memberClient = Server.ClientLookup.GetClientByCharacterId(characterId);
+                // Allows the menu to transition
+                var ntc = new S2CEntryBoardEntryBoardItemReadyNtc()
+                {
+                    MaxMember = data.EntryItem.Param.MaxEntryNum,
+                    TimeOut = 120
+                };
+                memberClient.Send(ntc);
+            }
+
+            // TODO: Start a timer for 120 seconds
 
             return new S2CEntryBoardEntryBoardItemForceStartRes();
         }

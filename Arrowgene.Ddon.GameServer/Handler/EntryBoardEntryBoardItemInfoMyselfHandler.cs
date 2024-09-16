@@ -15,10 +15,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CEntryBoardEntryBoardItemInfoMyselfRes Handle(GameClient client, C2SEntryBoardEntryBoardItemInfoMyselfReq request)
         {
             // var pcap = new S2CEntryBoardEntryBoardItemInfoMyselfRes.Serializer().Read(GameFull.Dump_712.AsBuffer());
+
+            var data = Server.BoardManager.GetGroupDataForCharacter(client.Character);
             var result = new S2CEntryBoardEntryBoardItemInfoMyselfRes()
             {
-                ContentId = Server.ExmManager.GetContentIdForCharacter(client.Character),
-                EntryItem = Server.ExmManager.GetEntryItemDataForCharacter(client.Character)
+                BoardId = data.BoardId,
+                EntryItem = data.EntryItem
             };
 
             return result;

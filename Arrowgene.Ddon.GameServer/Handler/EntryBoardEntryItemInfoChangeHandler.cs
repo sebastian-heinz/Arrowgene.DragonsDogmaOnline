@@ -21,22 +21,25 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CEntryBoardEntryBoardItemInfoChangeRes Handle(GameClient client, C2SEntryBoardEntryBoardItemInfoChangeReq request)
         {
-            var data = Server.ExmManager.GetEntryItemDataForCharacter(client.Character);
-            data.Param = request.Param;
-            // TODO: How to save password?
-            // request.Password
+            var data = Server.BoardManager.GetGroupDataForCharacter(client.Character);
+            data.Password = request.Password;
+            data.EntryItem.Param = request.Param;
 
             var ntc = new S2CEntryBoardEntryBoardItemInfoChangeNtc()
             {
-                BoardId = Server.ExmManager.GetContentIdForCharacter(client.Character),
-                EntryItemData = data
+                BoardId = data.BoardId,
+                EntryItemData = data.EntryItem
             };
-            // TODO: Does this need to be sent to everyone in the server?
-            client.Party.SendToAllExcept(ntc, client);
 
+            foreach (var characterId in data.Members)
+            {
+                var memberClient = Server.ClientLookup.GetClientByCharacterId(characterId);
+                memberClient.Send(ntc);
+            }
+            
             return new S2CEntryBoardEntryBoardItemInfoChangeRes()
             {
-                EntryItemData = data
+                EntryItemData = data.EntryItem
             };
         }
     }
