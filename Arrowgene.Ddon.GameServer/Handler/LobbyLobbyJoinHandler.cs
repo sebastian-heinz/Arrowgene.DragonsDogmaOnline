@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 new List<S2CContextGetLobbyPlayerContextNtc>();
             foreach (GameClient otherClient in Server.ClientLookup.GetAll())
             {
-                if (otherClient != client)
+                if (otherClient != client && otherClient.Character != null)
                 {
                     alreadyPresentUsersNtc.UserList.Add
                     (

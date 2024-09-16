@@ -130,7 +130,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             partyMemberClient.InstanceDropItemManager.GetAssets(layoutId, (int)packet.Structure.SetId);
 
                 // If the roll was unlucky, there is a chance that no bag will show.
-                if (instancedGatheringItems.Count > 0)
+                if (instancedGatheringItems.Where(x => x.ItemNum > 0).Any())
                 {
                     partyMemberClient.Send(new S2CInstancePopDropItemNtc()
                     {

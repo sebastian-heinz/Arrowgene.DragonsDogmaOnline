@@ -2831,6 +2831,8 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_INSTANCE_GET_EX_OM_INFO_RES);
             AddPacketIdEntry(packetIds, C2S_INSTANCE_CHARACTER_START_BAD_STATUS_NTC);
             AddPacketIdEntry(packetIds, C2S_INSTANCE_CHARACTER_END_BAD_STATUS_NTC);
+            AddPacketIdEntry(packetIds, C2S_INSTANCE_13_46_16_NTC);
+            AddPacketIdEntry(packetIds, C2S_INSTANCE_13_47_16_NTC);
 
             // Group: 14 - (WARP)
             AddPacketIdEntry(packetIds, C2S_WARP_RELEASE_WARP_POINT_REQ);
