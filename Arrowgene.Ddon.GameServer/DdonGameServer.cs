@@ -518,6 +518,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestPlayStartTimerHandler(this));
             AddHandler(new QuestPlayEndHandler(this));
             AddHandler(new QuestPlayInterruptHandler(this));
+            AddHandler(new QuestPlayInterruptAnswerHandler(this));
             AddHandler(new QuestGetEndContentsRecruitListHandler(this));
             AddHandler(new QuestGetQuestScheduleInfoHandler(this));
 
