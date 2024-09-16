@@ -8,12 +8,10 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
-using static Arrowgene.Ddon.GameServer.Characters.ContentManager;
-// using static Arrowgene.Ddon.GameServer.Characters.ExmManager;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
-    public class ContentManager
+    public class PartyQuestContentManager
     {
         private DdonGameServer _Server;
         private Dictionary<uint, TimerState> _ContentTimers;
@@ -21,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private Dictionary<uint, TimerState> _VoteTimers;
         private Dictionary<uint, Dictionary<uint, bool>> _VoteStatus;
 
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ContentManager));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyQuestContentManager));
 
         internal class TimerState
         {
@@ -30,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             public Timer Timer { get; set; }
         }
 
-        public ContentManager(DdonGameServer server)
+        public PartyQuestContentManager(DdonGameServer server)
         {
             _Server = server;
             _ContentTimers = new Dictionary<uint, TimerState>();
