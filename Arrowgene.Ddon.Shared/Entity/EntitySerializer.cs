@@ -486,7 +486,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SEntryBoardEntryBoardItemListReq.Serializer());
             Create(new C2SEntryBoardEntryBoardItemRecreateReq.Serializer());
             Create(new C2SEntryBoardItemKickReq.Serializer());
-            Create(new C2SEntryBoardEntryBoardExtendTimeoutReq.Serializer());
+            Create(new C2SEntryBoardEntryBoardItemExtendTimeoutReq.Serializer());
 
             Create(new C2SAchievementReceivableRewardNtc.Serializer());
             Create(new C2SAchievementCompleteNtc.Serializer());
@@ -899,7 +899,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CEntryBoardItemTimeoutTimerNtc.Serializer());
             Create(new S2CEntryBoardItemPartyNtc.Serializer());
             Create(new S2CEntryBoardItemKickRes.Serializer());
-            Create(new S2CEntryBoardEntryBoardExtendTimeoutRes.Serializer());
+            Create(new S2CEntryBoardEntryBoardItemExtendTimeoutRes.Serializer());
 
             Create(new S2CEquipChangeCharacterEquipJobItemNtc.Serializer());
             Create(new S2CEquipChangeCharacterEquipJobItemRes.Serializer());

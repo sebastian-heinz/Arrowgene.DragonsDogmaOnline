@@ -6,7 +6,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class EntryBoardEntryBoardItemExtendTimeoutHandler : GameRequestPacketHandler<C2SEntryBoardEntryBoardExtendTimeoutReq, S2CEntryBoardEntryBoardExtendTimeoutRes>
+    public class EntryBoardEntryBoardItemExtendTimeoutHandler : GameRequestPacketHandler<C2SEntryBoardEntryBoardItemExtendTimeoutReq, S2CEntryBoardEntryBoardItemExtendTimeoutRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(EntryBoardEntryBoardItemExtendTimeoutHandler));
 
@@ -14,14 +14,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override S2CEntryBoardEntryBoardExtendTimeoutRes Handle(GameClient client, C2SEntryBoardEntryBoardExtendTimeoutReq request)
+        public override S2CEntryBoardEntryBoardItemExtendTimeoutRes Handle(GameClient client, C2SEntryBoardEntryBoardItemExtendTimeoutReq request)
         {
             // var pcap = new S2CEntryBoardEntryBoardItemForceStartRes.Serializer().Read(GameFull.Dump_711.AsBuffer());
             var data = Server.BoardManager.GetGroupDataForCharacter(client.Character);
 
             if (!Server.BoardManager.ExtendReadyUpTimer(data.EntryItem.Id))
             {
-                return new S2CEntryBoardEntryBoardExtendTimeoutRes()
+                return new S2CEntryBoardEntryBoardItemExtendTimeoutRes()
                 {
                     Error = (uint) ErrorCode.ERROR_CODE_TIMER_INTERNAL_ERROR
                 };
@@ -38,7 +38,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 memberClient.Send(new S2CEntryBoardItemTimeoutTimerNtc() { TimeOut = Server.BoardManager.GetTimeLeftToReadyUp(data.EntryItem.Id) });
             }
 
-            return new S2CEntryBoardEntryBoardExtendTimeoutRes()
+            return new S2CEntryBoardEntryBoardItemExtendTimeoutRes()
             {
                 TimeOut = Server.BoardManager.GetTimeLeftToReadyUp(data.EntryItem.Id)
             };

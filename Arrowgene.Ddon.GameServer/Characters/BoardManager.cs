@@ -444,14 +444,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         }
 
                         // Restart the recruitment timer
-                        data.EntryItem.TimeOut = 3600;
-                        StartRecruitmentTimer(data.EntryItem.Id, 3600);
+                        data.EntryItem.TimeOut = BoardManager.PARTY_BOARD_TIMEOUT;
+                        StartRecruitmentTimer(data.EntryItem.Id, BoardManager.PARTY_BOARD_TIMEOUT);
                         foreach (var characterId in data.Members)
                         {
                             var memberClient = _Server.ClientLookup.GetClientByCharacterId(characterId);
                             if (memberClient != null)
                             {
-                                memberClient.Send(new S2CEntryBoardItemTimeoutTimerNtc() { TimeOut = 3600});
+                                memberClient.Send(new S2CEntryBoardItemTimeoutTimerNtc() { TimeOut = BoardManager.PARTY_BOARD_TIMEOUT });
                             }
                         }
                     }

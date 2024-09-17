@@ -5,27 +5,27 @@ using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class S2CEntryBoardEntryBoardExtendTimeoutRes : ServerResponse
+    public class S2CEntryBoardEntryBoardItemExtendTimeoutRes : ServerResponse
     {
         public override PacketId Id => PacketId.S2C_ENTRY_BOARD_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_RES;
 
-        public S2CEntryBoardEntryBoardExtendTimeoutRes()
+        public S2CEntryBoardEntryBoardItemExtendTimeoutRes()
         {
         }
 
         public ushort TimeOut {  get; set; }
 
-        public class Serializer : PacketEntitySerializer<S2CEntryBoardEntryBoardExtendTimeoutRes>
+        public class Serializer : PacketEntitySerializer<S2CEntryBoardEntryBoardItemExtendTimeoutRes>
         {
-            public override void Write(IBuffer buffer, S2CEntryBoardEntryBoardExtendTimeoutRes obj)
+            public override void Write(IBuffer buffer, S2CEntryBoardEntryBoardItemExtendTimeoutRes obj)
             {
                 WriteServerResponse(buffer, obj);
                 WriteUInt16(buffer, obj.TimeOut);
             }
 
-            public override S2CEntryBoardEntryBoardExtendTimeoutRes Read(IBuffer buffer)
+            public override S2CEntryBoardEntryBoardItemExtendTimeoutRes Read(IBuffer buffer)
             {
-                S2CEntryBoardEntryBoardExtendTimeoutRes obj = new S2CEntryBoardEntryBoardExtendTimeoutRes();
+                S2CEntryBoardEntryBoardItemExtendTimeoutRes obj = new S2CEntryBoardEntryBoardItemExtendTimeoutRes();
                 ReadServerResponse(buffer, obj);
                 obj.TimeOut = ReadUInt16(buffer);
                 return obj;
