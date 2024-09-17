@@ -1,7 +1,6 @@
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -18,14 +17,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             if (client.Party.Clients.Count > 1)
             {
-                Server.ContentManager.InitatePartyAbandonVote(client.Party, 60);
-                Server.ContentManager.VoteToAbandon(client.Character, client.Party.Id, true);
+                Server.PartyQuestContentManager.InitatePartyAbandonVote(client, client.Party, 60);
+                Server.PartyQuestContentManager.VoteToAbandon(client.Character, client.Party.Id, VoteAnswer.Agree);
+                client.Party.SendToAllExcept(new S2CQuestPlayInterruptNtc()
+                {
+                    CharacterId = client.Character.CharacterId,
+                    DeadlineSec = 60
+                }, client);
             }
-
-            client.Party.SendToAll(new S2CQuestPlayInterruptNtc()
+            else
             {
-                DeadlineSec = 60
-            });
+                client.Party.SendToAll(new S2CQuestPlayInterruptAnswerNtc() { IsInterrupt = true });
+            }
 
             return new S2CQuestPlayInterruptRes()
             {

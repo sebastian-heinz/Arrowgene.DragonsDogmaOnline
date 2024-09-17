@@ -37,6 +37,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (Server.BoardManager.AllGroupMembersReady(data.EntryItem.Id))
             {
+                Server.BoardManager.CancelReadyUpTimer(data.EntryItem.Id);
+                
                 // If some sort of party recreation was taking place, it is now over
                 data.IsInRecreate = false;
 

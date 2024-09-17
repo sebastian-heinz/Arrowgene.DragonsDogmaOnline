@@ -35,6 +35,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 if (!data.IsInRecreate)
                 {
                     Server.BoardManager.RemoveCharacterFromGroup(client.Character);
+                    Server.PartyQuestContentManager.RemovePartyMember(party.Id, client.Character);
                     Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Online);
                 }
                 else

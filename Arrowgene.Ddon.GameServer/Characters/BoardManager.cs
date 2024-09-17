@@ -1,11 +1,11 @@
+using Arrowgene.Ddon.GameServer.Utils;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -16,10 +16,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private Dictionary<ulong, Dictionary<uint, GroupData>> _Boards;
         private Dictionary<uint, GroupData> _Groups;
         private Dictionary<uint, uint> _CharacterToEntryIdMap;
-        private uint EntryItemIdCounter;
-        private Stack<uint> _FreeEntryItemIds;
+        private UniqueIdPool _EntryItemIdPool;
 
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(BoardManager));
+
+        public static readonly ushort PARTY_BOARD_TIMEOUT = 3600;
+        public static readonly ushort ENTRY_BOARD_READY_TIMEOUT = 120;
 
         public class GroupData
         {
@@ -31,6 +33,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             public Dictionary<uint, bool> MemberReadyState {  get; set; }
             public bool IsInRecreate {  get; set; }
             public bool ContentInProgress {  get; set; }
+            public uint RecruitmentTimerId {  get; set; }
+            public uint ReadyUpTimerId {  get; set; }
 
             public GroupData()
             {
@@ -55,11 +59,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             _Boards = new Dictionary<ulong, Dictionary<uint, GroupData>>();
             _Groups = new Dictionary<uint, GroupData>();
             _CharacterToEntryIdMap = new Dictionary<uint, uint>();
-
-            // Entry ID Tracking
-            EntryItemIdCounter = 1;
-            _FreeEntryItemIds = new Stack<uint>();
-            _FreeEntryItemIds.Push(EntryItemIdCounter);
+            _EntryItemIdPool = new UniqueIdPool(1);
         }
 
         public GroupData CreateNewGroup(ulong boardId, CDataEntryItemParam createParam, string password, uint leaderCharacterId)
@@ -71,7 +71,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 PartyLeaderCharacterId = leaderCharacterId,
             };
             data.EntryItem.Param = createParam;
-            data.EntryItem.Id = GenerateEntryItemId();
+            data.EntryItem.Id = _EntryItemIdPool.GenerateId();
 
             // TODO: Quest Manager look up min/max
 
@@ -133,7 +133,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     }
                 }
 
-                ReclaimEntryItemId(data.EntryItem.Id);
+                if (data.RecruitmentTimerId != 0)
+                {
+                    _Server.TimerManager.CancelTimer(data.RecruitmentTimerId);
+                }
+                
+                if (data.ReadyUpTimerId != 0)
+                {
+                    _Server.TimerManager.CancelTimer(data.ReadyUpTimerId);
+                }
+
+                _EntryItemIdPool.ReclaimId(data.EntryItem.Id);
             }
 
             return true;
@@ -346,28 +356,160 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return GetEntryItemIdForCharacter(character.CharacterId);
         }
 
-        private uint GenerateEntryItemId()
+        public bool StartRecruitmentTimer(uint entryItemId, uint timeoutInSeconds)
         {
-            lock (_FreeEntryItemIds)
+            lock (_Boards)
             {
-                if (_FreeEntryItemIds.Count == 0)
+                var data = GetGroupData(entryItemId);
+                if (data == null)
                 {
-                    EntryItemIdCounter = EntryItemIdCounter + 1;
-                    _FreeEntryItemIds.Push(EntryItemIdCounter);
+                    return false;
                 }
 
-                var entryItemId = _FreeEntryItemIds.Pop();
-                Logger.Info($"Allocating EntryId={entryItemId}");
-                return entryItemId;
+                data.RecruitmentTimerId = _Server.TimerManager.CreateTimer(timeoutInSeconds, () =>
+                {
+                    lock (_Boards)
+                    {
+                        foreach (var characterId in data.Members)
+                        {
+                            var memberClient = _Server.ClientLookup.GetClientByCharacterId(characterId);
+                            if (memberClient != null)
+                            {
+                                memberClient.Send(new S2CEntryBoardEntryBoardItemLeaveNtc() { LeaveType = EntryBoardLeaveType.EntryBoardTimeUp });
+                            }
+                        }
+                    }
+                });
+
+                if (!_Server.TimerManager.StartTimer(data.RecruitmentTimerId))
+                {
+                    _Server.TimerManager.CancelTimer(data.RecruitmentTimerId);
+                    return false;
+                }
+
+                return true;
             }
         }
 
-        private void ReclaimEntryItemId(uint entryItemId)
+        public ulong GetRecruitmentTimeLeft(uint entryItemId)
         {
-            lock (_FreeEntryItemIds)
+            lock (_Boards)
             {
-                Logger.Info($"Reclaiming EntryId={entryItemId}");
-                _FreeEntryItemIds.Push(entryItemId);
+                var data = GetGroupData(entryItemId);
+                if (data == null)
+                {
+                    return 0;
+                }
+                return _Server.TimerManager.GetTimeLeftInSeconds(data.RecruitmentTimerId);
+            }
+        }
+
+        public bool CancelRecruitmentTimer(uint entryItemId)
+        {
+            lock (_Boards)
+            {
+                var data = GetGroupData(entryItemId);
+                if (data == null)
+                {
+                    return false;
+                }
+
+                _Server.TimerManager.CancelTimer(data.RecruitmentTimerId);
+                data.RecruitmentTimerId = 0;
+                return true;
+            }
+        }
+
+        public bool StartReadyUpTimer(uint entryItemId, uint timeoutInSeconds)
+        {
+            lock (_Boards)
+            {
+                var data = GetGroupData(entryItemId);
+                if (data == null)
+                {
+                    return false;
+                }
+
+                data.ReadyUpTimerId = _Server.TimerManager.CreateTimer(timeoutInSeconds, () =>
+                {
+                    lock (_Boards)
+                    {
+                        foreach (var characterId in data.Members)
+                        {
+                            var memberClient = _Server.ClientLookup.GetClientByCharacterId(characterId);
+                            if (memberClient != null)
+                            {
+                                memberClient.Send(new S2CEntryBoardItemUnreadyNtc());
+                            }
+                        }
+
+                        // Restart the recruitment timer
+                        data.EntryItem.TimeOut = BoardManager.PARTY_BOARD_TIMEOUT;
+                        StartRecruitmentTimer(data.EntryItem.Id, BoardManager.PARTY_BOARD_TIMEOUT);
+                        foreach (var characterId in data.Members)
+                        {
+                            var memberClient = _Server.ClientLookup.GetClientByCharacterId(characterId);
+                            if (memberClient != null)
+                            {
+                                memberClient.Send(new S2CEntryBoardItemTimeoutTimerNtc() { TimeOut = BoardManager.PARTY_BOARD_TIMEOUT });
+                            }
+                        }
+                    }
+                });
+
+                if (!_Server.TimerManager.StartTimer(data.ReadyUpTimerId))
+                {
+                    _Server.TimerManager.CancelTimer(data.ReadyUpTimerId);
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        public bool CancelReadyUpTimer(uint entryItemId)
+        {
+            lock (_Boards)
+            {
+                var data = GetGroupData(entryItemId);
+                if (data == null)
+                {
+                    return false;
+                }
+
+                _Server.TimerManager.CancelTimer(data.ReadyUpTimerId);
+                data.ReadyUpTimerId = 0;
+                return true;
+            }
+        }
+
+        public bool ExtendReadyUpTimer(uint entryItemId)
+        {
+            lock (_Boards)
+            {
+                var data = GetGroupData(entryItemId);
+                if (data == null)
+                {
+                    return false;
+                }
+
+                // UI only allows the count down to start from 120
+                var ellapsedTime = BoardManager.ENTRY_BOARD_READY_TIMEOUT - _Server.TimerManager.GetTimeLeftInSeconds(data.ReadyUpTimerId);
+                _Server.TimerManager.ExtendTimer(data.ReadyUpTimerId, (uint)ellapsedTime);
+                return true;
+            }
+        }
+
+        public ushort GetTimeLeftToReadyUp(uint entryItemId)
+        {
+            lock (_Boards)
+            {
+                var data = GetGroupData(entryItemId);
+                if (data == null)
+                {
+                    return 0;
+                }
+                return (ushort) _Server.TimerManager.GetTimeLeftInSeconds(data.ReadyUpTimerId);
             }
         }
     }

@@ -31,7 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CQuestPlayEndRes Handle(GameClient client, C2SQuestPlayEndReq request)
         {
-            var timeData = Server.ContentManager.CancelTimer(client.Party.Id);
+            var timeData = Server.PartyQuestContentManager.CancelTimer(client.Party.Id);
             var quest = QuestManager.GetQuestByBoardId(client.Party.ContentId);
 
             var ntc = new S2CQuestPlayEndNtc();

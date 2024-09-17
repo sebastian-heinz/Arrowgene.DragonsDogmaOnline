@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CQuestPlayInterruptAnswerNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.S2C_QUEST_11_86_16_NTC; // EMPTY ID
+        public PacketId Id => PacketId.S2C_QUEST_PLAY_INTERRUPT_RESULT_NTC;
 
         public S2CQuestPlayInterruptAnswerNtc()
         {

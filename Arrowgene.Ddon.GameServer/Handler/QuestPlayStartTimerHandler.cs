@@ -32,7 +32,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
             client.Party.SendToAll(ntc);
 
-            Server.ContentManager.StartTimer(client.Party.Id, client, quest.MissionParams.PlaytimeInSeconds);
+            Server.PartyQuestContentManager.StartTimer(client.Party.Id, client, quest.MissionParams.PlaytimeInSeconds);
 
             return new S2CQuestPlayStartTimerRes();
         }
