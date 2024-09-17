@@ -485,6 +485,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SEntryBoardEntryBoardItemEntryReq.Serializer());
             Create(new C2SEntryBoardEntryBoardItemListReq.Serializer());
             Create(new C2SEntryBoardEntryBoardItemRecreateReq.Serializer());
+            Create(new C2SEntryBoardItemKickReq.Serializer());
+            Create(new C2SEntryBoardEntryBoardExtendTimeoutReq.Serializer());
 
             Create(new C2SAchievementReceivableRewardNtc.Serializer());
             Create(new C2SAchievementCompleteNtc.Serializer());
@@ -656,6 +658,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SQuestPlayInterruptReq.Serializer());
             Create(new C2SQuestGetQuestScheduleInfoReq.Serializer());
             Create(new C2SQuestPlayInterruptAnswerReq.Serializer());
+            Create(new C2SQuestPlayEntryCancelReq.Serializer());
 
             Create(new C2SServerGameTimeGetBaseInfoReq.Serializer());
             Create(new C2SServerGetRealTimeReq.Serializer());
@@ -892,6 +895,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CEntryBoardEntryBoardItemListRes.Serializer());
             Create(new S2CEntryBoardEntryBoardItemRecreateRes.Serializer());
             Create(new S2CEntryBoardEntryBoardItemRecreateNtc.Serializer());
+            Create(new S2CEntryBoardItemUnreadyNtc.Serializer());
+            Create(new S2CEntryBoardItemTimeoutTimerNtc.Serializer());
+            Create(new S2CEntryBoardItemPartyNtc.Serializer());
+            Create(new S2CEntryBoardItemKickRes.Serializer());
+            Create(new S2CEntryBoardEntryBoardExtendTimeoutRes.Serializer());
 
             Create(new S2CEquipChangeCharacterEquipJobItemNtc.Serializer());
             Create(new S2CEquipChangeCharacterEquipJobItemRes.Serializer());
@@ -1145,6 +1153,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CQuestPlayInterruptNtc.Serializer());
             Create(new S2CQuestPlayTimeupNtc.Serializer());
             Create(new S2CQuestPlayAddTimerNtc.Serializer());
+            Create(new S2CQuestPlayEntryCancelRes.Serializer());
             Create(new S2CQuestPlayEntryCancelNtc.Serializer());
             Create(new S2CQuestPlayInterruptAnswerRes.Serializer());
             Create(new S2CQuestPlayInterruptAnswerNtc.Serializer());

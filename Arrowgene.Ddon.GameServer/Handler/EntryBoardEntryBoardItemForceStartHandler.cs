@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -6,6 +7,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp.Consumer.BlockingQueueConsumption;
+using System.Threading;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -23,6 +25,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             var data = Server.BoardManager.GetGroupDataForCharacter(client.Character);
 
+            Server.BoardManager.CancelRecruitmentTimer(data.EntryItem.Id);
             foreach (var characterId in data.Members)
             {
                 var memberClient = Server.ClientLookup.GetClientByCharacterId(characterId);
@@ -30,12 +33,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var ntc = new S2CEntryBoardEntryBoardItemReadyNtc()
                 {
                     MaxMember = data.EntryItem.Param.MaxEntryNum,
-                    TimeOut = 120
+                    TimeOut = BoardManager.ENTRY_BOARD_READY_TIMEOUT,
                 };
                 memberClient.Send(ntc);
+                memberClient.Send(new S2CEntryBoardItemTimeoutTimerNtc() {TimeOut = BoardManager.ENTRY_BOARD_READY_TIMEOUT });
             }
 
-            // TODO: Start a timer for 120 seconds
+            Server.BoardManager.StartReadyUpTimer(data.EntryItem.Id, BoardManager.ENTRY_BOARD_READY_TIMEOUT);
 
             return new S2CEntryBoardEntryBoardItemForceStartRes();
         }

@@ -196,7 +196,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             if (questBlock.BlockType == QuestBlockType.ExtendTime && client.Party.ContentId != 0)
             {
-                var newEndTime = server.ContentManager.ExtendTimer(client.Party.Id, questBlock.TimeAmount);
+                var newEndTime = server.PartyQuestContentManager.ExtendTimer(client.Party.Id, questBlock.TimeAmount);
                 client.Party.SendToAll(new S2CQuestPlayAddTimerNtc() { PlayEndDateTime = newEndTime });
             }
 

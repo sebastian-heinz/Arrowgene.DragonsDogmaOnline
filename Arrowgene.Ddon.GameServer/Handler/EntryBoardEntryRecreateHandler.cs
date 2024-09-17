@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
@@ -17,6 +18,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CEntryBoardEntryBoardItemRecreateRes Handle(GameClient client, C2SEntryBoardEntryBoardItemRecreateReq request)
         {
             var data = Server.BoardManager.RecreateGroup(client.Character);
+
+            data.EntryItem.TimeOut = BoardManager.PARTY_BOARD_TIMEOUT;
             foreach (var characterId in data.Members)
             {
                 var memberClient = Server.ClientLookup.GetClientByCharacterId(characterId);

@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             data.EntryItem.PartyLeaderCharacterId = data.PartyLeaderCharacterId;
-            data.EntryItem.TimeOut = 3600; // TODO: Start a timer for 3600
+            data.EntryItem.TimeOut = BoardManager.PARTY_BOARD_TIMEOUT;
 
             var member = new CDataEntryMemberData()
             {
@@ -61,6 +61,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
             client.Send(ntc);
 
+            Server.BoardManager.StartRecruitmentTimer(data.EntryItem.Id, BoardManager.PARTY_BOARD_TIMEOUT);
             Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.EntryBoard);
 
             return new S2CEntryBoardEntryBoardItemCreateRes()
@@ -69,5 +70,5 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 EntryItem = data.EntryItem
             };
         }
-     }
+    }
 }

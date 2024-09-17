@@ -14,29 +14,22 @@ namespace Arrowgene.Ddon.GameServer.Characters
     public class PartyQuestContentManager
     {
         private DdonGameServer _Server;
-        private Dictionary<uint, TimerState> _ContentTimers;
+        private Dictionary<uint, uint> _ContentTimers;
 
-        private Dictionary<uint, TimerState> _VoteTimers;
-        private Dictionary<uint, Dictionary<uint, bool>> _VoteStatus;
+        private Dictionary<uint, uint> _VoteTimers;
+        private Dictionary<uint, Dictionary<uint, VoteAnswer>> _VoteStatus;
 
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyQuestContentManager));
-
-        internal class TimerState
-        {
-            public DateTime TimeStart {  get; set; }
-            public TimeSpan Duration {  get; set; }
-            public Timer Timer { get; set; }
-        }
 
         public PartyQuestContentManager(DdonGameServer server)
         {
             _Server = server;
-            _ContentTimers = new Dictionary<uint, TimerState>();
-            _VoteTimers = new Dictionary<uint, TimerState>();
-            _VoteStatus = new Dictionary<uint, Dictionary<uint, bool>>();
+            _VoteStatus = new Dictionary<uint, Dictionary<uint, VoteAnswer>>();
+            _VoteTimers = new Dictionary<uint, uint>();
+            _ContentTimers = new Dictionary<uint, uint>();
         }
 
-        public void InitatePartyAbandonVote(PartyGroup party, uint timeoutInSeconds)
+        public void InitatePartyAbandonVote(GameClient client, PartyGroup party, uint timeoutInSeconds)
         {
             lock (_VoteStatus)
             {
@@ -46,41 +39,56 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     return;
                 }
 
-                _VoteStatus[party.Id] = new Dictionary<uint, bool>();
-                foreach (var client in party.Clients)
+                _VoteStatus[party.Id] = new Dictionary<uint, VoteAnswer>();
+                foreach (var memberClient in party.Clients)
                 {
-                    _VoteStatus[party.Id][client.Character.CharacterId] = false;
+                    _VoteStatus[party.Id][memberClient.Character.CharacterId] = VoteAnswer.Undecided;
                 }
-                _VoteTimers[party.Id] = new TimerState();
 
-                var timerState = _VoteTimers[party.Id];
-                timerState.Duration = TimeSpan.FromSeconds(timeoutInSeconds);
-                timerState.TimeStart = DateTime.Now;
-                timerState.Timer = new Timer(task =>
+                _VoteTimers[party.Id] = _Server.TimerManager.CreateTimer(timeoutInSeconds, () =>
                 {
-                    TimeSpan alreadyElapsed = DateTime.Now.Subtract(timerState.TimeStart);
-                    if (alreadyElapsed > timerState.Duration)
-                    {
-                        Logger.Info($"(VoteToAbandon) Timer expired for PartyId={party.Id}");
-                        CancelVoteToAbandonTimer(party.Id);
-                    }
-                }, null, 0, 1000);
+                    Logger.Info($"(VoteToAbandon) Timer expired for PartyId={party.Id}");
+                    client.Party.SendToAll(new S2CQuestPlayInterruptAnswerNtc() { IsInterrupt = false });
+                    CancelVoteToAbandonTimer(party.Id);
+                });
+                _Server.TimerManager.StartTimer(_VoteTimers[party.Id]);
             }
             Logger.Info($"(VoteToAbandon) Started {timeoutInSeconds} seconds timer for PartyId={party.Id}");
+        }
+
+        public void RemovePartyMember(uint partyId, uint characterId)
+        {
+            lock (_VoteStatus)
+            {
+                if (!_VoteStatus.ContainsKey(partyId))
+                {
+                    return;
+                }
+
+                if (_VoteStatus[partyId].ContainsKey(characterId))
+                {
+                    _VoteStatus[partyId].Remove(characterId);
+                }
+            }
+        }
+
+        public void RemovePartyMember(uint partyId, Character character)
+        {
+            RemovePartyMember(partyId, character.CharacterId);
         }
 
         public void CancelVoteToAbandonTimer(uint partyId)
         {
             lock (_VoteStatus)
             {
-                _VoteTimers[partyId].Timer.Dispose();
+                _Server.TimerManager.CancelTimer(_VoteTimers[partyId]);
                 _VoteStatus.Remove(partyId);
                 _VoteTimers.Remove(partyId);
                 Logger.Info($"(VoteToAbandon) Canceling timer for PartyId={partyId}");
             }
         }
 
-        public void VoteToAbandon(uint characterId, uint partyId, bool shouldAbandon)
+        public void VoteToAbandon(uint characterId, uint partyId, VoteAnswer answer)
         {
             lock (_VoteStatus)
             {
@@ -94,16 +102,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     return;
                 }
 
-                _VoteStatus[partyId][characterId] = shouldAbandon;
+                _VoteStatus[partyId][characterId] = answer;
             }
         }
 
-        public void VoteToAbandon(Character character, uint partyId, bool shouldAbandon)
+        public void VoteToAbandon(Character character, uint partyId, VoteAnswer answer)
         {
-            VoteToAbandon(character.CharacterId, partyId, shouldAbandon);
+            VoteToAbandon(character.CharacterId, partyId, answer);
         }
 
-        public bool VoteToAbandonPassed(uint partyId)
+        public bool AllMembersVoted(uint partyId)
         {
             lock (_VoteStatus)
             {
@@ -112,12 +120,30 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     return false;
                 }
 
-                bool shouldAbandon = true;
-                foreach (var (characterId, result) in _VoteStatus[partyId])
+                bool allMembersVoted = true;
+                foreach (var (characterId, answer) in _VoteStatus[partyId])
                 {
-                    shouldAbandon &= result;
+                    allMembersVoted &= answer != VoteAnswer.Undecided;
                 }
-                return shouldAbandon;
+                return allMembersVoted;
+            }
+        }
+
+        public bool VotedPassed(uint partyId)
+        {
+            lock (_VoteStatus)
+            {
+                if (!_VoteStatus.ContainsKey(partyId))
+                {
+                    return false;
+                }
+
+                bool allMembersVoted = true;
+                foreach (var (characterId, answer) in _VoteStatus[partyId])
+                {
+                    allMembersVoted &= (answer == VoteAnswer.Agree);
+                }
+                return allMembersVoted;
             }
         }
 
@@ -125,21 +151,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             lock (_ContentTimers)
             {
-                _ContentTimers[partyId] = new TimerState();
-
-                var timerState = _ContentTimers[partyId];
-                timerState.Duration = TimeSpan.FromSeconds(playtimeInSeconds);
-                timerState.TimeStart = DateTime.Now;
-                timerState.Timer = new Timer(task =>
+                _ContentTimers[partyId] = _Server.TimerManager.CreateTimer(playtimeInSeconds, () =>
                 {
-                    TimeSpan alreadyElapsed = DateTime.Now.Subtract(timerState.TimeStart);
-                    if (alreadyElapsed > timerState.Duration)
-                    {
-                        Logger.Info($"(Content) Timer expired for Id={partyId}");
-                        client.Party.SendToAll(new S2CQuestPlayTimeupNtc());
-                        CancelTimer(partyId);
-                    }
-                }, null, 0, 1000);
+                    Logger.Info($"(Content) Timer expired for Id={partyId}");
+                    client.Party.SendToAll(new S2CQuestPlayTimeupNtc());
+                    CancelTimer(partyId);
+                });
+                _Server.TimerManager.StartTimer(_ContentTimers[partyId]);
                 Logger.Info($"Starting {playtimeInSeconds} second timer for PartyId={partyId}");
             }
         }
@@ -149,8 +167,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             lock (_ContentTimers)
             {
                 Logger.Info($"(Content) Extending time by {amountInSeconds} seconds for PartyId={partyId}");
-                _ContentTimers[partyId].Duration += TimeSpan.FromSeconds(amountInSeconds);
-                return (ulong) ((DateTimeOffset)(_ContentTimers[partyId].TimeStart + _ContentTimers[partyId].Duration)).ToUnixTimeSeconds();
+                return _Server.TimerManager.ExtendTimer(_ContentTimers[partyId], amountInSeconds);
             }
         }
 
@@ -161,12 +178,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 if (_ContentTimers.ContainsKey(partyId))
                 {
                     Logger.Info($"(Content) Canceling timer for PartyId={partyId}");
-                    _ContentTimers[partyId].Timer.Dispose();
-
-                    var timerState = _ContentTimers[partyId];
-
-                    TimeSpan elapsed = DateTime.Now.Subtract(timerState.TimeStart);
-                    var results = (elapsed, timerState.Duration);
+                    var results = _Server.TimerManager.CancelTimer(_ContentTimers[partyId]);
                     _ContentTimers.Remove(partyId);
                     return results;
                 }

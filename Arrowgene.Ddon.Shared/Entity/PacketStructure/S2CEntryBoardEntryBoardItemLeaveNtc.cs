@@ -14,19 +14,19 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
         }
 
-        public uint LeaveType {  get; set; }
+        public EntryBoardLeaveType LeaveType {  get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CEntryBoardEntryBoardItemLeaveNtc>
         {
             public override void Write(IBuffer buffer, S2CEntryBoardEntryBoardItemLeaveNtc obj)
             {
-                WriteUInt32(buffer, obj.LeaveType);
+                WriteUInt32(buffer, (uint) obj.LeaveType);
             }
 
             public override S2CEntryBoardEntryBoardItemLeaveNtc Read(IBuffer buffer)
             {
                 S2CEntryBoardEntryBoardItemLeaveNtc obj = new S2CEntryBoardEntryBoardItemLeaveNtc();
-                obj.LeaveType = ReadUInt32(buffer);
+                obj.LeaveType = (EntryBoardLeaveType) ReadUInt32(buffer);
                 return obj;
             }
         }

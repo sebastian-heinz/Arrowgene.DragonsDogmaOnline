@@ -1,4 +1,3 @@
-using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using System;
 using System.Collections.Generic;
 
@@ -662,8 +661,8 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId C2S_QUEST_PLAY_ENTRY_REQ = new PacketId(11, 39, 1, "C2S_QUEST_PLAY_ENTRY_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_PLAY_ENTRY_RES = new PacketId(11, 39, 2, "S2C_QUEST_PLAY_ENTRY_RES", ServerType.Game, PacketSource.Server); // プレイエントリーに
         public static readonly PacketId S2C_QUEST_PLAY_ENTRY_NTC = new PacketId(11, 39, 16, "S2C_QUEST_PLAY_ENTRY_NTC", ServerType.Game, PacketSource.Server, "S2C_QUEST_11_39_16_NTC");
-        public static readonly PacketId C2S_QUEST_11_40_1_REQ = new PacketId(11, 40, 1, "C2S_QUEST_11_40_1_REQ", ServerType.Game, PacketSource.Client); // PLAY_ENTRY_CANCEL?
-        public static readonly PacketId S2C_QUEST_11_40_2_RES = new PacketId(11, 40, 2, "S2C_QUEST_11_40_2_RES", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId C2S_QUEST_PLAY_ENTRY_CANCEL_REQ = new PacketId(11, 40, 1, "C2S_QUEST_PLAY_ENTRY_CANCEL_REQ", ServerType.Game, PacketSource.Client, "C2S_QUEST_11_40_1_REQ");
+        public static readonly PacketId S2C_QUEST_PLAY_ENTRY_CANCEL_RES = new PacketId(11, 40, 2, "S2C_QUEST_PLAY_ENTRY_CANCEL_RES", ServerType.Game, PacketSource.Server, "S2C_QUEST_11_40_2_RES");
         public static readonly PacketId S2C_QUEST_PLAY_ENTRY_CANCEL_NTC = new PacketId(11, 40, 16, "S2C_QUEST_PLAY_ENTRY_CANCEL_NTC", ServerType.Game, PacketSource.Server, "S2C_QUEST_11_40_16_NTC");
         public static readonly PacketId C2S_QUEST_PLAY_START_REQ = new PacketId(11, 41, 1, "C2S_QUEST_PLAY_START_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_PLAY_START_RES = new PacketId(11, 41, 2, "S2C_QUEST_PLAY_START_RES", ServerType.Game, PacketSource.Server); // プレイスタートに
@@ -750,12 +749,12 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_QUEST_11_79_2_RES = new PacketId(11, 79, 2, "S2C_QUEST_11_79_2_RES", ServerType.Game, PacketSource.Server);
         public static readonly PacketId C2S_QUEST_DEBUG_ENEMY_SET_PRESET_FIX_REQ = new PacketId(11, 80, 1, "C2S_QUEST_DEBUG_ENEMY_SET_PRESET_FIX_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_DEBUG_ENEMY_SET_PRESET_FIX_RES = new PacketId(11, 80, 2, "S2C_QUEST_DEBUG_ENEMY_SET_PRESET_FIX_RES", ServerType.Game, PacketSource.Server); // (デバッグ用)敵セットプリセット固定に
-        public static readonly PacketId S2C_QUEST_11_81_16_NTC = new PacketId(11, 81, 16, "S2C_QUEST_11_81_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_QUEST_11_81_16_NTC = new PacketId(11, 81, 16, "S2C_QUEST_11_81_16_NTC", ServerType.Game, PacketSource.Server); // Doesn't seem to have a handler?
         public static readonly PacketId S2C_QUEST_11_82_16_NTC = new PacketId(11, 82, 16, "S2C_QUEST_11_82_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_QUEST_11_83_16_NTC = new PacketId(11, 83, 16, "S2C_QUEST_11_83_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_QUEST_11_84_16_NTC = new PacketId(11, 84, 16, "S2C_QUEST_11_84_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_QUEST_11_85_16_NTC = new PacketId(11, 85, 16, "S2C_QUEST_11_85_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_QUEST_11_86_16_NTC = new PacketId(11, 86, 16, "S2C_QUEST_11_86_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_QUEST_11_85_16_NTC = new PacketId(11, 85, 16, "S2C_QUEST_11_85_16_NTC", ServerType.Game, PacketSource.Server); // S2C_QUEST_ENABLE_NOTICE?
+        public static readonly PacketId S2C_QUEST_11_86_16_NTC = new PacketId(11, 86, 16, "S2C_QUEST_11_86_16_NTC", ServerType.Game, PacketSource.Server); // S2C_CYCLE_CONTENTS_ENABLE_NOTICE?
         public static readonly PacketId S2C_QUEST_11_87_16_NTC = new PacketId(11, 87, 16, "S2C_QUEST_11_87_16_NTC", ServerType.Game, PacketSource.Server); // S2C_QUEST_MASTER_DATA_RELOAD_NOTICE
         public static readonly PacketId S2C_QUEST_11_88_16_NTC = new PacketId(11, 88, 16, "S2C_QUEST_11_88_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_QUEST_JOIN_LOBBY_QUEST_INFO_NTC = new PacketId(11, 89, 16, "S2C_QUEST_JOIN_LOBBY_QUEST_INFO_NTC", ServerType.Game, PacketSource.Server, "S2C_QUEST_11_89_16_NTC");
@@ -776,8 +775,8 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_QUEST_11_104_16_NTC = new PacketId(11, 104, 16, "S2C_QUEST_11_104_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_QUEST_PLAY_TIMEUP_NTC = new PacketId(11, 105, 16, "S2C_QUEST_PLAY_TIMEUP_NTC", ServerType.Game, PacketSource.Server, "S2C_QUEST_11_105_16_NTC"); // Time is up (S2C_PLAY_TIMEUP_NOTICE)
         public static readonly PacketId S2C_QUEST_11_106_16_NTC = new PacketId(11, 106, 16, "S2C_QUEST_11_106_16_NTC", ServerType.Game, PacketSource.Server); // <syslog_wm_statement_gauge_0_defeat>
-        public static readonly PacketId S2C_QUEST_11_107_16_NTC = new PacketId(11, 107, 16, "S2C_QUEST_11_107_16_NTC", ServerType.Game, PacketSource.Server); // The request to end the mission was successful
-        public static readonly PacketId S2C_QUEST_11_108_16_NTC = new PacketId(11, 108, 16, "S2C_QUEST_11_108_16_NTC", ServerType.Game, PacketSource.Server); // The request to end the mission was successful
+        public static readonly PacketId S2C_QUEST_PLAY_INTERRUPT_RESULT_NTC = new PacketId(11, 107, 16, "S2C_QUEST_PLAY_INTERRUPT_RESULT_NTC", ServerType.Game, PacketSource.Server, "S2C_QUEST_11_107_16_NTC");
+        public static readonly PacketId S2C_QUEST_11_108_16_NTC = new PacketId(11, 108, 16, "S2C_QUEST_11_108_16_NTC", ServerType.Game, PacketSource.Server); // The request to end the mission was successful (S2C_PLAY_FORCE_INTERRUPT_NOTICE?)
         public static readonly PacketId S2C_QUEST_11_109_16_NTC = new PacketId(11, 109, 16, "S2C_QUEST_11_109_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_QUEST_11_110_16_NTC = new PacketId(11, 110, 16, "S2C_QUEST_11_110_16_NTC", ServerType.Game, PacketSource.Server); // <syslog_quest_progress_failed> (S2C_FORT_DEFENSE_PLAY_START_NOTICE)
         public static readonly PacketId S2C_QUEST_11_111_16_NTC = new PacketId(11, 111, 16, "S2C_QUEST_11_111_16_NTC", ServerType.Game, PacketSource.Server);
@@ -1584,10 +1583,10 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_ENTRY_BOARD_ENTRY_BOARD_ITEM_INVITE_RES = new PacketId(34, 13, 2, "S2C_ENTRY_BOARD_ENTRY_BOARD_ITEM_INVITE_RES", ServerType.Game, PacketSource.Server); // エントリーボード招待に
         public static readonly PacketId S2C_ENTRY_BOARD_ENTRY_BOARD_ITEM_INVITE_NTC = new PacketId(34, 13, 16, "S2C_ENTRY_BOARD_ENTRY_BOARD_ITEM_INVITE_NTC", ServerType.Game, PacketSource.Server, "S2C_ENTRY_34_13_16_NTC");
         public static readonly PacketId S2C_ENTRY_BOARD_ENTRY_BOARD_ITEM_CHANGE_MEMBER_NTC = new PacketId(34, 14, 16, "S2C_ENTRY_BOARD_ENTRY_BOARD_ITEM_CHANGE_MEMBER_NTC", ServerType.Game, PacketSource.Server, "S2C_ENTRY_34_14_16_NTC");
-        public static readonly PacketId S2C_ENTRY_34_15_16_NTC = new PacketId(34, 15, 16, "S2C_ENTRY_34_15_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_ENTRY_BOARD_ITEM_UNREADY_NTC = new PacketId(34, 15, 16, "S2C_ENTRY_BOARD_ITEM_UNREADY_NTC", ServerType.Game, PacketSource.Server, "S2C_ENTRY_34_15_16_NTC");
         public static readonly PacketId S2C_ENTRY_BOARD_ENTRY_BOARD_ITEM_RESERVE_NTC = new PacketId(34, 16, 16, "S2C_ENTRY_BOARD_ENTRY_BOARD_ITEM_RESERVE_NTC", ServerType.Game, PacketSource.Server, "S2C_ENTRY_34_16_16_NTC");
-        public static readonly PacketId S2C_ENTRY_34_17_16_NTC = new PacketId(34, 17, 16, "S2C_ENTRY_34_17_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_ENTRY_34_18_16_NTC = new PacketId(34, 18, 16, "S2C_ENTRY_34_18_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_ENTRY_BOARD_ITEM_PARTY_NTC = new PacketId(34, 17, 16, "S2C_ENTRY_BOARD_ITEM_PARTY_NTC", ServerType.Game, PacketSource.Server, "S2C_ENTRY_34_17_16_NTC");
+        public static readonly PacketId S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NTC = new PacketId(34, 18, 16, "S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NTC", ServerType.Game, PacketSource.Server, "S2C_ENTRY_34_18_16_NTC");
         public static readonly PacketId C2S_ENTRY_BOARD_PARTY_RECRUIT_CATEGORY_LIST_REQ = new PacketId(34, 19, 1, "C2S_ENTRY_BOARD_PARTY_RECRUIT_CATEGORY_LIST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_ENTRY_BOARD_PARTY_RECRUIT_CATEGORY_LIST_RES = new PacketId(34, 19, 2, "S2C_ENTRY_BOARD_PARTY_RECRUIT_CATEGORY_LIST_RES", ServerType.Game, PacketSource.Server); // パーティ募集掲示板リスト取得に
         public static readonly PacketId C2S_ENTRY_BOARD_ITEM_KICK_REQ = new PacketId(34, 20, 1, "C2S_ENTRY_BOARD_ITEM_KICK_REQ", ServerType.Game, PacketSource.Client);
@@ -2591,8 +2590,8 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, C2S_QUEST_PLAY_ENTRY_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_PLAY_ENTRY_RES);
             AddPacketIdEntry(packetIds, S2C_QUEST_PLAY_ENTRY_NTC);
-            AddPacketIdEntry(packetIds, C2S_QUEST_11_40_1_REQ);
-            AddPacketIdEntry(packetIds, S2C_QUEST_11_40_2_RES);
+            AddPacketIdEntry(packetIds, C2S_QUEST_PLAY_ENTRY_CANCEL_REQ);
+            AddPacketIdEntry(packetIds, S2C_QUEST_PLAY_ENTRY_CANCEL_RES);
             AddPacketIdEntry(packetIds, S2C_QUEST_PLAY_ENTRY_CANCEL_NTC);
             AddPacketIdEntry(packetIds, C2S_QUEST_PLAY_START_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_PLAY_START_RES);
@@ -2705,7 +2704,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_QUEST_11_104_16_NTC);
             AddPacketIdEntry(packetIds, S2C_QUEST_PLAY_TIMEUP_NTC);
             AddPacketIdEntry(packetIds, S2C_QUEST_11_106_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_QUEST_11_107_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_QUEST_PLAY_INTERRUPT_RESULT_NTC);
             AddPacketIdEntry(packetIds, S2C_QUEST_11_108_16_NTC);
             AddPacketIdEntry(packetIds, S2C_QUEST_11_109_16_NTC);
             AddPacketIdEntry(packetIds, S2C_QUEST_11_110_16_NTC);
@@ -3513,10 +3512,10 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_ENTRY_BOARD_ENTRY_BOARD_ITEM_INVITE_RES);
             AddPacketIdEntry(packetIds, S2C_ENTRY_BOARD_ENTRY_BOARD_ITEM_INVITE_NTC);
             AddPacketIdEntry(packetIds, S2C_ENTRY_BOARD_ENTRY_BOARD_ITEM_CHANGE_MEMBER_NTC);
-            AddPacketIdEntry(packetIds, S2C_ENTRY_34_15_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_ENTRY_BOARD_ITEM_UNREADY_NTC);
             AddPacketIdEntry(packetIds, S2C_ENTRY_BOARD_ENTRY_BOARD_ITEM_RESERVE_NTC);
-            AddPacketIdEntry(packetIds, S2C_ENTRY_34_17_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_ENTRY_34_18_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_ENTRY_BOARD_ITEM_PARTY_NTC);
+            AddPacketIdEntry(packetIds, S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NTC);
             AddPacketIdEntry(packetIds, C2S_ENTRY_BOARD_PARTY_RECRUIT_CATEGORY_LIST_REQ);
             AddPacketIdEntry(packetIds, S2C_ENTRY_BOARD_PARTY_RECRUIT_CATEGORY_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_ENTRY_BOARD_ITEM_KICK_REQ);

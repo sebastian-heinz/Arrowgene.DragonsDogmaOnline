@@ -76,8 +76,9 @@ namespace Arrowgene.Ddon.GameServer
             HubManager = new HubManager(this);
             GpCourseManager = new GpCourseManager(this);
             WeatherManager = new WeatherManager(this);
-            ContentManager = new PartyQuestContentManager(this);
+            PartyQuestContentManager = new PartyQuestContentManager(this);
             BoardManager = new BoardManager(this);
+            TimerManager = new TimerManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
@@ -108,8 +109,9 @@ namespace Arrowgene.Ddon.GameServer
         public GameRouter Router { get; }
         public GpCourseManager GpCourseManager { get; }
         public WeatherManager WeatherManager { get; }
-        public PartyQuestContentManager ContentManager { get; }
+        public PartyQuestContentManager PartyQuestContentManager { get; }
         public BoardManager BoardManager { get; }
+        public TimerManager TimerManager { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
 
@@ -514,6 +516,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestGetPartyBonusListHandler(this));
             AddHandler(new QuestGetMobHuntQuestListHandler(this));
             AddHandler(new QuestPlayEntryHandler(this));
+            AddHandler(new QuestPlayEntryCancelHandler(this));
             AddHandler(new QuestPlayStartHandler(this));
             AddHandler(new QuestPlayStartTimerHandler(this));
             AddHandler(new QuestPlayEndHandler(this));
@@ -534,6 +537,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new EntryBoardEntryBoardItemEntryHandler(this));
             AddHandler(new EntryBoardEntryBoardItemListHandler(this));
             AddHandler(new EntryBoardEntryRecreateHandler(this));
+            AddHandler(new EntryBoardItemKickHandler(this));
+            AddHandler(new EntryBoardEntryBoardItemExtendTimeoutHandler(this));
 
             AddHandler(new ServerGameTimeGetBaseinfoHandler(this));
             AddHandler(new ServerGetGameSettingHandler(this));

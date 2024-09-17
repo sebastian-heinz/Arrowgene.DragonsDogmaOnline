@@ -65,6 +65,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.EntryBoard);
 
+            data.EntryItem.TimeOut = (ushort)Server.BoardManager.GetRecruitmentTimeLeft(data.EntryItem.Id);
+
             return new S2CEntryBoardEntryBoardItemEntryRes()
             {
                 EntryItem = data.EntryItem
