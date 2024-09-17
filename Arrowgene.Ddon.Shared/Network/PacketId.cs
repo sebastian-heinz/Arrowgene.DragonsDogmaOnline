@@ -1407,7 +1407,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_CLAN_CLAN_CREATE_RES = new PacketId(31, 1, 2, "S2C_CLAN_CLAN_CREATE_RES", ServerType.Game, PacketSource.Server); // クラン作成に
         public static readonly PacketId C2S_CLAN_CLAN_UPDATE_REQ = new PacketId(31, 2, 1, "C2S_CLAN_CLAN_UPDATE_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CLAN_CLAN_UPDATE_RES = new PacketId(31, 2, 2, "S2C_CLAN_CLAN_UPDATE_RES", ServerType.Game, PacketSource.Server); // クラン更新に
-        public static readonly PacketId S2C_CLAN_31_2_16_NTC = new PacketId(31, 2, 16, "S2C_CLAN_31_2_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CLAN_CLAN_UPDATE_NTC = new PacketId(31, 2, 16, "S2C_CLAN_31_2_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId C2S_CLAN_CLAN_GET_MEMBER_LIST_REQ = new PacketId(31, 3, 1, "C2S_CLAN_CLAN_GET_MEMBER_LIST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CLAN_CLAN_GET_MEMBER_LIST_RES = new PacketId(31, 3, 2, "S2C_CLAN_CLAN_GET_MEMBER_LIST_RES", ServerType.Game, PacketSource.Server); // クランメンバー取得に
         public static readonly PacketId C2S_CLAN_CLAN_GET_MY_MEMBER_LIST_REQ = new PacketId(31, 4, 1, "C2S_CLAN_CLAN_GET_MY_MEMBER_LIST_REQ", ServerType.Game, PacketSource.Client);
@@ -1418,10 +1418,10 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_CLAN_CLAN_GET_INFO_RES = new PacketId(31, 6, 2, "S2C_CLAN_CLAN_GET_INFO_RES", ServerType.Game, PacketSource.Server); // クラン情報取得に
         public static readonly PacketId C2S_CLAN_CLAN_REGISTER_JOIN_REQ = new PacketId(31, 7, 1, "C2S_CLAN_CLAN_REGISTER_JOIN_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CLAN_CLAN_REGISTER_JOIN_RES = new PacketId(31, 7, 2, "S2C_CLAN_CLAN_REGISTER_JOIN_RES", ServerType.Game, PacketSource.Server); // クラン加入申請に
-        public static readonly PacketId S2C_CLAN_31_7_16_NTC = new PacketId(31, 7, 16, "S2C_CLAN_31_7_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CLAN_CLAN_REGISTER_JOIN_NTC = new PacketId(31, 7, 16, "S2C_CLAN_31_7_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId C2S_CLAN_CLAN_CANCEL_JOIN_REQ = new PacketId(31, 8, 1, "C2S_CLAN_CLAN_CANCEL_JOIN_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CLAN_CLAN_CANCEL_JOIN_RES = new PacketId(31, 8, 2, "S2C_CLAN_CLAN_CANCEL_JOIN_RES", ServerType.Game, PacketSource.Server); // クラン加入申請キャンセルに
-        public static readonly PacketId S2C_CLAN_31_8_16_NTC = new PacketId(31, 8, 16, "S2C_CLAN_31_8_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CLAN_CLAN_CANCEL_JOIN_NTC = new PacketId(31, 8, 16, "S2C_CLAN_31_8_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId C2S_CLAN_CLAN_GET_JOIN_REQUESTED_LIST_REQ = new PacketId(31, 9, 1, "C2S_CLAN_CLAN_GET_JOIN_REQUESTED_LIST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CLAN_CLAN_GET_JOIN_REQUESTED_LIST_RES = new PacketId(31, 9, 2, "S2C_CLAN_CLAN_GET_JOIN_REQUESTED_LIST_RES", ServerType.Game, PacketSource.Server); // クラン加入申請リスト取得に
         public static readonly PacketId C2S_CLAN_CLAN_GET_MY_JOIN_REQUEST_LIST_REQ = new PacketId(31, 10, 1, "C2S_CLAN_CLAN_GET_MY_JOIN_REQUEST_LIST_REQ", ServerType.Game, PacketSource.Client);
@@ -1430,22 +1430,22 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_CLAN_CLAN_APPROVE_JOIN_RES = new PacketId(31, 11, 2, "S2C_CLAN_CLAN_APPROVE_JOIN_RES", ServerType.Game, PacketSource.Server); // クラン加入許可(拒否)に
         public static readonly PacketId C2S_CLAN_CLAN_LEAVE_MEMBER_REQ = new PacketId(31, 12, 1, "C2S_CLAN_CLAN_LEAVE_MEMBER_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CLAN_CLAN_LEAVE_MEMBER_RES = new PacketId(31, 12, 2, "S2C_CLAN_CLAN_LEAVE_MEMBER_RES", ServerType.Game, PacketSource.Server); // クラン脱退に
-        public static readonly PacketId S2C_CLAN_31_12_16_NTC = new PacketId(31, 12, 16, "S2C_CLAN_31_12_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CLAN_CLAN_LEAVE_MEMBER_NTC = new PacketId(31, 12, 16, "S2C_CLAN_CLAN_LEAVE_MEMBER_NTC", ServerType.Game, PacketSource.Server, "S2C_CLAN_31_12_16_NTC");
         public static readonly PacketId C2S_CLAN_CLAN_EXPEL_MEMBER_REQ = new PacketId(31, 13, 1, "C2S_CLAN_CLAN_EXPEL_MEMBER_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CLAN_CLAN_EXPEL_MEMBER_RES = new PacketId(31, 13, 2, "S2C_CLAN_CLAN_EXPEL_MEMBER_RES", ServerType.Game, PacketSource.Server); // クラン除名に
         public static readonly PacketId C2S_CLAN_CLAN_NEGOTIATE_MASTER_REQ = new PacketId(31, 14, 1, "C2S_CLAN_CLAN_NEGOTIATE_MASTER_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CLAN_CLAN_NEGOTIATE_MASTER_RES = new PacketId(31, 14, 2, "S2C_CLAN_CLAN_NEGOTIATE_MASTER_RES", ServerType.Game, PacketSource.Server); // クランマスター譲渡に
-        public static readonly PacketId S2C_CLAN_31_14_16_NTC = new PacketId(31, 14, 16, "S2C_CLAN_31_14_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CLAN_CLAN_NEGOTIATE_MASTER_NTC = new PacketId(31, 14, 16, "S2C_CLAN_31_14_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId C2S_CLAN_CLAN_SET_MEMBER_RANK_REQ = new PacketId(31, 15, 1, "C2S_CLAN_CLAN_SET_MEMBER_RANK_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CLAN_CLAN_SET_MEMBER_RANK_RES = new PacketId(31, 15, 2, "S2C_CLAN_CLAN_SET_MEMBER_RANK_RES", ServerType.Game, PacketSource.Server); // クランメンバーランク設定に
-        public static readonly PacketId S2C_CLAN_31_15_16_NTC = new PacketId(31, 15, 16, "S2C_CLAN_31_15_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CLAN_CLAN_SET_MEMBER_RANK_NTC = new PacketId(31, 15, 16, "S2C_CLAN_31_15_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId C2S_CLAN_CLAN_GET_MEMBER_NUM_REQ = new PacketId(31, 16, 1, "C2S_CLAN_CLAN_GET_MEMBER_NUM_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CLAN_CLAN_GET_MEMBER_NUM_RES = new PacketId(31, 16, 2, "S2C_CLAN_CLAN_GET_MEMBER_NUM_RES", ServerType.Game, PacketSource.Server); // クランメンバー数取得に
         public static readonly PacketId C2S_CLAN_CLAN_SETTING_UPDATE_REQ = new PacketId(31, 17, 1, "C2S_CLAN_CLAN_SETTING_UPDATE_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CLAN_CLAN_SETTING_UPDATE_RES = new PacketId(31, 17, 2, "S2C_CLAN_CLAN_SETTING_UPDATE_RES", ServerType.Game, PacketSource.Server); // クラン設定更新要求に
         public static readonly PacketId C2S_CLAN_CLAN_INVITE_REQ = new PacketId(31, 18, 1, "C2S_CLAN_CLAN_INVITE_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CLAN_CLAN_INVITE_RES = new PacketId(31, 18, 2, "S2C_CLAN_CLAN_INVITE_RES", ServerType.Game, PacketSource.Server); // クラン直接勧誘に
-        public static readonly PacketId S2C_CLAN_31_18_16_NTC = new PacketId(31, 18, 16, "S2C_CLAN_31_18_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CLAN_CLAN_INVITE_NTC = new PacketId(31, 18, 16, "S2C_CLAN_31_18_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId C2S_CLAN_CLAN_INVITE_ACCEPT_REQ = new PacketId(31, 19, 1, "C2S_CLAN_CLAN_INVITE_ACCEPT_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CLAN_CLAN_INVITE_ACCEPT_RES = new PacketId(31, 19, 2, "S2C_CLAN_CLAN_INVITE_ACCEPT_RES", ServerType.Game, PacketSource.Server); // クラン直接勧誘承認に
         public static readonly PacketId C2S_CLAN_CLAN_SCOUT_ENTRY_REGISTER_REQ = new PacketId(31, 20, 1, "C2S_CLAN_CLAN_SCOUT_ENTRY_REGISTER_REQ", ServerType.Game, PacketSource.Client);
@@ -1458,12 +1458,12 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_CLAN_CLAN_SCOUT_ENTRY_SEARCH_RES = new PacketId(31, 23, 2, "S2C_CLAN_CLAN_SCOUT_ENTRY_SEARCH_RES", ServerType.Game, PacketSource.Server); // クランスカウトエントリーリスト取得に
         public static readonly PacketId C2S_CLAN_CLAN_SCOUT_ENTRY_INVITE_REQ = new PacketId(31, 24, 1, "C2S_CLAN_CLAN_SCOUT_ENTRY_INVITE_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CLAN_CLAN_SCOUT_ENTRY_INVITE_RES = new PacketId(31, 24, 2, "S2C_CLAN_CLAN_SCOUT_ENTRY_INVITE_RES", ServerType.Game, PacketSource.Server); // クラン勧誘に
-        public static readonly PacketId S2C_CLAN_31_24_16_NTC = new PacketId(31, 24, 16, "S2C_CLAN_31_24_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CLAN_CLAN_SCOUT_ENTRY_INVITE_NTC = new PacketId(31, 24, 16, "S2C_CLAN_31_24_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId C2S_CLAN_CLAN_SCOUT_ENTRY_GET_INVITE_LIST_REQ = new PacketId(31, 25, 1, "C2S_CLAN_CLAN_SCOUT_ENTRY_GET_INVITE_LIST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CLAN_CLAN_SCOUT_ENTRY_GET_INVITE_LIST_RES = new PacketId(31, 25, 2, "S2C_CLAN_CLAN_SCOUT_ENTRY_GET_INVITE_LIST_RES", ServerType.Game, PacketSource.Server); // クラン勧誘中リスト取得に
         public static readonly PacketId C2S_CLAN_CLAN_SCOUT_ENTRY_CANCEL_INVITE_REQ = new PacketId(31, 26, 1, "C2S_CLAN_CLAN_SCOUT_ENTRY_CANCEL_INVITE_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CLAN_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES = new PacketId(31, 26, 2, "S2C_CLAN_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES", ServerType.Game, PacketSource.Server); // クラン勧誘キャンセルに
-        public static readonly PacketId S2C_CLAN_31_26_16_NTC = new PacketId(31, 26, 16, "S2C_CLAN_31_26_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CLAN_CLAN_SCOUT_ENTRY_CANCEL_INVITE_NTC = new PacketId(31, 26, 16, "S2C_CLAN_31_26_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId C2S_CLAN_CLAN_SCOUT_ENTRY_GET_INVITED_LIST_REQ = new PacketId(31, 27, 1, "C2S_CLAN_CLAN_SCOUT_ENTRY_GET_INVITED_LIST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CLAN_CLAN_SCOUT_ENTRY_GET_INVITED_LIST_RES = new PacketId(31, 27, 2, "S2C_CLAN_CLAN_SCOUT_ENTRY_GET_INVITED_LIST_RES", ServerType.Game, PacketSource.Server); // クラン勧誘受けてるリスト取得に
         public static readonly PacketId C2S_CLAN_CLAN_SCOUT_ENTRY_APPROVE_INVITED_REQ = new PacketId(31, 28, 1, "C2S_CLAN_CLAN_SCOUT_ENTRY_APPROVE_INVITED_REQ", ServerType.Game, PacketSource.Client);
@@ -3336,7 +3336,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_CREATE_RES);
             AddPacketIdEntry(packetIds, C2S_CLAN_CLAN_UPDATE_REQ);
             AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_UPDATE_RES);
-            AddPacketIdEntry(packetIds, S2C_CLAN_31_2_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_UPDATE_NTC);
             AddPacketIdEntry(packetIds, C2S_CLAN_CLAN_GET_MEMBER_LIST_REQ);
             AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_GET_MEMBER_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_CLAN_CLAN_GET_MY_MEMBER_LIST_REQ);
@@ -3347,10 +3347,10 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_GET_INFO_RES);
             AddPacketIdEntry(packetIds, C2S_CLAN_CLAN_REGISTER_JOIN_REQ);
             AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_REGISTER_JOIN_RES);
-            AddPacketIdEntry(packetIds, S2C_CLAN_31_7_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_REGISTER_JOIN_NTC);
             AddPacketIdEntry(packetIds, C2S_CLAN_CLAN_CANCEL_JOIN_REQ);
             AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_CANCEL_JOIN_RES);
-            AddPacketIdEntry(packetIds, S2C_CLAN_31_8_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_CANCEL_JOIN_NTC);
             AddPacketIdEntry(packetIds, C2S_CLAN_CLAN_GET_JOIN_REQUESTED_LIST_REQ);
             AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_GET_JOIN_REQUESTED_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_CLAN_CLAN_GET_MY_JOIN_REQUEST_LIST_REQ);
@@ -3359,22 +3359,22 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_APPROVE_JOIN_RES);
             AddPacketIdEntry(packetIds, C2S_CLAN_CLAN_LEAVE_MEMBER_REQ);
             AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_LEAVE_MEMBER_RES);
-            AddPacketIdEntry(packetIds, S2C_CLAN_31_12_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_LEAVE_MEMBER_NTC);
             AddPacketIdEntry(packetIds, C2S_CLAN_CLAN_EXPEL_MEMBER_REQ);
             AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_EXPEL_MEMBER_RES);
             AddPacketIdEntry(packetIds, C2S_CLAN_CLAN_NEGOTIATE_MASTER_REQ);
             AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_NEGOTIATE_MASTER_RES);
-            AddPacketIdEntry(packetIds, S2C_CLAN_31_14_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_NEGOTIATE_MASTER_NTC);
             AddPacketIdEntry(packetIds, C2S_CLAN_CLAN_SET_MEMBER_RANK_REQ);
             AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_SET_MEMBER_RANK_RES);
-            AddPacketIdEntry(packetIds, S2C_CLAN_31_15_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_SET_MEMBER_RANK_NTC);
             AddPacketIdEntry(packetIds, C2S_CLAN_CLAN_GET_MEMBER_NUM_REQ);
             AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_GET_MEMBER_NUM_RES);
             AddPacketIdEntry(packetIds, C2S_CLAN_CLAN_SETTING_UPDATE_REQ);
             AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_SETTING_UPDATE_RES);
             AddPacketIdEntry(packetIds, C2S_CLAN_CLAN_INVITE_REQ);
             AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_INVITE_RES);
-            AddPacketIdEntry(packetIds, S2C_CLAN_31_18_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_INVITE_NTC);
             AddPacketIdEntry(packetIds, C2S_CLAN_CLAN_INVITE_ACCEPT_REQ);
             AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_INVITE_ACCEPT_RES);
             AddPacketIdEntry(packetIds, C2S_CLAN_CLAN_SCOUT_ENTRY_REGISTER_REQ);
@@ -3387,12 +3387,12 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_SCOUT_ENTRY_SEARCH_RES);
             AddPacketIdEntry(packetIds, C2S_CLAN_CLAN_SCOUT_ENTRY_INVITE_REQ);
             AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_SCOUT_ENTRY_INVITE_RES);
-            AddPacketIdEntry(packetIds, S2C_CLAN_31_24_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_SCOUT_ENTRY_INVITE_NTC);
             AddPacketIdEntry(packetIds, C2S_CLAN_CLAN_SCOUT_ENTRY_GET_INVITE_LIST_REQ);
             AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_SCOUT_ENTRY_GET_INVITE_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_CLAN_CLAN_SCOUT_ENTRY_CANCEL_INVITE_REQ);
             AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES);
-            AddPacketIdEntry(packetIds, S2C_CLAN_31_26_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_SCOUT_ENTRY_CANCEL_INVITE_NTC);
             AddPacketIdEntry(packetIds, C2S_CLAN_CLAN_SCOUT_ENTRY_GET_INVITED_LIST_REQ);
             AddPacketIdEntry(packetIds, S2C_CLAN_CLAN_SCOUT_ENTRY_GET_INVITED_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_CLAN_CLAN_SCOUT_ENTRY_APPROVE_INVITED_REQ);

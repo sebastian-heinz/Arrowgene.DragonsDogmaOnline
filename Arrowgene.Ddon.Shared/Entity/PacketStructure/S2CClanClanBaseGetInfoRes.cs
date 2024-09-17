@@ -3,20 +3,22 @@ using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class S2CClanClanBaseGetInfoRes : IPacketStructure
+    public class S2CClanClanBaseGetInfoRes : ServerResponse
     {
-        public PacketId Id => PacketId.S2C_CLAN_CLAN_BASE_GET_INFO_RES;
+        public override PacketId Id => PacketId.S2C_CLAN_CLAN_BASE_GET_INFO_RES;
         
         public class Serializer : PacketEntitySerializer<S2CClanClanBaseGetInfoRes>
         {
             public override void Write(IBuffer buffer, S2CClanClanBaseGetInfoRes obj)
             {
+                WriteServerResponse(buffer, obj);
                 WriteByteArray(buffer, obj.BaseData);
             }
 
             public override S2CClanClanBaseGetInfoRes Read(IBuffer buffer)
             {
                 S2CClanClanBaseGetInfoRes obj = new S2CClanClanBaseGetInfoRes();
+                ReadServerResponse(buffer, obj);
                 return obj;
             }
         }

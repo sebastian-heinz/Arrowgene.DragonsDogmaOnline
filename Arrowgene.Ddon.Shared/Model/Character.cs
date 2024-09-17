@@ -104,8 +104,6 @@ namespace Arrowgene.Ddon.Shared.Model
         public GameMode GameMode {  get; set; }
 
         public Dictionary<uint, uint> LastSeenLobby { get; set; }
-        public Clan Clan;
-
         public List<Pawn> Pawns { get; set; }
         public List<Pawn> RentedPawns {  get; set; }
 

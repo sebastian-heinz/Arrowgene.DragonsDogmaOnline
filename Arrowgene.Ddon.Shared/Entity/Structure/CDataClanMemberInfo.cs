@@ -1,7 +1,6 @@
-using System.Collections.Generic;
 using Arrowgene.Buffers;
-using Arrowgene.Ddon.Shared.Model;
-        
+using Arrowgene.Ddon.Shared.Model.Clan;
+
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataClanMemberInfo
@@ -11,7 +10,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             CharacterListElement = new CDataCharacterListElement();
         }
 
-        public uint Rank { get; set; }
+        public ClanMemberRank Rank { get; set; }
         public long Created { get; set; }
         public long LastLoginTime { get; set; }
         public long LeaveTime { get; set; }
@@ -22,7 +21,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             public override void Write(IBuffer buffer, CDataClanMemberInfo obj)
             {
-                WriteUInt32(buffer, obj.Rank);
+                WriteUInt32(buffer, (uint)obj.Rank);
                 WriteInt64(buffer, obj.Created);
                 WriteInt64(buffer, obj.LastLoginTime);
                 WriteInt64(buffer, obj.LeaveTime);
@@ -33,7 +32,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataClanMemberInfo Read(IBuffer buffer)
             {
                 CDataClanMemberInfo obj = new CDataClanMemberInfo();
-                obj.Rank = ReadUInt32(buffer);
+                obj.Rank = (ClanMemberRank)ReadUInt32(buffer);
                 obj.Created = ReadInt64(buffer);
                 obj.LastLoginTime = ReadInt64(buffer);
                 obj.LeaveTime = ReadInt64(buffer);
