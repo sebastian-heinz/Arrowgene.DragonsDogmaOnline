@@ -1,13 +1,10 @@
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Threading;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {

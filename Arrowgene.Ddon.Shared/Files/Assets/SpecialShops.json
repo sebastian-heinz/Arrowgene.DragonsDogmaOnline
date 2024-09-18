@@ -29622,6 +29622,198 @@
                             ]
                         }
                     ]
+                },
+                {
+                    "label": "Crimson Exchange",
+                    "appraisals": [
+                        {
+                            "label": "＜Exch＞ Crimson Sword",
+                            "base_items": [
+                                {
+                                    "item_id": 19147,
+                                    "name": "Central Tree Drop",
+                                    "amount": 140
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 19149,
+                                    "name": "Crimson Sword",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exch＞ Crimson Blade",
+                            "base_items": [
+                                {
+                                    "item_id": 19147,
+                                    "name": "Central Tree Drop",
+                                    "amount": 140
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 19154,
+                                    "name": "Crimson Blade",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exch＞ Crimson Daggers",
+                            "base_items": [
+                                {
+                                    "item_id": 19147,
+                                    "name": "Central Tree Drop",
+                                    "amount": 140
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 19164,
+                                    "name": "Crimson Daggers",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exch＞ Crimson Bow",
+                            "base_items": [
+                                {
+                                    "item_id": 19147,
+                                    "name": "Central Tree Drop",
+                                    "amount": 140
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 19169,
+                                    "name": "Crimson Bow",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exch＞ Crimson Wand",
+                            "base_items": [
+                                {
+                                    "item_id": 19147,
+                                    "name": "Central Tree Drop",
+                                    "amount": 140
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 19189,
+                                    "name": "Crimson Wand",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exch＞ Crimson Wall",
+                            "base_items": [
+                                {
+                                    "item_id": 19147,
+                                    "name": "Central Tree Drop",
+                                    "amount": 140
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 19159,
+                                    "name": "Crimson Wall",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exch＞ Crimson Staff",
+                            "base_items": [
+                                {
+                                    "item_id": 19147,
+                                    "name": "Central Tree Drop",
+                                    "amount": 140
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 19184,
+                                    "name": "Crimson Staff",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exch＞ Crimson Spell",
+                            "base_items": [
+                                {
+                                    "item_id": 19147,
+                                    "name": "Central Tree Drop",
+                                    "amount": 140
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 19179,
+                                    "name": "Crimson Spell",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exch＞ Crimson Gauntlet",
+                            "base_items": [
+                                {
+                                    "item_id": 19147,
+                                    "name": "Central Tree Drop",
+                                    "amount": 140
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 19174,
+                                    "name": "Crimson Gauntlet",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exch＞ Crimson Spear",
+                            "base_items": [
+                                {
+                                    "item_id": 19147,
+                                    "name": "Central Tree Drop",
+                                    "amount": 140
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 19194,
+                                    "name": "Crimson Spear",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "＜Exch＞ Crimson Firangi",
+                            "base_items": [
+                                {
+                                    "item_id": 19179,
+                                    "name": "Central Tree Drop",
+                                    "amount": 140
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21427,
+                                    "name": "Crimson Firangi",
+                                    "amount": 1
+                                }
+                            ]
+                        }
+                    ]
                 }
             ]
         },

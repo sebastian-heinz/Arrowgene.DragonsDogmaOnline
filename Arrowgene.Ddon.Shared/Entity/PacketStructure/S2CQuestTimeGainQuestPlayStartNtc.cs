@@ -11,7 +11,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CQuestTimeGainQuestPlayStartNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.S2C_QUEST_TIME_GAIN_QUEST_PLAY_START_NTC; // Might be chain quest???
+        public PacketId Id => PacketId.S2C_QUEST_TIME_GAIN_QUEST_PLAY_START_NTC;
 
         public S2CQuestTimeGainQuestPlayStartNtc()
         {
