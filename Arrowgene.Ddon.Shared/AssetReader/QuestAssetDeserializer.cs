@@ -1106,7 +1106,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 questEnemey.EnemyTargetTypesId = jEnemyTargetTypesId.GetByte();
             }
 
-            if (enemy.TryGetProperty("mondatge_fix_no", out JsonElement jMontageFixNo))
+            if (enemy.TryGetProperty("montage_fix_no", out JsonElement jMontageFixNo))
             {
                 questEnemey.MontageFixNo = jMontageFixNo.GetByte();
             }
