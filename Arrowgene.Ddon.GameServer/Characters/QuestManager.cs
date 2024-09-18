@@ -171,15 +171,22 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return gWorldQuests[areaId].Select(x => x.QuestId).ToList();
         }
 
+        /**
+         * @brief Magic number derived by taking a known BoardId associated with a QuestId and subtracting the two.
+         * A pattern was noticed that the BoardId values had the same distribution as the QuestId and via some
+         * experimentation this pattern was found and confirmed to work.
+         */
+        private static readonly ulong BOARD_ID_MAGIC_VALUE_CONSTANT = 17179869184UL;
+
         public static Quest GetQuestByBoardId(ulong boardId)
         {
-            uint questId = (uint)(boardId - 17179869184UL);
+            uint questId = (uint)(boardId - QuestManager.BOARD_ID_MAGIC_VALUE_CONSTANT);
             return GetQuest(questId);
         }
 
         public static ulong QuestIdToBoardId(uint questId)
         {
-            return questId + 17179869184UL;
+            return questId + QuestManager.BOARD_ID_MAGIC_VALUE_CONSTANT;
         }
 
         public static ulong QuestIdToBoardId(QuestId questId)

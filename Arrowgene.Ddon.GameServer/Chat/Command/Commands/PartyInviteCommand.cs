@@ -35,6 +35,12 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                 return;
             }
 
+            if (client.Party.ContentId != 0)
+            {
+                responses.Add(ChatResponse.CommandError(client, "Use the recruitment board to invite players to the party."));
+                return;
+            }
+
             if (!client.Party.GetPlayerPartyMember(client).IsLeader)
             {
                 responses.Add(ChatResponse.CommandError(client, "Only the party leader can invite."));
