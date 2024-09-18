@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     QuestScheduleId = (uint) quest.QuestScheduleId,
                     QuestId = (uint) quest.QuestId,
-                    GroupsRecruiting = (uint) Server.BoardManager.GetGroupsForBoardId(quest.MissionParams.BoardId).Where(x => !x.ContentInProgress).ToList().Count
+                    GroupsRecruiting = (uint) Server.BoardManager.GetGroupsForBoardId(QuestManager.QuestIdToBoardId(quest.QuestId)).Where(x => !x.ContentInProgress).ToList().Count
                 });
             }
 

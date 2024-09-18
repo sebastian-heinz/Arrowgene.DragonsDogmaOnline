@@ -26,7 +26,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static readonly HashSet<QuestId> AvailableVariantQuests = new();
         private static Dictionary<uint, List<Quest>> gTutorialQuests = new Dictionary<uint, List<Quest>>();
         private static Dictionary<QuestAreaId, List<Quest>> gWorldQuests = new Dictionary<QuestAreaId, List<Quest>>();
-        private static readonly Dictionary<ulong, Quest> gExtremeQuests = new Dictionary<ulong, Quest>();
 
         public static HashSet<QuestId> GetAllVariantQuestIds()
         {
@@ -81,10 +80,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             gWorldQuests[quest.QuestAreaId] = new List<Quest>();
                         }
                         gWorldQuests[quest.QuestAreaId].Add(quest);
-                    }
-                    else if (quest.QuestType == QuestType.ExtremeMission)
-                    {
-                        gExtremeQuests[quest.MissionParams.BoardId] = quest;
                     }
                 }
             }
@@ -178,11 +173,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public static Quest GetQuestByBoardId(ulong boardId)
         {
-            if (!gExtremeQuests.ContainsKey(boardId))
-            {
-                return null;
-            }
-            return gExtremeQuests[boardId];
+            uint questId = (uint)(boardId - 17179869184UL);
+            return GetQuest(questId);
+        }
+
+        public static ulong QuestIdToBoardId(uint questId)
+        {
+            return questId + 17179869184UL;
+        }
+
+        public static ulong QuestIdToBoardId(QuestId questId)
+        {
+            return QuestIdToBoardId((uint)questId);
         }
 
         public static List<Quest> GetTutorialQuestsByStageNo(uint stageNo)

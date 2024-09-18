@@ -860,13 +860,6 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 assetData.MissionParams.QuestPhaseGroupIdList.Add(new CDataCommonU32() { Value = element.GetUInt32() });
             }
 
-            if (!jMissionParams.TryGetProperty("board_id", out JsonElement jBoardId))
-            {
-                Logger.Error($"Missing required member 'board_id' from ExtremeMission config.");
-                return false;
-            }
-            assetData.MissionParams.BoardId = jBoardId.GetUInt64();
-
             assetData.MissionParams.MinimumMembers = 4;
             if (jMissionParams.TryGetProperty("minimum_members", out JsonElement jMinimumMembers))
             {

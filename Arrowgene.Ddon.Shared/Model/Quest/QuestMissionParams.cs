@@ -1,10 +1,5 @@
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Shared.Model.Quest
 {
@@ -14,8 +9,6 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         {
             QuestPhaseGroupIdList = new List<CDataCommonU32>();
         }
-
-        public ulong BoardId {  get; set; }
         public uint MinimumMembers { get; set; }
         public uint MaximumMembers { get; set; }
         public uint PlaytimeInSeconds { get; set; }

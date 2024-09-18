@@ -28,14 +28,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (var boardId in request.BoardIdList.Select(x => x.Value).ToList())
             {
                 var quest = QuestManager.GetQuestByBoardId(boardId);
-                foreach (var group in Server.BoardManager.GetGroupsForBoardId(boardId))
+                if (quest != null)
                 {
                     var contentParams = new CDataEntryBoardListParam()
                     {
-                        BoardId = group.BoardId,
-                        SortieMin = 1, // TODO: Can client populate this from somewhere?
-                        NoPartyMembers = (ushort) group.Members.Count(),
-                        TimeOut = 3600, // TODO: Get time ellapsed until recruitment ends and populate this to match?
+                        BoardId = boardId,
+                        SortieMin = (ushort) quest.MissionParams.MinimumMembers,
+                        NoPartyMembers = (ushort) quest.MissionParams.MaximumMembers,
+                        TimeOut = BoardManager.PARTY_BOARD_TIMEOUT,
                     };
                     result.EntryList.Add(contentParams);
                 }

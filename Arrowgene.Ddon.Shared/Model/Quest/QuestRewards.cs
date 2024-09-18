@@ -14,6 +14,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         {
             IncrementalHash hash = IncrementalHash.CreateHash(HashAlgorithmName.MD5);
             hash.AppendData(BitConverter.GetBytes(ItemId));
+            hash.AppendData(BitConverter.GetBytes(Num));
             return BitConverter.ToString(hash.GetHashAndReset()).Replace("-", string.Empty).Substring(0, 8);
         }
     }
@@ -34,6 +35,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         {
             IncrementalHash hash = IncrementalHash.CreateHash(HashAlgorithmName.MD5);
             hash.AppendData(BitConverter.GetBytes(ItemId));
+            hash.AppendData(BitConverter.GetBytes(Num));
             return BitConverter.ToString(hash.GetHashAndReset()).Replace("-", string.Empty).Substring(0, 8);
         }
     }
