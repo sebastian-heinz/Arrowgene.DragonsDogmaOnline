@@ -16,8 +16,7 @@
         "loot_distribution": "TimeBased",
         "phase_groups": []
     },
-    "order_conditions": [
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "random",

@@ -146,15 +146,17 @@ namespace Arrowgene.Ddon.GameServer.Party
                     HasStarted = questStarted
                 };
 
+                foreach (var stageId in quest.UniqueEnemyGroups)
+                {
+                    if (!QuestLookupTable.ContainsKey(stageId))
+                    {
+                        QuestLookupTable[stageId] = new List<QuestId>();
+                    }
+                    QuestLookupTable[stageId].Add(quest.QuestId);
+                }
+
                 foreach (var location in quest.Locations)
                 {
-                    if (!QuestLookupTable.ContainsKey(location.StageId))
-                    {
-                        QuestLookupTable[location.StageId] = new List<QuestId>();
-                    }
-
-                    QuestLookupTable[location.StageId].Add(quest.QuestId);
-
                     // Populate data structures for Instance Enemy Data
                     if (!ActiveQuests[quest.QuestId].QuestEnemies.ContainsKey(location.StageId))
                     {

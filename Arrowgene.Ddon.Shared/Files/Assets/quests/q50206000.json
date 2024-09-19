@@ -4,7 +4,7 @@
     "comment": "Phindym War Chronicles",
     "quest_id": 50206000,
     "base_level": 80,
-    "minimum_item_rank": 0,
+    "minimum_item_rank": 70,
     "discoverable": false,
     "mission_params": {
         "group": 2,
@@ -15,8 +15,7 @@
         "loot_distribution": "TimeBased",
         "phase_groups": []
     },
-    "order_conditions": [
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "fixed",
@@ -98,7 +97,7 @@
                     "exp": 0,
                     "index": 0,
                     "repop_count": 50,
-                    "repop_wait_second": 45,
+                    "repop_wait_second": 60,
                     "enemy_target_types_id": 1,
                     "named_enemy_params_id": 1698
                 },
@@ -109,7 +108,7 @@
                     "exp": 0,
                     "index": 1,
                     "repop_count": 50,
-                    "repop_wait_second": 45,
+                    "repop_wait_second": 60,
                     "enemy_target_types_id": 1,
                     "named_enemy_params_id": 1698
                 },
@@ -120,7 +119,7 @@
                     "exp": 0,
                     "index": 2,
                     "repop_count": 50,
-                    "repop_wait_second": 45,
+                    "repop_wait_second": 60,
                     "enemy_target_types_id": 1,
                     "named_enemy_params_id": 1698
                 },
@@ -131,7 +130,7 @@
                     "exp": 0,
                     "index": 3,
                     "repop_count": 50,
-                    "repop_wait_second": 45,
+                    "repop_wait_second": 60,
                     "enemy_target_types_id": 1,
                     "named_enemy_params_id": 1698
                 },
@@ -142,7 +141,7 @@
                     "exp": 0,
                     "index": 4,
                     "repop_count": 50,
-                    "repop_wait_second": 45,
+                    "repop_wait_second": 60,
                     "enemy_target_types_id": 1,
                     "named_enemy_params_id": 1698
                 },
@@ -153,7 +152,7 @@
                     "exp": 0,
                     "index": 5,
                     "repop_count": 50,
-                    "repop_wait_second": 45,
+                    "repop_wait_second": 60,
                     "enemy_target_types_id": 1,
                     "named_enemy_params_id": 1698
                 }
@@ -563,6 +562,12 @@
                     "stage_id": {
                         "id": 433
                     }
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "EmHpLess", "Param1": 113, "Param2": 3, "Param3": 0, "Param4": 80}
+                    ]
                 },
                 {
                     "type": "SpawnGroup",

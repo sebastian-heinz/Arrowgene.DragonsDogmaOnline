@@ -67,6 +67,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 }
             }
 
+            foreach (var (_, enemyGroup) in questAsset.EnemyGroups)
+            {
+                quest.UniqueEnemyGroups.Add(enemyGroup.StageId);
+            }
+
             foreach (var process in quest.Processes)
             {
                 foreach (var block in process.Blocks)
@@ -80,7 +85,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
                                 {
                                     var enemyGroup = quest.EnemyGroups[groupId];
                                     quest.Locations.Add(new QuestLocation() { StageId = enemyGroup.StageId, SubGroupId = (ushort) enemyGroup.SubGroupId });
-                                    quest.UniqueEnemyGroups.Add(enemyGroup.StageId);
                                 }
                             }
                             break;
