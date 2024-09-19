@@ -78,7 +78,7 @@
                     "exp": 0,
                     "index": 0,
                     "is_boss": true,
-                    "named_enemy_params_id": 1699
+                    "named_enemy_params_id": 1698
                 }
             ]
         },
@@ -99,7 +99,7 @@
                     "repop_count": 50,
                     "repop_wait_second": 60,
                     "enemy_target_types_id": 1,
-                    "named_enemy_params_id": 1698
+                    "named_enemy_params_id": 1699
                 },
                 {
                     "comment": "Strix",
@@ -110,7 +110,7 @@
                     "repop_count": 50,
                     "repop_wait_second": 60,
                     "enemy_target_types_id": 1,
-                    "named_enemy_params_id": 1698
+                    "named_enemy_params_id": 1699
                 },
                 {
                     "comment": "Strix",
@@ -121,7 +121,7 @@
                     "repop_count": 50,
                     "repop_wait_second": 60,
                     "enemy_target_types_id": 1,
-                    "named_enemy_params_id": 1698
+                    "named_enemy_params_id": 1699
                 },
                 {
                     "comment": "Grimwarg",
@@ -132,7 +132,7 @@
                     "repop_count": 50,
                     "repop_wait_second": 60,
                     "enemy_target_types_id": 1,
-                    "named_enemy_params_id": 1698
+                    "named_enemy_params_id": 1699
                 },
                 {
                     "comment": "Grimwarg",
@@ -143,7 +143,7 @@
                     "repop_count": 50,
                     "repop_wait_second": 60,
                     "enemy_target_types_id": 1,
-                    "named_enemy_params_id": 1698
+                    "named_enemy_params_id": 1699
                 },
                 {
                     "comment": "Grimwarg",
@@ -154,7 +154,7 @@
                     "repop_count": 50,
                     "repop_wait_second": 60,
                     "enemy_target_types_id": 1,
-                    "named_enemy_params_id": 1698
+                    "named_enemy_params_id": 1699
                 }
             ]
         },
@@ -614,32 +614,29 @@
                 {
                     "type": "Raw",
                     "check_commands": [
-                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 85}
+                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 81}
                     ]
                 },
                 {
                     "comment": "Spawn Crystals",
                     "type": "SpawnGroup",
                     "check_commands": [
-                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 65}
+                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 70}
                     ],
                     "groups": [8]
                 },
                 {
                     "type": "DestroyGroup",
-                    "groups": [8]
-                },
-                {
-                    "type": "Raw",
+                    "groups": [8],
                     "check_commands": [
-                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 45}
+                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 41}
                     ]
                 },
                 {
                     "comment": "Spawn Crystals",
                     "type": "SpawnGroup",
                     "check_commands": [
-                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 25}
+                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 30}
                     ],
                     "groups": [9]
                 },
