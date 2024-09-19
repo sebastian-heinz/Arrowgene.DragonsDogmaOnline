@@ -418,7 +418,7 @@
                 {
                     "type": "Raw",
                     "check_commands": [
-                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 80}
+                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 81}
                     ]
                 },
                 {
@@ -431,12 +431,9 @@
                 },
                 {
                     "type": "DestroyGroup",
-                    "groups": [3]
-                },
-                {
-                    "type": "Raw",
+                    "groups": [3],
                     "check_commands": [
-                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 40}
+                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 41}
                     ]
                 },
                 {

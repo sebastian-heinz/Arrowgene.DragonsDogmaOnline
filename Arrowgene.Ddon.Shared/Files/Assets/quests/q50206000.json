@@ -614,32 +614,29 @@
                 {
                     "type": "Raw",
                     "check_commands": [
-                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 85}
+                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 81}
                     ]
                 },
                 {
                     "comment": "Spawn Crystals",
                     "type": "SpawnGroup",
                     "check_commands": [
-                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 65}
+                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 70}
                     ],
                     "groups": [8]
                 },
                 {
                     "type": "DestroyGroup",
-                    "groups": [8]
-                },
-                {
-                    "type": "Raw",
+                    "groups": [8],
                     "check_commands": [
-                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 45}
+                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 41}
                     ]
                 },
                 {
                     "comment": "Spawn Crystals",
                     "type": "SpawnGroup",
                     "check_commands": [
-                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 25}
+                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 30}
                     ],
                     "groups": [9]
                 },
