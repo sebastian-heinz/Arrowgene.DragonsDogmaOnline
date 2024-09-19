@@ -9,6 +9,7 @@ using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.BattleContent;
+using Arrowgene.Ddon.Shared.Model.Clan;
 using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.Database
@@ -568,5 +569,12 @@ namespace Arrowgene.Ddon.Database
         bool UpdateBBMContentTreasure(uint characterId, uint contentId, uint amount);
         bool RemoveBBMContentTreasure(uint characterId);
         List<BitterblackMazeTreasure> SelectBBMContentTreasure(uint characterId);
+
+        // Clan
+
+        bool CreateClan(ClanParam clanParam);
+        uint SelectClanMembershipByCharacterId(uint characterId, DbConnection? connectionIn = null);
+        ClanName GetClanNameByClanId(uint clanId, DbConnection? connectionIn = null);
+        CDataClanParam SelectClan(uint clanId, DbConnection? connectionIn = null);
     }
 }

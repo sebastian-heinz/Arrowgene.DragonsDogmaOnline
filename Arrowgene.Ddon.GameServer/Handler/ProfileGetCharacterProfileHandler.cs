@@ -44,6 +44,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             GameStructure.CDataCharacterName(res.CharacterName, targetClient.Character);
             res.JobId = targetClient.Character.Job;
             res.JobLevel = (byte)targetClient.Character.ActiveCharacterJobData.Lv;
+            res.ClanParam = Server.ClanManager.GetClan(targetClient.Character.ClanId);
             // TODO: ClanParam
             // TODO: ClanMemberRank
             res.JobLevelList = targetClient.Character.CharacterJobDataList.Select(jobData => new CDataJobBaseInfo()

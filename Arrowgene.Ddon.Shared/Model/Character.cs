@@ -5,6 +5,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model.BattleContent;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model.Quest;
+using Arrowgene.Ddon.Shared.Model.Clan;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
@@ -36,6 +37,7 @@ namespace Arrowgene.Ddon.Shared.Model
             LastSeenLobby = new Dictionary<uint, uint>();
             BbmProgress = new BitterblackMazeProgress();
             CompletedQuests = new Dictionary<QuestId, CompletedQuest>();
+            ClanName = new ClanName();
         }
 
         public int AccountId { get; set; }
@@ -117,6 +119,10 @@ namespace Arrowgene.Ddon.Shared.Model
         public Dictionary<QuestId, CompletedQuest> CompletedQuests { get; set; }
 
         public uint LastSafeStageId { get; set; }
+        public uint ClanId { get; set; }
+        public ClanName ClanName { get; set; }
+
+        // ---
 
         public bool IsLanternLit { get; set; }
 

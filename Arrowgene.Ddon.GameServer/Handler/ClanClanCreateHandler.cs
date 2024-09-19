@@ -19,40 +19,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             var res = new S2CClanClanCreateRes();
 
-            var memberInfo = new CDataClanMemberInfo()
-            {
-                Rank = ClanMemberRank.Master,
-                Created = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
-                LastLoginTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
-                LeaveTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
-                Permission = uint.MaxValue
-            };
-
-            GameStructure.CDataCharacterListElement(memberInfo.CharacterListElement, client.Character);
-
-            Logger.Info($"Motto: {request.CreateParam.Motto}" +
-                $"\nActiveDays: {request.CreateParam.ActiveDays}" +
-                $"\nActiveTime: {request.CreateParam.ActiveTime}" +
-                $"\nCharacteristic: {request.CreateParam.Characteristic}");
-
-            var serverParam = new CDataClanServerParam()
-            {
-                ID = 1,
-                Lv = 1,
-                MemberNum = 1,
-                MasterInfo = memberInfo,
-                IsSystemRestriction = false,
-                IsClanBaseRelease = false,
-                CanClanBaseRelease = false,
-                TotalClanPoint = 0,
-                MoneyClanPoint = 50,
-                NextClanPoint = 100,
-            };
-
-            res.ClanParam.ClanUserParam = request.CreateParam;
-            res.ClanParam.ClanUserParam.Created = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            res.ClanParam.ClanServerParam = serverParam;
-            res.MemberList.Add(memberInfo);
+            res.ClanParam = Server.ClanManager.CreateClan(client, request.CreateParam);
+            res.MemberList.Add(res.ClanParam.ClanServerParam.MasterInfo);
 
             return res;
         }

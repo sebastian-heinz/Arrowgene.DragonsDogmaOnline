@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -23,6 +23,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SCharacterCommunityCharacterStatusGetReq> packet)
         {
             // client.Send(InGameDump.Dump_65);
+
+            Logger.Info($"Update request type {packet.Structure.unType}");
 
             List<CDataCharacterListElement> updateCharacterList = new List<CDataCharacterListElement>();
             List<CDataUpdateMatchingProfileInfo> updateMatchingProfileList = new List<CDataUpdateMatchingProfileInfo>();

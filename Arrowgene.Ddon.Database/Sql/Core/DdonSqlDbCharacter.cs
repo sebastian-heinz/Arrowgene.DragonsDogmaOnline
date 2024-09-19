@@ -396,6 +396,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                        }
                    });
             }
+
+            //Clan membership
+            character.ClanId = SelectClanMembershipByCharacterId(character.CharacterId, conn);
+            character.ClanName = GetClanNameByClanId(character.ClanId);
         }
 
         public bool UpdateMyPawnSlot(uint characterId, uint num)

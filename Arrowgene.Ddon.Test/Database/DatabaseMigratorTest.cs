@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.BattleContent;
+using Arrowgene.Ddon.Shared.Model.Clan;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections.Generic;
@@ -394,6 +395,11 @@ namespace Arrowgene.Ddon.Test.Database
         public uint GetPawnOwnerCharacterId(uint pawnId) { return 0; }
         public CDataCharacterSearchParam SelectCharacterNameById(uint characterId) { return new CDataCharacterSearchParam(); }
         public CDataCharacterSearchParam SelectCharacterNameById(DbConnection connection, uint characterId) { return new CDataCharacterSearchParam(); }
+
+        public bool CreateClan(ClanParam clanParam) { return true; }
+        public uint SelectClanMembershipByCharacterId(uint characterId, DbConnection? connectionIn = null) { return 0; }
+        public CDataClanParam SelectClan(uint clanId, DbConnection? connectionIn = null) { return new CDataClanParam(); }
+        public ClanName GetClanNameByClanId(uint clanId, DbConnection? connectionIn = null) { return new ClanName(); }
 
         public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
         public void AddParameter(DbCommand command, string name, string value) { }

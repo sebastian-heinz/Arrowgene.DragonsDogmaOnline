@@ -448,6 +448,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SClanClanSearchReq.Serializer());
             Create(new C2SClanClanUpdateReq.Serializer());
             Create(new C2SClanClanGetHistoryReq.Serializer());
+            Create(new C2SClanClanGetMyInfoReq.Serializer());
 
             Create(new C2SConnectionLoginReq.Serializer());
             Create(new C2SConnectionMoveInServerReq.Serializer());

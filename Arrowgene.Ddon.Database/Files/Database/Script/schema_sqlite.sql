@@ -739,7 +739,7 @@ CREATE TABLE IF NOT EXISTS "ddon_clan_param"
     "is_publish"            BOOLEAN             NOT NULL,
     "comment"               TEXT                NOT NULL,
     "board_message"         TEXT                NOT NULL,
-    "created"               DATETIME            NOT NULL,
+    "created"               DATETIME            NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS "ddon_clan_membership"

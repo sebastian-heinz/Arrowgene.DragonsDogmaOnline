@@ -14,7 +14,6 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             GpCourseValidList = new List<CDataGPCourseValid>();
             ClanName = "";
             ClanNameShort = "";
-            ClanNameShort = "";
             IsClanMemberNotice = 0;
         }
 

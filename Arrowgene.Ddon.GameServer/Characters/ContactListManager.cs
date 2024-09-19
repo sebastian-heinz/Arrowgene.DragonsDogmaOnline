@@ -1,4 +1,4 @@
-﻿using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 
@@ -22,55 +22,53 @@ public class ContactListManager
 
         return otherCharacter;
     }
-    
+
     public static CDataCommunityCharacterBaseInfo CharacterToCommunityInfo(Character c)
+    {
+        return new CDataCommunityCharacterBaseInfo()
+        {
+            CharacterId = c.CharacterId,
+            CharacterName = new CDataCharacterName()
             {
-                return new CDataCommunityCharacterBaseInfo()
-                {
-                    CharacterId = c.CharacterId,
-                    CharacterName = new CDataCharacterName()
-                    {
-                        FirstName = c.FirstName,
-                        LastName = c.LastName
-                    },
-                    ClanName = "", // TODO get clan
-    
-                };
-    
-            }
-    
-            public static CDataCharacterListElement CharacterToListEml(Character c)
+                FirstName = c.FirstName,
+                LastName = c.LastName
+            },
+            ClanName = c.ClanName.ShortName,
+        };
+    }
+
+    public static CDataCharacterListElement CharacterToListEml(Character c)
+    {
+        return new CDataCharacterListElement()
+        {
+            OnlineStatus = c.OnlineStatus,
+            MatchingProfile = c.MatchingProfile.Comment,
+            ServerId = c.Server.Id,
+            CommunityCharacterBaseInfo = CharacterToCommunityInfo(c),
+            CurrentJobBaseInfo = new CDataJobBaseInfo()
             {
-                return new CDataCharacterListElement()
-                {
-                    OnlineStatus = c.OnlineStatus,
-                    MatchingProfile = c.MatchingProfile.Comment,
-                    ServerId = c.Server.Id,
-                    CommunityCharacterBaseInfo = CharacterToCommunityInfo(c),
-                    CurrentJobBaseInfo = new CDataJobBaseInfo()
-                    {
-                        Job = c.Job,
-                        Level = (byte)(c.ActiveCharacterJobData?.Lv ?? 0x00)
-                    },
-                    EntryJobBaseInfo = new CDataJobBaseInfo()
-                    {
-                        // TODO
-                        Job = c.MatchingProfile.EntryJob,
-                        Level = (byte)(c.MatchingProfile?.EntryJobLevel ?? 0x00)
-                    }
-                };
-            }
-            
-            public static CDataFriendInfo CharacterToFriend(Character c, uint unFriendNo, bool isFavorite)
+                Job = c.Job,
+                Level = (byte)(c.ActiveCharacterJobData?.Lv ?? 0x00)
+            },
+            EntryJobBaseInfo = new CDataJobBaseInfo()
             {
-                return new CDataFriendInfo()
-                {
-                    IsFavorite = isFavorite,
-                    PendingStatus = 0x00, // TODO
-                    UnFriendNo = unFriendNo,
-                    CharacterListElement = CharacterToListEml(c)
-    
-                };
-                
+                // TODO
+                Job = c.MatchingProfile.EntryJob,
+                Level = (byte)(c.MatchingProfile?.EntryJobLevel ?? 0x00)
             }
+        };
+    }
+
+    public static CDataFriendInfo CharacterToFriend(Character c, uint unFriendNo, bool isFavorite)
+    {
+        return new CDataFriendInfo()
+        {
+            IsFavorite = isFavorite,
+            PendingStatus = 0x00, // TODO
+            UnFriendNo = unFriendNo,
+            CharacterListElement = CharacterToListEml(c)
+
+        };
+
+    }
 }
