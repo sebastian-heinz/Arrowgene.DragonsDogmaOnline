@@ -73,6 +73,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public QuestMissionParams MissionParams { get; protected set; }
         public Dictionary<uint, QuestEnemyGroup> EnemyGroups { get; set; }
         public HashSet<StageId> UniqueEnemyGroups { get; protected set; }
+        public List<QuestServerAction> ServerActions { get; protected set; }
         public bool IsVariantQuest { get; set; }
         public uint VariantId { get; set; }
 
@@ -99,6 +100,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             IsVariantQuest = false;
             VariantId = 0;
             MissionParams = new QuestMissionParams();
+            ServerActions = new List<QuestServerAction>();
             Processes = new List<QuestProcess>();
         }
 
@@ -383,26 +385,22 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             HashSet<uint> items = new HashSet<uint>();
             // Rewards for EXM seem to show up independently
-            foreach (var reward in result.Param.FixedRewardItemList)
+            foreach (var rewardData in this.ItemRewards)
             {
-                if (MissionParams.LootDistribution == QuestLootDistribution.TimeBased)
+                foreach (var reward in rewardData.LootPool)
                 {
-                    if (!items.Contains(reward.ItemId))
+                    if (rewardData.RewardType == QuestRewardType.Fixed)
                     {
-                        // Show 1 of each item as exact value is unknown
                         result.RewardItemDetailList.Add(new CDataRewardItemDetail()
                         {
                             ItemId = reward.ItemId,
-                            Num = 1,
-                            Type = 12
+                            Num = reward.Num,
+                            Type = 11
                         });
-                        items.Add(reward.ItemId);
                     }
-                }
-                else
-                {
-                    for (var i = 0; i < reward.Num; i++)
+                    else if (rewardData.RewardType == QuestRewardType.Random && !items.Contains(reward.ItemId))
                     {
+                        items.Add(reward.ItemId);
                         result.RewardItemDetailList.Add(new CDataRewardItemDetail()
                         {
                             ItemId = reward.ItemId,
@@ -581,10 +579,36 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     continue;
                 }
 
-                foreach (var groupId in process.Blocks[(int)processState.BlockNo - 1].EnemyGroupIds)
+                foreach (var groupId in process.Blocks[processState.BlockNo - 1].EnemyGroupIds)
                 {
                     var enemyGroup = EnemyGroups[groupId];
                     partyQuestState.SetInstanceEnemies(this, enemyGroup.StageId, (ushort)enemyGroup.SubGroupId, enemyGroup.CreateNewInstance());
+                }
+            }
+        }
+
+        public virtual void HandleOmInstantValue(GameClient client, ulong key, uint value)
+        {
+            // Remove the valid bit (that way json doesn't need to provide it)
+            key = key & 0x7fffffffffffffff;
+            foreach (var action in ServerActions)
+            {
+                if (action.Key == key && action.Value == value && action.ActionType == QuestSeverActionType.OmSetInstantValue)
+                {
+                    switch (action.OmInstantValueAction)
+                    {
+                        case OmInstantValueAction.ResetGroup:
+                            client.Party.SendToAll(new S2CInstanceEnemyGroupResetNtc()
+                            {
+                                LayoutId = new CDataStageLayoutId()
+                                {
+                                    StageId = action.StageId.Id,
+                                    GroupId = action.StageId.GroupId,
+                                    LayerNo = action.StageId.LayerNo
+                                }
+                            });
+                            break;
+                    }
                 }
             }
         }

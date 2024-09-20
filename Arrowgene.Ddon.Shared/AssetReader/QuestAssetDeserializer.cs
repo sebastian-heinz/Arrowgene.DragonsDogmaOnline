@@ -159,6 +159,11 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
             ParseRewards(assetData, jQuest);
 
+            if (!ParseServerActions(assetData, jQuest))
+            {
+                return false;
+            }
+
             if (!ParseOrderCondition(assetData, jQuest))
             {
                 return false;
@@ -632,7 +637,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                             if (!Enum.TryParse(jblock.GetProperty("interact_type").GetString(), true, out OmInteractType interactType))
                             {
-                                Logger.Error($"Unable to parse the quest typ in block @ index {blockIndex - 1}.");
+                                Logger.Error($"Unable to parse the quest type in block @ index {blockIndex - 1}.");
                                 return false;
                             }
 
@@ -648,7 +653,6 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             }
 
                             questBlock.OmInteractEvent.QuestType = questType;
-                            questBlock.OmInteractEvent.InteractType = interactType;
                         }
                         break;
                     case QuestBlockType.DeliverItems:
@@ -914,6 +918,55 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 {
                     assetData.MissionParams.JewelryAllowed = jJewelryAllowed.GetBoolean();
                 }
+            }
+
+            return true;
+        }
+
+        private bool ParseServerActions(QuestAssetData assetData, JsonElement quest)
+        {
+            if (!quest.TryGetProperty("server_actions", out JsonElement jServerActions))
+            {
+                // It is optional to provide this list
+                return true;
+            }
+
+            foreach (var jServerAction in jServerActions.EnumerateArray())
+            {
+                var action = new QuestServerAction();
+
+                if (!jServerAction.TryGetProperty("action_type", out JsonElement jActionType))
+                {
+                    Logger.Error("Unable to find the server action type. Exiting.");
+                    return false;
+                }
+
+                if (!Enum.TryParse(jActionType.GetString(), true, out QuestSeverActionType actionType))
+                {
+                    Logger.Error("Unable to decode the server action type. Exiting.");
+                    return false;
+                }
+
+                action.ActionType = actionType;
+                if (actionType == QuestSeverActionType.OmSetInstantValue)
+                {
+                    if (!jServerAction.TryGetProperty("instant_value_action", out JsonElement jInstantValueAction))
+                    {
+                        Logger.Error("Failed to locate the instant_value_action field. Exiting.");
+                        return false;
+                    }
+
+                    if (!Enum.TryParse(jInstantValueAction.ToString(), true, out OmInstantValueAction instantValueAction))
+                    {
+                        Logger.Error("Failed to decode the instant_value_action field. Exiting.");
+                    }
+                    action.OmInstantValueAction = instantValueAction;
+                    action.Key = jServerAction.GetProperty("key").GetUInt64();
+                    action.Value = jServerAction.GetProperty("value").GetUInt32();
+                    action.StageId = ParseStageId(jServerAction.GetProperty("stage_id"));
+                }
+
+                assetData.ServerActions.Add(action);
             }
 
             return true;
