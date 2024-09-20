@@ -45,6 +45,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (StageManager.IsSafeArea(client.Character.Stage))
             {
                 res.IsBase = true;
+                client.Character.LastSafeStageId = packet.StageId;
 
                 bool shouldReset = true;
                 // Check to see if all player members are in a safe area.
