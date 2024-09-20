@@ -117,7 +117,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint MaxBazaarExhibits { get; set; }
         public Dictionary<QuestId, CompletedQuest> CompletedQuests { get; set; }
 
-        // ---
+        public uint LastSafeStageId { get; set; }
 
         // TODO: Move to a more sensible place
         public uint LastEnteredShopId { get; set; }
