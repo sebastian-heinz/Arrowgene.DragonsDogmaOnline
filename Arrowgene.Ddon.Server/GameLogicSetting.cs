@@ -108,6 +108,9 @@ namespace Arrowgene.Ddon.Server
         /// </summary>
         [DataMember(Order = 16)] public uint LaternBurnTimeInSeconds { get; set; }
 
+        [DataMember(Order = 16)] public uint JobLevelMax { get; set; }
+        [DataMember(Order = 17)] public uint PlayPointMax { get; set; }
+
         public GameLogicSetting()
         {
             LaternBurnTimeInSeconds = 1500;
@@ -151,6 +154,9 @@ namespace Arrowgene.Ddon.Server
                 (60 * 30, 1), //Cloudy
                 (60 * 30, 1), //Rainy
             };
+
+            JobLevelMax = 120;
+            PlayPointMax = 2000;
         }
 
         public GameLogicSetting(GameLogicSetting setting)
@@ -172,6 +178,8 @@ namespace Arrowgene.Ddon.Server
             EnablePawnCatchup = setting.EnablePawnCatchup;
             PawnCatchupMultiplier = setting.PawnCatchupMultiplier;
             PawnCatchupLvDiff = setting.PawnCatchupLvDiff;
+            JobLevelMax = setting.JobLevelMax;
+            PlayPointMax = setting.PlayPointMax;
         }
 
         // Note: method is called after the object is completely deserialized - constructors are skipped.

@@ -104,7 +104,6 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteEntityList<CDataWalletLimit>(buffer, obj.WalletLimits);
                 WriteUInt16(buffer, obj.Unk5);
                 WriteEntityList<CDataExpSetting>(buffer, obj.ExpRequiredPerLevel);
-
             }
 
             public override CDataGameSetting Read(IBuffer buffer)

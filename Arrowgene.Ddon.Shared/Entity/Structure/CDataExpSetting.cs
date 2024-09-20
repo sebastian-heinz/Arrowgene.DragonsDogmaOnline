@@ -1,15 +1,12 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataExpSetting
     {
-        /// <summary>
-        /// 1 = Job Level
-        /// 2 = Clan Level
-        /// </summary>
-        public byte Type { get; set; }
+        public GameMode Type { get; set; }
         public List<CDataExpRequirement> ExpList { get; set; }
 
         public CDataExpSetting()
@@ -21,14 +18,14 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             public override void Write(IBuffer buffer, CDataExpSetting obj)
             {
-                WriteByte(buffer, obj.Type);
+                WriteByte(buffer, (byte)obj.Type);
                 WriteEntityList<CDataExpRequirement>(buffer, obj.ExpList);
             }
 
             public override CDataExpSetting Read(IBuffer buffer)
             {
                 CDataExpSetting obj = new CDataExpSetting();
-                obj.Type = ReadByte(buffer);
+                obj.Type = (GameMode)ReadByte(buffer);
                 obj.ExpList = ReadEntityList<CDataExpRequirement>(buffer);
                 return obj;
             }

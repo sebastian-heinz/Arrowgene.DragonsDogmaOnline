@@ -460,7 +460,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public void AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, RewardSource rewardType, QuestType questType = QuestType.All)
         {
-            var lvCap = (client.GameMode == GameMode.Normal) ? ExpManager.LV_CAP : BitterblackMazeManager.LevelCap(client.Character.BbmProgress);
+            var lvCap = (client.GameMode == GameMode.Normal) 
+                ? _Server.Setting.GameLogicSetting.JobLevelMax
+                : BitterblackMazeManager.LevelCap(client.Character.BbmProgress);
 
             CDataCharacterJobData? activeCharacterJobData = characterToAddExpTo.ActiveCharacterJobData;
             if (activeCharacterJobData != null && activeCharacterJobData.Lv < lvCap)
