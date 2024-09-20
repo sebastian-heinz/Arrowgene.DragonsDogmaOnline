@@ -138,6 +138,13 @@ namespace Arrowgene.Ddon.GameServer.Party
         {
             lock (ActiveQuests)
             {
+                if (quest == null)
+                {
+                    // Might be a removed quest (or one in development).
+                    Logger.Error($"Unable to locate quest data.");
+                    return;
+                }
+
                 ActiveQuests[quest.QuestId] = new QuestState()
                 {
                     QuestId = quest.QuestId,
@@ -250,6 +257,13 @@ namespace Arrowgene.Ddon.GameServer.Party
         public void AddNewQuest(QuestId questId, uint step, bool questStarted, uint variantId)
         {
             Quest quest = QuestManager.GetQuest(questId, variantId);
+
+            if (quest == null)
+            {
+                // Might be progress from removed quest (or one in development).
+                Logger.Error($"Unable to locate quest data for {questId}");
+                return;
+            }
 
             if (VariantQuests.Contains(questId))
             {
