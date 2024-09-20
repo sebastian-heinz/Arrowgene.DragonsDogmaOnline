@@ -385,26 +385,22 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             HashSet<uint> items = new HashSet<uint>();
             // Rewards for EXM seem to show up independently
-            foreach (var reward in result.Param.FixedRewardItemList)
+            foreach (var rewardData in this.ItemRewards)
             {
-                if (MissionParams.LootDistribution == QuestLootDistribution.TimeBased)
+                foreach (var reward in rewardData.LootPool)
                 {
-                    if (!items.Contains(reward.ItemId))
+                    if (rewardData.RewardType == QuestRewardType.Fixed)
                     {
-                        // Show 1 of each item as exact value is unknown
                         result.RewardItemDetailList.Add(new CDataRewardItemDetail()
                         {
                             ItemId = reward.ItemId,
-                            Num = 1,
-                            Type = 12
+                            Num = reward.Num,
+                            Type = 11
                         });
-                        items.Add(reward.ItemId);
                     }
-                }
-                else
-                {
-                    for (var i = 0; i < reward.Num; i++)
+                    else if (rewardData.RewardType == QuestRewardType.Random && !items.Contains(reward.ItemId))
                     {
+                        items.Add(reward.ItemId);
                         result.RewardItemDetailList.Add(new CDataRewardItemDetail()
                         {
                             ItemId = reward.ItemId,

@@ -24,6 +24,71 @@
                     "num": 1
                 }
             ]
+        },
+        {
+            "type": "random",
+            "loot_pool": [
+                {
+                    "item_id": 21231,
+                    "num": 1,
+                    "chance": 0.50
+                },
+                {
+                    "item_id": 21231,
+                    "num": 2,
+                    "chance": 0.40
+                },
+                {
+                    "item_id": 21231,
+                    "num": 3,
+                    "chance": 0.10
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "loot_pool": [
+                {
+                    "item_id": 16030,
+                    "num": 1,
+                    "chance": 0.75
+                },
+                {
+                    "item_id": 16035,
+                    "num": 1,
+                    "chance": 0.25
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "loot_pool": [
+                {
+                    "item_id": 25656,
+                    "num": 0,
+                    "chance": 0.75
+                },
+                {
+                    "item_id": 25656,
+                    "num": 1,
+                    "chance": 0.25
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "loot_pool": [
+                {
+                    "item_id": 25672,
+                    "num": 0,
+                    "chance": 0.75
+                },
+                {
+                    "item_id": 25672,
+                    "num": 1,
+                    "chance": 0.25
+                }
+            ]
         }
     ],
     "enemy_groups" : [
@@ -109,6 +174,7 @@
     ],
     "server_actions": [
         {
+            "comment": "Detects when Ifirt destroys the stage, so the second form can come out.",
             "action_type": "OmSetInstantValue",
             "instant_value_action": "ResetGroup",
             "stage_id": {
