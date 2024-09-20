@@ -5,6 +5,7 @@ using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Instance;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {

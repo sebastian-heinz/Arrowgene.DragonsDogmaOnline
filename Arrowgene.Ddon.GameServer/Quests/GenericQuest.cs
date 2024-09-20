@@ -34,6 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             quest.OrderConditions = questAsset.OrderConditions;
             quest.StageId = questAsset.StageId;
             quest.MissionParams = questAsset.MissionParams;
+            quest.ServerActions = questAsset.ServerActions;
 
             foreach (var pointReward in questAsset.PointRewards)
             {
@@ -363,6 +364,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 case QuestBlockType.End:
                     {
                         resultCommands.Add(QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Clear));
+                        resultCommands.Add(QuestManager.ResultCommand.ResetDiePlayerReturnPos(0, 0));
                         resultCommands.Add(QuestManager.ResultCommand.EndEndQuest());
                     }
                     break;

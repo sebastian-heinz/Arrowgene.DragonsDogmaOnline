@@ -1,0 +1,162 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "ExtremeMission",
+    "comment": "The Flames of Darkness: Restricted Area",
+    "quest_id": 50303000,
+    "base_level": 95,
+    "minimum_item_rank": 110,
+    "discoverable": false,
+    "mission_params": {
+        "group": 7,
+        "minimum_members": 1,
+        "playtime": 900,
+        "solo_only": false,
+        "max_pawns": 3,
+        "phase_groups": []
+    },
+    "order_conditions": [],
+    "rewards": [
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 18741,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "comment": "Boss",
+            "stage_id": {
+                "id": 586,
+                "group_id": 1
+            },
+            "subgroup_id": 1,
+            "enemies": [
+                {
+                    "comment": "Ifrit (1st form)",
+                    "enemy_id": "0x020803",
+                    "level": 95,
+                    "exp": 0,
+                    "is_boss": true,
+                    "start_think_tbl_no": 2
+                }
+            ]
+        },
+        {
+            "comment": "Boss",
+            "stage_id": {
+                "id": 586,
+                "group_id": 1
+            },
+            "subgroup_id": 0,
+            "enemies": [
+                {
+                    "comment": "Ifrit (2nd form)",
+                    "enemy_id": "0x020804",
+                    "level": 95,
+                    "exp": 0,
+                    "is_boss": true,
+                    "start_think_tbl_no": 1,
+                    "montage_fix_no": 1
+                }
+            ]
+        },
+        {
+            "comment": "Blaze Harpy",
+            "stage_id": {
+                "id": 586,
+                "group_id": 2
+            },
+            "starting_index": 1,
+            "enemies": [
+                {
+                    "enemy_id": "0x010608",
+                    "level": 95,
+                    "exp": 0,
+                    "repop_count": 50,
+                    "repop_wait_second": 60,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "enemy_id": "0x010608",
+                    "level": 95,
+                    "exp": 0,
+                    "repop_count": 50,
+                    "repop_wait_second": 60,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "enemy_id": "0x010608",
+                    "level": 95,
+                    "exp": 0,
+                    "repop_count": 50,
+                    "repop_wait_second": 60,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "enemy_id": "0x010608",
+                    "level": 95,
+                    "exp": 0,
+                    "repop_count": 50,
+                    "repop_wait_second": 60,
+                    "enemy_target_types_id": 1
+                }
+            ]
+        }
+    ],
+    "server_actions": [
+        {
+            "action_type": "OmSetInstantValue",
+            "instant_value_action": "ResetGroup",
+            "stage_id": {
+                "id": 586,
+                "group_id": 1,
+                "layer_no": 0
+            },
+            "key": 9379,
+            "value": 8
+        }
+    ],
+    "processes": [
+        {
+            "blocks": [
+                {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 586
+                    }
+                },
+                {
+                    "type": "SpawnGroup",
+                    "announce_type": "Start",
+                    "groups": [0],
+                    "check_commands": [
+                        {"type": "EmHpLess", "Param1": 138, "Param2": 1, "Param3": 0, "Param4": 85}
+                    ]
+                },
+                {
+                    "type": "KillGroup",
+                    "reset_group": false,
+                    "groups": [1]
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "EmHpLess", "Param1": 138, "Param2": 1, "Param3": 0, "Param4": 40}
+                    ]
+                },
+                {
+                    "type": "SpawnGroup",
+                    "groups": [2]
+                }
+            ]
+        }
+    ]
+}
