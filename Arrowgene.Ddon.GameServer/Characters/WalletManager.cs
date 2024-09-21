@@ -1,6 +1,4 @@
 #nullable enable
-using System.Data.Common;
-using System.Linq;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -8,6 +6,10 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -16,6 +18,26 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(WalletManager));
 
         private IDatabase _Database;
+
+        private static readonly Dictionary<WalletType, uint> WalletLimits = new()
+        {
+            {WalletType.Gold, 999999999},
+            {WalletType.RiftPoints, 999999999},
+            {WalletType.BloodOrbs, 50000},
+            {WalletType.SilverTickets, 999999999},
+            {WalletType.GoldenGemstones, 99999},
+            {WalletType.RentalPoints, 99999},
+            {WalletType.ResetJobPoints, 99}, // 1 in the pcaps
+            {WalletType.ResetCraftSkills, 99}, // 1 in the pcaps
+            {WalletType.HighOrbs, 5000},
+            {WalletType.DominionPoints, 999999999},
+            {WalletType.AdventurePassPoints, 80},
+            {WalletType.UnknownTickets, 999999999},
+            {WalletType.BitterblackMazeResetTicket, 3},
+            {WalletType.GoldenDragonMark, 30},
+            {WalletType.SilverDragonMark, 150},
+            {WalletType.RedDragonMark, 99999}
+        };
 
         public WalletManager(IDatabase Database)
         {
@@ -38,7 +60,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             CDataWalletPoint Wallet = Character.WalletPointList.Single(wp => wp.Type == Type);
 
-            Wallet.Value += Amount;
+            Wallet.Value = Math.Min(Wallet.Value + Amount, WalletLimits[Type]);
 
             _Database.UpdateWalletPoint(Character.CharacterId, Wallet, connectionIn);
 
