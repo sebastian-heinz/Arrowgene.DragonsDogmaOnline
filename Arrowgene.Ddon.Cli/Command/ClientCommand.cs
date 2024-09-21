@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -221,15 +221,9 @@ namespace Arrowgene.Ddon.Cli.Command
                             GmdCsv.Entry matchCsvEntry = null;
                             foreach (GmdCsv.Entry csvEntry in gmdCsvEntries)
                             {
-                                if (!string.IsNullOrEmpty(entry.Key) && csvEntry.Key == entry.Key)
+                                if (!string.IsNullOrEmpty(entry.Key) && csvEntry.Key == entry.Key && entry.ReadIndex == csvEntry.ReadIndex)
                                 {
-                                    // matched based on key
-                                    matchCsvEntry = csvEntry;
-                                    break;
-                                }
-
-                                if (entry.ReadIndex == csvEntry.ReadIndex)
-                                {
+                                    // Both key AND index have to match, because there are gui entries with duplicate keys.
                                     matchCsvEntry = csvEntry;
                                     break;
                                 }
