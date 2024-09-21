@@ -102,6 +102,9 @@
                     "stage_id": {
                         "id": 1
                     },
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"}
+                    ],
                     "event_id": 100
                 },
                 {
@@ -111,7 +114,9 @@
                         "id": 3,
                         "group_id": 1
                     },
-                    "flags": [],
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Set", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"}
+                    ],
                     "npc_id": "Joseph",
                     "message_id": 14936
                 },
@@ -221,7 +226,10 @@
                     "stage_id": {
                         "id": 3
                     },
-                    "event_id": 110
+                    "event_id": 110,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"}
+                    ]
                 },
                 {
                     "type": "TalkToNpc",
@@ -231,9 +239,11 @@
                         "id": 3,
                         "group_id": 1
                     },
-                    "flags": [],
                     "npc_id": "Joseph",
-                    "message_id": 15007
+                    "message_id": 15007,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Set", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"}
+                    ]
                 }
             ]
         }

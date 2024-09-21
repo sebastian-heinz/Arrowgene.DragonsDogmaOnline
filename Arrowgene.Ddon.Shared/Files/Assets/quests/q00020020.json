@@ -185,7 +185,10 @@
                     "stage_id": {
                         "id": 3
                     },
-                    "event_id": 115
+                    "event_id": 115,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"}
+                    ]
                 },
                 {
                     "type": "TalkToNpc",
@@ -198,7 +201,10 @@
                         {"type": "QstLayout", "action": "Set", "value": 3027, "comment": "Spawns Cici, Gurdolin, Lise and Elliot"}
                     ],
                     "npc_id": "Joseph",
-                    "message_id": 15078
+                    "message_id": 15078,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Set", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"}
+                    ]
                 },
                 {
                     "type": "TalkToNpc",

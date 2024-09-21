@@ -134,12 +134,14 @@
                 {
                     "comment": "Infected Hobgoblin",
                     "enemy_id": "0x010160",
+                    "start_think_tbl_no": 1,
                     "level": 55,
                     "exp": 6476
                 },
                 {
                     "comment": "Infected Hobgoblin Fighter",
                     "enemy_id": "0x010161",
+                    "start_think_tbl_no": 1,
                     "level": 55,
                     "exp": 6476
                 }
