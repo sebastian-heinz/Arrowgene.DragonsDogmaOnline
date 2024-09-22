@@ -634,12 +634,14 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                                 Logger.Error($"Unable to parse the quest type in block @ index {blockIndex - 1}.");
                                 return false;
                             }
+                            questBlock.OmInteractEvent.QuestType = questType;
 
                             if (!Enum.TryParse(jblock.GetProperty("interact_type").GetString(), true, out OmInteractType interactType))
                             {
                                 Logger.Error($"Unable to parse the quest type in block @ index {blockIndex - 1}.");
                                 return false;
                             }
+                            questBlock.OmInteractEvent.InteractType = interactType;
 
                             questBlock.ShowMarker = true;
                             if (jblock.TryGetProperty("show_marker", out JsonElement jShowMarker))
@@ -651,8 +653,6 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             {
                                 questBlock.OmInteractEvent.QuestId = (QuestId)jQuestId.GetUInt32();
                             }
-
-                            questBlock.OmInteractEvent.QuestType = questType;
                         }
                         break;
                     case QuestBlockType.DeliverItems:
