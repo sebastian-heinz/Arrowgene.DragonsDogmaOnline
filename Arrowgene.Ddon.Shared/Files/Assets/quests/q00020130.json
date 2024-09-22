@@ -1,0 +1,211 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "Straying Power",
+    "quest_id": 20130,
+    "next_quest": 20140,
+    "base_level": 65,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "order_conditions": [
+        {"type": "MinimumLevel", "Param1": 65}
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 123000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 40000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 3000
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 13481,
+                    "num": 1
+                },
+                {
+                    "item_id": 14189,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "comment": "Block monsters in room while quest is active",
+            "stage_id": {
+                "id": 74,
+                "group_id": 8
+            },
+            "enemies": []
+        },
+        {
+            "stage_id": {
+                "id": 361,
+                "group_id": 1
+            },
+            "enemies": [
+                {
+                    "comment": "Phantasmic Great Dragon",
+                    "enemy_id": "0x021003",
+                    "level": 65,
+                    "exp": 197000,
+                    "named_enemy_params_id": 942,
+                    "is_boss": true
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "npc_id": "Joseph",
+                    "message_id": 15447,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"},
+                        {"type": "QstLayout", "action": "Set", "value": 2475, "comment": "Spawns Cecily, Elliot and Lise"}
+                    ]
+                },
+                {
+                    "type": "IsStageNo",
+                    "announce_type": "Accept",
+                    "stage_id": {
+                        "id": 74
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2473, "comment": "Spawns Leo"}
+                    ]
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 74
+                    },
+                    "location": {
+                        "x": -230,
+                        "y": -1649,
+                        "z": -29680
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 74
+                    },
+                    "event_id": 15,
+                    "jump_stage_id": {
+                        "id": 361
+                    }
+                },
+                {
+                    "type": "IsStageNo",
+                    "announce_type": "Update",
+                    "stage_id": {
+                        "id": 361
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 2473, "comment": "Spawns Leo"},
+                        {"type": "QstLayout", "action": "Set", "value": 2529, "comment": "Spawns Leo"}
+                    ]
+                },
+                {
+                    "type": "PartyGather",
+                    "stage_id": {
+                        "id": 361
+                    },
+                    "location": {
+                        "x": 59,
+                        "y": 519,
+                        "z": -7292
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 361
+                    },
+                    "event_id": 0,
+                    "jump_stage_id": {
+                        "id": 361
+                    },
+                    "start_pos_no": 1
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "groups": [ 1 ],
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 2529, "comment": "Spawns Leo"},
+                        {"type": "QstLayout", "action": "Set", "value": 3654, "comment": "Spawns Leo for combat"},
+                        {"type": "QstLayout", "action": "Set", "value": 3446, "comment": "Spawns Gurdolin for combat"},
+                        {"type": "MyQst", "action": "Set", "value": 1081, "comment": "Starts Gurdolin combat FSM"}
+                    ]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 361
+                    },
+                    "event_id": 5
+                },
+                {
+                    "type": "PartyGather",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "stage_id": {
+                        "id": 350
+                    },
+                    "location": {
+                        "x": -2143,
+                        "y": 18,
+                        "z": 52
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 3654, "comment": "Spawns Leo for combat"},
+                        {"type": "QstLayout", "action": "Clear", "value": 3446, "comment": "Spawns Gurdolin for combat"},
+                        {"type": "MyQst", "action": "Clear", "value": 1081, "comment": "Starts Gurdolin combat FSM"},
+                        {"type": "QstLayout", "action": "Set", "value": 3448, "comment": "Spawns Loeg, Cecily, Lise and Elliot"}
+                    ]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 350
+                    },
+                    "event_id": 15
+                },
+                {
+                    "type": "TalkToNpc",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "npc_id": "Joseph",
+                    "message_id": 15486,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 3448, "comment": "Spawns Loeg, Cecily, Lise and Elliot"},
+                        {"type": "QstLayout", "action": "Set", "value": 3449, "comment": "Spawns Loeg, Cecily, Lise and Elliot"}
+                    ]
+                }
+            ]
+        }
+    ]
+}
