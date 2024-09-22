@@ -53,44 +53,6 @@
     ],
     "enemy_groups": [
         {
-            "comment": "Meat Monsters (14, 2)",
-            "stage_id": {
-                "id": 77,
-                "group_id": 14
-            },
-            "subgroup_id": 2,
-            "enemies": [
-                {
-                    "comment" : "Skeleton Warrior",
-                    "enemy_id": "0x010302",
-                    "level": 51,
-                    "exp": 6040,
-                    "enemy_target_types_id": 1
-                },
-                {
-                    "comment" : "Skeleton Warrior",
-                    "enemy_id": "0x010302",
-                    "level": 51,
-                    "exp": 6040,
-                    "enemy_target_types_id": 1
-                },
-                {
-                    "comment" : "Skeleton Warrior",
-                    "enemy_id": "0x010302",
-                    "level": 51,
-                    "exp": 6040,
-                    "enemy_target_types_id": 1
-                },
-                {
-                    "comment" : "Skeleton Warrior",
-                    "enemy_id": "0x010302",
-                    "level": 51,
-                    "exp": 6040,
-                    "enemy_target_types_id": 1
-                }
-            ]
-        },
-        {
             "comment": "Boss Group 1",
             "stage_id": {
                 "id": 77,
@@ -315,7 +277,7 @@
                         {"type": "MyQst", "action": "Set", "value": 120, "comment": "Starts Leo's FSM"}
                     ],
                     "announce_type": "Update",
-                    "groups": [1]
+                    "groups": [0]
                 },
                 {
                     "type": "PlayEvent",
@@ -422,16 +384,6 @@
                         ]
                     ],
                     "result_commands": []
-                }
-            ]
-        },
-        {
-            "comment": "Meat Spawner",
-            "blocks": [
-                {
-                    "comment": "Spawns Enemies for meat monsters",
-                    "type": "SpawnGroup",
-                    "groups": [0]
                 }
             ]
         }
