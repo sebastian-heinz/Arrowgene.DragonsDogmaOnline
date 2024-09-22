@@ -3,7 +3,7 @@
     "type": "Main",
     "comment": "The Fate of Lestania",
     "quest_id": 20070,
-    "next_quest": 0,
+    "next_quest": 20080,
     "base_level": 57,
     "minimum_item_rank": 0,
     "discoverable": true,
