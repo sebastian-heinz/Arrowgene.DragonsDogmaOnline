@@ -10,9 +10,17 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 {
     public class EnemySpawnAssetDeserializer : IAssetDeserializer<EnemySpawnAsset>
     {
+
+        // Consider this a macro that may be changed for balance
+        // reasons. Each enemy drops PP equal to its experience points
+        // divided by this number, unless an explicit value is
+        // provided (called "PPDrop") in which case that value is used
+        // instead.
+        private static uint EXP_PER_PP = 7500;
+
         private static readonly ILogger Logger = LogProvider.Logger(typeof(EnemySpawnAssetDeserializer));
 
-        private static readonly string[] ENEMY_HEADERS = new string[]{"StageId", "LayerNo", "GroupId", "SubGroupId", "EnemyId", "NamedEnemyParamsId", "RaidBossId", "Scale", "Lv", "HmPresetNo", "StartThinkTblNo", "RepopNum", "RepopCount", "EnemyTargetTypesId", "MontageFixNo", "SetType", "InfectionType", "IsBossGauge", "IsBossBGM", "IsManualSet", "IsAreaBoss", "BloodOrbs", "HighOrbs", "Experience", "DropsTableId", "SpawnTime"};
+        private static readonly string[] ENEMY_HEADERS = new string[]{"StageId", "LayerNo", "GroupId", "SubGroupId", "EnemyId", "NamedEnemyParamsId", "RaidBossId", "Scale", "Lv", "HmPresetNo", "StartThinkTblNo", "RepopNum", "RepopCount", "EnemyTargetTypesId", "MontageFixNo", "SetType", "InfectionType", "IsBossGauge", "IsBossBGM", "IsManualSet", "IsAreaBoss", "BloodOrbs", "HighOrbs", "Experience", "DropsTableId", "SpawnTime", "PPDrop"};
         private static readonly string[] DROPS_TABLE_HEADERS = new string[]{"ItemId", "ItemNum", "MaxItemNum", "Quality", "IsHidden", "DropChance"};
 
         private Dictionary<uint, NamedParam> namedParams;
@@ -82,7 +90,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     row[enemySchemaIndexes["GroupId"]].GetUInt32()
                 );
                 byte subGroupId = row[enemySchemaIndexes["SubGroupId"]].GetByte();
-                List<Enemy> enemies = asset.Enemies.GetValueOrDefault((layoutId, subGroupId)) ?? new List<Enemy>();
+                List<Enemy> enemies = asset.Enemies.GetValueOrDefault(layoutId) ?? new List<Enemy>();
                 Enemy enemy = new Enemy()
                 {
                     EnemyId = ParseHexUInt(row[enemySchemaIndexes["EnemyId"]].GetString()),
@@ -105,24 +113,37 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     BloodOrbs = row[enemySchemaIndexes["BloodOrbs"]].GetUInt32(),
                     HighOrbs = row[enemySchemaIndexes["HighOrbs"]].GetUInt32(),
                     Experience = row[enemySchemaIndexes["Experience"]].GetUInt32(),
+
+                    Subgroup = subGroupId,
                 };
 
-                //checking if the file has spawntime, if yes we convert the time and pass it along to enemy.cs
-                    if(enemySchemaIndexes.ContainsKey("SpawnTime"))
-                    {
-                        string SpawnTimeGet = row[enemySchemaIndexes["SpawnTime"]].GetString();
-                        ConvertSpawnTimeToMilliseconds(SpawnTimeGet, out long start, out long end);
-                        enemy.SpawnTimeStart = start;
-                        enemy.SpawnTimeEnd = end; 
-                    }
-                    else
-                    {
-                        // if no, we define it to the "allday" spawn time range and pass this along to the enemy.cs instead.
-                        ConvertSpawnTimeToMilliseconds("00:00,23:59", out long start, out long end);
-                        enemy.SpawnTimeStart = start;
-                        enemy.SpawnTimeEnd = end;
-                    }
-                    
+                // checking if the file has spawntime, if yes we convert the time and pass it along to enemy.cs
+                if(enemySchemaIndexes.ContainsKey("SpawnTime"))
+                {
+                    string SpawnTimeGet = row[enemySchemaIndexes["SpawnTime"]].GetString();
+                    ConvertSpawnTimeToMilliseconds(SpawnTimeGet, out long start, out long end);
+                    enemy.SpawnTimeStart = start;
+                    enemy.SpawnTimeEnd = end;
+                }
+                else
+                {
+                    // if no, we define it to the "allday" spawn time range and pass this along to the enemy.cs instead.
+                    ConvertSpawnTimeToMilliseconds("00:00,23:59", out long start, out long end);
+                    enemy.SpawnTimeStart = start;
+                    enemy.SpawnTimeEnd = end;
+                }
+
+                // check if the file has PPDrop.
+                if(enemySchemaIndexes.ContainsKey("PPDrop"))
+                {
+                    // If yes, get it as a uint32.
+                    enemy.PPDrop = row[enemySchemaIndexes["PPDrop"]].GetUInt32();
+                }
+                else
+                {
+                    // If no, set the value to its experience / EXP_PER_PP.
+                    enemy.PPDrop = enemy.Experience / EXP_PER_PP;
+                }
                 
                 int dropsTableId = row[enemySchemaIndexes["DropsTableId"]].GetInt32();
                 if(dropsTableId >= 0)
@@ -130,7 +151,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     enemy.DropsTable = asset.DropsTables[(uint) dropsTableId];
                 }
                 enemies.Add(enemy);
-                asset.Enemies[(layoutId, subGroupId)] = enemies;
+                asset.Enemies[layoutId] = enemies;
             }
 
             return asset;

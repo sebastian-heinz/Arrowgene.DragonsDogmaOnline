@@ -128,7 +128,7 @@ namespace Arrowgene.Ddon.Database
 
         #region Pawn craft progress
         bool ReplacePawnCraftProgress(CraftProgress craftProgress);
-        bool InsertPawnCraftProgress(CraftProgress craftProgress);
+        bool InsertPawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);
         bool InsertIfNotExistsPawnCraftProgress(CraftProgress craftProgress);
         bool UpdatePawnCraftProgress(CraftProgress craftProgress);
         bool DeletePawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId);
@@ -140,7 +140,7 @@ namespace Arrowgene.Ddon.Database
         bool DeleteSpSkill(uint pawnId, JobId job, byte spSkillId);
 
         // CharacterJobData
-        bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData);
+        bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData, DbConnection? connectionIn = null);
         bool UpdateCharacterJobData(uint commonId, CDataCharacterJobData updatedCharacterJobData);
 
         // Wallet Points
@@ -424,19 +424,16 @@ namespace Arrowgene.Ddon.Database
             QuestType questType
         );
 
+        bool ReplaceCompletedQuest(
+            uint characterCommonId,
+            QuestId questId,
+            QuestType questType,
+            uint count = 1
+        );
+
         // Quest Progress
-        bool InsertQuestProgress(
-            uint characterCommonId,
-            QuestId questId,
-            QuestType questType,
-            uint step
-        );
-        bool UpdateQuestProgress(
-            uint characterCommonId,
-            QuestId questId,
-            QuestType questType,
-            uint step
-        );
+        bool InsertQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step, uint variantId=0);
+        bool UpdateQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step);
         bool RemoveQuestProgress(uint characterCommonId, QuestId questId, QuestType questType);
         List<QuestProgress> GetQuestProgressByType(uint characterCommonId, QuestType questType);
         QuestProgress GetQuestProgressById(uint characterCommonId, QuestId questId);

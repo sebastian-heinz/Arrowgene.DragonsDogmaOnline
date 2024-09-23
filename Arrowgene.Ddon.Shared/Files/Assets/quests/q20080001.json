@@ -48,7 +48,7 @@
             },
             "enemies": [
                 {
-                    "enemy_id": "0x0115605",
+                    "enemy_id": "0x015605",
                     "level": 48,
                     "exp": 14000,
                     "is_boss": true							

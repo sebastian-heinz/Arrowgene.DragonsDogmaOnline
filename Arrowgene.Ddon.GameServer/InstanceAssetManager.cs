@@ -1,44 +1,93 @@
-using System.Collections.Generic;
-using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.GatheringItems
 {
-    public abstract class InstanceAssetManager<T1, T2, T3>
+    /// <summary>
+    /// Interface for managing various objects that appear in instances:
+    ///     Enemies, via InstanceEnemyManager, <Enemy,InstancedEnemy>
+    ///     Gatherable items, via InstanceGatheringItemManager, <List<GatheringItem>, List<InstancedGatheringItem>>
+    ///     Dropped items, via InstanceDropItemManager, <List<GatheringItem>, List<InstancedGatheringItem>>
+    ///     
+    /// Notably does not cover enemies associated with quests.
+    /// 
+    /// Each object is associated uniquely with a stageLayoutId and an index, 
+    /// which may also be referred to as setId, posId, or PositionIndex, among other terms.
+    /// 
+    /// Enemies and dropped items are paired at the same stageLayoutId and index.
+    /// An enemy spawned at (foo, bar) will have its drops instanced at (foo, bar) in the other manager.
+    /// 
+    /// For enemies, the index is NOT the spawn subgroup, but the position index.
+    /// </summary>
+    public abstract class InstanceAssetManager<TItem, TAssetItem>
     {
         public InstanceAssetManager()
         {
-            this._instancedAssetsDictionary = new Dictionary<(StageId, T1), List<T3>>();
+            this._instancedAssetsDictionary = new Dictionary<StageId, Dictionary<int, TAssetItem>>();
         }
 
-        private readonly Dictionary<(StageId, T1), List<T3>> _instancedAssetsDictionary;
+        private readonly Dictionary<StageId, Dictionary<int, TAssetItem>> _instancedAssetsDictionary;
 
-        public bool HasAssetsInstanced(CDataStageLayoutId stageLayoutId, T1 subGroupId)
+        public bool HasAssetsInstanced(CDataStageLayoutId stageLayoutId, int subId)
         {
-            return _instancedAssetsDictionary.ContainsKey((StageId.FromStageLayoutId(stageLayoutId), subGroupId));
+            var stageId = StageId.FromStageLayoutId(stageLayoutId);
+            return HasAssetsInstanced(stageId, subId);
         }
 
-        public bool HasAssetsInstanced(StageId stageId, T1 subGroupId)
+        public bool HasAssetsInstanced(StageId stageId, int subId)
         {
-            return _instancedAssetsDictionary.ContainsKey((stageId, subGroupId));
+            return _instancedAssetsDictionary.ContainsKey(stageId) && _instancedAssetsDictionary[stageId].ContainsKey(subId);
         }
 
-        public List<T3> GetAssets(CDataStageLayoutId stageLayoutId, T1 subGroupId)
+        public List<TAssetItem> GetAssets(CDataStageLayoutId stageLayoutId)
         {
-            return GetAssets(StageId.FromStageLayoutId(stageLayoutId), subGroupId);
+            return GetAssets(StageId.FromStageLayoutId(stageLayoutId));
         }
 
-        public List<T3> GetAssets(StageId stageId, T1 subGroupId)
+        public List<TAssetItem> GetAssets(StageId stageId)
         {
-            if(!HasAssetsInstanced(stageId, subGroupId))
+            if (!_instancedAssetsDictionary.ContainsKey(stageId))
             {
-                List<T2> items = FetchAssetsFromRepository(stageId, subGroupId);
-                List<T3> instancedAssets = InstanceAssets(items);
-                _instancedAssetsDictionary.Add((stageId, subGroupId), instancedAssets);
+                IEnumerable<TItem> items = FetchAssetsFromRepository(stageId);
+                List<TAssetItem> instancedAssets = InstanceAssets(items);
+                if (!_instancedAssetsDictionary.ContainsKey(stageId))
+                {
+                    _instancedAssetsDictionary[stageId] = new Dictionary<int, TAssetItem>();
+                }
+                for (int i = 0; i < instancedAssets.Count; i++)
+                {
+                    _instancedAssetsDictionary[stageId].Add(i, instancedAssets[i]);
+                }
                 return instancedAssets;
             }
-            return _instancedAssetsDictionary[(stageId, subGroupId)];
+            else
+            {
+                return _instancedAssetsDictionary[stageId].Values.ToList();
+            }
+        }
+
+        public TAssetItem GetAssets(CDataStageLayoutId stageLayoutId, int subId)
+        {
+            return GetAssets(StageId.FromStageLayoutId(stageLayoutId), subId);
+        }
+
+        public TAssetItem GetAssets(StageId stageId, int subId)
+        {
+            if(!HasAssetsInstanced(stageId, subId))
+            {
+                TItem items = FetchAssetsFromRepository(stageId, subId);
+                TAssetItem instancedAssets = InstanceAssets(items);
+
+                if (!_instancedAssetsDictionary.ContainsKey(stageId))
+                {
+                    _instancedAssetsDictionary[stageId] = new Dictionary<int, TAssetItem>();
+                }
+                _instancedAssetsDictionary[stageId].Add(subId, instancedAssets);
+                return instancedAssets;
+            }
+            return _instancedAssetsDictionary[stageId][subId];
         }
 
         public virtual void Clear()
@@ -46,8 +95,12 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
             _instancedAssetsDictionary.Clear();
         }
 
-        protected abstract List<T2> FetchAssetsFromRepository(StageId stage, T1 subGroupId);
+        protected abstract TItem FetchAssetsFromRepository(StageId stage, int subId);
 
-        protected abstract List<T3> InstanceAssets(List<T2> originals);
+        protected abstract IEnumerable<TItem> FetchAssetsFromRepository(StageId stage);
+
+        protected abstract TAssetItem InstanceAssets(TItem original);
+
+        protected abstract List<TAssetItem> InstanceAssets(IEnumerable<TItem> originals);
     }
 }

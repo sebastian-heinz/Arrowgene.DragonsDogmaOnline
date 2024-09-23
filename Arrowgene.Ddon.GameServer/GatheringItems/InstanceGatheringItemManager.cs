@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Model;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.GatheringItems
 {
@@ -17,9 +17,14 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
             BitterBlackLootTables = new Dictionary<(StageId, uint), List<GatheringItem>>();
         }
 
-        protected override List<GatheringItem> FetchAssetsFromRepository(StageId stage, uint subGroupId)
+        protected override List<GatheringItem> FetchAssetsFromRepository(StageId stage, int subGroupId)
         {
-            return _assetRepository.GatheringItems.GetValueOrDefault((stage, subGroupId)) ?? new List<GatheringItem>();
+            return _assetRepository.GatheringItems.GetValueOrDefault((stage, (uint)subGroupId)) ?? new List<GatheringItem>();
+        }
+
+        protected override IEnumerable<List<GatheringItem>> FetchAssetsFromRepository(StageId stage)
+        {
+            return _assetRepository.GatheringItems.Where(x => x.Key.Item1.Equals(stage)).Select(x => x.Value);
         }
     }
 }

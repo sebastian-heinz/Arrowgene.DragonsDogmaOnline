@@ -3,6 +3,7 @@ using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections.Generic;
@@ -73,12 +74,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             }
             var questResultCommands = new List<CDataQuestCommand>()
             {
-                new CDataQuestCommand()
-                {
-                    Command = (ushort)QuestResultCommand.StageJump,
-                    Param01 = stageNo,
-                    Param02 = startingLocation
-                }
+                QuestManager.ResultCommand.StageJump((StageNo) stageNo, startingLocation)
             };
 
             //Send fake progress update to trigger the warp command.

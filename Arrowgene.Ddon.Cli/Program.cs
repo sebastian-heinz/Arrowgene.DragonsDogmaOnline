@@ -1,4 +1,4 @@
-﻿/*
+/*
  * This file is part of Arrowgene.Ddon.Cli
  *
  * Arrowgene.Ddon.Cli is a server implementation for the game "Dragons Dogma Online".
@@ -47,13 +47,26 @@ namespace Arrowgene.Ddon.Cli
         // A list of packet Ids to always ignore, regardless of setting
         private static HashSet<PacketId> IgnorePacketIds = new HashSet<PacketId>()
         {
-            new PacketId(3, 3, 16, ""),
-            new PacketId(6, 25, 16, ""),
             PacketId.C2S_CONNECTION_PING_REQ,
             PacketId.S2C_CONNECTION_PING_RES,
+
             PacketId.C2L_PING_REQ,
             PacketId.L2C_PING_RES,
+
             PacketId.S2C_LOBBY_LOBBY_DATA_MSG_NTC,
+            PacketId.C2S_LOBBY_LOBBY_DATA_MSG_REQ,
+            PacketId.S2C_LOBBY_LOBBY_CHAT_MSG_NTC,
+
+            PacketId.C2S_PARTY_SEND_BINARY_MSG_NTC,
+            PacketId.S2C_PARTY_RECV_BINARY_MSG_NTC,
+
+            PacketId.S2C_CONTEXT_MASTER_CHANGE_NTC,
+            PacketId.C2S_CONTEXT_GET_SET_CONTEXT_REQ,
+            PacketId.C2S_CONTEXT_SET_CONTEXT_NTC,
+            PacketId.S2C_CONTEXT_SET_CONTEXT_NTC,
+            PacketId.S2C_CONTEXT_SET_CONTEXT_BASE_NTC,
+
+            PacketId.S2C_USER_LIST_JOIN_NTC
         };
 
         private static void Main(string[] args)

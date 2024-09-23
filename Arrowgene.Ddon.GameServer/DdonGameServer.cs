@@ -76,6 +76,9 @@ namespace Arrowgene.Ddon.GameServer
             HubManager = new HubManager(this);
             GpCourseManager = new GpCourseManager(this);
             WeatherManager = new WeatherManager(this);
+            PartyQuestContentManager = new PartyQuestContentManager(this);
+            BoardManager = new BoardManager(this);
+            TimerManager = new TimerManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
@@ -106,6 +109,9 @@ namespace Arrowgene.Ddon.GameServer
         public GameRouter Router { get; }
         public GpCourseManager GpCourseManager { get; }
         public WeatherManager WeatherManager { get; }
+        public PartyQuestContentManager PartyQuestContentManager { get; }
+        public BoardManager BoardManager { get; }
+        public TimerManager TimerManager { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
 
@@ -360,6 +366,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new InstanceGetOmInstantKeyValueAllHandler(this));
             AddHandler(new InstanceTraningRoomGetEnemyListHandler(this));
             AddHandler(new InstanceTraningRoomSetEnemyHandler(this));
+            AddHandler(new Instance_13_46_16_Handler(this));
+            AddHandler(new Instance_13_47_16_Handler(this));
 
             AddHandler(new ItemConsumeStorageItemHandler(this));
             AddHandler(new ItemGetStorageItemListHandler(this));
@@ -492,8 +500,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestGetTutorialQuestListHandler(this));
             AddHandler(new QuestGetWorldManageQuestListHandler(this));
             AddHandler(new QuestLeaderQuestProgressRequestHandler(this));
-			AddHandler(new QuestGetEndContentsGroup(this));
-			AddHandler(new QuestGetCycleContentsNewsList(this));
+			AddHandler(new QuestGetEndContentsGroupHandler(this));
+			AddHandler(new QuestGetCycleContentsNewsListHandler(this));
             AddHandler(new QuestQuestOrderHandler(this));
             AddHandler(new QuestQuestProgressHandler(this));
             AddHandler(new QuestSendLeaderQuestOrderConditionInfoHandler(this));
@@ -507,11 +515,30 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestCancelHandler(this));
             AddHandler(new QuestGetPartyBonusListHandler(this));
             AddHandler(new QuestGetMobHuntQuestListHandler(this));
+            AddHandler(new QuestPlayEntryHandler(this));
+            AddHandler(new QuestPlayEntryCancelHandler(this));
+            AddHandler(new QuestPlayStartHandler(this));
+            AddHandler(new QuestPlayStartTimerHandler(this));
+            AddHandler(new QuestPlayEndHandler(this));
+            AddHandler(new QuestPlayInterruptHandler(this));
+            AddHandler(new QuestPlayInterruptAnswerHandler(this));
+            AddHandler(new QuestGetEndContentsRecruitListHandler(this));
+            AddHandler(new QuestGetQuestScheduleInfoHandler(this));
 
-			AddHandler(new EntryBoardEntryBoardList(this));
-			AddHandler(new EntryBoardEntryBoardItemCreate(this));
-			AddHandler(new EntryBoardEntryBoardItemForceStart(this));
-			AddHandler(new EntryBoardEntryBoardItemInfoMyself(this));
+			AddHandler(new EntryBoardEntryBoardListHandler(this));
+			AddHandler(new EntryBoardEntryBoardItemCreateHandler(this));
+			AddHandler(new EntryBoardEntryBoardItemForceStartHandler(this));
+			AddHandler(new EntryBoardEntryBoardItemInfoMyselfHandler(this));
+            AddHandler(new EntryBoardEntryBoardItemReadyHandler(this));
+            AddHandler(new EntryBoardEntryBoardItemLeaveHandler(this));
+            AddHandler(new EntryBoardEntryItemInfoChangeHandler(this));
+            AddHandler(new EntryBoardEntryBoardItemInviteHandler(this));
+            AddHandler(new EntryBoardEntryBoardItemInfoHandler(this));
+            AddHandler(new EntryBoardEntryBoardItemEntryHandler(this));
+            AddHandler(new EntryBoardEntryBoardItemListHandler(this));
+            AddHandler(new EntryBoardEntryRecreateHandler(this));
+            AddHandler(new EntryBoardItemKickHandler(this));
+            AddHandler(new EntryBoardEntryBoardItemExtendTimeoutHandler(this));
 
             AddHandler(new ServerGameTimeGetBaseinfoHandler(this));
             AddHandler(new ServerGetGameSettingHandler(this));

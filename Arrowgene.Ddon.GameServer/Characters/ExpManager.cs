@@ -458,7 +458,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return JobData;
         }
 
-        public void AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, RewardSource rewardType, QuestType questType = QuestType.Unknown)
+        public void AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, RewardSource rewardType, QuestType questType = QuestType.All)
         {
             var lvCap = (client.GameMode == GameMode.Normal) ? ExpManager.LV_CAP : BitterblackMazeManager.LevelCap(client.Character.BbmProgress);
 
@@ -564,6 +564,35 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 // PERSIST CHANGES IN DB
                 _Server.Database.UpdateCharacterJobData(characterToAddExpTo.CommonId, activeCharacterJobData);
             }
+        }
+
+        public void AddJp(GameClient client, CharacterCommon characterToJpExpTo, uint gainedJp, RewardSource rewardType, QuestType questType = QuestType.All)
+        {
+            CDataCharacterJobData? activeCharacterJobData = characterToJpExpTo.ActiveCharacterJobData;
+            activeCharacterJobData.JobPoint += gainedJp;
+
+            if (characterToJpExpTo is Character)
+            {
+                S2CUpdateCharacterJobPointNtc jpNtc = new S2CUpdateCharacterJobPointNtc();
+                jpNtc.Job = characterToJpExpTo.Job;
+                jpNtc.AddJobPoint = gainedJp;
+                jpNtc.ExtraBonusJobPoint = 0;
+                jpNtc.TotalJobPoint = activeCharacterJobData.JobPoint;
+                client.Send(jpNtc);
+            }
+            else
+            {
+                S2CJobPawnJobPointNtc jpNtc = new S2CJobPawnJobPointNtc();
+                jpNtc.PawnId = ((Pawn)characterToJpExpTo).PawnId;
+                jpNtc.Job = characterToJpExpTo.Job;
+                jpNtc.AddJobPoint = gainedJp;
+                jpNtc.ExtraBonusJobPoint = 0;
+                jpNtc.TotalJobPoint = activeCharacterJobData.JobPoint;
+                client.Send(jpNtc);
+            }
+
+            // PERSIST CHANGES IN DB
+            _Server.Database.UpdateCharacterJobData(characterToJpExpTo.CommonId, activeCharacterJobData);
         }
 
         public void ResetExpData(GameClient client, CharacterCommon characterCommon)
@@ -707,8 +736,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private uint PartyLevelRange(PartyGroup party)
         {
-            uint maxLevel = party.Leader.Client.Character.ActiveCharacterJobData.Lv;
-            uint minLevel = party.Leader.Client.Character.ActiveCharacterJobData.Lv;
+            var firstMember = party.Clients.First();
+            uint maxLevel = firstMember.Character.ActiveCharacterJobData.Lv;
+            uint minLevel = firstMember.Character.ActiveCharacterJobData.Lv;
 
             foreach (var member in party.Members)
             {
@@ -737,7 +767,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private uint PartyMemberMaxLevel(PartyGroup party)
         {
-            uint maxLevel = party.Leader.Client.Character.ActiveCharacterJobData.Lv;
+            uint maxLevel = party.Clients.First().Character.ActiveCharacterJobData.Lv;
             foreach (var member in party.Members)
             {
                 CharacterCommon characterCommon = null;

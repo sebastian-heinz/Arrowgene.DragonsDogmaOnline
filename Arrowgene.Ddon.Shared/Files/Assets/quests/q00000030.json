@@ -3,7 +3,7 @@
     "type": "Main",
     "comment": "Be Forevermore, White Dragon",
     "quest_id": 30,
-    "next_quest": 0,
+    "next_quest": 20010,
     "base_level": 55,
     "minimum_item_rank": 0,
     "discoverable": true,
@@ -43,10 +43,10 @@
                         "id": 3
                     },
                     "event_id": 100
-				},
+                },
                 {
                     "type": "PlayEvent",
-					"announce_type": "Accept",
+                    "announce_type": "Accept",
                     "stage_id": {
                         "id": 76
                     },

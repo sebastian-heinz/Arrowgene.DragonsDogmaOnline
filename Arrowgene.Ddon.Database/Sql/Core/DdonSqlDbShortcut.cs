@@ -54,10 +54,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
             try
             {
-                Logger.Debug("Inserting shortcut.");
                 if (!InsertIfNotExistsShortcut((TCon)connection, characterId, shortcut))
                 {
-                    Logger.Debug("Shortcut already exists, replacing.");
                     return UpdateShortcut((TCon)connection, characterId, shortcut.PageNo, shortcut.ButtonNo, shortcut);
                 }
                 return true;

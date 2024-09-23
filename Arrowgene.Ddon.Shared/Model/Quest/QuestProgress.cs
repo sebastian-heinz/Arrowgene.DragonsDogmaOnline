@@ -13,6 +13,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public QuestId QuestId { get; set; }
         public QuestType QuestType { get; set; }
         public uint Step { get; set; }
+        public uint ? VariantId { get; set; }
     }
 
     public enum QuestProgressStatus : uint

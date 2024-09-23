@@ -88,7 +88,7 @@
             "groups": [0]
         },
         {
-            "type": "NewTalkToNpc",
+            "type": "TalkToNpc",
             "stage_id": {
                 "id": 61,
                 "group_id": 1,

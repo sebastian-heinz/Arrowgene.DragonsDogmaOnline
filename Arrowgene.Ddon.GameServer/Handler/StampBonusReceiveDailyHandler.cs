@@ -1,14 +1,11 @@
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Logging;
-using System;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class StampBonusReceiveDailyHandler : PacketHandler<GameClient>
+    public class StampBonusReceiveDailyHandler : GameRequestPacketHandler<C2SStampBonusRecieveDailyReq, S2CStampBonusRecieveDailyRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(StampBonusReceiveDailyHandler));
 
@@ -18,22 +15,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
             _gameServer = server;
         }
 
-        public override PacketId Id => PacketId.C2S_STAMP_BONUS_RECIEVE_DAILY_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override S2CStampBonusRecieveDailyRes Handle(GameClient client, C2SStampBonusRecieveDailyReq request)
         {
-            //Update stamp bonus data.
-            client.Character.StampBonus.LastStamp = DateTime.Now;
-            client.Character.StampBonus.ConsecutiveStamp += 1;
-            client.Character.StampBonus.TotalStamp += 1;
-
-            _gameServer.Database.UpdateCharacterStampData(client.Character.CharacterId, client.Character.StampBonus);
+            _gameServer.StampManager.UpdateStamp(client.Character);
 
             var dailyStamps = _gameServer.StampManager.GetDailyStampAssets().Where(x => x.StampNum == client.Character.StampBonus.ConsecutiveStamp);
 
             _gameServer.StampManager.HandleStampBonuses(client, dailyStamps);
 
-            client.Send(GameFull.Dump_701);
+            return new S2CStampBonusRecieveDailyRes();
         }
     }
 } 

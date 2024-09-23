@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.Database.Model;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
@@ -34,9 +35,21 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                 return;
             }
 
+            if (client.Party.ContentId != 0)
+            {
+                responses.Add(ChatResponse.CommandError(client, "Use the recruitment board to invite players to the party."));
+                return;
+            }
+
             if (!client.Party.GetPlayerPartyMember(client).IsLeader)
             {
-                responses.Add(ChatResponse.CommandError(client, "Only the party leader can invite players."));
+                responses.Add(ChatResponse.CommandError(client, "Only the party leader can invite."));
+                return;
+            }
+
+            if (!StageManager.IsSafeArea(client.Character.Stage))
+            {
+                responses.Add(ChatResponse.CommandError(client, "You must be in a safe area to invite others."));
                 return;
             }
 
@@ -72,6 +85,12 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                 if (targetClient == client)
                 {
                     responses.Add(ChatResponse.CommandError(client, "You cannot invite yourself."));
+                    return;
+                }
+
+                if (!StageManager.IsSafeArea(targetClient.Character.Stage))
+                {
+                    responses.Add(ChatResponse.CommandError(client, "The invited player is not in a safe area."));
                     return;
                 }
 

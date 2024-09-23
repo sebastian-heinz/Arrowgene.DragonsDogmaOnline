@@ -1,0 +1,64 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "To the Bitterblack Maze",
+    "quest_id": 60300047,
+    "next_quest": 0,
+    "base_level": 1,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {"id": 5},
+    "order_conditions": [
+        {"type": "SoloWithPawns"},
+        {"type": "MainQuestCompleted", "Param1": 26}
+    ],
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 15000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 1500
+        },
+        {
+            "type": "exp",
+            "amount": 15000
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 5,
+                "group_id": 1
+            },
+            "flags": [
+                {"type": "WorldManageQuest", "action": "Clear", "value": 4978, "quest_id": 70032001, "Comment": "Bitterblack Maze Entrance"}
+            ],
+            "npc_id": "Lyka1",
+            "message_id": 27922
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 5,
+                "group_id": 1
+            },
+            "announce_type": "Accept",
+            "npc_id": "Lyka1",
+            "message_id": 27938
+        },
+        {
+            "type": "IsStageNo",
+            "stage_id": {
+                "id": 5
+            },
+            "flags": [
+                {"type": "WorldManageQuest", "action": "Set", "value": 4978, "quest_id": 70032001, "Comment": "Bitterblack Maze Entrance"}
+            ]
+        }
+    ]
+}

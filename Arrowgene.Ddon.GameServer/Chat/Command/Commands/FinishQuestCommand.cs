@@ -64,7 +64,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             };
             client.Party.SendToAll(completeNtc);
 
-            client.Party.QuestState.UpdatePriorityQuestList(_server, client.Party);
+            client.Party.QuestState.UpdatePriorityQuestList(_server, client, client.Party);
 
             if (quest.ResetPlayerAfterQuest)
             {

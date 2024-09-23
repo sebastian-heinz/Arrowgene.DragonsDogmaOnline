@@ -42,11 +42,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 pawn.StageNo = res.StageNo;
             }
 
-            Logger.Info($"StageNo: {client.Character.StageNo} StageId: {packet.StageId}");
-
             if (StageManager.IsSafeArea(client.Character.Stage))
             {
                 res.IsBase = true;
+                client.Character.LastSafeStageId = packet.StageId;
 
                 bool shouldReset = true;
                 // Check to see if all player members are in a safe area.
@@ -71,6 +70,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     client.Party.ResetInstance();
                     client.Party.SendToAll(new S2CInstanceAreaResetNtc());
+                }
+            }
+
+            if (client.Party.ContentInProgress)
+            {
+                var quest = QuestManager.GetQuestByBoardId(client.Party.ContentId);
+                if (quest != null)
+                {
+                    quest.HandleAreaChange(client, client.Character.Stage);
                 }
             }
 

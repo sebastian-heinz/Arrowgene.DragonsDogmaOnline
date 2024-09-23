@@ -53,6 +53,8 @@ The JSON for the state machine is split into 4 major parts.
     "base_level": int,
     "minimum_item_rank": int,
     "discoverable": bool,
+    "area_id": string,
+    "news_image": int,
     "rewards": [],
     "enemy_groups": [],
     "blocks": []
@@ -144,6 +146,8 @@ Each file should start with the following generic format.
     "base_level": int,
     "minimum_item_rank": int,
     "discoverable": bool,
+    "area_id": string,
+    "news_image": int,
     "rewards": [],
     "enemy_groups": [],
     "blocks": []
@@ -163,11 +167,59 @@ First fill in the common items using the values we collected from the wiki. Ques
     "base_level": 12,
     "minimum_item_rank": 0,
     "discoverable": false,
+    "area_id": "HidellPlains",
+    "news_image": 5,
     "rewards": [],
     "enemy_groups": [],
     "blocks": []
 }
 ```
+
+The `area_id` field controls what category the quest appears under for Lestania News. In this case, the quest appears in Hidell Plains. You can also use "None" to hide the quest from the news. Similarly, if the quest does appear in Lestania News, you should provide a news image index. If none is provided, a default is used by the client, but the default only includes Hidell Plains images, so you should manually choose one.
+
+| Min ID     | Max ID | Image Description                                                    |
+|:---------:|:-----:|:-----------------------------------------------------------|
+| 0     |       | Locked, used for quests with hidden info.
+| 1     | 16    | Hidell Plains + White Dragon Temple
+| 21    | 29    | Breya Coast
+| 41    | 57    | Betland Plains + Temple of Purification
+| 61    | 75    | Dowe Valley + Dreed Castle
+| 81    | 96    | Volden Mines + Tunnels
+| 101   | 114   | Mysree Forest + Glowworm Cave
+| 121   | 128   | Mysree Grove
+| 141   | 154   | Northern Betland Plains + Gardnox Fort
+| 161   | 171   | Zandora Wasteland
+| 181   | 193   | Eastern Zandora + Mergoda Security District
+| 201   | 211   | Deenan Woods + Erte Deenan
+| 221   | 235   | Mergoda Ruins
+| 241   | 249   | Bloodbane Isle
+| 261   | 266   | Elan Water Grove
+| 281   | 285   | Farana Plains
+| 301   | 305   | Kingall Canyon
+| 321   | 326   | Morrow Forest
+| 330   | 345   | Acre Selund
+| 347   |       | Acre Selund
+| 501   | 505   | Generic Wells
+| 511   | 516   | Generic Cellars
+| 521   | 527   | Generic Waterways
+| 531   | 538   | Generic Caves
+| 541   | 548   | Generic Catacombs
+| 551   | 555   | Generic Arks
+| 561   | 567   | Generic Terraces
+| 571   | 573   | Generic Chapels
+| 581   | 583   | Generic Caves (S2)
+| 591   | 593   | Generic Waterways (S2)
+| 603   |       | Tower of Ivanos
+| 611   | 615   | Generic Ruins
+| 621   | 623   | Generic Wells (S2)
+| 641   | 643   | Generic Catacombs (S2)
+| 650   |       | Hollow of Beginnings
+| 660   | 662   | Generic Infected Forests
+| 670   | 679   | Acre Selund Interiors
+| 681   |       | Firefall Lava Caves
+| 683   |       | Generic Cave (S3)
+| 900   | 902   | Text Banners: Disaster/Rare Species/Bounty
+
 
 #### Adding Rewards
 
@@ -309,6 +361,8 @@ Finally, your file should look like below. Save the file, reload the server and 
     "base_level": 12,
     "minimum_item_rank": 0,
     "discoverable": false,
+    "area_id": "HidellPlains",
+    "news_image": 5,
     "rewards": [
         {
             "type": "wallet",
@@ -717,71 +771,6 @@ See the [quest command reference document](quest_command_reference.md) for more 
 | QstLayout | st0418 | 1099  | Diametes Sealed Door (ディアマンテス封印扉)
 | QstLayout | st0418 | 1101  | Spawns Klaus
 | MyQst     |        | 137   | Start Leo battl FSM
-
-#### World Manage Quest
-
-##### q70000001
-
-| Type              | StageNo | Value  | Comment
-|:-----------------:|:-------:|:------:|:-----------------------------------------------------------|
-| WorldManageLayout | st0100  | 977    | Spawns Gerd and the White Knights outside 
-| WorldManageLayout | st0100  | 1263   | The 2nd Ark (random) (st0574)
-| WorldManageLayout | st0100  | 2201   | The 1st Ark (random) (st0573)
-| WorldManageLayout | st0100  | 2204   | The 2nd Ark (quest) (st0571)
-| WorldManageLayout | st0100  | 2204   | The 1st Ark (quest) (st0576)
-|
-| WorldManageLayout | st0201  | 1218   | Spawns Leo in the audience chamber
-| WorldManageLayout | st0201  | 1219   | Spawns Iris in the audience chamber
-| WorldManageLayout | st0201  | 1293   | Spawns The White Dragon in the audience chamber in the most injured state
-|
-| WorldManageLayout | st0403  | 1109   | Locks the double doors to the Chapel at (x:51,y:89)
-| WorldManageLayout | st0403  | 1110   | Unlocks the double doors to the Chapel at (x:51,y:89)
-|
-| WorldManageLayout | st0408  | 1111   | Closed Water Flow Control Room Door
-| WorldManageLayout | st0408  | 1112   | Open Water Flow Control Room Door
-| WorldManageLayout | st0408  | 1317   | Water Falls Gimick
-| WorldManageLayout | st0408  | 1671   | Closed Lever Door (Stone Door, middle)
-| WorldManageLayout | st0408  | 1672   | Open Lever Door  (Stone Door, middle)
-
-
-##### q70002001
-| Type              | StageNo | Value  | Comment
-|:-----------------:|:-------:|:------:|:-----------------------------------------------------------|
-| WorldManageLayout | st0402  |   0    | Solider Corpse message
-| WorldManageLayout | st0402  | 3859   | Floor Lever
-| WorldManageLayout | st0402  | 3859   | Large Door Inside Gardnock Fort
-| WorldManageLayout | st0402  | 3860   | Large Door Inside Gardnock Fort
-|
-| WorldManageLayout | st0403  | 1113   | Large Door Closed in Erte Deenan
-| WorldManageLayout | st0403  | 1114   | Large Door Open in Erte Deenan
-
-##### q70003001
-| Type              | StageNo | Value  | Comment
-|:-----------------:|:-------:|:------:|:-----------------------------------------------------------|
-| WorldManageLayout | st0411  | 1106   | Front Door Lever (floor mounted) (ver1.2_正面扉用_レバー) (床置きレバー（遺跡用)
-| WorldManageLayout | st0411  | 1104   | Front Large Door Closed (ver1.2閉じ_正面扉) (メルゴダ扉・大)
-| WorldManageLayout | st0411  | 1105   | Front Large Door Open (ver1.2開き_正面扉) (メルゴダ扉・大)
-| WorldManageLayout | st0411  | 1119   | Closed Alchemy Research Building Door (ver1.2閉じ_錬金研究棟扉) (メルゴダ扉・中片扉)
-| WorldManageLayout | st0411  | 1120   | Open Alchemy Research Building Door (ver1.2開き_錬金研究棟扉) (メルゴダ扉・中片扉)
-| WorldManageLayout | st0411  | 1121   | Closed Military Instructors Door (small door) (ver1.2閉じ_軍事指導官扉) (メルゴダ扉・小片扉)
-| WorldManageLayout | st0411  | 1122   | Open Military Instructors Door (ver1.2開き_軍事指導官扉) (メルゴダ扉・小片扉)
-| WorldManageLayout | st0411  | 1123   | Closed Special Research Door (ver1.2閉じ_特別研究区扉) (メルゴダ扉・小片扉)
-| WorldManageLayout | st0411  | 1124   | Open Special Research Door (ver1.2開き_特別研究区扉) (メルゴダ扉・小片扉)
-| WorldManageLayout | st0411  | 1202   | Mergoda Warp OFF? (Quest Specified Message) (ver1.2OFF_メルゴダワープ系) (クエスト指定メッセージOM)
-| WorldManageLayout | st0411  | 1203   | Mergoda TO ON?  Lost City Dungeon (ver1.2ON_メルゴダ行き) (レーゼ行きワープ(亡都ダンジョン))
-| WorldManageLayout | st0411  | 2458   | Quest Specified Message (ver1.2メルゴダ大扉用メッセージＯＭ) (クエスト指定メッセージOM)
-|
-| WorldManageLayout | st0203  | 1103   | ver1.2 3rd Arc OM General purpose Glitter (ver1.2第三アーク行OM) (汎用キラキラポイント（調べる用）)
-|
-| WorldManageLayout | st0418  | 1098   | ver1.2 Closed_Diamantes Door (ver1.2閉じ_ディアマンテス扉)
-| WorldManageLayout | st0418  | 1713   | ver1.2 Opening_Diamantes Door (ver1.2開き_ディアマンテス扉)
-| WorldManageLayout | st0418  | 2456   | ver1.2 Royal Palace and Residential Area Door Warp OM (ver1.2王宮と住居区の扉ワープOM, フロア移動用透明ワープＯＭ)
-
-##### q70032001
-
-| Type              | Value  | Comment
-|:-----------------:|:------:|:-----------------------------------------------------------|
-| WorldManageLayout | 7390   | Spawns The White Dragon in the audience chamber in the fully revived state
 
 ### Events
 

@@ -7,6 +7,14 @@ using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Shared.Model.Quest
 {
+    public class Announcements
+    {
+        public int GeneralAnnounceId { get; set; }
+        public int StageStart {  get; set; }
+        public int StageClear { get; set; }
+        public int EndContentsPurpose {  get; set; }
+    }
+
     public class QuestBlock
     {
         public QuestBlockType BlockType { get; set; }
@@ -14,6 +22,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public ushort SequenceNo { get; set; }
         public ushort BlockNo { get; set; }
         public QuestAnnounceType AnnounceType { get; set; }
+        public Announcements Announcements { get; set; }
         public StageId StageId { get; set; }
         public ushort SubGroupId { get; set; }
         public uint SetNo { get; set; }
@@ -25,6 +34,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 
         public bool ShouldStageJump {  get; set; }
         public bool IsCheckpoint { get; set; }
+        public uint TimeAmount {  get; set; }
 
         public QuestEvent QuestEvent {  get; set; }
         public QuestCameraEvent QuestCameraEvent { get; set; }
@@ -75,6 +85,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             OmInteractEvent = new QuestOmInteractEvent();
 
             TargetEnemy = new QuestTargetEnemy();
+            Announcements = new Announcements();
         }
     }
 }

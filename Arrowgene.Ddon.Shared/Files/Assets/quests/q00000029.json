@@ -109,145 +109,6 @@
             ]
         },
         {
-            "comment": "Meat Monsters (1, 2)",
-            "stage_id": {
-                "id": 144,
-                "group_id": 1
-            },
-            "subgroup_id": 2,
-            "enemies": [
-                {
-                    "comment" : "Slime",
-                    "enemy_id": "0x010900",
-                    "level": 48,
-                    "exp": 5446,
-                    "enemy_target_types_id": 1
-                },
-                {
-                    "comment" : "Slime",
-                    "enemy_id": "0x010900",
-                    "level": 48,
-                    "exp": 5446,
-                    "enemy_target_types_id": 1
-                }
-            ]
-        },
-        {
-            "comment": "Meat Monsters (7, 2)",
-            "stage_id": {
-                "id": 144,
-                "group_id": 7
-            },
-            "subgroup_id": 2,
-            "enemies": [
-                {
-                    "comment" : "Alchemized Skeleton",
-                    "enemy_id": "0x010312",
-                    "level": 48,
-                    "exp": 5734,
-                    "enemy_target_types_id": 1
-                },
-                {
-                    "comment" : "Slime",
-                    "enemy_id": "0x010900",
-                    "level": 48,
-                    "exp": 5734,
-                    "enemy_target_types_id": 1
-                },
-                {
-                    "comment" : "Slime",
-                    "enemy_id": "0x010900",
-                    "level": 48,
-                    "exp": 5734,
-                    "enemy_target_types_id": 1
-                }
-            ]
-        },
-        {
-            "comment": "Meat Monsters (17, 2)",
-            "stage_id": {
-                "id": 144,
-                "group_id": 17
-            },
-            "subgroup_id": 2,
-            "enemies": [
-                {
-                    "comment" : "Alchemized Skeleton",
-                    "enemy_id": "0x010312",
-                    "level": 48,
-                    "exp": 5734,
-                    "enemy_target_types_id": 1
-                },
-                {
-                    "comment" : "Alchemized Skeleton",
-                    "enemy_id": "0x010312",
-                    "level": 48,
-                    "exp": 5734,
-                    "enemy_target_types_id": 1
-                },
-                {
-                    "comment" : "Alchemized Skeleton Mage",
-                    "enemy_id": "0x010308",
-                    "level": 48,
-                    "exp": 5734,
-                    "enemy_target_types_id": 1,
-                    "named_enemy_params_id": 167
-                },
-                {
-                    "comment" : "Slime",
-                    "enemy_id": "0x010900",
-                    "level": 48,
-                    "exp": 5734,
-                    "enemy_target_types_id": 1
-                },
-                {
-                    "comment" : "Slime",
-                    "enemy_id": "0x010900",
-                    "level": 48,
-                    "exp": 5734,
-                    "enemy_target_types_id": 1
-                }
-            ]
-        },
-        {
-            "comment": "Meat Monsters (15, 2)",
-            "stage_id": {
-                "id": 144,
-                "group_id": 15
-            },
-            "subgroup_id": 2,
-            "enemies": [
-                {
-                    "comment" : "Alchemized Skeleton",
-                    "enemy_id": "0x010312",
-                    "level": 48,
-                    "exp": 5734,
-                    "enemy_target_types_id": 1
-                },
-                {
-                    "comment" : "Slime",
-                    "enemy_id": "0x010900",
-                    "level": 48,
-                    "exp": 5734,
-                    "enemy_target_types_id": 1
-                },
-                {
-                    "comment" : "Slime",
-                    "enemy_id": "0x010900",
-                    "level": 48,
-                    "exp": 5734,
-                    "enemy_target_types_id": 1
-                },
-                {
-                    "comment" : "Slime",
-                    "enemy_id": "0x010900",
-                    "level": 48,
-                    "exp": 5734,
-                    "enemy_target_types_id": 1
-                }
-            ]
-        },
-        {
             "comment": "After Boss Monster Rush",
             "stage_id": {
                 "id": 144,
@@ -311,9 +172,6 @@
                         "id": 144
                     }
                 },
-
-
-
                 {
                     "type": "PartyGather",
                     "announce_type": "Update",
@@ -421,16 +279,6 @@
                         "id": 3
                     },
                     "event_id": 75
-                }
-            ]
-        },
-        {
-            "comment": "Process 1 (Subgroup Process)",
-            "blocks": [
-                {
-                    "comment": "Spawns Enemies for meat monsters",
-                    "type": "SpawnGroup",
-                    "groups": [2, 3, 4, 5]
                 }
             ]
         }

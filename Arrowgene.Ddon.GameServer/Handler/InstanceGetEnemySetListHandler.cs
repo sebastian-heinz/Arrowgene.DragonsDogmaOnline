@@ -32,7 +32,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (var questId in client.Party.QuestState.StageQuests(stageId))
             {
                 quest = QuestManager.GetQuest(questId);
-                if (client.Party.QuestState.HasEnemiesInCurrentStageGroup(quest, stageId, subGroupId))
+                if (quest.HasEnemiesInInCurrentStage(stageId))
                 {
                     IsQuestControlled = true;
                     break;
@@ -46,27 +46,52 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 RandomSeed = CryptoRandom.Instance.GetRandomUInt32(),
             };
 
-            client.Party.InstanceEnemyManager.SetInstanceSubgroupId(stageId, subGroupId);
+            bool notifyStrongEnemy = false;
             if (IsQuestControlled && quest != null)
             {
                 response.QuestId = (uint) quest.QuestId;
-                response.EnemyList = client.Party.QuestState.GetInstancedEnemies(quest, stageId, subGroupId).Select(enemy => new CDataLayoutEnemyData()
+
+                foreach (var enemy in client.Party.QuestState.GetInstancedEnemies(quest, stageId, subGroupId))
                 {
-                    PositionIndex = (byte)(enemy.Index),
-                    EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
-                }).ToList();
+                    response.EnemyList.Add(new CDataLayoutEnemyData()
+                    {
+                        PositionIndex = enemy.Index,
+                        EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
+                    });
+                    client.Party.InstanceEnemyManager.SetInstanceEnemy(stageId, enemy.Index, enemy);
+
+                    if (enemy.NotifyStrongEnemy)
+                    {
+                        notifyStrongEnemy = true;
+                    }
+                }
             }
             else
             {
-                response.EnemyList = client.Party.InstanceEnemyManager.GetAssets(stageId, subGroupId).Select((enemy, index) => new CDataLayoutEnemyData()
+                var instancedEnemyList = client.Party.InstanceEnemyManager.GetAssets(stageId)
+                    .Where(x => x.Subgroup == subGroupId);
+                foreach (var asset in instancedEnemyList)
                 {
-                    PositionIndex = (byte)index,
-                    EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
-                })
-                .ToList();
+                    response.EnemyList.Add(new CDataLayoutEnemyData()
+                    {
+                        PositionIndex = asset.Index,
+                        EnemyInfo = asset.asCDataStageLayoutEnemyPresetEnemyInfoClient()
+                    });
+                    client.Party.InstanceEnemyManager.SetInstanceEnemy(stageId, asset.Index, asset);
+
+                    if (asset.NotifyStrongEnemy)
+                    {
+                        notifyStrongEnemy = true;
+                    }
+                }
             }
 
-            if (subGroupId > 0)
+            if (notifyStrongEnemy)
+            {
+                // TODO: Send NTC which creates popup
+            }
+
+            if (subGroupId > 0 && response.EnemyList.Count > 0)
             {
                 S2CInstanceEnemySubGroupAppearNtc subgroupNtc = new S2CInstanceEnemySubGroupAppearNtc()
                 {

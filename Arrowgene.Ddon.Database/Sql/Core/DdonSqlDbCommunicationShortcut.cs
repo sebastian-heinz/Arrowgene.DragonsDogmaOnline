@@ -54,10 +54,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
             try
             {
-                Logger.Debug("Inserting communication shortcut.");
                 if (!InsertIfNotExistsCommunicationShortcut((TCon)connection, characterId, communicationShortcut))
                 {
-                    Logger.Debug("Communication shortcut already exists, replacing.");
                     return UpdateCommunicationShortcut((TCon)connection, characterId, communicationShortcut.PageNo, communicationShortcut.ButtonNo, communicationShortcut);
                 }
                 return true;

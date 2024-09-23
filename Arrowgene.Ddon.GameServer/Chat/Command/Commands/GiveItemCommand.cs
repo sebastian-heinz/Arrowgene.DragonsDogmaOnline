@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
 
             if (command.Length >= 1)
             {
-                if (UInt32.TryParse(command[0], out uint parsedId))
+                if (uint.TryParse(command[0], out uint parsedId))
                 {
                     itemId = parsedId;
                 }
@@ -50,7 +51,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             uint amount = DefaultAmount;
             if (command.Length >= 2)
             {
-                if (UInt32.TryParse(command[1], out uint parsedAmount))
+                if (uint.TryParse(command[1], out uint parsedAmount))
                 {
                     amount = parsedAmount;
                 }
@@ -67,31 +68,11 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                 return;
             }
 
-            ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(_server.AssetRepository.ClientItemInfos, itemId);
-
-            SystemMailMessage mail = new SystemMailMessage()
+            client.Send(new S2CItemUpdateCharacterItemNtc()
             {
-                Title = $"GiveItem: {itemInfo.Name} x{amount}",
-                Body = $"",
-                CharacterId = client.Character.CharacterId,
-                SenderName = "/giveitem",
-                MessageState = MailState.Unopened
-            };
-            mail.Attachments.Add(new SystemMailAttachment()
-            {
-                AttachmentType = SystemMailAttachmentType.Item,
-                Param1 = itemId,
-                Param2 = amount,
-                MessageId = (ulong)(mail.Attachments.Count + 1),
-                IsReceived = false,
+                UpdateType = ItemNoticeType.StampBonus,
+                UpdateItemList = _server.ItemManager.AddItem(_server, client.Character, StorageType.ItemPost, itemId, amount),
             });
-            SystemMailService.DeliverSystemMailMessage(_server.Database, mail);
-
-            S2CMailSystemMailSendNtc notice = new S2CMailSystemMailSendNtc()
-            {
-                MailInfo = mail.ToCDataMailInfo((byte)(MailItemState.Exist | MailItemState.Item))
-            };
-            client.Send(notice);
         }
     }
 }

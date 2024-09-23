@@ -10,7 +10,9 @@ body {
 
 /* Dimensions for a full screen banner. Any image in slide.html will be scaled down to this size. */
   img {
-    width: 370px !important;
-    height: 140px !important;
+/*     width: 370px !important;
+    height: 140px !important; */
+    width: 100% !important;
+    height: 100% !important;
   }
   

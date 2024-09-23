@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Party
     {
         public uint ItemId { get; set; }
         public uint AmountDelivered { get; set; }
-        public uint AmountRequired {  get; set; }
+        public uint AmountRequired { get; set; }
     }
 
     public class QuestState
@@ -30,7 +30,8 @@ namespace Arrowgene.Ddon.GameServer.Party
         public QuestId QuestId { get; set; }
         public QuestType QuestType { get; set; }
         public QuestProgressState State { get; set; }
-        public uint Step {  get; set; }
+        public bool HasStarted { get; set; }
+        public uint Step { get; set; }
 
         public Dictionary<ushort, QuestProcessState> ProcessState {  get; set; }
         public Dictionary<StageId, Dictionary<uint, List<InstancedEnemy>>> QuestEnemies {  get; set; }
@@ -103,35 +104,66 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         private Dictionary<QuestId, QuestState> ActiveQuests { get; set; }
         private Dictionary<StageId, List<QuestId>> QuestLookupTable { get; set; }
-        private List<QuestId> CompletedWorldQuests {  get; set; }
+        private Dictionary<QuestId, uint> ActiveVariantQuests { get; set; }
+        // For the purposes of each party quest state knowing the possible variant quests
+        private HashSet<QuestId> VariantQuests { get; set; }
+        public HashSet<QuestId> CompletedWorldQuests { get; set; }
 
         public PartyQuestState()
         {
             ActiveQuests = new Dictionary<QuestId, QuestState>();
             QuestLookupTable = new Dictionary<StageId, List<QuestId>>();
-            CompletedWorldQuests = new List<QuestId>();
+            CompletedWorldQuests = new HashSet<QuestId>();
+            ActiveVariantQuests = new Dictionary<QuestId, uint>();
+            VariantQuests = QuestManager.GetAllVariantQuestIds();
         }
 
-        public void AddNewQuest(Quest quest, uint step = 0)
+        public void SetHasStarted(QuestId questId, bool activeState)
         {
-            lock (ActiveQuests) 
+            ActiveQuests[questId].HasStarted = activeState;
+        }
+
+        public Quest GetQuest(QuestId questId)
+        {
+            if (ActiveVariantQuests.ContainsKey(questId))
             {
+                // Look inside the ActiveVariantQuests and get the quest variant id to be used to get back the specific quest.
+                return QuestManager.GetQuest(questId, ActiveVariantQuests[questId]);
+            }
+
+            return QuestManager.GetQuest(questId);
+        }
+
+        public void AddNewQuest(Quest quest, uint step = 0, bool questStarted = false)
+        {
+            lock (ActiveQuests)
+            {
+                if (quest == null)
+                {
+                    // Might be a removed quest (or one in development).
+                    Logger.Error($"Unable to locate quest data.");
+                    return;
+                }
+
                 ActiveQuests[quest.QuestId] = new QuestState()
                 {
                     QuestId = quest.QuestId,
                     QuestType = quest.QuestType,
-                    Step = step
+                    Step = step,
+                    HasStarted = questStarted
                 };
+
+                foreach (var stageId in quest.UniqueEnemyGroups)
+                {
+                    if (!QuestLookupTable.ContainsKey(stageId))
+                    {
+                        QuestLookupTable[stageId] = new List<QuestId>();
+                    }
+                    QuestLookupTable[stageId].Add(quest.QuestId);
+                }
 
                 foreach (var location in quest.Locations)
                 {
-                    if (!QuestLookupTable.ContainsKey(location.StageId))
-                    {
-                        QuestLookupTable[location.StageId] = new List<QuestId>();
-                    }
-
-                    QuestLookupTable[location.StageId].Add(quest.QuestId);
-
                     // Populate data structures for Instance Enemy Data
                     if (!ActiveQuests[quest.QuestId].QuestEnemies.ContainsKey(location.StageId))
                     {
@@ -152,17 +184,12 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
-        public bool HasEnemiesInCurrentStageGroup(Quest quest, StageId stageId, uint subGroupId)
+        public bool HasEnemiesInCurrentStageGroup(Quest quest, StageId stageId)
         {
             lock (ActiveQuests)
             {
                 var questState = ActiveQuests[quest.QuestId];
-                if (!questState.QuestEnemies.ContainsKey(stageId))
-                {
-                    return false;
-                }
-
-                return questState.QuestEnemies[stageId].ContainsKey(subGroupId);
+                return questState.QuestEnemies.ContainsKey(stageId);
             }
         }
 
@@ -178,13 +205,29 @@ namespace Arrowgene.Ddon.GameServer.Party
         {
             lock (ActiveQuests)
             {
+                if (!ActiveQuests.ContainsKey(quest.QuestId))
+                {
+                    Logger.Error($"No state for '{quest.QuestId}' present. Returning empty enemy list.");
+                    return new List<InstancedEnemy>();
+                }
+
+                if (!ActiveQuests[quest.QuestId].QuestEnemies.ContainsKey(stageId))
+                {
+                    return new List<InstancedEnemy>();
+                }
+
+                if (!ActiveQuests[quest.QuestId].QuestEnemies[stageId].ContainsKey(subGroupId))
+                {
+                    return new List<InstancedEnemy>();
+                }
+
                 return ActiveQuests[quest.QuestId].QuestEnemies[stageId][subGroupId];
             }
         }
 
         public List<InstancedEnemy> GetInstancedEnemies(QuestId questId, StageId stageId, ushort subGroupId)
         {
-            var quest = QuestManager.GetQuest(questId);
+            var quest = GetQuest(questId);
             return GetInstancedEnemies(quest, stageId, subGroupId);
         }
 
@@ -207,22 +250,76 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public InstancedEnemy GetInstancedEnemy(QuestId questId, StageId stageId, ushort subGroupId, uint index)
         {
-            var quest = QuestManager.GetQuest(questId);
+            var quest = GetQuest(questId);
             return GetInstancedEnemy(quest, stageId, subGroupId, index);
         }
 
-        public void AddNewQuest(QuestId questId, uint step)
+        public void AddNewQuest(QuestId questId, uint step, bool questStarted, uint variantId)
         {
-            var quest = QuestManager.GetQuest(questId);
-            AddNewQuest(quest, step);
+            Quest quest = QuestManager.GetQuest(questId, variantId);
+
+            if (quest == null)
+            {
+                // Might be progress from removed quest (or one in development).
+                Logger.Error($"Unable to locate quest data for {questId}");
+                return;
+            }
+
+            if (VariantQuests.Contains(questId))
+            {
+                ActiveVariantQuests[questId] = (uint)quest.VariantId;
+                AddNewQuest(quest, step, questStarted);
+            }
+        }
+
+        public void AddNewQuest(QuestId questId, uint step, bool questStarted)
+        {
+            // Trying to add a new variant quest before properly removing it will cause an exception.
+
+            if (ActiveVariantQuests.ContainsKey(questId))
+            {
+                return;
+            }
+
+            Quest quest;
+
+            // If the quest we are trying to add is a variant quest, then roll and get a random version.
+            if (VariantQuests.Contains(questId))
+            {
+                quest = QuestManager.GetQuest(questId, QuestManager.GetRandomVariantId(questId));
+            }
+            else
+            {
+                quest = GetQuest(questId);
+            }
+
+            if (quest == null)
+            {
+                // Might be progress from removed quest (or one in development).
+                Logger.Error($"Unable to locate quest data for {questId}");
+                return;
+            }
+
+            // If we are adding a new variant quest, then log the variant id for further reference
+            if (quest.IsVariantQuest)
+            {
+                ActiveVariantQuests.Add(quest.QuestId, quest.VariantId);
+            }
+
+            AddNewQuest(quest, step, questStarted);
         }
 
         public void RemoveQuest(QuestId questId)
         {
-            var quest = QuestManager.GetQuest(questId);
+            var quest = GetQuest(questId);
             lock (ActiveQuests)
             {
                 ActiveQuests.Remove(questId);
+
+                if (ActiveVariantQuests.ContainsKey(questId))
+                {
+                    ActiveVariantQuests.Remove(questId);
+                }
 
                 foreach (var location in quest.Locations)
                 {
@@ -234,41 +331,51 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
-        public void CancelQuest(QuestId questId)
+        public void RemoveInactiveWorldQuests()
         {
-            lock (CompletedWorldQuests)
+            lock (ActiveQuests)
             {
-                var quest = QuestManager.GetQuest(questId);
-                RemoveQuest(questId);
-
-                // Save the quest if it was a world quest
-                // so we can add it back on instance reset
-                if (quest.QuestType == QuestType.World)
+                var questsToRemove = new List<QuestId>();
+                foreach (var (questId, quest) in ActiveQuests)
                 {
-                    CompletedWorldQuests.Add(questId);
+                    if (quest.QuestType == QuestType.World && quest.Step == 0)
+                    {
+                        questsToRemove.Add(questId);
+                    }
+                }
+
+                foreach (var questId in questsToRemove)
+                {
+                    RemoveQuest(questId);
                 }
             }
         }
 
+        public void CancelQuest(QuestId questId)
+        {
+            var quest = GetQuest(questId);
+            RemoveQuest(questId);
+        }
+
         public void CompleteQuest(QuestId questId)
         {
-            lock (CompletedWorldQuests)
+            var quest = GetQuest(questId);
+            RemoveQuest(questId);
+
+            if (QuestManager.IsWorldQuest(questId))
             {
-                var quest = QuestManager.GetQuest(questId);
-                RemoveQuest(questId);
-
-                // Save the quest if it was a world quest
-                // so we can add it back on instance reset
-                if (quest.QuestType == QuestType.World)
-                {
-                    CompletedWorldQuests.Add(questId);
-                }
-
-                if (quest.NextQuestId != 0)
-                {
-                    AddNewQuest(quest.NextQuestId, 0);
-                }
+                CompletedWorldQuests.Add(questId);
             }
+
+            if (quest.NextQuestId != 0)
+            {
+                AddNewQuest(quest.NextQuestId, 0, false);
+            }
+        }
+
+        public bool IsCompletedWorldQuest(QuestId questId)
+        {
+            return CompletedWorldQuests.Contains(questId);
         }
 
         public List<QuestId> GetActiveQuestIds()
@@ -301,9 +408,9 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public bool HasQuest(QuestId questId)
         {
-            lock(ActiveQuests)
+            lock (ActiveQuests)
             {
-                return ActiveQuests.ContainsKey(questId);    
+                return ActiveQuests.ContainsKey(questId);
             }
         }
 
@@ -323,7 +430,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public QuestState GetQuestState(QuestId questId)
         {
-            var quest = QuestManager.GetQuest(questId);
+            var quest = GetQuest(questId);
             return GetQuestState(quest);
         }
 
@@ -374,20 +481,38 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
-        public void ResetInstanceQuestState()
+        private void RerollUnfoundAltQuests()
         {
-            // Add all world quests
-            foreach (var questId in CompletedWorldQuests)
-            {
-                AddNewQuest(questId, 0);
-            }
+            // 1. Check all Active variant quests and see if they have started.
 
-            CompletedWorldQuests.Clear();
+            foreach (var variantQuest in VariantQuests)
+            {
+                // 1. Check if the variant quest is not in either active quest lists
+                if (!ActiveVariantQuests.ContainsKey(variantQuest) && !ActiveQuests.ContainsKey(variantQuest))
+                {
+                    // 2. Add a new variant quest if none were found.
+                    AddNewQuest(variantQuest, 0, false);
+                    continue;
+                }
+
+                // 3. Check if the quest exists within the larger active quest list
+                if (ActiveQuests.ContainsKey(variantQuest))
+                    switch (ActiveQuests[variantQuest].HasStarted)
+                    {
+                        // 4. If the quest is started, leave it alone, if not remove and add a new random quest.
+                        case true:
+                            continue;
+                        case false:
+                            RemoveQuest(variantQuest);
+                            AddNewQuest(variantQuest, 0, false);
+                            continue;
+                    }
+            }
         }
 
         public bool UpdatePartyQuestProgress(DdonGameServer server, PartyGroup party, QuestId questId)
         {
-            Quest quest = QuestManager.GetQuest(questId);
+            Quest quest = GetQuest(questId);
 
             var questState = party.QuestState.GetQuestState(quest);
             foreach (var memberClient in party.Clients)
@@ -413,11 +538,34 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public bool CompletePartyQuestProgress(DdonGameServer server, PartyGroup party, QuestId questId)
         {
-            Quest quest = QuestManager.GetQuest(questId);
+            Quest quest = GetQuest(questId);
 
             var questState = party.QuestState.GetQuestState(quest);
             foreach (var memberClient in party.Clients)
             {
+                // Special case for Exteme Missions where there is no state saved
+                // Tracking completion matters for progress and weekly reward limits
+                if (quest.QuestType == QuestType.ExtremeMission)
+                {
+                    var completedQuests = memberClient.Character.CompletedQuests;
+                    if (!completedQuests.ContainsKey(quest.QuestId))
+                    {
+                        completedQuests.Add(quest.QuestId, new CompletedQuest()
+                        {
+                            QuestId = quest.QuestId,
+                            QuestType = quest.QuestType,
+                            ClearCount = 1,
+                        });
+                    }
+                    else
+                    {
+                        completedQuests[quest.QuestId].ClearCount += 1;
+                    }
+                        
+                    server.Database.ReplaceCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, completedQuests[quest.QuestId].ClearCount);
+                    continue;
+                }
+
                 var result = server.Database.GetQuestProgressById(memberClient.Character.CommonId, quest.QuestId);
                 if (result == null)
                 {
@@ -433,11 +581,25 @@ namespace Arrowgene.Ddon.GameServer.Party
                 server.Database.RemoveQuestProgress(memberClient.Character.CommonId, quest.QuestId, quest.QuestType);
                 if (quest.NextQuestId != QuestId.None)
                 {
-                    var nextQuest = QuestManager.GetQuest(quest.NextQuestId);
+                    var nextQuest = GetQuest(quest.NextQuestId);
                     server.Database.InsertQuestProgress(memberClient.Character.CommonId, nextQuest.QuestId, nextQuest.QuestType, 0);
                 }
 
-                server.Database.InsertIfNotExistCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType);
+                if (!memberClient.Character.CompletedQuests.ContainsKey(quest.QuestId))
+                {
+                    memberClient.Character.CompletedQuests.Add(questId, new CompletedQuest()
+                    {
+                        QuestId = quest.QuestId,
+                        QuestType = quest.QuestType,
+                        ClearCount = 1,
+                    });
+                    server.Database.InsertIfNotExistCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType);
+                }
+                else
+                {
+                    uint clearCount = ++memberClient.Character.CompletedQuests[quest.QuestId].ClearCount;
+                    server.Database.ReplaceCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, clearCount);
+                }
             }
 
             // Remove the quest data from the party object
@@ -448,7 +610,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public bool DistributePartyQuestRewards(DdonGameServer server, PartyGroup party, QuestId questId)
         {
-            Quest quest = QuestManager.GetQuest(questId);
+            Quest quest = GetQuest(questId);
 
             var questState = party.QuestState.GetQuestState(quest);
             foreach (var memberClient in party.Clients)
@@ -511,6 +673,10 @@ namespace Arrowgene.Ddon.GameServer.Party
                 {
                     server.ExpManager.AddExp(client, client.Character, expPoint.Reward, RewardSource.Quest, quest.QuestType);
                 }
+                else if (expPoint.Type == ExpType.JobPoints)
+                {
+                    server.ExpManager.AddJp(client, client.Character, expPoint.Reward, RewardSource.Quest, quest.QuestType);
+                }
                 else if (expPoint.Type == ExpType.PlayPoints)
                 {
                     server.PPManager.AddPlayPoint(client, expPoint.Reward, type: 2);
@@ -518,8 +684,13 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
-        public void UpdatePriorityQuestList(DdonGameServer server, PartyGroup party)
+        public void UpdatePriorityQuestList(DdonGameServer server, GameClient requestingClient, PartyGroup party)
         {
+            if (party.Leader is null || requestingClient != party.Leader.Client)
+            {
+                return;
+            }
+
             var leaderClient = party.Leader.Client;
 
             S2CQuestSetPriorityQuestNtc prioNtc = new S2CQuestSetPriorityQuestNtc()
@@ -530,11 +701,21 @@ namespace Arrowgene.Ddon.GameServer.Party
             var priorityQuests = server.Database.GetPriorityQuests(leaderClient.Character.CommonId);
             foreach (var priorityQuestId in priorityQuests)
             {
-                var priorityQuest = QuestManager.GetQuest(priorityQuestId);
+                var priorityQuest = GetQuest(priorityQuestId);
                 var questState = party.QuestState.GetQuestState(priorityQuest.QuestId);
                 prioNtc.PriorityQuestList.Add(priorityQuest.ToCDataPriorityQuest(questState.Step));
             }
             party.SendToAll(prioNtc);
+        }
+
+        public void ResetInstance()
+        {
+            lock (ActiveQuests)
+            {
+                CompletedWorldQuests.Clear();
+
+                RerollUnfoundAltQuests();
+            }
         }
     }
 }

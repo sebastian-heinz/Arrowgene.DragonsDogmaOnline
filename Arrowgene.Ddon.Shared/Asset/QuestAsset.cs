@@ -14,6 +14,12 @@ namespace Arrowgene.Ddon.Shared.Asset
         public List<QuestAssetData> Quests { get; set; }
     }
 
+    public class PointReward
+    {
+        public ExpType ExpType { get; set; }
+        public uint ExpReward { get; set; }
+    }
+
     public class QuestAssetData
     {
         public List<QuestProcess> Processes { get; set; }
@@ -22,11 +28,13 @@ namespace Arrowgene.Ddon.Shared.Asset
         public QuestId NextQuestId { get; set; }
         public QuestId QuestScheduleId { get; set; }
         public QuestAreaId QuestAreaId { get; set; }
+        public StageId StageId {  get; set; }
         public uint NewsImageId { get; set; }
         public ushort BaseLevel { get; set; }
         public byte MinimumItemRank { get; set; }
-        public ExpType ExpType { get; set; }
-        public uint ExpReward { get; set; }
+
+        public List<PointReward> PointRewards { get; set; }
+
         public bool Discoverable { get; set; }
         public List<QuestRewardItem> RewardItems;
         public List<QuestRewardCurrency> RewardCurrency;
@@ -35,16 +43,22 @@ namespace Arrowgene.Ddon.Shared.Asset
         public List<QuestLayoutFlag> QuestLayoutFlags { get; set; }
         public List<QuestLayoutFlagSetInfo> QuestLayoutSetInfoFlags { get; set; }
         public Dictionary<uint, QuestEnemyGroup> EnemyGroups {  get; set; }
+        public uint VariantId { get; set; }
+        public QuestMissionParams MissionParams {  get; set; }
+        public List<QuestServerAction> ServerActions { get; set; }
 
         public QuestAssetData()
         {
             Processes = new List<QuestProcess>();
+            PointRewards = new List<PointReward>();
             RewardItems = new List<QuestRewardItem>();
             RewardCurrency = new List<QuestRewardCurrency>();
             QuestLayoutFlags = new List<QuestLayoutFlag>();
             QuestLayoutSetInfoFlags = new List<QuestLayoutFlagSetInfo>();
             EnemyGroups = new Dictionary<uint, QuestEnemyGroup>();
             OrderConditions = new List<QuestOrderCondition>();
+            MissionParams = new QuestMissionParams();
+            ServerActions = new List<QuestServerAction>();
         }
     }
 }

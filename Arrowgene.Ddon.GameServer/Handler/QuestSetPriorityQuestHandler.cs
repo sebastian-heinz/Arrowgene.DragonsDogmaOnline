@@ -1,11 +1,8 @@
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -28,10 +25,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Server.Database.InsertPriorityQuest(client.Character.CommonId, questId);
 
-            var prioirtyQuests = Server.Database.GetPriorityQuests(client.Character.CommonId);
-            foreach (var priorityQuestId in prioirtyQuests)
+            var priorityQuests = Server.Database.GetPriorityQuests(client.Character.CommonId);
+            foreach (var priorityQuestId in priorityQuests)
             {
-                var quest = QuestManager.GetQuest(priorityQuestId);
+                var quest = client.Party.QuestState.GetQuest(priorityQuestId);
                 var questState = client.Party.QuestState.GetQuestState(questId);
                 ntc.PriorityQuestList.Add(quest.ToCDataPriorityQuest(questState.Step));
             }
