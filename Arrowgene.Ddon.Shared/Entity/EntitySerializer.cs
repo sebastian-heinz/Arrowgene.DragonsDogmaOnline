@@ -449,6 +449,13 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SClanClanUpdateReq.Serializer());
             Create(new C2SClanClanGetHistoryReq.Serializer());
             Create(new C2SClanClanGetMyInfoReq.Serializer());
+            Create(new C2SClanClanInviteReq.Serializer());
+            Create(new C2SClanClanInviteAcceptReq.Serializer());
+            Create(new C2SClanClanGetInfoReq.Serializer());
+            Create(new C2SClanClanGetMyMemberListReq.Serializer());
+            Create(new C2SClanClanScoutEntrySearchReq.Serializer());
+            Create(new C2SClanClanScoutEntryGetInviteListReq.Serializer());
+            Create(new C2SClanClanGetJoinRequestedListReq.Serializer());
 
             Create(new C2SConnectionLoginReq.Serializer());
             Create(new C2SConnectionMoveInServerReq.Serializer());
@@ -880,6 +887,14 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CClanClanSearchRes.Serializer());
             Create(new S2CClanClanUpdateRes.Serializer());
             Create(new S2CClanClanGetHistoryRes.Serializer());
+            Create(new S2CClanClanInviteRes.Serializer());
+            Create(new S2CClanClanInviteNtc.Serializer());
+            Create(new S2CClanClanInviteAcceptRes.Serializer());
+            Create(new S2CClanClanGetInfoRes.Serializer());
+            Create(new S2CClanClanScoutEntrySearchRes.Serializer());
+            Create(new S2CClanClanScoutEntryGetInviteListRes.Serializer());
+            Create(new S2CClanClanGetJoinRequestedListRes.Serializer());
+
 
             Create(new S2CClanClanLeaveMemberNtc.Serializer());
             Create(new S2CClanClanUpdateNtc.Serializer());

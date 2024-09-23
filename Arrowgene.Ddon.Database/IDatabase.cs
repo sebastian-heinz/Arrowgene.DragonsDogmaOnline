@@ -571,10 +571,13 @@ namespace Arrowgene.Ddon.Database
         List<BitterblackMazeTreasure> SelectBBMContentTreasure(uint characterId);
 
         // Clan
-
-        bool CreateClan(ClanParam clanParam);
+        bool CreateClan(CDataClanParam clanParam);
         uint SelectClanMembershipByCharacterId(uint characterId, DbConnection? connectionIn = null);
         ClanName GetClanNameByClanId(uint clanId, DbConnection? connectionIn = null);
         CDataClanParam SelectClan(uint clanId, DbConnection? connectionIn = null);
+        bool UpdateClan(CDataClanParam clan, DbConnection? connectionIn = null);
+        bool InsertClanMember(CDataClanMemberInfo memberInfo, uint clanId, DbConnection? connectionIn = null);
+        bool DeleteClanMember(uint characterId, uint clanId, DbConnection? connectionIn = null);
+        List<CDataClanMemberInfo> GetClanMemberList(uint clanId, DbConnection? connectionIn = null);
     }
 }

@@ -276,6 +276,14 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ClanClanCreateHandler(this));
             AddHandler(new ClanClanGetHistoryHandler(this));
             AddHandler(new ClanClanUpdateHandler(this));
+            AddHandler(new ClanClanInviteHandler(this));
+            AddHandler(new ClanClanGetInfoHandler(this));
+            AddHandler(new ClanClanInviteAcceptHandler(this));
+            AddHandler(new ClanClanScoutEntrySearchHandler(this));
+            AddHandler(new ClanClanSearchHandler(this));
+            AddHandler(new ClanClanScoutEntryGetInviteListHandler(this));
+            AddHandler(new ClanClanLeaveMemberHandler(this));
+            AddHandler(new ClanClanGetMemberListHandler(this));
 
             AddHandler(new ClientChallengeHandler(this));
 

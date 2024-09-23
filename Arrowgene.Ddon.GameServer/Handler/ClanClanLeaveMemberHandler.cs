@@ -14,6 +14,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CClanClanLeaveMemberRes Handle(GameClient client, C2SClanClanLeaveMemberReq request)
         {
+            Server.ClanManager.LeaveClan(client.Character, client.Character.ClanId);
+
             return new S2CClanClanLeaveMemberRes();
         }
     }

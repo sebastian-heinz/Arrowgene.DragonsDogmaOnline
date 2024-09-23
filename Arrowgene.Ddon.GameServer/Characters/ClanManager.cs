@@ -1,11 +1,16 @@
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Clan;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Reflection;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -15,7 +20,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private readonly DdonGameServer Server;
 
-        private readonly Dictionary<uint, ClanParam> ClanParams;
+        private readonly Dictionary<uint, CDataClanParam> ClanParams;
+        private readonly Dictionary<uint, List<CDataClanMemberInfo>> ClanMembers;
 
         private static readonly CDataClanParam NULL_CLAN = new();
         private static readonly uint ALL_PERMISSIONS = 2047;
@@ -63,29 +69,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             if (!ClanParams.ContainsKey(id))
             {
-                ClanParams.Add(id, new ClanParam(Server.Database.SelectClan(id)));
+                ClanParams.Add(id, Server.Database.SelectClan(id));
             }
-            return ClanParams[id].ToCDataClanParam();
+            return ClanParams[id];
         }
 
         public CDataClanParam CreateClan(GameClient client, CDataClanUserParam createParam)
         {
-            var memberInfo = new CDataClanMemberInfo()
-            {
-                Rank = ClanMemberRank.Master,
-                Created = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
-                LastLoginTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
-                LeaveTime = 0,
-                Permission = ALL_PERMISSIONS
-            };
-
-            GameStructure.CDataCharacterListElement(memberInfo.CharacterListElement, client.Character);
-
             var serverParam = new CDataClanServerParam()
             {
                 Lv = 1,
                 MemberNum = 1,
-                MasterInfo = memberInfo,
+                MasterInfo = NewMaster(client.Character),
                 IsSystemRestriction = false,
                 IsClanBaseRelease = false,
                 CanClanBaseRelease = false,
@@ -94,17 +89,144 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 NextClanPoint = TOTAL_CP_FOR_ADV[1],
             };
 
-            ClanParam newClan = new(createParam, serverParam)
+            CDataClanParam newClan = new CDataClanParam()
             {
-                Created = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+                ClanServerParam = serverParam,
+                ClanUserParam = createParam
             };
+            newClan.ClanUserParam.Created = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             Server.Database.CreateClan(newClan);
 
-            ClanParams.Add(newClan.ID, newClan);
-            client.Character.ClanId = newClan.ID;
-            client.Character.ClanName = newClan.ClanName;
+            ClanParams.Add(newClan.ClanServerParam.ID, newClan);
 
-            return newClan.ToCDataClanParam();
+            client.Character.ClanId = newClan.ClanServerParam.ID;
+            client.Character.ClanName.Name = newClan.ClanUserParam.Name;
+            client.Character.ClanName.ShortName = newClan.ClanUserParam.ShortName;
+
+            return newClan;
+        }
+
+        public void UpdateClan(GameClient client, CDataClanUserParam updateParam)
+        {
+            if (client.Character.ClanId != 0)
+            {
+                var clan = Server.ClanManager.GetClan(client.Character.ClanId);
+                updateParam.Name = clan.ClanUserParam.Name;
+                clan.ClanUserParam = updateParam;
+                Server.Database.UpdateClan(clan);
+
+                foreach (var otherClient in Server.ClientLookup.GetAll())
+                {
+                    if (otherClient.Character != null && otherClient.Character.ClanId == client.Character.ClanId)
+                    {
+                        otherClient.Send(new S2CClanClanUpdateNtc());
+                    }
+                }
+            }
+        }
+
+        public void AddMemberToClan(Character character, uint clanId)
+        {
+            var clan = ClanParams[clanId];
+            clan.ClanServerParam.MemberNum++;
+
+            var newMember = NewMember(character);
+            Server.Database.InsertClanMember(newMember, clanId);
+
+            character.ClanId = clanId;
+            character.ClanName.Name = clan.ClanUserParam.Name;
+            character.ClanName.ShortName = clan.ClanUserParam.Name;
+        }
+
+        public void LeaveClan(Character character, uint clanId)
+        {
+            if (clanId == 0) return;
+
+            var clan = GetClan(clanId);
+            clan.ClanServerParam.MemberNum--;
+
+            character.ClanId = 0;
+            character.ClanName.Name = string.Empty;
+            character.ClanName.ShortName = string.Empty;
+
+            bool leaderLeaving = false;
+            if (clan.ClanServerParam.MasterInfo.CharacterListElement.CommunityCharacterBaseInfo.CharacterId == character.CharacterId)
+            {
+                clan.ClanServerParam.MasterInfo = new CDataClanMemberInfo();
+                leaderLeaving = true;
+            }
+
+            Server.Database.ExecuteInTransaction(conn =>
+            {
+                Server.Database.DeleteClanMember(character.CharacterId, clanId, conn);
+                if (leaderLeaving)
+                {
+                    Server.Database.UpdateClan(clan, conn);
+                }
+            });
+
+            var ntc = new S2CClanClanLeaveMemberNtc()
+            {
+                ClanId = clanId
+            };
+            GameStructure.CDataCharacterListElement(ntc.CharacterListElement, character);
+            foreach (var client in Server.ClientLookup.GetAll())
+            {
+                client.Send(ntc);
+            }
+        }
+
+        public static CDataClanMemberInfo NewMaster(Character character)
+        {
+            var info = new CDataClanMemberInfo()
+            {
+                Rank = ClanMemberRank.Master,
+                Created = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                LastLoginTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                LeaveTime = 0,
+                Permission = ALL_PERMISSIONS
+            };
+            GameStructure.CDataCharacterListElement(info.CharacterListElement, character);
+            return info;
+        }
+
+        public static CDataClanMemberInfo NewMember(Character character)
+        {
+            var info = new CDataClanMemberInfo()
+            {
+                Rank = ClanMemberRank.Apprentice,
+                Created = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                LastLoginTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
+                LeaveTime = 0,
+                Permission = 0
+            };
+            GameStructure.CDataCharacterListElement(info.CharacterListElement, character);
+            return info;
+        }
+
+        public List<CDataClanMemberInfo> MemberList(uint clanId)
+        {
+            Logger.Info($"Fetching memberlist for clan {clanId}");
+
+            if (clanId == 0) return new();
+
+            var clan = GetClan(clanId);
+            var memberList = Server.Database.GetClanMemberList(clanId);
+            foreach (var member in memberList)
+            {
+                CDataCommunityCharacterBaseInfo memberInfo = member.CharacterListElement.CommunityCharacterBaseInfo;
+                memberInfo.ClanName = clan.ClanUserParam.ShortName;
+                GameClient lookup = Server.ClientLookup.GetClientByCharacterId(memberInfo.CharacterId);
+                if (lookup != null)
+                {
+                    member.CharacterListElement.OnlineStatus = lookup.Character.OnlineStatus;
+                }
+                else
+                {
+                    member.CharacterListElement.OnlineStatus = OnlineStatus.Offline;
+                }
+            }
+            return memberList;
         }
 
         private static int BitsToInt(List<int> bitindices)

@@ -47,7 +47,7 @@ public static class GameStructure
     {
         cDataCommunityCharacterBaseInfo.CharacterId = character.CharacterId;
         CDataCharacterName(cDataCommunityCharacterBaseInfo.CharacterName, character);
-        cDataCommunityCharacterBaseInfo.ClanName = character.ClanName.Name;
+        cDataCommunityCharacterBaseInfo.ClanName = character.ClanName.ShortName;
     }
 
     public static void CDataCommunityCharacterBaseInfo(

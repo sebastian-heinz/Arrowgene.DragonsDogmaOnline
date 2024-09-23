@@ -15,9 +15,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CClanClanGetMyInfoRes Handle(GameClient client, C2SClanClanGetMyInfoReq request)
         {
-            var res = new S2CClanClanGetMyInfoRes();
-
-            res.ClanParam = Server.ClanManager.GetClan(client.Character.ClanId);
+            var res = new S2CClanClanGetMyInfoRes()
+            {
+                ClanParam = Server.ClanManager.GetClan(client.Character.ClanId)
+            };
 
             return res;
         }

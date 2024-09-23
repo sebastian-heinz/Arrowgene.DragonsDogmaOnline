@@ -14,10 +14,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CClanClanUpdateRes Handle(GameClient client, C2SClanClanUpdateReq request)
         {
-            Logger.Info($"Motto: {request.CreateParam.Motto}" +
-                $"\nActiveDays: {request.CreateParam.ActiveDays}" +
-                $"\nActiveTime: {request.CreateParam.ActiveTime}" +
-                $"\nCharacteristic: {request.CreateParam.Characteristic}");
+            Server.ClanManager.UpdateClan(client, request.CreateParam);
 
             return new S2CClanClanUpdateRes();
         }

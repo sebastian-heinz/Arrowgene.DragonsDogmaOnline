@@ -236,6 +236,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool DeleteCharacter(uint characterId)
         {
+            var clan = SelectClanMembershipByCharacterId(characterId);
+            if (clan != 0)
+            {
+                IncrementClanMemberNum(-1, clan);
+            }
+
             uint bbmCharacterId = SelectBBMCharacterId(characterId);
             if (bbmCharacterId > 0)
             {

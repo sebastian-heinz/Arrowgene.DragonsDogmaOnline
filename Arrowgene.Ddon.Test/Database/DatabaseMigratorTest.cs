@@ -396,10 +396,14 @@ namespace Arrowgene.Ddon.Test.Database
         public CDataCharacterSearchParam SelectCharacterNameById(uint characterId) { return new CDataCharacterSearchParam(); }
         public CDataCharacterSearchParam SelectCharacterNameById(DbConnection connection, uint characterId) { return new CDataCharacterSearchParam(); }
 
-        public bool CreateClan(ClanParam clanParam) { return true; }
+        public bool CreateClan(CDataClanParam clanParam) { return true; }
         public uint SelectClanMembershipByCharacterId(uint characterId, DbConnection? connectionIn = null) { return 0; }
         public CDataClanParam SelectClan(uint clanId, DbConnection? connectionIn = null) { return new CDataClanParam(); }
         public ClanName GetClanNameByClanId(uint clanId, DbConnection? connectionIn = null) { return new ClanName(); }
+        public bool UpdateClan(CDataClanParam clan, DbConnection? connectionIn = null) { return true; }
+        public bool InsertClanMember(CDataClanMemberInfo memberInfo, uint clanId, DbConnection? connectionIn = null) { return true; }
+        public bool DeleteClanMember(uint characterId, uint clanId, DbConnection? connectionIn = null) { return true; }
+        public List<CDataClanMemberInfo> GetClanMemberList(uint clanId, DbConnection? connectionIn = null) { return new(); }
 
         public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
         public void AddParameter(DbCommand command, string name, string value) { }

@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override C2SClanClanGetMemberListReq Read(IBuffer buffer)
             {
                 C2SClanClanGetMemberListReq obj = new C2SClanClanGetMemberListReq();
-                obj.ClanId = buffer.ReadUInt32();
+                obj.ClanId = ReadUInt32(buffer);
                 return obj;
             }
         }
