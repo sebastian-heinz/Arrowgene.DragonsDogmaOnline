@@ -434,26 +434,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     lock (_Boards)
                     {
-                        foreach (var characterId in data.Members)
-                        {
-                            var memberClient = _Server.ClientLookup.GetClientByCharacterId(characterId);
-                            if (memberClient != null)
-                            {
-                                memberClient.Send(new S2CEntryBoardItemUnreadyNtc());
-                            }
-                        }
-
-                        // Restart the recruitment timer
-                        data.EntryItem.TimeOut = BoardManager.PARTY_BOARD_TIMEOUT;
-                        StartRecruitmentTimer(data.EntryItem.Id, BoardManager.PARTY_BOARD_TIMEOUT);
-                        foreach (var characterId in data.Members)
-                        {
-                            var memberClient = _Server.ClientLookup.GetClientByCharacterId(characterId);
-                            if (memberClient != null)
-                            {
-                                memberClient.Send(new S2CEntryBoardItemTimeoutTimerNtc() { TimeOut = BoardManager.PARTY_BOARD_TIMEOUT });
-                            }
-                        }
+                        RestartRecruitment(entryItemId);
                     }
                 });
 
@@ -461,6 +442,41 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     _Server.TimerManager.CancelTimer(data.ReadyUpTimerId);
                     return false;
+                }
+
+                return true;
+            }
+        }
+
+        public bool RestartRecruitment(uint entryItemId)
+        {
+            lock (_Boards)
+            {
+                var data = GetGroupData(entryItemId);
+                if (data == null)
+                {
+                    return false;
+                }
+
+                foreach (var characterId in data.Members)
+                {
+                    var memberClient = _Server.ClientLookup.GetClientByCharacterId(characterId);
+                    if (memberClient != null)
+                    {
+                        memberClient.Send(new S2CEntryBoardItemUnreadyNtc());
+                    }
+                }
+
+                // Restart the recruitment timer
+                data.EntryItem.TimeOut = BoardManager.PARTY_BOARD_TIMEOUT;
+                StartRecruitmentTimer(data.EntryItem.Id, BoardManager.PARTY_BOARD_TIMEOUT);
+                foreach (var characterId in data.Members)
+                {
+                    var memberClient = _Server.ClientLookup.GetClientByCharacterId(characterId);
+                    if (memberClient != null)
+                    {
+                        memberClient.Send(new S2CEntryBoardItemTimeoutTimerNtc() { TimeOut = BoardManager.PARTY_BOARD_TIMEOUT });
+                    }
                 }
 
                 return true;
