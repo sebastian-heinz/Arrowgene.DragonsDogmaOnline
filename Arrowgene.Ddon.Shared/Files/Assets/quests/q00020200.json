@@ -90,8 +90,7 @@
                 },
                 {
                     "type": "PartyGather",
-                    "announce_type": "Update",
-                    "checkpoint": true,
+                    "announce_type": "Accept",
                     "stage_id": {
                         "id": 435
                     },
