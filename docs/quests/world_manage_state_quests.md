@@ -90,7 +90,18 @@ World Manage Quests are special quests that control the world state. By this we 
 
 ### q70022001 (Season 2.2)
 
+| Type              | StageNo | Value  | Comment
+|:-----------------:|:-------:|:------:|:-----------------------------------------------------------|
+| WorldManageLayout | st914   | 4053   | Normal Placement of Geroid (通常置きのガラダ)
+
+
 ### q70023001 (Season 2.3)
+
+| Type              | StageNo | Value  | Comment
+|:-----------------:|:-------:|:------:|:-----------------------------------------------------------|
+| WorldManageLayout | st914   | 4066   | Geroid after clearing game (クリア後のガラダ)
+
+
 
 ## Season 3
 
