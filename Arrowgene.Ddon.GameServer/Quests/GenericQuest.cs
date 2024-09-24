@@ -237,6 +237,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 ResetEnemiesForBlock(client, questBlock);
             }
 
+            if (questBlock.BlockType == QuestBlockType.ReturnCheckpoint && questBlock.ProcessNo == questBlock.CheckpointDetails.ProcessNo)
+            {
+                questBlock = process.Blocks[questBlock.CheckpointDetails.BlockNo];
+            }
+
             return new List<CDataQuestProcessState>()
             {
                 questBlock.QuestProcessState
@@ -573,6 +578,10 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         // Handles kill x amount of monster type quests
                         checkCommands.Add(QuestManager.CheckCommand.EmDieLight((int)questBlock.TargetEnemy.EnemyId, (int)questBlock.TargetEnemy.Level, (int)questBlock.TargetEnemy.Amount));
                     }
+                    break;
+                case QuestBlockType.ReturnCheckpoint:
+                    /* This is a pseudo block handeled at the state machine level */
+                    checkCommands.Add(QuestManager.CheckCommand.StageNoWithoutMarker(StageManager.ConvertIdToStageNo(questBlock.StageId)));
                     break;
                 case QuestBlockType.Raw:
                     /* handled generically for all blocks */

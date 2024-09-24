@@ -718,6 +718,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             questBlock.TargetEnemy.Amount = jblock.GetProperty("amount").GetUInt32();
                         }
                         break;
+                    case QuestBlockType.ReturnCheckpoint:
+                        {
+                            questBlock.CheckpointDetails.ProcessNo = jblock.GetProperty("process_no").GetUInt16();
+                            questBlock.CheckpointDetails.BlockNo = jblock.GetProperty("block_no").GetUInt16();
+                        }
+                        break;
                     case QuestBlockType.Raw:
                         break;
                     case QuestBlockType.DummyBlock:
