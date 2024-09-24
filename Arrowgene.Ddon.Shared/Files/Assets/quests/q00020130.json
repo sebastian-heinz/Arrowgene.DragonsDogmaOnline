@@ -60,7 +60,8 @@
                     "level": 65,
                     "exp": 197000,
                     "named_enemy_params_id": 942,
-                    "is_boss": true
+                    "is_boss": true,
+					"is_boss_bgm": true
                 }
             ]
         }
@@ -122,7 +123,7 @@
                     },
                     "flags": [
                         {"type": "QstLayout", "action": "Clear", "value": 2473, "comment": "Spawns Leo"},
-                        {"type": "QstLayout", "action": "Set", "value": 2529, "comment": "Spawns Leo"}
+                        {"type": "QstLayout", "action": "Set", "value": 3654, "comment": "Spawns Leo"}
                     ]
                 },
                 {
@@ -145,17 +146,16 @@
                     "jump_stage_id": {
                         "id": 361
                     },
-                    "start_pos_no": 1
+                    "start_pos_no": 2
                 },
                 {
                     "type": "KillGroup",
                     "announce_type": "Update",
                     "groups": [ 1 ],
                     "flags": [
-                        {"type": "QstLayout", "action": "Clear", "value": 2529, "comment": "Spawns Leo"},
-                        {"type": "QstLayout", "action": "Set", "value": 3654, "comment": "Spawns Leo for combat"},
-                        {"type": "QstLayout", "action": "Set", "value": 3446, "comment": "Spawns Gurdolin for combat"},
-                        {"type": "MyQst", "action": "Set", "value": 1081, "comment": "Starts Gurdolin combat FSM"}
+                        {"type": "QstLayout", "action": "Clear", "value": 3654, "comment": "Spawns Leo"},
+                        {"type": "QstLayout", "action": "Set", "value": 2529, "comment": "Spawns Leo for combat"},
+                        {"type": "MyQst", "action": "Set", "value": 2473, "comment": "Starts Leo combat FSM"}
                     ]
                 },
                 {
@@ -178,9 +178,8 @@
                         "z": 52
                     },
                     "flags": [
-                        {"type": "QstLayout", "action": "Clear", "value": 3654, "comment": "Spawns Leo for combat"},
-                        {"type": "QstLayout", "action": "Clear", "value": 3446, "comment": "Spawns Gurdolin for combat"},
-                        {"type": "MyQst", "action": "Clear", "value": 1081, "comment": "Starts Gurdolin combat FSM"},
+                        {"type": "QstLayout", "action": "Clear", "value": 2529, "comment": "Spawns Leo for combat"},
+                        {"type": "MyQst", "action": "Clear", "value": 2473, "comment": "Starts Leo combat FSM"},
                         {"type": "QstLayout", "action": "Set", "value": 3448, "comment": "Spawns Loeg, Cecily, Lise and Elliot"}
                     ]
                 },
