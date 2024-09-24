@@ -15,6 +15,12 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public int EndContentsPurpose {  get; set; }
     }
 
+    public class QuestReturnCheckpoint
+    {
+        public ushort ProcessNo { get; set; }
+        public ushort BlockNo { get; set; }
+    }
+
     public class QuestBlock
     {
         public QuestBlockType BlockType { get; set; }
@@ -41,6 +47,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 
         public QuestPartyGatherPoint PartyGatherPoint {  get; set; }
         public QuestOmInteractEvent OmInteractEvent { get; set; }
+        public QuestReturnCheckpoint CheckpointDetails {  get; set; }
 
         public bool ShowMarker { get; set; }
         public bool ResetGroup { get; set; }
@@ -83,6 +90,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             QuestEvent = new QuestEvent();
             QuestCameraEvent = new QuestCameraEvent();
             OmInteractEvent = new QuestOmInteractEvent();
+            CheckpointDetails = new QuestReturnCheckpoint();
 
             TargetEnemy = new QuestTargetEnemy();
             Announcements = new Announcements();

@@ -6,7 +6,7 @@
     "base_level": 53,
     "minimum_item_rank": 0,
     "discoverable": true,
-	"area_id": "MergodaRuins",	
+	"area_id": "MergodaRuins",
     "rewards": [
         {
             "type": "exp",
@@ -35,7 +35,7 @@
                 },
                 {
                     "item_id": 41,
-                    "num": 1					
+                    "num": 1
                 }
             ]
         }
@@ -99,7 +99,7 @@
                 {"type": "QstLayout", "action": "Set", "value": 1725, "comment": "Spawns Glowing Item"},
                 {"type": "QstLayout", "action": "Set", "value": 1726, "comment": "Spawns Glowing Item"},
                 {"type": "QstLayout", "action": "Set", "value": 1727, "comment": "Spawns Glowing Item"}
-            ]				
+            ]
         },
         {
             "type": "CollectItem",
@@ -124,7 +124,7 @@
                 {"type": "QstLayout", "action": "Set", "value": 1725, "comment": "Spawns Glowing Item"},
                 {"type": "QstLayout", "action": "Set", "value": 1726, "comment": "Spawns Glowing Item"},
                 {"type": "QstLayout", "action": "Set", "value": 1727, "comment": "Spawns Glowing Item"}
-            ]				
+            ]
         },
         {
             "type": "CollectItem",
@@ -149,7 +149,7 @@
                 {"type": "QstLayout", "action": "Set", "value": 1725, "comment": "Spawns Glowing Item"},
                 {"type": "QstLayout", "action": "Set", "value": 1726, "comment": "Spawns Glowing Item"},
                 {"type": "QstLayout", "action": "Set", "value": 1727, "comment": "Spawns Glowing Item"}
-            ]				
+            ]
         },
         {
             "type": "CollectItem",
@@ -173,7 +173,7 @@
                 {"type": "QstLayout", "action": "Set", "value": 1724, "comment": "Spawns Glowing Item"},
                 {"type": "QstLayout", "action": "Set", "value": 1725, "comment": "Spawns Glowing Item"},
                 {"type": "QstLayout", "action": "Set", "value": 1726, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1727, "comment": "Spawns Glowing Item"}			
+                {"type": "QstLayout", "action": "Set", "value": 1727, "comment": "Spawns Glowing Item"}
             ]
         },
         {
@@ -185,7 +185,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Actaeon",
-            "message_id": 11842			
+            "message_id": 11842
         }
     ]
 }
