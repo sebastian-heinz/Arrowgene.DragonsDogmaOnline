@@ -64,7 +64,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 client.Send(new S2CEntryBoardEntryBoardItemLeaveNtc());
 
+                Server.BoardManager.CancelReadyUpTimer(data.EntryItem.Id);
                 Server.BoardManager.RemoveCharacterFromGroup(client.Character);
+                Server.BoardManager.RestartRecruitment(data.EntryItem.Id);
+
                 Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Online);
             }
 
