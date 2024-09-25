@@ -84,6 +84,12 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataClanServerParam.Serializer());
             Create(new CDataClanUserParam.Serializer());
             Create(new CDataClanHistoryElement.Serializer());
+            Create(new CDataClanNoticePackage.Serializer());
+            Create(new CDataClanShopBuffInfo.Serializer());
+            Create(new CDataClanShopBuffItem.Serializer());
+            Create(new CDataClanShopConciergeItem.Serializer());
+            Create(new CDataClanShopFunctionInfo.Serializer());
+            Create(new CDataClanShopFunctionItem.Serializer());
 
             Create(new CDataClearTimePointBonus.Serializer());
             Create(new CDataCommonU8.Serializer());
@@ -895,9 +901,19 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CClanClanScoutEntryGetInviteListRes.Serializer());
             Create(new S2CClanClanGetJoinRequestedListRes.Serializer());
 
-
             Create(new S2CClanClanLeaveMemberNtc.Serializer());
             Create(new S2CClanClanUpdateNtc.Serializer());
+            Create(new S2CClanClanBaseReleaseStateUpdateNtc.Serializer());
+            Create(new S2CClanClanJoinDisapproveNtc.Serializer());
+            Create(new S2CClanClanJoinMemberNtc.Serializer());
+            Create(new S2CClanClanJoinNtc.Serializer());
+            Create(new S2CClanClanJoinSelfNtc.Serializer());
+            Create(new S2CClanClanPointAddNtc.Serializer());
+            Create(new S2CClanClanQuestClearNtc.Serializer());
+            Create(new S2CClanClanScoutEntryDisapproveInviteNtc.Serializer());
+            Create(new S2CClanClanUpdateCommonNtc.Serializer());
+            Create(new S2CClanClanShopBuyItemNtc.Serializer());
+            Create(new S2CClanClanLevelUpNtc.Serializer());
 
             Create(new S2CConnectionLoginRes.Serializer());
             Create(new S2CConnectionLogoutRes.Serializer());
