@@ -3,7 +3,7 @@
     "type": "Main",
     "comment": "The Darkness of the Heart",
     "quest_id": 20200,
-    "next_quest": 0,
+    "next_quest": 20210,
     "base_level": 71,
     "minimum_item_rank": 0,
     "discoverable": true,

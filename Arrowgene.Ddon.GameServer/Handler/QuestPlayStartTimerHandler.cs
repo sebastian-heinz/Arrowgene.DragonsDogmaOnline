@@ -25,6 +25,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CQuestPlayStartTimerRes Handle(GameClient client, C2SQuestPlayStartTimerReq request)
         {
+            if (client.Party.ContentId == 0)
+            {
+                // See on the MSQ for the Spirit Dragon, this handler gets called
+                // even though there is no timer present in the quest
+                return new S2CQuestPlayStartTimerRes();
+            }
+
             var quest = QuestManager.GetQuestByBoardId(client.Party.ContentId);
             var ntc = new S2CQuestPlayStartTimerNtc()
             {
