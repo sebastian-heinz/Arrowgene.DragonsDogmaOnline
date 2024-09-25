@@ -227,9 +227,15 @@
                     "event_id": 25
                 },
                 {
-                    "type": "PartyGather",
+                    "type": "IsStageNo",
                     "announce_type": "Update",
                     "checkpoint": true,
+                    "stage_id": {
+                        "id": 386
+                    }
+                },
+                {
+                    "type": "PartyGather",
                     "stage_id": {
                         "id": 386
                     },
@@ -327,7 +333,7 @@
                 {
                     "type": "Raw",
                     "check_commands": [
-                        {"type": "EmHpLess", "Param1": 435, "Param2": 0, "Param3": 0, "Param4": 11}
+                        {"type": "EmHpLess", "Param1": 435, "Param2": 0, "Param3": 0, "Param4": 10}
                     ]
                 },
                 {

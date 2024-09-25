@@ -242,16 +242,19 @@
                         {"type": "QstLayout", "action": "Set", "value": 4374, "comment": "Spawn NPCs"}
                     ],
                     "jump_stage_id": {
-                        "id": 383
-                    },
-                    "start_pos_no": 6
+                        "id": 371
+                    }
                 },
                 {
                     "type": "PlayEvent",
                     "stage_id": {
+                        "id": 371
+                    },
+                    "event_id": 40,
+                    "jump_stage_id": {
                         "id": 383
                     },
-                    "event_id": 25
+                    "start_pos_no": 6
                 },
                 {
                     "type": "TalkToNpc",
