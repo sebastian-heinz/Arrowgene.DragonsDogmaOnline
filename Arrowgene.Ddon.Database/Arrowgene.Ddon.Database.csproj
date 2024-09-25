@@ -42,6 +42,7 @@
         <ContentWithTargetPath Remove="files\database\script\migration_msq_2.0.sql" />
         <ContentWithTargetPath Remove="files\database\script\migration_msq_2.1.sql" />
         <ContentWithTargetPath Remove="files\database\script\migration_msq_2.2.sql" />
+        <ContentWithTargetPath Remove="files\database\script\migration_msq_2.3.sql" />
         <ContentWithTargetPath Remove="Files\Database\Script\migration_quest_variant.sql" />
         <ContentWithTargetPath Remove="Files\Database\Script\migration_rented_pawn.sql" />
         <ContentWithTargetPath Remove="Files\Database\Script\pawncraftingdata_migration.sql" />
@@ -82,6 +83,9 @@
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="Files\Database\Script\migration_msq_2.2.sql">
+          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+        <None Update="Files\Database\Script\migration_msq_2.3.sql">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
         <None Update="Files\Database\Script\migration_rented_pawn.sql">
