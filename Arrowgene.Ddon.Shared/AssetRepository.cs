@@ -46,6 +46,7 @@ namespace Arrowgene.Ddon.Shared
         public const string PawnCostReductionKey = "PawnCostReduction.json"; 
         public const string BitterblackMazeKey = "BitterblackMaze.json";
         public const string QuestDropItemsKey = "QuestEnemyDrops.json";
+        public const string RecruitmentBoardCategoryKey = "RecruitmentGroups.json";
 
         private static readonly ILogger Logger = LogProvider.Logger(typeof(AssetRepository));
 
@@ -91,6 +92,7 @@ namespace Arrowgene.Ddon.Shared
             PawnCostReductionAsset = new PawnCostReductionAsset();
             BitterblackMazeAsset = new BitterblackMazeAsset();
             QuestDropItemAsset = new QuestDropItemAsset();
+            RecruitmentBoardCategoryAsset = new RecruitmentBoardCategoryAsset();
         }
 
         public List<CDataErrorMessage> ClientErrorCodes { get; private set; }
@@ -120,6 +122,7 @@ namespace Arrowgene.Ddon.Shared
         public PawnCostReductionAsset PawnCostReductionAsset { get; private set; }
         public BitterblackMazeAsset BitterblackMazeAsset { get; private set; }
         public QuestDropItemAsset QuestDropItemAsset { get; private set; }
+        public RecruitmentBoardCategoryAsset RecruitmentBoardCategoryAsset { get; private set; }
 
         public void Initialize()
         {
@@ -149,6 +152,8 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => PawnCostReductionAsset = value, PawnCostReductionKey, new PawnCostReductionAssetDeserializer());
             RegisterAsset(value => BitterblackMazeAsset = value, BitterblackMazeKey, new BitterblackMazeAssetDeserializer());
             RegisterAsset(value => QuestDropItemAsset = value, QuestDropItemsKey, new QuestDropAssetDeserializer());
+            RegisterAsset(value => RecruitmentBoardCategoryAsset = value, RecruitmentBoardCategoryKey, new RecruitmentBoardCategoryDeserializer());
+
             var questAssetDeserializer = new QuestAssetDeserializer(this.NamedParamAsset, QuestDropItemAsset);
             questAssetDeserializer.LoadQuestsFromDirectory(Path.Combine(_directory.FullName, QuestAssestKey), QuestAssets);
         }

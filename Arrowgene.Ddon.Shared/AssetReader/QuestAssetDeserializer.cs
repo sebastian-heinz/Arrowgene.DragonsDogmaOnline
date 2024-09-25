@@ -815,7 +815,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             }
 
             announcements.EndContentsPurpose = 0;
-            if (jBlock.TryGetProperty("end_contents_announce", out JsonElement jEndContentsPurpose))
+            if (jBlock.TryGetProperty("end_contents_purpose", out JsonElement jEndContentsPurpose))
             {
                 announcements.EndContentsPurpose = jEndContentsPurpose.GetInt32();
             }

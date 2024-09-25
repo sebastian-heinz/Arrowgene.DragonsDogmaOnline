@@ -199,7 +199,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 }
             }
 
-            if (questBlock.BlockType == QuestBlockType.ExtendTime && client.Party.ContentId != 0)
+            if (questBlock.BlockType == QuestBlockType.ExtendTime && BoardManager.BoardIdIsExm(client.Party.ContentId))
             {
                 var newEndTime = server.PartyQuestContentManager.ExtendTimer(client.Party.Id, questBlock.TimeAmount);
                 client.Party.SendToAll(new S2CQuestPlayAddTimerNtc() { PlayEndDateTime = newEndTime });
@@ -316,7 +316,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             if (questBlock.Announcements.EndContentsPurpose != 0)
             {
-                resultCommands.Add(QuestManager.ResultCommand.AddEndContentsPurpose(questBlock.Announcements.EndContentsPurpose, 0));
+                resultCommands.Add(QuestManager.ResultCommand.AddEndContentsPurpose(questBlock.Announcements.EndContentsPurpose, 1));
             }
 
             foreach (var item in questBlock.HandPlayerItems)

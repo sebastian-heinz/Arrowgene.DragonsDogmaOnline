@@ -26,12 +26,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // var pcap = new S2CEntryBoardEntryBoardItemCreateRes.Serializer().Read(GameFull.Dump_710.AsBuffer())
 
             var data = Server.BoardManager.CreateNewGroup(request.BoardId, request.CreateParam, request.Password, client.Character);
-            // Override some defaults using JSON config
-            var quest = QuestManager.GetQuestByBoardId(request.BoardId);
-            if (quest != null)
+
+            if (BoardManager.BoardIdIsExm(request.BoardId))
             {
+                // Override some defaults using JSON config
+                var quest = QuestManager.GetQuestByBoardId(request.BoardId);
                 data.EntryItem.Param.MinEntryNum = (ushort)quest.MissionParams.MinimumMembers;
                 data.EntryItem.Param.MaxEntryNum = (ushort)quest.MissionParams.MaximumMembers;
+            }
+            else if (BoardManager.BoardIdIsRecruitmentCategory(request.BoardId))
+            {
+                uint recruitmentCategory = BoardManager.RecruitmentCategoryFromBoardId(request.BoardId);
+                var recruitmentData = Server.AssetRepository.RecruitmentBoardCategoryAsset.RecruitmentBoardCategories[recruitmentCategory];
+                data.EntryItem.Param.MinEntryNum = recruitmentData.PartyMin;
+                data.EntryItem.Param.MaxEntryNum = recruitmentData.PartyMax;
             }
 
             data.EntryItem.PartyLeaderCharacterId = data.PartyLeaderCharacterId;
