@@ -31,10 +31,25 @@ namespace Arrowgene.Ddon.GameServer.Characters
             _Server = server;
         }
 
-        public (IPacketStructure jobRes, IPacketStructure itemNtc, IPacketStructure jobNtc) SetJob(GameClient client, CharacterCommon common, JobId jobId, DbConnection? connectionIn = null)
+        public (IPacketStructure? jobRes, IPacketStructure? itemNtc, IPacketStructure? jobNtc) SetJob(GameClient client, CharacterCommon common, JobId jobId, DbConnection? connectionIn = null)
         {
             // TODO: Reject job change if there's no primary and secondary weapon for the new job in storage
             // (or give a lvl 1 weapon for free?)
+
+            var totalSlots = common.Equipment.GetItems(EquipType.Performance)
+                .Concat(common.Equipment.GetItems(EquipType.Visual))
+                .Where(x => x != null)
+                .ToList()
+                .Count;
+            if (totalSlots > client.Character.Storage.GetStorage(StorageType.StorageBoxNormal).EmptySlots())
+            {
+                return (new S2CJobChangeJobRes()
+                {
+                    Error = (uint)ErrorCode.ERROR_CODE_JOBCHANGE_ITEM_CAPACITY_OVER
+                }, 
+                null,
+                null);
+            }
 
             JobId oldJobId = common.Job;
             common.Job = jobId;

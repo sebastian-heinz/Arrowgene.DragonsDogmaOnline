@@ -22,6 +22,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CPawnCreatePawnRes Handle(GameClient client, C2SPawnCreatePawnReq request)
         {
+            // I hate hardcoding this but people legitimately keep finding ways to break this. 
+            if (request.SlotNo > 3)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_CREATE_NUM_OVER);
+            }
+
             if (request.SlotNo == 1)
             {
                 const byte myPawnSlotNum = 2;
@@ -61,6 +67,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         Error = (uint)ErrorCode.ERROR_CODE_CHARACTER_ITEM_NOT_FOUND
                     };
+                }
+                else
+                {
+                    client.Send(new S2CItemUpdateCharacterItemNtc()
+                    {
+                        UpdateType = ItemNoticeType.CreatePawn,
+                        UpdateItemList = new()
+                        {
+                            result
+                        }
+                    });
                 }
             }           
             
