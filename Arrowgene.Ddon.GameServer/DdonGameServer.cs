@@ -539,6 +539,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new EntryBoardEntryRecreateHandler(this));
             AddHandler(new EntryBoardItemKickHandler(this));
             AddHandler(new EntryBoardEntryBoardItemExtendTimeoutHandler(this));
+            AddHandler(new EntryBoardPartyRecruitCategoryListHandler(this));
 
             AddHandler(new ServerGameTimeGetBaseinfoHandler(this));
             AddHandler(new ServerGetGameSettingHandler(this));

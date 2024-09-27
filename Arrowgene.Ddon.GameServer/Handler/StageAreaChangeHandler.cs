@@ -70,10 +70,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     client.Party.ResetInstance();
                     client.Party.SendToAll(new S2CInstanceAreaResetNtc());
+                    // Next two packets seem to be send when transitioning to a safe area in all pcaps
+                    // not sure what they do though
+                    client.Party.SendToAll(new S2C_SEASON_62_38_16_NTC());
+                    // client.Party.SendToAll(new S2C_SEASON_62_39_16_NTC) ??? Does this go to all, it has a character ID
                 }
             }
 
-            if (client.Party.ContentInProgress)
+            if (client.Party.ContentInProgress && BoardManager.BoardIdIsExm(client.Party.ContentId))
             {
                 var quest = QuestManager.GetQuestByBoardId(client.Party.ContentId);
                 if (quest != null)

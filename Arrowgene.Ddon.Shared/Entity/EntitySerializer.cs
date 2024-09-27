@@ -147,6 +147,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataEntryItemParam.Serializer());
             Create(new CDataEntryMemberData.Serializer());
             Create(new CDataEntryBoardItemSearchParameter.Serializer());
+            Create(new CDataEntryRecruitCategoryData.Serializer());
             Create(new CDataRaidBossPlayStartData.Serializer());
             Create(new CDataRaidBossEnemyParam.Serializer());
 
@@ -487,6 +488,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SEntryBoardEntryBoardItemRecreateReq.Serializer());
             Create(new C2SEntryBoardItemKickReq.Serializer());
             Create(new C2SEntryBoardEntryBoardItemExtendTimeoutReq.Serializer());
+            Create(new C2SEntryBoardPartyRecruitCategoryListReq.Serializer());
 
             Create(new C2SAchievementReceivableRewardNtc.Serializer());
             Create(new C2SAchievementCompleteNtc.Serializer());
@@ -900,6 +902,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CEntryBoardItemPartyNtc.Serializer());
             Create(new S2CEntryBoardItemKickRes.Serializer());
             Create(new S2CEntryBoardEntryBoardItemExtendTimeoutRes.Serializer());
+            Create(new S2CEntryBoardPartyRecruitCategoryListRes.Serializer());
 
             Create(new S2CEquipChangeCharacterEquipJobItemNtc.Serializer());
             Create(new S2CEquipChangeCharacterEquipJobItemRes.Serializer());
@@ -1176,7 +1179,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CServerWeatherForecastGetRes.Serializer());
             Create(new S2CServerTimeUpdateNtc.Serializer());
 
-            Create(new S2CSituationDataStartNtc.Serializer());
+            Create(new S2C_63_0_16_NTC.Serializer());
             Create(new S2CSituationDataUpdateObjectivesNtc.Serializer());
             Create(new S2CSituationDataEndNtc.Serializer());
             Create(new S2C_63_7_16_NTC.Serializer());
@@ -1226,6 +1229,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CSkillRegisterPresetAbilityRes.Serializer());
             Create(new S2CSkillSetPresetAbilityNameRes.Serializer());
             Create(new S2CSkillSetPresetAbilityListRes.Serializer());
+
+            Create(new S2C_SEASON_62_38_16_NTC.Serializer());
 
             Create(new S2CSetCommunicationShortcutRes.Serializer());
             Create(new S2CSetShortcutRes.Serializer());

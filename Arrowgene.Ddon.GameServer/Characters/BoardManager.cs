@@ -1,10 +1,13 @@
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.GameServer.Utils;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
@@ -98,6 +101,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 _Groups[data.EntryItem.Id] = data;
 
                 AddCharacterToGroup(data.EntryItem.Id, leaderCharacterId);
+
+                Logger.Info($"Allocating EntryId={data.EntryItem.Id}");
             }
 
             return data;
@@ -144,6 +149,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
 
                 _EntryItemIdPool.ReclaimId(data.EntryItem.Id);
+                Logger.Info($"Reclaiming EntryId={data.EntryItem.Id}");
             }
 
             return true;
@@ -527,6 +533,55 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
                 return (ushort) _Server.TimerManager.GetTimeLeftInSeconds(data.ReadyUpTimerId);
             }
+        }
+
+        private static readonly ulong BOARD_CATEGORY_RECRUITMENT = 0x9_00000000;
+        private static readonly ulong BOARD_CATEGORY_EXM         = 0x4_00000000;
+
+        public static ulong QuestIdToExmBoardId(uint questId)
+        {
+            return (ulong)(questId | BOARD_CATEGORY_EXM);
+        }
+
+        public static ulong QuestIdToExmBoardId(QuestId questId)
+        {
+            return QuestIdToExmBoardId((uint) questId);
+        }
+
+        public static bool BoardIdIsExm(ulong boardId)
+        {
+            // When then 5th byte is 4, this quest is an extreme mission
+            // The bottom 4 bytes are the QuestId/QuestScheduleId
+            // 0x4_nnnnnnnn
+            return (BOARD_CATEGORY_EXM & boardId) > 0;
+        }
+
+        public static bool BoardIdIsRecruitmentCategory(ulong boardId)
+        {
+            // When then 5th byte is 9, this quest is a board id for general party
+            // The bottom 4 bytes are the CategoryId
+            // 0x9_nnnnnnnn
+            return (BOARD_CATEGORY_RECRUITMENT & boardId) > 0;
+        }
+
+        public static ulong BoardIdFromRecruitmentCategory(uint category)
+        {
+            return (BOARD_CATEGORY_RECRUITMENT | category);
+        }
+
+        private static uint GetValueFromBoardId(ulong boardId)
+        {
+            return unchecked((uint) boardId);
+        }
+
+        public static uint RecruitmentCategoryFromBoardId(ulong boardId)
+        {
+            return GetValueFromBoardId(boardId);
+        }
+
+        public static uint GetQuestIdFromBoardId(ulong boardId)
+        {
+            return GetValueFromBoardId(boardId);
         }
     }
 }

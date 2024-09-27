@@ -2,6 +2,7 @@ using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -29,6 +30,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
+            var previousLeader = client.Party.Leader;
+
             ErrorRes<PlayerPartyMember> newLeader = party.ChangeLeader(client, newLeaderCharacterId);
             if (newLeader.HasError)
             {
@@ -45,13 +48,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Send(res);
 
             PlayerPartyMember currentLeader = party.Leader;
-            if (currentLeader != null)
+            if (previousLeader != null)
             {
-                Logger.Info(client, $"Party leader changed from {currentLeader.Client.Character.CharacterId} to {newLeader.Value.Client.Character.CharacterId} for PartyId:{party.Id}");
+                Server.CharacterManager.UpdateOnlineStatus(previousLeader.Client, previousLeader.Client.Character, OnlineStatus.PtMember);
+                Logger.Info(client, $"Party leader changed from {previousLeader.Client.Character.CharacterId} to {currentLeader.Client.Character.CharacterId} for PartyId:{party.Id}");
             }
             else
             {
-                Logger.Info(client, $"The character {newLeader.Value.Client.Character.CharacterId} has been promoted to leader for PartyId:{party.Id}");
+                Logger.Info(client, $"The character {currentLeader.Client.Character.CharacterId} has been promoted to leader for PartyId:{party.Id}");
+            }
+
+            if (party.MemberCount() == 1)
+            {
+                Server.CharacterManager.UpdateOnlineStatus(currentLeader.Client, currentLeader.Client.Character, OnlineStatus.Online);
+            }
+            else
+            {
+                Server.CharacterManager.UpdateOnlineStatus(currentLeader.Client, currentLeader.Client.Character, OnlineStatus.PtLeader);
             }
         }
     }

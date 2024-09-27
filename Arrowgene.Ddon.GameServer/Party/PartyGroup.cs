@@ -617,6 +617,7 @@ namespace Arrowgene.Ddon.GameServer.Party
         public void ResetInstance()
         {
             InstanceEnemyManager.Clear();
+            Contexts.Clear();
             foreach (GameClient client in Clients)
             {
                 client.InstanceGatheringItemManager.Clear();

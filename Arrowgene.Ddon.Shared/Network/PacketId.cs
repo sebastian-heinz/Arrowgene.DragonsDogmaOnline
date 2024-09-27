@@ -297,9 +297,9 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_CHARACTER_2_11_16_NTC = new PacketId(2, 11, 16, "S2C_CHARACTER_2_11_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId C2S_CHARACTER_COMMUNITY_CHARACTER_STATUS_GET_REQ = new PacketId(2, 12, 1, "C2S_CHARACTER_COMMUNITY_CHARACTER_STATUS_GET_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CHARACTER_COMMUNITY_CHARACTER_STATUS_GET_RES = new PacketId(2, 12, 2, "S2C_CHARACTER_COMMUNITY_CHARACTER_STATUS_GET_RES", ServerType.Game, PacketSource.Server); // コミュニティキャラクターステータス取得要求に
-        public static readonly PacketId C2S_CHARACTER_CHARACTER_DOWN_NTC = new PacketId(2, 13, 16, "S2C_CHARACTER_CHARACTER_DOWN_NTC", ServerType.Game, PacketSource.Client, "S2C_CHARACTER_2_13_16_NTC");
-        public static readonly PacketId C2S_CHARACTER_CHARACTER_DOWN_CANCEL_NTC = new PacketId(2, 14, 16, "S2C_CHARACTER_CHARACTER_DOWN_CANCEL_NTC", ServerType.Game, PacketSource.Client, "S2C_CHARACTER_2_14_16_NTC");
-        public static readonly PacketId C2S_CHARACTER_CHARACTER_DEAD_NTC = new PacketId(2, 15, 16, "S2C_CHARACTER_CHARACTER_DEAD_NTC", ServerType.Game, PacketSource.Client, "S2C_CHARACTER_2_15_16_NTC");
+        public static readonly PacketId C2S_CHARACTER_CHARACTER_DOWN_NTC = new PacketId(2, 13, 16, "C2S_CHARACTER_CHARACTER_DOWN_NTC", ServerType.Game, PacketSource.Client, "C2S_CHARACTER_2_13_16_NTC");
+        public static readonly PacketId C2S_CHARACTER_CHARACTER_DOWN_CANCEL_NTC = new PacketId(2, 14, 16, "C2S_CHARACTER_CHARACTER_DOWN_CANCEL_NTC", ServerType.Game, PacketSource.Client, "C2S_CHARACTER_2_14_16_NTC");
+        public static readonly PacketId C2S_CHARACTER_CHARACTER_DEAD_NTC = new PacketId(2, 15, 16, "C2S_CHARACTER_CHARACTER_DEAD_NTC", ServerType.Game, PacketSource.Client, "C2S_CHARACTER_2_15_16_NTC");
         public static readonly PacketId C2S_CHARACTER_CHARACTER_POINT_REVIVE_REQ = new PacketId(2, 16, 1, "C2S_CHARACTER_CHARACTER_POINT_REVIVE_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CHARACTER_CHARACTER_POINT_REVIVE_RES = new PacketId(2, 16, 2, "S2C_CHARACTER_CHARACTER_POINT_REVIVE_RES", ServerType.Game, PacketSource.Server); // キャラクタ復活(復活力消費)に
         public static readonly PacketId C2S_CHARACTER_CHARACTER_GOLDEN_REVIVE_REQ = new PacketId(2, 17, 1, "C2S_CHARACTER_CHARACTER_GOLDEN_REVIVE_REQ", ServerType.Game, PacketSource.Client);
