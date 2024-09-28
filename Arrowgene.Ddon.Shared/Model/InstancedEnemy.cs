@@ -1,12 +1,10 @@
-using System.Collections.Generic;
-
 namespace Arrowgene.Ddon.Shared.Model
 {
     public class InstancedEnemy : Enemy
     {
         public InstancedEnemy()
         {
-
+            QuestProcessInfo = new EnemyQuestProcessInfo();
         }
 
         public InstancedEnemy(Enemy enemy) : base(enemy)
@@ -14,6 +12,7 @@ namespace Arrowgene.Ddon.Shared.Model
             IsKilled = false;
             IsRequired = true;
             RepopWaitSecond = 60;
+            QuestProcessInfo = new EnemyQuestProcessInfo();
         }
 
         public InstancedEnemy(InstancedEnemy enemy) : base (enemy)
@@ -22,16 +21,21 @@ namespace Arrowgene.Ddon.Shared.Model
             Index = enemy.Index;
             IsRequired = enemy.IsRequired;
             RepopWaitSecond = enemy.RepopWaitSecond;
-            StageId = enemy.StageId;
-            IsQuestControlled = enemy.IsQuestControlled;
+            StageLayoutId = enemy.StageLayoutId;
+            QuestScheduleId = enemy.QuestScheduleId;
+            QuestProcessInfo = enemy.QuestProcessInfo;
+            QuestEnemyGroupId = enemy.QuestEnemyGroupId;
         }
 
-        public StageLayoutId StageId { get; set; }
+        public StageLayoutId StageLayoutId { get; set; }
         public byte Index { get; set; }
         public bool IsRequired { get; set; }
         public bool IsKilled { get; set; }
         public uint RepopWaitSecond {  get; set; }
-        public bool IsQuestControlled { get; set; }
+
+        public uint QuestScheduleId { get; set; }
+        public uint QuestEnemyGroupId { get; set; }
+        public EnemyQuestProcessInfo QuestProcessInfo { get; set; }
 
         public InstancedEnemy(uint enemyId, ushort lv, uint exp, byte index)
         {
@@ -43,6 +47,14 @@ namespace Arrowgene.Ddon.Shared.Model
             EnemyTargetTypesId = 4;
             Scale = 100;
             IsRequired = true;
+            QuestProcessInfo = new EnemyQuestProcessInfo();
+        }
+
+        public class EnemyQuestProcessInfo
+        {
+            public ushort ProcessNo { get; set; }
+            public ushort SequenceNo { get; set; }
+            public ushort BlockNo { get; set; }
         }
 
         public virtual InstancedEnemy CreateNewInstance()
@@ -237,6 +249,26 @@ namespace Arrowgene.Ddon.Shared.Model
         public InstancedEnemy SetRaidPoints(uint points)
         {
             RaidPoints = points;
+            return this;
+        }
+
+        public InstancedEnemy SetQuestScheduleId(uint questScheduleId)
+        {
+            QuestScheduleId = questScheduleId;
+            return this;
+        }
+
+        public InstancedEnemy SetQuestProcessInfo(ushort procNo, ushort seqNo, ushort blockNo)
+        {
+            QuestProcessInfo.ProcessNo = procNo;
+            QuestProcessInfo.SequenceNo = seqNo;
+            QuestProcessInfo.BlockNo = blockNo;
+            return this;
+        }
+
+        public InstancedEnemy SetQuestProcessInfo(EnemyQuestProcessInfo info)
+        {
+            QuestProcessInfo = info;
             return this;
         }
     }

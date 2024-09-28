@@ -325,7 +325,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             public static List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand> AppendCheckCommands(List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand> obj, List<CDataQuestCommand> commands)
             {
-                obj[0].ResultCommandList.Concat(commands);
+                obj[0].ResultCommandList.AddRange(commands);
                 return obj;
             }
 

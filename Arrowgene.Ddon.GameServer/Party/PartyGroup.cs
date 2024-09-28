@@ -849,5 +849,61 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
             return false;
         }
+
+        private bool ContainsJobInList(PartyMember member, List<JobId> jobList)
+        {
+            if (member is PlayerPartyMember playerPartyMember)
+            {
+                if (jobList.Contains(playerPartyMember.Client.Character.Job))
+                {
+                    return true;
+                }
+            }
+            else if (member is PawnPartyMember pawnPartyMember)
+            {
+                if (jobList.Contains(pawnPartyMember.Pawn.Job))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool ContainsGreenJob()
+        {
+            foreach (var member in Members)
+            {
+                if (ContainsJobInList(member, JobIdExtensions.GreenJobs))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool ContainsRedJob()
+        {
+            foreach (var member in Members)
+            {
+                if (ContainsJobInList(member, JobIdExtensions.RedJobs))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool ContainsBlueJob()
+        {
+            foreach (var member in Members)
+            {
+                if (ContainsJobInList(member, JobIdExtensions.BlueJobs))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

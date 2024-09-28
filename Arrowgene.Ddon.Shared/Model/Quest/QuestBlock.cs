@@ -41,7 +41,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public List<uint> MyQstCheckFlags { get; set; }
         public List<QuestFlag> QuestFlags { get; set; }
         public List<QuestFlag> CheckpointQuestFlags { get; set; }
-        public List<Action<Object>> Callbacks { get; set; }
+        public List<Object> Callbacks { get; set; }
 
         public bool ShouldStageJump { get; set; }
         public uint JumpPos { get; set; }
@@ -112,7 +112,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             TargetEnemy = new QuestTargetEnemy();
             Announcements = new Announcements();
 
-            Callbacks = new List<Action<Object>>();
+            Callbacks = new List<Object>();
         }
 
         public QuestBlock AddAnnotation(string msg)

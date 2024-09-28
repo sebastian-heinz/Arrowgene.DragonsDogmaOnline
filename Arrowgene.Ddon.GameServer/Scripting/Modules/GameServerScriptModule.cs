@@ -31,6 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
                 .AddImports("Arrowgene.Ddon.GameServer.Context")
                 .AddImports("Arrowgene.Ddon.GameServer.Party")
                 .AddImports("Arrowgene.Ddon.GameServer.Quests")
+                .AddImports("Arrowgene.Ddon.GameServer.Quests.Extensions")
                 .AddImports("Arrowgene.Ddon.GameServer.Scripting")
                 .AddImports("Arrowgene.Ddon.GameServer.Scripting.Interfaces")
                 .AddImports("Arrowgene.Ddon.Server.Scripting")

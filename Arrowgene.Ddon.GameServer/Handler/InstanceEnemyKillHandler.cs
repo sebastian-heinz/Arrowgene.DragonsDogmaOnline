@@ -115,6 +115,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         }
                     }
 
+                    if (IsQuestControlled)
+                    {
+                        var ntcs = QuestManager.GetQuestStateManager(client, quest).HandleDestroyGroupWorkNotice(client.Party, quest, stageId, enemyKilled, connectionIn);
+                        queuedPackets.AddRange(ntcs);
+                    }
+                    
                     // This is used for quests and things like key door monsters
                     S2CInstanceEnemyGroupDestroyNtc groupDestroyedNtc = new S2CInstanceEnemyGroupDestroyNtc()
                     {

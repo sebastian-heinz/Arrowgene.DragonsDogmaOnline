@@ -1,7 +1,9 @@
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,9 +15,11 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         private static readonly LibDdon Instance = new LibDdon();
 
         private DdonGameServer Server { get; set; } = null;
+        public QuestUtils QuestFunctions { get; }
 
         private LibDdon()
         {
+            QuestFunctions = new QuestUtils(this);
         }
 
         public static void SetServer(DdonGameServer server)
@@ -47,7 +51,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
 
         public static InstancedEnemy CreateEnemy(EnemyId enemyId, ushort lv, uint exp, byte index, bool assignDefaultDrops = true)
         {
-            var enemy = new InstancedEnemy((uint) enemyId, lv, exp, index);
+            var enemy = new InstancedEnemy((uint)enemyId, lv, exp, index);
             if (assignDefaultDrops)
             {
                 enemy.DropsTable = LibDdon.GetDropsTable((uint)enemyId, lv);
@@ -77,7 +81,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
             {
                 Instance.HandlerCache[name] = Activator.CreateInstance(typeof(T), Instance.Server);
             }
-            return (T) Instance.HandlerCache[name];
+            return (T)Instance.HandlerCache[name];
         }
 
         public static IDatabase Database()
@@ -127,6 +131,30 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         public static GpCourseManager GetCourseManager()
         {
             return Instance.Server.GpCourseManager;
+        }
+
+        public static QuestUtils Quest()
+        {
+            return Instance.QuestFunctions;
+        }
+
+        public class QuestUtils
+        {
+            private LibDdon LibDdon;
+
+            public QuestUtils(LibDdon libDdon)
+            {
+                LibDdon = libDdon;
+            }
+
+            public void ApplyTimeExtension(GameClient client, uint amount)
+            {
+                if (BoardManager.BoardIdIsExm(client.Party.ContentId) && amount > 0)
+                {
+                    var newEndTime = LibDdon.Server.PartyQuestContentManager.ExtendTimer(client.Party.Id, amount);
+                    client.Party.SendToAll(new S2CQuestPlayAddTimerNtc() { PlayEndDateTime = newEndTime });
+                }
+            }
         }
     }
 

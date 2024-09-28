@@ -2,6 +2,7 @@
 Arrowgene.Ddon.Cli/Properties/launchSettings.json
 Arrowgene.Ddon.Shared/Files/Assets/scripts/custom/*
 Arrowgene.Ddon.Shared/Files/Assets/scripts/addendums/*
+Arrowgene.Ddon.Scripts/scripts/intelisense.csx
 
 ## Folders specific
 /publish/

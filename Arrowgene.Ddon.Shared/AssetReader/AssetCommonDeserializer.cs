@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text.Json;
 
@@ -68,8 +69,10 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     enemyGroup.PlacementType = placementType;
                 }
 
-                foreach (var enemy in jGroup.GetProperty("enemies").EnumerateArray())
+                for (int i = 0; i < jGroup.GetProperty("enemies").EnumerateArray().Count(); i++)
                 {
+                    var enemy = jGroup.GetProperty("enemies")[i];
+
                     bool isBoss = false;
                     if (enemy.TryGetProperty("is_boss", out JsonElement jIsBoss))
                     {
@@ -85,6 +88,10 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             return false;
                         }
                         index = jEnemyIndex.GetByte();
+                    }
+                    else
+                    {
+                        index = (byte)(enemyGroup.StartingIndex + i);
                     }
 
                     bool isRequired = true;

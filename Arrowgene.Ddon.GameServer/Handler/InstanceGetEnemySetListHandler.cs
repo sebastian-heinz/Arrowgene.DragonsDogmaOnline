@@ -66,9 +66,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 instancedEnemyList = Server.EpitaphRoadManager.GetInstancedEnemies(client.Party, stageId, subGroupId);
             }
-            else
+            else if (!client.Party.ExmInProgress)
             {
                 instancedEnemyList = client.Party.InstanceEnemyManager.GetAssets(stageId).Where(x => x.Subgroup == subGroupId).Select(x => new InstancedEnemy(x)).ToList();
+            }
+            else
+            {
+                // This can happen in EXM where we don't want to return any
+                // monsters which might exist outside the quest spawns.
+                // Example, EXM which takes place in BBI, this is the normal
+                // BBI map, not a special one allocated for the EXM.
+                instancedEnemyList = new();
             }
 
             foreach (var enemy in instancedEnemyList)
@@ -84,7 +92,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                     client.Party.InstanceEnemyManager.SetInstanceEnemy(stageId, em.Index, em);
                 }
-                em.StageId = stageId;
+                em.StageLayoutId = stageId;
 
                 response.EnemyList.Add(new CDataLayoutEnemyData()
                 {

@@ -1,9 +1,28 @@
+using System;
 using Arrowgene.Ddon.Shared.Model.Quest;
+using System.Reflection;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
-    public class Stage
+    public static class Stage
     {
+        private static Dictionary<uint, StageInfo> StageIdToStageInfoMap = new Dictionary<uint, StageInfo>();
+        private static Dictionary<uint, StageInfo> StageNoToStageInfoMap = new Dictionary<uint, StageInfo>();
+
+        static Stage()
+        {
+            Type myType = typeof(Stage);
+            FieldInfo[] staticFields = myType.GetFields(BindingFlags.Static | BindingFlags.Public);
+
+            foreach (FieldInfo field in staticFields)
+            {
+                StageInfo value = (StageInfo)field.GetValue(null);
+                StageIdToStageInfoMap[value.StageId] = value;
+                StageNoToStageInfoMap[value.StageNo] = value;
+            }
+        }
+
         public static readonly StageInfo Invalid = new StageInfo(0, 0, QuestAreaId.None, "Invalid");
         public static readonly StageInfo DemoRoom = new StageInfo(649, 3000, QuestAreaId.HidellPlains, "34DemoRoom");
         public static readonly StageInfo AbandonedBoneyard = new StageInfo(86, 501, QuestAreaId.DoweValley, "AbandonedBoneyard");
@@ -521,7 +540,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public static readonly StageInfo st0030testroomJungwei = new StageInfo(203, 30, QuestAreaId.None, "st0030testroomJungwei");
         public static readonly StageInfo st0031testroomkawasaki = new StageInfo(204, 31, QuestAreaId.None, "st0031testroomkawasaki");
         public static readonly StageInfo st0032testroomsakamoto = new StageInfo(205, 32, QuestAreaId.None, "st0032testroomsakamoto");
-        public static readonly StageInfo st0033testroomYamamoto, T = new StageInfo(206, 33, QuestAreaId.None, "st0033testroomYamamoto,T");
+        public static readonly StageInfo st0033testroomYamamoto = new StageInfo(206, 33, QuestAreaId.None, "st0033testroomYamamoto");
         public static readonly StageInfo st0034testroombano = new StageInfo(207, 34, QuestAreaId.None, "st0034testroombano");
         public static readonly StageInfo st0035testroomhamashima = new StageInfo(208, 35, QuestAreaId.None, "st0035testroomhamashima");
         public static readonly StageInfo st0036testroomtamura = new StageInfo(209, 36, QuestAreaId.None, "st0036testroomtamura");
@@ -566,5 +585,20 @@ namespace Arrowgene.Ddon.Shared.Model
         public static readonly StageInfo st00871012timevalley = new StageInfo(358, 87, QuestAreaId.None, "st00871012timevalley");
         public static readonly StageInfo st0088doublefloorandslope = new StageInfo(359, 88, QuestAreaId.None, "st0088doublefloorandslope");
         public static readonly StageInfo st0089slendercolumns = new StageInfo(360, 89, QuestAreaId.None, "st0089slendercolumns");
+
+        public static StageInfo StageInfoFromStageLayoutId(StageLayoutId stageLayoutId)
+        {
+            return StageIdToStageInfoMap[stageLayoutId.Id];
+        }
+
+        public static StageInfo StageInfoFromStageId(uint stageId)
+        {
+            return StageIdToStageInfoMap[stageId];
+        }
+
+        public static StageInfo StageInfoFromStageNo(uint stageNo)
+        {
+            return StageNoToStageInfoMap[stageNo];
+        }
     }
 }
