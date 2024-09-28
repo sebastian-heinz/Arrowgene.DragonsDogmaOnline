@@ -136,6 +136,14 @@
                     "chance": 0.10
                 }
             ]
+        },
+        {
+            "type": "jp",
+            "amount": 300
+        },
+        {
+            "type": "exp",
+            "amount": 85000
         }
     ],
     "enemy_groups" : [
@@ -151,7 +159,8 @@
                     "enemy_id": "0x080300",
                     "level": 55,
                     "exp": 0,
-                    "is_boss": true
+                    "is_boss": true,
+                    "blood_orbs": 500
                 }
             ]
         }

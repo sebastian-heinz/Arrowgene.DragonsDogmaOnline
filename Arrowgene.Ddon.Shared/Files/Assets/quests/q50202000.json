@@ -26,6 +26,14 @@
                     "num": 3
                 }
             ]
+        },
+        {
+            "type": "jp",
+            "amount": 1600
+        },
+        {
+            "type": "exp",
+            "amount": 50000
         }
     ],
     "enemy_groups" : [
@@ -41,6 +49,7 @@
                     "enemy_id": "0x021003",
                     "level": 70,
                     "exp": 0,
+                    "blood_orbs": 650,
                     "named_enemy_params_id": 942,
                     "is_boss": true
                 }

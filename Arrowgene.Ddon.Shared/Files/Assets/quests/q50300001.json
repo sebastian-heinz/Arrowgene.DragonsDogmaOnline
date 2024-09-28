@@ -95,7 +95,6 @@
                 }
             ]
         },
-
         {
             "type": "random",
             "comment": "Unappraised Moon Trinket (Soldier)",
@@ -137,6 +136,14 @@
                     "chance": 0.10
                 }
             ]
+        },
+        {
+            "type": "jp",
+            "amount": 200
+        },
+        {
+            "type": "exp",
+            "amount": 50000
         }
     ],
     "enemy_groups" : [
@@ -152,6 +159,7 @@
                     "enemy_id": "0x080200",
                     "level": 45,
                     "exp": 0,
+                    "blood_orbs": 200,
                     "is_boss": true
                 }
             ]
