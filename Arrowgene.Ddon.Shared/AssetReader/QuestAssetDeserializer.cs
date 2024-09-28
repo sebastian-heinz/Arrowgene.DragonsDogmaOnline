@@ -870,6 +870,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 assetData.MissionParams.QuestPhaseGroupIdList.Add(new CDataCommonU32() { Value = element.GetUInt32() });
             }
 
+            assetData.MissionParams.StartPos = 0;
+            if (jMissionParams.TryGetProperty("start_pos", out JsonElement jStartPos))
+            {
+                assetData.MissionParams.StartPos = jStartPos.GetByte();
+            }
+
             assetData.MissionParams.MinimumMembers = 4;
             if (jMissionParams.TryGetProperty("minimum_members", out JsonElement jMinimumMembers))
             {
