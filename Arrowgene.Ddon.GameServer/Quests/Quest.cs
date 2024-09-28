@@ -384,12 +384,13 @@ namespace Arrowgene.Ddon.GameServer.Quests
 #endif
 
             HashSet<uint> items = new HashSet<uint>();
+            List<QuestRewardItem> rewards = this.ItemRewards.Concat(this.SelectableRewards).ToList();
             // Rewards for EXM seem to show up independently
-            foreach (var rewardData in this.ItemRewards)
+            foreach (var rewardData in rewards)
             {
                 foreach (var reward in rewardData.LootPool)
                 {
-                    if (rewardData.RewardType == QuestRewardType.Fixed)
+                    if (rewardData.RewardType == QuestRewardType.Fixed || rewardData.RewardType == QuestRewardType.Select)
                     {
                         result.RewardItemDetailList.Add(new CDataRewardItemDetail()
                         {
@@ -457,6 +458,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 QuestId = (uint) QuestId,
                 QuestScheudleId = (uint) QuestScheduleId,
                 BaseLevel = BaseLevel,
+                StartPos = MissionParams.StartPos,
                 QuestEnemyInfoList = EnemyGroups.Values.SelectMany(group => group.Enemies.Select(enemy => new CDataQuestEnemyInfo()
                 {
                     GroupId = enemy.UINameId,

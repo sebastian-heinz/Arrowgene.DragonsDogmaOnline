@@ -254,6 +254,7 @@
                     "level": 80,
                     "exp": 0,
                     "enemy_target_types_id": 1,
+                    "start_think_tbl_no": 2,
                     "named_enemy_params_id": 1700
                 },
                 {
