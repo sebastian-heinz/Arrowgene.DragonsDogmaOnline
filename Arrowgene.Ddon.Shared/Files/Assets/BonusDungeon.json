@@ -1,0 +1,41 @@
+[
+    {
+        "category_id": 1,
+        "name": "Bonus Dungeon",
+        "dungeons": [
+            {
+                "name": "Bonus Dungeon [XP]",
+                "stage_id": 523,
+                "starting_position": 0,
+                "entry_fee": [
+                    {"item_id": 17923, "amount": 1}
+                ],
+                "sync_monster_level": true
+            },
+            {
+                "name": "Bonus Dungeon [R]",
+                "stage_id": 524,
+                "starting_position": 0,
+                "entry_fee": [
+                    {"item_id": 17924, "amount": 1}
+                ]
+            },
+            {
+                "name": "Bonus Dungeon [BO]",
+                "stage_id": 525,
+                "starting_position": 0,
+                "entry_fee": [
+                    {"item_id": 17925, "amount": 1}
+                ]
+            },
+            {
+                "name": "Bonus Dungeon [G]",
+                "stage_id": 526,
+                "starting_position": 0,
+                "entry_fee": [
+                    {"item_id": 17926, "amount": 1}
+                ]
+            }
+        ]
+    }
+]

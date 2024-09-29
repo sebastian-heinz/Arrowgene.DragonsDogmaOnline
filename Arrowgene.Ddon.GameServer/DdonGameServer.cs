@@ -77,6 +77,7 @@ namespace Arrowgene.Ddon.GameServer
             GpCourseManager = new GpCourseManager(this);
             WeatherManager = new WeatherManager(this);
             PartyQuestContentManager = new PartyQuestContentManager(this);
+            BonusDungeonManager = new BonusDungeonManager(this);
             BoardManager = new BoardManager(this);
             TimerManager = new TimerManager(this);
 
@@ -110,6 +111,7 @@ namespace Arrowgene.Ddon.GameServer
         public GpCourseManager GpCourseManager { get; }
         public WeatherManager WeatherManager { get; }
         public PartyQuestContentManager PartyQuestContentManager { get; }
+        public BonusDungeonManager BonusDungeonManager { get; }
         public BoardManager BoardManager { get; }
         public TimerManager TimerManager { get; }
 
@@ -590,6 +592,12 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new StageAreaChangeHandler(this));
             AddHandler(new StageGetStageListHandler(this));
+            AddHandler(new StageGetTicketDungeonCategoryListHandler(this));
+            AddHandler(new StageGetTicketDungeonInfoListHandler(this));
+            AddHandler(new StageUnisonAreaChangeBeginRecruitmentHandler(this));
+            AddHandler(new StageUnisonAreaChangeGetRecruitmentStateHandler(this));
+            AddHandler(new StageUnisonAreaChangeReadyHandler(this));
+            AddHandler(new StageUnisonAreaChangeReadyCancelHandler(this));
 
             AddHandler(new StampBonusCheckHandler(this));
 			AddHandler(new StampBonusGetListHandler(this));

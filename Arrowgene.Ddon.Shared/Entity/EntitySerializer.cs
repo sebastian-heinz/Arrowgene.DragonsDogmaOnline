@@ -312,11 +312,17 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataShortCut.Serializer());
             Create(new CDataSkillLevelParam.Serializer());
             Create(new CDataSkillParam.Serializer());
+
             Create(new CDataStageAttribute.Serializer());
             Create(new CDataStageInfo.Serializer());
             Create(new CDataStageLayoutEnemyPresetEnemyInfoClient.Serializer());
             Create(new CDataStageAreaChangeResUnk0.Serializer());
             Create(new CDataStageAreaChangeResUnk1.Serializer());
+            Create(new CDataStageTicketDungeonCategory.Serializer());
+            Create(new CDataStageTicketDungeonCategoryInfo.Serializer());
+            Create(new CDataStageTicketDungeonItem.Serializer());
+            Create(new CDataStageTicketDungeonItemInfo.Serializer());
+
             Create(new CDataStatusInfoSerializer());
             Create(new CDataStorageItemUIDList.Serializer());
             Create(new CDataStorageEmptySlotNum.Serializer());
@@ -705,8 +711,16 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SShopBuyShopGoodsReq.Serializer());
             Create(new C2SShopGetShopGoodsListReq.Serializer());
             Create(new C2SSetCommunicationShortcutReq.Serializer());
+            
             Create(new C2SStageAreaChangeReq.Serializer());
             Create(new C2SStageGetStageListReq.Serializer());
+            Create(new C2SStageGetTicketDungeonCategoryListReq.Serializer());
+            Create(new C2SStageGetTicketDungeonInfoListReq.Serializer());
+            Create(new C2SStageUnisonAreaChangeBeginRecruitmentReq.Serializer());
+            Create(new C2SStageUnisonAreaChangeGetRecruitmentStateReq.Serializer());
+            Create(new C2SStageUnisonAreaChangeReadyReq.Serializer());
+            Create(new C2SStageUnisonAreaChangeReadyCancelReq.Serializer());
+
             Create(new C2SStampBonusCheckReq.Serializer());
             Create(new C2SStampBonusGetListReq.Serializer());
             Create(new C2SStampBonusRecieveDailyReq.Serializer());
@@ -1240,8 +1254,18 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CSetShortcutRes.Serializer());
             Create(new S2CShopBuyShopGoodsRes.Serializer());
             Create(new S2CShopGetShopGoodsListRes.Serializer());
+
             Create(new S2CStageAreaChangeRes.Serializer());
             Create(new S2CStageGetStageListRes.Serializer());
+            Create(new S2CStageGetTicketDungeonCategoryListRes.Serializer());
+            Create(new S2CStageGetTicketDungeonInfoListRes.Serializer());
+            Create(new S2CStageUnisonAreaChangeBeginRecruitmentRes.Serializer());
+            Create(new S2CStageUnisonAreaChangeGetRecruitmentStateRes.Serializer());
+            Create(new S2CStageUnisonAreaChangeReadyRes.Serializer());
+            Create(new S2CStageTicketDungeonStartNtc.Serializer());
+            Create(new S2CStageUnisonAreaChangeReadyCancelRes.Serializer());
+            Create(new S2CStageUnisonAreaReadyCancelNtc.Serializer());
+
             Create(new S2CInstanceTraningRoomGetEnemyListRes.Serializer());
             Create(new S2CInstanceTraningRoomSetEnemyRes.Serializer());
             Create(new S2CUserListJoinNtc.Serializer());

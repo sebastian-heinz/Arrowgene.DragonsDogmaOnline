@@ -48,6 +48,7 @@ namespace Arrowgene.Ddon.Shared
         public const string QuestDropItemsKey = "QuestEnemyDrops.json";
         public const string RecruitmentBoardCategoryKey = "RecruitmentGroups.json";
         public const string EventDropsKey = "EventDrops.json";
+        public const string BonusDungeonKey = "BonusDungeon.json";
 
         private static readonly ILogger Logger = LogProvider.Logger(typeof(AssetRepository));
 
@@ -95,6 +96,7 @@ namespace Arrowgene.Ddon.Shared
             QuestDropItemAsset = new QuestDropItemAsset();
             RecruitmentBoardCategoryAsset = new RecruitmentBoardCategoryAsset();
             EventDropsAsset = new EventDropsAsset();
+            BonusDungeonAsset = new BonusDungeonAsset();
         }
 
         public List<CDataErrorMessage> ClientErrorCodes { get; private set; }
@@ -126,6 +128,7 @@ namespace Arrowgene.Ddon.Shared
         public QuestDropItemAsset QuestDropItemAsset { get; private set; }
         public RecruitmentBoardCategoryAsset RecruitmentBoardCategoryAsset { get; private set; }
         public EventDropsAsset EventDropsAsset { get; private set; }
+        public BonusDungeonAsset BonusDungeonAsset { get; private set; }
 
         public void Initialize()
         {
@@ -157,6 +160,7 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => QuestDropItemAsset = value, QuestDropItemsKey, new QuestDropAssetDeserializer());
             RegisterAsset(value => RecruitmentBoardCategoryAsset = value, RecruitmentBoardCategoryKey, new RecruitmentBoardCategoryDeserializer());
             RegisterAsset(value => EventDropsAsset = value, EventDropsKey, new EventDropAssetDeserializer());
+            RegisterAsset(value => BonusDungeonAsset = value, BonusDungeonKey, new BonusDungeonAssetDeserializer());
 
             var questAssetDeserializer = new QuestAssetDeserializer(this.NamedParamAsset, QuestDropItemAsset);
             questAssetDeserializer.LoadQuestsFromDirectory(Path.Combine(_directory.FullName, QuestAssestKey), QuestAssets);
