@@ -157,6 +157,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 ParseMissionParams(assetData, jMissionParams);
             }
 
+            assetData.Enabled = true;
+            if (jQuest.TryGetProperty("enabled", out JsonElement jQuestEnabled))
+            {
+                assetData.Enabled = jQuestEnabled.GetBoolean();
+            }
+
             ParseRewards(assetData, jQuest);
 
             if (!ParseServerActions(assetData, jQuest))
@@ -656,7 +662,8 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         }
                         break;
                     case QuestBlockType.DeliverItems:
-                        {
+                    case QuestBlockType.NewDeliverItems:
+                    {
                             if (!Enum.TryParse(jblock.GetProperty("npc_id").GetString(), true, out NpcId npcId))
                             {
                                 Logger.Error($"Unable to parse the npc_id in block @ index {blockIndex - 1}.");

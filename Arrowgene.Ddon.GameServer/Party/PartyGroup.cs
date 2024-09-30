@@ -622,6 +622,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             {
                 client.InstanceGatheringItemManager.Clear();
                 client.InstanceBbmItemManager.Reset();
+                client.InstanceEventDropItemManager.Reset();
                 client.InstanceDropItemManager.Clear();
                 client.InstanceQuestDropManager.Clear();
                 client.Character.ContextOwnership.Clear();

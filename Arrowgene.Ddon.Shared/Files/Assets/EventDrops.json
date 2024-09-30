@@ -1,0 +1,59 @@
+[
+	{
+        "item_id": 16743,
+        "comment": "Lestania Herb Candy (2016)",
+        "min_num": 1,
+        "max_num": 1,
+        "drop_chance": 0.10,
+        "quest_ids": [60301001, 60301054],
+        "stage_ids": [],
+        "enemy_ids": [],
+        "requirements": {
+            "lantern_on": false,
+            "items_equipped": []
+        }
+    },
+    {
+        "item_id": 21182,
+        "comment": "Ghost Marshmallow (2017)",
+        "min_num": 1,
+        "max_num": 1,
+        "drop_chance": 0.10,
+        "quest_ids": [60301001, 60301054],
+        "stage_ids": [],
+        "enemy_ids": [],
+        "requirements": {
+            "lantern_on": false,
+            "items_equipped": []
+        }
+    },
+	    {
+        "item_id": 21183,
+        "comment": "Skull Gummy (2017)",
+        "min_num": 1,
+        "max_num": 1,
+        "drop_chance": 0.10,
+        "quest_ids": [60301001, 60301054],
+        "stage_ids": [],
+        "enemy_ids": [],
+        "requirements": {
+            "lantern_on": false,
+            "items_equipped": []
+        }
+    },
+    {
+        "item_id": 23545,
+        "comment": "Halloween Petit Muffin (2018)",
+        "min_num": 1,
+        "max_num": 1,
+        "drop_chance": 0.10,
+        "quest_ids": [60301001, 60301054],
+        "stage_ids": [],
+        "enemy_ids": [],
+        "requirements": {
+            "lantern_on": false,
+            "items_equipped": []
+        }
+    }
+]
+

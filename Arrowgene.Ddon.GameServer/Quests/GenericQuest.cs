@@ -35,6 +35,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             quest.StageId = questAsset.StageId;
             quest.MissionParams = questAsset.MissionParams;
             quest.ServerActions = questAsset.ServerActions;
+            quest.Enabled = questAsset.Enabled;
 
             foreach (var pointReward in questAsset.PointRewards)
             {
@@ -485,6 +486,13 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         }
                         resultCommands.Add(QuestManager.ResultCommand.SetDeliverInfo(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
                     }
+                    break;
+                case QuestBlockType.NewDeliverItems:
+                    foreach (var item in questBlock.DeliveryRequests)
+                    {
+                        checkCommands.Add(QuestManager.CheckCommand.DeliverItem((int)item.ItemId, (int)item.Amount, questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
+                    }
+                    resultCommands.Add(QuestManager.ResultCommand.SetDeliverInfoQuest(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo, questBlock.NpcOrderDetails[0].MsgId));
                     break;
                 case QuestBlockType.TalkToNpc:
                     {

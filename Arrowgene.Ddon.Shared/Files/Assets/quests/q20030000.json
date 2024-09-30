@@ -80,10 +80,11 @@
       "message_id": 10800
     },
     {
-      "type": "DeliverItems",
+      "type": "NewDeliverItems",
       "stage_id": {
         "id": 1,
-        "group_id": 1
+        "group_id": 1,
+        "layer_no": 1
       },
       "npc_id": "WearyHarpy",
       "announce_type": "Accept",
@@ -96,10 +97,11 @@
       "message_id": 10737
     },
     {
-      "type": "DeliverItems",
+      "type": "NewDeliverItems",
       "stage_id": {
         "id": 1,
-        "group_id": 1
+        "group_id": 1,
+        "layer_no": 1
       },
       "npc_id": "WearyHarpy",
       "announce_type": "Update",

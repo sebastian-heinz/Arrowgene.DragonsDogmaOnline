@@ -119,6 +119,8 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public uint LastSafeStageId { get; set; }
 
+        public bool IsLanternLit { get; set; }
+
         // TODO: Move to a more sensible place
         public uint LastEnteredShopId { get; set; }
 

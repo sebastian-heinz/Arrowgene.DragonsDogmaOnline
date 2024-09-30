@@ -64,6 +64,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     gQuests[questAsset.QuestId] = GenericQuest.FromAsset(questAsset);
 
                     var quest = gQuests[questAsset.QuestId];
+                    if (!quest.Enabled)
+                    {
+                        continue;
+                    }
+
                     if (quest.QuestType == QuestType.Tutorial)
                     {
                         uint stageNo = (uint)StageManager.ConvertIdToStageNo(quest.StageId);
