@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -24,8 +25,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // Notify new player of already present players
             S2CUserListJoinNtc alreadyPresentUsersNtc = new S2CUserListJoinNtc();
-            List<S2CContextGetLobbyPlayerContextNtc> alreadyPresentPlayerContextNtcs =
-                new List<S2CContextGetLobbyPlayerContextNtc>();
             foreach (GameClient otherClient in Server.ClientLookup.GetAll())
             {
                 if (otherClient != client && otherClient.Character != null)
@@ -75,10 +74,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Server.BazaarManager.NotifySoldExhibitions(client);
 
+            var allUsers = newUserNtc.UserList.Concat(alreadyPresentUsersNtc.UserList).ToList();
             return new S2CLobbyJoinRes()
             {
                 CharacterId = client.Character.CharacterId,
-                LobbyMemberInfoList = newUserNtc.UserList
+                LobbyMemberInfoList = allUsers
             };
         }
     }

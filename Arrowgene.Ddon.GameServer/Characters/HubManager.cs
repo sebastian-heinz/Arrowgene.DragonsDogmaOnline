@@ -157,6 +157,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public void LeaveAllHubs(GameClient client)
         {
+            foreach (var otherClient in Server.ClientLookup.GetAll())
+            {
+                otherClient.Character?.LastSeenLobby.Remove(client.Character.CharacterId);
+            }
+
             foreach (var hub in HubMembers.Values)
             {
                 hub.Remove(client);
