@@ -49,25 +49,25 @@
       },
       "enemies": [
         {
-          "enemy_id": "01015800",
+          "enemy_id": "0x015800",
           "level": 44,
           "exp": 1100,
           "is_boss": false
         },
         {
-          "enemy_id": "01015800",
+          "enemy_id": "0x015800",
           "level": 44,
           "exp": 1100,
           "is_boss": false
         },
         {
-          "enemy_id": "01015800",
+          "enemy_id": "0x015800",
           "level": 44,
           "exp": 1100,
           "is_boss": false
         },
         {
-          "enemy_id": "01015800",
+          "enemy_id": "0x015800",
           "level": 44,
           "exp": 1100,
           "is_boss": false
