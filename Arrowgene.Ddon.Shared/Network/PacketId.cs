@@ -320,9 +320,9 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId C2S_CHARACTER_GET_REVIVE_POINT_REQ = new PacketId(2, 26, 1, "C2S_CHARACTER_GET_REVIVE_POINT_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CHARACTER_GET_REVIVE_POINT_RES = new PacketId(2, 26, 2, "S2C_CHARACTER_GET_REVIVE_POINT_RES", ServerType.Game, PacketSource.Server); // 復活力取得に
         public static readonly PacketId S2C_CHARACTER_START_LANTERN_NTC = new PacketId(2, 27, 16, "S2C_CHARACTER_START_LANTERN_NTC", ServerType.Game, PacketSource.Server, "S2C_CHARACTER_2_27_16_NTC");
-        public static readonly PacketId S2C_CHARACTER_2_28_16_NTC = new PacketId(2, 28, 16, "S2C_CHARACTER_2_28_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_CHARACTER_2_29_16_NTC = new PacketId(2, 29, 16, "S2C_CHARACTER_2_29_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_CHARACTER_2_30_16_NTC = new PacketId(2, 30, 16, "S2C_CHARACTER_2_30_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CHARACTER_FINISH_LANTERN_NTC = new PacketId(2, 28, 16, "S2C_CHARACTER_FINISH_LANTERN_NTC", ServerType.Game, PacketSource.Server, "S2C_CHARACTER_2_28_16_NTC");
+        public static readonly PacketId S2C_CHARACTER_START_LANTERN_OTHER_NTC = new PacketId(2, 29, 16, "S2C_CHARACTER_START_LANTERN_OTHER_NTC", ServerType.Game, PacketSource.Server, "S2C_CHARACTER_2_29_16_NTC");
+        public static readonly PacketId S2C_CHARACTER_FINISH_LANTERN_OTHER_NTC = new PacketId(2, 30, 16, "S2C_CHARACTER_FINISH_LANTERN_OTHER_NTC", ServerType.Game, PacketSource.Server, "S2C_CHARACTER_2_30_16_NTC");
         public static readonly PacketId S2C_CHARACTER_START_DEATH_PENALTY_NTC = new PacketId(2, 31, 16, "S2C_CHARACTER_2_31_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_CHARACTER_FINISH_DEATH_PENALTY_NTC = new PacketId(2, 32, 16, "S2C_CHARACTER_2_32_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_CHARACTER_2_33_16_NTC = new PacketId(2, 33, 16, "S2C_CHARACTER_2_33_16_NTC", ServerType.Game, PacketSource.Server);
@@ -2250,9 +2250,9 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, C2S_CHARACTER_GET_REVIVE_POINT_REQ);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_GET_REVIVE_POINT_RES);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_START_LANTERN_NTC);
-            AddPacketIdEntry(packetIds, S2C_CHARACTER_2_28_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_CHARACTER_2_29_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_CHARACTER_2_30_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CHARACTER_FINISH_LANTERN_NTC);
+            AddPacketIdEntry(packetIds, S2C_CHARACTER_START_LANTERN_OTHER_NTC);
+            AddPacketIdEntry(packetIds, S2C_CHARACTER_FINISH_LANTERN_OTHER_NTC);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_START_DEATH_PENALTY_NTC);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_FINISH_DEATH_PENALTY_NTC);
             AddPacketIdEntry(packetIds, S2C_CHARACTER_2_33_16_NTC);

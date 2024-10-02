@@ -2496,7 +2496,7 @@
                                     "item_id": 11652,
                                     "name": "Bracelet of Unburdening",
                                     "amount": 1,
-                                     "crests": [
+                                    "crests": [
                                         {
                                             "type": "Imbued",
                                             "crest_id": 22071
@@ -2570,7 +2570,7 @@
                                             "type": "Imbued",
                                             "crest_id": 18616
                                         }
-                                   ]
+                                    ]
                                 }
                             ]
                         },
@@ -2994,7 +2994,6 @@
                                             "job_id": "ShieldSage"
                                         }
                                     ]
-
                                 },
                                 {
                                     "item_id": 16440,
@@ -29809,6 +29808,128 @@
                                 {
                                     "item_id": 21437,
                                     "name": "Crimson Firangi",
+                                    "amount": 1
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "label": "Halloween Exchange",
+                    "appraisals": [
+                        {
+                            "label": "Ghost Lantern",
+                            "base_items": [
+                                {
+                                    "item_id": 21182,
+                                    "name": "Ghost Marshmallow",
+                                    "amount": 5
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 20435,
+                                    "name": "Ghost Lantern",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Ghost Marshmallow",
+                            "base_items": [
+                                {
+                                    "item_id": 21183,
+                                    "name": "Skull Gummy",
+                                    "amount": 10
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21182,
+                                    "name": "Ghost Marshmallow",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Skull Gummy",
+                            "base_items": [
+                                {
+                                    "item_id": 21182,
+                                    "name": "Ghost Marshmallow",
+                                    "amount": 10
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 21183,
+                                    "name": "Skull Gummy",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Magical Night Jack-o'-Helm",
+                            "base_items": [
+                                {
+                                    "item_id": 21183,
+                                    "name": "Skull Gummy",
+                                    "amount": 100
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 19500,
+                                    "name": "Magical Night Jack-o'-Helm",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Pumpkin Lantern",
+                            "base_items": [
+                                {
+                                    "item_id": 16743,
+                                    "name": "Lestania Herb Candy",
+                                    "amount": 100
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 14253,
+                                    "name": "Pumpkin Lantern",
+                                    "amount": 1
+                                }
+                            ]
+                        },
+                        {
+                            "label": "Mischievous Ghost Costume",
+                            "base_items": [
+                                {
+                                    "item_id": 16743,
+                                    "name": "Lestania Herb Candy",
+                                    "amount": 50
+                                },
+                                {
+                                    "item_id": 21182,
+                                    "name": "Ghost Marshmallow",
+                                    "amount": 50
+                                },
+                                {
+                                    "item_id": 21183,
+                                    "name": "Skull Gummy",
+                                    "amount": 50
+                                },
+                                {
+                                    "item_id": 23545,
+                                    "name": "Petit Muffin",
+                                    "amount": 50
+                                }
+                            ],
+                            "pool": [
+                                {
+                                    "item_id": 23397,
+                                    "name": "Mischievous Ghost Costume",
                                     "amount": 1
                                 }
                             ]

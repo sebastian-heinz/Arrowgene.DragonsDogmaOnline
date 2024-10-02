@@ -32,6 +32,7 @@ namespace Arrowgene.Ddon.Shared.Asset
         public uint NewsImageId { get; set; }
         public ushort BaseLevel { get; set; }
         public byte MinimumItemRank { get; set; }
+        public bool Enabled { get; set; }
 
         public List<PointReward> PointRewards { get; set; }
 

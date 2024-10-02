@@ -103,8 +103,14 @@ namespace Arrowgene.Ddon.Server
         /// </summary>
         [DataMember(Order = 15)] public uint PawnCatchupLvDiff { get; set; }
 
+        /// <summary>
+        /// Configures the default time in seconds a latern is active after igniting it.
+        /// </summary>
+        [DataMember(Order = 16)] public uint LaternBurnTimeInSeconds { get; set; }
+
         public GameLogicSetting()
         {
+            LaternBurnTimeInSeconds = 1500;
             AdditionalProductionSpeedFactor = 1.0;
             AdditionalCostPerformanceFactor = 1.0;
             RookiesRingMaxLevel = 89;
@@ -149,6 +155,7 @@ namespace Arrowgene.Ddon.Server
 
         public GameLogicSetting(GameLogicSetting setting)
         {
+            LaternBurnTimeInSeconds = setting.LaternBurnTimeInSeconds;
             AdditionalProductionSpeedFactor = setting.AdditionalProductionSpeedFactor;
             AdditionalCostPerformanceFactor = setting.AdditionalCostPerformanceFactor;
             RookiesRingMaxLevel = setting.RookiesRingMaxLevel;

@@ -824,6 +824,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCharacterSwitchGameModeRes.Serializer());
             Create(new S2CCharacterSwitchGameModeNtc.Serializer());
             Create(new S2CCharacterCreateModeCharacterEditParamRes.Serializer());
+            Create(new S2CCharacterStartLanternNtc.Serializer());
+            Create(new S2CCharacterFinishLanternNtc.Serializer());
+            Create(new S2CCharacterStartLanternOtherNtc.Serializer());
+            Create(new S2CCharacterFinishLanternOtherNtc.Serializer());
 
             Create(new S2CClanClanBaseGetInfoRes.Serializer());
             Create(new S2CClanClanConciergeGetListRes.Serializer());

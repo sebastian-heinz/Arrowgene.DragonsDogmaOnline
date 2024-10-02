@@ -55,10 +55,11 @@
             "message_id": 11372
         },
         {
-            "type": "DeliverItems",
+            "type": "NewDeliverItems",
             "stage_id": {
                 "id": 76,
-                "group_id": 1
+                "group_id": 1,
+                "layer_no": 1
             },
             "npc_id": "4743",
             "announce_type": "Accept",

@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -76,6 +77,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public List<QuestServerAction> ServerActions { get; protected set; }
         public bool IsVariantQuest { get; set; }
         public uint VariantId { get; set; }
+        public bool Enabled { get; protected set; }
 
         public Quest(QuestId questId, QuestId questScheduleId, QuestType questType, bool isDiscoverable = false)
         {

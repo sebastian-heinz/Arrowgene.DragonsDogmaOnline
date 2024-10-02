@@ -88,5 +88,4 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
             QuestEnemyDropsTable.Clear();
         }
     }
-
 }
