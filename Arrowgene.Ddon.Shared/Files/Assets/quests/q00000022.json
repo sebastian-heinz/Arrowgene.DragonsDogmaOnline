@@ -101,7 +101,9 @@
                         {"type": "WorldManageLayout", "action": "Set", "value": 7389, "quest_id": 70032001, "comment": "The White Dragon (Less Less Dead)"},
 
                         {"type": "WorldManageLayout", "action": "Set", "value": 1202, "quest_id": 70003001, "comment": "Mergoda Warp Off"},
-                        {"type": "WorldManageLayout", "action": "Clear", "value": 1203, "quest_id": 70003001, "comment": "Mergoda Warp on"}
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1203, "quest_id": 70003001, "comment": "Mergoda Warp on"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1104, "quest_id": 70003001, "comment": "Large Front Door Closed"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1105, "quest_id": 70003001, "comment": "Large Front Door Open"}
                     ],
                     "npc_id": "Klaus0",
                     "message_id": 8427
