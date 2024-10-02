@@ -122,7 +122,7 @@
                 {
                     "type": "NewTalkToNpc",
                     "checkpoint": true,
-                    "announce_type": "Update",
+                    "announce_type": "Accept",
                     "flags": [
                         {"type": "QstLayout", "action": "Set", "value": 1248, "comment": "Spawns Gerd in audience chamber"},
                         {"type": "QstLayout", "action": "Set", "value": 1022, "comment": "Spawns Leo at entrance of Mergoda"}
@@ -276,7 +276,6 @@
                         {"type": "QstLayout", "action": "Set", "value": 1023, "comment": "Spawns Leo"},
                         {"type": "MyQst", "action": "Set", "value": 120, "comment": "Starts Leo's FSM"}
                     ],
-                    "announce_type": "Update",
                     "groups": [0]
                 },
                 {
