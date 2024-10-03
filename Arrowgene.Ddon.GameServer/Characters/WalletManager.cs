@@ -18,30 +18,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(WalletManager));
 
         private IDatabase _Database;
+        private DdonGameServer _Server;
 
-        private static readonly Dictionary<WalletType, uint> WalletLimits = new()
-        {
-            {WalletType.Gold, 999999999},
-            {WalletType.RiftPoints, 999999999},
-            {WalletType.BloodOrbs, 50000},
-            {WalletType.SilverTickets, 999999999},
-            {WalletType.GoldenGemstones, 99999},
-            {WalletType.RentalPoints, 99999},
-            {WalletType.ResetJobPoints, 99}, // 1 in the pcaps
-            {WalletType.ResetCraftSkills, 99}, // 1 in the pcaps
-            {WalletType.HighOrbs, 5000},
-            {WalletType.DominionPoints, 999999999},
-            {WalletType.AdventurePassPoints, 80},
-            {WalletType.UnknownTickets, 999999999},
-            {WalletType.BitterblackMazeResetTicket, 3},
-            {WalletType.GoldenDragonMark, 30},
-            {WalletType.SilverDragonMark, 150},
-            {WalletType.RedDragonMark, 99999}
-        };
+        private readonly Dictionary<WalletType, uint> WalletLimits;
 
-        public WalletManager(IDatabase Database)
+        public WalletManager(DdonGameServer server)
         {
-            _Database = Database;
+            _Database = server.Database;
+            _Server = server;
+            WalletLimits = server.Setting.GameLogicSetting.WalletLimits.ToDictionary(x => x.WalletType, x => x.MaxValue);
         }
         public bool AddToWalletNtc(Client Client, Character Character, WalletType Type, uint Amount, ItemNoticeType updateType = ItemNoticeType.Default, DbConnection? connectionIn = null)
         {
@@ -62,7 +47,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             Wallet.Value = Math.Min(Wallet.Value + Amount, WalletLimits[Type]);
 
-            _Database.UpdateWalletPoint(Character.CharacterId, Wallet, connectionIn);
+            _Server.Database.UpdateWalletPoint(Character.CharacterId, Wallet, connectionIn);
 
             CDataUpdateWalletPoint UpdateWalletPoint = new CDataUpdateWalletPoint();
             UpdateWalletPoint.Type = Type;
@@ -82,7 +67,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             Wallet.Value -= Amount;
 
-            _Database.UpdateWalletPoint(Character.CharacterId, Wallet, connectionIn);
+            _Server.Database.UpdateWalletPoint(Character.CharacterId, Wallet, connectionIn);
 
             CDataUpdateWalletPoint UpdateWalletPoint = new CDataUpdateWalletPoint();
             UpdateWalletPoint.Type = Type;

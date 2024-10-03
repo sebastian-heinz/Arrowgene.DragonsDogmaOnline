@@ -1,4 +1,7 @@
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 
 namespace Arrowgene.Ddon.Server
@@ -108,8 +111,70 @@ namespace Arrowgene.Ddon.Server
         /// </summary>
         [DataMember(Order = 16)] public uint LaternBurnTimeInSeconds { get; set; }
 
-        [DataMember(Order = 16)] public uint JobLevelMax { get; set; }
+        /// <summary>
+        /// Maximum amount of play points the client will display in the UI. 
+        /// Play points past this point will also trigger a chat log message saying you've reached the cap.
+        /// </summary>
         [DataMember(Order = 17)] public uint PlayPointMax { get; set; }
+
+        /// <summary>
+        /// Maximum level for each job. 
+        /// Shared with the login server.
+        /// </summary>
+        [DataMember(Order = 18)] public uint JobLevelMax { get; set; }
+
+        /// <summary>
+        /// Maximum number of members in a single clan. 
+        /// Shared with the login server.
+        /// </summary>
+        [DataMember(Order = 19)] public uint ClanMemberMax { get; set; }
+
+        /// <summary>
+        /// Maximum number of characters per account. 
+        /// Shared with the login server.
+        /// </summary>
+        [DataMember(Order = 20)] public byte CharacterNumMax { get; set; }
+
+        /// <summary>
+        /// Toggles the visual equip set for all characters. 
+        /// Shared with the login server.
+        /// </summary>
+        [DataMember(Order = 21)] public bool EnableVisualEquip { get; set; }
+
+        /// <summary>
+        /// Maximum entries in the friends list. 
+        /// Shared with the login server.
+        /// </summary>
+        [DataMember(Order = 22)] public uint FriendListMax { get; set; }
+
+        /// <summary>
+        /// Limits for each wallet type.
+        /// </summary>
+        [DataMember(Order = 23)] public List<CDataWalletLimit> WalletLimits { get; set; }
+
+        /// <summary>
+        /// Various URLs used by the client.
+        /// Shared with the login server.
+        /// </summary>
+        [DataMember(Order = 200)] public string UrlManual { get; set; }
+        [DataMember(Order = 200)] public string UrlShopDetail { get; set; }
+        [DataMember(Order = 200)] public string UrlShopCounterA { get; set; }
+        [DataMember(Order = 200)] public string UrlShopAttention { get; set; }
+        [DataMember(Order = 200)] public string UrlShopStoneLimit { get; set; }
+        [DataMember(Order = 200)] public string UrlShopCounterB { get; set; }
+        [DataMember(Order = 200)] public string UrlChargeCallback { get; set; }
+        [DataMember(Order = 200)] public string UrlChargeA { get; set; }
+        [DataMember(Order = 200)] public string UrlSample9 { get; set; }
+        [DataMember(Order = 200)] public string UrlSample10 { get; set; }
+        [DataMember(Order = 200)] public string UrlCampaignBanner { get; set; }
+        [DataMember(Order = 200)] public string UrlSupportIndex { get; set; }
+        [DataMember(Order = 200)] public string UrlPhotoupAuthorize { get; set; }
+        [DataMember(Order = 200)] public string UrlApiA { get; set; }
+        [DataMember(Order = 200)] public string UrlApiB { get; set; }
+        [DataMember(Order = 200)] public string UrlIndex { get; set; }
+        [DataMember(Order = 200)] public string UrlCampaign { get; set; }
+        [DataMember(Order = 200)] public string UrlChargeB { get; set; }
+        [DataMember(Order = 200)] public string UrlCompanionImage { get; set; }
 
         public GameLogicSetting()
         {
@@ -155,8 +220,40 @@ namespace Arrowgene.Ddon.Server
                 (60 * 30, 1), //Rainy
             };
 
-            JobLevelMax = 120;
             PlayPointMax = 2000;
+
+            JobLevelMax = 120;
+            ClanMemberMax = 100;
+            CharacterNumMax = 4;
+            EnableVisualEquip = true;
+            FriendListMax = 200;
+
+            WalletLimits = DefaultWalletLimits.Select(x => new CDataWalletLimit()
+            {
+                WalletType = x.Key,
+                MaxValue = x.Value
+            }).ToList();
+
+            string urlDomain = $"http://localhost:{52099}";
+            UrlManual = $"{urlDomain}/manual_nfb/";
+            UrlShopDetail = $"{urlDomain}/shop/ingame/stone/detail";
+            UrlShopCounterA = $"{urlDomain}/shop/ingame/counter?";
+            UrlShopAttention = $"{urlDomain}/shop/ingame/attention?";
+            UrlShopStoneLimit = $"{urlDomain}/shop/ingame/stone/limit";
+            UrlShopCounterB = $"{urlDomain}/shop/ingame/counter?";
+            UrlChargeCallback = $"{urlDomain}/opening/entry/ddo/cog_callback/charge";
+            UrlChargeA = $"{urlDomain}/sp_ingame/charge/";
+            UrlSample9 = "http://sample09.html";
+            UrlSample10 = "http://sample10.html";
+            UrlCampaignBanner = $"{urlDomain}/sp_ingame/campaign/bnr/bnr01.html?";
+            UrlSupportIndex = $"{urlDomain}/sp_ingame/support/index.html";
+            UrlPhotoupAuthorize = $"{urlDomain}/api/photoup/authorize";
+            UrlApiA = $"{urlDomain}/link/api";
+            UrlApiB = $"{urlDomain}/link/api";
+            UrlIndex = $"{urlDomain}/sp_ingame/link/index.html";
+            UrlCampaign = $"{urlDomain}/sp_ingame/campaign/bnr/slide.html";
+            UrlChargeB = $"{urlDomain}/sp_ingame/charge/";
+            UrlCompanionImage = $"{urlDomain}/";
         }
 
         public GameLogicSetting(GameLogicSetting setting)
@@ -178,8 +275,32 @@ namespace Arrowgene.Ddon.Server
             EnablePawnCatchup = setting.EnablePawnCatchup;
             PawnCatchupMultiplier = setting.PawnCatchupMultiplier;
             PawnCatchupLvDiff = setting.PawnCatchupLvDiff;
-            JobLevelMax = setting.JobLevelMax;
             PlayPointMax = setting.PlayPointMax;
+            JobLevelMax = setting.JobLevelMax;
+            ClanMemberMax = setting.ClanMemberMax;
+            CharacterNumMax = setting.CharacterNumMax;
+            EnableVisualEquip = setting.EnableVisualEquip;
+            FriendListMax = setting.FriendListMax;
+            WalletLimits = setting.WalletLimits;
+            UrlManual = setting.UrlManual;
+            UrlShopDetail = setting.UrlShopDetail;
+            UrlShopCounterA = setting.UrlShopCounterA;
+            UrlShopAttention = setting.UrlShopAttention;
+            UrlShopStoneLimit = setting.UrlShopStoneLimit;
+            UrlShopCounterB = setting.UrlShopCounterB;
+            UrlChargeCallback = setting.UrlChargeCallback;
+            UrlChargeA = setting.UrlChargeA;
+            UrlSample9 = setting.UrlSample9;
+            UrlSample10 = setting.UrlSample10;
+            UrlCampaignBanner = setting.UrlCampaignBanner;
+            UrlSupportIndex = setting.UrlSupportIndex;
+            UrlPhotoupAuthorize = setting.UrlPhotoupAuthorize;
+            UrlApiA = setting.UrlApiA;
+            UrlApiB = setting.UrlApiB;
+            UrlIndex = setting.UrlIndex;
+            UrlCampaign = setting.UrlCampaign;
+            UrlChargeB = setting.UrlChargeB;
+            UrlCompanionImage = setting.UrlCompanionImage;
         }
 
         // Note: method is called after the object is completely deserialized - constructors are skipped.
@@ -210,6 +331,38 @@ namespace Arrowgene.Ddon.Server
             {
                 PawnCatchupMultiplier = 1.0;
             }
+
+            foreach ((WalletType type, uint maxValue) in DefaultWalletLimits)
+            {
+                if (!WalletLimits.Where(x => x.WalletType == type).Any())
+                {
+                    WalletLimits.Add(new CDataWalletLimit()
+                    {
+                        WalletType = type,
+                        MaxValue = maxValue
+                    });
+                }
+            }
         }
+
+        private static readonly Dictionary<WalletType, uint> DefaultWalletLimits = new Dictionary<WalletType, uint>()
+        {
+            {WalletType.Gold, 999999999},
+            {WalletType.RiftPoints, 999999999},
+            {WalletType.BloodOrbs, 50000},
+            {WalletType.SilverTickets, 999999999},
+            {WalletType.GoldenGemstones, 99999},
+            {WalletType.RentalPoints, 99999},
+            {WalletType.ResetJobPoints, 99},
+            {WalletType.ResetCraftSkills, 99},
+            {WalletType.HighOrbs, 5000},
+            {WalletType.DominionPoints, 999999999},
+            {WalletType.AdventurePassPoints, 80},
+            {WalletType.UnknownTickets, 999999999},
+            {WalletType.BitterblackMazeResetTicket, 3},
+            {WalletType.GoldenDragonMark, 30},
+            {WalletType.SilverDragonMark, 150},
+            {WalletType.RedDragonMark, 99999},
+        };
     }
 }

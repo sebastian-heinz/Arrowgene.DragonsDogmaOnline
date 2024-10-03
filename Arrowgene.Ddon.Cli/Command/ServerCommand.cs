@@ -112,7 +112,7 @@ namespace Arrowgene.Ddon.Cli.Command
 
             if (_loginServer == null)
             {
-                _loginServer = new DdonLoginServer(_setting.LoginServerSetting, _database, _assetRepository);
+                _loginServer = new DdonLoginServer(_setting.LoginServerSetting, _setting.GameServerSetting.GameLogicSetting, _database, _assetRepository);
             }
 
             if (_webServer == null)

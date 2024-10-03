@@ -37,15 +37,17 @@ namespace Arrowgene.Ddon.LoginServer
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonLoginServer));
 
-        public DdonLoginServer(LoginServerSetting setting, IDatabase database, AssetRepository assetRepository)
+        public DdonLoginServer(LoginServerSetting setting, GameLogicSetting gameSetting, IDatabase database, AssetRepository assetRepository)
             : base(ServerType.Login, setting.ServerSetting, database, assetRepository)
         {
             Setting = new LoginServerSetting(setting);
+            GameSetting = new GameLogicSetting(gameSetting);
             ClientLookup = new LoginClientLookup();
             LoadPacketHandler();
         }
 
         public LoginServerSetting Setting { get; }
+        public GameLogicSetting GameSetting { get; }
 
         public override LoginClientLookup ClientLookup { get; }
 

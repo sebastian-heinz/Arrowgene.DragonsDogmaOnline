@@ -49,9 +49,6 @@ namespace Arrowgene.Ddon.GameServer
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonGameServer));
 
-        // TODO: Maybe place somewhere else
-        public static readonly TimeSpan RevivalPowerRechargeTimeSpan = TimeSpan.FromDays(1);
-
         public DdonGameServer(GameServerSetting setting, IDatabase database, AssetRepository assetRepository)
             : base(ServerType.Game, setting.ServerSetting, database, assetRepository)
         {
@@ -68,7 +65,7 @@ namespace Arrowgene.Ddon.GameServer
             JobManager = new JobManager(this);
             EquipManager = new EquipManager();
             ShopManager = new ShopManager(assetRepository, database);
-            WalletManager = new WalletManager(database);
+            WalletManager = new WalletManager(this);
             CharacterManager = new CharacterManager(this);
             BazaarManager = new BazaarManager(this);
             RewardManager = new RewardManager(this);
