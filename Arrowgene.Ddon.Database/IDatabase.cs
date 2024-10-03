@@ -522,7 +522,7 @@ namespace Arrowgene.Ddon.Database
 
         // Bitterblack Maze Progress
         bool InsertBBMCharacterId(uint characterId, uint bbmCharacterId);
-        uint SelectBBMCharacterId(uint characterId);
+        uint SelectBBMCharacterId(uint characterId, DbConnection? connectionIn = null);
         uint SelectBBMNormalCharacterId(uint bbmCharacterId);
         bool InsertBBMProgress(
             uint characterId,

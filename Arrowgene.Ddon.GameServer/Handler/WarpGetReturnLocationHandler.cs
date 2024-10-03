@@ -78,8 +78,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CWarpGetReturnLocationRes response = new S2CWarpGetReturnLocationRes();
 
-            Logger.Info($"LastSafeStageId: {client.Character.LastSafeStageId}");
-
             if (client.GameMode == GameMode.BitterblackMaze)
             {
                 response.JumpLocation.stageId = 602;

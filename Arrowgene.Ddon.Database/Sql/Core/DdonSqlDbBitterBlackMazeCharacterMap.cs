@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.Data.Common;
+using System.Security.Claims;
 using System.Xml;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.BattleContent;
@@ -38,16 +39,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
 
-        public uint SelectBBMCharacterId(uint characterId)
-        {
-            using TCon connection = OpenNewConnection();
-            return SelectBBMCharacterId(connection, characterId);
-        }
-
-        public uint SelectBBMCharacterId(TCon connection, uint characterId)
+        public uint SelectBBMCharacterId(uint characterId, DbConnection? connectionIn = null)
         {
             uint bbmCharacterId = 0;
-            ExecuteInTransaction(connection =>
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
             {
                 ExecuteReader(connection, SqlSelectBBMCharacterId, command =>
                 {
@@ -59,8 +56,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         bbmCharacterId = GetUInt32(reader, "bbm_character_id");
                     }
                 });
-            });
-
+            }
+            finally
+            {
+                if (!isTransaction) connection.Dispose();
+            }
             return bbmCharacterId;
         }
 

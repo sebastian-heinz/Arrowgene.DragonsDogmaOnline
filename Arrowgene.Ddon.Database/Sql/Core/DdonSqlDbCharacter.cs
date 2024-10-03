@@ -236,21 +236,33 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool DeleteCharacter(uint characterId)
         {
-            var clan = SelectClanMembershipByCharacterId(characterId);
-            if (clan != 0)
+            int rowsAffected = 0;
+            ExecuteInTransaction(conn =>
             {
-                IncrementClanMemberNum(-1, clan);
-            }
+                var clan = SelectClanMembershipByCharacterId(characterId, conn);
+                if (clan != 0)
+                {
+                    if (GetClanMemberList(clan, conn).Count == 1)
+                    {
+                        DeleteClan(clan, conn);
+                    }
+                    else
+                    {
+                        IncrementClanMemberNum(-1, clan, conn);
+                    }
+                }
 
-            uint bbmCharacterId = SelectBBMCharacterId(characterId);
-            if (bbmCharacterId > 0)
-            {
-                ExecuteNonQuery(SqlDeleteCharacter,
-                command => { AddParameter(command, "@character_id", bbmCharacterId); });
-            }
+                uint bbmCharacterId = SelectBBMCharacterId(characterId, conn);
+                if (bbmCharacterId > 0)
+                {
+                    ExecuteNonQuery(conn, SqlDeleteCharacter,
+                    command => { AddParameter(command, "@character_id", bbmCharacterId); });
+                }
 
-            int rowsAffected = ExecuteNonQuery(SqlDeleteCharacter,
-                command => { AddParameter(command, "@character_id", characterId); });
+                rowsAffected = ExecuteNonQuery(conn, SqlDeleteCharacter,
+                    command => { AddParameter(command, "@character_id", characterId); });
+            });
+            
             return rowsAffected > NoRowsAffected;
         }
 

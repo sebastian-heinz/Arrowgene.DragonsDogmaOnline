@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Clan;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics.Metrics;
 using System.Reflection;
 using System.Security.Claims;
 
@@ -16,7 +17,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly string[] ClanParamFields = new string[] {
             "clan_level", "member_num", "master_id", "system_restriction",
-            "is_base_release", "can_base_release", "total_clan_point", "money_clan_point", "next_clan_point",
+            "is_base_release", "can_base_release", "total_clan_point", "money_clan_point",
             "name", "short_name", "emblem_mark_type", "emblem_base_type", "emblem_main_color",
             "emblem_sub_color", "motto", "active_days", "active_time", "characteristic",
             "is_publish", "comment", "board_message", "created"
@@ -24,7 +25,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private static readonly string[] ClanMembershipFields = new string[]
         {
-            "character_id", "clan_id", "rank", "permission"
+            "character_id", "clan_id", "rank", "permission", "created"
         };
 
         private readonly string SqlInsertClanParam = $"INSERT INTO \"ddon_clan_param\" ({BuildQueryField(ClanParamFields)}) VALUES ({BuildQueryInsert(ClanParamFields)});";
@@ -39,12 +40,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private readonly string SqlDeleteClanMembership = "DELETE FROM \"ddon_clan_membership\" WHERE \"character_id\"=@character_id;";
         private readonly string SqlUpdateClanMembership = $"UPDATE \"ddon_clan_membership\" SET {BuildQueryUpdate(ClanMembershipFields)} WHERE \"character_id\" = @character_id";
 
-        private readonly string SqlCDataClanMemberInfoList = "SELECT \"ddon_clan_membership\".\"character_id\", \"ddon_clan_membership\".\"rank\", \"ddon_clan_membership\".\"permission\", \"ddon_character\".\"first_name\", \"ddon_character\".\"last_name\", \"ddon_character_job_data\".\"job\", \"ddon_character_job_data\".\"lv\" "
+        private readonly string SqlCDataClanMemberInfoList = "SELECT \"ddon_clan_membership\".\"character_id\", \"ddon_clan_membership\".\"rank\", \"ddon_clan_membership\".\"permission\", \"ddon_clan_membership\".\"created\", \"ddon_character\".\"first_name\", \"ddon_character\".\"last_name\", \"ddon_character_job_data\".\"job\", \"ddon_character_job_data\".\"lv\" "
             + "FROM \"ddon_clan_membership\" "
             + "INNER JOIN \"ddon_character\" ON \"ddon_clan_membership\".\"character_id\" = \"ddon_character\".\"character_id\" AND \"ddon_clan_membership\".\"clan_id\" = @clan_id "
             + "INNER JOIN \"ddon_character_common\" ON \"ddon_character_common\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
             + "INNER JOIN \"ddon_character_job_data\" ON \"ddon_character_job_data\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" AND \"ddon_character_job_data\".\"job\" = \"ddon_character_common\".\"job\";";
-        private readonly string SqlCDataClanMemberInfo = "SELECT \"ddon_clan_membership\".\"character_id\", \"ddon_clan_membership\".\"rank\", \"ddon_clan_membership\".\"permission\", \"ddon_character\".\"first_name\", \"ddon_character\".\"last_name\", \"ddon_character_job_data\".\"job\", \"ddon_character_job_data\".\"lv\" "
+        private readonly string SqlCDataClanMemberInfo = "SELECT \"ddon_clan_membership\".\"character_id\", \"ddon_clan_membership\".\"rank\", \"ddon_clan_membership\".\"permission\", \"ddon_clan_membership\".\"created\", \"ddon_character\".\"first_name\", \"ddon_character\".\"last_name\", \"ddon_character_job_data\".\"job\", \"ddon_character_job_data\".\"lv\" "
             + "FROM \"ddon_clan_membership\" "
             + "INNER JOIN \"ddon_character\" ON \"ddon_clan_membership\".\"character_id\" = \"ddon_character\".\"character_id\" AND \"ddon_character\".\"character_id\" = @character_id "
             + "INNER JOIN \"ddon_character_common\" ON \"ddon_character_common\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
@@ -162,29 +163,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     {
                         while (reader.Read())
                         {
-                            CDataClanMemberInfo info = new CDataClanMemberInfo()
-                            {
-                                Rank = (ClanMemberRank)GetUInt32(reader, "rank"),
-                                Permission = GetUInt32(reader, "permission"),
-                                CharacterListElement = new()
-                                {
-                                    CommunityCharacterBaseInfo = new()
-                                    {
-                                        CharacterId = GetUInt32(reader, "character_id"),
-                                        CharacterName = new()
-                                        {
-                                            FirstName = GetString(reader, "first_name"),
-                                            LastName = GetString(reader, "last_name")
-                                        }
-                                    },
-                                    CurrentJobBaseInfo = new()
-                                    {
-                                        Job = (JobId)GetByte(reader, "job"),
-                                        Level = GetByte(reader, "lv")
-                                    }
-                                }
-                            };
-
+                            CDataClanMemberInfo info = ReadClanMemberInfo(reader);
                             list.Add(info);
                         }
                     });
@@ -211,28 +190,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     {
                         if (reader.Read())
                         {
-                            member = new CDataClanMemberInfo()
-                            {
-                                Rank = (ClanMemberRank)GetUInt32(reader, "rank"),
-                                Permission = GetUInt32(reader, "permission"),
-                                CharacterListElement = new()
-                                {
-                                    CommunityCharacterBaseInfo = new()
-                                    {
-                                        CharacterId = GetUInt32(reader, "character_id"),
-                                        CharacterName = new()
-                                        {
-                                            FirstName = GetString(reader, "first_name"),
-                                            LastName = GetString(reader, "last_name")
-                                        }
-                                    },
-                                    CurrentJobBaseInfo = new()
-                                    {
-                                        Job = (JobId)GetByte(reader, "job"),
-                                        Level = GetByte(reader, "lv")
-                                    }
-                                }
-                            };
+                            member = ReadClanMemberInfo(reader);
                         }
                     });
             }
@@ -285,6 +243,23 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 return ExecuteNonQuery(connection, SqlUpdateClanParam, command =>
                 {
                     AddParameter(command, clan);
+                }) == 1;
+            }
+            finally
+            {
+                if (!isTransaction) connection.Dispose();
+            }
+        }
+
+        public bool DeleteClan(uint clanId, DbConnection? connectionIn = null)
+        {
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
+            {
+                return ExecuteNonQuery(connection, SqlDeleteClanParam, command =>
+                {
+                    AddParameter(command, "@clan_id", clanId);
                 }) == 1;
             }
             finally
@@ -408,7 +383,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@can_base_release", clanParam.ClanServerParam.CanClanBaseRelease);
             AddParameter(command, "@total_clan_point", clanParam.ClanServerParam.TotalClanPoint);
             AddParameter(command, "@money_clan_point", clanParam.ClanServerParam.MoneyClanPoint);
-            AddParameter(command, "@next_clan_point", clanParam.ClanServerParam.NextClanPoint);
             AddParameter(command, "@name", clanParam.ClanUserParam.Name);
             AddParameter(command, "@short_name", clanParam.ClanUserParam.ShortName);
             AddParameter(command, "@emblem_mark_type", clanParam.ClanUserParam.EmblemMarkType);
@@ -422,7 +396,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@is_publish", clanParam.ClanUserParam.IsPublish);
             AddParameter(command, "@comment", clanParam.ClanUserParam.Comment);
             AddParameter(command, "@board_message", clanParam.ClanUserParam.BoardMessage);
-            AddParameter(command, "@created", clanParam.ClanUserParam.Created);
+            AddParameter(command, "@created", clanParam.ClanUserParam.Created.UtcDateTime);
         }
 
         private void AddParameter(TCom command, CDataClanMemberInfo memberInfo, uint clanId)
@@ -431,9 +405,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@clan_id", clanId);
             AddParameter(command, "@rank", (uint)memberInfo.Rank);
             AddParameter(command, "@permission", memberInfo.Permission);
+            AddParameter(command, "@created", memberInfo.Created.UtcDateTime);
         }
 
-        private CDataClanUserParam ReadClanUserParam(DbDataReader reader)
+        private CDataClanUserParam ReadClanUserParam(TReader reader)
         {
             CDataClanUserParam userParam = new()
             {
@@ -450,13 +425,13 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 IsPublish = GetBoolean(reader, "is_publish"),
                 Comment = GetString(reader, "comment"),
                 BoardMessage = GetString(reader, "board_message"),
-                Created = GetInt64(reader, "created")
+                Created = GetDateTime(reader, "created")
             };
 
             return userParam;
         }
 
-        private CDataClanServerParam ReadClanServerParam(DbDataReader reader)
+        private CDataClanServerParam ReadClanServerParam(TReader reader)
         {
             CDataClanServerParam serverParam = new()
             {
@@ -468,10 +443,37 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 CanClanBaseRelease = GetBoolean(reader, "can_base_release"),
                 TotalClanPoint = GetUInt32(reader, "total_clan_point"),
                 MoneyClanPoint = GetUInt32(reader, "money_clan_point"),
-                NextClanPoint = GetUInt32(reader, "next_clan_point")
             };
 
             return serverParam;
+        }
+
+        private CDataClanMemberInfo ReadClanMemberInfo(TReader reader)
+        {
+            var member = new CDataClanMemberInfo()
+            {
+                Rank = (ClanMemberRank)GetUInt32(reader, "rank"),
+                Permission = GetUInt32(reader, "permission"),
+                Created = GetDateTime(reader, "created"),
+                CharacterListElement = new()
+                {
+                    CommunityCharacterBaseInfo = new()
+                    {
+                        CharacterId = GetUInt32(reader, "character_id"),
+                        CharacterName = new()
+                        {
+                            FirstName = GetString(reader, "first_name"),
+                            LastName = GetString(reader, "last_name")
+                        }
+                    },
+                    CurrentJobBaseInfo = new()
+                    {
+                        Job = (JobId)GetByte(reader, "job"),
+                        Level = GetByte(reader, "lv")
+                    }
+                }
+            };
+            return member;
         }
     }
 }

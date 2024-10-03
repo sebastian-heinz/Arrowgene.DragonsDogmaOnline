@@ -369,7 +369,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateAbilityPreset(uint characterId, CDataPresetAbilityParam preset) { return true; }
         public bool UpdateCharacterBinaryData(uint characterId, byte[] data) { return true; }
         public bool InsertBBMCharacterId(uint characterId, uint bbmCharacterId) { return false; }
-        public uint SelectBBMCharacterId(uint characterId) { return 0; }
+        public uint SelectBBMCharacterId(uint characterId, DbConnection? connectionIn = null) { return 0; }
         public uint SelectBBMNormalCharacterId(uint bbmCharacterId) { return 0; }
         public bool InsertBBMProgress(uint characterId, ulong startTime, uint contentId, BattleContentMode contentMode, uint tier, bool killedDeath, ulong lastTicketTime) { return true;  }
         public bool UpdateBBMProgress(uint characterId, ulong startTime, uint contentId, BattleContentMode contentMode, uint tier, bool killedDeath, ulong lastTicketTime) { return true; }

@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using System;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -9,6 +10,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             ShortName = string.Empty;
             Comment = string.Empty;
             BoardMessage = string.Empty;
+            Created = DateTimeOffset.MinValue;
         }
     
         public string Name { get; set; }
@@ -24,7 +26,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public bool IsPublish { get; set; }
         public string Comment { get; set; }
         public string BoardMessage { get; set; }
-        public long Created { get; set; }
+        public DateTimeOffset Created { get; set; }
     
         public class Serializer : EntitySerializer<CDataClanUserParam>
         {
@@ -43,7 +45,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteBool(buffer, obj.IsPublish);
                 WriteMtString(buffer, obj.Comment);
                 WriteMtString(buffer, obj.BoardMessage);
-                WriteInt64(buffer, obj.Created);
+                WriteInt64(buffer, obj.Created.ToUnixTimeSeconds());
             }
         
             public override CDataClanUserParam Read(IBuffer buffer)
@@ -62,7 +64,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.IsPublish = ReadBool(buffer);
                 obj.Comment = ReadMtString(buffer);
                 obj.BoardMessage = ReadMtString(buffer);
-                obj.Created = ReadInt64(buffer);
+                obj.Created = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
                 return obj;
             }
         }

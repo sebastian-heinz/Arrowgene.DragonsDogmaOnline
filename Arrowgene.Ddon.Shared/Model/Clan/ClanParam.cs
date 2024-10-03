@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using System;
 
 namespace Arrowgene.Ddon.Shared.Model.Clan
 {
@@ -69,7 +70,7 @@ namespace Arrowgene.Ddon.Shared.Model.Clan
         public bool IsPublish { get; set; }
         public string Comment { get; set; }
         public string BoardMessage { get; set; }
-        public long Created { get; set; }
+        public DateTimeOffset Created { get; set; }
 
         public ClanName ClanName
         {

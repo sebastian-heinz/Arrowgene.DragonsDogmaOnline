@@ -24,8 +24,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             // client.Send(InGameDump.Dump_65);
 
-            Logger.Info($"Update request type {packet.Structure.unType}");
-
             List<CDataCharacterListElement> updateCharacterList = new List<CDataCharacterListElement>();
             List<CDataUpdateMatchingProfileInfo> updateMatchingProfileList = new List<CDataUpdateMatchingProfileInfo>();
             

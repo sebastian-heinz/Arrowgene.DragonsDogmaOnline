@@ -725,7 +725,6 @@ CREATE TABLE IF NOT EXISTS "ddon_clan_param"
     "can_base_release"      BOOLEAN             NOT NULL,
     "total_clan_point"      INTEGER             NOT NULL,
     "money_clan_point"      INTEGER             NOT NULL,
-    "next_clan_point"       INTEGER             NOT NULL,
     "name"                  TEXT                NOT NULL,
     "short_name"            TEXT                NOT NULL,
     "emblem_mark_type"      SMALLINT            NOT NULL,
@@ -744,36 +743,12 @@ CREATE TABLE IF NOT EXISTS "ddon_clan_param"
 
 CREATE TABLE IF NOT EXISTS "ddon_clan_membership"
 (
-    "character_id"          INTEGER NOT NULL,
-    "clan_id"               INTEGER NOT NULL,
-    "rank"                  INTEGER NOT NULL,
-    "permission"            INTEGER NOT NULL,
+    "character_id"          INTEGER     NOT NULL,
+    "clan_id"               INTEGER     NOT NULL,
+    "rank"                  INTEGER     NOT NULL,
+    "permission"            INTEGER     NOT NULL,
+    "created"               DATETIME    NOT NULL,
     CONSTRAINT "pk_ddon_clan_membership" PRIMARY KEY ("character_id", "clan_id"),
     CONSTRAINT "fk_ddon_clan_membership_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE,
     CONSTRAINT "fk_ddon_clan_membership_clan_id" FOREIGN KEY ("clan_id") REFERENCES "ddon_clan_param" ("clan_id") ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS "ddon_clan_scout"
-(
-    "character_id"          INTEGER     NOT NULL,
-    "clan_id"               INTEGER     NOT NULL,
-    "is_scout"              BOOLEAN     NOT NULL,
-    "created"               DATETIME    NOT NULL,
-    CONSTRAINT "pk_ddon_clan_scout" PRIMARY KEY ("character_id", "clan_id"),
-    CONSTRAINT "fk_ddon_clan_scout_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE,
-    CONSTRAINT "fk_ddon_clan_scout_clan_id" FOREIGN KEY ("clan_id") REFERENCES "ddon_clan_param" ("clan_id") ON DELETE CASCADE
-);
-
-CREATE TABLE IF NOT EXISTS "ddon_clan_history"
-(
-    "clan_id"       INTEGER     NOT NULL,
-    "date"          DATETIME    NOT NULL,
-    "type"          SMALLINT    NOT NULL,
-    "first_name"    TEXT        NOT NULL,
-    "last_name"     TEXT        NOT NULL,
-    "value1"        INTEGER     NOT NULL,
-    "value2"        INTEGER     NOT NULL,
-    "value3"        INTEGER     NOT NULL,
-    "free_text"     TEXT        NOT NULL,
-    CONSTRAINT "fk_ddon_clan_history_clan_id" FOREIGN KEY ("clan_id") REFERENCES "ddon_clan_param" ("clan_id") ON DELETE CASCADE
 );

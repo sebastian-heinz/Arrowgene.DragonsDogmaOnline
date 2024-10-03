@@ -1,4 +1,3 @@
-using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -10,22 +9,49 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Reflection;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
+    public class PeriodicSync<T>
+    {
+        private DateTime LastSync = DateTime.MinValue;
+        private TimeSpan SyncPeriod;
+        internal T Obj { get; set; }
+
+        public PeriodicSync(T obj, TimeSpan syncPeriod)
+        {
+            Obj = obj;
+            SyncPeriod = syncPeriod;
+        }
+
+        public bool NeedSync
+        {
+            get
+            {
+                return (DateTime.UtcNow - LastSync) > SyncPeriod;
+            }
+        }
+
+        public void Sync()
+        {
+            LastSync = DateTime.UtcNow;
+        }
+    }
+
     public class ClanManager
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClanManager));
 
         private readonly DdonGameServer Server;
 
-        private readonly Dictionary<uint, CDataClanParam> ClanParams;
+        private readonly Dictionary<uint, PeriodicSync<CDataClanParam>> ClanParams;
         private readonly Dictionary<uint, List<CDataClanMemberInfo>> ClanMembers;
 
         private static readonly CDataClanParam NULL_CLAN = new();
         private static readonly uint ALL_PERMISSIONS = 6143;
         private static readonly uint SUBMASTER_ALL_PERMISSIONS = 5002;
+
+        private static readonly TimeSpan CLAN_CACHE_TIME = TimeSpan.FromHours(1);
 
         public static readonly uint[] TOTAL_CP_FOR_ADV = new uint[] {
             /********/   0,
@@ -50,29 +76,50 @@ namespace Arrowgene.Ddon.GameServer.Characters
             /* Lv 19 */  1000000,
         };
 
-        private bool IsHead
-        {
-            get
-            {
-                return Server.ChannelManager.IsHead;
-            }
-        }
-
         public ClanManager(DdonGameServer server)
         {
             Server = server;
             ClanParams = new();
         }
 
+        private void AddClan(CDataClanParam clan)
+        {
+            var syncObject = new PeriodicSync<CDataClanParam>(clan, CLAN_CACHE_TIME);
+            ClanParams.Add(clan.ClanServerParam.ID, syncObject);
+        }
+
         public CDataClanParam GetClan(uint id)
         {
             if (id == 0) return NULL_CLAN;
 
-            if (!ClanParams.ContainsKey(id))
+            lock(ClanParams)
             {
-                ClanParams.Add(id, Server.Database.SelectClan(id));
+                if (!ClanParams.ContainsKey(id))
+                {
+                    var clan = Server.Database.SelectClan(id);
+
+                    if (clan.ClanServerParam.ID == 0)
+                    {
+                        // Failed to fetch the clan, because it doesn't exist.
+                        // Throw an exception?
+                        throw new ResponseErrorException(ErrorCode.ERROR_CODE_CLAN_NOT_EXIST);
+                    }
+
+                    clan.ClanServerParam.NextClanPoint = TOTAL_CP_FOR_ADV[clan.ClanServerParam.Lv];
+                    AddClan(clan);
+
+                    return clan;
+                }
+                else
+                {
+                    if (ClanParams[id].NeedSync)
+                    {
+                        ClanParams[id].Obj = Server.Database.SelectClan(id);
+                        ClanParams[id].Sync();
+                    }
+                    return ClanParams[id].Obj;
+                }
             }
-            return ClanParams[id];
         }
 
         public CDataClanParam CreateClan(GameClient client, CDataClanUserParam createParam)
@@ -95,11 +142,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 ClanServerParam = serverParam,
                 ClanUserParam = createParam
             };
-            newClan.ClanUserParam.Created = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            newClan.ClanUserParam.Created = DateTimeOffset.UtcNow;
             Server.Database.CreateClan(newClan);
 
-            ClanParams.Add(newClan.ClanServerParam.ID, newClan);
-            GetClan(newClan.ClanServerParam.ID).ClanServerParam.MemberNum = 1;
+            AddClan(newClan);
+            newClan.ClanServerParam.MemberNum = 1;
 
             client.Character.ClanId = newClan.ClanServerParam.ID;
             client.Character.ClanName.Name = newClan.ClanUserParam.Name;
@@ -110,30 +157,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 CharacterId = client.Character.CharacterId
             };
 
-            //var selfNtc = new S2CClanClanJoinSelfNtc()
-            //{
-            //    ClanParam = newClan,
-            //    SelfInfo = serverParam.MasterInfo,
-            //    MemberList = new List<CDataClanMemberInfo>() { serverParam.MasterInfo }
-            //};
-            //client.Send(selfNtc);
-
-            //S2CUserListJoinNtc newUserNtc = new S2CUserListJoinNtc()
-            //{
-            //    UserList = new List<CDataLobbyMemberInfo>()
-            //    {
-            //        new CDataLobbyMemberInfo()
-            //        {
-            //            CharacterId = client.Character.CharacterId,
-            //            FirstName = client.Character.FirstName,
-            //            LastName = client.Character.LastName,
-            //            ClanName = client.Character.ClanName.ShortName,
-            //            Unk0 = 1, // Platform PC?
-            //            Unk1 = 0,
-            //            OnlineStatus = OnlineStatus.Online  // OnlineStatus?
-            //        },
-            //    }
-            //};
+            var selfNtc = new S2CClanClanJoinSelfNtc()
+            {
+                ClanParam = newClan,
+                SelfInfo = serverParam.MasterInfo,
+                MemberList = new List<CDataClanMemberInfo>() { serverParam.MasterInfo }
+            };
+            client.Send(selfNtc);
 
             foreach (GameClient otherClient in Server.ClientLookup.GetAll())
             {
@@ -197,11 +227,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             };
 
             client.Send(selfntc);
-            SendToClan(clanId, memberNtc);
             foreach (var otherClient in Server.ClientLookup.GetAll())
             {
-                otherClient.Send(memberNtc);
+                otherClient.Send(joinNtc);
             }
+            SendToClan(clanId, memberNtc);
         }
 
         public void LeaveClan(uint characterId, uint clanId)
@@ -342,9 +372,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             var info = new CDataClanMemberInfo()
             {
                 Rank = ClanMemberRank.Master,
-                Created = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
-                LastLoginTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
-                LeaveTime = 0,
+                Created = DateTimeOffset.UtcNow,
+                LastLoginTime = DateTimeOffset.UtcNow,
                 Permission = ALL_PERMISSIONS
             };
             GameStructure.CDataCharacterListElement(info.CharacterListElement, character);
@@ -355,10 +384,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             var info = new CDataClanMemberInfo()
             {
-                Rank = ClanMemberRank.Apprentice,
-                Created = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
-                LastLoginTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
-                LeaveTime = 0,
+                Rank = ClanMemberRank.Member,
+                Created = DateTimeOffset.UtcNow,
+                LastLoginTime = DateTimeOffset.UtcNow,
                 Permission = 0
             };
             GameStructure.CDataCharacterListElement(info.CharacterListElement, character);
@@ -400,7 +428,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        private static int BitsToInt(List<int> bitindices)
+        private static int BitsToInt(IEnumerable<int> bitindices)
         {
             return bitindices.Aggregate(0, (sum, val) => sum + 2 ^ (val));
         }
@@ -417,6 +445,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
             }
             return res;
+        }
+
+        private static int EnumsToInt<T>(IEnumerable<T> enums)
+            where T : struct, IConvertible
+        {
+            return BitsToInt(enums.Select(x => (int)(object)x));
+        }
+
+        private static List<T> IntToEnums<T>(int input)
+            where T : struct, IConvertible
+        {
+            return IntToBits(input).Select(x => (T)(object)x).ToList();
         }
     }
 }
