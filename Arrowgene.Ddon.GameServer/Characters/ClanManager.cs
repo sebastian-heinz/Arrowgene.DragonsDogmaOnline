@@ -416,6 +416,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return memberList;
         }
 
+        public (uint ClanId, CDataClanMemberInfo MemberInfo) ClanMembership(uint characterId)
+        {
+            var clanId = Server.Database.SelectClanMembershipByCharacterId(characterId);
+            var membership = Server.Database.GetClanMember(characterId);
+
+            return (clanId, membership);
+        }
+
         public void SendToClan<T>(uint clanId, T packet)
             where T : class, IPacketStructure, new()
         {

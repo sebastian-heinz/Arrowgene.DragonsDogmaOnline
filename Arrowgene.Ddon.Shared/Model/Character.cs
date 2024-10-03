@@ -104,26 +104,19 @@ namespace Arrowgene.Ddon.Shared.Model
         public List<CDataPresetAbilityParam> AbilityPresets;
         public byte[] BinaryData;
         public GameMode GameMode {  get; set; }
-
         public Dictionary<uint, uint> LastSeenLobby { get; set; }
         public List<Pawn> Pawns { get; set; }
         public List<Pawn> RentedPawns {  get; set; }
-
         public uint FavWarpSlotNum { get; set; }
         public List<ReleasedWarpPoint> ReleasedWarpPoints { get; set; }
 
         public BitterblackMazeProgress BbmProgress;
         public uint NextBBMStageId {  get; set; }
-
         public uint MaxBazaarExhibits { get; set; }
         public Dictionary<QuestId, CompletedQuest> CompletedQuests { get; set; }
-
         public uint LastSafeStageId { get; set; }
         public uint ClanId { get; set; }
         public ClanName ClanName { get; set; }
-
-        // ---
-
         public bool IsLanternLit { get; set; }
 
         // TODO: Move to a more sensible place
