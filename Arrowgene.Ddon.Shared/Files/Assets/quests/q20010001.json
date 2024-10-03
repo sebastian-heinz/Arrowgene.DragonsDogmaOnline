@@ -111,22 +111,6 @@
                     "index": 11
                 }
             ]
-        },
-        {
-            "stage_id": {
-                "id": 1,
-                "group_id": 83
-            },
-            "placement_type": "Manual",
-            "enemies": [
-                {
-                    "enemy_id": "0x010411",
-                    "level": 4,
-                    "exp": 136,
-                    "is_boss": false,
-                    "index": 8
-                }
-            ]
         }
     ],
     "blocks": [
@@ -140,8 +124,14 @@
             "message_id": 10800
         },
         {
-            "type": "KillGroup",
+            "type": "DiscoverEnemy",
             "announce_type": "Accept",
+            "groups": [ 0 ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
             "groups": [ 0 ]
         },
         {
@@ -152,8 +142,7 @@
         {
             "type": "TalkToNpc",
             "stage_id": {
-                "id": 1,
-                "group_id": 0
+                "id": 1
             },
             "announce_type": "Update",
             "npc_id": "Walter",
