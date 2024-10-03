@@ -1,0 +1,72 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "After That Dragon!",
+  "quest_id": 20035009,
+  "base_level": 36,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DoweValley",
+  "news_image": 64,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1180
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 230
+    },
+    {
+      "type": "exp",
+      "amount": 1660
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 7928,
+          "num": 3
+        },
+        {
+          "item_id": 9412,
+          "num": 2
+        },
+        {
+          "item_id": 9388,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 495
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015707",
+          "level": 36,
+          "exp": 6400,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

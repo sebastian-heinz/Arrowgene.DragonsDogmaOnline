@@ -1,0 +1,150 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Shadow from the South Shore",
+  "quest_id": 20010007,
+  "base_level": 21,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "BreyaCoast",
+  "news_image": 23,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 690
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 570
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 60
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Rock Armor",
+          "item_id": 547,
+          "num": 1
+        },
+        {
+          "comment": "Throwing Skull",
+          "item_id": 9397,
+          "num": 2
+        },
+        {
+          "comment": "Mushroom Saute",
+          "item_id": 1351,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 97
+      },
+      "starting_index": 1,
+      "enemies": [
+        {
+          "comment": "Hobgoblin Fighter",
+          "enemy_id": "0x010111",
+          "level": 19,
+          "exp": 85
+        },
+        {
+          "comment": "Sling Hobgoblin (Oil flask)",
+          "enemy_id": "0x010112",
+          "level": 19,
+          "exp": 85
+        },
+        {
+          "comment": "Hobgoblin Leader",
+          "enemy_id": "0x010113",
+          "level": 19,
+          "exp": 85
+        }
+      ]
+    },
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 104
+      },
+      "starting_index": 7,
+      "enemies": [
+        {
+          "comment": "Hobgoblin Fighter",
+          "enemy_id": "0x010111",
+          "level": 19,
+          "exp": 85
+        },
+        {
+          "comment": "Sling Hobgoblin (Oil flask)",
+          "enemy_id": "0x010112",
+          "level": 19,
+          "exp": 85
+        },
+        {
+          "comment": "Hobgoblin Fighter",
+          "enemy_id": "0x010111",
+          "level": 19,
+          "exp": 85
+        },
+        {
+          "comment": "Hobgoblin Leader",
+          "enemy_id": "0x010113",
+          "level": 21,
+          "exp": 150
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 26
+      },
+      "npc_id": "Persimmon",
+      "message_id": 10817
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "groups": [ 1 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 1 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 26
+      },
+      "announce_type": "Update",
+      "npc_id": "Persimmon",
+      "message_id": 10821
+    }
+  ]
+}

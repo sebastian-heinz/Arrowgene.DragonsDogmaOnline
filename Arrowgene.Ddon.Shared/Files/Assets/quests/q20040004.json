@@ -1,0 +1,103 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Cause of the Hot Springs Blockage",
+  "quest_id": 20040004,
+  "base_level": 22,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "VoldenMines",
+  "news_image": 91,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 720
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 110
+    },
+    {
+      "type": "exp",
+      "amount": 1010
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 758,
+          "num": 1
+        },
+        {
+          "item_id": 9395,
+          "num": 3
+        },
+        {
+          "item_id": 9375,
+          "num": 2
+        }
+      ]
+    },
+    {
+      "type": "random",
+      "loot_pool": [
+        {
+          "item_id": 36,
+          "num": 9,
+          "chance": 1.0
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 152,
+        "group_id": 5
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015002",
+          "level": 22,
+          "exp": 4500,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 80,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Miles",
+      "message_id": 11830
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 80,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Miles",
+      "message_id": 11835
+    }
+  ]
+}

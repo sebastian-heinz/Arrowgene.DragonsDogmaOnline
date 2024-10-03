@@ -1,0 +1,78 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Surge of Hellfire",
+  "quest_id": 20105002,
+  "base_level": 42,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DeenanWoods",
+  "news_image": 210,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1380
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 220
+    },
+    {
+      "type": "exp",
+      "amount": 1940
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 9196,
+          "num": 1
+        },
+        {
+          "item_id": 9390,
+          "num": 1
+        },
+        {
+          "item_id": 9416,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 70,
+        "group_id": 19
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015041",
+          "level": 42,
+          "exp": 10500,
+          "is_boss": true
+        },
+        {
+          "enemy_id": "0x015041",
+          "level": 42,
+          "exp": 10500,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

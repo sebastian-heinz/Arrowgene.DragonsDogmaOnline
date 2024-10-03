@@ -48,6 +48,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
+            if (invitedClient == client)
+            {
+                Logger.Error(client, $"can not invite (invitedClient == client)");
+                res.Error = (uint)ErrorCode.ERROR_CODE_FAIL;
+                client.Send(res);
+                return;
+            }
+
             PartyGroup party = client.Party;
             if (party == null)
             {
@@ -69,7 +77,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CPartyPartyInviteNtc ntc = new S2CPartyPartyInviteNtc();
             ntc.TimeoutSec = PartyManager.InvitationTimeoutSec;
             ntc.PartyListInfo.PartyId = party.Id;
-            ntc.PartyListInfo.ServerId = Server.AssetRepository.ServerList[0].Id;
+            ntc.PartyListInfo.ServerId = (uint) Server.Id;
             foreach (PartyMember member in party.Members)
             {
                 ntc.PartyListInfo.MemberList.Add(member.GetCDataPartyMember());
@@ -80,7 +88,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             res.TimeoutSec = PartyManager.InvitationTimeoutSec;
             res.Info.PartyId = party.Id;
-            res.Info.ServerId = Server.AssetRepository.ServerList[0].Id;
+            res.Info.ServerId = (uint) Server.Id;
             res.Info.MemberList.Add(invitedMember.Value.GetCDataPartyMember());
             client.Send(res);
 

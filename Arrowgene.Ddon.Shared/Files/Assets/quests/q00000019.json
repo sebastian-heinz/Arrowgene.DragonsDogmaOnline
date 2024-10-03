@@ -1,0 +1,190 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "Thinking of A Friend",
+    "quest_id": 19,
+    "next_quest": 29,
+    "base_level": 46,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "order_conditions": [],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 12000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 10000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 1050
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 9032,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 9033,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1
+                    },
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1215, "quest_id": 70000001, "comment": "Mysial"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 7389, "quest_id": 70032001, "comment": "The White Dragon (Less Less Dead)"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"}
+                    ],
+                    "npc_id": "Joseph",
+                    "message_id": 8202
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Accept",
+                    "checkpoint": true,
+                    "flags": [],
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "location": {
+                        "x": -685,
+                        "y": 9164,
+                        "z": -396
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [
+                    ],
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "event_id": 30
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [
+                    ],
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "event_id": 70
+                },
+                {
+                    "type": "TalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 1243, "comment": "Spawns Gerd"}
+                    ],
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1
+                    },
+                    "npc_id": "Leo0",
+                    "message_id": 8203
+                },
+                {
+                    "type": "IsStageNo",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "stage_id": {
+                        "id": 61
+                    }
+                },
+                {
+                    "type": "TalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "flags": [],
+                    "stage_id": {
+                        "id": 61,
+                        "group_id": 1
+                    },
+                    "npc_id": "Nadia",
+                    "message_id": 16092
+                },
+                {
+                    "type": "OmInteractEvent",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 274, "comment": "Spawns Collection Point"}
+                    ],
+                    "quest_type": "MyQuest",
+                    "interact_type": "Release",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 1,
+                        "layer_no": 2
+                    }
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 274, "comment": "Spawns Collection Point"}
+                    ],
+                    "stage_id": {
+                        "id": 1
+                    },
+                    "location": {
+                        "x": 88466,
+                        "y": 25358,
+                        "z": -224302
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 1017, "comment": "Spawns Iris"}
+                    ],
+                    "stage_id": {
+                        "id": 1
+                    },
+                    "event_id": 71
+                },
+                {
+                    "type": "TalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 1243, "comment": "Spawns Gerd"}
+                    ],
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1
+                    },
+                    "npc_id": "Leo0",
+                    "message_id": 11686
+                }
+            ]
+        }
+    ]
+}

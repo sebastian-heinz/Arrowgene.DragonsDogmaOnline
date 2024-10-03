@@ -1,0 +1,98 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Fabio's Collectibles",
+  "quest_id": 20000017,
+  "base_level": 8,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "HidellPlains",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 220
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 660
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 30
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 8928,
+          "num": 1
+        },
+        {
+          "item_id": 36,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 2,
+        "group_id": 0
+      },
+      "npc_id": "Fabio0",
+      "message_id": 11373
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 2,
+        "group_id": 0
+      },
+      "npc_id": "Fabio0",
+      "announce_type": "Accept",
+      "items": [
+        {
+          "id": 7858,
+          "amount": 2
+        }
+      ],
+      "message_id": 11848
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 2,
+        "group_id": 0
+      },
+      "npc_id": "Fabio0",
+      "announce_type": "Update",
+      "items": [
+        {
+          "id": 7893,
+          "amount": 2
+        }
+      ],
+      "message_id": 11849
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 2,
+        "group_id": 0
+      },
+      "npc_id": "Fabio0",
+      "announce_type": "Update",
+      "items": [
+        {
+          "id": 7854,
+          "amount": 2
+        }
+      ],
+      "message_id": 11853
+    }
+  ]
+}

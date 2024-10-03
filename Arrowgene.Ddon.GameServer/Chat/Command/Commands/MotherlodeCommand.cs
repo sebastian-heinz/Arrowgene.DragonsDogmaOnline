@@ -15,13 +15,16 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             {"G", WalletType.Gold},
             {"RP", WalletType.RiftPoints},
             {"BO", WalletType.BloodOrbs},
-            {"HO", WalletType.HighOrbs}
+            {"HO", WalletType.HighOrbs},
+            {"GG", WalletType.GoldenGemstones},
+            {"RC", WalletType.ResetCraftSkills}
         };
 
         private static readonly uint DefaultAmount = 10000;
         private static readonly HashSet<WalletType> DefaultWalletTypes = new HashSet<WalletType> {
             WalletType.Gold,
-            WalletType.RiftPoints
+            WalletType.RiftPoints,
+            WalletType.BloodOrbs
         };
 
         public override AccountStateType AccountState => AccountStateType.User;
@@ -72,7 +75,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             foreach (var walletType in walletTypes)
             {
-                CDataWalletPoint walletPoint = client.Character.WalletPointList.Where(wp => wp.Type == walletType).Single();
+                CDataWalletPoint walletPoint = client.Character.WalletPointList.Single(wp => wp.Type == walletType);
                 walletPoint.Value += amount;
                 _server.Database.UpdateWalletPoint(client.Character.CharacterId, walletPoint);
                 

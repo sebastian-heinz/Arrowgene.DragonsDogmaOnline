@@ -11,13 +11,13 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public C2SCharacterEditUpdateCharacterEditParamExReq()
         {
             EditInfo = new CDataEditInfo();
+            EditPrice = new CDataCharacterEditPrice();
             FirstName = string.Empty;
         }
 
         // One of these bytes is UpdateType
-        public byte Unk0 { get; set; }
-        public byte Unk1 { get; set; }
-        public uint Unk2 { get; set; }
+        public byte UpdateType { get; set; }
+        public CDataCharacterEditPrice EditPrice { get; set; }
         public CDataEditInfo EditInfo { get; set; }
         public string FirstName { get; set; }
 
@@ -25,9 +25,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
             public override void Write(IBuffer buffer, C2SCharacterEditUpdateCharacterEditParamExReq obj)
             {
-                WriteByte(buffer, obj.Unk0);
-                WriteByte(buffer, obj.Unk1);
-                WriteUInt32(buffer, obj.Unk2);
+                WriteByte(buffer, obj.UpdateType);
+                WriteEntity(buffer, obj.EditPrice);
                 WriteEntity(buffer, obj.EditInfo);
                 WriteMtString(buffer, obj.FirstName);
             }
@@ -35,9 +34,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override C2SCharacterEditUpdateCharacterEditParamExReq Read(IBuffer buffer)
             {
                 C2SCharacterEditUpdateCharacterEditParamExReq obj = new C2SCharacterEditUpdateCharacterEditParamExReq();
-                obj.Unk0 = ReadByte(buffer);
-                obj.Unk1 = ReadByte(buffer);
-                obj.Unk2 = ReadUInt32(buffer);
+                obj.UpdateType = ReadByte(buffer);
+                obj.EditPrice = ReadEntity<CDataCharacterEditPrice>(buffer);
                 obj.EditInfo = ReadEntity<CDataEditInfo>(buffer);
                 obj.FirstName = ReadMtString(buffer);
                 return obj;

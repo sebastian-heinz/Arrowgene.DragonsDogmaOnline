@@ -1,0 +1,113 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Beach Bandits",
+  "quest_id": 20010000,
+  "base_level": 11,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "BreyaCoast",
+  "news_image": 21,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 300
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 30
+    },
+    {
+      "type": "exp",
+      "amount": 360
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 9604,
+          "num": 1
+        },
+        {
+          "item_id": 489,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 85
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x011002",
+          "level": 11,
+          "exp": 140,
+          "is_boss": false,
+          "hm_present_no": 47
+        },
+        {
+          "enemy_id": "0x011002",
+          "level": 11,
+          "exp": 140,
+          "is_boss": false,
+          "hm_present_no": 47
+        },
+        {
+          "enemy_id": "0x011002",
+          "level": 11,
+          "exp": 140,
+          "is_boss": false,
+          "hm_present_no": 47
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "npc_id": "Yuni",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "message_id": 10782,
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 992
+        }
+      ]
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "announce_type": "Update",
+      "npc_id": "Yuni",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "message_id": 10785
+    }
+  ]
+}

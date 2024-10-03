@@ -32,15 +32,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataPriorityQuestSetting setting = new CDataPriorityQuestSetting();
             setting.CharacterId = partyLeader.Client.Character.CharacterId;
 
-            foreach (var questId in partyLeader.Client.Character.PriorityQuests)
+            var priorityQuests = Server.Database.GetPriorityQuests(partyLeader.Client.Character.CommonId);
+            foreach (var questId in priorityQuests)
             {
-                // TODO: Currently we are using the questId as the schedule
-                // TODO: ID but we might want to make that unique at some point.
-                setting.PriorityQuestList.Add(new CDataPriorityQuest()
+                var quest = client.Party.QuestState.GetQuest(questId);
+                if (quest == null)
                 {
-                    QuestId = (uint) questId,
-                    QuestScheduleId = (uint) questId,
-                });
+                    continue;
+                }
+
+                var questState = client.Party.QuestState.GetQuestState(quest);
+                if (questState == null)
+                {
+                    // Quest State should not be null, but don't crash
+                    // Just delete the quest from priority list
+                    Server.Database.DeletePriorityQuest(partyLeader.Client.Character.CommonId, questId);
+                    Logger.Error($"Client {partyLeader.Client.Character.CommonId} has priority quest for quest state which doesn't exist");
+                    continue;
+                }
+
+                setting.PriorityQuestList.Add(quest.ToCDataPriorityQuest(questState.Step));
             }
 
             res.PriorityQuestSettingsList.Add(setting);

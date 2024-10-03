@@ -61,9 +61,13 @@ namespace Arrowgene.Ddon.Shared.Model
         ReleaseTreeElement = 0x32,
         PawnExpeditionDrop = 0x33,
         StorePostItemBoxGacha = 0x34,
+        GatherEquipItem = 0x4b,
         Debug = 0x64,
         DebugAdd = 0x64,
         DebugSub = 0x65,
         DebugEquipAdd = 0x66,
+
+        // ItemsBought = 0x10a,
+        // UseJobItem2 = 0x121,
     }
 }

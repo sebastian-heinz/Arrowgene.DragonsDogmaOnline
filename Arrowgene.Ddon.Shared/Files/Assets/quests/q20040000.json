@@ -1,0 +1,73 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Stylish Consideration",
+  "quest_id": 20040000,
+  "base_level": 23,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "VoldenMines",
+  "news_image": 68,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 200
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 70
+    },
+    {
+      "type": "exp",
+      "amount": 370
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Jewel Steel Ingot",
+          "item_id": 7882,
+          "num": 3
+        },
+        {
+          "comment": "Small Thief Key",
+          "item_id": 9429,
+          "num": 3
+        },
+        {
+          "comment": "Sorcerer Hat",
+          "item_id": 8153,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 52
+      },
+      "npc_id": "Livian",
+      "message_id": 10800
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 52,
+        "group_id": 1
+      },
+      "npc_id": "Livian",
+      "announce_type": "Accept",
+      "items": [
+        {
+          "id": 7982,
+          "amount": 8
+        }
+      ],
+      "message_id": 10737
+    }
+  ]
+}

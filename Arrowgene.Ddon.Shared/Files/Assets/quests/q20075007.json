@@ -1,0 +1,96 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Feast of Demons",
+  "quest_id": 20075007,
+  "base_level": 44,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "NorthernBetlandPlains",
+  "news_image": 513,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1450
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 230
+    },
+    {
+      "type": "exp",
+      "amount": 1740
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 7941,
+          "num": 2
+        },
+        {
+          "item_id": 9412,
+          "num": 2
+        },
+        {
+          "item_id": 9418,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 123,
+        "group_id": 1
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015800",
+          "level": 44,
+          "exp": 1100,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015800",
+          "level": 44,
+          "exp": 1100,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015800",
+          "level": 44,
+          "exp": 1100,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015800",
+          "level": 44,
+          "exp": 1100,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015820",
+          "level": 44,
+          "exp": 1300,
+          "is_boss": false
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Halloween Season (Spawns NPCs for 2018 holiday event)",
+    "quest_id": 60301054,
+    "next_quest": 0,
+    "base_level": 0,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {"id": 2},
+    "order_conditions": [],
+    "rewards": [],
+    "enabled": false,
+    "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {"type": "IsTutorialQuestClear", "Param1": 60301053}
+            ]
+        },
+        {
+            "type": "Raw",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 8236, "comment": "Spawns decorations and warp"},
+                {"type": "QstLayout", "action": "Set", "value": 8228, "comment": "Spawns Angelo and Shelly so they remain for the event"}
+            ]
+        }
+    ]
+}

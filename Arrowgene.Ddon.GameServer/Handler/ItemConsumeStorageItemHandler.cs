@@ -21,21 +21,28 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CItemConsumeStorageItemRes res = new S2CItemConsumeStorageItemRes();
             try
             {
-                S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
-                ntc.UpdateType = 4;
-                foreach (CDataStorageItemUIDList consumeItem in req.Structure.ConsumeItemList)
+                S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc()
                 {
-                    CDataItemUpdateResult itemUpdate;
-                    if(consumeItem.SlotNo == 0)
+                    UpdateType = ItemNoticeType.ConsumeBag
+                };
+
+                Server.Database.ExecuteInTransaction(connection => 
+                {
+                    foreach (CDataStorageItemUIDList consumeItem in req.Structure.ConsumeItemList)
                     {
-                        itemUpdate = Server.ItemManager.ConsumeItemByUId(Server, client.Character, consumeItem.StorageType, consumeItem.ItemUId, consumeItem.Num);
+                        CDataItemUpdateResult itemUpdate;
+                        if (consumeItem.SlotNo == 0)
+                        {
+                            itemUpdate = Server.ItemManager.ConsumeItemByUId(Server, client.Character, consumeItem.StorageType, consumeItem.ItemUId, consumeItem.Num, connection);
+                        }
+                        else
+                        {
+                            itemUpdate = Server.ItemManager.ConsumeItemInSlot(Server, client.Character, consumeItem.StorageType, consumeItem.SlotNo, consumeItem.Num, connection);
+                        }
+                        ntc.UpdateItemList.Add(itemUpdate);
                     }
-                    else
-                    {
-                        itemUpdate = Server.ItemManager.ConsumeItemInSlot(Server, client.Character, consumeItem.StorageType, consumeItem.SlotNo, consumeItem.Num);
-                    }
-                    ntc.UpdateItemList.Add(itemUpdate);
-                }
+                });
+                
                 client.Send(ntc);
             }
             catch(Exception _)

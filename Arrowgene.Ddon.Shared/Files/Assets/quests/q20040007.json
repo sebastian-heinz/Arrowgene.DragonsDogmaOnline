@@ -1,0 +1,104 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Miner’s Lifeline",
+  "quest_id": 20040007,
+  "base_level": 30,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "VoldenMines",
+  "news_image": 94,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1180
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 990
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 150
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Over Guard",
+          "item_id": 628,
+          "num": 1
+        },
+        {
+          "comment": "Quality Gala Extract",
+          "item_id": 9361,
+          "num": 3
+        },
+        {
+          "comment": "Demon Amulet",
+          "item_id": 9383,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 96,
+        "group_id": 10
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015200",
+          "level": 30,
+          "exp": 6000,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1050,
+          "comment": "Spawns Man511 NPC"
+        }
+      ],
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Man511",
+      "message_id": 11372
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Man511",
+      "message_id": 11842
+    }
+  ]
+}

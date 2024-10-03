@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             DropPosX=0;
             DropPosY=0;
             DropPosZ=0;
-            IsNoBattleReword=false;
+            IsNoBattleReward=false;
             Unk0=false;
             RegionFlag=0;
         }
@@ -27,8 +27,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public double DropPosX { get; set; }
         public float DropPosY { get; set; }
         public double DropPosZ { get; set; }
-        public bool IsNoBattleReword { get; set; }
-        public bool Unk0 { get; set; } // It's possible that IsNoBattleReword is this data instead
+        public bool IsNoBattleReward { get; set; }
+        public bool Unk0 { get; set; }
         public uint RegionFlag { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SInstanceEnemyKillReq>
@@ -42,7 +42,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteDouble(buffer, obj.DropPosX);
                 WriteFloat(buffer, obj.DropPosY);
                 WriteDouble(buffer, obj.DropPosZ);
-                WriteBool(buffer, obj.IsNoBattleReword);
+                WriteBool(buffer, obj.IsNoBattleReward);
                 WriteBool(buffer, obj.Unk0);
                 WriteUInt32(buffer, obj.RegionFlag);
             }
@@ -56,7 +56,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.DropPosX = ReadDouble(buffer);
                 obj.DropPosY = ReadFloat(buffer);
                 obj.DropPosZ = ReadDouble(buffer);
-                obj.IsNoBattleReword = ReadBool(buffer);
+                obj.IsNoBattleReward = ReadBool(buffer);
                 obj.Unk0 = ReadBool(buffer);
                 obj.RegionFlag = ReadUInt32(buffer);
                 return obj;

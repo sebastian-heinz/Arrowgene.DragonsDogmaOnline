@@ -1,13 +1,14 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
-using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System.ComponentModel;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -50,10 +51,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            // TODO: Fetch this from the party leader from the database
-            // party.QuestState.AddNewQuest((QuestId) 1);
-            // party.QuestState.AddNewQuest((QuestId) 2);
-            // party.QuestState.AddNewQuest((QuestId) 3);
+            var quests = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All);
+            foreach (var quest in quests)
+            {
+                if (quest.VariantId != 0)
+                {
+                    Logger.Debug($"Getting quest progress. Adding {quest.QuestId} with variant {quest.VariantId}");
+                    party.QuestState.AddNewQuest(quest.QuestId, quest.Step, true, (uint)quest.VariantId);
+                    continue;
+                }
+
+                party.QuestState.AddNewQuest(quest.QuestId, quest.Step, true);
+            }
+
+            // Add quest for debug command
+            party.QuestState.AddNewQuest(QuestManager.GetQuest(70000001));
 
             S2CPartyPartyJoinNtc ntc = new S2CPartyPartyJoinNtc();
             ntc.HostCharacterId = client.Character.CharacterId;

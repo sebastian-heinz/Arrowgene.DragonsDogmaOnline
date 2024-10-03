@@ -14,6 +14,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ItemSellItemHandler));
         
         private readonly ItemManager _itemManager;
+        private readonly WalletManager _walletManager;
 
         public ItemSellItemHandler(DdonGameServer server) : base(server)
         {
@@ -26,28 +27,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             uint totalAmountToAdd = 0;
 
-            S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
-            ntc.UpdateType = 267;
-            foreach (CDataStorageItemUIDList consumeItem in req.Structure.ConsumeItemList)
+            S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc()
             {
-                var ntcData = _itemManager.ConsumeItemByUId(Server, client.Character, consumeItem.StorageType, consumeItem.ItemUId, consumeItem.Num);
-                ntc.UpdateItemList.Add(ntcData);
+                UpdateType = ItemNoticeType.ShopItemSell
+            };
 
-                uint goldValue = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, ntcData.ItemList.ItemId).Price;
-                uint amountToAdd = goldValue * consumeItem.Num;
-                totalAmountToAdd += amountToAdd;
-            }
+            Server.Database.ExecuteInTransaction(connection =>
+            {
+                foreach (CDataStorageItemUIDList consumeItem in req.Structure.ConsumeItemList)
+                {
+                    var ntcData = _itemManager.ConsumeItemByUId(Server, client.Character, consumeItem.StorageType, consumeItem.ItemUId, consumeItem.Num, connection);
+                    ntc.UpdateItemList.Add(ntcData);
+
+                    uint goldValue = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, ntcData.ItemList.ItemId).Price;
+                    uint amountToAdd = goldValue * consumeItem.Num;
+                    totalAmountToAdd += amountToAdd;
+                }
+                CDataUpdateWalletPoint walletUpdate = Server.WalletManager.AddToWallet(client.Character, WalletType.Gold, totalAmountToAdd, connection);
+                ntc.UpdateWalletList.Add(walletUpdate);
+            });
             
-            CDataWalletPoint characterWalletPoint = client.Character.WalletPointList.Where(wp => wp.Type == WalletType.Gold).First();
-            characterWalletPoint.Value += totalAmountToAdd; // TODO: Cap to maximum for that wallet
-            Database.UpdateWalletPoint(client.Character.CharacterId, characterWalletPoint);
-
-            CDataUpdateWalletPoint walletUpdate = new CDataUpdateWalletPoint();
-            walletUpdate.Type = WalletType.Gold;
-            walletUpdate.AddPoint = (int) totalAmountToAdd;
-            walletUpdate.Value = characterWalletPoint.Value;
-            ntc.UpdateWalletList.Add(walletUpdate);
-
             client.Send(ntc);
         }
     }

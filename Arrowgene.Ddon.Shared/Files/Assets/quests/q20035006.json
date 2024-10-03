@@ -1,0 +1,94 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Misty Spectres",
+  "quest_id": 20035006,
+  "base_level": 38,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DoweValley",
+  "news_image": 532,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1050
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 140
+    },
+    {
+      "type": "exp",
+      "amount": 1230
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 9759,
+          "num": 1
+        },
+        {
+          "item_id": 9410,
+          "num": 2
+        },
+        {
+          "item_id": 9362,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 99,
+        "group_id": 2
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x011031",
+          "level": 38,
+          "exp": 450,
+          "is_boss": false,
+          "hm_present_no": 69
+        },
+        {
+          "enemy_id": "0x011031",
+          "level": 38,
+          "exp": 450,
+          "is_boss": false,
+          "hm_present_no": 69
+        },
+        {
+          "enemy_id": "0x011033",
+          "level": 38,
+          "exp": 450,
+          "is_boss": false,
+          "hm_present_no": 71
+        },
+        {
+          "enemy_id": "0x011033",
+          "level": 38,
+          "exp": 450,
+          "is_boss": false,
+          "hm_present_no": 71
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

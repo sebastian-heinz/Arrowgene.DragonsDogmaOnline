@@ -1,6 +1,7 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Dump;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -10,12 +11,15 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp.Consumer.BlockingQueueConsumption;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
     public class QuestGetRewardBoxItemHandler : GameRequestPacketHandler<C2SQuestGetRewardBoxItemReq, S2CQuestGetRewardBoxItemRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetRewardBoxItemHandler));
+
+
 
         public QuestGetRewardBoxItemHandler(DdonGameServer server) : base(server)
         {
@@ -25,41 +29,67 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             // client.Send(GameFull.Dump_902);
 
+            var questBoxRewards = Server.RewardManager.GetQuestBoxRewards(client);
+
             var rewardIndex = packet.ListNo;
-            if (rewardIndex == 0 || rewardIndex > client.Character.QuestRewards.Count)
+            if (rewardIndex == 0 || rewardIndex > questBoxRewards.Count)
             {
                 Logger.Error($"Illegal reward request sent to server.");
                 return new S2CQuestGetRewardBoxItemRes() { Error = 1};
             }
 
             // Make zero based index
-            var boxRewards = client.Character.QuestRewards[(int)(rewardIndex - 1)];
+            var questBoxReward = questBoxRewards[(int)(rewardIndex - 1)];
+            var rewards = Quest.AsCDataRewardBoxItems(questBoxReward);
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
             {
                 UpdateType = 0
             };
 
-            foreach (var boxReward in packet.GetRewardBoxItemList)
+            // If a quest has multiple slots with the same reward, coalesce them into a single slot.
+            // This can happen when a quest has multiple random rewards and they random to the same item and amount
+            Dictionary<string, CDataRewardBoxItem> coalescedRewards = new Dictionary<string, CDataRewardBoxItem>();
+            foreach (var reward in rewards)
             {
-                var reward = boxRewards.Rewards[boxReward.UID];
-
-                if (Server.ItemManager.IsItemWalletPoint(reward.ItemId))
+                if (!coalescedRewards.ContainsKey(reward.UID))
                 {
-                    (WalletType walletType, uint amount) = Server.ItemManager.ItemToWalletPoint(reward.ItemId);
-                    var result = Server.WalletManager.AddToWallet(client.Character, walletType, amount);
-                    updateCharacterItemNtc.UpdateWalletList.Add(result);
+                    coalescedRewards[reward.UID] = reward;
                 }
                 else
                 {
-                    var result = Server.ItemManager.AddItem(Server, client.Character, StorageType.StorageBoxNormal, reward.ItemId, reward.Num);
+                    coalescedRewards[reward.UID].Num += reward.Num;
+                }
+            }
+
+            var slotCount = coalescedRewards
+                .Where(x => !Server.ItemManager.IsItemWalletPoint(x.Value.ItemId) && x.Value.Num > 0)
+                .ToList()
+                .Count;
+
+            if (slotCount > client.Character.Storage.GetStorage(StorageType.StorageBoxNormal).EmptySlots())
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_STORAGE_OVERFLOW);
+            }
+
+            foreach (var rewardUID in packet.GetRewardBoxItemList.Select(x => x.UID).Distinct().ToList())
+            {
+                var reward = coalescedRewards[rewardUID];
+                if (Server.ItemManager.IsItemWalletPoint(reward.ItemId))
+                {
+                    (WalletType walletType, uint amount) = Server.ItemManager.ItemToWalletPoint(reward.ItemId);
+                    var result = Server.WalletManager.AddToWallet(client.Character, walletType, amount * reward.Num);
+                    updateCharacterItemNtc.UpdateWalletList.Add(result);
+                }
+                else if (reward.Num > 0)
+                {
+                    var result = Server.ItemManager.AddItem(Server, client.Character, false, reward.ItemId, reward.Num);
                     updateCharacterItemNtc.UpdateItemList.AddRange(result);
                 }
             }
             client.Send(updateCharacterItemNtc);
 
-            // Remove this reward from the list
-            client.Character.QuestRewards.RemoveAt((int)(rewardIndex - 1));
+            Server.RewardManager.DeleteQuestBoxReward(client, questBoxReward.UniqRewardId);
 
             return new S2CQuestGetRewardBoxItemRes();
         }

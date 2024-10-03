@@ -22,11 +22,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SItemUseJobItemsReq> packet)
         {
-            S2CItemUpdateCharacterItemNtc ntc = new();
-            ntc.UpdateType = 0x121;
+            S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc()
+            {
+                UpdateType = ItemNoticeType.UseJobItem
+            };
+
             foreach (CDataItemUIdList itemUIdListElement in packet.Structure.ItemUIdList)
             {
-                _itemManager.ConsumeItemByUId(Server, client.Character, StorageType.ItemBagJob, itemUIdListElement.UId, itemUIdListElement.Num);
+                var update = _itemManager.ConsumeItemByUId(Server, client.Character, StorageType.ItemBagJob, itemUIdListElement.UId, itemUIdListElement.Num);
+                if (update != null)
+                {
+                    ntc.UpdateItemList.Add(update);
+                }
+                else
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_NUM_SHORT);
+                }
             }
 
             client.Send(ntc);

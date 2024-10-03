@@ -1,0 +1,90 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Foolish Occupiers",
+  "quest_id": 20105001,
+  "base_level": 42,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DeenanWoods",
+  "news_image": 209,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1380
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 180
+    },
+    {
+      "type": "exp",
+      "amount": 1150
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 9297,
+          "num": 1
+        },
+        {
+          "item_id": 9389,
+          "num": 1
+        },
+        {
+          "item_id": 9416,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 70,
+        "group_id": 7
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015031",
+          "level": 42,
+          "exp": 10500,
+          "is_boss": true
+        },
+        {
+          "enemy_id": "0x011100",
+          "level": 42,
+          "exp": 950,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x011100",
+          "level": 42,
+          "exp": 950,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x011100",
+          "level": 42,
+          "exp": 950,
+          "is_boss": false
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

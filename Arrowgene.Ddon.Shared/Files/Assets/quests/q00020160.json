@@ -1,0 +1,235 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "The Lost Hometown",
+    "quest_id": 20160,
+    "next_quest": 20170,
+    "base_level": 69,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "order_conditions": [
+        {"type": "MinimumLevel", "Param1": 69}
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 300000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 46000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 3600
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 11510,
+                    "num": 5
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 14190,
+                    "num": 1
+                },
+                {
+                    "item_id": 14191,
+                    "num": 1
+                },
+                {
+                    "item_id": 14192,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 371,
+                "group_id": 70
+            },
+            "enemies": [
+                {
+                    "comment": "Pixie",
+                    "enemy_id": "0x010150",
+                    "level": 69,
+                    "exp": 30700,
+                    "named_enemy_params_id": 1232
+                },
+                {
+                    "comment": "Pixie Biff",
+                    "enemy_id": "0x010151",
+                    "level": 69,
+                    "exp": 30700,
+                    "named_enemy_params_id": 1232
+                },
+                {
+                    "comment": "Pixie Din",
+                    "enemy_id": "0x010152",
+                    "level": 69,
+                    "exp": 30700,
+                    "named_enemy_params_id": 1232
+                },
+                {
+                    "comment": "Pixie Pow",
+                    "enemy_id": "0x010153",
+                    "level": 69,
+                    "exp": 30700,
+                    "named_enemy_params_id": 1232
+                },
+                {
+                    "comment": "Pixie Jabber",
+                    "enemy_id": "0x010155",
+                    "level": 69,
+                    "exp": 30700,
+                    "named_enemy_params_id": 1232
+                },
+                {
+                    "comment": "Pixie",
+                    "enemy_id": "0x010150",
+                    "level": 69,
+                    "exp": 30700,
+                    "named_enemy_params_id": 1232
+                },
+                {
+                    "comment": "Pixie Biff",
+                    "enemy_id": "0x010151",
+                    "level": 69,
+                    "exp": 30700,
+                    "named_enemy_params_id": 1232
+                },
+                {
+                    "comment": "Pixie Jabber",
+                    "enemy_id": "0x010155",
+                    "level": 69,
+                    "exp": 30700,
+                    "named_enemy_params_id": 1232
+                },
+                {
+                    "comment": "Pixie Din",
+                    "enemy_id": "0x010152",
+                    "level": 69,
+                    "exp": 30700,
+                    "named_enemy_params_id": 1232
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "npc_id": "Joseph",
+                    "message_id": 15633,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"}
+                    ]
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "stage_id": {
+                        "id": 372,
+                        "group_id": 0,
+                        "layer_no": 4
+                    },
+                    "announce_type": "Accept",
+                    "npc_id": "Loeg",
+                    "message_id": 15627,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 3943, "comment": "Loeg, Cecily, Gurdolin, Lise and Elliot"}
+                    ]
+                },
+                {
+                    "type": "IsStageNo",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 371
+                    }
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "announce_type": "Update",
+                    "groups": [ 0 ]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [ 0 ]
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 371
+                    },
+                    "location": {
+                        "x": -43499,
+                        "y": 3614,
+                        "z": 17701
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 371
+                    },
+                    "event_id": 5
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 371
+                    },
+                    "event_id": 10
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "stage_id": {
+                        "id": 372,
+                        "group_id": 1,
+                        "layer_no": 1
+                    },
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "npc_id": "Lise0",
+                    "message_id": 15653,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 3943, "comment": "Loeg, Cecily, Gurdolin, Lise and Elliot"},
+                        {"type": "QstLayout", "action": "Set", "value": 3944, "comment": "Cecily, Lise and Elliot"}
+                    ]
+                },
+                {
+                    "type": "TalkToNpc",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "npc_id": "Joseph",
+                    "message_id": 15656,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 4773, "comment": "Spawn Gerd and WhiteKnights"}
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,11 +1,13 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
+using System;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     /// <summary>
     /// CStageLayoutID
     /// </summary>
-    public class CDataStageLayoutId
+    public class CDataStageLayoutId : IEquatable<CDataStageLayoutId>
     {
         public uint StageId { get; set; }
         public byte LayerNo { get; set; }
@@ -22,6 +24,11 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             StageId = stageId;
             LayerNo = layerNo;
             GroupId = groupId;
+        }
+
+        public StageId AsStageId()
+        {
+            return new StageId(this);
         }
 
         public class Serializer : EntitySerializer<CDataStageLayoutId>
@@ -41,6 +48,21 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.GroupId = ReadUInt32(buffer);
                 return obj;
             }
+        }
+
+        public override string ToString() 
+        { 
+            return $"{StageId}.{LayerNo}.{GroupId}";
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(StageId, LayerNo, GroupId);
+        }
+
+        public bool Equals(CDataStageLayoutId other)
+        {
+            return StageId == other.StageId && LayerNo == other.LayerNo && GroupId == other.GroupId;
         }
     }
 }

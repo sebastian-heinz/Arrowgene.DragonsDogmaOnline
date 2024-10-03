@@ -1,0 +1,392 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "The Spirit Land",
+    "quest_id": 20210,
+    "next_quest": 20220,
+    "base_level": 75,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "order_conditions": [
+        {"type": "MinimumLevel", "Param1": 75}
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 600000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 56000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 4600
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 13487,
+                    "num": 1
+                },
+                {
+                    "item_id": 11510,
+                    "num": 5
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "comment": "Prevent monsters spawning during the quest",
+            "stage_id": {
+                "id": 371,
+                "group_id": 19
+            },
+            "enemies": []
+        },
+        {
+            "stage_id": {
+                "id": 385,
+                "group_id": 3
+            },
+            "enemies": [
+                {
+                    "comment": "Siren",
+                    "enemy_id": "0x010605",
+                    "level": 75,
+                    "exp": 60700,
+                    "named_enemy_params_id": 1462
+                },
+                {
+                    "comment": "Siren",
+                    "enemy_id": "0x010605",
+                    "level": 75,
+                    "exp": 60700,
+                    "named_enemy_params_id": 1462
+                },
+                {
+                    "comment": "Siren",
+                    "enemy_id": "0x010605",
+                    "level": 75,
+                    "exp": 60700,
+                    "named_enemy_params_id": 1462
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 385,
+                "group_id": 1
+            },
+            "enemies": [
+                {
+                    "comment": "Green Guardian",
+                    "enemy_id": "0x010210",
+                    "level": 75,
+                    "exp": 60700,
+                    "named_enemy_params_id": 1462
+                },
+                {
+                    "comment": "Green Guardian",
+                    "enemy_id": "0x010210",
+                    "level": 75,
+                    "exp": 60700,
+                    "named_enemy_params_id": 1462
+                },
+                {
+                    "comment": "Green Guardian",
+                    "enemy_id": "0x010210",
+                    "level": 75,
+                    "exp": 60700,
+                    "named_enemy_params_id": 1462
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 385,
+                "group_id": 2
+            },
+            "enemies": [
+                {
+                    "comment": "Severly Infected Pixie",
+                    "enemy_id": "0x010170",
+                    "level": 75,
+                    "exp": 60700,
+                    "infection_type": 2,
+                    "named_enemy_params_id": 1462
+                },
+                {
+                    "comment": "Severly Infected Pixie",
+                    "enemy_id": "0x010171",
+                    "level": 75,
+                    "exp": 60700,
+                    "infection_type": 2,
+                    "named_enemy_params_id": 1462
+                },
+                {
+                    "comment": "Severly Infected Pixie",
+                    "enemy_id": "0x010170",
+                    "level": 75,
+                    "exp": 60700,
+                    "infection_type": 2,
+                    "named_enemy_params_id": 1462
+                },
+                {
+                    "comment": "Severly Infected Pixie",
+                    "enemy_id": "0x010171",
+                    "level": 75,
+                    "exp": 60700,
+                    "infection_type": 2,
+                    "named_enemy_params_id": 1462
+                },
+                {
+                    "comment": "Severly Infected Stymphalides",
+                    "enemy_id": "0x010171",
+                    "level": 75,
+                    "exp": 60700,
+                    "infection_type": 2,
+                    "named_enemy_params_id": 1462
+                },
+                {
+                    "comment": "Severly Infected Stymphalides",
+                    "enemy_id": "0x010171",
+                    "level": 75,
+                    "exp": 60700,
+                    "infection_type": 2,
+                    "named_enemy_params_id": 1462
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 382,
+                "group_id": 0
+            },
+            "enemies": [
+                {
+                    "comment": "Severely Infected Demon",
+                    "enemy_id": "0x015910",
+                    "level": 75,
+                    "exp": 60700,
+                    "infection_type": 2,
+                    "named_enemy_params_id": 1236
+                },
+                {
+                    "comment": "Severely Infected Demon",
+                    "enemy_id": "0x015910",
+                    "level": 75,
+                    "exp": 60700,
+                    "infection_type": 2,
+                    "named_enemy_params_id": 1237
+                },
+                {
+                    "comment": "Severely Infected Demon",
+                    "enemy_id": "0x015910",
+                    "level": 75,
+                    "exp": 60700,
+                    "infection_type": 2,
+                    "named_enemy_params_id": 1238
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "npc_id": "Joseph",
+                    "message_id": 0,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"}
+                    ]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "event_id": 170,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"}
+                    ]
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Accept",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 371
+                    },
+                    "location": {
+                        "x": -9714,
+                        "y": 1121,
+                        "z": -31048
+                    },
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Set", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"}
+                    ]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 371
+                    },
+                    "event_id": 35
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "groups": [ 1 ],
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 4044, "comment": "Gearóid, Cecily, Gurdolin, Lise and Elliot"},
+                        {"type": "QstLayout", "action": "Set", "value": 4966, "comment": "Spawns plants and poison mist"}
+                    ]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [ 1 ]
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "groups": [ 2 ]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [ 2 ]
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "groups": [ 3 ]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [ 3 ]
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 382
+                    },
+                    "location": {
+                        "x": 17,
+                        "y": 1000,
+                        "z": -14792
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 382
+                    },
+                    "event_id": 0,
+                    "jump_stage_id": {
+                        "id": 382
+                    },
+                    "start_pos_no": 6
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "groups": [ 4 ],
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 4211, "comment": "NPCs, Blockade and Plants"}
+                    ]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 382
+                    },
+                    "event_id": 5,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 4211, "comment": "NPCs, Blockade and Plants"},
+                        {"type": "QstLayout", "action": "Set", "value": 4046, "comment": "Post battle NPCs"}
+                    ]
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "stage_id": {
+                        "id": 382,
+                        "group_id": 1,
+                        "layer_no": 0
+                    },
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "npc_id": "Cecily0",
+                    "message_id": 11835
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "check_commands": [
+                        {"type": "IsReleaseWarpPointAnyone", "Param1": 21}
+                    ]
+                },
+                {
+                    "type": "TalkToNpc",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "npc_id": "Joseph",
+                    "message_id": 15844
+                }
+            ]
+        },
+        {
+            "comment": "Forces player to correct stage. Flags are set currently to force player to StageNo 881 but the quest takes place on StageNo 880",
+            "blocks": [
+                {
+                    "type": "IsStageNo",
+                    "show_marker": false,
+                    "stage_id": {
+                        "id": 383
+                    }
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "StageNo", "Param1": 880}
+                    ],
+                    "result_commands": [
+                        {"type": "StageJump", "Param1": 880, "Param2": 0}
+                    ]
+                },
+                {
+                    "type": "ReturnCheckPoint",
+                    "stage_id": {
+                        "id": 382
+                    },
+                    "process_no": 1,
+                    "block_no": 0
+                }
+            ]
+        }
+
+    ]
+}

@@ -1,0 +1,468 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "ExtremeMission",
+    "comment": "With the Myrmidons",
+    "quest_id": 50202003,
+    "base_level": 70,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "mission_params": {
+        "group": 1,
+        "minimum_members": 1,
+        "playtime": 600,
+        "solo_only": true,
+        "max_pawns": 3,
+        "phase_groups": []
+    },
+    "order_conditions": [
+        {"type": "SoloWithPawns"},
+        {"type": "ClearExtremeMission", "Param1": 50104000}
+    ],
+    "rewards": [
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 16100,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "jp",
+            "amount": 1000
+        },
+        {
+            "type": "exp",
+            "amount": 50000
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "comment": "Phase 1",
+            "stage_id": {
+                "id": 452,
+                "group_id": 1
+            },
+            "placement_type": "Manual",
+            "enemies": [
+                {
+                    "comment": "Wight",
+                    "enemy_id": "0x015600",
+                    "index": 1,
+                    "level": 70,
+                    "exp": 0,
+                    "is_boss": true,
+                    "start_think_tbl_no": 2
+                },
+                {
+                    "comment": "Witch",
+                    "enemy_id": "0x015604",
+                    "index": 2,
+                    "level": 70,
+                    "exp": 0,
+                    "is_boss": true,
+                    "start_think_tbl_no": 2
+                },
+                {
+                    "comment": "Empress Ghost",
+                    "enemy_id": "0x015605",
+                    "index": 7,
+                    "level": 70,
+                    "exp": 0,
+                    "is_boss": true,
+                    "start_think_tbl_no": 2
+                }
+            ]
+        },
+        {
+            "comment": "Phase 2 (P1)",
+            "stage_id": {
+                "id": 452,
+                "group_id": 1
+            },
+            "placement_type": "Manual",
+            "enemies": [
+                {
+                    "comment": "Eliminator",
+                    "enemy_id": "0x010508",
+                    "index": 5,
+                    "level": 70,
+                    "exp": 0
+                }
+            ]
+        },
+        {
+            "comment": "Phase 2 (P1)",
+            "stage_id": {
+                "id": 452,
+                "group_id": 2
+            },
+            "placement_type": "Manual",
+            "enemies": [
+                {
+                    "comment": "Eliminator",
+                    "enemy_id": "0x010508",
+                    "index": 8,
+                    "level": 70,
+                    "exp": 0
+                }
+            ]
+        },
+        {
+            "comment": "Phase 2 (P1-E1-Adds)",
+            "stage_id": {
+                "id": 452,
+                "group_id": 1
+            },
+            "placement_type": "Manual",
+            "enemies": [
+                {
+                    "comment": "Ghost",
+                    "enemy_id": "0x015620",
+                    "index": 10,
+                    "level": 70,
+                    "exp": 0
+                },
+                {
+                    "comment": "Mudman",
+                    "enemy_id": "0x010509",
+                    "index": 17,
+                    "level": 70,
+                    "exp": 0
+                }
+            ]
+        },
+        {
+            "comment": "Phase 2 (P1-E2-Adds)",
+            "stage_id": {
+                "id": 452,
+                "group_id": 2
+            },
+            "placement_type": "Manual",
+            "enemies": [
+                {
+                    "comment": "Ghost",
+                    "enemy_id": "0x015620",
+                    "index": 9,
+                    "level": 70,
+                    "exp": 0
+                },
+                {
+                    "comment": "Mudman",
+                    "enemy_id": "0x010509",
+                    "index": 16,
+                    "level": 70,
+                    "exp": 0
+                }
+            ]
+        },
+        {
+            "comment": "Phase 2 (P2-P2)",
+            "stage_id": {
+                "id": 452,
+                "group_id": 1
+            },
+            "placement_type": "Manual",
+            "enemies": [
+                {
+                    "comment": "Medusa",
+                    "enemy_id": "0x015610",
+                    "index": 12,
+                    "level": 70,
+                    "exp": 0,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Mudman",
+                    "enemy_id": "0x010509",
+                    "index": 11,
+                    "level": 70,
+                    "exp": 0
+                },
+                {
+                    "comment": "Mudman",
+                    "enemy_id": "0x010509",
+                    "index": 15,
+                    "level": 70,
+                    "exp": 0
+                },
+                {
+                    "comment": "Mudman",
+                    "enemy_id": "0x010509",
+                    "index": 18,
+                    "level": 70,
+                    "exp": 0
+                },
+                {
+                    "comment": "Mudman",
+                    "enemy_id": "0x010509",
+                    "index": 14,
+                    "level": 70,
+                    "exp": 0
+                }
+            ]
+        },
+        {
+            "comment": "Phase 3",
+            "stage_id": {
+                "id": 452,
+                "group_id": 1
+            },
+            "placement_type": "Manual",
+            "enemies": [
+                {
+                    "comment": "Geo Golem",
+                    "enemy_id": "0x015104",
+                    "index": 19,
+                    "level": 70,
+                    "exp": 0,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Infected Griffin",
+                    "enemy_id": "0x015306",
+                    "index": 6,
+                    "level": 70,
+                    "exp": 0,
+                    "is_boss": true,
+                    "infection_type": 2
+                }
+            ]
+        },
+        {
+            "comment": "Phase 4 (A)",
+            "stage_id": {
+                "id": 452,
+                "group_id": 0
+            },
+            "enemies": [
+                {
+                    "comment": "Pawn Fighter",
+                    "enemy_id": "0x011050",
+                    "hm_present_no": 77,
+                    "level": 70,
+                    "exp": 0
+                },
+                {
+                    "comment": "Pawn Seeker",
+                    "enemy_id": "0x011051",
+                    "hm_present_no": 78,
+                    "level": 70,
+                    "exp": 0
+                },
+                {
+                    "comment": "Pawn Hunter",
+                    "enemy_id": "0x011052",
+                    "hm_present_no": 79,
+                    "level": 70,
+                    "exp": 0
+                },
+                {
+                    "comment": "Pawn Healer",
+                    "enemy_id": "0x011053",
+                    "hm_present_no": 80,
+                    "level": 70,
+                    "exp": 0
+                }
+            ]
+        },
+        {
+            "comment": "Phase 4 (B)",
+            "stage_id": {
+                "id": 452,
+                "group_id": 0
+            },
+            "starting_index": 4,
+            "enemies": [
+                {
+                    "comment": "Pawn Defender",
+                    "enemy_id": "0x011054",
+                    "hm_present_no": 81,
+                    "level": 70,
+                    "exp": 0
+                },
+                {
+                    "comment": "Pawn Mage",
+                    "enemy_id": "0x011055",
+                    "hm_present_no": 82,
+                    "level": 70,
+                    "exp": 0
+                },
+                {
+                    "comment": "Pawn Warrior",
+                    "enemy_id": "0x011056",
+                    "hm_present_no": 83,
+                    "level": 70,
+                    "exp": 0
+                },
+                {
+                    "comment": "Pawn Element Archer",
+                    "enemy_id": "0x011057",
+                    "hm_present_no": 84,
+                    "level": 70,
+                    "exp": 0
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "blocks": [
+                {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 452
+                    }
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "EventEnd", "Param1": 438, "Param2": 0}
+                    ]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Start",
+                    "stage_start": 1,
+                    "groups": [0]
+                },
+                {
+                    "type": "IsStageNo",
+                    "stage_clear": 1,
+                    "stage_id": {
+                        "id": 452
+                    }
+                },
+                {
+                    "comment": "Wait for fight to start",
+                    "stage_start": 2,
+                    "type": "MyQstFlags",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 1, "comment": "Start Phase 2 Groups"}
+                    ],
+                    "check_flags": [2, 3, 4, 5]
+                },
+                {
+                    "type": "IsStageNo",
+                    "stage_clear": 2,
+                    "stage_id": {
+                        "id": 452
+                    }
+                },
+                {
+                    "type": "KillGroup",
+                    "stage_start": 3,
+                    "groups": [6]
+                },
+                {
+                    "type": "IsStageNo",
+                    "stage_clear": 3,
+                    "stage_id": {
+                        "id": 452
+                    }
+                },
+                {
+                    "type": "KillGroup",
+                    "stage_start": 4,
+                    "groups": [7]
+                },
+                {
+                    "type": "KillGroup",
+                    "groups": [8]
+                },
+                {
+                    "type": "IsStageNo",
+                    "stage_clear": 4,
+                    "stage_id": {
+                        "id": 452
+                    }
+                }
+            ]
+        },
+        {
+            "comment": "Phase2 - Spawns Eliminators",
+            "blocks": [
+                {
+                    "comment": "Wait for fight to start",
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+                },
+                {
+                    "type": "KillGroup",
+                    "groups": [1, 2]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "set_flags": [2]
+                }
+            ]
+        },
+        {
+            "comment": "Phase2 - Spawns Eliminator 1 adds",
+            "blocks": [
+                {
+                    "comment": "Wait for fight to start",
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "DieEnemy", "Param1": 438, "Param2": 1, "Param3": 5}
+                    ]
+                },
+                {
+                    "type": "KillGroup",
+                    "groups": [3]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "set_flags": [3]
+                }
+            ]
+        },
+        {
+            "comment": "Phase2 - Spawns Eliminator 2 adds",
+            "blocks": [
+                {
+                    "comment": "Wait for fight to start",
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "DieEnemy", "Param1": 438, "Param2": 2, "Param3": 8}
+                    ]
+                },
+                {
+                    "type": "KillGroup",
+                    "groups": [4]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "set_flags": [4]
+                }
+            ]
+        },
+        {
+            "comment": "Phase2 - Spawns Medusa",
+            "blocks": [
+                {
+                    "comment": "Wait for fight to start",
+                    "type": "MyQstFlags",
+                    "check_flags": [1, 2, 3, 4]
+                },
+                {
+                    "type": "KillGroup",
+                    "groups": [5]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "set_flags": [5]
+                }
+            ]
+        }
+    ]
+}

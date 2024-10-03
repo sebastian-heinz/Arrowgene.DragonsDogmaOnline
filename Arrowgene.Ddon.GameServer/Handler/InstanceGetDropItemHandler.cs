@@ -1,12 +1,10 @@
-using System.Collections.Generic;
-using System.Linq;
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -14,31 +12,50 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceGetDropItemHandler));
         
-        private readonly ItemManager _itemManager;
-
         public InstanceGetDropItemHandler(DdonGameServer server) : base(server)
         {
-            this._itemManager = server.ItemManager;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceGetDropItemReq> packet)
         {
-            List<InstancedGatheringItem> items = client.InstanceDropItemManager.GetAssets(packet.Structure.LayoutId, packet.Structure.SetId);
-            
-            S2CInstanceGetDropItemRes res = new S2CInstanceGetDropItemRes();
-            res.LayoutId = packet.Structure.LayoutId;
-            res.SetId = packet.Structure.SetId;
-            res.GatheringItemGetRequestList = packet.Structure.GatheringItemGetRequestList;
-            client.Send(res);
+            // This call is for when an item is claimed from a bag. It needs the drops rolled from the enemy to keep track of the items left.
 
-            S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
-            ntc.UpdateType = 2;
-            foreach (CDataGatheringItemGetRequest gatheringItemRequest in packet.Structure.GatheringItemGetRequestList)
+            List<InstancedGatheringItem> items = new List<InstancedGatheringItem>();
+
+            if (client.InstanceQuestDropManager.IsQuestDrop(packet.Structure.LayoutId, packet.Structure.SetId))
             {
-                InstancedGatheringItem dropItem = items[(int) gatheringItemRequest.SlotNo];
-                this._itemManager.GatherItem(Server, client.Character, ntc, dropItem, gatheringItemRequest.Num);
+                items.AddRange(client.InstanceQuestDropManager.FetchEnemyLoot());
+            } else
+            {
+                items.AddRange(client.InstanceDropItemManager.GetAssets(packet.Structure.LayoutId, (int)packet.Structure.SetId));
             }
 
+            // Special Event Items
+            items.AddRange(client.InstanceEventDropItemManager.FetchEventItems(client, packet.Structure.LayoutId, packet.Structure.SetId));
+
+            S2CInstanceGetDropItemRes res = new()
+            {
+                LayoutId = packet.Structure.LayoutId,
+                SetId = packet.Structure.SetId,
+                GatheringItemGetRequestList = packet.Structure.GatheringItemGetRequestList
+            };
+
+            client.Send(res);
+
+            S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc()
+            {
+                UpdateType = ItemNoticeType.Drop
+            };
+
+            Server.Database.ExecuteInTransaction(connection =>
+            {
+                foreach (CDataGatheringItemGetRequest gatheringItemRequest in packet.Structure.GatheringItemGetRequestList)
+                {
+                    InstancedGatheringItem dropItem = items[(int)gatheringItemRequest.SlotNo];
+                    Server.ItemManager.GatherItem(Server, client.Character, ntc, dropItem, gatheringItemRequest.Num, connection);
+                }
+            });
+            
             client.Send(ntc);
         }
     }

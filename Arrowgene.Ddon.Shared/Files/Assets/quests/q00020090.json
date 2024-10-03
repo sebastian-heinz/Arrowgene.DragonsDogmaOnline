@@ -1,0 +1,140 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "Negotiations",
+    "quest_id": 20090,
+    "next_quest": 20100,
+    "base_level": 64,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "order_conditions": [
+        {"type": "MinimumLevel", "Param1": 64}
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 103000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 28000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 2300
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 13078,
+                    "num": 1
+                },
+                {
+                    "item_id": 11510,
+                    "num": 5
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 342,
+                "group_id": 1
+            },
+            "enemies": [
+                {
+                    "comment": "Manticore",
+                    "enemy_id": "0x015210",
+                    "level": 59,
+                    "exp": 151320,
+                    "named_enemy_params_id": 934,
+                    "is_boss": true
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "npc_id": "Joseph",
+                    "message_id": 15326,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"}
+                    ]
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "announce_type": "Accept",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 1,
+                        "layer_no": 1
+                    },
+                    "npc_id": "Gurdolin3",
+                    "message_id": 15327,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2770, "comment": "Spawns Gurdolin, Lise and Elliot"}
+                    ]
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 342
+                    },
+                    "location": {
+                        "x": 114,
+                        "y": 0,
+                        "z": -1275
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 342
+                    },
+                    "event_id": 0
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "groups": [ 0 ]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 342
+                    },
+                    "event_id": 5,
+                    "jump_stage_id": {
+                        "id": 342
+                    },
+                    "start_pos_no": 2
+                },
+                {
+                    "type": "TalkToNpc",
+                    "announce_type": "Update",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "npc_id": "Joseph",
+                    "message_id": 15353,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2772, "comment": "Leo"}
+                    ]
+                }
+            ]
+        }
+    ]
+}

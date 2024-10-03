@@ -11,7 +11,7 @@ public class CDataQuestOrderList
         FixedRewardSelectItem = new List<CDataRewardItem>();
         BaseWalletPoints = new List<CDataWalletPoint>();
         BaseExp = new List<CDataQuestExp>();
-        Unk7 = new List<CDataQuestListUnk7>();
+        ContentsReleaseList = new List<CDataCharacterReleaseElement>();
         QuestLog = new CDataQuestLog();
         QuestFlagList = new List<CDataQuestFlag>();
         QuestLayoutFlagList = new List<CDataQuestLayoutFlag>();
@@ -31,7 +31,7 @@ public class CDataQuestOrderList
     public ushort ContentJoinItemRank { get; set; }
     public List<CDataWalletPoint> BaseWalletPoints { get; set; }
     public List<CDataQuestExp> BaseExp { get; set; }
-    public uint Unk2 { get; set;} // NpcId?
+    public uint NpcId { get; set;} // NpcId?
     public uint Unk3 { get; set;} // MsgId?
     public uint Unk4 { get; set;} // DetailMsgId
     public ulong Unk5 { get; set; } // ??
@@ -39,7 +39,7 @@ public class CDataQuestOrderList
     public ulong Unk6A { get; set; } // EndDistributionDate?
     public List<CDataRewardItem> FixedRewardItem { get; set; }
     public List<CDataRewardItem> FixedRewardSelectItem { get; set; }
-    public List<CDataQuestListUnk7> Unk7;
+    public List<CDataCharacterReleaseElement> ContentsReleaseList { get; set; }
     public CDataQuestLog QuestLog { get; set; }
     public List<CDataQuestFlag> QuestFlagList;
     public List<CDataQuestLayoutFlag> QuestLayoutFlagList;
@@ -65,7 +65,7 @@ public class CDataQuestOrderList
             WriteUInt16(buffer, obj.ContentJoinItemRank);
             WriteEntityList<CDataWalletPoint>(buffer, obj.BaseWalletPoints);
             WriteEntityList<CDataQuestExp>(buffer, obj.BaseExp);
-            WriteUInt32(buffer, obj.Unk2);
+            WriteUInt32(buffer, obj.NpcId);
             WriteUInt32(buffer, obj.Unk3);
             WriteUInt32(buffer, obj.Unk4);
             WriteUInt64(buffer, obj.Unk5);
@@ -73,7 +73,7 @@ public class CDataQuestOrderList
             WriteUInt64(buffer, obj.Unk6A);
             WriteEntityList(buffer, obj.FixedRewardItem);
             WriteEntityList(buffer, obj.FixedRewardSelectItem);
-            WriteEntityList<CDataQuestListUnk7>(buffer, obj.Unk7);
+            WriteEntityList<CDataCharacterReleaseElement>(buffer, obj.ContentsReleaseList);
             WriteEntity<CDataQuestLog>(buffer, obj.QuestLog);
             WriteEntityList<CDataQuestFlag>(buffer, obj.QuestFlagList);
             WriteEntityList<CDataQuestLayoutFlag>(buffer, obj.QuestLayoutFlagList);
@@ -99,7 +99,7 @@ public class CDataQuestOrderList
             obj.ContentJoinItemRank = ReadUInt16(buffer);
             obj.BaseWalletPoints = ReadEntityList<CDataWalletPoint>(buffer);
             obj.BaseExp = ReadEntityList<CDataQuestExp>(buffer);
-            obj.Unk2 = ReadUInt32(buffer);
+            obj.NpcId = ReadUInt32(buffer);
             obj.Unk3 = ReadUInt32(buffer);
             obj.Unk4 = ReadUInt32(buffer);
             obj.Unk5 = ReadUInt64(buffer);
@@ -107,7 +107,7 @@ public class CDataQuestOrderList
             obj.Unk6A = ReadUInt64(buffer);
             obj.FixedRewardItem = ReadEntityList<CDataRewardItem>(buffer);
             obj.FixedRewardSelectItem = ReadEntityList<CDataRewardItem>(buffer);
-            obj.Unk7 = ReadEntityList<CDataQuestListUnk7>(buffer);
+            obj.ContentsReleaseList = ReadEntityList<CDataCharacterReleaseElement>(buffer);
             obj.QuestLog = ReadEntity<CDataQuestLog>(buffer);
             obj.QuestFlagList = ReadEntityList<CDataQuestFlag>(buffer);
             obj.QuestLayoutFlagList = ReadEntityList<CDataQuestLayoutFlag>(buffer);

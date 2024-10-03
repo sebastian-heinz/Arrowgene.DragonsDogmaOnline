@@ -1,0 +1,77 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Man-Eating Ogre Appears!",
+  "quest_id": 20005011,
+  "base_level": 26,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "HidellPlains",
+  "news_image": 7,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1020
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 850
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 130
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Sergeant's Helm",
+          "item_id": 842,
+          "num": 1
+        },
+        {
+          "comment": "Wine-Boiled Mushroom",
+          "item_id": 9411,
+          "num": 3
+        },
+        {
+          "comment": "Throwing Rock",
+          "item_id": 9396,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 11
+      },
+      "enemies": [
+        {
+          "comment": "Ogre",
+          "enemy_id": "0x015500",
+          "named_enemy_params_id": 54,
+          "level": 26,
+          "exp": 7600,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

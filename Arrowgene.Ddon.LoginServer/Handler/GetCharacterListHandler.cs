@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Buffers;
@@ -33,10 +34,12 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             buffer.WriteInt32(0, Endianness.Big); // result
 
             List<CDataCharacterListInfo> characterListResponse = new List<CDataCharacterListInfo>();
-            List<Character> characters = Database.SelectCharactersByAccountId(client.Account.Id);
+            List<Character> characters = Database.SelectCharactersByAccountId(client.Account.Id, GameMode.Normal);
             Logger.Info(client, $"Found: {characters.Count} Characters");
             foreach (Character c in characters)
             {
+                c.Equipment = c.Storage.GetCharacterEquipment();
+
                 CDataCharacterListInfo cResponse = new CDataCharacterListInfo();
                 cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterId = (uint)c.CharacterId;
                 cResponse.CharacterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = c.FirstName;
@@ -44,19 +47,33 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 cResponse.CharacterListElement.CurrentJobBaseInfo.Job = c.Job;
                 cResponse.CharacterListElement.CurrentJobBaseInfo.Level = (byte) c.ActiveCharacterJobData.Lv;
 
-                List<CDataGPCourseValid> ValidCourses = new List<CDataGPCourseValid>();
+                ulong now = (ulong)DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
+                List<CDataGPCourseValid> ValidCourses = new List<CDataGPCourseValid>();
                 foreach (var ValidCourse in _AssetRepo.GPCourseInfoAsset.ValidCourses)
                 {
+                    if (now > ValidCourse.Value.EndTime)
+                    {
+                        continue;
+                    }
+
                     CDataGPCourseValid cDataGPCourseValid = new CDataGPCourseValid()
                     {
                         Id = c.CharacterId,
                         CourseId = ValidCourse.Value.Id,
                         NameA = _AssetRepo.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].Name, // Course Name
                         NameB = _AssetRepo.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].IconPath, // Link to a icon
-                        StartTime = ValidCourse.Value.StartTime,
-                        EndTime = ValidCourse.Value.EndTime,
                     };
+
+                    if ((now >= ValidCourse.Value.StartTime) && (now <= ValidCourse.Value.EndTime))
+                    {
+                        cDataGPCourseValid.StartTime = ValidCourse.Value.StartTime;
+                        cDataGPCourseValid.EndTime = ValidCourse.Value.EndTime;
+                    }
+                    else
+                    {
+                        cDataGPCourseValid.StartTime = ValidCourse.Value.StartTime;
+                    }
 
                     ValidCourses.Add(cDataGPCourseValid);
                 }
@@ -71,8 +88,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 //cResponse.CharacterListElement.EntryJobBaseInfo.Level = (byte) c.CharacterInfo.MatchingProfile.EntryJobLevel;
                 cResponse.EditInfo = c.EditInfo;
                 cResponse.MatchingProfile = c.MatchingProfile;
-                cResponse.EquipItemInfo = c.Equipment.getEquipmentAsCDataEquipItemInfo(c.Job, EquipType.Performance)
-                    .Union(c.Equipment.getEquipmentAsCDataEquipItemInfo(c.Job, EquipType.Visual))
+                cResponse.EquipItemInfo = c.Equipment.AsCDataEquipItemInfo(EquipType.Performance)
+                    .Union(c.Equipment.AsCDataEquipItemInfo(EquipType.Visual))
                     .ToList();
 
                 characterListResponse.Add(cResponse);

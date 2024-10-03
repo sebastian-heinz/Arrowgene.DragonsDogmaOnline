@@ -1,0 +1,141 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "The Slumbering God",
+    "quest_id": 2,
+    "next_quest": 3,
+    "base_level": 1,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "order_conditions": [
+        {
+            "type": "Solo"
+        }
+    ],
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 200
+        },
+        {
+            "type": "exp",
+            "amount": 700
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 499,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 505,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "Raw",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 273},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1215, "quest_id": 70000001, "Comment": "Mysial"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1219, "quest_id": 70000001, "comment": "Iris"},
+                {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"}
+            ],
+            "check_commands": [
+                {"type": "EventEnd", "Param1": 200, "Param2": 0}
+            ],
+            "result_commands": [
+                {"type": "EventExec", "Param1": 200, "Param2": 0, "Param3": 200, "Param4": 1}
+            ]
+        },
+        {
+            "type": "Raw",
+            "flags": [
+                {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1293, "quest_id": 70000001, "comment": "The White Dragon (Dead)"}
+            ],
+            "announce_type": "Accept",
+            "check_commands": [
+                {"type": "StageNo", "Param1": 201}
+            ],
+            "result_commands": []
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 3,
+                "group_id": 1
+            },
+            "npc_id": "Leo0",
+            "message_id": 0
+        },
+        {
+            "type": "Raw",
+            "check_commands": [
+                {"type": "EventEnd", "Param1": 201, "Param2": 0}
+            ],
+            "result_commands": [
+                {"type": "EventExec", "Param1": 201, "Param2": 0, "Param3": 201, "Param4": 1}
+            ]
+        },
+        {
+            "type": "TalkToNpc",
+            "checkpoint": true,
+            "announce_type": "Update",
+            "stage_id": {
+                "id": 3,
+                "group_id": 1
+            },
+            "npc_id": "Leo0",
+            "message_id": 7454
+        },
+        {
+            "type": "TalkToNpc",
+            "checkpoint": true,
+            "stage_id": {
+                "id": 3,
+                "group_id": 1
+            },
+            "npc_id": "Mysial0",
+            "message_id": 7456
+        },
+        {
+            "type": "TalkToNpc",
+            "checkpoint": true,
+            "announce_type": "Update",
+            "stage_id": {
+                "id": 3,
+                "group_id": 1
+            },
+            "npc_id": "TheWhiteDragon",
+            "message_id": 0
+        },
+        {
+            "type": "Raw",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 1225}
+            ],
+            "check_commands": [
+                {"type": "EventEnd", "Param1": 201, "Param2": 3}
+            ],
+            "result_commands": [
+                {"type": "EventExec", "Param1": 201, "Param2": 3, "Param3": 0, "Param4": 0}
+            ]
+        }
+    ]
+}

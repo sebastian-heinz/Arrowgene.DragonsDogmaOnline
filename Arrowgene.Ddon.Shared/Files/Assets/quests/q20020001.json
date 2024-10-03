@@ -1,0 +1,147 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Missing Report",
+  "quest_id": 20020001,
+  "base_level": 31,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "BetlandPlains",
+  "news_image": 41,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1020
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 850
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 130
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 9659,
+          "num": 1
+        },
+        {
+          "item_id": 9417,
+          "num": 1
+        },
+        {
+          "item_id": 9362,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 264
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x011001",
+          "level": 31,
+          "exp": 400,
+          "is_boss": false,
+          "hm_present_no": 46
+        },
+        {
+          "enemy_id": "0x011001",
+          "level": 31,
+          "exp": 400,
+          "is_boss": false,
+          "hm_present_no": 46
+        },
+        {
+          "enemy_id": "0x011002",
+          "level": 31,
+          "exp": 400,
+          "is_boss": false,
+          "hm_present_no": 47
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 995,
+          "comment": "Spawns ArisenCorpsRegimentalSoldier10"
+        }
+      ],
+      "stage_id": {
+        "id": 66,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "ArisenCorpsRegimentalSoldier10",
+      "message_id": 11372
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 996,
+          "comment": "Spawns ArisenCorpsRegimentalSoldier7 Message"
+        }
+      ],
+      "stage_id": {
+        "id": 1,
+        "group_id": 2,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "ArisenCorpsRegimentalSoldier7",
+      "message_id": 11372
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 66,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "ArisenCorpsRegimentalSoldier10",
+      "message_id": 11842
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 66,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Vanessa0",
+      "message_id": 11842
+    }
+  ]
+}

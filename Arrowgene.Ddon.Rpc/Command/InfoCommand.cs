@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer;
 using Arrowgene.Ddon.Shared.Model;
@@ -40,8 +40,13 @@ namespace Arrowgene.Ddon.Rpc.Command
         public RpcCommandResult Execute(DdonGameServer gameServer)
         {
             Infos.Clear();
-            foreach (GameClient client in gameServer.Clients)
+            foreach (GameClient client in gameServer.ClientLookup.GetAll())
             {
+                if (client == null || client.Character == null)
+                {
+                    continue;
+                }
+
                 Info info = new Info();
                 info.X = client.Character.X;
                 info.Y = client.Character.Y;
@@ -50,6 +55,7 @@ namespace Arrowgene.Ddon.Rpc.Command
                 info.StageId = client.Character.Stage.Id;
                 info.GroupId = client.Character.Stage.GroupId;
                 info.LayerNo = client.Character.Stage.LayerNo;
+
                 Account account = client.Account;
                 if (account != null)
                 {

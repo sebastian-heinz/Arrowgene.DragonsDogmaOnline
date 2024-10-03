@@ -1,10 +1,11 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataPlayPointData
     {
-        public byte ExpMode;
+        public ExpMode ExpMode;
         public uint PlayPoint;
     }
 
@@ -12,14 +13,14 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public override void Write(IBuffer buffer, CDataPlayPointData obj)
         {
-            WriteByte(buffer, obj.ExpMode);
+            WriteByte(buffer, (byte)obj.ExpMode);
             WriteUInt32(buffer, obj.PlayPoint);
         }
 
         public override CDataPlayPointData Read(IBuffer buffer)
         {
             CDataPlayPointData obj = new CDataPlayPointData();
-            obj.ExpMode = ReadByte(buffer);
+            obj.ExpMode = (ExpMode)ReadByte(buffer);
             obj.PlayPoint = ReadUInt32(buffer);
             return obj;
         }

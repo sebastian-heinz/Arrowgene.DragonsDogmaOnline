@@ -23,6 +23,6 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         FixedSecond = 12,
         FixedMemberFirst = 13,
         ProgressBonus = 14,
-        Num = 15
+        Num = 15,
     }
 }

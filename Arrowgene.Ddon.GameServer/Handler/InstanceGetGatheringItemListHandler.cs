@@ -1,12 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SInstanceGetGatheringItemListReq> req)
         {
             bool isGatheringItemBreak = false;
-            if(!client.InstanceGatheringItemManager.HasAssetsInstanced(req.Structure.LayoutId, req.Structure.PosId) && req.Structure.GatheringItemUId.Length > 0 && Random.Shared.NextDouble() < BREAK_CHANCE)
+            if(!client.InstanceGatheringItemManager.HasAssetsInstanced(req.Structure.LayoutId, (int)req.Structure.PosId) && req.Structure.GatheringItemUId.Length > 0 && Random.Shared.NextDouble() < BREAK_CHANCE)
             {
                 isGatheringItemBreak = true;
 
@@ -33,7 +33,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 client.Send(ntc);
             }
 
-            List<InstancedGatheringItem> gatheringItems = client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, req.Structure.PosId);
+            List<InstancedGatheringItem> gatheringItems = new List<InstancedGatheringItem>();
+
+            uint posId = req.Structure.PosId;
+            var stageId = req.Structure.LayoutId.AsStageId();
+            if (StageManager.IsBitterBlackMazeStageId(stageId))
+            {
+                gatheringItems.AddRange(client.InstanceBbmItemManager.FetchBitterblackItems(Server, client, stageId, posId));
+            }
+            else
+            {
+                gatheringItems.AddRange(client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, (int)posId));
+            }
 
             S2CInstanceGetGatheringItemListRes res = new S2CInstanceGetGatheringItemListRes();
             res.LayoutId = req.Structure.LayoutId;

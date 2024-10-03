@@ -50,8 +50,6 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public List<CDataQuestLayoutFlagSetInfo> QuestLayoutFlagSetInfoList { get; set; }
         public List<CDataDeliveryItem> DeliveryItemList { get; set; }
         public bool IsClientOrder {  get; set; }
-        public bool IsEnable { get; set; }
-        // public bool CanProgress { get; set; }
 
         public class Serializer : EntitySerializer<CDataQuestList>
         {
@@ -74,8 +72,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteEntityList<CDataCharacterReleaseElement>(buffer, obj.ContentsReleaseList);
                 WriteEntityList<CDataQuestOrderConditionParam>(buffer, obj.QuestOrderConditionParamList);
                 // CQuestLog
-                    WriteEntityList<CDataQuestAnnounce>(buffer, obj.QuestAnnounceList);
-                    WriteEntityList<CDataQuestTalkInfo>(buffer, obj.QuestTalkInfoList);
+                WriteEntityList<CDataQuestAnnounce>(buffer, obj.QuestAnnounceList);
+                WriteEntityList<CDataQuestTalkInfo>(buffer, obj.QuestTalkInfoList);
                 WriteEntityList<CDataQuestFlag>(buffer, obj.QuestFlagList);
                 WriteEntityList<CDataQuestLayoutFlag>(buffer, obj.QuestLayoutFlagList);
                 WriteEntityList<CDataQuestProcessState>(buffer, obj.QuestProcessStateList);

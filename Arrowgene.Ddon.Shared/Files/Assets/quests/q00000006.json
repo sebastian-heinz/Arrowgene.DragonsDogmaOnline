@@ -1,0 +1,235 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "The Girl in the Forest",
+    "quest_id": 6,
+    "next_quest": 27,
+    "base_level": 16,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 3500
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 3200
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 360
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 8228,
+                    "num": 1
+                },
+                {
+                    "item_id": 8253,
+                    "num": 1
+                },
+                {
+                    "item_id": 8278,
+                    "num": 1
+                },
+                {
+                    "item_id": 8303,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 67,
+                "group_id": 2
+            },
+            "placement_type": "Manual",
+            "enemies": [
+                {
+                    "enemy_id": "0x015040",
+                    "level": 20,
+                    "exp": 4660,
+                    "named_enemy_params_id": 141,
+                    "is_boss": true,
+                    "index": 6
+                },
+                {
+                    "enemy_id": "0x010200",
+                    "level": 18,
+                    "named_enemy_params_id": 142,
+                    "index": 3,
+                    "exp": 64,
+                    "index": 4
+                },
+                {
+                    "enemy_id": "0x010200",
+                    "level": 18,
+                    "named_enemy_params_id": 142,
+                    "index": 3,
+                    "exp": 64,
+                    "index": 10
+                },
+                {
+                    "enemy_id": "0x010200",
+                    "level": 18,
+                    "named_enemy_params_id": 142,
+                    "index": 3,
+                    "exp": 64,
+                    "index": 11
+                },
+                {
+                    "enemy_id": "0x010200",
+                    "level": 18,
+                    "named_enemy_params_id": 142,
+                    "index": 3,
+                    "exp": 64,
+                    "index": 12
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 3,
+                "group_id": 1
+            },
+            "flags": [
+                {"type": "WorldManageLayout", "action": "Set", "value": 1215, "quest_id": 70000001, "comment": "Mysial"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1219, "quest_id": 70000001, "comment": "Iris"},
+                {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1293, "quest_id": 70000001, "comment": "The White Dragon (Dead)"},
+                {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"}
+            ],
+            "npc_id": "Joseph",
+            "message_id": 7603
+        },
+        {
+            "type": "PartyGather",
+            "stage_id": {
+                "id": 1
+            },
+            "location": {
+                "x": -122500,
+                "y": 2849,
+                "z": 56113
+            },
+            "announce_type": "Accept",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 977, "comment": "Spawns Gerd and the White Knights outside Glowworm Cave"}
+            ]
+        },
+        {
+            "type": "PlayEvent",
+            "stage_id": {
+                "id": 1
+            },
+            "flags": [
+                {"type": "QstLayout", "action": "Clear", "value": 977, "comment": "Spawns Gerd and the White Knights outside Glowworm Cave"}
+            ],
+            "event_id": 20
+        },
+        {
+            "type": "PartyGather",
+            "checkpoint": true,
+            "stage_id": {
+                "id": 67
+            },
+            "location": {
+                "x": -1668,
+                "y": -3001,
+                "z": 7508
+            },
+            "announce_type": "Update"
+        },
+        {
+            "type": "PlayEvent",
+            "stage_id": {
+                "id": 67
+            },
+            "jump_stage_id": {
+                "id": 67
+            },
+            "start_pos_no": 2,
+            "event_id": 0
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 912, "comment": "Mine Rock Wall"}
+            ],
+            "groups": [0]
+        },
+        {
+            "type": "PlayEvent",
+            "stage_id": {
+                "id": 67
+            },
+            "event_id": 10
+        },
+        {
+            "type": "PlayEvent",
+            "stage_id": {
+                "id": 67
+            },
+            "event_id": 5
+        },
+        {
+            "type": "TalkToNpc",
+            "checkpoint": true,
+            "announce_type": "Update",
+            "stage_id": {
+                "id": 67,
+                "group_id": 1
+            },
+            "flags": [
+                {"type": "QstLayout", "action": "Clear", "value": 912, "comment": "Mine Rock Wall"},
+                {"type": "QstLayout", "action": "Clear", "value": 977, "comment": "Spawns Gerd and the White Knights outside Glowworm Cave"},
+                {"type": "QstLayout", "action": "Set", "value": 979, "comment": "Spawns Gerd1, Mayleaf0"}
+            ],
+            "npc_id": "Mayleaf0",
+            "message_id": 10934
+        },
+        {
+            "type": "PartyGather",
+            "checkpoint": true,
+            "announce_type": "Update",
+            "stage_id": {
+                "id": 1
+            },
+            "location": {
+                "x": -76088,
+                "y": 4285,
+                "z": 32829
+            }
+        },
+        {
+            "type": "PlayEvent",
+            "stage_id": {
+                "id": 1
+            },
+            "event_id": 25
+        },
+        {
+            "type": "TalkToNpc",
+            "checkpoint": true,
+            "announce_type": "Update",
+            "stage_id": {
+                "id": 3,
+                "group_id": 1
+            },
+            "npc_id": "Joseph",
+            "message_id": 7615
+        }
+    ]
+}

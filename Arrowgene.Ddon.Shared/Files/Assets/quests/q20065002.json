@@ -1,0 +1,90 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Unbidden Guest",
+  "quest_id": 20065002,
+  "base_level": 35,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "MysreeGrove",
+  "news_image": 564,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 960
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 150
+    },
+    {
+      "type": "exp",
+      "amount": 1150
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 711,
+          "num": 1
+        },
+        {
+          "item_id": 9375,
+          "num": 3
+        },
+        {
+          "item_id": 9410,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 111,
+        "group_id": 2
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x010411",
+          "level": 35,
+          "exp": 450,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010411",
+          "level": 35,
+          "exp": 450,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010411",
+          "level": 35,
+          "exp": 450,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010411",
+          "level": 35,
+          "exp": 450,
+          "is_boss": false
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

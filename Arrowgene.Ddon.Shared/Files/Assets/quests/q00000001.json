@@ -1,0 +1,321 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "Resolutions and Omens",
+    "quest_id": 1,
+    "next_quest": 2,
+    "base_level": 1,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "reset_player_after_quest": true,
+    "rewards": [],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 230,
+                "group_id": 1
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010100",
+                    "level": 10,
+                    "exp": 0,
+                    "is_boss": false,
+                    "named_enemy_params_id": 122,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "enemy_id": "0x010100",
+                    "level": 10,
+                    "exp": 0,
+                    "is_boss": false,
+                    "named_enemy_params_id": 122,
+                    "enemy_target_types_id": 1
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 230,
+                "group_id": 2
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x011200",
+                    "level": 8,
+                    "exp": 0,
+                    "is_boss": false,
+                    "named_enemy_params_id": 126,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "enemy_id": "0x010100",
+                    "level": 10,
+                    "exp": 0,
+                    "is_boss": false,
+                    "named_enemy_params_id": 123,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "enemy_id": "0x011200",
+                    "level": 8,
+                    "exp": 0,
+                    "is_boss": false,
+                    "named_enemy_params_id": 126,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "enemy_id": "0x010100",
+                    "level": 10,
+                    "exp": 0,
+                    "is_boss": false,
+                    "named_enemy_params_id": 123,
+                    "enemy_target_types_id": 1
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 230,
+                "group_id": 3
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015800",
+                    "level": 12,
+                    "exp": 0,
+                    "is_boss": false,
+                    "named_enemy_params_id": 125,
+                    "enemy_target_types_id": 1
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 300,
+                "group_id": 1
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015800",
+                    "level": 12,
+                    "exp": 0,
+                    "is_boss": false,
+                    "named_enemy_params_id": 125,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "enemy_id": "0x015800",
+                    "level": 12,
+                    "exp": 0,
+                    "is_boss": false,
+                    "named_enemy_params_id": 125,
+                    "enemy_target_types_id": 1
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 300,
+                "group_id": 2
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010101",
+                    "level": 10,
+                    "exp": 0,
+                    "is_boss": false,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "enemy_id": "0x010101",
+                    "level": 10,
+                    "exp": 0,
+                    "is_boss": false,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "enemy_id": "0x010101",
+                    "level": 10,
+                    "exp": 0,
+                    "is_boss": false,
+                    "enemy_target_types_id": 1
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 300,
+                "group_id": 0
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015800",
+                    "level": 12,
+                    "exp": 0,
+                    "is_boss": false,
+                    "named_enemy_params_id": 125
+                },
+                {
+                    "enemy_id": "0x015800",
+                    "level": 12,
+                    "exp": 0,
+                    "is_boss": false,
+                    "named_enemy_params_id": 125
+                },
+                {
+                    "enemy_id": "0x015800",
+                    "level": 12,
+                    "exp": 0,
+                    "is_boss": false,
+                    "named_enemy_params_id": 125
+                },
+                {
+                    "enemy_id": "0x015800",
+                    "level": 12,
+                    "exp": 0,
+                    "is_boss": false,
+                    "named_enemy_params_id": 125
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 284},
+                        {"type": "QstLayout", "action": "Set", "value": 937}
+                    ],
+                    "check_commands": [
+                        {"type": "EventEnd", "Param1": 101, "Param2": 10}
+                    ],
+                    "result_commands": [
+                        {"type": "ExeEventAfterStageJump", "Param1": 101, "Param2": 10, "Param3": 0}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "Accept",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 4, "comment": "Leo Waiting for Action to Begin"},
+                        {"type": "MyQst", "action": "Set", "value": 1, "comment": "Starts check for login in second process"}
+                    ],
+                    "check_commands": [
+                        {"type": "SceHitIn", "Param1": 101, "Param2": 1}
+                    ],
+                    "result_commands": [
+                    ]
+                },
+                {
+                    "type": "KillGroup",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 11, "comment": "Iris NPC FSM"},
+                        {"type": "MyQst", "action": "Set", "value": 934, "comment": "Move in front of the enemy"},
+                        {"type": "MyQst", "action": "Set", "value": 935, "comment": "Move in front of the enemy"}
+                    ],
+                    "groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 13, "comment": "Leo"},
+                        {"type": "MyQst", "action": "Set", "value": 936, "comment": "Leo moves to next battle"},
+                        {"type": "MyQst", "action": "Set", "value": 937, "comment": "Iris idle"},
+                        {"type": "MyQst", "action": "Set", "value": 598, "comment": "Iris Moves to next battle"},
+                        {"type": "MyQst", "action": "Set", "value": 942, "comment": "Leo moves to next battle"}
+                    ],
+                    "groups": [1]
+                },
+                {
+                    "type": "KillGroup",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 946, "comment": "Leo moves to next battle"}
+                    ],
+                    "groups": [2]
+                },
+                {
+                    "type": "Raw",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 18, "comment": "Move to end"},
+                        {"type": "MyQst", "action": "Set", "value": 599, "comment": "Move Iris and Leo to gate"}
+                    ],
+                    "check_commands": [
+                        {"type": "StageNo", "Param1": 423}
+                    ],
+                    "result_commands": []
+                },
+                {
+                    "type": "Raw",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 284},
+                        {"type": "QstLayout", "action": "Set", "value": 1277}
+                    ],
+                    "check_commands": [
+                        {"type": "EventEnd", "Param1": 423, "Param2": 0}
+                    ],
+                    "result_commands": [
+                        {"type": "EventExec", "Param1": 423, "Param2": 0, "Param3": 423, "Param4": 0}
+                    ]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 20}
+                    ],
+                    "groups": [3]
+                },
+                {
+                    "type": "KillGroup",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 649}
+                    ],
+                    "groups": [4]
+                },
+                {
+                    "type": "KillGroup",
+                    "groups": [5]
+                },
+                {
+
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "EventEnd", "Param1": 423, "Param2": 5}
+                    ],
+                    "result_commands": [
+                        {"type": "EventExec", "Param1": 423, "Param2": 5, "Param3": 101, "Param4": 0}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "EventEnd", "Param1": 101, "Param2": 5}
+                    ],
+                    "result_commands": [
+                        {"type": "EventExec", "Param1": 101, "Param2": 5, "Param3": 200, "Param4": 1}
+                    ]
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "IsLogin"},
+                        {"type": "MyQstFlagOn", "Param1": 1}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "result_commands": [
+                        {"type": "StageJump", "Param1": 101, "Param2":  0}
+                    ]
+                }
+            ]
+        }
+    ]
+}

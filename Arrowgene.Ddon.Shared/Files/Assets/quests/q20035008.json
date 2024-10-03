@@ -1,0 +1,72 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Echoing Roars in the Tunnel",
+  "quest_id": 20035008,
+  "base_level": 32,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DoweValley",
+  "news_image": 535,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1050
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 140
+    },
+    {
+      "type": "exp",
+      "amount": 1230
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 9709,
+          "num": 1
+        },
+        {
+          "item_id": 9414,
+          "num": 1
+        },
+        {
+          "item_id": 9384,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 100,
+        "group_id": 4
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015500",
+          "level": 32,
+          "exp": 5400,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

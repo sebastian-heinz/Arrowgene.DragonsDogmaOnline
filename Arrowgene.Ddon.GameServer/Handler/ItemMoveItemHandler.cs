@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -20,31 +18,52 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
             ntc.UpdateType = DetermineUpdateType(packet.Structure.SourceGameStorageType);
-            foreach (CDataMoveItemUIDFromTo itemFromTo in packet.Structure.ItemUIDList)
+            Server.Database.ExecuteInTransaction(connection =>
             {
-                ntc.UpdateItemList.AddRange(Server.ItemManager.MoveItem(Server, client.Character, itemFromTo.SrcStorageType, itemFromTo.ItemUId, itemFromTo.Num, itemFromTo.DstStorageType, itemFromTo.SlotNo));
-            }
-            client.Send(ntc);
+                foreach (CDataMoveItemUIDFromTo itemFromTo in packet.Structure.ItemUIDList)
+                {
+                    ntc.UpdateItemList.AddRange(
+                        Server.ItemManager.MoveItem(
+                            Server,
+                            client.Character,
+                            client.Character.Storage.GetStorage(itemFromTo.SrcStorageType),
+                            itemFromTo.ItemUId,
+                            itemFromTo.Num,
+                            client.Character.Storage.GetStorage(itemFromTo.DstStorageType),
+                            itemFromTo.SlotNo,
+                            connection
+                        )
+                    );
+                }
+            });
             
+            client.Send(ntc);
+
             client.Send(new S2CItemMoveItemRes());
         }
 
         // Taken from sItemManager::moveItemsFunc (0xB9F867 in the PC Dump)
         // TODO: Cleanup
-        private ushort DetermineUpdateType(byte sourceGameStorageType)
+        private ItemNoticeType DetermineUpdateType(byte sourceGameStorageType)
         {
             switch ( sourceGameStorageType )
             {
                 case 1:
-                    return 49;
+                    return ItemNoticeType.TemporaryItems;
                 case 7:
-                    return 22;
+                    return ItemNoticeType.ExStorageItems;
+                case 8:
+                case 9:
+                case 10:
+                    return ItemNoticeType.BaggageItems; //Found by binary search, may not be the "correct" one, but it does work.
+                case 13:
+                    return ItemNoticeType.LoadPostItems;
                 case 19:
-                    return 8;
+                    return ItemNoticeType.StoreStorage_items;
                 case 20:
-                    return 9;
+                    return ItemNoticeType.LoadStorage_items;
                 default:
-                    return 0;
+                    return ItemNoticeType.Default;
             }
         }
     }

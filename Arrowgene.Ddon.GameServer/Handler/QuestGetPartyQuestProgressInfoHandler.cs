@@ -9,6 +9,7 @@ using Arrowgene.Logging;
 using System.Collections.Generic;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -35,10 +36,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             foreach (var questId in client.Party.QuestState.GetActiveQuestIds())
             {
-                var quest = QuestManager.GetQuest(questId);
-                pcap.QuestOrderList.Add(quest.ToCDataQuestOrderList());
+                var quest = client.Party.QuestState.GetQuest(questId);
+                var questState = client.Party.QuestState.GetQuestState(questId);
+                pcap.QuestOrderList.Add(quest.ToCDataQuestOrderList(questState.Step));
             }
-            
+
 #if false
             EntitySerializer<S2CQuestGetPartyQuestProgressInfoRes> serializer = EntitySerializer.Get<S2CQuestGetPartyQuestProgressInfoRes>();
             S2CQuestGetPartyQuestProgressInfoRes pcap = serializer.Read(early_stream);

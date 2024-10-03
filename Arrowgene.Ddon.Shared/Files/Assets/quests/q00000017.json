@@ -1,0 +1,72 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "The Course of Life",
+    "quest_id": 17,
+    "next_quest": 28,
+    "base_level": 43,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [],
+    "enemy_groups": [],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 3,
+                "group_id": 1
+            },
+            "flags": [
+                {"type": "WorldManageLayout", "action": "Set", "value": 1215, "quest_id": 70000001, "comment": "Mysial"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
+                {"type": "WorldManageLayout", "action": "Clear", "value": 1219, "quest_id": 70000001, "comment": "Iris"},
+                {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1294, "quest_id": 70000001, "comment": "The White Dragon (Less Dead)"},
+                {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"}
+            ],
+            "npc_id": "Mysial0",
+            "message_id": 0
+        },
+        {
+            "type": "PlayEvent",
+            "stage_id": {
+                "id": 3
+            },
+            "jump_stage_id": {
+                "id": 1
+            },
+            "event_id": 65
+        },
+        {
+            "type": "PlayEvent",
+            "stage_id": {
+                "id": 1
+            },
+            "jump_stage_id": {
+                "id": 3
+            },
+            "event_id": 55
+        },
+        {
+            "type": "PlayEvent",
+            "stage_id": {
+                "id": 3
+            },
+            "event_id": 66
+        },
+        {
+            "type": "TalkToNpc",
+            "announce_type": "Accept",
+            "flags": [
+                {"type": "WorldManageLayout", "action": "Clear", "value": 1294, "quest_id": 70000001, "comment": "The White Dragon (Less Dead)"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 7389, "quest_id": 70032001, "comment": "The White Dragon (Less Less Dead)"}
+            ],
+            "stage_id": {
+                "id": 3,
+                "group_id": 1
+            },
+            "npc_id": "Joseph",
+            "message_id": 11533
+        }
+    ]
+}

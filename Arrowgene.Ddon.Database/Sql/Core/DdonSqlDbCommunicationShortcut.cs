@@ -1,5 +1,6 @@
-using System.Data.Common;
+#nullable enable
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using System.Data.Common;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -47,21 +48,22 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
         
-        public bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut)
+        public bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return ReplaceCommunicationShortcut(connection, characterId, communicationShortcut);
-        }      
-        
-        public bool ReplaceCommunicationShortcut(TCon connection, uint characterId, CDataCommunicationShortCut communicationShortcut)
-        {
-            Logger.Debug("Inserting communication shortcut.");
-            if (!InsertIfNotExistsCommunicationShortcut(connection, characterId, communicationShortcut))
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
             {
-                Logger.Debug("Communication shortcut already exists, replacing.");
-                return UpdateCommunicationShortcut(connection, characterId, communicationShortcut.PageNo, communicationShortcut.ButtonNo, communicationShortcut);
+                if (!InsertIfNotExistsCommunicationShortcut((TCon)connection, characterId, communicationShortcut))
+                {
+                    return UpdateCommunicationShortcut((TCon)connection, characterId, communicationShortcut.PageNo, communicationShortcut.ButtonNo, communicationShortcut);
+                }
+                return true;
             }
-            return true;
+            finally
+            {
+                if (!isTransaction) connection.Dispose();
+            }
         }
 
         public bool UpdateCommunicationShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataCommunicationShortCut updatedCommunicationShortcut)

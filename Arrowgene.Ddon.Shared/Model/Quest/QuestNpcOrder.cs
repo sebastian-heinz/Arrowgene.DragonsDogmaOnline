@@ -10,7 +10,6 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
     {
         public NpcId NpcId { get; set; }
         public int MsgId { get; set; }
-
         public StageId StageId { get; set; }
 
         public QuestNpcOrder()

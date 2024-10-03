@@ -1,0 +1,72 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Sudden Urge to Kill",
+  "quest_id": 20105007,
+  "base_level": 45,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DeenanWoods",
+  "news_image": 204,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1410
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 230
+    },
+    {
+      "type": "exp",
+      "amount": 2070
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 9260,
+          "num": 1
+        },
+        {
+          "item_id": 9418,
+          "num": 1
+        },
+        {
+          "item_id": 9415,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 97,
+        "group_id": 7
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015500",
+          "level": 45,
+          "exp": 13000,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

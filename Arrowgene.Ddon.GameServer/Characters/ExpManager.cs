@@ -7,6 +7,13 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Logging;
+using Arrowgene.Ddon.Server.Network;
+using System.Linq;
+using Arrowgene.Ddon.Shared.Model.Quest;
+using Arrowgene.Ddon.GameServer.Party;
+using System.IO;
+using System.Text;
+using System.Buffers.Text;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -27,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ExpManager));
 
-        private static readonly byte LV_CAP = 120;
+        public static readonly byte LV_CAP = 120;
 
         // E.g. EXP_UNTIL_NEXT_LV[3] = 800, meaning as Lv 3 you need 800 exp to level to Lv 4
         public static readonly uint[] EXP_UNTIL_NEXT_LV = new uint[] {
@@ -151,6 +158,66 @@ namespace Arrowgene.Ddon.GameServer.Characters
             /* Lv 117 */ 5000000,
             /* Lv 118 */ 5000000,
             /* Lv 119 */ 5000000,
+        };
+
+        private static readonly uint[] BBM_EXP_UNTIL_NEXT_LV = new uint[]
+        {
+            /********/ 0,
+            /* LV 1 */ 500,
+            /* LV 2 */ 500,
+            /* LV 3 */ 500,
+            /* LV 4 */ 500,
+            /* LV 5 */ 500,
+            /* LV 6 */ 500,
+            /* LV 7 */ 500,
+            /* LV 8 */ 500,
+            /* LV 9 */ 500,
+            /* LV 10 */ 500,
+            /* LV 11 */ 500,
+            /* LV 12 */ 500,
+            /* LV 13 */ 500,
+            /* LV 14 */ 500,
+            /* LV 15 */ 500,
+            /* LV 16 */ 500,
+            /* LV 17 */ 500,
+            /* LV 18 */ 500,
+            /* LV 19 */ 500,
+            /* LV 20 */ 500,
+            /* LV 21 */ 3000,
+            /* LV 22 */ 3000,
+            /* LV 23 */ 3000,
+            /* LV 24 */ 3000,
+            /* LV 25 */ 3000,
+            /* LV 26 */ 3000,
+            /* LV 27 */ 3000,
+            /* LV 28 */ 3000,
+            /* LV 29 */ 3000,
+            /* LV 30 */ 3000,
+            /* LV 31 */ 3000,
+            /* LV 32 */ 3000,
+            /* LV 33 */ 3000,
+            /* LV 34 */ 3000,
+            /* LV 35 */ 3000,
+            /* LV 36 */ 3000,
+            /* LV 37 */ 3000,
+            /* LV 38 */ 3000,
+            /* LV 39 */ 3000,
+            /* LV 40 */ 5000,
+            /* LV 41 */ 5000,
+            /* LV 42 */ 5000,
+            /* LV 43 */ 5000,
+            /* LV 44 */ 5000,
+            /* LV 45 */ 5000,
+            /* LV 46 */ 5000,
+            /* LV 47 */ 5000,
+            /* LV 48 */ 5000,
+            /* LV 49 */ 5000,
+            /* LV 50 */ 8000,
+            /* LV 51 */ 8000,
+            /* LV 52 */ 8000,
+            /* LV 53 */ 8000,
+            /* LV 54 */ 8000,
+            /* LV 55 */ 8000,
         };
 
         // E.g. LEVEL_UP_JOB_POINTS_EARNED[3] = 300, meaning you earn 300 JP when you reach Lv 3
@@ -331,14 +398,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 },
             };
 
-        public ExpManager(IDatabase database, GameClientLookup gameClientLookup)
+        public ExpManager(DdonGameServer server, GameClientLookup gameClientLookup)
         {
-            this._database = database;
+            this._Server = server;
             this._gameClientLookup = gameClientLookup;
+            this._GameSettings = server.Setting.GameLogicSetting;
         }
 
-        protected readonly IDatabase _database;
+        private DdonGameServer _Server;
         protected readonly GameClientLookup _gameClientLookup;
+        private GameLogicSetting _GameSettings;
 
         private bool CalculateAndAssignStats(CharacterCommon Character)
         {
@@ -356,6 +425,19 @@ namespace Arrowgene.Ddon.GameServer.Characters
             ActiveCharacterJobData.MDef = (ushort)(baseStats.MDef + (ActiveCharacterJobData.Lv - 1) * baseStats.MDefRate);
 
             return true;
+        }
+
+        public static CDataCharacterJobData CalculateBaseStats(JobId jobId, uint Level)
+        {
+            CDataCharacterJobData JobData = new CDataCharacterJobData();
+
+            BaseStats baseStats = BASE_STATS_TABLE[jobId];
+            JobData.Atk = (ushort)(baseStats.Atk + (Level - 1) * baseStats.AtkRate);
+            JobData.Def = (ushort)(baseStats.Def + (Level - 1) * baseStats.DefRate);
+            JobData.MAtk = (ushort)(baseStats.MAtk + (Level - 1) * baseStats.MAtkRate);
+            JobData.MDef = (ushort)(baseStats.MDef + (Level - 1) * baseStats.MDefRate);
+
+            return JobData;
         }
 
         public static CDataCharacterJobData CalculateBaseStats(CharacterCommon Character)
@@ -376,35 +458,40 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return JobData;
         }
 
-        public void AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, uint extraBonusExp, byte type = 0)
+        public void AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, RewardSource rewardType, QuestType questType = QuestType.All)
         {
+            var lvCap = (client.GameMode == GameMode.Normal) ? ExpManager.LV_CAP : BitterblackMazeManager.LevelCap(client.Character.BbmProgress);
+
             CDataCharacterJobData? activeCharacterJobData = characterToAddExpTo.ActiveCharacterJobData;
-            if (activeCharacterJobData != null && activeCharacterJobData.Lv < ExpManager.LV_CAP)
+            if (activeCharacterJobData != null && activeCharacterJobData.Lv < lvCap)
             {
                 // ------
                 // EXP UP
 
+                uint extraBonusExp = CalculateExpBonus(characterToAddExpTo, gainedExp, rewardType, questType);
+
                 activeCharacterJobData.Exp += gainedExp;
                 activeCharacterJobData.Exp += extraBonusExp;
 
-                if(characterToAddExpTo is Character)
+                if (characterToAddExpTo is Character)
                 {
                     S2CJobCharacterJobExpUpNtc expNtc = new S2CJobCharacterJobExpUpNtc();
                     expNtc.JobId = activeCharacterJobData.Job;
-                    expNtc.AddExp = gainedExp;
+                    expNtc.AddExp = gainedExp + extraBonusExp;
                     expNtc.ExtraBonusExp = extraBonusExp;
                     expNtc.TotalExp = activeCharacterJobData.Exp;
-                    expNtc.Type = type; // TODO: Figure out
+                    expNtc.Type = (byte) rewardType; // TODO: Figure out
                     client.Send(expNtc);
                 }
                 else if(characterToAddExpTo is Pawn)
                 {
                     S2CJobPawnJobExpUpNtc expNtc = new S2CJobPawnJobExpUpNtc();
+                    expNtc.PawnId = ((Pawn)characterToAddExpTo).PawnId;
                     expNtc.JobId = activeCharacterJobData.Job;
-                    expNtc.AddExp = gainedExp;
+                    expNtc.AddExp = gainedExp + extraBonusExp;
                     expNtc.ExtraBonusExp = extraBonusExp;
                     expNtc.TotalExp = activeCharacterJobData.Exp;
-                    expNtc.Type = type; // TODO: Figure out
+                    expNtc.Type = (byte) rewardType; // TODO: Figure out
                     client.Send(expNtc);
                 }
 
@@ -415,10 +502,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 uint targetLevel = currentLevel;
                 uint addJobPoint = 0;
 
-                while (targetLevel < LV_CAP && activeCharacterJobData.Exp >= ExpManager.TotalExpToLevelUpTo(targetLevel + 1))
+                while (targetLevel < lvCap && activeCharacterJobData.Exp >= ExpManager.TotalExpToLevelUpTo(targetLevel + 1, client.GameMode))
                 {
                     targetLevel++;
-                    addJobPoint+=LEVEL_UP_JOB_POINTS_EARNED[targetLevel];
+
+                    if (client.GameMode == GameMode.Normal)
+                    {
+                        addJobPoint += LEVEL_UP_JOB_POINTS_EARNED[targetLevel];
+                    }
                 }
 
                 if (currentLevel != targetLevel || addJobPoint != 0)
@@ -471,18 +562,390 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
 
                 // PERSIST CHANGES IN DB
-                this._database.UpdateCharacterJobData(characterToAddExpTo.CommonId, activeCharacterJobData);
+                _Server.Database.UpdateCharacterJobData(characterToAddExpTo.CommonId, activeCharacterJobData);
             }
         }
 
-        public static uint TotalExpToLevelUpTo(uint level)
+        public void AddJp(GameClient client, CharacterCommon characterToJpExpTo, uint gainedJp, RewardSource rewardType, QuestType questType = QuestType.All)
         {
+            CDataCharacterJobData? activeCharacterJobData = characterToJpExpTo.ActiveCharacterJobData;
+            activeCharacterJobData.JobPoint += gainedJp;
+
+            if (characterToJpExpTo is Character)
+            {
+                S2CUpdateCharacterJobPointNtc jpNtc = new S2CUpdateCharacterJobPointNtc();
+                jpNtc.Job = characterToJpExpTo.Job;
+                jpNtc.AddJobPoint = gainedJp;
+                jpNtc.ExtraBonusJobPoint = 0;
+                jpNtc.TotalJobPoint = activeCharacterJobData.JobPoint;
+                client.Send(jpNtc);
+            }
+            else
+            {
+                S2CJobPawnJobPointNtc jpNtc = new S2CJobPawnJobPointNtc();
+                jpNtc.PawnId = ((Pawn)characterToJpExpTo).PawnId;
+                jpNtc.Job = characterToJpExpTo.Job;
+                jpNtc.AddJobPoint = gainedJp;
+                jpNtc.ExtraBonusJobPoint = 0;
+                jpNtc.TotalJobPoint = activeCharacterJobData.JobPoint;
+                client.Send(jpNtc);
+            }
+
+            // PERSIST CHANGES IN DB
+            _Server.Database.UpdateCharacterJobData(characterToJpExpTo.CommonId, activeCharacterJobData);
+        }
+
+        public void ResetExpData(GameClient client, CharacterCommon characterCommon)
+        {
+            foreach (var jobData in client.Character.CharacterJobDataList)
+            {
+                if (jobData.Lv == 1 && jobData.Exp == 0)
+                {
+                    // We can skip sending this NTC since the job was never leveled
+                    continue;
+                }
+
+                jobData.Lv = 1;
+                jobData.JobPoint = 0;
+                jobData.Exp = 0;
+
+                CalculateAndAssignStats(characterCommon);
+
+                if (characterCommon is Character)
+                {
+                    S2CJobCharacterJobExpUpNtc expNtc = new S2CJobCharacterJobExpUpNtc();
+                    expNtc.JobId = jobData.Job;
+                    expNtc.AddExp = 0;
+                    expNtc.ExtraBonusExp = 0;
+                    expNtc.TotalExp = jobData.Exp;
+                    client.Send(expNtc);
+
+                    // Inform client of lvl up
+                    S2CJobCharacterJobLevelUpNtc lvlNtc = new S2CJobCharacterJobLevelUpNtc();
+                    lvlNtc.Job = jobData.Job;
+                    lvlNtc.Level = jobData.Lv;
+                    lvlNtc.AddJobPoint = 0;
+                    lvlNtc.TotalJobPoint = 0;
+                    GameStructure.CDataCharacterLevelParam(lvlNtc.CharacterLevelParam, (Character)characterCommon);
+                    client.Send(lvlNtc);
+
+                    // Inform other party members
+                    S2CJobCharacterJobLevelUpMemberNtc lvlMemberNtc = new S2CJobCharacterJobLevelUpMemberNtc();
+                    lvlMemberNtc.CharacterId = ((Character)characterCommon).CharacterId;
+                    lvlMemberNtc.Job = jobData.Job;
+                    lvlMemberNtc.Level = jobData.Lv;
+                    GameStructure.CDataCharacterLevelParam(lvlMemberNtc.CharacterLevelParam, (Character)characterCommon);
+                    client.Party.SendToAllExcept(lvlMemberNtc, client);
+                }
+                else if (characterCommon is Pawn)
+                {
+                    S2CJobPawnJobExpUpNtc expNtc = new S2CJobPawnJobExpUpNtc();
+                    expNtc.JobId = jobData.Job;
+                    expNtc.AddExp = 0;
+                    expNtc.ExtraBonusExp = 0;
+                    expNtc.TotalExp = jobData.Exp;
+                    client.Send(expNtc);
+
+                    // Inform client of lvl up
+                    S2CJobPawnJobLevelUpNtc lvlNtc = new S2CJobPawnJobLevelUpNtc();
+                    lvlNtc.PawnId = ((Pawn)characterCommon).PawnId;
+                    lvlNtc.Job = jobData.Job;
+                    lvlNtc.Level = jobData.Lv;
+                    lvlNtc.AddJobPoint = 0;
+                    lvlNtc.TotalJobPoint = 0;
+                    GameStructure.CDataCharacterLevelParam(lvlNtc.CharacterLevelParam, (Pawn)characterCommon);
+                    client.Send(lvlNtc);
+
+                    // Inform other party members
+                    S2CJobPawnJobLevelUpMemberNtc lvlMemberNtc = new S2CJobPawnJobLevelUpMemberNtc();
+                    lvlMemberNtc.CharacterId = ((Pawn)characterCommon).CharacterId;
+                    lvlMemberNtc.PawnId = ((Pawn)characterCommon).PawnId;
+                    lvlMemberNtc.Job = jobData.Job;
+                    lvlMemberNtc.Level = jobData.Lv;
+                    GameStructure.CDataCharacterLevelParam(lvlMemberNtc.CharacterLevelParam, (Pawn)characterCommon);
+                    client.Party.SendToAllExcept(lvlMemberNtc, client);
+                }
+
+                _Server.Database.UpdateCharacterJobData(characterCommon.CommonId, jobData);
+            }
+        }
+
+        public static uint TotalExpToLevelUpTo(uint level, GameMode gameMode)
+        {
+            var expTable = (gameMode == GameMode.Normal) ? EXP_UNTIL_NEXT_LV : BBM_EXP_UNTIL_NEXT_LV;
+
             uint totalExp = 0;
             for (int i = 1; i < level; i++)
             {
-                totalExp += EXP_UNTIL_NEXT_LV[i];
+                totalExp += expTable[i];
             }
             return totalExp;
+        }
+
+        private double RookiesRingBonus()
+        {
+            return _GameSettings.RookiesRingBonus;
+        }
+
+        private uint RookiesRingMaxLevel()
+        {
+            return _GameSettings.RookiesRingMaxLevel;
+        }
+
+        private uint GetRookiesRingBonus(CharacterCommon characterCommon, uint baseExpAmount)
+        {
+            if (characterCommon.ActiveCharacterJobData.Lv > RookiesRingMaxLevel())
+            {
+                return 0;
+            }
+
+            if (!characterCommon.Equipment.GetItems(EquipType.Performance).Exists(x => x?.ItemId == 11718))
+            {
+                return 0;
+            }
+
+            double result = baseExpAmount * RookiesRingBonus();
+            return (uint)result;
+        }
+
+        private uint GetCourseExpBonus(CharacterCommon characterCommon, uint baseExpAmount, RewardSource source, QuestType questType)
+        {
+            double multiplier = 0;
+            switch (source)
+            {
+                case RewardSource.Enemy:
+                    multiplier = _Server.GpCourseManager.EnemyExpBonus(characterCommon);
+                    break;
+                case RewardSource.Quest:
+                    multiplier = _Server.GpCourseManager.QuestExpBonus(questType);
+                    break;
+            }
+
+            return (uint) (baseExpAmount * multiplier);
+        }
+
+        public uint CalculateExpBonus(CharacterCommon characterCommon, uint baseExpAmount, RewardSource source, QuestType questType)
+        {
+            uint bonusAmount = 0;
+
+            bonusAmount += GetRookiesRingBonus(characterCommon, baseExpAmount);
+            bonusAmount += GetCourseExpBonus(characterCommon, baseExpAmount, source, questType);
+
+            return bonusAmount;
+        }
+
+        private uint PartyLevelRange(PartyGroup party)
+        {
+            var firstMember = party.Clients.First();
+            uint maxLevel = firstMember.Character.ActiveCharacterJobData.Lv;
+            uint minLevel = firstMember.Character.ActiveCharacterJobData.Lv;
+
+            foreach (var member in party.Members)
+            {
+                CharacterCommon characterCommon = null;
+                if (member is PlayerPartyMember)
+                {
+                    var client = ((PlayerPartyMember)member).Client;
+                    characterCommon = client.Character;
+                }
+                else if (member is PawnPartyMember)
+                {
+                    characterCommon = ((PawnPartyMember)member).Pawn;
+                }
+                else
+                {
+                    // Is this possible?
+                    continue;
+                }
+
+                maxLevel = Math.Max(maxLevel, characterCommon.ActiveCharacterJobData.Lv);
+                minLevel = Math.Min(minLevel, characterCommon.ActiveCharacterJobData.Lv);
+            }
+
+            return maxLevel - minLevel;
+        }
+
+        private uint PartyMemberMaxLevel(PartyGroup party)
+        {
+            uint maxLevel = party.Clients.First().Character.ActiveCharacterJobData.Lv;
+            foreach (var member in party.Members)
+            {
+                CharacterCommon characterCommon = null;
+                if (member is PlayerPartyMember)
+                {
+                    var client = ((PlayerPartyMember)member).Client;
+                    characterCommon = client.Character;
+                }
+                else if (member is PawnPartyMember)
+                {
+                    characterCommon = ((PawnPartyMember)member).Pawn;
+                }
+                else
+                {
+                    // Is this possible?
+                    continue;
+                }
+
+                maxLevel = Math.Max(maxLevel, characterCommon.ActiveCharacterJobData.Lv);
+            }
+
+            return maxLevel;
+        }
+
+        private double CalculatePartyRangeMultipler(GameMode gameMode, PartyGroup party)
+        {
+            if (!_GameSettings.AdjustPartyEnemyExp || gameMode == GameMode.BitterblackMaze)
+            {
+                return 1.0;
+            }
+
+            var range = PartyLevelRange(party);
+
+            double multiplier = 0;
+            foreach (var tier in _GameSettings.AdjustPartyEnemyExpTiers)
+            {
+                if (range >= tier.MinLv && range <= tier.MaxLv)
+                {
+                    multiplier = tier.ExpMultiplier;
+                    break;
+                }
+            }
+
+            return multiplier;
+        }
+
+        private double CalculateTargetLvMultiplier(GameMode gameMode, PartyGroup party, uint targetLv)
+        {
+            if (!_GameSettings.AdjustTargetLvEnemyExp || gameMode == GameMode.BitterblackMaze)
+            {
+                return 1.0;
+            }
+
+            var maxLevelInParty = PartyMemberMaxLevel(party);
+            if (maxLevelInParty <= targetLv)
+            {
+                return 1.0;
+            }
+
+            var range = maxLevelInParty - targetLv;
+
+            double multiplier = 0;
+            foreach (var tier in _GameSettings.AdjustTargetLvEnemyExpTiers)
+            {
+                if (range >= tier.MinLv && range <= tier.MaxLv)
+                {
+                    multiplier = tier.ExpMultiplier;
+                    break;
+                }
+            }
+
+            return multiplier;
+        }
+
+        public uint GetAdjustedExp(GameMode gameMode, RewardSource source, PartyGroup party, uint baseExpAmount, uint targetLv)
+        {
+            if (_Server.GpCourseManager.DisablePartyExpAdjustment())
+            {
+                return baseExpAmount;
+            }
+
+            double multiplier = 1.0;
+            if (source == RewardSource.Enemy)
+            {
+                var targetMultiplier = CalculateTargetLvMultiplier(gameMode, party, targetLv);
+                var partyRangeMultiplier = CalculatePartyRangeMultipler(gameMode, party);
+                multiplier = Math.Min(partyRangeMultiplier, targetMultiplier);
+            }
+            
+            return (uint)(multiplier * baseExpAmount);
+        }
+
+        private uint GetMaxAllowedPartyRange()
+        {
+            if (_GameSettings.AdjustPartyEnemyExpTiers.Count == 0)
+            {
+                return 0;
+            }
+
+            uint min = _GameSettings.AdjustPartyEnemyExpTiers[0].MinLv;
+            uint max = _GameSettings.AdjustPartyEnemyExpTiers[0].MaxLv;
+
+            foreach (var tier in _GameSettings.AdjustPartyEnemyExpTiers)
+            {
+                min = Math.Min(min, tier.MinLv);
+                max = Math.Max(max, tier.MaxLv);
+            }
+
+            return max - min;
+        }
+
+        public bool RequiresPawnCatchup(GameMode gameMode, PartyGroup party, Pawn pawn)
+        {
+            if (!_GameSettings.EnablePawnCatchup || gameMode == GameMode.BitterblackMaze)
+            {
+                return false;
+            }
+
+            foreach (var client in party.Clients)
+            {
+                if (pawn.CharacterId == client.Character.CharacterId)
+                {
+                    if (pawn.ActiveCharacterJobData.Lv >= client.Character.ActiveCharacterJobData.Lv)
+                    {
+                        return false;
+                    }
+                    else if (client.Character.ActiveCharacterJobData.Lv - pawn.ActiveCharacterJobData.Lv > _GameSettings.PawnCatchupLvDiff)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private double CalculatePawnCatchupTargetLvMultiplier(GameMode gameMode, Pawn pawn, uint targetLv)
+        {
+            if (!_GameSettings.AdjustTargetLvEnemyExp || gameMode == GameMode.BitterblackMaze)
+            {
+                return 1.0;
+            }
+
+            if (pawn.ActiveCharacterJobData.Lv <= targetLv)
+            {
+                return 1.0;
+            }
+
+            var range = pawn.ActiveCharacterJobData.Lv - targetLv;
+
+            double multiplier = 0;
+            foreach (var tier in _GameSettings.AdjustTargetLvEnemyExpTiers)
+            {
+                if (range >= tier.MinLv && range <= tier.MaxLv)
+                {
+                    multiplier = tier.ExpMultiplier;
+                    break;
+                }
+            }
+
+            return multiplier;
+        }
+
+        public uint GetAdjustedPawnExp(GameMode gameMode, RewardSource source, PartyGroup party, Pawn pawn, uint baseExpAmount, uint targetLv)
+        {
+            if (!_GameSettings.EnablePawnCatchup || gameMode == GameMode.BitterblackMaze)
+            {
+                return baseExpAmount;
+            }
+
+            var targetMultiplier = CalculatePawnCatchupTargetLvMultiplier(gameMode, pawn, targetLv);
+            var multiplier = _GameSettings.PawnCatchupMultiplier * targetMultiplier;
+
+            return (uint)(multiplier * baseExpAmount);
         }
     }
 }

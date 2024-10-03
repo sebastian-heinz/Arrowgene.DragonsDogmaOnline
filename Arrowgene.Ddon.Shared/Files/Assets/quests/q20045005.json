@@ -1,0 +1,97 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Trapped in a Nightmare",
+  "quest_id": 20045005,
+  "base_level": 25,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "VoldenMines",
+  "news_image": 93,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 680
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 110
+    },
+    {
+      "type": "exp",
+      "amount": 820
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 7881,
+          "num": 1
+        },
+        {
+          "item_id": 9066,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 96,
+        "group_id": 2
+      },
+      "enemies": [
+        {
+          "comment": "Rock Saurian",
+          "enemy_id": "0x010450",
+          "level": 25,
+          "exp": 250,
+          "is_boss": false
+        },
+        {
+          "comment": "Rock Saurian",
+          "enemy_id": "0x010450",
+          "level": 25,
+          "exp": 250,
+          "is_boss": false
+        },
+        {
+          "comment": "Rock Saurian",
+          "enemy_id": "0x010450",
+          "level": 25,
+          "exp": 250,
+          "is_boss": false
+        },
+        {
+          "comment": "Rock Saurian",
+          "enemy_id": "0x010450",
+          "level": 25,
+          "exp": 250,
+          "is_boss": false
+        },
+        {
+          "comment": "Rock Saurian",
+          "enemy_id": "0x010450",
+          "level": 25,
+          "exp": 250,
+          "is_boss": false
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

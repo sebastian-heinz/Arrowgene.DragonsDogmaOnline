@@ -28,7 +28,7 @@ public class PawnPartyMember : PartyMember
         GameStructure.CDataContextPlayerInfo(partyContextPawn.PlayerInfo, Pawn);
         partyContextPawn.PawnReactionList = Pawn.PawnReactionList;
         partyContextPawn.TrainingStatus = Pawn.TrainingStatus.GetValueOrDefault(Pawn.Job, new byte[64]);
-        partyContextPawn.SpSkillList = Pawn.SpSkillList;
+        partyContextPawn.SpSkillList = Pawn.SpSkills.GetValueOrDefault(Pawn.Job, new List<CDataSpSkill>());
         GameStructure.CDataContextResist(partyContextPawn.ResistInfo, Pawn);
         partyContextPawn.EditInfo = Pawn.EditInfo;
 
@@ -50,7 +50,7 @@ public class PawnPartyMember : PartyMember
         GameStructure.CDataContextPlayerInfo(partyContextPawn.PlayerInfo, Pawn);
         partyContextPawn.PawnReactionList = Pawn.PawnReactionList;
         partyContextPawn.TrainingStatus = Pawn.TrainingStatus.GetValueOrDefault(Pawn.Job, new byte[64]);
-        partyContextPawn.SpSkillList = Pawn.SpSkillList;
+        partyContextPawn.SpSkillList = Pawn.SpSkills.GetValueOrDefault(Pawn.Job, new List<CDataSpSkill>());
         GameStructure.CDataContextResist(partyContextPawn.ResistInfo, Pawn);
         partyContextPawn.EditInfo = Pawn.EditInfo;
 
@@ -59,5 +59,27 @@ public class PawnPartyMember : PartyMember
         partyPlayerContextNtc.Context = partyContextPawn;
         partyPlayerContextNtc.Context.Base.MemberIndex = MemberIndex;
         return partyPlayerContextNtc;
+    }
+
+    public S2CContextGetPartyRentedPawnContextNtc GetS2CContextGetPartyRentedPawn_ContextNtc()
+    {
+        CDataPartyContextPawn partyContextPawn = new CDataPartyContextPawn();
+        GameStructure.CDataContextBase(partyContextPawn.Base, Pawn);
+        partyContextPawn.Base.PawnId = PawnId;
+        partyContextPawn.Base.CharacterId = Pawn.CharacterId;
+        partyContextPawn.Base.PawnType = Pawn.PawnType;
+        partyContextPawn.Base.HmType = Pawn.HmType;
+        GameStructure.CDataContextPlayerInfo(partyContextPawn.PlayerInfo, Pawn);
+        partyContextPawn.PawnReactionList = Pawn.PawnReactionList;
+        partyContextPawn.TrainingStatus = Pawn.TrainingStatus.GetValueOrDefault(Pawn.Job, new byte[64]);
+        partyContextPawn.SpSkillList = Pawn.SpSkills.GetValueOrDefault(Pawn.Job, new List<CDataSpSkill>());
+        GameStructure.CDataContextResist(partyContextPawn.ResistInfo, Pawn);
+        partyContextPawn.EditInfo = Pawn.EditInfo;
+
+        var contextNtc = new S2CContextGetPartyRentedPawnContextNtc();
+        contextNtc.PawnId = PawnId;
+        contextNtc.Context = partyContextPawn;
+        contextNtc.Context.Base.MemberIndex = MemberIndex;
+        return contextNtc;
     }
 }

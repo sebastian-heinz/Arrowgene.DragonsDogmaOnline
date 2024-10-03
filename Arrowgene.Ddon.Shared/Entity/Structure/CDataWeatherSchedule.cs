@@ -1,16 +1,10 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataWeatherSchedule
     {
-
-        public CDataWeatherSchedule(byte weatherId, long beginTimeSec, long endTimeSec)
-        {
-            WeatherId=weatherId;
-            BeginTimeSec=beginTimeSec;
-            EndTimeSec=endTimeSec;
-        }
 
         public CDataWeatherSchedule()
         {
@@ -19,7 +13,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             EndTimeSec=0;
         }
 
-        public byte WeatherId { get; set; }
+        public Weather WeatherId { get; set; }
         public long BeginTimeSec { get; set; }
         public long EndTimeSec { get; set; }
 
@@ -27,7 +21,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             public override void Write(IBuffer buffer, CDataWeatherSchedule obj)
             {
-                WriteByte(buffer, obj.WeatherId);
+                WriteByte(buffer, (byte)obj.WeatherId);
                 WriteInt64(buffer, obj.BeginTimeSec);
                 WriteInt64(buffer, obj.EndTimeSec);
             }
@@ -35,7 +29,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataWeatherSchedule Read(IBuffer buffer)
             {
                 CDataWeatherSchedule obj = new CDataWeatherSchedule();
-                obj.WeatherId = ReadByte(buffer);
+                obj.WeatherId = (Weather)ReadByte(buffer);
                 obj.BeginTimeSec = ReadInt64(buffer);
                 obj.EndTimeSec = ReadInt64(buffer);
                 return obj;

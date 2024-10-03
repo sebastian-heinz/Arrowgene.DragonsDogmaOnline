@@ -1,0 +1,211 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Stolen Treasure",
+  "quest_id": 20020010,
+  "base_level": 39,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "BetlandPlains",
+  "news_image": 512,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1280
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1070
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 170
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 7888,
+          "num": 1
+        },
+        {
+          "item_id": 9418,
+          "num": 1
+        },
+        {
+          "item_id": 9415,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 124,
+        "group_id": 0
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x011002",
+          "level": 39,
+          "exp": 550,
+          "is_boss": false,
+          "hm_present_no": 47
+        },
+        {
+          "enemy_id": "0x011002",
+          "level": 39,
+          "exp": 550,
+          "is_boss": false,
+          "hm_present_no": 47
+        },
+        {
+          "enemy_id": "0x011003",
+          "level": 39,
+          "exp": 550,
+          "is_boss": false,
+          "hm_present_no": 48
+        },
+        {
+          "enemy_id": "0x011003",
+          "level": 39,
+          "exp": 550,
+          "is_boss": false,
+          "hm_present_no": 48
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1004,
+          "comment": "Spawns LightlyEquippedSoldier NPC"
+        }
+      ],
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "LightlyEquippedSoldier",
+      "message_id": 11372
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "CollectItem",
+      "announce_type": "Update",
+      "stage_id": {
+        "id": 124,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1146,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1147,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1148,
+          "comment": "Spawns Glowing Item"
+        }
+      ]
+    },
+    {
+      "type": "CollectItem",
+      "announce_type": "Update",
+      "stage_id": {
+        "id": 124,
+        "group_id": 2,
+        "layer_no": 1
+      },
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1146,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1147,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1148,
+          "comment": "Spawns Glowing Item"
+        }
+      ]
+    },
+    {
+      "type": "CollectItem",
+      "announce_type": "Update",
+      "stage_id": {
+        "id": 124,
+        "group_id": 3,
+        "layer_no": 1
+      },
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1146,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1147,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1148,
+          "comment": "Spawns Glowing Item"
+        }
+      ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "LightlyEquippedSoldier",
+      "message_id": 11842
+    }
+  ]
+}

@@ -1,4 +1,4 @@
-﻿//Blowfish encryption (ECB, CBC and CTR mode) as defined by Bruce Schneier here: http://www.schneier.com/paper-blowfish-fse.html
+//Blowfish encryption (ECB, CBC and CTR mode) as defined by Bruce Schneier here: http://www.schneier.com/paper-blowfish-fse.html
 //Complies with test vectors found here: http://www.schneier.com/code/vectors.txt
 //non-standard mode provided to be usable with the javascript crypto library found here: http://etherhack.co.uk/symmetric/blowfish/blowfish.html
 //By Taylor Hornby, 1/7/1010, 
@@ -621,10 +621,13 @@ namespace Arrowgene.Ddon.Shared.Crypto
         /// <returns></returns>
         private uint round(uint a, uint b, uint n)
         {
-            uint x1 = (bf_s0[wordByte0(b)] + bf_s1[wordByte1(b)]) ^ bf_s2[wordByte2(b)];
-            uint x2 = x1 + bf_s3[this.wordByte3(b)];
-            uint x3 = x2 ^ bf_P[n];
-            return x3 ^ a;
+            unchecked
+            {
+                uint x1 = (bf_s0[wordByte0(b)] + bf_s1[wordByte1(b)]) ^ bf_s2[wordByte2(b)];
+                uint x2 = x1 + bf_s3[this.wordByte3(b)];
+                uint x3 = x2 ^ bf_P[n];
+                return x3 ^ a;
+            }
         }
 
         #endregion

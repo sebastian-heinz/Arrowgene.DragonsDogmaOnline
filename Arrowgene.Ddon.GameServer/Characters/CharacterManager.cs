@@ -1,20 +1,10 @@
-using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Party;
-using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using YamlDotNet.Core.Tokens;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -24,6 +14,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public static readonly uint BASE_HEALTH = 760U;
         public static readonly uint BASE_STAMINA = 450U;
+        public static readonly uint BBM_BASE_HEALTH = 990U;
+        public static readonly uint BBM_BASE_STAMINA = 589U;
+
         public static readonly uint DEFAULT_RING_COUNT = 1;
         public static readonly uint BASE_ABILITY_COST_AMOUNT = 15;
 
@@ -39,11 +32,23 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public Character SelectCharacter(GameClient client, uint characterId)
         {
+            Character character = SelectCharacter(characterId);
+            client.Character = character;
+            client.UpdateIdentity();
+
+            return character;
+        }
+
+        public Character SelectCharacter(uint characterId)
+        {
             Character character = _Server.Database.SelectCharacter(characterId);
             if (character == null)
             {
                 return null;
             }
+
+            character.Server = _Server.AssetRepository.ServerList.Where(server => server.Id == _Server.Id).Single();
+            character.Equipment = character.Storage.GetCharacterEquipment();
 
             character.ExtendedParams = _Server.Database.SelectOrbGainExtendParam(character.CommonId);
             if (character.ExtendedParams == null)
@@ -55,33 +60,45 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             UpdateCharacterExtendedParams(character);
 
-            client.Character = character;
-            client.Character.Server = _Server.AssetRepository.ServerList[0];
-            client.UpdateIdentity();
-
             SelectPawns(character);
-
-            // TODO: Query things like main quest?
 
             return character;
         }
 
         private void SelectPawns(Character character)
         {
-            character.Pawns = _Server.Database.SelectPawnsByCharacterId(character.CharacterId);
+            character.Pawns = _Server.Database.SelectPawnsByCharacterId(character.ContentCharacterId);
 
-            foreach (var pawn in character.Pawns)
+            for (int i = 0; i < character.Pawns.Count; i++)
             {
+                Pawn pawn = character.Pawns[i];
                 pawn.Server = character.Server;
-
+                pawn.Equipment = character.Storage.GetPawnEquipment(i);
                 pawn.ExtendedParams = _Server.Database.SelectOrbGainExtendParam(pawn.CommonId);
                 if (pawn.ExtendedParams == null)
                 {
                     // Old DB is in use and new table not populated with required data for character
-                    Logger.Error($"Character: AccountId={character.AccountId}, CharacterId={character.CharacterId}, CommonId={character.CommonId}, PawnCommonId={pawn.CommonId} is missing table entry in 'ddon_orb_gain_extend_param'.");
+                    Logger.Error($"Character: AccountId={character.AccountId}, CharacterId={character.ContentCharacterId}, CommonId={character.CommonId}, PawnCommonId={pawn.CommonId} is missing table entry in 'ddon_orb_gain_extend_param'.");
                 }
-
                 UpdateCharacterExtendedParams(pawn);
+            }
+        }
+
+        public void UpdateOnlineStatus(GameClient client, Character character, OnlineStatus onlineStatus)
+        {
+            client.Character.OnlineStatus = onlineStatus;
+            var charUpdateNtc = new S2CCharacterCommunityCharacterStatusUpdateNtc();
+            charUpdateNtc.UpdateCharacterList.Add(ContactListManager.CharacterToListEml(client.Character));
+            charUpdateNtc.UpdateMatchingProfileList.Add(new CDataUpdateMatchingProfileInfo()
+            {
+                CharacterId = client.Character.CharacterId,
+                Comment = client.Character.MatchingProfile.Comment,
+            });
+
+            // TODO: Is there a reduced set of clients we can send this to?
+            foreach (var memberClient in _Server.ClientLookup.GetAll())
+            {
+                memberClient.Send(charUpdateNtc);
             }
         }
 
@@ -90,7 +107,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return CharacterManager.BASE_ABILITY_COST_AMOUNT + character.ExtendedParams.AbilityCost;
         }
 
-        private void UpdateCharacterExtendedParams(CharacterCommon character)
+        public void UpdateCharacterExtendedParams(CharacterCommon character, bool newCharacter = false)
         {
             var ExtendedParams = character.ExtendedParams;
 
@@ -126,17 +143,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * scenarios where this may be required. The same trick also works
              * for stamina.
              */
-            if (character.StatusInfo.MaxHP != 0)
+            if (character.StatusInfo.MaxHP != 0 || newCharacter)
             {
                 character.StatusInfo.HP = CharacterManager.MAX_PLAYER_HP;
                 character.StatusInfo.WhiteHP = CharacterManager.MAX_PLAYER_HP;
             }
             character.StatusInfo.MaxHP = CharacterManager.BASE_HEALTH;
 
-            if (character.StatusInfo.MaxStamina != 0)
+            if (character.StatusInfo.MaxStamina != 0 || newCharacter)
             {
                 character.StatusInfo.Stamina = CharacterManager.MAX_PLAYER_STAMINA;
-
             }
             character.StatusInfo.MaxStamina = CharacterManager.BASE_STAMINA;
         }

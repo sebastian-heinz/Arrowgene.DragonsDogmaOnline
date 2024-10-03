@@ -1,0 +1,100 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Fabio and Monster-Slaying",
+  "quest_id": 20000018,
+  "base_level": 9,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "HidellPlains",
+  "news_image": 1,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 480
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 290
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 50
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 8143,
+          "num": 1
+        },
+        {
+          "item_id": 9365,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 21
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015504",
+          "level": 11,
+          "exp": 260,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015504",
+          "level": 11,
+          "exp": 260,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015504",
+          "level": 11,
+          "exp": 260,
+          "is_boss": false
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 2,
+        "group_id": 0
+      },
+      "npc_id": "Fabio0",
+      "message_id": 11862
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 2,
+        "group_id": 0
+      },
+      "announce_type": "Update",
+      "npc_id": "Fabio0",
+      "message_id": 11865
+    }
+  ]
+}

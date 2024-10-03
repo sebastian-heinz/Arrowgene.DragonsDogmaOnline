@@ -1,0 +1,72 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Desire to Feed",
+  "quest_id": 20035007,
+  "base_level": 35,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DoweValley",
+  "news_image": 537,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1150
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 180
+    },
+    {
+      "type": "exp",
+      "amount": 1610
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 7883,
+          "num": 1
+        },
+        {
+          "item_id": 9398,
+          "num": 2
+        },
+        {
+          "item_id": 9383,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 89,
+        "group_id": 9
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015000",
+          "level": 35,
+          "exp": 6200,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

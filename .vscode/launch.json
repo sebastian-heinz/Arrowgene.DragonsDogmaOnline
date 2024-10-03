@@ -46,13 +46,51 @@
             // Use IntelliSense to find out which attributes exist for C# debugging
             // Use hover for the description of the existing attributes
             // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
+            "name": "DDOn Migrate Database",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/Arrowgene.Ddon.Cli/bin/Debug/net6.0/Arrowgene.Ddon.Cli.dll",
+            "args": ["dbmigration"],
+            "cwd": "${workspaceFolder}/Arrowgene.Ddon.Cli",
+            // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
+            "console": "integratedTerminal",
+            "stopAtEntry": false,
+            "logging": {
+                "moduleLoad": false
+            }
+        },
+        {
+            // Use IntelliSense to find out which attributes exist for C# debugging
+            // Use hover for the description of the existing attributes
+            // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
             "name": "DDOn Client Data Parser",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
             "program": "${workspaceFolder}/Arrowgene.Ddon.Cli/bin/Debug/net6.0/Arrowgene.Ddon.Cli.dll",
-            "args": ["client", "J:\\Juegos\\Dragon's Dogma Online\\nativePC\\rom"],
+            "args": ["client", "D:\\Juegos\\DDOn\\Dragon's Dogma Online\\nativePC\\rom"],
+            "cwd": "${workspaceFolder}/Arrowgene.Ddon.Cli",
+            // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
+            "console": "integratedTerminal",
+            "stopAtEntry": false,
+            "logging": {
+                "moduleLoad": false
+            }
+        },
+        {
+            // Use IntelliSense to find out which attributes exist for C# debugging
+            // Use hover for the description of the existing attributes
+            // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
+            "name": "DDOn Client Translation Patch",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/Arrowgene.Ddon.Cli/bin/Debug/net6.0/Arrowgene.Ddon.Cli.dll",
+            "args": ["client", "packGmd", "gmdCsv=C:\\Users\\GAMER\\Downloads\\gmd.csv", "romDir=D:\\Juegos\\DDOn\\Dragon's Dogma Online\\nativePC\\rom", "romLang=English"],
             "cwd": "${workspaceFolder}/Arrowgene.Ddon.Cli",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "integratedTerminal",

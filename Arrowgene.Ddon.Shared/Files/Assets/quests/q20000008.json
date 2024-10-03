@@ -1,0 +1,182 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Raiding Orc Platoon",
+  "quest_id": 20000008,
+  "base_level": 11,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "HidellPlains",
+  "news_image": 11,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 500
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 360
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 50
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Crest of Poison",
+          "item_id": 9239,
+          "num": 1
+        },
+        {
+          "comment": "Meatloaf",
+          "item_id": 9408,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 22
+      },
+      "enemies": [
+        {
+          "comment": "Orc Soldier",
+          "enemy_id": "0x015800",
+          "named_enemy_params_id": 53,
+          "level": 11,
+          "exp": 160
+        },
+        {
+          "comment": "Orc Soldier",
+          "enemy_id": "0x015800",
+          "named_enemy_params_id": 53,
+          "level": 11,
+          "exp": 160
+        },
+        {
+          "comment": "Orc Banger",
+          "enemy_id": "0x015802",
+          "named_enemy_params_id": 53,
+          "level": 11,
+          "exp": 160
+        },
+        {
+          "comment": "Orc Soldier",
+          "enemy_id": "0x015800",
+          "named_enemy_params_id": 53,
+          "level": 11,
+          "exp": 160
+        },
+        {
+          "comment": "Orc Banger",
+          "enemy_id": "0x015802",
+          "named_enemy_params_id": 53,
+          "level": 11,
+          "exp": 160
+        }
+      ]
+    },
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 36
+      },
+      "enemies": [
+        {
+          "comment": "Orc Soldier",
+          "enemy_id": "0x015800",
+          "named_enemy_params_id": 53,
+          "level": 11,
+          "exp": 160
+        },
+        {
+          "comment": "Orc Soldier",
+          "enemy_id": "0x015800",
+          "named_enemy_params_id": 53,
+          "level": 11,
+          "exp": 160
+        },
+        {
+          "comment": "Orc Banger",
+          "enemy_id": "0x015802",
+          "named_enemy_params_id": 53,
+          "level": 11,
+          "exp": 160
+        },
+        {
+          "comment": "Orc Banger",
+          "enemy_id": "0x015802",
+          "named_enemy_params_id": 53,
+          "level": 11,
+          "exp": 160
+        },
+        {
+          "comment": "Orc Soldier",
+          "enemy_id": "0x015800",
+          "named_enemy_params_id": 53,
+          "level": 11,
+          "exp": 160
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "ArisenCorpsRegimentalSoldier8",
+      "message_id": 10817,
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 989
+        }
+      ]
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "groups": [ 1 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 1 ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "ArisenCorpsRegimentalSoldier8",
+      "message_id": 10821
+    }
+  ]
+}

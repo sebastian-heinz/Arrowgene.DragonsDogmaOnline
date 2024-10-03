@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "name": "Main Story Progress"
+    },
+    {
+        "id": 2,
+        "name": "Open World Exploration"
+    },
+    {
+        "id": 3,
+        "name": "Earn EXP/PP"
+    },
+    {
+        "id": 4,
+        "name": "Earn Gold"
+    },
+    {
+        "id": 5,
+        "name": "Earn BO/HO"
+    },
+    {
+        "id": 6,
+        "name": "Collect Materials"
+    },
+    {
+        "id": 7,
+        "name": "Seasonal Events"
+    }
+]

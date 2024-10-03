@@ -1,0 +1,72 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Old Witch of the Woods",
+  "quest_id": 20105006,
+  "base_level": 43,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DeenanWoods",
+  "news_image": 563,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1410
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 220
+    },
+    {
+      "type": "exp",
+      "amount": 1700
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 7947,
+          "num": 1
+        },
+        {
+          "item_id": 9399,
+          "num": 1
+        },
+        {
+          "item_id": 9414,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 163,
+        "group_id": 8
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015600",
+          "level": 43,
+          "exp": 11000,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

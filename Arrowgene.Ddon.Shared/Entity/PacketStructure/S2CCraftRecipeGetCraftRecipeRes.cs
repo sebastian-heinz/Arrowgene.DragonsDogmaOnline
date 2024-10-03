@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -14,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             RecipeList = new List<CDataMDataCraftRecipe>();
         }
 
-        public byte Category { get; set; }
+        public RecipeCategory Category { get; set; }
         public List<CDataMDataCraftRecipe> RecipeList { get; set; }
         public bool IsEnd { get; set; }
 
@@ -23,7 +24,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, S2CCraftRecipeGetCraftRecipeRes obj)
             {
                 WriteServerResponse(buffer, obj);
-                WriteByte(buffer, obj.Category);
+                WriteByte(buffer, (byte)obj.Category);
                 WriteEntityList<CDataMDataCraftRecipe>(buffer, obj.RecipeList);
                 WriteBool(buffer, obj.IsEnd);
             }
@@ -32,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 S2CCraftRecipeGetCraftRecipeRes obj = new S2CCraftRecipeGetCraftRecipeRes();
                 ReadServerResponse(buffer, obj);
-                obj.Category = ReadByte(buffer);
+                obj.Category = (RecipeCategory)ReadByte(buffer);
                 obj.RecipeList = ReadEntityList<CDataMDataCraftRecipe>(buffer);
                 obj.IsEnd = ReadBool(buffer);
                 return obj;

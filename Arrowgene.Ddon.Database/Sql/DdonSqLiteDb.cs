@@ -12,7 +12,6 @@ namespace Arrowgene.Ddon.Database.Sql
 
 
         public const string MemoryDatabasePath = ":memory:";
-        public const int Version = 1;
 
         private readonly string _databasePath;
         private string _connectionString;
@@ -36,7 +35,7 @@ namespace Arrowgene.Ddon.Database.Sql
             }
         }
 
-        public bool CreateDatabase()
+        public override bool CreateDatabase()
         {
             _connectionString = BuildConnectionString(_databasePath);
             if (_connectionString == null)
@@ -60,7 +59,6 @@ namespace Arrowgene.Ddon.Database.Sql
                 FileStream fs = File.Create(_databasePath);
                 fs.Close();
                 fs.Dispose();
-                Logger.Info($"Created new v{Version} database");
                 return true;
             }
 

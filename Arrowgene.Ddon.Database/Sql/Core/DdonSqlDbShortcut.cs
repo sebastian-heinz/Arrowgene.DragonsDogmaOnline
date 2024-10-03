@@ -1,5 +1,6 @@
-using System.Data.Common;
+#nullable enable
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using System.Data.Common;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -47,21 +48,22 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
         
-        public bool ReplaceShortcut(uint characterId, CDataShortCut shortcut)
+        public bool ReplaceShortcut(uint characterId, CDataShortCut shortcut, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return ReplaceShortcut(connection, characterId, shortcut);
-        }       
-        
-        public bool ReplaceShortcut(TCon connection, uint characterId, CDataShortCut shortcut)
-        {
-            Logger.Debug("Inserting shortcut.");
-            if (!InsertIfNotExistsShortcut(connection, characterId, shortcut))
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
             {
-                Logger.Debug("Shortcut already exists, replacing.");
-                return UpdateShortcut(connection, characterId, shortcut.PageNo, shortcut.ButtonNo, shortcut);
+                if (!InsertIfNotExistsShortcut((TCon)connection, characterId, shortcut))
+                {
+                    return UpdateShortcut((TCon)connection, characterId, shortcut.PageNo, shortcut.ButtonNo, shortcut);
+                }
+                return true;
             }
-            return true;
+            finally
+            {
+                if (!isTransaction) connection.Dispose();
+            }
         }
 
         public bool UpdateShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataShortCut updatedShortcut)

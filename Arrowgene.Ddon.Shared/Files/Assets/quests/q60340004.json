@@ -1,0 +1,22 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Valentines Season (Spawns NPCs for holiday event)",
+    "quest_id": 60340004,
+    "next_quest": 0,
+    "base_level": 0,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {"id": 2},
+    "order_conditions": [],
+    "rewards": [],
+    "enabled": false,
+    "blocks": [
+        {
+            "type": "Raw",
+            "flags": [
+                {"type": "QstLayout", "action": "Clear", "value": 8684, "comment": "Spawns Angelo (4983) and Shelly (4984)"}
+            ]
+        }
+    ]
+}

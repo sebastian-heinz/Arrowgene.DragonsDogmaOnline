@@ -8,6 +8,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.GameServer.Characters;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -16,9 +17,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ItemUseBagItemHandler));
 
         private static readonly StorageType DestinationStorageType = StorageType.ItemBagConsumable;
+        private DdonGameServer _Server;
 
         public ItemUseBagItemHandler(DdonGameServer server) : base(server)
         {
+            _Server = server;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SItemUseBagItemReq> req)
@@ -28,7 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // TODO: Send S2CItemUseBagItemNtc?
 
-            var tuple = client.Character.Storage.getStorage(DestinationStorageType).Items
+            var tuple = client.Character.Storage.GetStorage(DestinationStorageType).Items
                 .Select((x, index) => new {item = x, slot = index+1})
                 .Where(tuple => tuple.item?.Item1.UId == req.Structure.ItemUId)
                 .First();
@@ -38,8 +41,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             itemNum--;
 
-            S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
-            ntc.UpdateType = 3;
+            S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc()
+            {
+                UpdateType = ItemNoticeType.UseBag
+            };
+
+            if (_Server.ItemManager.IsSecretAbilityItem(item.ItemId))
+            {
+                _Server.JobManager.UnlockSecretAbility(client, client.Character, (SecretAbility) _Server.ItemManager.GetAbilityId(item.ItemId));
+            }
 
             CDataItemUpdateResult ntcData0 = new CDataItemUpdateResult();
             ntcData0.ItemList.ItemUId = item.UId;
@@ -51,25 +61,25 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntcData0.ItemList.Color = item.Color; // ?
             ntcData0.ItemList.PlusValue = item.PlusValue; // ?
             ntcData0.ItemList.Bind = false;
-            ntcData0.ItemList.EquipPoint = 0;
+            ntcData0.ItemList.EquipPoint = item.EquipPoints;
             ntcData0.ItemList.EquipCharacterID = 0;
             ntcData0.ItemList.EquipPawnID = 0;
-            ntcData0.ItemList.WeaponCrestDataList = item.WeaponCrestDataList;
-            ntcData0.ItemList.ArmorCrestDataList = item.ArmorCrestDataList;
             ntcData0.ItemList.EquipElementParamList = item.EquipElementParamList;
+            ntcData0.ItemList.AddStatusParamList = item.AddStatusParamList;
+            ntcData0.ItemList.Unk2List = item.Unk2List;
             ntcData0.UpdateItemNum = - (int) req.Structure.Amount;
             ntc.UpdateItemList.Add(ntcData0);
 
             if(itemNum == 0)
             {
                 // Delete item when ItemNum reaches 0 to free up the slot
-                client.Character.Storage.setStorageItem(null, 0, DestinationStorageType, slotNo);
-                Server.Database.DeleteStorageItem(client.Character.CharacterId, DestinationStorageType, slotNo);
+                client.Character.Storage.GetStorage(DestinationStorageType).SetItem(null, 0, slotNo);
+                Server.Database.DeleteStorageItem(client.Character.ContentCharacterId, DestinationStorageType, slotNo);
             }
             else
             {
-                client.Character.Storage.setStorageItem(item, itemNum, DestinationStorageType, slotNo);
-                Server.Database.ReplaceStorageItem(client.Character.CharacterId, DestinationStorageType, slotNo, item.UId, itemNum);
+                client.Character.Storage.GetStorage(DestinationStorageType).SetItem(item, itemNum, slotNo);
+                Server.Database.ReplaceStorageItem(client.Character.ContentCharacterId, DestinationStorageType, slotNo, itemNum, item);
             }
 
             client.Send(ntc);
@@ -77,9 +87,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Lantern start NTC
             // TODO: Figure out all item IDs that do lantern stuff
             if (item.ItemId == 55)
-            { 
-                client.Send(SelectedDump.lantern2_27_16); 
-                // TODO: Send S2C_CHARACTER_START_LANTERN_OTHER_NOTICE to other party members?
+            {
+                // client.Send(SelectedDump.lantern2_27_16);
+                // TODO: Start a timer to estinguish after LaternBurnTimeInSeconds expires
+                client.Character.IsLanternLit = true;
+                client.Send(new S2CCharacterStartLanternNtc() { RemainTime = _Server.Setting.GameLogicSetting.LaternBurnTimeInSeconds});
+                // client.Party.SendToAllExcept(new S2CCharacterStartLanternOtherNtc() { CharacterId = client.Character.CharacterId }, client);
             }
         }
     }

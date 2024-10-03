@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -24,11 +24,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: Figure out if it should send all equips or just the ones for the current job
             client.Send(new S2CEquipGetCharacterEquipListRes()
             {
-                CharacterEquipList = client.Character.Equipment.getEquipmentAsCDataCharacterEquipInfo(client.Character.Job, EquipType.Performance)
-                    .Union(client.Character.Equipment.getEquipmentAsCDataCharacterEquipInfo(client.Character.Job, EquipType.Visual))
+                CharacterEquipList = client.Character.Equipment.AsCDataCharacterEquipInfo(EquipType.Performance)
+                    .Union(client.Character.Equipment.AsCDataCharacterEquipInfo(EquipType.Visual))
                     .ToList(),
-                EquipJobItemList = client.Character.Equipment.getJobItemsAsCDataEquipJobItem(client.Character.Job),
-                // TODO: PawnEquipItemList
+                EquipJobItemList = client.Character.EquipmentTemplate.JobItemsAsCDataEquipJobItem(client.Character.Job),
             });
         }
     }

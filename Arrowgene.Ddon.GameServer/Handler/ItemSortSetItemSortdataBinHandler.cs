@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SItemSortSetItemSortDataBinReq> packet)
         {
-            Storage storage = client.Character.Storage.getStorage(packet.Structure.SortData.StorageType);
+            Storage storage = client.Character.Storage.GetStorage(packet.Structure.SortData.StorageType);
             storage.SortData = packet.Structure.SortData.Bin;
             Server.Database.UpdateStorage(client.Character.CharacterId, packet.Structure.SortData.StorageType, storage);
 

@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Dynamic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -24,14 +25,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // client.Send(GameFull.Dump_123);
 
             S2CQuestGetMainQuestListRes res = new S2CQuestGetMainQuestListRes();
+            S2CQuestGetMainQuestNtc ntc = new S2CQuestGetMainQuestNtc();
             foreach (var questId in client.Party.QuestState.GetActiveQuestIds())
             {
-                var quest = QuestManager.GetQuest(questId);
+                var quest = client.Party.QuestState.GetQuest(questId);
                 if (quest.QuestType == QuestType.Main)
                 {
-                    res.MainQuestList.Add(quest.ToCDataQuestList());
+                    var questState = client.Party.QuestState.GetQuestState(questId);
+                    res.MainQuestList.Add(quest.ToCDataQuestList(questState.Step));
+                    ntc.MainQuestList.Add(quest.ToCDataMainQuestList(questState.Step));
                 }
             }
+
+            client.Party.SendToAllExcept(ntc, client);
 
             // res.MainQuestList.Add(Quest25);    // Can't find this quest
             // res.MainQuestList.Add(Quest30260); // Hopes Bitter End (White Dragon)

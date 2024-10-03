@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CQuestCompleteNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.S2C_QUEST_11_91_16_NTC;
+        public PacketId Id => PacketId.S2C_QUEST_QUEST_COMPLETE_NTC;
 
         public S2CQuestCompleteNtc()
         {

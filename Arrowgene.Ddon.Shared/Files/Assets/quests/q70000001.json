@@ -1,0 +1,21 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Secret! Warp Command!",
+    "quest_id": 70000001,
+    "base_level": 1,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "order_conditions": [],
+    "rewards": [],
+    "enemy_groups": [],
+    "quest_layout_flags": [],
+    "blocks": [
+        {
+            "type": "DummyBlock"
+        },
+        {
+            "type": "DummyBlock"
+        }
+    ]
+}

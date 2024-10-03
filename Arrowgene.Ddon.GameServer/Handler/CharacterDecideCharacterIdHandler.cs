@@ -1,38 +1,28 @@
-using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Dump;
+using System;
+using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterDecideCharacterIdHandler : PacketHandler<GameClient>
+    public class CharacterDecideCharacterIdHandler : GameStructurePacketHandler<C2SCharacterDecideCharacterIdReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterDecideCharacterIdHandler));
 
-        private readonly AssetRepository _AssetRepo;
-
         public CharacterDecideCharacterIdHandler(DdonGameServer server) : base(server)
         {
-            _AssetRepo = server.AssetRepository;
         }
 
-        public override PacketId Id => PacketId.C2S_CHARACTER_DECIDE_CHARACTER_ID_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override void Handle(GameClient client, StructurePacket<C2SCharacterDecideCharacterIdReq> packet)
         {
-            S2CCharacterDecideCharacterIdRes pcap = EntitySerializer.Get<S2CCharacterDecideCharacterIdRes>().Read(GameDump.data_Dump_13);
             S2CCharacterDecideCharacterIdRes res = new S2CCharacterDecideCharacterIdRes();
             res.CharacterId = client.Character.CharacterId;
             res.CharacterInfo = new CDataCharacterInfo(client.Character);
-            res.Unk0 = pcap.Unk0; // Removing this makes tons of tutorials pop up
+            res.BinaryData = client.Character.BinaryData;
             client.Send(res);
 
             // Unlocks menu options such as inventory, warping, etc.
@@ -43,13 +33,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
             client.Send(contentsReleaseElementNotice);
 
-            foreach (var ValidCourse in _AssetRepo.GPCourseInfoAsset.ValidCourses)
+            ulong now = (ulong)DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            foreach (var (id, course) in Server.AssetRepository.GPCourseInfoAsset.ValidCourses)
             {
-                client.Send(new S2CGPCourseStartNtc()
+                if (now >= course.StartTime && now <= course.EndTime)
                 {
-                    CourseID = ValidCourse.Value.Id,
-                    ExpiryTimestamp = ValidCourse.Value.EndTime
-                });
+                    client.Send(new S2CGPCourseStartNtc()
+                    {
+                        CourseID = course.Id,
+                        ExpiryTimestamp = course.EndTime
+                    });
+                }
             }
         }
 
@@ -69,7 +63,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             new CDataCharacterReleaseElement(ContentsRelease.RathniteFoothillsWorldQuests),
             new CDataCharacterReleaseElement(ContentsRelease.DressEquipment),
             new CDataCharacterReleaseElement(ContentsRelease.FeryanaWildernessWorldQuests),
-            // new CDataCharacterReleaseElement(ContentsRelease.LestaniaNews),
+            new CDataCharacterReleaseElement(ContentsRelease.LestaniaNews),
             // new CDataCharacterReleaseElement(ContentsRelease.MandragoraBreeding),
             new CDataCharacterReleaseElement(ContentsRelease.JobTrainingLog),
             new CDataCharacterReleaseElement(ContentsRelease.YourRoomsTerrace),
@@ -93,7 +87,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             new CDataCharacterReleaseElement(ContentsRelease.MyrmidonsPledge),
             new CDataCharacterReleaseElement(ContentsRelease.AdventureBroker), // This was called "PartyMenu" or "冒険仲介係"
             new CDataCharacterReleaseElement(ContentsRelease.MatchingProfile),
-            // new CDataCharacterReleaseElement(ContentsRelease.QuickParty),
+            new CDataCharacterReleaseElement(ContentsRelease.QuickParty), // Also unlocks board for EM
             new CDataCharacterReleaseElement(ContentsRelease.OrbEnemy),
             new CDataCharacterReleaseElement(ContentsRelease.WarSkillAugmentation),
             new CDataCharacterReleaseElement(ContentsRelease.FighterWarSkillAugmentation),

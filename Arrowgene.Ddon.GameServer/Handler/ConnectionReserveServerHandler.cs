@@ -1,14 +1,13 @@
 ﻿using System;
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class ConnectionReserveServerHandler : PacketHandler<GameClient>
+    public class ConnectionReserveServerHandler : GameRequestPacketHandler<C2SConnectionReserveServerReq, S2CConnectionReserveServerRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ConnectionReserveServerHandler));
 
@@ -17,21 +16,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_CONNECTION_RESERVE_SERVER_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override S2CConnectionReserveServerRes Handle(GameClient client, C2SConnectionReserveServerReq request)
         {
-            
-            IBuffer buffer = new StreamBuffer();
-            buffer.WriteUInt32(0, Endianness.Big);
-            buffer.WriteUInt32(0, Endianness.Big);
-            buffer.WriteBytes(new byte[]
+            Connection reservedConnection = new Connection()
             {
-                0x00, 0x05, 0x00, 0x00, 0x00, 0x01, 0x00, 0x20, 0x4F, 0xD8, 0x1B, 0x02, 0x84, 0x14, 0xB0
-            });
-            client.Send(new Packet(PacketId.S2C_CONNECTION_RESERVE_SERVER_RES, buffer.GetAllBytes()));
-            
-            //client.Send(GameDump.Dump_27);
+                ServerId = request.GameServerUniqueID,
+                AccountId = client.Account.Id,
+                Type = ConnectionType.GameServer,
+                Created = DateTime.UtcNow
+            };
+            if(!Server.Database.InsertConnection(reservedConnection))
+            {
+                Logger.Error($"Failed to reserve connection on server {request.GameServerUniqueID} for account {client.Account.Id}");
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_NET_NOT_CONNECT_GAME_SERVER);
+            }
+
+            return new S2CConnectionReserveServerRes()
+            {
+                GameServerUniqueID = request.GameServerUniqueID,
+                ReserveInfoList = request.ReserveInfoList
+            };
         }
     }
 }

@@ -1,0 +1,102 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Messenger From the Underworld",
+  "quest_id": 20045001,
+  "base_level": 27,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "VoldenMines",
+  "news_image": 96,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 740
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 110
+    },
+    {
+      "type": "exp",
+      "amount": 890
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 920,
+          "num": 1
+        },
+        {
+          "item_id": 9410,
+          "num": 1
+        },
+        {
+          "item_id": 9374,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 72,
+        "group_id": 17
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x010309",
+          "level": 26,
+          "exp": 300,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010309",
+          "level": 26,
+          "exp": 300,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010309",
+          "level": 26,
+          "exp": 300,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010301",
+          "level": 26,
+          "exp": 300,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010301",
+          "level": 26,
+          "exp": 300,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010301",
+          "level": 26,
+          "exp": 300,
+          "is_boss": false
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

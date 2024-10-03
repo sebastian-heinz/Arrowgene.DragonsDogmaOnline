@@ -1,0 +1,279 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "Return to Yore",
+    "quest_id": 15,
+    "next_quest": 16,
+    "base_level": 41,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 9000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 7200
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 900
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 9724,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 8873,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 9020,
+                    "num": 1
+                }
+            ]
+        }
+
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 320
+            },
+            "enemies": [
+                {
+                    "comment" : "Captain Orc",
+                    "enemy_id": "0x085004",
+                    "level": 41,
+                    "exp": 3742
+                },
+                {
+                    "comment" : "Orc Soldier",
+                    "enemy_id": "0x085000",
+                    "level": 41,
+                    "exp": 3742
+                },
+                {
+                    "comment" : "Orc Soldier",
+                    "enemy_id": "0x085001",
+                    "level": 41,
+                    "exp": 3742
+                },
+                {
+                    "comment" : "Orc Soldier",
+                    "enemy_id": "0x085002",
+                    "level": 41,
+                    "exp": 3742
+                },
+                {
+                    "comment" : "Orc Soldier",
+                    "enemy_id": "0x085003",
+                    "level": 41,
+                    "exp": 3742
+                }
+
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 70,
+                "group_id": 23
+            },
+            "enemies": [
+                {
+                    "comment" : "Captain Orc",
+                    "enemy_id": "0x085004",
+                    "level": 41,
+                    "exp": 3742
+                },
+                {
+                    "comment" : "Tamed Cockatrice",
+                    "enemy_id": "0x015301",
+                    "level": 41,
+                    "exp": 4200,
+                    "is_boss": true,
+                    "named_enemy_params_id": 272
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 70,
+                "group_id": 18
+            },
+            "enemies": [
+                {
+                    "comment" : "Orc Soldier",
+                    "enemy_id": "0x085001",
+                    "level": 41,
+                    "exp": 3742
+                },
+                {
+                    "comment" : "Orc Soldier",
+                    "enemy_id": "0x085002",
+                    "level": 41,
+                    "exp": 3742
+                },
+                {
+                    "comment" : "Orc Soldier",
+                    "enemy_id": "0x085003",
+                    "level": 41,
+                    "exp": 3742
+                }
+            ]
+        }
+
+    ],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1215, "quest_id": 70000001, "comment": "Mysial"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1219, "quest_id": 70000001, "comment": "Iris"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1294, "quest_id": 70000001, "comment": "The White Dragon (Less Dead)"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1113, "quest_id": 70002001, "comment": "Large Door Closed"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1114, "quest_id": 70002001, "comment": "Large Door Open"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"}
+                    ],
+                    "npc_id": "Leo0",
+                    "message_id": 11520
+                },
+                {
+                    "type": "TalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Accept",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 105
+                    },
+                    "npc_id": "Rondejeel0",
+                    "message_id": 14874
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "flags": [],
+                    "groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "flags": [],
+                    "reset_group": false,
+                    "groups": [0]
+                },
+                {
+                    "type": "IsStageNo",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 70
+                    }
+                },
+                {
+                    "type": "CollectItem",
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 903, "comment": "General-purpose glitter points (key)"}
+                    ],
+                    "stage_id": {
+                        "id": 70,
+                        "group_id": 1,
+                        "layer_no": 1
+                    },
+                    "layout_flags_on": []
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1113, "quest_id": 70002001, "comment": "Large Door Closed"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1114, "quest_id": 70002001, "comment": "Large Door Open"}
+                    ],
+                    "stage_id": {
+                        "id": 70
+                    },
+                    "location": {
+                        "x": -14438,
+                        "y": 1875,
+                        "z": -26685
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [],
+                    "stage_id": {
+                        "id": 70
+                    },
+                    "event_id": 0
+                },
+                {
+                    "type": "KillGroup",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 1011, "comment": "Spawns Leo"},
+                        {"type": "QstLayout", "action": "Set", "value": 2395, "comment": "Spawns Kieshildt"},
+                        {"type": "QstLayout", "action": "Set", "value": 1258, "comment": "Spawns Vessel of Life"},
+                        {"type": "QstLayout", "action": "Set", "value": 915, "comment": "Lock boss door"}
+                    ],
+                    "announce_type": "Update",
+                    "groups": [1, 2]
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 1011, "comment": "Spawns Leo"},
+                        {"type": "QstLayout", "action": "Clear", "value": 2395, "comment": "Spawns Kieshildt"},
+                        {"type": "QstLayout", "action": "Clear", "value": 915, "comment": "Lock boss door"},
+                        {"type": "QstLayout", "action": "Set", "value": 1012, "comment": "Spawns Kieshildt (dead) and Leo"}
+                    ],
+                    "stage_id": {
+                        "id": 70
+                    },
+                    "event_id": 5
+                },
+                {
+                    "type": "TalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 1258, "comment": "Spawns Vessel of Life"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1218, "quest_id": 70000001, "comment": "Leo"}
+                    ],
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "npc_id": "Joseph",
+                    "message_id": 8066
+                }
+            ]
+        }
+    ]
+}

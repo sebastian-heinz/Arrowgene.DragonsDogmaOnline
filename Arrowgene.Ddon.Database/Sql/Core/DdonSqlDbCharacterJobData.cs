@@ -1,4 +1,5 @@
 using System.Data.Common;
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 
@@ -36,21 +37,24 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private const string SqlDeleteCharacterJobData = "DELETE FROM \"ddon_character_job_data\" WHERE \"character_common_id\"=@character_common_id AND \"job\" = @job;";
 
-        public bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData)
+        public bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return ReplaceCharacterJobData(connection, commonId, replacedCharacterJobData);
-        }
-
-        public bool ReplaceCharacterJobData(TCon connection, uint commonId, CDataCharacterJobData replacedCharacterJobData)
-        {
-            Logger.Debug("Inserting character job data.");
-            if (!InsertIfNotExistsCharacterJobData(connection, commonId, replacedCharacterJobData))
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
             {
-                Logger.Debug("Character job data already exists, replacing.");
-                return UpdateCharacterJobData(connection, commonId, replacedCharacterJobData);
+                Logger.Debug("Inserting character job data.");
+                if (!InsertIfNotExistsCharacterJobData(connection, commonId, replacedCharacterJobData))
+                {
+                    Logger.Debug("Character job data already exists, replacing.");
+                    return UpdateCharacterJobData(connection, commonId, replacedCharacterJobData);
+                }
+                return true;
             }
-            return true;
+            finally
+            {
+                if (!isTransaction) connection.Dispose();
+            }
         }
 
         public bool InsertCharacterJobData(uint commonId, CDataCharacterJobData updatedCharacterJobData)
@@ -86,7 +90,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return ExecuteNonQuery(connection, SqlUpdateCharacterJobData, command => { AddParameter(command, commonId, updatedCharacterJobData); }) == 1;
         }
 
-        private CDataCharacterJobData ReadCharacterJobData(TReader reader)
+        private CDataCharacterJobData ReadCharacterJobData(DbDataReader reader)
         {
             CDataCharacterJobData characterJobData = new CDataCharacterJobData();
             characterJobData.Job = (JobId) GetByte(reader, "job");

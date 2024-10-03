@@ -1,0 +1,99 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Phantoms in the Moonlight",
+  "quest_id": 20015002,
+  "base_level": 14,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "BreyaCoast",
+  "news_image": 25,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 460
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 380
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 60
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Crest of Decreased Ice Resist",
+          "item_id": 9269,
+          "num": 1
+        },
+        {
+          "comment": "Restorative",
+          "item_id": 9369,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 85
+      },
+      "enemies": [
+        {
+          "comment": "Mist Fighter",
+          "enemy_id": "0x011030",
+          "level": 14,
+          "exp": 79,
+          "hm_present_no": 68
+        },
+        {
+          "comment": "Mist Fighter",
+          "enemy_id": "0x011030",
+          "level": 14,
+          "exp": 79,
+          "hm_present_no": 68
+        },
+        {
+          "comment": "Mist Hunter",
+          "enemy_id": "0x011031",
+          "level": 14,
+          "exp": 79,
+          "hm_present_no": 69
+        },
+        {
+          "comment": "Mist Hunter",
+          "enemy_id": "0x011031",
+          "level": 14,
+          "exp": 79,
+          "hm_present_no": 69
+        },
+        {
+          "comment": "Mist Hunter",
+          "enemy_id": "0x011031",
+          "level": 14,
+          "exp": 79,
+          "hm_present_no": 69
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

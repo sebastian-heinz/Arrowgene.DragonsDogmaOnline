@@ -1,0 +1,72 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Snow-White Lion King",
+  "quest_id": 20105000,
+  "base_level": 42,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DeenanWoods",
+  "news_image": 565,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1380
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 220
+    },
+    {
+      "type": "exp",
+      "amount": 1940
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 9200,
+          "num": 1
+        },
+        {
+          "item_id": 9388,
+          "num": 1
+        },
+        {
+          "item_id": 9415,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 113,
+        "group_id": 3
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015202",
+          "level": 42,
+          "exp": 10500,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

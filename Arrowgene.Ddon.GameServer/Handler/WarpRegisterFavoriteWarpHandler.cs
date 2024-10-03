@@ -1,5 +1,6 @@
 #nullable enable
 using System.Linq;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -24,6 +25,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 oldFavorite.FavoriteSlotNo = 0;
                 Server.Database.UpdateReleasedWarpPoint(client.Character.CharacterId, oldFavorite);
+            }
+            else
+            {
+                oldFavorite = new ReleasedWarpPoint()
+                {
+                    WarpPointId = request.Structure.WarpPointId,
+                    FavoriteSlotNo = request.Structure.SlotNo
+                };
             }
 
             ReleasedWarpPoint newFavorite = client.Character.ReleasedWarpPoints.Where(rwp => rwp.WarpPointId == request.Structure.WarpPointId).Single();

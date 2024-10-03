@@ -1,0 +1,73 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Rock-Crushing Fangs",
+  "quest_id": 20045004,
+  "base_level": 30,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "VoldenMines",
+  "news_image": 83,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 990
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 190
+    },
+    {
+      "type": "exp",
+      "amount": 1380
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 9241,
+          "num": 1
+        },
+        {
+          "item_id": 9413,
+          "num": 1
+        },
+        {
+          "item_id": 9429,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 192
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015200",
+          "named_enemy_params_id": 53,
+          "level": 30,
+          "exp": 4600,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

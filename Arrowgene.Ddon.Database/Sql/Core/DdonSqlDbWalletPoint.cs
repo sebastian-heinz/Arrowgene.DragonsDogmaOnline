@@ -1,6 +1,7 @@
-using System.Data.Common;
+#nullable enable
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using System.Data.Common;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -60,23 +61,26 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             if (!InsertIfNotExistsWalletPoint(connection, characterId, walletPoint))
             {
                 Logger.Debug("Wallet point already exists, replacing.");
-                return UpdateWalletPoint(connection, characterId, walletPoint);
+                return UpdateWalletPoint(characterId, walletPoint, connection);
             }
             return true;
         }
 
-        public bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint)
+        public bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return UpdateWalletPoint(connection, characterId, updatedWalletPoint);
-        }
-        
-        public bool UpdateWalletPoint(TCon connection, uint characterId, CDataWalletPoint updatedWalletPoint)
-        {
-            return ExecuteNonQuery(connection, SqlUpdateWalletPoint, command =>
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
             {
-                AddParameter(command, characterId, updatedWalletPoint);
-            }) == 1;
+                return ExecuteNonQuery(connection, SqlUpdateWalletPoint, command =>
+                {
+                    AddParameter(command, characterId, updatedWalletPoint);
+                }) == 1;
+            }
+            finally
+            {
+                if (!isTransaction) connection.Dispose();
+            }
         }
 
         public bool DeleteWalletPoint(uint characterId, WalletType type)

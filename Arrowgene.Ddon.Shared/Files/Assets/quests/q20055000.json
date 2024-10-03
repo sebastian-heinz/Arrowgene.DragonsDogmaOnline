@@ -1,0 +1,83 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Scaled Soldiers",
+  "quest_id": 20055000,
+  "base_level": 16,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "MysreeForest",
+  "news_image": 105,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 440
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 80
+    },
+    {
+      "type": "exp",
+      "amount": 420
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 448,
+          "num": 1
+        },
+        {
+          "item_id": 35,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 47
+      },
+      "enemies": [
+        {
+          "comment": "Giant Saurian",
+          "enemy_id": "0x010401",
+          "level": 16,
+          "exp": 120,
+          "is_boss": false
+        },
+        {
+          "comment": "Giant Saurian",
+          "enemy_id": "0x010401",
+          "level": 16,
+          "exp": 120,
+          "is_boss": false
+        },
+        {
+          "comment": "Giant Saurian",
+          "enemy_id": "0x010401",
+          "level": 16,
+          "exp": 120,
+          "is_boss": false
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

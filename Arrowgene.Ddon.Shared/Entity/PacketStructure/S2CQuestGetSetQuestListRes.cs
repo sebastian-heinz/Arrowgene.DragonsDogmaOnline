@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -14,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             SetQuestList = new List<CDataSetQuestList>();
         }
 
-        public uint DistributeId { get; set; }
+        public QuestAreaId DistributeId { get; set; }
         public List<CDataSetQuestList> SetQuestList { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CQuestGetSetQuestListRes>
@@ -22,7 +23,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, S2CQuestGetSetQuestListRes obj)
             {
                 WriteServerResponse(buffer, obj);
-                WriteUInt32(buffer, obj.DistributeId);
+                WriteUInt32(buffer, (uint)obj.DistributeId);
                 WriteEntityList<CDataSetQuestList>(buffer, obj.SetQuestList);
             }
 
@@ -30,7 +31,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 S2CQuestGetSetQuestListRes obj = new S2CQuestGetSetQuestListRes();
                 ReadServerResponse(buffer, obj);
-                obj.DistributeId = ReadUInt32(buffer);
+                obj.DistributeId = (QuestAreaId)ReadUInt32(buffer);
                 obj.SetQuestList = ReadEntityList<CDataSetQuestList>(buffer);
                 return obj;
             }

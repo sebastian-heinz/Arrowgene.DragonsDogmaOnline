@@ -1,7 +1,6 @@
 #nullable enable
 using System.Collections.Generic;
 using System.Linq;
-using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Shared.Model
@@ -16,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Model
             EditInfo = new CDataEditInfo();
             StatusInfo = new CDataStatusInfo();
             CharacterJobDataList = new List<CDataCharacterJobData>();
-            Equipment = new Equipment();
+            EquipmentTemplate = new EquipmentTemplate();
             LearnedNormalSkills = new List<CDataNormalSkillParam>();
             LearnedCustomSkills = new List<CustomSkill>();
             EquippedCustomSkillsDictionary = ((JobId[]) JobId.GetValues(typeof(JobId)))
@@ -27,6 +26,7 @@ namespace Arrowgene.Ddon.Shared.Model
                 .Select(jobId => (jobId, Enumerable.Repeat<Ability?>(null, 10).ToList()))
                 .ToDictionary(pair => pair.jobId, pair => pair.Item2);
             OnlineStatus = OnlineStatus.Offline;
+            ExtendedParams = new CDataOrbGainExtendParam();
         }
 
         public CDataCharacterJobData? ActiveCharacterJobData
@@ -42,6 +42,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public bool HideEquipHead { get; set; }
         public bool HideEquipLantern { get; set; }
         public List<CDataCharacterJobData> CharacterJobDataList { get; set; }
+        public EquipmentTemplate EquipmentTemplate { get; set; }
         public Equipment Equipment { get; set; }
         public byte JewelrySlotNum { get; set; }
         public List<CDataNormalSkillParam> LearnedNormalSkills { get; set; }
@@ -54,6 +55,7 @@ namespace Arrowgene.Ddon.Shared.Model
 
         /// TODO combine into a location class ?
         public StageId Stage { get; set; }
+
         public uint StageNo { get; set; }
         public double X { get; set; }
         public float Y { get; set; }

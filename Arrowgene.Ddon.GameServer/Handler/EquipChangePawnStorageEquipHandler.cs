@@ -1,6 +1,7 @@
 using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
@@ -21,14 +22,32 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SEquipChangePawnStorageEquipReq> packet)
         {
+            (S2CItemUpdateCharacterItemNtc itemNtc, S2CEquipChangePawnEquipNtc equipNtc) equipResult = (null, null);
+
             Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
-            equipManager.HandleChangeEquipList(Server, client, pawn, packet.Structure.ChangeCharacterEquipList, 0x27, StorageType.StorageBoxNormal, () => {
-                client.Send(new S2CEquipChangePawnStorageEquipRes()
-                {
-                    PawnId = packet.Structure.PawnId,
-                    CharacterEquipList = packet.Structure.ChangeCharacterEquipList
-                    // TODO: Unk0
-                });
+            Server.Database.ExecuteInTransaction(connection =>
+            {
+                equipResult = ((S2CItemUpdateCharacterItemNtc, S2CEquipChangePawnEquipNtc))
+                equipManager.HandleChangeEquipList(
+                    Server, 
+                    client, 
+                    pawn, 
+                    packet.Structure.ChangeCharacterEquipList, 
+                    ItemNoticeType.ChangeStoragePawnEquip, 
+                    ItemManager.BoxStorageTypes,
+                    connection);
+            });
+
+            client.Send(equipResult.itemNtc);
+
+            //Only the party needs to be updated, because only they can see pawns.
+            client.Party.SendToAllExcept(equipResult.equipNtc, client); 
+
+            client.Send(new S2CEquipChangePawnStorageEquipRes()
+            {
+                PawnId = packet.Structure.PawnId,
+                CharacterEquipList = packet.Structure.ChangeCharacterEquipList
+                // TODO: Unk0
             });
         }
     }

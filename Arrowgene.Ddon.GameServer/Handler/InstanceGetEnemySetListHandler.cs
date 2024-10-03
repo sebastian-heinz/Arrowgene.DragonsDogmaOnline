@@ -1,6 +1,4 @@
-using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -9,6 +7,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -29,14 +28,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Logger.Info($"GroupId={request.Structure.LayoutId.GroupId}, SubGroupId={request.Structure.SubGroupId}, LayerNo={request.Structure.LayoutId.LayerNo}");
 
             Quest quest = null;
-            QuestState questState = null;
             bool IsQuestControlled = false;
             foreach (var questId in client.Party.QuestState.StageQuests(stageId))
             {
                 quest = QuestManager.GetQuest(questId);
-                questState = client.Party.QuestState.GetQuestState(questId);
-
-                if (quest.HasEnemiesInCurrentStageGroup(questState, stageId, subGroupId))
+                if (quest.HasEnemiesInInCurrentStage(stageId))
                 {
                     IsQuestControlled = true;
                     break;
@@ -50,32 +46,60 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 RandomSeed = CryptoRandom.Instance.GetRandomUInt32(),
             };
 
+            bool notifyStrongEnemy = false;
             if (IsQuestControlled && quest != null)
             {
                 response.QuestId = (uint) quest.QuestId;
-                response.EnemyList = client.Party.QuestState.GetInstancedEnemies(quest.QuestId, stageId, subGroupId).Select(enemy => new CDataLayoutEnemyData()
-                {
-                    PositionIndex = (byte)(enemy.Index),
-                    EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
-                }).ToList();
 
-                if (client.Party.QuestState.ShouldResetInstanceEnemyGroup(quest.QuestId, stageId))
+                foreach (var enemy in client.Party.QuestState.GetInstancedEnemies(quest, stageId, subGroupId))
                 {
-                    S2CInstanceEnemyGroupResetNtc resetNtc = new S2CInstanceEnemyGroupResetNtc()
+                    response.EnemyList.Add(new CDataLayoutEnemyData()
                     {
-                        LayoutId = stageId.ToStageLayoutId()
-                    };
-                    client.Party.SendToAll(resetNtc);
+                        PositionIndex = enemy.Index,
+                        EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
+                    });
+                    client.Party.InstanceEnemyManager.SetInstanceEnemy(stageId, enemy.Index, enemy);
+
+                    if (enemy.NotifyStrongEnemy)
+                    {
+                        notifyStrongEnemy = true;
+                    }
                 }
             }
             else
             {
-                response.EnemyList = client.Party.InstanceEnemyManager.GetAssets(stageId, subGroupId).Select((enemy, index) => new CDataLayoutEnemyData()
+                var instancedEnemyList = client.Party.InstanceEnemyManager.GetAssets(stageId)
+                    .Where(x => x.Subgroup == subGroupId);
+                foreach (var asset in instancedEnemyList)
                 {
-                    PositionIndex = (byte)index,
-                    EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
-                })
-                .ToList();
+                    response.EnemyList.Add(new CDataLayoutEnemyData()
+                    {
+                        PositionIndex = asset.Index,
+                        EnemyInfo = asset.asCDataStageLayoutEnemyPresetEnemyInfoClient()
+                    });
+                    client.Party.InstanceEnemyManager.SetInstanceEnemy(stageId, asset.Index, asset);
+
+                    if (asset.NotifyStrongEnemy)
+                    {
+                        notifyStrongEnemy = true;
+                    }
+                }
+            }
+
+            if (notifyStrongEnemy)
+            {
+                // TODO: Send NTC which creates popup
+            }
+
+            if (subGroupId > 0 && response.EnemyList.Count > 0)
+            {
+                S2CInstanceEnemySubGroupAppearNtc subgroupNtc = new S2CInstanceEnemySubGroupAppearNtc()
+                {
+                    SubGroupId = subGroupId,
+                    LayoutId = stageId.ToStageLayoutId(),
+                };
+
+                client.Party.SendToAll(subgroupNtc);
             }
 
             client.Send(response);

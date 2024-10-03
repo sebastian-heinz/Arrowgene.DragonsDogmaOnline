@@ -1,10 +1,10 @@
-using System.Linq;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -18,13 +18,33 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SJobUpdateExpModeReq> packet)
         {
-            // TODO: Store updated Exp mode in the character object and in DB
-
-            S2CJobGetJobChangeListRes jobChangeList = EntitySerializer.Get<S2CJobGetJobChangeListRes>().Read(InGameDump.data_Dump_52);
-            client.Send(new S2CJobUpdateExpModeRes()
+            //Handle case where the character is somehow missing a PlayPoint structure.
+            var missingList = packet.Structure.UpdateExpModeList.Where(x => !client.Character.PlayPointList.Any(y => y.Job == x.Job)).ToList();
+            foreach (var missing in missingList)
             {
-                PlayPointList = jobChangeList.PlayPointList.Where(x => packet.Structure.UpdateExpModeList.Any(y => y.Job == x.Job)).ToList()
-            });
+                client.Character.PlayPointList.Add(new CDataJobPlayPoint()
+                {
+                    Job = missing.Job,
+                    PlayPoint = new CDataPlayPointData()
+                    {
+                        PlayPoint = 0,
+                        ExpMode = ExpMode.Experience,
+                    }
+                });
+            }
+            
+            var res = new S2CJobUpdateExpModeRes()
+            {
+                PlayPointList = client.Character.PlayPointList.Where(x => packet.Structure.UpdateExpModeList.Any(y => y.Job == x.Job)).ToList()
+            };
+            res.PlayPointList.ForEach(x => x.PlayPoint.ExpMode = 3 - x.PlayPoint.ExpMode); //Flip 1 <-> 2
+
+            foreach (CDataJobPlayPoint playpoint in res.PlayPointList)
+            {
+                Database.ReplaceCharacterPlayPointData(client.Character.CharacterId, playpoint);
+            }
+
+            client.Send(res);
         }
     }
 }

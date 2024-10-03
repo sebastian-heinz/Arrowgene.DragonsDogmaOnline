@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.C2S_CRAFT_RECIPE_GET_CRAFT_RECIPE_REQ;
 
-        public byte Category { get; set; }
+        public RecipeCategory Category { get; set; }
         public uint Offset { get; set; }
         public int Num { get; set; }
 
@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
             public override void Write(IBuffer buffer, C2SCraftRecipeGetCraftRecipeReq obj)
             {
-                WriteByte(buffer, obj.Category);
+                WriteByte(buffer, (byte)obj.Category);
                 WriteUInt32(buffer, obj.Offset);
                 WriteInt32(buffer, obj.Num);
             }
@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override C2SCraftRecipeGetCraftRecipeReq Read(IBuffer buffer)
             {
                 C2SCraftRecipeGetCraftRecipeReq obj = new C2SCraftRecipeGetCraftRecipeReq();
-                obj.Category = ReadByte(buffer);
+                obj.Category = (RecipeCategory)ReadByte(buffer);
                 obj.Offset = ReadUInt32(buffer);
                 obj.Num = ReadInt32(buffer);
                 return obj;

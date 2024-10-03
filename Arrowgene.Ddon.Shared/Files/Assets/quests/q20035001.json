@@ -1,0 +1,72 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Sleeping Giant",
+  "quest_id": 20035001,
+  "base_level": 35,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DoweValley",
+  "news_image": 72,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1320
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 260
+    },
+    {
+      "type": "exp",
+      "amount": 1080
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 7902,
+          "num": 3
+        },
+        {
+          "item_id": 9384,
+          "num": 2
+        },
+        {
+          "item_id": 9066,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 69,
+        "group_id": 6
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015100",
+          "level": 35,
+          "exp": 6000,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

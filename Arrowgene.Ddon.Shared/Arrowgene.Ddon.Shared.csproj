@@ -10,6 +10,14 @@
         <Copyright>Copyright © 2019-2022 DDON Team</Copyright>
         <LangVersion>10</LangVersion>
     </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+      <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+      <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+    </PropertyGroup>
     <Import Project="./../SetSourceRevision.targets" />
     <ItemGroup>
         <PackageReference Include="Arrowgene.Buffers" Version="1.0.2" />
@@ -25,6 +33,12 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Asset\" />
+      <ContentWithTargetPath Remove="files\assets\ElementAttachInfo.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Files\Assets\ElementAttachInfo.json">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 </Project>

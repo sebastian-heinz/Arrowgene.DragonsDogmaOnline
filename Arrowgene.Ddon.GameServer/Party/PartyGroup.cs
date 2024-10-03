@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Context;
 using Arrowgene.Ddon.GameServer.Instance;
-using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
@@ -11,6 +7,9 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Party
 {
@@ -28,6 +27,9 @@ namespace Arrowgene.Ddon.GameServer.Party
         private PlayerPartyMember _leader;
         private PlayerPartyMember _host;
         private bool _isBreakup;
+        
+        public readonly ulong ContentId;
+        public bool ContentInProgress;
 
         public InstanceEnemyManager InstanceEnemyManager { get; }
 
@@ -35,20 +37,21 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public Dictionary<uint, Dictionary<ulong, uint>> InstanceOmData { get; }
 
-        public PartyGroup(uint id, PartyManager partyManager)
+        public PartyGroup(uint id, PartyManager partyManager, ulong contentId)
         {
             MaxSlots = MaxPartyMember;
             _lock = new object();
             _slots = new PartyMember[MaxSlots];
             _partyManager = partyManager;
             _isBreakup = false;
+            ContentId = contentId;
 
             Id = id;
 
             // TODO
             Contexts = new Dictionary<ulong, Tuple<CDataContextSetBase, CDataContextSetAdditional>>();
 
-            InstanceEnemyManager = new InstanceEnemyManager(partyManager.assetRepository);
+            InstanceEnemyManager = new InstanceEnemyManager(_partyManager.Server);
 
             InstanceOmData = new Dictionary<uint, Dictionary<ulong, uint>>();
 
@@ -266,13 +269,12 @@ namespace Arrowgene.Ddon.GameServer.Party
             lock (_lock)
             {
                 PlayerPartyMember partyMember = GetPlayerPartyMember(client);
-                if (partyMember == null)
+                if (partyMember == null && MemberCount() > 0)
                 {
                     Logger.Error(client, $"[PartyId:{Id}][Join(GameClient)] has no slot");
                     return ErrorRes<PlayerPartyMember>.Fail;
                 }
 
-                client.Party = this;
                 if (_leader == null && _host == null)
                 {
                     // first to join the party
@@ -280,6 +282,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                     _leader = partyMember;
                     _host = partyMember;
                 }
+                client.Party = this;
 
                 partyMember.JoinState = JoinState.On;
                 Logger.Info(client, $"[PartyId:{Id}][Join(GameClient)] joined");
@@ -339,6 +342,9 @@ namespace Arrowgene.Ddon.GameServer.Party
                     Logger.Error(client, $"[PartyId:{Id}][Leave(GameClient)] has no slot");
                     return;
                 }
+
+                //Hand off any enemy groups they're responsible for.
+                ContextManager.DelegateAllMasters(client);
 
                 // We need to get rid of pawn players associated with the person who left
                 foreach (var member in client.Party.Members)
@@ -408,6 +414,9 @@ namespace Arrowgene.Ddon.GameServer.Party
                         Logger.Error(client, $"[PartyId:{Id}][Kick] is not authorized (not leader)");
                         return ErrorRes<PartyMember>.Error(ErrorCode.ERROR_CODE_PARTY_IS_NOT_LEADER);
                     }
+
+                    //Hand off any enemy groups they're responsible for.
+                    ContextManager.DelegateAllMasters(player.Client);
 
                     FreeSlot(member.MemberIndex);
                     Logger.Info(client, $"[PartyId:{Id}][Kick] kicked player {player.Client.Identity}");
@@ -608,14 +617,18 @@ namespace Arrowgene.Ddon.GameServer.Party
         public void ResetInstance()
         {
             InstanceEnemyManager.Clear();
+            Contexts.Clear();
             foreach (GameClient client in Clients)
             {
                 client.InstanceGatheringItemManager.Clear();
+                client.InstanceBbmItemManager.Reset();
+                client.InstanceEventDropItemManager.Reset();
                 client.InstanceDropItemManager.Clear();
+                client.InstanceQuestDropManager.Clear();
+                client.Character.ContextOwnership.Clear();
             }
-
-            QuestState.ResetInstanceQuestState();
             OmManager.ResetAllOmData(InstanceOmData);
+            QuestState.ResetInstance();
         }
 
         public PartyMember GetPartyMemberByCharacter(CharacterCommon characterCommon)
@@ -699,6 +712,12 @@ namespace Arrowgene.Ddon.GameServer.Party
                     }
                 }
 
+                if (slotIndex == InvalidSlotIndex)
+                {
+                    Logger.Error($"[PartyId:{Id}][TakeSlot] (no empty slot)");
+                    return InvalidSlotIndex;
+                }
+
                 partyMember.MemberIndex = slotIndex;
                 _slots[slotIndex] = partyMember;
             }
@@ -758,6 +777,33 @@ namespace Arrowgene.Ddon.GameServer.Party
             partyMember.SessionStatus = 0;
             partyMember.MemberIndex = InvalidSlotIndex;
             return partyMember;
+        }
+
+        public int ClientIndex(GameClient client)
+        {
+            if (!Members.Any() || !Clients.Any()) return 0;
+            
+            var ind = Members.FindIndex(member =>
+                member is PlayerPartyMember playerMember
+                && playerMember.Client == client
+            );
+            return ind >= 0 ? ind : ClientIndex(Clients.First());
+        }
+
+        public bool Contains(CharacterCommon character)
+        {
+            foreach (PartyMember member in Members)
+            {
+                if (member is PlayerPartyMember playerMember)
+                {
+                    if (playerMember.Client.Character == character) return true;
+                }
+                else if (member is PawnPartyMember pawnMember)
+                {
+                    if (pawnMember.Pawn == character) return true;
+                }
+            }
+            return false;
         }
     }
 }

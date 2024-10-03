@@ -1,0 +1,195 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "The Girl Clad in Darkness",
+    "quest_id": 12,
+    "next_quest": 13,
+    "base_level": 40,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 7000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 5600
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 740
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 1021,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 8997,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 8998,
+                    "num": 1
+                }
+            ]
+        }
+
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 137
+            },
+            "enemies": [
+                {
+                    "comment" : "Alchemized Goblin",
+                    "enemy_id": "0x011120",
+                    "level": 41,
+                    "exp": 4200
+                },
+                {
+                    "comment" : "Alchemized Wolf",
+                    "enemy_id": "0x010207",
+                    "level": 41,
+                    "exp": 4200
+                },
+                {
+                    "comment" : "Alchemized Skeleton",
+                    "enemy_id": "0x010312",
+                    "level": 40,
+                    "exp": 3742
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 3
+            },
+            "flags": [
+                {"type": "WorldManageLayout", "action": "Set", "value": 1215, "quest_id": 70000001, "comment": "Mysial"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
+                {"type": "WorldManageLayout", "action": "Clear", "value": 1219, "quest_id": 70000001, "comment": "Iris"},
+                {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
+                {"type": "WorldManageLayout", "action": "Set", "value": 1294, "quest_id": 70000001, "comment": "The White Dragon (Less Dead)"},
+                {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"}
+            ],
+            "npc_id": "Joseph",
+            "message_id": 7898
+        },
+        {
+            "type": "TalkToNpc",
+            "checkpoint": true,
+            "announce_type": "Accept",
+            "stage_id": {
+                "id": 2
+            },
+            "npc_id": "Pamela",
+            "message_id": 7902
+        },
+        {
+            "type": "TalkToNpc",
+            "checkpoint": true,
+            "announce_type": "Update",
+            "stage_id": {
+                "id": 1
+            },
+            "npc_id": "Cain",
+            "message_id": 11504
+        },
+        {
+            "type": "TalkToNpc",
+            "checkpoint": true,
+            "announce_type": "Update",
+            "stage_id": {
+                "id": 137
+            },
+            "npc_id": "Christine",
+            "message_id": 14855
+        },
+        {
+            "type": "IsStageNo",
+            "checkpoint": true,
+            "announce_type": "Update",
+            "comment": "This is a filler step that should be replaced. It is supposed to check for any world quest to be completed.",
+            "stage_id": {
+                "id": 137
+            }
+        },
+        {
+            "type": "TalkToNpc",
+            "checkpoint": true,
+            "announce_type": "Update",
+            "stage_id": {
+                "id": 137
+            },
+            "npc_id": "Christine",
+            "message_id": 14858
+        },
+        {
+            "type": "PartyGather",
+            "announce_type": "Update",
+            "checkpoint": true,
+            "flags": [],
+            "stage_id": {
+                "id": 1
+            },
+            "location": {
+                "x": -64166,
+                "y": 1706,
+                "z": 133604
+            }
+        },
+        {
+            "type": "PlayEvent",
+            "flags": [],
+            "stage_id": {
+                "id": 1
+            },
+            "event_id": 30
+        },
+        {
+            "type": "KillGroup",
+            "flags": [],
+            "announce_type": "Update",
+            "groups": [0]
+        },
+        {
+            "type": "PlayEvent",
+            "flags": [],
+            "stage_id": {
+                "id": 1
+            },
+            "event_id": 35
+        },
+        {
+            "type": "TalkToNpc",
+            "checkpoint": true,
+            "announce_type": "Update",
+            "stage_id": {
+                "id": 3
+            },
+            "npc_id": "Joseph",
+            "message_id": 7908
+        }
+    ]
+}

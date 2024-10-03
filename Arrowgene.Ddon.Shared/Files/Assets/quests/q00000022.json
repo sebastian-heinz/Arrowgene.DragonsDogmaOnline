@@ -1,0 +1,243 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "The Dwellers of the Golden Land",
+    "quest_id": 22,
+    "next_quest": 23,
+    "base_level": 51,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "order_conditions": [],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 14500
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 14000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 1350
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 951,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 9734,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "comment": "Boss Group 1",
+            "stage_id": {
+                "id": 76,
+                "group_id": 4
+            },
+            "enemies": [
+                {
+                    "comment" : "Alchemized Griffin",
+                    "enemy_id": "0x015304",
+                    "level": 51,
+                    "exp": 60400,
+                    "is_boss": true
+                },
+                {
+                    "comment" : "Alchemized Harpy",
+                    "enemy_id": "0x010606",
+                    "level": 50,
+                    "exp": 5936
+                },
+                {
+                    "comment" : "Alchemized Harpy",
+                    "enemy_id": "0x010606",
+                    "level": 50,
+                    "exp": 5936
+                },
+                {
+                    "comment" : "Alchemized Harpy",
+                    "enemy_id": "0x010606",
+                    "level": 50,
+                    "exp": 5936
+                },
+                {
+                    "comment" : "Alchemized Harpy",
+                    "enemy_id": "0x010606",
+                    "level": 50,
+                    "exp": 5936
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1
+                    },
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1215, "quest_id": 70000001, "comment": "Mysial"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 7389, "quest_id": 70032001, "comment": "The White Dragon (Less Less Dead)"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"},
+
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1202, "quest_id": 70003001, "comment": "Mergoda Warp Off"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1203, "quest_id": 70003001, "comment": "Mergoda Warp on"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1104, "quest_id": 70003001, "comment": "Large Front Door Closed"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1105, "quest_id": 70003001, "comment": "Large Front Door Open"}
+                    ],
+                    "npc_id": "Klaus0",
+                    "message_id": 8427
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Accept",
+                    "checkpoint": true,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 1102, "comment": "Spawn Klaus"},
+                        {"type": "QstLayout", "action": "Set", "value": 1098, "comment": "Seals Diametes door"},
+                        {"type": "QstLayout", "action": "Set", "value": 1307, "comment": "Blockaid"}
+                    ],
+                    "stage_id": {
+                        "id": 77
+                    },
+                    "location": {
+                        "x": -15,
+                        "y": 8,
+                        "z": 859
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "jump_type": "Before",
+                    "stage_id": {
+                        "id": 76
+                    },
+                    "event_id": 0
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 1202, "quest_id": 70003001, "comment": "Mergoda Warp Off"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1203, "quest_id": 70003001, "comment": "Mergoda Warp on"},
+                        {"type": "QstLayout", "action": "Clear", "value": 1102, "comment": "Spawn Klaus"},
+                        {"type": "QstLayout", "action": "Set", "value": 1029, "comment": "Spawn Klaus"}
+                    ],
+                    "stage_id": {
+                        "id": 76,
+                        "group_id": 2,
+                        "layer_no": 1
+                    },
+                    "npc_id": "Klaus0",
+                    "message_id": 8434
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "flags": [],
+                    "stage_id": {
+                        "id": 76
+                    },
+                    "location": {
+                        "x": 8215,
+                        "y": -336,
+                        "z": -18140
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 76
+                    },
+                    "event_id": 5
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "flags": [
+                    ],
+                    "groups": [0]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 76
+                    },
+                    "event_id": 10
+                },
+                {
+                    "type": "TalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 1029, "comment": "Spawn Klaus"},
+                        {"type": "QstLayout", "action": "Set", "value": 1030, "comment": "Spawn Klaus"}
+                    ],
+                    "stage_id": {
+                        "id": 63
+                    },
+                    "npc_id": "Theodor",
+                    "message_id": 8438
+                },
+                {
+                    "type": "TalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "flags": [],
+                    "stage_id": {
+                        "id": 237
+                    },
+                    "npc_id": "Beatrix",
+                    "message_id": 16096
+                },
+                {
+                    "type": "TalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "flags": [],
+                    "stage_id": {
+                        "id": 63
+                    },
+                    "npc_id": "Theodor",
+                    "message_id": 16095
+                },
+                {
+                    "type": "TalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 1028, "comment": "Spawn Vanessa, Heniz and Mayleaf"}
+                    ],
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "npc_id": "Joseph",
+                    "message_id": 8442
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,73 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Witch of the Forest (Lestania Herbs)",
+  "quest_id": 20050006,
+  "base_level": 13,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "MysreeForest",
+  "news_image": 114,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 850
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 70
+    },
+    {
+      "type": "exp",
+      "amount": 280
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Linen",
+          "item_id": 7936,
+          "num": 2
+        },
+        {
+          "comment": "Oil Flask",
+          "item_id": 9394,
+          "num": 3
+        },
+        {
+          "comment": "Mushroom Saute",
+          "item_id": 1351,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 16
+      },
+      "npc_id": "Emerada0",
+      "message_id": 10800
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 16,
+        "group_id": 1
+      },
+      "npc_id": "Emerada0",
+      "announce_type": "Accept",
+      "items": [
+        {
+          "id": 7976,
+          "amount": 5
+        }
+      ],
+      "message_id": 10737
+    }
+  ]
+}
