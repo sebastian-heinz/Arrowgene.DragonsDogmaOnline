@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CClanClanInviteAcceptRes Handle(GameClient client, C2SClanClanInviteAcceptReq request)
         {
-            Server.ClanManager.AddMemberToClan(client.Character, request.ClanId);
+            Server.ClanManager.JoinClan(client.Character.CharacterId, request.ClanId);
 
             return new S2CClanClanInviteAcceptRes();
         }

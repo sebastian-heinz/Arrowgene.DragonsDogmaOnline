@@ -572,6 +572,7 @@ namespace Arrowgene.Ddon.Database
 
         // Clan
         bool CreateClan(CDataClanParam clanParam);
+        bool DeleteClan(CDataClanParam clan, DbConnection? connectionIn = null);
         uint SelectClanMembershipByCharacterId(uint characterId, DbConnection? connectionIn = null);
         ClanName GetClanNameByClanId(uint clanId, DbConnection? connectionIn = null);
         CDataClanParam SelectClan(uint clanId, DbConnection? connectionIn = null);
@@ -579,5 +580,7 @@ namespace Arrowgene.Ddon.Database
         bool InsertClanMember(CDataClanMemberInfo memberInfo, uint clanId, DbConnection? connectionIn = null);
         bool DeleteClanMember(uint characterId, uint clanId, DbConnection? connectionIn = null);
         List<CDataClanMemberInfo> GetClanMemberList(uint clanId, DbConnection? connectionIn = null);
+        CDataClanMemberInfo GetClanMember(uint characterId, DbConnection? connectionIn = null);
+        bool UpdateClanMember(CDataClanMemberInfo memberInfo, uint clanId, DbConnection? connectionIn = null);
     }
 }

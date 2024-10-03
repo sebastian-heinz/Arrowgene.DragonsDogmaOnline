@@ -163,7 +163,7 @@ namespace Arrowgene.Ddon.Shared.Model
                     FirstName = FirstName,
                     LastName = LastName,
                 },
-                ClanName = ""
+                ClanName = ClanName.ShortName
             };
         }
     }

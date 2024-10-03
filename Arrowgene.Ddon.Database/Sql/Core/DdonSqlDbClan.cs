@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         };
 
         private readonly string SqlInsertClanParam = $"INSERT INTO \"ddon_clan_param\" ({BuildQueryField(ClanParamFields)}) VALUES ({BuildQueryInsert(ClanParamFields)});";
-        private readonly string SqlDeleteClanParam = "DELETE FROM \"ddon_clam_param\" WHERE \"clan_id\"=@clan_id;";
+        private readonly string SqlDeleteClanParam = "DELETE FROM \"ddon_clan_param\" WHERE \"clan_id\"=@clan_id;";
         private readonly string SqlUpdateClanParam = $"UPDATE \"ddon_clan_param\" SET {BuildQueryUpdate(ClanParamFields)} WHERE \"clan_id\" = @clan_id;";
         private readonly string SqlSelectClanParamById = $"SELECT \"clan_id\", {BuildQueryField(ClanParamFields)} FROM \"ddon_clan_param\" WHERE \"clan_id\"=@clan_id;";
 
@@ -37,6 +37,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private readonly string SqlInsertClanMembership = $"INSERT INTO \"ddon_clan_membership\" ({BuildQueryField(ClanMembershipFields)}) VALUES ({BuildQueryInsert(ClanMembershipFields)});";
         private readonly string SqlSelectClanMembershipByCharacterId = $"SELECT {BuildQueryField(ClanMembershipFields)} FROM \"ddon_clan_membership\" WHERE \"character_id\"=@character_id;";
         private readonly string SqlDeleteClanMembership = "DELETE FROM \"ddon_clan_membership\" WHERE \"character_id\"=@character_id;";
+        private readonly string SqlUpdateClanMembership = $"UPDATE \"ddon_clan_membership\" SET {BuildQueryUpdate(ClanMembershipFields)} WHERE \"character_id\" = @character_id";
 
         private readonly string SqlCDataClanMemberInfoList = "SELECT \"ddon_clan_membership\".\"character_id\", \"ddon_clan_membership\".\"rank\", \"ddon_clan_membership\".\"permission\", \"ddon_character\".\"first_name\", \"ddon_character\".\"last_name\", \"ddon_character_job_data\".\"job\", \"ddon_character_job_data\".\"lv\" "
             + "FROM \"ddon_clan_membership\" "
@@ -292,6 +293,23 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }
         }
 
+        public bool DeleteClan(CDataClanParam clan, DbConnection? connectionIn = null)
+        {
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
+            {
+                return ExecuteNonQuery(connection, SqlDeleteClanParam, command =>
+                {
+                    AddParameter(command, clan);
+                }) == 1;
+            }
+            finally
+            {
+                if (!isTransaction) connection.Dispose();
+            }
+        }
+
         public bool IncrementClanMemberNum(int value, uint clanId, DbConnection? connectionIn = null)
         {
             bool isTransaction = connectionIn is not null;
@@ -349,6 +367,28 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 ) == 1;
                 var incrementNum = IncrementClanMemberNum(-1, clanId, connection);
                 return memberInsert && incrementNum;
+            }
+            finally
+            {
+                if (!isTransaction) connection.Dispose();
+            }
+        }
+
+        public bool UpdateClanMember(CDataClanMemberInfo memberInfo, uint clanId, DbConnection? connectionIn = null)
+        {
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
+            {
+                var memberUpdate = ExecuteNonQuery(
+                    connection,
+                    SqlUpdateClanMembership,
+                    command =>
+                    {
+                        AddParameter(command, memberInfo, clanId);
+                    }
+                ) == 1;
+                return memberUpdate;
             }
             finally
             {
