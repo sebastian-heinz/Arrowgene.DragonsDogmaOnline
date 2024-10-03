@@ -1,7 +1,7 @@
 {
     "state_machine": "GenericStateMachine",
     "type": "World",
-    "comment": "A Wish For Inheritance",
+    "comment": "Inherited Experience",
     "quest_id": 20990003,
     "base_level": 50,
     "minimum_item_rank": 0,
@@ -83,8 +83,19 @@
             "message_id": 11372
         },
         {
-            "type": "CollectItem",
+            "type": "DiscoverEnemy",
             "announce_type": "Accept",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "reset_group": false,
+            "announce_type": "Update",
+            "groups": [0]
+        },
+        {
+            "type": "CollectItem",
+            "announce_type": "Update",
             "stage_id": {
                 "id": 58,
                 "group_id": 1,
@@ -93,11 +104,6 @@
             "flags": [
                 {"type": "QstLayout", "action": "Set", "value": 1302, "comment": "Spawns Glowing Item"}
             ]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [0]
         },
         {
             "type": "TalkToNpc",

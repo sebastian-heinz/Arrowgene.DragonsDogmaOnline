@@ -101,6 +101,7 @@
                         {"type": "WorldManageLayout", "action": "Clear", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
                         {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
                         {"type": "WorldManageLayout", "action": "Set", "value": 7389, "quest_id": 70032001, "comment": "The White Dragon (Less Less Dead)"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"},
 
                         {"type": "WorldManageLayout", "action": "Set", "value": 1106, "quest_id": 70003001, "comment": "Front Door Levers"},
                         {"type": "WorldManageLayout", "action": "Set", "value": 1104, "quest_id": 70003001, "comment": "Large Front Door Closed"},
