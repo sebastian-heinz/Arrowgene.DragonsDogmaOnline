@@ -118,7 +118,8 @@
                         {"type": "WorldManageLayout", "action": "Clear", "value": 1672, "quest_id": 70000001, "comment": "Open Lever Door  (Stone Door, middle)"},
                         {"type": "WorldManageLayout", "action": "Set", "value": 1111, "quest_id": 70000001, "comment": "Closed Water Flow Control Door"},
                         {"type": "WorldManageLayout", "action": "Set", "value": 1671, "quest_id": 70000001, "comment": "Closed Lever Door (Stone Door, middle)"},
-                        {"type": "WorldManageLayout", "action": "Set", "value": 1317, "quest_id": 70000001, "comment": "Waterfalls"}
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1317, "quest_id": 70000001, "comment": "Waterfalls"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"}
                     ],
                     "npc_id": "Klaus0",
                     "message_id": 7931

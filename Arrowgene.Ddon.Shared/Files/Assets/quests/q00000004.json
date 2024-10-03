@@ -56,7 +56,8 @@
                 {"type": "WorldManageLayout", "action": "Set", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
                 {"type": "WorldManageLayout", "action": "Set", "value": 1219, "quest_id": 70000001, "comment": "Iris"},
                 {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
-                {"type": "WorldManageLayout", "action": "Set", "value": 1293, "quest_id": 70000001, "comment": "The White Dragon (Dead)"}
+                {"type": "WorldManageLayout", "action": "Set", "value": 1293, "quest_id": 70000001, "comment": "The White Dragon (Dead)"},
+                {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"}
             ],
             "stage_id": {
                 "id": 3,
