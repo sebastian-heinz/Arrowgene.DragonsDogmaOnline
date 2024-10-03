@@ -824,8 +824,8 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_STAGE_UNISON_AREA_CHANGE_READY_RES = new PacketId(12, 7, 2, "S2C_STAGE_UNISON_AREA_CHANGE_READY_RES", ServerType.Game, PacketSource.Server); // 一斉ステージ移動準備に
         public static readonly PacketId C2S_STAGE_UNISON_AREA_CHANGE_READY_CANCEL_REQ = new PacketId(12, 8, 1, "C2S_STAGE_UNISON_AREA_CHANGE_READY_CANCEL_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_STAGE_UNISON_AREA_CHANGE_READY_CANCEL_RES = new PacketId(12, 8, 2, "S2C_STAGE_UNISON_AREA_CHANGE_READY_CANCEL_RES", ServerType.Game, PacketSource.Server); // 一斉ステージ移動準備キャンセルに
-        public static readonly PacketId S2C_STAGE_12_9_16_NTC = new PacketId(12, 9, 16, "S2C_STAGE_12_9_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_STAGE_12_10_16_NTC = new PacketId(12, 10, 16, "S2C_STAGE_12_10_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_STAGE_TICKET_DUNGEON_START_NTC = new PacketId(12, 9, 16, "S2C_STAGE_TICKET_DUNGEON_START_NTC", ServerType.Game, PacketSource.Server, "S2C_STAGE_12_9_16_NTC");
+        public static readonly PacketId S2C_STAGE_UNISON_AREA_READY_CANCEL_NTC = new PacketId(12, 10, 16, "S2C_STAGE_UNISON_AREA_READY_CANCEL_NTC", ServerType.Game, PacketSource.Server, "S2C_STAGE_12_10_16_NTC");
         public static readonly PacketId C2S_STAGE_GET_TICKET_DUNGEON_CATEGORY_LIST_REQ = new PacketId(12, 11, 1, "C2S_STAGE_GET_TICKET_DUNGEON_CATEGORY_LIST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_STAGE_GET_TICKET_DUNGEON_CATEGORY_LIST_RES = new PacketId(12, 11, 2, "S2C_STAGE_GET_TICKET_DUNGEON_CATEGORY_LIST_RES", ServerType.Game, PacketSource.Server); // チケットダンジョンカテゴリ取得に
         public static readonly PacketId C2S_STAGE_GET_TICKET_DUNGEON_INFO_LIST_REQ = new PacketId(12, 12, 1, "C2S_STAGE_GET_TICKET_DUNGEON_INFO_LIST_REQ", ServerType.Game, PacketSource.Client);
@@ -2753,8 +2753,8 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_STAGE_UNISON_AREA_CHANGE_READY_RES);
             AddPacketIdEntry(packetIds, C2S_STAGE_UNISON_AREA_CHANGE_READY_CANCEL_REQ);
             AddPacketIdEntry(packetIds, S2C_STAGE_UNISON_AREA_CHANGE_READY_CANCEL_RES);
-            AddPacketIdEntry(packetIds, S2C_STAGE_12_9_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_STAGE_12_10_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_STAGE_TICKET_DUNGEON_START_NTC);
+            AddPacketIdEntry(packetIds, S2C_STAGE_UNISON_AREA_READY_CANCEL_NTC);
             AddPacketIdEntry(packetIds, C2S_STAGE_GET_TICKET_DUNGEON_CATEGORY_LIST_REQ);
             AddPacketIdEntry(packetIds, S2C_STAGE_GET_TICKET_DUNGEON_CATEGORY_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_STAGE_GET_TICKET_DUNGEON_INFO_LIST_REQ);
