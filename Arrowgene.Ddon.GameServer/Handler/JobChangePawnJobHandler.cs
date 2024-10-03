@@ -30,11 +30,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 jobManager.SetJob(client, pawn, packet.Structure.JobId, connection);
             });
 
-            foreach (GameClient otherClient in Server.ClientLookup.GetAll())
+            if (jobResult.jobNtc != null)
             {
-                otherClient.Send(jobResult.jobNtc);
+                foreach (GameClient otherClient in Server.ClientLookup.GetAll())
+                {
+                    otherClient.Send(jobResult.jobNtc);
+                }
             }
-            client.Send(jobResult.itemNtc);
+
+            if (jobResult.itemNtc != null)
+            {
+                client.Send(jobResult.itemNtc);
+            }
+
             client.Send(jobResult.jobRes);
         }
     }

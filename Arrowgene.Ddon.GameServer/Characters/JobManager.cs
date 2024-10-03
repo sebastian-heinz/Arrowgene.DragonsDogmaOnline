@@ -31,17 +31,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
             _Server = server;
         }
 
-        public (IPacketStructure? jobRes, IPacketStructure? itemNtc, IPacketStructure? jobNtc) SetJob(GameClient client, CharacterCommon common, JobId jobId, DbConnection? connectionIn = null)
+        public (IPacketStructure jobRes, IPacketStructure? itemNtc, IPacketStructure? jobNtc) SetJob(GameClient client, CharacterCommon common, JobId jobId, DbConnection? connectionIn = null)
         {
             // TODO: Reject job change if there's no primary and secondary weapon for the new job in storage
             // (or give a lvl 1 weapon for free?)
 
-            var totalSlots = common.Equipment.GetItems(EquipType.Performance)
-                .Concat(common.Equipment.GetItems(EquipType.Visual))
-                .Where(x => x != null)
-                .ToList()
-                .Count;
-            if (totalSlots > client.Character.Storage.GetStorage(StorageType.StorageBoxNormal).EmptySlots())
+            if (!HasEmptySlotsForTemplateSwap(client, common, common.Job, jobId))
             {
                 return (new S2CJobChangeJobRes()
                 {
@@ -291,6 +286,36 @@ namespace Arrowgene.Ddon.GameServer.Characters
             _Server.Database.UpdateCharacterCommonBaseInfo(common, connectionIn);
 
             return itemUpdateResultList;
+        }
+
+        private static bool HasEmptySlotsForTemplateSwap(GameClient client, CharacterCommon common, JobId oldJobId, JobId newJobId)
+        {
+            var availableSlots = client.Character.Storage.GetStorage(StorageType.StorageBoxNormal).EmptySlots();
+
+            var neededSlots = common.Equipment.GetItems(EquipType.Performance)
+                .Concat(common.Equipment.GetItems(EquipType.Visual))
+                .Where(x => x != null)
+                .ToList()
+                .Count;
+
+            // If the item isn't moving, it doesn't need a space in the box.
+            foreach (var equipType in new List<EquipType>(){ EquipType.Performance, EquipType.Visual })
+            {
+                List<Item?> oldEquipment = common.Equipment.GetItems(equipType);
+                List<Item?> newEquipmentTemplate = common.EquipmentTemplate.GetEquipment(newJobId, equipType);
+
+                for (int i = 0; i < oldEquipment.Count; i++)
+                {
+                    if (oldEquipment[i] != null && newEquipmentTemplate[i] != null && oldEquipment[i] == newEquipmentTemplate[i])
+                    {
+                        neededSlots--;
+                    }
+                }
+            }
+            
+            // TODO: Account for one-to-one swaps, as well as jewelry shuffling order.
+
+            return neededSlots <= availableSlots;
         }
 
         public void UnlockSkill(IDatabase database, GameClient client, CharacterCommon character, JobId job, uint skillId, byte skillLv)
