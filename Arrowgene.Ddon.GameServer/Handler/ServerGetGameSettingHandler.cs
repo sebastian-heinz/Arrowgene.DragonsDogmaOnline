@@ -53,7 +53,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
 
             res.GameSetting.PlayPointMax = Server.Setting.GameLogicSetting.PlayPointMax;
-            res.GameSetting.WalletLimits = Server.Setting.GameLogicSetting.WalletLimits;
+            res.GameSetting.WalletLimits = Server.Setting.GameLogicSetting.WalletLimits.Select(x => new CDataWalletLimit()
+            {
+                WalletType = x.Key,
+                MaxValue = x.Value,
+            }).ToList();
 
             return res;
         }

@@ -1,7 +1,5 @@
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.Serialization;
 
 namespace Arrowgene.Ddon.Server
@@ -150,7 +148,7 @@ namespace Arrowgene.Ddon.Server
         /// <summary>
         /// Limits for each wallet type.
         /// </summary>
-        [DataMember(Order = 23)] public List<CDataWalletLimit> WalletLimits { get; set; }
+        [DataMember(Order = 23)] public Dictionary<WalletType, uint> WalletLimits { get; set; }
 
         /// <summary>
         /// Various URLs used by the client.
@@ -228,11 +226,7 @@ namespace Arrowgene.Ddon.Server
             EnableVisualEquip = true;
             FriendListMax = 200;
 
-            WalletLimits = DefaultWalletLimits.Select(x => new CDataWalletLimit()
-            {
-                WalletType = x.Key,
-                MaxValue = x.Value
-            }).ToList();
+            WalletLimits = DefaultWalletLimits;
 
             string urlDomain = $"http://localhost:{52099}";
             UrlManual = $"{urlDomain}/manual_nfb/";
@@ -307,6 +301,31 @@ namespace Arrowgene.Ddon.Server
         [OnDeserialized]
         void OnDeserialized(StreamingContext context)
         {
+            // Initialize reference types so tests work properly.
+            AdjustPartyEnemyExpTiers ??= new();
+            AdjustTargetLvEnemyExpTiers ??= new();
+            WeatherStatistics ??= new();
+            WalletLimits ??= new();
+            UrlManual ??= string.Empty;
+            UrlShopDetail ??= string.Empty;
+            UrlShopCounterA ??= string.Empty;
+            UrlShopAttention ??= string.Empty;
+            UrlShopStoneLimit ??= string.Empty;
+            UrlShopCounterB ??= string.Empty;
+            UrlChargeCallback ??= string.Empty;
+            UrlChargeA ??= string.Empty;
+            UrlSample9 ??= string.Empty;
+            UrlSample10 ??= string.Empty;
+            UrlCampaignBanner ??= string.Empty;
+            UrlSupportIndex ??= string.Empty;
+            UrlPhotoupAuthorize ??= string.Empty;
+            UrlApiA ??= string.Empty;
+            UrlApiB ??= string.Empty;
+            UrlIndex ??= string.Empty;
+            UrlCampaign ??= string.Empty;
+            UrlChargeB ??= string.Empty;
+            UrlCompanionImage ??= string.Empty;
+
             if (RookiesRingBonus < 0)
             {
                 RookiesRingBonus = 1.0;
@@ -331,25 +350,21 @@ namespace Arrowgene.Ddon.Server
             {
                 PawnCatchupMultiplier = 1.0;
             }
-
-            foreach ((WalletType type, uint maxValue) in DefaultWalletLimits)
+       
+            foreach (var walletMax in DefaultWalletLimits)
             {
-                if (!WalletLimits.Where(x => x.WalletType == type).Any())
+                if (!WalletLimits.ContainsKey(walletMax.Key))
                 {
-                    WalletLimits.Add(new CDataWalletLimit()
-                    {
-                        WalletType = type,
-                        MaxValue = maxValue
-                    });
+                    WalletLimits.Add(walletMax.Key, walletMax.Value);
                 }
             }
         }
 
-        private static readonly Dictionary<WalletType, uint> DefaultWalletLimits = new Dictionary<WalletType, uint>()
+        private static readonly Dictionary<WalletType, uint> DefaultWalletLimits = new()
         {
             {WalletType.Gold, 999999999},
             {WalletType.RiftPoints, 999999999},
-            {WalletType.BloodOrbs, 50000},
+            {WalletType.BloodOrbs, 500000},
             {WalletType.SilverTickets, 999999999},
             {WalletType.GoldenGemstones, 99999},
             {WalletType.RentalPoints, 99999},

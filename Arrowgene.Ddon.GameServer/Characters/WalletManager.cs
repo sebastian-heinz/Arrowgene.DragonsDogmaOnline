@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             _Database = server.Database;
             _Server = server;
-            WalletLimits = server.Setting.GameLogicSetting.WalletLimits.ToDictionary(x => x.WalletType, x => x.MaxValue);
+            WalletLimits = server.Setting.GameLogicSetting.WalletLimits;
         }
         public bool AddToWalletNtc(Client Client, Character Character, WalletType Type, uint Amount, ItemNoticeType updateType = ItemNoticeType.Default, DbConnection? connectionIn = null)
         {
