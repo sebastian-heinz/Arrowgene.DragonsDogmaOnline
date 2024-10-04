@@ -92,6 +92,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     .Union(c.Equipment.AsCDataEquipItemInfo(EquipType.Visual))
                     .ToList();
 
+                cResponse.ClanName = c.ClanName.Name;
+                cResponse.ClanNameShort = c.ClanName.ShortName;
                 characterListResponse.Add(cResponse);
             }
 

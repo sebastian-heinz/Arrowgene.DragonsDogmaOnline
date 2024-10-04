@@ -80,6 +80,7 @@ namespace Arrowgene.Ddon.GameServer
             BonusDungeonManager = new BonusDungeonManager(this);
             BoardManager = new BoardManager(this);
             TimerManager = new TimerManager(this);
+            ClanManager = new ClanManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
@@ -114,6 +115,7 @@ namespace Arrowgene.Ddon.GameServer
         public BonusDungeonManager BonusDungeonManager { get; }
         public BoardManager BoardManager { get; }
         public TimerManager TimerManager { get; }
+        public ClanManager ClanManager { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
 
@@ -268,6 +270,23 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ClanClanSettingUpdateHandler(this));
             AddHandler(new ClanGetFurnitureHandler(this));
             AddHandler(new ClanSetFurnitureHandler(this));
+            AddHandler(new ClanClanScoutEntryGetMyHandler(this));
+            AddHandler(new ClanClanScoutEntryGetInvitedListHandler(this));
+            AddHandler(new ClanClanGetMyJoinRequestListHandler(this));
+            AddHandler(new ClanClanCreateHandler(this));
+            AddHandler(new ClanClanGetHistoryHandler(this));
+            AddHandler(new ClanClanUpdateHandler(this));
+            AddHandler(new ClanClanInviteHandler(this));
+            AddHandler(new ClanClanGetInfoHandler(this));
+            AddHandler(new ClanClanInviteAcceptHandler(this));
+            AddHandler(new ClanClanScoutEntrySearchHandler(this));
+            AddHandler(new ClanClanSearchHandler(this));
+            AddHandler(new ClanClanScoutEntryGetInviteListHandler(this));
+            AddHandler(new ClanClanLeaveMemberHandler(this));
+            AddHandler(new ClanClanGetMemberListHandler(this));
+            AddHandler(new ClanClanExpelMemberHandler(this));
+            AddHandler(new ClanClanSetMemberRankHandler(this));
+            AddHandler(new ClanClanNegotiateMasterHandler(this));
 
             AddHandler(new ClientChallengeHandler(this));
 

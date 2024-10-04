@@ -9,6 +9,7 @@ using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.BattleContent;
+using Arrowgene.Ddon.Shared.Model.Clan;
 using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.Database
@@ -521,7 +522,7 @@ namespace Arrowgene.Ddon.Database
 
         // Bitterblack Maze Progress
         bool InsertBBMCharacterId(uint characterId, uint bbmCharacterId);
-        uint SelectBBMCharacterId(uint characterId);
+        uint SelectBBMCharacterId(uint characterId, DbConnection? connectionIn = null);
         uint SelectBBMNormalCharacterId(uint bbmCharacterId);
         bool InsertBBMProgress(
             uint characterId,
@@ -568,5 +569,18 @@ namespace Arrowgene.Ddon.Database
         bool UpdateBBMContentTreasure(uint characterId, uint contentId, uint amount);
         bool RemoveBBMContentTreasure(uint characterId);
         List<BitterblackMazeTreasure> SelectBBMContentTreasure(uint characterId);
+
+        // Clan
+        bool CreateClan(CDataClanParam clanParam);
+        bool DeleteClan(CDataClanParam clan, DbConnection? connectionIn = null);
+        uint SelectClanMembershipByCharacterId(uint characterId, DbConnection? connectionIn = null);
+        ClanName GetClanNameByClanId(uint clanId, DbConnection? connectionIn = null);
+        CDataClanParam SelectClan(uint clanId, DbConnection? connectionIn = null);
+        bool UpdateClan(CDataClanParam clan, DbConnection? connectionIn = null);
+        bool InsertClanMember(CDataClanMemberInfo memberInfo, uint clanId, DbConnection? connectionIn = null);
+        bool DeleteClanMember(uint characterId, uint clanId, DbConnection? connectionIn = null);
+        List<CDataClanMemberInfo> GetClanMemberList(uint clanId, DbConnection? connectionIn = null);
+        CDataClanMemberInfo GetClanMember(uint characterId, DbConnection? connectionIn = null);
+        bool UpdateClanMember(CDataClanMemberInfo memberInfo, uint clanId, DbConnection? connectionIn = null);
     }
 }

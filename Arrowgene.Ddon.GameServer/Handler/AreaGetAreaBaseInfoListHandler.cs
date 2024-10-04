@@ -27,6 +27,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 areaBaseInfo.Rank = 15;
                 areaBaseInfo.CanRankUp = false;
+                areaBaseInfo.ClanAreaPoint = 0;
             }
             client.Send(pcap);
         }

@@ -5,6 +5,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model.BattleContent;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model.Quest;
+using Arrowgene.Ddon.Shared.Model.Clan;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
@@ -36,6 +37,7 @@ namespace Arrowgene.Ddon.Shared.Model
             LastSeenLobby = new Dictionary<uint, uint>();
             BbmProgress = new BitterblackMazeProgress();
             CompletedQuests = new Dictionary<QuestId, CompletedQuest>();
+            ClanName = new ClanName();
         }
 
         public int AccountId { get; set; }
@@ -102,23 +104,19 @@ namespace Arrowgene.Ddon.Shared.Model
         public List<CDataPresetAbilityParam> AbilityPresets;
         public byte[] BinaryData;
         public GameMode GameMode {  get; set; }
-
         public Dictionary<uint, uint> LastSeenLobby { get; set; }
-
         public List<Pawn> Pawns { get; set; }
         public List<Pawn> RentedPawns {  get; set; }
-
         public uint FavWarpSlotNum { get; set; }
         public List<ReleasedWarpPoint> ReleasedWarpPoints { get; set; }
 
         public BitterblackMazeProgress BbmProgress;
         public uint NextBBMStageId {  get; set; }
-
         public uint MaxBazaarExhibits { get; set; }
         public Dictionary<QuestId, CompletedQuest> CompletedQuests { get; set; }
-
         public uint LastSafeStageId { get; set; }
-
+        public uint ClanId { get; set; }
+        public ClanName ClanName { get; set; }
         public bool IsLanternLit { get; set; }
 
         // TODO: Move to a more sensible place
@@ -158,7 +156,7 @@ namespace Arrowgene.Ddon.Shared.Model
                     FirstName = FirstName,
                     LastName = LastName,
                 },
-                ClanName = ""
+                ClanName = ClanName.ShortName
             };
         }
     }
