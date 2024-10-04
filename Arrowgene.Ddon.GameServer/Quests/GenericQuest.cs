@@ -91,6 +91,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             }
                             break;
                         case QuestBlockType.DeliverItems:
+                        case QuestBlockType.NewDeliverItems:
                             foreach (var request in block.DeliveryRequests)
                             {
                                 quest.DeliveryItems.Add(new QuestDeliveryItem()
