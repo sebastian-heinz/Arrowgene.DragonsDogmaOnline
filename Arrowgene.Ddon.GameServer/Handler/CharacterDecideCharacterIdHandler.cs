@@ -80,7 +80,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             new CDataCharacterReleaseElement(ContentsRelease.ExtremeMission1),
             new CDataCharacterReleaseElement(ContentsRelease.ChangeVocations),
             new CDataCharacterReleaseElement(ContentsRelease.ExtremeMission2),
-            // new CDataCharacterReleaseElement(ContentsRelease.CreateandJoinClans),
+            new CDataCharacterReleaseElement(ContentsRelease.CreateandJoinClans),
             new CDataCharacterReleaseElement(ContentsRelease.ExtremeMission3),
             new CDataCharacterReleaseElement(ContentsRelease.MainMenu),
             new CDataCharacterReleaseElement(ContentsRelease.AppraisalExchangeofDragonArmor),

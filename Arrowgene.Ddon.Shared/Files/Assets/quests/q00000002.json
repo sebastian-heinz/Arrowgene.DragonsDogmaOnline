@@ -53,7 +53,8 @@
                 {"type": "QstLayout", "action": "Set", "value": 273},
                 {"type": "WorldManageLayout", "action": "Set", "value": 1215, "quest_id": 70000001, "Comment": "Mysial"},
                 {"type": "WorldManageLayout", "action": "Set", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
-                {"type": "WorldManageLayout", "action": "Set", "value": 1219, "quest_id": 70000001, "comment": "Iris"}
+                {"type": "WorldManageLayout", "action": "Set", "value": 1219, "quest_id": 70000001, "comment": "Iris"},
+                {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"}
             ],
             "check_commands": [
                 {"type": "EventEnd", "Param1": 200, "Param2": 0}

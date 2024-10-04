@@ -27,6 +27,14 @@
                     "num": 1
                 }
             ]
+        },
+        {
+            "type": "jp",
+            "amount": 1000
+        },
+        {
+            "type": "exp",
+            "amount": 50000
         }
     ],
     "enemy_groups" : [

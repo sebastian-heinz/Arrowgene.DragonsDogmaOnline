@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -132,7 +133,7 @@ namespace Arrowgene.Ddon.GameServer.Chat
             {
                 case LobbyChatMsgType.Say:
                 case LobbyChatMsgType.Shout:
-                    response.Recipients.AddRange(_server.Clients);
+                    response.Recipients.AddRange(_server.ClientLookup.GetAll());
                     break;
                 case LobbyChatMsgType.Party:
                     PartyGroup party = client.Party;
@@ -140,6 +141,19 @@ namespace Arrowgene.Ddon.GameServer.Chat
                     {
                         response.Recipients.AddRange(party.Clients);
                     }
+                    break;
+                case LobbyChatMsgType.Clan:
+                    if (client.Character.ClanId == 0)
+                    {
+                        response.Recipients.Add(client);
+                        break;
+                    }
+
+                    response.Recipients.AddRange(_server.ClientLookup.GetAll().Where(
+                        x => x.Character != null 
+                        && client.Character != null
+                        && x.Character.ClanId == client.Character.ClanId)
+                    );
                     break;
                 default:
                     response.Recipients.Add(client);

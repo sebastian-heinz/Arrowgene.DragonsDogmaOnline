@@ -60,6 +60,14 @@
                     "chance": 0.05
                 }
             ]
+        },
+        {
+            "type": "jp",
+            "amount": 1600
+        },
+        {
+            "type": "exp",
+            "amount": 100000
         }
     ],
     "enemy_groups" : [
@@ -246,6 +254,7 @@
                     "level": 80,
                     "exp": 0,
                     "enemy_target_types_id": 1,
+                    "start_think_tbl_no": 2,
                     "named_enemy_params_id": 1700
                 },
                 {
@@ -452,8 +461,15 @@
                     "repop_wait_second": 45
                 }
             ]
+        },
+        {
+            "comment": "Phase 1 (3) (prevent monsters from spawning during Zuhl fight)",
+            "stage_id": {
+                "id": 433,
+                "group_id": 5
+            },
+            "enemies": []
         }
-
     ],
     "processes": [
         {

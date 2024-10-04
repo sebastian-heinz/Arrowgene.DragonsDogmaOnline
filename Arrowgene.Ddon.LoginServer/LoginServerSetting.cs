@@ -1,4 +1,4 @@
-﻿using System.Runtime.Serialization;
+using System.Runtime.Serialization;
 using Arrowgene.Ddon.Server;
 
 namespace Arrowgene.Ddon.LoginServer

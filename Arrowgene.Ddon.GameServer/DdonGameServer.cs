@@ -77,8 +77,10 @@ namespace Arrowgene.Ddon.GameServer
             GpCourseManager = new GpCourseManager(this);
             WeatherManager = new WeatherManager(this);
             PartyQuestContentManager = new PartyQuestContentManager(this);
+            BonusDungeonManager = new BonusDungeonManager(this);
             BoardManager = new BoardManager(this);
             TimerManager = new TimerManager(this);
+            ClanManager = new ClanManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
@@ -110,8 +112,10 @@ namespace Arrowgene.Ddon.GameServer
         public GpCourseManager GpCourseManager { get; }
         public WeatherManager WeatherManager { get; }
         public PartyQuestContentManager PartyQuestContentManager { get; }
+        public BonusDungeonManager BonusDungeonManager { get; }
         public BoardManager BoardManager { get; }
         public TimerManager TimerManager { get; }
+        public ClanManager ClanManager { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
 
@@ -266,6 +270,23 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ClanClanSettingUpdateHandler(this));
             AddHandler(new ClanGetFurnitureHandler(this));
             AddHandler(new ClanSetFurnitureHandler(this));
+            AddHandler(new ClanClanScoutEntryGetMyHandler(this));
+            AddHandler(new ClanClanScoutEntryGetInvitedListHandler(this));
+            AddHandler(new ClanClanGetMyJoinRequestListHandler(this));
+            AddHandler(new ClanClanCreateHandler(this));
+            AddHandler(new ClanClanGetHistoryHandler(this));
+            AddHandler(new ClanClanUpdateHandler(this));
+            AddHandler(new ClanClanInviteHandler(this));
+            AddHandler(new ClanClanGetInfoHandler(this));
+            AddHandler(new ClanClanInviteAcceptHandler(this));
+            AddHandler(new ClanClanScoutEntrySearchHandler(this));
+            AddHandler(new ClanClanSearchHandler(this));
+            AddHandler(new ClanClanScoutEntryGetInviteListHandler(this));
+            AddHandler(new ClanClanLeaveMemberHandler(this));
+            AddHandler(new ClanClanGetMemberListHandler(this));
+            AddHandler(new ClanClanExpelMemberHandler(this));
+            AddHandler(new ClanClanSetMemberRankHandler(this));
+            AddHandler(new ClanClanNegotiateMasterHandler(this));
 
             AddHandler(new ClientChallengeHandler(this));
 
@@ -539,6 +560,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new EntryBoardEntryRecreateHandler(this));
             AddHandler(new EntryBoardItemKickHandler(this));
             AddHandler(new EntryBoardEntryBoardItemExtendTimeoutHandler(this));
+            AddHandler(new EntryBoardPartyRecruitCategoryListHandler(this));
 
             AddHandler(new ServerGameTimeGetBaseinfoHandler(this));
             AddHandler(new ServerGetGameSettingHandler(this));
@@ -589,6 +611,12 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new StageAreaChangeHandler(this));
             AddHandler(new StageGetStageListHandler(this));
+            AddHandler(new StageGetTicketDungeonCategoryListHandler(this));
+            AddHandler(new StageGetTicketDungeonInfoListHandler(this));
+            AddHandler(new StageUnisonAreaChangeBeginRecruitmentHandler(this));
+            AddHandler(new StageUnisonAreaChangeGetRecruitmentStateHandler(this));
+            AddHandler(new StageUnisonAreaChangeReadyHandler(this));
+            AddHandler(new StageUnisonAreaChangeReadyCancelHandler(this));
 
             AddHandler(new StampBonusCheckHandler(this));
 			AddHandler(new StampBonusGetListHandler(this));

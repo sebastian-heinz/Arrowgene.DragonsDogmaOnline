@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -76,6 +77,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public List<QuestServerAction> ServerActions { get; protected set; }
         public bool IsVariantQuest { get; set; }
         public uint VariantId { get; set; }
+        public bool Enabled { get; protected set; }
 
         public Quest(QuestId questId, QuestId questScheduleId, QuestType questType, bool isDiscoverable = false)
         {
@@ -384,12 +386,13 @@ namespace Arrowgene.Ddon.GameServer.Quests
 #endif
 
             HashSet<uint> items = new HashSet<uint>();
+            List<QuestRewardItem> rewards = this.ItemRewards.Concat(this.SelectableRewards).ToList();
             // Rewards for EXM seem to show up independently
-            foreach (var rewardData in this.ItemRewards)
+            foreach (var rewardData in rewards)
             {
                 foreach (var reward in rewardData.LootPool)
                 {
-                    if (rewardData.RewardType == QuestRewardType.Fixed)
+                    if (rewardData.RewardType == QuestRewardType.Fixed || rewardData.RewardType == QuestRewardType.Select)
                     {
                         result.RewardItemDetailList.Add(new CDataRewardItemDetail()
                         {
@@ -457,6 +460,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 QuestId = (uint) QuestId,
                 QuestScheudleId = (uint) QuestScheduleId,
                 BaseLevel = BaseLevel,
+                StartPos = MissionParams.StartPos,
                 QuestEnemyInfoList = EnemyGroups.Values.SelectMany(group => group.Enemies.Select(enemy => new CDataQuestEnemyInfo()
                 {
                     GroupId = enemy.UINameId,
@@ -533,12 +537,13 @@ namespace Arrowgene.Ddon.GameServer.Quests
         {
             ResetEnemiesForStage(client, stageId);
 
-            // client.Party.SendToAll(new S2C_63_11_16_NTC() { StageNo = res.StageNo });
             // TODO: Figure out what these do
-            // client.Party.SendToAll(new S2CSituationDataStartNtc() { Unk0 = 1 });
+            client.Party.SendToAll(new S2C_63_0_16_NTC() { Unk0 = 2 });
+            client.Party.SendToAll(new S2C_63_11_16_NTC() { StageNo = (uint) StageManager.ConvertIdToStageNo(stageId) });
 #if false
-                var pcap2 = new S2CSituationDataUpdateObjectivesNtc.Serializer().Read(pcap2_data);
-                client.Party.SendToAll(pcap2);
+            // S2C_63_2_16_NTC appears to have objective data inside of it
+            var pcap2 = new S2CSituationDataUpdateObjectivesNtc.Serializer().Read(pcap2_data);
+            client.Party.SendToAll(pcap2);
 #endif
         }
 

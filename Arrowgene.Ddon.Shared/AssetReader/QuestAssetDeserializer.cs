@@ -157,6 +157,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 ParseMissionParams(assetData, jMissionParams);
             }
 
+            assetData.Enabled = true;
+            if (jQuest.TryGetProperty("enabled", out JsonElement jQuestEnabled))
+            {
+                assetData.Enabled = jQuestEnabled.GetBoolean();
+            }
+
             ParseRewards(assetData, jQuest);
 
             if (!ParseServerActions(assetData, jQuest))
@@ -656,7 +662,8 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         }
                         break;
                     case QuestBlockType.DeliverItems:
-                        {
+                    case QuestBlockType.NewDeliverItems:
+                    {
                             if (!Enum.TryParse(jblock.GetProperty("npc_id").GetString(), true, out NpcId npcId))
                             {
                                 Logger.Error($"Unable to parse the npc_id in block @ index {blockIndex - 1}.");
@@ -716,6 +723,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             questBlock.TargetEnemy.EnemyId = Convert.ToUInt32(jblock.GetProperty("enemy_id").GetString(), 16);
                             questBlock.TargetEnemy.Level = jblock.GetProperty("level").GetUInt32();
                             questBlock.TargetEnemy.Amount = jblock.GetProperty("amount").GetUInt32();
+                        }
+                        break;
+                    case QuestBlockType.ReturnCheckpoint:
+                        {
+                            questBlock.CheckpointDetails.ProcessNo = jblock.GetProperty("process_no").GetUInt16();
+                            questBlock.CheckpointDetails.BlockNo = jblock.GetProperty("block_no").GetUInt16();
                         }
                         break;
                     case QuestBlockType.Raw:
@@ -809,7 +822,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             }
 
             announcements.EndContentsPurpose = 0;
-            if (jBlock.TryGetProperty("end_contents_announce", out JsonElement jEndContentsPurpose))
+            if (jBlock.TryGetProperty("end_contents_purpose", out JsonElement jEndContentsPurpose))
             {
                 announcements.EndContentsPurpose = jEndContentsPurpose.GetInt32();
             }
@@ -862,6 +875,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             foreach (var element in jPhaseGroups.EnumerateArray())
             {
                 assetData.MissionParams.QuestPhaseGroupIdList.Add(new CDataCommonU32() { Value = element.GetUInt32() });
+            }
+
+            assetData.MissionParams.StartPos = 0;
+            if (jMissionParams.TryGetProperty("start_pos", out JsonElement jStartPos))
+            {
+                assetData.MissionParams.StartPos = jStartPos.GetByte();
             }
 
             assetData.MissionParams.MinimumMembers = 4;

@@ -35,6 +35,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             quest.StageId = questAsset.StageId;
             quest.MissionParams = questAsset.MissionParams;
             quest.ServerActions = questAsset.ServerActions;
+            quest.Enabled = questAsset.Enabled;
 
             foreach (var pointReward in questAsset.PointRewards)
             {
@@ -199,7 +200,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 }
             }
 
-            if (questBlock.BlockType == QuestBlockType.ExtendTime && client.Party.ContentId != 0)
+            if (questBlock.BlockType == QuestBlockType.ExtendTime && BoardManager.BoardIdIsExm(client.Party.ContentId))
             {
                 var newEndTime = server.PartyQuestContentManager.ExtendTimer(client.Party.Id, questBlock.TimeAmount);
                 client.Party.SendToAll(new S2CQuestPlayAddTimerNtc() { PlayEndDateTime = newEndTime });
@@ -235,6 +236,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
             if (questBlock.ResetGroup || ShouldResetGroup)
             {
                 ResetEnemiesForBlock(client, questBlock);
+            }
+
+            if (questBlock.BlockType == QuestBlockType.ReturnCheckpoint && questBlock.ProcessNo == questBlock.CheckpointDetails.ProcessNo)
+            {
+                questBlock = process.Blocks[questBlock.CheckpointDetails.BlockNo];
             }
 
             return new List<CDataQuestProcessState>()
@@ -311,7 +317,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             if (questBlock.Announcements.EndContentsPurpose != 0)
             {
-                resultCommands.Add(QuestManager.ResultCommand.AddEndContentsPurpose(questBlock.Announcements.EndContentsPurpose, 0));
+                resultCommands.Add(QuestManager.ResultCommand.AddEndContentsPurpose(questBlock.Announcements.EndContentsPurpose, 1));
             }
 
             foreach (var item in questBlock.HandPlayerItems)
@@ -481,6 +487,13 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         resultCommands.Add(QuestManager.ResultCommand.SetDeliverInfo(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
                     }
                     break;
+                case QuestBlockType.NewDeliverItems:
+                    foreach (var item in questBlock.DeliveryRequests)
+                    {
+                        checkCommands.Add(QuestManager.CheckCommand.DeliverItem((int)item.ItemId, (int)item.Amount, questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
+                    }
+                    resultCommands.Add(QuestManager.ResultCommand.SetDeliverInfoQuest(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo, questBlock.NpcOrderDetails[0].MsgId));
+                    break;
                 case QuestBlockType.TalkToNpc:
                     {
                         var questCommand = questBlock.ShowMarker ?
@@ -573,6 +586,10 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         // Handles kill x amount of monster type quests
                         checkCommands.Add(QuestManager.CheckCommand.EmDieLight((int)questBlock.TargetEnemy.EnemyId, (int)questBlock.TargetEnemy.Level, (int)questBlock.TargetEnemy.Amount));
                     }
+                    break;
+                case QuestBlockType.ReturnCheckpoint:
+                    /* This is a pseudo block handeled at the state machine level */
+                    checkCommands.Add(QuestManager.CheckCommand.StageNoWithoutMarker(StageManager.ConvertIdToStageNo(questBlock.StageId)));
                     break;
                 case QuestBlockType.Raw:
                     /* handled generically for all blocks */

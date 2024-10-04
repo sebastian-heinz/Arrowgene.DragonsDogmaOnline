@@ -1,14 +1,9 @@
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -65,7 +60,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     var characterId = members[i];
                     var memberClient = Server.ClientLookup.GetClientByCharacterId(characterId);
 
-                    party.Invite(memberClient, hostClient);
+                    var invitedMember = party.Invite(memberClient, hostClient);
+                    if (invitedMember.HasError)
+                    {
+                        Logger.Error($"(EntryBoard) Failed to invite CharacterId={memberClient.Character.CharacterId} to PartyId={party.Id}");
+                        continue;
+                    }
+
+                    var partyMember = party.Accept(memberClient);
+                    if (partyMember.HasError)
+                    {
+                        Logger.Error($"(EntryBoard) CharacterId={memberClient.Character.CharacterId} failed to accept invite for PartyId={party.Id}");
+                        continue;
+                    }
 
                     inviteAcceptNtc.MemberIndex = i;
                     memberClient.Send(inviteAcceptNtc);

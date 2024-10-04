@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.BattleContent;
+using Arrowgene.Ddon.Shared.Model.Clan;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections.Generic;
@@ -368,7 +369,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateAbilityPreset(uint characterId, CDataPresetAbilityParam preset) { return true; }
         public bool UpdateCharacterBinaryData(uint characterId, byte[] data) { return true; }
         public bool InsertBBMCharacterId(uint characterId, uint bbmCharacterId) { return false; }
-        public uint SelectBBMCharacterId(uint characterId) { return 0; }
+        public uint SelectBBMCharacterId(uint characterId, DbConnection? connectionIn = null) { return 0; }
         public uint SelectBBMNormalCharacterId(uint bbmCharacterId) { return 0; }
         public bool InsertBBMProgress(uint characterId, ulong startTime, uint contentId, BattleContentMode contentMode, uint tier, bool killedDeath, ulong lastTicketTime) { return true;  }
         public bool UpdateBBMProgress(uint characterId, ulong startTime, uint contentId, BattleContentMode contentMode, uint tier, bool killedDeath, ulong lastTicketTime) { return true; }
@@ -394,6 +395,18 @@ namespace Arrowgene.Ddon.Test.Database
         public uint GetPawnOwnerCharacterId(uint pawnId) { return 0; }
         public CDataCharacterSearchParam SelectCharacterNameById(uint characterId) { return new CDataCharacterSearchParam(); }
         public CDataCharacterSearchParam SelectCharacterNameById(DbConnection connection, uint characterId) { return new CDataCharacterSearchParam(); }
+
+        public bool CreateClan(CDataClanParam clanParam) { return true; }
+        public bool DeleteClan(CDataClanParam clan, DbConnection? connectionIn = null) { return true; }
+        public uint SelectClanMembershipByCharacterId(uint characterId, DbConnection? connectionIn = null) { return 0; }
+        public CDataClanParam SelectClan(uint clanId, DbConnection? connectionIn = null) { return new CDataClanParam(); }
+        public ClanName GetClanNameByClanId(uint clanId, DbConnection? connectionIn = null) { return new ClanName(); }
+        public bool UpdateClan(CDataClanParam clan, DbConnection? connectionIn = null) { return true; }
+        public bool InsertClanMember(CDataClanMemberInfo memberInfo, uint clanId, DbConnection? connectionIn = null) { return true; }
+        public bool DeleteClanMember(uint characterId, uint clanId, DbConnection? connectionIn = null) { return true; }
+        public List<CDataClanMemberInfo> GetClanMemberList(uint clanId, DbConnection? connectionIn = null) { return new(); }
+        public CDataClanMemberInfo GetClanMember(uint characterId, DbConnection? connectionIn = null) { return new(); }
+        public bool UpdateClanMember(CDataClanMemberInfo memberInfo, uint clanId, DbConnection? connectionIn = null) { return true; }
 
         public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
         public void AddParameter(DbCommand command, string name, string value) { }

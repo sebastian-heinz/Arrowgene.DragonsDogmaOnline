@@ -11,7 +11,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SCharacterCharacterDownNtc> packet)
         {
-            //Unsure what CAPCOM wanted with this packet.
+            // Unsure what CAPCOM wanted with this packet.
         }
     }
 }

@@ -125,9 +125,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (var partyMemberClient in client.Party.Clients)
             {
                 // If the enemy is quest controlled, then either get from the quest loot drop, or the general one.
-                List<InstancedGatheringItem> instancedGatheringItems = IsQuestControlled ?
+                List<InstancedGatheringItem> instancedGatheringItems = new List<InstancedGatheringItem>();
+
+                // Items from kill an enemy normally
+                instancedGatheringItems.AddRange(IsQuestControlled ?
                             partyMemberClient.InstanceQuestDropManager.GenerateEnemyLoot(quest, enemyKilled, packet.Structure.LayoutId, packet.Structure.SetId) :
-                            partyMemberClient.InstanceDropItemManager.GetAssets(layoutId, (int)packet.Structure.SetId);
+                            partyMemberClient.InstanceDropItemManager.GetAssets(layoutId, (int)packet.Structure.SetId));
+
+                // Items for any server events which might be active
+                instancedGatheringItems.AddRange(partyMemberClient.InstanceEventDropItemManager.GenerateEventItems(partyMemberClient, enemyKilled, packet.Structure.LayoutId, packet.Structure.SetId));
 
                 // If the roll was unlucky, there is a chance that no bag will show.
                 if (instancedGatheringItems.Where(x => x.ItemNum > 0).Any())

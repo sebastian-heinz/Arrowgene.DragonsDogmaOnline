@@ -9,6 +9,7 @@ using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Arrowgene.Ddon.GameServer.Characters;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {

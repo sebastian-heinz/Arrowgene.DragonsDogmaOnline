@@ -26,6 +26,10 @@
                     "num": 3
                 }
             ]
+        },
+        {
+            "type": "jp",
+            "amount": 800
         }
     ],
     "enemy_groups" : [
@@ -286,6 +290,7 @@
                     "named_enemy_params_id": 631,
                     "level": 58,
                     "exp": 0,
+                    "blood_orbs": 200,
                     "is_boss": true
                 },
                 {

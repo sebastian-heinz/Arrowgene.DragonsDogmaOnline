@@ -65,6 +65,7 @@
         "group_id": 1
       },
       "flags": [
+        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"},
         {
           "type": "QstLayout",
           "action": "Set",
