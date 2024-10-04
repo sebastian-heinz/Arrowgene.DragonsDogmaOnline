@@ -1,0 +1,69 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "A Yearning From A Distance",
+    "quest_id": 21000046,
+    "base_level": 63,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+	"area_id": "BloodbaneIsle",	
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 5195
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 662
+        },
+        {
+            "type": "exp",
+            "amount": 3876
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 7948,
+                    "num": 2
+                },
+                {					
+                    "item_id": 7848,
+                    "num": 3
+                },
+                {				
+                    "item_id": 41,
+                    "num": 3					
+                }
+            ]
+        }
+    ],	
+    "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 317
+      },
+      "npc_id": "Gunther",
+      "message_id": 10800
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 44,
+        "group_id": 1
+      },
+      "npc_id": "Kennec",
+      "announce_type": "Accept",
+      "items": [
+        {
+          "id": 11770,
+          "amount": 6
+        }
+      ],
+      "message_id": 10737		
+    }
+  ]
+}
