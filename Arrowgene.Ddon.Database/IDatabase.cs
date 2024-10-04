@@ -582,5 +582,15 @@ namespace Arrowgene.Ddon.Database
         List<CDataClanMemberInfo> GetClanMemberList(uint clanId, DbConnection? connectionIn = null);
         CDataClanMemberInfo GetClanMember(uint characterId, DbConnection? connectionIn = null);
         bool UpdateClanMember(CDataClanMemberInfo memberInfo, uint clanId, DbConnection? connectionIn = null);
+
+        // Equipment Preset
+        bool InsertEquipmentPreset(uint characterCommonId, JobId jobId, uint presetNo, string presetName);
+        bool UpdateEquipmentPreset(uint characterCommonId, JobId jobId, uint presetNo, string presetName);
+        List<CDataEquipPreset> SelectEquipmentPresets(uint characterCommonId, JobId jobId);
+        bool DeleteEquipmentPreset(uint characterCommonId, JobId jobId, uint presetNo);
+
+        bool InsertEquipmentPresetTemplate(uint characterCommonId, JobId jobId, uint presetNo, uint slotNo, string itemUId);
+        List<CDataPresetEquipInfo> SelectEquipmentPresetTemplate(uint characterCommonId, JobId jobId, uint presetNo);
+        bool DeleteEquipmentPresetTemplate(uint characterCommonId, JobId jobId, uint presetNo);
     }
 }
