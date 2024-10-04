@@ -15,6 +15,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CClanClanSettingUpdateRes Handle(GameClient client, C2SClanClanSettingUpdateReq request)
         {
+            // TODO: Figure out what fires this and implement.
             return new S2CClanClanSettingUpdateRes()
             {
                 IsMemberNotice = false

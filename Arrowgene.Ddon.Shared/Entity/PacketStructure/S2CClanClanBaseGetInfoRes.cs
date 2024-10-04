@@ -1,29 +1,57 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CClanClanBaseGetInfoRes : ServerResponse
     {
         public override PacketId Id => PacketId.S2C_CLAN_CLAN_BASE_GET_INFO_RES;
+
+        public List<CDataCommonU32> FunctionReleaseIds { get; set; }
+        public List<CDataCommonU32> DungeonReleaseIds { get; set; }
+        public CDataPawnExpeditionInfo PawnExpeditionInfo { get; set; }
+        public CDataClanPartnerPawnInfo PartnerPawnInfo { get; set; }
+        public CDataClanConciergeInfo ConciergeInfo { get; set; }
+        public List<CDataClanShopLineupName> ShopLineupNameList {  get; set; }
+        public List<CDataClanValueInfo> ClanValueInfoList { get; set; }
         
         public class Serializer : PacketEntitySerializer<S2CClanClanBaseGetInfoRes>
         {
             public override void Write(IBuffer buffer, S2CClanClanBaseGetInfoRes obj)
             {
+#if false
+                WriteByteArray(buffer, BaseData);
+#endif
+
                 WriteServerResponse(buffer, obj);
-                WriteByteArray(buffer, obj.BaseData);
+                WriteEntityList<CDataCommonU32>(buffer, obj.FunctionReleaseIds);
+                WriteEntityList<CDataCommonU32>(buffer, obj.DungeonReleaseIds);
+                WriteEntity<CDataPawnExpeditionInfo>(buffer, obj.PawnExpeditionInfo);
+                WriteEntity<CDataClanPartnerPawnInfo>(buffer, obj.PartnerPawnInfo);
+                WriteEntity<CDataClanConciergeInfo>(buffer, obj.ConciergeInfo);
+                WriteEntityList<CDataClanShopLineupName>(buffer, obj.ShopLineupNameList);
+                WriteEntityList<CDataClanValueInfo>(buffer, obj.ClanValueInfoList);
             }
 
             public override S2CClanClanBaseGetInfoRes Read(IBuffer buffer)
             {
                 S2CClanClanBaseGetInfoRes obj = new S2CClanClanBaseGetInfoRes();
                 ReadServerResponse(buffer, obj);
+
+                obj.FunctionReleaseIds = ReadEntityList<CDataCommonU32>(buffer);
+                obj.DungeonReleaseIds = ReadEntityList<CDataCommonU32>(buffer);
+                obj.PawnExpeditionInfo = ReadEntity<CDataPawnExpeditionInfo>(buffer);
+                obj.PartnerPawnInfo = ReadEntity<CDataClanPartnerPawnInfo>(buffer);
+                obj.ConciergeInfo = ReadEntity<CDataClanConciergeInfo>(buffer);
+                obj.ShopLineupNameList = ReadEntityList<CDataClanShopLineupName>(buffer);
+                obj.ClanValueInfoList = ReadEntityList<CDataClanValueInfo>(buffer);
                 return obj;
             }
         }
 
-        private readonly byte[] BaseData = 
+        private readonly byte[] BaseData =
         {
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x09, 0x00, 0x00, 0x00, 0x05,
             0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00, 0x02,
@@ -174,6 +202,5 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x48, 0xCF, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
             0x52, 0x8B, 0x00, 0x00, 0x00, 0x00, 0x3C
         };
-
     }
 }

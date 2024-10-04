@@ -143,6 +143,12 @@ namespace Arrowgene.Ddon.GameServer.Chat
                     }
                     break;
                 case LobbyChatMsgType.Clan:
+                    if (client.Character.ClanId == 0)
+                    {
+                        response.Recipients.Add(client);
+                        break;
+                    }
+
                     response.Recipients.AddRange(_server.ClientLookup.GetAll().Where(
                         x => x.Character != null 
                         && client.Character != null

@@ -14,6 +14,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CClanClanScoutEntryGetInvitedListRes Handle(GameClient client, C2SClanClanScoutEntryGetInvitedListReq request)
         {
+            // TODO: Implement.
             return new S2CClanClanScoutEntryGetInvitedListRes();
         }
     }

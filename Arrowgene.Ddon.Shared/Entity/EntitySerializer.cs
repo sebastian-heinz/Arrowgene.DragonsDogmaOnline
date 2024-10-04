@@ -90,6 +90,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataClanShopConciergeItem.Serializer());
             Create(new CDataClanShopFunctionInfo.Serializer());
             Create(new CDataClanShopFunctionItem.Serializer());
+            Create(new CDataClanConciergeInfo.Serializer());
+            Create(new CDataClanConciergeNpc.Serializer());
+            Create(new CDataClanPartnerPawnInfo.Serializer());
+            Create(new CDataClanShopLineupName.Serializer());
+            Create(new CDataClanValueInfo.Serializer());
 
             Create(new CDataClearTimePointBonus.Serializer());
             Create(new CDataCommonU8.Serializer());
@@ -253,6 +258,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataPartyMemberMinimum.Serializer());
             Create(new CDataPartyPlayerContext.Serializer());
             Create(new CDataPartyQuestProgressInfo.Serializer());
+
+            Create(new CDataPawnExpeditionInfo.Serializer());
             Create(new CDataPawnCraftData.Serializer());
             Create(new CDataPawnCraftSkill.Serializer());
             Create(new CDataPawnEquipInfo.Serializer());
@@ -268,6 +275,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataPawnTrainingPreparationInfoToAdvice.Serializer());
             Create(new CDataPawnSearchParameter.Serializer());
             Create(new CDataRegisterdPawnList.Serializer());
+
             Create(new CDataPlayPointDataSerializer());
             Create(new CDataPresetAbilityParam.Serializer());
             Create(new CDataPriorityQuest.Serializer());

@@ -14,6 +14,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CClanClanGetHistoryRes Handle(GameClient client, C2SClanClanGetHistoryReq request)
         {
+            // TODO: Implement.
             return new S2CClanClanGetHistoryRes();
         }
     }

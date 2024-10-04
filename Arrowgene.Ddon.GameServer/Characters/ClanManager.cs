@@ -418,8 +418,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public (uint ClanId, CDataClanMemberInfo MemberInfo) ClanMembership(uint characterId)
         {
-            var clanId = Server.Database.SelectClanMembershipByCharacterId(characterId);
-            var membership = Server.Database.GetClanMember(characterId);
+            uint clanId = 0;
+            CDataClanMemberInfo membership = new();
+            Server.Database.ExecuteInTransaction(conn =>
+            {
+                clanId = Server.Database.SelectClanMembershipByCharacterId(characterId, conn);
+                membership = Server.Database.GetClanMember(characterId, conn);
+            });
 
             return (clanId, membership);
         }
@@ -427,6 +432,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public void SendToClan<T>(uint clanId, T packet)
             where T : class, IPacketStructure, new()
         {
+            if (clanId == 0) return;
+
             foreach (var client in Server.ClientLookup.GetAll())
             {
                 if (client.Character != null && client.Character.ClanId == clanId)
@@ -436,9 +443,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        // Will likely need this later for clan searching.
+        private static bool ClanSearchBitmaskMatch(uint searchParam, uint match)
+        {
+            return (searchParam & match) == match;
+        }
+
         private static int BitsToInt(IEnumerable<int> bitindices)
         {
-            return bitindices.Aggregate(0, (sum, val) => sum + 2 ^ (val));
+            return bitindices.Aggregate(0, (sum, val) => sum + (1 << val));
         }
 
         private static List<int> IntToBits(int input)
