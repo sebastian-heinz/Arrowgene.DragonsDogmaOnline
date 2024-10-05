@@ -216,6 +216,7 @@
                     "stage_id": {
                         "id": 335
                     },
+                    "bgm_stop": true,
                     "event_id": 15,
                     "jump_stage_id": {
                         "id": 3
