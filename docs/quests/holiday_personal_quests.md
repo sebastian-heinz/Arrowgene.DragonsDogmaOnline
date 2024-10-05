@@ -4,6 +4,8 @@ There appears to be a set of holiday/seasonal personal quests. Some which don't 
 
 ## Halloween
 
+https://moreali523425.com/2018/10/02/post-5695/
+
 - quest\q60301001\quest\60301001\q60301001_st0200.qst.json (mentions pumpkins)
 - quest\q60301054\quest\60301054\q60301054_st0200.qst.json (also mentions pumpkins)
 

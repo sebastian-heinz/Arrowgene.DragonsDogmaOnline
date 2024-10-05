@@ -511,7 +511,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 foreach (var enemy in enemyGroup.Enemies)
                 {
                     var uid = ContextManager.CreateEnemyUID(enemy.Index, enemyGroup.StageId.ToStageLayoutId());
-                    client.Party.Contexts.Remove(uid);
+                    ContextManager.RemoveContext(client.Party, uid);
                 }
 
                 S2CInstanceEnemyGroupResetNtc resetNtc = new S2CInstanceEnemyGroupResetNtc()
@@ -534,7 +534,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     foreach (var enemy in group.Enemies)
                     {
                         var uid = ContextManager.CreateEnemyUID(enemy.Index, group.StageId.ToStageLayoutId());
-                        client.Party.Contexts.Remove(uid);
+                        ContextManager.RemoveContext(client.Party, uid);
                     }
 
                     S2CInstanceEnemyGroupResetNtc resetNtc = new S2CInstanceEnemyGroupResetNtc()

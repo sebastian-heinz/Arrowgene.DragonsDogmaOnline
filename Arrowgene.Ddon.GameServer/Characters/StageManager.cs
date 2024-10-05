@@ -75,6 +75,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             557, // Heroic Spirit Sleeping Path: Feryana Wilderness
             558, // Old Heroic Spirit Shrine
             576, // Fort Thines: Great Dining Hall
+            578, // Bonus Dungeon Lobby
             580, // Fortress City Megado: Craft Room
             584, // Eli Guard Tower
             594, // Northern Bandit Hideout

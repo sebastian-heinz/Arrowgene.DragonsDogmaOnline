@@ -51,17 +51,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            var quests = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All);
-            foreach (var quest in quests)
+            var progress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All);
+            foreach (var questProgress in progress)
             {
-                if (quest.VariantId != 0)
+                if (questProgress.VariantId != 0)
                 {
-                    Logger.Debug($"Getting quest progress. Adding {quest.QuestId} with variant {quest.VariantId}");
-                    party.QuestState.AddNewQuest(quest.QuestId, quest.Step, true, (uint)quest.VariantId);
+                    Logger.Debug($"Getting quest progress. Adding {questProgress.QuestId} with variant {questProgress.VariantId}");
+                    party.QuestState.AddNewQuest(questProgress.QuestId, questProgress.Step, true, (uint)questProgress.VariantId);
                     continue;
                 }
 
-                party.QuestState.AddNewQuest(quest.QuestId, quest.Step, true);
+                party.QuestState.AddNewQuest(questProgress.QuestId, questProgress.Step, true);
             }
 
             // Add quest for debug command

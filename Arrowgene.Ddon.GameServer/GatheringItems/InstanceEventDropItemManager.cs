@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
 
         private bool DropEnabled(Character character, EventItem item, Enemy enemy, StageId stageId)
         {
-            if (item.QuestIds.Count > 0 && !item.QuestIds.Any(x => QuestManager.GetQuest(x).Enabled))
+            if (item.QuestIds.Count > 0 && !item.QuestIds.Any(x => QuestManager.IsQuestEnabled(x)))
             {
                 return false;
             }
