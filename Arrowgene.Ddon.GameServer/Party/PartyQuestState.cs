@@ -307,10 +307,9 @@ namespace Arrowgene.Ddon.GameServer.Party
                 quest = GetQuest(questId);
             }
 
-            if (quest == null)
+            if (!QuestManager.IsQuestEnabled(questId))
             {
-                // Might be progress from removed quest (or one in development).
-                Logger.Error($"Unable to locate quest data for {questId}");
+                // Quest either not enabled or removed (skip it)
                 return;
             }
 

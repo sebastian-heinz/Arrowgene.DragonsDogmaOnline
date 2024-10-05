@@ -228,6 +228,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return GetQuest((QuestId)questId);
         }
 
+        public static bool IsQuestEnabled(uint questId)
+        {
+            var quest = GetQuest(questId);
+            return (quest == null) ? false : quest.Enabled;
+        }
+
+        public static bool IsQuestEnabled(QuestId questId)
+        {
+            return IsQuestEnabled((uint)questId);
+        }
+
         public class LayoutFlag
         {
             public static CDataQuestLayoutFlagSetInfo Create(uint layoutFlag, StageNo stageNo, uint groupId)

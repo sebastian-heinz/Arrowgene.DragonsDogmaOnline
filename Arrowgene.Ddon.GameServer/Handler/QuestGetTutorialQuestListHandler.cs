@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.IO;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -28,7 +29,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // This handler should return personal quests which have not been started
             // yet when the player enters the StageNo
-            foreach (var quest in QuestManager.GetTutorialQuestsByStageNo(request.StageNo))
+            foreach (var quest in QuestManager.GetTutorialQuestsByStageNo(request.StageNo).Where(x => x.Enabled).ToList())
             {
                 uint stageNo = (uint) StageManager.ConvertIdToStageNo(quest.StageId);
                 if (stageNo != request.StageNo)
