@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.Shared.Asset;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System;
@@ -29,8 +30,6 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     MinAmount = jEventItem.GetProperty("min_num").GetUInt32(),
                     MaxAmount = jEventItem.GetProperty("max_num").GetUInt32(),
                     Chance = jEventItem.GetProperty("drop_chance").GetDouble(),
-                    // Requirements
-                    RequiresLanternLit = jEventItem.GetProperty("requirements").GetProperty("lantern_on").GetBoolean()
                 };
 
                 foreach (var jQuestId in jEventItem.GetProperty("quest_ids").EnumerateArray())
@@ -55,9 +54,34 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     }
                 }
 
-                foreach (var jEquippedItem in jEventItem.GetProperty("requirements").GetProperty("items_equipped").EnumerateArray())
+                if (jEventItem.TryGetProperty("requirements", out JsonElement jRequirements))
                 {
-                    eventItem.RequiredItemsEquipped.Add(jEquippedItem.GetUInt32());
+                    eventItem.RequiresLanternLit = false;
+                    if (jRequirements.TryGetProperty("lantern_on", out JsonElement jLanternOn))
+                    {
+                        eventItem.RequiresLanternLit = jLanternOn.GetBoolean();
+                    }
+
+                    if (jRequirements.TryGetProperty("items_equipped", out JsonElement jItemsEquipped))
+                    {
+                        foreach (var jEquippedItem in jItemsEquipped.GetProperty("item_ids").EnumerateArray())
+                        {
+                            eventItem.RequiredItemsEquipped.Add(jEquippedItem.GetUInt32());
+                        }
+
+                        eventItem.ItemConstraint = EventItemConstraint.All;
+                        if (jItemsEquipped.TryGetProperty("constraint", out JsonElement jConstraint))
+                        {
+                            if (Enum.TryParse(jConstraint.GetString(), true, out EventItemConstraint itemConstraint))
+                            {
+                                eventItem.ItemConstraint = itemConstraint;
+                            }
+                            else
+                            {
+                                Logger.Error($"Failed to parse item constraint {jConstraint.GetString()}");
+                            }
+                        }
+                    }
                 }
 
                 asset.EventItems.Add(eventItem);
