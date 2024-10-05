@@ -41,6 +41,14 @@ namespace Arrowgene.Ddon.GameServer.Context
             }
         }
 
+        public static void RemoveContext(PartyGroup partyGroup, ulong uniqueId)
+        {
+            lock (partyGroup.Contexts)
+            {
+                partyGroup.Contexts.Remove(uniqueId);
+            }
+        }
+
         public static Tuple<CDataContextSetBase, CDataContextSetAdditional> SetAndGetContext(PartyGroup partyGroup, ulong uniqueId, Tuple<CDataContextSetBase, CDataContextSetAdditional> context)
         {
             lock (partyGroup.Contexts)
