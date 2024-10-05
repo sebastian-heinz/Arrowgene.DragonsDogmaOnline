@@ -40,10 +40,31 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
 
             if (item.RequiredItemsEquipped.Count > 0)
             {
-                foreach (var itemId in item.RequiredItemsEquipped)
+                if (item.ItemConstraint == EventItemConstraint.All)
                 {
-                    if (!character.Equipment.GetItems(EquipType.Performance).Exists(x => x?.ItemId == itemId) &&
-                         character.Equipment.GetItems(EquipType.Visual).Exists(x => x?.ItemId == itemId))
+                    foreach (var itemId in item.RequiredItemsEquipped)
+                    {
+                        if (!character.Equipment.GetItems(EquipType.Performance).Exists(x => x?.ItemId == itemId) &&
+                            !character.Equipment.GetItems(EquipType.Visual).Exists(x => x?.ItemId == itemId))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                else if (item.ItemConstraint == EventItemConstraint.AtLeastOne)
+                {
+                    bool foundItem = false;
+                    foreach (var itemId in item.RequiredItemsEquipped)
+                    {
+                        if (character.Equipment.GetItems(EquipType.Performance).Exists(x => x?.ItemId == itemId) ||
+                            character.Equipment.GetItems(EquipType.Visual).Exists(x => x?.ItemId == itemId))
+                        {
+                            foundItem = true;
+                            break;
+                        }
+                    }
+
+                    if (!foundItem)
                     {
                         return false;
                     }

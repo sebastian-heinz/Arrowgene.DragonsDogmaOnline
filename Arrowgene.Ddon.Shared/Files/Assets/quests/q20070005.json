@@ -55,32 +55,51 @@
     {
       "stage_id": {
         "id": 123,
-        "group_id": 1
+        "group_id": 0
       },
+      "placement_type": "Manual",
       "enemies": [
         {
           "enemy_id": "0x010309",
           "level": 43,
           "exp": 950,
-          "is_boss": false
+          "is_boss": false,
+          "index": 7
         },
         {
           "enemy_id": "0x010309",
           "level": 43,
           "exp": 950,
-          "is_boss": false
+          "is_boss": false,
+          "index": 8
         },
         {
-          "enemy_id": "0x010516",
+          "enemy_id": "0x010511",
           "level": 43,
           "exp": 950,
-          "is_boss": false
+          "is_boss": false,
+          "index": 9
         },
         {
-          "enemy_id": "0x010516",
+          "enemy_id": "0x010511",
           "level": 43,
           "exp": 950,
-          "is_boss": false
+          "is_boss": false,
+          "index": 10
+        },
+        {
+          "enemy_id": "0x010511",
+          "level": 43,
+          "exp": 950,
+          "is_boss": false,
+          "index": 11
+        },
+        {
+          "enemy_id": "0x010511",
+          "level": 43,
+          "exp": 950,
+          "is_boss": false,
+          "index": 12
         }
       ]
     }
