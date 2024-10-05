@@ -193,6 +193,20 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
+        public bool HasEnemiesInCurrentStageGroup(Quest quest, StageId stageId, uint subGroupId)
+        {
+            lock (ActiveQuests)
+            {
+                var questState = ActiveQuests[quest.QuestId];
+                if (!questState.QuestEnemies.ContainsKey(stageId))
+                {
+                    return false;
+                }
+
+                return questState.QuestEnemies[stageId].ContainsKey(subGroupId);
+            }
+        }
+
         public void SetInstanceEnemies(Quest quest, StageId stageId, ushort subGroupId, List<InstancedEnemy> enemies)
         {
             lock (ActiveQuests)

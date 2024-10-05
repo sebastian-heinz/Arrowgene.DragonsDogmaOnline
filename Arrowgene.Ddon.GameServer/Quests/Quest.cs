@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Context;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Asset;
@@ -506,6 +507,13 @@ namespace Arrowgene.Ddon.GameServer.Quests
             {
                 var enemyGroup = EnemyGroups[groupId];
 
+                // Cleanup old contexts if we are replacing monsters with new ones
+                foreach (var enemy in enemyGroup.Enemies)
+                {
+                    var uid = ContextManager.CreateEnemyUID(enemy.Index, enemyGroup.StageId.ToStageLayoutId());
+                    client.Party.Contexts.Remove(uid);
+                }
+
                 S2CInstanceEnemyGroupResetNtc resetNtc = new S2CInstanceEnemyGroupResetNtc()
                 {
                     LayoutId = enemyGroup.StageId.ToStageLayoutId()
@@ -522,6 +530,13 @@ namespace Arrowgene.Ddon.GameServer.Quests
             {
                 if (group.StageId.Id == stageId.Id)
                 {
+                    // Cleanup old contexts if we are replacing monsters with new ones
+                    foreach (var enemy in group.Enemies)
+                    {
+                        var uid = ContextManager.CreateEnemyUID(enemy.Index, group.StageId.ToStageLayoutId());
+                        client.Party.Contexts.Remove(uid);
+                    }
+
                     S2CInstanceEnemyGroupResetNtc resetNtc = new S2CInstanceEnemyGroupResetNtc()
                     {
                         LayoutId = group.StageId.ToStageLayoutId()
