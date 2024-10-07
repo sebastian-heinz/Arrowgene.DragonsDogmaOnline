@@ -229,7 +229,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataMailGPInfo.Serializer());
             Create(new CDataMailOptionCourseInfo.Serializer());
             Create(new CDataMailLegendPawnInfo.Serializer());
-
+            Create(new CDataMobHuntQuestDetail.Serializer());
 
             Create(new CDataMainQuestList.Serializer());
             Create(new CDataMainQuestOrderList.Serializer());
@@ -322,9 +322,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataS2CEquipEnhancedGetPacksResUnk0Unk9.Serializer());
             Create(new CDataS2CEquipEnhancedGetPacksResUnk0Unk10.Serializer());
             Create(new CDataS2CEquipEnhancedGetPacksResUnk0Unk10Unk1.Serializer());
-            Create(new CDataS2CQuestJoinLobbyQuestInfoNtcUnk0.Serializer());
+            Create(new CDataSubstoryQuestOrderList.Serializer());
             Create(new CDataS2CQuestJoinLobbyQuestInfoNtcUnk0Unk1.Serializer());
-            Create(new CDataWildHuntQuestOrderList.Serializer());
+            Create(new CDataMobHuntQuestOrderList.Serializer());
             Create(new CDataSituationObjective.Serializer());
             Create(new CDataScreenShotCategory.Serializer());
             Create(new CDataSetAcquirementParam.Serializer());

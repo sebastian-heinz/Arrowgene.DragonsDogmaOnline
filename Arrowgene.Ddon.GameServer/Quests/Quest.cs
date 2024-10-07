@@ -53,6 +53,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public readonly QuestType QuestType;
         public readonly uint QuestScheduleId;
         public QuestAreaId QuestAreaId { get; set; }
+        public uint QuestOrderBackgroundImage { get; protected set; }
         public StageId StageId {  get; set; }
         public uint NewsImageId { get; set; }
         public uint BaseLevel { get; set; }
@@ -222,6 +223,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 FixedRewardItemList = GetQuestFixedRewards(),
                 FixedRewardSelectItemList = GetQuestSelectableRewards(),
                 QuestOrderConditionParamList = GetQuestOrderConditions(),
+                QuestEnemyInfoList = EnemyGroups.Values.SelectMany(group => group.Enemies.Select(enemy => new CDataQuestEnemyInfo()
+                {
+                    GroupId = enemy.UINameId,
+                    Unk0 = 0, // Seemingly always 0 in the pcaps
+                    Lv = enemy.Lv,
+                    IsPartyRecommend = enemy.IsBossGauge
+                }))
+                .ToList()
             };
 
             quest.QuestProcessStateList = GetProcessState(step, out uint announceNoCount);
@@ -251,6 +260,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 QuestId = (uint)QuestId,
                 QuestScheduleId = (uint)QuestScheduleId,
                 BaseLevel = BaseLevel,
+                AreaId = (uint) QuestAreaId,
                 ContentJoinItemRank = MinimumItemRank,
                 IsClientOrder = step > 0,
                 IsEnable = true,
@@ -260,6 +270,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 FixedRewardItem = GetQuestFixedRewards(),
                 FixedRewardSelectItem = GetQuestSelectableRewards(),
                 QuestOrderConditionParam = GetQuestOrderConditions(),
+                QuestEnemyInfoList = EnemyGroups.Values.SelectMany(group => group.Enemies.Select(enemy => new CDataQuestEnemyInfo()
+                {
+                    GroupId = enemy.UINameId,
+                    Unk0 = 0, // Seemingly always 0 in the pcaps
+                    Lv = enemy.Lv,
+                    IsPartyRecommend = enemy.IsBossGauge
+                }))
+                .ToList()
             };
 
             quest.QuestProcessStateList = GetProcessState(step, out uint announceNoCount);
@@ -407,6 +425,32 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     }
                 }
             }
+
+            return result;
+        }
+
+        public CDataQuestMobHuntQuestInfo ToCDataQuestMobHuntQuestInfo(uint step)
+        {
+            var result = new CDataQuestMobHuntQuestInfo()
+            {
+                QuestList = ToCDataQuestList(step),
+                QuestOrderBackgroundImage = QuestOrderBackgroundImage,
+            };
+
+            return result;
+        }
+
+        public CDataMobHuntQuestOrderList ToCDataMobHuntQuestOrderList(uint step)
+        {
+            var result = new CDataMobHuntQuestOrderList()
+            {
+                Param = ToCDataQuestOrderList(step),
+                Detail = new CDataMobHuntQuestDetail()
+                {
+                    QuestOrderBackgroundImage = QuestOrderBackgroundImage,
+                    Unk0 = 0
+                }
+            };
 
             return result;
         }

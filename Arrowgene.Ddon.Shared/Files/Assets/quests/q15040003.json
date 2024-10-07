@@ -1,0 +1,148 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "WildHunt",
+    "comment": "S Rank Target Subjugation: Volden Mines",
+    "quest_id": 15040003,
+    "next_quest": 0,
+    "base_level": 100,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "enabled": false,
+    "order_conditions": [
+        {"type": "MinimumJobLevel", "Param1": 70}
+    ],
+    "rewards": [
+        {
+            "type": "pp",
+            "amount": 70
+        }
+    ],
+    "area_id": "VoldenMines",
+    "order_background_id": 1007,
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 167
+            },
+            "enemies": [
+                {
+                    "comment": "Mutated Severly Infected Griffin",
+                    "enemy_id": "0x015310",
+                    "level": 100,
+                    "exp": 0,
+                    "pp": 15,
+                    "is_boss": true,
+                    "infection_type": 2,
+                    "named_enemy_params_id": 3058
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 161
+            },
+            "enemies": [
+                {
+                    "comment": "Wandering Snow Harpy",
+                    "enemy_id": "0x010601",
+                    "level": 100,
+                    "exp": 0,
+                    "pp": 2,
+                    "named_enemy_params_id": 3090
+                },
+                {
+                    "comment": "Wandering Snow Harpy",
+                    "enemy_id": "0x010601",
+                    "level": 100,
+                    "exp": 0,
+                    "pp": 2,
+                    "named_enemy_params_id": 3090
+                },
+                {
+                    "comment": "Wandering Snow Harpy",
+                    "enemy_id": "0x010601",
+                    "level": 100,
+                    "exp": 0,
+                    "pp": 2,
+                    "named_enemy_params_id": 3090
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 165
+            },
+            "enemies": [
+                {
+                    "comment": "Wandering Dammed Golem",
+                    "enemy_id": "0x015103",
+                    "level": 100,
+                    "exp": 0,
+                    "pp": 10,
+                    "is_boss": true,
+                    "named_enemy_params_id": 3089
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "blocks": [
+                {
+                    "type": "IsQuestOrdered",
+                    "quest_type": "WildHunt"
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "announce_type": "Accept",
+                    "groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [0]
+                },
+                {
+                    "type": "TalkToNpc",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "npc_id": "Lisa",
+                    "stage_id": {
+                        "id": 2
+                    },
+                    "message_id": 31125
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "DiscoverEnemy",
+                    "groups": [1]
+                },
+                {
+                    "type": "KillGroup",
+                    "reset_group": false,
+                    "groups": [1]
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "DiscoverEnemy",
+                    "groups": [2]
+                },
+                {
+                    "type": "KillGroup",
+                    "reset_group": false,
+                    "groups": [2]
+                }
+            ]
+        }
+    ]
+}

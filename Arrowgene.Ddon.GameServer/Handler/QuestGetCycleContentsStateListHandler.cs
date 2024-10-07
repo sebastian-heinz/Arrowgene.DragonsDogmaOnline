@@ -74,6 +74,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ntc.TutorialQuestOrderList.Add(tutorialQuest);
             }
 
+            var wildHuntsInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.WildHunt);
+            foreach (var questProgress in wildHuntsInProgress)
+            {
+                if (!QuestManager.IsQuestEnabled(questProgress.QuestScheduleId))
+                {
+                    continue;
+                }
+
+                var quest = QuestManager.GetQuestByScheduleId(questProgress.QuestScheduleId);
+                var mobHuntQuest = quest.ToCDataMobHuntQuestOrderList(questProgress.Step);
+                ntc.MobHuntQuestOrderList.Add(mobHuntQuest);
+            }
+
             if (client.Party != null)
             {
                 var priorityQuests = Server.Database.GetPriorityQuestScheduleIds(client.Party.Leader.Client.Character.CommonId);

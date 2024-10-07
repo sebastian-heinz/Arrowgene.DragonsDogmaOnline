@@ -642,7 +642,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                 }
                 else if (expPoint.Type == ExpType.PlayPoints)
                 {
-                    server.PPManager.AddPlayPoint(client, expPoint.Reward, type: 2);
+                    server.PPManager.AddPlayPoint(client, expPoint.Reward, type: 1);
                 }
             }
         }

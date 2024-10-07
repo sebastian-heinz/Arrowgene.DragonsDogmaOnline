@@ -147,6 +147,23 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 ParseMissionParams(assetData, jMissionParams);
             }
 
+            assetData.QuestOrderBackgroundImage = 0;
+            if (questType == QuestType.WildHunt)
+            {
+                if (!jQuest.TryGetProperty("order_background_id", out JsonElement jOrderBackgroundId))
+                {
+                    Logger.Error($"Unable to create the quest '{assetData.QuestId}'. Missing 'order_background_id'. Skipping.");
+                    return false;
+                }
+
+                assetData.QuestOrderBackgroundImage = jOrderBackgroundId.GetUInt32();
+                if (assetData.QuestOrderBackgroundImage == 0)
+                {
+                    Logger.Error($"The value of 'order_background_id' must be > 0, for the quest '{assetData.QuestId}'. Skipping.");
+                    return false;
+                }
+            }
+
             assetData.Enabled = true;
             if (jQuest.TryGetProperty("enabled", out JsonElement jQuestEnabled))
             {
@@ -592,7 +609,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             }
 
                             questBlock.QuestOrderDetails.QuestType = questType;
-                            questBlock.QuestOrderDetails.QuestId = (QuestId)jblock.GetProperty("quest_id").GetUInt32();
+
+                            questBlock.QuestOrderDetails.QuestId = QuestId.None;
+                            if (jblock.TryGetProperty("quest_id", out JsonElement jOrderQuestId))
+                            {
+                                questBlock.QuestOrderDetails.QuestId = (QuestId)jOrderQuestId.GetUInt32();
+                            }
                         }
                         break;
                     case QuestBlockType.MyQstFlags:
@@ -1128,6 +1150,11 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
         private void ApplyOptionalEnemyKeys(JsonElement enemy, Enemy questEnemey)
         {
+            if (enemy.TryGetProperty("pp", out JsonElement jPpAmount))
+            {
+                questEnemey.PPDrop = jPpAmount.GetUInt32();
+            }
+
             if (enemy.TryGetProperty("named_enemy_params_id", out JsonElement jNamedEnemyParamsId))
             {
                 questEnemey.NamedEnemyParams = this.namedParams.GetValueOrDefault(jNamedEnemyParamsId.GetUInt32(), NamedParam.DEFAULT_NAMED_PARAM);

@@ -14,12 +14,13 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         TimeGain = 9, // Queried when logging in
         Unk0 = 10,
         Unk1 = 11, // Queried when logging in
+        Unk3 = 15,
 
         // Pseudo Categories
         Board = 1,
         World = 1, // World should be Set Quest (2) not light
-        // Personal = 4, (some personal quests are tutorial (4), others are board (1))
-        ExtremeMission = TimeGain, // Unsure if this is the proper category
+        ExtremeMission = TimeGain,
+        WildHunt = Unk3
 #if false
 // Seems game has 2 different sets of quest IDs
 // which one is the right one to use???
