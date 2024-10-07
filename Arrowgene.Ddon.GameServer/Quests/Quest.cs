@@ -55,6 +55,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public readonly QuestType QuestType;
         public readonly QuestId QuestScheduleId;
         public QuestAreaId QuestAreaId { get; set; }
+        public uint QuestOrderBackgroundImage { get; protected set; }
         public StageId StageId {  get; set; }
         public uint NewsImageId { get; set; }
         public uint BaseLevel { get; set; }
@@ -228,6 +229,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 FixedRewardItemList = GetQuestFixedRewards(),
                 FixedRewardSelectItemList = GetQuestSelectableRewards(),
                 QuestOrderConditionParamList = GetQuestOrderConditions(),
+                QuestEnemyInfoList = EnemyGroups.Values.SelectMany(group => group.Enemies.Select(enemy => new CDataQuestEnemyInfo()
+                {
+                    GroupId = enemy.UINameId,
+                    Unk0 = 0, // Seemingly always 0 in the pcaps
+                    Lv = enemy.Lv,
+                    IsPartyRecommend = enemy.IsBossGauge
+                }))
+                .ToList()
             };
 
             quest.QuestProcessStateList = GetProcessState(step, out uint announceNoCount);
@@ -257,6 +266,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 QuestId = (uint)QuestId,
                 QuestScheduleId = (uint)QuestScheduleId,
                 BaseLevel = BaseLevel,
+                AreaId = (uint) QuestAreaId,
                 ContentJoinItemRank = MinimumItemRank,
                 IsClientOrder = step > 0,
                 IsEnable = true,
@@ -266,6 +276,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 FixedRewardItem = GetQuestFixedRewards(),
                 FixedRewardSelectItem = GetQuestSelectableRewards(),
                 QuestOrderConditionParam = GetQuestOrderConditions(),
+                QuestEnemyInfoList = EnemyGroups.Values.SelectMany(group => group.Enemies.Select(enemy => new CDataQuestEnemyInfo()
+                {
+                    GroupId = enemy.UINameId,
+                    Unk0 = 0, // Seemingly always 0 in the pcaps
+                    Lv = enemy.Lv,
+                    IsPartyRecommend = enemy.IsBossGauge
+                }))
+                .ToList()
             };
 
             quest.QuestProcessStateList = GetProcessState(step, out uint announceNoCount);
@@ -414,6 +432,59 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     }
                 }
             }
+
+            return result;
+        }
+
+        public CDataQuestMobHuntQuestInfo ToCDataQuestMobHuntQuestInfo(uint step)
+        {
+            var result = new CDataQuestMobHuntQuestInfo()
+            {
+                QuestList = ToCDataQuestList(step),
+                QuestOrderBackgroundImage = QuestOrderBackgroundImage,
+            };
+
+            return result;
+        }
+
+        public CDataMobHuntQuestOrderList ToCDataMobHuntQuestOrderList(uint step)
+        {
+            var result = new CDataMobHuntQuestOrderList()
+            {
+                Param = ToCDataQuestOrderList(step),
+                Detail = new CDataMobHuntQuestDetail()
+                {
+                    QuestOrderBackgroundImage = QuestOrderBackgroundImage,
+                    Unk0 = 3
+                }
+            };
+
+            result.Param.NpcId = (uint) NpcId.Lisa;
+            result.Param.AreaId = (uint) QuestAreaId.VoldenMines;
+            result.Param.Unk3 = 1;
+            result.Param.Unk4 = 2;
+            result.Param.Unk5 = 3;
+            result.Param.Unk6 = 1440993600;
+            result.Param.Unk6A = 4103413199;
+            result.Param.KeyId = 1;
+            result.Param.Unk8.Add(new CDataQuestOrderListUnk8() { Unk0 = 1, Unk1 = 4103413199 });
+            result.Param.QuestLayoutFlagSetInfoList.Add(new CDataQuestLayoutFlagSetInfo()
+            {
+                LayoutFlagNo = 1,
+                SetInfoList = new List<CDataQuestSetInfo>()
+                {
+                    new CDataQuestSetInfo()
+                    {
+                        StageNo = 100,
+                        GroupId = 0
+                    }
+                }
+            });
+
+            result.Param.QuestLayoutFlagList.Add(new CDataQuestLayoutFlag()
+            {
+                FlagId = 2,
+            });
 
             return result;
         }

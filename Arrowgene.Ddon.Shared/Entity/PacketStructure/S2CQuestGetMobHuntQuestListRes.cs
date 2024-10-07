@@ -15,8 +15,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
 
         public uint Unk0 {  get; set; }
-        public byte Unk1 {  get; set; }
-        public byte Unk2 { get; set; }
+        public byte ConfidenceLevel {  get; set; }
+        public byte WildHuntCount { get; set; }
         public List<CDataQuestMobHuntQuestInfo> QuestList {  get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CQuestGetMobHuntQuestListRes>
@@ -25,8 +25,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 WriteServerResponse(buffer, obj);
                 WriteUInt32(buffer, obj.Unk0);
-                WriteByte(buffer, obj.Unk1);
-                WriteByte(buffer, obj.Unk2);
+                WriteByte(buffer, obj.ConfidenceLevel);
+                WriteByte(buffer, obj.WildHuntCount);
                 WriteEntityList<CDataQuestMobHuntQuestInfo>(buffer, obj.QuestList);
             }
 
@@ -35,8 +35,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 S2CQuestGetMobHuntQuestListRes obj = new S2CQuestGetMobHuntQuestListRes();
                 ReadServerResponse(buffer, obj);
                 obj.Unk0 = ReadUInt32(buffer);
-                obj.Unk1 = ReadByte(buffer);
-                obj.Unk2 = ReadByte(buffer);
+                obj.ConfidenceLevel = ReadByte(buffer);
+                obj.WildHuntCount = ReadByte(buffer);
                 obj.QuestList = ReadEntityList<CDataQuestMobHuntQuestInfo>(buffer);
                 return obj;
             }

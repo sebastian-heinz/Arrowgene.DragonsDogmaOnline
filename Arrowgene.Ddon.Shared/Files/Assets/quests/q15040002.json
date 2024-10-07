@@ -1,0 +1,97 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "WildHunt",
+    "comment": "A Rank Target Subjugation: Volden Mines",
+    "quest_id": 15040002,
+    "next_quest": 0,
+    "base_level": 100,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "order_conditions": [
+        {"type": "MinimumJobLevel", "Param1": 70}
+    ],
+    "rewards": [
+        {
+            "type": "pp",
+            "amount": 200
+        }
+    ],
+    "area_id": "VoldenMines",
+    "order_background_id": 1,
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 0
+            },
+            "enemies": [
+                {
+                    "comment": "Wandering Snow Harpy",
+                    "enemy_id": "0x010601",
+                    "level": 100,
+                    "exp": 0,
+                    "pp": 10,
+                    "named_enemy_params_id": 3090
+                },
+                {
+                    "comment": "Wandering Snow Harpy",
+                    "enemy_id": "0x010601",
+                    "level": 100,
+                    "exp": 0,
+                    "named_enemy_params_id": 3090
+                },
+                {
+                    "comment": "Wandering Snow Harpy",
+                    "enemy_id": "0x010601",
+                    "level": 100,
+                    "exp": 0,
+                    "named_enemy_params_id": 3090
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 0
+            },
+            "enemies": [
+                {
+                    "comment": "Wandering Dammed Golem",
+                    "enemy_id": "0x015103",
+                    "level": 1,
+                    "exp": 0,
+                    "pp": 10,
+                    "is_boss": true,
+                    "named_enemy_params_id": 3089
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "IsQuestOrdered",
+            "quest_type": "WildHunt"
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [0]
+        },
+        {
+            "type": "TalkToNpc",
+            "announce_type": "Update",
+            "checkpoint": true,
+            "npc_id": "Lisa",
+            "stage_id": {
+                "id": 2
+            },
+            "message_id": 31124
+        }
+    ]
+}
