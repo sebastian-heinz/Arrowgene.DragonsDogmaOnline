@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataSetQuestOrderList> SetQuestOrderList { get; set; }
         public List<CDataMainQuestOrderList> MainQuestOrderList { get; set; }
         public List<CDataTutorialQuestOrderList> TutorialQuestOrderList { get; set; }
-        public List<CDataLotQuestOrderList> LotQuestOrderList { get; set; }
+        public List<CDataLotQuestOrderList> LotQuestOrderList { get; set; } // TYPE_PAWN=1?
         public List<CDataS2CQuestJoinLobbyQuestInfoNtcUnk0> Unk0 { get; set; } // Probably those purple quests from season 3
         public List<CDataWildHuntQuestOrderList> WildHuntQuestOrderList { get; set; } // or maybe this
         public List<CDataTimeLimitedQuestOrderList> TimeLimitedQuestOrderList { get; set; }
@@ -87,6 +87,5 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 return obj;
             }
         }
-
     }
 }
