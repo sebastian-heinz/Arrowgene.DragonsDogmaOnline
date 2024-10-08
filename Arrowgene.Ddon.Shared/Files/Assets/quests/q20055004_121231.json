@@ -1,10 +1,10 @@
 {
     "state_machine": "GenericStateMachine",
     "type": "World",
-    "comment": "The Abductors’ True Nature",
+    "comment": "The Abductors' True Nature (Redcaps)",
     "quest_id": 20055004,
-    "quest_schedule_id": 364258,
-    "base_level": 31,
+    "quest_schedule_id": 121231,
+    "base_level": 19,
     "minimum_item_rank": 0,
     "discoverable": false,
     "area_id": "MysreeForest",
@@ -13,30 +13,30 @@
         {
             "type": "wallet",
             "wallet_type": "Gold",
-            "amount": 1020
+            "amount": 520
         },
         {
             "type": "wallet",
             "wallet_type": "RiftPoints",
-            "amount": 160
+            "amount": 100
         },
         {
             "type": "exp",
-            "amount": 1430
+            "amount": 750
         },
         {
             "type": "select",
             "loot_pool": [
                 {
-                    "item_id": 605,
+                    "item_id": 8173,
                     "num": 1
                 },
                 {
-                    "item_id": 9411,
+                    "item_id": 9376,
                     "num": 2
                 },
                 {
-                    "item_id": 52,
+                    "item_id": 9368,
                     "num": 3
                 }
             ]
@@ -50,10 +50,28 @@
             },
             "enemies": [
                 {
-                    "enemy_id": "0x015040",
-                    "level": 31,
-                    "exp": 5000,
-                    "is_boss": true
+                    "enemy_id": "0x011110",
+                    "level": 19,
+                    "exp": 200,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x011110",
+                    "level": 19,
+                    "exp": 200,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x011110",
+                    "level": 19,
+                    "exp": 200,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x011110",
+                    "level": 19,
+                    "exp": 200,
+                    "is_boss": false
                 }
             ]
         }

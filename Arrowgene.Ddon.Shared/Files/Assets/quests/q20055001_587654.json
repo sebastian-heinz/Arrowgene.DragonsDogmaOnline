@@ -1,7 +1,7 @@
 {
     "state_machine": "GenericStateMachine",
     "type": "World",
-    "comment": "A Strange Creature Dances In the Forest",
+    "comment": "A Strange Creature Dances In the Forest (Ape)",
     "quest_id": 20055001,
     "quest_schedule_id": 587654,
     "base_level": 15,

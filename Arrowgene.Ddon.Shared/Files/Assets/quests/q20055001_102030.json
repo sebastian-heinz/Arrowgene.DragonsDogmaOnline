@@ -1,7 +1,7 @@
 {
     "state_machine": "GenericStateMachine",
     "type": "World",
-    "comment": "A Strange Bird Dances In the Forest",
+    "comment": "A Strange Bird Dances In the Forest (Sphinx)",
     "quest_id": 20055001,
     "quest_schedule_id": 102030,
     "base_level": 18,
