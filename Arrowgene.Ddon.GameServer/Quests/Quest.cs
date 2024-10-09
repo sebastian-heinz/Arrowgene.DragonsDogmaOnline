@@ -2,14 +2,12 @@ using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Context;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -53,7 +51,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public readonly QuestId QuestId;
         public readonly bool IsDiscoverable;
         public readonly QuestType QuestType;
-        public readonly QuestId QuestScheduleId;
+        public readonly uint QuestScheduleId;
         public QuestAreaId QuestAreaId { get; set; }
         public StageId StageId {  get; set; }
         public uint NewsImageId { get; set; }
@@ -76,11 +74,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public Dictionary<uint, QuestEnemyGroup> EnemyGroups { get; set; }
         public HashSet<StageId> UniqueEnemyGroups { get; protected set; }
         public List<QuestServerAction> ServerActions { get; protected set; }
-        public bool IsVariantQuest { get; set; }
-        public uint VariantId { get; set; }
         public bool Enabled { get; protected set; }
 
-        public Quest(QuestId questId, QuestId questScheduleId, QuestType questType, bool isDiscoverable = false)
+        public Quest(QuestId questId, uint questScheduleId, QuestType questType, bool isDiscoverable = false)
         {
             QuestId = questId;
             QuestType = questType;
@@ -100,8 +96,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
             QuestLayoutFlags = new List<QuestLayoutFlag>();
             EnemyGroups = new Dictionary<uint, QuestEnemyGroup>();
             UniqueEnemyGroups = new HashSet<StageId>();
-            IsVariantQuest = false;
-            VariantId = 0;
             MissionParams = new QuestMissionParams();
             ServerActions = new List<QuestServerAction>();
             Processes = new List<QuestProcess>();
@@ -219,7 +213,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             var quest = new CDataQuestList()
             {
                 QuestId = (uint)QuestId,
-                QuestScheduleId = (uint)QuestScheduleId,
+                QuestScheduleId = QuestScheduleId,
                 BaseLevel = BaseLevel,
                 ContentJoinItemRank = MinimumItemRank,
                 IsClientOrder = step > 0,
@@ -313,8 +307,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             var result = new CDataPriorityQuest()
             {
                 QuestId = (uint) QuestId,
-                QuestScheduleId = (uint) QuestScheduleId,
-
+                QuestScheduleId = QuestScheduleId,
             };
 
             for (uint i = 0; i < announceNoCount; i++)
@@ -584,7 +577,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         public virtual void PopulateStartingEnemyData(PartyQuestState partyQuestState)
         {
-            var questState = partyQuestState.GetQuestState(this.QuestId);
+            var questState = partyQuestState.GetQuestState(this.QuestScheduleId);
             foreach (var processState in questState.ProcessState.Values)
             {
                 if (processState.ProcessNo >= Processes.Count)
@@ -684,7 +677,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         {
             List<CDataRewardBoxItem> results = new List<CDataRewardBoxItem>();
 
-            Quest quest = QuestManager.GetRewardQuest(rewards.QuestId, rewards.VariantId);
+            Quest quest = QuestManager.GetQuestByScheduleId(rewards.QuestScheduleId);
             if (quest == null)
             {
                 return new List<CDataRewardBoxItem>();
@@ -720,8 +713,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         {
             QuestBoxRewards obj = new QuestBoxRewards()
             {
-                QuestId = QuestId,
-                VariantId = VariantId
+                QuestScheduleId = QuestScheduleId
             };
 
             foreach (var reward in ItemRewards)

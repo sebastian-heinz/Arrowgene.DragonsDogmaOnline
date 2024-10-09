@@ -206,7 +206,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool DeleteEquippedCustomSkill(uint commonId, JobId job, byte slotNo) { return true; }
         public bool DeleteNormalSkillParam(uint commonId, JobId job, uint skillNo) { return true; }
         public bool DeletePawn(uint pawnId) { return true; }
-        public bool DeletePriorityQuest(uint characterCommonId, QuestId questId) { return true; }
+        public bool DeletePriorityQuest(uint characterCommonId, uint questScheduleId) { return true; }
         public bool DeleteReleasedWarpPoint(uint characterId, uint warpPointId) { return true; }
         public bool DeleteShortcut(uint characterId, uint pageNo, uint buttonNo) { return true; }
         public bool DeleteSpSkill(uint pawnId, JobId job, byte spSkillId) { return true; }
@@ -224,8 +224,8 @@ namespace Arrowgene.Ddon.Test.Database
         public List<CompletedQuest> GetCompletedQuestsByType(uint characterCommonId, QuestType questType) { return new List<CompletedQuest>(); }
         public bool CreateMeta(DatabaseMeta meta) { return true; }
         public DatabaseMeta GetMeta() { return new DatabaseMeta(); }
-        public List<QuestId> GetPriorityQuests(uint characterCommonId) { return new List<QuestId>(); }
-        public QuestProgress GetQuestProgressById(uint characterCommonId, QuestId questId) { return new QuestProgress(); }
+        public List<uint> GetPriorityQuestScheduleIds(uint characterCommonId) { return new List<uint>(); }
+        public QuestProgress GetQuestProgressById(uint characterCommonId, uint questScheduleId) { return new QuestProgress(); }
         public List<QuestProgress> GetQuestProgressByType(uint characterCommonId, QuestType questType) { return new List<QuestProgress>(); }
         public ulong InsertBazaarExhibition(BazaarExhibition exhibition) { return 1; }
         public bool InsertBoxRewardItems(uint commonId, QuestBoxRewards rewards) { return true; }
@@ -247,8 +247,8 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertLearnedCustomSkill(uint commonId, CustomSkill skill) { return true; }
         public bool InsertNormalSkillParam(uint commonId, CDataNormalSkillParam normalSkillParam) { return true; }
         public bool InsertPawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus) { return true; }
-        public bool InsertPriorityQuest(uint characterCommonId, QuestId questId) { return true; }
-        public bool InsertQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step, uint variantId=0) { return true; }
+        public bool InsertPriorityQuest(uint characterCommonId, uint questScheduleId) { return true; }
+        public bool InsertQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType, uint step) { return true; }
         public bool InsertReleasedWarpPoint(uint characterId, ReleasedWarpPoint ReleasedWarpPoint) { return true; }
         public bool InsertSecretAbilityUnlock(uint commonId, SecretAbility secretAbility) { return true; }
         public bool InsertShortcut(uint characterId, CDataShortCut shortcut) { return true; }
@@ -257,7 +257,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertStorage(uint characterId, StorageType storageType, Storage storage) { return true; }
         public bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, DbConnection? connectionIn = null) { return true; }
         public bool InsertWalletPoint(uint characterId, CDataWalletPoint walletPoint) { return true; }
-        public bool RemoveQuestProgress(uint characterCommonId, QuestId questId, QuestType questType) { return true; }
+        public bool RemoveQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType) { return true; }
         public bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData, DbConnection? connectionIn = null) { return true; }
         public bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut, DbConnection? connectionIn = null) { return true; }
         public bool ReplaceEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId, DbConnection? connectionIn = null) { return true; }
@@ -327,7 +327,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertIfNotExistsPawnCraftProgress(CraftProgress craftProgress) { return true; }
         public bool UpdatePawnCraftProgress(CraftProgress craftProgress) { return true; }
         public bool DeletePawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId) { return true; }
-        public bool UpdateQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step) { return true; }
+        public bool UpdateQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType, uint step) { return true; }
         public bool UpdateReleasedWarpPoint(uint characterId, ReleasedWarpPoint updatedReleasedWarpPoint) { return true; }
         public bool UpdateShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataShortCut updatedShortcut) { return true; }
         public bool UpdateStatusInfo(CharacterCommon character) { return true; }

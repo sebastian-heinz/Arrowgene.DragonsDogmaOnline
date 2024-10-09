@@ -102,26 +102,16 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 assetData.NewsImageId = jNewsImage.GetUInt32();
             }
 
-            // For the purpose of setting up alternate quests.
-
-            if (jQuest.TryGetProperty("variant_id", out JsonElement AltQuestId))
-            {
-                assetData.VariantId = AltQuestId.GetUInt32();
-            } else
-            {
-                assetData.VariantId = 0;
-            }
-
             assetData.NextQuestId = 0;
             if (jQuest.TryGetProperty("next_quest", out JsonElement jNextQuest))
             {
                 assetData.NextQuestId = (QuestId)jNextQuest.GetUInt32();
             }
 
-            assetData.QuestScheduleId = assetData.QuestId;
+            assetData.QuestScheduleId = (uint) assetData.QuestId;
             if (jQuest.TryGetProperty("quest_schedule_id", out JsonElement jQuestScheduleId))
             {
-                assetData.QuestScheduleId = (QuestId)jQuestScheduleId.GetUInt32();
+                assetData.QuestScheduleId = jQuestScheduleId.GetUInt32();
             }
 
             if (jQuest.TryGetProperty("quest_layout_set_info_flags", out JsonElement jLayoutSetInfoFlags))

@@ -1,41 +1,42 @@
 {
     "state_machine": "GenericStateMachine",
     "type": "World",
-    "comment": "The Greenery Falls, Dancing",
-    "quest_id": 20105005,
-    "base_level": 41,
+    "comment": "The Abductors' True Nature (Troll)",
+    "quest_id": 20055004,
+    "quest_schedule_id": 364258,
+    "base_level": 31,
     "minimum_item_rank": 0,
     "discoverable": false,
-    "area_id": "DeenanWoods",
-    "news_image": 203,
+    "area_id": "MysreeForest",
+    "news_image": 111,
     "rewards": [
         {
             "type": "wallet",
             "wallet_type": "Gold",
-            "amount": 1120
+            "amount": 1020
         },
         {
             "type": "wallet",
             "wallet_type": "RiftPoints",
-            "amount": 180
+            "amount": 160
         },
         {
             "type": "exp",
-            "amount": 900
+            "amount": 1430
         },
         {
             "type": "select",
             "loot_pool": [
                 {
-                    "item_id": 7726,
-                    "num": 3
-                },
-                {
-                    "item_id": 9419,
+                    "item_id": 605,
                     "num": 1
                 },
                 {
-                    "item_id": 9401,
+                    "item_id": 9411,
+                    "num": 2
+                },
+                {
+                    "item_id": 52,
                     "num": 3
                 }
             ]
@@ -44,14 +45,14 @@
     "enemy_groups": [
         {
             "stage_id": {
-                "id": 1,
-                "group_id": 340
+                "id": 67,
+                "group_id": 4
             },
             "enemies": [
                 {
-                    "enemy_id": "0x015031",
-                    "level": 41,
-                    "exp": 10000,
+                    "enemy_id": "0x015040",
+                    "level": 31,
+                    "exp": 5000,
                     "is_boss": true
                 }
             ]

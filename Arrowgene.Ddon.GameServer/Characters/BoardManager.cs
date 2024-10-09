@@ -1,13 +1,10 @@
-using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.GameServer.Utils;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
@@ -538,14 +535,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static readonly ulong BOARD_CATEGORY_RECRUITMENT = 0x9_00000000;
         private static readonly ulong BOARD_CATEGORY_EXM         = 0x4_00000000;
 
-        public static ulong QuestIdToExmBoardId(uint questId)
+        public static ulong QuestScheduleIdToExmBoardId(uint questScheduleId)
         {
-            return (ulong)(questId | BOARD_CATEGORY_EXM);
-        }
-
-        public static ulong QuestIdToExmBoardId(QuestId questId)
-        {
-            return QuestIdToExmBoardId((uint) questId);
+            return (ulong)(questScheduleId | BOARD_CATEGORY_EXM);
         }
 
         public static bool BoardIdIsExm(ulong boardId)

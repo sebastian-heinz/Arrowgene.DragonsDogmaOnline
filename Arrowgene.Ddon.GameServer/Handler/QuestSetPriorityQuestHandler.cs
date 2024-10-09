@@ -16,20 +16,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SQuestSetPriorityQuestReq> packet)
         {
-            QuestId questId = (QuestId)packet.Structure.QuestScheduleId;
-
             S2CQuestSetPriorityQuestNtc ntc = new S2CQuestSetPriorityQuestNtc()
             {
                 CharacterId = client.Character.CharacterId
             };
 
-            Server.Database.InsertPriorityQuest(client.Character.CommonId, questId);
+            Server.Database.InsertPriorityQuest(client.Character.CommonId, packet.Structure.QuestScheduleId);
 
-            var priorityQuests = Server.Database.GetPriorityQuests(client.Character.CommonId);
-            foreach (var priorityQuestId in priorityQuests)
+            var prioirtyQuests = Server.Database.GetPriorityQuestScheduleIds(client.Character.CommonId);
+            foreach (var questScheduleId in prioirtyQuests)
             {
-                var quest = client.Party.QuestState.GetQuest(priorityQuestId);
-                var questState = client.Party.QuestState.GetQuestState(questId);
+                var quest = client.Party.QuestState.GetQuest(questScheduleId);
+                var questState = client.Party.QuestState.GetQuestState(questScheduleId);
                 ntc.PriorityQuestList.Add(quest.ToCDataPriorityQuest(questState.Step));
             }
 

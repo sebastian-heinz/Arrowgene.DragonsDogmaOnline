@@ -27,19 +27,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.GpCompletePriceGp = 10;
             res.LightQuestList = new List<CDataLightQuestList>();
 
-            var activeQuests = client.Party.QuestState.GetActiveQuestIds();
-            var quests = QuestManager.GetQuestsByType(QuestType.Light);
-            foreach (var quest in quests)
+            var activeQuests = client.Party.QuestState.GetActiveQuestScheduleIds();
+            foreach (var questScheduleId in QuestManager.GetQuestsByType(QuestType.Light))
             {
-                if (activeQuests.Contains(quest.Key))
+                var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
+                if (activeQuests.Contains(quest.QuestScheduleId))
                 {
                     continue;
                 }
-                if (!QuestManager.IsBoardQuest(quest.Key))
+                if (!QuestManager.IsBoardQuest(quest.QuestId))
                 {
                     continue;
                 }
-                res.LightQuestList.Add(quest.Value.ToCDataLightQuestList(0));
+                res.LightQuestList.Add(quest.ToCDataLightQuestList(0));
             }
 
             client.Send(res);

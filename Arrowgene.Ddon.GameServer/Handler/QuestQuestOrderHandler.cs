@@ -26,16 +26,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             var res = new S2CQuestQuestOrderRes();
 
-            QuestId questId = (QuestId)packet.Structure.QuestScheduleId;
-            var quest = client.Party.QuestState.GetQuest(questId);
-            if (client.Party.QuestState.GetActiveQuestIds().Contains(questId))
+            var quest = client.Party.QuestState.GetQuest(packet.Structure.QuestScheduleId);
+            if (client.Party.QuestState.GetActiveQuestScheduleIds().Contains(packet.Structure.QuestScheduleId))
             {
-                var questState = client.Party.QuestState.GetQuestState(questId);
+                var questState = client.Party.QuestState.GetQuestState(quest.QuestScheduleId);
                 res.QuestProcessStateList = quest.ToCDataQuestList(questState.Step).QuestProcessStateList;
             }
             else
             {
-                Logger.Debug($"Quest q{questId} inactive.");
+                Logger.Debug($"Quest '{packet.Structure.QuestScheduleId}' inactive.");
             }
 
             client.Send(res);

@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CQuestPlayerStartRes Handle(GameClient client, C2SQuestPlayerStartReq request)
         {
-            var quest = QuestManager.GetQuest(request.QuestScheduleId);
+            var quest = QuestManager.GetQuestByScheduleId(request.QuestScheduleId);
             if (quest != null)
             {
                 client.Party.QuestState.AddNewQuest(quest);
