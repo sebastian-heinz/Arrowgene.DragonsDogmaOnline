@@ -26,8 +26,16 @@ namespace Arrowgene.Ddon.Rpc.Web
             ChatRoute chatRoute = new ChatRoute(this);
             _webServer.AddRoute(chatRoute);
 
+            FindPlayerRoute findPlayerRoute = new(this);
+            _webServer.AddRoute(findPlayerRoute);
+
+            KickRoute kickRoute = new(this);
+            _webServer.AddRoute(kickRoute);
+
             AuthMiddleware authMiddleware = new AuthMiddleware(_gameServer.Database);
             authMiddleware.Require(AccountStateType.GameMaster, chatRoute.Route);
+            authMiddleware.Require(AccountStateType.GameMaster, findPlayerRoute.Route);
+            authMiddleware.Require(AccountStateType.GameMaster, kickRoute.Route);
             _webServer.AddMiddleware(authMiddleware);
         }
     }
