@@ -330,7 +330,8 @@ namespace Arrowgene.Ddon.GameServer.Party
 
             if (quest.NextQuestId != 0)
             {
-                AddNewQuest(quest.QuestScheduleId, 0);
+                var nextQuest = QuestManager.RollQuestForQuestId(quest.NextQuestId);
+                AddNewQuest(nextQuest.QuestScheduleId, 0);
             }
         }
 
