@@ -317,7 +317,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public List<CDataCharacterEquipInfo> AsCDataCharacterEquipInfo(EquipType equipType)
         {
             return GetItems(equipType)
-                .Select((x, index) => new {item = x, slot = (byte)(index+1)})
+                .Select((x, index) => new {item = x, slot = (byte)(index + 1)})
                 .Where(tuple => tuple.item != null)
                 .Select(tuple => new CDataCharacterEquipInfo()
                 {
