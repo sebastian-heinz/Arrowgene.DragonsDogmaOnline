@@ -43,11 +43,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         Server.PartyQuestContentManager.RemovePartyMember(party.Id, client.Character);
                     }
-
-                    if (party.MemberCount() == 1 && party.Leader != null && !BoardManager.BoardIdIsExm(party.ContentId))
-                    {
-                        Server.CharacterManager.UpdateOnlineStatus(party.Leader.Client, party.Leader.Client.Character, OnlineStatus.Online);
-                    }
                 }
                 else
                 {
@@ -57,6 +52,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             else
             {
                 Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Online);
+            }
+
+            if (party.MemberCount() == 1 && party.Leader != null && !BoardManager.BoardIdIsExm(party.ContentId))
+            {
+                Server.CharacterManager.UpdateOnlineStatus(party.Leader.Client, party.Leader.Client.Character, OnlineStatus.Online);
             }
 
             S2CPartyPartyLeaveNtc partyLeaveNtc = new S2CPartyPartyLeaveNtc();

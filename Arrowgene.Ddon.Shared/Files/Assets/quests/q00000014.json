@@ -7,6 +7,9 @@
     "base_level": 41,
     "minimum_item_rank": 0,
     "discoverable": true,
+    "order_conditions": [
+        {"type": "MainQuestCompleted", "Param1": 13}
+    ],
     "rewards": [
         {
             "type": "exp",
@@ -197,7 +200,8 @@
                     "comment" : "Behemoth",
                     "enemy_id": "0x015709",
                     "level": 40,
-                    "exp": 3742
+                    "exp": 37420,
+                    "is_boss": true
                 }
             ]
         }

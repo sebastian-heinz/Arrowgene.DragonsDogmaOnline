@@ -2,6 +2,7 @@ using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System.Linq;
 
@@ -24,7 +25,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     CategoryId = data.CategoryId,
                     CategoryName = data.CategoryName,
-                    NumGroups = (uint)Server.BoardManager.GetGroupsForBoardId(BoardManager.BoardIdFromRecruitmentCategory(data.CategoryId)).Where(x => !x.ContentInProgress).ToList().Count
+                    NumGroups = (uint)Server.BoardManager.GetGroupsForBoardId(BoardManager.BoardIdFromRecruitmentCategory(data.CategoryId)).Where(x => x.ContentStatus == ContentStatus.Recruiting).ToList().Count
                 });
             }
             return res;

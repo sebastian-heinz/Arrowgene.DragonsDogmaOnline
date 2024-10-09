@@ -6,6 +6,7 @@
     "base_level": 52,
     "minimum_item_rank": 0,
     "discoverable": false,
+    "area_id": "MergodaRuins",
     "rewards": [
         {
             "type": "wallet",
@@ -68,7 +69,7 @@
                     "enemy_id": "0x010103",
                     "level": 52,
                     "exp": 1500,
-                    "is_boss": false					
+                    "is_boss": false
                 }
             ]
         }

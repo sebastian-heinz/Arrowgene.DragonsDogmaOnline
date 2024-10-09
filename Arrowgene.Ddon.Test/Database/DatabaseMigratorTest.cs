@@ -225,7 +225,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool CreateMeta(DatabaseMeta meta) { return true; }
         public DatabaseMeta GetMeta() { return new DatabaseMeta(); }
         public List<uint> GetPriorityQuestScheduleIds(uint characterCommonId) { return new List<uint>(); }
-        public QuestProgress GetQuestProgressById(uint characterCommonId, uint questScheduleId) { return new QuestProgress(); }
+        public QuestProgress GetQuestProgressByScheduleId(uint characterCommonId, uint questScheduleId) { return new QuestProgress(); }
         public List<QuestProgress> GetQuestProgressByType(uint characterCommonId, QuestType questType) { return new List<QuestProgress>(); }
         public ulong InsertBazaarExhibition(BazaarExhibition exhibition) { return 1; }
         public bool InsertBoxRewardItems(uint commonId, QuestBoxRewards rewards) { return true; }

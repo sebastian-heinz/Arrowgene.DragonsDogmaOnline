@@ -26,6 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var quest = QuestManager.GetQuestByScheduleId(request.QuestScheduleId);
             if (quest != null)
             {
+                client.Party.ExmInProgress = true;
                 client.Party.QuestState.AddNewQuest(quest);
                 var ntc = new S2CQuestTimeGainQuestPlayStartNtc()
                 {

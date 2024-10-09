@@ -159,6 +159,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public void UpdateDatabaseOnExit(Character character)
         {
+            // When the character is first logging in, the HP
+            // values are set to 0. If the player disconnects
+            // before fully logging in, this handler will save
+            // a value of 0 HP into the database. The next time
+            // the player logs in, they will have no health causing
+            // the game to function improperly.
+            if (character.GreenHp == 0 || character.WhiteHp == 0)
+            {
+                return;
+            }
+
             _Server.Database.UpdateStatusInfo(character);
 
             foreach (var pawn in character.Pawns)

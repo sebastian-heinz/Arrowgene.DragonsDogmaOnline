@@ -32,7 +32,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             public HashSet<uint> Members {  get; set; }
             public Dictionary<uint, bool> MemberReadyState {  get; set; }
             public bool IsInRecreate {  get; set; }
-            public bool ContentInProgress {  get; set; }
+            public ContentStatus ContentStatus {  get; set; }
             public uint RecruitmentTimerId {  get; set; }
             public uint ReadyUpTimerId {  get; set; }
 
@@ -42,6 +42,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 Password = string.Empty;
                 Members = new HashSet<uint>();
                 MemberReadyState = new Dictionary<uint, bool>();
+
+                ContentStatus = ContentStatus.Recruiting;
             }
 
             public void ResetReadyState()
@@ -165,7 +167,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 var data = GetGroupData(entryItemId);
                 data.ResetReadyState();
                 data.IsInRecreate = true;
-                data.ContentInProgress = false;
+                data.ContentStatus = ContentStatus.Recruiting;
 
                 return data;
             }

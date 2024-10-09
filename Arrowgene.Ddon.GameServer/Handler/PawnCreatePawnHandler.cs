@@ -23,7 +23,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CPawnCreatePawnRes Handle(GameClient client, C2SPawnCreatePawnReq request)
         {
             // I hate hardcoding this but people legitimately keep finding ways to break this. 
-            if (request.SlotNo > 3)
+
+            if (request.SlotNo == 1 && client.Character.Pawns.Count > 1)
+            {
+                // Need to return a successful response, otherwise the player will
+                // be stuck here on the quest (it kicks them back to pawn creation).
+                // This should only be possible for legacy characters or people
+                // using the /givepawn command before reaching this quest.
+                return new S2CPawnCreatePawnRes();
+            }
+            else if (request.SlotNo > 3)
             {
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_CREATE_NUM_OVER);
             }
