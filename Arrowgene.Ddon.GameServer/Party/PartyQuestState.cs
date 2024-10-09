@@ -547,7 +547,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                 if (quest.NextQuestId != QuestId.None)
                 {
                     var nextQuest = GetQuest((uint) quest.NextQuestId);
-                    server.Database.InsertQuestProgress(memberClient.Character.CommonId, nextQuest.QuestScheduleId, nextQuest.QuestType, nextQuest.QuestScheduleId);
+                    server.Database.InsertQuestProgress(memberClient.Character.CommonId, nextQuest.QuestScheduleId, nextQuest.QuestType, 0);
                 }
 
                 if (!memberClient.Character.CompletedQuests.ContainsKey(quest.QuestId))
