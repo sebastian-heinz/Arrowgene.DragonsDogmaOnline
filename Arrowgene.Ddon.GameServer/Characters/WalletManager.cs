@@ -1,5 +1,4 @@
 #nullable enable
-using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -17,15 +16,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(WalletManager));
 
-        private IDatabase _Database;
-        private DdonGameServer _Server;
-
+        private readonly DdonGameServer Server;
         private readonly Dictionary<WalletType, uint> WalletLimits;
 
         public WalletManager(DdonGameServer server)
         {
-            _Database = server.Database;
-            _Server = server;
+            Server = server;
             WalletLimits = server.Setting.GameLogicSetting.WalletLimits;
         }
         public bool AddToWalletNtc(Client Client, Character Character, WalletType Type, uint Amount, ItemNoticeType updateType = ItemNoticeType.Default, DbConnection? connectionIn = null)
@@ -47,7 +43,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             Wallet.Value = Math.Min(Wallet.Value + Amount, WalletLimits[Type]);
 
-            _Server.Database.UpdateWalletPoint(Character.CharacterId, Wallet, connectionIn);
+            Server.Database.UpdateWalletPoint(Character.CharacterId, Wallet, connectionIn);
 
             CDataUpdateWalletPoint UpdateWalletPoint = new CDataUpdateWalletPoint();
             UpdateWalletPoint.Type = Type;
@@ -67,7 +63,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             Wallet.Value -= Amount;
 
-            _Server.Database.UpdateWalletPoint(Character.CharacterId, Wallet, connectionIn);
+            Server.Database.UpdateWalletPoint(Character.CharacterId, Wallet, connectionIn);
 
             CDataUpdateWalletPoint UpdateWalletPoint = new CDataUpdateWalletPoint();
             UpdateWalletPoint.Type = Type;
