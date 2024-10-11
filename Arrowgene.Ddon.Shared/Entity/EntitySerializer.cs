@@ -381,6 +381,13 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataOmData.Serializer());
             Create(new CDataReleaseAreaInfoSet.Serializer());
 
+            Create(new CDataGameSetting.Serializer());
+            Create(new CDataWalletLimit.Serializer());
+            Create(new CDataExpSetting.Serializer());
+            Create(new CDataExpRequirement.Serializer());
+            Create(new CDataJewelryEquipLimit.Serializer());
+            Create(new CDataPartyMemberMaxNum.Serializer());
+
             // Packet structure serializers
             Create(new C2LCreateCharacterDataReq.Serializer());
             Create(new C2LDecideCharacterIdReq.Serializer());
@@ -715,6 +722,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SServerGetRealTimeReq.Serializer());
             Create(new C2SServerGetScreenShotCategoryReq.Serializer());
             Create(new C2SServerWeatherForecastGetReq.Serializer());
+            Create(new C2SServerGetGameSettingReq.Serializer());
 
             Create(new C2SSkillChangeExSkillReq.Serializer());
             Create(new C2SSkillGetAbilityCostReq.Serializer());
@@ -1276,6 +1284,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CServerGetScreenShotCategoryRes.Serializer());
             Create(new S2CServerWeatherForecastGetRes.Serializer());
             Create(new S2CServerTimeUpdateNtc.Serializer());
+            Create(new S2CServerGetGameSettingRes.Serializer());
 
             Create(new S2C_63_0_16_NTC.Serializer());
             Create(new S2CSituationDataUpdateObjectivesNtc.Serializer());
