@@ -545,10 +545,10 @@ namespace Arrowgene.Ddon.GameServer.Quests
         {
             ResetEnemiesForStage(client, stageId);
 
+#if false
             // TODO: Figure out what these do
             client.Party.SendToAll(new S2C_63_0_16_NTC() { Unk0 = 2 });
             client.Party.SendToAll(new S2C_63_11_16_NTC() { StageNo = (uint) StageManager.ConvertIdToStageNo(stageId) });
-#if false
             // S2C_63_2_16_NTC appears to have objective data inside of it
             var pcap2 = new S2CSituationDataUpdateObjectivesNtc.Serializer().Read(pcap2_data);
             client.Party.SendToAll(pcap2);
