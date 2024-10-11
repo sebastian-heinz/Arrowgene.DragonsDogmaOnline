@@ -6,6 +6,9 @@
     "next_quest": 5,
     "base_level": 10,
     "minimum_item_rank": 0,
+    "order_conditions": [
+        {"type": "MainQuestCompleted", "Param1": 26}
+    ],
     "discoverable": true,
     "rewards": [
         {

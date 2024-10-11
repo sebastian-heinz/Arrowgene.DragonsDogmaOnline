@@ -34,6 +34,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var timeData = Server.PartyQuestContentManager.CancelTimer(client.Party.Id);
             var quest = QuestManager.GetQuestByBoardId(client.Party.ContentId);
 
+            client.Party.ExmInProgress = false;
+
             var ntc = new S2CQuestPlayEndNtc();
             ntc.ContentsPlayEnd.RewardItemDetailList = quest.ToCDataTimeGainQuestList(0).RewardItemDetailList;
             ntc.ContentsPlayEnd.PlayTimeMillSec = (uint) timeData.Elapsed.Milliseconds;

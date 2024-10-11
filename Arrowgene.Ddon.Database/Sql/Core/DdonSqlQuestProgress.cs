@@ -88,7 +88,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         }
 
 
-        public QuestProgress GetQuestProgressById(uint characterCommonId, uint questScheduleId)
+        public QuestProgress GetQuestProgressByScheduleId(uint characterCommonId, uint questScheduleId)
         {
             using TCon connection = OpenNewConnection();
             return GetQuestProgressById(connection, characterCommonId, questScheduleId);

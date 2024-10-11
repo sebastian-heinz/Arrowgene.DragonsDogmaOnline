@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            if (data.ContentInProgress)
+            if (data.ContentStatus != ContentStatus.Recruiting)
             {
                 client.Send(new S2CEntryBoardEntryBoardItemEntryRes()
                 {

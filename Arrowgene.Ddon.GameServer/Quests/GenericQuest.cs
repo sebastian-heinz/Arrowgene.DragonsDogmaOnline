@@ -220,11 +220,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
             foreach (var item in questBlock.ConsumePlayerItems)
             {
                 var result = server.ItemManager.ConsumeItemByIdFromItemBag(server, client.Character, item.ItemId, item.Amount);
-                client.Send(new S2CItemUpdateCharacterItemNtc()
+                if (result != null)
                 {
-                    UpdateType = 0,
-                    UpdateItemList = new List<CDataItemUpdateResult>() { result }
-                });
+                    client.Send(new S2CItemUpdateCharacterItemNtc()
+                    {
+                        UpdateType = 0,
+                        UpdateItemList = new List<CDataItemUpdateResult>() { result }
+                    });
+                }
             }
 
             bool ShouldResetGroup = false;

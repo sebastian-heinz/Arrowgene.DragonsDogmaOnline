@@ -77,7 +77,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            if (client.Party.ContentInProgress && BoardManager.BoardIdIsExm(client.Party.ContentId))
+            if (client.Party.ExmInProgress && BoardManager.BoardIdIsExm(client.Party.ContentId))
             {
                 var quest = QuestManager.GetQuestByBoardId(client.Party.ContentId);
                 if (quest != null)

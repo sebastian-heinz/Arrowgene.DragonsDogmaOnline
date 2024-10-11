@@ -483,7 +483,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             var questState = party.QuestState.GetQuestState(questScheduleId);
             foreach (var memberClient in party.Clients)
             {
-                var result = server.Database.GetQuestProgressById(memberClient.Character.CommonId, questState.QuestScheduleId);
+                var result = server.Database.GetQuestProgressByScheduleId(memberClient.Character.CommonId, questState.QuestScheduleId);
                 if (result == null)
                 {
                     continue;
@@ -532,7 +532,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                     continue;
                 }
 
-                var result = server.Database.GetQuestProgressById(memberClient.Character.CommonId, questScheduleId);
+                var result = server.Database.GetQuestProgressByScheduleId(memberClient.Character.CommonId, questScheduleId);
                 if (result == null)
                 {
                     continue;
@@ -584,7 +584,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                 // If this is a main quest, check to see that the member is currently on this quest, otherwise don't reward
                 if (quest.QuestType == QuestType.Main)
                 {
-                    var result = server.Database.GetQuestProgressById(memberClient.Character.CommonId, quest.QuestScheduleId);
+                    var result = server.Database.GetQuestProgressByScheduleId(memberClient.Character.CommonId, quest.QuestScheduleId);
                     if (result == null)
                     {
                         continue;

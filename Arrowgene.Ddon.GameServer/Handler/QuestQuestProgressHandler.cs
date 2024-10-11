@@ -60,7 +60,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     foreach (var memberClient in client.Party.Clients)
                     {
-                        var questProgress = Server.Database.GetQuestProgressById(memberClient.Character.CommonId, questScheduleId);
+                        var questProgress = Server.Database.GetQuestProgressByScheduleId(memberClient.Character.CommonId, questScheduleId);
 
                         if (questProgress != null)
                         {
