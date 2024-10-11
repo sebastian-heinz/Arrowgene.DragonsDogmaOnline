@@ -39,7 +39,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // Mandatory to send otherwise the UI gets stuck.
                 CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
                 // TODO: This is not accurate to the original game but currently there is no other way to gain crafting reset points.
-                Server.WalletManager.AddToWalletNtc(client, client.Character, WalletType.ResetCraftSkills, 1, ItemNoticeType.ResetCraftpoint);
+                Server.WalletManager.AddToWalletNtc(client, client.Character, WalletType.ResetCraftSkills, 1, 0, ItemNoticeType.ResetCraftpoint);
                 Server.Database.UpdatePawnBaseInfo(leadPawn);
             }
             else

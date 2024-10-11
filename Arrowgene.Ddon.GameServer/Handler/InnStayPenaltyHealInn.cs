@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
@@ -23,15 +19,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             WalletType priceWalletType = InnGetPenaltyHealStayPrice.PointType;
             uint price = InnGetPenaltyHealStayPrice.Point;
 
-            // Update character wallet
-            CDataWalletPoint wallet = client.Character.WalletPointList.Where(wp => wp.Type == priceWalletType).Single();
-            wallet.Value = (uint) Math.Max(0, (int)wallet.Value - (int)price);
-            Database.UpdateWalletPoint(client.Character.CharacterId, wallet);
+            var walletUpdate = Server.WalletManager.RemoveFromWallet(client.Character, priceWalletType, price);
 
             client.Send(new S2CInnStayPenaltyHealInnRes()
             {
-                PointType = wallet.Type,
-                Point = wallet.Value
+                PointType = priceWalletType,
+                Point = walletUpdate?.Value ?? 0
             });
         }
     }

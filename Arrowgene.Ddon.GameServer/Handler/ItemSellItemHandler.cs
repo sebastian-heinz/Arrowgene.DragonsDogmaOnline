@@ -43,7 +43,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     uint amountToAdd = goldValue * consumeItem.Num;
                     totalAmountToAdd += amountToAdd;
                 }
-                CDataUpdateWalletPoint walletUpdate = Server.WalletManager.AddToWallet(client.Character, WalletType.Gold, totalAmountToAdd, connection);
+                CDataUpdateWalletPoint walletUpdate = Server.WalletManager.AddToWallet(client.Character, WalletType.Gold, totalAmountToAdd, 0, connection);
                 ntc.UpdateWalletList.Add(walletUpdate);
             });
             
