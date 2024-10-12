@@ -20,12 +20,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             WalletType priceWalletType = InnGetStayPriceHandler.PointType;
             uint price = InnGetStayPriceHandler.Point;
 
-            var walletUpdate = Server.WalletManager.RemoveFromWallet(client.Character, priceWalletType, price);
+            var walletUpdate = Server.WalletManager.RemoveFromWallet(client.Character, priceWalletType, price)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_INN_LACK_MONEY);
 
             client.Send(new S2CInnStayInnRes()
             {
                 PointType = priceWalletType,
-                Point = walletUpdate?.Value ?? 0
+                Point = walletUpdate.Value
             });
         }
     }

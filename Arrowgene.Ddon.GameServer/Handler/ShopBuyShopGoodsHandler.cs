@@ -72,6 +72,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     itemNtc.UpdateWalletList = new List<CDataUpdateWalletPoint>()
                     {
                         Server.WalletManager.RemoveFromWallet(client.Character, shop.WalletType, totalPrice, connection)
+                            ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_SHOP_LACK_MONEY)
                     };
                     itemNtc.UpdateItemList = itemUpdateResults;
                 }

@@ -17,9 +17,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CCharacterCharacterGoldenReviveRes res = new S2CCharacterCharacterGoldenReviveRes();
 
-            var amount = Server.WalletManager.GetWalletAmount(client.Character, WalletType.GoldenGemstones);
-            res.GP = amount - 1;
-            Server.WalletManager.RemoveFromWalletNtc(client, client.Character, WalletType.GoldenGemstones, 1);
+            bool walletUpdate = Server.WalletManager.RemoveFromWalletNtc(client, client.Character, WalletType.GoldenGemstones, 1); // TODO: Get price from settings.
+            if (!walletUpdate)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_GP_LACK_GP);
+            }
+            res.GP = Server.WalletManager.GetWalletAmount(client.Character, WalletType.GoldenGemstones); 
 
             return res;
         }

@@ -23,7 +23,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             uint price = packet.Structure.Price; // TODO: Don't trust packet.Structure.Price and check its price server side
 
-            CDataUpdateWalletPoint updateWallet = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.RiftPoints, price);
+            CDataUpdateWalletPoint updateWallet = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.RiftPoints, price)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_WARP_LACK_RIM);
 
             S2CWarpWarpRes response = new S2CWarpWarpRes();
             response.WarpPointId = packet.Structure.DestPointId;
