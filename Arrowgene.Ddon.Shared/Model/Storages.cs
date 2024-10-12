@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -316,7 +317,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public List<CDataCharacterEquipInfo> AsCDataCharacterEquipInfo(EquipType equipType)
         {
             return GetItems(equipType)
-                .Select((x, index) => new {item = x, slot = (byte)(index+1)})
+                .Select((x, index) => new {item = x, slot = (byte)(index + 1)})
                 .Where(tuple => tuple.item != null)
                 .Select(tuple => new CDataCharacterEquipInfo()
                 {
@@ -326,7 +327,24 @@ namespace Arrowgene.Ddon.Shared.Model
                 })
                 .ToList();
         }
-        
+
+        public List<CDataPresetEquipInfo> AsCDataPresetEquipInfo(EquipType equipType)
+        {
+            return GetItems(equipType)
+                .Select((x, index) => new { item = x, slot = (byte)(index + 1) })
+                .Where(tuple => tuple.item != null)
+                .Select(tuple => new CDataPresetEquipInfo()
+                {
+                    ItemId = tuple!.item.ItemId,
+                    ItemUId = tuple!.item.UId,
+                    EquipSlotNo = tuple!.slot,
+                    Color = tuple!.item.Color,
+                    PlusValue = tuple!.item.PlusValue,
+                    EquipElementParamList = tuple!.item.EquipElementParamList
+                })
+                .ToList();
+        }
+
         private int calculateEquipTypeOffset(EquipType equipType)
         {
             return equipType == EquipType.Performance ? 0 : EquipmentTemplate.TOTAL_EQUIP_SLOTS;

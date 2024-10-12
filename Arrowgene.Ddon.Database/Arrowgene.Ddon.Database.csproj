@@ -34,10 +34,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ContentWithTargetPath Remove="files\database\script\migration_quest_variant_refactor.sql" />
-    </ItemGroup>
-
-    <ItemGroup>
         <ProjectReference Include="..\Arrowgene.Ddon.Shared\Arrowgene.Ddon.Shared.csproj" />
     </ItemGroup>
 

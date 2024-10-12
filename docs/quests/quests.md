@@ -4,6 +4,34 @@ This document describes currently implemented quest information and known issues
 
 If you are interested in modifying or creating new quests, see the [generic quest state machine document](generic_quest_state_machine.md) for the details.
 
+## Quest Types
+
+- Main story quests
+    - Quest IDs for S1 q00000001 to q00000030
+    - Quest IDs for S2 q00020010 to q00020250
+    - Quest IDs for S2 q00030010 to q00030440
+- Set Quests (World Quests)
+    - Quest IDs are q2xxxxxx 
+- Light Quests (Personal Quests from board)
+  - Quest IDs are q4xxxxxxx
+- Extreme Missions
+  - Quest IDs are q5xxxxxxx
+- Tutorial Quests (Personal Quests from NPCs)
+  - Quest IDs are q6xxxxxx
+- World Manage Quest
+  - q7xxxxxx
+- War Missions
+  - Quest IDs are q9xxxxxx
+  - Earlier quests look like grand missions
+- Wild Hunt
+  - Quest IDs are q15xxxxxx
+- Substory
+  - Quest IDs are q10xxxxxx
+
+- Unknown
+  - q3xxxxxxx (looks like more board quests?)
+  - q8xxxxxxx (cooking/crafting?)
+
 ## What works in the current implementation
 
 - Currently only [Season 1.0 MSQ](#season-10), [Season 1.1 MSQ](#season-11) and a limited number of [World Quests](#world-quests) are activated.

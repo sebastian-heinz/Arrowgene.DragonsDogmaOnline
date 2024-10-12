@@ -513,7 +513,6 @@ CREATE TABLE IF NOT EXISTS "ddon_contact_list"
     "requester_favorite"     BOOLEAN  NOT NULL,
     "requested_favorite"     BOOLEAN  NOT NULL,
     CONSTRAINT "fk_ddon_contact_list_requester_character_id" FOREIGN KEY ("requester_character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE,
-    CONSTRAINT "fk_ddon_contact_list_requested_character_id" FOREIGN KEY ("requested_character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE,
     CONSTRAINT "uq_ddon_contact_list_requester_character_id_requested_character_id" UNIQUE ("requester_character_id", "requested_character_id")
 );
 
@@ -749,4 +748,25 @@ CREATE TABLE IF NOT EXISTS "ddon_clan_membership"
     CONSTRAINT "pk_ddon_clan_membership" PRIMARY KEY ("character_id", "clan_id"),
     CONSTRAINT "fk_ddon_clan_membership_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE,
     CONSTRAINT "fk_ddon_clan_membership_clan_id" FOREIGN KEY ("clan_id") REFERENCES "ddon_clan_param" ("clan_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_equip_preset"
+(
+    "character_common_id" INTEGER NOT NULL,
+    "job_id"              INTEGER NOT NULL,
+    "preset_no"           INTEGER NOT NULL,
+    "preset_name"         TEXT    NOT NULL,
+    CONSTRAINT "pk_ddon_equip_preset" PRIMARY KEY ("character_common_id", "job_id", "preset_no"),  
+    CONSTRAINT "fk_ddon_equip_preset_character_common_id" FOREIGN KEY ("character_common_id") REFERENCES "ddon_character_common" ("character_common_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_equip_preset_template"
+(
+    "character_common_id" INTEGER NOT NULL,
+    "job_id"              INTEGER NOT NULL,
+    "preset_no"           INTEGER NOT NULL,
+    "slot_no"             INTEGER NOT NULL,
+    "item_uid"            VARCHAR(8) NOT NULL,
+    CONSTRAINT "pk_ddon_equip_preset_template" PRIMARY KEY ("character_common_id", "job_id", "preset_no", "slot_no"),    
+    CONSTRAINT "fk_ddon_equip_preset_template_character_common_id" FOREIGN KEY ("character_common_id", "job_id", "preset_no") REFERENCES "ddon_equip_preset" ("character_common_id", "job_id", "preset_no") ON DELETE CASCADE
 );
