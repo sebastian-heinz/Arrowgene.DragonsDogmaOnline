@@ -12,8 +12,12 @@ using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Rpc.Web.Route
 {
-    public class ServerStatusCommand : IRpcCommand
+    public class ServerStatusCommand : RpcQueryCommand
     {
+        public ServerStatusCommand(WebCollection<string, string> queryParams) : base(queryParams)
+        {
+        }
+
         public class ServerStatus
         {
             public ushort Id { get; set; }
@@ -42,30 +46,23 @@ namespace Arrowgene.Ddon.Rpc.Web.Route
             }
         }
 
-        public string Name => "ServerStatusCommand";
+        public override string Name => "ServerStatusCommand";
 
-        public ServerStatusCommand(uint serverId, bool returnAll)
+        public override RpcCommandResult Execute(DdonGameServer gameServer)
         {
-            ServerId = serverId;
-            ReturnAll = returnAll;
-            Status = new List<ServerStatus>();
-        }
-        public List<ServerStatus> Status { get; set; }
-        public uint ServerId { get; set; }
-        public bool ReturnAll { get; set; }
+            List<ServerStatus> statusList = new();
+            ReturnValue = statusList;
+            uint serverId = uint.TryParse(_queryParams.Get("serverid"), out uint serverIdParse) ? serverIdParse : 0;
 
-        public RpcCommandResult Execute(DdonGameServer gameServer)
-        {
-            Status.Clear();
             var serverList = new List<CDataGameServerListInfo>(gameServer.AssetRepository.ServerList);
-            var serverListSelected = ReturnAll ? serverList : serverList.Where(x => x.Id == ServerId).ToList();
+            var serverListSelected = serverId == 0 ? serverList : serverList.Where(x => x.Id == serverId).ToList();
 
             if (serverListSelected.Any())
             {
                 var connections = gameServer.Database.SelectConnections();
                 foreach (var server in serverListSelected)
                 {
-                    Status.Add(new ServerStatus()
+                    statusList.Add(new ServerStatus()
                     {
                         Id = server.Id,
                         Name = server.Name,
@@ -89,7 +86,7 @@ namespace Arrowgene.Ddon.Rpc.Web.Route
         }
     }
 
-    public class ServerStatusRoute : RpcWebRoute
+    public class ServerStatusRoute : RpcRouteTemplate
     {
         public override string Route => "/rpc/status";
 
@@ -99,22 +96,7 @@ namespace Arrowgene.Ddon.Rpc.Web.Route
 
         public override async Task<WebResponse> Get(WebRequest request)
         {
-            WebCollection<string, string> queryParams = request.QueryParameter;
-            bool returnAll = queryParams.ContainsKey("all") ? bool.Parse(queryParams["all"]) : false;
-            uint serverId = queryParams.ContainsKey("serverid") ? uint.Parse(queryParams["serverid"]) : 0;
-
-            WebResponse response = new WebResponse();
-            ServerStatusCommand status = new ServerStatusCommand(serverId, returnAll);
-            RpcCommandResult result = Executer.Execute(status);
-            if (!result.Success)
-            {
-                response.StatusCode = 500;
-                await response.WriteAsync("Error");
-                return response;
-            }
-            response.StatusCode = 200;
-            await response.WriteJsonAsync(status.Status);
-            return response;
+            return await HandleQuery<ServerStatusCommand>(request);
         }
     }
 }
