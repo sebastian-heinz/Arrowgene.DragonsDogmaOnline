@@ -34,6 +34,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (var boxReward in Server.RewardManager.GetQuestBoxRewards(client))
             {
                 var quest = QuestManager.GetQuestByScheduleId(boxReward.QuestScheduleId);
+                if (quest == null)
+                {
+                    Logger.Error($"Quest reward for QuestScheduleId={boxReward.QuestScheduleId}, but no definition of quest exists.");
+                    continue;
+                }
+
                 res.RewardBoxRecordList.Add(new CDataRewardBoxRecord()
                 {
                     ListNo = listNo,
