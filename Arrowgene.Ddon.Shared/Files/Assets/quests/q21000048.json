@@ -6,7 +6,7 @@
     "base_level": 65,
     "minimum_item_rank": 0,
     "discoverable": true,
-	"area_id": "BloodbaneIsle",	
+	"area_id": "BloodbaneIsle",
     "rewards": [
         {
             "type": "wallet",
@@ -29,13 +29,13 @@
                     "item_id": 11775,
                     "num": 3
                 },
-                {					
+                {
                     "item_id": 7848,
                     "num": 3
                 },
-                {				
+                {
                     "item_id": 9364,
-                    "num": 3					
+                    "num": 3
                 }
             ]
         }
@@ -66,44 +66,44 @@
                     "is_boss": false
     },
     {
-                    "enemy_id": "0x010430",
-                    "level": 65,
-                    "exp": 3500,
-                    "is_boss": false	
+        "enemy_id": "0x010430",
+        "level": 65,
+        "exp": 3500,
+        "is_boss": false
     },
     {
-                    "enemy_id": "0x010430",
-                    "level": 65,
-                    "exp": 3500,
-                    "is_boss": false						
-                }
+        "enemy_id": "0x010430",
+        "level": 65,
+        "exp": 3500,
+        "is_boss": false
+    }
             ]
         }
-    ],		
+    ],
     "blocks": [
-    {
-      "type": "NpcTalkAndOrder",
-      "stage_id": {
-        "id": 317
-      },
-      "npc_id": "Rolf",
-      "message_id": 10800
-    },
-    {
-      "type": "DeliverItems",
-      "stage_id": {
-        "id": 317,
-        "group_id": 1
-      },
-      "npc_id": "Rolf",
-      "announce_type": "Accept",
-      "items": [
         {
-          "id": 7956,
-          "amount": 2
-        }
-      ],
-      "message_id": 10737
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 317
+            },
+            "npc_id": "Rolf",
+            "message_id": 10800
+        },
+        {
+            "type": "DeliverItems",
+            "stage_id": {
+                "id": 317,
+                "group_id": 1
+            },
+            "npc_id": "Rolf",
+            "announce_type": "Accept",
+            "items": [
+                {
+                    "id": 7956,
+                    "amount": 2
+                }
+            ],
+            "message_id": 10737
         },
         {
             "type": "SeekOutEnemiesAtMarkedLocation",
@@ -115,7 +115,7 @@
             "announce_type": "Update",
             "groups": [0]
         },
-        {		
+        {
             "type": "TalkToNpc",
             "stage_id": {
                 "id": 317,
@@ -124,7 +124,7 @@
             },
             "announce_type": "Update",
             "npc_id": "Rolf",
-            "message_id": 11842			
-    }
-  ]
+            "message_id": 11842
+        }
+    ]
 }

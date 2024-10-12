@@ -1,29 +1,24 @@
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class AreaGetLeaderAreaReleaseListHandler : PacketHandler<GameClient>
+    public class AreaGetLeaderAreaReleaseListHandler : GameRequestPacketHandler<C2SAreaGetLeaderAreaReleaseListReq, S2CAreaGetLeaderAreaReleaseListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(AreaGetLeaderAreaReleaseListHandler));
-
 
         public AreaGetLeaderAreaReleaseListHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override PacketId Id => PacketId.C2S_AREA_GET_LEADER_AREA_RELEASE_LIST_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override S2CAreaGetLeaderAreaReleaseListRes Handle(GameClient client, C2SAreaGetLeaderAreaReleaseListReq request)
         {
-            client.Send(GameFull.Dump_117);
+            // client.Send(GameFull.Dump_117);
+            var result = new S2CAreaGetLeaderAreaReleaseListRes.Serializer().Read(GameFull.Dump_117.AsBuffer());
 
-            // S2CAreaGetLeaderAreaReleaseListRes res = new S2CAreaGetLeaderAreaReleaseListRes();
-            // client.Send(res);
+            return result;
         }
     }
 }
