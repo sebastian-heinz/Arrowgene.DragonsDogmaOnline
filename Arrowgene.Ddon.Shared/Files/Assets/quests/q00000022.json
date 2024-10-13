@@ -145,7 +145,8 @@
                         {"type": "WorldManageLayout", "action": "Clear", "value": 1202, "quest_id": 70003001, "comment": "Mergoda Warp Off"},
                         {"type": "WorldManageLayout", "action": "Set", "value": 1203, "quest_id": 70003001, "comment": "Mergoda Warp on"},
                         {"type": "QstLayout", "action": "Clear", "value": 1102, "comment": "Spawn Klaus"},
-                        {"type": "QstLayout", "action": "Set", "value": 1029, "comment": "Spawn Klaus"}
+                        {"type": "QstLayout", "action": "Set", "value": 1029, "comment": "Spawn Klaus"},
+                        {"type": "QstLayout", "action": "Clear", "value": 1307, "comment": "Blockaid"}
                     ],
                     "stage_id": {
                         "id": 76,
