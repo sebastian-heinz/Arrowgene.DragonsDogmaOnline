@@ -45,6 +45,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataAreaBaseInfo.Serializer());
             Create(new CDataAreaRank.Serializer());
             Create(new CDataArisenProfileSerializer());
+            Create(new CDataAreaRankUpQuestInfo.Serializer());
+            Create(new CDataSupplyItem.Serializer());
+            Create(new CDataBorderSupplyItem.Serializer());
             
             Create(new CDataBattleContentInfo.Serializer());
             Create(new CDataBattleContentStage.Serializer());
@@ -395,7 +398,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2LLoginReq.Serializer());
             Create(new C2LPingReq.Serializer());
             Create(new C2SActionSetPlayerActionHistoryReq.Serializer());
+
             Create(new C2SAreaGetAreaBaseInfoListReq.Serializer());
+            Create(new C2SAreaGetAreaMasterInfoReq.Serializer());
+            Create(new C2SAreaGetLeaderAreaReleaseListReq.Serializer());
             
             Create(new C2SAchievementGetReceivableRewardListReq.Serializer());
             Create(new C2SAchievementGetProgressListReq.Serializer());
@@ -816,7 +822,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new L2CGpCourseGetInfoRes.Serializer());
 
             Create(new S2CActionSetPlayerActionHistoryRes.Serializer());
+
             Create(new S2CAreaGetAreaBaseInfoListRes.Serializer());
+            Create(new S2CAreaGetAreaMasterInfoRes.Serializer());
             
             Create(new S2CAchievementGetReceivableRewardListRes.Serializer());
             Create(new S2CAchievementGetProgressListRes.Serializer());

@@ -11,7 +11,7 @@ public class CDataReleaseAreaInfoSet
     {
     }
 
-    public UInt32 AreaId {  get; set; }
+    public uint AreaId {  get; set; }
     public List<CDataCommonU32> ReleaseList { get; set; }
 
     public class Serializer : EntitySerializer<CDataReleaseAreaInfoSet>
