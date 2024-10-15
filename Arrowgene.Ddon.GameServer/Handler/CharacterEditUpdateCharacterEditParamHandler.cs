@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -17,8 +18,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             CharacterEditGetShopPriceHandler.CheckPrice(packet.UpdateType, packet.EditPrice.PointType, packet.EditPrice.Value);
 
-            Server.WalletManager.RemoveFromWalletNtc(client, client.Character,
-                            packet.EditPrice.PointType, packet.EditPrice.Value);
+            bool walletUpdate = Server.WalletManager.RemoveFromWalletNtc(client, client.Character, packet.EditPrice.PointType, packet.EditPrice.Value);
+            if (!walletUpdate)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_GP_LACK_GP);
+            }
 
             client.Character.EditInfo = packet.EditInfo;
             Server.Database.UpdateEditInfo(client.Character);

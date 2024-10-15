@@ -122,6 +122,11 @@ namespace Arrowgene.Ddon.GameServer
             }
 
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, totalPrice);
+            if (updateWalletPoint is null)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_BAZAAR_INTERNAL_ERROR, "Insufficient funds.");
+            }
+
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
             Server.BazaarManager.SetExhibitionState(exhibition.Info.ItemInfo.BazaarId, BazaarExhibitionState.Sold);

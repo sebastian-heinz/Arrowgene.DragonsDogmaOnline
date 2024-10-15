@@ -618,14 +618,11 @@ namespace Arrowgene.Ddon.GameServer.Party
 
             foreach (var walletReward in quest.WalletRewards)
             {
-                server.WalletManager.AddToWallet(client.Character, walletReward.Type, walletReward.Value);
-
-                updateCharacterItemNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint()
-                {
-                    Type = walletReward.Type,
-                    Value = server.WalletManager.GetWalletAmount(client.Character, walletReward.Type),
-                    AddPoint = (int)walletReward.Value
-                });
+                updateCharacterItemNtc.UpdateWalletList.Add(server.WalletManager.AddToWallet(
+                    client.Character, 
+                    walletReward.Type, 
+                    walletReward.Value
+                ));
             }
 
             if (updateCharacterItemNtc.UpdateWalletList.Count > 0)

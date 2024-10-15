@@ -10,7 +10,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class WarpAreaWarpHandler : StructurePacketHandler<GameClient, C2SWarpAreaWarpReq>
+    public class WarpAreaWarpHandler : GameStructurePacketHandler<C2SWarpAreaWarpReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(WarpAreaWarpHandler));
 
@@ -22,21 +22,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             uint price = packet.Structure.Price; // TODO: Don't trust packet.Structure.Price and check its price server side
 
-            CDataWalletPoint walletPoint = client.Character.WalletPointList.Where(wp => wp.Type == WalletType.RiftPoints).Single();
-            walletPoint.Value -= price;
-            Database.UpdateWalletPoint(client.Character.CharacterId, walletPoint);
+            CDataUpdateWalletPoint updateWallet = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.RiftPoints, price)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_WARP_LACK_RIM);
 
             S2CWarpAreaWarpRes obj = new S2CWarpAreaWarpRes();
             obj.WarpPointId = packet.Structure.WarpPointId;
-            obj.Rim = walletPoint.Value;
+            obj.Rim = updateWallet.Value;
             client.Send(obj);
 
             if(packet.Structure.Price > 0) {
                 S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-                CDataUpdateWalletPoint updateWallet = new CDataUpdateWalletPoint();
-                updateWallet.Type = WalletType.RiftPoints;
-                updateWallet.AddPoint = (int) -price;
-                updateWallet.Value = walletPoint.Value;
                 updateCharacterItemNtc.UpdateWalletList.Add(updateWallet);
                 client.Send(updateCharacterItemNtc);
             }
