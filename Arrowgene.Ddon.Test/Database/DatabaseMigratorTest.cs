@@ -284,6 +284,7 @@ namespace Arrowgene.Ddon.Test.Database
         public List<Character> SelectCharactersByAccountId(int accountId, GameMode gameMode) { return new List<Character>(); }
         public List<Character> SelectAllCharacters() { return new List<Character>(); }
         public List<Character> SelectAllCharacters(DbConnection conn) { return new List<Character>(); }
+        public List<Connection> SelectConnections() { return new(); }
         public List<Connection> SelectConnectionsByAccountId(int accountId) { return new List<Connection>(); }
         public ContactListEntity SelectContactListById(uint id) { return new ContactListEntity(); }
         public List<ContactListEntity> SelectContactsByCharacterId(uint characterId) { return new List<ContactListEntity>(); }

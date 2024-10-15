@@ -353,6 +353,7 @@ namespace Arrowgene.Ddon.Database
 
         // Connections
         bool InsertConnection(Connection connection);
+        List<Connection> SelectConnections();
         List<Connection> SelectConnectionsByAccountId(int accountId);
         bool DeleteConnection(int serverId, int accountId);
         bool DeleteConnectionsByAccountId(int accountId);

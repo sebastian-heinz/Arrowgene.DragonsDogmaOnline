@@ -12,6 +12,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private const string SqlInsertConnection =
             "INSERT INTO \"ddon_connection\" (\"server_id\", \"account_id\", \"type\", \"created\") VALUES (@server_id, @account_id, @type, @created);";
 
+        private const string SqlSelectConnections =
+            "SELECT \"server_id\", \"account_id\", \"type\", \"created\" FROM \"ddon_connection\";";
+
         private const string SqlSelectConnectionsByAccountId =
             "SELECT \"server_id\", \"account_id\", \"type\", \"created\" FROM \"ddon_connection\" WHERE \"account_id\" = @account_id;";
 
@@ -42,6 +45,25 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             List<Connection> connections = new List<Connection>();
             ExecuteReader(SqlSelectConnectionsByAccountId,
                 command => { AddParameter(command, "@account_id", accountId); },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        Connection connection = new Connection();
+                        connection.ServerId = GetInt32(reader, "server_id");
+                        connection.AccountId = GetInt32(reader, "account_id");
+                        connection.Type = GetEnumInt32<ConnectionType>(reader, "type");
+                        connection.Created = GetDateTime(reader, "created");
+                        connections.Add(connection);
+                    }
+                });
+            return connections;
+        }
+
+        public List<Connection> SelectConnections()
+        {
+            List<Connection> connections = new List<Connection>();
+            ExecuteReader(SqlSelectConnections,
                 reader =>
                 {
                     while (reader.Read())
