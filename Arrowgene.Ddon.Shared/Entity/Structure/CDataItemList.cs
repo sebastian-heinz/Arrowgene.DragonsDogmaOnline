@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public string ItemUId { get; set; }
         public uint ItemId { get; set; }
         public uint ItemNum { get; set; }
-        public byte Unk3 { get; set; }
+        public byte SafetySetting { get; set; }
         public StorageType StorageType { get; set; }
         public ushort SlotNo { get; set; }
         public byte Color { get; set; }
@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteMtString(buffer, obj.ItemUId);
                 WriteUInt32(buffer, obj.ItemId);
                 WriteUInt32(buffer, obj.ItemNum);
-                WriteByte(buffer, obj.Unk3);
+                WriteByte(buffer, obj.SafetySetting);
                 WriteByte(buffer, (byte) obj.StorageType);
                 WriteUInt16(buffer, obj.SlotNo);
                 WriteByte(buffer, obj.Color);
@@ -57,7 +57,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.ItemUId = ReadMtString(buffer);
                 obj.ItemId = ReadUInt32(buffer);
                 obj.ItemNum = ReadUInt32(buffer);
-                obj.Unk3 = ReadByte(buffer);
+                obj.SafetySetting = ReadByte(buffer);
                 obj.StorageType = (StorageType) ReadByte(buffer);
                 obj.SlotNo = ReadUInt16(buffer);
                 obj.Color = ReadByte(buffer);

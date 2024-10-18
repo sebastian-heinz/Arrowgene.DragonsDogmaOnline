@@ -55,7 +55,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntcData0.ItemList.ItemUId = item.UId;
             ntcData0.ItemList.ItemId = item.ItemId;
             ntcData0.ItemList.ItemNum = itemNum;
-            ntcData0.ItemList.Unk3 = item.Unk3;
+            ntcData0.ItemList.SafetySetting = item.SafetySetting;
             ntcData0.ItemList.StorageType = DestinationStorageType;
             ntcData0.ItemList.SlotNo = slotNo;
             ntcData0.ItemList.Color = item.Color; // ?

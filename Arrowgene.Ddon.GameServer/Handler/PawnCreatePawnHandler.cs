@@ -217,101 +217,101 @@ namespace Arrowgene.Ddon.GameServer.Handler
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.Primary,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0,
                                     PlusValue = 0
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.Secondary,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.Head,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0,
                                     PlusValue = 0
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.Body,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0,
                                     PlusValue = 0,
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.BodyClothing,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.Arm,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0,
                                     PlusValue = 0
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.Leg,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0,
                                     PlusValue = 0
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.LegWear,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.OverWear,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.JewelrySlot1,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0,
                                     PlusValue = 0,
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.JewelrySlot2,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0,
                                     PlusValue = 0,
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.JewelrySlot3,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0,
                                     PlusValue = 0,
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.JewelrySlot4,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0,
                                     PlusValue = 0,
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.JewelrySlot5,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0,
                                     PlusValue = 0,
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.Lantern,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                 }
                             }.Select(item => (item == null || item.ItemId == 0) ? null : item).ToList()
                         },

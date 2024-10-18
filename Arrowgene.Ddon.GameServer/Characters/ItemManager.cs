@@ -288,7 +288,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             ntcData.ItemList.ItemUId = item.UId;
             ntcData.ItemList.ItemId = item.ItemId;
             ntcData.ItemList.ItemNum = finalItemNum;
-            ntcData.ItemList.Unk3 = item.Unk3;
+            ntcData.ItemList.SafetySetting = item.SafetySetting;
             ntcData.ItemList.StorageType = fromStorageType;
             ntcData.ItemList.SlotNo = slotNo;
             ntcData.ItemList.Color = item.Color;
@@ -428,7 +428,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     item = new Item() {
                         ItemId = itemId,
-                        Unk3 = 0,
+                        SafetySetting = 0,
                         Color = 0,
                         PlusValue = plusvalue,
                         EquipPoints = 0,
@@ -453,7 +453,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 result.ItemList.ItemUId = item.UId;
                 result.ItemList.ItemId = item.ItemId;
                 result.ItemList.ItemNum = newItemNum;
-                result.ItemList.Unk3 = item.Unk3;
+                result.ItemList.SafetySetting = item.SafetySetting;
                 result.ItemList.StorageType = destinationStorageType;
                 result.ItemList.SlotNo = slot;
                 result.ItemList.Color = item.Color;
@@ -489,7 +489,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 Item? item = new Item()
                 {
                     ItemId = itemId,
-                    Unk3 = 0,
+                    SafetySetting = 0,
                     Color = 0,
                     PlusValue = plusvalue,
                     EquipPoints = 0,
@@ -509,7 +509,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 result.ItemList.ItemUId = item.UId;
                 result.ItemList.ItemId = item.ItemId;
                 result.ItemList.ItemNum = newItemNum;
-                result.ItemList.Unk3 = item.Unk3;
+                result.ItemList.SafetySetting = item.SafetySetting;
                 result.ItemList.StorageType = destinationStorageType;
                 result.ItemList.SlotNo = slot;
                 result.ItemList.Color = item.Color;
@@ -759,7 +759,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.ItemUId = item.UId;
             updateResult.ItemList.ItemId = item.ItemId;
             updateResult.ItemList.ItemNum = itemNum;
-            updateResult.ItemList.Unk3 = item.Unk3;
+            updateResult.ItemList.SafetySetting = item.SafetySetting;
             updateResult.ItemList.StorageType = storageType;
             updateResult.ItemList.SlotNo = slotNo;
             updateResult.ItemList.Color = item.Color;
@@ -801,7 +801,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.ItemUId = newItem.UId;
             updateResult.ItemList.ItemId = newItem.ItemId;
             updateResult.ItemList.ItemNum = 1;
-            updateResult.ItemList.Unk3 = newItem.Unk3;
+            updateResult.ItemList.SafetySetting = newItem.SafetySetting;
             updateResult.ItemList.StorageType = storageType;
             updateResult.ItemList.SlotNo = slotNo;
             updateResult.ItemList.Color = newItem.Color;

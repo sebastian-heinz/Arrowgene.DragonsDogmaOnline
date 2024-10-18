@@ -42,7 +42,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                             item = new Item();
                             item.UId = GetString(reader, "item_uid");
                             item.ItemId = GetUInt32(reader, "item_id");
-                            item.Unk3 = GetByte(reader, "unk3");
+                            item.SafetySetting = GetByte(reader, "unk3");
                             item.Color = GetByte(reader, "color");
                             item.PlusValue = GetByte(reader, "plus_value");
                             item.EquipPoints = GetUInt32(reader, "equip_points");
@@ -66,7 +66,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 AddParameter(command, "slot_no", slotNo);
                 AddParameter(command, "item_id", item.ItemId);
                 AddParameter(command, "item_num", itemNum);
-                AddParameter(command, "unk3", item.Unk3);
+                AddParameter(command, "unk3", item.SafetySetting);
                 AddParameter(command, "color", item.Color);
                 AddParameter(command, "plus_value", item.PlusValue);
                 AddParameter(command, "equip_points", item.EquipPoints);
@@ -93,7 +93,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     AddParameter(command, "slot_no", slotNo);
                     AddParameter(command, "item_id", item.ItemId);
                     AddParameter(command, "item_num", itemNum);
-                    AddParameter(command, "unk3", item.Unk3);
+                    AddParameter(command, "unk3", item.SafetySetting);
                     AddParameter(command, "color", item.Color);
                     AddParameter(command, "plus_value", item.PlusValue);
                     AddParameter(command, "equip_points", item.EquipPoints);
@@ -158,7 +158,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     AddParameter(command, "slot_no", slotNo);
                     AddParameter(command, "item_id", item.ItemId);
                     AddParameter(command, "item_num", itemNum);
-                    AddParameter(command, "unk3", item.Unk3);
+                    AddParameter(command, "unk3", item.SafetySetting);
                     AddParameter(command, "color", item.Color);
                     AddParameter(command, "plus_value", item.PlusValue);
                     AddParameter(command, "equip_points", item.EquipPoints);
