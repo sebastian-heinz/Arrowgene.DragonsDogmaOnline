@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                 new Item()
                 {
                     ItemId = itemId,
-                    Unk3 = unk3,
+                    SafetySetting = unk3,
                     Color = color,
                     PlusValue = plusValue
                 });
