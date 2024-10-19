@@ -17,11 +17,13 @@ public class AuthMiddleware : IWebMiddleware
 
     private readonly IDatabase _database;
     private readonly Dictionary<string, AccountStateType> _routeAndRequiredMinimumState;
+    private readonly Dictionary<string, Account> _credentialCache;
 
     public AuthMiddleware(IDatabase database)
     {
         _database = database;
         _routeAndRequiredMinimumState = new Dictionary<string, AccountStateType>();
+        _credentialCache = new();
     }
 
     public void Require(AccountStateType minimumState, string route)
@@ -71,7 +73,9 @@ public class AuthMiddleware : IWebMiddleware
         string username = usernameAndPassword[0];
         string password = usernameAndPassword[1];
 
-        Account account = _database.SelectAccountByName(username);
+        // Short-circuit the DB handling if we've already cached the account.
+        Account account = _credentialCache.GetValueOrDefault(username) ?? _database.SelectAccountByName(username);
+        _credentialCache.Add(username, account);
         if (account == null)
         {
             Logger.Error($"Attempted to authenticate as a nonexistant user {username}.");
@@ -91,7 +95,7 @@ public class AuthMiddleware : IWebMiddleware
         }
 
         AccountStateType minimumRequiredAccountStateType = _routeAndRequiredMinimumState[request.Path];
-        if(account.State < minimumRequiredAccountStateType)
+        if (account.State < minimumRequiredAccountStateType)
         {
             Logger.Error($"Attempted to access auth protected route as {username} without enough permissions (Account has {account.State}, minimum required {minimumRequiredAccountStateType}).");
             WebResponse response = new WebResponse();

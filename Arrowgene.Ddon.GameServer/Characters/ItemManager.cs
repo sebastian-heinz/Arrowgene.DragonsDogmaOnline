@@ -187,7 +187,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 uint totalQuantityToAdd = walletTypeAndQuantity.Quantity * gatheringItem.ItemNum;
 
                 ntc.UpdateWalletList.Add(
-                    server.WalletManager.AddToWallet(character, walletTypeAndQuantity.Type, totalQuantityToAdd
+                    server.WalletManager.AddToWallet(character, walletTypeAndQuantity.Type, totalQuantityToAdd, 0, connectionIn
                 ));
 
                 gatheringItem.ItemNum -= pickedGatherItems;
