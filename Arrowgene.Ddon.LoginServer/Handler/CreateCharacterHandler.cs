@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
-    public class CreateCharacterHandler : StructurePacketHandler<LoginClient, C2LCreateCharacterDataReq>
+    public class CreateCharacterHandler : LoginStructurePacketHandler<C2LCreateCharacterDataReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CreateCharacterHandler));
 
@@ -509,12 +509,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     Value = 0
                 }
             };
-            // Value taken from pcaps
-            // TODO: Not hardcode it
-            character.FavWarpSlotNum = 10;
-
-            // TODO: Figure out a proper default value and not hardcode it
-            character.MaxBazaarExhibits = 5;
+            character.FavWarpSlotNum = Server.GameSetting.DefaultWarpFavorites;
+            character.MaxBazaarExhibits = Server.GameSetting.DefaultMaxBazaarExhibits;
 
             // Add starting storage items
             foreach (var tuple in Server.AssetRepository.StorageItemAsset)
@@ -578,6 +574,14 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             {
                 Database.InsertSecretAbilityUnlock(character.CommonId, ability);
             }
+
+            // Unlock WDT as the primary warp.
+            var wdtWarpPoint = new ReleasedWarpPoint()
+            {
+                WarpPointId = 1,
+                FavoriteSlotNo = 1
+            };
+            Database.InsertIfNotExistsReleasedWarpPoint(character.CharacterId, wdtWarpPoint);
 
             // Insert the first main quest to start the chain
             // note: We cast the QuestId to a ScheduleId because main quests have the same QuestId and QuestScheduleId
