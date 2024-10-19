@@ -75,7 +75,7 @@ public class AuthMiddleware : IWebMiddleware
 
         // Short-circuit the DB handling if we've already cached the account.
         Account account = _credentialCache.GetValueOrDefault(username) ?? _database.SelectAccountByName(username);
-        _credentialCache.Add(username, account);
+        _credentialCache[username] = account;
         if (account == null)
         {
             Logger.Error($"Attempted to authenticate as a nonexistant user {username}.");
