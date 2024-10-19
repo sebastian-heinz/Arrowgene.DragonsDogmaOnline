@@ -167,11 +167,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     if (memberCharacter.Stage.Id != stageId.Id) continue; // Only nearby allies get XP.
 
-                    if (memberClient.Character.ActiveCharacterPlayPointData.PlayPoint.ExpMode == ExpMode.Experience)
+                    if (memberClient.Character.ActiveCharacterPlayPointData.PlayPoint.ExpMode == ExpMode.Experience && !IsQuestControlled)
                     {
                         gainedPP = 0;
                     }
-                    else
+                    else if (!IsQuestControlled)
                     {
                         gainedExp = 0;
                     }

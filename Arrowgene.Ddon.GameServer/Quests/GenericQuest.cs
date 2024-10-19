@@ -36,6 +36,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             quest.MissionParams = questAsset.MissionParams;
             quest.ServerActions = questAsset.ServerActions;
             quest.Enabled = questAsset.Enabled;
+            quest.QuestOrderBackgroundImage = questAsset.QuestOrderBackgroundImage;
 
             foreach (var pointReward in questAsset.PointRewards)
             {
@@ -530,6 +531,10 @@ namespace Arrowgene.Ddon.GameServer.Quests
                                 break;
                             case QuestType.WorldManage:
                                 checkCommands.Add(QuestManager.CheckCommand.IsOrderWorldQuest((int)questBlock.QuestOrderDetails.QuestId));
+                                break;
+                            case QuestType.WildHunt:
+                                // Hack for progressing quest after ordering it
+                                checkCommands.Add(QuestManager.CheckCommand.EmDieLight(0, 0, 0));
                                 break;
                         }
                     }

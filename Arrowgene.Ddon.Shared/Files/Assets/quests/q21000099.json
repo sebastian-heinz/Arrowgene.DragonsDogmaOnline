@@ -6,7 +6,7 @@
     "base_level": 70,
     "minimum_item_rank": 0,
     "discoverable": false,
-	"area_id": "BloodbaneIsle",	
+    "area_id": "BloodbaneIsle",
     "rewards": [
         {
             "type": "wallet",
@@ -45,19 +45,19 @@
             "stage_id": {
                 "id": 443,
                 "group_id": 2
-            },			
+            },
             "enemies": [
                 {
                     "enemy_id": "0x015850",
                     "level": 70,
                     "exp": 85000,
                     "is_boss": true
-        },
-        {
+                },
+                {
                     "enemy_id": "0x015851",
                     "level": 70,
                     "exp": 85000,
-                    "is_boss": true					
+                    "is_boss": true
                 }
             ]
         }
