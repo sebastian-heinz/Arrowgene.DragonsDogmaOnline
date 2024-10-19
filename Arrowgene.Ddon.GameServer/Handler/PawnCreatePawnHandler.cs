@@ -462,6 +462,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             pawn.LearnedAbilities = pawn.EquippedAbilitiesDictionary.SelectMany(jobAndAugs => jobAndAugs.Value).Where(aug => aug != null).ToList();
             pawn.TrainingPoints = int.MaxValue;
             pawn.AvailableTraining = uint.MaxValue;
+            pawn.PawnReactionList = Enumerable.Range(1, 11).Select(x => new CDataPawnReaction() { ReactionType = (byte)x, MotionNo = 1 }).ToList();
 
             // Add current job's equipment to the equipment storage
             // EquipmentTemplate.TOTAL_EQUIP_SLOTS * 2
