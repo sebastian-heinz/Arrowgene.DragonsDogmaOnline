@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
-    public class CreateCharacterHandler : StructurePacketHandler<LoginClient, C2LCreateCharacterDataReq>
+    public class CreateCharacterHandler : LoginStructurePacketHandler<C2LCreateCharacterDataReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CreateCharacterHandler));
 
@@ -574,6 +574,14 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             {
                 Database.InsertSecretAbilityUnlock(character.CommonId, ability);
             }
+
+            // Unlock WDT as the primary warp.
+            var wdtWarpPoint = new ReleasedWarpPoint()
+            {
+                WarpPointId = 1,
+                FavoriteSlotNo = 1
+            };
+            Database.InsertIfNotExistsReleasedWarpPoint(character.CharacterId, wdtWarpPoint);
 
             // Insert the first main quest to start the chain
             // note: We cast the QuestId to a ScheduleId because main quests have the same QuestId and QuestScheduleId
