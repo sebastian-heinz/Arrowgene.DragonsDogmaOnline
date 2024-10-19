@@ -15,6 +15,8 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using YamlDotNet.Core.Tokens;
 using YamlDotNet.Core;
+using Arrowgene.Ddon.GameServer.Quests;
+using Arrowgene.Ddon.Server.Network;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -913,6 +915,39 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return results;
+        }
+
+        public void SetSafetySetting(GameClient client, Character character, List<CDataItemUIdList> uids, bool safetySetting)
+        {
+            List<(ushort SlotNo, Item Item, uint Amount, Storage Storage)> items = new();
+
+            var ntc = new S2CItemUpdateCharacterItemNtc()
+            {
+                UpdateType = ItemNoticeType.Default // TODO: Investigate.
+            };
+
+            uint updateItemNum = 0;
+            foreach (var reqitem in uids)
+            {
+                (StorageType storageType, Tuple<ushort, Item, uint> itemProps) = character.Storage.FindItemByUIdInStorage(ItemManager.AllItemStorages, reqitem.UId);
+                var (slotNo, item, amount) = itemProps;
+                var storage = character.Storage.GetStorage(storageType);
+
+                item.SafetySetting = (byte)(safetySetting ? 1 : 0);
+                items.Add((slotNo, item, amount, storage));
+
+                ntc.UpdateItemList.Add(CreateItemUpdateResult(character, item, storageType, slotNo, amount, ++updateItemNum));
+            }
+
+            _Server.Database.ExecuteInTransaction(conn =>
+            {
+                foreach (var item in items)
+                {
+                    UpdateItem(_Server, character, item.Item, item.Storage, item.SlotNo, item.Amount, conn);
+                }
+            });
+
+            client.Send(ntc);
         }
     }
 
