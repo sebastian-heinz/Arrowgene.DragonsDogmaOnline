@@ -323,6 +323,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateOrbGainExtendParam(uint commonId, CDataOrbGainExtendParam Param) { return true; }
         public bool UpdatePawnBaseInfo(Pawn pawn) { return true; }
         public bool UpdatePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus) { return true; }
+        public bool ReplacePawnReaction(uint pawnId, CDataPawnReaction pawnReaction, DbConnection? connectionIn = null) { return true; }
         public bool ReplacePawnCraftProgress(CraftProgress craftProgress) { return true; }
         public bool InsertPawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null) { return true; }
         public bool InsertIfNotExistsPawnCraftProgress(CraftProgress craftProgress) { return true; }

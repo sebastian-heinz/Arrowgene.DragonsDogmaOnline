@@ -677,6 +677,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPawnJoinPartyRentedPawnReq.Serializer());
             Create(new C2SPawnReturnRentedPawnReq.Serializer());
             Create(new C2SPawnGetNoraPawnListReq.Serializer());
+            Create(new C2SPawnUpdatePawnReactionListReq.Serializer());
 
             Create(new C2SProfileGetCharacterProfileReq.Serializer());
             Create(new C2SProfileGetMyCharacterProfileReq.Serializer());
@@ -1206,6 +1207,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPawnJoinPartyRentedPawnRes.Serializer());
             Create(new S2CPawnReturnRentedPawnRes.Serializer());
             Create(new S2CPawnGetNoraPawnListRes.Serializer());
+            Create(new S2CPawnUpdatePawnReactionListRes.Serializer());
+            Create(new S2CPawnUpdatePawnReactionListNtc.Serializer());
 
             Create(new S2CProfileGetCharacterProfileRes.Serializer());
             Create(new S2CProfileGetMyCharacterProfileRes.Serializer());

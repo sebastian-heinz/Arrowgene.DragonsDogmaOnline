@@ -94,6 +94,7 @@ namespace Arrowgene.Ddon.Shared.Model
                         .Where(skill => skill != null)
                         .ToList(),
                 ExtendParam = ExtendedParams,
+                PawnReactionList = PawnReactionList,
                 // TODO: Add rest of fileds so full structure can be populated here
             };
         }
