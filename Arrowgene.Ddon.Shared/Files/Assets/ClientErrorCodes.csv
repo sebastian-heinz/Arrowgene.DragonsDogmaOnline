@@ -1137,7 +1137,7 @@ CAPの取得を再試行します。",Failed to acquire CAP. Reopen the online s
 1,11031,,通信エラーが発生しました。,A communication error has occurred.
 1,11032,,通信エラーが発生しました。,A communication error has occurred.
 1,12056,,通信エラーが発生しました。,A communication error has occurred.
-1,14032,,"セーフティ設定中のアイテムが
+1,14032,ERROR_CODE_ITEM_SAFETY_SETTING,"セーフティ設定中のアイテムが
 含まれているためできません。",That action cannot be done with this item because of a safety setting.
 1,15026,,通信エラーが発生しました。,A communication error has occurred.
 1,15027,,通信エラーが発生しました。,A communication error has occurred.
