@@ -509,12 +509,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     Value = 0
                 }
             };
-            // Value taken from pcaps
-            // TODO: Not hardcode it
-            character.FavWarpSlotNum = 10;
-
-            // TODO: Figure out a proper default value and not hardcode it
-            character.MaxBazaarExhibits = 5;
+            character.FavWarpSlotNum = Server.GameSetting.DefaultWarpFavorites;
+            character.MaxBazaarExhibits = Server.GameSetting.DefaultMaxBazaarExhibits;
 
             // Add starting storage items
             foreach (var tuple in Server.AssetRepository.StorageItemAsset)
