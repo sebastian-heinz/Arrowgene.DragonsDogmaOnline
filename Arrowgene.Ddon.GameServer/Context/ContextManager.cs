@@ -8,6 +8,7 @@ using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Permissions;
 
 namespace Arrowgene.Ddon.GameServer.Context
 {
@@ -40,6 +41,14 @@ namespace Arrowgene.Ddon.GameServer.Context
             }
         }
 
+        public static void RemoveContext(PartyGroup partyGroup, ulong uniqueId)
+        {
+            lock (partyGroup.Contexts)
+            {
+                partyGroup.Contexts.Remove(uniqueId);
+            }
+        }
+
         public static Tuple<CDataContextSetBase, CDataContextSetAdditional> SetAndGetContext(PartyGroup partyGroup, ulong uniqueId, Tuple<CDataContextSetBase, CDataContextSetAdditional> context)
         {
             lock (partyGroup.Contexts)
@@ -66,6 +75,16 @@ namespace Arrowgene.Ddon.GameServer.Context
         private static readonly Bitfield LayoutGroup   = new Bitfield(24, 16, "LayoutGroup");
         private static readonly Bitfield LayoutId      = new Bitfield(29, 25, "LayoutId");
         private static readonly Bitfield InnerId       = new Bitfield(34, 30, "InnerId");
+
+        public static bool IsOmUID(ulong value)
+        {
+            return ((byte) Kind.Get(value)) == (byte) UIDKind.OM;
+        }
+
+        public static uint GetStageId(ulong value)
+        {
+            return (uint) StageId.Get(value);
+        }
 
         public static ulong CreateEnemyUID(ulong setId, CDataStageLayoutId stageLayoutId)
         {

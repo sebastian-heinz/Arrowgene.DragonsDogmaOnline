@@ -10,7 +10,7 @@
         "group": 2,
         "minimum_members": 1,
         "playtime": 600,
-        "solo_only": true,
+        "solo_only": false,
         "max_pawns": 3,
         "phase_groups": []
     },
@@ -26,6 +26,14 @@
                     "num": 3
                 }
             ]
+        },
+        {
+            "type": "jp",
+            "amount": 1650
+        },
+        {
+            "type": "exp",
+            "amount": 65000
         }
     ],
     "enemy_groups" : [
@@ -41,6 +49,7 @@
                     "enemy_id": "0x080600",
                     "level": 75,
                     "exp": 0,
+                    "blood_orbs": 750,
                     "is_boss": true
                 }
             ]

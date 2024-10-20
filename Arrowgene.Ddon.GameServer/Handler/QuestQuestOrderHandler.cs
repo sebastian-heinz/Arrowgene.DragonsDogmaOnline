@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model.Quest;
@@ -17,14 +18,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             var res = new S2CQuestQuestOrderRes();
 
-            QuestId questId = (QuestId)request.QuestScheduleId;
-            var quest = client.Party.QuestState.GetQuest(questId);
-            if (client.Party.QuestState.GetActiveQuestIds().Contains(questId))
+            var id = request.QuestScheduleId;
+            var quest = client.Party.QuestState.GetQuest(id);
+            if (client.Party.QuestState.GetActiveQuestScheduleIds().Contains(id))
             {
                 return res;
             }
 
-            client.Party.QuestState.AddNewQuest(questId, 0, false);
+            client.Party.QuestState.AddNewQuest(QuestManager.GetQuestByScheduleId(id), 0);
             res.QuestProcessStateList.AddRange(quest.ToCDataQuestList(0).QuestProcessStateList);
 
             return res;

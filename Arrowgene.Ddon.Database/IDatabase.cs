@@ -9,6 +9,7 @@ using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.BattleContent;
+using Arrowgene.Ddon.Shared.Model.Clan;
 using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.Database
@@ -119,6 +120,7 @@ namespace Arrowgene.Ddon.Database
         bool DeletePawn(uint pawnId);
         bool UpdatePawnBaseInfo(Pawn pawn);
         uint GetPawnOwnerCharacterId(uint pawnId);
+        bool ReplacePawnReaction(uint pawnId, CDataPawnReaction pawnReaction, DbConnection? connectionIn = null);
 
         // Pawn Training Status
         bool ReplacePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
@@ -352,6 +354,7 @@ namespace Arrowgene.Ddon.Database
 
         // Connections
         bool InsertConnection(Connection connection);
+        List<Connection> SelectConnections();
         List<Connection> SelectConnectionsByAccountId(int accountId);
         bool DeleteConnection(int serverId, int accountId);
         bool DeleteConnectionsByAccountId(int accountId);
@@ -432,16 +435,16 @@ namespace Arrowgene.Ddon.Database
         );
 
         // Quest Progress
-        bool InsertQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step, uint variantId=0);
-        bool UpdateQuestProgress(uint characterCommonId, QuestId questId, QuestType questType, uint step);
-        bool RemoveQuestProgress(uint characterCommonId, QuestId questId, QuestType questType);
+        bool InsertQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType, uint step);
+        bool UpdateQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType, uint step);
+        bool RemoveQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType);
         List<QuestProgress> GetQuestProgressByType(uint characterCommonId, QuestType questType);
-        QuestProgress GetQuestProgressById(uint characterCommonId, QuestId questId);
+        QuestProgress GetQuestProgressByScheduleId(uint characterCommonId, uint questScheduleId);
 
         // Quest Priority
-        bool InsertPriorityQuest(uint characterCommonId, QuestId questId);
-        List<QuestId> GetPriorityQuests(uint characterCommonId);
-        bool DeletePriorityQuest(uint characterCommonId, QuestId questId);
+        bool InsertPriorityQuest(uint characterCommonId, uint questScheduleId);
+        List<uint> GetPriorityQuestScheduleIds(uint characterCommonId);
+        bool DeletePriorityQuest(uint characterCommonId, uint questScheduleId);
 
         // System mail
         long InsertSystemMailAttachment(SystemMailAttachment attachment);
@@ -521,7 +524,7 @@ namespace Arrowgene.Ddon.Database
 
         // Bitterblack Maze Progress
         bool InsertBBMCharacterId(uint characterId, uint bbmCharacterId);
-        uint SelectBBMCharacterId(uint characterId);
+        uint SelectBBMCharacterId(uint characterId, DbConnection? connectionIn = null);
         uint SelectBBMNormalCharacterId(uint bbmCharacterId);
         bool InsertBBMProgress(
             uint characterId,
@@ -568,5 +571,18 @@ namespace Arrowgene.Ddon.Database
         bool UpdateBBMContentTreasure(uint characterId, uint contentId, uint amount);
         bool RemoveBBMContentTreasure(uint characterId);
         List<BitterblackMazeTreasure> SelectBBMContentTreasure(uint characterId);
+
+        // Clan
+        bool CreateClan(CDataClanParam clanParam);
+        bool DeleteClan(CDataClanParam clan, DbConnection? connectionIn = null);
+        uint SelectClanMembershipByCharacterId(uint characterId, DbConnection? connectionIn = null);
+        ClanName GetClanNameByClanId(uint clanId, DbConnection? connectionIn = null);
+        CDataClanParam SelectClan(uint clanId, DbConnection? connectionIn = null);
+        bool UpdateClan(CDataClanParam clan, DbConnection? connectionIn = null);
+        bool InsertClanMember(CDataClanMemberInfo memberInfo, uint clanId, DbConnection? connectionIn = null);
+        bool DeleteClanMember(uint characterId, uint clanId, DbConnection? connectionIn = null);
+        List<CDataClanMemberInfo> GetClanMemberList(uint clanId, DbConnection? connectionIn = null);
+        CDataClanMemberInfo GetClanMember(uint characterId, DbConnection? connectionIn = null);
+        bool UpdateClanMember(CDataClanMemberInfo memberInfo, uint clanId, DbConnection? connectionIn = null);
     }
 }

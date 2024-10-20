@@ -1,0 +1,253 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "The Storm That Brought A Tragedy",
+    "quest_id": 20010,
+    "next_quest": 20020,
+    "base_level": 55,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "order_conditions": [
+        {"type": "SoloWithPawns"},
+        {"type": "MainQuestCompleted", "Param1": 30}
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 98000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 12000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 1000
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 11784,
+                    "num": 2
+                },
+                {
+                    "item_id": 11408,
+                    "num": 3
+                },
+                {
+                    "item_id": 11407,
+                    "num": 3
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 335,
+                "group_id": 3
+            },
+            "enemies": [
+                {
+                    "comment": "Infected Hobgoblin",
+                    "enemy_id": "0x010160",
+                    "level": 55,
+                    "exp": 6476,
+                    "named_enemy_params_id": 920
+                },
+                {
+                    "comment": "Infected Hobgoblin",
+                    "enemy_id": "0x010160",
+                    "level": 55,
+                    "exp": 6476,
+                    "named_enemy_params_id": 920
+                },
+                {
+                    "comment": "Infected Hobgoblin",
+                    "enemy_id": "0x010160",
+                    "level": 55,
+                    "exp": 6476,
+                    "named_enemy_params_id": 920
+                },
+                {
+                    "comment": "Infected Hobgoblin",
+                    "enemy_id": "0x010160",
+                    "level": 55,
+                    "exp": 6476,
+                    "named_enemy_params_id": 920
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1
+                    },
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"}
+                    ],
+                    "npc_id": "Joseph",
+                    "message_id": 0
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 1
+                    },
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"}
+                    ],
+                    "event_id": 100
+                },
+                {
+                    "type": "TalkToNpc",
+                    "announce_type": "Accept",
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1
+                    },
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Set", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"}
+                    ],
+                    "npc_id": "Joseph",
+                    "message_id": 14936
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1,
+                        "layer_no": 1
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2762, "comment": "Spawns Gurdolin, Lise and Elliot"},
+                        {"type": "QstLayout", "action": "Set", "value": 2640, "comment": "Spawns Gurdolin, Lise and Elliot"}
+                    ],
+                    "npc_id": "Gurdolin3",
+                    "message_id": 14938
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 1
+                    },
+                    "location": {
+                        "x": -222507,
+                        "y": 35,
+                        "z": -83434
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2641, "comment": "Spawns Fabio, Gerd and Gurdolin in Breya Coast"},
+                        {"type": "QstLayout", "action": "Set", "value": 2977, "comment": "Spawns dead infected monster"}
+                    ]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 1
+                    },
+                    "event_id": 105,
+                    "jump_stage_id": {
+                        "id": 335
+                    },
+                    "start_pos_no": 0
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 335
+                    },
+                    "event_id": 0
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "stage_id": {
+                        "id": 335,
+                        "group_id": 1,
+                        "layer_no": 1
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2642, "comment": "Gurdolin"}
+                    ],
+                    "npc_id": "Gurdolin3",
+                    "message_id": 14960
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 335
+                    },
+                    "location": {
+                        "x": -6405,
+                        "y": 2795,
+                        "z": -11369
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 335
+                    },
+                    "event_id": 10
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "groups": [0]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 335
+                    },
+                    "bgm_stop": true,
+                    "event_id": 15,
+                    "jump_stage_id": {
+                        "id": 3
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "event_id": 110,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"}
+                    ]
+                },
+                {
+                    "type": "TalkToNpc",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1
+                    },
+                    "npc_id": "Joseph",
+                    "message_id": 15007,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Set", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"}
+                    ]
+                }
+            ]
+        }
+    ]
+}

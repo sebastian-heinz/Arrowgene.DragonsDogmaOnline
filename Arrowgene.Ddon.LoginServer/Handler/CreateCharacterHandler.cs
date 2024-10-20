@@ -580,7 +580,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             }
 
             // Insert the first main quest to start the chain
-            if (!Database.InsertQuestProgress(character.CommonId, QuestId.ResolutionsAndOmens, QuestType.Main, 0))
+            // note: We cast the QuestId to a ScheduleId because main quests have the same QuestId and QuestScheduleId
+            if (!Database.InsertQuestProgress(character.CommonId, (uint) QuestId.ResolutionsAndOmens, QuestType.Main, 0))
             {
                 Logger.Error("Failed to seed first MSQ for player");
             }

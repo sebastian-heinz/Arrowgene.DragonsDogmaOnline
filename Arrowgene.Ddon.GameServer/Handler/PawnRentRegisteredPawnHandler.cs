@@ -59,9 +59,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: Store snapshot in DB
             client.Character.RentedPawns.Add(pawn);
 
+            var walletUpdate = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.RiftPoints, request.RentalCost)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_FAIL, "Insufficient Rim for pawn rental.");
+
             return new S2CPawnRentRegisteredPawnRes()
             {
-                TotalRim = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.RiftPoints, request.RentalCost).Value,
+                TotalRim = walletUpdate.Value
             };
         }
     }

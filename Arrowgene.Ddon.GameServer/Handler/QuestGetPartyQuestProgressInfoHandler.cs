@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             EntitySerializer<S2CQuestGetPartyQuestProgressInfoRes> serializer = EntitySerializer.Get<S2CQuestGetPartyQuestProgressInfoRes>();
             S2CQuestGetPartyQuestProgressInfoRes pcap = serializer.Read(GameFull.data_Dump_142);
 
-            foreach (var questId in client.Party.QuestState.GetActiveQuestIds())
+            foreach (var questId in client.Party.QuestState.GetActiveQuestScheduleIds())
             {
                 var quest = client.Party.QuestState.GetQuest(questId);
                 var questState = client.Party.QuestState.GetQuestState(questId);

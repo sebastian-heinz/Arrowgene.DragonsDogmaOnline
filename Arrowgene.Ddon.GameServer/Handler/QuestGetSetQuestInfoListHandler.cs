@@ -65,24 +65,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             var completedQuests = client.Character.CompletedQuests.Values.Where(x => x.QuestType == QuestType.World);
-
-            res.SetQuestList = QuestManager.GetQuestsByType(QuestType.World)
-                .Where(x => QuestManager.IsWorldQuest(x.Key)
-                    && x.Value.QuestAreaId == request.DistributeId)
-                .Select(x =>
-                {
-                    var ret = x.Value.ToCDataSetQuestInfoList();
-                    ret.CompleteNum = (ushort)(client.Party.QuestState.IsCompletedWorldQuest(x.Key) ? 1 : 0); // Completed in the current instance, hides rewards.
-                    ret.IsDiscovery = x.Value.IsDiscoverable || (completedQuests.Where(y => y.QuestId == x.Key).FirstOrDefault()?.ClearCount ?? 0) > 0;
-
-                    if (!ret.IsDiscovery)
-                    {
-                        ret.SelectRewardItemIdList = new List<CDataCommonU32>();
-                    }
-
-                    return ret;
-                })
-                .ToList();
+            foreach (var questScheduleId in client.Party.QuestState.AreaQuests(request.DistributeId))
+            {
+                var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
+                var questInfo = quest.ToCDataSetQuestInfoList();
+                questInfo.CompleteNum = (ushort)(client.Party.QuestState.IsCompletedWorldQuest(quest.QuestId) ? 1 : 0); // Completed in the current instance, hides rewards.
+                questInfo.IsDiscovery = quest.IsDiscoverable || (completedQuests.Where(y => y.QuestId == quest.QuestId).FirstOrDefault()?.ClearCount ?? 0) > 0;
+                res.SetQuestList.Add(questInfo);
+            }
 
             return res;
         }

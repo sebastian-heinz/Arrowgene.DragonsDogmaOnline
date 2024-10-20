@@ -85,7 +85,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     UpdateWalletList = new List<CDataUpdateWalletPoint>()
                     {
-                        Server.WalletManager.RemoveFromWallet(client.Character, request.WalletType, 3) // TODO: Why is the price not passed?
+                        Server.WalletManager.RemoveFromWallet(client.Character, request.WalletType, 3)
+                            ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INTERNAL_ERROR, "Lacking item embody price.") // TODO: Why is the price not passed?
                     }
                 });
 

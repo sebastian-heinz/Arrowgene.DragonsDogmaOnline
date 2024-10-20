@@ -75,14 +75,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             foreach (var walletType in walletTypes)
             {
-                CDataWalletPoint walletPoint = client.Character.WalletPointList.Single(wp => wp.Type == walletType);
-                walletPoint.Value += amount;
-                _server.Database.UpdateWalletPoint(client.Character.CharacterId, walletPoint);
-                
-                CDataUpdateWalletPoint updateWalletPoint = new CDataUpdateWalletPoint();
-                updateWalletPoint.Type = walletPoint.Type;
-                updateWalletPoint.AddPoint = (int) amount;
-                updateWalletPoint.Value = walletPoint.Value;
+                CDataUpdateWalletPoint updateWalletPoint = _server.WalletManager.AddToWallet(client.Character, walletType, amount);
                 updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
             }
             client.Send(updateCharacterItemNtc);

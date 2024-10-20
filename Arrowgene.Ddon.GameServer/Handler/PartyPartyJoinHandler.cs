@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.GameServer.Quests;
@@ -40,19 +41,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
+            var partyLeader = party.Leader.Client.Character;
+
             res.ContentNumber = party.ContentId;
-            if (res.ContentNumber != 0)
+            if (BoardManager.BoardIdIsExm(party.ContentId))
             {
                 Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Contents);
             }
-
-            var characterContentId = Server.ExmManager.GetContentIdForCharacter(client.Character);
-            if (party.ContentId != 0 && characterContentId != party.ContentId)
+            else
             {
-                Server.ExmManager.AddCharacterToContentGroup(party.ContentId, client.Character);
+                Server.CharacterManager.UpdateOnlineStatus(party.Leader.Client, partyLeader, OnlineStatus.PtLeader);
+                if (partyLeader.CharacterId != client.Character.CharacterId)
+                {
+                    Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.PtMember);
+                }
             }
-
-            var partyLeader = party.Leader.Client.Character;
 
             S2CPartyPartyJoinNtc ntc = new S2CPartyPartyJoinNtc();
             ntc.HostCharacterId = party.Host.Client.Character.CharacterId;

@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Mq030260_HopesBitterEnd));
 
-        public Mq030260_HopesBitterEnd() : base(QuestId.HopesBitterEnd, QuestId.HopesBitterEnd, QuestType.Main)
+        public Mq030260_HopesBitterEnd() : base(QuestId.HopesBitterEnd, (uint) QuestId.HopesBitterEnd, QuestType.Main)
         {
         }
 

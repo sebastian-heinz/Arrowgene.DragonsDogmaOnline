@@ -30,8 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ProcessNo = packet.Structure.ProcessNo,
             };
 
-            QuestId questId = (QuestId)packet.Structure.QuestScheduleId;
-            var questState = client.Party.QuestState.GetQuestState(questId);
+            var questState = client.Party.QuestState.GetQuestState(packet.Structure.QuestScheduleId);
 
             Dictionary<uint, CDataDeliveredItem> deliveredItems = new Dictionary<uint, CDataDeliveredItem>();
             List<CDataItemUpdateResult> itemUpdateResults = new List<CDataItemUpdateResult>();

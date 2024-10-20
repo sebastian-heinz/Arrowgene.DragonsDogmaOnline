@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
 using Arrowgene.Ddon.Client;
@@ -219,21 +220,26 @@ namespace Arrowgene.Ddon.Cli.Command
                         foreach (GuiMessage.Entry entry in gmd.Entries)
                         {
                             GmdCsv.Entry matchCsvEntry = null;
+                            List<GmdCsv.Entry> keyMatches = new();
+                            List<GmdCsv.Entry> indexMatches = new();
                             foreach (GmdCsv.Entry csvEntry in gmdCsvEntries)
                             {
                                 if (!string.IsNullOrEmpty(entry.Key) && csvEntry.Key == entry.Key)
                                 {
-                                    // matched based on key
-                                    matchCsvEntry = csvEntry;
-                                    break;
+                                    keyMatches.Add(csvEntry);
+                                    continue;
                                 }
 
                                 if (entry.ReadIndex == csvEntry.ReadIndex)
                                 {
-                                    matchCsvEntry = csvEntry;
-                                    break;
+                                    indexMatches.Add(csvEntry);
+                                    continue;
                                 }
                             }
+
+                            matchCsvEntry = keyMatches.Where(x => x.ReadIndex == entry.ReadIndex).FirstOrDefault()
+                                ?? keyMatches.FirstOrDefault()
+                                ?? indexMatches.FirstOrDefault();
 
                             if (matchCsvEntry == null)
                             {

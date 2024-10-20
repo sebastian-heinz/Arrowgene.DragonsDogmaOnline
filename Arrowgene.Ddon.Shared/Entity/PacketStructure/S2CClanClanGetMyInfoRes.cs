@@ -10,10 +10,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public S2CClanClanGetMyInfoRes()
         {
-            CreateParam = new CDataClanParam();
+            ClanParam = new CDataClanParam();
         }
-
-        public CDataClanParam CreateParam { get; set; }
+        public CDataClanParam ClanParam { get; set; }
         public long LeaveTime { get; set; } 
 
         public class Serializer : PacketEntitySerializer<S2CClanClanGetMyInfoRes>
@@ -21,7 +20,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, S2CClanClanGetMyInfoRes obj)
             {
                 WriteServerResponse(buffer, obj);
-                WriteEntity<CDataClanParam>(buffer, obj.CreateParam);
+                WriteEntity<CDataClanParam>(buffer, obj.ClanParam);
                 WriteInt64(buffer, obj.LeaveTime);
             }
 
@@ -29,7 +28,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 S2CClanClanGetMyInfoRes obj = new S2CClanClanGetMyInfoRes();
                 ReadServerResponse(buffer, obj);
-                obj.CreateParam = ReadEntity<CDataClanParam>(buffer);
+                obj.ClanParam = ReadEntity<CDataClanParam>(buffer);
                 obj.LeaveTime = ReadInt64(buffer);
                 return obj;
             }

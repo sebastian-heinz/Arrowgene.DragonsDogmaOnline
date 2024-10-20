@@ -28,18 +28,35 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return;
             }
 
-            if (party.ContentId != 0)
-            {
-                Server.ExmManager.RemoveCharacterFromContentGroup(client.Character);
-            }
-            Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Online);
-
             party.Leave(client);
             Logger.Info(client, $"Left PartyId:{party.Id}");
 
-            if (party.ContentId != 0 && party.MemberCount() == 0)
+            if (party.ContentId != 0)
             {
-                Server.ExmManager.RemoveGroupForContent(party.ContentId);
+                var data = Server.BoardManager.GetGroupDataForCharacter(client.Character);
+                if (!data.IsInRecreate)
+                {
+                    Server.BoardManager.RemoveCharacterFromGroup(client.Character);
+                    Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Online);
+
+                    if (BoardManager.BoardIdIsExm(party.ContentId))
+                    {
+                        Server.PartyQuestContentManager.RemovePartyMember(party.Id, client.Character);
+                    }
+                }
+                else
+                {
+                    Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.EntryBoard);
+                }
+            }
+            else
+            {
+                Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Online);
+            }
+
+            if (party.MemberCount() == 1 && party.Leader != null && !BoardManager.BoardIdIsExm(party.ContentId))
+            {
+                Server.CharacterManager.UpdateOnlineStatus(party.Leader.Client, party.Leader.Client.Character, OnlineStatus.Online);
             }
 
             S2CPartyPartyLeaveNtc partyLeaveNtc = new S2CPartyPartyLeaveNtc();

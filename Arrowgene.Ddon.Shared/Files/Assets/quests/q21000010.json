@@ -1,0 +1,69 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "A Shopkeeper's Distress",
+    "quest_id": 21000010,
+    "base_level": 55,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+	"area_id": "BloodbaneIsle",	
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 4537
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 562
+        },
+        {
+            "type": "exp",
+            "amount": 1591
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 7942,
+                    "num": 2
+                },
+                {					
+                    "item_id": 8018,
+                    "num": 5
+                },
+                {				
+                    "item_id": 9364,
+                    "num": 3					
+                }
+            ]
+        }
+    ],
+    "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 317
+      },
+      "npc_id": "Gunther",
+      "message_id": 10800
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 2,
+        "group_id": 1
+      },
+      "npc_id": "Sally",
+      "announce_type": "Accept",
+      "items": [
+        {
+          "id": 11508,
+          "amount": 6
+        }
+      ],
+      "message_id": 10737
+    }
+  ]
+}

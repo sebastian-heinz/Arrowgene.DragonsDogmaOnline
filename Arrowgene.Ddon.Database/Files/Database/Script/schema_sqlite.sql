@@ -536,13 +536,12 @@ CREATE TABLE IF NOT EXISTS "ddon_reward_box"
 (
     "uniq_reward_id"       INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     "character_common_id"  INTEGER                           NOT NULL,
-    "quest_id"             INTEGER                           NOT NULL,
+    "quest_schedule_id"    INTEGER                           NOT NULL,
     "num_random_rewards"   INTEGER                           NOT NULL,
     "random_reward0_index" INTEGER                           NOT NULL,
     "random_reward1_index" INTEGER                           NOT NULL,
     "random_reward2_index" INTEGER                           NOT NULL,
     "random_reward3_index" INTEGER                           NOT NULL,
-    "variant_quest_id"     INTEGER                           NOT NULL DEFAULT 0,
     CONSTRAINT "fk_ddon_reward_box_character_common_id" FOREIGN KEY ("character_common_id") REFERENCES "ddon_character_common" ("character_common_id") ON DELETE CASCADE
 );
 
@@ -550,9 +549,8 @@ CREATE TABLE IF NOT EXISTS "ddon_quest_progress"
 (
     "character_common_id" INTEGER NOT NULL,
     "quest_type"          INTEGER NOT NULL,
-    "quest_id"            INTEGER NOT NULL,
+    "quest_schedule_id"   INTEGER NOT NULL,
     "step"                INTEGER NOT NULL,
-    "variant_quest_id"          INTEGER NOT NULL,  
     CONSTRAINT "fk_ddon_quest_progress_character_common_id" FOREIGN KEY ("character_common_id") REFERENCES "ddon_character_common" ("character_common_id") ON DELETE CASCADE
 );
 
@@ -568,7 +566,7 @@ CREATE TABLE IF NOT EXISTS "ddon_completed_quests"
 CREATE TABLE IF NOT EXISTS "ddon_priority_quests"
 (
     "character_common_id" INTEGER NOT NULL,
-    "quest_id"            INTEGER NOT NULL,
+    "quest_schedule_id"   INTEGER NOT NULL,
     CONSTRAINT "fk_ddon_priority_quests_character_common_id" FOREIGN KEY ("character_common_id") REFERENCES "ddon_character_common" ("character_common_id") ON DELETE CASCADE
 );
 
@@ -712,4 +710,43 @@ CREATE TABLE IF NOT EXISTS "ddon_bbm_content_treasure"
     "content_id"   INTEGER             NOT NULL,
     "amount"       INTEGER             NOT NULL,
     CONSTRAINT "fk_ddon_bbm_content_treasure_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_clan_param"
+(
+    "clan_id"               INTEGER PRIMARY KEY NOT NULL,
+    "clan_level"            INTEGER             NOT NULL,
+    "member_num"            INTEGER             NOT NULL,
+    "master_id"             INTEGER             NOT NULL,
+    "system_restriction"    BOOLEAN             NOT NULL,
+    "is_base_release"       BOOLEAN             NOT NULL,
+    "can_base_release"      BOOLEAN             NOT NULL,
+    "total_clan_point"      INTEGER             NOT NULL,
+    "money_clan_point"      INTEGER             NOT NULL,
+    "name"                  TEXT                NOT NULL,
+    "short_name"            TEXT                NOT NULL,
+    "emblem_mark_type"      SMALLINT            NOT NULL,
+    "emblem_base_type"      SMALLINT            NOT NULL,
+    "emblem_main_color"     SMALLINT            NOT NULL,
+    "emblem_sub_color"      SMALLINT            NOT NULL,
+    "motto"                 INTEGER             NOT NULL,
+    "active_days"           INTEGER             NOT NULL,
+    "active_time"           INTEGER             NOT NULL,
+    "characteristic"        INTEGER             NOT NULL,
+    "is_publish"            BOOLEAN             NOT NULL,
+    "comment"               TEXT                NOT NULL,
+    "board_message"         TEXT                NOT NULL,
+    "created"               DATETIME            NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_clan_membership"
+(
+    "character_id"          INTEGER     NOT NULL,
+    "clan_id"               INTEGER     NOT NULL,
+    "rank"                  INTEGER     NOT NULL,
+    "permission"            INTEGER     NOT NULL,
+    "created"               DATETIME    NOT NULL,
+    CONSTRAINT "pk_ddon_clan_membership" PRIMARY KEY ("character_id", "clan_id"),
+    CONSTRAINT "fk_ddon_clan_membership_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE,
+    CONSTRAINT "fk_ddon_clan_membership_clan_id" FOREIGN KEY ("clan_id") REFERENCES "ddon_clan_param" ("clan_id") ON DELETE CASCADE
 );

@@ -5,8 +5,6 @@ namespace Arrowgene.Ddon.Shared.Model
 {
     public class Enemy
     {       
-        private static uint EXP_PER_PP = 7500;
-
         public Enemy()
         {
             NamedEnemyParams = NamedParam.DEFAULT_NAMED_PARAM;
@@ -41,6 +39,7 @@ namespace Arrowgene.Ddon.Shared.Model
             DropsTable = enemy.DropsTable;
             NotifyStrongEnemy = enemy.NotifyStrongEnemy;
             Subgroup = enemy.Subgroup;
+            PPDrop = enemy.PPDrop;
         }
 
         public uint Id { get; set; }
@@ -69,6 +68,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint Experience { get; set; }
         public DropsTable DropsTable { get; set; }
         public bool NotifyStrongEnemy { get; set; }
+        public uint PPDrop { get; set; }
         public uint UINameId { get 
             {
                 return NameMap.GetValueOrDefault(EnemyId);
@@ -83,7 +83,7 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public uint GetDroppedPlayPoints()
         {
-            return GetDroppedExperience()/EXP_PER_PP; //TODO: Totally arbitrary. Figure out how to do this properly.
+            return PPDrop;
         }
 
         public CDataStageLayoutEnemyPresetEnemyInfoClient asCDataStageLayoutEnemyPresetEnemyInfoClient()

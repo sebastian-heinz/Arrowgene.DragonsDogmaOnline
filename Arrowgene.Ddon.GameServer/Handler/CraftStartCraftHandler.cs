@@ -168,7 +168,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // Subtract craft price
                 CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,
                                 Server.CraftManager.CalculateRecipeCost(recipe.Cost, costPerformanceLevels) * request.CreateCount, connection)
-                    ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_SHOP_LACK_MONEY);
+                    ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CRAFT_INTERNAL, "Insufficient gold.");
                 updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
             });
 

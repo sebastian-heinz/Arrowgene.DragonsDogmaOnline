@@ -19,211 +19,135 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
         }
 
-        private static Dictionary<QuestId, Quest> gQuests = new Dictionary<QuestId, Quest>();
-        private static readonly Dictionary<QuestId, Dictionary<uint, Quest>> variantQuests = new();
-        private static readonly HashSet<QuestId> AvailableVariantQuests = new();
-        private static Dictionary<uint, List<Quest>> gTutorialQuests = new Dictionary<uint, List<Quest>>();
-        private static Dictionary<uint, List<Quest>> gPersonalQuests = new Dictionary<uint, List<Quest>>();
-        private static Dictionary<uint, List<Quest>> gLightQuests = new Dictionary<uint, List<Quest>>();
-        private static Dictionary<QuestAreaId, List<Quest>> gWorldQuests = new Dictionary<QuestAreaId, List<Quest>>();
+        /**
+         * @note gQuests contains a map of <QuestScheduleId:QuestId>.
+         * @note gVarientQuests maps QuestId:HashSet<QuestScheduleId>.
+         * 
+         * A QuestScheduleId should always get us back to a unique quest object.
+         * A QuestId can return us a list of related QuestScheduleIds which all use the same QuestId.
+         */
+        private static Dictionary<uint, Quest> gQuests = new Dictionary<uint, Quest>();
+        private static readonly Dictionary<QuestId, List<Quest>> gVariantQuests = new();
 
-        public static HashSet<QuestId> GetAllVariantQuestIds()
-        {
-            return AvailableVariantQuests;
-        }
+        private static Dictionary<uint, HashSet<uint>> gTutorialQuests = new Dictionary<uint, HashSet<uint>>();
+        private static Dictionary<QuestAreaId, HashSet<QuestId>> gWorldQuests = new Dictionary<QuestAreaId, HashSet<QuestId>>();
 
         public static void LoadQuests(AssetRepository assetRepository)
         {
-            // TODO: Quests should probably operate on the distribuition ID instead of quest id so the global list can still contain all quests
-            // TODO: Then quests can be distributed to different lists for faster lookup (like world by area id or tutorial by stageno)
-
-            // Load Quests defined in files
+            // TODO: Quests should probably operate on the QuestScheduleID instead of QuestId so the global list can still contain all quests
+            // TODO: Then quests can be distributed to different lists for faster lookup (like world by area id or personal by stageno)
             foreach (var questAsset in assetRepository.QuestAssets.Quests)
             {
-                // Separate all variant quests to its own dictionary for separate handling.
-                // This also ensures these quests are not in gQuests before processing.
-                if (questAsset.VariantId != 0 && !gQuests.ContainsKey(questAsset.QuestId))
+                gQuests[questAsset.QuestScheduleId] = GenericQuest.FromAsset(questAsset);
+
+                var quest = gQuests[questAsset.QuestScheduleId];
+                if (!quest.Enabled)
                 {
-                    Quest alternateQuest = GenericQuest.FromAsset(questAsset);
-                    alternateQuest.IsVariantQuest = true;
-                    alternateQuest.VariantId = (uint)questAsset.VariantId;
-
-                    // Add an entry to the dictionary if it doesn't exist then add the variant id and quest
-                    if (!variantQuests.ContainsKey(questAsset.QuestId))
-                    {
-                        variantQuests[alternateQuest.QuestId] = new Dictionary<uint, Quest>();
-                        variantQuests[questAsset.QuestId].Add(alternateQuest.VariantId, alternateQuest);
-                        continue;
-                    }
-
-                    // Add quest id and quest
-                    variantQuests[questAsset.QuestId].Add(alternateQuest.VariantId, alternateQuest);
+                    continue;
                 }
-                else
-                {
-                    gQuests[questAsset.QuestId] = GenericQuest.FromAsset(questAsset);
 
-                    var quest = gQuests[questAsset.QuestId];
-                    if (quest.QuestType == QuestType.Tutorial)
-                    {
-                        uint stageNo = (uint)StageManager.ConvertIdToStageNo(quest.StageId);
-                        if (!gTutorialQuests.ContainsKey(stageNo))
-                        {
-                            gTutorialQuests[stageNo] = new List<Quest>();
-                        }
-                        gTutorialQuests[stageNo].Add(quest);
-                    }
-                    else if (quest.QuestType == QuestType.World)
-                    {
-                        if (!gWorldQuests.ContainsKey(quest.QuestAreaId))
-                        {
-                            gWorldQuests[quest.QuestAreaId] = new List<Quest>();
-                        }
-                        gWorldQuests[quest.QuestAreaId].Add(quest);
-                    }
-                    else if (quest.QuestType == QuestType.Light)
-                    {
-                        uint stageNo = (uint)StageManager.ConvertIdToStageNo(quest.StageId);
-                        if (!gLightQuests.ContainsKey(stageNo))
-                        {
-                            gLightQuests[stageNo] = new List<Quest>();
-                        }
-                        gLightQuests[stageNo].Add(quest);
-                    }
+                if (!gVariantQuests.ContainsKey(quest.QuestId))
+                {
+                    gVariantQuests[quest.QuestId] = new List<Quest>();
                 }
-            }
+                gVariantQuests[quest.QuestId].Add(quest);
 
-            var variantQuestKeys = variantQuests.Keys.ToArray();
-            for (int i = 0; i < variantQuestKeys.Length; i++)
-            {
-                // Store of all variant ids under the generic quest id
-                HashSet<uint> allVariantQuestIds = new();
-
-                // Create a reliable source of all variant quests, also checks if they are unique
-                AvailableVariantQuests.Add(variantQuestKeys[i]);
-
-                Logger.Info($"Quest Group Listed: {variantQuestKeys[i]}");
-                var variantIds = variantQuests[variantQuestKeys[i]].Keys.ToArray();
-
-                for (int j = 0; j < variantIds.Length; j++)
+                if (quest.QuestType == QuestType.Tutorial)
                 {
-                    Logger.Info($"Variant entry: {variantIds[j]}");
-
-                    // Ensure variant ids are unique.
-                    try
+                    uint stageNo = (uint)StageManager.ConvertIdToStageNo(quest.StageId);
+                    if (!gTutorialQuests.ContainsKey(stageNo))
                     {
-                        allVariantQuestIds.Add(variantIds[j]);
+                        gTutorialQuests[stageNo] = new HashSet<uint>();
                     }
-                    catch (Exception)
+                    gTutorialQuests[stageNo].Add(quest.QuestScheduleId);
+                }
+                else if (quest.QuestType == QuestType.World)
+                {
+                    if (!gWorldQuests.ContainsKey(quest.QuestAreaId))
                     {
-                        Logger.Error($"Multiple quests are using variant id {variantIds[j]}. Please ensure all are unique.");
-                        throw;
+                        gWorldQuests[quest.QuestAreaId] = new HashSet<QuestId>();
                     }
+                    gWorldQuests[quest.QuestAreaId].Add(quest.QuestId);
                 }
             }
         }
 
-        /**
-         * @brief Should only be called when loading additional quests from file.
-         */
-        public static void AddQuest(Quest quest)
+        public static HashSet<uint> GetQuestsByType(QuestType type)
         {
-            gQuests[quest.QuestId] = quest;
-        }
-
-        public static List<KeyValuePair<QuestId, Quest>> GetQuestsByType(QuestType type)
-        {
-            List<KeyValuePair<QuestId, Quest>> results = new List<KeyValuePair<QuestId, Quest>>();
+            HashSet<uint> results = new HashSet<uint>();
 
             // TODO: We probably need to optimize this as more quests are added
-            foreach (var quest in gQuests)
+            foreach (var (scheduleId, quest) in gQuests)
             {
-                if (quest.Value.QuestType == type)
-                {
-                    results.Add(quest);
-                }
-            }
-
-            // Go over the variant quest collection, get a single quest per questId regardless of the variant id
-
-            foreach (var quests in variantQuests)
-            {
-                QuestId questId = quests.Key;
-                Quest quest = variantQuests[questId].First().Value;
-
                 if (quest.QuestType == type)
                 {
-                    results.Add(new KeyValuePair<QuestId, Quest>(questId, quest));
+                    results.Add(quest.QuestScheduleId);
                 }
             }
 
             return results;
         }
 
-        public static List<Quest> GetWorldQuestsByAreaId(QuestAreaId areaId)
+        public static HashSet<QuestId> GetWorldQuestIdsByAreaId(QuestAreaId areaId)
         {
             if (!gWorldQuests.ContainsKey(areaId))
             {
-                return new List<Quest>();
+                return new HashSet<QuestId>();
             }
 
             return gWorldQuests[areaId];
         }
 
-        public static List<QuestId> GetWorldQuestIdsByAreaId(QuestAreaId areaId)
+        public static Quest GetQuestByBoardId(ulong boardId)
         {
-            if (!gWorldQuests.ContainsKey(areaId))
-            {
-                return new List<QuestId>();
-            }
-
-            return gWorldQuests[areaId].Select(x => x.QuestId).ToList();
+            uint questId = BoardManager.GetQuestIdFromBoardId(boardId);
+            return GetQuestByScheduleId(questId);
         }
 
-        public static List<Quest> GetTutorialQuestsByStageNo(uint stageNo)
+        public static HashSet<uint> GetTutorialQuestsByStageNo(uint stageNo)
         {
             if (!gTutorialQuests.ContainsKey(stageNo))
             {
-                return new List<Quest>();
+                return new HashSet<uint>();
             }
 
             return gTutorialQuests[stageNo];
         }
 
-        public static uint GetRandomVariantId(QuestId baseQuest)
+        public static bool IsVariantQuest(QuestId baseQuestId)
         {
-            // Get random index value to choose a quest version.
-            int randomIndex = Random.Shared.Next(variantQuests[baseQuest].Count);
-
-            uint variantId = variantQuests[baseQuest].ElementAt(randomIndex).Key;
-
-            return variantId;
+            return gVariantQuests.ContainsKey(baseQuestId);
         }
 
-        public static Quest GetRewardQuest(QuestId questId, uint variantId)
+        public static Quest GetQuestByScheduleId(uint questScheduleId)
         {
-            return GetQuest(questId, variantId);
-        }
-
-        public static Quest GetQuest(QuestId questId, uint variantId = 0)
-        {
-            // If a variant is specified, return the variant quest.
-            if (variantId != 0)
-            {
-                return variantQuests[questId][variantId];
-            }
-
-            if (!gQuests.ContainsKey(questId))
+            if (!gQuests.ContainsKey(questScheduleId))
             {
                 return null;
             }
 
-            return gQuests[questId];
+            return gQuests[questScheduleId];
         }
 
-        public static Quest GetQuest(uint questId)
+        public static List<Quest> GetQuestsByQuestId(QuestId questId)
         {
-            return GetQuest((QuestId)questId);
+            if (gVariantQuests.ContainsKey(questId))
+            {
+                return gVariantQuests[questId];
+            }
+            return new List<Quest>();
+        }
+
+        public static Quest RollQuestForQuestId(QuestId questId)
+        {
+            var quests = GetQuestsByQuestId(questId);
+            return quests[Random.Shared.Next(0, quests.Count)];
+        }
+
+        public static bool IsQuestEnabled(uint questScheduleId)
+        {
+            var quest = GetQuestByScheduleId(questScheduleId);
+            return (quest == null) ? false : quest.Enabled;
         }
 
         public class LayoutFlag

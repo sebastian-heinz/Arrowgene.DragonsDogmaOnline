@@ -1,4 +1,6 @@
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Context;
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -6,7 +8,6 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -60,8 +61,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public readonly QuestId QuestId;
         public readonly bool IsDiscoverable;
         public readonly QuestType QuestType;
-        public readonly QuestId QuestScheduleId;
+        public readonly uint QuestScheduleId;
         public QuestAreaId QuestAreaId { get; set; }
+        public uint QuestOrderBackgroundImage { get; protected set; }
         public StageId StageId {  get; set; }
         public uint NewsImageId { get; set; }
         public uint BaseLevel { get; set; }
@@ -84,10 +86,10 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public CDataLightQuestDetail LightQuestDetail { get; protected set; }
         public Dictionary<uint, QuestEnemyGroup> EnemyGroups { get; set; }
         public HashSet<StageId> UniqueEnemyGroups { get; protected set; }
-        public bool IsVariantQuest { get; set; }
-        public uint VariantId { get; set; }
+        public List<QuestServerAction> ServerActions { get; protected set; }
+        public bool Enabled { get; protected set; }
 
-        public Quest(QuestId questId, QuestId questScheduleId, QuestType questType, bool isDiscoverable = false)
+        public Quest(QuestId questId, uint questScheduleId, QuestType questType, bool isDiscoverable = false)
         {
             QuestId = questId;
             QuestType = questType;
@@ -108,9 +110,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
             QuestLayoutFlags = new List<QuestLayoutFlag>();
             EnemyGroups = new Dictionary<uint, QuestEnemyGroup>();
             UniqueEnemyGroups = new HashSet<StageId>();
-            IsVariantQuest = false;
-            VariantId = 0;
             MissionParams = new QuestMissionParams();
+            ServerActions = new List<QuestServerAction>();
             Processes = new List<QuestProcess>();
             LightQuestDetail = new CDataLightQuestDetail();
         }
@@ -227,7 +228,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             var quest = new CDataQuestList()
             {
                 QuestId = (uint)QuestId,
-                QuestScheduleId = (uint)QuestScheduleId,
+                QuestScheduleId = QuestScheduleId,
                 BaseLevel = BaseLevel,
                 ContentJoinItemRank = MinimumItemRank,
                 IsClientOrder = step > 0,
@@ -236,6 +237,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 FixedRewardItemList = GetQuestFixedRewards(),
                 FixedRewardSelectItemList = GetQuestSelectableRewards(),
                 QuestOrderConditionParamList = GetQuestOrderConditions(),
+                QuestEnemyInfoList = EnemyGroups.Values.SelectMany(group => group.Enemies.Select(enemy => new CDataQuestEnemyInfo()
+                {
+                    GroupId = enemy.UINameId,
+                    Unk0 = 0, // Seemingly always 0 in the pcaps
+                    Lv = enemy.Lv,
+                    IsPartyRecommend = enemy.IsBossGauge
+                }))
+                .ToList()
             };
 
             quest.QuestProcessStateList = GetProcessState(step, out uint announceNoCount);
@@ -265,6 +274,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 QuestId = (uint)QuestId,
                 QuestScheduleId = (uint)QuestScheduleId,
                 BaseLevel = BaseLevel,
+                AreaId = (uint) QuestAreaId,
                 ContentJoinItemRank = MinimumItemRank,
                 IsClientOrder = step > 0,
                 IsEnable = true,
@@ -274,6 +284,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 FixedRewardItem = GetQuestFixedRewards(),
                 FixedRewardSelectItem = GetQuestSelectableRewards(),
                 QuestOrderConditionParam = GetQuestOrderConditions(),
+                QuestEnemyInfoList = EnemyGroups.Values.SelectMany(group => group.Enemies.Select(enemy => new CDataQuestEnemyInfo()
+                {
+                    GroupId = enemy.UINameId,
+                    Unk0 = 0, // Seemingly always 0 in the pcaps
+                    Lv = enemy.Lv,
+                    IsPartyRecommend = enemy.IsBossGauge
+                }))
+                .ToList()
             };
 
             quest.QuestProcessStateList = GetProcessState(step, out uint announceNoCount);
@@ -330,8 +348,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             var result = new CDataPriorityQuest()
             {
                 QuestId = (uint) QuestId,
-                QuestScheduleId = (uint) QuestScheduleId,
-
+                QuestScheduleId = QuestScheduleId,
             };
 
             for (uint i = 0; i < announceNoCount; i++)
@@ -406,19 +423,60 @@ namespace Arrowgene.Ddon.GameServer.Quests
             result.Restrictions.Unk5List.Add(new CDataCommonU8() { Value = 2 });
 #endif
 
+            HashSet<uint> items = new HashSet<uint>();
+            List<QuestRewardItem> rewards = this.ItemRewards.Concat(this.SelectableRewards).ToList();
             // Rewards for EXM seem to show up independently
-            foreach (var reward in result.Param.FixedRewardItemList)
+            foreach (var rewardData in rewards)
             {
-                for (var i = 0; i < reward.Num; i++)
+                foreach (var reward in rewardData.LootPool)
                 {
-                    result.RewardItemDetailList.Add(new CDataRewardItemDetail()
+                    if (rewardData.RewardType == QuestRewardType.Fixed || rewardData.RewardType == QuestRewardType.Select)
                     {
-                        ItemId = reward.ItemId,
-                        Num = 1,
-                        Type = 12
-                    });
+                        result.RewardItemDetailList.Add(new CDataRewardItemDetail()
+                        {
+                            ItemId = reward.ItemId,
+                            Num = reward.Num,
+                            Type = 11
+                        });
+                    }
+                    else if (rewardData.RewardType == QuestRewardType.Random && !items.Contains(reward.ItemId))
+                    {
+                        items.Add(reward.ItemId);
+                        result.RewardItemDetailList.Add(new CDataRewardItemDetail()
+                        {
+                            ItemId = reward.ItemId,
+                            Num = 1,
+                            Type = 12
+                        });
+                    }
                 }
             }
+
+            return result;
+        }
+
+        public CDataQuestMobHuntQuestInfo ToCDataQuestMobHuntQuestInfo(uint step)
+        {
+            var result = new CDataQuestMobHuntQuestInfo()
+            {
+                QuestList = ToCDataQuestList(step),
+                QuestOrderBackgroundImage = QuestOrderBackgroundImage,
+            };
+
+            return result;
+        }
+
+        public CDataMobHuntQuestOrderList ToCDataMobHuntQuestOrderList(uint step)
+        {
+            var result = new CDataMobHuntQuestOrderList()
+            {
+                Param = ToCDataQuestOrderList(step),
+                Detail = new CDataMobHuntQuestDetail()
+                {
+                    QuestOrderBackgroundImage = QuestOrderBackgroundImage,
+                    Unk0 = 0
+                }
+            };
 
             return result;
         }
@@ -466,6 +524,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 QuestId = (uint) QuestId,
                 QuestScheudleId = (uint) QuestScheduleId,
                 BaseLevel = BaseLevel,
+                StartPos = MissionParams.StartPos,
                 QuestEnemyInfoList = EnemyGroups.Values.SelectMany(group => group.Enemies.Select(enemy => new CDataQuestEnemyInfo()
                 {
                     GroupId = enemy.UINameId,
@@ -511,6 +570,13 @@ namespace Arrowgene.Ddon.GameServer.Quests
             {
                 var enemyGroup = EnemyGroups[groupId];
 
+                // Cleanup old contexts if we are replacing monsters with new ones
+                foreach (var enemy in enemyGroup.Enemies)
+                {
+                    var uid = ContextManager.CreateEnemyUID(enemy.Index, enemyGroup.StageId.ToStageLayoutId());
+                    ContextManager.RemoveContext(client.Party, uid);
+                }
+
                 S2CInstanceEnemyGroupResetNtc resetNtc = new S2CInstanceEnemyGroupResetNtc()
                 {
                     LayoutId = enemyGroup.StageId.ToStageLayoutId()
@@ -527,6 +593,13 @@ namespace Arrowgene.Ddon.GameServer.Quests
             {
                 if (group.StageId.Id == stageId.Id)
                 {
+                    // Cleanup old contexts if we are replacing monsters with new ones
+                    foreach (var enemy in group.Enemies)
+                    {
+                        var uid = ContextManager.CreateEnemyUID(enemy.Index, group.StageId.ToStageLayoutId());
+                        ContextManager.RemoveContext(client.Party, uid);
+                    }
+
                     S2CInstanceEnemyGroupResetNtc resetNtc = new S2CInstanceEnemyGroupResetNtc()
                     {
                         LayoutId = group.StageId.ToStageLayoutId()
@@ -542,12 +615,13 @@ namespace Arrowgene.Ddon.GameServer.Quests
         {
             ResetEnemiesForStage(client, stageId);
 
-            // client.Party.SendToAll(new S2C_63_11_16_NTC() { StageNo = res.StageNo });
-            // TODO: Figure out what these do
-            // client.Party.SendToAll(new S2CSituationDataStartNtc() { Unk0 = 1 });
 #if false
-                var pcap2 = new S2CSituationDataUpdateObjectivesNtc.Serializer().Read(pcap2_data);
-                client.Party.SendToAll(pcap2);
+            // TODO: Figure out what these do
+            client.Party.SendToAll(new S2C_63_0_16_NTC() { Unk0 = 2 });
+            client.Party.SendToAll(new S2C_63_11_16_NTC() { StageNo = (uint) StageManager.ConvertIdToStageNo(stageId) });
+            // S2C_63_2_16_NTC appears to have objective data inside of it
+            var pcap2 = new S2CSituationDataUpdateObjectivesNtc.Serializer().Read(pcap2_data);
+            client.Party.SendToAll(pcap2);
 #endif
         }
 
@@ -573,7 +647,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         public virtual void PopulateStartingEnemyData(QuestStateManager partyQuestState)
         {
-            var questState = partyQuestState.GetQuestState(this.QuestId);
+            var questState = partyQuestState.GetQuestState(this.QuestScheduleId);
             foreach (var processState in questState.ProcessState.Values)
             {
                 if (processState.ProcessNo >= Processes.Count)
@@ -588,10 +662,36 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     continue;
                 }
 
-                foreach (var groupId in process.Blocks[(int)processState.BlockNo - 1].EnemyGroupIds)
+                foreach (var groupId in process.Blocks[processState.BlockNo - 1].EnemyGroupIds)
                 {
                     var enemyGroup = EnemyGroups[groupId];
                     partyQuestState.SetInstanceEnemies(this, enemyGroup.StageId, (ushort)enemyGroup.SubGroupId, enemyGroup.CreateNewInstance());
+                }
+            }
+        }
+
+        public virtual void HandleOmInstantValue(GameClient client, ulong key, uint value)
+        {
+            // Remove the valid bit (that way json doesn't need to provide it)
+            key = key & 0x7fffffffffffffff;
+            foreach (var action in ServerActions)
+            {
+                if (action.Key == key && action.Value == value && action.ActionType == QuestSeverActionType.OmSetInstantValue)
+                {
+                    switch (action.OmInstantValueAction)
+                    {
+                        case OmInstantValueAction.ResetGroup:
+                            client.Party.SendToAll(new S2CInstanceEnemyGroupResetNtc()
+                            {
+                                LayoutId = new CDataStageLayoutId()
+                                {
+                                    StageId = action.StageId.Id,
+                                    GroupId = action.StageId.GroupId,
+                                    LayerNo = action.StageId.LayerNo
+                                }
+                            });
+                            break;
+                    }
                 }
             }
         }
@@ -647,7 +747,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         {
             List<CDataRewardBoxItem> results = new List<CDataRewardBoxItem>();
 
-            Quest quest = QuestManager.GetRewardQuest(rewards.QuestId, rewards.VariantId);
+            Quest quest = QuestManager.GetQuestByScheduleId(rewards.QuestScheduleId);
             if (quest == null)
             {
                 return new List<CDataRewardBoxItem>();
@@ -683,8 +783,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         {
             QuestBoxRewards obj = new QuestBoxRewards()
             {
-                QuestId = QuestId,
-                VariantId = VariantId
+                QuestScheduleId = QuestScheduleId
             };
 
             foreach (var reward in ItemRewards)

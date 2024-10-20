@@ -29,13 +29,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.GpCompletePriceGp = 1;
 
             res.LightQuestList = new List<CDataLightQuestList>();
-            var quests = QuestManager.GetQuestsByType(QuestType.Light).Where(x => x.Value.LightQuestDetail.BaseAreaPoint == request.BaseId);
+            var quests = QuestManager.GetQuestsByType(QuestType.Light).Where(x => QuestManager.GetQuestByScheduleId(x).LightQuestDetail.BaseAreaPoint == request.BaseId);
             var completionStats = Server.Database.GetCompletedQuestsByType(client.Character.CommonId, QuestType.Light).ToDictionary(x => x.QuestId, x => x.ClearCount);
-            foreach (var quest in quests)
+            foreach (var questScheduleId in quests)
             {
-                var lightQuest = quest.Value.ToCDataLightQuestList(1); // Step 1 has the necessary info that the UI is looking for, not step 0.
-                lightQuest.Detail.ClearNum = completionStats.GetValueOrDefault(quest.Key);
-                res.LightQuestList.Add(lightQuest);
+                var lightQuest = QuestManager.GetQuestByScheduleId(questScheduleId);
+                var data = lightQuest.ToCDataLightQuestList(1); // Step 1 has the necessary info that the UI is looking for, not step 0.
+                data.Detail.ClearNum = completionStats.GetValueOrDefault(lightQuest.QuestId);
+                res.LightQuestList.Add(data);
             }
 
             return res;

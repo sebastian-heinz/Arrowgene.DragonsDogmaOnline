@@ -45,6 +45,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (StageManager.IsSafeArea(client.Character.Stage))
             {
                 res.IsBase = true;
+                client.Character.LastSafeStageId = packet.StageId;
 
                 bool shouldReset = true;
                 // Check to see if all player members are in a safe area.
@@ -69,12 +70,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     client.Party.ResetInstance();
                     client.Party.SendToAll(new S2CInstanceAreaResetNtc());
+                    // Next two packets seem to be send when transitioning to a safe area in all pcaps
+                    // not sure what they do though
+                    client.Party.SendToAll(new S2C_SEASON_62_38_16_NTC());
+                    // client.Party.SendToAll(new S2C_SEASON_62_39_16_NTC) ??? Does this go to all, it has a character ID
                 }
             }
 
-            if (client.Party.ContentInProgress)
+            if (client.Party.ExmInProgress && BoardManager.BoardIdIsExm(client.Party.ContentId))
             {
-                var quest = Server.ExmManager.GetQuestForContent(client.Party.ContentId);
+                var quest = QuestManager.GetQuestByBoardId(client.Party.ContentId);
                 if (quest != null)
                 {
                     quest.HandleAreaChange(client, client.Character.Stage);

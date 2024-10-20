@@ -87,9 +87,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Lantern start NTC
             // TODO: Figure out all item IDs that do lantern stuff
             if (item.ItemId == 55)
-            { 
-                client.Send(SelectedDump.lantern2_27_16); 
-                // TODO: Send S2C_CHARACTER_START_LANTERN_OTHER_NOTICE to other party members?
+            {
+                // client.Send(SelectedDump.lantern2_27_16);
+                // TODO: Start a timer to estinguish after LaternBurnTimeInSeconds expires
+                client.Character.IsLanternLit = true;
+                client.Send(new S2CCharacterStartLanternNtc() { RemainTime = _Server.Setting.GameLogicSetting.LaternBurnTimeInSeconds});
+                // client.Party.SendToAllExcept(new S2CCharacterStartLanternOtherNtc() { CharacterId = client.Character.CharacterId }, client);
             }
         }
     }

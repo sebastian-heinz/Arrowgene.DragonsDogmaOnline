@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private readonly int MAX_RANDOM_REWARDS = 4;
         protected static readonly string[] RewardBoxFields = new string[]
         {
-            /* uniq_reward_id */  "character_common_id", "quest_id", "num_random_rewards", "random_reward0_index", "random_reward1_index", "random_reward2_index", "random_reward3_index", "variant_quest_id"
+            /* uniq_reward_id */  "character_common_id", "quest_schedule_id", "num_random_rewards", "random_reward0_index", "random_reward1_index", "random_reward2_index", "random_reward3_index"
         };
 
         private readonly string SqlInsertRewardBoxItems = $"INSERT INTO \"ddon_reward_box\" ({BuildQueryField(RewardBoxFields)}) VALUES ({BuildQueryInsert(RewardBoxFields)});";
@@ -37,9 +37,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return ExecuteNonQuery(conn, SqlInsertRewardBoxItems, command =>
             {
                 AddParameter(command, "character_common_id", commonId);
-                AddParameter(command, "quest_id", (uint) rewards.QuestId);
+                AddParameter(command, "quest_schedule_id", rewards.QuestScheduleId);
                 AddParameter(command, "num_random_rewards", rewards.NumRandomRewards);
-                AddParameter(command, "variant_quest_id", rewards.VariantId);
 
                 int i;
                 for(i = 0; i < rewards.NumRandomRewards; i++)
@@ -101,9 +100,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             QuestBoxRewards obj = new QuestBoxRewards();
             obj.UniqRewardId = GetUInt32(reader, "uniq_reward_id");
             obj.CharacterCommonId = GetUInt32(reader, "character_common_id");
-            obj.QuestId = (QuestId) GetUInt32(reader, "quest_id");
             obj.NumRandomRewards = GetInt32(reader, "num_random_rewards");
-            obj.VariantId = GetUInt32(reader, "variant_quest_id");
+            obj.QuestScheduleId = GetUInt32(reader, "quest_schedule_id");
 
             for (int i = 0; i < obj.NumRandomRewards; i++)
             {

@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System;
@@ -22,23 +23,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        private async void QuestTimeoutNotification(CancellationToken token)
-        {
-
-        }
-
         public override S2CQuestPlayStartTimerRes Handle(GameClient client, C2SQuestPlayStartTimerReq request)
         {
-            var contentId = Server.ExmManager.GetContentIdForCharacter(client.Character);
-            var quest = Server.ExmManager.GetQuestForContent(contentId);
+            if (!BoardManager.BoardIdIsExm(client.Party.ContentId))
+            {
+                // See on the MSQ for the Spirit Dragon, this handler gets called
+                // even though there is no timer present in the quest
+                return new S2CQuestPlayStartTimerRes();
+            }
 
+            var quest = QuestManager.GetQuestByBoardId(client.Party.ContentId);
             var ntc = new S2CQuestPlayStartTimerNtc()
             {
                 PlayEndDateTime = (ulong)(DateTimeOffset.UtcNow.ToUnixTimeSeconds() + quest.MissionParams.PlaytimeInSeconds) 
             };
             client.Party.SendToAll(ntc);
 
-            Server.ExmManager.StartTimer(contentId, client, quest.MissionParams.PlaytimeInSeconds);
+            Server.PartyQuestContentManager.StartTimer(client.Party.Id, client, quest.MissionParams.PlaytimeInSeconds);
 
             return new S2CQuestPlayStartTimerRes();
         }

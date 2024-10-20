@@ -34,19 +34,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ContentWithTargetPath Remove="files\database\script\abilitypresets_migration_sqlite.sql" />
-        <ContentWithTargetPath Remove="files\database\script\bitterblack_maze_migration.sql" />
-        <ContentWithTargetPath Remove="files\database\script\crest_migration.sql" />
-        <ContentWithTargetPath Remove="Files\Database\Script\equippoints_migration.sql" />
-        <ContentWithTargetPath Remove="Files\Database\Script\equip_migration_sqlite.sql" />
-        <ContentWithTargetPath Remove="Files\Database\Script\migration_quest_variant.sql" />
-        <ContentWithTargetPath Remove="Files\Database\Script\migration_rented_pawn.sql" />
-        <ContentWithTargetPath Remove="Files\Database\Script\pawncraftingdata_migration.sql" />
-        <ContentWithTargetPath Remove="Files\Database\Script\schema_sqlite.sql" />
-        <ContentWithTargetPath Remove="files\database\script\uid_migration.sql" />
-        <ContentWithTargetPath Remove="files\database\script\migration_pp_sqlite.sql" />
-        <ContentWithTargetPath Remove="files\database\script\migration_mail_sqlite.sql" />
-        <ContentWithTargetPath Remove="files\database\script\migration_stamp_sqlite.sql" />
+      <ContentWithTargetPath Remove="files\database\script\migration_quest_variant_refactor.sql" />
     </ItemGroup>
 
     <ItemGroup>
@@ -54,54 +42,9 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Update="Files\Database\Script\abilitypresets_migration_sqlite.sql">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Update="Files\Database\Script\binarydata_migration.sql">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Update="Files\Database\Script\bitterblack_maze_migration.sql">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Update="Files\Database\Script\crest_migration.sql">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Update="Files\Database\Script\equippoints_migration.sql">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Update="Files\Database\Script\equip_migration_sqlite.sql">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Update="Files\Database\Script\migration_rented_pawn.sql">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Update="Files\Database\Script\pawncraftingdata_migration.sql">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Update="Files\Database\Script\schema_sqlite.sql">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Update="Files\Database\Script\uid_migration.sql">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Update="Files\Database\Script\migration_pp_sqlite.sql">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Update="Files\Database\Script\migration_mail_sqlite.sql">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Update="Files\Database\Script\migration_stamp_sqlite.sql">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Update="Files\Database\Script\AddMissingOnDeleteCascades_migration.sql">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Update="Files\Database\Script\AddMissingOnDeleteCascades_migration.sql">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
-        <None Update="Files\Database\Script\migration_quest_variant.sql">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </None>
+      <None Update="Files\Database\Script\migration_quest_variant_refactor.sql">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 
 </Project>

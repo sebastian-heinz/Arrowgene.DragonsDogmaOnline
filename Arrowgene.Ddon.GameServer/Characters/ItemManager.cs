@@ -180,22 +180,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
         // old = 'プレイポイント'
         // new = 'Play Point'
 
-        public void GatherItem(DdonServer<GameClient> server, Character character, S2CItemUpdateCharacterItemNtc ntc, InstancedGatheringItem gatheringItem, uint pickedGatherItems, DbConnection? connectionIn = null)
+        public void GatherItem(DdonGameServer server, Character character, S2CItemUpdateCharacterItemNtc ntc, InstancedGatheringItem gatheringItem, uint pickedGatherItems, DbConnection? connectionIn = null)
         {
             if(ItemIdWalletTypeAndQuantity.ContainsKey(gatheringItem.ItemId)) {
                 var walletTypeAndQuantity = ItemIdWalletTypeAndQuantity[gatheringItem.ItemId];
                 uint totalQuantityToAdd = walletTypeAndQuantity.Quantity * gatheringItem.ItemNum;
 
-                CDataWalletPoint characterWalletPoint = character.WalletPointList.Where(wp => wp.Type == walletTypeAndQuantity.Type).First();
-                characterWalletPoint.Value += totalQuantityToAdd; // TODO: Cap to maximum for that wallet
-
-                server.Database.UpdateWalletPoint(character.CharacterId, characterWalletPoint, connectionIn);
-
-                CDataUpdateWalletPoint walletUpdate = new CDataUpdateWalletPoint();
-                walletUpdate.Type = walletTypeAndQuantity.Type;
-                walletUpdate.AddPoint = (int) totalQuantityToAdd;
-                walletUpdate.Value = characterWalletPoint.Value;
-                ntc.UpdateWalletList.Add(walletUpdate);
+                ntc.UpdateWalletList.Add(
+                    server.WalletManager.AddToWallet(character, walletTypeAndQuantity.Type, totalQuantityToAdd, 0, connectionIn
+                ));
 
                 gatheringItem.ItemNum -= pickedGatherItems;
             } else {

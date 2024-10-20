@@ -28,9 +28,9 @@ namespace Arrowgene.Ddon.GameServer.Party
         private PlayerPartyMember _leader;
         private PlayerPartyMember _host;
         private bool _isBreakup;
-        
+
         public readonly ulong ContentId;
-        public bool ContentInProgress;
+        public bool ExmInProgress;
 
         public InstanceEnemyManager InstanceEnemyManager { get; }
 
@@ -275,12 +275,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                     Logger.Error(client, $"[PartyId:{Id}][Join(GameClient)] has no slot");
                     return ErrorRes<PlayerPartyMember>.Fail;
                 }
-                else if (partyMember == null)
-                {
-                    AddHost(client);
-                    partyMember = GetPlayerPartyMember(client);
-                }
-                
+
                 if (_leader == null && _host == null)
                 {
                     // first to join the party
@@ -623,16 +618,18 @@ namespace Arrowgene.Ddon.GameServer.Party
         public void ResetInstance()
         {
             InstanceEnemyManager.Clear();
+            Contexts.Clear();
+            QuestState.ResetInstance();
             foreach (GameClient client in Clients)
             {
                 client.InstanceGatheringItemManager.Clear();
                 client.InstanceBbmItemManager.Reset();
+                client.InstanceEventDropItemManager.Reset();
                 client.InstanceDropItemManager.Clear();
                 client.InstanceQuestDropManager.Clear();
                 client.Character.ContextOwnership.Clear();
             }
             OmManager.ResetAllOmData(InstanceOmData);
-            QuestState.ResetInstance();
         }
 
         public PartyMember GetPartyMemberByCharacter(CharacterCommon characterCommon)
@@ -786,7 +783,7 @@ namespace Arrowgene.Ddon.GameServer.Party
         public int ClientIndex(GameClient client)
         {
             if (!Members.Any() || !Clients.Any()) return 0;
-            
+
             var ind = Members.FindIndex(member =>
                 member is PlayerPartyMember playerMember
                 && playerMember.Client == client

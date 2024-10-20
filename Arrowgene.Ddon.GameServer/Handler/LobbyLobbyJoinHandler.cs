@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -24,11 +25,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // Notify new player of already present players
             S2CUserListJoinNtc alreadyPresentUsersNtc = new S2CUserListJoinNtc();
-            List<S2CContextGetLobbyPlayerContextNtc> alreadyPresentPlayerContextNtcs =
-                new List<S2CContextGetLobbyPlayerContextNtc>();
             foreach (GameClient otherClient in Server.ClientLookup.GetAll())
             {
-                if (otherClient != client)
+                if (otherClient != client && otherClient.Character != null)
                 {
                     alreadyPresentUsersNtc.UserList.Add
                     (
@@ -37,7 +36,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             CharacterId = otherClient.Character.CharacterId,
                             FirstName = otherClient.Character.FirstName,
                             LastName = otherClient.Character.LastName,
-                            ClanName = "",
+                            ClanName = otherClient.Character.ClanName.ShortName,
                             PawnId = 0,
                             Unk0 = 1,
                             Unk1 = 0,
@@ -58,7 +57,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     CharacterId = client.Character.CharacterId,
                     FirstName = client.Character.FirstName,
                     LastName = client.Character.LastName,
-                    ClanName = "", // TODO: Clan
+                    ClanName = client.Character.ClanName.ShortName,
                     Unk0 = 1, // Platform PC?
                     Unk1 = 0,
                     OnlineStatus = OnlineStatus.Online  // OnlineStatus?
@@ -75,10 +74,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Server.BazaarManager.NotifySoldExhibitions(client);
 
+            var allUsers = newUserNtc.UserList.Concat(alreadyPresentUsersNtc.UserList).ToList();
             return new S2CLobbyJoinRes()
             {
                 CharacterId = client.Character.CharacterId,
-                LobbyMemberInfoList = newUserNtc.UserList
+                LobbyMemberInfoList = allUsers
             };
         }
     }

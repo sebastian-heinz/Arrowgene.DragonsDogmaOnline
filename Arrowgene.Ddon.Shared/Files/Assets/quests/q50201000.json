@@ -10,7 +10,7 @@
         "group": 2,
         "minimum_members": 1,
         "playtime": 1200,
-        "solo_only": true,
+        "solo_only": false,
         "max_pawns": 3,
         "phase_groups": []
     },
@@ -26,6 +26,14 @@
                     "num": 3
                 }
             ]
+        },
+        {
+            "type": "jp",
+            "amount": 1550
+        },
+        {
+            "type": "exp",
+            "amount": 35000
         }
     ],
     "enemy_groups" : [
@@ -33,19 +41,98 @@
             "comment": "Boss",
             "stage_id": {
                 "id": 433,
-                "group_id": 1
+                "group_id": 0
             },
             "enemies": [
                 {
                     "comment": "Scourge",
-                    "enemy_id": "0x071310",
+                    "enemy_id": "0x020606",
                     "level": 65,
                     "exp": 0,
                     "is_boss": true,
-                    "infection_type": 1,
+                    "blood_orbs": 500,
                     "named_enemy_params_id": 1674
                 }
             ]
+        },
+        {
+            "comment": "Foundation Adds",
+            "stage_id": {
+                "id": 433,
+                "group_id": 1
+            },
+            "enemies": [
+                {
+                    "comment": "Ghost",
+                    "enemy_id": "0x015620",
+                    "level": 65,
+                    "exp": 0,
+                    "repop_count": 50,
+                    "repop_wait_second": 45,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1430
+                },
+                {
+                    "comment": "Ghost",
+                    "enemy_id": "0x015620",
+                    "level": 65,
+                    "exp": 0,
+                    "repop_count": 50,
+                    "repop_wait_second": 45,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1430
+                },
+                {
+                    "comment": "Ghost",
+                    "enemy_id": "0x015620",
+                    "level": 65,
+                    "exp": 0,
+                    "repop_count": 50,
+                    "repop_wait_second": 45,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1430
+                },
+                {
+                    "comment": "Ghost",
+                    "enemy_id": "0x015620",
+                    "level": 65,
+                    "exp": 0,
+                    "repop_count": 50,
+                    "repop_wait_second": 45,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1430
+                },
+                {
+                    "comment": "Grimwarg",
+                    "enemy_id": "0x010205",
+                    "level": 65,
+                    "exp": 0,
+                    "infection_type": 1,
+                    "repop_count": 50,
+                    "repop_wait_second": 45,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1430
+                },
+                {
+                    "comment": "Grimwarg",
+                    "enemy_id": "0x010205",
+                    "level": 65,
+                    "exp": 0,
+                    "infection_type": 1,
+                    "repop_count": 50,
+                    "repop_wait_second": 45,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1430
+                }
+            ]
+        },
+        {
+            "comment": "Blocks Monsters from Spawning",
+            "stage_id": {
+                "id": 433,
+                "group_id": 4
+            },
+            "enemies": []
         }
     ],
     "processes": [
@@ -55,7 +142,10 @@
                     "type": "IsGatherPartyInStage",
                     "stage_id": {
                         "id": 433
-                    }
+                    },
+                    "result_commands": [
+                        {"type": "DecideDivideArea", "Param1": 113, "Param2": 2}
+                    ]
                 },
                 {
                     "type": "KillGroup",
@@ -69,19 +159,13 @@
                 {
                     "type": "Raw",
                     "check_commands": [
-                        {"type": "NoticeInterruptContents"}
-                    ],
-                    "result_commands": [
-                        {"type": "SetCheckPoint"}
+                        {"type": "EmHpLess", "Param1": 113, "Param2": 0, "Param3": 0, "Param4": 50}
                     ]
                 },
                 {
-                    "type": "Raw",
-                    "result_commands": [
-                        {"type": "ReturnCheckPointEx", "Param": 0},
-                        {"type": "ReturnCheckPointEx", "Param": 1},
-                        {"type": "EndEndQuest"}
-                    ]
+                    "comment": "Spawn",
+                    "type": "SpawnGroup",
+                    "groups": [1]
                 }
             ]
         }

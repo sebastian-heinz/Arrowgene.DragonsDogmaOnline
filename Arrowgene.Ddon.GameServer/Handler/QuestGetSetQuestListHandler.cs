@@ -44,10 +44,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
              * are random fetch, deliver and kill type quests.
              */
 
-            var activeQuestIds = client.Party.QuestState.GetActiveQuestIds().Where(x => QuestManager.IsWorldQuest(x)).ToHashSet();
-            foreach (var activeQuestId in activeQuestIds)
+            // Populate state for all quests currently in progress by the player
+            foreach (var questScheduleId in client.Party.QuestState.GetActiveQuestScheduleIds())
             {
-                var quest = client.Party.QuestState.GetQuest(activeQuestId);
+                var quest = client.Party.QuestState.GetQuest(questScheduleId);
+                if (!QuestManager.IsWorldQuest(quest.QuestId))
+                {
+                    continue;
+                }
+
                 var questStats = client.Party.Leader.Client.Character.CompletedQuests.GetValueOrDefault(quest.QuestId);
                 var questState = client.Party.QuestState.GetQuestState(quest);
 
@@ -62,32 +67,30 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 });
             }
 
-            // Populate rest of quests for the area
-            foreach (var questId in QuestManager.GetWorldQuestIdsByAreaId(packet.Structure.DistributeId))
+            foreach (var questScheduleId in client.Party.QuestState.AreaQuests(packet.Structure.DistributeId))
             {
-                if (activeQuestIds.Contains(questId) || client.Party.QuestState.IsCompletedWorldQuest(questId))
+                if (client.Party.QuestState.IsQuestActive(questScheduleId) || client.Party.QuestState.IsCompletedWorldQuest(questScheduleId))
                 {
                     // Skip quests already populated or completed
                     continue;
                 }
 
-                var quest = QuestManager.GetQuest(questId);
+                var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
                 var questStats = client.Party.Leader.Client.Character.CompletedQuests.GetValueOrDefault(quest.QuestId);
-
                 res.SetQuestList.Add(new CDataSetQuestList()
                 {
-                    Detail = new CDataSetQuestDetail() 
-                    { 
+                    Detail = new CDataSetQuestDetail()
+                    {
                         IsDiscovery = (questStats == null) ? quest.IsDiscoverable : true,
                         ClearCount = (questStats == null) ? 0 : questStats.ClearCount
                     },
                     Param = quest.ToCDataQuestList(0),
                 });
-                client.Party.QuestState.AddNewQuest(quest, 0, false);
+                client.Party.QuestState.AddNewQuest(quest, 0);
             }
 
             // Add Debug Quest
-            var debugQuest = QuestManager.GetQuest(70000001);
+            var debugQuest = QuestManager.GetQuestByScheduleId(70000001);
             res.SetQuestList.Add(new CDataSetQuestList()
             {
                 Detail = new CDataSetQuestDetail()
@@ -99,7 +102,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             });
 
             S2CQuestGetSetQuestListNtc ntc = new S2CQuestGetSetQuestListNtc()
-            { 
+            {
                 SelectCharacterId = client.Party.Leader.Client.Character.CharacterId,
                 SetQuestList = res.SetQuestList
             };

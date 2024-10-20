@@ -7,7 +7,9 @@
     "base_level": 49,
     "minimum_item_rank": 0,
     "discoverable": true,
-    "order_conditions": [],
+    "order_conditions": [
+        {"type": "MainQuestCompleted", "Param1": 29}
+    ],
     "rewards": [
         {
             "type": "exp",
@@ -52,44 +54,6 @@
         }
     ],
     "enemy_groups": [
-        {
-            "comment": "Meat Monsters (14, 2)",
-            "stage_id": {
-                "id": 77,
-                "group_id": 14
-            },
-            "subgroup_id": 2,
-            "enemies": [
-                {
-                    "comment" : "Skeleton Warrior",
-                    "enemy_id": "0x010302",
-                    "level": 51,
-                    "exp": 6040,
-                    "enemy_target_types_id": 1
-                },
-                {
-                    "comment" : "Skeleton Warrior",
-                    "enemy_id": "0x010302",
-                    "level": 51,
-                    "exp": 6040,
-                    "enemy_target_types_id": 1
-                },
-                {
-                    "comment" : "Skeleton Warrior",
-                    "enemy_id": "0x010302",
-                    "level": 51,
-                    "exp": 6040,
-                    "enemy_target_types_id": 1
-                },
-                {
-                    "comment" : "Skeleton Warrior",
-                    "enemy_id": "0x010302",
-                    "level": 51,
-                    "exp": 6040,
-                    "enemy_target_types_id": 1
-                }
-            ]
-        },
         {
             "comment": "Boss Group 1",
             "stage_id": {
@@ -139,6 +103,7 @@
                         {"type": "WorldManageLayout", "action": "Clear", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
                         {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
                         {"type": "WorldManageLayout", "action": "Set", "value": 7389, "quest_id": 70032001, "comment": "The White Dragon (Less Less Dead)"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"},
 
                         {"type": "WorldManageLayout", "action": "Set", "value": 1106, "quest_id": 70003001, "comment": "Front Door Levers"},
                         {"type": "WorldManageLayout", "action": "Set", "value": 1104, "quest_id": 70003001, "comment": "Large Front Door Closed"},
@@ -160,7 +125,7 @@
                 {
                     "type": "NewTalkToNpc",
                     "checkpoint": true,
-                    "announce_type": "Update",
+                    "announce_type": "Accept",
                     "flags": [
                         {"type": "QstLayout", "action": "Set", "value": 1248, "comment": "Spawns Gerd in audience chamber"},
                         {"type": "QstLayout", "action": "Set", "value": 1022, "comment": "Spawns Leo at entrance of Mergoda"}
@@ -314,8 +279,7 @@
                         {"type": "QstLayout", "action": "Set", "value": 1023, "comment": "Spawns Leo"},
                         {"type": "MyQst", "action": "Set", "value": 120, "comment": "Starts Leo's FSM"}
                     ],
-                    "announce_type": "Update",
-                    "groups": [1]
+                    "groups": [0]
                 },
                 {
                     "type": "PlayEvent",
@@ -422,16 +386,6 @@
                         ]
                     ],
                     "result_commands": []
-                }
-            ]
-        },
-        {
-            "comment": "Meat Spawner",
-            "blocks": [
-                {
-                    "comment": "Spawns Enemies for meat monsters",
-                    "type": "SpawnGroup",
-                    "groups": [0]
                 }
             ]
         }

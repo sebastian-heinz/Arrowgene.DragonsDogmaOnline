@@ -6,7 +6,7 @@
     "base_level": 46,
     "minimum_item_rank": 0,
     "discoverable": true,
-  "area_id": "EasternZandora",	
+    "area_id": "EasternZandora",
     "rewards": [
         {
             "type": "wallet",
@@ -35,7 +35,7 @@
                 },
                 {
                     "item_id": 41,
-                    "num": 1					
+                    "num": 1
                 }
             ]
         },
@@ -53,8 +53,8 @@
     "enemy_groups" : [
         {
             "stage_id": {
-                "id": 1,
-                "group_id": 461
+                "id": 169,
+                "group_id": 1
             },
             "enemies": [
                 {
@@ -62,21 +62,21 @@
                     "level": 46,
                     "exp": 1200,
                     "is_boss": false,
-					"hm_present_no": 52					
-        },
-        {
+                    "hm_present_no": 52
+                },
+                {
                     "enemy_id": "0x011010",
                     "level": 46,
                     "exp": 1200,
                     "is_boss": false,
-					"hm_present_no": 52					
-        },
-        {
+                    "hm_present_no": 52
+                },
+                {
                     "enemy_id": "0x011012",
                     "level": 46,
                     "exp": 1200,
                     "is_boss": false,
-					"hm_present_no": 54				
+                    "hm_present_no": 54
                 }
             ]
         }
@@ -110,7 +110,7 @@
             "stage_id": {
                 "id": 1,
                 "group_id": 1,
-                "layer_no": 1				
+                "layer_no": 1
             },
             "announce_type": "Update",
             "npc_id": "WhiteKnight2",

@@ -8,7 +8,8 @@
   "minimum_item_rank": 0,
   "discoverable": true,
   "order_conditions": [
-    {"type": "SoloWithPawns"}
+    {"type": "SoloWithPawns"},
+    {"type": "MainQuestCompleted", "Param1": 4}
   ],
   "rewards": [
     {
@@ -65,6 +66,7 @@
         "group_id": 1
       },
       "flags": [
+        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"},
         {
           "type": "QstLayout",
           "action": "Set",
@@ -223,29 +225,36 @@
       ]
     },
     {
-      "type": "Raw",
-      "consume_items": [
-        {
-          "id": 1026,
-          "amount": 1
+        "type": "IsStageNo",
+        "checkpoint": true,
+        "consume_items": [
+            {
+                "id": 1026,
+                "amount": 1
+            }
+        ],
+        "stage_id": {
+            "id": 3
         }
-      ],
-      "check_commands": [
-        {
-          "type": "EventEnd",
-          "Param1": 201,
-          "Param2": 10
-        }
-      ],
-      "result_commands": [
-        {
-          "type": "EventExec",
-          "Param1": 201,
-          "Param2": 10,
-          "Param3": 0,
-          "Param4": 0
-        }
-      ]
+    },
+    {
+        "type": "Raw",
+        "check_commands": [
+            {
+                "type": "EventEnd",
+                "Param1": 201,
+                "Param2": 10
+            }
+        ],
+        "result_commands": [
+            {
+                "type": "EventExec",
+                "Param1": 201,
+                "Param2": 10,
+                "Param3": 0,
+                "Param4": 0
+            }
+        ]
     }
   ]
 }

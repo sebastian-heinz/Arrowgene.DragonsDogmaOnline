@@ -236,15 +236,33 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool DeleteCharacter(uint characterId)
         {
-            uint bbmCharacterId = SelectBBMCharacterId(characterId);
-            if (bbmCharacterId > 0)
+            int rowsAffected = 0;
+            ExecuteInTransaction(conn =>
             {
-                ExecuteNonQuery(SqlDeleteCharacter,
-                command => { AddParameter(command, "@character_id", bbmCharacterId); });
-            }
+                var clan = SelectClanMembershipByCharacterId(characterId, conn);
+                if (clan != 0)
+                {
+                    if (GetClanMemberList(clan, conn).Count == 1)
+                    {
+                        DeleteClan(clan, conn);
+                    }
+                    else
+                    {
+                        IncrementClanMemberNum(-1, clan, conn);
+                    }
+                }
 
-            int rowsAffected = ExecuteNonQuery(SqlDeleteCharacter,
-                command => { AddParameter(command, "@character_id", characterId); });
+                uint bbmCharacterId = SelectBBMCharacterId(characterId, conn);
+                if (bbmCharacterId > 0)
+                {
+                    ExecuteNonQuery(conn, SqlDeleteCharacter,
+                    command => { AddParameter(command, "@character_id", bbmCharacterId); });
+                }
+
+                rowsAffected = ExecuteNonQuery(conn, SqlDeleteCharacter,
+                    command => { AddParameter(command, "@character_id", characterId); });
+            });
+            
             return rowsAffected > NoRowsAffected;
         }
 
@@ -396,6 +414,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                        }
                    });
             }
+
+            //Clan membership
+            character.ClanId = SelectClanMembershipByCharacterId(character.CharacterId, conn);
+            character.ClanName = GetClanNameByClanId(character.ClanId);
         }
 
         public bool UpdateMyPawnSlot(uint characterId, uint num)

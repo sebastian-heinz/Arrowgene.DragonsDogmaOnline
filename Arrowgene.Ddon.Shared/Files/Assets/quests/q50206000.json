@@ -1,0 +1,686 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "ExtremeMission",
+    "comment": "Phindym War Chronicles",
+    "quest_id": 50206000,
+    "base_level": 80,
+    "minimum_item_rank": 70,
+    "discoverable": false,
+    "mission_params": {
+        "group": 2,
+        "minimum_members": 1,
+        "maximum_members": 4,
+        "playtime": 900,
+        "solo_only": false,
+        "loot_distribution": "TimeBased",
+        "phase_groups": []
+    },
+    "order_conditions": [],
+    "rewards": [
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 19147,
+                    "num": 10
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "loot_pool": [
+                {
+                    "item_id": 19147,
+                    "num": 0,
+                    "chance": 0.30
+                },
+                {
+                    "item_id": 19147,
+                    "num": 5,
+                    "chance": 0.20
+                },
+                {
+                    "item_id": 19147,
+                    "num": 10,
+                    "chance": 0.20
+                },
+                {
+                    "item_id": 19147,
+                    "num": 20,
+                    "chance": 0.15
+                },
+                {
+                    "item_id": 19147,
+                    "num": 30,
+                    "chance": 0.10
+                },
+                {
+                    "item_id": 19147,
+                    "num": 60,
+                    "chance": 0.05
+                }
+            ]
+        },
+        {
+            "type": "jp",
+            "amount": 1600
+        },
+        {
+            "type": "exp",
+            "amount": 100000
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "comment": "Phase 1 (0)",
+            "stage_id": {
+                "id": 433,
+                "group_id": 3
+            },
+            "placement_type": "Manual",
+            "enemies": [
+                {
+                    "comment": "Altered Zhul",
+                    "enemy_id": "0x020403",
+                    "level": 80,
+                    "exp": 0,
+                    "index": 0,
+                    "is_boss": true,
+                    "named_enemy_params_id": 1698
+                }
+            ]
+        },
+        {
+            "comment": "Phase 1 Adds (1)",
+            "stage_id": {
+                "id": 433,
+                "group_id": 4
+            },
+            "placement_type": "Manual",
+            "enemies": [
+                {
+                    "comment": "Strix",
+                    "enemy_id": "0x010610",
+                    "level": 80,
+                    "exp": 0,
+                    "index": 0,
+                    "repop_count": 50,
+                    "repop_wait_second": 60,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1699
+                },
+                {
+                    "comment": "Strix",
+                    "enemy_id": "0x010610",
+                    "level": 80,
+                    "exp": 0,
+                    "index": 1,
+                    "repop_count": 50,
+                    "repop_wait_second": 60,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1699
+                },
+                {
+                    "comment": "Strix",
+                    "enemy_id": "0x010610",
+                    "level": 80,
+                    "exp": 0,
+                    "index": 2,
+                    "repop_count": 50,
+                    "repop_wait_second": 60,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1699
+                },
+                {
+                    "comment": "Grimwarg",
+                    "enemy_id": "0x010205",
+                    "level": 80,
+                    "exp": 0,
+                    "index": 3,
+                    "repop_count": 50,
+                    "repop_wait_second": 60,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1699
+                },
+                {
+                    "comment": "Grimwarg",
+                    "enemy_id": "0x010205",
+                    "level": 80,
+                    "exp": 0,
+                    "index": 4,
+                    "repop_count": 50,
+                    "repop_wait_second": 60,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1699
+                },
+                {
+                    "comment": "Grimwarg",
+                    "enemy_id": "0x010205",
+                    "level": 80,
+                    "exp": 0,
+                    "index": 5,
+                    "repop_count": 50,
+                    "repop_wait_second": 60,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1699
+                }
+            ]
+        },
+        {
+            "comment": "Phase 2 (2)",
+            "stage_id": {
+                "id": 375,
+                "group_id": 16
+            },
+            "enemies": [
+                {
+                    "comment": "Bearded Grigori",
+                    "enemy_id": "0x015920",
+                    "level": 80,
+                    "exp": 0,
+                    "named_enemy_params_id": 1700
+                },
+                {
+                    "comment": "Bearded Grigori",
+                    "enemy_id": "0x015920",
+                    "level": 80,
+                    "exp": 0,
+                    "named_enemy_params_id": 1700
+                },
+                {
+                    "comment": "Pixie Jabber",
+                    "enemy_id": "0x010155",
+                    "level": 80,
+                    "exp": 0,
+                    "named_enemy_params_id": 1700
+                },
+                {
+                    "comment": "Pixie Pow",
+                    "enemy_id": "0x010153",
+                    "level": 80,
+                    "exp": 0,
+                    "named_enemy_params_id": 1700
+                },
+                {
+                    "comment": "Pixie Din",
+                    "enemy_id": "0x010152",
+                    "level": 80,
+                    "exp": 0,
+                    "named_enemy_params_id": 1700
+                },
+                {
+                    "comment": "Pixie Biff",
+                    "enemy_id": "0x010151",
+                    "level": 80,
+                    "exp": 0,
+                    "named_enemy_params_id": 1700
+                },
+                {
+                    "comment": "Bearded Grigori",
+                    "enemy_id": "0x015920",
+                    "level": 80,
+                    "exp": 0,
+                    "named_enemy_params_id": 1700
+                }
+            ]
+        },
+        {
+            "comment": "Phase 2 Boss (3)",
+            "stage_id": {
+                "id": 375,
+                "group_id": 18
+            },
+            "enemies": [
+                {
+                    "comment": "Cursed Dragon",
+                    "enemy_id": "0x015706",
+                    "level": 80,
+                    "exp": 0,
+                    "is_boss": true,
+                    "named_enemy_params_id": 1701
+                }
+            ]
+        },
+        {
+            "comment": "Phase 2 Boss Adds (4)",
+            "stage_id": {
+                "id": 375,
+                "group_id": 13
+            },
+            "enemies": [
+                {
+                    "comment": "Witch",
+                    "enemy_id": "0x075700",
+                    "level": 80,
+                    "exp": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1700
+                },
+                {
+                    "comment": "Shadow Wolf",
+                    "enemy_id": "0x010206",
+                    "level": 80,
+                    "exp": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1700
+                },
+                {
+                    "comment": "Shadow Wolf",
+                    "enemy_id": "0x010206",
+                    "level": 80,
+                    "exp": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1700
+                },
+                {
+                    "comment": "Shadow Wolf",
+                    "enemy_id": "0x010206",
+                    "level": 80,
+                    "exp": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1700
+                },
+                {
+                    "comment": "Shadow Wolf",
+                    "enemy_id": "0x010206",
+                    "level": 80,
+                    "exp": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1700
+                },
+                {
+                    "comment": "Shadow Wolf",
+                    "enemy_id": "0x010206",
+                    "level": 80,
+                    "exp": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1700
+                },
+                {
+                    "comment": "Shadow Wolf",
+                    "enemy_id": "0x010206",
+                    "level": 80,
+                    "exp": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1700
+                }
+            ]
+        },
+        {
+            "comment": "Phase 3 Boss (5)",
+            "stage_id": {
+                "id": 459,
+                "group_id": 2
+            },
+            "enemies": [
+                {
+                    "comment": "Wisened Tarasque",
+                    "enemy_id": "0x080600",
+                    "level": 80,
+                    "exp": 0,
+                    "is_boss": true,
+                    "named_enemy_params_id": 1706
+                }
+            ]
+        },
+        {
+            "comment": "Phase 4 Boss (6)",
+            "stage_id": {
+                "id": 381,
+                "group_id": 0
+            },
+            "enemies": [
+                {
+                    "comment": "Spirit Dragon",
+                    "enemy_id": "0x022000",
+                    "level": 80,
+                    "exp": 0,
+                    "is_boss": true,
+                    "named_enemy_params_id": 1707
+                }
+            ]
+        },
+        {
+            "comment": "Adds (Towers) (7)",
+            "stage_id": {
+                "id": 381,
+                "group_id": 2
+            },
+            "starting_index": 4,
+            "enemies": [
+                {
+                    "comment": "Dragon Crystal of Evil Sealing",
+                    "enemy_id": "0x030104",
+                    "level": 80,
+                    "exp": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1710,
+                    "start_think_tbl_no": 2,
+                    "is_manual_set": true,
+                    "is_required": false,
+                    "repop_count": 50,
+                    "repop_wait_second": 0
+                },
+                {
+                    "comment": "Dragon Crystal of Evil Sealing",
+                    "enemy_id": "0x030104",
+                    "level": 80,
+                    "exp": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1710,
+                    "start_think_tbl_no": 2,
+                    "is_manual_set": true,
+                    "is_required": false,
+                    "repop_count": 50,
+                    "repop_wait_second": 0
+                },
+                {
+                    "comment": "Dragon Crystal of Power Sapping",
+                    "enemy_id": "0x030104",
+                    "level": 80,
+                    "exp": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1711,
+                    "start_think_tbl_no": 2,
+                    "is_manual_set": true,
+                    "is_required": false,
+                    "repop_count": 50,
+                    "repop_wait_second": 0
+                },
+                {
+                    "comment": "Dragon Crystal of Power Sapping",
+                    "enemy_id": "0x030104",
+                    "level": 80,
+                    "exp": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1711,
+                    "start_think_tbl_no": 2,
+                    "is_manual_set": true,
+                    "is_required": false,
+                    "repop_count": 50,
+                    "repop_wait_second": 0
+                }
+            ]
+        },
+        {
+            "comment": "Adds (Gimick) (8)",
+            "stage_id": {
+                "id": 381,
+                "group_id": 1
+            },
+            "enemies": [
+                {
+                    "comment": "Memory of Sighs",
+                    "enemy_id": "0x030105",
+                    "level": 80,
+                    "exp": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1701,
+                    "repop_count": 50,
+                    "repop_wait_second": 45
+                },
+                {
+                    "comment": "Memory of Sighs",
+                    "enemy_id": "0x030105",
+                    "level": 80,
+                    "exp": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1701,
+                    "repop_count": 50,
+                    "repop_wait_second": 45
+                }
+            ]
+        },
+        {
+            "comment": "Adds (Gimick) (9)",
+            "stage_id": {
+                "id": 381,
+                "group_id": 1
+            },
+            "starting_index": 2,
+            "enemies": [
+                {
+                    "comment": "Memory of Sighs",
+                    "enemy_id": "0x030105",
+                    "level": 80,
+                    "exp": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1701,
+                    "repop_count": 50,
+                    "repop_wait_second": 45
+                },
+                {
+                    "comment": "Memory of Sighs",
+                    "enemy_id": "0x030105",
+                    "level": 80,
+                    "exp": 0,
+                    "enemy_target_types_id": 1,
+                    "named_enemy_params_id": 1701,
+                    "repop_count": 50,
+                    "repop_wait_second": 45
+                }
+            ]
+        },
+        {
+            "comment": "Phase 1 (3) (prevent monsters from spawning during Zuhl fight)",
+            "stage_id": {
+                "id": 433,
+                "group_id": 5
+            },
+            "enemies": []
+        }
+    ],
+    "processes": [
+        {
+            "blocks": [
+                {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 433
+                    }
+                },
+                {
+                    "comment": "Kill Altered Zuhl",
+                    "type": "KillGroup",
+                    "announce_type": "Start",
+                    "groups": [0]
+                },
+                {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 375
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 5371, "comment": "Enables Teleport"},
+                        {"type": "MyQst", "action": "Set", "value": 5371, "comment": "Enables Teleport"}
+                    ]
+                },
+                {
+                    "comment": "Kill Dungeon Trash",
+                    "type": "KillGroup",
+                    "groups": [2]
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "groups": [3],
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2802, "comment": "Enables Teleport"},
+                        {"type": "MyQst", "action": "Set", "value": 2802, "comment": "Enables Teleport"}
+                    ]
+                },
+                {
+                    "comment": "Kill Dragon",
+                    "type": "KillGroup",
+                    "reset_group": false,
+                    "groups": [3],
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 1, "comment": "Spawn Adds"}
+                    ]
+                },
+                {
+                    "type": "PartyGather",
+                    "stage_id": {
+                        "id": 375
+                    },
+                    "location": {
+                        "x": 2,
+                        "y": 979,
+                        "z": -1633
+                    }
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "StageNo", "Param1": 124}
+                    ],
+                    "result_commands": [
+                        {"type": "StageJump", "Param1": 124, "Param2": 0}
+                    ]
+                },
+                {
+                    "comment": "Kill Wisened Tarasque",
+                    "type": "KillGroup",
+                    "groups": [5]
+                },
+                {
+                    "type": "PartyGather",
+                    "stage_id": {
+                        "id": 459
+                    },
+                    "location": {
+                        "x": -12505,
+                        "y": -598,
+                        "z": 4393
+                    }
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "StageNo", "Param1": 436}
+                    ],
+                    "result_commands": [
+                        {"type": "StageJump", "Param1": 436, "Param2": 0}
+                    ]
+                },
+                {
+                    "comment": "Kill Spirit Dragon",
+                    "type": "KillGroup",
+                    "groups": [6]
+                }
+            ]
+        },
+        {
+            "comment": "Spawns Zuhl Adds",
+            "blocks": [
+                {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 433
+                    }
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "EmHpLess", "Param1": 113, "Param2": 3, "Param3": 0, "Param4": 80}
+                    ]
+                },
+                {
+                    "type": "SpawnGroup",
+                    "groups": [1],
+                    "check_commands": [
+                        {"type": "DieEnemy", "Param1": 113, "Param2": 3, "Param3": 0}
+                    ]
+                },
+                {
+                    "type": "DestroyGroup",
+                    "groups": [1]
+                }
+            ]
+        },
+        {
+            "comment": "Spawn Zombie Dragon Adds",
+            "blocks": [
+                {
+                    "comment": "Wait for fight to start",
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+                },
+                {
+                    "type": "SpawnGroup",
+                    "groups": [4],
+                    "check_commands": [
+                        {"type": "MyQstFlagOn", "Param1": 2}
+                    ]
+                },
+                {
+                    "type": "DestroyGroup",
+                    "groups": [4]
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 381
+                    }
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 81}
+                    ]
+                },
+                {
+                    "comment": "Spawn Crystals",
+                    "type": "SpawnGroup",
+                    "check_commands": [
+                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 70}
+                    ],
+                    "groups": [8]
+                },
+                {
+                    "type": "DestroyGroup",
+                    "groups": [8],
+                    "check_commands": [
+                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 41}
+                    ]
+                },
+                {
+                    "comment": "Spawn Crystals",
+                    "type": "SpawnGroup",
+                    "check_commands": [
+                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 30}
+                    ],
+                    "groups": [9]
+                },
+                {
+                    "type": "DestroyGroup",
+                    "groups": [9]
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 381
+                    }
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "EmHpLess", "Param1": 436, "Param2": 0, "Param3": 0, "Param4": 15}
+                    ]
+                },
+                {
+                    "comment": "Spawn Towers",
+                    "type": "KillGroup",
+                    "groups": [7]
+                }
+            ]
+        }
+    ]
+}

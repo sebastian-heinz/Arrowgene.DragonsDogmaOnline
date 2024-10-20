@@ -26,13 +26,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.QuestProgressResult = 0;
 
             var partyQuestState = client.Party.QuestState;
-
             ushort processNo = packet.Structure.ProcessNo;
-            QuestId questId = (QuestId) packet.Structure.QuestScheduleId;
+            uint questScheduleId = packet.Structure.QuestScheduleId;
 
-            Logger.Debug($"QuestId={questId}, KeyId={packet.Structure.KeyId} ProgressCharacterId={packet.Structure.ProgressCharacterId}, QuestScheduleId={packet.Structure.QuestScheduleId}, ProcessNo={packet.Structure.ProcessNo}\n");
+            Logger.Debug($"QuestScheduleId={questScheduleId}, KeyId={packet.Structure.KeyId} ProgressCharacterId={packet.Structure.ProgressCharacterId}, ProcessNo={packet.Structure.ProcessNo}\n");
 
-            if (QuestManager.GetQuest(questId) == null)
+            if (QuestManager.GetQuestByScheduleId(questScheduleId) == null)
             {
                 // Tell the quest state machine that for these static quest packets
                 // these processes are terminated
@@ -45,63 +44,43 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
-                var processState = partyQuestState.GetProcessState(questId, processNo);
+                var processState = partyQuestState.GetProcessState(questScheduleId, processNo);
 
-                var quest = client.Party.QuestState.GetQuest(questId);
+                var quest = client.Party.QuestState.GetQuest(questScheduleId);
                 res.QuestProcessState = quest.StateMachineExecute(Server, client, processState, out questProgressState);
 
-                partyQuestState.UpdateProcessState(questId, res.QuestProcessState);
+                partyQuestState.UpdateProcessState(questScheduleId, res.QuestProcessState);
 
-                if (questProgressState == QuestProgressState.Accepted)
+                if (questProgressState == QuestProgressState.Accepted && quest.QuestType == QuestType.World)
                 {
-                    switch (quest.QuestType)
+                    foreach (var memberClient in client.Party.Clients)
                     {
-                        case QuestType.World:
-                            // A Quest has started, setting the HasStarted on the quest in QuestState
-                            partyQuestState.SetHasStarted(quest.QuestId, true);
+                        var questProgress = Server.Database.GetQuestProgressByScheduleId(memberClient.Character.CommonId, questScheduleId);
 
-                            foreach (var memberClient in client.Party.Clients)
-                            {
-                                var questProgress = Server.Database.GetQuestProgressById(memberClient.Character.CommonId, quest.QuestId);
+                        if (questProgress != null)
+                        {
+                            continue;
+                        }
 
-                                if (questProgress != null)
-                                {
-                                    continue;
-                                }
-
-                                // Handle new variant quests and the specific quest being added to this list with the variant id.
-
-                                if (quest.IsVariantQuest)
-                                {
-                                    if (!Server.Database.InsertQuestProgress(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, 0, quest.VariantId))
-                                    {
-                                        Logger.Error($"Failed to insert progress for the quest {quest.QuestId}");
-                                    }
-
-                                    continue;
-                                }
-
-                                // Add a new world quest record for the player
-                                if (!Server.Database.InsertQuestProgress(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, 0))
-                                {
-                                    Logger.Error($"Failed to insert progress for the quest {quest.QuestId}");
-                                }
-                            }
-                            break;
-                        case QuestType.Tutorial:
-                        case QuestType.Light:
-                            // Add a new personal quest record for the player
-                            if (!Server.Database.InsertQuestProgress(client.Character.CommonId, quest.QuestId, quest.QuestType, 0))
-                            {
-                                Logger.Error($"Failed to insert progress for the quest {quest.QuestId}");
-                            }
-                            break;
+                        // Add a new world quest record for the player
+                        if (!Server.Database.InsertQuestProgress(memberClient.Character.CommonId, questScheduleId, quest.QuestType, 0))
+                        {
+                            Logger.Error($"Failed to insert progress for the quest {quest.QuestId}");
+                        }
+                    }
+                }
+                else if (questProgressState == QuestProgressState.Accepted && (quest.QuestType == QuestType.Tutorial || quest.QuestType == QuestType.WildHunt))
+                {
+                    // Add a new personal quest record for the player
+                    if (!Server.Database.InsertQuestProgress(client.Character.CommonId, questScheduleId, quest.QuestType, 0))
+                    {
+                        Logger.Error($"Failed to insert progress for the quest {quest.QuestId}");
                     }
                 }
 
                 if (questProgressState == QuestProgressState.Checkpoint || questProgressState == QuestProgressState.Accepted)
                 {
-                    partyQuestState.UpdatePartyQuestProgress(Server, client.Party, questId);
+                    partyQuestState.UpdatePartyQuestProgress(Server, client.Party, questScheduleId);
                 }
                 else if (questProgressState == QuestProgressState.Complete)
                 {
@@ -112,7 +91,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 if (res.QuestProcessState.Count > 0)
                 {
                     Logger.Info("==========================================================================================");
-                    Logger.Info($"{questId}: ProcessNo={res.QuestProcessState[0].ProcessNo}, SequenceNo={res.QuestProcessState[0].SequenceNo}, BlockNo={res.QuestProcessState[0].BlockNo},");
+                    Logger.Info($"{quest.QuestId} ({quest.QuestScheduleId}): ProcessNo={res.QuestProcessState[0].ProcessNo}, SequenceNo={res.QuestProcessState[0].SequenceNo}, BlockNo={res.QuestProcessState[0].BlockNo},");
                     Logger.Info("==========================================================================================");
                 }
             }
@@ -140,14 +119,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
         private void CompleteQuest(Quest quest, GameClient client, PartyGroup party, QuestStateManager partyQuestState)
         {
             // Distribute rewards to the party
-            partyQuestState.DistributePartyQuestRewards(Server, party, quest.QuestId);
+            partyQuestState.DistributePartyQuestRewards(Server, party, quest.QuestScheduleId);
 
             // Resolve quest state for all members participating in the quest
-            partyQuestState.CompletePartyQuestProgress(Server, party, quest.QuestId);
+            partyQuestState.CompletePartyQuestProgress(Server, party, quest.QuestScheduleId);
 
             S2CQuestCompleteNtc completeNtc = new S2CQuestCompleteNtc()
             {
-                QuestScheduleId = (uint)quest.QuestId,
+                QuestScheduleId = quest.QuestScheduleId,
                 RandomRewardNum = quest.RandomRewardNum(),
                 ChargeRewardNum = quest.RewardParams.ChargeRewardNum,
                 ProgressBonusNum = quest.RewardParams.ProgressBonusNum,

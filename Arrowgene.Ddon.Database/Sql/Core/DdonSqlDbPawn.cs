@@ -460,7 +460,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach (CDataPawnReaction pawnReaction in pawn.PawnReactionList)
             {
-                ReplacePawnReaction(conn, pawn.PawnId, pawnReaction);
+                ReplacePawnReaction(pawn.PawnId, pawnReaction, conn);
             }
 
             DeleteSpSkills(conn, pawn.PawnId);
@@ -633,20 +633,22 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 ) == 1;
         }
 
-        public bool ReplacePawnReaction(uint pawnId, CDataPawnReaction pawnReaction)
+        public bool ReplacePawnReaction(uint pawnId, CDataPawnReaction pawnReaction, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return ReplacePawnReaction(connection, pawnId, pawnReaction);
-        }
-
-        public bool ReplacePawnReaction(TCon conn, uint pawnId, CDataPawnReaction pawnReaction)
-        {
-            Logger.Debug("Inserting pawn reaction.");
-            if (!InsertIfNotExistsPawnReaction(conn, pawnId, pawnReaction))
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
             {
-                Logger.Debug("Pawn reaction already exists, replacing.");
-                return UpdatePawnReaction(conn, pawnId, pawnReaction);
+                if (!InsertIfNotExistsPawnReaction(connection, pawnId, pawnReaction))
+                {
+                    return UpdatePawnReaction(connection, pawnId, pawnReaction);
+                }
             }
+            finally
+            {
+                if (!isTransaction) connection.Dispose();
+            }
+
             return true;
         }
 

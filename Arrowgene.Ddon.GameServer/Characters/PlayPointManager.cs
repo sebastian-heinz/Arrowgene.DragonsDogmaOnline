@@ -12,7 +12,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PlayPointManager));
 
-        private static readonly uint PP_MAX = 2000;
+        private uint PP_MAX {  get
+            {
+                return _Server.Setting.GameLogicSetting.PlayPointMax;
+            }
+        }
 
         public PlayPointManager(DdonGameServer server)
         {

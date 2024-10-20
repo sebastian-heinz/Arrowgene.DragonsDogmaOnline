@@ -20,6 +20,7 @@ namespace Arrowgene.Ddon.GameServer
             InstanceShopManager = new InstanceShopManager(shopManager);
             InstanceBbmItemManager = new InstanceBitterblackGatheringItemManager();
             InstanceQuestDropManager = new InstanceQuestDropManager();
+            InstanceEventDropItemManager = new InstanceEventDropItemManager(assetRepository);
             GameMode = GameMode.Normal;
         }
 
@@ -49,6 +50,7 @@ namespace Arrowgene.Ddon.GameServer
         public InstanceDropItemManager InstanceDropItemManager { get; }
         public InstanceBitterblackGatheringItemManager InstanceBbmItemManager { get; }
         public InstanceQuestDropManager InstanceQuestDropManager { get; }
+        public InstanceEventDropItemManager InstanceEventDropItemManager { get; }
 
         public GameMode GameMode { get; set; }
 

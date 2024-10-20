@@ -60,25 +60,48 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var tutorialQuestInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.Tutorial);
             foreach (var questProgress in tutorialQuestInProgress)
             {
-                var quest = QuestManager.GetQuest(questProgress.QuestId);
+                if (!QuestManager.IsQuestEnabled(questProgress.QuestScheduleId))
+                {
+                    continue;
+                }
+
+                var quest = QuestManager.GetQuestByScheduleId(questProgress.QuestScheduleId);
                 var tutorialQuest = quest.ToCDataTutorialQuestOrderList(questProgress.Step);
                 ntc.TutorialQuestOrderList.Add(tutorialQuest);
+            }
+
+            var wildHuntsInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.WildHunt);
+            foreach (var questProgress in wildHuntsInProgress)
+            {
+                if (!QuestManager.IsQuestEnabled(questProgress.QuestScheduleId))
+                {
+                    continue;
+                }
+
+                var quest = QuestManager.GetQuestByScheduleId(questProgress.QuestScheduleId);
+                var mobHuntQuest = quest.ToCDataMobHuntQuestOrderList(questProgress.Step);
+                ntc.MobHuntQuestOrderList.Add(mobHuntQuest);
             }
 
             var lightQuestInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.Light);
             foreach (var questProgress in lightQuestInProgress)
             {
-                var quest = QuestManager.GetQuest(questProgress.QuestId);
+                var quest = QuestManager.GetQuestByScheduleId(questProgress.QuestScheduleId);
                 var lightQuest = quest.ToCDataLightQuestOrderList(questProgress.Step);
                 ntc.LightQuestOrderList.Add(lightQuest);
             }
 
             if (client.Party != null)
             {
-                var priorityQuests = Server.Database.GetPriorityQuests(client.Party.Leader.Client.Character.CommonId);
+                var priorityQuests = Server.Database.GetPriorityQuestScheduleIds(client.Party.Leader.Client.Character.CommonId);
                 foreach (var questId in priorityQuests)
                 {
-                    var quest = client.Party.QuestState.GetQuest(questId);
+                    if (!QuestManager.IsQuestEnabled(questId))
+                    {
+                        continue;
+                    }
+
+                    var quest = QuestManager.GetQuestByScheduleId(questId);
                     ntc.PriorityQuestList.Add(new CDataPriorityQuest()
                     {
                         QuestId = (uint)quest.QuestId,

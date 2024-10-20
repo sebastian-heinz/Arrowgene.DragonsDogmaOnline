@@ -8,6 +8,7 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -22,31 +23,53 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CEntryBoardEntryBoardItemLeaveRes Handle(GameClient client, C2SEntryBoardEntryBoardItemLeaveReq request)
         {
-            var contentId = Server.ExmManager.GetContentIdForCharacter(client.Character);
-            var data = Server.ExmManager.GetEntryItemDataForContent(contentId);
-            var characterIds = Server.ExmManager.GetCharacterIdsForContent(contentId);
-
+            var data = Server.BoardManager.GetGroupDataForCharacter(client.Character);
             if (data.PartyLeaderCharacterId == client.Character.CharacterId)
             {
-                Server.ExmManager.RemoveGroupForContent(contentId);
-                foreach (var characterId in characterIds)
+                Server.BoardManager.RemoveGroup(data.EntryItem.Id);
+                foreach (var characterId in data.Members)
                 {
                     var memberClient = Server.ClientLookup.GetClientByCharacterId(characterId);
                     if (memberClient != null)
                     {
                         memberClient.Send(new S2CEntryBoardEntryBoardItemLeaveNtc());
+                        Server.CharacterManager.UpdateOnlineStatus(client, memberClient.Character, OnlineStatus.Online);
                     }
                 }
             }
             else
             {
-                // TODO: This might be wrong
-                client.Send(new S2CEntryBoardEntryBoardItemLeaveNtc());
-                var leaderClient = Server.ClientLookup.GetClientByCharacterId(data.PartyLeaderCharacterId);
-                leaderClient.Send(new S2CEntryBoardEntryBoardItemLeaveNtc());
-            }
+                CDataEntryMemberData memberData;
+                lock (data)
+                {
+                    memberData = data.EntryItem.EntryMemberList.Where(x => x.CharacterListElement.CommunityCharacterBaseInfo.CharacterId == client.Character.CharacterId).First();
+                    memberData.EntryFlag = false;
+                    memberData.CharacterListElement = new CDataCharacterListElement();
+                }
 
-            Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Online);
+                S2CEntryBoardEntryBoardItemChangeMemberNtc ntc = new S2CEntryBoardEntryBoardItemChangeMemberNtc()
+                {
+                    EntryFlag = false,
+                    MemberData = memberData,
+                };
+
+                foreach (var characterId in data.Members)
+                {
+                    var memberClient = Server.ClientLookup.GetClientByCharacterId(characterId);
+                    if (memberClient != null)
+                    {
+                        memberClient.Send(ntc);
+                    }
+                }
+
+                client.Send(new S2CEntryBoardEntryBoardItemLeaveNtc());
+
+                Server.BoardManager.CancelReadyUpTimer(data.EntryItem.Id);
+                Server.BoardManager.RemoveCharacterFromGroup(client.Character);
+                Server.BoardManager.RestartRecruitment(data.EntryItem.Id);
+
+                Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Online);
+            }
 
             return new S2CEntryBoardEntryBoardItemLeaveRes();
         }

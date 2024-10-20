@@ -22,6 +22,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CPawnCreatePawnRes Handle(GameClient client, C2SPawnCreatePawnReq request)
         {
+            // I hate hardcoding this but people legitimately keep finding ways to break this. 
+
+            if (request.SlotNo == 1 && client.Character.Pawns.Count > 1)
+            {
+                // Need to return a successful response, otherwise the player will
+                // be stuck here on the quest (it kicks them back to pawn creation).
+                // This should only be possible for legacy characters or people
+                // using the /givepawn command before reaching this quest.
+                return new S2CPawnCreatePawnRes();
+            }
+            else if (request.SlotNo > 3)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_CREATE_NUM_OVER);
+            }
+
             if (request.SlotNo == 1)
             {
                 const byte myPawnSlotNum = 2;
@@ -61,6 +76,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         Error = (uint)ErrorCode.ERROR_CODE_CHARACTER_ITEM_NOT_FOUND
                     };
+                }
+                else
+                {
+                    client.Send(new S2CItemUpdateCharacterItemNtc()
+                    {
+                        UpdateType = ItemNoticeType.CreatePawn,
+                        UpdateItemList = new()
+                        {
+                            result
+                        }
+                    });
                 }
             }           
             
@@ -436,6 +462,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             pawn.LearnedAbilities = pawn.EquippedAbilitiesDictionary.SelectMany(jobAndAugs => jobAndAugs.Value).Where(aug => aug != null).ToList();
             pawn.TrainingPoints = int.MaxValue;
             pawn.AvailableTraining = uint.MaxValue;
+            pawn.PawnReactionList = Enumerable.Range(1, 11).Select(x => new CDataPawnReaction() { ReactionType = (byte)x, MotionNo = 1 }).ToList();
 
             // Add current job's equipment to the equipment storage
             // EquipmentTemplate.TOTAL_EQUIP_SLOTS * 2

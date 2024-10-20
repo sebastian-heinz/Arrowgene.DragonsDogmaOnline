@@ -16,21 +16,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CQuestQuestCancelRes Handle(GameClient client, C2SQuestQuestCancelReq packet)
         {                
-            QuestId questId = (QuestId)packet.QuestScheduleId;
-
-            var quest = client.Party.QuestState.GetQuest(questId);
-            Server.Database.RemoveQuestProgress(client.Character.CommonId, quest.QuestId, quest.QuestType);
+            var quest = client.Party.QuestState.GetQuest(packet.QuestScheduleId);
+            Server.Database.RemoveQuestProgress(client.Character.CommonId, quest.QuestScheduleId, quest.QuestType);
             
-            bool isPriority = Server.Database.DeletePriorityQuest(client.Character.CommonId, questId);
+            bool isPriority = Server.Database.DeletePriorityQuest(client.Character.CommonId, quest.QuestScheduleId);
 
             if (client.Party.Leader.Client == client) //Only the leader should be able to inform the party quest state.
             {
-                client.Party.QuestState.CancelQuest(quest.QuestId);
+                client.Party.QuestState.CancelQuest(quest.QuestScheduleId);
 
                 S2CQuestQuestCancelNtc cancelNtc = new S2CQuestQuestCancelNtc()
                 {
                     QuestId = (uint)quest.QuestId,
-                    QuestScheduleId = (uint)quest.QuestScheduleId
+                    QuestScheduleId = quest.QuestScheduleId
                 };
                 client.Party.SendToAll(cancelNtc);
 

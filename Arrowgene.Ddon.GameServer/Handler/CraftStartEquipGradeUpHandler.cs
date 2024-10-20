@@ -106,7 +106,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             currentTotalEquipPoint += addEquipPoint;
 
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,
-                            Server.CraftManager.CalculateRecipeCost(recipeData.Cost, costPerformanceLevels));
+                            Server.CraftManager.CalculateRecipeCost(recipeData.Cost, costPerformanceLevels))
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CRAFT_INTERNAL, "Insufficient gold.");
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
             ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);

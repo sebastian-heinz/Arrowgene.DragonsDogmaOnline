@@ -14,6 +14,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         {
             IncrementalHash hash = IncrementalHash.CreateHash(HashAlgorithmName.MD5);
             hash.AppendData(BitConverter.GetBytes(ItemId));
+            hash.AppendData(BitConverter.GetBytes(Num));
             return BitConverter.ToString(hash.GetHashAndReset()).Replace("-", string.Empty).Substring(0, 8);
         }
     }
@@ -34,6 +35,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         {
             IncrementalHash hash = IncrementalHash.CreateHash(HashAlgorithmName.MD5);
             hash.AppendData(BitConverter.GetBytes(ItemId));
+            hash.AppendData(BitConverter.GetBytes(Num));
             return BitConverter.ToString(hash.GetHashAndReset()).Replace("-", string.Empty).Substring(0, 8);
         }
     }
@@ -118,6 +120,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             var item = LootPool[ItemIndex];
             return new CDataRewardBoxItem()
             {
+                UID = item.GetUID(),
                 ItemId = item.ItemId,
                 Num = item.Num,
                 Type = (byte)RewardType
@@ -129,6 +132,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             var item = LootPool[index];
             return new CDataRewardBoxItem()
             {
+                UID = item.GetUID(),
                 ItemId = item.ItemId,
                 Num = item.Num,
                 Type = (byte)RewardType
@@ -172,8 +176,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
     {
         public uint UniqRewardId { get; set; }
         public uint CharacterCommonId { get; set; }
-        public QuestId QuestId { get; set; }
-        public uint VariantId { get; set; }
+        public uint QuestScheduleId { get; set; }
         public int NumRandomRewards { get; set; }
         public List<int> RandomRewardIndices { get; set; }
 

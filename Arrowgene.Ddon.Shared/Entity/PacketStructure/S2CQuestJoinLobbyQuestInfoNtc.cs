@@ -17,8 +17,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             MainQuestOrderList = new List<CDataMainQuestOrderList>();
             TutorialQuestOrderList = new List<CDataTutorialQuestOrderList>();
             LotQuestOrderList = new List<CDataLotQuestOrderList>();
-            Unk0 = new List<CDataS2CQuestJoinLobbyQuestInfoNtcUnk0>();
-            WildHuntQuestOrderList = new List<CDataWildHuntQuestOrderList>();
+            SubstoryQuestOrderList = new List<CDataSubstoryQuestOrderList>();
+            MobHuntQuestOrderList = new List<CDataMobHuntQuestOrderList>();
             TimeLimitedQuestOrderList = new List<CDataTimeLimitedQuestOrderList>();
             WorldManageQuestOrderList = new List<CDataWorldManageQuestOrderList>();
             ExpiredQuestList = new List<CDataExpiredQuestList>();
@@ -33,9 +33,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataSetQuestOrderList> SetQuestOrderList { get; set; }
         public List<CDataMainQuestOrderList> MainQuestOrderList { get; set; }
         public List<CDataTutorialQuestOrderList> TutorialQuestOrderList { get; set; }
-        public List<CDataLotQuestOrderList> LotQuestOrderList { get; set; }
-        public List<CDataS2CQuestJoinLobbyQuestInfoNtcUnk0> Unk0 { get; set; } // Probably those purple quests from season 3
-        public List<CDataWildHuntQuestOrderList> WildHuntQuestOrderList { get; set; } // or maybe this
+        public List<CDataLotQuestOrderList> LotQuestOrderList { get; set; }  // TYPE_PAWN=1?
+        public List<CDataSubstoryQuestOrderList> SubstoryQuestOrderList { get; set; }
+        public List<CDataMobHuntQuestOrderList> MobHuntQuestOrderList { get; set; }
         public List<CDataTimeLimitedQuestOrderList> TimeLimitedQuestOrderList { get; set; }
         public List<CDataWorldManageQuestOrderList> WorldManageQuestOrderList { get; set; }
         public List<CDataExpiredQuestList> ExpiredQuestList { get; set; }
@@ -54,8 +54,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteEntityList<CDataMainQuestOrderList>(buffer, obj.MainQuestOrderList);
                 WriteEntityList<CDataTutorialQuestOrderList>(buffer, obj.TutorialQuestOrderList);
                 WriteEntityList<CDataLotQuestOrderList>(buffer, obj.LotQuestOrderList);
-                WriteEntityList<CDataS2CQuestJoinLobbyQuestInfoNtcUnk0>(buffer, obj.Unk0);
-                WriteEntityList<CDataWildHuntQuestOrderList>(buffer, obj.WildHuntQuestOrderList);
+                WriteEntityList<CDataSubstoryQuestOrderList>(buffer, obj.SubstoryQuestOrderList);
+                WriteEntityList<CDataMobHuntQuestOrderList>(buffer, obj.MobHuntQuestOrderList);
                 WriteEntityList<CDataTimeLimitedQuestOrderList>(buffer, obj.TimeLimitedQuestOrderList);
                 WriteEntityList<CDataWorldManageQuestOrderList>(buffer, obj.WorldManageQuestOrderList);
                 WriteEntityList<CDataExpiredQuestList>(buffer, obj.ExpiredQuestList);
@@ -74,8 +74,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.MainQuestOrderList = ReadEntityList<CDataMainQuestOrderList>(buffer);
                 obj.TutorialQuestOrderList = ReadEntityList<CDataTutorialQuestOrderList>(buffer);
                 obj.LotQuestOrderList = ReadEntityList<CDataLotQuestOrderList>(buffer);
-                obj.Unk0 = ReadEntityList<CDataS2CQuestJoinLobbyQuestInfoNtcUnk0>(buffer);
-                obj.WildHuntQuestOrderList = ReadEntityList<CDataWildHuntQuestOrderList>(buffer);
+                obj.SubstoryQuestOrderList = ReadEntityList<CDataSubstoryQuestOrderList>(buffer);
+                obj.MobHuntQuestOrderList = ReadEntityList<CDataMobHuntQuestOrderList>(buffer);
                 obj.TimeLimitedQuestOrderList = ReadEntityList<CDataTimeLimitedQuestOrderList>(buffer);
                 obj.WorldManageQuestOrderList = ReadEntityList<CDataWorldManageQuestOrderList>(buffer);
                 obj.ExpiredQuestList = ReadEntityList<CDataExpiredQuestList>(buffer);
@@ -87,6 +87,5 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 return obj;
             }
         }
-
     }
 }

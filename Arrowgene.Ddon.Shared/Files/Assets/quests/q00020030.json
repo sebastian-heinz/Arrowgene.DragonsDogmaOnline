@@ -1,0 +1,304 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "The Corruption and the Knights",
+    "quest_id": 20030,
+    "next_quest": 20040,
+    "base_level": 56,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "order_conditions": [
+        {"type": "MinimumLevel", "Param1": 55},
+        {"type": "MainQuestCompleted", "Param1": 20020}
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 128000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 20000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 1500
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 13053,
+                    "num": 1
+                },
+                {
+                    "item_id": 11408,
+                    "num": 5
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 48
+            },
+            "enemies": [
+                {
+                    "comment": "Infected Direwolf",
+                    "enemy_id": "0x010209",
+                    "level": 55,
+                    "exp": 6476
+                },
+                {
+                    "comment": "Infected Direwolf",
+                    "enemy_id": "0x010209",
+                    "level": 55,
+                    "exp": 6476
+                },
+                {
+                    "comment": "Infected Direwolf",
+                    "enemy_id": "0x010209",
+                    "level": 55,
+                    "exp": 6476
+                },
+                {
+                    "comment": "Infected Direwolf",
+                    "enemy_id": "0x010209",
+                    "level": 55,
+                    "exp": 6476
+                },
+                {
+                    "comment": "Infected Direwolf",
+                    "enemy_id": "0x010209",
+                    "level": 55,
+                    "exp": 6476
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 58
+            },
+            "starting_index": 1,
+            "enemies": [
+                {
+                    "comment": "Infected Snow Harpy",
+                    "enemy_id": "0x010612",
+                    "level": 55,
+                    "exp": 6476
+                },
+                {
+                    "comment": "Infected Snow Harpy",
+                    "enemy_id": "0x010612",
+                    "level": 55,
+                    "exp": 6476
+                },
+                {
+                    "comment": "Infected Snow Harpy",
+                    "enemy_id": "0x010612",
+                    "level": 55,
+                    "exp": 6476
+                },
+                {
+                    "comment": "Infected Snow Harpy",
+                    "enemy_id": "0x010612",
+                    "level": 55,
+                    "exp": 6476
+                },
+                {
+                    "comment": "Infected Snow Harpy",
+                    "enemy_id": "0x010612",
+                    "level": 55,
+                    "exp": 6476
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 56
+            },
+            "enemies": [
+                {
+                    "comment": "Infected Gorecyclops",
+                    "enemy_id": "0x015012",
+                    "infection_type": 1,
+                    "level": 55,
+                    "exp": 64760,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Infected Hobgoblin",
+                    "enemy_id": "0x010160",
+                    "start_think_tbl_no": 1,
+                    "level": 55,
+                    "exp": 6476
+                },
+                {
+                    "comment": "Infected Hobgoblin Fighter",
+                    "enemy_id": "0x010161",
+                    "start_think_tbl_no": 1,
+                    "level": 55,
+                    "exp": 6476
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NewNpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1,
+                        "layer_no": 1
+                    },
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"},
+                        {"type": "QstLayout", "action": "Set", "value": 2738, "comment": "Spawns Gurdolin, Lise and Elliot"}
+                    ],
+                    "npc_id": "Elliot0",
+                    "message_id": 15080
+                },
+                {
+                    "type": "TalkToNpc",
+                    "announce_type": "Accept",
+                    "stage_id": {
+                        "id": 2
+                    },
+                    "npc_id": "Heinz2",
+                    "message_id": 15081
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 1,
+                        "layer_no": 1
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2739, "comment": "Spawns Gerd"}
+                    ],
+                    "npc_id": "Gerd1",
+                    "message_id": 15082
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "groups": [ 0 ]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [ 0 ]
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "groups": [ 1 ]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [ 1 ]
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 1
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 2739, "comment": "Spawns Gerd"},
+                        {"type": "QstLayout", "action": "Set", "value": 3050, "comment": "Spawns Travers and WhiteKnights"}
+                    ],
+                    "location": {
+                        "x": -110961,
+                        "y": 1483,
+                        "z": 7477
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 1
+                    },
+                    "event_id": 125
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 3051, "comment": "Spawns Gerd"},
+                        {"type": "MyQst", "action": "Set", "value": 1339, "comment": "Starts NPC Battle State Machine"}
+                    ],
+                    "groups": [ 2 ]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 1
+                    },
+                    "event_id": 130
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 4,
+                        "layer_no": 1
+                    },
+                    "flags": [
+                        {"type": "MyQst", "action": "Clear", "value": 1199, "comment": "Starts NPC Battle State Machine"},
+                        {"type": "QstLayout", "action": "Clear", "value": 3050, "comment": "Spawns Travers and WhiteKnights"},
+                        {"type": "QstLayout", "action": "Clear", "value": 3051, "comment": "Spawns Gerd"},
+                        {"type": "QstLayout", "action": "Set", "value": 3124, "comment": "Spawns Gerd after battle"}
+                    ],
+                    "npc_id": "Gerd1",
+                    "message_id": 15126
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 2,
+                        "layer_no": 1
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2769, "comment": "Spawns Gerd in Audience Chamber"}
+                    ],
+                    "npc_id": "Gerd1",
+                    "message_id": 15127
+                },
+                {
+                    "type": "TalkToNpc",
+                    "checkpoint": true,
+                    "announce_type": "Update",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "npc_id": "Joseph",
+                    "message_id": 15129
+                }
+            ]
+        }
+    ]
+}

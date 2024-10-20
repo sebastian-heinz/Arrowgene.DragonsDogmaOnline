@@ -291,7 +291,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             if (upgrade.IsRestrictedByOrbCost())
             {
-                _WalletManager.RemoveFromWallet(client.Character, WalletType.BloodOrbs, upgrade.LvlUpCost);
+                var walletPointUpdate = _WalletManager.RemoveFromWallet(client.Character, WalletType.BloodOrbs, upgrade.LvlUpCost)
+                    ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_ORB_DEVOTE_ORB_LACK);
             }
 
             CDataOrbGainExtendParam ExtendParam = UpdateExtendedParamData(client, character, upgrade);

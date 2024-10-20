@@ -56,10 +56,11 @@
       ]
     },
     {
-      "type": "DeliverItems",
+      "type": "NewDeliverItems",
       "stage_id": {
         "id": 25,
-        "group_id": 1
+        "group_id": 1,
+        "layer_no": 1
       },
       "npc_id": "Peddler",
       "announce_type": "Accept",

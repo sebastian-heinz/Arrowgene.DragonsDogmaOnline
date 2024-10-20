@@ -1,0 +1,266 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "Homecoming",
+    "quest_id": 20180,
+    "next_quest": 20190,
+    "base_level": 69,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "order_conditions": [
+        {"type": "MinimumLevel", "Param1": 69},
+        {"type": "MainQuestCompleted", "Param1": 20170}
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 400000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 50000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 4000
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 11407,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 14190,
+                    "num": 1
+                },
+                {
+                    "item_id": 14191,
+                    "num": 1
+                },
+                {
+                    "item_id": 14192,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 414,
+                "group_id": 3
+            },
+            "enemies": [
+                {
+                    "comment": "Severely Infected Gorecyclops",
+                    "enemy_id": "0x015017",
+                    "level": 69,
+                    "exp": 307000,
+                    "infection_type": 1,
+                    "named_enemy_params_id": 1434,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Infected Direwold",
+                    "enemy_id": "0x010209",
+                    "level": 69,
+                    "infection_type": 1,
+                    "exp": 30700
+                },
+                {
+                    "comment": "Infected Direwold",
+                    "enemy_id": "0x010209",
+                    "level": 69,
+                    "infection_type": 1,
+                    "exp": 30700
+                },
+                {
+                    "comment": "Infected Direwold",
+                    "enemy_id": "0x010209",
+                    "level": 69,
+                    "infection_type": 1,
+                    "exp": 30700
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "npc_id": "Joseph",
+                    "message_id": 15679,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"}
+                    ]
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "stage_id": {
+                        "id": 371,
+                        "group_id": 0,
+                        "layer_no": 0
+                    },
+                    "announce_type": "Accept",
+                    "npc_id": "Cecily0",
+                    "message_id": 15680,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 3951, "comment": "Cecily, Elliot, Lise and Gurdolin"}
+                    ]
+                },
+                {
+                    "type": "TalkToNpc",
+                    "stage_id": {
+                        "id": 339
+                    },
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "npc_id": "Musel0",
+                    "message_id": 18526
+                },
+                {
+                    "comment": "Talk with the NPC Toreasa who is spawned by a world manage quest",
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "NewTalkNpc", "Param1": 121, "Param2": 0, "Param3": 0, "Param4": 70022001}
+                    ],
+                    "result_commands": [
+                        {"type": "QstTalkChg", "Param1": 564, "Param2": 18527}
+                    ],
+                    "announce_type": "Update",
+                    "checkpoint": true
+                },
+                {
+                    "type": "IsStageNo",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 414
+                    }
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 414
+                    },
+                    "location": {
+                        "x": -763,
+                        "y": -492,
+                        "z": -19886
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 414
+                    },
+                    "event_id": 0
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "groups": [ 0 ]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 414
+                    },
+                    "event_id": 5
+                },
+                {
+                    "type": "IsStageNo",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 374
+                    }
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 374
+                    },
+                    "location": {
+                        "x": -62456,
+                        "y": -128,
+                        "z": -37192
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 374
+                    },
+                    "event_id": 0
+                },
+                {
+                    "type": "Raw",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "check_commands": [
+                        {"type": "IsReleaseWarpPointAnyone", "Param1": 19}
+                    ]
+                },
+                {
+                    "type": "TalkToNpc",
+                    "stage_id": {
+                        "id": 340
+                    },
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "npc_id": "Arthfael",
+                    "message_id": 15693
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 374
+                    },
+                    "location": {
+                        "x": -57008,
+                        "y": -233,
+                        "z": -31689
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 374
+                    },
+                    "event_id": 5
+                },
+                {
+                    "type": "TalkToNpc",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "npc_id": "Joseph",
+                    "message_id": 15708
+                }
+            ]
+        }
+    ]
+}

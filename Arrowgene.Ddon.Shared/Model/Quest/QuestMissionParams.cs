@@ -1,10 +1,5 @@
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Shared.Model.Quest
 {
@@ -14,16 +9,17 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         {
             QuestPhaseGroupIdList = new List<CDataCommonU32>();
         }
-
-        public uint SortieMinimum { get; set; }
+        public byte StartPos { get; set; }
+        public uint MinimumMembers { get; set; }
+        public uint MaximumMembers { get; set; }
         public uint PlaytimeInSeconds { get; set; }
         public bool IsSolo { get; set; }
         public uint MaxPawns { get; set; }
         // public bool SupportPawnAllowed { get; set; } Is in symbol but doesn't seem to work?
         public bool ArmorAllowed { get; set; }
         public bool JewelryAllowed { get; set; }
-
         public uint Group {  get; set; }
         public List<CDataCommonU32> QuestPhaseGroupIdList { get; set; }
+        public QuestLootDistribution LootDistribution { get; set; }
     }
 }
