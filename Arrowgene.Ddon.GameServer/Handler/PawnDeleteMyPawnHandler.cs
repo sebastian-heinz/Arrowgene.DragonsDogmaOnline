@@ -36,6 +36,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     continue;
                 }
 
+                // UI indicates that holding a locked item should prevent pawn deletion.
+                if (storageItem.SafetySetting > 0)
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_SAFETY_SETTING);
+                }
+
                 if (request.IsKeepEquip)
                 {
                     updateItems.AddRange(Server.ItemManager.MoveItem(Server, client.Character, pawn.Equipment.Storage, storageItem.UId, 1,

@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.Shared.Model
         }
         
         public uint ItemId { get; set; }
-        public byte Unk3 { get; set; } // This is safety setting.
+        public byte SafetySetting { get; set; } // This is safety setting.
         public byte Color { get; set; }
         public byte PlusValue { get; set; } // This is Equipment Quality, +0/1/2/3/
         public uint EquipPoints { get; set; }
@@ -46,7 +46,7 @@ namespace Arrowgene.Ddon.Shared.Model
         {
             this._uid = UpdateUId();
             this.ItemId = obj.ItemId;
-            this.Unk3 = obj.Unk3;
+            this.SafetySetting = obj.SafetySetting;
             this.Color = obj.Color;
             this.PlusValue = obj.PlusValue;
             this.EquipPoints = obj.EquipPoints;

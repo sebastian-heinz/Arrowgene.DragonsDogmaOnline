@@ -295,7 +295,7 @@ CREATE TABLE IF NOT EXISTS "ddon_storage_item"
     "slot_no"      SMALLINT               NOT NULL,
     "item_id"      INTEGER                NOT NULL,
     "item_num"     INTEGER                NOT NULL,
-    "unk3"         SMALLINT               NOT NULL,
+    "safety"       SMALLINT               NOT NULL,
     "color"        SMALLINT               NOT NULL,
     "plus_value"   SMALLINT               NOT NULL,
     "equip_points" INTEGER                NOT NULL,
