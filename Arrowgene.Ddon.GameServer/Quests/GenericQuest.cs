@@ -115,6 +115,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
                                     MinimumLevel = block.TargetEnemy.Level,
                                     Amount = block.TargetEnemy.Amount,
                                 });
+
+                                if (quest.QuestType == QuestType.Light)
+                                {
+                                    quest.SaveWorkAsStage = true;
+                                }
                             }
                             break;
                     }

@@ -70,6 +70,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public ushort MinimumItemRank { get; set; }
         public QuestId NextQuestId { get; protected set; }
         public bool ResetPlayerAfterQuest { get; protected set; }
+        public bool SaveWorkAsStage { get; protected set; }
         public List<QuestOrderCondition> OrderConditions { get; protected set; }
         public QuestRewardParams RewardParams { get; protected set; }
         public List<CDataWalletPoint> WalletRewards { get; protected set; }
@@ -120,6 +121,21 @@ namespace Arrowgene.Ddon.GameServer.Quests
         {
             Dictionary<QuestFlagType, Dictionary<int, QuestFlag>> questFlags = new Dictionary<QuestFlagType, Dictionary<int, QuestFlag>>();
             List<CDataQuestProcessState> result = new List<CDataQuestProcessState>();
+
+            // Handle SaveWorkAsStage (Hunt Board) quests.
+            CDataQuestProgressWork workOverride = null;
+            if (step > 1 && SaveWorkAsStage)
+            {
+                workOverride = new CDataQuestProgressWork()
+                {
+                    CommandNo = (uint)QuestNotifyCommand.KilledEnemyLight,
+                    Work01 = 0,
+                    Work02 = 0,
+                    Work03 = (int)(step - 1)
+                };
+
+                step = 1;
+            }
 
             int i = 0;
             uint stepsFound = 0;
@@ -175,7 +191,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 throw new QuestRestoreProgressFailedException(QuestId, step, stepsFound);
             }
 
-            result.Add(new CDataQuestProcessState(Processes[0].Blocks[i].QuestProcessState));
+            var processStateBase = new CDataQuestProcessState(Processes[0].Blocks[i].QuestProcessState);
+            result.Add(processStateBase);
+            if (workOverride != null)
+            {
+                processStateBase.WorkList.Add(workOverride);
+            }
 
             for (int j = 1; j < Processes.Count; j++)
             {
@@ -323,11 +344,21 @@ namespace Arrowgene.Ddon.GameServer.Quests
             };
         }
 
-        public virtual CDataLightQuestOrderList ToCDataLightQuestOrderList(uint step)
+        public virtual CDataLightQuestOrderList ToCDataLightQuestOrderList(uint step, CDataQuestProgressWork workOverride = null)
         {
+            var quest = ToCDataQuestOrderList(step);
+
+            if (workOverride is not null)
+            {
+                if (quest.QuestProcessStateList.FirstOrDefault()?.WorkList.ElementAtOrDefault(0) != null)
+                {
+                    quest.QuestProcessStateList.FirstOrDefault().WorkList[0] = workOverride;
+                }
+            }
+
             return new CDataLightQuestOrderList()
             {
-                Param = ToCDataQuestOrderList(step),
+                Param = quest,
                 Detail = LightQuestDetail
             };
         }
@@ -367,7 +398,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             };
         }
 
-        public virtual CDataLightQuestList ToCDataLightQuestList(uint step)
+        public virtual CDataLightQuestList ToCDataLightQuestList(uint step, CDataQuestProgressWork workOverride = null)
         {
             CDataQuestList param = ToCDataQuestList(step);
 
@@ -389,6 +420,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 contents.Param04 = process.Param04;
                 contents.Unk0 = 0;
                 contents.Unk1 = 1;
+            }
+
+            if (workOverride is not null)
+            {
+                if (param.QuestProcessStateList.FirstOrDefault()?.WorkList.ElementAtOrDefault(0) != null)
+                {
+                    param.QuestProcessStateList.FirstOrDefault().WorkList[0] = workOverride;
+                }
             }
 
             return new CDataLightQuestList()

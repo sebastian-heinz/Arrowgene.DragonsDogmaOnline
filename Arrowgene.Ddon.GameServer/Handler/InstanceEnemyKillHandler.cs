@@ -176,7 +176,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         gainedExp = 0;
                     }
 
-                    memberClient.Party.QuestState.HandleEnemyHuntRequests(memberClient, enemyKilled);
+                    memberClient.Party.QuestState.HandleEnemyHuntRequests(_gameServer, memberClient, enemyKilled);
 
                     S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
 
