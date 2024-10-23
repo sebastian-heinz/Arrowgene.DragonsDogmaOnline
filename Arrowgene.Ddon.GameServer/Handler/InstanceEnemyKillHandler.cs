@@ -55,8 +55,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            InstancedEnemy enemyKilled = client.Party.InstanceEnemyManager.GetInstanceEnemy(stageId, (byte)packet.SetId) 
-                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_INSTANCE_AREA_ENEMY_UNIT_DATA_NONE);
+            InstancedEnemy enemyKilled = client.Party.InstanceEnemyManager.GetInstanceEnemy(stageId, (byte)packet.SetId);
+
+            if (enemyKilled is null)
+            {
+                Logger.Error(client, $"Enemy killed data missing; {layoutId}.{packet.SetId}");
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_INSTANCE_AREA_ENEMY_UNIT_DATA_NONE);
+            }
 
             if (enemyKilled.RepopCount > 0 && enemyKilled.RepopNum < enemyKilled.RepopCount)
             {

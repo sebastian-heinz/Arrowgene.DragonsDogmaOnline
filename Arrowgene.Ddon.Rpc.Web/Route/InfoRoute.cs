@@ -58,7 +58,7 @@ namespace Arrowgene.Ddon.Rpc.Web.Route
                 {
                     if (accNameParam is not null)
                     {
-                        accountId = gameServer.Database.SelectAccountByName(accNameParam)?.Id ?? accountId;
+                        accountId = gameServer.Database.SelectAccountByName(accNameParam.ToLowerInvariant())?.Id ?? accountId;
                     }
                 }
                 if (accountId > 0)
