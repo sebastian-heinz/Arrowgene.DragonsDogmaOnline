@@ -47,7 +47,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     // Quest State should not be null, but don't crash
                     // Just delete the quest from priority list
                     Server.Database.DeletePriorityQuest(partyLeader.Client.Character.CommonId, questScheduleId);
-                    Logger.Error($"Client {partyLeader.Client.Character.CommonId} has priority quest for quest state which doesn't exist");
+                    Logger.Error(client, $"Priority quest for quest state which doesn't exist, schedule {questScheduleId}");
                     continue;
                 }
 

@@ -14,7 +14,7 @@ using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class InstanceEnemyKillHandler : StructurePacketHandler<GameClient, C2SInstanceEnemyKillReq>
+    public class InstanceEnemyKillHandler : GameRequestPacketHandler<C2SInstanceEnemyKillReq, S2CInstanceEnemyKillRes>
     {
 
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceEnemyKillHandler));
@@ -31,17 +31,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             _gameServer = server;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SInstanceEnemyKillReq> packet)
+        public override S2CInstanceEnemyKillRes Handle(GameClient client, C2SInstanceEnemyKillReq packet)
         {
-            CDataStageLayoutId layoutId = packet.Structure.LayoutId;
+            CDataStageLayoutId layoutId = packet.LayoutId;
             StageId stageId = StageId.FromStageLayoutId(layoutId);
 
             // The training room uses special handling to produce enemies that don't exist in the QuestState or InstanceEnemyManager.
             // Return an empty response here to not break the rest of the handling.
             if (_ignoreKillsInStageIds.Contains(stageId.Id))
             {
-                client.Send(new S2CInstanceEnemyKillRes());
-                return;
+                return new();
             }
 
             Quest quest = null;
@@ -49,14 +48,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (var questScheduleId in client.Party.QuestState.StageQuests(stageId))
             {
                 quest = client.Party.QuestState.GetQuest(questScheduleId);
-                if (client.Party.QuestState.HasEnemiesInCurrentStageGroup(quest, stageId))
+                if (quest != null && client.Party.QuestState.HasEnemiesInCurrentStageGroup(quest, stageId))
                 {
                     IsQuestControlled = true;
                     break;
                 }
             }
 
-            InstancedEnemy enemyKilled = client.Party.InstanceEnemyManager.GetInstanceEnemy(stageId, (byte)packet.Structure.SetId);
+            InstancedEnemy enemyKilled = client.Party.InstanceEnemyManager.GetInstanceEnemy(stageId, (byte)packet.SetId) 
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_INSTANCE_AREA_ENEMY_UNIT_DATA_NONE);
+
             if (enemyKilled.RepopCount > 0 && enemyKilled.RepopNum < enemyKilled.RepopCount)
             {
                 enemyKilled.RepopNum += 1;
@@ -67,7 +68,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     WaitSecond = enemyKilled.RepopWaitSecond,
                     EnemyData = new CDataLayoutEnemyData()
                     {
-                        PositionIndex = (byte) packet.Structure.SetId,
+                        PositionIndex = (byte) packet.SetId,
                         EnemyInfo = enemyKilled.asCDataStageLayoutEnemyPresetEnemyInfoClient()
                     }
                 };
@@ -96,7 +97,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // This is used for quests and things like key door monsters
                 S2CInstanceEnemyGroupDestroyNtc groupDestroyedNtc = new S2CInstanceEnemyGroupDestroyNtc()
                 {
-                    LayoutId = packet.Structure.LayoutId,
+                    LayoutId = packet.LayoutId,
                     IsAreaBoss = IsAreaBoss && (client.GameMode == GameMode.Normal)
                 };
                 client.Party.SendToAll(groupDestroyedNtc);
@@ -110,16 +111,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            // TODO: EnemyId and KillNum
-            client.Send(new S2CInstanceEnemyKillRes()
+            if (packet.IsNoBattleReward)
             {
-                EnemyId = enemyKilled.Id,
-                KillNum = 1
-            });
-
-            if (packet.Structure.IsNoBattleReward)
-            {
-                return;
+                return new();
             }
 
             foreach (var partyMemberClient in client.Party.Clients)
@@ -129,23 +123,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 // Items from kill an enemy normally
                 instancedGatheringItems.AddRange(IsQuestControlled ?
-                            partyMemberClient.InstanceQuestDropManager.GenerateEnemyLoot(quest, enemyKilled, packet.Structure.LayoutId, packet.Structure.SetId) :
-                            partyMemberClient.InstanceDropItemManager.GetAssets(layoutId, (int)packet.Structure.SetId));
+                            partyMemberClient.InstanceQuestDropManager.GenerateEnemyLoot(quest, enemyKilled, packet.LayoutId, packet.SetId) :
+                            partyMemberClient.InstanceDropItemManager.GetAssets(layoutId, (int)packet.SetId));
 
                 // Items for any server events which might be active
-                instancedGatheringItems.AddRange(partyMemberClient.InstanceEventDropItemManager.GenerateEventItems(partyMemberClient, enemyKilled, packet.Structure.LayoutId, packet.Structure.SetId));
+                instancedGatheringItems.AddRange(partyMemberClient.InstanceEventDropItemManager.GenerateEventItems(partyMemberClient, enemyKilled, packet.LayoutId, packet.SetId));
 
                 // If the roll was unlucky, there is a chance that no bag will show.
                 if (instancedGatheringItems.Where(x => x.ItemNum > 0).Any())
                 {
                     partyMemberClient.Send(new S2CInstancePopDropItemNtc()
                     {
-                        LayoutId = packet.Structure.LayoutId,
-                        SetId = packet.Structure.SetId,
+                        LayoutId = packet.LayoutId,
+                        SetId = packet.SetId,
                         MdlType = enemyKilled.DropsTable.MdlType,
-                        PosX = packet.Structure.DropPosX,
-                        PosY = packet.Structure.DropPosY,
-                        PosZ = packet.Structure.DropPosZ
+                        PosX = packet.DropPosX,
+                        PosY = packet.DropPosY,
+                        PosZ = packet.DropPosZ
                     });
                 }
             }
@@ -238,6 +232,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     throw new Exception("Unknown member type");
                 }
             }
+
+            // TODO: EnemyId and KillNum
+            return new S2CInstanceEnemyKillRes()
+            {
+                EnemyId = enemyKilled.Id,
+                KillNum = 1
+            };
+
         }
     }
 }
