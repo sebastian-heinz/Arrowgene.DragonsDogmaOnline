@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.Shared.Model;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Runtime.Serialization;
 
 namespace Arrowgene.Ddon.Server
@@ -161,6 +162,11 @@ namespace Arrowgene.Ddon.Server
         [DataMember(Order = 25)] public uint DefaultWarpFavorites { get; set; }
 
         /// <summary>
+        /// Disables the exp correction if all party members are owned by the same character.
+        /// </summary>
+        [DataMember(Order = 26)] public bool DisableExpCorrectionForMyPawn { get; set; }
+
+        /// <summary>
         /// Various URLs used by the client.
         /// Shared with the login server.
         /// </summary>
@@ -204,7 +210,7 @@ namespace Arrowgene.Ddon.Server
                 (9, 10, 0.5),
             };
 
-            AdjustTargetLvEnemyExp = true;
+            AdjustTargetLvEnemyExp = false;
             AdjustTargetLvEnemyExpTiers = new List<(uint MinLv, uint MaxLv, double ExpMultiplier)>()
             {
                 (0, 2, 1.0),
@@ -217,6 +223,8 @@ namespace Arrowgene.Ddon.Server
             EnablePawnCatchup = true;
             PawnCatchupMultiplier = 1.5;
             PawnCatchupLvDiff = 5;
+
+            DisableExpCorrectionForMyPawn = true;
 
             GameClockTimescale = 90;
 
@@ -282,6 +290,7 @@ namespace Arrowgene.Ddon.Server
             EnablePawnCatchup = setting.EnablePawnCatchup;
             PawnCatchupMultiplier = setting.PawnCatchupMultiplier;
             PawnCatchupLvDiff = setting.PawnCatchupLvDiff;
+            DisableExpCorrectionForMyPawn = setting.DisableExpCorrectionForMyPawn;
             PlayPointMax = setting.PlayPointMax;
             JobLevelMax = setting.JobLevelMax;
             ClanMemberMax = setting.ClanMemberMax;

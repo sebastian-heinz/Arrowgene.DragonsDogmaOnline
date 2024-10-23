@@ -794,9 +794,50 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return maxLevel;
         }
 
+        private bool AllMembersOwnedBySameCharacter(PartyGroup party)
+        {
+            uint characterId = 0;
+            foreach (var member in party.Members)
+            {
+                uint id = 0;
+                if (member is PlayerPartyMember)
+                {
+                    var client = ((PlayerPartyMember)member).Client;
+                    id = client.Character.CharacterId;
+                }
+                else if (member is PawnPartyMember)
+                {
+                    var pawn = ((PawnPartyMember)member).Pawn;
+                    if (pawn.IsRented)
+                    {
+                        return false;
+                    }
+
+                    id = pawn.CharacterId;
+                }
+
+                if (characterId == 0)
+                {
+                    characterId = id;
+                }
+
+                if (characterId != id)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         private double CalculatePartyRangeMultipler(GameMode gameMode, PartyGroup party)
         {
             if (!_GameSettings.AdjustPartyEnemyExp || gameMode == GameMode.BitterblackMaze)
+            {
+                return 1.0;
+            }
+
+            if (_GameSettings.DisableExpCorrectionForMyPawn && AllMembersOwnedBySameCharacter(party))
             {
                 return 1.0;
             }
