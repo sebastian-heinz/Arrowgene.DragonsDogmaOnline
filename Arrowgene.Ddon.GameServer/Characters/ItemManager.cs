@@ -370,6 +370,35 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        public uint PredictAddItemSlots(Character character, StorageType destinationStorageType, uint itemId, long num)
+        {
+            long itemsToAdd = num;
+            Storage storage = character.Storage.GetStorage(destinationStorageType);
+            ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(_Server.AssetRepository.ClientItemInfos, itemId);
+            uint stackLimit = clientItemInfo.StorageType != StorageType.ItemBagEquipment && BoxStorageTypes.Contains(destinationStorageType) ? STACK_BOX_MAX : clientItemInfo.StackLimit;
+
+            long existingAvailableStackSlots = storage.Items
+                .Where(x => x != null && x.Item1.ItemId == itemId && x.Item2 < stackLimit)
+                .Sum(x => stackLimit - x!.Item2);
+
+            if (itemsToAdd < existingAvailableStackSlots)
+            {
+                return 0;
+            }
+
+            long requiredFreeStacks = itemsToAdd - existingAvailableStackSlots;
+            uint slotsRequired = (uint) Math.Ceiling(((double) requiredFreeStacks) / stackLimit);
+            
+            return slotsRequired;
+        }
+
+        public bool CanAddItem(Character character, StorageType destinationStorageType, uint itemId, long num)
+        {
+            uint slotsRequired = PredictAddItemSlots(character, destinationStorageType, itemId, num);
+            uint freeSlots = character.Storage.GetStorage(destinationStorageType).EmptySlots();
+            return freeSlots >= slotsRequired;
+        }
+
         private List<CDataItemUpdateResult> DoAddItem(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, uint stackLimit = UInt32.MaxValue, byte plusvalue = 0, DbConnection? connectionIn = null)
         {
             // Add to existing stacks or make new stacks until there are no more items to add
