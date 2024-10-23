@@ -155,7 +155,7 @@ namespace Arrowgene.Ddon.Server
 
         public void LogPacketError<TClient>(TClient client, IPacket packet) where TClient : Client
         {
-            Write(LogLevel.Error, $"PACKET ERROR:{Environment.NewLine}{client.Identity}{Environment.NewLine}{packet}",
+            Write(LogLevel.Error, $"PACKET ERROR: {client.Identity}{Environment.NewLine}{packet}",
                 packet);
         }
 
