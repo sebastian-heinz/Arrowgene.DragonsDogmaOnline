@@ -128,6 +128,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataCraftProduct.Serializer());
             Create(new S2CCraftCraftRankUpNtc.Serializer());
             Create(new CDataCurrentEquipInfo.Serializer());
+
+            Create(new CDataCycleContentsStateList.Serializer());
+
             Create(new CDataEquipSlot.Serializer());
             Create(new CDataDeliveredItem.Serializer());
             Create(new CDataDeliveredItemRecord.Serializer());
@@ -718,6 +721,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SQuestGetQuestScheduleInfoReq.Serializer());
             Create(new C2SQuestPlayInterruptAnswerReq.Serializer());
             Create(new C2SQuestPlayEntryCancelReq.Serializer());
+            Create(new C2SQuestGetCycleContentsStateListReq.Serializer());
 
             Create(new C2SServerGameTimeGetBaseInfoReq.Serializer());
             Create(new C2SServerGetRealTimeReq.Serializer());
@@ -1270,6 +1274,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CQuestPlayEntryCancelNtc.Serializer());
             Create(new S2CQuestPlayInterruptAnswerRes.Serializer());
             Create(new S2CQuestPlayInterruptAnswerNtc.Serializer());
+            Create(new S2CQuestGetCycleContentsStateListRes.Serializer());
 
             Create(new S2CQuestSendLeaderQuestOrderConditionInfoNtc.Serializer());
             Create(new S2CQuestSendLeaderQuestOrderConditionInfoRes.Serializer());
