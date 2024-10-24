@@ -127,6 +127,14 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
+        public bool IsSolo
+        {
+            get
+            {
+                return Clients.Count <= 1;
+            }
+        }
+
         public ErrorRes<PlayerPartyMember> Invite(GameClient invitee, GameClient host)
         {
             if (invitee == null)

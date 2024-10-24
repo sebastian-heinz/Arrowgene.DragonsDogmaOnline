@@ -160,9 +160,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 GameClient memberClient;
                 CharacterCommon memberCharacter;
-                if (member is PlayerPartyMember)
+                if (member is PlayerPartyMember playerMember)
                 {
-                    memberClient = ((PlayerPartyMember)member).Client;
+                    memberClient = playerMember.Client;
                     memberCharacter = memberClient.Character;
 
                     if (memberCharacter.Stage.Id != stageId.Id) continue; // Only nearby allies get XP.
@@ -176,7 +176,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         gainedExp = 0;
                     }
 
-                    memberClient.Party.QuestState.HandleEnemyHuntRequests(_gameServer, memberClient, enemyKilled);
+                    playerMember.QuestState.HandleEnemyHuntRequests(enemyKilled);
 
                     S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
 
@@ -211,9 +211,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp, RewardSource.Enemy);
                     }
                 }
-                else if (member is PawnPartyMember)
+                else if (member is PawnPartyMember pawnMember)
                 {
-                    Pawn pawn = ((PawnPartyMember)member).Pawn;
+                    Pawn pawn = pawnMember.Pawn;
                     memberClient = _gameServer.ClientLookup.GetClientByCharacterId(pawn.CharacterId);
                     memberCharacter = pawn;
 

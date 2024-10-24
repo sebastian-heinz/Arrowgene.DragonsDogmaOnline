@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model.Quest;
@@ -47,9 +48,8 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                 responses.Add(ChatResponse.CommandError(client, $"Invalid questId \"{command[0]}\". This quest does not exist."));
                 return;
             }
-
             //Super jank. Leaves lots of red icons over peoples heads, but doesn't immediately require relogs.
-            client.Party.QuestState.CompleteQuestProgress(quest.QuestScheduleId);
+
             S2CQuestCompleteNtc completeNtc = new S2CQuestCompleteNtc()
             {
                 QuestScheduleId = quest.QuestScheduleId,
@@ -61,17 +61,27 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                 IsHelpReward = quest.RewardParams.IsHelpReward,
                 IsPartyBonus = quest.RewardParams.IsPartyBonus,
             };
-            client.Party.SendToAll(completeNtc);
 
-            client.Party.QuestState.UpdatePriorityQuestList(client);
-
-            if (quest.ResetPlayerAfterQuest)
+            if (quest.IsPersonal)
             {
-                foreach (var memberClient in client.Party.Clients)
+                client.QuestState.CompleteQuest(quest.QuestScheduleId);
+                client.Send(completeNtc);
+            }
+            else
+            {
+                client.Party.QuestState.CompleteQuestProgress(quest.QuestScheduleId);
+                client.Party.QuestState.UpdatePriorityQuestList(client);
+                client.Party.SendToAll(completeNtc);
+
+                if (quest.ResetPlayerAfterQuest)
                 {
-                    _server.CharacterManager.UpdateCharacterExtendedParamsNtc(memberClient, memberClient.Character);
+                    foreach (var memberClient in client.Party.Clients)
+                    {
+                        _server.CharacterManager.UpdateCharacterExtendedParamsNtc(memberClient, memberClient.Character);
+                    }
                 }
             }
+            
 
             responses.Add(ChatResponse.ServerMessage(client, $"Finishing {quest.QuestId.ToString()} ({quest.QuestId})."));
         }

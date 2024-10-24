@@ -118,7 +118,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
                                 if (quest.QuestType == QuestType.Light)
                                 {
-                                    quest.SaveWorkAsStage = true;
+                                    quest.SaveWorkAsStep = true;
                                 }
                             }
                             break;

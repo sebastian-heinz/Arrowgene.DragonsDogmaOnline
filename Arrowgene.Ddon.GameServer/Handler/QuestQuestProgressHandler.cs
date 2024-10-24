@@ -25,13 +25,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.QuestScheduleId = packet.Structure.QuestScheduleId;
             res.QuestProgressResult = 0;
 
-            var partyQuestState = client.Party.QuestState;
             ushort processNo = packet.Structure.ProcessNo;
             uint questScheduleId = packet.Structure.QuestScheduleId;
 
             Logger.Debug($"QuestScheduleId={questScheduleId}, KeyId={packet.Structure.KeyId} ProgressCharacterId={packet.Structure.ProgressCharacterId}, ProcessNo={packet.Structure.ProcessNo}\n");
 
-            if (QuestManager.GetQuestByScheduleId(questScheduleId) == null)
+            var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
+
+            if (quest == null)
             {
                 // Tell the quest state machine that for these static quest packets
                 // these processes are terminated
@@ -44,12 +45,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
-                var processState = partyQuestState.GetProcessState(questScheduleId, processNo);
+                QuestStateManager questState = quest.IsPersonal ? client.QuestState : client.Party.QuestState;
 
-                var quest = client.Party.QuestState.GetQuest(questScheduleId);
+                var processState = questState.GetProcessState(questScheduleId, processNo);
                 res.QuestProcessState = quest.StateMachineExecute(Server, client, processState, out questProgressState);
-
-                partyQuestState.UpdateProcessState(questScheduleId, res.QuestProcessState);
+                questState.UpdateProcessState(questScheduleId, res.QuestProcessState);
 
                 if (questProgressState == QuestProgressState.Accepted && quest.QuestType == QuestType.World)
                 {
@@ -83,12 +83,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (questProgressState == QuestProgressState.Checkpoint || questProgressState == QuestProgressState.Accepted)
                 {
-                    partyQuestState.UpdateQuestProgress(questScheduleId);
+                    questState.UpdateQuestProgress(questScheduleId);
                 }
                 else if (questProgressState == QuestProgressState.Complete)
                 {
                     res.QuestProgressResult = 3; // ProcessEnd
-                    CompleteQuest(quest, client, client.Party, partyQuestState);
+                    CompleteQuest(quest, client, questState);
                 }
 
                 if (res.QuestProcessState.Count > 0)
@@ -97,35 +97,35 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Logger.Info($"{quest.QuestId} ({quest.QuestScheduleId}): ProcessNo={res.QuestProcessState[0].ProcessNo}, SequenceNo={res.QuestProcessState[0].SequenceNo}, BlockNo={res.QuestProcessState[0].BlockNo},");
                     Logger.Info("==========================================================================================");
                 }
-            }
 
-            foreach (var memberClient in client.Party.Clients)
-            {
-                if (memberClient == client)
+                if (!quest.IsPersonal)
                 {
-                    continue;
+                    foreach (var memberClient in client.Party.Clients)
+                    {
+                        if (memberClient == client)
+                        {
+                            continue;
+                        }
+
+                        S2CQuestQuestProgressNtc ntc = new S2CQuestQuestProgressNtc()
+                        {
+                            ProgressCharacterId = memberClient.Character.CharacterId,
+                            QuestScheduleId = quest.QuestScheduleId,
+                            QuestProcessStateList = res.QuestProcessState,
+                        };
+
+                        memberClient.Send(ntc);
+                    }
                 }
-
-                S2CQuestQuestProgressNtc ntc = new S2CQuestQuestProgressNtc()
-                {
-                    ProgressCharacterId = memberClient.Character.CharacterId,
-                    QuestScheduleId = res.QuestScheduleId,
-                    QuestProcessStateList = res.QuestProcessState,
-                };
-
-                memberClient.Send(ntc);
             }
 
             client.Send(res);
         }
 
-        private void CompleteQuest(Quest quest, GameClient client, PartyGroup party, QuestStateManager partyQuestState)
+        private void CompleteQuest(Quest quest, GameClient client, QuestStateManager questState)
         {
-            // Distribute rewards to the party
-            partyQuestState.DistributeQuestRewards(quest.QuestScheduleId);
-
-            // Resolve quest state for all members participating in the quest
-            partyQuestState.CompleteQuestProgress(quest.QuestScheduleId);
+            questState.DistributeQuestRewards(quest.QuestScheduleId);
+            questState.CompleteQuestProgress(quest.QuestScheduleId);
 
             S2CQuestCompleteNtc completeNtc = new S2CQuestCompleteNtc()
             {
@@ -138,10 +138,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 IsHelpReward = quest.RewardParams.IsHelpReward,
                 IsPartyBonus = quest.RewardParams.IsPartyBonus,
             };
-            client.Party.SendToAll(completeNtc);
 
-            // Update the priority quest list
-            client.Party.QuestState.UpdatePriorityQuestList(client.Party.Leader.Client);
+            if (quest.IsPersonal)
+            {
+                client.Send(completeNtc);
+
+                // Finishing personal quests as a non-leader shouldn't adjust the list.
+                if (client.Party.IsSolo || client.Party.Leader?.Client == client)
+                {
+                    client.Party.QuestState.UpdatePriorityQuestList(client.Party.Leader.Client);
+                }
+            }
+            else
+            {
+                client.Party.SendToAll(completeNtc);
+                client.Party.QuestState.UpdatePriorityQuestList(client.Party.Leader.Client);
+            }
 
             if (quest.ResetPlayerAfterQuest)
             {

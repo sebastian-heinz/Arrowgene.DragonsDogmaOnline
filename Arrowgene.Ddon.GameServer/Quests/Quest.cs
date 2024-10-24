@@ -70,7 +70,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public ushort MinimumItemRank { get; set; }
         public QuestId NextQuestId { get; protected set; }
         public bool ResetPlayerAfterQuest { get; protected set; }
-        public bool SaveWorkAsStage { get; protected set; }
+        public bool SaveWorkAsStep { get; protected set; }
         public List<QuestOrderCondition> OrderConditions { get; protected set; }
         public QuestRewardParams RewardParams { get; protected set; }
         public List<CDataWalletPoint> WalletRewards { get; protected set; }
@@ -89,6 +89,13 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public HashSet<StageId> UniqueEnemyGroups { get; protected set; }
         public List<QuestServerAction> ServerActions { get; protected set; }
         public bool Enabled { get; protected set; }
+
+        public bool IsPersonal { get
+            {
+                return QuestType == QuestType.Light
+                    || QuestType == QuestType.Tutorial;
+            } 
+        }
 
         public Quest(QuestId questId, uint questScheduleId, QuestType questType, bool isDiscoverable = false)
         {
@@ -124,7 +131,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             // Handle SaveWorkAsStage (Hunt Board) quests.
             CDataQuestProgressWork workOverride = null;
-            if (step > 1 && SaveWorkAsStage)
+            if (step > 1 && SaveWorkAsStep)
             {
                 workOverride = new CDataQuestProgressWork()
                 {
