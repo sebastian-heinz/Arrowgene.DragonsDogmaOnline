@@ -21,49 +21,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
 
-            if (request.ItemUIDList.Any())
-            {
-                // Condense all the source stacks into one structure; they may be going to different locations though (e.g. storage box -> item bag)
-                // Structure is (Destination, ID) -> Total Count.
-                Dictionary<(StorageType, uint), uint> itemCounts = new();
-                foreach (CDataMoveItemUIDFromTo itemFromTo in request.ItemUIDList)
-                {
-                    var storageItem = client.Character.Storage.GetStorage(itemFromTo.SrcStorageType).FindItemByUId(itemFromTo.ItemUId);
-                    var itemId = storageItem.Item2.ItemId;
-                    itemCounts[(itemFromTo.DstStorageType, itemId)] = itemCounts.GetValueOrDefault((itemFromTo.DstStorageType, itemId)) + itemFromTo.Num;
-                }
-
-                // Second pass to convert the previous structure into one of (Destination, Slots)
-                Dictionary<StorageType, uint> slotsRequired = new();
-                foreach (var condensedItem in itemCounts)
-                {
-                    StorageType destinationStorageType = condensedItem.Key.Item1;
-                    uint slotsPerItem = Server.ItemManager.PredictAddItemSlots(client.Character, destinationStorageType, condensedItem.Key.Item2, condensedItem.Value);
-                    slotsRequired[destinationStorageType] = slotsRequired.GetValueOrDefault(destinationStorageType) + slotsPerItem;
-                }
-
-                // Third pass to check if each storage has enough room.
-                foreach (var check in slotsRequired)
-                {
-                    uint emptySlots = client.Character.Storage.GetStorage(check.Key).EmptySlots();
-                    if (emptySlots < check.Value)
-                    {
-                        if (ItemManager.ItemBagStorageTypes.Contains(check.Key))
-                        {
-                            throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_BAG_CAPACITY_OVER);
-                        }
-                        else if (ItemManager.BoxStorageTypes.Contains(check.Key))
-                        {
-                            throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_STORAGE_CAPACITY_OVER);
-                        }
-                        else
-                        {
-                            throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INTERNAL_ERROR);
-                        }
-                    }
-                }
-            }
-            
             ntc.UpdateType = DetermineUpdateType(request.SourceGameStorageType);
             Server.Database.ExecuteInTransaction(connection =>
             {
