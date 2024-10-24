@@ -7,9 +7,15 @@ namespace Arrowgene.Ddon.GameServer.Party;
 
 public class PlayerPartyMember : PartyMember
 {
+    public PlayerPartyMember(GameClient client, DdonGameServer server)
+    {
+        Client = client;
+        QuestState = new SoloQuestStateManager(this, server);
+    }
+
     public GameClient Client { get; set; }
 
-    public QuestStateManager QuestState { get; set; }
+    public SoloQuestStateManager QuestState { get; set; }
 
     public override CDataPartyMember GetCDataPartyMember()
     {

@@ -83,7 +83,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (questProgressState == QuestProgressState.Checkpoint || questProgressState == QuestProgressState.Accepted)
                 {
-                    partyQuestState.UpdatePartyQuestProgress(Server, client.Party, questScheduleId);
+                    partyQuestState.UpdateQuestProgress(questScheduleId);
                 }
                 else if (questProgressState == QuestProgressState.Complete)
                 {
@@ -122,10 +122,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         private void CompleteQuest(Quest quest, GameClient client, PartyGroup party, QuestStateManager partyQuestState)
         {
             // Distribute rewards to the party
-            partyQuestState.DistributePartyQuestRewards(Server, party, quest.QuestScheduleId);
+            partyQuestState.DistributeQuestRewards(quest.QuestScheduleId);
 
             // Resolve quest state for all members participating in the quest
-            partyQuestState.CompletePartyQuestProgress(Server, party, quest.QuestScheduleId);
+            partyQuestState.CompleteQuestProgress(quest.QuestScheduleId);
 
             S2CQuestCompleteNtc completeNtc = new S2CQuestCompleteNtc()
             {
@@ -141,7 +141,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Party.SendToAll(completeNtc);
 
             // Update the priority quest list
-            client.Party.QuestState.UpdatePriorityQuestList(Server, client.Party.Leader.Client, client.Party);
+            client.Party.QuestState.UpdatePriorityQuestList(client.Party.Leader.Client);
 
             if (quest.ResetPlayerAfterQuest)
             {

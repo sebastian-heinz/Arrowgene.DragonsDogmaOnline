@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public InstanceEnemyManager InstanceEnemyManager { get; }
 
-        public QuestStateManager QuestState { get; }
+        public SharedQuestStateManager QuestState { get; }
 
         public Dictionary<uint, Dictionary<ulong, uint>> InstanceOmData { get; }
 
@@ -56,7 +56,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
             InstanceOmData = new Dictionary<uint, Dictionary<ulong, uint>>();
 
-            QuestState = new QuestStateManager();
+            QuestState = new SharedQuestStateManager(this, partyManager.Server);
         }
 
         // Contexts[UID] = ContextData
@@ -750,8 +750,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         private PlayerPartyMember CreatePartyMember(GameClient client)
         {
-            PlayerPartyMember partyMember = new PlayerPartyMember();
-            partyMember.Client = client;
+            PlayerPartyMember partyMember = new PlayerPartyMember(client, _partyManager.Server);
             partyMember.IsPawn = false;
             partyMember.MemberType = 1;
             partyMember.PawnId = 0;

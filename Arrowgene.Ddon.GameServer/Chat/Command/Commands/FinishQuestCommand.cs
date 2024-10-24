@@ -49,7 +49,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             }
 
             //Super jank. Leaves lots of red icons over peoples heads, but doesn't immediately require relogs.
-            client.Party.QuestState.CompletePartyQuestProgress(_server, client.Party, quest.QuestScheduleId);
+            client.Party.QuestState.CompleteQuestProgress(quest.QuestScheduleId);
             S2CQuestCompleteNtc completeNtc = new S2CQuestCompleteNtc()
             {
                 QuestScheduleId = quest.QuestScheduleId,
@@ -63,7 +63,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             };
             client.Party.SendToAll(completeNtc);
 
-            client.Party.QuestState.UpdatePriorityQuestList(_server, client, client.Party);
+            client.Party.QuestState.UpdatePriorityQuestList(client);
 
             if (quest.ResetPlayerAfterQuest)
             {
