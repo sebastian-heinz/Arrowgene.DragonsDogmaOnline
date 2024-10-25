@@ -1,16 +1,12 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Collections.Generic;
-using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.Quest;
-using Arrowgene.Ddon.GameServer.Quests;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -39,11 +35,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             HashSet<uint> activeQuests = new(client.Party.QuestState.GetActiveQuestScheduleIds());
             activeQuests.UnionWith(client.QuestState.GetActiveQuestScheduleIds());
 
-            foreach (var questId in activeQuests)
+            foreach (var questScheduleId in activeQuests)
             {
-                var quest = QuestManager.GetQuestByScheduleId(questId);
+                var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
                 var questStateManager = quest.IsPersonal ? client.QuestState : client.Party.QuestState;
-                var questState = questStateManager.GetQuestState(questId);
+                var questState = questStateManager.GetQuestState(questScheduleId);
                 pcap.QuestOrderList.Add(quest.ToCDataQuestOrderList(questState.Step));
             }
 

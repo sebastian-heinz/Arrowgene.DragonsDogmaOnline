@@ -160,9 +160,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestStateManager));
 
         protected Dictionary<uint, QuestState> ActiveQuests { get; set; }
-        protected Dictionary<StageId, HashSet<uint>> QuestLookupTable { get; set; }
-        protected List<QuestId> CompletedWorldQuests { get; set; }
-        protected Dictionary<QuestAreaId, HashSet<uint>> RolledInstanceWorldQuests { get; set; }
+        private Dictionary<StageId, HashSet<uint>> QuestLookupTable { get; set; }
+        private List<QuestId> CompletedWorldQuests { get; set; }
+        private Dictionary<QuestAreaId, HashSet<uint>> RolledInstanceWorldQuests { get; set; }
 
         public QuestStateManager()
         {
@@ -869,43 +869,45 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 return;
             }
 
-            foreach (var quest in ActiveQuests)
+            lock (ActiveQuests)
             {
-                Quest questObject = QuestManager.GetQuestByScheduleId(quest.Key);
-                QuestState questState = quest.Value;
-                QuestEnemyHuntRecord huntRecord = questState.UpdateHuntRequest(enemy);
-
-                if (huntRecord != null)
+                foreach (var quest in ActiveQuests)
                 {
-                    if (questObject.SaveWorkAsStep)
+                    Quest questObject = QuestManager.GetQuestByScheduleId(quest.Key);
+                    QuestState questState = quest.Value;
+                    QuestEnemyHuntRecord huntRecord = questState.UpdateHuntRequest(enemy);
+
+                    if (huntRecord != null)
                     {
-                        // The quest machinery of the client expects the entire hunt for light quests to be one stage, but that means progress doesn't persist.
-                        // Without altering the DB structure, we save the progress in the "stage" field:
-                        // Stage 0 -> Not accepted, should never occur.
-                        // Stage 1 -> Accepted, but no work done
-                        // Stage N+1 -> Accepted, but with N work done. 
-                        Server.Database.UpdateQuestProgress(Member.Client.Character.CommonId, questState.QuestScheduleId, questState.QuestType, huntRecord.AmountHunted + 1);
+                        if (questObject.SaveWorkAsStep)
+                        {
+                            // The quest machinery of the client expects the entire hunt for light quests to be one stage, but that means progress doesn't persist.
+                            // Without altering the DB structure, we save the progress in the "stage" field:
+                            // Stage 0 -> Not accepted, should never occur.
+                            // Stage 1 -> Accepted, but no work done
+                            // Stage N+1 -> Accepted, but with N work done. 
+                            Server.Database.UpdateQuestProgress(Member.Client.Character.CommonId, questState.QuestScheduleId, questState.QuestType, huntRecord.AmountHunted + 1);
+                        }
+
+                        S2CQuestQuestProgressWorkSaveNtc ntc = new()
+                        {
+                            QuestScheduleId = quest.Key,
+                            ProcessNo = huntRecord.ProcessNo,
+                            SequenceNo = huntRecord.SequenceNo,
+                            BlockNo = huntRecord.BlockNo
+                        };
+                        ntc.WorkList.Add(new CDataQuestProgressWork()
+                        {
+                            CommandNo = (uint)QuestNotifyCommand.KilledEnemyLight,
+                            Work01 = 0,
+                            Work02 = 0,
+                            Work03 = (int)huntRecord.AmountHunted
+                        });
+
+                        Member.Client.Send(ntc);
                     }
-
-                    S2CQuestQuestProgressWorkSaveNtc ntc = new()
-                    {
-                        QuestScheduleId = quest.Key,
-                        ProcessNo = huntRecord.ProcessNo,
-                        SequenceNo = huntRecord.SequenceNo,
-                        BlockNo = huntRecord.BlockNo
-                    };
-                    ntc.WorkList.Add(new CDataQuestProgressWork()
-                    {
-                        CommandNo = (uint)QuestNotifyCommand.KilledEnemyLight,
-                        Work01 = 0,
-                        Work02 = 0,
-                        Work03 = (int)huntRecord.AmountHunted
-                    });
-
-                    Member.Client.Send(ntc);
                 }
             }
         }
-
     }
 }

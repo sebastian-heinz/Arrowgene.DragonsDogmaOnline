@@ -1,10 +1,5 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Network;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
@@ -16,22 +11,22 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
         }
 
-        public uint Unk0 { get; set; }
-        public uint Unk1 { get; set; }
+        public uint QuestScheduleId { get; set; }
+        public uint QuestId { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CQuestQuestOrderNtc>
         {
             public override void Write(IBuffer buffer, S2CQuestQuestOrderNtc obj)
             {
-                WriteUInt32(buffer, obj.Unk0);
-                WriteUInt32(buffer, obj.Unk1);
+                WriteUInt32(buffer, obj.QuestScheduleId);
+                WriteUInt32(buffer, obj.QuestId);
             }
 
             public override S2CQuestQuestOrderNtc Read(IBuffer buffer)
             {
                 S2CQuestQuestOrderNtc obj = new S2CQuestQuestOrderNtc();
-                obj.Unk0 = ReadUInt32(buffer);
-                obj.Unk1 = ReadUInt32(buffer);
+                obj.QuestScheduleId = ReadUInt32(buffer);
+                obj.QuestId = ReadUInt32(buffer);
                 return obj;
             }
         }

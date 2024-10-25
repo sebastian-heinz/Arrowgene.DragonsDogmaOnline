@@ -17,8 +17,8 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         Unk3 = 15,
 
         // Pseudo Categories
-        Board = 1,
-        World = 2,
+        Board = Light,
+        World = Set,
         ExtremeMission = TimeGain, // Unsure if this is the proper category
         WildHunt = Unk3
     }
