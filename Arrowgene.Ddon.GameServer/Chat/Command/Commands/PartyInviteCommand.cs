@@ -18,12 +18,14 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
         private DdonGameServer _server;
         private PartyPartyInviteCharacterHandler _inviteCharacterHandler;
         private PawnJoinPartyMypawnHandler _inviteMypawnHandler;
+        private PawnJoinPartyRentedPawnHandler _inviteRentedPawnHandler;
 
         public PartyInviteCommand(DdonGameServer server)
         {
             _server = server;
             _inviteCharacterHandler = new PartyPartyInviteCharacterHandler(server);
             _inviteMypawnHandler = new PawnJoinPartyMypawnHandler(server);
+            _inviteRentedPawnHandler = new PawnJoinPartyRentedPawnHandler(server);
         }
 
         public override void Execute(string[] command, GameClient client, ChatMessage message, List<ChatResponse> responses)
@@ -56,21 +58,43 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             // TODO: What happens if some smartass decides to place a space in their pawns name?
             if (command.Length == 1)
             {
-                var tuple = client.Character.Pawns
-                    .Select((pawn, index) => new {pawn = pawn, pawnNumber = (byte)(index+1)})
-                    .Where(tuple => tuple.pawn.Name == command[0])
-                    .FirstOrDefault();
+                var myTuple = client.Character.Pawns
+                    .Select((pawn, index) => new { pawn = pawn, pawnNumber = (byte)(index + 1) })
+                    .FirstOrDefault(tuple => tuple.pawn.Name == command[0]);
+                //var rentedTuple = client.Character.RentedPawns
+                //    .Select((pawn, index) => new { pawn = pawn, pawnNumber = (byte)(index + 1) })
+                //    .FirstOrDefault(tuple => tuple.pawn.Name == command[0]);
 
-                if (tuple == null)
+                if (myTuple != null)
+                {
+                    if (client.Party.Contains(myTuple.pawn))
+                    {
+                        responses.Add(ChatResponse.CommandError(client, "The party already contains that pawn."));
+                        return;
+                    }
+                    _inviteMypawnHandler.Handle(client, new StructurePacket<C2SPawnJoinPartyMypawnReq>(new C2SPawnJoinPartyMypawnReq()
+                    {
+                        PawnNumber = myTuple.pawnNumber
+                    }));
+                }
+                //else if (rentedTuple != null)
+                //{
+                //    if (client.Party.Contains(rentedTuple.pawn))
+                //    {
+                //        responses.Add(ChatResponse.CommandError(client, "The party already contains that pawn."));
+                //        return;
+                //    }
+
+                //    _inviteMypawnHandler.Handle(client, new StructurePacket<C2SPawnJoinPartyRentedPawnReq>(new C2SPawnJoinPartyRentedPawnReq()
+                //    {
+                //        SlotNo = myTuple.pawnNumber
+                //    }));
+                //}
+                else
                 {
                     responses.Add(ChatResponse.CommandError(client, "No pawn was found by that name."));
                     return;
                 }
-
-                _inviteMypawnHandler.Handle(client, new StructurePacket<C2SPawnJoinPartyMypawnReq>(new C2SPawnJoinPartyMypawnReq()
-                {
-                    PawnNumber = tuple.pawnNumber
-                }));
             }
             else
             {
@@ -86,6 +110,11 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                 {
                     responses.Add(ChatResponse.CommandError(client, "You cannot invite yourself."));
                     return;
+                }
+
+                if (client.Party.Contains(targetClient.Character))
+                {
+                    responses.Add(ChatResponse.CommandError(client, "The party already contains that player."));
                 }
 
                 if (!StageManager.IsSafeArea(targetClient.Character.Stage))
