@@ -1,2 +1,2 @@
-﻿#Id,Name,Brief,TrafficName,TrafficLevel,MaxLoginNum,IpAddress,Port,IsHide
-10,Local Host,Brief,Traffic Name,0,1000,127.0.0.1,52000,false
+﻿#Id,Name,Brief,TrafficName,TrafficLevel,MaxLoginNum,IpAddress,Port,IsHide,RpcPort,RpcAuth,IsHead
+10,Local Host,Brief,Traffic Name,0,1000,127.0.0.1,52000,false,52099,AuthToken,true

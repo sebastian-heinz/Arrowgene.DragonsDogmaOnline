@@ -729,6 +729,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SServerGetScreenShotCategoryReq.Serializer());
             Create(new C2SServerWeatherForecastGetReq.Serializer());
             Create(new C2SServerGetGameSettingReq.Serializer());
+            Create(new C2SServerGetServerListReq.Serializer());
 
             Create(new C2SSkillChangeExSkillReq.Serializer());
             Create(new C2SSkillGetAbilityCostReq.Serializer());
