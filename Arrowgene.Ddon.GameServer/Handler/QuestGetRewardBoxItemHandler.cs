@@ -62,15 +62,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            var slotCount = coalescedRewards.Sum(x => Server.ItemManager.PredictAddItemSlots(client.Character, StorageType.StorageBoxNormal, x.Value.ItemId, x.Value.Num));
+            var distinctRewards = packet.GetRewardBoxItemList.Select(x => x.UID).Distinct().ToList();
+            var slotCount = coalescedRewards.Sum(x => 
+            distinctRewards.Contains(x.Key) 
+            ? Server.ItemManager.PredictAddItemSlots(client.Character, StorageType.StorageBoxNormal, x.Value.ItemId, x.Value.Num)
+            : 0);
 
             if (slotCount > client.Character.Storage.GetStorage(StorageType.StorageBoxNormal).EmptySlots())
             {
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_STORAGE_OVERFLOW);
             }
 
-            foreach (var reward in coalescedRewards.Values)
+            foreach (var rewardUID in distinctRewards)
             {
+                var reward = coalescedRewards[rewardUID];
                 if (Server.ItemManager.IsItemWalletPoint(reward.ItemId))
                 {
                     (WalletType walletType, uint amount) = Server.ItemManager.ItemToWalletPoint(reward.ItemId);
