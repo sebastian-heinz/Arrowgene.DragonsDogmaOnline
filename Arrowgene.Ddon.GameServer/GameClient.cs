@@ -53,6 +53,7 @@ namespace Arrowgene.Ddon.GameServer
         public InstanceEventDropItemManager InstanceEventDropItemManager { get; }
 
         public GameMode GameMode { get; set; }
+        public uint EquipPresetIndex { get; set; }
 
         // TODO: Place somewhere else more sensible
         public uint LastWarpPointId { get; set; }

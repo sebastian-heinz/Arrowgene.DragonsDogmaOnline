@@ -395,6 +395,8 @@ namespace Arrowgene.Ddon.Test.Database
         public List<uint> SelectRandomPlayerPawns(uint limit = 100) { return new List<uint>(); }
         public List<uint> SelectRandomPlayerPawns(DbConnection connection, uint limit = 100) { return new List<uint>(); }
         public uint GetPawnOwnerCharacterId(uint pawnId) { return 0; }
+        public List<CDataRegisterdPawnList> SelectRegisteredPawns(Character searchingCharacter, CDataPawnSearchParameter searchParams) { return new List<CDataRegisterdPawnList>(); }
+        public List<CDataRegisterdPawnList> SelectRegisteredPawns(DbConnection conn, Character searchingCharacter, CDataPawnSearchParameter searchParams) { return new List<CDataRegisterdPawnList>(); }
         public CDataCharacterSearchParam SelectCharacterNameById(uint characterId) { return new CDataCharacterSearchParam(); }
         public CDataCharacterSearchParam SelectCharacterNameById(DbConnection connection, uint characterId) { return new CDataCharacterSearchParam(); }
 
@@ -409,6 +411,14 @@ namespace Arrowgene.Ddon.Test.Database
         public List<CDataClanMemberInfo> GetClanMemberList(uint clanId, DbConnection? connectionIn = null) { return new(); }
         public CDataClanMemberInfo GetClanMember(uint characterId, DbConnection? connectionIn = null) { return new(); }
         public bool UpdateClanMember(CDataClanMemberInfo memberInfo, uint clanId, DbConnection? connectionIn = null) { return true; }
+
+        public bool InsertEquipmentPreset(uint characterCommonId, JobId jobId, uint presetNo, string presetName) { return true; }
+        public bool UpdateEquipmentPreset(uint characterCommonId, JobId jobId, uint presetNo, string presetName) { return true; }
+        public List<CDataEquipPreset> SelectEquipmentPresets(uint characterCommonId, JobId jobId) { return new List<CDataEquipPreset>(); }
+        public bool DeleteEquipmentPreset(uint characterCommonId, JobId jobId, uint presetNo) { return true; }
+        public bool InsertEquipmentPresetTemplate(uint characterCommonId, JobId jobId, uint presetNo, uint slotNo, string itemUId) { return true; }
+        public List<CDataPresetEquipInfo> SelectEquipmentPresetTemplate(uint characterCommonId, JobId jobId, uint presetNo) { return new(); }
+        public bool DeleteEquipmentPresetTemplate(uint characterCommonId, JobId jobId, uint presetNo) { return true; }
 
         public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
         public void AddParameter(DbCommand command, string name, string value) { }
@@ -432,8 +442,6 @@ namespace Arrowgene.Ddon.Test.Database
         public string GetString(DbDataReader reader, string column) { return ""; }
         public bool GetBoolean(DbDataReader reader, string column) { return false; }
         public byte[] GetBytes(DbDataReader reader, string column, int size) { return null; }
-        public List<CDataRegisterdPawnList> SelectRegisteredPawns(Character searchingCharacter, CDataPawnSearchParameter searchParams) { return new List<CDataRegisterdPawnList>(); }
-        public List<CDataRegisterdPawnList> SelectRegisteredPawns(DbConnection conn, Character searchingCharacter, CDataPawnSearchParameter searchParams) { return new List<CDataRegisterdPawnList>(); }
     }
 
     class MockMigrationStrategy : IMigrationStrategy

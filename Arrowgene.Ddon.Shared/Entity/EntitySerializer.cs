@@ -129,6 +129,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCraftCraftRankUpNtc.Serializer());
             Create(new CDataCurrentEquipInfo.Serializer());
             Create(new CDataEquipSlot.Serializer());
+            Create(new CDataEquipPreset.Serializer());
             Create(new CDataDeliveredItem.Serializer());
             Create(new CDataDeliveredItemRecord.Serializer());
             Create(new CDataDeliveryItem.Serializer());
@@ -278,6 +279,8 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new CDataPlayPointDataSerializer());
             Create(new CDataPresetAbilityParam.Serializer());
+            Create(new CDataPresetEquipInfo.Serializer());
+            Create(new CDatapresetEquipUnk0.Serializer());
             Create(new CDataPriorityQuest.Serializer());
             Create(new CDataPriorityQuestSetting.Serializer());
 
@@ -529,6 +532,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SEquipUpdateHideCharacterLanternReq.Serializer());
             Create(new C2SEquipUpdateHidePawnHeadArmorReq.Serializer());
             Create(new C2SEquipUpdateHidePawnLanternReq.Serializer());
+            Create(new C2SEquipGetEquipPresetListReq.Serializer());
+            Create(new C2SEquipUpdateEquipPresetReq.Serializer());
+            Create(new C2SEquipUpdateEquipPresetNameReq.Serializer());
 
             Create(new C2SEntryBoardEntryBoardListReq.Serializer());
             Create(new C2SEntryBoardEntryBoardItemCreateReq.Serializer());
@@ -1029,6 +1035,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CEquipUpdateHideCharacterLanternRes.Serializer());
             Create(new S2CEquipUpdateHidePawnHeadArmorRes.Serializer());
             Create(new S2CEquipUpdateHidePawnLanternRes.Serializer());
+            Create(new S2CEquipGetEquipPresetListRes.Serializer());
+            Create(new S2CEquipUpdateEquipPresetRes.Serializer());
+            Create(new S2CEquipUpdateEquipPresetNameRes.Serializer());
+
             Create(new S2CExtendEquipSlotNtc.Serializer());
             Create(new S2CGpGetGpRes.Serializer());
             Create(new S2CGpGetGpDetailRes.Serializer());

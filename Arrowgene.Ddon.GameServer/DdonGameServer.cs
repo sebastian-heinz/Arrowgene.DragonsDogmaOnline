@@ -337,6 +337,9 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new EquipUpdateHideCharacterLanternHandler(this));
             AddHandler(new EquipUpdateHidePawnHeadArmorHandler(this));
             AddHandler(new EquipUpdateHidePawnLanternHandler(this));
+            AddHandler(new EquipGetEquipPresetListHandler(this));
+            AddHandler(new EquipUpdateEquipPresetHandler(this));
+            AddHandler(new EquipUpdateEquipPresetNameHandler(this));
 
             AddHandler(new EventStartHandler(this));
             AddHandler(new EventEndHandler(this));

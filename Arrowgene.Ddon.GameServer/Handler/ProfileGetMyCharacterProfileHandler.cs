@@ -23,6 +23,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SProfileGetMyCharacterProfileReq> packet)
         {
+            client.EquipPresetIndex = 0;
+
             S2CProfileGetMyCharacterProfileRes Result = new S2CProfileGetMyCharacterProfileRes();
             Result.OrbStatusList = _OrbUnlockManager.GetOrbPageStatus(client.Character);
             Result.AbilityCostMax = _CharacterManager.GetMaxAugmentAllocation(client.Character);
