@@ -410,7 +410,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
                 else
                 {
-                    member.CharacterListElement.OnlineStatus = OnlineStatus.Offline;
+                    var channelId = Server.RpcManager.FindPlayerById(memberInfo.CharacterId);
+                    if (channelId > 0)
+                    {
+                        member.CharacterListElement.OnlineStatus = OnlineStatus.Online;
+                        member.CharacterListElement.ServerId = channelId;
+                    }
+                    else
+                    {
+                        member.CharacterListElement.OnlineStatus = OnlineStatus.Offline;
+                    }
                 }
             }
             return memberList;

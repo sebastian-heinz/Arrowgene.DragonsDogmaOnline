@@ -77,6 +77,7 @@ namespace Arrowgene.Ddon.GameServer
             BoardManager = new BoardManager(this);
             TimerManager = new TimerManager(this);
             ClanManager = new ClanManager(this);
+            RpcManager = new RpcManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
