@@ -15,6 +15,8 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using YamlDotNet.Core.Tokens;
 using YamlDotNet.Core;
+using Arrowgene.Ddon.GameServer.Quests;
+using Arrowgene.Ddon.Server.Network;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -288,7 +290,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             ntcData.ItemList.ItemUId = item.UId;
             ntcData.ItemList.ItemId = item.ItemId;
             ntcData.ItemList.ItemNum = finalItemNum;
-            ntcData.ItemList.Unk3 = item.Unk3;
+            ntcData.ItemList.SafetySetting = item.SafetySetting;
             ntcData.ItemList.StorageType = fromStorageType;
             ntcData.ItemList.SlotNo = slotNo;
             ntcData.ItemList.Color = item.Color;
@@ -370,6 +372,35 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        public uint PredictAddItemSlots(Character character, StorageType destinationStorageType, uint itemId, long num)
+        {
+            long itemsToAdd = num;
+            Storage storage = character.Storage.GetStorage(destinationStorageType);
+            ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(_Server.AssetRepository.ClientItemInfos, itemId);
+            uint stackLimit = clientItemInfo.StorageType != StorageType.ItemBagEquipment && BoxStorageTypes.Contains(destinationStorageType) ? STACK_BOX_MAX : clientItemInfo.StackLimit;
+
+            long existingAvailableStackSlots = storage.Items
+                .Where(x => x != null && x.Item1.ItemId == itemId && x.Item2 < stackLimit)
+                .Sum(x => stackLimit - x!.Item2);
+
+            if (itemsToAdd < existingAvailableStackSlots)
+            {
+                return 0;
+            }
+
+            long requiredFreeStacks = itemsToAdd - existingAvailableStackSlots;
+            uint slotsRequired = (uint) Math.Ceiling(((double) requiredFreeStacks) / stackLimit);
+            
+            return slotsRequired;
+        }
+
+        public bool CanAddItem(Character character, StorageType destinationStorageType, uint itemId, long num)
+        {
+            uint slotsRequired = PredictAddItemSlots(character, destinationStorageType, itemId, num);
+            uint freeSlots = character.Storage.GetStorage(destinationStorageType).EmptySlots();
+            return freeSlots >= slotsRequired;
+        }
+
         private List<CDataItemUpdateResult> DoAddItem(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, uint stackLimit = UInt32.MaxValue, byte plusvalue = 0, DbConnection? connectionIn = null)
         {
             // Add to existing stacks or make new stacks until there are no more items to add
@@ -399,7 +430,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     item = new Item() {
                         ItemId = itemId,
-                        Unk3 = 0,
+                        SafetySetting = 0,
                         Color = 0,
                         PlusValue = plusvalue,
                         EquipPoints = 0,
@@ -424,7 +455,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 result.ItemList.ItemUId = item.UId;
                 result.ItemList.ItemId = item.ItemId;
                 result.ItemList.ItemNum = newItemNum;
-                result.ItemList.Unk3 = item.Unk3;
+                result.ItemList.SafetySetting = item.SafetySetting;
                 result.ItemList.StorageType = destinationStorageType;
                 result.ItemList.SlotNo = slot;
                 result.ItemList.Color = item.Color;
@@ -460,7 +491,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 Item? item = new Item()
                 {
                     ItemId = itemId,
-                    Unk3 = 0,
+                    SafetySetting = 0,
                     Color = 0,
                     PlusValue = plusvalue,
                     EquipPoints = 0,
@@ -480,7 +511,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 result.ItemList.ItemUId = item.UId;
                 result.ItemList.ItemId = item.ItemId;
                 result.ItemList.ItemNum = newItemNum;
-                result.ItemList.Unk3 = item.Unk3;
+                result.ItemList.SafetySetting = item.SafetySetting;
                 result.ItemList.StorageType = destinationStorageType;
                 result.ItemList.SlotNo = slot;
                 result.ItemList.Color = item.Color;
@@ -730,7 +761,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.ItemUId = item.UId;
             updateResult.ItemList.ItemId = item.ItemId;
             updateResult.ItemList.ItemNum = itemNum;
-            updateResult.ItemList.Unk3 = item.Unk3;
+            updateResult.ItemList.SafetySetting = item.SafetySetting;
             updateResult.ItemList.StorageType = storageType;
             updateResult.ItemList.SlotNo = slotNo;
             updateResult.ItemList.Color = item.Color;
@@ -772,7 +803,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.ItemUId = newItem.UId;
             updateResult.ItemList.ItemId = newItem.ItemId;
             updateResult.ItemList.ItemNum = 1;
-            updateResult.ItemList.Unk3 = newItem.Unk3;
+            updateResult.ItemList.SafetySetting = newItem.SafetySetting;
             updateResult.ItemList.StorageType = storageType;
             updateResult.ItemList.SlotNo = slotNo;
             updateResult.ItemList.Color = newItem.Color;
@@ -884,6 +915,39 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return results;
+        }
+
+        public void SetSafetySetting(GameClient client, Character character, List<CDataItemUIdList> uids, bool safetySetting)
+        {
+            List<(ushort SlotNo, Item Item, uint Amount, Storage Storage)> items = new();
+
+            var ntc = new S2CItemUpdateCharacterItemNtc()
+            {
+                UpdateType = ItemNoticeType.Default // TODO: Investigate.
+            };
+
+            uint updateItemNum = 0;
+            foreach (var reqitem in uids)
+            {
+                (StorageType storageType, Tuple<ushort, Item, uint> itemProps) = character.Storage.FindItemByUIdInStorage(ItemManager.AllItemStorages, reqitem.UId);
+                var (slotNo, item, amount) = itemProps;
+                var storage = character.Storage.GetStorage(storageType);
+
+                item.SafetySetting = (byte)(safetySetting ? 1 : 0);
+                items.Add((slotNo, item, amount, storage));
+
+                ntc.UpdateItemList.Add(CreateItemUpdateResult(character, item, storageType, slotNo, amount, ++updateItemNum));
+            }
+
+            _Server.Database.ExecuteInTransaction(conn =>
+            {
+                foreach (var item in items)
+                {
+                    UpdateItem(_Server, character, item.Item, item.Storage, item.SlotNo, item.Amount, conn);
+                }
+            });
+
+            client.Send(ntc);
         }
     }
 

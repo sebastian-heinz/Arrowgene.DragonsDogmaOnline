@@ -6,7 +6,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestSetPriorityQuestHandler : GameStructurePacketHandler<C2SQuestSetPriorityQuestReq>
+    public class QuestSetPriorityQuestHandler : GameRequestPacketHandler<C2SQuestSetPriorityQuestReq, S2CQuestSetPriorityQuestRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestSetPriorityQuestHandler));
         
@@ -14,30 +14,37 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SQuestSetPriorityQuestReq> packet)
+        public override S2CQuestSetPriorityQuestRes Handle(GameClient client, C2SQuestSetPriorityQuestReq request)
         {
             S2CQuestSetPriorityQuestNtc ntc = new S2CQuestSetPriorityQuestNtc()
             {
                 CharacterId = client.Character.CharacterId
             };
 
-            Server.Database.InsertPriorityQuest(client.Character.CommonId, packet.Structure.QuestScheduleId);
+            Server.Database.InsertPriorityQuest(client.Character.CommonId, request.QuestScheduleId);
 
-            var prioirtyQuests = Server.Database.GetPriorityQuestScheduleIds(client.Character.CommonId);
-            foreach (var questScheduleId in prioirtyQuests)
+            var priorityQuests = Server.Database.GetPriorityQuestScheduleIds(client.Character.CommonId);
+            foreach (var questScheduleId in priorityQuests)
             {
                 var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
                 var questStateManager = quest.IsPersonal ? client.QuestState : client.Party.QuestState;
                 var questState = questStateManager.GetQuestState(questScheduleId);
+                if (quest is null || questState is null)
+                {
+                    Logger.Error(client, $"Priority quest for quest state which doesn't exist, schedule {questScheduleId}");
+                    Server.Database.DeletePriorityQuest(client.Character.CommonId, questScheduleId);
+                    continue;
+                }
+
                 ntc.PriorityQuestList.Add(quest.ToCDataPriorityQuest(questState.Step));
             }
 
             client.Party.SendToAll(ntc);
 
-            client.Send(new S2CQuestSetPriorityQuestRes()
+            return new S2CQuestSetPriorityQuestRes()
             {
-                QuestScheduleId = packet.Structure.QuestScheduleId
-            });
+                QuestScheduleId = request.QuestScheduleId
+            };
         }
     }
 }

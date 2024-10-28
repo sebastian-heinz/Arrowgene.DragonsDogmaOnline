@@ -105,7 +105,7 @@ namespace Arrowgene.Ddon.Shared.Model
                     ItemUId = tuple.item!.Item1.UId,
                     ItemId = tuple.item.Item1.ItemId,
                     ItemNum = tuple.item.Item2,
-                    Unk3 = tuple.item.Item1.Unk3,
+                    SafetySetting = tuple.item.Item1.SafetySetting,
                     StorageType = storageType,
                     SlotNo = tuple.slot,
                     Color = tuple.item.Item1.Color,
@@ -287,7 +287,7 @@ namespace Arrowgene.Ddon.Shared.Model
                 {
                     ItemId = (ushort) x.ItemId,
                     ColorNo = x.Color,
-                    PlusValue = x.Unk3,
+                    PlusValue = x.SafetySetting,
                     EquipElementParamList = x.EquipElementParamList,
                     AddStatusParamList = x.AddStatusParamList
                 })
@@ -301,7 +301,7 @@ namespace Arrowgene.Ddon.Shared.Model
                 .Select(tuple => new CDataEquipItemInfo()
                 {
                     ItemId = tuple.item?.ItemId ?? 0,
-                    Unk0 = tuple.item?.Unk3 ?? 0,
+                    Unk0 = tuple.item?.SafetySetting ?? 0,
                     EquipType = equipType,
                     EquipSlot = tuple.slot,
                     Color = tuple.item?.Color ?? 0,

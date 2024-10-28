@@ -599,6 +599,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SItemGetEmbodyPayCostReq.Serializer());
             Create(new C2SItemGetSpecifiedHavingItemListReq.Serializer());
             Create(new C2SItemEmbodyItemsReq.Serializer());
+            Create(new C2SItemChangeAttrDiscardReq.Serializer());
             Create(new CDataItemEmbodyItem.Serializer());
 
             Create(new C2SJobChangeJobReq.Serializer());
@@ -1087,6 +1088,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CItemGetSpecifiedHavingItemListRes.Serializer());
             Create(new S2CItemEmbodyItemsRes.Serializer());
             Create(new S2CItemSwitchStorageNtc.Serializer());
+            Create(new S2CItemChangeAttrDiscardRes.Serializer());
 
             Create(new S2CJob_33_3_16_Ntc.Serializer());
             Create(new S2CJobChangeJobNtc.Serializer());

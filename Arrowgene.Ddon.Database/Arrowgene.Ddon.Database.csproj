@@ -34,6 +34,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ContentWithTargetPath Remove="files\database\script\item_safety_setting_migration.sql" />
       <ContentWithTargetPath Remove="files\database\script\migration_light_quest_type.sql" />
       <ContentWithTargetPath Remove="files\database\script\migration_quest_variant_refactor.sql" />
     </ItemGroup>

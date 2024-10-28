@@ -144,6 +144,7 @@
                 {
                     "type": "TalkToNpc",
                     "announce_type": "Update",
+                    "checkpoint": true,
                     "stage_id": {
                         "id": 3
                     },

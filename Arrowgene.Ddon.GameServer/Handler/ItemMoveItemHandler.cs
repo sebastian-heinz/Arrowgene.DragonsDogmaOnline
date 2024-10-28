@@ -1,26 +1,30 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class ItemMoveItemHandler : GameStructurePacketHandler<C2SItemMoveItemReq>
+    public class ItemMoveItemHandler : GameRequestPacketHandler<C2SItemMoveItemReq, S2CItemMoveItemRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ItemGetStorageItemListHandler));
 
         public ItemMoveItemHandler(DdonGameServer server) : base(server)
         {
         }
-        public override void Handle(GameClient client, StructurePacket<C2SItemMoveItemReq> packet)
+
+        public override S2CItemMoveItemRes Handle(GameClient client, C2SItemMoveItemReq request)
         {
             S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
-            ntc.UpdateType = DetermineUpdateType(packet.Structure.SourceGameStorageType);
+
+            ntc.UpdateType = DetermineUpdateType(request.SourceGameStorageType);
             Server.Database.ExecuteInTransaction(connection =>
             {
-                foreach (CDataMoveItemUIDFromTo itemFromTo in packet.Structure.ItemUIDList)
+                foreach (CDataMoveItemUIDFromTo itemFromTo in request.ItemUIDList)
                 {
                     ntc.UpdateItemList.AddRange(
                         Server.ItemManager.MoveItem(
@@ -39,7 +43,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             
             client.Send(ntc);
 
-            client.Send(new S2CItemMoveItemRes());
+            return new S2CItemMoveItemRes();
         }
 
         // Taken from sItemManager::moveItemsFunc (0xB9F867 in the PC Dump)
