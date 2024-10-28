@@ -39,7 +39,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
                         var item = new Item();
                         item.UId = db.GetString(reader, "uid");
                         item.ItemId = db.GetUInt32(reader, "item_id");
-                        item.Unk3 = db.GetByte(reader, "unk3");
+                        item.SafetySetting = db.GetByte(reader, "unk3");
                         item.Color = db.GetByte(reader, "color");
                         item.PlusValue = db.GetByte(reader, "plus_value");
                         ddon_items[item.UId] = item;
@@ -151,7 +151,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
                     db.AddParameter(command, "slot_no", storageItem.Item4);
                     db.AddParameter(command, "item_id", item.ItemId);
                     db.AddParameter(command, "item_num", storageItem.Item5);
-                    db.AddParameter(command, "unk3", item.Unk3);
+                    db.AddParameter(command, "unk3", item.SafetySetting);
                     db.AddParameter(command, "color", item.Color);
                     db.AddParameter(command, "plus_value", item.PlusValue);
                 });

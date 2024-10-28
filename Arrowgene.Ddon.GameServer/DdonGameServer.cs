@@ -401,6 +401,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ItemEmbodyPayCostHandler(this));
             AddHandler(new ItemGetSpecifiedHavingItemListHandler(this));
             AddHandler(new ItemEmbodyItemsHandler(this));
+            AddHandler(new ItemChangeAttrDiscardHandler(this));
 
             AddHandler(new JobChangeJobHandler(this));
             AddHandler(new JobChangePawnJobHandler(this));
