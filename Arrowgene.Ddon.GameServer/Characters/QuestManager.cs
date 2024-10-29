@@ -150,6 +150,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return (quest == null) ? false : quest.Enabled;
         }
 
+        public static QuestStateManager GetQuestStateManager(GameClient client, Quest quest)
+        {
+            return quest.IsPersonal ? client.QuestState : client.Party.QuestState;
+        }
+
         public class LayoutFlag
         {
             public static CDataQuestLayoutFlagSetInfo Create(uint layoutFlag, StageNo stageNo, uint groupId)
@@ -321,7 +326,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             /**
              * @brief
-             * @param enemyId
+             * @param enemyNameId (NOT enemyId)
              * @param enemyLv
              * @param enemyNum
              */

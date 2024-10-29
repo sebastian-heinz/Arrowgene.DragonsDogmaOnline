@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40000128,
+  "base_level": 5,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "White Wings: Cooperation (Mysree Forest)",
+  "light_quest_details": {
+    "area_id": 3,
+    "board_type": 1,
+    "board_id": 4
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 358
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 156
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 81
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "46",
+      "level": 5,
+      "amount": 3
+    }
+  ]
+}

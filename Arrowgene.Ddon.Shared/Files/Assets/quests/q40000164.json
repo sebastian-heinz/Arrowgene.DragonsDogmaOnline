@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40000164,
+  "base_level": 38,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "That Bastard!!",
+  "light_quest_details": {
+    "area_id": 9,
+    "board_type": 1,
+    "board_id": 7
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 2563
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 9001
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1132
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "63",
+      "level": 38,
+      "amount": 3
+    }
+  ]
+}

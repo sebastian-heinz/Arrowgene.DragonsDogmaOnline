@@ -3,13 +3,13 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model.Quest;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestGetLightQuestList : GameStructurePacketHandler<C2SQuestGetLightQuestListReq>
+    public class QuestGetLightQuestList : GameRequestPacketHandler<C2SQuestGetLightQuestListReq, S2CQuestGetLightQuestListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetLightQuestList));
         
@@ -17,32 +17,29 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SQuestGetLightQuestListReq> packet)
+        public override S2CQuestGetLightQuestListRes Handle(GameClient client, C2SQuestGetLightQuestListReq request)
         {
             S2CQuestGetLightQuestListRes res = new S2CQuestGetLightQuestListRes();
 
-            res.BaseId = packet.Structure.BaseId;
-            res.NotCompleteQuestNum = 0;
-            res.GpCompleteEnable = false;
-            res.GpCompletePriceGp = 10;
-            res.LightQuestList = new List<CDataLightQuestList>();
+            res.BaseId = request.BaseId;
 
-            var activeQuests = client.Party.QuestState.GetActiveQuestScheduleIds();
-            foreach (var questScheduleId in QuestManager.GetQuestsByType(QuestType.Light))
+            // TODO: Investigate these values.
+            res.NotCompleteQuestNum = 10;
+            res.GpCompleteEnable = false;
+            res.GpCompletePriceGp = 1;
+
+            res.LightQuestList = new List<CDataLightQuestList>();
+            var quests = QuestManager.GetQuestsByType(QuestType.Light).Where(x => QuestManager.GetQuestByScheduleId(x).LightQuestDetail.BaseAreaPoint == request.BaseId);
+            var completionStats = Server.Database.GetCompletedQuestsByType(client.Character.CommonId, QuestType.Light).ToDictionary(x => x.QuestId, x => x.ClearCount);
+            foreach (var questScheduleId in quests)
             {
-                var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
-                if (activeQuests.Contains(quest.QuestScheduleId))
-                {
-                    continue;
-                }
-                if (!QuestManager.IsBoardQuest(quest.QuestId))
-                {
-                    continue;
-                }
-                res.LightQuestList.Add(quest.ToCDataLightQuestList(0));
+                var lightQuest = QuestManager.GetQuestByScheduleId(questScheduleId);
+                var data = lightQuest.ToCDataLightQuestList(1); // Step 1 has the necessary info that the UI is looking for, not step 0.
+                data.Detail.ClearNum = completionStats.GetValueOrDefault(lightQuest.QuestId);
+                res.LightQuestList.Add(data);
             }
 
-            client.Send(res);
+            return res;
         }
     }
 }

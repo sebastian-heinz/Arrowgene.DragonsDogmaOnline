@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40000045,
+  "base_level": 6,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Vengeance for the Pig!",
+  "light_quest_details": {
+    "area_id": 1,
+    "board_type": 1,
+    "board_id": 3
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 432
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 188
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 103
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "37",
+      "level": 6,
+      "amount": 3
+    }
+  ]
+}

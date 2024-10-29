@@ -619,7 +619,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_QUEST_GET_AREA_BONUS_LIST_RES = new PacketId(11, 19, 2, "S2C_QUEST_GET_AREA_BONUS_LIST_RES", ServerType.Game, PacketSource.Server); // 新聞用エリアボーナスリスト取得に
         public static readonly PacketId C2S_QUEST_QUEST_ORDER_REQ = new PacketId(11, 20, 1, "C2S_QUEST_QUEST_ORDER_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_QUEST_ORDER_RES = new PacketId(11, 20, 2, "S2C_QUEST_QUEST_ORDER_RES", ServerType.Game, PacketSource.Server); // クエスト受注に
-        public static readonly PacketId S2C_QUEST_11_20_16_NTC = new PacketId(11, 20, 16, "S2C_QUEST_11_20_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_QUEST_QUEST_ORDER_NTC = new PacketId(11, 20, 16, "S2C_QUEST_QUEST_ORDER_NTC", ServerType.Game, PacketSource.Server, "S2C_QUEST_11_20_16_NTC");
         public static readonly PacketId C2S_QUEST_QUEST_PROGRESS_REQ = new PacketId(11, 21, 1, "C2S_QUEST_QUEST_PROGRESS_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_QUEST_PROGRESS_RES = new PacketId(11, 21, 2, "S2C_QUEST_QUEST_PROGRESS_RES", ServerType.Game, PacketSource.Server); // クエスト進行に
         public static readonly PacketId S2C_QUEST_QUEST_PROGRESS_NTC = new PacketId(11, 21, 16, "S2C_QUEST_QUEST_PROGRESS_NTC", ServerType.Game, PacketSource.Server, "S2C_QUEST_11_21_16_NTC");
@@ -2548,7 +2548,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_QUEST_GET_AREA_BONUS_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_QUEST_QUEST_ORDER_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_QUEST_ORDER_RES);
-            AddPacketIdEntry(packetIds, S2C_QUEST_11_20_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_QUEST_QUEST_ORDER_NTC);
             AddPacketIdEntry(packetIds, C2S_QUEST_QUEST_PROGRESS_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_QUEST_PROGRESS_RES);
             AddPacketIdEntry(packetIds, S2C_QUEST_QUEST_PROGRESS_NTC);

@@ -1,36 +1,29 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Dump;
-using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestGetCycleContentsStateListHandler : PacketHandler<GameClient>
+    public class QuestGetCycleContentsStateListHandler : GameRequestPacketHandler<C2SQuestGetCycleContentsStateListReq, S2CQuestGetCycleContentsStateListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetCycleContentsStateListHandler));
-
 
         public QuestGetCycleContentsStateListHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override PacketId Id => PacketId.C2S_QUEST_GET_CYCLE_CONTENTS_STATE_LIST_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override S2CQuestGetCycleContentsStateListRes Handle(GameClient client, C2SQuestGetCycleContentsStateListReq request)
         {
 #if false
             /*
@@ -87,6 +80,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ntc.MobHuntQuestOrderList.Add(mobHuntQuest);
             }
 
+            var lightQuestInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.Light);
+            foreach (var questProgress in lightQuestInProgress)
+            {
+                var quest = QuestManager.GetQuestByScheduleId(questProgress.QuestScheduleId);
+                var lightQuest = quest.ToCDataLightQuestOrderList(questProgress.Step);
+                ntc.LightQuestOrderList.Add(lightQuest);
+            }
+
             if (client.Party != null)
             {
                 var priorityQuests = Server.Database.GetPriorityQuestScheduleIds(client.Party.Leader.Client.Character.CommonId);
@@ -108,11 +109,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             client.Send(ntc);
 #endif
-            IBuffer buffer = new StreamBuffer();
-            buffer.WriteInt32(0, Endianness.Big);
-            buffer.WriteInt32(0, Endianness.Big);
-            buffer.WriteUInt32(0, Endianness.Big);
-            client.Send(new Packet(PacketId.S2C_QUEST_GET_CYCLE_CONTENTS_STATE_LIST_RES, buffer.GetAllBytes()));
+            return new();
 
             // client.Send(InGameDump.Dump_24);
         }

@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40000010,
+  "base_level": 12,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Area Order: Temple Outskirts Demon Extermination",
+  "light_quest_details": {
+    "area_id": 1,
+    "board_type": 1,
+    "board_id": 1
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 2502
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1797
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 759
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "79",
+      "level": 12,
+      "amount": 1
+    }
+  ]
+}

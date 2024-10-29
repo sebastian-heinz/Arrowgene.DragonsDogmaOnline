@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -54,7 +55,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var progress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All);
             foreach (var questProgress in progress)
             {
-                party.QuestState.AddNewQuest(questProgress.QuestScheduleId, questProgress.Step);
+                var quest = QuestManager.GetQuestByScheduleId(questProgress.QuestScheduleId);
+                if (quest is null)
+                {
+                    continue;
+                }
+
+                QuestStateManager questStateManager = quest.IsPersonal ? join.Value.QuestState : party.QuestState;
+                questStateManager.AddNewQuest(questProgress.QuestScheduleId, questProgress.Step);
             }
 
             // Add quest for debug command

@@ -26,6 +26,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 
         RathniteFoothills = 26, // All of Rathnite Foothills
         FelyanaWilderness = 27, // All of Felyana Wilderness
+        SpecialQuestBoard = 28, // In WDT, possibly elsewhere.
         EliGuardTower = 29, // Eli Guard Tower
         Megado = 30, // Fortress City Megado: Residential District
         NorthernBanditHideout = 31, // Urteca Mountains, Northern Bandit Hideout

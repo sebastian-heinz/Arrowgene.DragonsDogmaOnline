@@ -1,6 +1,7 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Dump;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -35,13 +36,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var priorityQuestScheduleIds = Server.Database.GetPriorityQuestScheduleIds(partyLeader.Client.Character.CommonId);
             foreach (var questScheduleId in priorityQuestScheduleIds)
             {
-                var quest = client.Party.QuestState.GetQuest(questScheduleId);
+                var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
+
                 if (quest == null)
                 {
                     continue;
                 }
 
-                var questState = client.Party.QuestState.GetQuestState(quest);
+                var questStateManager = QuestManager.GetQuestStateManager(client, quest);
+                var questState = questStateManager.GetQuestState(questScheduleId);
+
                 if (questState == null)
                 {
                     // Quest State should not be null, but don't crash

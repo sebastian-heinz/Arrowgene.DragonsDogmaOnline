@@ -17,26 +17,9 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         Unk3 = 15,
 
         // Pseudo Categories
-        Board = 1,
-        World = 1, // World should be Set Quest (2) not light
-        ExtremeMission = TimeGain,
+        Board = Light,
+        World = Set,
+        ExtremeMission = TimeGain, // Unsure if this is the proper category
         WildHunt = Unk3
-#if false
-// Seems game has 2 different sets of quest IDs
-// which one is the right one to use???
-        Main = 0,
-        Set = 1,
-        Light = 2,
-        Tutorial = 3,
-        TimeLimited = 4,
-        WorldSetting = 5,
-        Cycle01 = 6,
-        Cycle04 = 7,
-        CycleEndContents = 8,
-        CycleSubCategory = 9,
-        Pawn = 10,
-        DebugTool = 11,
-        ManagerNum = 12,
-#endif
     }
 }

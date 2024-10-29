@@ -1,6 +1,6 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -26,8 +26,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var priorityQuests = Server.Database.GetPriorityQuestScheduleIds(client.Character.CommonId);
             foreach (var questScheduleId in priorityQuests)
             {
-                var quest = client.Party.QuestState.GetQuest(questScheduleId);
-                var questState = client.Party.QuestState.GetQuestState(questScheduleId);
+                var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
+                var questStateManager = QuestManager.GetQuestStateManager(client, quest);
+                var questState = questStateManager.GetQuestState(questScheduleId);
                 if (quest is null || questState is null)
                 {
                     Logger.Error(client, $"Priority quest for quest state which doesn't exist, schedule {questScheduleId}");

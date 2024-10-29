@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.GatheringItems;
 using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.GameServer.Shop;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
@@ -43,7 +44,7 @@ namespace Arrowgene.Ddon.GameServer
         public Account Account { get; set; }
 
         public Character Character { get; set; }
-        
+
         public PartyGroup Party { get; set; }
         public InstanceShopManager InstanceShopManager { get; }
         public InstanceGatheringItemManager InstanceGatheringItemManager { get; }
@@ -53,6 +54,12 @@ namespace Arrowgene.Ddon.GameServer
         public InstanceEventDropItemManager InstanceEventDropItemManager { get; }
 
         public GameMode GameMode { get; set; }
+
+        public QuestStateManager QuestState { get
+            {
+                return ((PlayerPartyMember)Party?.GetPartyMemberByCharacter(Character))?.QuestState;
+            } 
+        }
 
         // TODO: Place somewhere else more sensible
         public uint LastWarpPointId { get; set; }

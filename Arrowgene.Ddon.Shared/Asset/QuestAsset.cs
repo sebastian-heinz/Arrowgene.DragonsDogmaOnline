@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using System.Collections.Generic;
@@ -46,6 +47,7 @@ namespace Arrowgene.Ddon.Shared.Asset
         public List<QuestLayoutFlagSetInfo> QuestLayoutSetInfoFlags { get; set; }
         public Dictionary<uint, QuestEnemyGroup> EnemyGroups {  get; set; }
         public QuestMissionParams MissionParams {  get; set; }
+        public CDataLightQuestDetail LightQuestDetail { get; set; }
         public List<QuestServerAction> ServerActions { get; set; }
 
         public QuestAssetData()
@@ -60,6 +62,7 @@ namespace Arrowgene.Ddon.Shared.Asset
             OrderConditions = new List<QuestOrderCondition>();
             MissionParams = new QuestMissionParams();
             ServerActions = new List<QuestServerAction>();
+            LightQuestDetail = new CDataLightQuestDetail();
         }
     }
 }

@@ -1,15 +1,12 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Collections.Generic;
-using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -34,10 +31,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
             EntitySerializer<S2CQuestGetPartyQuestProgressInfoRes> serializer = EntitySerializer.Get<S2CQuestGetPartyQuestProgressInfoRes>();
             S2CQuestGetPartyQuestProgressInfoRes pcap = serializer.Read(GameFull.data_Dump_142);
 
-            foreach (var questId in client.Party.QuestState.GetActiveQuestScheduleIds())
+            // TODO: Do we need to check personal quests here?
+            HashSet<uint> activeQuests = new(client.Party.QuestState.GetActiveQuestScheduleIds());
+            activeQuests.UnionWith(client.QuestState.GetActiveQuestScheduleIds());
+
+            foreach (var questScheduleId in activeQuests)
             {
-                var quest = client.Party.QuestState.GetQuest(questId);
-                var questState = client.Party.QuestState.GetQuestState(questId);
+                var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
+                var questStateManager = QuestManager.GetQuestStateManager(client, quest);
+                var questState = questStateManager.GetQuestState(questScheduleId);
                 pcap.QuestOrderList.Add(quest.ToCDataQuestOrderList(questState.Step));
             }
 

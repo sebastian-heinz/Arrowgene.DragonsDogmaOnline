@@ -32,20 +32,8 @@
             <TargetPath>Files\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
         </ContentWithTargetPath>
     </ItemGroup>
-
-    <ItemGroup>
-      <ContentWithTargetPath Remove="files\database\script\item_safety_setting_migration.sql" />
-      <ContentWithTargetPath Remove="files\database\script\migration_quest_variant_refactor.sql" />
-    </ItemGroup>
-
+    
     <ItemGroup>
         <ProjectReference Include="..\Arrowgene.Ddon.Shared\Arrowgene.Ddon.Shared.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <None Update="Files\Database\Script\migration_quest_variant_refactor.sql">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
-
 </Project>

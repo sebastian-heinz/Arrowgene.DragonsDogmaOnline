@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40000067,
+  "base_level": 7,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "What Lurks in the Waters",
+  "light_quest_details": {
+    "area_id": 2,
+    "board_type": 1,
+    "board_id": 2
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 506
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 230
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 125
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "45",
+      "level": 7,
+      "amount": 3
+    }
+  ]
+}

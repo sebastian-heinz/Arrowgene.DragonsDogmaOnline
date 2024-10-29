@@ -11,7 +11,7 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestDecideDeliveryItemHandler : GameStructurePacketHandler<C2SQuestDecideDeliveryItemReq>
+    public class QuestDecideDeliveryItemHandler : GameRequestPacketHandler<C2SQuestDecideDeliveryItemReq, S2CQuestDecideDeliveryItemRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestDecideDeliveryItemHandler));
 
@@ -20,28 +20,36 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SQuestDecideDeliveryItemReq> packet)
+        public override S2CQuestDecideDeliveryItemRes Handle(GameClient client, C2SQuestDecideDeliveryItemReq request)
         {
             S2CQuestDecideDeliveryItemRes res = new S2CQuestDecideDeliveryItemRes()
             {
-                QuestScheduleId = packet.Structure.QuestScheduleId,
-                ProcessNo = packet.Structure.ProcessNo,
+                QuestScheduleId = request.QuestScheduleId,
+                ProcessNo = request.ProcessNo,
             };
 
-            var questState = client.Party.QuestState.GetQuestState(packet.Structure.QuestScheduleId);
+            var quest = QuestManager.GetQuestByScheduleId(request.QuestScheduleId);
+            var questStateManager = QuestManager.GetQuestStateManager(client, quest);
+            var questState = questStateManager.GetQuestState(request.QuestScheduleId);
             if (questState.DeliveryRequestComplete())
             {
-
                 S2CQuestDecideDeliveryItemNtc ntc = new S2CQuestDecideDeliveryItemNtc()
                 {
-                    QuestScheduleId = packet.Structure.QuestScheduleId,
-                    ProcessNo = packet.Structure.ProcessNo
+                    QuestScheduleId = request.QuestScheduleId,
+                    ProcessNo = request.ProcessNo
                 };
 
-                client.Party.SendToAll(ntc);
+                if (quest.IsPersonal)
+                {
+                    client.Send(ntc);
+                }
+                else
+                {
+                    client.Party.SendToAll(ntc);
+                }
             }
 
-            client.Send(res);
+            return res;
         }
     }
 }

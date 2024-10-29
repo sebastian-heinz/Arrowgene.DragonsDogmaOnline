@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40000210,
+  "base_level": 36,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Area Order: Mysree Grove Demon Extermination",
+  "light_quest_details": {
+    "area_id": 6,
+    "board_type": 1,
+    "board_id": 12
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 6021
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 23628
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 3165
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "72",
+      "level": 36,
+      "amount": 1
+    }
+  ]
+}

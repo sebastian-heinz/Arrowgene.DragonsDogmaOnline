@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.GameServer.Context;
 using Arrowgene.Ddon.GameServer.Instance;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
@@ -33,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public InstanceEnemyManager InstanceEnemyManager { get; }
 
-        public PartyQuestState QuestState { get; }
+        public SharedQuestStateManager QuestState { get; }
 
         public Dictionary<uint, Dictionary<ulong, uint>> InstanceOmData { get; }
 
@@ -55,7 +56,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
             InstanceOmData = new Dictionary<uint, Dictionary<ulong, uint>>();
 
-            QuestState = new PartyQuestState();
+            QuestState = new SharedQuestStateManager(this, partyManager.Server);
         }
 
         // Contexts[UID] = ContextData
@@ -123,6 +124,14 @@ namespace Arrowgene.Ddon.GameServer.Party
                 }
 
                 return members;
+            }
+        }
+
+        public bool IsSolo
+        {
+            get
+            {
+                return Clients.Count <= 1;
             }
         }
 
@@ -749,8 +758,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         private PlayerPartyMember CreatePartyMember(GameClient client)
         {
-            PlayerPartyMember partyMember = new PlayerPartyMember();
-            partyMember.Client = client;
+            PlayerPartyMember partyMember = new PlayerPartyMember(client, _partyManager.Server);
             partyMember.IsPawn = false;
             partyMember.MemberType = 1;
             partyMember.PawnId = 0;

@@ -44,7 +44,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     continue;
                 }
 
-                var questState = client.Party.QuestState.GetQuestState(quest);
+                var questStateManager = QuestManager.GetQuestStateManager(client, quest);
+                var questState = questStateManager.GetQuestState(questScheduleId);
                 if (questState == null || questState.Step == 0)
                 {
                     var tutorialQuest = quest.ToCDataTutorialQuestList(0);
@@ -53,7 +54,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (questState == null)
                 {
-                    client.Party.QuestState.AddNewQuest(quest, 0);
+                    questStateManager.AddNewQuest(quest, 0);
                 }
             }
 

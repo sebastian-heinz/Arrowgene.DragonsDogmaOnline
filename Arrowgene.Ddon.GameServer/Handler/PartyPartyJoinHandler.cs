@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -54,6 +55,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 if (partyLeader.CharacterId != client.Character.CharacterId)
                 {
                     Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.PtMember);
+                }
+            }
+
+            var progress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All);
+            foreach (var questProgress in progress)
+            {
+                var quest = QuestManager.GetQuestByScheduleId(questProgress.QuestScheduleId);
+                if (quest != null && quest.IsPersonal)
+                { 
+                    join.Value.QuestState.AddNewQuest(questProgress.QuestScheduleId, questProgress.Step);
                 }
             }
 
