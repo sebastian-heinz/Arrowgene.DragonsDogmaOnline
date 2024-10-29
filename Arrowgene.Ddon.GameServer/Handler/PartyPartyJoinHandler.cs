@@ -62,12 +62,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (var questProgress in progress)
             {
                 var quest = QuestManager.GetQuestByScheduleId(questProgress.QuestScheduleId);
-                if (quest is null)
-                {
-                    continue;
-                }
-                else if (quest.IsPersonal)
-                {
+                if (quest != null && quest.IsPersonal)
+                { 
                     join.Value.QuestState.AddNewQuest(questProgress.QuestScheduleId, questProgress.Step);
                 }
             }

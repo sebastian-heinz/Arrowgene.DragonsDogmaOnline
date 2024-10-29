@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     continue;
                 }
 
-                var questStateManager = quest.IsPersonal ? client.QuestState : client.Party.QuestState;
+                var questStateManager = QuestManager.GetQuestStateManager(client, quest);
                 var questState = questStateManager.GetQuestState(questScheduleId);
                 if (questState == null || questState.Step == 0)
                 {

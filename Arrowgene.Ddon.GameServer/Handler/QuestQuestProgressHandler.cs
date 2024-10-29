@@ -45,11 +45,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
-                QuestStateManager questState = quest.IsPersonal ? client.QuestState : client.Party.QuestState;
+                QuestStateManager questStateManager = QuestManager.GetQuestStateManager(client, quest);
 
-                var processState = questState.GetProcessState(questScheduleId, processNo);
+                var processState = questStateManager.GetProcessState(questScheduleId, processNo);
                 res.QuestProcessState = quest.StateMachineExecute(Server, client, processState, out questProgressState);
-                questState.UpdateProcessState(questScheduleId, res.QuestProcessState);
+                questStateManager.UpdateProcessState(questScheduleId, res.QuestProcessState);
 
                 if (questProgressState == QuestProgressState.Accepted && quest.QuestType == QuestType.World)
                 {
@@ -83,12 +83,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (questProgressState == QuestProgressState.Checkpoint || questProgressState == QuestProgressState.Accepted)
                 {
-                    questState.UpdateQuestProgress(questScheduleId);
+                    questStateManager.UpdateQuestProgress(questScheduleId);
                 }
                 else if (questProgressState == QuestProgressState.Complete)
                 {
                     res.QuestProgressResult = 3; // ProcessEnd
-                    CompleteQuest(quest, client, questState);
+                    CompleteQuest(quest, client, questStateManager);
                 }
 
                 if (res.QuestProcessState.Count > 0)

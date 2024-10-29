@@ -29,7 +29,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
 
             var quest = QuestManager.GetQuestByScheduleId(request.QuestScheduleId);
-            var questStateManager = quest.IsPersonal ? client.QuestState : client.Party.QuestState;
+            var questStateManager = QuestManager.GetQuestStateManager(client, quest);
             var questState = questStateManager.GetQuestState(request.QuestScheduleId);
             if (questState.DeliveryRequestComplete())
             {

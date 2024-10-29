@@ -18,14 +18,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var res = new S2CQuestQuestOrderRes();
             var questScheduleId = request.QuestScheduleId;
             var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
-            var questState = quest.IsPersonal ? client.QuestState : client.Party.QuestState;
+            var questStateManager = QuestManager.GetQuestStateManager(client, quest);
 
-            if (questState.GetActiveQuestScheduleIds().Contains(questScheduleId))
+            if (questStateManager.GetActiveQuestScheduleIds().Contains(questScheduleId))
             {
                 return res;
             }
 
-            questState.AddNewQuest(QuestManager.GetQuestByScheduleId(questScheduleId), 0);
+            questStateManager.AddNewQuest(QuestManager.GetQuestByScheduleId(questScheduleId), 0);
             res.QuestProcessStateList.AddRange(quest.ToCDataQuestList(0).QuestProcessStateList);
 
             return res;

@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (var questScheduleId in priorityQuests)
             {
                 var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
-                var questStateManager = quest.IsPersonal ? client.QuestState : client.Party.QuestState;
+                var questStateManager = QuestManager.GetQuestStateManager(client, quest);
                 var questState = questStateManager.GetQuestState(questScheduleId);
                 if (quest is null || questState is null)
                 {
