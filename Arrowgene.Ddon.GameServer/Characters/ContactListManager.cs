@@ -59,13 +59,13 @@ public class ContactListManager
         };
     }
 
-    public static CDataFriendInfo CharacterToFriend(Character c, uint unFriendNo, bool isFavorite)
+    public static CDataFriendInfo CharacterToFriend(Character c, uint friendNo, bool isFavorite)
     {
         return new CDataFriendInfo()
         {
             IsFavorite = isFavorite,
             PendingStatus = 0x00, // TODO
-            UnFriendNo = unFriendNo,
+            FriendNo = friendNo,
             CharacterListElement = CharacterToListEml(c)
 
         };
