@@ -34,11 +34,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (var item in request.ItemUIDList)
             {
                 uint itemId = Server.ItemManager.LookupItemByUID(Server, item.UId);
-                var itemUpdate = Server.ItemManager.ConsumeItemByUIdFromItemBag(Server, client.Character, item.UId, item.Num);
-                if (itemUpdate == null)
-                {
-                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_QUEST_DONT_HAVE_DELIVERY_ITEM);
-                }
+                var searchResult = client.Character.Storage.FindItemByUIdInStorage(ItemManager.BothStorageTypes, item.UId);
+                var itemUpdate = Server.ItemManager.ConsumeItemByUId(Server, client.Character, searchResult.Item1, item.UId, item.Num) 
+                    ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_QUEST_DONT_HAVE_DELIVERY_ITEM);
+
                 itemUpdateResults.Add(itemUpdate);
 
                 if (!deliveredItems.ContainsKey(itemId))
