@@ -155,6 +155,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return quest.IsPersonal ? client.QuestState : client.Party.QuestState;
         }
 
+        public static HashSet<uint> CollectQuestScheduleIds(GameClient client, StageId stageId)
+        {
+            var questScheduleIds = new HashSet<uint>();
+            questScheduleIds.UnionWith(client.QuestState.StageQuests(stageId));
+            questScheduleIds.UnionWith(client.Party.QuestState.StageQuests(stageId));
+            return questScheduleIds;
+        }
+
         public class LayoutFlag
         {
             public static CDataQuestLayoutFlagSetInfo Create(uint layoutFlag, StageNo stageNo, uint groupId)

@@ -7,6 +7,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -29,7 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Quest quest = null;
             bool IsQuestControlled = false;
-            foreach (var questScheduleId in client.Party.QuestState.StageQuests(stageId))
+            foreach (var questScheduleId in QuestManager.CollectQuestScheduleIds(client, stageId))
             {
                 quest = QuestManager.GetQuestByScheduleId(questScheduleId);
                 // if (client.Party.QuestState.HasEnemiesInCurrentStageGroup(quest, stageId, subGroupId))
@@ -52,7 +53,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 response.QuestId = (uint) quest.QuestId;
 
-                foreach (var enemy in client.Party.QuestState.GetInstancedEnemies(quest, stageId, subGroupId))
+                var questStateManager = QuestManager.GetQuestStateManager(client, quest);
+                foreach (var enemy in questStateManager.GetInstancedEnemies(quest, stageId, subGroupId))
                 {
                     response.EnemyList.Add(new CDataLayoutEnemyData()
                     {
