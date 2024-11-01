@@ -334,6 +334,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // Check removals caused by equipped an ensemble
             foreach (var changeItem in changeCharacterEquipList)
             {
+                // This is actually a removal, so skip it.
+                if (changeItem.EquipItemUId.Length == 0)
+                {
+                    continue;
+                }
+
                 var itemInfo = server.ItemManager.LookupInfoByUID(server, changeItem.EquipItemUId);
                 if (itemInfo.SubCategory == ItemSubCategory.EquipEnsemble)
                 {
@@ -354,7 +360,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
             }
 
-            return slotsRequired >= freeSlots;
+            return slotsRequired <= freeSlots;
         }
 
         public uint CalculateItemRank(DdonGameServer server, CharacterCommon characterCommon)

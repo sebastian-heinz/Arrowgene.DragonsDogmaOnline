@@ -24,13 +24,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CPawnGetPartyPawnDataRes Handle(GameClient client, C2SPawnGetPartyPawnDataReq packet)
         {
             // var owner = Server.CharacterManager.SelectCharacter(packet.Structure.CharacterId);
-            GameClient owner = this.Server.ClientLookup.GetClientByCharacterId(packet.CharacterId);
+            GameClient owner = this.Server.ClientLookup.GetClientByCharacterId(packet.CharacterId)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CHARACTER_PARAM_NOT_FOUND);
             // TODO: Move this to a function or lookup class
             List<Pawn> pawns = owner.Character.Pawns.Concat(client.Character.RentedPawns).ToList();
 
             Pawn pawn = pawns
-                .Where(pawn => pawn.PawnId == packet.PawnId)
-                .FirstOrDefault() ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_NOT_FOUNDED);
+                .Find(pawn => pawn.PawnId == packet.PawnId)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_NOT_FOUNDED);
 
             var res = new S2CPawnGetPartyPawnDataRes();
             res.CharacterId = pawn.CharacterId;
