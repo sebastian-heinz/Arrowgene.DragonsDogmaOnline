@@ -61,7 +61,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     continue;
                 }
 
-                QuestStateManager questStateManager = quest.IsPersonal ? join.Value.QuestState : party.QuestState;
+                QuestStateManager questStateManager = QuestManager.GetQuestStateManager(client, quest);
                 questStateManager.AddNewQuest(questProgress.QuestScheduleId, questProgress.Step);
             }
 

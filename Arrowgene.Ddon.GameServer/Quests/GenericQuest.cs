@@ -6,7 +6,6 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
-using System.CodeDom.Compiler;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Quests
@@ -154,7 +153,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
             else
             {
-                var proccessState = client.Party.QuestState.GetProcessState(QuestScheduleId, 0);
+                var questStateManager = QuestManager.GetQuestStateManager(client, this);
+
+                var proccessState = questStateManager.GetProcessState(QuestScheduleId, 0);
                 // We need to signal the current block
                 client.Party.SendToAll(new S2CQuestQuestProgressWorkSaveNtc()
                 {
@@ -174,6 +175,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         public override List<CDataQuestProcessState> StateMachineExecute(DdonGameServer server, GameClient client, QuestProcessState processState, out QuestProgressState questProgressState)
         {
+            var questStateManager = QuestManager.GetQuestStateManager(client, this);
+
             if (processState.ProcessNo >= Processes.Count)
             {
                 questProgressState = QuestProgressState.Unknown;
@@ -210,7 +213,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 foreach (var enemyGroupId in questBlock.EnemyGroupIds)
                 {
                     var enemyGroup = EnemyGroups[enemyGroupId];
-                    client.Party.QuestState.SetInstanceEnemies(this, enemyGroup.StageId, (ushort)enemyGroup.SubGroupId, enemyGroup.CreateNewInstance());
+                    questStateManager.SetInstanceEnemies(this, enemyGroup.StageId, (ushort)enemyGroup.SubGroupId, enemyGroup.CreateNewInstance());
                 }
             }
             else
@@ -218,7 +221,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 foreach (var enemyGroupId in questBlock.EnemyGroupIds)
                 {
                     var enemies = EnemyGroups[enemyGroupId];
-                    client.Party.QuestState.SetInstanceEnemies(this, enemies.StageId, (ushort)enemies.SubGroupId, new List<InstancedEnemy>());
+                    questStateManager.SetInstanceEnemies(this, enemies.StageId, (ushort)enemies.SubGroupId, new List<InstancedEnemy>());
                 }
             }
 
