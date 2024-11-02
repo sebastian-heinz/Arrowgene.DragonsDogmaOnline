@@ -158,8 +158,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public static HashSet<uint> CollectQuestScheduleIds(GameClient client, StageId stageId)
         {
             var questScheduleIds = new HashSet<uint>();
-            questScheduleIds.UnionWith(client.QuestState.StageQuests(stageId));
+
             questScheduleIds.UnionWith(client.Party.QuestState.StageQuests(stageId));
+            if (client.Party.Clients.Count == 1)
+            {
+                questScheduleIds.UnionWith(client.QuestState.StageQuests(stageId));
+            }
+            
             return questScheduleIds;
         }
 
