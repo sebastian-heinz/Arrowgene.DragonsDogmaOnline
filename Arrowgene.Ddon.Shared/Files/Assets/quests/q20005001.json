@@ -134,6 +134,7 @@
         "id": 1,
         "group_id": 6
       },
+      "starting_index": 6,
       "enemies": [
         {
           "enemy_id": "0x011110",

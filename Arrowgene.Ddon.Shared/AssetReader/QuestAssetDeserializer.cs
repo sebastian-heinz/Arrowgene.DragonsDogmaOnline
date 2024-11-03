@@ -114,6 +114,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 assetData.QuestScheduleId = jQuestScheduleId.GetUInt32();
             }
 
+            assetData.OverrideEnemySpawn = (assetData.Type == QuestType.Main || assetData.Type == QuestType.ExtremeMission);
+            if (jQuest.TryGetProperty("override_enemy_spawn", out JsonElement jOverrideEnemySpawn))
+            {
+                assetData.OverrideEnemySpawn = jOverrideEnemySpawn.GetBoolean();
+            }
+
             if (jQuest.TryGetProperty("quest_layout_set_info_flags", out JsonElement jLayoutSetInfoFlags))
             {
                 foreach (var layoutFlag in jLayoutSetInfoFlags.EnumerateArray())

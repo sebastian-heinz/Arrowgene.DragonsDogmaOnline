@@ -33,9 +33,10 @@ namespace Arrowgene.Ddon.GameServer.Quests
             quest.StageId = questAsset.StageId;
             quest.MissionParams = questAsset.MissionParams;
             quest.ServerActions = questAsset.ServerActions;
-            quest.Enabled = questAsset.Enabled;
             quest.QuestOrderBackgroundImage = questAsset.QuestOrderBackgroundImage;
             quest.LightQuestDetail = questAsset.LightQuestDetail;
+            quest.Enabled = questAsset.Enabled;
+            quest.OverrideEnemySpawn = questAsset.OverrideEnemySpawn;
 
             foreach (var pointReward in questAsset.PointRewards)
             {
