@@ -7,6 +7,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Data.Common;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -51,45 +52,47 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 res.QuestProcessState = quest.StateMachineExecute(Server, client, processState, out questProgressState);
                 questStateManager.UpdateProcessState(questScheduleId, res.QuestProcessState);
 
-                if (questProgressState == QuestProgressState.Accepted && quest.QuestType == QuestType.World)
+                Server.Database.ExecuteInTransaction(connection =>
                 {
-                    foreach (var memberClient in client.Party.Clients)
+                    if (questProgressState == QuestProgressState.Accepted && quest.QuestType == QuestType.World)
                     {
-                        var questProgress = Server.Database.GetQuestProgressByScheduleId(memberClient.Character.CommonId, questScheduleId);
-
-                        if (questProgress != null)
+                        foreach (var memberClient in client.Party.Clients)
                         {
-                            continue;
-                        }
+                            var questProgress = Server.Database.GetQuestProgressByScheduleId(memberClient.Character.CommonId, questScheduleId, connection);
+                            if (questProgress != null)
+                            {
+                                continue;
+                            }
 
-                        // Add a new world quest record for the player
-                        if (!Server.Database.InsertQuestProgress(memberClient.Character.CommonId, questScheduleId, quest.QuestType, 0))
+                            // Add a new world quest record for the player
+                            if (!Server.Database.InsertQuestProgress(memberClient.Character.CommonId, questScheduleId, quest.QuestType, 0, connection))
+                            {
+                                Logger.Error($"Failed to insert progress for the quest {quest.QuestId}");
+                            }
+                        }
+                    }
+                    else if (questProgressState == QuestProgressState.Accepted &&
+                             (quest.QuestType == QuestType.Tutorial ||
+                              quest.QuestType == QuestType.WildHunt ||
+                              quest.QuestType == QuestType.Light))
+                    {
+                        // Add a new personal quest record for the player
+                        if (!Server.Database.InsertQuestProgress(client.Character.CommonId, questScheduleId, quest.QuestType, 0, connection))
                         {
                             Logger.Error($"Failed to insert progress for the quest {quest.QuestId}");
                         }
                     }
-                }
-                else if (questProgressState == QuestProgressState.Accepted && (
-                    quest.QuestType == QuestType.Tutorial 
-                    || quest.QuestType == QuestType.WildHunt
-                    || quest.QuestType == QuestType.Light))
-                {
-                    // Add a new personal quest record for the player
-                    if (!Server.Database.InsertQuestProgress(client.Character.CommonId, questScheduleId, quest.QuestType, 0))
-                    {
-                        Logger.Error($"Failed to insert progress for the quest {quest.QuestId}");
-                    }
-                }
 
-                if (questProgressState == QuestProgressState.Checkpoint || questProgressState == QuestProgressState.Accepted)
-                {
-                    questStateManager.UpdateQuestProgress(questScheduleId);
-                }
-                else if (questProgressState == QuestProgressState.Complete)
-                {
-                    res.QuestProgressResult = 3; // ProcessEnd
-                    CompleteQuest(quest, client, questStateManager);
-                }
+                    if (questProgressState == QuestProgressState.Checkpoint || questProgressState == QuestProgressState.Accepted)
+                    {
+                        questStateManager.UpdateQuestProgress(questScheduleId, connection);
+                    }
+                    else if (questProgressState == QuestProgressState.Complete)
+                    {
+                        res.QuestProgressResult = 3; // ProcessEnd
+                        CompleteQuest(quest, client, questStateManager, connection);
+                    }
+                });
 
                 if (res.QuestProcessState.Count > 0)
                 {
@@ -122,10 +125,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Send(res);
         }
 
-        private void CompleteQuest(Quest quest, GameClient client, QuestStateManager questState)
+        private void CompleteQuest(Quest quest, GameClient client, QuestStateManager questState, DbConnection? connectionIn = null)
         {
-            questState.DistributeQuestRewards(quest.QuestScheduleId);
-            questState.CompleteQuestProgress(quest.QuestScheduleId);
+            questState.DistributeQuestRewards(quest.QuestScheduleId, connectionIn);
+            questState.CompleteQuestProgress(quest.QuestScheduleId, connectionIn);
 
             S2CQuestCompleteNtc completeNtc = new S2CQuestCompleteNtc()
             {
@@ -146,13 +149,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // Finishing personal quests as a non-leader shouldn't adjust the list.
                 if (client.Party.IsSolo || client.Party.Leader?.Client == client)
                 {
-                    client.Party.QuestState.UpdatePriorityQuestList(client.Party.Leader.Client);
+                    client.Party.QuestState.UpdatePriorityQuestList(client.Party.Leader.Client, connectionIn);
                 }
             }
             else
             {
                 client.Party.SendToAll(completeNtc);
-                client.Party.QuestState.UpdatePriorityQuestList(client.Party.Leader.Client);
+                client.Party.QuestState.UpdatePriorityQuestList(client.Party.Leader.Client, connectionIn);
             }
 
             if (quest.ResetPlayerAfterQuest)

@@ -29,32 +29,24 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private readonly string SqlSelectPriorityQuests = $"SELECT {BuildQueryField(PriorityQuestFields)} FROM \"ddon_priority_quests\" WHERE \"character_common_id\" = @character_common_id;";
         private readonly string SqlDeletePriorityQuest = $"DELETE FROM \"ddon_priority_quests\" WHERE \"character_common_id\" = @character_common_id AND \"quest_schedule_id\" = @quest_schedule_id;";
 
-        public bool InsertPriorityQuest(uint characterCommonId, uint questScheduleId)
+        public bool InsertPriorityQuest(uint characterCommonId, uint questScheduleId, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return InsertPriorityQuest(connection, characterCommonId, questScheduleId);
+            return ExecuteQuerySafe<bool>(connectionIn, (connection) =>
+            {
+                return ExecuteNonQuery(connection, SqlInsertIfNotExistPriorityQuestId, command =>
+                {
+                    AddParameter(command, "character_common_id", characterCommonId);
+                    AddParameter(command, "quest_schedule_id", questScheduleId);
+                }) == 1;
+            });
         }
 
-        public bool InsertPriorityQuest(TCon connection, uint characterCommonId, uint questScheduleId)
+        public List<uint> GetPriorityQuestScheduleIds(uint characterCommonId, DbConnection? connectionIn = null)
         {
-            return ExecuteNonQuery(connection, SqlInsertIfNotExistPriorityQuestId, command =>
+            return ExecuteQuerySafe<List<uint>>(connectionIn, (connection) =>
             {
-                AddParameter(command, "character_common_id", characterCommonId);
-                AddParameter(command, "quest_schedule_id", questScheduleId);
-            }) == 1;
-        }
-
-        public List<uint> GetPriorityQuestScheduleIds(uint characterCommonId)
-        {
-            using TCon connection = OpenNewConnection();
-            return GetPriorityQuests(connection, characterCommonId);
-        }
-        public List<uint> GetPriorityQuests(TCon connection, uint characterCommonId)
-        {
-            List<uint> results = new List<uint>();
-            ExecuteInTransaction(conn =>
-            {
-                ExecuteReader(conn, SqlSelectPriorityQuests,
+                List<uint> results = new List<uint>();
+                ExecuteReader(connection, SqlSelectPriorityQuests,
                     command => {
                         AddParameter(command, "@character_common_id", characterCommonId);
                     }, reader => {
@@ -63,23 +55,20 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                             results.Add(GetUInt32(reader, "quest_schedule_id"));
                         }
                     });
+                return results;
             });
-            return results;
         }
 
-        public bool DeletePriorityQuest(uint characterCommonId, uint questScheduleId)
+        public bool DeletePriorityQuest(uint characterCommonId, uint questScheduleId, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return DeletePriorityQuest(connection, characterCommonId, questScheduleId);
-        }
-
-        public bool DeletePriorityQuest(TCon connection, uint characterCommonId, uint questScheduleId)
-        {
-            return ExecuteNonQuery(connection, SqlDeletePriorityQuest, command =>
+            return ExecuteQuerySafe<bool>(connectionIn, (connection) =>
             {
-                AddParameter(command, "@character_common_id", characterCommonId);
-                AddParameter(command, "quest_schedule_id", questScheduleId);
-            }) == 1;
+                return ExecuteNonQuery(connection, SqlDeletePriorityQuest, command =>
+                {
+                    AddParameter(command, "@character_common_id", characterCommonId);
+                    AddParameter(command, "quest_schedule_id", questScheduleId);
+                }) == 1;
+            });
         }
     }
 }

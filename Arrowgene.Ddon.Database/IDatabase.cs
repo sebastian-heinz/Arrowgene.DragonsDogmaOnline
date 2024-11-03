@@ -143,7 +143,7 @@ namespace Arrowgene.Ddon.Database
 
         // CharacterJobData
         bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData, DbConnection? connectionIn = null);
-        bool UpdateCharacterJobData(uint commonId, CDataCharacterJobData updatedCharacterJobData);
+        bool UpdateCharacterJobData(uint commonId, CDataCharacterJobData updatedCharacterJobData, DbConnection? connectionIn = null);
 
         // Wallet Points
         bool InsertWalletPoint(uint characterId, CDataWalletPoint walletPoint);
@@ -414,37 +414,39 @@ namespace Arrowgene.Ddon.Database
         );
 
         // Rewards
-        bool InsertBoxRewardItems(uint commonId, QuestBoxRewards rewards);
-        bool DeleteBoxRewardItem(uint commonId, uint uniqId);
-        List<QuestBoxRewards> SelectBoxRewardItems(uint commonId);
+        bool InsertBoxRewardItems(uint commonId, QuestBoxRewards rewards, DbConnection? connectionIn = null);
+        bool DeleteBoxRewardItem(uint commonId, uint uniqId, DbConnection? connectionIn = null);
+        List<QuestBoxRewards> SelectBoxRewardItems(uint commonId, DbConnection? connectionIn = null);
 
         // Completed Quests
-        List<CompletedQuest> GetCompletedQuestsByType(uint characterCommonId, QuestType questType);
-        CompletedQuest GetCompletedQuestsById(uint characterCommonId, QuestId questId);
+        List<CompletedQuest> GetCompletedQuestsByType(uint characterCommonId, QuestType questType, DbConnection? connectionIn = null);
+        CompletedQuest GetCompletedQuestsById(uint characterCommonId, QuestId questId, DbConnection? connectionIn = null);
         bool InsertIfNotExistCompletedQuest(
             uint characterCommonId,
             QuestId questId,
-            QuestType questType
+            QuestType questType,
+            DbConnection? connectionIn = null
         );
 
         bool ReplaceCompletedQuest(
             uint characterCommonId,
             QuestId questId,
             QuestType questType,
-            uint count = 1
+            uint count = 1,
+            DbConnection? connectionIn = null
         );
 
         // Quest Progress
-        bool InsertQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType, uint step);
-        bool UpdateQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType, uint step);
-        bool RemoveQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType);
-        List<QuestProgress> GetQuestProgressByType(uint characterCommonId, QuestType questType);
-        QuestProgress GetQuestProgressByScheduleId(uint characterCommonId, uint questScheduleId);
+        bool InsertQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType, uint step, DbConnection? connectionIn = null);
+        bool UpdateQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType, uint step, DbConnection? connectionIn = null);
+        bool RemoveQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType, DbConnection? connectionIn = null);
+        List<QuestProgress> GetQuestProgressByType(uint characterCommonId, QuestType questType, DbConnection? connectionIn = null);
+        QuestProgress GetQuestProgressByScheduleId(uint characterCommonId, uint questScheduleId, DbConnection? connectionIn = null);
 
         // Quest Priority
-        bool InsertPriorityQuest(uint characterCommonId, uint questScheduleId);
-        List<uint> GetPriorityQuestScheduleIds(uint characterCommonId);
-        bool DeletePriorityQuest(uint characterCommonId, uint questScheduleId);
+        bool InsertPriorityQuest(uint characterCommonId, uint questScheduleId, DbConnection? connectionIn = null);
+        List<uint> GetPriorityQuestScheduleIds(uint characterCommonId, DbConnection? connectionIn = null);
+        bool DeletePriorityQuest(uint characterCommonId, uint questScheduleId, DbConnection? connectionIn = null);
 
         // System mail
         long InsertSystemMailAttachment(SystemMailAttachment attachment);
@@ -495,9 +497,10 @@ namespace Arrowgene.Ddon.Database
         // Play points
         bool ReplaceCharacterPlayPointData(
             uint id,
-            CDataJobPlayPoint updatedCharacterPlayPointData
+            CDataJobPlayPoint updatedCharacterPlayPointData,
+            DbConnection? connectionIn = null
         );
-        bool UpdateCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData);
+        bool UpdateCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData, DbConnection? connectionIn = null);
 
         // Stamps
         public bool InsertCharacterStampData(uint id, CharacterStampBonus stampData);

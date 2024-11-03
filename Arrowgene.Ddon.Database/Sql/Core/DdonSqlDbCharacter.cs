@@ -476,7 +476,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach(CDataJobPlayPoint playPoint in character.PlayPointList)
             {
-                ReplaceCharacterPlayPointData(conn, character.ContentCharacterId, playPoint);
+                ReplaceCharacterPlayPointData(character.ContentCharacterId, playPoint, conn);
             }
 
             ExecuteNonQuery(conn, SqlInsertCharacterStamp, (Action<TCom>)(command =>

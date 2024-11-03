@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
@@ -9,6 +10,7 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Quests
@@ -538,12 +540,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
         }
 
-        public abstract bool UpdateQuestProgress(uint questScheduleId);
-        public abstract bool CompleteQuestProgress(uint questScheduleId);
-        public abstract bool DistributeQuestRewards(uint questScheduleId);
-        public abstract void UpdatePriorityQuestList(GameClient requestingClient);
+        public abstract bool UpdateQuestProgress(uint questScheduleId, DbConnection? connectionIn = null);
+        public abstract bool CompleteQuestProgress(uint questScheduleId, DbConnection? connectionIn = null);
+        public abstract bool DistributeQuestRewards(uint questScheduleId, DbConnection? connectionIn = null);
+        public abstract void UpdatePriorityQuestList(GameClient requestingClient, DbConnection? connectionIn = null);
 
-        protected void SendWalletRewards(DdonGameServer server, GameClient client, Quest quest)
+        protected void SendWalletRewards(DdonGameServer server, GameClient client, Quest quest, DbConnection? connectionIn = null)
         {
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
             {
@@ -555,7 +557,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 updateCharacterItemNtc.UpdateWalletList.Add(server.WalletManager.AddToWallet(
                     client.Character, 
                     walletReward.Type, 
-                    walletReward.Value
+                    walletReward.Value,
+                    connectionIn: connectionIn
                 ));
             }
 
@@ -568,15 +571,15 @@ namespace Arrowgene.Ddon.GameServer.Quests
             {
                 if (expPoint.Type == ExpType.ExperiencePoints)
                 {
-                    server.ExpManager.AddExp(client, client.Character, expPoint.Reward, RewardSource.Quest, quest.QuestType);
+                    server.ExpManager.AddExp(client, client.Character, expPoint.Reward, RewardSource.Quest, quest.QuestType, connectionIn);
                 }
                 else if (expPoint.Type == ExpType.JobPoints)
                 {
-                    server.ExpManager.AddJp(client, client.Character, expPoint.Reward, RewardSource.Quest, quest.QuestType);
+                    server.ExpManager.AddJp(client, client.Character, expPoint.Reward, RewardSource.Quest, quest.QuestType, connectionIn);
                 }
                 else if (expPoint.Type == ExpType.PlayPoints)
                 {
-                    server.PPManager.AddPlayPoint(client, expPoint.Reward, type: 1);
+                    server.PPManager.AddPlayPoint(client, expPoint.Reward, type: 1, connectionIn: connectionIn);
                 }
             }
         }
@@ -606,7 +609,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             this.Server = server;
         }
 
-        public override bool CompleteQuestProgress(uint questScheduleId)
+        public override bool CompleteQuestProgress(uint questScheduleId, DbConnection? connectionIn = null)
         {
             Quest quest = GetQuest(questScheduleId);
 
@@ -632,11 +635,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         completedQuests[quest.QuestId].ClearCount += 1;
                     }
 
-                    Server.Database.ReplaceCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, completedQuests[quest.QuestId].ClearCount);
+                    Server.Database.ReplaceCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, completedQuests[quest.QuestId].ClearCount, connectionIn);
                     continue;
                 }
 
-                var result = Server.Database.GetQuestProgressByScheduleId(memberClient.Character.CommonId, questScheduleId);
+                var result = Server.Database.GetQuestProgressByScheduleId(memberClient.Character.CommonId, questScheduleId, connectionIn);
                 if (result == null)
                 {
                     continue;
@@ -647,12 +650,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     continue;
                 }
 
-                Server.Database.DeletePriorityQuest(memberClient.Character.CommonId, questScheduleId);
-                Server.Database.RemoveQuestProgress(memberClient.Character.CommonId, questScheduleId, quest.QuestType);
+                Server.Database.DeletePriorityQuest(memberClient.Character.CommonId, questScheduleId, connectionIn);
+                Server.Database.RemoveQuestProgress(memberClient.Character.CommonId, questScheduleId, quest.QuestType, connectionIn);
                 if (quest.NextQuestId != QuestId.None)
                 {
                     var nextQuest = GetQuest((uint)quest.NextQuestId);
-                    Server.Database.InsertQuestProgress(memberClient.Character.CommonId, nextQuest.QuestScheduleId, nextQuest.QuestType, 0);
+                    Server.Database.InsertQuestProgress(memberClient.Character.CommonId, nextQuest.QuestScheduleId, nextQuest.QuestType, 0, connectionIn);
                 }
 
                 if (!memberClient.Character.CompletedQuests.ContainsKey(quest.QuestId))
@@ -663,12 +666,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         QuestType = quest.QuestType,
                         ClearCount = 1,
                     });
-                    Server.Database.InsertIfNotExistCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType);
+                    Server.Database.InsertIfNotExistCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, connectionIn);
                 }
                 else
                 {
                     uint clearCount = ++memberClient.Character.CompletedQuests[quest.QuestId].ClearCount;
-                    Server.Database.ReplaceCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, clearCount);
+                    Server.Database.ReplaceCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, clearCount, connectionIn);
                 }
             }
 
@@ -678,7 +681,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return true;
         }
 
-        public override bool DistributeQuestRewards(uint questScheduleId)
+        public override bool DistributeQuestRewards(uint questScheduleId, DbConnection? connectionIn = null)
         {
             Quest quest = GetQuest(questScheduleId);
 
@@ -688,7 +691,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 // If this is a main quest, check to see that the member is currently on this quest, otherwise don't reward
                 if (quest.QuestType == QuestType.Main)
                 {
-                    var result = Server.Database.GetQuestProgressByScheduleId(memberClient.Character.CommonId, quest.QuestScheduleId);
+                    var result = Server.Database.GetQuestProgressByScheduleId(memberClient.Character.CommonId, quest.QuestScheduleId, connectionIn);
                     if (result == null)
                     {
                         continue;
@@ -703,17 +706,17 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 // Check for Item Rewards
                 if (quest.HasRewards())
                 {
-                    Server.RewardManager.AddQuestRewards(memberClient, quest);
+                    Server.RewardManager.AddQuestRewards(memberClient, quest, connectionIn);
                 }
 
                 // Check for Exp, Rift and Gold Rewards
-                SendWalletRewards(Server, memberClient, quest);
+                SendWalletRewards(Server, memberClient, quest, connectionIn);
             }
 
             return true;
         }
 
-        public override void UpdatePriorityQuestList(GameClient requestingClient)
+        public override void UpdatePriorityQuestList(GameClient requestingClient, DbConnection? connectionIn = null)
         {
             if (Party.Leader is null || requestingClient != Party.Leader.Client)
             {
@@ -727,7 +730,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 CharacterId = leaderClient.Character.CharacterId
             };
 
-            var priorityQuestScheduleIds = Server.Database.GetPriorityQuestScheduleIds(leaderClient.Character.CommonId);
+            var priorityQuestScheduleIds = Server.Database.GetPriorityQuestScheduleIds(leaderClient.Character.CommonId, connectionIn);
             foreach (var priorityQuestScheduleId in priorityQuestScheduleIds)
             {
                 var quest = QuestManager.GetQuestByScheduleId(priorityQuestScheduleId);
@@ -738,13 +741,13 @@ namespace Arrowgene.Ddon.GameServer.Quests
             Party.SendToAll(prioNtc);
         }
 
-        public override bool UpdateQuestProgress( uint questScheduleId)
+        public override bool UpdateQuestProgress( uint questScheduleId, DbConnection? connectionIn = null)
         {
             var questState = GetQuestState(questScheduleId);
             var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
             foreach (var memberClient in Party.Clients)
             {
-                var result = Server.Database.GetQuestProgressByScheduleId(memberClient.Character.CommonId, questState.QuestScheduleId);
+                var result = Server.Database.GetQuestProgressByScheduleId(memberClient.Character.CommonId, questState.QuestScheduleId, connectionIn);
                 if (result == null)
                 {
                     continue;
@@ -755,7 +758,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     continue;
                 }
 
-                Server.Database.UpdateQuestProgress(memberClient.Character.CommonId, questState.QuestScheduleId, questState.QuestType, questState.Step + 1);
+                Server.Database.UpdateQuestProgress(memberClient.Character.CommonId, questState.QuestScheduleId, questState.QuestType, questState.Step + 1, connectionIn);
             }
 
             questState.Step += 1;
@@ -775,7 +778,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             this.Server = server;
         }
 
-        public override bool UpdateQuestProgress(uint questScheduleId)
+        public override bool UpdateQuestProgress(uint questScheduleId, DbConnection? connectionIn = null)
         {
             var questState = GetQuestState(questScheduleId);
             var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
@@ -798,12 +801,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return true;
         }
 
-        public override bool CompleteQuestProgress(uint questScheduleId)
+        public override bool CompleteQuestProgress(uint questScheduleId, DbConnection? connectionIn = null)
         {
             Quest quest = GetQuest(questScheduleId);
             var questState = GetQuestState(quest);
 
-            var result = Server.Database.GetQuestProgressByScheduleId(Member.Client.Character.CommonId, questScheduleId);
+            var result = Server.Database.GetQuestProgressByScheduleId(Member.Client.Character.CommonId, questScheduleId, connectionIn);
             if (result == null)
             {
                 return false;
@@ -814,12 +817,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 return false;
             }
 
-            Server.Database.DeletePriorityQuest(Member.Client.Character.CommonId, questScheduleId);
-            Server.Database.RemoveQuestProgress(Member.Client.Character.CommonId, questScheduleId, quest.QuestType);
+            Server.Database.DeletePriorityQuest(Member.Client.Character.CommonId, questScheduleId, connectionIn);
+            Server.Database.RemoveQuestProgress(Member.Client.Character.CommonId, questScheduleId, quest.QuestType, connectionIn);
             if (quest.NextQuestId != QuestId.None)
             {
                 var nextQuest = GetQuest((uint)quest.NextQuestId);
-                Server.Database.InsertQuestProgress(Member.Client.Character.CommonId, nextQuest.QuestScheduleId, nextQuest.QuestType, 0);
+                Server.Database.InsertQuestProgress(Member.Client.Character.CommonId, nextQuest.QuestScheduleId, nextQuest.QuestType, 0, connectionIn);
             }
 
             if (!Member.Client.Character.CompletedQuests.ContainsKey(quest.QuestId))
@@ -830,12 +833,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     QuestType = quest.QuestType,
                     ClearCount = 1,
                 });
-                Server.Database.InsertIfNotExistCompletedQuest(Member.Client.Character.CommonId, quest.QuestId, quest.QuestType);
+                Server.Database.InsertIfNotExistCompletedQuest(Member.Client.Character.CommonId, quest.QuestId, quest.QuestType, connectionIn);
             }
             else
             {
                 uint clearCount = ++Member.Client.Character.CompletedQuests[quest.QuestId].ClearCount;
-                Server.Database.ReplaceCompletedQuest(Member.Client.Character.CommonId, quest.QuestId, quest.QuestType, clearCount);
+                Server.Database.ReplaceCompletedQuest(Member.Client.Character.CommonId, quest.QuestId, quest.QuestType, clearCount, connectionIn);
             }
 
             CompleteQuest(quest.QuestScheduleId);
@@ -843,7 +846,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return true;
         }
 
-        public override bool DistributeQuestRewards(uint questScheduleId)
+        public override bool DistributeQuestRewards(uint questScheduleId, DbConnection? connectionIn = null)
         {
             Quest quest = GetQuest(questScheduleId);
             var questState = GetQuestState(quest);
@@ -857,7 +860,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return true;
         }
 
-        public override void UpdatePriorityQuestList(GameClient requestingClient)
+        public override void UpdatePriorityQuestList(GameClient requestingClient, DbConnection? connectionIn = null)
         {
             throw new NotImplementedException();
         }

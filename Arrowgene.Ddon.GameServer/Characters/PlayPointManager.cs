@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System;
+using System.Data.Common;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
@@ -25,7 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private readonly DdonGameServer _Server;
 
-        public void AddPlayPoint(GameClient client, uint gainedPoints, JobId? job = null, byte type = 1)
+        public void AddPlayPoint(GameClient client, uint gainedPoints, JobId? job = null, byte type = 1, DbConnection? connectionIn = null)
         {
             CDataJobPlayPoint? targetPlayPoint;
             if (job is null)
@@ -56,7 +57,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 
                 client.Send(ppNtc);
 
-                _Server.Database.UpdateCharacterPlayPointData(client.Character.CharacterId, targetPlayPoint);
+                _Server.Database.UpdateCharacterPlayPointData(client.Character.CharacterId, targetPlayPoint, connectionIn);
             }
         }
 
