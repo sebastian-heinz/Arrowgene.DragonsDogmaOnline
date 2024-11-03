@@ -14,6 +14,7 @@ using Arrowgene.Ddon.GameServer.Party;
 using System.IO;
 using System.Text;
 using System.Buffers.Text;
+using System.Data.Common;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -458,7 +459,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return JobData;
         }
 
-        public void AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, RewardSource rewardType, QuestType questType = QuestType.All)
+        public void AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, RewardSource rewardType, QuestType questType = QuestType.All, DbConnection? connectionIn = null)
         {
             var lvCap = (client.GameMode == GameMode.Normal) 
                 ? _Server.Setting.GameLogicSetting.JobLevelMax
@@ -564,11 +565,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
 
                 // PERSIST CHANGES IN DB
-                _Server.Database.UpdateCharacterJobData(characterToAddExpTo.CommonId, activeCharacterJobData);
+                _Server.Database.UpdateCharacterJobData(characterToAddExpTo.CommonId, activeCharacterJobData, connectionIn);
             }
         }
 
-        public void AddJp(GameClient client, CharacterCommon characterToJpExpTo, uint gainedJp, RewardSource rewardType, QuestType questType = QuestType.All)
+        public void AddJp(GameClient client, CharacterCommon characterToJpExpTo, uint gainedJp, RewardSource rewardType, QuestType questType = QuestType.All, DbConnection? connectionIn = null)
         {
             CDataCharacterJobData? activeCharacterJobData = characterToJpExpTo.ActiveCharacterJobData;
             activeCharacterJobData.JobPoint += gainedJp;
@@ -594,7 +595,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             // PERSIST CHANGES IN DB
-            _Server.Database.UpdateCharacterJobData(characterToJpExpTo.CommonId, activeCharacterJobData);
+            _Server.Database.UpdateCharacterJobData(characterToJpExpTo.CommonId, activeCharacterJobData, connectionIn);
         }
 
         public void ResetExpData(GameClient client, CharacterCommon characterCommon)

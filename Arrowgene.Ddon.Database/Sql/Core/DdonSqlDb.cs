@@ -131,6 +131,34 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             base.ExecuteReader((TCon) conn, sql, (command) => commandAction.Invoke((TCom) command), (reader) => readAction.Invoke((TReader) reader));
         }
 
+        public T ExecuteQuerySafe<T>(DbConnection? connectionIn, Func<TCon, T> work)
+        {
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
+            {
+                return work.Invoke(connection);
+            }
+            finally
+            {
+                if (!isTransaction) connection.Dispose();
+            }
+        }
+
+        public void ExecuteQuerySafe(DbConnection? connectionIn, Action<TCon> work)
+        {
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
+            {
+                work.Invoke(connection);
+            }
+            finally
+            {
+                if (!isTransaction) connection.Dispose();
+            }
+        }
+
         public bool MigrateDatabase(DatabaseMigrator migrator, uint toVersion)
         {
             uint currentVersion = GetMeta().DatabaseVersion;

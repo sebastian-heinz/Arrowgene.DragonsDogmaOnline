@@ -179,6 +179,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         gainedExp = 0;
                     }
 
+                    // TODO: Add transaction?
                     playerMember.QuestState.HandleEnemyHuntRequests(enemyKilled);
 
                     S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();

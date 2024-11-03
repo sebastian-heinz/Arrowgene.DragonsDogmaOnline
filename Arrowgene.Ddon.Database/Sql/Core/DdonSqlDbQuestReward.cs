@@ -26,46 +26,36 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private readonly string SqlSelectRewardBoxItems = $"SELECT \"uniq_reward_id\", {BuildQueryField(RewardBoxFields)} FROM \"ddon_reward_box\" WHERE \"character_common_id\" = @character_common_id;";
         private readonly string SqlDeleteRewardBoxItem = $"DELETE FROM \"ddon_reward_box\" WHERE \"uniq_reward_id\"=@uniq_reward_id AND \"character_common_id\"=@character_common_id;";
 
-        public bool InsertBoxRewardItems(uint commonId, QuestBoxRewards rewards)
+        public bool InsertBoxRewardItems(uint commonId, QuestBoxRewards rewards, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return InsertBoxRewardItems(connection, commonId, rewards);
-        }
-
-        public bool InsertBoxRewardItems(TCon conn, uint commonId, QuestBoxRewards rewards)
-        {
-            return ExecuteNonQuery(conn, SqlInsertRewardBoxItems, command =>
+            return ExecuteQuerySafe<bool>(connectionIn, (connection) =>
             {
-                AddParameter(command, "character_common_id", commonId);
-                AddParameter(command, "quest_schedule_id", rewards.QuestScheduleId);
-                AddParameter(command, "num_random_rewards", rewards.NumRandomRewards);
-
-                int i;
-                for(i = 0; i < rewards.NumRandomRewards; i++)
+                return ExecuteNonQuery(connection, SqlInsertRewardBoxItems, command =>
                 {
-                    AddParameter(command, $"random_reward{i}_index", rewards.RandomRewardIndices[i]);
-                }
+                    AddParameter(command, "character_common_id", commonId);
+                    AddParameter(command, "quest_schedule_id", rewards.QuestScheduleId);
+                    AddParameter(command, "num_random_rewards", rewards.NumRandomRewards);
 
-                for (; i < MAX_RANDOM_REWARDS; i++)
-                {
-                    AddParameter(command, $"random_reward{i}_index", 0);
-                }
-            }, out long autoIncrement) == 1;
+                    int i;
+                    for (i = 0; i < rewards.NumRandomRewards; i++)
+                    {
+                        AddParameter(command, $"random_reward{i}_index", rewards.RandomRewardIndices[i]);
+                    }
+
+                    for (; i < MAX_RANDOM_REWARDS; i++)
+                    {
+                        AddParameter(command, $"random_reward{i}_index", 0);
+                    }
+                }, out long autoIncrement) == 1;
+            });   
         }
 
-        public List<QuestBoxRewards> SelectBoxRewardItems(uint commonId)
+        public List<QuestBoxRewards> SelectBoxRewardItems(uint commonId, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return SelectBoxRewardItems(connection, commonId);
-        }
-
-        public List<QuestBoxRewards> SelectBoxRewardItems(TCon conn, uint commonId)
-        {
-            List<QuestBoxRewards> results = new List<QuestBoxRewards>();
-
-            ExecuteInTransaction(conn =>
+            return ExecuteQuerySafe<List<QuestBoxRewards>>(connectionIn, (connection) =>
             {
-                ExecuteReader(conn, SqlSelectRewardBoxItems,
+                List<QuestBoxRewards> results = new List<QuestBoxRewards>();
+                ExecuteReader(connection, SqlSelectRewardBoxItems,
                     command => {
                         AddParameter(command, "@character_common_id", commonId);
                     }, reader => {
@@ -75,24 +65,20 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                             results.Add(result);
                         }
                     });
+                return results;
             });
-
-            return results;
         }
 
-        public bool DeleteBoxRewardItem(uint commonId, uint uniqId)
+        public bool DeleteBoxRewardItem(uint commonId, uint uniqId, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return DeleteBoxRewardItem(connection, commonId, uniqId);
-        }
-
-        public bool DeleteBoxRewardItem(TCon conn, uint commonId, uint uniqId)
-        {
-            return ExecuteNonQuery(conn, SqlDeleteRewardBoxItem, command =>
+            return ExecuteQuerySafe<bool>(connectionIn, (connection) =>
             {
-                AddParameter(command, "@character_common_id", commonId);
-                AddParameter(command, "@uniq_reward_id", uniqId);
-            }) == 1;
+                return ExecuteNonQuery(connection, SqlDeleteRewardBoxItem, command =>
+                {
+                    AddParameter(command, "@character_common_id", commonId);
+                    AddParameter(command, "@uniq_reward_id", uniqId);
+                }) == 1;
+            });
         }
 
         private QuestBoxRewards ReadDatabaseQuestBoxReward(TReader reader)

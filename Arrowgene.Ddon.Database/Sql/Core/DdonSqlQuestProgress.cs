@@ -22,44 +22,44 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private readonly string SqlSelectQuestProgressByType = $"SELECT {BuildQueryField(QuestProgressFields)} FROM \"ddon_quest_progress\" WHERE +" +
                                                                $"\"character_common_id\" = @character_common_id AND \"quest_type\" = @quest_type;";
-        private readonly string SqlSelectQuestProgressById = $"SELECT {BuildQueryField(QuestProgressFields)} FROM \"ddon_quest_progress\" WHERE +" +
+        private readonly string SqlSelectQuestProgressByScheduleId = $"SELECT {BuildQueryField(QuestProgressFields)} FROM \"ddon_quest_progress\" WHERE +" +
                                                                $"\"character_common_id\" = @character_common_id AND \"quest_schedule_id\" = @quest_schedule_id;";
         private readonly string SqlSelectAllQuestProgress = $"SELECT {BuildQueryField(QuestProgressFields)} FROM \"ddon_quest_progress\" WHERE +" +
                                                                $"\"character_common_id\" = @character_common_id;";
 
-        public List<QuestProgress> GetQuestProgressByType(uint characterCommonId, QuestType questType)
+        public List<QuestProgress> GetQuestProgressByType(uint characterCommonId, QuestType questType, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            if (questType == QuestType.All)
+            return ExecuteQuerySafe<List<QuestProgress>>(connectionIn, (connection) =>
             {
-                return GetAllQuestProgress(connection, characterCommonId);
-            }
-            else
-            {
-                return GetQuestProgressByType(connection, characterCommonId, questType);
-            }
+                if (questType == QuestType.All)
+                {
+                    return GetAllQuestProgress(connection, characterCommonId);
+                }
+                else
+                {
+                    return GetQuestProgressByType(connection, characterCommonId, questType);
+                }
+            });
         }
 
-        public List<QuestProgress> GetQuestProgressByType(TCon connection, uint characterCommonId, QuestType questType)
+        private List<QuestProgress> GetQuestProgressByType(TCon connection, uint characterCommonId, QuestType questType)
         {
             List<QuestProgress> results = new List<QuestProgress>();
 
-            ExecuteInTransaction(conn =>
-            {
-                ExecuteReader(conn, SqlSelectQuestProgressByType,
-                    command =>
+            ExecuteReader(connection, SqlSelectQuestProgressByType,
+                command =>
+                {
+                    AddParameter(command, "@character_common_id", characterCommonId);
+                    AddParameter(command, "@quest_type", (uint)questType);
+                }, reader =>
+                {
+                    while (reader.Read())
                     {
-                        AddParameter(command, "@character_common_id", characterCommonId);
-                        AddParameter(command, "@quest_type", (uint)questType);
-                    }, reader =>
-                    {
-                        while (reader.Read())
-                        {
-                            var result = ReadQuestProgress(reader);
-                            results.Add(result);
-                        }
-                    });
-            });
+                        var result = ReadQuestProgress(reader);
+                        results.Add(result);
+                    }
+                }
+            );
 
             return results;
         }
@@ -67,39 +67,27 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private List<QuestProgress> GetAllQuestProgress(TCon connection, uint characterCommonId)
         {
             List<QuestProgress> results = new List<QuestProgress>();
-
-            ExecuteInTransaction(conn =>
-            {
-                ExecuteReader(conn, SqlSelectAllQuestProgress,
-                    command =>
+            ExecuteReader(connection, SqlSelectAllQuestProgress,
+                command =>
+                {
+                    AddParameter(command, "@character_common_id", characterCommonId);
+                }, reader =>
+                {
+                    while (reader.Read())
                     {
-                        AddParameter(command, "@character_common_id", characterCommonId);
-                    }, reader =>
-                    {
-                        while (reader.Read())
-                        {
-                            var result = ReadQuestProgress(reader);
-                            results.Add(result);
-                        }
-                    });
-            });
-
+                        var result = ReadQuestProgress(reader);
+                        results.Add(result);
+                    }
+                });
             return results;
         }
 
-
-        public QuestProgress GetQuestProgressByScheduleId(uint characterCommonId, uint questScheduleId)
+        public QuestProgress GetQuestProgressByScheduleId(uint characterCommonId, uint questScheduleId, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return GetQuestProgressById(connection, characterCommonId, questScheduleId);
-        }
-
-        public QuestProgress GetQuestProgressById(TCon connection, uint characterCommonId, uint questScheduleId)
-        {
-            QuestProgress result = null;
-            ExecuteInTransaction(connection =>
+            return ExecuteQuerySafe<QuestProgress>(connectionIn, (connection) =>
             {
-                ExecuteReader(connection, SqlSelectQuestProgressById,
+                QuestProgress result = null;
+                ExecuteReader(connection, SqlSelectQuestProgressByScheduleId,
                     command =>
                     {
                         AddParameter(command, "@character_common_id", characterCommonId);
@@ -111,35 +99,29 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         {
                             result = ReadQuestProgress(reader);
                         }
-                    });
+                    }
+                );
+                return result;
             });
-            return result;
         }
 
-        public bool RemoveQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType)
+        public bool RemoveQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return RemoveQuestProgress(connection, characterCommonId, questScheduleId, questType);
-        }
-
-        public bool RemoveQuestProgress(TCon connection, uint characterCommonId, uint questScheduleId, QuestType questType)
-        {
-            return ExecuteNonQuery(connection, SqlDeleteQuestProgress, command =>
+            return ExecuteQuerySafe<bool>(connectionIn, (connection) =>
             {
-                AddParameter(command, "character_common_id", characterCommonId);
-                AddParameter(command, "quest_type", (uint)questType);
-                AddParameter(command, "quest_schedule_id", questScheduleId);
-            }) == 1;
+                return ExecuteNonQuery(connection, SqlDeleteQuestProgress, command =>
+                {
+                    AddParameter(command, "character_common_id", characterCommonId);
+                    AddParameter(command, "quest_type", (uint)questType);
+                    AddParameter(command, "quest_schedule_id", questScheduleId);
+                }) == 1;
+            });
         }
 
-        public bool InsertQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType, uint step)
+        public bool InsertQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType, uint step, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return InsertQuestProgress(connection, characterCommonId, questScheduleId, questType, step);
-        }
-
-        public bool InsertQuestProgress(TCon connection, uint characterCommonId, uint questScheduleId, QuestType questType, uint step)
-        {
+            return ExecuteQuerySafe<bool>(connectionIn, (connection) =>
+            {
                 return ExecuteNonQuery(connection, SqlInsertQuestProgress, command =>
                 {
                     AddParameter(command, "character_common_id", characterCommonId);
@@ -147,23 +129,21 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     AddParameter(command, "quest_type", (uint)questType);
                     AddParameter(command, "step", (uint)step);
                 }) == 1;
+            });
         }
 
-        public bool UpdateQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType, uint step)
+        public bool UpdateQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType, uint step, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return UpdateQuestProgress(connection, characterCommonId, questScheduleId, questType, step);
-        }
-
-        public bool UpdateQuestProgress(TCon connection, uint characterCommonId, uint questScheduleId, QuestType questType, uint step)
-        {
-            return ExecuteNonQuery(connection, SqlUpdateQuestProgress, command =>
+            return ExecuteQuerySafe<bool>(connectionIn, (connection) =>
             {
-                AddParameter(command, "character_common_id", characterCommonId);
-                AddParameter(command, "quest_schedule_id", questScheduleId);
-                AddParameter(command, "quest_type", (uint)questType);
-                AddParameter(command, "step", (uint)step);
-            }) == 1; ;
+                return ExecuteNonQuery(connection, SqlUpdateQuestProgress, command =>
+                {
+                    AddParameter(command, "character_common_id", characterCommonId);
+                    AddParameter(command, "quest_schedule_id", questScheduleId);
+                    AddParameter(command, "quest_type", (uint)questType);
+                    AddParameter(command, "step", (uint)step);
+                }) == 1;
+            });
         }
 
         private QuestProgress ReadQuestProgress(TReader reader)
