@@ -33,8 +33,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (var questScheduleId in QuestManager.CollectQuestScheduleIds(client, stageId))
             {
                 quest = QuestManager.GetQuestByScheduleId(questScheduleId);
-                // if (client.Party.QuestState.HasEnemiesInCurrentStageGroup(quest, stageId, subGroupId))
-                if (quest.HasEnemiesInInCurrentStage(stageId))
+
+                var questStateManager = QuestManager.GetQuestStateManager(client, quest);
+                if (quest.OverrideEnemySpawn && quest.HasEnemiesInInCurrentStage(stageId))
+                {
+                    IsQuestControlled = true;
+                    break;
+                }
+                else if (!quest.OverrideEnemySpawn && questStateManager.HasEnemiesInCurrentStageGroup(quest, stageId, subGroupId))
                 {
                     IsQuestControlled = true;
                     break;

@@ -89,6 +89,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public HashSet<StageId> UniqueEnemyGroups { get; protected set; }
         public List<QuestServerAction> ServerActions { get; protected set; }
         public bool Enabled { get; protected set; }
+        public bool OverrideEnemySpawn { get; protected set; }
 
         public bool IsPersonal { get
             {

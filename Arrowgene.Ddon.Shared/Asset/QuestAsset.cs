@@ -35,6 +35,7 @@ namespace Arrowgene.Ddon.Shared.Asset
         public ushort BaseLevel { get; set; }
         public byte MinimumItemRank { get; set; }
         public bool Enabled { get; set; }
+        public bool OverrideEnemySpawn { get; set; }
 
         public List<PointReward> PointRewards { get; set; }
 
