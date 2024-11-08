@@ -167,6 +167,42 @@ namespace Arrowgene.Ddon.Server
         [DataMember(Order = 26)] public bool DisableExpCorrectionForMyPawn { get; set; }
 
         /// <summary>
+        /// Global modifier for exp calculations to scale up or down.
+        /// </summary>
+        [DataMember(Order = 26)] public double ExpModifier { get; set; }
+
+        /// <summary>
+        /// Global modifier for pp calculations to scale up or down.
+        /// </summary>
+        [DataMember(Order = 26)] public double PpModifier { get; set; }
+
+        /// <summary>
+        /// Global modifier for BO calculations to scale up or down.
+        /// </summary>
+        [DataMember(Order = 26)] public double BoModifier { get; set; }
+
+        /// <summary>
+        /// Global modifier for HO calculations to scale up or down.
+        /// </summary>
+        [DataMember(Order = 26)] public double HoModifier { get; set; }
+
+        /// <summary>
+        /// Global modifier for JP calculations to scale up or down.
+        /// </summary>
+        [DataMember(Order = 26)] public double JpModifier { get; set; }
+
+        /// <summary>
+        /// Configures the maximum amount of reward box slots.
+        /// </summary>
+        [DataMember(Order = 27)] public byte RewardBoxMax { get; set; }
+
+        /// <summary>
+        /// Configures the maximum amount of quests that can be ordered at one time.
+        /// </summary>
+        [DataMember(Order = 27)] public byte QuestOrderMax { get; set; }
+
+
+        /// <summary>
         /// Various URLs used by the client.
         /// Shared with the login server.
         /// </summary>
@@ -249,6 +285,14 @@ namespace Arrowgene.Ddon.Server
             DefaultMaxBazaarExhibits = 5;
             DefaultWarpFavorites = 3;
 
+            ExpModifier = 1.0;
+            PpModifier = 1.0;
+            BoModifier = 1.0;
+            HoModifier = 1.0;
+            JpModifier = 1.0;
+            RewardBoxMax = 100;
+            QuestOrderMax = 20;
+
             string urlDomain = $"http://localhost:{52099}";
             UrlManual = $"{urlDomain}/manual_nfb/";
             UrlShopDetail = $"{urlDomain}/shop/ingame/stone/detail";
@@ -300,6 +344,14 @@ namespace Arrowgene.Ddon.Server
             WalletLimits = setting.WalletLimits;
             DefaultMaxBazaarExhibits = setting.DefaultMaxBazaarExhibits;
             DefaultWarpFavorites = setting.DefaultWarpFavorites;
+
+            ExpModifier = setting.ExpModifier;
+            PpModifier = setting.PpModifier;
+            BoModifier = setting.BoModifier;
+            HoModifier = setting.HoModifier;
+            JpModifier = setting.JpModifier;
+            RewardBoxMax = setting.RewardBoxMax;
+            QuestOrderMax = setting.QuestOrderMax;
 
             UrlManual = setting.UrlManual;
             UrlShopDetail = setting.UrlShopDetail;
@@ -374,6 +426,26 @@ namespace Arrowgene.Ddon.Server
             if (PawnCatchupMultiplier < 0)
             {
                 PawnCatchupMultiplier = 1.0;
+            }
+            if (ExpModifier < 0)
+            {
+                ExpModifier = 1.0;
+            }
+            if (PpModifier < 0)
+            {
+                PpModifier = 1.0;
+            }
+            if (BoModifier < 0)
+            {
+                BoModifier = 1.0;
+            }
+            if (HoModifier < 0)
+            {
+                HoModifier = 1.0;
+            }
+            if (JpModifier < 0)
+            {
+                JpModifier = 1.0;
             }
        
             foreach (var walletMax in DefaultWalletLimits)

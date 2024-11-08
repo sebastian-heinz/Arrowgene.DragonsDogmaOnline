@@ -509,7 +509,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                     if (client.GameMode == GameMode.Normal)
                     {
-                        addJobPoint += LEVEL_UP_JOB_POINTS_EARNED[targetLevel];
+                        addJobPoint += (uint)(LEVEL_UP_JOB_POINTS_EARNED[targetLevel] * _Server.Setting.GameLogicSetting.JpModifier);
                     }
                 }
 
@@ -903,7 +903,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             if (_Server.GpCourseManager.DisablePartyExpAdjustment())
             {
-                return baseExpAmount;
+                return (uint)(baseExpAmount * _GameSettings.ExpModifier);
             }
 
             double multiplier = 1.0;
@@ -914,7 +914,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 multiplier = Math.Min(partyRangeMultiplier, targetMultiplier);
             }
             
-            return (uint)(multiplier * baseExpAmount);
+            return (uint)(multiplier * baseExpAmount * _GameSettings.ExpModifier);
         }
 
         private uint GetMaxAllowedPartyRange()
@@ -996,13 +996,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             if (!_GameSettings.EnablePawnCatchup || gameMode == GameMode.BitterblackMaze)
             {
-                return baseExpAmount;
+                return (uint)(baseExpAmount * _GameSettings.ExpModifier);
             }
 
             var targetMultiplier = CalculatePawnCatchupTargetLvMultiplier(gameMode, pawn, targetLv);
             var multiplier = _GameSettings.PawnCatchupMultiplier * targetMultiplier;
 
-            return (uint)(multiplier * baseExpAmount);
+            return (uint)(multiplier * baseExpAmount * _GameSettings.ExpModifier);
         }
     }
 }

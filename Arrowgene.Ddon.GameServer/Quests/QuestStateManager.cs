@@ -576,19 +576,36 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             foreach (var expPoint in quest.ExpRewards)
             {
+                uint amount = expPoint.Reward;
+                double modifier = 1.0;
+                switch (expPoint.Type)
+                {
+                    case ExpType.ExperiencePoints:
+                        modifier = server.Setting.GameLogicSetting.ExpModifier;
+                        break;
+                    case ExpType.JobPoints:
+                        modifier = server.Setting.GameLogicSetting.JpModifier;
+                        break;
+                    case ExpType.PlayPoints:
+                        modifier = server.Setting.GameLogicSetting.PpModifier;
+                        break;
+                }
+
+                amount = (uint)(amount * modifier);
+
                 if (expPoint.Type == ExpType.ExperiencePoints)
                 {
-                    var ntcs = server.ExpManager.AddExp(client, client.Character, expPoint.Reward, RewardSource.Quest, quest.QuestType, connectionIn);
+                    var ntcs = server.ExpManager.AddExp(client, client.Character, amount, RewardSource.Quest, quest.QuestType, connectionIn);
                     packets.AddRange(ntcs);
                 }
                 else if (expPoint.Type == ExpType.JobPoints)
                 {
-                    var ntcs = server.ExpManager.AddJp(client, client.Character, expPoint.Reward, RewardSource.Quest, quest.QuestType, connectionIn);
+                    var ntcs = server.ExpManager.AddJp(client, client.Character, amount, RewardSource.Quest, quest.QuestType, connectionIn);
                     packets.AddRange(ntcs);
                 }
                 else if (expPoint.Type == ExpType.PlayPoints)
                 {
-                    var ntc = server.PPManager.AddPlayPoint(client, expPoint.Reward, type: 1, connectionIn: connectionIn);
+                    var ntc = server.PPManager.AddPlayPoint(client, amount, type: 1, connectionIn: connectionIn);
                     client.Enqueue(ntc, packets);
                 }
             }
