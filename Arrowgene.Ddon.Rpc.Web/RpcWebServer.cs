@@ -34,13 +34,19 @@ namespace Arrowgene.Ddon.Rpc.Web
             authMiddleware.Require(AccountStateType.GameMaster, infoRoute.Route);
             _webServer.AddMiddleware(authMiddleware);
 
+            #region Internal RPC
             InternalMiddleware internalMiddleware = new InternalMiddleware(_gameServer);
 
             Route.Internal.TrackingRoute trackingRoute = new(this);
             internalMiddleware.Require(trackingRoute.Route);
             _webServer.AddRoute(trackingRoute);
 
+            Route.Internal.InternalChatRoute internalChatRoute = new(this);
+            internalMiddleware.Require(internalChatRoute.Route);
+            _webServer.AddRoute(internalChatRoute);
+
             _webServer.AddMiddleware(internalMiddleware);
+            #endregion 
         }
     }
 }

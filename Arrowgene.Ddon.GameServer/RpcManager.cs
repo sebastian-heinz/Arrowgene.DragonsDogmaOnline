@@ -212,9 +212,9 @@ namespace Arrowgene.Ddon.GameServer
                     if (channelMembers.ContainsKey(characterId))
                     {
                         return channelId;
-                        }
                     }
                 }
+            }
             return 0;
         }
     
@@ -254,6 +254,67 @@ namespace Arrowgene.Ddon.GameServer
             var characterSummary = new RpcCharacterData(character);
             AddPlayerSummary((ushort)Server.Id, characterSummary);
             AnnounceOthers("internal/tracking", RpcInternalCommand.NotifyPlayerJoin, characterSummary);
+        }
+        #endregion
+
+        #region Chat
+        public void AnnounceClanChat(GameClient client, ChatResponse chatResponse)
+        {
+            if (client.Character.ClanId == 0) return;
+
+            RpcChatData chatData = new RpcChatData()
+            {
+                HandleId = 0,
+                Type = LobbyChatMsgType.Clan,
+                MessageFlavor = chatResponse.MessageFlavor,
+                PhrasesCategory = chatResponse.PhrasesCategory,
+                PhrasesIndex = chatResponse.PhrasesIndex,
+                Message = chatResponse.Message,
+                Deliver = false,
+                SourceData = new RpcCharacterData(client.Character)
+            };
+
+            foreach (var channel in CharacterTrackingMap)
+            {
+                if (channel.Key == Server.Id)
+                {
+                    continue;
+                }
+
+                if (channel.Value.Any(x => x.Value.ClanId == client.Character.ClanId))
+                {
+                    Announce(channel.Key, "internal/chat", RpcInternalCommand.SendClanMessage, chatData);
+                }
+            }
+        }
+
+        public void AnnounceTellChat(GameClient client, C2SChatSendTellMsgReq request)
+        {
+            var targetServer = FindPlayerByName(request.CharacterInfo.CharacterName.FirstName, 
+                request.CharacterInfo.CharacterName.LastName);
+
+            if (targetServer == 0) throw new ResponseErrorException(ErrorCode.ERROR_CODE_CHAT_TELL_CHARACTER_OFFLINE);
+            if (targetServer == Server.Id) throw new ResponseErrorException(ErrorCode.ERROR_CODE_CHAT_TELL_SESSION_LOST);
+
+            RpcChatData chatData = new RpcChatData()
+            {
+                HandleId = 0,
+                Type = LobbyChatMsgType.Tell,
+                MessageFlavor = request.MessageFlavor,
+                PhrasesCategory = request.PhrasesCategory,
+                PhrasesIndex = request.PhrasesIndex,
+                Message = request.Message,
+                Deliver = false,
+                SourceData = new RpcCharacterData(client.Character),
+                TargetData = new RpcCharacterData()
+                {
+                    FirstName = request.CharacterInfo.CharacterName.FirstName,
+                    LastName = request.CharacterInfo.CharacterName.LastName,
+                    CharacterId = request.CharacterInfo.CharacterId
+                }
+            };
+
+            Announce(targetServer, "internal/chat", RpcInternalCommand.SendTellMessage, chatData);
         }
 
         #endregion

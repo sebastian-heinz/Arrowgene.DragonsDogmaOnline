@@ -1,11 +1,11 @@
-using System.Collections.Generic;
-using System.Linq;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Chat
 {
@@ -74,16 +74,40 @@ namespace Arrowgene.Ddon.GameServer.Chat
             Send(response);
         }
         
-        // TODO: add support for sending tell messages across worlds - requires some form of access to available worlds and their associated clients
-        public void SendTellMessage(uint handleId, CDataCommunityCharacterBaseInfo senderCharacterInfo, CDataCommunityCharacterBaseInfo receiverCharacterInfo, C2SChatSendTellMsgReq request, GameClient sender, GameClient receiver)
+        public void SendTellMessage(GameClient sender, GameClient receiver, C2SChatSendTellMsgReq request)
         {
-            ChatResponse senderChatResponse = GetTellChatResponse(handleId, receiverCharacterInfo, request);
+            var senderCharacterInfo = sender.Character.GetCommunityCharacterBaseInfo();
+            var receiverCharacterInfo = receiver.Character.GetCommunityCharacterBaseInfo();
+            ChatResponse senderChatResponse = GetTellChatResponse(senderCharacterInfo.CharacterId, receiverCharacterInfo, request);
             senderChatResponse.Recipients.Add(sender);
-            ChatResponse receiverChatResponse = GetTellChatResponse(handleId, senderCharacterInfo, request);
+            ChatResponse receiverChatResponse = GetTellChatResponse(senderCharacterInfo.CharacterId, senderCharacterInfo, request);
             receiverChatResponse.Recipients.Add(receiver);
 
             Send(senderChatResponse);
             Send(receiverChatResponse);
+        }
+
+        public void SendTellMessageForeign(GameClient client, C2SChatSendTellMsgReq request)
+        {
+            _server.RpcManager.AnnounceTellChat(client, request);
+
+            ChatResponse senderChatResponse = new ChatResponse
+            {
+                HandleId = request.CharacterInfo.CharacterId,
+                Deliver = false,
+                FirstName = request.CharacterInfo.CharacterName.FirstName,
+                LastName = request.CharacterInfo.CharacterName.LastName,
+                ClanName = request.CharacterInfo.ClanName,
+                CharacterId = request.CharacterInfo.CharacterId,
+                Type = LobbyChatMsgType.Tell,
+                Message = request.Message,
+                MessageFlavor = request.MessageFlavor,
+                PhrasesCategory = request.PhrasesCategory,
+                PhrasesIndex = request.PhrasesIndex
+            };
+
+            senderChatResponse.Recipients.Add(client);
+            Send(senderChatResponse);
         }
 
         public void Handle(GameClient client, ChatMessage message)
@@ -152,6 +176,8 @@ namespace Arrowgene.Ddon.GameServer.Chat
                         && client.Character != null
                         && x.Character.ClanId == client.Character.ClanId)
                     );
+
+                    _server.RpcManager.AnnounceClanChat(client, response);
                     break;
                 default:
                     response.Recipients.Add(client);
