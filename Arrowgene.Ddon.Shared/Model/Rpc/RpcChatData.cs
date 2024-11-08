@@ -1,14 +1,14 @@
-namespace Arrowgene.Ddon.Shared.Model
+namespace Arrowgene.Ddon.Shared.Model.Rpc
 {
     public class RpcChatData
     {
-        public RpcChatData() 
+        public RpcChatData()
         {
             SourceData = new();
             TargetData = new();
             Message = string.Empty;
         }
-        
+
         public RpcCharacterData SourceData { get; set; }
         public RpcCharacterData TargetData { get; set; }
         public uint HandleId { get; set; }

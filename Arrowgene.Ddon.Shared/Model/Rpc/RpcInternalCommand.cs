@@ -1,4 +1,4 @@
-namespace Arrowgene.Ddon.Shared.Model
+namespace Arrowgene.Ddon.Shared.Model.Rpc
 {
     public enum RpcInternalCommand
     {
@@ -6,6 +6,9 @@ namespace Arrowgene.Ddon.Shared.Model
         NotifyPlayerLeave, // RpcCharacterData
 
         SendTellMessage, // RpcChatData
-        SendClanMessage // RpcChatData
+        SendClanMessage, // RpcChatData
+
+        AnnouncePacketAll, // RpcPacketData
+        AnnouncePacketClan, // RpcPacketData
     }
 }

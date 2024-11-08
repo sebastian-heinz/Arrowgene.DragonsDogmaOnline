@@ -45,6 +45,10 @@ namespace Arrowgene.Ddon.Rpc.Web
             internalMiddleware.Require(internalChatRoute.Route);
             _webServer.AddRoute(internalChatRoute);
 
+            Route.Internal.PacketRoute packetRoute = new(this);
+            internalMiddleware.Require(packetRoute.Route);
+            _webServer.AddRoute(packetRoute);
+
             _webServer.AddMiddleware(internalMiddleware);
             #endregion 
         }

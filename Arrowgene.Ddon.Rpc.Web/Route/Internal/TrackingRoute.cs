@@ -1,6 +1,6 @@
 using Arrowgene.Ddon.GameServer;
 using Arrowgene.Ddon.Rpc.Command;
-using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Logging;
 using Arrowgene.WebServer;
 using System.Threading.Tasks;

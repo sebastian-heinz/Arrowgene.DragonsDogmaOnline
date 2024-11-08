@@ -1,8 +1,14 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Chat;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
+using Arrowgene.Ddon.Shared.Model.Rpc;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
@@ -163,6 +169,10 @@ namespace Arrowgene.Ddon.GameServer
             };
 
             var json = JsonSerializer.Serialize(wrappedObject);
+
+            var bing = JsonSerializer.Deserialize<RpcUnwrappedObject>(json);
+            var baz = bing.GetData<RpcPacketData>();
+
             _ = HttpClient.PostAsync(Route(channelId, route), new StringContent(json));
         }
 
@@ -180,6 +190,22 @@ namespace Arrowgene.Ddon.GameServer
             {
                 if (id == Server.Id) continue;
                 Announce(id, route, command, data);
+            }
+        }
+
+        public void AnnounceClan(uint clanId, string route, RpcInternalCommand command, object data)
+        {
+            foreach (var channel in CharacterTrackingMap)
+            {
+                if (channel.Key == Server.Id)
+                {
+                    continue;
+                }
+
+                if (channel.Value.Any(x => x.Value.ClanId == clanId))
+                {
+                    Announce(channel.Key, route, command, data);
+                }
             }
         }
         #endregion
@@ -234,6 +260,23 @@ namespace Arrowgene.Ddon.GameServer
             }
         }
 
+        public void UpdatePlayerSummaryClan(uint characterId, uint clanId)
+        {
+            var clan = Server.ClanManager.GetClan(clanId);
+            foreach ((ushort channelId, var channelMembers) in CharacterTrackingMap)
+            {
+                lock (channelMembers)
+                {
+                    if (channelMembers.ContainsKey(characterId))
+                    {
+                        channelMembers[characterId].ClanId = clan.ClanServerParam.ID;
+                        channelMembers[characterId].ClanName = clan.ClanUserParam.Name;
+                        channelMembers[characterId].ClanShortName = clan.ClanUserParam.ShortName;
+                    }
+                }
+            }
+        }
+
         public void AnnouncePlayerLeave(Character character)
         {
             var characterSummary = new RpcCharacterData(character);
@@ -274,18 +317,7 @@ namespace Arrowgene.Ddon.GameServer
                 SourceData = new RpcCharacterData(client.Character)
             };
 
-            foreach (var channel in CharacterTrackingMap)
-            {
-                if (channel.Key == Server.Id)
-                {
-                    continue;
-                }
-
-                if (channel.Value.Any(x => x.Value.ClanId == client.Character.ClanId))
-                {
-                    Announce(channel.Key, "internal/chat", RpcInternalCommand.SendClanMessage, chatData);
-                }
-            }
+            AnnounceClan(client.Character.ClanId, "internal/chat", RpcInternalCommand.SendClanMessage, chatData);
         }
 
         public void AnnounceTellChat(GameClient client, C2SChatSendTellMsgReq request)
@@ -316,7 +348,44 @@ namespace Arrowgene.Ddon.GameServer
 
             Announce(targetServer, "internal/chat", RpcInternalCommand.SendTellMessage, chatData);
         }
-
         #endregion
+
+        public void AnnounceAllPacket<T>(T packet)
+            where T : class, IPacketStructure, new()
+        {
+            RpcPacketData data = new RpcPacketData()
+            {
+                GroupId = packet.Id.GroupId,
+                HandlerId = packet.Id.HandlerId,
+                HandlerSubId = packet.Id.HandlerSubId,
+                Data = EntitySerializer.Get<T>().Write(packet)
+            };
+            AnnounceAll("internal/packet", RpcInternalCommand.AnnouncePacketAll, data);
+        }
+
+        public void AnnounceClanPacket<T>(uint clanId, T packet)
+            where T : class, IPacketStructure, new()
+        {
+            if (clanId == 0) return;
+
+            RpcPacketData data = new RpcPacketData()
+            {
+                GroupId = packet.Id.GroupId,
+                HandlerId = packet.Id.HandlerId,
+                HandlerSubId = packet.Id.HandlerSubId,
+                ClanId = clanId,
+                Data = EntitySerializer.Get<T>().Write(packet)
+            };
+
+            if (ClanManager.INTERNAL_IMPORTANT_PACKETS.Contains(packet.Id))
+            {
+                // This needs to be sent to all channels so they'll update their internal tracking of the clan, even if nobody is there to recieve the packet.
+                AnnounceOthers("internal/packet", RpcInternalCommand.AnnouncePacketClan, data);
+            }
+            else
+            {
+                AnnounceClan(clanId, "internal/packet", RpcInternalCommand.AnnouncePacketClan, data);
+            }
+        }
     }
 }

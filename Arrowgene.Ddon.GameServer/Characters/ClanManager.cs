@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Clan;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
@@ -52,6 +53,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static readonly uint SUBMASTER_ALL_PERMISSIONS = 5002;
 
         private static readonly TimeSpan CLAN_CACHE_TIME = TimeSpan.FromHours(1);
+
+        /// <summary>
+        /// Packets that get sent to all channels, even if there isn't a clan member there to recieve them.
+        /// These have side-effects on the internal tracking of clans.
+        /// </summary>
+        public static readonly HashSet<PacketId> INTERNAL_IMPORTANT_PACKETS = new HashSet<PacketId>()
+        {
+            PacketId.S2C_CLAN_CLAN_UPDATE_NTC,
+            PacketId.S2C_CLAN_CLAN_LEAVE_MEMBER_NTC,
+            PacketId.S2C_CLAN_CLAN_JOIN_MEMBER_NTC
+        };
 
         public static readonly uint[] TOTAL_CP_FOR_ADV = new uint[] {
             /********/   0,
@@ -122,6 +134,32 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        public void ResyncClan(uint id)
+        {
+            lock (ClanParams)
+            {
+                if (!ClanParams.ContainsKey(id))
+                {
+                    var clan = Server.Database.SelectClan(id);
+
+                    if (clan.ClanServerParam.ID == 0)
+                    {
+                        // Failed to fetch the clan, because it doesn't exist.
+                        // Throw an exception?
+                        throw new ResponseErrorException(ErrorCode.ERROR_CODE_CLAN_NOT_EXIST);
+                    }
+
+                    clan.ClanServerParam.NextClanPoint = TOTAL_CP_FOR_ADV[clan.ClanServerParam.Lv];
+                    AddClan(clan);
+                }
+                else
+                {
+                    ClanParams[id].Obj = Server.Database.SelectClan(id);
+                    ClanParams[id].Sync();
+                }
+            }
+        }
+
         public CDataClanParam CreateClan(GameClient client, CDataClanUserParam createParam)
         {
             var serverParam = new CDataClanServerParam()
@@ -169,6 +207,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 otherClient.Send(joinNtc);
             }
+            Server.RpcManager.AnnouncePlayerJoin(client.Character); // Resend this join notice to update the clan info.
 
             return newClan;
         }
@@ -183,13 +222,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 clan.ClanUserParam = updateParam;
                 Server.Database.UpdateClan(clan);
 
-                foreach (var otherClient in Server.ClientLookup.GetAll())
-                {
-                    if (otherClient.Character != null && otherClient.Character.ClanId == client.Character.ClanId)
-                    {
-                        otherClient.Send(new S2CClanClanUpdateNtc());
-                    }
-                }
+                SendToClan(client.Character.ClanId, new S2CClanClanUpdateNtc());
             }
         }
 
@@ -254,7 +287,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             var memberList = MemberList(clanId);
-            var character = memberList.Where(x => x.CharacterListElement.CommunityCharacterBaseInfo.CharacterId == characterId).FirstOrDefault();
+            var memberInfo = memberList.Where(x => x.CharacterListElement.CommunityCharacterBaseInfo.CharacterId == characterId).FirstOrDefault();
 
             Server.Database.ExecuteInTransaction(conn =>
             {
@@ -270,23 +303,28 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
             });
 
-            Character characterLookup = Server.ClientLookup.GetClientByCharacterId(characterId)?.Character;
-            if (character != null)
-            {
-                character.CharacterListElement.CommunityCharacterBaseInfo.ClanName = string.Empty;
-                characterLookup.ClanId = 0;
-                characterLookup.ClanName.Name = string.Empty;
-                characterLookup.ClanName.ShortName = string.Empty;
-            }
-
             var ntc = new S2CClanClanLeaveMemberNtc()
             {
                 ClanId = 0,
-                CharacterListElement = character.CharacterListElement
+                CharacterListElement = memberInfo.CharacterListElement
             };
             foreach (var client in Server.ClientLookup.GetAll())
             {
                 client.Send(ntc);
+            }
+            Server.RpcManager.AnnounceClanPacket(clanId, ntc);
+
+            if (memberInfo != null)
+            {
+                memberInfo.CharacterListElement.CommunityCharacterBaseInfo.ClanName = string.Empty;
+            }
+
+            Character characterLookup = Server.ClientLookup.GetClientByCharacterId(characterId)?.Character;
+            if (characterLookup != null)
+            {
+                characterLookup.ClanId = 0;
+                characterLookup.ClanName.Name = string.Empty;
+                characterLookup.ClanName.ShortName = string.Empty;
             }
         }
 
@@ -306,13 +344,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 Server.Database.UpdateClanMember(memberInfo, clanId, conn);
             });
 
-            SendToClan(clanId, new S2CClanClanSetMemberRankNtc()
+            var rankNtc = new S2CClanClanSetMemberRankNtc()
             {
                 ClanId = clanId,
                 CharacterId = characterId,
                 Rank = rank,
                 Permission = permission
-            });
+            };
+
+            SendToClan(clanId, rankNtc);
         }
 
         public void NegotiateMaster(uint characterId, uint clanId)
@@ -450,6 +490,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     client.Send(packet);
                 }
             }
+            Server.RpcManager.AnnounceClanPacket(clanId, packet);
         }
 
         // Will likely need this later for clan searching.
