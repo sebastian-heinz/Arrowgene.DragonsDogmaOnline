@@ -102,7 +102,12 @@ namespace Arrowgene.Ddon.GameServer
                 CharacterTrackingMap[info.Id] = new();
             }
 
-            var authToken = ChannelInfo[(ushort) Server.Id].RpcAuthToken;
+            string authToken = string.Empty;
+            if (ChannelInfo.ContainsKey((ushort)Server.Id))
+            {
+                authToken = ChannelInfo[(ushort)Server.Id].RpcAuthToken;
+            }
+
             HttpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Internal", $"{server.Id}:{authToken}");
         }
 
