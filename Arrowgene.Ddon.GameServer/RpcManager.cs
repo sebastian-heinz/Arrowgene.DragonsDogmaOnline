@@ -1,4 +1,6 @@
+using Arrowgene.Ddon.GameServer.Chat;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
@@ -26,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer
 
         private readonly DdonGameServer Server;
         private readonly Dictionary<ushort, ServerInfo> ChannelInfo;
-        private readonly Dictionary<ushort, Dictionary<uint, CharacterSummary>> CharacterTrackingMap;
+        private readonly Dictionary<ushort, Dictionary<uint, RpcCharacterData>> CharacterTrackingMap;
 
         public class RpcWrappedObject
         {
@@ -185,15 +187,15 @@ namespace Arrowgene.Ddon.GameServer
         #region Player Tracking
         public ushort FindPlayerByName(string firstName, string lastName)
         {
-            foreach (var channel in CharacterTrackingMap)
+            foreach ((ushort channelId, var channelMembers) in CharacterTrackingMap)
             {
-                lock(channel.Value)
+                lock(channelMembers)
                 {
-                    foreach (var player in channel.Value.Values)
+                    foreach (var player in channelMembers.Values)
                     {
                         if (player.FirstName == firstName && player.LastName == lastName)
                         {
-                            return channel.Key;
+                            return channelId;
                         }
                     }
                 }
@@ -203,19 +205,16 @@ namespace Arrowgene.Ddon.GameServer
 
         public ushort FindPlayerById(uint characterId)
         {
-            foreach (var channel in CharacterTrackingMap)
+            foreach ((ushort channelId, var channelMembers) in CharacterTrackingMap)
             {
-                lock (channel.Value)
+                lock (channelMembers)
                 {
-                    foreach (var player in channel.Value.Values)
+                    if (channelMembers.ContainsKey(characterId))
                     {
-                        if (player.CharacterId == characterId)
-                        {
-                            return channel.Key;
+                        return channelId;
                         }
                     }
                 }
-            }
             return 0;
         }
     
@@ -227,7 +226,7 @@ namespace Arrowgene.Ddon.GameServer
             }
         }
 
-        public void AddPlayerSummary(ushort channelId, CharacterSummary characterSummary)
+        public void AddPlayerSummary(ushort channelId, RpcCharacterData characterSummary)
         {
             lock (CharacterTrackingMap[channelId])
             {
@@ -237,7 +236,7 @@ namespace Arrowgene.Ddon.GameServer
 
         public void AnnouncePlayerLeave(Character character)
         {
-            var characterSummary = new CharacterSummary(character);
+            var characterSummary = new RpcCharacterData(character);
             lock (CharacterTrackingMap[(ushort)Server.Id])
             {
                 if (!CharacterTrackingMap[(ushort)Server.Id].ContainsKey(character.CharacterId))
@@ -252,7 +251,7 @@ namespace Arrowgene.Ddon.GameServer
 
         public void AnnouncePlayerJoin(Character character)
         {
-            var characterSummary = new CharacterSummary(character);
+            var characterSummary = new RpcCharacterData(character);
             AddPlayerSummary((ushort)Server.Id, characterSummary);
             AnnounceOthers("internal/tracking", RpcInternalCommand.NotifyPlayerJoin, characterSummary);
         }

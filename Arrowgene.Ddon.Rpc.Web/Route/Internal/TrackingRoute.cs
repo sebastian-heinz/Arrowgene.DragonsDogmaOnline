@@ -26,15 +26,21 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                 {
                     case RpcInternalCommand.NotifyPlayerLeave:
                         {
-                            CharacterSummary data = _entry.GetData<CharacterSummary>();
+                            RpcCharacterData data = _entry.GetData<RpcCharacterData>();
                             gameServer.RpcManager.RemovePlayerSummary(_entry.Origin, data.CharacterId);
-                            return new RpcCommandResult(this, true);
+                            return new RpcCommandResult(this, true)
+                            {
+                                Message = $"NotifyPlayerLeave Channel {_entry.Origin} ID {data.CharacterId}"
+                            };
                         }
                     case RpcInternalCommand.NotifyPlayerJoin:
                         {
-                            CharacterSummary data = _entry.GetData<CharacterSummary>();
+                            RpcCharacterData data = _entry.GetData<RpcCharacterData>();
                             gameServer.RpcManager.AddPlayerSummary(_entry.Origin, data);
-                            return new RpcCommandResult(this, true);
+                            return new RpcCommandResult(this, true)
+                            {
+                                Message = $"NotifyPlayerJoin Channel {_entry.Origin} ID {data.CharacterId}"
+                            };
                         }
                     default:
                         return new RpcCommandResult(this, false);
