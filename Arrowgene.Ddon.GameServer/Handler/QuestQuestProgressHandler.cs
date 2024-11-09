@@ -2,6 +2,7 @@ using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model.Quest;
@@ -21,6 +22,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SQuestQuestProgressReq> packet)
         {
+            PacketQueue packets = new();
+
             QuestProgressState questProgressState = QuestProgressState.InProgress;
             S2CQuestQuestProgressRes res = new S2CQuestQuestProgressRes();
             res.QuestScheduleId = packet.Structure.QuestScheduleId;
@@ -90,7 +93,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     else if (questProgressState == QuestProgressState.Complete)
                     {
                         res.QuestProgressResult = 3; // ProcessEnd
-                        CompleteQuest(quest, client, questStateManager, connection);
+                        var ntcs = CompleteQuest(quest, client, questStateManager, connection);
+                        packets.AddRange(ntcs);
                     }
                 });
 
@@ -117,17 +121,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             QuestProcessStateList = res.QuestProcessState,
                         };
 
-                        memberClient.Send(ntc);
+                        memberClient.Enqueue(ntc, packets);
                     }
                 }
             }
 
+            packets.Send();
+
             client.Send(res);
         }
 
-        private void CompleteQuest(Quest quest, GameClient client, QuestStateManager questState, DbConnection? connectionIn = null)
+        private PacketQueue CompleteQuest(Quest quest, GameClient client, QuestStateManager questState, DbConnection? connectionIn = null)
         {
-            questState.DistributeQuestRewards(quest.QuestScheduleId, connectionIn);
+            PacketQueue packets = new();
+            packets.AddRange(questState.DistributeQuestRewards(quest.QuestScheduleId, connectionIn));
             questState.CompleteQuestProgress(quest.QuestScheduleId, connectionIn);
 
             S2CQuestCompleteNtc completeNtc = new S2CQuestCompleteNtc()
@@ -144,18 +151,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (quest.IsPersonal)
             {
-                client.Send(completeNtc);
+                client.Enqueue(completeNtc, packets);
 
                 // Finishing personal quests as a non-leader shouldn't adjust the list.
                 if (client.Party.IsSolo || client.Party.Leader?.Client == client)
                 {
-                    client.Party.QuestState.UpdatePriorityQuestList(client.Party.Leader.Client, connectionIn);
+                    packets.AddRange(client.Party.QuestState.UpdatePriorityQuestList(client.Party.Leader.Client, connectionIn));
                 }
             }
             else
             {
-                client.Party.SendToAll(completeNtc);
-                client.Party.QuestState.UpdatePriorityQuestList(client.Party.Leader.Client, connectionIn);
+                client.Party.EnqueueToAll(completeNtc, packets);
+                packets.AddRange(client.Party.QuestState.UpdatePriorityQuestList(client.Party.Leader.Client, connectionIn));
             }
 
             if (quest.ResetPlayerAfterQuest)
@@ -165,6 +172,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Server.CharacterManager.UpdateCharacterExtendedParamsNtc(memberClient, memberClient.Character);
                 }
             }
+
+            return packets;
         }
     }
 }

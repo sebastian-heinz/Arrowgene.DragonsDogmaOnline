@@ -20,11 +20,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private readonly string SqlUpdateQuestProgress = $"UPDATE \"ddon_quest_progress\" SET \"step\"=@step WHERE \"character_common_id\"=@character_common_id AND \"quest_type\"=@quest_type AND \"quest_schedule_id\"=@quest_schedule_id;";
 
-        private readonly string SqlSelectQuestProgressByType = $"SELECT {BuildQueryField(QuestProgressFields)} FROM \"ddon_quest_progress\" WHERE +" +
+        private readonly string SqlSelectQuestProgressByType = $"SELECT {BuildQueryField(QuestProgressFields)} FROM \"ddon_quest_progress\" WHERE " +
                                                                $"\"character_common_id\" = @character_common_id AND \"quest_type\" = @quest_type;";
-        private readonly string SqlSelectQuestProgressByScheduleId = $"SELECT {BuildQueryField(QuestProgressFields)} FROM \"ddon_quest_progress\" WHERE +" +
+        private readonly string SqlSelectQuestProgressByScheduleId = $"SELECT {BuildQueryField(QuestProgressFields)} FROM \"ddon_quest_progress\" WHERE " +
                                                                $"\"character_common_id\" = @character_common_id AND \"quest_schedule_id\" = @quest_schedule_id;";
-        private readonly string SqlSelectAllQuestProgress = $"SELECT {BuildQueryField(QuestProgressFields)} FROM \"ddon_quest_progress\" WHERE +" +
+        private readonly string SqlSelectAllQuestProgress = $"SELECT {BuildQueryField(QuestProgressFields)} FROM \"ddon_quest_progress\" WHERE " +
                                                                $"\"character_common_id\" = @character_common_id;";
 
         public List<QuestProgress> GetQuestProgressByType(uint characterCommonId, QuestType questType, DbConnection? connectionIn = null)

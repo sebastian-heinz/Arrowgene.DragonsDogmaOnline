@@ -1,16 +1,11 @@
-using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model.Quest;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -45,17 +40,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var completedMsq = client.Character.CompletedQuests.Values.Where(x => x.QuestType == QuestType.Main);
             foreach (var msq in completedMsq)
             {
-                ntc.MainQuestIdList.Add(new CDataQuestId() { QuestId = (uint) msq.QuestId });
+                ntc.MainQuestIdList.Add(new CDataQuestId() { QuestId = (uint)msq.QuestId });
             }
 
             var completedTutorials = client.Character.CompletedQuests.Values.Where(x => x.QuestType == QuestType.Tutorial);
             foreach (var tut in completedTutorials)
             {
-                ntc.TutorialQuestIdList.Add(new CDataQuestId() { QuestId = (uint) tut.QuestId});
+                ntc.TutorialQuestIdList.Add(new CDataQuestId() { QuestId = (uint)tut.QuestId });
             }
 
-            var tutorialQuestInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.Tutorial);
-            foreach (var questProgress in tutorialQuestInProgress)
+            var allQuestsInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All);
+            foreach (var questProgress in allQuestsInProgress)
             {
                 if (!QuestManager.IsQuestEnabled(questProgress.QuestScheduleId))
                 {
@@ -63,29 +58,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
 
                 var quest = QuestManager.GetQuestByScheduleId(questProgress.QuestScheduleId);
-                var tutorialQuest = quest.ToCDataTutorialQuestOrderList(questProgress.Step);
-                ntc.TutorialQuestOrderList.Add(tutorialQuest);
-            }
 
-            var wildHuntsInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.WildHunt);
-            foreach (var questProgress in wildHuntsInProgress)
-            {
-                if (!QuestManager.IsQuestEnabled(questProgress.QuestScheduleId))
+                switch (questProgress.QuestType)
                 {
-                    continue;
+                    case QuestType.Tutorial:
+                        var tutorialQuest = quest.ToCDataTutorialQuestOrderList(questProgress.Step);
+                        ntc.TutorialQuestOrderList.Add(tutorialQuest);
+                        break;
+                    case QuestType.WildHunt:
+                        var mobHuntQuest = quest.ToCDataMobHuntQuestOrderList(questProgress.Step);
+                        ntc.MobHuntQuestOrderList.Add(mobHuntQuest);
+                        break;
+                    case QuestType.Light:
+                        var lightQuest = quest.ToCDataLightQuestOrderList(questProgress.Step);
+                        ntc.LightQuestOrderList.Add(lightQuest);
+                        break;
                 }
-
-                var quest = QuestManager.GetQuestByScheduleId(questProgress.QuestScheduleId);
-                var mobHuntQuest = quest.ToCDataMobHuntQuestOrderList(questProgress.Step);
-                ntc.MobHuntQuestOrderList.Add(mobHuntQuest);
-            }
-
-            var lightQuestInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.Light);
-            foreach (var questProgress in lightQuestInProgress)
-            {
-                var quest = QuestManager.GetQuestByScheduleId(questProgress.QuestScheduleId);
-                var lightQuest = quest.ToCDataLightQuestOrderList(questProgress.Step);
-                ntc.LightQuestOrderList.Add(lightQuest);
             }
 
             if (client.Party != null)

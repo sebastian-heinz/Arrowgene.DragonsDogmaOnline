@@ -541,11 +541,13 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         public abstract bool UpdateQuestProgress(uint questScheduleId, DbConnection? connectionIn = null);
         public abstract bool CompleteQuestProgress(uint questScheduleId, DbConnection? connectionIn = null);
-        public abstract bool DistributeQuestRewards(uint questScheduleId, DbConnection? connectionIn = null);
-        public abstract void UpdatePriorityQuestList(GameClient requestingClient, DbConnection? connectionIn = null);
+        public abstract PacketQueue DistributeQuestRewards(uint questScheduleId, DbConnection? connectionIn = null);
+        public abstract PacketQueue UpdatePriorityQuestList(GameClient requestingClient, DbConnection? connectionIn = null);
 
-        protected void SendWalletRewards(DdonGameServer server, GameClient client, Quest quest, DbConnection? connectionIn = null)
+        protected PacketQueue SendWalletRewards(DdonGameServer server, GameClient client, Quest quest, DbConnection? connectionIn = null)
         {
+            PacketQueue packets = new();
+
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
             {
                 UpdateType = ItemNoticeType.Quest
@@ -563,24 +565,29 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             if (updateCharacterItemNtc.UpdateWalletList.Count > 0)
             {
-                client.Send(updateCharacterItemNtc);
+                client.Enqueue(updateCharacterItemNtc, packets);
             }
 
             foreach (var expPoint in quest.ExpRewards)
             {
                 if (expPoint.Type == ExpType.ExperiencePoints)
                 {
-                    server.ExpManager.AddExpNtc(client, client.Character, expPoint.Reward, RewardSource.Quest, quest.QuestType, connectionIn);
+                    var ntcs = server.ExpManager.AddExp(client, client.Character, expPoint.Reward, RewardSource.Quest, quest.QuestType, connectionIn);
+                    packets.AddRange(ntcs);
                 }
                 else if (expPoint.Type == ExpType.JobPoints)
                 {
-                    server.ExpManager.AddJp(client, client.Character, expPoint.Reward, RewardSource.Quest, quest.QuestType, connectionIn);
+                    var ntcs = server.ExpManager.AddJp(client, client.Character, expPoint.Reward, RewardSource.Quest, quest.QuestType, connectionIn);
+                    packets.AddRange(ntcs);
                 }
                 else if (expPoint.Type == ExpType.PlayPoints)
                 {
-                    server.PPManager.AddPlayPointNtc(client, expPoint.Reward, type: 1, connectionIn: connectionIn);
+                    var ntc = server.PPManager.AddPlayPoint(client, expPoint.Reward, type: 1, connectionIn: connectionIn);
+                    client.Enqueue(ntc, packets);
                 }
             }
+
+            return packets;
         }
 
         public void ResetInstance()
@@ -680,8 +687,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return true;
         }
 
-        public override bool DistributeQuestRewards(uint questScheduleId, DbConnection? connectionIn = null)
+        public override PacketQueue DistributeQuestRewards(uint questScheduleId, DbConnection? connectionIn = null)
         {
+            PacketQueue packets = new();
             Quest quest = GetQuest(questScheduleId);
 
             var questState = GetQuestState(quest);
@@ -709,17 +717,20 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 }
 
                 // Check for Exp, Rift and Gold Rewards
-                SendWalletRewards(Server, memberClient, quest, connectionIn);
+                var ntcs = SendWalletRewards(Server, memberClient, quest, connectionIn);
+                packets.AddRange(ntcs);
             }
 
-            return true;
+            return packets;
         }
 
-        public override void UpdatePriorityQuestList(GameClient requestingClient, DbConnection? connectionIn = null)
+        public override PacketQueue UpdatePriorityQuestList(GameClient requestingClient, DbConnection? connectionIn = null)
         {
+            PacketQueue packets = new();
+
             if (Party.Leader is null || requestingClient != Party.Leader.Client)
             {
-                return;
+                return packets;
             }
 
             var leaderClient = Party.Leader.Client;
@@ -737,7 +748,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 var questState = questStateManager.GetQuestState(priorityQuestScheduleId);
                 prioNtc.PriorityQuestList.Add(quest.ToCDataPriorityQuest(questState.Step));
             }
-            Party.SendToAll(prioNtc);
+            Party.EnqueueToAll(prioNtc, packets);
+
+            return packets;
         }
 
         public override bool UpdateQuestProgress( uint questScheduleId, DbConnection? connectionIn = null)
@@ -782,7 +795,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             var questState = GetQuestState(questScheduleId);
             var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
 
-            var result = Server.Database.GetQuestProgressByScheduleId(Member.Client.Character.CommonId, questState.QuestScheduleId);
+            var result = Server.Database.GetQuestProgressByScheduleId(Member.Client.Character.CommonId, questState.QuestScheduleId, connectionIn);
             if (result == null)
             {
                 return false;
@@ -793,7 +806,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 return false;
             }
 
-            Server.Database.UpdateQuestProgress(Member.Client.Character.CommonId, questState.QuestScheduleId, questState.QuestType, questState.Step + 1);
+            Server.Database.UpdateQuestProgress(Member.Client.Character.CommonId, questState.QuestScheduleId, questState.QuestType, questState.Step + 1, connectionIn);
 
             questState.Step += 1;
 
@@ -845,21 +858,20 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return true;
         }
 
-        public override bool DistributeQuestRewards(uint questScheduleId, DbConnection? connectionIn = null)
+        public override PacketQueue DistributeQuestRewards(uint questScheduleId, DbConnection? connectionIn = null)
         {
             Quest quest = GetQuest(questScheduleId);
             var questState = GetQuestState(quest);
             if (quest.HasRewards())
             {
-                Server.RewardManager.AddQuestRewards(Member.Client, quest);
+                Server.RewardManager.AddQuestRewards(Member.Client, quest, connectionIn);
             }
 
             // Check for Exp, Rift and Gold Rewards
-            SendWalletRewards(Server, Member.Client, quest);
-            return true;
+            return SendWalletRewards(Server, Member.Client, quest, connectionIn);
         }
 
-        public override void UpdatePriorityQuestList(GameClient requestingClient, DbConnection? connectionIn = null)
+        public override PacketQueue UpdatePriorityQuestList(GameClient requestingClient, DbConnection? connectionIn = null)
         {
             throw new NotImplementedException();
         }
