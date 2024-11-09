@@ -381,13 +381,13 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertBBMRewards(uint characterId, uint goldMarks, uint silverMarks, uint redMarks) { return true; }
         public bool UpdateBBMRewards(uint characterId, BitterblackMazeRewards rewards, DbConnection? connectionIn = null) { return true; }
         public bool RemoveBBMRewards(uint characterId) { return true; }
-        public BitterblackMazeRewards SelectBBMRewards(uint characterId) { return new BitterblackMazeRewards(); }
+        public BitterblackMazeRewards SelectBBMRewards(uint characterId, DbConnection? connectionIn = null) { return new BitterblackMazeRewards(); }
         public bool InsertBBMContentTreasure(uint characterId, BitterblackMazeTreasure treasure, DbConnection? connectionIn = null) { return true; }
         public bool InsertBBMContentTreasure(uint characterId, uint contentId, uint amount, DbConnection? connectionIn = null) { return true; }
         public bool UpdateBBMContentTreasure(uint characterId, BitterblackMazeTreasure treasure) { return true; }
         public bool UpdateBBMContentTreasure(uint characterId, uint contentId, uint amount) { return true; }
         public bool RemoveBBMContentTreasure(uint characterId) { return true; }
-        public List<BitterblackMazeTreasure> SelectBBMContentTreasure(uint characterId) { return new List<BitterblackMazeTreasure>(); }
+        public List<BitterblackMazeTreasure> SelectBBMContentTreasure(uint characterId, DbConnection? connectionIn = null) { return new List<BitterblackMazeTreasure>(); }
         public List<uint> SelectOfficialPawns() { return new List<uint>(); }
         public List<uint> SelectAllPlayerPawns(uint limit = 100) { return new List<uint>(); }
         public List<uint> SelectAllPlayerPawns(DbConnection connection, uint limit = 100) { return new List<uint>(); }

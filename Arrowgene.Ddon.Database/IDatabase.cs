@@ -547,7 +547,7 @@ namespace Arrowgene.Ddon.Database
         bool InsertBBMRewards(uint characterId, uint goldMarks, uint silverMarks, uint redMarks);
         bool UpdateBBMRewards(uint characterId, BitterblackMazeRewards rewards, DbConnection? connectionIn = null);
         bool RemoveBBMRewards(uint characterId);
-        BitterblackMazeRewards SelectBBMRewards(uint characterId);
+        BitterblackMazeRewards SelectBBMRewards(uint characterId, DbConnection? connectionIn = null);
 
         // Bitterblack Maze Treasure
         bool InsertBBMContentTreasure(
@@ -564,7 +564,7 @@ namespace Arrowgene.Ddon.Database
         bool UpdateBBMContentTreasure(uint characterId, BitterblackMazeTreasure treasure);
         bool UpdateBBMContentTreasure(uint characterId, uint contentId, uint amount);
         bool RemoveBBMContentTreasure(uint characterId);
-        List<BitterblackMazeTreasure> SelectBBMContentTreasure(uint characterId);
+        List<BitterblackMazeTreasure> SelectBBMContentTreasure(uint characterId, DbConnection? connectionIn = null);
 
         // Clan
         bool CreateClan(CDataClanParam clanParam);

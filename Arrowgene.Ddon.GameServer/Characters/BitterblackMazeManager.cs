@@ -48,14 +48,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return levelCap;
         }
 
-        public static CDataBattleContentStatus GetUpdatedContentStatus(DdonGameServer server, Character character)
+        public static CDataBattleContentStatus GetUpdatedContentStatus(DdonGameServer server, Character character, DbConnection? connectionIn = null)
         {
             var progress = character.BbmProgress;
 
-            var rewards = server.Database.SelectBBMRewards(character.CharacterId);
+            var rewards = server.Database.SelectBBMRewards(character.CharacterId, connectionIn);
 
             var availableRewards = new List<CDataBattleContentAvailableRewards>();
-            var trackedRewards = server.Database.SelectBBMContentTreasure(character.CharacterId);
+            var trackedRewards = server.Database.SelectBBMContentTreasure(character.CharacterId, connectionIn);
             foreach (var stage in server.AssetRepository.BitterblackMazeAsset.Stages)
             {
                 var matches = trackedRewards.Select(x => x.ContentId == stage.Value.ContentId).ToList();
@@ -132,7 +132,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
             server.Database.UpdateBBMProgress(character.CharacterId, progress, connectionIn);
 
-            var rewards = server.Database.SelectBBMRewards(character.CharacterId);
+            var rewards = server.Database.SelectBBMRewards(character.CharacterId, connectionIn);
             // TODO: handle BattleContentRewardBonus.Up (some sort of reward bonus)
             // TODO: Is there a reason we wouldn't get a reward here?
             var marks = GetMarksForStage(server.AssetRepository.BitterblackMazeAsset, stageId);
@@ -143,7 +143,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             // Update the situation information
             S2CBattleContentProgressNtc progressNtc = new S2CBattleContentProgressNtc();
-            progressNtc.BattleContentStatusList.Add(BitterblackMazeManager.GetUpdatedContentStatus(server, character));
+            progressNtc.BattleContentStatusList.Add(BitterblackMazeManager.GetUpdatedContentStatus(server, character, connectionIn));
             client.Enqueue(progressNtc, packets);
 
             return packets;
