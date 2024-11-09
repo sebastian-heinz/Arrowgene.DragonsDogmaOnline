@@ -10,22 +10,22 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.C2S_FRIEND_REGISTER_FAVORITE_FRIEND_REQ;
         
-        public UInt32 unFriendNo { get; set; }
-        public bool isFavorite { get; set; }
+        public uint FriendNo { get; set; }
+        public bool IsFavorite { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SFriendRegisterFavoriteFriendReq>
         {
             public override void Write(IBuffer buffer, C2SFriendRegisterFavoriteFriendReq obj)
             {
-                WriteUInt32(buffer, obj.unFriendNo);
-                WriteBool(buffer, obj.isFavorite);
+                WriteUInt32(buffer, obj.FriendNo);
+                WriteBool(buffer, obj.IsFavorite);
             }
 
             public override C2SFriendRegisterFavoriteFriendReq Read(IBuffer buffer)
             {
                 C2SFriendRegisterFavoriteFriendReq obj = new C2SFriendRegisterFavoriteFriendReq();
-                obj.unFriendNo = ReadUInt32(buffer);
-                obj.isFavorite = ReadBool(buffer);
+                obj.FriendNo = ReadUInt32(buffer);
+                obj.IsFavorite = ReadBool(buffer);
                 return obj;
             }
         }

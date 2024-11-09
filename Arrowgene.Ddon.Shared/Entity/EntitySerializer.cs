@@ -803,6 +803,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SFriendRemoveFriendReq.Serializer());
             Create(new C2SFriendRegisterFavoriteFriendReq.Serializer());
             Create(new C2SFriendCancelFriendApplicationReq.Serializer());
+            Create(new C2SFriendGetFriendListReq.Serializer());
             Create(new C2SCharacterCommunityCharacterStatusGetReq.Serializer());
 
             Create(new C2SBinarySaveSetCharacterBinSaveDataReq.Serializer());

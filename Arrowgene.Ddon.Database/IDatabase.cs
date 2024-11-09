@@ -382,6 +382,7 @@ namespace Arrowgene.Ddon.Database
         List<ContactListEntity> SelectContactsByCharacterId(uint characterId);
         ContactListEntity SelectContactsByCharacterId(uint characterId1, uint characterId2);
         ContactListEntity SelectContactListById(uint id);
+        List<(ContactListEntity, CDataCharacterListElement)> SelectFullContactListByCharacterId(uint characterId, DbConnection? connectionIn = null);
 
         // Dragon Force Augmentation
         bool InsertIfNotExistsDragonForceAugmentation(

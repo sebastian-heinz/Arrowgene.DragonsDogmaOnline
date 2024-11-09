@@ -1,14 +1,13 @@
-﻿using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class FriendApplyFriendListHandler :  GameStructurePacketHandler<C2SFriendApplyFriendReq>
+    public class FriendApplyFriendListHandler : GameRequestPacketHandler<C2SFriendApplyFriendReq, S2CFriendApplyFriendRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(FriendApplyFriendListHandler));
 
@@ -17,70 +16,52 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SFriendApplyFriendReq> packet)
+        public override S2CFriendApplyFriendRes Handle(GameClient client, C2SFriendApplyFriendReq request)
         {
-            
-            ContactListEntity existingFriend = Server.Database.SelectContactsByCharacterId(packet.Structure.CharacterId, client.Character.CharacterId);
+
+            ContactListEntity existingFriend = Server.Database.SelectContactsByCharacterId(request.CharacterId, client.Character.CharacterId);
             if (existingFriend != null)
             {
-                uint errorCode = (uint)ErrorCode.ERROR_CODE_FAIL;
+                ErrorCode errorCode = ErrorCode.ERROR_CODE_FAIL;
 
                 if (existingFriend.Type == ContactListType.BlackList && client.Character.CharacterId == existingFriend.RequesterCharacterId)
                 {
-                    errorCode = (uint)ErrorCode.ERROR_CODE_FRIEND_TARGET_IN_BLACK_LIST;
+                    errorCode = ErrorCode.ERROR_CODE_FRIEND_TARGET_IN_BLACK_LIST;
                 }
                 else if (existingFriend.Status == ContactListStatus.Accepted)
                 {
-                    errorCode = (uint)ErrorCode.ERROR_CODE_FRIEND_TARGET_ALREADY_FRIEND;
+                    errorCode = ErrorCode.ERROR_CODE_FRIEND_TARGET_ALREADY_FRIEND;
                 }
                 else if (existingFriend.Status == ContactListStatus.PendingApproval && client.Character.CharacterId == existingFriend.RequesterCharacterId)
                 {
-                    errorCode = (uint)ErrorCode.ERROR_CODE_FRIEND_TARGET_ALREADY_APPLYING;
+                    errorCode = ErrorCode.ERROR_CODE_FRIEND_TARGET_ALREADY_APPLYING;
                 }
                 else if (existingFriend.Status == ContactListStatus.PendingApproval && client.Character.CharacterId == existingFriend.RequestedCharacterId)
                 {
-                    errorCode = (uint)ErrorCode.ERROR_CODE_FRIEND_TARGET_ALREADY_APPROVING;
+                    errorCode = ErrorCode.ERROR_CODE_FRIEND_TARGET_ALREADY_APPROVING;
                 }
-                var res = new S2CFriendApplyFriendRes()
-                {
-                    FriendInfo = new CDataFriendInfo(),
-                    Error = errorCode
-                };
-                Logger.Error(client, $"already in contact list: {packet.Structure.CharacterId} - friend invitation");
-                client.Send(res);
-                return;
+
+                throw new ResponseErrorException(errorCode, $"already in contact list: {request.CharacterId} - friend invitation.");
             }
-            
-            Character requestedChar = ContactListManager.getCharWithOnlineStatus(Server, Database, packet.Structure.CharacterId);
-            if (requestedChar == null)
-            {
-                var res = new S2CFriendApplyFriendRes();
-                Logger.Error(client, $"not found CharacterId:{packet.Structure.CharacterId} for friend invitation");
-                res.Error = (uint)ErrorCode.ERROR_CODE_FRIEND_TARGET_PARAM_NOT_FOUND;
-                client.Send(res);
-                return;
-            }
+
+            Character requestedChar = Server.ClientLookup.GetClientByCharacterId(request.CharacterId)?.Character 
+                ?? ContactListManager.getCharWithOnlineStatus(Server, Database, request.CharacterId)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_FRIEND_TARGET_PARAM_NOT_FOUND, $"not found CharacterId:{request.CharacterId} for friend invitation.");
 
             int id = Database.InsertContact(client.Character.CharacterId, requestedChar.CharacterId,
                 ContactListStatus.PendingApproval, ContactListType.FriendList, false, false);
-            
+
             if (id < 1)
             {
-                var res = new S2CFriendApplyFriendRes()
-                {
-                    FriendInfo = new CDataFriendInfo()
-                };
-                Logger.Error(client, $"Problem saving friend request");
-                res.Error = (uint)ErrorCode.ERROR_CODE_FAIL;
-                client.Send(res);
-                return;
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_FAIL, $"Problem saving friend request.");
             }
+
             CDataFriendInfo requester = ContactListManager.CharacterToFriend(client.Character, (uint)id, false);
             CDataFriendInfo requested = ContactListManager.CharacterToFriend(requestedChar, (uint)id, false);
-            requester.UnFriendNo = (uint)id;
-            requested.UnFriendNo = (uint)id;
+            requester.FriendNo = (uint)id;
+            requested.FriendNo = (uint)id;
 
-            GameClient requestedClient = Server.ClientLookup.GetClientByCharacterId(packet.Structure.CharacterId);
+            GameClient requestedClient = Server.ClientLookup.GetClientByCharacterId(request.CharacterId);
             if (requestedClient != null)
             {
                 var ntc = new S2CFriendApplyFriendNtc()
@@ -90,16 +71,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 requestedClient.Send(ntc);
             }
 
-            
-            var Result = new S2CFriendApplyFriendRes()
+            return new S2CFriendApplyFriendRes()
             {
-                FriendInfo = requested,
-                Result = 0,
-                Error = 0,
-                    
+                FriendInfo = requested
             };
-            
-            client.Send(Result);
         }
     }
 }
