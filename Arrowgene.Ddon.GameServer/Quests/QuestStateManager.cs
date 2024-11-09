@@ -291,6 +291,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
         {
             lock (ActiveQuests)
             {
+                if (!ActiveQuests[quest.QuestScheduleId].QuestEnemies.ContainsKey(stageId))
+                {
+                    // Why does this keep failing?
+                    ActiveQuests[quest.QuestScheduleId].QuestEnemies[stageId] = new();
+                    Logger.Error($"Unprepared enemy location {stageId} for schedule {quest.QuestScheduleId}.");
+                }
                 ActiveQuests[quest.QuestScheduleId].QuestEnemies[stageId][subGroupId] = enemies;
             }
         }
