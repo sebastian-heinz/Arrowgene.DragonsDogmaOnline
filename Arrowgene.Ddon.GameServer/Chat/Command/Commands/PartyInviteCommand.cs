@@ -2,6 +2,7 @@ using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,12 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             if (client.Party.ContentId != 0)
             {
                 responses.Add(ChatResponse.CommandError(client, "Use the recruitment board to invite players to the party."));
+                return;
+            }
+
+            if (client.GameMode == GameMode.BitterblackMaze && client.Party.Members.Count >= 4)
+            {
+                responses.Add(ChatResponse.CommandError(client, "This game mode only supports 4 players."));
                 return;
             }
 
@@ -109,6 +116,12 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                 if (targetClient == client)
                 {
                     responses.Add(ChatResponse.CommandError(client, "You cannot invite yourself."));
+                    return;
+                }
+
+                if (targetClient.GameMode != client.GameMode)
+                {
+                    responses.Add(ChatResponse.CommandError(client, "You cannot invite players which are in different game modes."));
                     return;
                 }
 
