@@ -11,8 +11,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
 {
     public class RewardManager
     {
-        private readonly int MAX_REWARD_BOX_RESULTS = 100;
-
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(RewardManager));
 
         private readonly DdonGameServer _Server;
@@ -26,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             var rewards = quest.GenerateBoxRewards();
 
             var currentRewards = GetQuestBoxRewards(client, connectionIn);
-            if (currentRewards.Count >= MAX_REWARD_BOX_RESULTS)
+            if (currentRewards.Count >= _Server.Setting.GameLogicSetting.RewardBoxMax)
             {
                 return false;
             }
