@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Network;
@@ -76,6 +76,13 @@ namespace Arrowgene.Ddon.Server.Network
             StructurePacket<TResStruct> packet = new StructurePacket<TResStruct>(res);
 
             Send(packet);
+        }
+
+        public void Enqueue<TResStruct>(TResStruct res, PacketQueue queue)
+            where TResStruct : class, IPacketStructure, new()
+        {
+            StructurePacket<TResStruct> packet = new StructurePacket<TResStruct>(res);
+            queue.Enqueue((this, packet));
         }
 
         public void Send(Packet packet)

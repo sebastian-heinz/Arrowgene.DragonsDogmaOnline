@@ -1,4 +1,3 @@
-using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
@@ -571,7 +570,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             {
                 if (expPoint.Type == ExpType.ExperiencePoints)
                 {
-                    server.ExpManager.AddExp(client, client.Character, expPoint.Reward, RewardSource.Quest, quest.QuestType, connectionIn);
+                    server.ExpManager.AddExpNtc(client, client.Character, expPoint.Reward, RewardSource.Quest, quest.QuestType, connectionIn);
                 }
                 else if (expPoint.Type == ExpType.JobPoints)
                 {
@@ -579,7 +578,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 }
                 else if (expPoint.Type == ExpType.PlayPoints)
                 {
-                    server.PPManager.AddPlayPoint(client, expPoint.Reward, type: 1, connectionIn: connectionIn);
+                    server.PPManager.AddPlayPointNtc(client, expPoint.Reward, type: 1, connectionIn: connectionIn);
                 }
             }
         }
@@ -865,12 +864,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
             throw new NotImplementedException();
         }
 
-        public void HandleEnemyHuntRequests(Enemy enemy)
+        public PacketQueue HandleEnemyHuntRequests(Enemy enemy)
         {
             if (Member.Client.Character.GameMode != GameMode.Normal)
             {
-                return;
+                return new();
             }
+
+            PacketQueue packets = new();
 
             lock (ActiveQuests)
             {
@@ -907,10 +908,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             Work03 = (int)huntRecord.AmountHunted
                         });
 
-                        Member.Client.Send(ntc);
+                        Member.Client.Enqueue(ntc, packets);
                     }
                 }
             }
+            return packets;
         }
     }
 }

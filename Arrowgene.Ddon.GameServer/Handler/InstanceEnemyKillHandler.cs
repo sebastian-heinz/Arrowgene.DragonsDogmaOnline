@@ -6,7 +6,6 @@ using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
@@ -35,6 +34,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             CDataStageLayoutId layoutId = packet.LayoutId;
             StageId stageId = StageId.FromStageLayoutId(layoutId);
+
+            PacketQueue queuedPackets = new();
 
             // The training room uses special handling to produce enemies that don't exist in the QuestState or InstanceEnemyManager.
             // Return an empty response here to not break the rest of the handling.
@@ -81,7 +82,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         EnemyInfo = enemyKilled.asCDataStageLayoutEnemyPresetEnemyInfoClient()
                     }
                 };
-                client.Send(repopNtc);
+                client.Enqueue(repopNtc, queuedPackets);
+                //client.Send(repopNtc);
             }
             else
             {
@@ -109,13 +111,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     LayoutId = packet.LayoutId,
                     IsAreaBoss = IsAreaBoss && (client.GameMode == GameMode.Normal)
                 };
-                client.Party.SendToAll(groupDestroyedNtc);
+                client.Party.EnqueueToAll(groupDestroyedNtc, queuedPackets);
+                //client.Party.SendToAll(groupDestroyedNtc);
 
                 if (IsAreaBoss && client.GameMode == GameMode.BitterblackMaze)
                 {
                     foreach (var memberClient in client.Party.Clients)
                     {
-                        BitterblackMazeManager.HandleTierClear(_gameServer, memberClient, memberClient.Character, stageId);
+                        var ntcs = BitterblackMazeManager.HandleTierClear(_gameServer, memberClient, memberClient.Character, stageId);
+                        queuedPackets.AddRange(ntcs);
                     }
                 }
             }
@@ -125,6 +129,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return new();
             }
 
+            var dropItemNtc = new S2CInstancePopDropItemNtc()
+            {
+                LayoutId = packet.LayoutId,
+                SetId = packet.SetId,
+                MdlType = enemyKilled.DropsTable.MdlType,
+                PosX = packet.DropPosX,
+                PosY = packet.DropPosY,
+                PosZ = packet.DropPosZ
+            };
             foreach (var partyMemberClient in client.Party.Clients)
             {
                 // If the enemy is quest controlled, then either get from the quest loot drop, or the general one.
@@ -141,25 +154,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // If the roll was unlucky, there is a chance that no bag will show.
                 if (instancedGatheringItems.Where(x => x.ItemNum > 0).Any())
                 {
-                    partyMemberClient.Send(new S2CInstancePopDropItemNtc()
-                    {
-                        LayoutId = packet.LayoutId,
-                        SetId = packet.SetId,
-                        MdlType = enemyKilled.DropsTable.MdlType,
-                        PosX = packet.DropPosX,
-                        PosY = packet.DropPosY,
-                        PosZ = packet.DropPosZ
-                    });
+                    partyMemberClient.Enqueue(dropItemNtc, queuedPackets);
+                    //partyMemberClient.Send(dropItemNtc);
                 }
             }
+
+
+            uint calcExp = _gameServer.ExpManager.GetAdjustedExp(client.GameMode, RewardSource.Enemy, client.Party, enemyKilled.GetDroppedExperience(), enemyKilled.Lv);
+            uint calcPP = enemyKilled.GetDroppedPlayPoints();
 
             foreach (PartyMember member in client.Party.Members)
             {
                 if (member.JoinState != JoinState.On) continue; // Only fully joined members get rewards.
 
-                uint gainedExp = _gameServer.ExpManager.GetAdjustedExp(client.GameMode, RewardSource.Enemy, client.Party, enemyKilled.GetDroppedExperience(), enemyKilled.Lv);
-
-                uint gainedPP = enemyKilled.GetDroppedPlayPoints();
+                uint gainedExp = calcExp;
+                uint gainedPP = calcPP;
 
                 GameClient memberClient;
                 CharacterCommon memberCharacter;
@@ -180,7 +189,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
 
                     // TODO: Add transaction?
-                    playerMember.QuestState.HandleEnemyHuntRequests(enemyKilled);
+                    var huntPackets = playerMember.QuestState.HandleEnemyHuntRequests(enemyKilled);
+                    queuedPackets.AddRange(huntPackets);
 
                     S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
 
@@ -202,17 +212,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     if (updateCharacterItemNtc.UpdateItemList.Count != 0 || updateCharacterItemNtc.UpdateWalletList.Count != 0)
                     {
-                        memberClient.Send(updateCharacterItemNtc);
+                        memberClient.Enqueue(updateCharacterItemNtc, queuedPackets);
+                        //memberClient.Send(updateCharacterItemNtc);
                     }
 
                     if (gainedPP > 0)
                     {
-                        _gameServer.PPManager.AddPlayPoint(memberClient, gainedPP, type: 1);
+                        var ntc = _gameServer.PPManager.AddPlayPoint(memberClient, gainedPP, type: 1);
+                        memberClient.Enqueue(ntc, queuedPackets);
                     }
 
                     if (gainedExp > 0)
                     {
-                        _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp, RewardSource.Enemy);
+                        var ntcs = _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp, RewardSource.Enemy);
+                        queuedPackets.AddRange(ntcs);
                     }
                 }
                 else if (member is PawnPartyMember pawnMember)
@@ -236,7 +249,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     if (pawnExp > 0)
                     {
-                        _gameServer.ExpManager.AddExp(memberClient, memberCharacter, pawnExp, RewardSource.Enemy);
+                        var ntcs = _gameServer.ExpManager.AddExp(memberClient, memberCharacter, pawnExp, RewardSource.Enemy);
+                        queuedPackets.AddRange(ntcs);
                     }
                 }
                 else
@@ -244,6 +258,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     throw new Exception("Unknown member type");
                 }
             }
+
+            queuedPackets.Send();
 
             // TODO: EnemyId and KillNum
             return new S2CInstanceEnemyKillRes()

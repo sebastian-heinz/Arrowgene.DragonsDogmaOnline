@@ -2,6 +2,7 @@ using Arrowgene.Ddon.GameServer.Context;
 using Arrowgene.Ddon.GameServer.Instance;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -572,6 +573,16 @@ namespace Arrowgene.Ddon.GameServer.Party
             SendToAll(packet);
         }
 
+        public void EnqueueToAll<TResStruct>(TResStruct res, PacketQueue queue)
+            where TResStruct : class, IPacketStructure, new()
+        {
+            StructurePacket<TResStruct> packet = new StructurePacket<TResStruct>(res);
+            foreach(GameClient client in Clients)
+            {
+                queue.Enqueue((client, packet));
+            }
+        }
+
         public void SendToAll(Packet packet)
         {
             foreach (GameClient client in Clients)
@@ -585,6 +596,21 @@ namespace Arrowgene.Ddon.GameServer.Party
             StructurePacket<TResStruct> packet = new StructurePacket<TResStruct>(res);
             SendToAllExcept(packet, exceptions);
         }
+
+        public void EnqueueToAllExcept<TResStruct>(TResStruct res, PacketQueue queue, params GameClient[] exceptions)
+            where TResStruct : class, IPacketStructure, new()
+        {
+            StructurePacket<TResStruct> packet = new StructurePacket<TResStruct>(res);
+            foreach (GameClient client in Clients)
+            {
+                if (exceptions.Contains(client))
+                {
+                    continue;
+                }
+                queue.Enqueue((client, packet));
+            }
+        }
+
 
         public void SendToAllExcept(Packet packet, params GameClient[] exceptions)
         {
