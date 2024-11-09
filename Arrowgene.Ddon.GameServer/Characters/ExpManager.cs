@@ -1,19 +1,16 @@
 #nullable enable
-using System;
-using System.Collections.Generic;
-using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Server;
-using Arrowgene.Logging;
-using Arrowgene.Ddon.Server.Network;
-using System.Linq;
 using Arrowgene.Ddon.Shared.Model.Quest;
-using Arrowgene.Ddon.GameServer.Party;
-using System.IO;
-using System.Text;
-using System.Buffers.Text;
+using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -458,8 +455,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return JobData;
         }
 
-        public void AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, RewardSource rewardType, QuestType questType = QuestType.All)
+        public PacketQueue AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, RewardSource rewardType, QuestType questType = QuestType.All, DbConnection? connectionIn = null)
         {
+            PacketQueue packets = new();
+
             var lvCap = (client.GameMode == GameMode.Normal) 
                 ? _Server.Setting.GameLogicSetting.JobLevelMax
                 : BitterblackMazeManager.LevelCap(client.Character.BbmProgress);
@@ -483,7 +482,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     expNtc.ExtraBonusExp = extraBonusExp;
                     expNtc.TotalExp = activeCharacterJobData.Exp;
                     expNtc.Type = (byte) rewardType; // TODO: Figure out
-                    client.Send(expNtc);
+                    client.Enqueue(expNtc, packets);
                 }
                 else if(characterToAddExpTo is Pawn)
                 {
@@ -494,7 +493,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     expNtc.ExtraBonusExp = extraBonusExp;
                     expNtc.TotalExp = activeCharacterJobData.Exp;
                     expNtc.Type = (byte) rewardType; // TODO: Figure out
-                    client.Send(expNtc);
+                    client.Enqueue(expNtc, packets);
                 }
 
 
@@ -530,7 +529,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         lvlNtc.AddJobPoint = addJobPoint;
                         lvlNtc.TotalJobPoint = activeCharacterJobData.JobPoint;
                         GameStructure.CDataCharacterLevelParam(lvlNtc.CharacterLevelParam, (Character) characterToAddExpTo);
-                        client.Send(lvlNtc);
+                        client.Enqueue(lvlNtc, packets);
 
                         // Inform other party members
                         S2CJobCharacterJobLevelUpMemberNtc lvlMemberNtc = new S2CJobCharacterJobLevelUpMemberNtc();
@@ -538,7 +537,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         lvlMemberNtc.Job = characterToAddExpTo.Job;
                         lvlMemberNtc.Level = activeCharacterJobData.Lv;
                         GameStructure.CDataCharacterLevelParam(lvlMemberNtc.CharacterLevelParam, (Character) characterToAddExpTo);
-                        client.Party.SendToAllExcept(lvlMemberNtc, client);
+                        client.Party.EnqueueToAllExcept(lvlMemberNtc, packets, client);
                     }
                     else if(characterToAddExpTo is Pawn)
                     {
@@ -550,7 +549,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         lvlNtc.AddJobPoint = addJobPoint;
                         lvlNtc.TotalJobPoint = activeCharacterJobData.JobPoint;
                         GameStructure.CDataCharacterLevelParam(lvlNtc.CharacterLevelParam, (Pawn) characterToAddExpTo);
-                        client.Send(lvlNtc);
+                        client.Enqueue(lvlNtc, packets);
 
                         // Inform other party members
                         S2CJobPawnJobLevelUpMemberNtc lvlMemberNtc = new S2CJobPawnJobLevelUpMemberNtc();
@@ -559,17 +558,25 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         lvlMemberNtc.Job = characterToAddExpTo.Job;
                         lvlMemberNtc.Level = activeCharacterJobData.Lv;
                         GameStructure.CDataCharacterLevelParam(lvlMemberNtc.CharacterLevelParam, (Pawn) characterToAddExpTo);
-                        client.Party.SendToAllExcept(lvlMemberNtc, client);
+                        client.Party.EnqueueToAllExcept(lvlMemberNtc, packets, client);
                     }
                 }
 
                 // PERSIST CHANGES IN DB
-                _Server.Database.UpdateCharacterJobData(characterToAddExpTo.CommonId, activeCharacterJobData);
+                _Server.Database.UpdateCharacterJobData(characterToAddExpTo.CommonId, activeCharacterJobData, connectionIn);
             }
+
+            return packets;
         }
 
-        public void AddJp(GameClient client, CharacterCommon characterToJpExpTo, uint gainedJp, RewardSource rewardType, QuestType questType = QuestType.All)
+        public void AddExpNtc(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, RewardSource rewardType, QuestType questType = QuestType.All, DbConnection? connectionIn = null)
         {
+            AddExp(client, characterToAddExpTo, gainedExp, rewardType, questType, connectionIn).Send();
+        }
+
+        public PacketQueue AddJp(GameClient client, CharacterCommon characterToJpExpTo, uint gainedJp, RewardSource rewardType, QuestType questType = QuestType.All, DbConnection? connectionIn = null)
+        {
+            PacketQueue packets = new(); // Only ever has one packet, but has to exist because there are problems with returning interface types
             CDataCharacterJobData? activeCharacterJobData = characterToJpExpTo.ActiveCharacterJobData;
             activeCharacterJobData.JobPoint += gainedJp;
 
@@ -580,7 +587,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 jpNtc.AddJobPoint = gainedJp;
                 jpNtc.ExtraBonusJobPoint = 0;
                 jpNtc.TotalJobPoint = activeCharacterJobData.JobPoint;
-                client.Send(jpNtc);
+                client.Enqueue(jpNtc, packets);
             }
             else
             {
@@ -590,11 +597,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 jpNtc.AddJobPoint = gainedJp;
                 jpNtc.ExtraBonusJobPoint = 0;
                 jpNtc.TotalJobPoint = activeCharacterJobData.JobPoint;
-                client.Send(jpNtc);
+                client.Enqueue(jpNtc, packets);
             }
 
             // PERSIST CHANGES IN DB
-            _Server.Database.UpdateCharacterJobData(characterToJpExpTo.CommonId, activeCharacterJobData);
+            _Server.Database.UpdateCharacterJobData(characterToJpExpTo.CommonId, activeCharacterJobData, connectionIn);
+
+            return packets;
+        }
+
+        public void AddJpNtc(GameClient client, CharacterCommon characterToJpExpTo, uint gainedJp, RewardSource rewardType, QuestType questType = QuestType.All, DbConnection? connectionIn = null)
+        {
+            AddJp(client, characterToJpExpTo, gainedJp, rewardType, questType, connectionIn).Send();
         }
 
         public void ResetExpData(GameClient client, CharacterCommon characterCommon)

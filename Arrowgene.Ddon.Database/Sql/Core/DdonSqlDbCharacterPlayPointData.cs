@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using System.Data.Common;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -31,21 +32,18 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private const string SqlDeleteCharacterPlayPointData = "DELETE FROM \"ddon_character_playpoint_data\" WHERE \"character_id\"=@character_id AND \"job\" = @job;";
 
-        public bool ReplaceCharacterPlayPointData(uint id, CDataJobPlayPoint replacedCharacterPlayPointData)
+        public bool ReplaceCharacterPlayPointData(uint id, CDataJobPlayPoint replacedCharacterPlayPointData, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return ReplaceCharacterPlayPointData(connection, id, replacedCharacterPlayPointData);
-        }
-
-        public bool ReplaceCharacterPlayPointData(TCon connection, uint id, CDataJobPlayPoint replacedCharacterPlayPointData)
-        {
-            Logger.Debug("Inserting character playpoint data.");
-            if (!InsertIfNotExistsCharacterPlayPointData(connection, id, replacedCharacterPlayPointData))
+            return ExecuteQuerySafe<bool>(connectionIn, (connection) =>
             {
-                Logger.Debug("Character playpoint data already exists, replacing.");
-                return UpdateCharacterPlayPointData(connection, id, replacedCharacterPlayPointData);
-            }
-            return true;
+                Logger.Debug("Inserting character playpoint data.");
+                if (!InsertIfNotExistsCharacterPlayPointData(connection, id, replacedCharacterPlayPointData))
+                {
+                    Logger.Debug("Character playpoint data already exists, replacing.");
+                    return UpdateCharacterPlayPointData(id, replacedCharacterPlayPointData, connection);
+                }
+                return true;
+            });
         }
 
         public bool InsertCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData)
@@ -70,15 +68,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return ExecuteNonQuery(connection, SqlInsertIfNotExistsCharacterPlayPointData, command => { AddParameter(command, id, updatedCharacterPlayPointData); }) == 1;
         }
 
-        public bool UpdateCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData)
+        public bool UpdateCharacterPlayPointData(uint id, CDataJobPlayPoint updatedCharacterPlayPointData, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return UpdateCharacterPlayPointData(connection, id, updatedCharacterPlayPointData);
-        }
-
-        public bool UpdateCharacterPlayPointData(TCon connection, uint id, CDataJobPlayPoint updatedCharacterPlayPointData)
-        {
-            return ExecuteNonQuery(connection, SqlUpdateCharacterPlayPointData, command => { AddParameter(command, id, updatedCharacterPlayPointData); }) == 1;
+            return ExecuteQuerySafe<bool>(connectionIn, (connection) =>
+            {
+                return ExecuteNonQuery(connection, SqlUpdateCharacterPlayPointData, command => { AddParameter(command, id, updatedCharacterPlayPointData); }) == 1;
+            });
         }
 
         private void AddParameter(TCom command, uint id, CDataJobPlayPoint characterPlayPointData)

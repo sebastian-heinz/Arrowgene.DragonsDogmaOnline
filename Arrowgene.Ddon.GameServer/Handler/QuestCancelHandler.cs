@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (isPriority && (client.Party.IsSolo || client.Party.Leader?.Client == client))
                 {
-                    client.Party.QuestState.UpdatePriorityQuestList(client.Party.Leader.Client);
+                    client.Party.QuestState.UpdatePriorityQuestList(client.Party.Leader.Client).Send();
                 }
             }
             else
@@ -46,7 +46,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     if (isPriority)
                     {
-                        client.Party.QuestState.UpdatePriorityQuestList(client);
+                        client.Party.QuestState.UpdatePriorityQuestList(client).Send();
                     }
                 }
             }
