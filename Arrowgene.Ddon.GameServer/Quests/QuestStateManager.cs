@@ -864,7 +864,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             throw new NotImplementedException();
         }
 
-        public PacketQueue HandleEnemyHuntRequests(Enemy enemy)
+        public PacketQueue HandleEnemyHuntRequests(Enemy enemy, DbConnection? connectionIn = null)
         {
             if (Member.Client.Character.GameMode != GameMode.Normal)
             {
@@ -881,6 +881,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     QuestState questState = quest.Value;
                     QuestEnemyHuntRecord huntRecord = questState.UpdateHuntRequest(enemy);
 
+                    if (Member.Client.Party.ExmInProgress && questObject.QuestType == QuestType.Light)
+                    {
+                        // The UI indicates that light quests cannot progress during EXMs.
+                        continue;
+                    }
+
                     if (huntRecord != null)
                     {
                         if (questObject.SaveWorkAsStep)
@@ -890,7 +896,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             // Stage 0 -> Not accepted, should never occur.
                             // Stage 1 -> Accepted, but no work done
                             // Stage N+1 -> Accepted, but with N work done. 
-                            Server.Database.UpdateQuestProgress(Member.Client.Character.CommonId, questState.QuestScheduleId, questState.QuestType, huntRecord.AmountHunted + 1);
+                            Server.Database.UpdateQuestProgress(Member.Client.Character.CommonId, questState.QuestScheduleId, questState.QuestType, huntRecord.AmountHunted + 1, connectionIn);
                         }
 
                         S2CQuestQuestProgressWorkSaveNtc ntc = new()

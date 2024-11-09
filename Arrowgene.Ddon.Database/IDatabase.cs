@@ -538,23 +538,13 @@ namespace Arrowgene.Ddon.Database
             bool killedDeath,
             ulong lastTicketTime
         );
-        bool UpdateBBMProgress(
-            uint characterId,
-            ulong startTime,
-            uint contentId,
-            BattleContentMode contentMode,
-            uint tier,
-            bool killedDeath,
-            ulong lastTicketTime
-        );
-        bool UpdateBBMProgress(uint characterId, BitterblackMazeProgress progress);
+        bool UpdateBBMProgress(uint characterId, BitterblackMazeProgress progress, DbConnection? connectionIn = null);
         BitterblackMazeProgress SelectBBMProgress(uint characterId);
         bool RemoveBBMProgress(uint characterId);
 
         // Bitterblack Maze Rewards
         bool InsertBBMRewards(uint characterId, uint goldMarks, uint silverMarks, uint redMarks);
-        bool UpdateBBMRewards(uint characterId, uint goldMarks, uint silverMarks, uint redMarks);
-        bool UpdateBBMRewards(uint characterId, BitterblackMazeRewards rewards);
+        bool UpdateBBMRewards(uint characterId, BitterblackMazeRewards rewards, DbConnection? connectionIn = null);
         bool RemoveBBMRewards(uint characterId);
         BitterblackMazeRewards SelectBBMRewards(uint characterId);
 

@@ -95,7 +95,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return contentStatus;
         }
 
-        public static PacketQueue HandleTierClear(DdonGameServer server, GameClient client, Character character, StageId stageId)
+        public static PacketQueue HandleTierClear(DdonGameServer server, GameClient client, Character character, StageId stageId, DbConnection? connectionIn = null)
         {
             PacketQueue packets = new();
             
@@ -130,7 +130,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 progress.ContentId = 0;
                 progress.Tier = 0;
             }
-            server.Database.UpdateBBMProgress(character.CharacterId, progress);
+            server.Database.UpdateBBMProgress(character.CharacterId, progress, connectionIn);
 
             var rewards = server.Database.SelectBBMRewards(character.CharacterId);
             // TODO: handle BattleContentRewardBonus.Up (some sort of reward bonus)
@@ -139,7 +139,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             rewards.GoldMarks += marks.Gold;
             rewards.SilverMarks += marks.Silver;
             rewards.RedMarks += marks.Red;
-            server.Database.UpdateBBMRewards(character.CharacterId, rewards);
+            server.Database.UpdateBBMRewards(character.CharacterId, rewards, connectionIn);
 
             // Update the situation information
             S2CBattleContentProgressNtc progressNtc = new S2CBattleContentProgressNtc();

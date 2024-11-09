@@ -41,26 +41,23 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
 
-        public bool UpdateBBMRewards(uint characterId, BitterblackMazeRewards rewards)
+        public bool UpdateBBMRewards(uint characterId, BitterblackMazeRewards rewards, DbConnection? connectionIn = null)
         {
-            return UpdateBBMRewards(characterId, rewards.GoldMarks, rewards.SilverMarks, rewards.RedMarks);
+            return UpdateBBMRewards(characterId, rewards.GoldMarks, rewards.SilverMarks, rewards.RedMarks, connectionIn);
         }
 
-        public bool UpdateBBMRewards(uint characterId, uint goldMarks, uint silverMarks, uint redMarks)
+        public bool UpdateBBMRewards(uint characterId, uint goldMarks, uint silverMarks, uint redMarks, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return UpdateBBMRewards(connection, characterId, goldMarks, silverMarks, redMarks);
-        }
-
-        public bool UpdateBBMRewards(TCon connection, uint characterId, uint goldMarks, uint silverMarks, uint redMarks)
-        {
-            return ExecuteNonQuery(connection, SqlUpdateBBMRewards, command =>
+            return ExecuteQuerySafe(connectionIn, (connection) =>
             {
-                AddParameter(command, "character_id", characterId);
-                AddParameter(command, "gold_marks", goldMarks);
-                AddParameter(command, "silver_marks", silverMarks);
-                AddParameter(command, "red_marks", redMarks);
-            }) == 1; ;
+                return ExecuteNonQuery(connection, SqlUpdateBBMRewards, command =>
+                {
+                    AddParameter(command, "character_id", characterId);
+                    AddParameter(command, "gold_marks", goldMarks);
+                    AddParameter(command, "silver_marks", silverMarks);
+                    AddParameter(command, "red_marks", redMarks);
+                }) == 1;
+            });
         }
 
         public bool RemoveBBMRewards(uint characterId)

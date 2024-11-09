@@ -1,21 +1,16 @@
 #nullable enable
-using System;
-using System.Collections.Generic;
-using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Server;
-using Arrowgene.Logging;
-using Arrowgene.Ddon.Server.Network;
-using System.Linq;
 using Arrowgene.Ddon.Shared.Model.Quest;
-using Arrowgene.Ddon.GameServer.Party;
-using System.IO;
-using System.Text;
-using System.Buffers.Text;
+using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
 using System.Data.Common;
-using Arrowgene.Ddon.Shared.Network;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -579,8 +574,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             AddExp(client, characterToAddExpTo, gainedExp, rewardType, questType, connectionIn).Send();
         }
 
-        public void AddJp(GameClient client, CharacterCommon characterToJpExpTo, uint gainedJp, RewardSource rewardType, QuestType questType = QuestType.All, DbConnection? connectionIn = null)
+        public PacketQueue AddJp(GameClient client, CharacterCommon characterToJpExpTo, uint gainedJp, RewardSource rewardType, QuestType questType = QuestType.All, DbConnection? connectionIn = null)
         {
+            PacketQueue packets = new(); // Only ever has one packet, but has to exist because there are problems with returning interface types
             CDataCharacterJobData? activeCharacterJobData = characterToJpExpTo.ActiveCharacterJobData;
             activeCharacterJobData.JobPoint += gainedJp;
 
@@ -591,7 +587,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 jpNtc.AddJobPoint = gainedJp;
                 jpNtc.ExtraBonusJobPoint = 0;
                 jpNtc.TotalJobPoint = activeCharacterJobData.JobPoint;
-                client.Send(jpNtc);
+                client.Enqueue(jpNtc, packets);
             }
             else
             {
@@ -601,11 +597,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 jpNtc.AddJobPoint = gainedJp;
                 jpNtc.ExtraBonusJobPoint = 0;
                 jpNtc.TotalJobPoint = activeCharacterJobData.JobPoint;
-                client.Send(jpNtc);
+                client.Enqueue(jpNtc, packets);
             }
 
             // PERSIST CHANGES IN DB
             _Server.Database.UpdateCharacterJobData(characterToJpExpTo.CommonId, activeCharacterJobData, connectionIn);
+
+            return packets;
+        }
+
+        public void AddJpNtc(GameClient client, CharacterCommon characterToJpExpTo, uint gainedJp, RewardSource rewardType, QuestType questType = QuestType.All, DbConnection? connectionIn = null)
+        {
+            AddJp(client, characterToJpExpTo, gainedJp, rewardType, questType, connectionIn).Send();
         }
 
         public void ResetExpData(GameClient client, CharacterCommon characterCommon)

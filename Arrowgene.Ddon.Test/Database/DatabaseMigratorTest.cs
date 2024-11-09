@@ -374,13 +374,11 @@ namespace Arrowgene.Ddon.Test.Database
         public uint SelectBBMCharacterId(uint characterId, DbConnection? connectionIn = null) { return 0; }
         public uint SelectBBMNormalCharacterId(uint bbmCharacterId) { return 0; }
         public bool InsertBBMProgress(uint characterId, ulong startTime, uint contentId, BattleContentMode contentMode, uint tier, bool killedDeath, ulong lastTicketTime) { return true;  }
-        public bool UpdateBBMProgress(uint characterId, ulong startTime, uint contentId, BattleContentMode contentMode, uint tier, bool killedDeath, ulong lastTicketTime) { return true; }
-        public bool UpdateBBMProgress(uint characterId, BitterblackMazeProgress progress) { return true; }
+        public bool UpdateBBMProgress(uint characterId, BitterblackMazeProgress progress, DbConnection? connectionIn = null) { return true; }
         public bool RemoveBBMProgress(uint characterId) { return true; }
         public BitterblackMazeProgress SelectBBMProgress(uint characterId) { return new BitterblackMazeProgress(); }
         public bool InsertBBMRewards(uint characterId, uint goldMarks, uint silverMarks, uint redMarks) { return true; }
-        public bool UpdateBBMRewards(uint characterId, BitterblackMazeRewards rewards) { return true; }
-        public bool UpdateBBMRewards(uint characterId, uint goldMarks, uint silverMarks, uint redMarks) { return true; }
+        public bool UpdateBBMRewards(uint characterId, BitterblackMazeRewards rewards, DbConnection? connectionIn = null) { return true; }
         public bool RemoveBBMRewards(uint characterId) { return true; }
         public BitterblackMazeRewards SelectBBMRewards(uint characterId) { return new BitterblackMazeRewards(); }
         public bool InsertBBMContentTreasure(uint characterId, BitterblackMazeTreasure treasure, DbConnection? connectionIn = null) { return true; }

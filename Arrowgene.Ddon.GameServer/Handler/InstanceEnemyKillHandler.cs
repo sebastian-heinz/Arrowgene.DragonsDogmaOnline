@@ -78,7 +78,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     WaitSecond = enemyKilled.RepopWaitSecond,
                     EnemyData = new CDataLayoutEnemyData()
                     {
-                        PositionIndex = (byte) packet.SetId,
+                        PositionIndex = (byte)packet.SetId,
                         EnemyInfo = enemyKilled.asCDataStageLayoutEnemyPresetEnemyInfoClient()
                     }
                 };
@@ -90,182 +90,185 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 enemyKilled.IsKilled = true;
             }
 
-            List<InstancedEnemy> group = client.Party.InstanceEnemyManager.GetInstancedEnemies(stageId);
-            bool groupDestroyed = group.Where(x => x.IsRequired).All(x => x.IsKilled);
-            if (groupDestroyed)
+            Server.Database.ExecuteInTransaction(connectionIn =>
             {
 
-                bool IsAreaBoss = false;
-                foreach (var enemy in group)
+                List<InstancedEnemy> group = client.Party.InstanceEnemyManager.GetInstancedEnemies(stageId);
+                bool groupDestroyed = group.Where(x => x.IsRequired).All(x => x.IsKilled);
+                if (groupDestroyed)
                 {
-                    IsAreaBoss = IsAreaBoss || enemy.IsAreaBoss;
-                    if (IsAreaBoss)
+
+                    bool IsAreaBoss = false;
+                    foreach (var enemy in group)
                     {
-                        break;
+                        IsAreaBoss = IsAreaBoss || enemy.IsAreaBoss;
+                        if (IsAreaBoss)
+                        {
+                            break;
+                        }
+                    }
+
+                    // This is used for quests and things like key door monsters
+                    S2CInstanceEnemyGroupDestroyNtc groupDestroyedNtc = new S2CInstanceEnemyGroupDestroyNtc()
+                    {
+                        LayoutId = packet.LayoutId,
+                        IsAreaBoss = IsAreaBoss && (client.GameMode == GameMode.Normal)
+                    };
+                    client.Party.EnqueueToAll(groupDestroyedNtc, queuedPackets);
+                    //client.Party.SendToAll(groupDestroyedNtc);
+
+                    if (IsAreaBoss && client.GameMode == GameMode.BitterblackMaze)
+                    {
+                        foreach (var memberClient in client.Party.Clients)
+                        {
+                            var ntcs = BitterblackMazeManager.HandleTierClear(_gameServer, memberClient, memberClient.Character, stageId, connectionIn);
+                            queuedPackets.AddRange(ntcs);
+                        }
                     }
                 }
 
-                // This is used for quests and things like key door monsters
-                S2CInstanceEnemyGroupDestroyNtc groupDestroyedNtc = new S2CInstanceEnemyGroupDestroyNtc()
+                if (packet.IsNoBattleReward)
+                {
+                    return;
+                }
+
+                var dropItemNtc = new S2CInstancePopDropItemNtc()
                 {
                     LayoutId = packet.LayoutId,
-                    IsAreaBoss = IsAreaBoss && (client.GameMode == GameMode.Normal)
+                    SetId = packet.SetId,
+                    MdlType = enemyKilled.DropsTable.MdlType,
+                    PosX = packet.DropPosX,
+                    PosY = packet.DropPosY,
+                    PosZ = packet.DropPosZ
                 };
-                client.Party.EnqueueToAll(groupDestroyedNtc, queuedPackets);
-                //client.Party.SendToAll(groupDestroyedNtc);
-
-                if (IsAreaBoss && client.GameMode == GameMode.BitterblackMaze)
+                foreach (var partyMemberClient in client.Party.Clients)
                 {
-                    foreach (var memberClient in client.Party.Clients)
+                    // If the enemy is quest controlled, then either get from the quest loot drop, or the general one.
+                    List<InstancedGatheringItem> instancedGatheringItems = new List<InstancedGatheringItem>();
+
+                    // Items from kill an enemy normally
+                    instancedGatheringItems.AddRange(IsQuestControlled ?
+                                partyMemberClient.InstanceQuestDropManager.GenerateEnemyLoot(quest, enemyKilled, packet.LayoutId, packet.SetId) :
+                                partyMemberClient.InstanceDropItemManager.GetAssets(layoutId, (int)packet.SetId));
+
+                    // Items for any server events which might be active
+                    instancedGatheringItems.AddRange(partyMemberClient.InstanceEventDropItemManager.GenerateEventItems(partyMemberClient, enemyKilled, packet.LayoutId, packet.SetId));
+
+                    // If the roll was unlucky, there is a chance that no bag will show.
+                    if (instancedGatheringItems.Where(x => x.ItemNum > 0).Any())
                     {
-                        var ntcs = BitterblackMazeManager.HandleTierClear(_gameServer, memberClient, memberClient.Character, stageId);
-                        queuedPackets.AddRange(ntcs);
+                        partyMemberClient.Enqueue(dropItemNtc, queuedPackets);
+                        //partyMemberClient.Send(dropItemNtc);
                     }
                 }
-            }
 
-            if (packet.IsNoBattleReward)
-            {
-                return new();
-            }
 
-            var dropItemNtc = new S2CInstancePopDropItemNtc()
-            {
-                LayoutId = packet.LayoutId,
-                SetId = packet.SetId,
-                MdlType = enemyKilled.DropsTable.MdlType,
-                PosX = packet.DropPosX,
-                PosY = packet.DropPosY,
-                PosZ = packet.DropPosZ
-            };
-            foreach (var partyMemberClient in client.Party.Clients)
-            {
-                // If the enemy is quest controlled, then either get from the quest loot drop, or the general one.
-                List<InstancedGatheringItem> instancedGatheringItems = new List<InstancedGatheringItem>();
+                uint calcExp = _gameServer.ExpManager.GetAdjustedExp(client.GameMode, RewardSource.Enemy, client.Party, enemyKilled.GetDroppedExperience(), enemyKilled.Lv);
+                uint calcPP = enemyKilled.GetDroppedPlayPoints();
 
-                // Items from kill an enemy normally
-                instancedGatheringItems.AddRange(IsQuestControlled ?
-                            partyMemberClient.InstanceQuestDropManager.GenerateEnemyLoot(quest, enemyKilled, packet.LayoutId, packet.SetId) :
-                            partyMemberClient.InstanceDropItemManager.GetAssets(layoutId, (int)packet.SetId));
-
-                // Items for any server events which might be active
-                instancedGatheringItems.AddRange(partyMemberClient.InstanceEventDropItemManager.GenerateEventItems(partyMemberClient, enemyKilled, packet.LayoutId, packet.SetId));
-
-                // If the roll was unlucky, there is a chance that no bag will show.
-                if (instancedGatheringItems.Where(x => x.ItemNum > 0).Any())
+                foreach (PartyMember member in client.Party.Members)
                 {
-                    partyMemberClient.Enqueue(dropItemNtc, queuedPackets);
-                    //partyMemberClient.Send(dropItemNtc);
-                }
-            }
+                    if (member.JoinState != JoinState.On) continue; // Only fully joined members get rewards.
 
+                    uint gainedExp = calcExp;
+                    uint gainedPP = calcPP;
 
-            uint calcExp = _gameServer.ExpManager.GetAdjustedExp(client.GameMode, RewardSource.Enemy, client.Party, enemyKilled.GetDroppedExperience(), enemyKilled.Lv);
-            uint calcPP = enemyKilled.GetDroppedPlayPoints();
-
-            foreach (PartyMember member in client.Party.Members)
-            {
-                if (member.JoinState != JoinState.On) continue; // Only fully joined members get rewards.
-
-                uint gainedExp = calcExp;
-                uint gainedPP = calcPP;
-
-                GameClient memberClient;
-                CharacterCommon memberCharacter;
-                if (member is PlayerPartyMember playerMember)
-                {
-                    memberClient = playerMember.Client;
-                    memberCharacter = memberClient.Character;
-
-                    if (memberCharacter.Stage.Id != stageId.Id) continue; // Only nearby allies get XP.
-
-                    if (memberClient.Character.ActiveCharacterPlayPointData.PlayPoint.ExpMode == ExpMode.Experience && !IsQuestControlled)
+                    GameClient memberClient;
+                    CharacterCommon memberCharacter;
+                    if (member is PlayerPartyMember playerMember)
                     {
-                        gainedPP = 0;
+                        memberClient = playerMember.Client;
+                        memberCharacter = memberClient.Character;
+
+                        if (memberCharacter.Stage.Id != stageId.Id) continue; // Only nearby allies get XP.
+
+                        if (memberClient.Character.ActiveCharacterPlayPointData.PlayPoint.ExpMode == ExpMode.Experience && !IsQuestControlled)
+                        {
+                            gainedPP = 0;
+                        }
+                        else if (!IsQuestControlled)
+                        {
+                            gainedExp = 0;
+                        }
+
+                        var huntPackets = playerMember.QuestState.HandleEnemyHuntRequests(enemyKilled, connectionIn);
+                        queuedPackets.AddRange(huntPackets);
+
+                        S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
+
+                        if (enemyKilled.BloodOrbs > 0)
+                        {
+                            // Drop BO
+                            uint gainedBo = enemyKilled.BloodOrbs;
+                            uint bonusBo = (uint)(enemyKilled.BloodOrbs * _gameServer.GpCourseManager.EnemyBloodOrbBonus());
+                            CDataUpdateWalletPoint boUpdateWalletPoint = _gameServer.WalletManager.AddToWallet(memberClient.Character, WalletType.BloodOrbs, gainedBo + bonusBo, bonusBo, connectionIn: connectionIn);
+                            updateCharacterItemNtc.UpdateWalletList.Add(boUpdateWalletPoint);
+                        }
+
+                        if (enemyKilled.HighOrbs > 0)
+                        {
+                            // Drop HO
+                            uint gainedHo = enemyKilled.HighOrbs;
+                            CDataUpdateWalletPoint hoUpdateWalletPoint = _gameServer.WalletManager.AddToWallet(memberClient.Character, WalletType.HighOrbs, gainedHo, connectionIn: connectionIn); 
+                        }
+
+                        if (updateCharacterItemNtc.UpdateItemList.Count != 0 || updateCharacterItemNtc.UpdateWalletList.Count != 0)
+                        {
+                            memberClient.Enqueue(updateCharacterItemNtc, queuedPackets);
+                            //memberClient.Send(updateCharacterItemNtc);
+                        }
+
+                        if (gainedPP > 0)
+                        {
+                            var ntc = _gameServer.PPManager.AddPlayPoint(memberClient, gainedPP, type: 1, connectionIn:connectionIn);
+                            memberClient.Enqueue(ntc, queuedPackets);
+                        }
+
+                        if (gainedExp > 0)
+                        {
+                            var ntcs = _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp, RewardSource.Enemy, connectionIn: connectionIn); 
+                            queuedPackets.AddRange(ntcs);
+                        }
                     }
-                    else if (!IsQuestControlled)
+                    else if (member is PawnPartyMember pawnMember)
                     {
-                        gainedExp = 0;
+                        Pawn pawn = pawnMember.Pawn;
+                        memberClient = _gameServer.ClientLookup.GetClientByCharacterId(pawn.CharacterId);
+                        memberCharacter = pawn;
+
+                        if (memberClient.Character.Stage.Id != stageId.Id || pawn.IsRented)
+                        {
+                            // Only nearby allies get XP
+                            // and non-rented pawns
+                            continue;
+                        }
+
+                        uint pawnExp = gainedExp;
+                        if (_gameServer.ExpManager.RequiresPawnCatchup(client.GameMode, client.Party, pawn))
+                        {
+                            pawnExp = _gameServer.ExpManager.GetAdjustedPawnExp(client.GameMode, RewardSource.Enemy, client.Party, pawn, enemyKilled.GetDroppedExperience(), enemyKilled.Lv);
+                        }
+
+                        if (pawnExp > 0)
+                        {
+                            var ntcs = _gameServer.ExpManager.AddExp(memberClient, memberCharacter, pawnExp, RewardSource.Enemy, connectionIn: connectionIn);
+                            queuedPackets.AddRange(ntcs);
+                        }
                     }
-
-                    // TODO: Add transaction?
-                    var huntPackets = playerMember.QuestState.HandleEnemyHuntRequests(enemyKilled);
-                    queuedPackets.AddRange(huntPackets);
-
-                    S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-
-                    if (enemyKilled.BloodOrbs > 0)
+                    else
                     {
-                        // Drop BO
-                        uint gainedBo = enemyKilled.BloodOrbs;
-                        uint bonusBo = (uint)(enemyKilled.BloodOrbs * _gameServer.GpCourseManager.EnemyBloodOrbBonus());
-                        CDataUpdateWalletPoint boUpdateWalletPoint = _gameServer.WalletManager.AddToWallet(memberClient.Character, WalletType.BloodOrbs, gainedBo + bonusBo, bonusBo);
-                        updateCharacterItemNtc.UpdateWalletList.Add(boUpdateWalletPoint);
-                    }
-
-                    if (enemyKilled.HighOrbs > 0)
-                    {
-                        // Drop HO
-                        uint gainedHo = enemyKilled.HighOrbs;
-                        CDataUpdateWalletPoint hoUpdateWalletPoint = _gameServer.WalletManager.AddToWallet(memberClient.Character, WalletType.HighOrbs, gainedHo);
-                    }
-
-                    if (updateCharacterItemNtc.UpdateItemList.Count != 0 || updateCharacterItemNtc.UpdateWalletList.Count != 0)
-                    {
-                        memberClient.Enqueue(updateCharacterItemNtc, queuedPackets);
-                        //memberClient.Send(updateCharacterItemNtc);
-                    }
-
-                    if (gainedPP > 0)
-                    {
-                        var ntc = _gameServer.PPManager.AddPlayPoint(memberClient, gainedPP, type: 1);
-                        memberClient.Enqueue(ntc, queuedPackets);
-                    }
-
-                    if (gainedExp > 0)
-                    {
-                        var ntcs = _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp, RewardSource.Enemy);
-                        queuedPackets.AddRange(ntcs);
+                        throw new Exception("Unknown member type");
                     }
                 }
-                else if (member is PawnPartyMember pawnMember)
-                {
-                    Pawn pawn = pawnMember.Pawn;
-                    memberClient = _gameServer.ClientLookup.GetClientByCharacterId(pawn.CharacterId);
-                    memberCharacter = pawn;
-
-                    if (memberClient.Character.Stage.Id != stageId.Id || pawn.IsRented)
-                    {
-                        // Only nearby allies get XP
-                        // and non-rented pawns
-                        continue;
-                    }
-
-                    uint pawnExp = gainedExp;
-                    if (_gameServer.ExpManager.RequiresPawnCatchup(client.GameMode, client.Party, pawn))
-                    {
-                        pawnExp = _gameServer.ExpManager.GetAdjustedPawnExp(client.GameMode, RewardSource.Enemy, client.Party, pawn, enemyKilled.GetDroppedExperience(), enemyKilled.Lv);
-                    }
-
-                    if (pawnExp > 0)
-                    {
-                        var ntcs = _gameServer.ExpManager.AddExp(memberClient, memberCharacter, pawnExp, RewardSource.Enemy);
-                        queuedPackets.AddRange(ntcs);
-                    }
-                }
-                else
-                {
-                    throw new Exception("Unknown member type");
-                }
-            }
+            });
 
             queuedPackets.Send();
 
             // TODO: EnemyId and KillNum
             return new S2CInstanceEnemyKillRes()
             {
-                EnemyId = enemyKilled.Id,
-                KillNum = 1
+                EnemyId = packet.IsNoBattleReward ? 0u : enemyKilled.Id,
+                KillNum = packet.IsNoBattleReward ? 0u : 1u
             };
 
         }
