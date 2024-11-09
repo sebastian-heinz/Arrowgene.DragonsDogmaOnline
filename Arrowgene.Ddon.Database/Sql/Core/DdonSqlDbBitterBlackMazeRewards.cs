@@ -74,16 +74,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
 
-        public BitterblackMazeRewards SelectBBMRewards(uint characterId)
-        {
-            using TCon connection = OpenNewConnection();
-            return SelectBBMRewards(connection, characterId);
-        }
-
-        public BitterblackMazeRewards SelectBBMRewards(TCon connection, uint characterId)
+        public BitterblackMazeRewards SelectBBMRewards(uint characterId, DbConnection? connectionIn = null)
         {
             BitterblackMazeRewards result = null;
-            ExecuteInTransaction(connection =>
+
+            ExecuteQuerySafe(connectionIn, (connection) =>
             {
                 ExecuteReader(connection, SqlSelectBBMRewards, command =>
                 {
