@@ -43,6 +43,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         character.OnlineStatus = OnlineStatus.Online; // TODO
                         character.ServerId = matchServer;
                     }
+                    else
+                    {
+                        character.OnlineStatus = OnlineStatus.Offline;
+                    }
                 }
 
                 updateCharacterList.Add(character);
