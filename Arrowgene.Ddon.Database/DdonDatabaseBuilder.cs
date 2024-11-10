@@ -48,6 +48,7 @@ namespace Arrowgene.Ddon.Database
 
         public static string AdaptSQLiteSchemaToPostgreSQL(string schema)
         {
+            schema = Regex.Replace(schema, @"TINYINT", "SMALLINT", RegexOptions.IgnoreCase);
             schema = Regex.Replace(schema, @"(\s)DATETIME(\s|,)", "$1TIMESTAMP WITH TIME ZONE$2", RegexOptions.IgnoreCase);
             schema = Regex.Replace(schema, @"(\s)INTEGER PRIMARY KEY AUTOINCREMENT(\s|,)", "$1SERIAL PRIMARY KEY$2", RegexOptions.IgnoreCase);
             schema = Regex.Replace(schema, @"(\s)BLOB(\s|,)", "$1BYTEA$2", RegexOptions.IgnoreCase);
