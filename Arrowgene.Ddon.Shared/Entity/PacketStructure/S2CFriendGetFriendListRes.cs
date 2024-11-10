@@ -1,16 +1,19 @@
 using Arrowgene.Buffers;
-using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
-using Arrowgene.Logging;
-using System;
-using System.Collections.Generic;
-using System.Net.Sockets;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Network;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CFriendGetFriendListRes : ServerResponse
     {
+        public S2CFriendGetFriendListRes()
+        {
+            FriendInfoList = new();
+            ApplyingCharacterList = new();
+            ApprovingCharacterList = new();
+        }
+
         public override PacketId Id => PacketId.S2C_FRIEND_GET_FRIEND_LIST_RES;
         
         public List<CDataFriendInfo> FriendInfoList { get; set; }

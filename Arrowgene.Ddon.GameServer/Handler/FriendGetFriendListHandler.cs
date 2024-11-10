@@ -1,72 +1,58 @@
-﻿using System.Collections.Generic;
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class FriendGetFriendListHandler : PacketHandler<GameClient>
+    public class FriendGetFriendListHandler : GameRequestPacketHandler<C2SFriendGetFriendListReq, S2CFriendGetFriendListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(FriendGetFriendListHandler));
-
 
         public FriendGetFriendListHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override PacketId Id => PacketId.C2S_FRIEND_GET_FRIEND_LIST_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override S2CFriendGetFriendListRes Handle(GameClient client, C2SFriendGetFriendListReq request)
         {
-            // client.Send(InGameDump.Dump_60);
-            List<CDataFriendInfo> fList = new List<CDataFriendInfo>();
-            List<CDataCommunityCharacterBaseInfo> applList = new List<CDataCommunityCharacterBaseInfo>();
-            List<CDataCommunityCharacterBaseInfo> apprList = new List<CDataCommunityCharacterBaseInfo>();
-            List<ContactListEntity> friends = Database.SelectContactsByCharacterId(client.Character.CharacterId);
-            
-            foreach (var f in friends)
+
+            S2CFriendGetFriendListRes res = new();
+
+            List<(ContactListEntity, CDataCharacterListElement)> friends = Database.SelectFullContactListByCharacterId(client.Character.CharacterId);
+
+            foreach ((ContactListEntity contact, CDataCharacterListElement character) in friends)
             {
-                if (f.Type != ContactListType.FriendList)
+                if (contact.Type != ContactListType.FriendList)
                 {
                     continue;
                 }
-                Character otherCharacter =
-                    Database.SelectCharacter(f.GetOtherCharacterId(client.Character.CharacterId));
-                
-                if (f.Status == ContactListStatus.Accepted)
+
+                if (contact.Status == ContactListStatus.Accepted)
                 {
-                    fList.Add(ContactListManager.CharacterToFriend(otherCharacter, f.Id, f.IsFavoriteForCharacter(client.Character.CharacterId)));
-                } 
-                else if (f.Status == ContactListStatus.PendingApproval)
-                {
-                    if (f.RequesterCharacterId == client.Character.CharacterId)
+                    res.FriendInfoList.Add(new CDataFriendInfo()
                     {
-                        applList.Add(ContactListManager.CharacterToCommunityInfo(otherCharacter));
+                        CharacterListElement = character,
+                        PendingStatus = 0, // TODO
+                        IsFavorite = contact.IsFavoriteForCharacter(client.Character.CharacterId),
+                        FriendNo = contact.Id,
+                    });
+                }
+                else if (contact.Status == ContactListStatus.PendingApproval)
+                {
+                    if (contact.RequesterCharacterId == client.Character.CharacterId)
+                    {
+                        res.ApplyingCharacterList.Add(character.CommunityCharacterBaseInfo);
                     }
-                    else if (f.RequestedCharacterId == client.Character.CharacterId)
+                    else if (contact.RequestedCharacterId == client.Character.CharacterId)
                     {
-                        apprList.Add(ContactListManager.CharacterToCommunityInfo(otherCharacter));
+                        res.ApprovingCharacterList.Add(character.CommunityCharacterBaseInfo);
                     }
                 }
             }
-            
-            var result = new S2CFriendGetFriendListRes()
-            {
-                FriendInfoList = fList,
-                ApplyingCharacterList = applList,
-                ApprovingCharacterList = apprList,
-                Result = 0,
-                Error = 0,
-                    
-            };
-            
 
-            client.Send(result);
+            return res;
         }
     }
 }

@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             Server.Database.DeletePriorityQuest(client.Character.CommonId, packet.QuestScheduleId);
 
-            client.Party.QuestState.UpdatePriorityQuestList(client);
+            client.Party.QuestState.UpdatePriorityQuestList(client).Send();
 
             return new S2CQuestCancelPriorityQuestRes()
             {

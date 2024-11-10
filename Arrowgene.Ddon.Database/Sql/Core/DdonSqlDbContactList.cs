@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Data.Common;
+using System.Security.Claims;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Clan;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -31,6 +34,22 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         
         private static readonly string SqlUpdateContactByCharIds = $"UPDATE \"{ContactListTableName}\" SET \"status\"=@status, \"type\"=@type, \"requester_favorite\"=@requester_favorite, \"requested_favorite\"=@requested_favorite WHERE \"requester_character_id\"=@requester_character_id and \"requested_character_id\"=@requested_character_id;";
 
+        private static readonly string SqlSelectFullContactsByCharacterId = @"SELECT ""ddon_contact_list"".*,  
+	        ""ddon_character"".""first_name"", ""ddon_character"".""last_name"", 
+	        ""ddon_character_job_data"".""job"", ""ddon_character_job_data"".""lv"",
+	        ""ddon_character_matching_profile"".""comment"",
+	        CASE WHEN CASE WHEN ""ddon_contact_list"".""requester_character_id"" = @character_id THEN ""ddon_contact_list"".""requested_character_id"" ELSE ""ddon_contact_list"".""requester_character_id"" END NOT IN (SELECT ""character_id"" FROM ""ddon_clan_membership"") THEN """"
+	        ELSE (SELECT ""ddon_clan_param"".""name"" as ""clan_name"" FROM ""ddon_clan_param"" INNER JOIN ""ddon_clan_membership"" ON ""ddon_clan_membership"".""clan_id"" = ""ddon_clan_param"".""clan_id"" WHERE ""ddon_clan_membership"".""character_id"" = CASE WHEN ""ddon_contact_list"".""requester_character_id"" = @character_id THEN ""ddon_contact_list"".""requested_character_id"" ELSE ""ddon_contact_list"".""requester_character_id"" END)
+	        END AS ""clan_name"",
+	        CASE WHEN ""ddon_contact_list"".""requester_character_id"" = @character_id THEN ""ddon_contact_list"".""requested_character_id""
+	        ELSE ""ddon_contact_list"".""requester_character_id""
+	        END AS ""other_id""
+	        FROM ""ddon_contact_list""
+	        INNER JOIN ""ddon_character"" ON ""ddon_character"".""character_id"" = ""other_id""
+	        INNER JOIN ""ddon_character_common"" ON ""ddon_character_common"".""character_common_id"" = ""ddon_character"".""character_common_id""
+	        INNER JOIN ""ddon_character_job_data"" ON ""ddon_character_job_data"".""character_common_id"" = ""ddon_character"".""character_common_id"" AND ""ddon_character_job_data"".""job"" = ""ddon_character_common"".""job""
+	        INNER JOIN ""ddon_character_matching_profile"" ON ""ddon_character_matching_profile"".""character_id"" = ""other_id""
+	        WHERE ""requested_character_id"" = @character_id OR ""requester_character_id"" = @character_id;";
 
         public int InsertContact(uint requestingCharacterId, uint requestedCharacterId, ContactListStatus status, ContactListType type, bool requesterFavorite, bool requestedFavorite)
         {
@@ -137,6 +156,49 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 });
 
             return entity;
+        }
+
+        public List<(ContactListEntity, CDataCharacterListElement)> SelectFullContactListByCharacterId(uint characterId, DbConnection? connectionIn = null)
+        {
+            List<(ContactListEntity, CDataCharacterListElement)> list = new();
+
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
+            {
+                ExecuteReader(
+                connection,
+                SqlSelectFullContactsByCharacterId,
+                command =>
+                {
+                    AddParameter(command, "@character_id", characterId);
+                },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        var contactListEntity = ReadContactListEntity(reader);
+                        var characterListElement = new CDataCharacterListElement();
+
+                        characterListElement.CommunityCharacterBaseInfo.CharacterId = GetUInt32(reader, "other_id");
+                        characterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = GetString(reader, "first_name");
+                        characterListElement.CommunityCharacterBaseInfo.CharacterName.LastName = GetString(reader, "last_name");
+                        characterListElement.CommunityCharacterBaseInfo.ClanName = GetStringNullable(reader, "clan_name") ?? string.Empty;
+                        characterListElement.CurrentJobBaseInfo.Job = (JobId)GetByte(reader, "job");
+                        characterListElement.CurrentJobBaseInfo.Level = GetByte(reader, "lv");
+                        characterListElement.EntryJobBaseInfo = characterListElement.CurrentJobBaseInfo;
+                        characterListElement.MatchingProfile = GetString(reader, "comment");
+
+                        list.Add((contactListEntity, characterListElement));
+                    }
+                });
+            }
+            finally
+            {
+                if (!isTransaction) connection.Dispose();
+            }
+
+            return list;
         }
 
         private ContactListEntity ReadContactListEntity(TReader reader)

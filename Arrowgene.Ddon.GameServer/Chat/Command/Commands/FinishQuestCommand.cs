@@ -70,7 +70,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             else
             {
                 client.Party.QuestState.CompleteQuestProgress(quest.QuestScheduleId);
-                client.Party.QuestState.UpdatePriorityQuestList(client);
+                client.Party.QuestState.UpdatePriorityQuestList(client).Send();
                 client.Party.SendToAll(completeNtc);
 
                 if (quest.ResetPlayerAfterQuest)

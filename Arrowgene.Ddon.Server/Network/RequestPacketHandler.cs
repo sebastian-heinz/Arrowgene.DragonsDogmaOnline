@@ -3,6 +3,7 @@ using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Server.Network
 {
@@ -11,6 +12,8 @@ namespace Arrowgene.Ddon.Server.Network
         where TReqStruct : class, IPacketStructure, new()
         where TResStruct : ServerResponse, new()
     {
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(RequestPacketHandler<TClient, TReqStruct, TResStruct>));
+
         protected RequestPacketHandler(DdonServer<TClient> server) : base(server)
         {
         }
@@ -28,6 +31,8 @@ namespace Arrowgene.Ddon.Server.Network
             {
                 response = new TResStruct();
                 response.Error = (uint) ex.ErrorCode;
+                var message = ex.Message.Length > 0 ? ("\n\tMessage: " + ex.Message) : "";
+                Logger.Error(client, $"{ex.ErrorCode} thrown when handling {typeof(TReqStruct)}{message}.");
                 client.Send(response);
             }
             catch (Exception)
