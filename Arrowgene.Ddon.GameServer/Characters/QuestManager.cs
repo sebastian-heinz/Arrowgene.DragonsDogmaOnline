@@ -164,7 +164,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 questScheduleIds.UnionWith(client.QuestState.StageQuests(stageId));
             }
-            
+
             return questScheduleIds;
         }
 
@@ -3238,6 +3238,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public static bool IsWorldQuest(Quest quest)
         {
             return IsWorldQuest(quest.QuestId);
+        }
+
+        public static bool IsClanQuest(QuestId questId)
+        {
+            return (((uint)questId) >= 30000000) && (((uint)questId) < 40000000);
+        }
+
+        public static bool IsClanQuest(Quest quest)
+        {
+            return IsClanQuest(quest.QuestId);
         }
     }
 }

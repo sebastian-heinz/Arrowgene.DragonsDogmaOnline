@@ -8,43 +8,52 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         /// Area associated with the quest reward reputation.
         /// </summary>
         public uint AreaId { get; set; }
-        public uint BaseAreaPoint { get; set; }
+        /// <summary>
+        /// Which board the quest corresponds to.
+        /// </summary>
+        public uint BoardId { get; set; }
         /// <summary>
         /// Value of the quest reward reputation.
         /// </summary>
-        public uint GetCP { get; set; } 
+        public uint GetAp { get; set; } 
+
+        /// <summary>
+        /// Checked against ClearNum to see if you're eligible for clan point rewards.
+        /// </summary>
+        public uint GetCp { get; set; }
         public uint OrderLimit { get; set; }
+        /// <summary>
+        /// 1 = Hunt, 2 = Gathering
+        /// </summary>
         public uint ClearNum { get; set; }
         /// <summary>
-        /// 1 = Regular Board?
-        /// 2 = Clan Board?
+        /// TODO: Investigate.
         /// </summary>
         public uint BoardType { get; set; }
-        public uint Unk0 { get; set; }
 
         public class Serializer : EntitySerializer<CDataLightQuestDetail>
         {
             public override void Write(IBuffer buffer, CDataLightQuestDetail obj)
             {
                 WriteUInt32(buffer, obj.AreaId);
-                WriteUInt32(buffer, obj.BaseAreaPoint);
-                WriteUInt32(buffer, obj.GetCP);
+                WriteUInt32(buffer, obj.BoardId);
+                WriteUInt32(buffer, obj.GetAp);
+                WriteUInt32(buffer, obj.GetCp);
                 WriteUInt32(buffer, obj.OrderLimit);
                 WriteUInt32(buffer, obj.ClearNum);
                 WriteUInt32(buffer, obj.BoardType);
-                WriteUInt32(buffer, obj.Unk0);
             }
         
             public override CDataLightQuestDetail Read(IBuffer buffer)
             {
                 CDataLightQuestDetail obj = new CDataLightQuestDetail();
                 obj.AreaId = ReadUInt32(buffer);
-                obj.BaseAreaPoint = ReadUInt32(buffer);
-                obj.GetCP = ReadUInt32(buffer);
+                obj.BoardId = ReadUInt32(buffer);
+                obj.GetAp = ReadUInt32(buffer);
+                obj.GetCp = ReadUInt32(buffer);
                 obj.OrderLimit = ReadUInt32(buffer);
                 obj.ClearNum = ReadUInt32(buffer);
                 obj.BoardType = ReadUInt32(buffer);
-                obj.Unk0 = ReadUInt32(buffer);
                 return obj;
             }
         }

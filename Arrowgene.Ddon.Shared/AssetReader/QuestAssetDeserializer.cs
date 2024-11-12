@@ -1407,26 +1407,39 @@ namespace Arrowgene.Ddon.Shared.AssetReader
    
         private bool ParseLightQuestDetails(QuestAssetData assetData, JsonElement jLightQuestDetails)
         {
-            if(!jLightQuestDetails.TryGetProperty("area_id", out JsonElement jAreaId))
-            {
-                Logger.Error($"Missing required member 'area_id' from LightQuest config.");
-                return false;
-            }
-            assetData.LightQuestDetail.AreaId = jAreaId.GetUInt32();
-
             if (!jLightQuestDetails.TryGetProperty("board_type", out JsonElement jBoardType))
             {
                 Logger.Error($"Missing required member 'board_type' from LightQuest config.");
                 return false;
             }
-            assetData.LightQuestDetail.BoardType = jAreaId.GetUInt32();
+            assetData.LightQuestDetail.BoardType = jBoardType.GetUInt32();
 
             if (!jLightQuestDetails.TryGetProperty("board_id", out JsonElement jBoardId))
             {
                 Logger.Error($"Missing required member 'board_id' from LightQuest config.");
                 return false;
             }
-            assetData.LightQuestDetail.BaseAreaPoint = jBoardId.GetUInt32();
+            assetData.LightQuestDetail.BoardId = jBoardId.GetUInt32();
+
+            if (jLightQuestDetails.TryGetProperty("area_id", out JsonElement jAreaId))
+            {
+                assetData.LightQuestDetail.AreaId = jAreaId.GetUInt32();
+            }
+            assetData.LightQuestDetail.AreaId = jAreaId.GetUInt32();
+
+            if (jLightQuestDetails.TryGetProperty("order_limit", out JsonElement jOrderLimit))
+            {
+                assetData.LightQuestDetail.OrderLimit = jOrderLimit.GetUInt32();
+            }
+
+            if (jLightQuestDetails.TryGetProperty("get_cp", out JsonElement jGetCP))
+            {
+                assetData.LightQuestDetail.GetCp = jGetCP.GetUInt32();
+            }
+            if (jLightQuestDetails.TryGetProperty("get_ap", out JsonElement jGetAP))
+            {
+                assetData.LightQuestDetail.GetAp = jGetAP.GetUInt32();
+            }
 
             return true;
         }
