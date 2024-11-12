@@ -1,0 +1,51 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 30200011,
+  "base_level": 52,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Delivery Request From a Collector",
+  "light_quest_details": {
+    "board_type": 2,
+    "board_id": 24,
+    "get_cp": 10,
+    "order_limit": 7
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 5455
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 13719
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1190
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "DeliverItemsLight",
+      "announce_type": "Accept",
+      "items": [
+        {
+          "id": 9456,
+          "amount": 2
+        }
+      ]
+    }
+  ]
+}

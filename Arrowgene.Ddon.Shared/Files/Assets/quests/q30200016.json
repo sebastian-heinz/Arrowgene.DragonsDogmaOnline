@@ -1,0 +1,51 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 30200016,
+  "base_level": 66,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "For Stockpiling",
+  "light_quest_details": {
+    "board_type": 2,
+    "board_id": 24,
+    "get_cp": 20,
+    "order_limit": 7
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 16995
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 24841
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1624
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "DeliverItemsLight",
+      "announce_type": "Accept",
+      "items": [
+        {
+          "id": 11810,
+          "amount": 2
+        }
+      ]
+    }
+  ]
+}

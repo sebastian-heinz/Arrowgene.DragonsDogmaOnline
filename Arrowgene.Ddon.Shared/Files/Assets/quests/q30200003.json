@@ -1,0 +1,48 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 30200003,
+  "base_level": 40,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Too Many Monsters",
+  "light_quest_details": {
+    "board_type": 2,
+    "board_id": 24,
+    "get_cp": 14,
+    "order_limit": 7
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 3954
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 10219
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1210
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "79",
+      "level": 40,
+      "amount": 1
+    }
+  ]
+}

@@ -1425,7 +1425,6 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             {
                 assetData.LightQuestDetail.AreaId = jAreaId.GetUInt32();
             }
-            assetData.LightQuestDetail.AreaId = jAreaId.GetUInt32();
 
             if (jLightQuestDetails.TryGetProperty("order_limit", out JsonElement jOrderLimit))
             {
