@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40200007,
+  "base_level": 63,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Half of the Crowd",
+  "light_quest_details": {
+    "area_id": 13,
+    "board_type": 1,
+    "board_id": 16
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 19558
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 31603
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 2183
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "249",
+      "level": 63,
+      "amount": 2
+    }
+  ]
+}

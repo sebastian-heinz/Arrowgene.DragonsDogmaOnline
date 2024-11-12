@@ -14,17 +14,17 @@
   "rewards": [
     {
       "type": "exp",
-      "amount": 6021
+      "amount": 3947
     },
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 23628
+      "amount": 15492
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 3165
+      "amount": 2075
     }
   ],
   "blocks": [

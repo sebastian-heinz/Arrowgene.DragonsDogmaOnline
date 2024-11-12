@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40200141,
+  "base_level": 78,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Tell Me What You Said Just Now",
+  "light_quest_details": {
+    "area_id": 17,
+    "board_type": 1,
+    "board_id": 23
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 91599
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 53832
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 2882
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "261",
+      "level": 78,
+      "amount": 2
+    }
+  ]
+}

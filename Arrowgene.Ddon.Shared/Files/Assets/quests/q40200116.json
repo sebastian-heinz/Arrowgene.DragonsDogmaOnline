@@ -1,0 +1,50 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40200116,
+  "base_level": 46,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Even If It's For Harvesting",
+  "light_quest_details": {
+    "area_id": 17,
+    "board_type": 1,
+    "board_id": 21
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 5070
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 10115
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1015
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "DeliverItemsLight",
+      "announce_type": "Accept",
+      "items": [
+        {
+          "id": 7911,
+          "amount": 3
+        }
+      ]
+    }
+  ]
+}

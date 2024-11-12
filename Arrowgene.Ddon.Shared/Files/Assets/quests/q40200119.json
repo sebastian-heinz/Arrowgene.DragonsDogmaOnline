@@ -1,0 +1,50 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40200119,
+  "base_level": 72,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "The State of Shena's Kitchen",
+  "light_quest_details": {
+    "area_id": 17,
+    "board_type": 1,
+    "board_id": 21
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 34498
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 30861
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1817
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "DeliverItemsLight",
+      "announce_type": "Accept",
+      "items": [
+        {
+          "id": 16008,
+          "amount": 3
+        }
+      ]
+    }
+  ]
+}

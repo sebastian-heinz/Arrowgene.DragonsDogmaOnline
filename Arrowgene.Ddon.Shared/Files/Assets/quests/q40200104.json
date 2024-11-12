@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40200104,
+  "base_level": 75,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Watch Over the Village Yourselves",
+  "light_quest_details": {
+    "area_id": 17,
+    "board_type": 1,
+    "board_id": 21
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 68782
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 48814
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 2739
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "295",
+      "level": 75,
+      "amount": 3
+    }
+  ]
+}
