@@ -352,7 +352,7 @@ namespace Arrowgene.Ddon.GameServer
         }
         #endregion
 
-        public void AnnounceAllPacket<T>(T packet)
+        public void AnnounceAllPacket<T>(T packet, uint characterId = 0)
             where T : class, IPacketStructure, new()
         {
             RpcPacketData data = new RpcPacketData()
@@ -360,12 +360,13 @@ namespace Arrowgene.Ddon.GameServer
                 GroupId = packet.Id.GroupId,
                 HandlerId = packet.Id.HandlerId,
                 HandlerSubId = packet.Id.HandlerSubId,
+                CharacterId = characterId,
                 Data = EntitySerializer.Get<T>().Write(packet)
             };
             AnnounceAll("internal/packet", RpcInternalCommand.AnnouncePacketAll, data);
         }
 
-        public void AnnounceClanPacket<T>(uint clanId, T packet)
+        public void AnnounceClanPacket<T>(uint clanId, T packet, uint characterId = 0)
             where T : class, IPacketStructure, new()
         {
             if (clanId == 0) return;
@@ -376,6 +377,7 @@ namespace Arrowgene.Ddon.GameServer
                 HandlerId = packet.Id.HandlerId,
                 HandlerSubId = packet.Id.HandlerSubId,
                 ClanId = clanId,
+                CharacterId = characterId,
                 Data = EntitySerializer.Get<T>().Write(packet)
             };
 

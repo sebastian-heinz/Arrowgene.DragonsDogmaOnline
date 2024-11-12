@@ -483,6 +483,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SClanClanExpelMemberReq.Serializer());
             Create(new C2SClanClanSetMemberRankReq.Serializer());
             Create(new C2SClanClanNegotiateMasterReq.Serializer());
+            Create(new C2SClanClanBaseReleaseReq.Serializer());
 
             Create(new C2SConnectionLoginReq.Serializer());
             Create(new C2SConnectionMoveInServerReq.Serializer());
@@ -931,6 +932,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CClanClanExpelMemberRes.Serializer());
             Create(new S2CClanClanSetMemberRankRes.Serializer());
             Create(new S2CClanClanNegotiateMasterRes.Serializer());
+            Create(new S2CClanClanBaseReleaseRes.Serializer());
 
             Create(new S2CClanClanLeaveMemberNtc.Serializer());
             Create(new S2CClanClanUpdateNtc.Serializer());
