@@ -8,7 +8,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class ClanClanConciergeUpdateHandler : StructurePacketHandler<GameClient, C2SClanClanConciergeUpdateReq>
+    public class ClanClanConciergeUpdateHandler : GameRequestPacketHandler<C2SClanClanConciergeUpdateReq, S2CClanClanConciergeUpdateRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClanClanConciergeUpdateHandler));
 
@@ -16,12 +16,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SClanClanConciergeUpdateReq> req)
+        public override S2CClanClanConciergeUpdateRes Handle(GameClient client, C2SClanClanConciergeUpdateReq request)
         {
+            // TODO: Store concierge in database.
+            // TODO: Deduct clan points.
             S2CClanClanConciergeUpdateRes res = new S2CClanClanConciergeUpdateRes();
-            res.ConciergeUpdate = req.Structure;
-            res.CP = 1110;
-            client.Send(res);
+            var clan = Server.ClanManager.GetClan(client.Character.ClanId);
+
+            res.NpcId = request.ConciergeId;
+            return res;
         }
     }
 }

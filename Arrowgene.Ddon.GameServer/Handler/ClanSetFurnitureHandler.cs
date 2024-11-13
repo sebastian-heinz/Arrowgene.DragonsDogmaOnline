@@ -1,14 +1,10 @@
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
-using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class ClanSetFurnitureHandler : StructurePacketHandler<GameClient, C2SClanSetFurnitureReq>
+    public class ClanSetFurnitureHandler : GameRequestPacketHandler<C2SClanSetFurnitureReq, S2CClanSetFurnitureRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClanSetFurnitureHandler));
 
@@ -16,11 +12,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SClanSetFurnitureReq> req)
+        public override S2CClanSetFurnitureRes Handle(GameClient client, C2SClanSetFurnitureReq request)
         {
-            S2CClanSetFurnitureRes res = new S2CClanSetFurnitureRes();
-            res.FurnitureUpdate = req.Structure;
-            client.Send(res);
+            // TODO: Track in the database.
+            return new();
         }
     }
 }

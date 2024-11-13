@@ -95,6 +95,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataClanPartnerPawnInfo.Serializer());
             Create(new CDataClanShopLineupName.Serializer());
             Create(new CDataClanValueInfo.Serializer());
+            Create(new CDataClanShopInfo.Serializer());
 
             Create(new CDataClearTimePointBonus.Serializer());
             Create(new CDataCommonU8.Serializer());
@@ -391,6 +392,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataExpRequirement.Serializer());
             Create(new CDataJewelryEquipLimit.Serializer());
             Create(new CDataPartyMemberMaxNum.Serializer());
+            Create(new CDataFurnitureLayout.Serializer());
 
             // Packet structure serializers
             Create(new C2LCreateCharacterDataReq.Serializer());
@@ -485,6 +487,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SClanClanSetMemberRankReq.Serializer());
             Create(new C2SClanClanNegotiateMasterReq.Serializer());
             Create(new C2SClanClanBaseReleaseReq.Serializer());
+            Create(new C2SClanClanShopGetFunctionItemListReq.Serializer());
+            Create(new C2SClanClanShopGetBuffItemListReq.Serializer());
 
             Create(new C2SConnectionLoginReq.Serializer());
             Create(new C2SConnectionMoveInServerReq.Serializer());
@@ -934,6 +938,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CClanClanSetMemberRankRes.Serializer());
             Create(new S2CClanClanNegotiateMasterRes.Serializer());
             Create(new S2CClanClanBaseReleaseRes.Serializer());
+            Create(new S2CClanClanShopGetFunctionItemListRes.Serializer());
+            Create(new S2CClanClanShopGetBuffItemListRes.Serializer());
 
             Create(new S2CClanClanLeaveMemberNtc.Serializer());
             Create(new S2CClanClanUpdateNtc.Serializer());

@@ -18,6 +18,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             ConciergeInfo = new();
             ShopLineupNameList = new();
             ClanValueInfoList = new();
+            ClanFurnitureInfo = new();
         }
 
         public List<CDataCommonU32> FunctionReleaseIds { get; set; }
@@ -27,6 +28,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public CDataClanConciergeInfo ConciergeInfo { get; set; }
         public List<CDataClanShopLineupName> ShopLineupNameList {  get; set; }
         public List<CDataClanValueInfo> ClanValueInfoList { get; set; }
+        public List<CDataFurnitureLayout> ClanFurnitureInfo { get; set; }
         
         public class Serializer : PacketEntitySerializer<S2CClanClanBaseGetInfoRes>
         {
@@ -40,6 +42,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteEntity<CDataClanConciergeInfo>(buffer, obj.ConciergeInfo);
                 WriteEntityList<CDataClanShopLineupName>(buffer, obj.ShopLineupNameList);
                 WriteEntityList<CDataClanValueInfo>(buffer, obj.ClanValueInfoList);
+                WriteEntityList<CDataFurnitureLayout>(buffer, obj.ClanFurnitureInfo);
             }
 
             public override S2CClanClanBaseGetInfoRes Read(IBuffer buffer)
@@ -54,6 +57,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.ConciergeInfo = ReadEntity<CDataClanConciergeInfo>(buffer);
                 obj.ShopLineupNameList = ReadEntityList<CDataClanShopLineupName>(buffer);
                 obj.ClanValueInfoList = ReadEntityList<CDataClanValueInfo>(buffer);
+                obj.ClanFurnitureInfo = ReadEntityList<CDataFurnitureLayout>(buffer);
                 return obj;
             }
         }

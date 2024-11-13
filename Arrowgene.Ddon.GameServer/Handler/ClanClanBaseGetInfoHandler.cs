@@ -21,6 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CClanClanBaseGetInfoRes res = new S2CClanClanBaseGetInfoRes();
 
             List<uint> pawnIds = Server.Database.SelectClanPawns(client.Character.ClanId, client.Character.CharacterId, uint.MaxValue);
+            var clan = Server.ClanManager.GetClan(client.Character.ClanId);
 
             var pcap = new S2CClanClanBaseGetInfoRes.Serializer().Read(BaseData);
 
@@ -41,6 +42,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
 
             pcap.ShopLineupNameList = Server.AssetRepository.ClanShopAsset.Values.Select(x => x.ToCDataClanShopLineupName()).ToList();
+
+            pcap.ClanValueInfoList = new()
+            {
+                new() { Type = 1, Value = clan.ClanServerParam.MoneyClanPoint },
+                new() { Type = 2, Value = clan.ClanServerParam.TotalClanPoint }
+            };
 
             return pcap;
         }

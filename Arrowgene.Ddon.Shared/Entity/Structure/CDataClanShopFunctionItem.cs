@@ -5,6 +5,12 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataClanShopFunctionItem
     {
+        public CDataClanShopFunctionItem()
+        {
+            FunctionInfo = new();
+            RequireLineupId = new();
+        }
+
         public uint LineupId { get; set; }
         public uint RequireClanPoint { get; set; }
         public byte RequireLevel { get; set; }
