@@ -247,6 +247,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataMoonSchedule.Serializer());
             Create(new CDataMoveItemUIDFromTo.Serializer());
             Create(new CDataNamedEnemyParamClient.Serializer());
+            Create(new CDataNoraPawnInfo.Serializer());
             Create(new CDataNormalSkillParam.Serializer());
             Create(new CDataNpcExtendedFacilityMenuItem.Serializer());
             Create(new CDataOcdActive.Serializer());

@@ -163,6 +163,22 @@ public static class GameStructure
         cDataPawnInfo.SpSkillList = pawn.SpSkills.GetValueOrDefault(pawn.Job, new List<CDataSpSkill>());
     }
 
+    public static void CDataNoraPawnInfo(CDataNoraPawnInfo cDataNoraPawnInfo, Pawn pawn)
+    {
+        cDataNoraPawnInfo.Name = pawn.Name;
+        cDataNoraPawnInfo.EditInfo = pawn.EditInfo;
+        cDataNoraPawnInfo.Job = (byte)pawn.Job;
+        cDataNoraPawnInfo.CharacterEquipData = new() // TODO: ???
+        {
+            new CDataCharacterEquipData() {
+                Equips = pawn.Equipment.AsCDataEquipItemInfo(EquipType.Performance)
+            },
+            new CDataCharacterEquipData() {
+                Equips = pawn.Equipment.AsCDataEquipItemInfo(EquipType.Visual)
+            }
+        };
+    }
+
     public static void CDataCharacterLevelParam(CDataCharacterLevelParam characterLevelParam, CharacterCommon character)
     {
         CDataCharacterJobData activeCharacterJobData = character.ActiveCharacterJobData;

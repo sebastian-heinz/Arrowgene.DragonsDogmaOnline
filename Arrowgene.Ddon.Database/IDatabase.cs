@@ -81,7 +81,7 @@ namespace Arrowgene.Ddon.Database
 
         // Character
         bool CreateCharacter(Character character);
-        Character SelectCharacter(uint characterId);
+        Character SelectCharacter(uint characterId, DbConnection? connectionIn = null);
         List<Character> SelectCharactersByAccountId(int accountId, GameMode gameMode);
         List<Character> SelectAllCharacters();
         List<Character> SelectAllCharacters(DbConnection conn);
@@ -103,11 +103,11 @@ namespace Arrowgene.Ddon.Database
         bool CreatePawn(Pawn pawn);
         Pawn SelectPawn(uint pawnId);
         Pawn SelectPawn(DbConnection connection, uint pawnId);
-        List<Pawn> SelectPawnsByCharacterId(uint characterId);
-        List<Pawn> SelectPawnsByCharacterId(DbConnection conn, uint characterId);
+        List<Pawn> SelectPawnsByCharacterId(uint characterId, DbConnection? connectionIn = null);
         List<uint> SelectOfficialPawns();
         List<uint> SelectAllPlayerPawns(uint limit = 100);
         List<uint> SelectAllPlayerPawns(DbConnection connection, uint limit = 100);
+        List<uint> SelectClanPawns(uint clanId, uint characterId = 0, uint limit = 100, DbConnection? connectionIn = null);
         List<CDataRegisterdPawnList> SelectRegisteredPawns(
             Character searchingCharacter,
             CDataPawnSearchParameter searchParams
@@ -397,7 +397,7 @@ namespace Arrowgene.Ddon.Database
         );
         bool InsertGainExtendParam(uint commonId, CDataOrbGainExtendParam Param);
         bool UpdateOrbGainExtendParam(uint commonId, CDataOrbGainExtendParam Param);
-        CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId);
+        CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId, DbConnection? connectionIn = null);
 
         // Bazaar
         ulong InsertBazaarExhibition(BazaarExhibition exhibition);

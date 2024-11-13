@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Data.Common;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
@@ -30,18 +31,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
             _Server = server;
         }
 
-        public Character SelectCharacter(GameClient client, uint characterId)
+        public Character SelectCharacter(GameClient client, uint characterId, DbConnection? connectionIn = null)
         {
-            Character character = SelectCharacter(characterId);
+            Character character = SelectCharacter(characterId, connectionIn);
             client.Character = character;
             client.UpdateIdentity();
 
             return character;
         }
 
-        public Character SelectCharacter(uint characterId)
+        public Character SelectCharacter(uint characterId, DbConnection? connectionIn = null)
         {
-            Character character = _Server.Database.SelectCharacter(characterId);
+            Character character = _Server.Database.SelectCharacter(characterId, connectionIn);
             if (character == null)
             {
                 return null;
@@ -50,7 +51,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             character.Server = _Server.AssetRepository.ServerList.Where(server => server.Id == _Server.Id).Single().ToCDataGameServerListInfo();
             character.Equipment = character.Storage.GetCharacterEquipment();
 
-            character.ExtendedParams = _Server.Database.SelectOrbGainExtendParam(character.CommonId);
+            character.ExtendedParams = _Server.Database.SelectOrbGainExtendParam(character.CommonId, connectionIn);
             if (character.ExtendedParams == null)
             {
                 // Old DB is in use and new table not populated with required data for character
@@ -60,21 +61,21 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             UpdateCharacterExtendedParams(character);
 
-            SelectPawns(character);
+            SelectPawns(character, connectionIn);
 
             return character;
         }
 
-        private void SelectPawns(Character character)
+        private void SelectPawns(Character character, DbConnection? connectionIn = null)
         {
-            character.Pawns = _Server.Database.SelectPawnsByCharacterId(character.ContentCharacterId);
+            character.Pawns = _Server.Database.SelectPawnsByCharacterId(character.ContentCharacterId, connectionIn);
 
             for (int i = 0; i < character.Pawns.Count; i++)
             {
                 Pawn pawn = character.Pawns[i];
                 pawn.Server = character.Server;
                 pawn.Equipment = character.Storage.GetPawnEquipment(i);
-                pawn.ExtendedParams = _Server.Database.SelectOrbGainExtendParam(pawn.CommonId);
+                pawn.ExtendedParams = _Server.Database.SelectOrbGainExtendParam(pawn.CommonId, connectionIn);
                 if (pawn.ExtendedParams == null)
                 {
                     // Old DB is in use and new table not populated with required data for character

@@ -65,17 +65,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return ExecuteNonQuery(conn, SqlUpdateOrbGainExtendParam, command => { AddParameter(command, commonId, Param); }) == 1;
         }
 
-        public CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId)
+        public CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return SelectOrbGainExtendParam(connection, commonId);
-        }
+            CDataOrbGainExtendParam results = new CDataOrbGainExtendParam();
 
-        public CDataOrbGainExtendParam SelectOrbGainExtendParam(TCon conn, uint commonId)
-        {
-            CDataOrbGainExtendParam Results = new CDataOrbGainExtendParam();
-
-            ExecuteInTransaction(conn =>
+            ExecuteQuerySafe(connectionIn, conn =>
             {
                 ExecuteReader(conn, SqlSelectOrbGainExtendParam,
                     command => {
@@ -83,12 +77,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     }, reader => {
                         while (reader.Read())
                         {
-                            Results = ReadOrbGainExtendParam(reader);
+                            results = ReadOrbGainExtendParam(reader);
                         }
                     });
             });
 
-            return Results;
+            return results;
         }
 
         private void AddParameter(TCom command, uint commonId, CDataOrbGainExtendParam obj)

@@ -2,6 +2,8 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -18,11 +20,27 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CClanClanBaseGetInfoRes res = new S2CClanClanBaseGetInfoRes();
 
+            List<uint> pawnIds = Server.Database.SelectClanPawns(client.Character.ClanId, client.Character.CharacterId, uint.MaxValue);
+
             var pcap = new S2CClanClanBaseGetInfoRes.Serializer().Read(BaseData);
+
+            pcap.PawnExpeditionInfo = new(); // TODO: Pawn Expeditions
             pcap.PartnerPawnInfo.MyPartnerPawnList = client.Character.Pawns.Select(x => new CDataCommonU32(x.PawnId)).ToList();
-            pcap.PartnerPawnInfo.MemberPartnerPawnList = new();
-            pcap.FunctionReleaseIds = new();
-            pcap.PawnExpeditionInfo = new();
+            pcap.PartnerPawnInfo.MemberPartnerPawnList = pawnIds.OrderBy(x => Random.Shared.Next()).Take(10).Select(x => new CDataCommonU32() { Value = x }).ToList();
+            pcap.FunctionReleaseIds = new()
+            {
+                //new CDataCommonU32(1),
+                //new CDataCommonU32(2),
+                //new CDataCommonU32(3),
+                //new CDataCommonU32(4),
+                //new CDataCommonU32(5),
+                //new CDataCommonU32(6),
+                //new CDataCommonU32(7),
+                //new CDataCommonU32(8),
+                //new CDataCommonU32(9),
+            };
+
+            pcap.ShopLineupNameList = Server.AssetRepository.ClanShopAsset.Values.Select(x => x.ToCDataClanShopLineupName()).ToList();
 
             return pcap;
         }
