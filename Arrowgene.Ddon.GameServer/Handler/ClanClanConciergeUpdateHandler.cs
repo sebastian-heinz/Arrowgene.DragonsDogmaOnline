@@ -18,11 +18,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CClanClanConciergeUpdateRes Handle(GameClient client, C2SClanClanConciergeUpdateReq request)
         {
-            // TODO: Store concierge in database.
             // TODO: Deduct clan points.
             S2CClanClanConciergeUpdateRes res = new S2CClanClanConciergeUpdateRes();
             var clan = Server.ClanManager.GetClan(client.Character.ClanId);
 
+            Server.Database.InsertOrUpdateClanBaseCustomization(client.Character.ClanId, Shared.Model.ClanBaseCustomizationType.Concierge, request.ConciergeId);
             res.NpcId = request.ConciergeId;
             return res;
         }

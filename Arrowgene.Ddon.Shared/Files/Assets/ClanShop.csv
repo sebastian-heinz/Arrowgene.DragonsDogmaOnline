@@ -1,13 +1,13 @@
-#LineupID,Name,Cost,Level,Type,Icon,Requires,ID,Type
- 18,Base Expansion: Clan Flag,1000,4,1,1,0,1,1
- 19,Base Expansion: 1st Floor,10000,6,1,1,0,2,1
+#LineupID,Name,Cost,Level,Type,Icon,Requires,FuncId,FuncType
+ 18,Base Expansion: Clan Flag,1000,4,1,1,0,4,1
+ 19,Base Expansion: 1st Floor,10000,6,1,1,0,1,1
  20,Base Expansion: 2nd Floor,30000,10,1,1,19,3,1
- 21,Base Expansion: Hidden Room,30000,12,1,1,20,4,1
+ 21,Base Expansion: Hidden Room,30000,12,1,1,20,2,1
  52,Base Expansion: Interior Change Permit,2000,6,1,1,19,5,1
  22,Pawn Expedition Facilities,2000,3,1,2,0,6,2
- 46,Pawn Expedition Equipment: Searching For Hidden Treasures,3000,5,1,2,22,7,2
- 43,Pawn Expedition Equipment: Tactics,20000,8,1,2,22,8,2
- 49,Pawn Expedition Equipment: Continental Transfer,30000,13,1,2,22,9,2
+ 46,Pawn Expedition Equipment: Searching For Hidden Treasures,3000,5,1,2,22,7,3
+ 43,Pawn Expedition Equipment: Tactics,20000,8,1,2,22,8,3
+ 49,Pawn Expedition Equipment: Continental Transfer,30000,13,1,2,22,9,3
  23,Pioneering Expedition: Volden Mines,3000,5,1,2,22,10,3
  24,Pioneering Expedition: Dowe Valley,3000,5,1,2,22,11,3
  25,Pioneering Expedition: Mysree Grove,4000,6,1,2,22,12,3
@@ -34,18 +34,18 @@
  40,Expedition Support: Supporter's Amulet,100,5,2,3,22,5,3
  44,Expedition Support: Supporter's Talisman,300,8,2,3,43,8,3
  45,Expedition Support: Seal of the Squire,300,12,2,3,43,9,3
- 53,Clan: Christmas Tree,13000,6,3,5,52,28,4
- 54,Clan: Christmas Carpet,2000,6,3,5,52,29,4
- 55,Clan: Christmas Decoration,5000,6,3,5,52,30,4
- 56,Clan: Little Frost,10000,6,3,5,52,31,4
- 66,Clan: Christmas Cuisine,3000,6,3,5,52,32,4
- 67,Clan: White Tree,13000,6,3,5,52,33,4
- 57,Clan: 3rd Anniversary Stuffed Toy,30000,6,3,5,52,34,4
- 58,Clan: 3rd Anniversary Cuisine,3000,6,3,5,52,35,4
- 59,Clan: 3rd Anniversary Carpet,3000,6,3,5,52,36,4
- 60,Clan: 3rd Anniversary Decoration,3000,6,3,5,52,37,4
- 61,Clan: Halloween Stuffed Toy,10000,6,3,5,52,38,4
- 62,Clan: Halloween Cuisine,3000,6,3,5,52,39,4
- 63,Clan: Halloween Carpet,3000,6,3,5,52,40,4
- 64,Clan: Halloween Decoration,3000,6,3,5,52,41,4
- 65,Clan: Halloween Tower,5000,6,3,5,52,42,4
+ 53,Clan: Christmas Tree,13000,6,3,5,52,1,1
+ 54,Clan: Christmas Carpet,2000,6,3,5,52,2,1
+ 55,Clan: Christmas Decoration,5000,6,3,5,52,3,1
+ 56,Clan: Little Frost,10000,6,3,5,52,4,1
+ 66,Clan: Christmas Cuisine,3000,6,3,5,52,5,1
+ 67,Clan: White Tree,13000,6,3,5,52,6,1
+ 57,Clan: 3rd Anniversary Stuffed Toy,30000,6,3,5,52,7,1
+ 58,Clan: 3rd Anniversary Cuisine,3000,6,3,5,52,8,1
+ 59,Clan: 3rd Anniversary Carpet,3000,6,3,5,52,9,1
+ 60,Clan: 3rd Anniversary Decoration,3000,6,3,5,52,10,1
+ 61,Clan: Halloween Stuffed Toy,10000,6,3,5,52,11,1
+ 62,Clan: Halloween Cuisine,3000,6,3,5,52,12,1
+ 63,Clan: Halloween Carpet,3000,6,3,5,52,13,1
+ 64,Clan: Halloween Decoration,3000,6,3,5,52,14,1
+ 65,Clan: Halloween Tower,5000,6,3,5,52,15,1

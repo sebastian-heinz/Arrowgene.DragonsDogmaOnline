@@ -31,7 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.ConciergeItemList.Add(new()
             {
                 NpcId = 674,
-                RequireClanPoint = 10000 // TODO: Only pay this once?
+                RequireClanPoint = 0 // TODO: Actually 10000, but need to only pay this once?
             });
 
             return res;

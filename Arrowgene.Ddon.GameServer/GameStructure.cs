@@ -114,7 +114,7 @@ public static class GameStructure
         cDataPawnInfo.Version = 0;
         cDataPawnInfo.Name = pawn.Name;
         cDataPawnInfo.EditInfo = pawn.EditInfo;
-        cDataPawnInfo.State = 0; // TODO: ?
+        cDataPawnInfo.State = 1; // TODO: ?
         cDataPawnInfo.MaxHp = pawn.StatusInfo.MaxHP;
         cDataPawnInfo.MaxStamina = pawn.StatusInfo.MaxStamina;
         cDataPawnInfo.JobId = pawn.Job;

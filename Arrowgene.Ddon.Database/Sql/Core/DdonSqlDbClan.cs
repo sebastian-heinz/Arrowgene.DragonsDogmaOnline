@@ -4,9 +4,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Clan;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Diagnostics.Metrics;
 using System.Reflection;
-using System.Security.Claims;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -26,6 +24,16 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string[] ClanMembershipFields = new string[]
         {
             "character_id", "clan_id", "rank", "permission", "created"
+        };
+
+        private static readonly string[] ClanShopFields = new string[]
+        {
+            "clan_id", "lineup_id"
+        };
+
+        private static readonly string[] ClanBaseCustomizationFields = new string[]
+        {
+            "clan_id", "type", "furniture_id"
         };
 
         private readonly string SqlInsertClanParam = $"INSERT INTO \"ddon_clan_param\" ({BuildQueryField(ClanParamFields)}) VALUES ({BuildQueryInsert(ClanParamFields)});";
@@ -50,6 +58,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             + "INNER JOIN \"ddon_character\" ON \"ddon_clan_membership\".\"character_id\" = \"ddon_character\".\"character_id\" AND \"ddon_character\".\"character_id\" = @character_id "
             + "INNER JOIN \"ddon_character_common\" ON \"ddon_character_common\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" "
             + "INNER JOIN \"ddon_character_job_data\" ON \"ddon_character_job_data\".\"character_common_id\" = \"ddon_character\".\"character_common_id\" AND \"ddon_character_job_data\".\"job\" = \"ddon_character_common\".\"job\";";
+
+        private readonly string SqlSelectClanShopPurchases = $"SELECT {BuildQueryField(ClanShopFields)} FROM \"ddon_clan_shop_purchases\" WHERE \"clan_id\" = @clan_id;";
+        private readonly string SqlInsertClanShopPurchase = $"INSERT INTO \"ddon_clan_shop_purchases\" ({BuildQueryField(ClanShopFields)}) VALUES ({BuildQueryInsert(ClanShopFields)});";
+
+        private readonly string SqlSelectClanBaseCustomizations = $"SELECT {BuildQueryField(ClanBaseCustomizationFields)} FROM \"ddon_clan_base_customization\" WHERE \"clan_id\" = @clan_id;";
+        private readonly string SqlInsertClanBaseCustomization = $"INSERT INTO \"ddon_clan_base_customization\" ({BuildQueryField(ClanBaseCustomizationFields)}) VALUES ({BuildQueryInsert(ClanBaseCustomizationFields)});";
+        private readonly string SqlDeleteClanBaseCustomization = $"DELETE FROM \"ddon_clan_base_customization\" WHERE \"clan_id\" = @clan_id AND \"type\" = @type;";
+        private readonly string SqlUpdateClanBaseCustomization = $"UPDATE \"ddon_clan_base_customization\" SET {BuildQueryUpdate(ClanBaseCustomizationFields)} WHERE \"clan_id\" = @clan_id AND \"type\" = @type;";
 
         public bool CreateClan(CDataClanParam clanParam)
         {
@@ -369,6 +385,112 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             {
                 if (!isTransaction) connection.Dispose();
             }
+        }
+
+        public List<uint> SelectClanShopPurchases(uint clanId, DbConnection? connectionIn = null)
+        {
+            return ExecuteQuerySafe<List<uint>>(connectionIn, connection => { 
+                var list = new List<uint>();
+                ExecuteReader(connection,
+                    SqlSelectClanShopPurchases,
+                    command => { AddParameter(command, "@clan_id", clanId); },
+                    reader =>
+                    {
+                        while (reader.Read())
+                        {
+                            list.Add(GetUInt32(reader, "lineup_id"));
+                        }
+                    });
+
+                return list;
+            });
+        }
+
+        public bool InsertClanShopPurchase(uint clanId, uint lineupId, DbConnection? connectionIn = null)
+        {
+            return ExecuteQuerySafe<bool>(connectionIn, connection => {
+                return ExecuteNonQuery(
+                    connection,
+                    SqlInsertClanShopPurchase,
+                    command =>
+                    {
+                        AddParameter(command, "clan_id", clanId);
+                        AddParameter(command, "lineup_id", lineupId);
+                    }
+                ) == 1;
+            });
+        }
+
+        public List<(ClanBaseCustomizationType Type, uint Id)> SelectClanBaseCustomizations(uint clanId, DbConnection? connectionIn = null)
+        {
+            return ExecuteQuerySafe(connectionIn, connection => {
+                var list = new List<(ClanBaseCustomizationType Type, uint Id)>();
+                ExecuteReader(connection,
+                    SqlSelectClanBaseCustomizations,
+                    command => { AddParameter(command, "@clan_id", clanId); },
+                    reader =>
+                    {
+                        while (reader.Read())
+                        {
+                            var cust = (
+                                (ClanBaseCustomizationType)GetByte(reader, "type"),
+                                GetUInt32(reader, "furniture_id")
+                            );
+                            list.Add(cust);
+                        }
+                    });
+
+                return list;
+            });
+        }
+
+        public bool InsertOrUpdateClanBaseCustomization(uint clanId, ClanBaseCustomizationType type, uint furnitureId, DbConnection? connectionIn = null)
+        {
+            return ExecuteQuerySafe(connectionIn, connection =>
+            {
+                bool check = ExecuteNonQuery(
+                    connection,
+                    SqlUpdateClanBaseCustomization,
+                    command =>
+                    {
+                        AddParameter(command, "clan_id", clanId);
+                        AddParameter(command, "type", (byte)type);
+                        AddParameter(command, "furniture_id", furnitureId);
+                    }
+                    ) == 1;
+
+                if (!check)
+                {
+                    check = ExecuteNonQuery(
+                    connection,
+                    SqlInsertClanBaseCustomization,
+                    command =>
+                    {
+                        AddParameter(command, "clan_id", clanId);
+                        AddParameter(command, "type", (byte)type);
+                        AddParameter(command, "furniture_id", furnitureId);
+                    }
+                    ) == 1;
+                }
+
+                return check;
+            });
+        }
+
+        public bool DeleteClanBaseCustomization(uint clanId, ClanBaseCustomizationType type, DbConnection? connectionIn = null)
+        {
+            return ExecuteQuerySafe(connectionIn, connection =>
+            {
+                return ExecuteNonQuery(
+                    connection,
+                    SqlDeleteClanBaseCustomization,
+                    command =>
+                    {
+                        AddParameter(command, "clan_id", clanId);
+                        AddParameter(command, "type", (byte)type);
+                    }
+                    ) == 1;
+            });
         }
 
         private void AddParameter(TCom command, CDataClanParam clanParam)

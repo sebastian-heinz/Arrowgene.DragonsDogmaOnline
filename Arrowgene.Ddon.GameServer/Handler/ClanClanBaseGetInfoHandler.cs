@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
@@ -20,29 +21,57 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CClanClanBaseGetInfoRes res = new S2CClanClanBaseGetInfoRes();
 
-            List<uint> pawnIds = Server.Database.SelectClanPawns(client.Character.ClanId, client.Character.CharacterId, uint.MaxValue);
+            List<uint> pawnIds = new();
+            List<uint> baseFuncs = new();
+            List<(ClanBaseCustomizationType Type, uint Id)> customizations = new();
+            Server.Database.ExecuteInTransaction(connection =>
+            {
+                pawnIds = Server.Database.SelectClanPawns(client.Character.ClanId, client.Character.CharacterId, uint.MaxValue, connection);
+                baseFuncs = Server.Database.SelectClanShopPurchases(client.Character.ClanId, connection);
+                customizations = Server.Database.SelectClanBaseCustomizations(client.Character.ClanId, connection)
+                    .Where(x => x.Type == ClanBaseCustomizationType.Concierge)
+                    .ToList();
+            });
+
             var clan = Server.ClanManager.GetClan(client.Character.ClanId);
 
             var pcap = new S2CClanClanBaseGetInfoRes.Serializer().Read(BaseData);
 
-            pcap.PawnExpeditionInfo = new(); // TODO: Pawn Expeditions
-            pcap.PartnerPawnInfo.MyPartnerPawnList = client.Character.Pawns.Select(x => new CDataCommonU32(x.PawnId)).ToList();
-            pcap.PartnerPawnInfo.MemberPartnerPawnList = pawnIds.OrderBy(x => Random.Shared.Next()).Take(10).Select(x => new CDataCommonU32() { Value = x }).ToList();
+            // TODO: Pawn Expeditions
+            pcap.PawnExpeditionInfo = new() 
+            {
+                SallyStatus = PawnExpeditionStatus.Locked,
+                GoldenSallyPrice = 3,
+                ChargeSallyPrice = 1
+            }; 
+            pcap.PartnerPawnInfo.MyPartnerPawnList = client.Character.Pawns.Select(x => new CDataCommonU32(x.PawnId)).OrderBy(x => Random.Shared.Next()).Take(3).ToList();
+            pcap.PartnerPawnInfo.MemberPartnerPawnList = pawnIds.OrderBy(x => Random.Shared.Next()).Take(3).Select(x => new CDataCommonU32() { Value = x }).ToList();
             pcap.FunctionReleaseIds = new()
             {
-                //new CDataCommonU32(1),
-                //new CDataCommonU32(2),
-                //new CDataCommonU32(3),
-                //new CDataCommonU32(4),
-                //new CDataCommonU32(5),
-                //new CDataCommonU32(6),
-                //new CDataCommonU32(7),
-                //new CDataCommonU32(8),
-                //new CDataCommonU32(9),
+                //new CDataCommonU32(5), // Probably Pawn Expedition-related?
+                //new CDataCommonU32(6), // Probably Pawn Expedition-related?
+                //new CDataCommonU32(7), // Probably Pawn Expedition-related?
+                //new CDataCommonU32(8), // Probably Pawn Expedition-related?
+                //new CDataCommonU32(9), // Probably Pawn Expedition-related?
             };
+
+            if (baseFuncs.Contains(18)) pcap.FunctionReleaseIds.Add(new(4)); // Clan Flag
+            if (baseFuncs.Contains(19)) pcap.FunctionReleaseIds.Add(new(1)); // 1st Floor Unlock
+            if (baseFuncs.Contains(20)) pcap.FunctionReleaseIds.Add(new(3)); // 2nd Floor Unlock
+            if (baseFuncs.Contains(21)) pcap.FunctionReleaseIds.Add(new(2)); // Hidden Room Unlock
 
             pcap.ShopLineupNameList = Server.AssetRepository.ClanShopAsset.Values.Select(x => x.ToCDataClanShopLineupName()).ToList();
 
+            if (customizations.Any())
+            {
+                var chosenConcierge = customizations.First();
+                pcap.ConciergeInfo.NpcId = chosenConcierge.Id;
+                foreach (var concierge in pcap.ConciergeInfo.ClanConciergeNpcList)
+                {
+                    concierge.IsInit = concierge.NpcId == chosenConcierge.Id;
+                }
+            }
+            
             pcap.ClanValueInfoList = new()
             {
                 new() { Type = 1, Value = clan.ClanServerParam.MoneyClanPoint },

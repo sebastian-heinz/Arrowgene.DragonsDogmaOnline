@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -6,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public uint ItemID { get; set; }
         public uint OmID { get; set; }
-        public byte LayoutId { get; set; }
+        public ClanBaseCustomizationType LayoutId { get; set; }
 
         public class Serializer : EntitySerializer<CDataFurnitureLayout>
         {
@@ -14,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 WriteUInt32(buffer, obj.ItemID);
                 WriteUInt32(buffer, obj.OmID);
-                WriteByte(buffer, obj.LayoutId);
+                WriteByte(buffer, (byte)obj.LayoutId);
             }
 
             public override CDataFurnitureLayout Read(IBuffer buffer)
@@ -22,7 +23,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 CDataFurnitureLayout obj = new CDataFurnitureLayout();
                 obj.ItemID = ReadUInt32(buffer);
                 obj.OmID = ReadUInt32(buffer);
-                obj.LayoutId = ReadByte(buffer);
+                obj.LayoutId = (ClanBaseCustomizationType)ReadByte(buffer);
                 return obj;
             }
         }

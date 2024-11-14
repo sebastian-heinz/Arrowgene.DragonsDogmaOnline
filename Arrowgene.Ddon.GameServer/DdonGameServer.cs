@@ -287,6 +287,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ClanClanBaseReleaseHandler(this));
             AddHandler(new ClanClanShopGetFunctionItemListHandler(this));
             AddHandler(new ClanClanShopGetBuffItemListHandler(this));
+            AddHandler(new ClanClanShopBuyFunctionItemHandler(this));
+            AddHandler(new ClanClanShopBuyBuffItemHandler(this));
 
             AddHandler(new ClientChallengeHandler(this));
 
@@ -452,6 +454,7 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new PartnerPawnPawnLikabilityReleasedRewardListGetHandler(this));
             AddHandler(new PartnerPawnPawnLikabilityRewardListGetHandler(this));
+
             AddHandler(new PartyMemberSetValueHandler(this));
             AddHandler(new PartyPartyBreakupHandler(this));
             AddHandler(new PartyPartyChangeLeaderHandler(this));
@@ -494,6 +497,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PawnJoinPartyRentedPawnHandler(this));
             AddHandler(new PawnReturnRentedPawnHandler(this));
             AddHandler(new PawnUpdatePawnReactionListHandler(this));
+
+            AddHandler(new PawnExpeditionGetSallyInfoHandler(this));
 
             AddHandler(new PhotoPhotoTakeHandler(this));
 

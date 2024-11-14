@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -14,7 +15,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CClanSetFurnitureRes Handle(GameClient client, C2SClanSetFurnitureReq request)
         {
-            // TODO: Track in the database.
+            Server.Database.ExecuteInTransaction(connection =>
+            {
+                foreach (var update in request.FurnitureLayoutData)
+                {
+                    if (update.LayoutId == 0)
+                    {
+                        // Only one slot makes this possible, so we can just hardcode it.
+                        Server.Database.DeleteClanBaseCustomization(client.Character.ClanId, ClanBaseCustomizationType.LoungeBoard, connection);
+                    }
+                    else
+                    {
+                        Server.Database.InsertOrUpdateClanBaseCustomization(client.Character.ClanId, update.LayoutId, update.ItemID, connection);
+                    }
+                }
+            });
+            
             return new();
         }
     }
