@@ -48,6 +48,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         continue;
                     }
 
+                    // Special handling for the Clan Hall
+                    if (client.Character.Stage.Id == 347 && client.Character.ClanId != otherClient.Character.ClanId)
+                    {
+                        continue;
+                    }
+
                     if (client.Character.Stage.Id == otherClient.Character.Stage.Id || _PartyManager.ClientsInSameParty(client, otherClient))
                     {
                         otherClient.Send(res);

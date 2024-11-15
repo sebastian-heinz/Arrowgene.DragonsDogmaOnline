@@ -97,6 +97,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             2, // White Dragon Temple
             141, // Breya Coast (Summer Event Hub Area)
             341, // Dana Centrum
+            347, // Clan Hall (has special handling)
             486, // Fortress City Megado: Residential Level
             487, // Fortress City Megado: Residential Level
             488, // Fortress City Megado: Royal Palace Level

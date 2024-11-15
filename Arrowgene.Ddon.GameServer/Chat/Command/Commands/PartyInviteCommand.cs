@@ -21,6 +21,11 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
         private PawnJoinPartyMypawnHandler _inviteMypawnHandler;
         private PawnJoinPartyRentedPawnHandler _inviteRentedPawnHandler;
 
+        private HashSet<uint> BannedStageIds = new()
+        {
+            347
+        };
+
         public PartyInviteCommand(DdonGameServer server)
         {
             _server = server;
@@ -122,6 +127,12 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                 if (targetClient.GameMode != client.GameMode)
                 {
                     responses.Add(ChatResponse.CommandError(client, "You cannot invite players which are in different game modes."));
+                    return;
+                }
+
+                if (BannedStageIds.Contains(client.Character.Stage.Id))
+                {
+                    responses.Add(ChatResponse.CommandError(client, "You cannot use invite players from this area."));
                     return;
                 }
 

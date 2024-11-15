@@ -75,7 +75,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             PacketId.S2C_CLAN_CLAN_LEVEL_UP_NTC,
             PacketId.S2C_CLAN_CLAN_POINT_ADD_NTC,
             PacketId.S2C_CLAN_CLAN_BASE_RELEASE_STATE_UPDATE_NTC,
-            PacketId.S2C_CLAN_CLAN_QUEST_CLEAR_NTC
+            PacketId.S2C_CLAN_CLAN_QUEST_CLEAR_NTC,
+            PacketId.S2C_CLAN_CLAN_SHOP_BUY_ITEM_NTC
         };
 
         public static readonly uint[] TOTAL_CP_FOR_ADV = new uint[] {
@@ -600,6 +601,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     clan.ClanServerParam.Lv = (ushort)(clan.ClanServerParam.Lv + 1);
                     clan.ClanServerParam.NextClanPoint = TOTAL_CP_FOR_ADV[clan.ClanServerParam.Lv];
 
+                    // TODO: Clan History
                     var levelupNtc = new S2CClanClanLevelUpNtc()
                     {
                         ClanLevel = clan.ClanServerParam.Lv,

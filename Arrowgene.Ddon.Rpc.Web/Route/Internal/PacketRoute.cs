@@ -131,6 +131,18 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
 
                                 checkFunc = x => false;
                             }
+                            else if (packet.Id == PacketId.S2C_CLAN_CLAN_SHOP_BUY_ITEM_NTC)
+                            {
+                                var parsedPacket = new S2CClanClanShopBuyItemNtc.Serializer().Read(data.Data);
+                                if (gameServer.ClanManager.HasClan(data.ClanId))
+                                {
+                                    var clan = gameServer.ClanManager.GetClan(data.ClanId);
+                                    lock (clan)
+                                    {
+                                        clan.ClanServerParam.MoneyClanPoint = parsedPacket.ClanPoint;
+                                    }
+                                }
+                            }
 
                             foreach (var client in gameServer.ClientLookup.GetAll())
                             {

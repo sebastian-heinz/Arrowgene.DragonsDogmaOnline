@@ -18,6 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CClanClanShopBuyFunctionItemRes Handle(GameClient client, C2SClanClanShopBuyFunctionItemReq request)
         {
             // TODO: Buying furniture seemingly doesn't have a string associated with it, so it displays an empty text box???
+            // TODO: Clan History
 
             S2CClanClanShopBuyFunctionItemRes res = new();
 
