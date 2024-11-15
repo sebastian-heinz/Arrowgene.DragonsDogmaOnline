@@ -35,6 +35,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     character.OnlineStatus = matchClient.Character?.OnlineStatus ?? OnlineStatus.Offline;
                     character.ServerId = (ushort)Server.Id;
                 }
+                else
+                {
+                    var matchServer = Server.RpcManager.FindPlayerById(character.CommunityCharacterBaseInfo.CharacterId);
+                    if (matchServer != 0)
+                    {
+                        character.OnlineStatus = OnlineStatus.Online; // TODO
+                        character.ServerId = matchServer;
+                    }
+                    else
+                    {
+                        character.OnlineStatus = OnlineStatus.Offline;
+                    }
+                }
 
                 updateCharacterList.Add(character);
                 updateMatchingProfileList.Add(new CDataUpdateMatchingProfileInfo()

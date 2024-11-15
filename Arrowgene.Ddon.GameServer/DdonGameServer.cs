@@ -53,10 +53,9 @@ namespace Arrowgene.Ddon.GameServer
             : base(ServerType.Game, setting.ServerSetting, database, assetRepository)
         {
             Setting = new GameServerSetting(setting);
-            Router = new GameRouter();
             ClientLookup = new GameClientLookup();
             ChatLogHandler = new ChatLogHandler();
-            ChatManager = new ChatManager(this, Router);
+            ChatManager = new ChatManager(this);
             ItemManager = new ItemManager(this);
             CraftManager = new CraftManager(this);
             PartyManager = new PartyManager(this);
@@ -78,6 +77,7 @@ namespace Arrowgene.Ddon.GameServer
             BoardManager = new BoardManager(this);
             TimerManager = new TimerManager(this);
             ClanManager = new ClanManager(this);
+            RpcManager = new RpcManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
@@ -105,7 +105,6 @@ namespace Arrowgene.Ddon.GameServer
         public RewardManager RewardManager { get; }
         public StampManager StampManager { get; }
         public HubManager HubManager { get; }
-        public GameRouter Router { get; }
         public GpCourseManager GpCourseManager { get; }
         public WeatherManager WeatherManager { get; }
         public PartyQuestContentManager PartyQuestContentManager { get; }
@@ -113,6 +112,7 @@ namespace Arrowgene.Ddon.GameServer
         public BoardManager BoardManager { get; }
         public TimerManager TimerManager { get; }
         public ClanManager ClanManager { get; }
+        public RpcManager RpcManager { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
 

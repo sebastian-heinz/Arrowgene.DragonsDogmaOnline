@@ -47,7 +47,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return null;
             }
 
-            character.Server = _Server.AssetRepository.ServerList.Where(server => server.Id == _Server.Id).Single();
+            character.Server = _Server.AssetRepository.ServerList.Where(server => server.Id == _Server.Id).Single().ToCDataGameServerListInfo();
             character.Equipment = character.Storage.GetCharacterEquipment();
 
             character.ExtendedParams = _Server.Database.SelectOrbGainExtendParam(character.CommonId);
