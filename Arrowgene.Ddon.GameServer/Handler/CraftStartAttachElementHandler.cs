@@ -51,7 +51,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 result.CurrentEquip.EquipSlot.EquipType = EquipManager.GetEquipTypeFromSlotNo(relativeSlotNo);
             }
 
-            var craftInfo = Server.AssetRepository.CostExpScalingAsset.CostExpScalingInfo[clientItemInfo.Rank];
+            var craftInfo = Server.AssetRepository.CostExpScalingAsset.GetScalingInfo(clientItemInfo.Rank);
             uint totalCost = (uint)(craftInfo.Cost * request.CraftElementList.Count);
             uint pawnExp = (uint)(craftInfo.Exp * request.CraftElementList.Count);
 

@@ -109,7 +109,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     CurrentEquipInfo = CurrentEquipInfo
                 };
 
-            var craftInfo = Server.AssetRepository.CostExpScalingAsset.CostExpScalingInfo[clientItemInfo.Rank];
+            var craftInfo = Server.AssetRepository.CostExpScalingAsset.GetScalingInfo(clientItemInfo.Rank);
             uint totalCost = craftInfo.Cost;
             uint pawnExp = craftInfo.Exp;
 
