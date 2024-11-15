@@ -20,11 +20,15 @@
     "rewards": [
         {
             "type": "fixed",
-            "comment": "Pink Dye",
+            "comment": "Pink Dye, Blood Orb",
             "loot_pool": [
                 {
                     "item_id": 8139,
                     "num": 1
+                },
+                {
+                    "item_id": 7795,
+                    "num": 500
                 }
             ]
         },
@@ -159,8 +163,7 @@
                     "enemy_id": "0x080300",
                     "level": 55,
                     "exp": 0,
-                    "is_boss": true,
-                    "blood_orbs": 500
+                    "is_boss": true
                 }
             ]
         }
