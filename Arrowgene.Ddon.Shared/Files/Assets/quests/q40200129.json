@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40200129,
+  "base_level": 75,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Gazing with Goggling Eyes",
+  "light_quest_details": {
+    "area_id": 15,
+    "board_type": 1,
+    "board_id": 22
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 111928
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 79435
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 4457
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "239",
+      "level": 75,
+      "amount": 1
+    }
+  ]
+}

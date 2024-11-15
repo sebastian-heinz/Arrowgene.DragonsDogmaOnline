@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40200123,
+  "base_level": 69,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Loitering Footsteps",
+  "light_quest_details": {
+    "area_id": 15,
+    "board_type": 1,
+    "board_id": 22
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 34532
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 39648
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 2458
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "190",
+      "level": 69,
+      "amount": 3
+    }
+  ]
+}

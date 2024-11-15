@@ -2,7 +2,7 @@
   "state_machine": "GenericStateMachine",
   "type": "Light",
   "quest_id": 40000254,
-  "base_level": 51,
+  "base_level": 50,
   "minimum_item_rank": 0,
   "discoverable": false,
   "comment": "Essence Extraction",
@@ -14,17 +14,17 @@
   "rewards": [
     {
       "type": "exp",
-      "amount": 5381
+      "amount": 5311
     },
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 13072
+      "amount": 12444
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 1161
+      "amount": 1131
     }
   ],
   "blocks": [
