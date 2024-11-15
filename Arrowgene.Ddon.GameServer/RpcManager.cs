@@ -85,8 +85,6 @@ namespace Arrowgene.Ddon.GameServer
                     Id = x.Id,
                     Name = x.Name,
                     Brief = x.Brief,
-                    TrafficName = x.TrafficName,
-                    TrafficLevel = x.TrafficLevel,
                     MaxLoginNum = x.MaxLoginNum,
                     LoginNum = x.LoginNum,
                     Addr = x.Addr,
@@ -94,7 +92,6 @@ namespace Arrowgene.Ddon.GameServer
                     IsHide = x.IsHide,
                     RpcPort = x.RpcPort,
                     RpcAuthToken = x.RpcAuthToken,
-                    IsHead = x.IsHead,
                 });
             CharacterTrackingMap = new();
             foreach (var info in ChannelInfo.Values)

@@ -1,9 +1,4 @@
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
@@ -13,15 +8,12 @@ namespace Arrowgene.Ddon.Shared.Model
         {
             Name = string.Empty;
             Brief = string.Empty;
-            TrafficName = string.Empty;
             RpcAuthToken = string.Empty;
         }
 
         public ushort Id { get; set; }
         public string Name { get; set; }
         public string Brief { get; set; }
-        public string TrafficName { get; set; }
-        public uint TrafficLevel { get; set; }
         public uint MaxLoginNum { get; set; }
         public uint LoginNum { get; set; }
         public string Addr { get; set; }
@@ -29,7 +21,6 @@ namespace Arrowgene.Ddon.Shared.Model
         public bool IsHide { get; set; }
         public ushort RpcPort { get; set; }
         public string RpcAuthToken { get; set; }
-        public bool IsHead { get; set; }
 
         public CDataGameServerListInfo ToCDataGameServerListInfo()
         {
@@ -38,8 +29,8 @@ namespace Arrowgene.Ddon.Shared.Model
                 Id = Id,
                 Name = Name,
                 Brief = Brief,
-                TrafficName = TrafficName,
-                TrafficLevel = TrafficLevel,
+                TrafficName = string.Empty,
+                TrafficLevel = 0,
                 MaxLoginNum = MaxLoginNum,
                 LoginNum = LoginNum,
                 Addr = Addr,
