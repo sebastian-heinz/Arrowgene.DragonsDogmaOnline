@@ -73,7 +73,7 @@ namespace Arrowgene.Ddon.Shared
             NamedParamAsset = new Dictionary<uint, NamedParam>();
             EnemySpawnAsset = new EnemySpawnAsset();
             GatheringItems = new Dictionary<(StageId, uint), List<GatheringItem>>();
-            ServerList = new List<CDataGameServerListInfo>();
+            ServerList = new List<ServerInfo>();
             MyPawnAsset = new List<MyPawnCsv>();
             MyRoomAsset = new List<MyRoomCsv>();
             ArisenAsset = new List<ArisenCsv>();
@@ -104,7 +104,7 @@ namespace Arrowgene.Ddon.Shared
         public Dictionary<uint, NamedParam> NamedParamAsset { get; private set; }
         public EnemySpawnAsset EnemySpawnAsset { get; private set; }
         public Dictionary<(StageId, uint), List<GatheringItem>> GatheringItems { get; private set; }
-        public List<CDataGameServerListInfo> ServerList { get; private set; }
+        public List<ServerInfo> ServerList { get; private set; }
         public List<MyPawnCsv> MyPawnAsset { get; private set; }
         public List<MyRoomCsv> MyRoomAsset { get; private set; }
         public List<ArisenCsv> ArisenAsset { get; private set; }

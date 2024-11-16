@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer;
+using Arrowgene.Ddon.Rpc.Web.Middleware;
 using Arrowgene.Ddon.Rpc.Web.Route;
 using Arrowgene.Ddon.WebServer;
 
@@ -32,6 +33,24 @@ namespace Arrowgene.Ddon.Rpc.Web
             authMiddleware.Require(AccountStateType.GameMaster, chatRoute.Route);
             authMiddleware.Require(AccountStateType.GameMaster, infoRoute.Route);
             _webServer.AddMiddleware(authMiddleware);
+
+            #region Internal RPC
+            InternalMiddleware internalMiddleware = new InternalMiddleware(_gameServer);
+
+            Route.Internal.TrackingRoute trackingRoute = new(this);
+            internalMiddleware.Require(trackingRoute.Route);
+            _webServer.AddRoute(trackingRoute);
+
+            Route.Internal.InternalChatRoute internalChatRoute = new(this);
+            internalMiddleware.Require(internalChatRoute.Route);
+            _webServer.AddRoute(internalChatRoute);
+
+            Route.Internal.PacketRoute packetRoute = new(this);
+            internalMiddleware.Require(packetRoute.Route);
+            _webServer.AddRoute(packetRoute);
+
+            _webServer.AddMiddleware(internalMiddleware);
+            #endregion 
         }
     }
 }

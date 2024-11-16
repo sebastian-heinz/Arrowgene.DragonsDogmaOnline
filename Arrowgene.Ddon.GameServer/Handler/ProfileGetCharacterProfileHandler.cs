@@ -17,48 +17,45 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CProfileGetCharacterProfileRes Handle(GameClient client, C2SProfileGetCharacterProfileReq request)
         {
-            GameClient targetClient = Server.ClientLookup.GetClientByCharacterId(request.CharacterId);
-
-            if (targetClient is null)
-            {
-                throw new ResponseErrorException(ErrorCode.ERROR_CODE_CHARACTER_DATA_INVALID_CHARACTER_ID);
-            }
+            Character targetCharacter = Server.ClientLookup.GetClientByCharacterId(request.CharacterId)?.Character
+                ?? Server.Database.SelectCharacter(request.CharacterId)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CHARACTER_DATA_INVALID_CHARACTER_ID);
 
             S2CCharacterGetCharacterStatusNtc ntc = new S2CCharacterGetCharacterStatusNtc();
-            ntc.CharacterId = targetClient.Character.CharacterId;
-            ntc.StatusInfo = targetClient.Character.StatusInfo;
-            ntc.JobParam = targetClient.Character.ActiveCharacterJobData;
-            GameStructure.CDataCharacterLevelParam(ntc.CharacterParam, client.Character);
-            ntc.EditInfo = targetClient.Character.EditInfo;
-            ntc.EquipDataList = targetClient.Character.Equipment.AsCDataEquipItemInfo(EquipType.Performance);
-            ntc.VisualEquipDataList = targetClient.Character.Equipment.AsCDataEquipItemInfo(EquipType.Visual);
-            ntc.EquipJobItemList = targetClient.Character.EquipmentTemplate.JobItemsAsCDataEquipJobItem(targetClient.Character.Job);
-            ntc.HideHead = targetClient.Character.HideEquipHead;
-            ntc.HideLantern = targetClient.Character.HideEquipLantern;
-            ntc.JewelryNum = targetClient.Character.ExtendedParams.JewelrySlot;
+            ntc.CharacterId = targetCharacter.CharacterId;
+            ntc.StatusInfo = targetCharacter.StatusInfo;
+            ntc.JobParam = targetCharacter.ActiveCharacterJobData;
+            GameStructure.CDataCharacterLevelParam(ntc.CharacterParam, targetCharacter);
+            ntc.EditInfo = targetCharacter.EditInfo;
+            ntc.EquipDataList = targetCharacter.Equipment.AsCDataEquipItemInfo(EquipType.Performance);
+            ntc.VisualEquipDataList = targetCharacter.Equipment.AsCDataEquipItemInfo(EquipType.Visual);
+            ntc.EquipJobItemList = targetCharacter.EquipmentTemplate.JobItemsAsCDataEquipJobItem(targetCharacter.Job);
+            ntc.HideHead = targetCharacter.HideEquipHead;
+            ntc.HideLantern = targetCharacter.HideEquipLantern;
+            ntc.JewelryNum = targetCharacter.ExtendedParams.JewelrySlot;
 
             client.Send(ntc);
 
             S2CProfileGetCharacterProfileRes res = new S2CProfileGetCharacterProfileRes();
-            res.CharacterId = targetClient.Character.CharacterId;
-            GameStructure.CDataCharacterName(res.CharacterName, targetClient.Character);
-            res.JobId = targetClient.Character.Job;
-            res.JobLevel = (byte)targetClient.Character.ActiveCharacterJobData.Lv;
-            res.ClanParam = Server.ClanManager.GetClan(targetClient.Character.ClanId);
+            res.CharacterId = targetCharacter.CharacterId;
+            GameStructure.CDataCharacterName(res.CharacterName, targetCharacter);
+            res.JobId = targetCharacter.Job;
+            res.JobLevel = (byte)targetCharacter.ActiveCharacterJobData.Lv;
+            res.ClanParam = Server.ClanManager.GetClan(targetCharacter.ClanId);
 
-            var (clanId, memberInfo) = Server.ClanManager.ClanMembership(targetClient.Character.CharacterId);
+            var (clanId, memberInfo) = Server.ClanManager.ClanMembership(targetCharacter.CharacterId);
             if (memberInfo != null)
             {
                 res.ClanMemberRank = (uint)memberInfo.Rank;
             }
 
-            res.JobLevelList = targetClient.Character.CharacterJobDataList.Select(jobData => new CDataJobBaseInfo()
+            res.JobLevelList = targetCharacter.CharacterJobDataList.Select(jobData => new CDataJobBaseInfo()
             {
                 Job = jobData.Job,
                 Level = (byte)jobData.Lv
             }).ToList();
-            res.MatchingProfile = targetClient.Character.MatchingProfile;
-            res.ArisenProfile = targetClient.Character.ArisenProfile;
+            res.MatchingProfile = targetCharacter.MatchingProfile;
+            res.ArisenProfile = targetCharacter.ArisenProfile;
             // TODO: OnlineId
 
             return res;

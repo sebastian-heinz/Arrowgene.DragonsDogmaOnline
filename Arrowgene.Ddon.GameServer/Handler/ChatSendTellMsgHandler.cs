@@ -15,8 +15,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CChatSendTellMsgRes Handle(GameClient senderClient, C2SChatSendTellMsgReq request)
         {
             GameClient receiverClient = Server.ClientLookup.GetClientByCharacterId(request.CharacterInfo.CharacterId);
-            Server.ChatManager.SendTellMessage(senderClient.Character.CharacterId, senderClient.Character.GetCommunityCharacterBaseInfo(), request.CharacterInfo, request,
-                senderClient, receiverClient);
+            if (receiverClient == null)
+            {
+                Server.ChatManager.SendTellMessageForeign(senderClient, request);
+            }
+            else
+            {
+                Server.ChatManager.SendTellMessage(senderClient, receiverClient, request);
+            }
 
             return new S2CChatSendTellMsgRes
             {

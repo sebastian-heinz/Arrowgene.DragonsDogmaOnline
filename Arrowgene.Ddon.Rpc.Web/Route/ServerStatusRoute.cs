@@ -54,7 +54,7 @@ namespace Arrowgene.Ddon.Rpc.Web.Route
             ReturnValue = statusList;
             uint serverId = uint.TryParse(_queryParams.Get("serverid"), out uint serverIdParse) ? serverIdParse : 0;
 
-            var serverList = new List<CDataGameServerListInfo>(gameServer.AssetRepository.ServerList);
+            var serverList = new List<ServerInfo>(gameServer.AssetRepository.ServerList);
             var serverListSelected = serverId == 0 ? serverList : serverList.Where(x => x.Id == serverId).ToList();
 
             if (serverListSelected.Any())
@@ -67,8 +67,8 @@ namespace Arrowgene.Ddon.Rpc.Web.Route
                         Id = server.Id,
                         Name = server.Name,
                         Brief = server.Brief,
-                        TrafficName = server.TrafficName,
-                        TrafficLevel = server.TrafficLevel,
+                        TrafficName = string.Empty,
+                        TrafficLevel = 0,
                         MaxLoginNum = server.MaxLoginNum,
                         LoginNum = (uint)connections.Count(x => x.ServerId == server.Id && x.Type == ConnectionType.GameServer),
                         Addr = server.Addr,
