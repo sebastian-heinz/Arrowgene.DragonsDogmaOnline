@@ -436,7 +436,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (tuple.Item3.ItemId != 0)
                 {
-                    bbmCharacter.Storage.GetStorage(tuple.Item1).AddItem(tuple.Item3, tuple.Item2);
+                    bbmCharacter.Storage.GetStorage(tuple.Item1).AddItem(new Item(tuple.Item3), tuple.Item2);
                 }
             }
 
