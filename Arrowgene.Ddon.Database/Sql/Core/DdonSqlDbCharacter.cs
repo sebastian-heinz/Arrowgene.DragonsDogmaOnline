@@ -82,7 +82,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlSelectCharacterArisenProfile = $"SELECT {BuildQueryField(CDataArisenProfileFields)} FROM \"ddon_character_arisen_profile\" WHERE \"character_id\" = @character_id;";
         private const string SqlDeleteCharacterArisenProfile = "DELETE FROM \"ddon_character_arisen_profile\" WHERE \"character_id\"=@character_id;";
 
-        private readonly string SqlReplaceCharacterBinaryData = $"REPLACE INTO \"ddon_binary_data\" ({BuildQueryField(CharacterBinaryDataFields)}) VALUES ({BuildQueryInsert(CharacterBinaryDataFields)});";
+        private readonly string SqlInsertCharacterBinaryData = $"INSERT INTO \"ddon_binary_data\" ({BuildQueryField(CharacterBinaryDataFields)}) VALUES ({BuildQueryInsert(CharacterBinaryDataFields)});";
+        private readonly string SqlUpdateCharacterBinaryData = $"UPDATE \"ddon_binary_data\" SET {BuildQueryUpdate(CharacterBinaryDataFields)} WHERE \"character_id\" = @character_id;";
         private static readonly string SqlSelectCharacterBinaryData = $"SELECT {BuildQueryField(CharacterBinaryDataFields)} FROM \"ddon_binary_data\" WHERE \"character_id\" = @character_id;";
 
         public bool CreateCharacter(Character character)
@@ -106,7 +107,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     ExecuteNonQuery(conn, SqlInsertStatusInfo, command => { AddParameter(command, character); });
                     ExecuteNonQuery(conn, SqlInsertCharacterMatchingProfile, command => { AddParameter(command, character); });
                     ExecuteNonQuery(conn, SqlInsertCharacterArisenProfile, command => { AddParameter(command, character); });
-                    ExecuteNonQuery(conn, SqlReplaceCharacterBinaryData, command => { AddParameter(command, character);});
+                    ExecuteNonQuery(conn, SqlInsertCharacterBinaryData, command => { AddParameter(command, character);});
 
                     CreateItems(conn, character);
 
@@ -325,7 +326,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         item.PlusValue = GetByte(reader2, "plus_value");
                         item.EquipPoints = GetUInt32(reader2, "equip_points");
 
-                        ExecuteReader(conn, SqlSelectAllCrestData,
+                        using TCon connection = OpenNewConnection();
+                        ExecuteReader(connection, SqlSelectAllCrestData,
                         command4 => {
                             AddParameter(command4, "character_common_id", character.CommonId);
                             AddParameter(command4, "item_uid", item.UId);
@@ -755,7 +757,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool UpdateCharacterBinaryData(TCon conn, uint characterId, byte[] data)
         {
-            int rowsAffected = ExecuteNonQuery(conn, SqlReplaceCharacterBinaryData, command =>
+            int rowsAffected = ExecuteNonQuery(conn, SqlUpdateCharacterBinaryData, command =>
             {
                 AddParameter(command, "@character_id", characterId);
                 AddParameter(command, "@binary_data", data);

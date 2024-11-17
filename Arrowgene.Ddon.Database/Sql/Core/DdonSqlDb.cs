@@ -201,6 +201,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             base.AddParameter((TCom)command, name, value);
         }
+        
+        public void AddParameter(DbCommand command, string name, ulong value)
+        {
+            base.AddParameter((TCom)command, name, value);
+        }
 
         public void AddParameter(DbCommand command, string name, byte value)
         {

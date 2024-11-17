@@ -276,6 +276,11 @@ namespace Arrowgene.Ddon.Database.Sql
         {
             AddParameter(command, name, value, DbType.Double);
         }
+        
+        public void AddParameter(TCom command, string name, ulong value)
+        {
+            AddParameter(command, name, (long)value, DbType.Int64);
+        }
 
         public void AddParameter(TCom command, string name, byte value)
         {

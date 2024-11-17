@@ -75,7 +75,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private const string SqlSelectOfficialPawns =
             @"SELECT * FROM ddon_pawn WHERE is_official_pawn=1;";
         private const string SqlSelectAllPlayerPawns =
-            @"SELECT * FROM ddon_pawn WHERE is_official_pawn=0 LIMIT @limit;";
+            @"SELECT * FROM ddon_pawn WHERE is_official_pawn=false LIMIT @limit;";
         private const string SqlSelectPawnOwnerId =
             $"SELECT * FROM ddon_pawn WHERE \"pawn_id\" = @pawn_id;";
         private const string SqlSelectRegisteredPawns =
