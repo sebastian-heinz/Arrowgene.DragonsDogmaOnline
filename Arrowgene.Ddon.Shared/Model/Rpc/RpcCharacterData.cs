@@ -7,6 +7,7 @@ namespace Arrowgene.Ddon.Shared.Model.Rpc
             FirstName = string.Empty;
             LastName = string.Empty;
             ClanName = string.Empty;
+            ClanShortName = string.Empty;
         }
 
         public RpcCharacterData(Character character)
@@ -15,7 +16,7 @@ namespace Arrowgene.Ddon.Shared.Model.Rpc
             FirstName = character.FirstName;
             LastName = character.LastName;
             ClanName = character.ClanName.Name;
-            ClanName = character.ClanName.ShortName;
+            ClanShortName = character.ClanName.ShortName;
             ClanId = character.ClanId;
         }
 

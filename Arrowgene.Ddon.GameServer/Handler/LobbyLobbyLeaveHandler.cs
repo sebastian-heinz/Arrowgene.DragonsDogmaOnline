@@ -49,7 +49,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Server.HubManager.LeaveAllHubs(client);
                 Server.CharacterManager.UpdateDatabaseOnExit(client.Character);
                 Server.PartyManager.CleanupOnExit(client);
-                Server.RpcManager.AnnouncePlayerLeave(client.Character);
+                Server.RpcManager.AnnouncePlayerList();
             }
         }
     }

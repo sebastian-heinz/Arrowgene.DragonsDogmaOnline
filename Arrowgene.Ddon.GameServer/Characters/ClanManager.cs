@@ -225,7 +225,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 otherClient.Send(joinNtc);
             }
-            Server.RpcManager.AnnouncePlayerJoin(client.Character); // Resend this join notice to update the clan info.
+            Server.RpcManager.AnnouncePlayerList();
 
             return newClan;
         }

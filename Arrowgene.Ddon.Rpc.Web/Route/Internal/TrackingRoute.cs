@@ -3,6 +3,7 @@ using Arrowgene.Ddon.Rpc.Command;
 using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Logging;
 using Arrowgene.WebServer;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using static Arrowgene.Ddon.GameServer.RpcManager;
 
@@ -40,6 +41,15 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                             return new RpcCommandResult(this, true)
                             {
                                 Message = $"NotifyPlayerJoin Channel {_entry.Origin} ID {data.CharacterId}"
+                            };
+                        }
+                    case RpcInternalCommand.NotifyPlayerList:
+                        {
+                            List<RpcCharacterData> data = _entry.GetData<List<RpcCharacterData>>();
+                            gameServer.RpcManager.ReceivePlayerList(_entry.Origin, _entry.Timestamp, data);
+                            return new RpcCommandResult(this, true)
+                            {
+                                Message = $"NotifyPlayerList Channel {_entry.Origin}"
                             };
                         }
                     default:

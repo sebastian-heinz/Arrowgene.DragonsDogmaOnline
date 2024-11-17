@@ -73,7 +73,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             Server.BazaarManager.NotifySoldExhibitions(client);
-            Server.RpcManager.AnnouncePlayerJoin(client.Character);
+            Server.RpcManager.AnnouncePlayerList();
 
             var allUsers = newUserNtc.UserList.Concat(alreadyPresentUsersNtc.UserList).ToList();
             return new S2CLobbyJoinRes()
