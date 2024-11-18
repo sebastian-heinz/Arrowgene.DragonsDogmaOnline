@@ -1,6 +1,6 @@
 CREATE TABLE "ddon_clan_param"
 (
-    "clan_id"               INTEGER PRIMARY KEY NOT NULL,
+    "clan_id"               INTEGER PRIMARY KEY AUTOINCREMENT,
     "clan_level"            INTEGER             NOT NULL,
     "member_num"            INTEGER             NOT NULL,
     "master_id"             INTEGER             NOT NULL,
