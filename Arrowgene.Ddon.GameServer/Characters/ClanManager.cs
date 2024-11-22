@@ -177,11 +177,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public CDataClanParam CreateClan(GameClient client, CDataClanUserParam createParam)
         {
+            var masterInfo = NewMaster(client.Character);
+            masterInfo.CharacterListElement.CommunityCharacterBaseInfo.ClanName = createParam.ShortName;
+
             var serverParam = new CDataClanServerParam()
             {
                 Lv = 1,
                 MemberNum = 0,
-                MasterInfo = NewMaster(client.Character),
+                MasterInfo = masterInfo,
                 IsSystemRestriction = false,
                 IsClanBaseRelease = false,
                 CanClanBaseRelease = false,
@@ -213,8 +216,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             var selfNtc = new S2CClanClanJoinSelfNtc()
             {
                 ClanParam = newClan,
-                SelfInfo = serverParam.MasterInfo,
-                MemberList = new List<CDataClanMemberInfo>() { serverParam.MasterInfo }
+                SelfInfo = masterInfo,
+                MemberList = new List<CDataClanMemberInfo>() { masterInfo }
             };
             client.Send(selfNtc);
 
@@ -254,7 +257,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             character.ClanId = clanId;
             character.ClanName.Name = clan.ClanUserParam.Name;
-            character.ClanName.ShortName = clan.ClanUserParam.Name;
+            character.ClanName.ShortName = clan.ClanUserParam.ShortName;
+            memberInfo.CharacterListElement.CommunityCharacterBaseInfo.ClanName = clan.ClanUserParam.ShortName;
 
             S2CClanClanJoinNtc joinNtc = new()
             {
@@ -318,20 +322,19 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
             });
 
-            var ntc = new S2CClanClanLeaveMemberNtc()
-            {
-                ClanId = 0,
-                CharacterListElement = memberInfo.CharacterListElement
-            };
-            foreach (var client in Server.ClientLookup.GetAll())
-            {
-                client.Send(ntc);
-            }
-            Server.RpcManager.AnnounceClanPacket(clanId, ntc);
-
             if (memberInfo != null)
             {
                 memberInfo.CharacterListElement.CommunityCharacterBaseInfo.ClanName = string.Empty;
+                var ntc = new S2CClanClanLeaveMemberNtc()
+                {
+                    ClanId = 0,
+                    CharacterListElement = memberInfo.CharacterListElement
+                };
+                foreach (var client in Server.ClientLookup.GetAll())
+                {
+                    client.Send(ntc);
+                }
+                Server.RpcManager.AnnounceClanPacket(clanId, ntc);
             }
 
             Character characterLookup = Server.ClientLookup.GetClientByCharacterId(characterId)?.Character;
