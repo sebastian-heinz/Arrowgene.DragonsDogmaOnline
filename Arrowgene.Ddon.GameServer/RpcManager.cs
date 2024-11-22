@@ -34,19 +34,26 @@ namespace Arrowgene.Ddon.GameServer
 
         private readonly DdonGameServer Server;
         private readonly Dictionary<ushort, ServerInfo> ChannelInfo;
-        private readonly Dictionary<ushort, Dictionary<uint, RpcCharacterData>> CharacterTrackingMap;
+
+        private readonly Dictionary<ushort, (DateTime TimeStamp, Dictionary<uint, RpcCharacterData> CharacterData)> CharacterTrackingMap;
 
         public class RpcWrappedObject
         {
             public RpcInternalCommand Command { get; set; }
             public ushort Origin { get; set; }
             public object Data { get; set; }
+            public DateTime Timestamp { get; set; }
+            public RpcWrappedObject()
+            {
+                Timestamp = DateTime.UtcNow;
+            }
         }
 
         public class RpcUnwrappedObject
         {
             public RpcInternalCommand Command { get; set; }
             public ushort Origin { get; set; }
+            public DateTime Timestamp { get; set; }
 
             [JsonConverter(typeof(DataJsonConverter))]
             public string Data { get; set; }
@@ -96,7 +103,7 @@ namespace Arrowgene.Ddon.GameServer
             CharacterTrackingMap = new();
             foreach (var info in ChannelInfo.Values)
             {
-                CharacterTrackingMap[info.Id] = new();
+                CharacterTrackingMap[info.Id] = (DateTime.MinValue, new());
             }
 
             string authToken = string.Empty;
@@ -117,9 +124,9 @@ namespace Arrowgene.Ddon.GameServer
         public CDataGameServerListInfo ServerListInfo(ushort channelId)
         {
             var info = ChannelInfo[channelId].ToCDataGameServerListInfo();
-            lock (CharacterTrackingMap[channelId])
+            lock (CharacterTrackingMap[channelId].CharacterData)
             {
-                info.LoginNum = (uint)CharacterTrackingMap[channelId].Keys.Count;
+                info.LoginNum = (uint)CharacterTrackingMap[channelId].CharacterData.Count;
             }
             info.TrafficName = GetTrafficName(info.LoginNum);
             return info;
@@ -172,9 +179,6 @@ namespace Arrowgene.Ddon.GameServer
 
             var json = JsonSerializer.Serialize(wrappedObject);
 
-            var bing = JsonSerializer.Deserialize<RpcUnwrappedObject>(json);
-            var baz = bing.GetData<RpcPacketData>();
-
             _ = HttpClient.PostAsync(Route(channelId, route), new StringContent(json));
         }
 
@@ -204,7 +208,7 @@ namespace Arrowgene.Ddon.GameServer
                     continue;
                 }
 
-                if (channel.Value.Any(x => x.Value.ClanId == clanId))
+                if (channel.Value.CharacterData.Any(x => x.Value.ClanId == clanId))
                 {
                     Announce(channel.Key, route, command, data);
                 }
@@ -215,7 +219,7 @@ namespace Arrowgene.Ddon.GameServer
         #region Player Tracking
         public ushort FindPlayerByName(string firstName, string lastName)
         {
-            foreach ((ushort channelId, var channelMembers) in CharacterTrackingMap)
+            foreach ((ushort channelId, (_, var channelMembers)) in CharacterTrackingMap)
             {
                 lock(channelMembers)
                 {
@@ -233,7 +237,7 @@ namespace Arrowgene.Ddon.GameServer
 
         public ushort FindPlayerById(uint characterId)
         {
-            foreach ((ushort channelId, var channelMembers) in CharacterTrackingMap)
+            foreach ((ushort channelId, (_, var channelMembers)) in CharacterTrackingMap)
             {
                 lock (channelMembers)
                 {
@@ -248,24 +252,52 @@ namespace Arrowgene.Ddon.GameServer
     
         public void RemovePlayerSummary(ushort channelId, uint characterId)
         {
-            lock (CharacterTrackingMap[channelId])
+            lock (CharacterTrackingMap[channelId].CharacterData)
             {
-                CharacterTrackingMap[channelId].Remove(characterId);
+                CharacterTrackingMap[channelId].CharacterData.Remove(characterId);
             }
         }
 
         public void AddPlayerSummary(ushort channelId, RpcCharacterData characterSummary)
         {
-            lock (CharacterTrackingMap[channelId])
+            lock (CharacterTrackingMap[channelId].CharacterData)
             {
-                CharacterTrackingMap[channelId][characterSummary.CharacterId] = characterSummary;
+                CharacterTrackingMap[channelId].CharacterData[characterSummary.CharacterId] = characterSummary;
+            }
+        }
+
+        public void AnnouncePlayerList()
+        {
+            List<RpcCharacterData> rpcCharacterDatas = new List<RpcCharacterData>();
+            foreach (var client in Server.ClientLookup.GetAll())
+            {
+                if (client.Character != null)
+                {
+                    rpcCharacterDatas.Add(new(client.Character));
+                }
+            }
+            AnnounceOthers("internal/tracking", RpcInternalCommand.NotifyPlayerList, rpcCharacterDatas);
+        }
+
+        public void ReceivePlayerList(ushort channelId, DateTime timestamp, List<RpcCharacterData> characterDatas)
+        {
+            if (CharacterTrackingMap.ContainsKey(channelId))
+            {
+                if (CharacterTrackingMap[channelId].TimeStamp <= timestamp)
+                {
+                    CharacterTrackingMap[channelId] = (timestamp, characterDatas.ToDictionary(key => key.CharacterId, val => val));
+                }
+                else
+                {
+                    Logger.Info($"Out of date character list discarded for channel ID {channelId}");
+                }
             }
         }
 
         public void UpdatePlayerSummaryClan(uint characterId, uint clanId)
         {
             var clan = Server.ClanManager.GetClan(clanId);
-            foreach ((ushort channelId, var channelMembers) in CharacterTrackingMap)
+            foreach ((ushort channelId, (_, var channelMembers)) in CharacterTrackingMap)
             {
                 lock (channelMembers)
                 {
@@ -282,9 +314,9 @@ namespace Arrowgene.Ddon.GameServer
         public void AnnouncePlayerLeave(Character character)
         {
             var characterSummary = new RpcCharacterData(character);
-            lock (CharacterTrackingMap[(ushort)Server.Id])
+            lock (CharacterTrackingMap[(ushort)Server.Id].CharacterData)
             {
-                if (!CharacterTrackingMap[(ushort)Server.Id].ContainsKey(character.CharacterId))
+                if (!CharacterTrackingMap[(ushort)Server.Id].CharacterData.ContainsKey(character.CharacterId))
                 {
                     // We don't actually have this player, so we don't have the authority to announce his leaving.
                     return;
@@ -352,7 +384,7 @@ namespace Arrowgene.Ddon.GameServer
         }
         #endregion
 
-        public void AnnounceAllPacket<T>(T packet)
+        public void AnnounceAllPacket<T>(T packet, uint characterId = 0)
             where T : class, IPacketStructure, new()
         {
             RpcPacketData data = new RpcPacketData()
@@ -360,12 +392,13 @@ namespace Arrowgene.Ddon.GameServer
                 GroupId = packet.Id.GroupId,
                 HandlerId = packet.Id.HandlerId,
                 HandlerSubId = packet.Id.HandlerSubId,
+                CharacterId = characterId,
                 Data = EntitySerializer.Get<T>().Write(packet)
             };
             AnnounceAll("internal/packet", RpcInternalCommand.AnnouncePacketAll, data);
         }
 
-        public void AnnounceClanPacket<T>(uint clanId, T packet)
+        public void AnnounceClanPacket<T>(uint clanId, T packet, uint characterId = 0)
             where T : class, IPacketStructure, new()
         {
             if (clanId == 0) return;
@@ -376,6 +409,7 @@ namespace Arrowgene.Ddon.GameServer
                 HandlerId = packet.Id.HandlerId,
                 HandlerSubId = packet.Id.HandlerSubId,
                 ClanId = clanId,
+                CharacterId = characterId,
                 Data = EntitySerializer.Get<T>().Write(packet)
             };
 

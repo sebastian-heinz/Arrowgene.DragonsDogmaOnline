@@ -95,6 +95,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataClanPartnerPawnInfo.Serializer());
             Create(new CDataClanShopLineupName.Serializer());
             Create(new CDataClanValueInfo.Serializer());
+            Create(new CDataClanShopInfo.Serializer());
 
             Create(new CDataClearTimePointBonus.Serializer());
             Create(new CDataCommonU8.Serializer());
@@ -247,6 +248,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataMoonSchedule.Serializer());
             Create(new CDataMoveItemUIDFromTo.Serializer());
             Create(new CDataNamedEnemyParamClient.Serializer());
+            Create(new CDataNoraPawnInfo.Serializer());
             Create(new CDataNormalSkillParam.Serializer());
             Create(new CDataNpcExtendedFacilityMenuItem.Serializer());
             Create(new CDataOcdActive.Serializer());
@@ -390,6 +392,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataExpRequirement.Serializer());
             Create(new CDataJewelryEquipLimit.Serializer());
             Create(new CDataPartyMemberMaxNum.Serializer());
+            Create(new CDataFurnitureLayout.Serializer());
+            Create(new CDataFurnitureLayoutData.Serializer());
+            Create(new CDataAreaSpotSet.Serializer());
+            Create(new CDataPawnExpeditionClanSallySpotInfo.Serializer());
 
             // Packet structure serializers
             Create(new C2LCreateCharacterDataReq.Serializer());
@@ -483,6 +489,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SClanClanExpelMemberReq.Serializer());
             Create(new C2SClanClanSetMemberRankReq.Serializer());
             Create(new C2SClanClanNegotiateMasterReq.Serializer());
+            Create(new C2SClanClanBaseReleaseReq.Serializer());
+            Create(new C2SClanClanShopGetFunctionItemListReq.Serializer());
+            Create(new C2SClanClanShopGetBuffItemListReq.Serializer());
+            Create(new C2SClanClanShopBuyFunctionItemReq.Serializer());
+            Create(new C2SClanClanShopBuyBuffItemReq.Serializer());
 
             Create(new C2SConnectionLoginReq.Serializer());
             Create(new C2SConnectionMoveInServerReq.Serializer());
@@ -683,10 +694,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPawnGetNoraPawnListReq.Serializer());
             Create(new C2SPawnUpdatePawnReactionListReq.Serializer());
 
+            Create(new C2SPawnExpeditionGetSallyInfoReq.Serializer());
+
             Create(new C2SProfileGetCharacterProfileReq.Serializer());
             Create(new C2SProfileGetMyCharacterProfileReq.Serializer());
             
-
             Create(new C2SPhotoPhotoTakeNtc.Serializer());
 
             Create(new C2SQuestCancelPriorityQuestReq.Serializer());
@@ -723,6 +735,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SQuestPlayInterruptAnswerReq.Serializer());
             Create(new C2SQuestPlayEntryCancelReq.Serializer());
             Create(new C2SQuestGetCycleContentsStateListReq.Serializer());
+            Create(new C2SQuestQuestLogInfoReq.Serializer());
 
             Create(new C2SServerGameTimeGetBaseInfoReq.Serializer());
             Create(new C2SServerGetRealTimeReq.Serializer());
@@ -930,6 +943,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CClanClanExpelMemberRes.Serializer());
             Create(new S2CClanClanSetMemberRankRes.Serializer());
             Create(new S2CClanClanNegotiateMasterRes.Serializer());
+            Create(new S2CClanClanBaseReleaseRes.Serializer());
+            Create(new S2CClanClanShopGetFunctionItemListRes.Serializer());
+            Create(new S2CClanClanShopGetBuffItemListRes.Serializer());
+            Create(new S2CClanClanShopBuyFunctionItemRes.Serializer());
+            Create(new S2CClanClanShopBuyBuffItemRes.Serializer());
 
             Create(new S2CClanClanLeaveMemberNtc.Serializer());
             Create(new S2CClanClanUpdateNtc.Serializer());
@@ -1217,6 +1235,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPawnGetNoraPawnListRes.Serializer());
             Create(new S2CPawnUpdatePawnReactionListRes.Serializer());
             Create(new S2CPawnUpdatePawnReactionListNtc.Serializer());
+
+            Create(new S2CPawnExpeditionGetSallyInfoRes.Serializer());
 
             Create(new S2CProfileGetCharacterProfileRes.Serializer());
             Create(new S2CProfileGetMyCharacterProfileRes.Serializer());

@@ -1,0 +1,48 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 30200010,
+  "base_level": 75,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "For the Peace of Lestania",
+  "light_quest_details": {
+    "board_type": 2,
+    "board_id": 24,
+    "get_cp": 28,
+    "order_limit": 7
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 68782
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 48814
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 2739
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "272",
+      "level": 75,
+      "amount": 1
+    }
+  ]
+}

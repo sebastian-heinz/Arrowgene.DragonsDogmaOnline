@@ -609,6 +609,20 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     client.Enqueue(ntc, packets);
                 }
             }
+            
+            if (QuestManager.IsClanQuest(quest) && client.Character.ClanId != 0)
+            {
+                var amount = quest.LightQuestDetail.GetCp;
+                if (amount > 0)
+                {
+                    var cpNtcs = server.ClanManager.AddClanPoint(client.Character.ClanId, amount, connectionIn);
+                    packets.AddRange(cpNtcs);
+                }
+
+                var completeNtcs = server.ClanManager.CompleteClanQuest(quest, client);
+                packets.AddRange(completeNtcs);
+            }
+            
 
             return packets;
         }

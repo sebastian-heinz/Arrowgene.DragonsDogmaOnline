@@ -1,12 +1,17 @@
 using Arrowgene.Ddon.GameServer;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Rpc.Command;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Clan;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.WebServer;
+using System;
+using System.Linq;
 using System.Threading.Tasks;
 using static Arrowgene.Ddon.GameServer.RpcManager;
 
@@ -48,6 +53,8 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                             RpcPacketData data = _entry.GetData<RpcPacketData>();
                             Packet packet = data.ToPacket();
 
+                            Func<GameClient, bool> checkFunc = x => true;
+
                             if (packet.Id == PacketId.S2C_CLAN_CLAN_UPDATE_NTC)
                             {
                                 gameServer.ClanManager.ResyncClan(data.ClanId);
@@ -67,11 +74,85 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                                 }
                                 gameServer.RpcManager.UpdatePlayerSummaryClan(characterId, parsedPacket.ClanId);
                             }
+                            else if (packet.Id == PacketId.S2C_CLAN_CLAN_POINT_ADD_NTC)
+                            {
+                                var parsedPacket = new S2CClanClanPointAddNtc.Serializer().Read(data.Data);
+                                if (gameServer.ClanManager.HasClan(data.ClanId))
+                                {
+                                    var clan = gameServer.ClanManager.GetClan(data.ClanId);
+                                    lock (clan)
+                                    {
+                                        clan.ClanServerParam.TotalClanPoint = parsedPacket.TotalClanPoint;
+                                        clan.ClanServerParam.MoneyClanPoint = parsedPacket.MoneyClanPoint;
+                                    }
+                                }
+                            }
+                            else if (packet.Id == PacketId.S2C_CLAN_CLAN_LEVEL_UP_NTC)
+                            {
+                                var parsedPacket = new S2CClanClanLevelUpNtc.Serializer().Read(data.Data);
+                                if (gameServer.ClanManager.HasClan(data.ClanId))
+                                {
+                                    var clan = gameServer.ClanManager.GetClan(data.ClanId);
+                                    lock (clan)
+                                    {
+                                        clan.ClanServerParam.Lv = (ushort)parsedPacket.ClanLevel;
+                                        clan.ClanServerParam.NextClanPoint = parsedPacket.NextClanPoint;
+                                    }
+                                }
+                            }
+                            else if (packet.Id == PacketId.S2C_CLAN_CLAN_BASE_RELEASE_STATE_UPDATE_NTC)
+                            {
+                                var parsedPacket = new S2CClanClanBaseReleaseStateUpdateNtc.Serializer().Read(data.Data);
+                                if (gameServer.ClanManager.HasClan(data.ClanId))
+                                {
+                                    var clan = gameServer.ClanManager.GetClan(data.ClanId);
+                                    lock (clan)
+                                    {
+                                        if (parsedPacket.State == 2)
+                                        {
+                                            clan.ClanServerParam.CanClanBaseRelease = true;
+                                            var memberList = gameServer.ClanManager.LookupClientsByPermission(data.ClanId, ClanPermission.BaseRelease);
+                                            checkFunc = x => memberList.Contains(x);
+                                        }
+                                        else if (parsedPacket.State == 3)
+                                        {
+                                            clan.ClanServerParam.CanClanBaseRelease = false;
+                                            clan.ClanServerParam.IsClanBaseRelease = true;
+                                        }
+                                    }
+                                }
+                            }
+                            else if (packet.Id == PacketId.S2C_CLAN_CLAN_QUEST_CLEAR_NTC)
+                            {
+                                // TODO: This is an abuse of this packet; it's not actually announced.
+                                var parsedPacket = new S2CClanClanQuestClearNtc.Serializer().Read(data.Data);
+                                var quest = QuestManager.GetQuestsByQuestId((QuestId)parsedPacket.QuestId).First();
+                                gameServer.ClanManager.CompleteClanQuestForeign(quest, data.CharacterId);
+
+                                checkFunc = x => false;
+                            }
+                            else if (packet.Id == PacketId.S2C_CLAN_CLAN_SHOP_BUY_ITEM_NTC)
+                            {
+                                var parsedPacket = new S2CClanClanShopBuyItemNtc.Serializer().Read(data.Data);
+                                if (gameServer.ClanManager.HasClan(data.ClanId))
+                                {
+                                    var clan = gameServer.ClanManager.GetClan(data.ClanId);
+                                    lock (clan)
+                                    {
+                                        clan.ClanServerParam.MoneyClanPoint = parsedPacket.ClanPoint;
+                                    }
+                                }
+                            }
 
                             foreach (var client in gameServer.ClientLookup.GetAll())
                             {
                                 if (client.Character != null && client.Character.ClanId == data.ClanId)
                                 {
+                                    if (!checkFunc(client))
+                                    {
+                                        continue;
+                                    }
+
                                     client.Send(packet);
                                 }
                             }

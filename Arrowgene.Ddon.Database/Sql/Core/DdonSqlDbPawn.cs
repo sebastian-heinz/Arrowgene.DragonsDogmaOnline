@@ -95,6 +95,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             // TODO: Filter by CraftSkillList, LevelMin/LevelMax, ItemRankMin/ItemRankMax, IsFriend, IsClan and DragonAbilitiesList
             + "AND (@dont_filter_by_jobs OR ((1 << \"active_job\".\"job\") & @job_bitfield) != 0) "
             + "LIMIT 250;"; // Any more and we overflow the client UI's button IDs (It uses a byte)
+        private const string SqlSelectClanPawns =
+            @"SELECT ""ddon_pawn"".* FROM ddon_pawn 
+                INNER JOIN ""ddon_clan_membership"" ON ""ddon_pawn"".""character_id"" = ""ddon_clan_membership"".""character_id"" 
+                WHERE ""clan_id"" = @clan_id AND ""ddon_pawn"".""character_id"" <> @character_id 
+                LIMIT @limit;";
 
         private readonly string SqlInsertPawnReaction =
             $"INSERT INTO \"ddon_pawn_reaction\" ({BuildQueryField(CDataPawnReactionFields)}) VALUES ({BuildQueryInsert(CDataPawnReactionFields)});";
@@ -223,6 +228,33 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return pawns;
         }
 
+        public List<uint> SelectClanPawns(uint clanId, uint characterId = 0, uint limit = 100, DbConnection? connectionIn = null)
+        {
+            return ExecuteQuerySafe<List<uint>>(connectionIn, (connection) =>
+            {
+                var pawns = new List<uint>();
+                ExecuteReader(
+                    connection,
+                    SqlSelectClanPawns,
+                    command =>
+                    {
+                        AddParameter(command, "@limit", limit);
+                        AddParameter(command, "@clan_id", clanId);
+                        AddParameter(command, "@character_id", characterId);
+                    },
+                    reader =>
+                    {
+                        while (reader.Read())
+                        {
+                            uint pawnId = GetUInt32(reader, "pawn_id");
+                            pawns.Add(pawnId);
+                        }
+                    }
+                );
+                return pawns;
+            });
+        }
+
         public List<CDataRegisterdPawnList> SelectRegisteredPawns(
             Character searchingCharacter,
             CDataPawnSearchParameter searchParams
@@ -301,20 +333,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return ownerCharacterId;
         }
 
-        public List<Pawn> SelectPawnsByCharacterId(uint characterId)
+        public List<Pawn> SelectPawnsByCharacterId(uint characterId, DbConnection? connectionIn = null)
         {
-            List<Pawn> pawns = null;
-            ExecuteInTransaction(conn =>
+            List<Pawn> pawns = new();
+            ExecuteQuerySafe(connectionIn, conn =>
             {
-                pawns = SelectPawnsByCharacterId(conn, characterId);
-            });
-            return pawns;
-        }
-
-        public List<Pawn> SelectPawnsByCharacterId(DbConnection conn, uint characterId)
-        {
-            List<Pawn> pawns = new List<Pawn>();
-            ExecuteReader(
+                ExecuteReader(
                 conn,
                 SqlSelectAllPawnsDataByCharacterId,
                 command =>
@@ -328,12 +352,13 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         Pawn pawn = ReadAllPawnData(reader);
                         pawns.Add(pawn);
                     }
+                });
+
+                foreach (var pawn in pawns)
+                {
+                    QueryPawnData(conn, pawn);
                 }
-            );
-            foreach (var pawn in pawns)
-            {
-                QueryPawnData(conn, pawn);
-            }
+            });
             return pawns;
         }
 

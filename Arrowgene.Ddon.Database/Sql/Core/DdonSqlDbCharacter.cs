@@ -162,10 +162,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return characterUpdateRowsAffected > NoRowsAffected;
         }
 
-        public Character SelectCharacter(uint characterId)
+        public Character SelectCharacter(uint characterId, DbConnection? connectionIn = null)
         {
             Character character = null;
-            ExecuteInTransaction(conn => {
+            ExecuteQuerySafe(connectionIn, conn => {
                 ExecuteReader(conn, SqlSelectAllCharacterData,
                 command => { AddParameter(command, "@character_id", characterId); }, reader =>
                 {

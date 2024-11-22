@@ -280,7 +280,7 @@ namespace Arrowgene.Ddon.Test.Database
         public List<SecretAbility> SelectAllUnlockedSecretAbilities(uint commonId) { return new List<SecretAbility>(); }
         public BazaarExhibition SelectBazaarExhibitionByBazaarId(ulong bazaarId) { return new BazaarExhibition(); }
         public List<QuestBoxRewards> SelectBoxRewardItems(uint commonId, DbConnection? connectionIn = null) { return new List<QuestBoxRewards>(); }
-        public Character SelectCharacter(uint characterId) { return new Character(); }
+        public Character SelectCharacter(uint characterId, DbConnection? connectionIn = null) { return new Character(); }
         public List<Character> SelectCharactersByAccountId(int accountId, GameMode gameMode) { return new List<Character>(); }
         public List<Character> SelectAllCharacters() { return new List<Character>(); }
         public List<Character> SelectAllCharacters(DbConnection conn) { return new List<Character>(); }
@@ -292,12 +292,11 @@ namespace Arrowgene.Ddon.Test.Database
         public List<(ContactListEntity, CDataCharacterListElement)> SelectFullContactListByCharacterId(uint characterId, DbConnection? connectionIn = null) { return new(); }
         public Item SelectStorageItemByUId(string uId, DbConnection? connectionIn = null) { return new Item(); }
         public List<CDataNormalSkillParam> SelectNormalSkillParam(uint commonId, JobId job) { return new List<CDataNormalSkillParam>(); }
-        public CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId) { return new CDataOrbGainExtendParam(); }
+        public CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId, DbConnection? connectionIn = null) { return new CDataOrbGainExtendParam(); }
         public List<CDataReleaseOrbElement> SelectOrbReleaseElementFromDragonForceAugmentation(uint commonId) { return new List<CDataReleaseOrbElement>(); }
         public Pawn SelectPawn(uint pawnId) { return new Pawn(); }
         public Pawn SelectPawn(DbConnection connection, uint pawnId) { return new Pawn(); }
-        public List<Pawn> SelectPawnsByCharacterId(uint characterId) { return new List<Pawn>(); }
-        public List<Pawn> SelectPawnsByCharacterId(DbConnection conn, uint characterId) { return new List<Pawn>(); }
+        public List<Pawn> SelectPawnsByCharacterId(uint characterId, DbConnection? connectionIn = null) { return new List<Pawn>(); }
         public List<ReleasedWarpPoint> SelectReleasedWarpPoints(uint characterId) { return new List<ReleasedWarpPoint>(); }
         public GameToken SelectToken(string tokenStr) { return new GameToken(); }
         public GameToken SelectTokenByAccountId(int accountId) { return new GameToken(); }
@@ -391,6 +390,7 @@ namespace Arrowgene.Ddon.Test.Database
         public List<uint> SelectOfficialPawns() { return new List<uint>(); }
         public List<uint> SelectAllPlayerPawns(uint limit = 100) { return new List<uint>(); }
         public List<uint> SelectAllPlayerPawns(DbConnection connection, uint limit = 100) { return new List<uint>(); }
+        public List<uint> SelectClanPawns(uint clanId, uint characterId = 0, uint limit = 100, DbConnection? connectionIn = null) { return new(); }
         public List<uint> SelectRandomPlayerPawns(uint limit = 100) { return new List<uint>(); }
         public List<uint> SelectRandomPlayerPawns(DbConnection connection, uint limit = 100) { return new List<uint>(); }
         public uint GetPawnOwnerCharacterId(uint pawnId) { return 0; }
@@ -408,6 +408,11 @@ namespace Arrowgene.Ddon.Test.Database
         public List<CDataClanMemberInfo> GetClanMemberList(uint clanId, DbConnection? connectionIn = null) { return new(); }
         public CDataClanMemberInfo GetClanMember(uint characterId, DbConnection? connectionIn = null) { return new(); }
         public bool UpdateClanMember(CDataClanMemberInfo memberInfo, uint clanId, DbConnection? connectionIn = null) { return true; }
+        public List<uint> SelectClanShopPurchases(uint clanId, DbConnection? connectionIn = null) { return new(); }
+        public bool InsertClanShopPurchase(uint clanId, uint lineupId, DbConnection? connectionIn = null) { return true; }
+        public List<(ClanBaseCustomizationType Type, uint Id)> SelectClanBaseCustomizations(uint clanId, DbConnection? connectionIn = null) { return new(); }
+        public bool InsertOrUpdateClanBaseCustomization(uint clanId, ClanBaseCustomizationType type, uint furnitureId, DbConnection? connectionIn = null) { return true; }
+        public bool DeleteClanBaseCustomization(uint clanId, ClanBaseCustomizationType type, DbConnection? connectionIn = null) { return true; }
 
         public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
         public void AddParameter(DbCommand command, string name, string value) { }

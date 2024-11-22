@@ -114,7 +114,7 @@ public static class GameStructure
         cDataPawnInfo.Version = 0;
         cDataPawnInfo.Name = pawn.Name;
         cDataPawnInfo.EditInfo = pawn.EditInfo;
-        cDataPawnInfo.State = 0; // TODO: ?
+        cDataPawnInfo.State = 1; // TODO: ?
         cDataPawnInfo.MaxHp = pawn.StatusInfo.MaxHP;
         cDataPawnInfo.MaxStamina = pawn.StatusInfo.MaxStamina;
         cDataPawnInfo.JobId = pawn.Job;
@@ -161,6 +161,22 @@ public static class GameStructure
         cDataPawnInfo.TrainingStatus = pawn.TrainingStatus.GetValueOrDefault(pawn.Job, new byte[64]);
         cDataPawnInfo.Unk1 = new CData_772E80() {Unk0 = 0x7530, Unk1 = 0x3, Unk2 = 0x3, Unk3 = 0x1, Unk4 = 0x3};
         cDataPawnInfo.SpSkillList = pawn.SpSkills.GetValueOrDefault(pawn.Job, new List<CDataSpSkill>());
+    }
+
+    public static void CDataNoraPawnInfo(CDataNoraPawnInfo cDataNoraPawnInfo, Pawn pawn)
+    {
+        cDataNoraPawnInfo.Name = pawn.Name;
+        cDataNoraPawnInfo.EditInfo = pawn.EditInfo;
+        cDataNoraPawnInfo.Job = (byte)pawn.Job;
+        cDataNoraPawnInfo.CharacterEquipData = new() // TODO: ???
+        {
+            new CDataCharacterEquipData() {
+                Equips = pawn.Equipment.AsCDataEquipItemInfo(EquipType.Performance)
+            },
+            new CDataCharacterEquipData() {
+                Equips = pawn.Equipment.AsCDataEquipItemInfo(EquipType.Visual)
+            }
+        };
     }
 
     public static void CDataCharacterLevelParam(CDataCharacterLevelParam characterLevelParam, CharacterCommon character)

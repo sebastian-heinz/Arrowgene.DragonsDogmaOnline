@@ -1,0 +1,51 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 30200017,
+  "base_level": 72,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Request From A Connoisseur",
+  "light_quest_details": {
+    "board_type": 2,
+    "board_id": 24,
+    "get_cp": 22,
+    "order_limit": 7
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 34498
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 30861
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1817
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "DeliverItemsLight",
+      "announce_type": "Accept",
+      "items": [
+        {
+          "id": 15940,
+          "amount": 2
+        }
+      ]
+    }
+  ]
+}

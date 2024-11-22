@@ -3,32 +3,30 @@ using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class S2CClanClanConciergeUpdateRes : IPacketStructure
+    public class S2CClanClanConciergeUpdateRes : ServerResponse
     {
-        public PacketId Id => PacketId.S2C_CLAN_CLAN_CONCIERGE_UPDATE_RES;
+        public override PacketId Id => PacketId.S2C_CLAN_CLAN_CONCIERGE_UPDATE_RES;
 
-        public S2CClanClanConciergeUpdateRes()
-        {
-            CP = 0;
-        }
+        public S2CClanClanConciergeUpdateRes() { }
 
-        public C2SClanClanConciergeUpdateReq ConciergeUpdate { get; set; }
-        public uint CP { get; set; }
+        public uint NpcId { get; set; }
+        public uint ClanPoint { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CClanClanConciergeUpdateRes>
         {
             public override void Write(IBuffer buffer, S2CClanClanConciergeUpdateRes obj)
             {
-                C2SClanClanConciergeUpdateReq req = obj.ConciergeUpdate;
-                WriteUInt64(buffer, 0);
-                WriteUInt32(buffer, req.ConciergeId);
-                uint i = obj.CP-req.RequireCP;
-                WriteUInt32(buffer, i);
+                WriteServerResponse(buffer, obj);
+                WriteUInt32(buffer, obj.NpcId);
+                WriteUInt32(buffer, obj.ClanPoint);
             }
 
             public override S2CClanClanConciergeUpdateRes Read(IBuffer buffer)
             {
                 S2CClanClanConciergeUpdateRes obj = new S2CClanClanConciergeUpdateRes();
+                ReadServerResponse(buffer, obj);
+                obj.NpcId = ReadUInt32(buffer);
+                obj.ClanPoint = ReadUInt32(buffer);
                 return obj;
             }
         }
