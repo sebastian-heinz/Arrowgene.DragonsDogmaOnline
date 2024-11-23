@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         private void NotifyDisconnect(GameClient client)
         {
-            if(client.Character != null) {
+            if(client.Character != null && client.Character.Stage.Id != 0) {
                 // Notice all other users
                 S2CUserListLeaveNtc ntc = new S2CUserListLeaveNtc();
                 ntc.CharacterList.Add(new CDataCommonU32(client.Character.CharacterId));
