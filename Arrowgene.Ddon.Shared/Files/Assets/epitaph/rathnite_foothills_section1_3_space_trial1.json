@@ -1,0 +1,155 @@
+{
+    "comment": "Heroic Spirit Sleeping Path: Rathnite Foothills - Section 1: Third Space Trial 1",
+    "stage_id": {
+        "id": 550,
+        "group_id": 33
+    },
+    "pos_id": 6,
+    "unlock_cost": [],
+    "unlocks": [],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
+                {"type": "CannotDieMoreThanOnce", "priority": "Secondary"},
+                {"type": "CompleteConditionsWithinTimeLimit", "priority": "Secondary", "Param1": 120}
+            ],
+            "cost": [],
+            "item_rewards": [
+                {"item_id": 18656, "amount": 10},
+                {"item_id": 18742, "amount": 10}
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 550,
+                        "group_id": 30
+                    },
+                    "enemies": [
+                        {
+                            "comment" : "White Chimera",
+                            "enemy_id": "0x070810",
+                            "level": 83,
+                            "exp": 84000,
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true
+                        },
+                        {
+                            "comment" : "Eliminator Slay",
+                            "enemy_id": "0x010520",
+                            "level": 83,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Eliminator Slay",
+                            "enemy_id": "0x010520",
+                            "level": 83,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "trial_name": "Trial of the Souls",
+            "constraints": [
+                {"type": "DefeatEnemyCount", "priority": "Primary", "Param1": 20},
+                {"type": "ItemNoteUsedMoreThanOnce", "priority": "Secondary"},
+                {"type": "CompleteConditionsWithinTimeLimit", "priority": "Secondary", "Param1": 360}
+            ],
+            "cost": [
+                {"item_id": 18656, "amount": 10}
+            ],
+            "item_rewards": [
+                {"item_id": 18742, "amount": 20},
+                {
+                    "type": "pool", "rolls": 1,
+                    "items": [
+                        {"type": "Random", "item_id": 9257, "amount": 3},
+                        {"type": "Random", "item_id": 13653, "amount": 3},
+                        {"type": "Random", "item_id": 9300, "amount": 3},
+                        {"type": "Random", "item_id": 13679, "amount": 3}
+                    ]
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 550,
+                        "group_id": 30
+                    },
+                    "enemies": [
+                        {
+                            "comment" : "White Griffin",
+                            "enemy_id": "0x015851",
+                            "level": 83,
+                            "exp": 84000,
+                            "index": 0,
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true,
+                            "repop_count": 50,
+                            "repop_wait_second": 0
+                        },
+                        {
+                            "comment" : "Lux Skeleton",
+                            "enemy_id": "0x010317",
+                            "level": 83,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 0
+                        },
+                        {
+                            "comment" : "Lux Skeleton",
+                            "enemy_id": "0x010317",
+                            "level": 83,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 0
+                        },
+                        {
+                            "comment" : "Siren",
+                            "enemy_id": "0x010605",
+                            "level": 83,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 0
+                        },
+                        {
+                            "comment" : "Siren",
+                            "enemy_id": "0x010605",
+                            "level": 83,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 0
+                        },
+                        {
+                            "comment" : "Lux Skeleton",
+                            "enemy_id": "0x010317",
+                            "level": 83,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 0
+                        },
+                        {
+                            "comment" : "Lux Skeleton",
+                            "enemy_id": "0x010317",
+                            "level": 83,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 0
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

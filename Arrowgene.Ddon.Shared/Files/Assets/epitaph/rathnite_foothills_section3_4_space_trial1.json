@@ -1,0 +1,84 @@
+{
+    "comment": "Heroic Spirit Sleeping Path: Rathnite Foothills - Section 3: 4th Space Trial 1",
+    "stage_id": {
+        "id": 551,
+        "group_id": 87
+    },
+    "pos_id": 6,
+    "unlock_cost": [],
+    "unlocks": [],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
+                {"type": "CompleteConditionsWithinTimeLimit", "priority": "Secondary", "Param1": 180}
+            ],
+            "cost": [],
+            "item_rewards": [
+                {"item_id": 18656, "amount": 80},
+                {"item_id": 18742, "amount": 10}
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 91
+                    },
+                    "enemies": [
+                        {
+                            "comment" : "Manticore",
+                            "enemy_id": "0x070830",
+                            "level": 84,
+                            "exp": 84000,
+                            "pp": 2,
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true
+                        }
+                   ]
+                }
+            ]
+        },
+        {
+            "trial_name": "Trial of the Souls",
+            "constraints": [
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
+                {"type": "CannotBeAffectedByAbnormalStatus", "priority": "Secondary", "Param1": 3}
+            ],
+            "cost": [
+                {"item_id": 18656, "amount": 30}
+            ],
+            "item_rewards": [
+                {"item_id": 18742, "amount": 20},
+                {
+                    "type": "pool", "rolls": 1,
+                    "items": [
+                        {"type": "Random", "item_id": 9252, "amount": 3},
+                        {"type": "Random", "item_id": 25706, "amount": 3},
+                        {"type": "Random", "item_id": 9345, "amount": 3},
+                        {"type": "Random", "item_id": 13697, "amount": 3}
+                    ]
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 91
+                    },
+                    "enemies": [
+                        {
+                            "comment" : "Lindwurm",
+                            "enemy_id": "0x070940",
+                            "level": 84,
+                            "exp": 84000,
+                            "pp": 2,
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true
+                        }
+                   ]
+                }
+            ]
+        }
+    ]
+}

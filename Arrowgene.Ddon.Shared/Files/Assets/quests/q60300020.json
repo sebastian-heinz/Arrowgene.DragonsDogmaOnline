@@ -1,0 +1,95 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "To the Heroic Spirit Sleeping Path: Rathnite District",
+    "quest_id": 60300020,
+    "next_quest": 0,
+    "base_level": 80,
+    "minimum_item_rank": 82,
+    "discoverable": true,
+    "stage_id": {"id": 467},
+    "order_conditions": [
+    ],
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 11000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 2000
+        },
+        {
+            "type": "exp",
+            "amount": 42000
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {"item_id": 18815, "num": 3},
+                {"item_id": 17891, "num": 1}
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 467
+            },
+            "npc_id": "Iruva",
+            "message_id": 629390
+        },
+        {
+            "announce_type": "Accept",
+            "type": "IsStageNo",
+            "stage_id": {
+                "id": 549
+            }
+        },
+        {
+            "type": "TalkToNpc",
+            "checkpoint": true,
+            "announce_type": "Update",
+            "stage_id": {
+                "id": 549
+            },
+            "npc_id": "Pehr1",
+            "message_id": 25812
+        },
+        {
+            "type": "OmInteractEvent",
+            "checkpoint": true,
+            "announce_type": "Update",
+            "quest_type": "WorldManageQuest",
+            "interact_type": "Release",
+            "stage_id": {
+                "id": 550,
+                "group_id": 32,
+                "layer_no": 0
+            }
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 467
+            },
+            "announce_type": "Update",
+            "checkpoint": true,
+            "npc_id": "Iruva",
+            "message_id": 25815
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 3
+            },
+            "announce_type": "Update",
+            "checkpoint": true,
+            "npc_id": "TheWhiteDragon",
+            "message_id": 26211
+        }
+    ]
+}

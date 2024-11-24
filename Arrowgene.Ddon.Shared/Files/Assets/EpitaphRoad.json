@@ -1,0 +1,713 @@
+{
+    "comment": [
+        "This file describe the different Epitaph Road Sections/Paths.",
+        "The systems for 3.0/3.1 is a bit different than the 3.2/3.3 content",
+        "The 3.0 and 3.1 dungeons have generic barriers that are removed by",
+        "spending a small amount of souls. In 3.2 and 3.3, unlocking a new",
+        "section removes the barrier.",
+        "",
+        "Individual trials are described in the epitaph directory"
+    ],
+    "paths": [
+        {
+            "name": "Heroic Spirit Sleeping Path: Rathnite Foothills",
+            "npc_id": "Pehr1",
+            "dungeon_id": 1,
+            "final_trial_id": {"stage_id": {"id": 549, "group_id": 26}, "pos_id": 0},
+            "hub_stage_id": 549,
+            "stage_ids": [550, 551, 553],
+            "soul_item_id": 18656,
+            "reward_buffs": false,
+            "barriers": [
+                {"type": "omid", "name": "Shrine: after 1st trial", "stage_id": 550, "group_id": 50, "pos_id": 0, "item_id": 18656, "amount": 8},
+                {"type": "omid", "name": "Shrine: before 4th trial", "stage_id": 550, "group_id": 49, "pos_id": 1, "item_id": 18656, "amount": 10},
+                {"type": "omid", "name": "Shrine: 1st space", "stage_id": 550, "group_id": 45, "pos_id": 0, "item_id": 18656, "amount": 30},
+                {"type": "omid", "name": "Shrine: 2nd space", "stage_id": 550, "group_id": 46, "pos_id": 0, "item_id": 18656, "amount": 30},
+                {"type": "omid", "name": "Shrine: 3rd space", "stage_id": 550, "group_id": 47, "pos_id": 0, "item_id": 18656, "amount": 30},
+                {"type": "omid", "name": "Shrine: 4th space", "stage_id": 550, "group_id": 48, "pos_id": 0, "item_id": 18656, "amount": 30},
+                {"type": "npcid", "name": "Shrine: Cave", "npc_id": "Anita1", "stage_id": 550, "group_id": 31, "pos_id": 1, "item_id": 18656, "amount": 99},
+
+                {"type": "omid", "name": "Cave: before 3rd trial", "stage_id": 551, "group_id": 43, "pos_id": 0, "item_id": 18656, "amount": 30},
+                {"type": "omid", "name": "Cave: 1st space", "stage_id": 551, "group_id": 52, "pos_id": 0, "item_id": 18656, "amount": 50},
+                {"type": "omid", "name": "Cave: 2nd space", "stage_id": 551, "group_id": 62, "pos_id": 0, "item_id": 18656, "amount": 50},
+                {"type": "omid", "name": "Cave: 3rd space", "stage_id": 551, "group_id": 82, "pos_id": 0, "item_id": 18656, "amount": 50},
+                {"type": "omid", "name": "Cave: 4th space", "stage_id": 551, "group_id": 72, "pos_id": 0, "item_id": 18656, "amount": 50},
+                {"type": "npcid", "name": "Cave: Cave Depth", "npc_id": "Isel1", "stage_id": 551, "group_id": 36, "pos_id": 0, "item_id": 18656, "amount": 198},
+
+                {"type": "omid", "name": "Cave Depth: before 2nd trial", "stage_id": 551, "group_id": 93, "pos_id": 0, "item_id": 18656, "amount": 100},
+                {"type": "omid", "name": "Cave Depth: 1st space", "stage_id": 551, "group_id": 102, "pos_id": 0, "item_id": 18656, "amount": 150},
+                {"type": "omid", "name": "Cave Depth: 2nd space", "stage_id": 551, "group_id": 112, "pos_id": 0, "item_id": 18656, "amount": 150},
+                {"type": "omid", "name": "Cave Depth: 3rd space", "stage_id": 551, "group_id": 122, "pos_id": 0, "item_id": 18656, "amount": 150},
+                {"type": "omid", "name": "Cave Depth: 4th space", "stage_id": 551, "group_id": 132, "pos_id": 0, "item_id": 18656, "amount": 150},
+                {"type": "npcid", "name": "Waterway", "npc_id": "Damad1", "stage_id": 553, "group_id": 31, "pos_id": 0, "item_id": 18656, "amount": 297},
+
+                {"type": "omid", "name": "Waterway: before 3rd trial", "stage_id": 553, "group_id": 39, "pos_id": 0, "item_id": 18656, "amount": 200},
+                {"type": "omid", "name": "Waterway: 1st space", "stage_id": 553, "group_id": 41, "pos_id": 0, "item_id": 18656, "amount": 300},
+                {"type": "omid", "name": "Waterway: 2nd space", "stage_id": 553, "group_id": 42, "pos_id": 0, "item_id": 18656, "amount": 300},
+                {"type": "omid", "name": "Waterway: 3rd space", "stage_id": 553, "group_id": 43, "pos_id": 0, "item_id": 18656, "amount": 300},
+                {"type": "omid", "name": "Waterway: 4th space", "stage_id": 553, "group_id": 44, "pos_id": 0, "item_id": 18656, "amount": 300}
+            ],
+            "statues": [
+                {"stage_id": 550, "group_id": 32, "pos_id": 0},
+                {"stage_id": 551, "group_id": 38, "pos_id": 0},
+                {"stage_id": 551, "group_id": 88, "pos_id": 0},
+                {"stage_id": 553, "group_id": 33, "pos_id": 0}
+            ],
+            "doors": [
+                {
+                    "comment": "Shrine: Main Road",
+                    "stage_id": {"id": 550, "group_id": 54}, "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {"id": 550, "group_id": 40},
+                        "amount": 6
+                    }
+                },
+                {
+                    "comment": "Shrine: 1st Space",
+                    "stage_id": {"id": 550, "group_id": 56}, "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {"id": 550, "group_id": 42},
+                        "amount": 5
+                    }
+                },
+                {
+                    "comment": "Shrine: 2nd Space",
+                    "stage_id": {"id": 550, "group_id": 57}, "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {"id": 550, "group_id": 43},
+                        "amount": 4
+                    }
+                },
+                {
+                    "comment": "Shrine: 3rd Space",
+                    "stage_id": {"id": 550, "group_id": 58}, "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {"id": 550, "group_id": 44},
+                        "amount": 5
+                    }
+                },
+                {
+                    "comment": "Shrine: 4th Space",
+                    "stage_id": {"id": 550, "group_id": 55}, "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {"id": 550, "group_id": 41},
+                        "amount": 7
+                    }
+                },
+                {
+                    "comment": "Cave: Main Road",
+                    "stage_id": {"id": 551, "group_id": 39}, "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {"id": 551, "group_id": 40},
+                        "amount": 8
+                    }
+                },
+                {
+                    "comment": "Cave: 1st Space",
+                    "stage_id": {"id": 551, "group_id": 50}, "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {"id": 551, "group_id": 51},
+                        "amount": 15
+                    }
+                },
+                {
+                    "comment": "Cave: 2nd Space",
+                    "stage_id": {"id": 551, "group_id": 60}, "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {"id": 551, "group_id": 61},
+                        "amount": 15
+                    }
+                },
+                {
+                    "comment": "Cave: 3rd Space",
+                    "stage_id": {"id": 551, "group_id": 80}, "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {"id": 551, "group_id": 81},
+                        "amount": 8
+                    }
+                },
+                {
+                    "comment": "Cave: 4th Space",
+                    "stage_id": {"id": 551, "group_id": 70}, "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {"id": 550, "group_id": 71},
+                        "amount": 14
+                    }
+                },
+                {
+                    "comment": "Cave Depth: Main Road",
+                    "stage_id": {"id": 551, "group_id": 89}, "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {"id": 551, "group_id": 90},
+                        "amount": 17
+                    }
+                },
+                {
+                    "comment": "Cave Depth: 1st Space",
+                    "stage_id": {"id": 551, "group_id": 100}, "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {"id": 551, "group_id": 101},
+                        "amount": 9
+                    }
+                },
+                {
+                    "comment": "Cave Depth: 2nd Space",
+                    "stage_id": {"id": 551, "group_id": 110}, "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {"id": 551, "group_id": 111},
+                        "amount": 19
+                    }
+                },
+                {
+                    "comment": "Cave Depth: 3rd Space",
+                    "stage_id": {"id": 551, "group_id": 120}, "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {"id": 551, "group_id": 121},
+                        "amount": 28
+                    }
+                },
+                {
+                    "comment": "Cave Depth: 4th Space",
+                    "stage_id": {"id": 551, "group_id": 130}, "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {"id": 551, "group_id": 131},
+                        "amount": 23
+                    }
+                },
+                {
+                    "comment": "Waterway",
+                    "stage_id": {"id": 553, "group_id": 47}, "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {"id": 553, "group_id": 48},
+                        "amount": 9
+                    }
+                },
+                {
+                    "comment": "Waterway",
+                    "stage_id": {"id": 553, "group_id": 47}, "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {"id": 553, "group_id": 48},
+                        "amount": 9
+                    }
+                },
+                {
+                    "comment": "Waterway",
+                    "stage_id": {"id": 553, "group_id": 55}, "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {"id": 553, "group_id": 56},
+                        "amount": 11
+                    }
+                },
+                {
+                    "comment": "Waterway",
+                    "stage_id": {"id": 553, "group_id": 65}, "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {"id": 553, "group_id": 66},
+                        "amount": 9
+                    }
+                },
+                {
+                    "comment": "Waterway",
+                    "stage_id": {"id": 553, "group_id": 75}, "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {"id": 553, "group_id": 76},
+                        "amount": 13
+                    }
+                },
+                {
+                    "comment": "Waterway",
+                    "stage_id": {"id": 553, "group_id": 85}, "pos_id": 0,
+                    "gathering_points": {
+                        "stage_id": {"id": 553, "group_id": 86},
+                        "amount": 9
+                    }
+                }
+            ],
+            "chests": [
+                {
+                    "comment": "Gold Chest (Shrine Main Road)",
+                    "type": "single",
+                    "stage_id": {"id": 550, "group_id": 221}, "pos_id": 0, "drop_tables": [0]
+                },
+                {
+                    "comment": "Gold Chest (Shrine)",
+                    "type": "single",
+                    "stage_id": {"id": 550, "group_id": 223}, "pos_id": 0, "drop_tables": [0]
+                },
+                {
+                    "comment": "Gold Chest (Shrine)",
+                    "type": "single",
+                    "stage_id": {"id": 550, "group_id": 225}, "pos_id": 0, "drop_tables": [0]
+                },
+                {
+                    "comment": "Gold Chest (Cave Main Road)",
+                    "type": "single",
+                    "stage_id": {"id": 551, "group_id": 227}, "pos_id": 0, "drop_tables": [1]
+                },
+                {
+                    "comment": "Gold Chest (Cave 1st Space)",
+                    "type": "single",
+                    "stage_id": {"id": 551, "group_id": 225}, "pos_id": 0, "drop_tables": [1]
+                },
+                {
+                    "comment": "Gold Chest (Cave 4th Space)",
+                    "type": "single",
+                    "stage_id": {"id": 551, "group_id": 226}, "pos_id": 0, "drop_tables": [1]
+                },
+                {
+                    "comment": "Gold Chest (Cave Depth Main Road)",
+                    "type": "single",
+                    "stage_id": {"id": 551, "group_id": 232}, "pos_id": 0, "drop_tables": [2, 3, 4]
+                },
+                {
+                    "comment": "Gold Chest (Cave Depth 1st Space)",
+                    "type": "single",
+                    "stage_id": {"id": 551, "group_id": 230}, "pos_id": 0, "drop_tables": [2, 3, 4]
+                },
+                {
+                    "comment": "Gold Chest (Cave Depth 4th Space)",
+                    "type": "single",
+                    "stage_id": {"id": 551, "group_id": 231}, "pos_id": 0, "drop_tables": [2, 3, 4]
+                },
+                {
+                    "comment": "Gold Chest (Waterway Main Road)",
+                    "type": "single",
+                    "stage_id": {"id": 553, "group_id": 213}, "pos_id": 0, "drop_tables": [2, 3, 4]
+                },
+                {
+                    "comment": "Gold Chest (Waterway 1st Space)",
+                    "type": "single",
+                    "stage_id": {"id": 553, "group_id": 214}, "pos_id": 0, "drop_tables": [2, 3, 4]
+                },
+                {
+                    "comment": "Gold Chest (Waterway 4th Space)",
+                    "type": "single",
+                    "stage_id": {"id": 553, "group_id": 215}, "pos_id": 0, "drop_tables": [2, 3, 4]
+                },
+                {
+                    "comment": "Gold Chest (Final Trial)",
+                    "type": "single",
+                    "stage_id": {"id": 553, "group_id": 209}, "pos_id": 0, "drop_tables": [0, 1, 2, 3, 4, 5]
+                },
+                {
+                    "comment": "Bronze Chest (Shrine)",
+                    "type": "range",
+                    "amount": 12,
+                    "stage_id": {"id": 550, "group_id": 224}, "drop_tables": [10]
+                },
+                {
+                    "comment": "Bronze Chest (Cave)",
+                    "type": "range",
+                    "amount": 12,
+                    "stage_id": {"id": 551, "group_id": 224}, "drop_tables": [11]
+                },
+                {
+                    "comment": "Bronze Chest (Cave Depth)",
+                    "type": "range",
+                    "amount": 10,
+                    "stage_id": {"id": 551, "group_id": 229}, "drop_tables": [12]
+                },
+                {
+                    "comment": "Bronze Chest (Cave Depth)",
+                    "type": "range",
+                    "amount": 12,
+                    "stage_id": {"id": 553, "group_id": 212}, "drop_tables": [13]
+                }
+            ],
+            "dungeon_trash": [
+                {
+                    "comment": "Chest and Enemy Loot in Shrine",
+                    "stage_id": 550,
+                    "items": [
+                        {"type": "random", "item_id": 18656, "amount": 3, "chance": 0.50}
+                    ]
+                },
+                {
+                    "comment": "Chest and Enemy Loot in Cave",
+                    "stage_id": 551,
+                    "items": [
+                        {"type": "random", "item_id": 18656, "amount": 5, "chance": 0.50}
+                    ]
+                },
+                {
+                    "comment": "Chest and Enemy Loot in Waterway",
+                    "stage_id": 553,
+                    "items": [
+                        {"type": "random", "item_id": 18656, "amount": 8, "chance": 0.50}
+                    ]
+                }
+            ],
+            "drop_tables": [
+                {
+                    "comment": "Section 1: Gold Chest",
+                    "id": 0,
+                    "items": [
+                        {
+                            "type": "pool",
+                            "rolls": 1,
+                            "items": [
+                                {"type": "fixed", "item_id": 17816, "amount": 1, "comment": "Biyabaan Mail 0*"},
+                                {"type": "fixed", "item_id": 17817, "amount": 1, "comment": "Biyabaan Mail 1*"},
+                                {"type": "fixed", "item_id": 17818, "amount": 1, "comment": "Biyabaan Mail 2*"},
+                                {"type": "fixed", "item_id": 17819, "amount": 1, "comment": "Biyabaan Mail 3*"},
+                                {"type": "fixed", "item_id": 17820, "amount": 1, "comment": "Biyabaan Mail 4*"},
+                                {"type": "fixed", "item_id": 17831, "amount": 1, "comment": "Biyabaan Tights 0*"},
+                                {"type": "fixed", "item_id": 17832, "amount": 1, "comment": "Biyabaan Tights 1*"},
+                                {"type": "fixed", "item_id": 17833, "amount": 1, "comment": "Biyabaan Tights 2*"},
+                                {"type": "fixed", "item_id": 17834, "amount": 1, "comment": "Biyabaan Tights 3*"},
+                                {"type": "fixed", "item_id": 17831, "amount": 1, "comment": "Biyabaan Tights 4*"},
+                                {"type": "fixed", "item_id": 17846, "amount": 1, "comment": "Albasiyyah 0*"},
+                                {"type": "fixed", "item_id": 17847, "amount": 1, "comment": "Albasiyyah 1*"},
+                                {"type": "fixed", "item_id": 17848, "amount": 1, "comment": "Albasiyyah 2*"},
+                                {"type": "fixed", "item_id": 17849, "amount": 1, "comment": "Albasiyyah 3*"},
+                                {"type": "fixed", "item_id": 17850, "amount": 1, "comment": "Albasiyyah 4*"},
+                                {"type": "fixed", "item_id": 17821, "amount": 1, "comment": "Acrean Tunic 0*"},
+                                {"type": "fixed", "item_id": 17821, "amount": 1, "comment": "Acrean Tunic 0*"},
+                                {"type": "fixed", "item_id": 17821, "amount": 1, "comment": "Acrean Tunic 0*"},
+                                {"type": "fixed", "item_id": 17821, "amount": 1, "comment": "Acrean Tunic 0*"},
+                                {"type": "fixed", "item_id": 17825, "amount": 1, "comment": "Acrean Tunic 4*"}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "comment": "Section 2: Gold Chest",
+                    "id": 1,
+                    "items": [
+                        {
+                            "type": "pool",
+                            "rolls": 1,
+                            "items": [
+                                {"type": "fixed", "item_id": 17816, "amount": 1, "comment": "Biyabaan Mail 0*"},
+                                {"type": "fixed", "item_id": 17817, "amount": 1, "comment": "Biyabaan Mail 1*"},
+                                {"type": "fixed", "item_id": 17818, "amount": 1, "comment": "Biyabaan Mail 2*"},
+                                {"type": "fixed", "item_id": 17819, "amount": 1, "comment": "Biyabaan Mail 3*"},
+                                {"type": "fixed", "item_id": 17820, "amount": 1, "comment": "Biyabaan Mail 4*"},
+                                {"type": "fixed", "item_id": 17831, "amount": 1, "comment": "Biyabaan Tights 0*"},
+                                {"type": "fixed", "item_id": 17832, "amount": 1, "comment": "Biyabaan Tights 1*"},
+                                {"type": "fixed", "item_id": 17833, "amount": 1, "comment": "Biyabaan Tights 2*"},
+                                {"type": "fixed", "item_id": 17834, "amount": 1, "comment": "Biyabaan Tights 3*"},
+                                {"type": "fixed", "item_id": 17831, "amount": 1, "comment": "Biyabaan Tights 4*"},
+                                {"type": "fixed", "item_id": 17846, "amount": 1, "comment": "Albasiyyah 0*"},
+                                {"type": "fixed", "item_id": 17847, "amount": 1, "comment": "Albasiyyah 1*"},
+                                {"type": "fixed", "item_id": 17848, "amount": 1, "comment": "Albasiyyah 2*"},
+                                {"type": "fixed", "item_id": 17849, "amount": 1, "comment": "Albasiyyah 3*"},
+                                {"type": "fixed", "item_id": 17850, "amount": 1, "comment": "Albasiyyah 4*"},
+                                {"type": "fixed", "item_id": 17836, "amount": 1, "comment": "Acrean Hose 0*"},
+                                {"type": "fixed", "item_id": 17836, "amount": 1, "comment": "Acrean Hose 0*"},
+                                {"type": "fixed", "item_id": 17836, "amount": 1, "comment": "Acrean Hose 0*"},
+                                {"type": "fixed", "item_id": 17836, "amount": 1, "comment": "Acrean Hose 0*"},
+                                {"type": "fixed", "item_id": 17840, "amount": 1, "comment": "Acrean Hose 4*"}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "comment": "Section 3: Gold Chest",
+                    "id": 2,
+                    "items": [
+                        {
+                            "type": "pool",
+                            "rolls": 1,
+                            "items": [
+                                {"type": "fixed", "item_id": 17816, "amount": 1, "comment": "Biyabaan Mail 0*"},
+                                {"type": "fixed", "item_id": 17817, "amount": 1, "comment": "Biyabaan Mail 1*"},
+                                {"type": "fixed", "item_id": 17818, "amount": 1, "comment": "Biyabaan Mail 2*"},
+                                {"type": "fixed", "item_id": 17819, "amount": 1, "comment": "Biyabaan Mail 3*"},
+                                {"type": "fixed", "item_id": 17820, "amount": 1, "comment": "Biyabaan Mail 4*"},
+                                {"type": "fixed", "item_id": 17831, "amount": 1, "comment": "Biyabaan Tights 0*"},
+                                {"type": "fixed", "item_id": 17832, "amount": 1, "comment": "Biyabaan Tights 1*"},
+                                {"type": "fixed", "item_id": 17833, "amount": 1, "comment": "Biyabaan Tights 2*"},
+                                {"type": "fixed", "item_id": 17834, "amount": 1, "comment": "Biyabaan Tights 3*"},
+                                {"type": "fixed", "item_id": 17831, "amount": 1, "comment": "Biyabaan Tights 4*"},
+                                {"type": "fixed", "item_id": 17846, "amount": 1, "comment": "Albasiyyah 0*"},
+                                {"type": "fixed", "item_id": 17847, "amount": 1, "comment": "Albasiyyah 1*"},
+                                {"type": "fixed", "item_id": 17848, "amount": 1, "comment": "Albasiyyah 2*"},
+                                {"type": "fixed", "item_id": 17849, "amount": 1, "comment": "Albasiyyah 3*"},
+                                {"type": "fixed", "item_id": 17850, "amount": 1, "comment": "Albasiyyah 4*"},
+                                {"type": "fixed", "item_id": 17851, "amount": 1, "comment": "Acrean Cloak 0*"},
+                                {"type": "fixed", "item_id": 17851, "amount": 1, "comment": "Acrean Cloak 0*"},
+                                {"type": "fixed", "item_id": 17851, "amount": 1, "comment": "Acrean Cloak 0*"},
+                                {"type": "fixed", "item_id": 17851, "amount": 1, "comment": "Acrean Cloak 0*"},
+                                {"type": "fixed", "item_id": 17855, "amount": 1, "comment": "Acrean Cloak 4*"}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "comment": "IR90 Weapons (NO HS?)",
+                    "id": 3,
+                    "items": [
+                        {
+                            "type": "pool",
+                            "rolls": 1,
+                            "items": [
+                                {"type": "fixed", "item_id": 17401, "amount": 1, "comment": "Shamshir-e Morad"},
+                                {"type": "fixed", "item_id": 17491, "amount": 1, "comment": "Rakhshan"},
+                                {"type": "fixed", "item_id": 17536, "amount": 1, "comment": "Nuri-e Sepehr"},
+                                {"type": "fixed", "item_id": 17446, "amount": 1, "comment": "Dival-e-Hami"},
+                                {"type": "fixed", "item_id": 17466, "amount": 1, "comment": "Farid"},
+                                {"type": "fixed", "item_id": 17551, "amount": 1, "comment": "Mahasti"},
+                                {"type": "fixed", "item_id": 17521, "amount": 1, "comment": "Parto"},
+                                {"type": "fixed", "item_id": 17431, "amount": 1, "comment": "Yekta-Kavi"},
+                                {"type": "fixed", "item_id": 17506, "amount": 1, "comment": "Hushyar"},
+                                {"type": "fixed", "item_id": 17566, "amount": 1, "comment": "Arsalan Milad"}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "comment": "IR90 Offhand",
+                    "id": 4,
+                    "items": [
+                        {
+                            "type": "pool",
+                            "rolls": 1,
+                            "items": [
+                                {"type": "fixed", "item_id": 17416, "amount": 1, "comment": "Mehrdad"},
+                                {"type": "fixed", "item_id": 17461, "amount": 1, "comment": "Roshanak"},
+                                {"type": "fixed", "item_id": 17881, "amount": 3, "comment": "Bone Pearl"},
+                                {"type": "fixed", "item_id": 17881, "amount": 3, "comment": "Bone Pearl"},
+                                {"type": "fixed", "item_id": 17881, "amount": 3, "comment": "Bone Pearl"},
+                                {"type": "fixed", "item_id": 17881, "amount": 3, "comment": "Bone Pearl"},
+                                {"type": "fixed", "item_id": 18656, "amount": 40, "comment": "Guardians Soul"},
+                                {"type": "fixed", "item_id": 18656, "amount": 40, "comment": "Guardians Soul"},
+                                {"type": "fixed", "item_id": 18656, "amount": 40, "comment": "Guardians Soul"},
+                                {"type": "fixed", "item_id": 18656, "amount": 40, "comment": "Guardians Soul"}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "comment": "Final Trial",
+                    "id": 5,
+                    "items": [
+                        {
+                            "type": "pool",
+                            "rolls": 1,
+                            "items": [
+                                {"type": "fixed", "item_id": 19236, "amount": 1, "comment": "Helm of the First King"},
+                                {"type": "fixed", "item_id": 19246, "amount": 1, "comment": "Gauntlets of the First King"}
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "comment": "Shrine Bronze Chest",
+                    "id": 10,
+                    "items": [
+                        {"type": "fixed", "item_id": 18656, "amount": 18}
+                    ]
+                },
+                {
+                    "comment": "Cave Bronze Chest",
+                    "id": 11,
+                    "items": [
+                        {"type": "fixed", "item_id": 18656, "amount": 23}
+                    ]
+                },
+                {
+                    "comment": "Cave Depth Bronze Chest",
+                    "id": 12,
+                    "items": [
+                        {"type": "fixed", "item_id": 18656, "amount": 29}
+                    ]
+                },
+                {
+                    "comment": "Waterway Bronze Chest",
+                    "id": 13,
+                    "items": [
+                        {"type": "fixed", "item_id": 18656, "amount": 39}
+                    ]
+                }
+            ],
+            "sections": [
+                {
+                    "name": "Rathnite Foothills - Section 1: Shrine",
+                    "stage_id": 550,
+                    "start_pos": 0,
+                    "unlock_cost": [],
+                    "barrier_oms": [],
+                    "barrier_dependency": [],
+                    "unlock_dependency": []
+                },
+                {
+                    "name": "Rathnite Foothills - Section 2: Cave",
+                    "stage_id": 551,
+                    "start_pos": 0,
+                    "unlock_cost": [],
+                    "barrier_oms": [],
+                    "barrier_dependency": [
+                        {
+                            "stage_id": {
+                                "id": 550,
+                                "group_id": 31
+                            },
+                            "pos_id": 1
+                        }
+                    ],
+                    "unlock_dependency": [2105955]
+                },
+                {
+                    "name": "Rathnite Foothills - Section 3: Cave Depth",
+                    "stage_id": 551,
+                    "start_pos": 10,
+                    "unlock_cost": [],
+                    "barrier_oms": [],
+                    "barrier_dependency": [
+                        {
+                            "stage_id": {
+                                "id": 551,
+                                "group_id": 36
+                            },
+                            "pos_id": 0
+                        }
+                    ],
+                    "unlock_dependency": [2499187]
+                },
+                {
+                    "name": "Rathnite Foothills - Section 4: Waterway",
+                    "stage_id": 553,
+                    "start_pos": 0,
+                    "unlock_cost": [],
+                    "barrier_oms": [],
+                    "barrier_dependency": [
+                        {
+                            "stage_id": {
+                                "id": 553,
+                                "group_id": 31
+                            },
+                            "pos_id": 0
+                        }
+                    ],
+                    "unlock_dependency": [5775987]
+                }
+            ]
+        },
+        {
+            "name": "Memory of Megadosys",
+            "npc_id": "Morgan",
+            "dungeon_id": 3,
+            "final_trial_id": {"stage_id": {"id": 558, "group_id": 26}, "pos_id": 0},
+            "hub_stage_id": 1149,
+            "stage_ids": [559],
+            "soul_item_id": 18659,
+            "reward_buffs": true,
+            "barriers": [],
+            "statues": [],
+            "doors": [],
+            "chests": [],
+            "drop_tables": [],
+            "dungeon_trash": [],
+            "sections": [
+                {
+                    "name": "Memory of Megadosys - Section 1: Castle Interior (Starting Point)",
+                    "stage_id": 559,
+                    "start_pos": 0,
+                    "unlock_cost": [],
+                    "barrier_oms": [],
+                    "barrier_dependency": [],
+                    "unlock_dependency": []
+                },
+                {
+                    "name": "Memory of Megadosys - Section 2: Forest",
+                    "stage_id": 559,
+                    "start_pos": 3,
+                    "unlock_cost": [
+                        {"item_id": 18659, "amount": 99}
+                    ],
+                    "barrier_oms": [107],
+                    "barrier_dependency": [],
+                    "unlock_dependency": []
+                },
+                {
+                    "name": "Memory of Megadosys - Section 3: Road",
+                    "stage_id": 559,
+                    "start_pos": 4,
+                    "unlock_cost": [
+                        {"item_id": 18659, "amount": 120}
+                    ],
+                    "barrier_oms": [117],
+                    "barrier_dependency": [],
+                    "unlock_dependency": []
+                },
+                {
+                    "name": "Memory of Megadosys - Section 4: Mountain Path",
+                    "stage_id": 559,
+                    "start_pos": 5,
+                    "unlock_cost": [
+                        {"item_id": 18659, "amount": 297}
+                    ],
+                    "barrier_oms": [127],
+                    "barrier_dependency": [],
+                    "unlock_dependency": []
+                }
+            ]
+        }
+    ],
+    "buffs": [
+        {"type": "Stats", "buff_id": 1, "buff_effect": 1, "increment": 1, "name": "Hp Up"},
+        {"type": "Stats", "buff_id": 2, "buff_effect": 5, "increment": 1, "name": "Stamina Up"},
+        {"type": "Stats", "buff_id": 3, "buff_effect": 9, "increment": 1, "name": "Lightweight"},
+        {"type": "Stats", "buff_id": 4, "buff_effect": 13, "increment": 1, "name": "Attack Power Up"},
+        {"type": "Stats", "buff_id": 5, "buff_effect": 17, "increment": 1, "name": "Physical Defense Up"},
+        {"type": "Stats", "buff_id": 6, "buff_effect": 21, "increment": 1, "name": "Magick Defense Up"},
+        {"type": "Stats", "buff_id": 7, "buff_effect": 25, "increment": 1, "name": "Blow Power Up"},
+        {"type": "Stats", "buff_id": 8, "buff_effect": 29, "increment": 1, "name": "Chance Attack Up"},
+        {"type": "Stats", "buff_id": 9, "buff_effect": 33, "increment": 1, "name": "Exhaust Attack Up"},
+        {"type": "Stats", "buff_id": 10, "buff_effect": 37, "increment": 1, "name": "Stun Attack Up"},
+        {"type": "Stats", "buff_id": 11, "buff_effect": 41, "increment": 1, "name": "Endurance Up"},
+        {"type": "Stats", "buff_id": 12, "buff_effect": 45, "increment": 1, "name": "Healing Power Up"},
+        {"type": "Stats", "buff_id": 13, "buff_effect": 49, "increment": 1, "name": "Fire Resist Up"},
+        {"type": "Stats", "buff_id": 14, "buff_effect": 53, "increment": 1, "name": "Ice Resist Up"},
+        {"type": "Stats", "buff_id": 15, "buff_effect": 57, "increment": 1, "name": "Thunder Resist Up"},
+        {"type": "Stats", "buff_id": 16, "buff_effect": 61, "increment": 1, "name": "Holy Resist Up"},
+        {"type": "Stats", "buff_id": 17, "buff_effect": 65, "increment": 1, "name": "Dark Resist Up"},
+
+        {"type": "StatusResist", "buff_id": 34, "buff_effect": 69, "increment": 4, "name": "Status Resist [Poison]"},
+        {"type": "StatusResist", "buff_id": 35, "buff_effect": 70, "increment": 4, "name": "Status Resist [Torpor]"},
+        {"type": "StatusResist", "buff_id": 36, "buff_effect": 71, "increment": 4, "name": "Status Resist [Sleep]"},
+        {"type": "StatusResist", "buff_id": 37, "buff_effect": 72, "increment": 4, "name": "Status Resist [Stun]"},
+        {"type": "StatusResist", "buff_id": 38, "buff_effect": 73, "increment": 4, "name": "Status Resist [Drenched]"},
+        {"type": "StatusResist", "buff_id": 39, "buff_effect": 74, "increment": 4, "name": "Status Resist [Tarred]"},
+        {"type": "StatusResist", "buff_id": 40, "buff_effect": 75, "increment": 4, "name": "Status Resist [Skill Seal]"},
+        {"type": "StatusResist", "buff_id": 41, "buff_effect": 76, "increment": 4, "name": "Status Resist [Cursed]"},
+        {"type": "StatusResist", "buff_id": 42, "buff_effect": 77, "increment": 4, "name": "Status Resist [Softening]"},
+        {"type": "StatusResist", "buff_id": 43, "buff_effect": 78, "increment": 4, "name": "Status Resist [Petrification]"},
+        {"type": "StatusResist", "buff_id": 44, "buff_effect": 79, "increment": 4, "name": "Status Resist [Golden]"},
+        {"type": "StatusResist", "buff_id": 47, "buff_effect": 82, "increment": 4, "name": "Status Resist [Caught Fire]"},
+        {"type": "StatusResist", "buff_id": 48, "buff_effect": 83, "increment": 4, "name": "Status Resist [Freeze]"},
+        {"type": "StatusResist", "buff_id": 49, "buff_effect": 84, "increment": 4, "name": "Status Resist [Shock]"},
+        {"type": "StatusResist", "buff_id": 50, "buff_effect": 85, "increment": 4, "name": "Status Resist [Holy]"},
+        {"type": "StatusResist", "buff_id": 51, "buff_effect": 86, "increment": 4, "name": "Status Resist [Blinded]"},
+
+        {"type": "StatusAttack", "buff_id": 53, "buff_effect": 88, "increment": 4, "name": "Status Attack [Fire Defense Down]"},
+        {"type": "StatusAttack", "buff_id": 54, "buff_effect": 89, "increment": 4, "name": "Status Attack [Ice Defense Down]"},
+        {"type": "StatusAttack", "buff_id": 55, "buff_effect": 90, "increment": 4, "name": "Status Attack [Thunder Defense Down]"},
+        {"type": "StatusAttack", "buff_id": 56, "buff_effect": 91, "increment": 4, "name": "Status Attack [Holy Defense Down]"},
+        {"type": "StatusAttack", "buff_id": 57, "buff_effect": 92, "increment": 4, "name": "Status Attack [Dark Defense Down]"},
+        {"type": "StatusAttack", "buff_id": 58, "buff_effect": 93, "increment": 4, "name": "Status Attack [Physical Attack Down]"},
+        {"type": "StatusAttack", "buff_id": 59, "buff_effect": 94, "increment": 4, "name": "Status Attack [Physical Defense Down]"},
+        {"type": "StatusAttack", "buff_id": 60, "buff_effect": 95, "increment": 4, "name": "Status Attack [Magick Attack Down]"},
+        {"type": "StatusAttack", "buff_id": 61, "buff_effect": 96, "increment": 4, "name": "Status Attack [Magick Defense Down]"},
+        {"type": "StatusAttack", "buff_id": 18, "buff_effect": 97, "increment": 4, "name": "Status Attack [Poison]"},
+        {"type": "StatusAttack", "buff_id": 19, "buff_effect": 98, "increment": 4, "name": "Status Attack [Torpor]"},
+        {"type": "StatusAttack", "buff_id": 20, "buff_effect": 99, "increment": 1, "name": "Status Attack [Sleep]"},
+        {"type": "StatusAttack", "buff_id": 21, "buff_effect": 100, "increment": 1, "name": "Status Attack [Stun]"},
+        {"type": "StatusAttack", "buff_id": 22, "buff_effect": 101, "increment": 1, "name": "Status Attack [Drenched]"},
+        {"type": "StatusAttack", "buff_id": 23, "buff_effect": 102, "increment": 1, "name": "Status Attack [Tarred]"},
+        {"type": "StatusAttack", "buff_id": 24, "buff_effect": 103, "increment": 4, "name": "Status Attack [Skill Seal]"},
+        {"type": "StatusAttack", "buff_id": 25, "buff_effect": 104, "increment": 4, "name": "Status Attack [Cursed]"},
+        {"type": "StatusAttack", "buff_id": 26, "buff_effect": 105, "increment": 4, "name": "Status Attack [Softening]"},
+        {"type": "StatusAttack", "buff_id": 27, "buff_effect": 106, "increment": 1, "name": "Status Attack [Petrification]"},
+        {"type": "StatusAttack", "buff_id": 28, "buff_effect": 107, "increment": 1, "name": "Status Attack [Golden]"},
+
+        {"type": "Rare", "buff_id": 63, "buff_effect": 122, "increment": 1, "name": "All Status Resist Up"},
+        {"type": "Rare", "buff_id": 64, "buff_effect": 123, "increment": 1, "name": "Enemy Soul Drop Increase"},
+        {"type": "Rare", "buff_id": 65, "buff_effect": 127, "increment": 1, "name": "Increase Enemy Gold Drop"},
+        {"type": "Rare", "buff_id": 66, "buff_effect": 131, "increment": 1, "name": "Trial Clear Reward Increase"},
+        {"type": "Rare", "buff_id": 70, "buff_effect": 141, "increment": 1, "name": "Increase Enemy Rift Drop"},
+        {"type": "Rare", "buff_id": 71, "buff_effect": 142, "increment": 1, "name": "Increase Enemy BO Drop"},
+        {"type": "Rare", "buff_id": 79, "buff_effect": 177, "increment": 1, "name": "Status Attack Up"}
+    ]
+}

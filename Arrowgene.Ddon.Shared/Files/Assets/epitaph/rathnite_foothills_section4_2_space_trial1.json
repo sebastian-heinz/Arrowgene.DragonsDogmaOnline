@@ -1,0 +1,120 @@
+{
+    "comment": "Heroic Spirit Sleeping Path: Rathnite Foothills - Section 4: 2nd Space Trial 1",
+    "stage_id": {
+        "id": 553,
+        "group_id": 45
+    },
+    "pos_id": 5,
+    "unlock_cost": [],
+    "unlocks": [],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
+                {"type": "CannotDieMoreThanOnce", "priority": "Secondary"},
+                {"type": "CompleteConditionsWithinTimeLimit", "priority": "Secondary", "Param1": 120}
+            ],
+            "cost": [],
+            "item_rewards": [
+                {"item_id": 18656, "amount": 80},
+                {"item_id": 18742, "amount": 10}
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 553,
+                        "group_id": 44
+                    },
+                    "enemies": [
+                        {
+                            "comment" : "Eliminator",
+                            "enemy_id": "0x010508",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Eliminator",
+                            "enemy_id": "0x010508",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Eliminator",
+                            "enemy_id": "0x010508",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Eliminator",
+                            "enemy_id": "0x010508",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Eliminator Slay",
+                            "enemy_id": "0x010530",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Eliminator Slay",
+                            "enemy_id": "0x010530",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        }
+                  ]
+                }
+            ]
+        },
+        {
+            "trial_name": "Trial of the Souls",
+            "constraints": [
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
+                {"type": "CannotDieMoreThanOnce", "priority": "Secondary"},
+                {"type": "CompleteConditionsWithinTimeLimit", "priority": "Secondary", "Param1": 180}
+            ],
+            "cost": [
+                {"item_id": 18656, "amount": 40}
+            ],
+            "item_rewards": [
+                {"item_id": 18742, "amount": 20},
+                {
+                    "type": "pool", "rolls": 1,
+                    "items": [
+                        {"type": "Random", "item_id": 9270, "amount": 3},
+                        {"type": "Random", "item_id": 9317, "amount": 3},
+                        {"type": "Random", "item_id": 13685, "amount": 3},
+                        {"type": "Random", "item_id": 13701, "amount": 3}
+                    ]
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 553,
+                        "group_id": 44
+                    },
+                    "starting_index": 6,
+                    "enemies": [
+                        {
+                            "comment" : "Frost Machina",
+                            "enemy_id": "0x015851",
+                            "level": 85,
+                            "exp": 85000,
+                            "pp": 3,
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true
+                        }
+                   ]
+                }
+            ]
+        }
+    ]
+}
