@@ -51,6 +51,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 _Server.JobManager.UnlockSecretAbility(client, client.Character, (SecretAbility) _Server.ItemManager.GetAbilityId(item.ItemId));
             }
 
+            if (_Server.EpitaphRoadManager.TrialInProgress(client.Party))
+            {
+                _Server.EpitaphRoadManager.EvaluateItemUsed(client.Party, item.ItemId);
+            }
+
             CDataItemUpdateResult ntcData0 = new CDataItemUpdateResult();
             ntcData0.ItemList.ItemUId = item.UId;
             ntcData0.ItemList.ItemId = item.ItemId;

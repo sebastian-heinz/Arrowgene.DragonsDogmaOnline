@@ -72,5 +72,10 @@ namespace Arrowgene.Ddon.Shared
         {
             return Bitfield.Value(msb, lsb, value);
         }
+
+        public ulong Width()
+        {
+            return msb - lsb + 1;
+        }
     }
 }

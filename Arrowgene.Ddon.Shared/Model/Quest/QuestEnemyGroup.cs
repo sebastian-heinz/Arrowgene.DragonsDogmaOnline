@@ -4,7 +4,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 {
     public class QuestEnemyGroup
     {
-        public uint SubGroupId { get; set; }
+        public byte SubGroupId { get; set; }
         public StageId StageId { get; set; }
         public uint StartingIndex { get; set; }
         public List<InstancedEnemy> Enemies { get; set; }

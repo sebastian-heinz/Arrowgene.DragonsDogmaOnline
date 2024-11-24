@@ -61,7 +61,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             InstancedEnemy enemyKilled = client.Party.InstanceEnemyManager.GetInstanceEnemy(stageId, (byte)packet.SetId);
-
             if (enemyKilled is null)
             {
                 Logger.Error(client, $"Enemy killed data missing; {layoutId}.{packet.SetId}");
@@ -88,6 +87,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             else
             {
                 enemyKilled.IsKilled = true;
+            }
+
+            bool isEpitaphEnemy = false;
+            if (_gameServer.EpitaphRoadManager.TrialInProgress(client.Party))
+            {
+                isEpitaphEnemy = _gameServer.EpitaphRoadManager.TrialHasEnemies(client.Party, stageId, 0);
+                _gameServer.EpitaphRoadManager.EvaluateEnemyKilled(client.Party, stageId, packet.SetId, enemyKilled);
             }
 
             Server.Database.ExecuteInTransaction(connectionIn =>
@@ -154,6 +160,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     // Items for any server events which might be active
                     instancedGatheringItems.AddRange(partyMemberClient.InstanceEventDropItemManager.GenerateEventItems(partyMemberClient, enemyKilled, packet.LayoutId, packet.SetId));
 
+                    // Items injected for epitaph bonuses and general kills
+                    var epitaphDrops = partyMemberClient.InstanceEpiDropItemManager.GenerateItems(partyMemberClient, enemyKilled, packet.LayoutId, packet.SetId);
+                    if (epitaphDrops.Count > 0)
+                    {
+                        dropItemNtc.MdlType = 1; // Make the bag appear as golden
+                        instancedGatheringItems.AddRange(epitaphDrops);
+                    }
+
                     // If the roll was unlucky, there is a chance that no bag will show.
                     if (instancedGatheringItems.Where(x => x.ItemNum > 0).Any())
                     {
@@ -182,11 +196,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                         if (memberCharacter.Stage.Id != stageId.Id) continue; // Only nearby allies get XP.
 
-                        if (memberClient.Character.ActiveCharacterPlayPointData.PlayPoint.ExpMode == ExpMode.Experience && !IsQuestControlled)
+                        if (memberClient.Character.ActiveCharacterPlayPointData.PlayPoint.ExpMode == ExpMode.Experience && !IsQuestControlled && !isEpitaphEnemy)
                         {
                             gainedPP = 0;
                         }
-                        else if (!IsQuestControlled)
+                        else if (!IsQuestControlled && !isEpitaphEnemy)
                         {
                             gainedExp = 0;
                         }
@@ -200,7 +214,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         {
                             // Drop BO
                             uint gainedBo = (uint) (enemyKilled.BloodOrbs * _gameServer.Setting.GameLogicSetting.BoModifier);
-                            uint bonusBo = (uint)(gainedBo * _gameServer.GpCourseManager.EnemyBloodOrbBonus());
+                            uint bonusBo = (uint) (gainedBo * _gameServer.GpCourseManager.EnemyBloodOrbBonus());
                             CDataUpdateWalletPoint boUpdateWalletPoint = _gameServer.WalletManager.AddToWallet(memberClient.Character, WalletType.BloodOrbs, gainedBo + bonusBo, bonusBo, connectionIn: connectionIn);
                             updateCharacterItemNtc.UpdateWalletList.Add(boUpdateWalletPoint);
                         }

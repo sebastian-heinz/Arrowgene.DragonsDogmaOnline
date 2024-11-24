@@ -45,7 +45,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                     foreach (var jItem in jDungeon.GetProperty("entry_fee").EnumerateArray())
                     {
-                        dungeonInfo.EntryCostList.Add(new CDataStageTicketDungeonItem()
+                        dungeonInfo.EntryCostList.Add(new CDataStageDungeonItem()
                         {
                             ItemId = jItem.GetProperty("item_id").GetUInt32(),
                             Num = jItem.GetProperty("amount").GetUInt16()

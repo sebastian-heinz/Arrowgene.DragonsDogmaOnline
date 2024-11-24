@@ -16,8 +16,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceGetEnemySetListHandler));
 
+        private DdonGameServer _Server;
+
         public InstanceGetEnemySetListHandler(DdonGameServer server) : base(server)
         {
+            _Server = server;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceGetEnemySetListReq> request)
@@ -54,44 +57,48 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 RandomSeed = CryptoRandom.Instance.GetRandomUInt32(),
             };
 
+            List<InstancedEnemy> instancedEnemyList;
+
             bool notifyStrongEnemy = false;
             if (IsQuestControlled && quest != null)
             {
                 response.QuestId = (uint) quest.QuestId;
 
                 var questStateManager = QuestManager.GetQuestStateManager(client, quest);
-                foreach (var enemy in questStateManager.GetInstancedEnemies(quest, stageId, subGroupId))
-                {
-                    response.EnemyList.Add(new CDataLayoutEnemyData()
-                    {
-                        PositionIndex = enemy.Index,
-                        EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
-                    });
-                    client.Party.InstanceEnemyManager.SetInstanceEnemy(stageId, enemy.Index, enemy);
-
-                    if (enemy.NotifyStrongEnemy)
-                    {
-                        notifyStrongEnemy = true;
-                    }
-                }
+                instancedEnemyList = questStateManager.GetInstancedEnemies(quest, stageId, subGroupId);
+            }
+            else if (_Server.EpitaphRoadManager.TrialHasEnemies(client.Party, stageId, subGroupId))
+            {
+                instancedEnemyList = _Server.EpitaphRoadManager.GetInstancedEnemies(client.Party, stageId, subGroupId);
             }
             else
             {
-                var instancedEnemyList = client.Party.InstanceEnemyManager.GetAssets(stageId)
-                    .Where(x => x.Subgroup == subGroupId);
-                foreach (var asset in instancedEnemyList)
-                {
-                    response.EnemyList.Add(new CDataLayoutEnemyData()
-                    {
-                        PositionIndex = asset.Index,
-                        EnemyInfo = asset.asCDataStageLayoutEnemyPresetEnemyInfoClient()
-                    });
-                    client.Party.InstanceEnemyManager.SetInstanceEnemy(stageId, asset.Index, asset);
+                instancedEnemyList = client.Party.InstanceEnemyManager.GetAssets(stageId).Where(x => x.Subgroup == subGroupId).Select(x => new InstancedEnemy(x)).ToList();
+            }
 
-                    if (asset.NotifyStrongEnemy)
+            foreach (var enemy in instancedEnemyList)
+            {
+                var em = client.Party.InstanceEnemyManager.GetInstanceEnemy(stageId, enemy.Index);
+                if (em == null)
+                {
+                    em = enemy;
+                    // TODO: Add for HOBO dungeon
+                    if (StageManager.IsEpitaphRoadStageId(stageId))
                     {
-                        notifyStrongEnemy = true;
+                        enemy.BloodOrbs = _Server.EpitaphRoadManager.CalculateBloodOrbBonus(client.Party, em);
                     }
+                    client.Party.InstanceEnemyManager.SetInstanceEnemy(stageId, em.Index, em);
+                }
+
+                response.EnemyList.Add(new CDataLayoutEnemyData()
+                {
+                    PositionIndex = em.Index,
+                    EnemyInfo = em.asCDataStageLayoutEnemyPresetEnemyInfoClient()
+                });
+
+                if (em.NotifyStrongEnemy)
+                {
+                    notifyStrongEnemy = true;
                 }
             }
 

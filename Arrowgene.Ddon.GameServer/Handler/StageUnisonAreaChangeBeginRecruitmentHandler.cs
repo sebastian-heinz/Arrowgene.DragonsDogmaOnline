@@ -2,8 +2,9 @@ using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model.EpitaphRoad;
 using Arrowgene.Logging;
-using System.Collections.Generic;
+using System.IO;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -17,10 +18,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CStageUnisonAreaChangeBeginRecruitmentRes Handle(GameClient client, C2SStageUnisonAreaChangeBeginRecruitmentReq request)
         {
-            Server.BonusDungeonManager.MarkReady(client.Party, client.Character, request.Unk0);
-            if (Server.BonusDungeonManager.PartyIsReady(client.Party))
+            Server.DungeonManager.MarkReady(client.Party, client.Character, request.ContentId);
+
+            if (Server.DungeonManager.PartyIsReady(client.Party))
             {
-                Server.BonusDungeonManager.StartDungeon(client.Party);
+                Server.DungeonManager.StartActivity(client.Party, DungeonManager.StartDungeon);
             }
 
             return new S2CStageUnisonAreaChangeBeginRecruitmentRes();

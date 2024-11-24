@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.Shared.Asset
         public BonusDungeonInfo()
         {
             EventName = string.Empty;
-            EntryCostList = new List<CDataStageTicketDungeonItem>();
+            EntryCostList = new List<CDataStageDungeonItem>();
         }
 
         public uint DungeonId { get; set; }
@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.Shared.Asset
         public uint StartingPos { get; set; }
         public bool SyncMonsterLevel { get; set; }
 
-        public List<CDataStageTicketDungeonItem> EntryCostList { get; set; }
+        public List<CDataStageDungeonItem> EntryCostList { get; set; }
     }
 
     public class BonusDungeonCategory

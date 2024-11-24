@@ -37,6 +37,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         gatheredItem = client.InstanceBbmItemManager.FetchBitterblackItems(Server, client, stageId, posId)[(int)gatheringItemRequest.SlotNo];
                     }
+                    else if (StageManager.IsEpitaphRoadStageId(stageId))
+                    {
+                        gatheredItem = client.InstanceEpiGatheringManager.FetchItems(client, stageId, posId)[(int)gatheringItemRequest.SlotNo];
+                    }
                     else
                     {
                         gatheredItem = client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, (int)req.Structure.PosId)[(int)gatheringItemRequest.SlotNo];

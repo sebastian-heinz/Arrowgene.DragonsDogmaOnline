@@ -18,12 +18,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CStageUnisonAreaChangeReadyRes Handle(GameClient client, C2SStageUnisonAreaChangeReadyReq request)
         {
-            var dungeonId = Server.BonusDungeonManager.GetPartyDungeonId(client.Party);
+            var dungeonId = Server.DungeonManager.GetPartyContentId(client.Party);
             
-            Server.BonusDungeonManager.MarkReady(client.Party, client.Character, dungeonId);
-            if (Server.BonusDungeonManager.PartyIsReady(client.Party))
+            Server.DungeonManager.MarkReady(client.Party, client.Character, dungeonId);
+            if (Server.DungeonManager.PartyIsReady(client.Party))
             {
-                Server.BonusDungeonManager.StartDungeon(client.Party);
+                Server.DungeonManager.StartActivity(client.Party, DungeonManager.StartDungeon);
             }
 
             return new S2CStageUnisonAreaChangeReadyRes();

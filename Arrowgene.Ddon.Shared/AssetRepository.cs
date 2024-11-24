@@ -39,7 +39,6 @@ namespace Arrowgene.Ddon.Shared
         public const string GPCourseInfoKey = "GpCourseInfo.json";
         public const string SecretAbilityKey = "DefaultSecretAbilities.json";
         public const string CostExpScalingInfoKey = "CostExpScalingInfo.json";
-        public const string QuestAssestKey = "quests";
         public const string JobValueShopKey = "JobValueShop.csv";
         public const string StampBonusKey = "StampBonus.csv";
         public const string SpecialShopKey = "SpecialShops.json";
@@ -50,6 +49,10 @@ namespace Arrowgene.Ddon.Shared
         public const string EventDropsKey = "EventDrops.json";
         public const string BonusDungeonKey = "BonusDungeon.json";
         public const string ClanShopKey = "ClanShop.csv";
+        public const string EpitaphRoadKey = "EpitaphRoad.json";
+
+        public const string QuestAssestKey = "quests";
+        public const string EpitaphAssestKey = "epitaph";
 
         private static readonly ILogger Logger = LogProvider.Logger(typeof(AssetRepository));
 
@@ -99,6 +102,8 @@ namespace Arrowgene.Ddon.Shared
             EventDropsAsset = new EventDropsAsset();
             BonusDungeonAsset = new BonusDungeonAsset();
             ClanShopAsset = new Dictionary<uint, ClanShopAsset>();
+            EpitaphRoadAssets = new EpitaphRoadAsset();
+            EpitaphTrialAssets = new EpitaphTrialAsset();
         }
 
         public List<CDataErrorMessage> ClientErrorCodes { get; private set; }
@@ -132,6 +137,8 @@ namespace Arrowgene.Ddon.Shared
         public EventDropsAsset EventDropsAsset { get; private set; }
         public BonusDungeonAsset BonusDungeonAsset { get; private set; }
         public Dictionary<uint, ClanShopAsset> ClanShopAsset { get; private set; }
+        public EpitaphRoadAsset EpitaphRoadAssets { get; private set; }
+        public EpitaphTrialAsset EpitaphTrialAssets { get; private set; }
 
         public void Initialize()
         {
@@ -165,9 +172,16 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => EventDropsAsset = value, EventDropsKey, new EventDropAssetDeserializer());
             RegisterAsset(value => BonusDungeonAsset = value, BonusDungeonKey, new BonusDungeonAssetDeserializer());
             RegisterAsset(value => ClanShopAsset = value.ToDictionary(key => key.LineupId, value => value), ClanShopKey, new ClanShopCsv());
+            RegisterAsset(value => EpitaphRoadAssets = value, EpitaphRoadKey, new EpitaphRoadAssertDeserializer());
 
-            var questAssetDeserializer = new QuestAssetDeserializer(this.NamedParamAsset, QuestDropItemAsset);
+            // This must be set before calling QuestAssertDeserializer and EpitaphTrialAssertDeserializer
+            var commonEnemyDeserializer = new AssetCommonDeserializer(this.NamedParamAsset);
+
+            var questAssetDeserializer = new QuestAssetDeserializer(commonEnemyDeserializer, QuestDropItemAsset);
             questAssetDeserializer.LoadQuestsFromDirectory(Path.Combine(_directory.FullName, QuestAssestKey), QuestAssets);
+
+            var epitaphTrialDeserializer = new EpitaphTrialAssetDeserializer(commonEnemyDeserializer);
+            epitaphTrialDeserializer.LoadTrialsFromDirectory(Path.Combine(_directory.FullName, EpitaphAssestKey), EpitaphTrialAssets);
         }
 
         private void RegisterAsset<T>(Action<T> onLoadAction, string key, IAssetDeserializer<T> readerWriter)

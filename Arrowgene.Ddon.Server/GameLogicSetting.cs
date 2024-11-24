@@ -201,6 +201,11 @@ namespace Arrowgene.Ddon.Server
         /// </summary>
         [DataMember(Order = 27)] public byte QuestOrderMax { get; set; }
 
+        /// <summary>
+        /// Configures if epitaph rewards are limited once per weekly reset.
+        /// </summary>
+        [DataMember(Order = 28)] public bool EnableEpitaphWeeklyRewards { get; set; }
+
 
         /// <summary>
         /// Various URLs used by the client.
@@ -293,6 +298,8 @@ namespace Arrowgene.Ddon.Server
             RewardBoxMax = 100;
             QuestOrderMax = 20;
 
+            EnableEpitaphWeeklyRewards = false;
+
             string urlDomain = $"http://localhost:{52099}";
             UrlManual = $"{urlDomain}/manual_nfb/";
             UrlShopDetail = $"{urlDomain}/shop/ingame/stone/detail";
@@ -352,6 +359,8 @@ namespace Arrowgene.Ddon.Server
             JpModifier = setting.JpModifier;
             RewardBoxMax = setting.RewardBoxMax;
             QuestOrderMax = setting.QuestOrderMax;
+
+            EnableEpitaphWeeklyRewards = setting.EnableEpitaphWeeklyRewards;
 
             UrlManual = setting.UrlManual;
             UrlShopDetail = setting.UrlShopDetail;

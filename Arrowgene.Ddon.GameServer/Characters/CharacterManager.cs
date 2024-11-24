@@ -59,6 +59,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return null;
             }
 
+            character.EpitaphRoadState.UnlockedContent = _Server.Database.GetEpitaphRoadUnlocks(character.CharacterId);
+
+            if (_Server.Setting.GameLogicSetting.EnableEpitaphWeeklyRewards)
+            {
+                character.EpitaphRoadState.WeeklyRewardsClaimed = _Server.Database.GetEpitaphClaimedWeeklyRewards(character.CharacterId);
+            }
+            
+
             UpdateCharacterExtendedParams(character);
 
             SelectPawns(character, connectionIn);

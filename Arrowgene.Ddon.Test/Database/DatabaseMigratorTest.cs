@@ -414,6 +414,11 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertOrUpdateClanBaseCustomization(uint clanId, ClanBaseCustomizationType type, uint furnitureId, DbConnection? connectionIn = null) { return true; }
         public bool DeleteClanBaseCustomization(uint clanId, ClanBaseCustomizationType type, DbConnection? connectionIn = null) { return true; }
 
+        public bool InsertEpitaphRoadUnlock(uint characterId, uint epitaphId, DbConnection? connectionIn = null) { return true; }
+        public HashSet<uint> GetEpitaphRoadUnlocks(uint characterId, DbConnection? connectionIn = null) { return new(); }
+        public bool InsertEpitaphWeeklyReward(uint characterId, uint epitaphId, DbConnection? connectionIn = null) { return true; }
+        public HashSet<uint> GetEpitaphClaimedWeeklyRewards(uint characterId, DbConnection? connectionIn = null) { return new(); }
+
         public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
         public void AddParameter(DbCommand command, string name, string value) { }
         public void AddParameter(DbCommand command, string name, Int32 value) { }
@@ -438,6 +443,7 @@ namespace Arrowgene.Ddon.Test.Database
         public byte[] GetBytes(DbDataReader reader, string column, int size) { return null; }
         public List<CDataRegisterdPawnList> SelectRegisteredPawns(Character searchingCharacter, CDataPawnSearchParameter searchParams) { return new List<CDataRegisterdPawnList>(); }
         public List<CDataRegisterdPawnList> SelectRegisteredPawns(DbConnection conn, Character searchingCharacter, CDataPawnSearchParameter searchParams) { return new List<CDataRegisterdPawnList>(); }
+        public void DeleteWeeklyRewards(DbConnection? connectionIn = null) { }
     }
 
     class MockMigrationStrategy : IMigrationStrategy

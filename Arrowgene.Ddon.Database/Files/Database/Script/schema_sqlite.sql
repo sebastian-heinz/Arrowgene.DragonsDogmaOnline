@@ -766,4 +766,17 @@ CREATE TABLE IF NOT EXISTS "ddon_clan_base_customization"
     "furniture_id"          INTEGER     NOT NULL,
     CONSTRAINT "pk_ddon_clan_base_customization" PRIMARY KEY ("clan_id", "type"),
     CONSTRAINT "fl_ddon_clan_base_customization_clan_id" FOREIGN KEY ("clan_id") REFERENCES "ddon_clan_param" ("clan_id") ON DELETE CASCADE
+
+CREATE TABLE IF NOT EXISTS "ddon_epitaph_road_unlocks" (
+	"character_id"	INTEGER NOT NULL,
+	"epitaph_id"	INTEGER NOT NULL,
+    CONSTRAINT "pk_ddon_epitaph_road_unlocks" PRIMARY KEY ("character_id", "epitaph_id"),
+	CONSTRAINT "fk_ddon_epitaph_road_unlocks_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character"("character_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS ddon_epitaph_claimed_weekly_rewards (
+	"character_id"	INTEGER NOT NULL,
+	"epitaph_id"	INTEGER NOT NULL,
+    CONSTRAINT "pk_ddon_epitaph_claimed_weekly_rewards" PRIMARY KEY ("character_id", "epitaph_id"),
+	CONSTRAINT "fk_ddon_epitaph_claimed_weekly_rewards_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character"("character_id") ON DELETE CASCADE
 );

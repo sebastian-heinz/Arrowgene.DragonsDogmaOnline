@@ -13,19 +13,19 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
         }
 
-        public uint Unk0 { get; set; }
+        public uint DungeonId { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SStageUnisonAreaChangeGetRecruitmentStateReq>
         {
             public override void Write(IBuffer buffer, C2SStageUnisonAreaChangeGetRecruitmentStateReq obj)
             {
-                WriteUInt32(buffer, obj.Unk0);
+                WriteUInt32(buffer, obj.DungeonId);
             }
 
             public override C2SStageUnisonAreaChangeGetRecruitmentStateReq Read(IBuffer buffer)
             {
                 C2SStageUnisonAreaChangeGetRecruitmentStateReq obj = new C2SStageUnisonAreaChangeGetRecruitmentStateReq();
-                obj.Unk0 = ReadUInt32(buffer);
+                obj.DungeonId = ReadUInt32(buffer);
                 return obj;
             }
         }
