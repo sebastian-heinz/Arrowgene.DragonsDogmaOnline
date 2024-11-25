@@ -81,7 +81,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         EnemyInfo = enemyKilled.asCDataStageLayoutEnemyPresetEnemyInfoClient()
                     }
                 };
-                client.Enqueue(repopNtc, queuedPackets);
+                client.Party.EnqueueToAll(repopNtc, queuedPackets);
                 //client.Send(repopNtc);
             }
             else

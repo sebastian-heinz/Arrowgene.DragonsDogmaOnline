@@ -81,7 +81,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             else if (EpitaphId.GetKind(request.EpitaphId) == EpitaphIdKind.Barrier)
             {
                 var barrier = Server.EpitaphRoadManager.GetBarrier(request.EpitaphId);
-                client.Party.SendToAll(new S2CSeasonDungeonSetOmStateNtc()
+                client.Send(new S2CSeasonDungeonSetOmStateNtc()
                 {
                     LayoutId = barrier.StageId.ToStageLayoutId(),
                     State = SoulOrdealOmState.AreaUnlocked

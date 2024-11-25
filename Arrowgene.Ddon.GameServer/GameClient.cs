@@ -64,6 +64,11 @@ namespace Arrowgene.Ddon.GameServer
             } 
         }
 
+        public bool IsPartyLeader()
+        {
+            return Party.Leader.Client == this;
+        }
+
         // TODO: Place somewhere else more sensible
         public uint LastWarpPointId { get; set; }
         public DateTime LastWarpDateTime { get; set; }

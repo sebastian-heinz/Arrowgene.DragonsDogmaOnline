@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             StageId stageId = packet.Structure.LayoutId.AsStageId();
             if (_Server.EpitaphRoadManager.IsStatueUnlocked(client, stageId, packet.Structure.PosId))
             {
-                client.Party.SendToAll(new S2CSeasonDungeonSetOmStateNtc()
+                client.Send(new S2CSeasonDungeonSetOmStateNtc()
                 {
                     LayoutId = packet.Structure.LayoutId,
                     PosId = packet.Structure.PosId,

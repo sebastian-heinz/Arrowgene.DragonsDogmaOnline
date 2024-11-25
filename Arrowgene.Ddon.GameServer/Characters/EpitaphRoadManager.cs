@@ -455,7 +455,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     return;
                 }
 
-                var trialEndState = SoulOrdealEndState.Unknown;
+                var trialEndState = SoulOrdealEndState.Cancel;
                 if (HasObjective(partyState, SoulOrdealObjective.DefeatEnemyWithAbnormalStatusCount) &&
                     partyState.AbnormalStatus.ContainsKey((stageId, posId)))
                 {
@@ -1053,7 +1053,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             // We need to send back a packet still, otherwise the player will get soft locked.
-            client.Party.SendToAll(new S2CSeasonDungeonSetOmStateNtc()
+            client.Send(new S2CSeasonDungeonSetOmStateNtc()
             {
                 LayoutId = stageId.ToStageLayoutId(),
                 PosId = posId,

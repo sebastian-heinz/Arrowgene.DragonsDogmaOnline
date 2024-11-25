@@ -2,6 +2,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model.EpitaphRoad;
 using Arrowgene.Logging;
+using YamlDotNet.Core.Tokens;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -32,12 +33,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else if (!Server.EpitaphRoadManager.TrialCompleted(client.Party, stageId, request.PosId))
             {
-                // TODO: Check to make sure no one in party has rewards available
-                result.Type = Server.EpitaphRoadManager.IsTrialUnlocked(client.Party, stageId, request.PosId) ? SoulOrdealOrderState.GetList : SoulOrdealOrderState.UnlockTrial;
-                if (result.Type == SoulOrdealOrderState.GetList)
+                if (client.IsPartyLeader())
                 {
-                    var trial = Server.EpitaphRoadManager.GetTrial(stageId, request.PosId);
-                    result.ElementParamList = trial.SoulOrdealOptions();
+                    result.Type = Server.EpitaphRoadManager.IsTrialUnlocked(client.Party, stageId, request.PosId) ? SoulOrdealOrderState.GetList : SoulOrdealOrderState.UnlockTrial;
+                    if (result.Type == SoulOrdealOrderState.GetList)
+                    {
+                        var trial = Server.EpitaphRoadManager.GetTrial(stageId, request.PosId);
+                        result.ElementParamList = trial.SoulOrdealOptions();
+                    }
+                }
+                else if (!Server.DungeonManager.IsReadyCheckInProgress(client.Party))
+                {
+                    result.Type = SoulOrdealOrderState.Waiting;
+                }
+                else
+                {
+                    result.Type = SoulOrdealOrderState.Start;
                 }
                 result.Unk2 = true;
             }

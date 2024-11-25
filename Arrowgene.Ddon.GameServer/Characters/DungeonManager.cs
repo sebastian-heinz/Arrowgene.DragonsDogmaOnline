@@ -95,7 +95,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             lock (_ReadyStatus)
             {
-                if (_ReadyStatus.ContainsKey(party.Id))
+                if (!_ReadyStatus.ContainsKey(party.Id))
                 {
                     return;
                 }
@@ -119,6 +119,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     allMembersReady &= answer;
                 }
                 return allMembersReady;
+            }
+        }
+
+        public bool IsReadyCheckInProgress(PartyGroup party)
+        {
+            lock (_ReadyStatus)
+            {
+                return _ReadyStatus.ContainsKey(party.Id);
             }
         }
 

@@ -178,6 +178,16 @@ namespace Arrowgene.Ddon.Shared.Asset
             }
             return results;
         }
+
+        public CDataSoulOrdealElementParam AsCDataSoulOrdealElementParam()
+        {
+            return new CDataSoulOrdealElementParam()
+            {
+                TrialId = EpitaphId,
+                TrialName = TrialName,
+                TrialCost = EntryCost
+            };
+        }
     }
 
     public class EpitaphTrial : EpitaphObject
@@ -201,12 +211,7 @@ namespace Arrowgene.Ddon.Shared.Asset
 
             foreach (var option in Options)
             {
-                results.Add(new CDataSoulOrdealElementParam()
-                {
-                    TrialId = option.EpitaphId,
-                    TrialName = option.TrialName,
-                    TrialCost = option.EntryCost
-                });
+                results.Add(option.AsCDataSoulOrdealElementParam());
             }
 
             return results;

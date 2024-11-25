@@ -590,6 +590,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new SeasonDungeonUpdateKeyPointDoorStatusHandler(this));
             AddHandler(new SeasonDungeonGetSoulOrdealRewardListForViewHandler(this));
             AddHandler(new SeasonDungeonInterruptSoulOrdealHandler(this));
+            AddHandler(new SeasonDungeonSoulOrdealCancelReadyHandler(this));
 
             AddHandler(new ServerGameTimeGetBaseinfoHandler(this));
             AddHandler(new ServerGetGameSettingHandler(this));

@@ -11,7 +11,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
     {
         public override AccountStateType AccountState => AccountStateType.User;
         public override string Key => "updateom";
-        public override string HelpText => "usage: `/updateom groupid subgroupid value`";
+        public override string HelpText => "usage: `/updateom groupid posid value`";
 
         private DdonGameServer Server;
 
@@ -31,7 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             try
             {
                 uint groupId = uint.Parse(command[0]);
-                uint subgroupId = uint.Parse(command[1]);
+                uint posId = uint.Parse(command[1]);
                 byte value = byte.Parse(command[2]);
                 uint limit = 0;
 
@@ -51,7 +51,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                             StageId = client.Character.Stage.Id,
                             GroupId = groupId
                         },
-                        PosId = subgroupId,
+                        PosId = posId,
                         State = (SoulOrdealOmState)value
                     };
                     client.Party.SendToAll(ntc);
@@ -67,7 +67,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                                 StageId = client.Character.Stage.Id,
                                 GroupId = i
                             },
-                            PosId = subgroupId,
+                            PosId = posId,
                             State = (SoulOrdealOmState)value
                         };
                         client.Party.SendToAll(ntc);

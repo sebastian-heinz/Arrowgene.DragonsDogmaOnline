@@ -814,6 +814,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SSeasonDungeonUpdateKeyPointDoorStatusReq.Serializer());
             Create(new C2SSeasonDungeonGetSoulOrdealRewardListForViewReq.Serializer());
             Create(new C2SSeasonDungeonInterruptSoulOrdealReq.Serializer());
+            Create(new C2SSeasonDungeonSoulOrdealCancelReadyReq.Serializer());
 
             Create(new C2SSetShortcutReq.Serializer());
             Create(new C2SShopBuyShopGoodsReq.Serializer());
@@ -1373,6 +1374,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CSeasonDungeonUpdateKeyPointDoorStatusRes.Serializer());
             Create(new S2CSeasonDungeonGetSoulOrdealRewardListForViewRes.Serializer());
             Create(new S2CSeasonDungeonInterruptSoulOrdealRes.Serializer());
+            Create(new S2CSeasonDungeonSoulOrdealCancelReadyRes.Serializer());
 
             Create(new S2CServerGameTimeGetBaseInfoRes.Serializer());
             Create(new S2CServerGetRealTimeRes.Serializer());
