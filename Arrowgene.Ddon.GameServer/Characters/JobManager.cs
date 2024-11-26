@@ -191,7 +191,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         }
                         else
                         {
-                            throw ex;
+                            throw;
                         }
                     }
                 }
@@ -222,7 +222,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                                     }
                                     else
                                     {
-                                        throw ex;
+                                        throw;
                                     }
                                 }
                                 break;
@@ -249,7 +249,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             }
                             else
                             {
-                                throw ex;
+                                throw;
                             }
                         }
                     }
@@ -275,7 +275,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             }
                             else
                             {
-                                throw ex;
+                                throw;
                             }
                         }
                     }
