@@ -33,6 +33,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Special Event Items
             items.AddRange(client.InstanceEventDropItemManager.FetchEventItems(client, packet.Structure.LayoutId, packet.Structure.SetId));
 
+            // Add Epitaph Items
+            items.AddRange(client.InstanceEpiDropItemManager.FetchItems(client, packet.Structure.LayoutId, packet.Structure.SetId));
+
             S2CInstanceGetDropItemRes res = new()
             {
                 LayoutId = packet.Structure.LayoutId,

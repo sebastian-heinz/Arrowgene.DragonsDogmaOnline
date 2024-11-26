@@ -583,5 +583,13 @@ namespace Arrowgene.Ddon.Database
         List<(ClanBaseCustomizationType Type, uint Id)> SelectClanBaseCustomizations(uint clanId, DbConnection? connectionIn = null);
         bool InsertOrUpdateClanBaseCustomization(uint clanId, ClanBaseCustomizationType type, uint furnitureId, DbConnection? connectionIn = null);
         bool DeleteClanBaseCustomization(uint clanId, ClanBaseCustomizationType type, DbConnection? connectionIn = null);
+
+        // Epitaph Road
+        bool InsertEpitaphRoadUnlock(uint characterId, uint epitaphId, DbConnection? connectionIn = null);
+        HashSet<uint> GetEpitaphRoadUnlocks(uint characterId, DbConnection? connectionIn = null);
+
+        bool InsertEpitaphWeeklyReward(uint characterId, uint epitaphId, DbConnection? connectionIn = null);
+        HashSet<uint> GetEpitaphClaimedWeeklyRewards(uint characterId, DbConnection? connectionIn = null);
+        void DeleteWeeklyRewards(DbConnection? connectionIn = null);
     }
 }

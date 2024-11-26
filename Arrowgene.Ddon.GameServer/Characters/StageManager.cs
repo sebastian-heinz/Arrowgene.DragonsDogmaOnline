@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
+using System.IO;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -203,6 +204,102 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public static bool IsBitterBlackMazeAbyssBossStageId(StageId stageId)
         {
             return StageManager.IsBitterBlackMazeAbyssBossStageId(stageId.Id);
+        }
+
+        // Hubs
+        // 549 Sleeping Path : Rathnite Foothills (Pehr)
+        // 557 Sleeping Path : Feryana (Ira)
+        // 558 Old Heroic Spirit Shrine (Morgan -> Memory of Megadosys, Selim -> Memory of Urteca)
+
+        private static readonly HashSet<uint> EpitaphRoadStageIds = new HashSet<uint>()
+        {
+            // 3.0
+            550, // Heroic Spirit Sleeping Path: Shrine
+            551, // Heroic Spirit Sleeping Path: Cave
+            // Cave Depth??
+            553, // Heroic Spirit Sleeping Path: Waterway
+            // 3.1
+            552, // Heroic Spirit Sleeping Path: Ruins
+            554, // Heroic Spirit Sleeping Path: Well
+            555, // Heroic Spirit Sleeping Path: Tomb
+            556, // Heroic Spirit Sleeping Path Ruins: Deepest Level
+            // 3.2
+            559, // Memory of Megadosys
+            560, // Memory of Megadosys: Old Road
+            561, // Memory of Megadosys: War God Space
+            // 3.3
+            563, // Memory of Urteca
+            564, // Memories of the Earth: Sacred Flame Path
+            565, // Memory of Urteca: War God Space
+            566, // Memory of Royal Family Mausoleum
+            567, // Memory of Firefall Mountain Campsite
+        };
+
+        public static bool IsEpitaphRoadStageId(uint stageId)
+        {
+            return EpitaphRoadStageIds.Contains(stageId);
+        }
+
+        public static bool IsEpitaphRoadStageId(StageId stageId)
+        {
+            return StageManager.IsEpitaphRoadStageId(stageId.Id);
+        }
+
+        private static readonly HashSet<uint> LegacyEpitaphRoadStageIds = new HashSet<uint>
+        {
+            // 3.0
+            550, // Heroic Spirit Sleeping Path: Shrine
+            551, // Heroic Spirit Sleeping Path: Cave
+            // Cave Depth??
+            553, // Heroic Spirit Sleeping Path: Waterway
+            // 3.1
+            552, // Heroic Spirit Sleeping Path: Ruins
+            554, // Heroic Spirit Sleeping Path: Well
+            555, // Heroic Spirit Sleeping Path: Tomb
+            556, // Heroic Spirit Sleeping Path Ruins: Deepest Level
+        };
+
+        public static bool IsLegacyEpitaphRoadStageId(uint stageId)
+        {
+            return LegacyEpitaphRoadStageIds.Contains(stageId);
+        }
+
+        public static bool IsLegacyEpitaphRoadStageId(StageId stageId)
+        {
+            return StageManager.IsLegacyEpitaphRoadStageId(stageId.Id);
+        }
+
+        private static readonly HashSet<uint> EpitaphHubArea = new HashSet<uint>
+        {
+            549, // Heroic Spirit Sleeping Path: Rathnite Foothills
+            1148, // Heroic Spirit Sleeping Path: Feryana Wilderness
+            1149, // Memory of Megadosys/Memory of Urteca
+        };
+
+        public static bool IsEpitaphHubArea(uint stageId)
+        {
+            return EpitaphHubArea.Contains(stageId);
+        }
+
+        public static bool IsEpitaphHubArea(StageId stageId)
+        {
+            return StageManager.IsEpitaphHubArea(stageId.Id);
+        }
+
+        private static readonly HashSet<uint> LegacyEpitaphHubArea = new HashSet<uint>
+        {
+            549, // Heroic Spirit Sleeping Path: Rathnite Foothills
+            1148, // Heroic Spirit Sleeping Path: Feryana Wilderness
+        };
+
+        public static bool IsLegacyEpitaphHubArea(uint stageId)
+        {
+            return LegacyEpitaphHubArea.Contains(stageId);
+        }
+
+        public static bool IsLegacyEpitaphHubArea(StageId stageId)
+        {
+            return StageManager.IsLegacyEpitaphHubArea(stageId.Id);
         }
     }
 }

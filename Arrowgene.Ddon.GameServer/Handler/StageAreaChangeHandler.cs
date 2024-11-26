@@ -3,6 +3,7 @@ using Arrowgene.Ddon.GameServer.Context;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -12,7 +13,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class StageAreaChangeHandler : GameRequestPacketHandler<C2SStageAreaChangeReq, S2CStageAreaChangeRes>
+    public class StageAreaChangeHandler : GameRequestPacketQueueHandler<C2SStageAreaChangeReq, S2CStageAreaChangeRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(StageAreaChangeHandler));
 
@@ -20,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override S2CStageAreaChangeRes Handle(GameClient client, C2SStageAreaChangeReq packet)
+        public override S2CStageAreaChangeRes Handle(GameClient client, C2SStageAreaChangeReq packet, PacketQueue queue)
         {
             S2CStageAreaChangeRes res = new S2CStageAreaChangeRes();
             res.StageNo = (uint) StageManager.ConvertIdToStageNo(packet.StageId);
@@ -68,12 +69,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (shouldReset)
                 {
+                    Server.EpitaphRoadManager.ResetInstance(client.Party);
                     client.Party.ResetInstance();
                     client.Party.SendToAll(new S2CInstanceAreaResetNtc());
-                    // Next two packets seem to be send when transitioning to a safe area in all pcaps
-                    // not sure what they do though
-                    client.Party.SendToAll(new S2C_SEASON_62_38_16_NTC());
-                    // client.Party.SendToAll(new S2C_SEASON_62_39_16_NTC) ??? Does this go to all, it has a character ID
                 }
             }
 
@@ -85,6 +83,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     quest.HandleAreaChange(client, client.Character.Stage);
                 }
             }
+
+            Server.EpitaphRoadManager.AreaChange(client, packet.StageId, queue);
 
             return res;
         }

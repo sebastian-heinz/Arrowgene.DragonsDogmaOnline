@@ -20,11 +20,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             var result = new S2CStageUnisonAreaChangeGetRecruitmentStateRes();
 
-            uint dungeonId = Server.BonusDungeonManager.GetPartyDungeonId(client.Party);
-            if (dungeonId != 0)
+            uint contentId = Server.DungeonManager.GetPartyContentId(client.Party);
+            if (Server.EpitaphRoadManager.IsEpitaphId(contentId))
             {
-                var dungeonInfo = Server.AssetRepository.BonusDungeonAsset.DungeonInfo[dungeonId];
-                result.Unk0 = dungeonInfo.DungeonId;
+                if (Server.EpitaphRoadManager.IsSectionUnlocked(client.Character, contentId))
+                {
+                    var sectionInfo = Server.EpitaphRoadManager.GetSectionById(contentId);
+                    result.ContentId = contentId;
+                    result.StageId = sectionInfo.StageId;
+                    result.StartPos = sectionInfo.StartingPos;
+                    result.Unk4 = true;
+                }
+            }
+            else if (contentId != 0)
+            {
+                var dungeonInfo = Server.AssetRepository.BonusDungeonAsset.DungeonInfo[contentId];
+                result.ContentId = dungeonInfo.DungeonId;
                 result.StageId = dungeonInfo.StageId;
                 result.StartPos = dungeonInfo.StartingPos;
                 result.Unk4 = true;

@@ -1,0 +1,148 @@
+{
+    "comment": "Heroic Spirit Sleeping Path: Rathnite Foothills - Section 3: 1st Space Trial 1",
+    "stage_id": {
+        "id": 551,
+        "group_id": 87
+    },
+    "pos_id": 3,
+    "unlock_cost": [],
+    "unlocks": [],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
+                {"type": "CannotBeAffectedByAbnormalStatus", "priority": "Secondary", "Param1": 3},
+                {"type": "CompleteConditionsWithinTimeLimit", "priority": "Secondary", "Param1": 120}
+            ],
+            "cost": [],
+            "item_rewards": [
+                {"item_id": 18656, "amount": 80},
+                {"item_id": 18742, "amount": 10}
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 60
+                    },
+                    "enemies": [
+                        {
+                            "comment" : "Freezing Slime",
+                            "enemy_id": "0x010906",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Freezing Slime",
+                            "enemy_id": "0x010906",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Wight",
+                            "enemy_id": "0x075700",
+                            "level": 84,
+                            "exp": 84000,
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true
+                        },
+                        {
+                            "comment" : "Freezing Slime",
+                            "enemy_id": "0x010906",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Freezing Slime",
+                            "enemy_id": "0x010906",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        }
+                   ]
+                }
+            ]
+        },
+        {
+            "trial_name": "Trial of the Souls",
+            "constraints": [
+                {"type": "DefeatEnemyCount", "priority": "Primary", "Param1": 15},
+                {"type": "CannotBeAffectedByAbnormalStatus", "priority": "Secondary", "Param1": 3},
+                {"type": "CompleteConditionsWithinTimeLimit", "priority": "Secondary", "Param1": 120}
+
+            ],
+            "cost": [
+                {"item_id": 18656, "amount": 30}
+            ],
+            "item_rewards": [
+                {"item_id": 18742, "amount": 20},
+                {
+                    "type": "pool", "rolls": 1,
+                    "items": [
+                        {"type": "Random", "item_id": 9292, "amount": 3},
+                        {"type": "Random", "item_id": 14187, "amount": 3}
+                    ]
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 60
+                    },
+                    "enemies": [
+                        {
+                            "comment" : "Blue Newt",
+                            "enemy_id": "0x010460",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 0
+                        },
+                        {
+                            "comment" : "Blue Newt",
+                            "enemy_id": "0x010460",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 0
+                        },
+                        {
+                            "comment" : "Large Newt",
+                            "enemy_id": "0x010461",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 0
+                        },
+                        {
+                            "comment" : "Blue Newt",
+                            "enemy_id": "0x010460",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 0
+                        },
+                        {
+                            "comment" : "Blue Newt",
+                            "enemy_id": "0x010460",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 0
+                        }
+                   ]
+                }
+            ]
+        }
+    ]
+}

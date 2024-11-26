@@ -1,0 +1,144 @@
+{
+    "comment": "Heroic Spirit Sleeping Path: Rathnite Foothills - Section 3: 3rd Space Trial 1",
+    "stage_id": {
+        "id": 551,
+        "group_id": 87
+    },
+    "pos_id": 5,
+    "unlock_cost": [],
+    "unlocks": [],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
+                {"type": "ItemNoteUsedMoreThanOnce", "priority": "Secondary"},
+                {"type": "CompleteConditionsWithinTimeLimit", "priority": "Secondary", "Param1": 300}
+            ],
+            "cost": [],
+            "item_rewards": [
+                {"item_id": 18656, "amount": 80},
+                {"item_id": 18742, "amount": 10}
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 82
+                    },
+                    "starting_index": 5,
+                    "enemies": [
+                        {
+                            "comment" : "Black Griffin",
+                            "enemy_id": "0x070610",
+                            "level": 84,
+                            "exp": 84000,
+                            "pp": 2,
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true
+                        },
+                        {
+                            "comment" : "Strix",
+                            "enemy_id": "0x010610",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Strix",
+                            "enemy_id": "0x010610",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Strix",
+                            "enemy_id": "0x010610",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Strix",
+                            "enemy_id": "0x010610",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        }
+                   ]
+                }
+            ]
+        },
+        {
+            "trial_name": "Trial of the Souls",
+            "constraints": [
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
+                {"type": "ItemNoteUsedMoreThanOnce", "priority": "Secondary"},
+                {"type": "CannotDieMoreThanOnce", "priority": "Secondary"}
+            ],
+            "cost": [
+                {"item_id": 18656, "amount": 30}
+            ],
+            "item_rewards": [
+                {"item_id": 18742, "amount": 20},
+                {
+                    "type": "pool", "rolls": 1,
+                    "items": [
+                        {"type": "Random", "item_id": 9268, "amount": 3},
+                        {"type": "Random", "item_id": 9314, "amount": 3},
+                        {"type": "Random", "item_id": 13684, "amount": 3},
+                        {"type": "Random", "item_id": 9267, "amount": 3},
+                        {"type": "Random", "item_id": 13700, "amount": 3}
+                    ]
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 82
+                    },
+                    "starting_index": 5,
+                    "enemies": [
+                        {
+                            "comment" : "White Griffin",
+                            "enemy_id": "0x070620",
+                            "level": 84,
+                            "exp": 84000,
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true
+                        },
+                        {
+                            "comment" : "Siren",
+                            "enemy_id": "0x010605",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Siren",
+                            "enemy_id": "0x010605",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Siren",
+                            "enemy_id": "0x010605",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Siren",
+                            "enemy_id": "0x010605",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        }
+                   ]
+                }
+            ]
+        }
+    ]
+}

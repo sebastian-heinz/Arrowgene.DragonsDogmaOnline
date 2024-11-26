@@ -1,0 +1,164 @@
+{
+    "comment": "Heroic Spirit Sleeping Path: Rathnite Foothills - Section 4: 1st Space Trial 1",
+    "stage_id": {
+        "id": 553,
+        "group_id": 45
+    },
+    "pos_id": 3,
+    "unlock_cost": [],
+    "unlocks": [],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
+                {"type": "CannotDieMoreThanOnce", "priority": "Secondary"},
+                {"type": "InflictAbnormalStatusCount", "priority": "Secondary", "Param1": 3}
+            ],
+            "cost": [],
+            "item_rewards": [
+                {"item_id": 18656, "amount": 80},
+                {"item_id": 18742, "amount": 10}
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 553,
+                        "group_id": 22
+                    },
+                    "enemies": [
+                        {
+                            "comment" : "Blunt Soldier Dwarf Orc",
+                            "enemy_id": "0x015822",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Sword Soldier Dwarf Orc",
+                            "enemy_id": "0x015821",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Sword Soldier Dwarf Orc",
+                            "enemy_id": "0x015821",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Ranged Soldier Dwarf Orc",
+                            "enemy_id": "0x015824",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Ranged Soldier Dwarf Orc",
+                            "enemy_id": "0x015824",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Ranged Soldier Dwarf Orc",
+                            "enemy_id": "0x015824",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Ranged Soldier Dwarf Orc",
+                            "enemy_id": "0x015824",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        }
+                   ]
+                }
+            ]
+        },
+        {
+            "trial_name": "Trial of the Souls",
+            "constraints": [
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
+                {"type": "InflictAbnormalStatusCount", "priority": "Secondary", "Param1": 3},
+                {"type": "DefeatEnemyWithAbnormalStatusCount", "priority": "Secondary", "Param1": 3}
+            ],
+            "cost": [
+                {"item_id": 18656, "amount": 40}
+            ],
+            "item_rewards": [
+                {"item_id": 18742, "amount": 20},
+                {
+                    "type": "pool", "rolls": 1,
+                    "items": [
+                        {"type": "Random", "item_id": 9200, "amount": 3},
+                        {"type": "Random", "item_id": 13659, "amount": 3}
+                    ]
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 553,
+                        "group_id": 22
+                    },
+                    "enemies": [
+                        {
+                            "comment" : "Squad Leader Dwarf Orc",
+                            "enemy_id": "0x015826",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "War-Ready Grimwarg",
+                            "enemy_id": "0x010230",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "War-Ready Grimwarg",
+                            "enemy_id": "0x010230",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Ranged Soldier Dwarf Orc",
+                            "enemy_id": "0x015824",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Ranged Soldier Dwarf Orc",
+                            "enemy_id": "0x015824",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Ranged Soldier Dwarf Orc",
+                            "enemy_id": "0x015824",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Ranged Soldier Dwarf Orc",
+                            "enemy_id": "0x015824",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        }
+                   ]
+                }
+            ]
+        }
+    ]
+}

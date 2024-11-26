@@ -4,7 +4,6 @@ using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.GameServer.Shop;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Networking.Tcp;
 using System;
@@ -13,15 +12,17 @@ namespace Arrowgene.Ddon.GameServer
 {
     public class GameClient : Client
     {
-        public GameClient(ITcpSocket socket, PacketFactory packetFactory, ShopManager shopManager, AssetRepository assetRepository) : base(socket, packetFactory)
+        public GameClient(ITcpSocket socket, PacketFactory packetFactory, DdonGameServer server) : base(socket, packetFactory)
         {
             UpdateIdentity();
-            InstanceGatheringItemManager = new InstanceGatheringItemManager(assetRepository);
+            InstanceGatheringItemManager = new InstanceGatheringItemManager(server.AssetRepository);
             InstanceDropItemManager = new InstanceDropItemManager(this);
-            InstanceShopManager = new InstanceShopManager(shopManager);
+            InstanceShopManager = new InstanceShopManager(server.ShopManager);
             InstanceBbmItemManager = new InstanceBitterblackGatheringItemManager();
             InstanceQuestDropManager = new InstanceQuestDropManager();
-            InstanceEventDropItemManager = new InstanceEventDropItemManager(assetRepository);
+            InstanceEventDropItemManager = new InstanceEventDropItemManager(server.AssetRepository);
+            InstanceEpiDropItemManager = new InstanceEpitaphRoadDropItemManager(server);
+            InstanceEpiGatheringManager = new InstanceEpitaphRoadGatheringManager(server);
             GameMode = GameMode.Normal;
         }
 
@@ -52,6 +53,8 @@ namespace Arrowgene.Ddon.GameServer
         public InstanceBitterblackGatheringItemManager InstanceBbmItemManager { get; }
         public InstanceQuestDropManager InstanceQuestDropManager { get; }
         public InstanceEventDropItemManager InstanceEventDropItemManager { get; }
+        public InstanceEpitaphRoadDropItemManager InstanceEpiDropItemManager { get; }
+        public InstanceEpitaphRoadGatheringManager InstanceEpiGatheringManager { get; }
 
         public GameMode GameMode { get; set; }
 
@@ -59,6 +62,11 @@ namespace Arrowgene.Ddon.GameServer
             {
                 return ((PlayerPartyMember)Party?.GetPartyMemberByCharacter(Character))?.QuestState;
             } 
+        }
+
+        public bool IsPartyLeader()
+        {
+            return Party.Leader.Client == this;
         }
 
         // TODO: Place somewhere else more sensible

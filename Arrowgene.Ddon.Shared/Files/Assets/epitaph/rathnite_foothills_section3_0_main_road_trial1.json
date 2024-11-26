@@ -1,0 +1,76 @@
+{
+    "comment": "Heroic Spirit Sleeping Path: Rathnite Foothills - Section 3: Main Road Trial 1",
+    "stage_id": {
+        "id": 551,
+        "group_id": 87
+    },
+    "pos_id": 0,
+    "unlock_cost": [],
+    "unlocks": [],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
+                {"type": "CompleteConditionsWithinTimeLimit", "priority": "Secondary", "Param1": 50}
+            ],
+            "cost": [],
+            "item_rewards": [
+                {"item_id": 18656, "amount": 40},
+                {"item_id": 18742, "amount": 10}
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 8
+                    },
+                    "enemies": [
+                        {
+                            "comment" : "Little Crag",
+                            "enemy_id": "0x015509",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Little Crag",
+                            "enemy_id": "0x015509",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Little Crag",
+                            "enemy_id": "0x015509",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Little Crag",
+                            "enemy_id": "0x015509",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Little Crag",
+                            "enemy_id": "0x015509",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Little Crag",
+                            "enemy_id": "0x015509",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        }
+                   ]
+                }
+            ]
+        }
+    ]
+}

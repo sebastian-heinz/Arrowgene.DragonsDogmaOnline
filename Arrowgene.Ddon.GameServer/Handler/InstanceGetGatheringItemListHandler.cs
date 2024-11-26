@@ -41,6 +41,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 gatheringItems.AddRange(client.InstanceBbmItemManager.FetchBitterblackItems(Server, client, stageId, posId));
             }
+            else if (StageManager.IsEpitaphRoadStageId(stageId))
+            {
+                gatheringItems.AddRange(client.InstanceEpiGatheringManager.FetchItems(client, stageId, posId));
+            }
             else
             {
                 gatheringItems.AddRange(client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, (int)posId));

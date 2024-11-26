@@ -330,6 +330,23 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataSubstoryQuestOrderList.Serializer());
             Create(new CDataS2CQuestJoinLobbyQuestInfoNtcUnk0Unk1.Serializer());
             Create(new CDataMobHuntQuestOrderList.Serializer());
+
+            Create(new CDataSeasonDungeonInfo.Serializer());
+            Create(new CDataSeasonDungeonSection.Serializer());
+            Create(new CDataSeasonDungeonUnk0.Serializer());
+            Create(new CDataSeasonDungeonBuffEffectParam.Serializer());
+            Create(new CDataSeasonDungeonUnk2.Serializer());
+            Create(new CDataSeasonDungeonBlockadeElement.Serializer());
+            Create(new CDataSoulOrdealElementParam.Serializer());
+            Create(new CDataSoulOrdealUnk0.Serializer());
+            Create(new CDataSoulOrdealUnk1.Serializer());
+            Create(new CDataSoulOrdealItemInfo.Serializer());
+            Create(new CDataSoulOrdealObjective.Serializer());
+            Create(new CDataSeasonDungeonBuffEffectReward.Serializer());
+            Create(new CDataSoulOrdealRewardItem.Serializer());
+            Create(new CDataSoulOrdealItem.Serializer());
+            Create(new CDataSeasonDungeonRewardItemViewEntry.Serializer());
+
             Create(new CDataSituationObjective.Serializer());
             Create(new CDataScreenShotCategory.Serializer());
             Create(new CDataSetAcquirementParam.Serializer());
@@ -347,7 +364,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataStageAreaChangeResUnk1.Serializer());
             Create(new CDataStageTicketDungeonCategory.Serializer());
             Create(new CDataStageTicketDungeonCategoryInfo.Serializer());
-            Create(new CDataStageTicketDungeonItem.Serializer());
+            Create(new CDataStageDungeonItem.Serializer());
             Create(new CDataStageTicketDungeonItemInfo.Serializer());
 
             Create(new CDataStatusInfoSerializer());
@@ -593,8 +610,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SInstancePlTouchOmNtc.Serializer());
             Create(new C2SInstanceCharacterEndBadStatusNtc.Serializer());
             Create(new C2SInstanceCharacterStartBadStatusNtc.Serializer());
-            Create(new C2SInstance_13_46_16_Ntc.Serializer());
-            Create(new C2SInstance_13_47_16_Ntc.Serializer());
+            Create(new C2SInstanceEnemyBadStatusStartNtc.Serializer());
+            Create(new C2SInstanceEnemyBadStatusEndNtc.Serializer());
 
             Create(new C2SItemConsumeStorageItemReq.Serializer());
             Create(new C2SItemGetStorageItemListReq.Serializer());
@@ -778,6 +795,27 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SSkillSetPresetAbilityNameReq.Serializer());
             Create(new C2SSkillSetPresetAbilityListReq.Serializer());
 
+            Create(new C2S_SEASON_62_40_16_NTC.Serializer());
+            Create(new C2S_SEASON_DUNGEON_62_12_16_NTC.Serializer());
+            Create(new C2SSeasonDungeonGetIdFromNpcIdReq.Serializer());
+            Create(new C2SSeasonDungeonGetInfoReq.Serializer());
+            Create(new C2SSeasonDungeonGetExtendableBlockadeListFromNpcIdReq.Serializer());
+            Create(new C2SSeasonDungeonGetSoulOrdealListfromOmReq.Serializer());
+            Create(new C2SSeasonDungeonSoulOrdealReadyReq.Serializer());
+            Create(new C2SSeasonDungeonExecuteSoulOrdealReq.Serializer());
+            Create(new C2SSeasonDungeonGetSoulOrdealRewardListReq.Serializer());
+            Create(new C2SSeasonDungeonReceiveSoulOrdealRewardBuffReq.Serializer());
+            Create(new C2SSeasonDungeonReceiveSoulOrdealRewardReq.Serializer());
+            Create(new C2SSeasonDungeonGetBlockadeIdFromOmReq.Serializer());
+            Create(new C2SSeasonDungeonGetExRequiredItemReq.Serializer());
+            Create(new C2SSeasonDungeonDeliverItemForExReq.Serializer());
+            Create(new C2SSeasonDungeonGetBlockadeIdFromNpcIdReq.Serializer());
+            Create(new C2SSeasonDungeonGetStatueStateNtc.Serializer());
+            Create(new C2SSeasonDungeonUpdateKeyPointDoorStatusReq.Serializer());
+            Create(new C2SSeasonDungeonGetSoulOrdealRewardListForViewReq.Serializer());
+            Create(new C2SSeasonDungeonInterruptSoulOrdealReq.Serializer());
+            Create(new C2SSeasonDungeonSoulOrdealCancelReadyReq.Serializer());
+
             Create(new C2SSetShortcutReq.Serializer());
             Create(new C2SShopBuyShopGoodsReq.Serializer());
             Create(new C2SShopGetShopGoodsListReq.Serializer());
@@ -791,6 +829,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SStageUnisonAreaChangeGetRecruitmentStateReq.Serializer());
             Create(new C2SStageUnisonAreaChangeReadyReq.Serializer());
             Create(new C2SStageUnisonAreaChangeReadyCancelReq.Serializer());
+            Create(new C2SStageGetSpAreaChangeIdFromNpcIdReq.Serializer());
+            Create(new C2SStageGetSpAreaChangeInfoReq.Serializer());
 
             Create(new C2SStampBonusCheckReq.Serializer());
             Create(new C2SStampBonusGetListReq.Serializer());
@@ -1309,7 +1349,32 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CQuestGetEndContentsGroupRes.Serializer());
             Create(new S2CQuestGetQuestScheduleInfoRes.Serializer());
 
-            Create(new S2CSeason62_26_16Ntc.Serializer());
+            Create(new S2CSeasonDungeonExecuteSoulOrdealNtc.Serializer());
+            Create(new S2CSeasonDungeonEndSoulOrdealNtc.Serializer());
+            Create(new S2CSeasonDungeonUpdateSoulOrdealObjectivesNtc.Serializer());
+            Create(new S2C_SEASON_62_22_16_NTC.Serializer());
+            Create(new S2CSeasonDungeonSetOmStateNtc.Serializer());
+            Create(new S2C_SEASON_62_28_16_NTC.Serializer());
+            Create(new S2C_SEASON_62_39_16_NTC.Serializer());
+            Create(new S2CSeasonDungeonAreaBuffEffectNtc.Serializer());
+            Create(new S2CSeasonDungeonGetIdFromNpcIdRes.Serializer());
+            Create(new S2CSeasonDungeonGetInfoRes.Serializer());
+            Create(new S2CSeasonDungeonGetExtendableBlockadeListFromNpcIdRes.Serializer());
+            Create(new S2CSeasonDungeonGetSoulOrdealListfromOmRes.Serializer());
+            Create(new S2CSeasonDungeonSoulOrdealReadyRes.Serializer());
+            Create(new S2CSeasonDungeonGroupReadyNtc.Serializer());
+            Create(new S2CSeasonDungeonExecuteSoulOrdealRes.Serializer());
+            Create(new S2CSeasonDungeonGetSoulOrdealRewardListRes.Serializer());
+            Create(new S2CSeasonDungeonReceiveSoulOrdealRewardBuffRes.Serializer());
+            Create(new S2CSeasonDungeonReceiveSoulOrdealRewardRes.Serializer());
+            Create(new S2CSeasonDungeonGetBlockadeIdFromOmRes.Serializer());
+            Create(new S2CSeasonDungeonGetExRequiredItemRes.Serializer());
+            Create(new S2CSeasonDungeonDeliverItemForExRes.Serializer());
+            Create(new S2CSeasonDungeonGetBlockadeIdFromNpcIdRes.Serializer());
+            Create(new S2CSeasonDungeonUpdateKeyPointDoorStatusRes.Serializer());
+            Create(new S2CSeasonDungeonGetSoulOrdealRewardListForViewRes.Serializer());
+            Create(new S2CSeasonDungeonInterruptSoulOrdealRes.Serializer());
+            Create(new S2CSeasonDungeonSoulOrdealCancelReadyRes.Serializer());
 
             Create(new S2CServerGameTimeGetBaseInfoRes.Serializer());
             Create(new S2CServerGetRealTimeRes.Serializer());
@@ -1370,8 +1435,6 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CSkillSetPresetAbilityNameRes.Serializer());
             Create(new S2CSkillSetPresetAbilityListRes.Serializer());
 
-            Create(new S2C_SEASON_62_38_16_NTC.Serializer());
-
             Create(new S2CSetCommunicationShortcutRes.Serializer());
             Create(new S2CSetShortcutRes.Serializer());
             Create(new S2CShopBuyShopGoodsRes.Serializer());
@@ -1384,9 +1447,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CStageUnisonAreaChangeBeginRecruitmentRes.Serializer());
             Create(new S2CStageUnisonAreaChangeGetRecruitmentStateRes.Serializer());
             Create(new S2CStageUnisonAreaChangeReadyRes.Serializer());
-            Create(new S2CStageTicketDungeonStartNtc.Serializer());
+            Create(new S2CStageDungeonStartNtc.Serializer());
             Create(new S2CStageUnisonAreaChangeReadyCancelRes.Serializer());
             Create(new S2CStageUnisonAreaReadyCancelNtc.Serializer());
+            Create(new S2CStageGetSpAreaChangeIdFromNpcIdRes.Serializer());
+            Create(new S2CStageGetSpAreaChangeInfoRes.Serializer());
 
             Create(new S2CInstanceTraningRoomGetEnemyListRes.Serializer());
             Create(new S2CInstanceTraningRoomSetEnemyRes.Serializer());

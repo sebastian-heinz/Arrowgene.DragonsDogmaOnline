@@ -73,11 +73,12 @@ namespace Arrowgene.Ddon.GameServer
             GpCourseManager = new GpCourseManager(this);
             WeatherManager = new WeatherManager(this);
             PartyQuestContentManager = new PartyQuestContentManager(this);
-            BonusDungeonManager = new BonusDungeonManager(this);
+            DungeonManager = new DungeonManager(this);
             BoardManager = new BoardManager(this);
             TimerManager = new TimerManager(this);
             ClanManager = new ClanManager(this);
             RpcManager = new RpcManager(this);
+            EpitaphRoadManager = new EpitaphRoadManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
@@ -108,11 +109,12 @@ namespace Arrowgene.Ddon.GameServer
         public GpCourseManager GpCourseManager { get; }
         public WeatherManager WeatherManager { get; }
         public PartyQuestContentManager PartyQuestContentManager { get; }
-        public BonusDungeonManager BonusDungeonManager { get; }
+        public DungeonManager DungeonManager { get; }
         public BoardManager BoardManager { get; }
         public TimerManager TimerManager { get; }
         public ClanManager ClanManager { get; }
         public RpcManager RpcManager { get; }
+        public EpitaphRoadManager EpitaphRoadManager { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
 
@@ -173,7 +175,7 @@ namespace Arrowgene.Ddon.GameServer
         public override GameClient NewClient(ITcpSocket socket)
         {
             GameClient newClient = new GameClient(socket,
-                new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver), ShopManager, AssetRepository);
+                new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver), this);
             ClientLookup.Add(newClient);
             return newClient;
         }
@@ -389,8 +391,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new InstanceGetOmInstantKeyValueAllHandler(this));
             AddHandler(new InstanceTraningRoomGetEnemyListHandler(this));
             AddHandler(new InstanceTraningRoomSetEnemyHandler(this));
-            AddHandler(new Instance_13_46_16_Handler(this));
-            AddHandler(new Instance_13_47_16_Handler(this));
+            AddHandler(new InstanceEnemyBadStatusStartHandler(this));
+            AddHandler(new InstanceEnemyBadStatusEndHandler(this));
 
             AddHandler(new ItemConsumeStorageItemHandler(this));
             AddHandler(new ItemGetStorageItemListHandler(this));
@@ -569,6 +571,27 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new EntryBoardEntryBoardItemExtendTimeoutHandler(this));
             AddHandler(new EntryBoardPartyRecruitCategoryListHandler(this));
 
+            AddHandler(new SeasonDungeon62_40_16_Handler(this));
+            AddHandler(new SeasonDungeonGetIdFromNpcIdHandler(this));
+            AddHandler(new SeasonDungeonGetInfoHandler(this));
+            AddHandler(new SeasonDungeonGetExtendableBlockadeListFromNpcIdHandler(this));
+            AddHandler(new SeasonDungeonGetSoulOrdealListFromOmHandler(this));
+            AddHandler(new SeasonDungeonSoulOrdealReadyHandler(this));
+            AddHandler(new SeasonDungeonExecuteSoulOrdealHandler(this));
+            AddHandler(new SeasonDungeonGetSoulOrdealRewardListHandler(this));
+            AddHandler(new SeasonDungeonReceiveSoulOrdealBuffHandler(this));
+            AddHandler(new SeasonDungeonReceiveSoulOrdealRewardHandler(this));
+            AddHandler(new SeasonDungeon62_12_16_Handler(this));
+            AddHandler(new SeasonDungeonGetBlockadeIdFromOmHandler(this));
+            AddHandler(new SeasonDungeonGetExRequiredItemHandler(this));
+            AddHandler(new SeasonDungeonDeliverItemForExHandler(this));
+            AddHandler(new SeasonDungeonGetBlockadeIdFromNpcIdHandler(this));
+            AddHandler(new SeasonDungeonGetStatueStateHandler(this));
+            AddHandler(new SeasonDungeonUpdateKeyPointDoorStatusHandler(this));
+            AddHandler(new SeasonDungeonGetSoulOrdealRewardListForViewHandler(this));
+            AddHandler(new SeasonDungeonInterruptSoulOrdealHandler(this));
+            AddHandler(new SeasonDungeonSoulOrdealCancelReadyHandler(this));
+
             AddHandler(new ServerGameTimeGetBaseinfoHandler(this));
             AddHandler(new ServerGetGameSettingHandler(this));
             AddHandler(new ServerGetRealTimeHandler(this));
@@ -624,6 +647,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new StageUnisonAreaChangeGetRecruitmentStateHandler(this));
             AddHandler(new StageUnisonAreaChangeReadyHandler(this));
             AddHandler(new StageUnisonAreaChangeReadyCancelHandler(this));
+            AddHandler(new StageGetSpAreaChangeIdFromNpcIdHandler(this));
+            AddHandler(new StageGetSpAreaChangeInfoHandler(this));
 
             AddHandler(new StampBonusCheckHandler(this));
 			AddHandler(new StampBonusGetListHandler(this));

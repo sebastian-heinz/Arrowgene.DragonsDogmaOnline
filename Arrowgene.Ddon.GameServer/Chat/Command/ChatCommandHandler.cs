@@ -33,6 +33,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command
             AddCommand(new FinishQuestCommand(server));
             AddCommand(new GivePawnCommand(server));
             AddCommand(new SkipTutorialCommand(server));
+            AddCommand(new UpdateOmCommand(server));
             AddCommand(new GivePowerfulItemsCommand(server));
             AddCommand(new WarpCommand(server));
             AddCommand(new TimeCommand(server));

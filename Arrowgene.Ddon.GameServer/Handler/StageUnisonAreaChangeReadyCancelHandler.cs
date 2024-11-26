@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CStageUnisonAreaChangeReadyCancelRes Handle(GameClient client, C2SStageUnisonAreaChangeReadyCancelReq request)
         {
-            Server.BonusDungeonManager.EndPartyReadyCheck(client.Party);
+            Server.DungeonManager.EndPartyReadyCheck(client.Party);
 
             client.Party.SendToAll(new S2CStageUnisonAreaReadyCancelNtc());
             return new S2CStageUnisonAreaChangeReadyCancelRes();
