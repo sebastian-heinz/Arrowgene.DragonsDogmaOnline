@@ -5,7 +5,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class InstanceEnemyBadStatusEndHandler : GameStructurePacketHandler<C2SInstanceEnemyBadStatusEnd>
+    public class InstanceEnemyBadStatusEndHandler : GameStructurePacketHandler<C2SInstanceEnemyBadStatusEndNtc>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceEnemyBadStatusEndHandler));
 
@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             _Server = server;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SInstanceEnemyBadStatusEnd> packet)
+        public override void Handle(GameClient client, StructurePacket<C2SInstanceEnemyBadStatusEndNtc> packet)
         {
             Logger.Debug($"{packet.Structure.LayoutId}\t{packet.Structure.PosId}.{packet.Structure.Unk4}.{packet.Structure.Unk5}");
 

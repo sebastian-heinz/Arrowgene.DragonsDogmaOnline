@@ -7,6 +7,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CSeasonDungeonSetOmStateNtc : IPacketStructure
     {
+        public S2CSeasonDungeonSetOmStateNtc()
+        {
+            LayoutId = new CDataStageLayoutId();
+        }
+
         public PacketId Id => PacketId.S2C_SEASON_DUNGEON_SET_OM_STATE_NTC;
 
         public CDataStageLayoutId LayoutId { get; set; }

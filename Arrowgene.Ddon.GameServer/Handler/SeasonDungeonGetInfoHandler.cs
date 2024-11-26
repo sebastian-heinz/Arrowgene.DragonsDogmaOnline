@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             var dungeonInfo = Server.EpitaphRoadManager.GetDungeonInfo(request.DungeonId);
 
-            result.DungeonInfo.Unk0 = 40;
+            result.DungeonInfo.Unk0 = 40; // Unsure what 40 does, was in packet capture
             result.DungeonInfo.Name = dungeonInfo.Name;
             result.DungeonInfo.DungeonId = dungeonInfo.DungeonId;
 

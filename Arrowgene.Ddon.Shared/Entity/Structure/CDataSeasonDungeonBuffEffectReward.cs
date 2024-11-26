@@ -6,6 +6,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataSeasonDungeonBuffEffectReward()
         {
+            BuffName = string.Empty;
         }
 
         public uint BuffEffect { get; set; }

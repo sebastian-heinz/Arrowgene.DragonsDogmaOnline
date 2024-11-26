@@ -9,15 +9,12 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
 {
     public class UpdateOmCommand : ChatCommand
     {
-        public override AccountStateType AccountState => AccountStateType.User;
+        public override AccountStateType AccountState => AccountStateType.Admin;
         public override string Key => "updateom";
-        public override string HelpText => "usage: `/updateom groupid posid value`";
-
-        private DdonGameServer Server;
+        public override string HelpText => "usage: `/updateom groupid posid value [range]`";
 
         public UpdateOmCommand(DdonGameServer server)
         {
-            Server = server;
         }
 
         public override void Execute(string[] command, GameClient client, ChatMessage message, List<ChatResponse> responses)

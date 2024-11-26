@@ -8,6 +8,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public C2SSeasonDungeonGetStatueStateNtc()
         {
+            LayoutId = new CDataStageLayoutId();
         }
 
         public PacketId Id => PacketId.C2S_SEASON_DUNGEON_GET_STATUE_STATE_NTC;

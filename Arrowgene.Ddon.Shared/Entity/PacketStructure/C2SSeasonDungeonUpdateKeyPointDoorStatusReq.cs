@@ -8,12 +8,12 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public C2SSeasonDungeonUpdateKeyPointDoorStatusReq()
         {
-            StageLayoutId = new CDataStageLayoutId();
+            LayoutId = new CDataStageLayoutId();
         }
 
         public PacketId Id => PacketId.C2S_SEASON_DUNGEON_UPDATE_KEY_POINT_DOOR_STATUS_REQ;
 
-        public CDataStageLayoutId StageLayoutId { get; set; }
+        public CDataStageLayoutId LayoutId { get; set; }
         public uint PosId { get; set; }
         public byte Unk0 { get; set; }
 
@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
             public override void Write(IBuffer buffer, C2SSeasonDungeonUpdateKeyPointDoorStatusReq obj)
             {
-                WriteEntity(buffer, obj.StageLayoutId);
+                WriteEntity(buffer, obj.LayoutId);
                 WriteUInt32(buffer, obj.PosId);
                 WriteByte(buffer, obj.Unk0);
             }
@@ -29,7 +29,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override C2SSeasonDungeonUpdateKeyPointDoorStatusReq Read(IBuffer buffer)
             {
                 C2SSeasonDungeonUpdateKeyPointDoorStatusReq obj = new C2SSeasonDungeonUpdateKeyPointDoorStatusReq();
-                obj.StageLayoutId = ReadEntity<CDataStageLayoutId>(buffer);
+                obj.LayoutId = ReadEntity<CDataStageLayoutId>(buffer);
                 obj.PosId = ReadUInt32(buffer);
                 obj.Unk0 = ReadByte(buffer);
                 return obj;

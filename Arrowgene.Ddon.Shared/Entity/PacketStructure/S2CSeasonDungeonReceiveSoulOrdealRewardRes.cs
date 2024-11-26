@@ -11,6 +11,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public S2CSeasonDungeonReceiveSoulOrdealRewardRes()
         {
+            RewardList = new List<CDataSoulOrdealRewardItem>();
         }
 
         public List<CDataSoulOrdealRewardItem> RewardList { get; set; }

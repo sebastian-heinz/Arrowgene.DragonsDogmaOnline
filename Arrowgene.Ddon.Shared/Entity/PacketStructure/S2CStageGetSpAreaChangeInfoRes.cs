@@ -12,6 +12,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public S2CStageGetSpAreaChangeInfoRes()
         {
+            Unk1 = string.Empty;
+            EntryCostList = new List<CDataStageDungeonItem>();
         }
 
         public uint Unk0 { get; set; }

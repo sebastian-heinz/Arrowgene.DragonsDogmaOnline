@@ -51,6 +51,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
             return 0;
         }
 
+        // TODO: Make these configurable.
         private readonly List<(EpitaphBuffId BuffId, uint ItemId, uint Amount, double Chance)> gDropConfigs = new List<(EpitaphBuffId BuffId, uint ItemId, uint Amount, double Chance)>()
         {
             (EpitaphBuffId.EnemyGoldDropIncrease,  7789, 100, 0.5),

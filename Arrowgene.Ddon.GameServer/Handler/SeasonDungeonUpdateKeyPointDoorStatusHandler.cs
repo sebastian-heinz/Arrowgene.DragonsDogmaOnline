@@ -15,24 +15,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CSeasonDungeonUpdateKeyPointDoorStatusRes Handle(GameClient client, C2SSeasonDungeonUpdateKeyPointDoorStatusReq request)
         {
-            Logger.Info($"KeyPointDoor: StageId{request.StageLayoutId.AsStageId()}, PosId={request.PosId}");
+            Logger.Info($"KeyPointDoor: StageId{request.LayoutId.AsStageId()}, PosId={request.PosId}");
 
-            var doorState = Server.EpitaphRoadManager.GetMysteriousDoorState(client.Party, request.StageLayoutId.AsStageId(), request.PosId);
+            var doorState = Server.EpitaphRoadManager.GetMysteriousDoorState(client.Party, request.LayoutId.AsStageId(), request.PosId);
 
             string message = "";
             if (doorState.State == SoulOrdealOmState.DoorLocked)
             {
                 message = "A mysterious power was scattered all around";
-                Server.EpitaphRoadManager.SetMysteriousDoorState(client.Party, request.StageLayoutId.AsStageId(), request.PosId, SoulOrdealOmState.ScatterPowers);
+                Server.EpitaphRoadManager.SetMysteriousDoorState(client.Party, request.LayoutId.AsStageId(), request.PosId, SoulOrdealOmState.ScatterPowers);
 
                 client.Party.SendToAll(new S2CSeasonDungeonSetOmStateNtc()
                 {
-                    LayoutId = request.StageLayoutId,
+                    LayoutId = request.LayoutId,
                     PosId = request.PosId,
                     State = SoulOrdealOmState.ScatterPowers
                 });
 
-                Server.EpitaphRoadManager.SpreadMysteriousPowers(client.Party, request.StageLayoutId.AsStageId(), request.PosId);
+                Server.EpitaphRoadManager.SpreadMysteriousPowers(client.Party, request.LayoutId.AsStageId(), request.PosId);
             }
             else if (doorState.State == SoulOrdealOmState.ScatterPowers)
             {
@@ -43,7 +43,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 message = "The mysterious door has opened";
                 client.Party.SendToAll(new S2CSeasonDungeonSetOmStateNtc()
                 {
-                    LayoutId = request.StageLayoutId,
+                    LayoutId = request.LayoutId,
                     PosId = request.PosId,
                     State = SoulOrdealOmState.DoorUnlocked
                 });

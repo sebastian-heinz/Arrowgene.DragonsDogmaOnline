@@ -75,6 +75,7 @@ namespace Arrowgene.Ddon.Shared.Asset
         public uint Param1;
         public uint Param2;
 
+        // TODO: Come up with a way to internationalize these strings
         public string Label()
         {
             uint counter = 0;

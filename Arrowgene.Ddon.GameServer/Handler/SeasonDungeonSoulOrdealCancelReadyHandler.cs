@@ -27,12 +27,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             else
             {
                 Server.DungeonManager.MarkNotReady(client.Party, client.Character);
-#if false
-                client.Send(new S2CSeasonDungeonEndSoulOrdealNtc()
-                {
-                    EndState = SoulOrdealEndState.Cancel
-                });
-#endif
             }
 
             return new S2CSeasonDungeonSoulOrdealCancelReadyRes()

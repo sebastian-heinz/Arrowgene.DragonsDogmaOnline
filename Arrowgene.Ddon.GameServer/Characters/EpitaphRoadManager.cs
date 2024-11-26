@@ -1310,6 +1310,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // If the player was very unlucky,
                     // put some souls or water flasks into the
                     // result as seen in player videos
+                    // TODO: Make this configurable
                     results.Add(new InstancedGatheringItem()
                     {
                         ItemId = (gatheringPoint == null) ? 9393 : dungeonInfo.SoulItemId,

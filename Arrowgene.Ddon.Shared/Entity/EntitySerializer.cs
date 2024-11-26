@@ -610,8 +610,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SInstancePlTouchOmNtc.Serializer());
             Create(new C2SInstanceCharacterEndBadStatusNtc.Serializer());
             Create(new C2SInstanceCharacterStartBadStatusNtc.Serializer());
-            Create(new C2SInstanceEnemyBadStatusStart.Serializer());
-            Create(new C2SInstanceEnemyBadStatusEnd.Serializer());
+            Create(new C2SInstanceEnemyBadStatusStartNtc.Serializer());
+            Create(new C2SInstanceEnemyBadStatusEndNtc.Serializer());
 
             Create(new C2SItemConsumeStorageItemReq.Serializer());
             Create(new C2SItemGetStorageItemListReq.Serializer());

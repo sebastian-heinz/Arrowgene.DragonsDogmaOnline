@@ -14,10 +14,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CStageGetSpAreaChangeIdFromNpcIdRes Handle(GameClient client, C2SStageGetSpAreaChangeIdFromNpcIdReq packet)
         {
-            return new S2CStageGetSpAreaChangeIdFromNpcIdRes()
-            {
-                StageId = 558
-            };
+            // TODO: Not sure what this req/res is for
+            return new S2CStageGetSpAreaChangeIdFromNpcIdRes();
         }
     }
 }

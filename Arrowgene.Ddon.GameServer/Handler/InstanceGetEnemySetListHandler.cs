@@ -1,35 +1,30 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Crypto;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class InstanceGetEnemySetListHandler : StructurePacketHandler<GameClient, C2SInstanceGetEnemySetListReq>
+    public class InstanceGetEnemySetListHandler : GameRequestPacketHandler<C2SInstanceGetEnemySetListReq, S2CInstanceGetEnemySetListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceGetEnemySetListHandler));
 
-        private DdonGameServer _Server;
-
         public InstanceGetEnemySetListHandler(DdonGameServer server) : base(server)
         {
-            _Server = server;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SInstanceGetEnemySetListReq> request)
+        public override S2CInstanceGetEnemySetListRes Handle(GameClient client, C2SInstanceGetEnemySetListReq request)
         {
-            StageId stageId = StageId.FromStageLayoutId(request.Structure.LayoutId);
-            byte subGroupId = request.Structure.SubGroupId;
+            StageId stageId = StageId.FromStageLayoutId(request.LayoutId);
+            byte subGroupId = request.SubGroupId;
             client.Character.Stage = stageId;
 
-            Logger.Info($"GroupId={request.Structure.LayoutId.GroupId}, SubGroupId={request.Structure.SubGroupId}, LayerNo={request.Structure.LayoutId.LayerNo}");
+            Logger.Info($"GroupId={request.LayoutId.GroupId}, SubGroupId={request.SubGroupId}, LayerNo={request.LayoutId.LayerNo}");
 
             Quest quest = null;
             bool IsQuestControlled = false;
@@ -67,9 +62,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var questStateManager = QuestManager.GetQuestStateManager(client, quest);
                 instancedEnemyList = questStateManager.GetInstancedEnemies(quest, stageId, subGroupId);
             }
-            else if (_Server.EpitaphRoadManager.TrialHasEnemies(client.Party, stageId, subGroupId))
+            else if (Server.EpitaphRoadManager.TrialHasEnemies(client.Party, stageId, subGroupId))
             {
-                instancedEnemyList = _Server.EpitaphRoadManager.GetInstancedEnemies(client.Party, stageId, subGroupId);
+                instancedEnemyList = Server.EpitaphRoadManager.GetInstancedEnemies(client.Party, stageId, subGroupId);
             }
             else
             {
@@ -85,7 +80,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     // TODO: Add for HOBO dungeon
                     if (StageManager.IsEpitaphRoadStageId(stageId))
                     {
-                        enemy.BloodOrbs = _Server.EpitaphRoadManager.CalculateBloodOrbBonus(client.Party, em);
+                        enemy.BloodOrbs = Server.EpitaphRoadManager.CalculateBloodOrbBonus(client.Party, em);
                     }
                     client.Party.InstanceEnemyManager.SetInstanceEnemy(stageId, em.Index, em);
                 }
@@ -118,7 +113,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 client.Party.SendToAll(subgroupNtc);
             }
 
-            client.Send(response);
+            return response;
         }
     }
 }

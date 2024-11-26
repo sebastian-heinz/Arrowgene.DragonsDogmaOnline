@@ -14,12 +14,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CStageGetSpAreaChangeInfoRes Handle(GameClient client, C2SStageGetSpAreaChangeInfoReq packet)
         {
-            return new S2CStageGetSpAreaChangeInfoRes()
-            {
-                Unk0 = 19,
-                Unk1 = "Memory of Megadosys",
-                StageId = 559,
-            };
+            // TODO: Not sure what this req/res is for
+            return new S2CStageGetSpAreaChangeInfoRes();
         }
     }
 }

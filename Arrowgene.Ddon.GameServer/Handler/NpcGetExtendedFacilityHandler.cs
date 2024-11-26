@@ -92,6 +92,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 #if false
+            // NPC which controls entrance to Memory of Megadosys
+            // Currently commented out since area is not completed and personal quest is missing
             [NpcId.Morgan] = new List<CDataNpcExtendedFacilityMenuItem>()
             {
                 // Memory of Megadosys

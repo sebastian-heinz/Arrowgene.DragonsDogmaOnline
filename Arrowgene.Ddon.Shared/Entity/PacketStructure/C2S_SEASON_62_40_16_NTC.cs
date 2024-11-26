@@ -6,6 +6,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class C2S_SEASON_62_40_16_NTC : IPacketStructure
     {
+        public C2S_SEASON_62_40_16_NTC()
+        {
+            LayoutId = new CDataStageLayoutId();
+        }
+
         /// <summary>
         /// Packet is sent inside the lobby area of Epitaph.
         /// Seems to be related to things like "Memory of Megadosys: War God Space"
