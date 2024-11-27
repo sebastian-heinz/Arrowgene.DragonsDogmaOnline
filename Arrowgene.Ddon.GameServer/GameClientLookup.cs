@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Network;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer
 {
@@ -83,6 +86,26 @@ namespace Arrowgene.Ddon.GameServer
             }
 
             return null;
+        }
+
+        public void SendToAll<TResStruct>(TResStruct res)
+            where TResStruct : class, IPacketStructure, new()
+        {
+            StructurePacket<TResStruct> packet = new StructurePacket<TResStruct>(res);
+            foreach (GameClient client in GetAll())
+            {
+                client.Send(packet);
+            }
+        }
+
+        public void EnqueueToAll<TResStruct>(TResStruct res, PacketQueue queue)
+            where TResStruct : class, IPacketStructure, new()
+        {
+            StructurePacket<TResStruct> packet = new StructurePacket<TResStruct>(res);
+            foreach (GameClient client in GetAll())
+            {
+                queue.Enqueue((client, packet));
+            }
         }
     }
 }

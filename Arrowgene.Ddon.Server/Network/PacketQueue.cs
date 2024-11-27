@@ -6,7 +6,8 @@ namespace Arrowgene.Ddon.Server.Network
 {
     public class PacketQueue : Queue<(Client Client, Packet Packet)>
     {
-        public PacketQueue() { }
+        public PacketQueue() : base() { }
+        public PacketQueue(IEnumerable<(Client Client, Packet Packet)> collection) : base(collection) { }
         public void Send()
         {
             foreach ((Client Client, Packet Packet) in this)

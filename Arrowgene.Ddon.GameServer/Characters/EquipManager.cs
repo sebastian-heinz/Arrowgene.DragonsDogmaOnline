@@ -1,6 +1,6 @@
 #nullable enable
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -119,8 +119,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public (IPacketStructure, IPacketStructure) HandleChangeEquipList(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, List<CDataCharacterEquipInfo> changeCharacterEquipList, ItemNoticeType updateType, List<StorageType> storageTypes, DbConnection? connectionIn = null)
+        public PacketQueue HandleChangeEquipList(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, List<CDataCharacterEquipInfo> changeCharacterEquipList, ItemNoticeType updateType, List<StorageType> storageTypes, DbConnection? connectionIn = null)
         {
+            PacketQueue queue = new();
+
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
             {
                 UpdateType = updateType
@@ -238,7 +240,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // TODO: Unk0
                 };
 
-                return (updateCharacterItemNtc, changeCharacterEquipNtc);
+                client.Enqueue(updateCharacterItemNtc, queue);
+                server.ClientLookup.EnqueueToAll(changeCharacterEquipNtc, queue);
+
+                return queue;
             } 
             else if(characterToEquipTo is Pawn pawn)
             {
@@ -251,7 +256,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // TODO: Unk0
                 };
 
-                return (updateCharacterItemNtc, changePawnEquipNtc);
+                client.Enqueue(updateCharacterItemNtc, queue);
+                server.ClientLookup.EnqueueToAll(changePawnEquipNtc, queue);
             }
 
             throw new ResponseErrorException(ErrorCode.ERROR_CODE_FAIL); //TODO: Find a better code.

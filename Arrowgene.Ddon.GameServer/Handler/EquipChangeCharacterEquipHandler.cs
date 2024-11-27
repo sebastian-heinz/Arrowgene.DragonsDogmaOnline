@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class EquipChangeCharacterEquipHandler : GameRequestPacketHandler<C2SEquipChangeCharacterEquipReq, S2CEquipChangeCharacterEquipRes>
+    public class EquipChangeCharacterEquipHandler : GameRequestPacketQueueHandler<C2SEquipChangeCharacterEquipReq, S2CEquipChangeCharacterEquipRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(EquipChangeCharacterEquipHandler));
 
@@ -19,9 +19,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             equipManager = server.EquipManager;
         }
 
-        public override S2CEquipChangeCharacterEquipRes Handle(GameClient client, C2SEquipChangeCharacterEquipReq request)
+        public override PacketQueue Handle(GameClient client, C2SEquipChangeCharacterEquipReq request)
         {
             (S2CItemUpdateCharacterItemNtc itemNtc, S2CEquipChangeCharacterEquipNtc equipNtc) equipResult = (null, null);
+
+            PacketQueue queue = new();
 
             if (!Server.EquipManager.CanMeetStorageRequirements(Server, client, client.Character, request.ChangeCharacterEquipList, new List<StorageType>() { StorageType.ItemBagEquipment }))
             {
@@ -30,27 +32,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Server.Database.ExecuteInTransaction(connection =>
             {
-                equipResult = ((S2CItemUpdateCharacterItemNtc, S2CEquipChangeCharacterEquipNtc))equipManager.HandleChangeEquipList(
+                queue.AddRange(equipManager.HandleChangeEquipList(
                     Server, client,
                     client.Character,
                     request.ChangeCharacterEquipList,
                     ItemNoticeType.ChangeEquip,
                     new List<StorageType>() { StorageType.ItemBagEquipment },
-                    connection);
+                    connection));
             });
 
-            client.Send(equipResult.itemNtc);
-
-            foreach (Client otherClient in Server.ClientLookup.GetAll())
-            {
-                otherClient.Send(equipResult.equipNtc); //TODO: Investigate if we need to send this to *everyone*.
-            }
-
-            return new S2CEquipChangeCharacterEquipRes()
+            client.Enqueue(new S2CEquipChangeCharacterEquipRes()
             {
                 CharacterEquipList = request.ChangeCharacterEquipList
                 // TODO: Unk0
-            };
+            }, queue);
+
+            return queue;
         }
     }
 }

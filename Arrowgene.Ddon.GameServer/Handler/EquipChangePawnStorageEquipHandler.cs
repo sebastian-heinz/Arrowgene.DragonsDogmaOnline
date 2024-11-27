@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
@@ -8,7 +9,7 @@ using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class EquipChangePawnStorageEquipHandler : GameRequestPacketHandler<C2SEquipChangePawnStorageEquipReq, S2CEquipChangePawnStorageEquipRes>
+    public class EquipChangePawnStorageEquipHandler : GameRequestPacketQueueHandler<C2SEquipChangePawnStorageEquipReq, S2CEquipChangePawnStorageEquipRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(EquipChangePawnStorageEquipHandler));
         
@@ -19,11 +20,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             equipManager = server.EquipManager;
         }
 
-        public override S2CEquipChangePawnStorageEquipRes Handle(GameClient client, C2SEquipChangePawnStorageEquipReq request)
+        public override PacketQueue Handle(GameClient client, C2SEquipChangePawnStorageEquipReq request)
         {
-            (S2CItemUpdateCharacterItemNtc itemNtc, S2CEquipChangePawnEquipNtc equipNtc) equipResult = (null, null);
-
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
+            PacketQueue queue = new();
+            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).SingleOrDefault()
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID);
 
             if (!Server.EquipManager.CanMeetStorageRequirements(Server, client, pawn, request.ChangeCharacterEquipList, new List<StorageType>() { StorageType.StorageBoxNormal }))
             {
@@ -32,28 +33,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Server.Database.ExecuteInTransaction(connection =>
             {
-                equipResult = ((S2CItemUpdateCharacterItemNtc, S2CEquipChangePawnEquipNtc))
-                equipManager.HandleChangeEquipList(
+                queue.AddRange(equipManager.HandleChangeEquipList(
                     Server,
                     client,
                     pawn,
                     request.ChangeCharacterEquipList,
                     ItemNoticeType.ChangeStoragePawnEquip,
                     ItemManager.BoxStorageTypes,
-                    connection);
+                    connection));
             });
 
-            client.Send(equipResult.itemNtc);
-
-            //Only the party needs to be updated, because only they can see pawns.
-            client.Party.SendToAllExcept(equipResult.equipNtc, client);
-
-            return new S2CEquipChangePawnStorageEquipRes()
+            client.Enqueue(new S2CEquipChangePawnStorageEquipRes()
             {
                 PawnId = request.PawnId,
                 CharacterEquipList = request.ChangeCharacterEquipList
                 // TODO: Unk0
-            };
+            }, queue);
+
+            return queue;
         }
     }
 }

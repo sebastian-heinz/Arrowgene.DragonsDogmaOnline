@@ -1,6 +1,7 @@
 #nullable enable
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -68,26 +69,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     EquipType = EquipType.Performance,
                 };
 
-                (S2CItemUpdateCharacterItemNtc itemNtc, S2CEquipChangeCharacterEquipNtc equipNtc) equipResult = (null, null);
+                PacketQueue queue = new();
                 Server.Database.ExecuteInTransaction(connection =>
                 {
-                    equipResult =((S2CItemUpdateCharacterItemNtc itemNtc, S2CEquipChangeCharacterEquipNtc equipNtc)) Server.EquipManager.HandleChangeEquipList(
+                    queue.AddRange(Server.EquipManager.HandleChangeEquipList(
                         Server,
                         client,
                         client.Character,
                         new List<CDataCharacterEquipInfo>() { equipInfo },
                         ItemNoticeType.GatherEquipItem,
                         new List<StorageType>() { StorageType.ItemBagEquipment },
-                        connection);
+                        connection));
                 });
-                client.Send(equipResult.itemNtc);
-
-                // TODO: Can this be optimized? So only players who need to see
-                //       get the update?
-                foreach (var otherClient in Server.ClientLookup.GetAll())
-                {
-                    otherClient.Send(equipResult.equipNtc);
-                }
+                queue.Send();
             }
         }
     }
