@@ -1,14 +1,10 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Context;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -21,11 +17,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override S2CStageAreaChangeRes Handle(GameClient client, C2SStageAreaChangeReq packet, PacketQueue queue)
+        public override PacketQueue Handle(GameClient client, C2SStageAreaChangeReq packet)
         {
+            PacketQueue queue = new();
             S2CStageAreaChangeRes res = new S2CStageAreaChangeRes();
             res.StageNo = (uint) StageManager.ConvertIdToStageNo(packet.StageId);
-            res.IsBase = false; // This is set true for audience chamber and WDT for exmaple
+            res.IsBase = false; // This is set true for audience chamber and WDT for example
+
+            // Order is notices sent manually, then the response, then other queued notices for Epitaph Road stuff.
+            client.Enqueue(res, queue); 
 
             uint previousStageId = client.Character.Stage.Id;
 
@@ -85,8 +85,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             Server.EpitaphRoadManager.AreaChange(client, packet.StageId, queue);
-
-            return res;
+            return queue;
         }
     }
 }
