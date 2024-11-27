@@ -11,7 +11,7 @@
         {
             "trial_name": "Trial of the Heroes",
             "constraints": [
-                {"type": "DefeatEnemyCount", "priority": "Primary", "Param1": 20},
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
                 {"type": "CannotBeAffectedByAbnormalStatus", "priority": "Secondary", "Param1": 3},
                 {"type": "CompleteConditionsWithinTimeLimit", "priority": "Secondary", "Param1": 60}
             ],
@@ -40,36 +40,28 @@
                             "enemy_id": "0x010512",
                             "level": 83,
                             "exp": 8400,
-                            "named_enemy_params_id": 2286,
-                            "repop_count": 50,
-                            "repop_wait_second": 60
+                            "named_enemy_params_id": 2286
                         },
                         {
                             "comment" : "Frost Corp Tortuerer",
                             "enemy_id": "0x010512",
                             "level": 83,
                             "exp": 8400,
-                            "named_enemy_params_id": 2286,
-                            "repop_count": 50,
-                            "repop_wait_second": 60
+                            "named_enemy_params_id": 2286
                         },
                         {
                             "comment" : "Frost Skeleton",
                             "enemy_id": "0x010315",
                             "level": 83,
                             "exp": 8400,
-                            "named_enemy_params_id": 2286,
-                            "repop_count": 50,
-                            "repop_wait_second": 60
+                            "named_enemy_params_id": 2286
                         },
                         {
                             "comment" : "Frost Skeleton",
                             "enemy_id": "0x010315",
                             "level": 83,
                             "exp": 8400,
-                            "named_enemy_params_id": 2286,
-                            "repop_count": 50,
-                            "repop_wait_second": 60
+                            "named_enemy_params_id": 2286
                         }
                     ]
                 }
@@ -78,7 +70,7 @@
         {
             "trial_name": "Trial of the Souls",
             "constraints": [
-                {"type": "DefeatEnemyCount", "priority": "Primary", "Param1": 20},
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
                 {"type": "CannotDieMoreThanOnce", "priority": "Secondary"},
                 {"type": "CompleteConditionsWithinTimeLimit", "priority": "Secondary", "Param1": 180}
             ],
@@ -115,36 +107,28 @@
                             "enemy_id": "0x010511",
                             "level": 83,
                             "exp": 8400,
-                            "named_enemy_params_id": 2286,
-                            "repop_count": 50,
-                            "repop_wait_second": 60
+                            "named_enemy_params_id": 2286
                         },
                         {
                             "comment" : "Frost Corp Punisher",
                             "enemy_id": "0x010511",
                             "level": 83,
                             "exp": 8400,
-                            "named_enemy_params_id": 2286,
-                            "repop_count": 50,
-                            "repop_wait_second": 60
+                            "named_enemy_params_id": 2286
                         },
                         {
                             "comment" : "Frost Skeleton Brute",
                             "enemy_id": "0x010321",
                             "level": 83,
                             "exp": 8400,
-                            "named_enemy_params_id": 2286,
-                            "repop_count": 50,
-                            "repop_wait_second": 60
+                            "named_enemy_params_id": 2286
                         },
                         {
                             "comment" : "Frost Skeleton Brute",
                             "enemy_id": "0x010321",
                             "level": 83,
                             "exp": 8400,
-                            "named_enemy_params_id": 2286,
-                            "repop_count": 50,
-                            "repop_wait_second": 60
+                            "named_enemy_params_id": 2286
                         }
                     ]
                 }

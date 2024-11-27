@@ -198,7 +198,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 return false;
             }
 
-            if (!_CommonEnemyDeserializer.ParseEnemyGroups(assetData.EnemyGroups, jQuest))
+            if (!_CommonEnemyDeserializer.ParseEnemyGroups(_QuestDrops, assetData.EnemyGroups, jQuest))
             {
                 Logger.Error($"Unable to create the quest '{assetData.QuestId}'. Skipping.");
                 return false;
@@ -1100,11 +1100,6 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 }
             }
 
-            return true;
-        }
-
-        private bool ParseAltConditions(JsonElement jAltConditions, QuestBlock questBlock)
-        {
             return true;
         }
 

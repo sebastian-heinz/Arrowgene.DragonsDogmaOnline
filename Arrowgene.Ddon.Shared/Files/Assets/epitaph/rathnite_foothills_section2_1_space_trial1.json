@@ -13,7 +13,7 @@
             "constraints": [
                 {"type": "DefeatEnemyCount", "priority": "Primary", "Param1": 20},
                 {"type": "CannotDieMoreThanOnce", "priority": "Secondary"},
-                {"type": "DefeatEnemyWithAbnormalStatusCount", "priority": "Secondary", "Param1": 3}
+                {"type": "DefeatEnemyWithAbnormalStatusCount", "priority": "Secondary", "Param1": 5}
             ],
             "cost": [],
             "item_rewards": [
@@ -37,8 +37,7 @@
                             "named_enemy_params_id": 2287,
                             "is_boss": true,
                             "repop_count": 50,
-                            "repop_wait_second": 0,
-                            "is_required": false
+                            "repop_wait_second": 0
                         },
                         {
                             "comment" : "Grim Goblin Fighter",
@@ -48,8 +47,7 @@
                             "index": 0,
                             "named_enemy_params_id": 2286,
                             "repop_count": 50,
-                            "repop_wait_second": 0,
-                            "is_required": false
+                            "repop_wait_second": 0
                         },
                         {
                             "comment" : "Grim Goblin Fighter",
@@ -59,8 +57,7 @@
                             "index": 1,
                             "named_enemy_params_id": 2286,
                             "repop_count": 50,
-                            "repop_wait_second": 0,
-                            "is_required": false
+                            "repop_wait_second": 0
                         },
                         {
                             "comment" : "Grim Goblin Fighter",
@@ -70,8 +67,7 @@
                             "index": 2,
                             "named_enemy_params_id": 2286,
                             "repop_count": 50,
-                            "repop_wait_second": 0,
-                            "is_required": false
+                            "repop_wait_second": 0
                         },
                         {
                             "comment" : "Grim Goblin Fighter",
@@ -81,8 +77,7 @@
                             "index": 3,
                             "named_enemy_params_id": 2286,
                             "repop_count": 50,
-                            "repop_wait_second": 0,
-                            "is_required": false
+                            "repop_wait_second": 0
                         },
                         {
                             "comment" : "Grim Goblin Fighter",
@@ -92,8 +87,7 @@
                             "index": 4,
                             "named_enemy_params_id": 2286,
                             "repop_count": 50,
-                            "repop_wait_second": 0,
-                            "is_required": false
+                            "repop_wait_second": 0
                         },
                         {
                             "comment" : "Grim Goblin Fighter",
@@ -103,8 +97,7 @@
                             "index": 5,
                             "named_enemy_params_id": 2286,
                             "repop_count": 50,
-                            "repop_wait_second": 0,
-                            "is_required": false
+                            "repop_wait_second": 0
                         }
                    ]
                 }
@@ -115,7 +108,7 @@
             "constraints": [
                 {"type": "DefeatEnemyCount", "priority": "Primary", "Param1": 20},
                 {"type": "CannotDieMoreThanOnce", "priority": "Secondary"},
-                {"type": "DefeatEnemyWithAbnormalStatusCount", "priority": "Secondary", "Param1": 3}
+                {"type": "DefeatEnemyWithAbnormalStatusCount", "priority": "Secondary", "Param1": 5}
             ],
             "cost": [
                 {"item_id": 18656, "amount": 20}
@@ -142,8 +135,7 @@
                             "named_enemy_params_id": 2287,
                             "is_boss": true,
                             "repop_count": 50,
-                            "repop_wait_second": 0,
-                            "is_required": false
+                            "repop_wait_second": 0
                         },
                         {
                             "comment" : "Goblin Shaman",
@@ -153,8 +145,7 @@
                             "index": 1,
                             "named_enemy_params_id": 2286,
                             "repop_count": 50,
-                            "repop_wait_second": 0,
-                            "is_required": false
+                            "repop_wait_second": 0
                         },
                         {
                             "comment" : "Goblin Shaman",
@@ -164,8 +155,7 @@
                             "index": 4,
                             "named_enemy_params_id": 2286,
                             "repop_count": 50,
-                            "repop_wait_second": 0,
-                            "is_required": false
+                            "repop_wait_second": 0
                         },
                         {
                             "comment" : "Goblin Shaman",
@@ -175,8 +165,7 @@
                             "index": 0,
                             "named_enemy_params_id": 2286,
                             "repop_count": 50,
-                            "repop_wait_second": 0,
-                            "is_required": false
+                            "repop_wait_second": 0
                         },
                         {
                             "comment" : "Goblin Aid Shaman",
@@ -186,8 +175,7 @@
                             "index": 3,
                             "named_enemy_params_id": 2286,
                             "repop_count": 50,
-                            "repop_wait_second": 0,
-                            "is_required": false
+                            "repop_wait_second": 0
                         },
                         {
                             "comment" : "Goblin Aid Shaman",
@@ -197,8 +185,7 @@
                             "index": 5,
                             "named_enemy_params_id": 2286,
                             "repop_count": 50,
-                            "repop_wait_second": 0,
-                            "is_required": false
+                            "repop_wait_second": 0
                         },
                         {
                             "comment" : "Goblin Aid Shaman",
@@ -208,8 +195,7 @@
                             "index": 0,
                             "named_enemy_params_id": 2286,
                             "repop_count": 50,
-                            "repop_wait_second": 0,
-                            "is_required": false
+                            "repop_wait_second": 0
                         }
                     ]
                 }

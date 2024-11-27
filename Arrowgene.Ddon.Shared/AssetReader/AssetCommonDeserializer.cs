@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
@@ -18,7 +19,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             NamedParams = namedParams;
         }
 
-        public bool ParseEnemyGroups(Dictionary<uint, QuestEnemyGroup> EnemyGroups, JsonElement jElement)
+        public bool ParseEnemyGroups(QuestDropItemAsset questDrops, Dictionary<uint, QuestEnemyGroup> EnemyGroups, JsonElement jElement)
         {
             if (!jElement.TryGetProperty("enemy_groups", out JsonElement jGroups))
             {
@@ -145,6 +146,10 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     if (customDropItems)
                     {
                         questEnemy.DropsTable = customTable;
+                    }
+                    else
+                    {
+                        questEnemy.DropsTable = questDrops.GetDropTable(questEnemy.EnemyId, questEnemy.Lv);
                     }
 
                     enemyGroup.Enemies.Add(questEnemy);

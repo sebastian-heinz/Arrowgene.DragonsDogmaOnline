@@ -15,10 +15,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
         private static readonly ILogger Logger = LogProvider.Logger(typeof(EpitaphTrialAssetDeserializer));
 
         private AssetCommonDeserializer _CommonEnemyDeserializer;
+        private QuestDropItemAsset _QuestDrops;
 
-        public EpitaphTrialAssetDeserializer(AssetCommonDeserializer commonEnemyDeserializer)
+        public EpitaphTrialAssetDeserializer(AssetCommonDeserializer commonEnemyDeserializer, QuestDropItemAsset questDrops)
         {
             _CommonEnemyDeserializer = commonEnemyDeserializer;
+            _QuestDrops = questDrops;
         }
 
         public bool LoadTrialsFromDirectory(string path, EpitaphTrialAsset trialAssets)
@@ -118,7 +120,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     trialOption.EntryCost.Add(item);
                 }
 
-                if (!_CommonEnemyDeserializer.ParseEnemyGroups(trialOption.EnemyGroups, jOption))
+                if (!_CommonEnemyDeserializer.ParseEnemyGroups(_QuestDrops, trialOption.EnemyGroups, jOption))
                 {
                     Logger.Error($"Unable to parse enemies for epitah trial {trialOption.TrialName}:{trialOption.EpitaphId}. Skipping.");
                     return false;
