@@ -39,9 +39,9 @@
     {
       "type": "KillTargetEnemies",
       "announce_type": "Accept",
-      "enemy_id": "6",
+      "enemy_id": "5",
       "level": 10,
-      "amount": 3
+      "amount": 2
     }
   ]
 }

@@ -2,7 +2,7 @@
   "state_machine": "GenericStateMachine",
   "type": "Light",
   "quest_id": 40000047,
-  "base_level": 8,
+  "base_level": 5,
   "minimum_item_rank": 0,
   "discoverable": false,
   "comment": "A Sight from the Tower",
@@ -14,17 +14,17 @@
   "rewards": [
     {
       "type": "exp",
-      "amount": 579
+      "amount": 358
     },
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 281
+      "amount": 156
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 149
+      "amount": 81
     }
   ],
   "blocks": [
@@ -39,8 +39,8 @@
     {
       "type": "KillTargetEnemies",
       "announce_type": "Accept",
-      "enemy_id": "54",
-      "level": 8,
+      "enemy_id": "141",
+      "level": 5,
       "amount": 3
     }
   ]

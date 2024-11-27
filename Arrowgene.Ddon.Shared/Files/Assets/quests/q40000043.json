@@ -2,7 +2,7 @@
   "state_machine": "GenericStateMachine",
   "type": "Light",
   "quest_id": 40000043,
-  "base_level": 6,
+  "base_level": 5,
   "minimum_item_rank": 0,
   "discoverable": false,
   "comment": "Out of Water",
@@ -14,17 +14,17 @@
   "rewards": [
     {
       "type": "exp",
-      "amount": 432
+      "amount": 358
     },
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 188
+      "amount": 156
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 103
+      "amount": 81
     }
   ],
   "blocks": [
@@ -39,8 +39,8 @@
     {
       "type": "KillTargetEnemies",
       "announce_type": "Accept",
-      "enemy_id": "138",
-      "level": 6,
+      "enemy_id": "67",
+      "level": 5,
       "amount": 3
     }
   ]

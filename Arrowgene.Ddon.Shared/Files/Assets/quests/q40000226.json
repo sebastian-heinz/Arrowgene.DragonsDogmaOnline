@@ -2,7 +2,7 @@
   "state_machine": "GenericStateMachine",
   "type": "Light",
   "quest_id": 40000226,
-  "base_level": 4,
+  "base_level": 7,
   "minimum_item_rank": 0,
   "discoverable": false,
   "comment": "Forces United",
@@ -14,17 +14,17 @@
   "rewards": [
     {
       "type": "exp",
-      "amount": 286
+      "amount": 506
     },
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 132
+      "amount": 230
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 61
+      "amount": 125
     }
   ],
   "blocks": [
@@ -39,8 +39,8 @@
     {
       "type": "KillTargetEnemies",
       "announce_type": "Accept",
-      "enemy_id": "95",
-      "level": 4,
+      "enemy_id": "70",
+      "level": 7,
       "amount": 3
     }
   ]

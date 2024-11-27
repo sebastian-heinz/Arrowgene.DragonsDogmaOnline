@@ -2,7 +2,7 @@
   "state_machine": "GenericStateMachine",
   "type": "Light",
   "quest_id": 40000049,
-  "base_level": 10,
+  "base_level": 13,
   "minimum_item_rank": 0,
   "discoverable": false,
   "comment": "White Wings: Elimination (Hidell Plains)",
@@ -14,17 +14,17 @@
   "rewards": [
     {
       "type": "exp",
-      "amount": 714
+      "amount": 889
     },
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 416
+      "amount": 709
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 200
+      "amount": 281
     }
   ],
   "blocks": [
@@ -39,8 +39,8 @@
     {
       "type": "KillTargetEnemies",
       "announce_type": "Accept",
-      "enemy_id": "51",
-      "level": 10,
+      "enemy_id": "53",
+      "level": 13,
       "amount": 3
     }
   ]

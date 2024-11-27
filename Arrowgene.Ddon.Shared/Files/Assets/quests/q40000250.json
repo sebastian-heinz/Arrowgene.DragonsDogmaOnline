@@ -2,7 +2,7 @@
   "state_machine": "GenericStateMachine",
   "type": "Light",
   "quest_id": 40000250,
-  "base_level": 60,
+  "base_level": 55,
   "minimum_item_rank": 0,
   "discoverable": false,
   "comment": "Area Order: Mergoda Demon Extermination",
@@ -14,17 +14,17 @@
   "rewards": [
     {
       "type": "exp",
-      "amount": 25670
+      "amount": 14224
     },
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 47850
+      "amount": 39388
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 3503
+      "amount": 3198
     }
   ],
   "blocks": [
@@ -39,8 +39,8 @@
     {
       "type": "KillTargetEnemies",
       "announce_type": "Accept",
-      "enemy_id": "26",
-      "level": 60,
+      "enemy_id": "105",
+      "level": 55,
       "amount": 1
     }
   ]
