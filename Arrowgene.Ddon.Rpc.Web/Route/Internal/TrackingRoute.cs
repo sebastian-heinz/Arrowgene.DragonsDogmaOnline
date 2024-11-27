@@ -34,6 +34,15 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                                 Message = $"NotifyPlayerList Channel {_entry.Origin}"
                             };
                         }
+                    case RpcInternalCommand.NotifyClanQuestCompletion:
+                        {
+                            RpcQuestCompletionData data = _entry.GetData<RpcQuestCompletionData>();
+                            gameServer.ClanManager.UpdateClanQuestCompletion(data.CharacterId, data.QuestStatus);
+                            return new RpcCommandResult(this, true)
+                            {
+                                Message = $"NotifyClanQuestCompletion for CharacterId {data.CharacterId}"
+                            };
+                        }
                     default:
                         return new RpcCommandResult(this, false);
                 }

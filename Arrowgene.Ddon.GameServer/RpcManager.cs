@@ -283,13 +283,10 @@ namespace Arrowgene.Ddon.GameServer
         public void AnnouncePlayerList()
         {
             List<RpcCharacterData> rpcCharacterDatas = new List<RpcCharacterData>();
-            foreach (var character in Server.ClientLookup.GetAllCharacter())
-            {
-                if (character.Stage.Id != 0)
+            foreach (var character in Server.ClientLookup.GetAllCharacter().Where(x => x.Stage.Id != 0))
                 {
                     rpcCharacterDatas.Add(new(character));
                 }
-            }
             
             AnnounceOthers("internal/tracking", RpcInternalCommand.NotifyPlayerList, rpcCharacterDatas);
             CharacterTrackingMap[(ushort) Server.Id].Update(DateTime.Now, rpcCharacterDatas);

@@ -6,10 +6,10 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Clan;
+using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Data.Common;
@@ -520,8 +520,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     ClanQuestClearCount[characterId][quest.QuestScheduleId] = ClanQuestClearCount[characterId].GetValueOrDefault(quest.QuestScheduleId) + 1;
                     
-                    // TODO: Revise this; this is a hacky solution so I don't need a dedicated route just for this one mechanic.
-                    Server.RpcManager.AnnounceClanPacket(character.ClanId, ntc, characterId);
+                    Server.RpcManager.AnnounceOthers("internal/tracking", RpcInternalCommand.NotifyClanQuestCompletion, new RpcQuestCompletionData()
+                    {
+                        CharacterId = characterId,
+                        QuestStatus = ClanQuestClearCount[characterId]
+                    });
                 }
 
                 if (ClanQuestClearCount[characterId].GetValueOrDefault(quest.QuestScheduleId) == quest.LightQuestDetail.OrderLimit)
@@ -534,19 +537,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
         }
 
         // For syncing across channels.
-        public void CompleteClanQuestForeign(Quest quest, uint characterId)
+        public void UpdateClanQuestCompletion(uint characterId, Dictionary<uint, uint> questStatus)
         {
-            if (!ClanQuestClearCount.ContainsKey(characterId))
-            {
-                ClanQuestClearCount[characterId] = new();
-            }
-            lock (ClanQuestClearCount[characterId])
-            {
-                if (ClanQuestClearCount[characterId].GetValueOrDefault(quest.QuestScheduleId) < quest.LightQuestDetail.OrderLimit)
-                {
-                    ClanQuestClearCount[characterId][quest.QuestScheduleId] = ClanQuestClearCount[characterId].GetValueOrDefault(quest.QuestScheduleId) + 1;
-                }
-            }
+            ClanQuestClearCount[characterId] = questStatus;
         }
 
         public uint ClanQuestCompletionStatistics(uint characterId, uint questScheduleId)
