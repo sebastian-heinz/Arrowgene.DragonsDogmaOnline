@@ -1,0 +1,22 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "For Christmas event NPC set (2016)",
+    "quest_id": 60200022,
+    "next_quest": 0,
+    "base_level": 0,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {"id": 2},
+    "order_conditions": [],
+    "rewards": [],
+    "enabled": false,
+    "blocks": [
+        {
+            "type": "Raw",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 5276, "comment": "Spawns Nicholas, Marco and Mia"}
+            ]
+        }
+    ]
+}

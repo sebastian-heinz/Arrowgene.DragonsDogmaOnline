@@ -22,12 +22,43 @@ https://moreali523425.com/2018/10/02/post-5695/
     - Emergency! Not Enough Candy! (1) (q60301052)
     - Emergency! Not Enough Candy! (2) (q60301053)
 
-
 To enable the Halloween 2018 Event
 - Modify the quest files q60301052, q60301053 and q60301054 enabled field to be `true`.
 
 To enable the Halloween 2017 Event
 - Modify the quest files 60301000 and 60301001 enabled field to be `true`.
+
+## Christmas 
+
+- Path to Miracles (2016)
+    - Path to Miracles I (q60200017)
+    - Path to Miracles II (q60200018)
+    - Path to Miracles III (q60200019)
+- With Great Desire to Gift (2016)
+    - With Great Desire to Gift: Upper (q60200020)
+    - With Great Desire to Gift: Lower (q60200021)
+- Christmas NPCs and Decorations 2016 (q60200022)
+
+- Wish on a Shooting Star (2017)
+    - Wish on a Shooting Star I (q60301002)
+    - Wish on a Shooting Star II (q60301003)
+    - Wish on a Shooting Star III (q60301004)
+    - Wish on a Shooting Star IV (q60301005)
+- Christmas NPCs and Decorations 2017 (q60301006)
+
+- Merry Christmas with Smiles (2018)
+    - Merry Christmas with Smiles I (q60301055)
+    - Merry Christmas with Smiles II (q60301056)
+- Christmas NPCs and Decorations 2018 (q60301057)
+
+To enable the Christmas 2016 Event
+- Set the enabled field to `true` in q60200017, q60200018, q60200019, q60200020, q60200021 and q60200022.
+
+To enable the Christmas 2017 Event
+- Set the enabled field to `true` in q60301002, q60301003, q60301004, q60301005 and q60301006.
+
+To enable the Christmas 2018 Event
+- Set the enabled field to `true` in q60301055, q60301056 and q60301057.
 
 ## Valentines Day/White Day
 
