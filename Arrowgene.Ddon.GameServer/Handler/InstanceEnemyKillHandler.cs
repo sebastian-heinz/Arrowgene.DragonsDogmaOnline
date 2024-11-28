@@ -135,7 +135,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (packet.IsNoBattleReward)
                 {
-                    return;
+                    queuedPackets.Send();
                 }
 
                 var dropItemNtc = new S2CInstancePopDropItemNtc()

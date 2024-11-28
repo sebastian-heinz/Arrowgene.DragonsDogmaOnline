@@ -180,7 +180,7 @@ namespace Arrowgene.Ddon.Shared
             var questAssetDeserializer = new QuestAssetDeserializer(commonEnemyDeserializer, QuestDropItemAsset);
             questAssetDeserializer.LoadQuestsFromDirectory(Path.Combine(_directory.FullName, QuestAssestKey), QuestAssets);
 
-            var epitaphTrialDeserializer = new EpitaphTrialAssetDeserializer(commonEnemyDeserializer);
+            var epitaphTrialDeserializer = new EpitaphTrialAssetDeserializer(commonEnemyDeserializer, QuestDropItemAsset);
             epitaphTrialDeserializer.LoadTrialsFromDirectory(Path.Combine(_directory.FullName, EpitaphAssestKey), EpitaphTrialAssets);
         }
 
