@@ -50,6 +50,7 @@ namespace Arrowgene.Ddon.Shared
         public const string BonusDungeonKey = "BonusDungeon.json";
         public const string ClanShopKey = "ClanShop.csv";
         public const string EpitaphRoadKey = "EpitaphRoad.json";
+        public const string GachaKey = "Gacha.json";
 
         public const string QuestAssestKey = "quests";
         public const string EpitaphAssestKey = "epitaph";
@@ -104,6 +105,7 @@ namespace Arrowgene.Ddon.Shared
             ClanShopAsset = new Dictionary<uint, ClanShopAsset>();
             EpitaphRoadAssets = new EpitaphRoadAsset();
             EpitaphTrialAssets = new EpitaphTrialAsset();
+            GachaAsset = new GachaAsset();
         }
 
         public List<CDataErrorMessage> ClientErrorCodes { get; private set; }
@@ -139,6 +141,7 @@ namespace Arrowgene.Ddon.Shared
         public Dictionary<uint, ClanShopAsset> ClanShopAsset { get; private set; }
         public EpitaphRoadAsset EpitaphRoadAssets { get; private set; }
         public EpitaphTrialAsset EpitaphTrialAssets { get; private set; }
+        public GachaAsset GachaAsset { get; private set; }
 
         public void Initialize()
         {
@@ -173,6 +176,7 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => BonusDungeonAsset = value, BonusDungeonKey, new BonusDungeonAssetDeserializer());
             RegisterAsset(value => ClanShopAsset = value.ToDictionary(key => key.LineupId, value => value), ClanShopKey, new ClanShopCsv());
             RegisterAsset(value => EpitaphRoadAssets = value, EpitaphRoadKey, new EpitaphRoadAssertDeserializer());
+            RegisterAsset(value => GachaAsset = value, GachaKey, new GachaAssetDeserializer());
 
             // This must be set before calling QuestAssertDeserializer and EpitaphTrialAssertDeserializer
             var commonEnemyDeserializer = new AssetCommonDeserializer(this.NamedParamAsset);

@@ -1163,7 +1163,6 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CGachaBuyRes.Serializer());
             
             Create(new S2CEventCodeInputRes.Serializer());
-            Create(new S2CItemGetItemStorageInfoRes.Serializer());
 
             Create(new S2CInnGetPenaltyHealStayPriceRes.Serializer());
             Create(new S2CInnGetStayPriceRes.Serializer());
