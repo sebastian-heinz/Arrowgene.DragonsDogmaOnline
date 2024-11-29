@@ -2,7 +2,7 @@
   "state_machine": "GenericStateMachine",
   "type": "Light",
   "quest_id": 40000044,
-  "base_level": 6,
+  "base_level": 5,
   "minimum_item_rank": 0,
   "discoverable": false,
   "comment": "To Be Rid of Them",
@@ -14,17 +14,17 @@
   "rewards": [
     {
       "type": "exp",
-      "amount": 432
+      "amount": 358
     },
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 188
+      "amount": 156
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 103
+      "amount": 81
     }
   ],
   "blocks": [
@@ -40,7 +40,7 @@
       "type": "KillTargetEnemies",
       "announce_type": "Accept",
       "enemy_id": "136",
-      "level": 6,
+      "level": 5,
       "amount": 3
     }
   ]

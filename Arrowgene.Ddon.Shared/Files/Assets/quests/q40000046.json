@@ -2,7 +2,7 @@
   "state_machine": "GenericStateMachine",
   "type": "Light",
   "quest_id": 40000046,
-  "base_level": 7,
+  "base_level": 8,
   "minimum_item_rank": 0,
   "discoverable": false,
   "comment": "The Cause of Illness",
@@ -14,17 +14,17 @@
   "rewards": [
     {
       "type": "exp",
-      "amount": 506
+      "amount": 579
     },
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 230
+      "amount": 281
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 125
+      "amount": 149
     }
   ],
   "blocks": [
@@ -39,8 +39,8 @@
     {
       "type": "KillTargetEnemies",
       "announce_type": "Accept",
-      "enemy_id": "16",
-      "level": 7,
+      "enemy_id": "54",
+      "level": 8,
       "amount": 3
     }
   ]

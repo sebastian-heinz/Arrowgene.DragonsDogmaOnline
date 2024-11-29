@@ -2,7 +2,7 @@
   "state_machine": "GenericStateMachine",
   "type": "Light",
   "quest_id": 40000125,
-  "base_level": 4,
+  "base_level": 16,
   "minimum_item_rank": 0,
   "discoverable": false,
   "comment": "Eyewitness",
@@ -14,17 +14,17 @@
   "rewards": [
     {
       "type": "exp",
-      "amount": 286
+      "amount": 1033
     },
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 132
+      "amount": 1124
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 61
+      "amount": 368
     }
   ],
   "blocks": [
@@ -40,7 +40,7 @@
       "type": "KillTargetEnemies",
       "announce_type": "Accept",
       "enemy_id": "95",
-      "level": 4,
+      "level": 16,
       "amount": 3
     }
   ]

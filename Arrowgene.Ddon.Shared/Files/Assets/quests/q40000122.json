@@ -2,7 +2,7 @@
   "state_machine": "GenericStateMachine",
   "type": "Light",
   "quest_id": 40000122,
-  "base_level": 3,
+  "base_level": 5,
   "minimum_item_rank": 0,
   "discoverable": false,
   "comment": "Vengeful Shadows",
@@ -14,17 +14,17 @@
   "rewards": [
     {
       "type": "exp",
-      "amount": 219
+      "amount": 358
     },
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 116
+      "amount": 156
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 42
+      "amount": 81
     }
   ],
   "blocks": [
@@ -39,8 +39,8 @@
     {
       "type": "KillTargetEnemies",
       "announce_type": "Accept",
-      "enemy_id": "37",
-      "level": 3,
+      "enemy_id": "130",
+      "level": 5,
       "amount": 3
     }
   ]

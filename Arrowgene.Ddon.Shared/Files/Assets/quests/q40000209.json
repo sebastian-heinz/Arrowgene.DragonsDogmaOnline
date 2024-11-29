@@ -2,7 +2,7 @@
   "state_machine": "GenericStateMachine",
   "type": "Light",
   "quest_id": 40000209,
-  "base_level": 36,
+  "base_level": 43,
   "minimum_item_rank": 0,
   "discoverable": false,
   "comment": "White Wings: Elimination (Mysree Grove)",
@@ -14,17 +14,17 @@
   "rewards": [
     {
       "type": "exp",
-      "amount": 3947
+      "amount": 11851
     },
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 15492
+      "amount": 22859
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 2075
+      "amount": 2485
     }
   ],
   "blocks": [
@@ -39,8 +39,8 @@
     {
       "type": "KillTargetEnemies",
       "announce_type": "Accept",
-      "enemy_id": "97",
-      "level": 36,
+      "enemy_id": "101",
+      "level": 43,
       "amount": 1
     }
   ]
