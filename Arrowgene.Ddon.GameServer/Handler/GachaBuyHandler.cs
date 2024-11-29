@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -17,8 +19,71 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CGachaBuyRes Handle(GameClient client, C2SGachaBuyReq request)
         {
-            S2CGachaBuyRes res = new S2CGachaBuyRes();
+            S2CGachaBuyRes res = new S2CGachaBuyRes()
+            {
+                GachaId = request.GachaId,
+            };
 
+            var gachaAsset = Server.AssetRepository.GachaAsset;
+
+            if (!gachaAsset.GachaInfoList.ContainsKey(request.GachaId))
+            {
+                return res;
+            }
+
+            var lootBox = gachaAsset.GachaInfoList[request.GachaId];
+
+            WalletType walletType;
+            switch (request.SettlementId)
+            {
+                case 1:
+                    walletType = WalletType.GoldenGemstones;
+                    break;
+                case 2:
+                    walletType = WalletType.SilverTickets;
+                    break;
+                default:
+                    return res;
+            }
+            
+            if (Server.WalletManager.RemoveFromWalletNtc(client, client.Character, walletType, request.Price))
+            {
+                // Failed to deduct the cost
+                return res;
+            }
+
+            foreach (var drawGroup in lootBox.DrawGroups)
+            {
+                var itemList = drawGroup.GachaDrawList[0];
+                res.GachaItemList.Add(itemList.GachaItemInfo[Random.Shared.Next(itemList.GachaItemInfo.Count)]);
+            }
+
+            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
+            {
+                UpdateType = 0
+            };
+
+            Server.Database.ExecuteInTransaction(connection =>
+            {
+                foreach (var item in res.GachaItemList)
+                {
+                    if (Server.ItemManager.IsItemWalletPoint(item.ItemId))
+                    {
+                        (WalletType walletType, uint amount) = Server.ItemManager.ItemToWalletPoint(item.ItemId);
+                        var result = Server.WalletManager.AddToWallet(client.Character, walletType, amount * item.ItemNum, connectionIn: connection);
+                        updateCharacterItemNtc.UpdateWalletList.Add(result);
+                    }
+                    else if (item.ItemNum > 0)
+                    {
+                        var result = Server.ItemManager.AddItem(Server, client.Character, true, item.ItemId, item.ItemNum, connectionIn: connection);
+                        updateCharacterItemNtc.UpdateItemList.AddRange(result);
+                    }
+                }
+            });
+
+            client.Send(updateCharacterItemNtc);
+
+#if false
             // TODO: based on gacha ID & draw ID figure out which items were bought
             res.GachaId = request.GachaId;
             res.GachaItemList.Add(new CDataGachaItemInfo
@@ -39,6 +104,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // TODO: based on Settlement ID figure out which currency was used
             Server.WalletManager.RemoveFromWalletNtc(client, client.Character, WalletType.GoldenGemstones, request.Price);
+#endif
 
             return res;
         }

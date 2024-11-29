@@ -60,6 +60,7 @@ namespace Arrowgene.Ddon.Shared
         public const string AreaRankSpotInfoKey = "AreaRankSpotInfo.csv";
         public const string AreaRankSupplyKey = "AreaRankSupply.json";
         public const string AreaRankRequirementKey = "AreaRankRequirements.json";
+        public const string GachaKey = "Gacha.json";
 
         public const string QuestAssestKey = "quests";
         public const string EpitaphAssestKey = "epitaph";
@@ -122,6 +123,7 @@ namespace Arrowgene.Ddon.Shared
             AreaRankSpotInfoAsset = new();
             AreaRankSupplyAsset = new();
             AreaRankRequirementAsset = new();
+            GachaAsset = new GachaAsset();
         }
 
         public Dictionary<ErrorCode, ClientErrorCode> ClientErrorCodes { get; private set; }
@@ -163,6 +165,7 @@ namespace Arrowgene.Ddon.Shared
         public Dictionary<QuestAreaId, List<AreaRankSpotInfo>> AreaRankSpotInfoAsset { get; private set; }
         public Dictionary<QuestAreaId, List<AreaRankSupply>> AreaRankSupplyAsset { get; private set; }
         public Dictionary<QuestAreaId, List<AreaRankRequirement>> AreaRankRequirementAsset { get; private set; }
+        public GachaAsset GachaAsset { get; private set; }
 
         public void Initialize()
         {
@@ -203,6 +206,7 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => AreaRankSpotInfoAsset = value.GroupBy(key => key.AreaId, val => val).ToDictionary(g => g.Key, g=> g.ToList()), AreaRankSpotInfoKey, new AreaRankSpotInfoCsv());
             RegisterAsset(value => AreaRankSupplyAsset = value, AreaRankSupplyKey, new AreaRankSupplyDeserializer());
             RegisterAsset(value => AreaRankRequirementAsset = value, AreaRankRequirementKey, new AreaRankRequirementDeserializer());
+            RegisterAsset(value => GachaAsset = value, GachaKey, new GachaAssetDeserializer());
 
             // This must be set before calling QuestAssertDeserializer and EpitaphTrialAssertDeserializer
             var commonEnemyDeserializer = new AssetCommonDeserializer(this.NamedParamAsset);

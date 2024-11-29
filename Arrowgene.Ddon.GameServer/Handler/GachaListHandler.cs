@@ -1,10 +1,8 @@
 #nullable enable
-using System;
-using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -18,8 +16,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CGachaListRes Handle(GameClient client, C2SGachaListReq request)
         {
-            S2CGachaListRes res = new S2CGachaListRes();
+            S2CGachaListRes res = new S2CGachaListRes()
+            {
+                GachaList = Server.AssetRepository.GachaAsset.GachaInfoList.Values.ToList()
+            };
 
+#if false
             res.GachaList.Add(new CDataGachaInfo
             {
                 Id = 266,
@@ -87,6 +89,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                 }
             });
+#endif
 
             return res;
         }

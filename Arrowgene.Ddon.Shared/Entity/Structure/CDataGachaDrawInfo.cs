@@ -11,6 +11,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 
         public CDataGachaDrawInfo()
         {
+            GachaItemInfo = new List<CDataGachaItemInfo>();
         }
 
         public class Serializer : EntitySerializer<CDataGachaDrawInfo>
