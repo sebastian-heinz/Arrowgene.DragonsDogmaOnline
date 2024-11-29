@@ -1,11 +1,10 @@
-using System.Linq;
-using System.Collections.Generic;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.Server.Network;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer;
 
@@ -163,19 +162,71 @@ public static class GameStructure
         cDataPawnInfo.SpSkillList = pawn.SpSkills.GetValueOrDefault(pawn.Job, new List<CDataSpSkill>());
     }
 
-    public static void CDataNoraPawnInfo(CDataNoraPawnInfo cDataNoraPawnInfo, Pawn pawn)
+    public static void CDataNoraPawnInfo(CDataNoraPawnInfo cDataNoraPawnInfo, Pawn pawn, DdonGameServer server)
     {
         cDataNoraPawnInfo.Name = pawn.Name;
         cDataNoraPawnInfo.EditInfo = pawn.EditInfo;
         cDataNoraPawnInfo.Job = (byte)pawn.Job;
-        cDataNoraPawnInfo.CharacterEquipData = new() // TODO: ???
+
+        // Merge visual and performance equips
+        var performanceEquips = pawn.Equipment.GetItems(EquipType.Performance);
+        var visualEquips = pawn.Equipment.GetItems(EquipType.Visual);
+
+        List<ClientItemInfo> perfInfo = performanceEquips.Select(x => x is not null ? server.ItemManager.LookupInfoByItem(server, x) : new()).ToList();
+        List<ClientItemInfo> visualInfo = visualEquips.Select(x => x is not null ? server.ItemManager.LookupInfoByItem(server, x) : new()).ToList();
+
+        List<Item?> mergedEquips = new();
+        List<ClientItemInfo> mergedInfo = new();
+
+        for (int i = 0; i < visualEquips.Count; i++)
+        {
+            mergedEquips.Add(visualEquips[i] ?? performanceEquips[i]);
+            mergedInfo.Add(mergedEquips[i] is not null ? server.ItemManager.LookupInfoByItem(server, mergedEquips[i]) : new ClientItemInfo());
+        }
+
+        // Check for ensembles
+        bool overwriteBody = perfInfo.Any(x => x.SubCategory == ItemSubCategory.EquipEnsemble) 
+            && visualInfo.Any(x => x.EquipSlot is not null && EquipManager.EnsembleSlots.Contains((EquipSlot)x.EquipSlot));
+        bool overwriteOthers = visualInfo.Any(x => x.SubCategory == ItemSubCategory.EquipEnsemble);
+
+        if (overwriteBody && !overwriteOthers)
+        {
+            mergedEquips[(byte)EquipSlot.ArmorBody - 1] = null;
+        }
+        else if (overwriteOthers && !overwriteBody)
+        {
+            for (int i = 0; i < mergedInfo.Count; i++)
+            {
+                if (mergedInfo[i].EquipSlot is null) continue;
+                if (EquipManager.EnsembleSlots.Contains((EquipSlot)mergedInfo[i].EquipSlot))
+                {
+                    mergedEquips[i] = null;
+                }
+            }
+        }
+
+        // Process to CDataEquipItemInfo
+        var mergedCData = mergedEquips.Select((item, index) => new CDataEquipItemInfo()
+                {
+                    ItemId = item?.ItemId ?? 0,
+                    Unk0 = item?.SafetySetting ?? 0,
+                    EquipType = EquipType.Performance,
+                    EquipSlot = (byte)(index + 1),
+                    Color = item?.Color ?? 0,
+                    PlusValue = item?.PlusValue ?? 0,
+                    EquipElementParamList = item?.EquipElementParamList ?? new List<CDataEquipElementParam>(),
+                    AddStatusParamList = item?.AddStatusParamList ?? new List<CDataAddStatusParam>(),
+                    Unk2List = item?.Unk2List ?? new List<CDataEquipItemInfoUnk2>()
+                })
+                .ToList();
+
+
+        cDataNoraPawnInfo.CharacterEquipData = new()
         {
             new CDataCharacterEquipData() {
-                Equips = pawn.Equipment.AsCDataEquipItemInfo(EquipType.Performance)
+                Equips = mergedCData
             },
-            new CDataCharacterEquipData() {
-                Equips = pawn.Equipment.AsCDataEquipItemInfo(EquipType.Visual)
-            }
+            new CDataCharacterEquipData() // The client expects a second element to this list, even if its not used.
         };
     }
 

@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(EquipManager));
 
-        private static readonly List<EquipSlot> EnsembleSlots = new List<EquipSlot>()
+        public static readonly List<EquipSlot> EnsembleSlots = new List<EquipSlot>()
         {
             EquipSlot.ArmorLeg,
             EquipSlot.ArmorHelm,
@@ -157,7 +157,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                     // Set in equipment template
                     //TODO: Move this lookup to memory instead of the DB if possible.
-                    characterToEquipTo.EquipmentTemplate.SetEquipItem(server.Database.SelectStorageItemByUId(itemUId), characterToEquipTo.Job, equipType, equipSlot);
+                    characterToEquipTo.EquipmentTemplate.SetEquipItem(server.Database.SelectStorageItemByUId(itemUId, connectionIn), characterToEquipTo.Job, equipType, equipSlot);
 
                     server.Database.ReplaceEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, itemUId, connectionIn);
                     
@@ -407,7 +407,5 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             return itemRank > 0 ? itemRank : 1;
         }
-
-
     }
 }
