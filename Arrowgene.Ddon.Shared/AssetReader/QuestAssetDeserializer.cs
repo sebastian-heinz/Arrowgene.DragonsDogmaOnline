@@ -614,6 +614,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                                 MsgId = jblock.GetProperty("message_id").GetInt32(),
                                 StageId = AssetCommonDeserializer.ParseStageId(jblock.GetProperty("stage_id"))
                             });
+
+                            questBlock.NpcOrderDetails[0].QuestId = QuestId.None;
+                            if (jblock.TryGetProperty("quest_id", out JsonElement jOrderQuestId))
+                            {
+                                questBlock.NpcOrderDetails[0].QuestId = (QuestId)jOrderQuestId.GetUInt32();
+                            }
                         }
                         break;
                     case QuestBlockType.IsQuestOrdered:

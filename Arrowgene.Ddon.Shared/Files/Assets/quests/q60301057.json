@@ -1,0 +1,46 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "For Christmas event NPC set (2018)",
+    "quest_id": 60301057,
+    "next_quest": 0,
+    "base_level": 0,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {"id": 2},
+    "order_conditions": [],
+    "rewards": [],
+    "enabled": false,
+    "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {"type": "IsTutorialQuestClear", "Param1": 60301055}
+            ]
+        },
+        {
+            "type": "Raw",
+            "check_commands": [
+                {"type": "IsTutorialQuestClear", "Param1": 60301056}
+            ],
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 8296, "comment": "Clan Base Christmas Tree"}
+            ]
+        },
+        {
+            "type": "Raw",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 8296, "comment": "Clan Base Christmas Tree"},
+                {"type": "QstLayout", "action": "Set", "value": 8229, "comment": "Spawns Nicholas, Marco and Mia and decorations"}
+            ]
+        },
+        {
+            "type": "ReturnCheckPoint",
+            "check_commands": [
+                {"type": "DummyNotProgress"}
+            ],
+            "process_no": 0,
+            "block_no": 1
+        }
+    ]
+}

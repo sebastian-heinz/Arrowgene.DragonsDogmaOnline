@@ -380,6 +380,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
             };
         }
 
+        public virtual CDataTimeLimitedQuestOrderList ToCDataTimeLimitedQuestOrderList(uint step)
+        {
+            return new CDataTimeLimitedQuestOrderList()
+            {
+                Param = ToCDataQuestOrderList(step)
+            };
+        }
+
         public virtual CDataPriorityQuest ToCDataPriorityQuest(uint step)
         {
             var questProcessStateList = GetProcessState(step, out uint announceNoCount);

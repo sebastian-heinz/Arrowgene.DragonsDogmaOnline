@@ -102,6 +102,16 @@
                 "item_ids": [23395, 23396, 23397]
             }
         }
+    },
+    {
+        "item_id": 23548,
+        "comment": "Sparkling Snow Large Crystal (Christmas 2018)",
+        "min_num": 1,
+        "max_num": 1,
+        "drop_chance": 0.10,
+        "quest_ids": [60301057],
+        "stage_ids": [],
+        "enemy_ids": []
     }
 ]
 
