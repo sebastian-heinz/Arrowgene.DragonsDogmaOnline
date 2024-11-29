@@ -2,9 +2,8 @@ namespace Arrowgene.Ddon.Shared.Model.Rpc
 {
     public enum RpcInternalCommand
     {
-        NotifyPlayerJoin, // RpcCharacterData
-        NotifyPlayerLeave, // RpcCharacterData
         NotifyPlayerList, // List<RpcCharacterData>
+        NotifyClanQuestCompletion, //RpcQuestCompletionData
 
         SendTellMessage, // RpcChatData
         SendClanMessage, // RpcChatData

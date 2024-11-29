@@ -25,24 +25,6 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
             {
                 switch (_entry.Command)
                 {
-                    case RpcInternalCommand.NotifyPlayerLeave:
-                        {
-                            RpcCharacterData data = _entry.GetData<RpcCharacterData>();
-                            gameServer.RpcManager.RemovePlayerSummary(_entry.Origin, data.CharacterId);
-                            return new RpcCommandResult(this, true)
-                            {
-                                Message = $"NotifyPlayerLeave Channel {_entry.Origin} ID {data.CharacterId}"
-                            };
-                        }
-                    case RpcInternalCommand.NotifyPlayerJoin:
-                        {
-                            RpcCharacterData data = _entry.GetData<RpcCharacterData>();
-                            gameServer.RpcManager.AddPlayerSummary(_entry.Origin, data);
-                            return new RpcCommandResult(this, true)
-                            {
-                                Message = $"NotifyPlayerJoin Channel {_entry.Origin} ID {data.CharacterId}"
-                            };
-                        }
                     case RpcInternalCommand.NotifyPlayerList:
                         {
                             List<RpcCharacterData> data = _entry.GetData<List<RpcCharacterData>>();
@@ -50,6 +32,15 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                             return new RpcCommandResult(this, true)
                             {
                                 Message = $"NotifyPlayerList Channel {_entry.Origin}"
+                            };
+                        }
+                    case RpcInternalCommand.NotifyClanQuestCompletion:
+                        {
+                            RpcQuestCompletionData data = _entry.GetData<RpcQuestCompletionData>();
+                            gameServer.ClanManager.UpdateClanQuestCompletion(data.CharacterId, data.QuestStatus);
+                            return new RpcCommandResult(this, true)
+                            {
+                                Message = $"NotifyClanQuestCompletion for CharacterId {data.CharacterId}"
                             };
                         }
                     default:

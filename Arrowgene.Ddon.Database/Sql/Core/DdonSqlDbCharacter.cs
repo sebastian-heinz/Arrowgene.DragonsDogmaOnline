@@ -175,7 +175,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     }
                 });
 
-                QueryCharacterData(conn, character);
+                if (character != null)
+                {
+                    QueryCharacterData(conn, character);
+                }
             });
             return character;
         }

@@ -122,15 +122,6 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                                     }
                                 }
                             }
-                            else if (packet.Id == PacketId.S2C_CLAN_CLAN_QUEST_CLEAR_NTC)
-                            {
-                                // TODO: This is an abuse of this packet; it's not actually announced.
-                                var parsedPacket = new S2CClanClanQuestClearNtc.Serializer().Read(data.Data);
-                                var quest = QuestManager.GetQuestsByQuestId((QuestId)parsedPacket.QuestId).First();
-                                gameServer.ClanManager.CompleteClanQuestForeign(quest, data.CharacterId);
-
-                                checkFunc = x => false;
-                            }
                             else if (packet.Id == PacketId.S2C_CLAN_CLAN_SHOP_BUY_ITEM_NTC)
                             {
                                 var parsedPacket = new S2CClanClanShopBuyItemNtc.Serializer().Read(data.Data);

@@ -82,7 +82,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                 };
                 client.Party.EnqueueToAll(repopNtc, queuedPackets);
-                //client.Send(repopNtc);
             }
             else
             {
@@ -121,7 +120,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         IsAreaBoss = IsAreaBoss && (client.GameMode == GameMode.Normal)
                     };
                     client.Party.EnqueueToAll(groupDestroyedNtc, queuedPackets);
-                    //client.Party.SendToAll(groupDestroyedNtc);
 
                     if (IsAreaBoss && client.GameMode == GameMode.BitterblackMaze)
                     {
@@ -142,7 +140,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     LayoutId = packet.LayoutId,
                     SetId = packet.SetId,
-                    MdlType = enemyKilled.DropsTable.MdlType,
+                    MdlType = enemyKilled.DropsTable?.MdlType ?? 0,
                     PosX = packet.DropPosX,
                     PosY = packet.DropPosY,
                     PosZ = packet.DropPosZ
@@ -169,13 +167,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
 
                     // If the roll was unlucky, there is a chance that no bag will show.
-                    if (instancedGatheringItems.Where(x => x.ItemNum > 0).Any())
+                    if (instancedGatheringItems.Any(x => x.ItemNum > 0))
                     {
                         partyMemberClient.Enqueue(dropItemNtc, queuedPackets);
-                        //partyMemberClient.Send(dropItemNtc);
                     }
                 }
-
 
                 uint calcExp = _gameServer.ExpManager.GetAdjustedExp(client.GameMode, RewardSource.Enemy, client.Party, enemyKilled.GetDroppedExperience(), enemyKilled.Lv);
                 uint calcPP = (uint)(enemyKilled.GetDroppedPlayPoints() * _gameServer.Setting.GameLogicSetting.PpModifier);
@@ -223,13 +219,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         {
                             // Drop HO
                             uint gainedHo = (uint)(enemyKilled.HighOrbs * _gameServer.Setting.GameLogicSetting.HoModifier);
-                            CDataUpdateWalletPoint hoUpdateWalletPoint = _gameServer.WalletManager.AddToWallet(memberClient.Character, WalletType.HighOrbs, gainedHo, connectionIn: connectionIn); 
+                            CDataUpdateWalletPoint hoUpdateWalletPoint = _gameServer.WalletManager.AddToWallet(memberClient.Character, WalletType.HighOrbs, gainedHo, connectionIn: connectionIn);
+                            updateCharacterItemNtc.UpdateWalletList.Add(hoUpdateWalletPoint);
                         }
 
                         if (updateCharacterItemNtc.UpdateItemList.Count != 0 || updateCharacterItemNtc.UpdateWalletList.Count != 0)
                         {
                             memberClient.Enqueue(updateCharacterItemNtc, queuedPackets);
-                            //memberClient.Send(updateCharacterItemNtc);
                         }
 
                         if (gainedPP > 0)

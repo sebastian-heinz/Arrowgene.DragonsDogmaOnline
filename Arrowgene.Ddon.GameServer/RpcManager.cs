@@ -1,14 +1,11 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Chat;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Model.Rpc;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
@@ -23,6 +20,30 @@ namespace Arrowgene.Ddon.GameServer
 {
     public class RpcManager
     {
+        private class RpcTrackingMap : Dictionary<uint, RpcCharacterData>
+        {
+            public DateTime TimeStamp { get; set; }
+
+            public RpcTrackingMap() : base() 
+            { 
+                TimeStamp = DateTime.Now;
+            }
+
+            public bool Update(DateTime newTimestamp, List<RpcCharacterData> characterData)
+            {
+                if (newTimestamp <= TimeStamp) return false;
+
+                TimeStamp = newTimestamp;
+                this.Clear();
+                foreach (var character in characterData)
+                {
+                    this[character.CharacterId] = character;
+                }
+                return true;
+            }
+        }
+
+
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(RpcManager));
 
         private static readonly string[] TRAFFIC_LABELS = new string[] {
@@ -35,7 +56,7 @@ namespace Arrowgene.Ddon.GameServer
         private readonly DdonGameServer Server;
         private readonly Dictionary<ushort, ServerInfo> ChannelInfo;
 
-        private readonly Dictionary<ushort, (DateTime TimeStamp, Dictionary<uint, RpcCharacterData> CharacterData)> CharacterTrackingMap;
+        private readonly Dictionary<ushort, RpcTrackingMap> CharacterTrackingMap;
 
         public class RpcWrappedObject
         {
@@ -103,7 +124,7 @@ namespace Arrowgene.Ddon.GameServer
             CharacterTrackingMap = new();
             foreach (var info in ChannelInfo.Values)
             {
-                CharacterTrackingMap[info.Id] = (DateTime.MinValue, new());
+                CharacterTrackingMap[info.Id] = new();
             }
 
             string authToken = string.Empty;
@@ -124,10 +145,19 @@ namespace Arrowgene.Ddon.GameServer
         public CDataGameServerListInfo ServerListInfo(ushort channelId)
         {
             var info = ChannelInfo[channelId].ToCDataGameServerListInfo();
-            lock (CharacterTrackingMap[channelId].CharacterData)
+            if (channelId == Server.Id)
             {
-                info.LoginNum = (uint)CharacterTrackingMap[channelId].CharacterData.Count;
+                // Check against StageId to not count clients that are in the character select.
+                info.LoginNum = (uint)Server.ClientLookup.GetAll().Where(x => x.Character != null && x.Character.Stage.Id != 0).Count();
             }
+            else
+            {
+                lock (CharacterTrackingMap[channelId])
+                {
+                    info.LoginNum = (uint)CharacterTrackingMap[channelId].Count;
+                }
+            }
+            
             info.TrafficName = GetTrafficName(info.LoginNum);
             return info;
         }
@@ -208,7 +238,7 @@ namespace Arrowgene.Ddon.GameServer
                     continue;
                 }
 
-                if (channel.Value.CharacterData.Any(x => x.Value.ClanId == clanId))
+                if (channel.Value.Any(x => x.Value.ClanId == clanId))
                 {
                     Announce(channel.Key, route, command, data);
                 }
@@ -219,7 +249,7 @@ namespace Arrowgene.Ddon.GameServer
         #region Player Tracking
         public ushort FindPlayerByName(string firstName, string lastName)
         {
-            foreach ((ushort channelId, (_, var channelMembers)) in CharacterTrackingMap)
+            foreach ((ushort channelId, var channelMembers) in CharacterTrackingMap)
             {
                 lock(channelMembers)
                 {
@@ -237,7 +267,7 @@ namespace Arrowgene.Ddon.GameServer
 
         public ushort FindPlayerById(uint characterId)
         {
-            foreach ((ushort channelId, (_, var channelMembers)) in CharacterTrackingMap)
+            foreach ((ushort channelId, var channelMembers) in CharacterTrackingMap)
             {
                 lock (channelMembers)
                 {
@@ -250,44 +280,23 @@ namespace Arrowgene.Ddon.GameServer
             return 0;
         }
     
-        public void RemovePlayerSummary(ushort channelId, uint characterId)
-        {
-            lock (CharacterTrackingMap[channelId].CharacterData)
-            {
-                CharacterTrackingMap[channelId].CharacterData.Remove(characterId);
-            }
-        }
-
-        public void AddPlayerSummary(ushort channelId, RpcCharacterData characterSummary)
-        {
-            lock (CharacterTrackingMap[channelId].CharacterData)
-            {
-                CharacterTrackingMap[channelId].CharacterData[characterSummary.CharacterId] = characterSummary;
-            }
-        }
-
         public void AnnouncePlayerList()
         {
             List<RpcCharacterData> rpcCharacterDatas = new List<RpcCharacterData>();
-            foreach (var client in Server.ClientLookup.GetAll())
-            {
-                if (client.Character != null)
+            foreach (var character in Server.ClientLookup.GetAllCharacter().Where(x => x.Stage.Id != 0))
                 {
-                    rpcCharacterDatas.Add(new(client.Character));
+                    rpcCharacterDatas.Add(new(character));
                 }
-            }
+            
             AnnounceOthers("internal/tracking", RpcInternalCommand.NotifyPlayerList, rpcCharacterDatas);
+            CharacterTrackingMap[(ushort) Server.Id].Update(DateTime.Now, rpcCharacterDatas);
         }
 
         public void ReceivePlayerList(ushort channelId, DateTime timestamp, List<RpcCharacterData> characterDatas)
         {
             if (CharacterTrackingMap.ContainsKey(channelId))
             {
-                if (CharacterTrackingMap[channelId].TimeStamp <= timestamp)
-                {
-                    CharacterTrackingMap[channelId] = (timestamp, characterDatas.ToDictionary(key => key.CharacterId, val => val));
-                }
-                else
+                if (!CharacterTrackingMap[channelId].Update(timestamp, characterDatas))
                 {
                     Logger.Info($"Out of date character list discarded for channel ID {channelId}");
                 }
@@ -297,7 +306,7 @@ namespace Arrowgene.Ddon.GameServer
         public void UpdatePlayerSummaryClan(uint characterId, uint clanId)
         {
             var clan = Server.ClanManager.GetClan(clanId);
-            foreach ((ushort channelId, (_, var channelMembers)) in CharacterTrackingMap)
+            foreach ((ushort channelId, var channelMembers) in CharacterTrackingMap)
             {
                 lock (channelMembers)
                 {
@@ -309,28 +318,6 @@ namespace Arrowgene.Ddon.GameServer
                     }
                 }
             }
-        }
-
-        public void AnnouncePlayerLeave(Character character)
-        {
-            var characterSummary = new RpcCharacterData(character);
-            lock (CharacterTrackingMap[(ushort)Server.Id].CharacterData)
-            {
-                if (!CharacterTrackingMap[(ushort)Server.Id].CharacterData.ContainsKey(character.CharacterId))
-                {
-                    // We don't actually have this player, so we don't have the authority to announce his leaving.
-                    return;
-                }
-            }
-            RemovePlayerSummary((ushort)Server.Id, character.CharacterId);
-            AnnounceOthers("internal/tracking", RpcInternalCommand.NotifyPlayerLeave, characterSummary);
-        }
-
-        public void AnnouncePlayerJoin(Character character)
-        {
-            var characterSummary = new RpcCharacterData(character);
-            AddPlayerSummary((ushort)Server.Id, characterSummary);
-            AnnounceOthers("internal/tracking", RpcInternalCommand.NotifyPlayerJoin, characterSummary);
         }
         #endregion
 

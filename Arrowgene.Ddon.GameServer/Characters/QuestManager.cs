@@ -123,6 +123,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             if (!gQuests.ContainsKey(questScheduleId))
             {
+                Logger.Error($"GetQuestByScheduleId: Invalid questScheduleId {questScheduleId}");
                 return null;
             }
 

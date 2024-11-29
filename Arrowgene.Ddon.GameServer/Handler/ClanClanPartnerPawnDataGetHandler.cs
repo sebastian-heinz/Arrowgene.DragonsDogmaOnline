@@ -19,6 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             res.PawnId = request.PawnId;
 
+            Pawn pawn = null;
             Server.Database.ExecuteInTransaction(connection =>
             {
                 uint ownerCharacterId = Server.Database.GetPawnOwnerCharacterId((uint)request.PawnId);
@@ -28,11 +29,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
 
                 var ownerCharacter = Server.CharacterManager.SelectCharacter(ownerCharacterId);
-                Pawn pawn = ownerCharacter.Pawns.Find(x => x.PawnId == request.PawnId)
+                pawn = ownerCharacter.Pawns.Find(x => x.PawnId == request.PawnId)
                     ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID);
-                GameStructure.CDataNoraPawnInfo(res.PawnInfo, pawn);
             });
-            
+            GameStructure.CDataNoraPawnInfo(res.PawnInfo, pawn, Server);
+
             return res;
         }
 

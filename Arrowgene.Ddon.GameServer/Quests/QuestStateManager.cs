@@ -915,26 +915,26 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         public PacketQueue HandleEnemyHuntRequests(Enemy enemy, DbConnection? connectionIn = null)
         {
+            PacketQueue packets = new();
+
             if (Member.Client.Character.GameMode != GameMode.Normal)
             {
-                return new();
+                return packets;
             }
-
-            PacketQueue packets = new();
 
             lock (ActiveQuests)
             {
-                foreach (var quest in ActiveQuests)
+                foreach ((uint questScheduleId, QuestState questState) in ActiveQuests)
                 {
-                    Quest questObject = QuestManager.GetQuestByScheduleId(quest.Key);
-                    QuestState questState = quest.Value;
-                    QuestEnemyHuntRecord huntRecord = questState.UpdateHuntRequest(enemy);
+                    Quest questObject = QuestManager.GetQuestByScheduleId(questScheduleId);
 
-                    if (Member.Client.Party.ExmInProgress && questObject.QuestType == QuestType.Light)
+                    if (questObject is null || Member.Client.Party.ExmInProgress && questObject?.QuestType == QuestType.Light)
                     {
                         // The UI indicates that light quests cannot progress during EXMs.
                         continue;
                     }
+
+                    QuestEnemyHuntRecord huntRecord = questState.UpdateHuntRequest(enemy);
 
                     if (huntRecord != null)
                     {
@@ -950,7 +950,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
                         S2CQuestQuestProgressWorkSaveNtc ntc = new()
                         {
-                            QuestScheduleId = quest.Key,
+                            QuestScheduleId = questScheduleId,
                             ProcessNo = huntRecord.ProcessNo,
                             SequenceNo = huntRecord.SequenceNo,
                             BlockNo = huntRecord.BlockNo
