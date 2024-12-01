@@ -687,7 +687,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             StructurePacket<T> packet = new StructurePacket<T>(res);
             foreach (GameClient client in Server.ClientLookup.GetAll())
             {
-                if (client.Character.ClanId == clanId)
+                if (client.Character is not null && client.Character.ClanId == clanId)
                 {
                     queue.Enqueue((client, packet));
                 }
