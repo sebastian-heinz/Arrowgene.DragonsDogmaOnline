@@ -16,16 +16,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CQuestQuestOrderRes Handle(GameClient client, C2SQuestQuestOrderReq request)
         {
             var res = new S2CQuestQuestOrderRes();
-            var questScheduleId = request.QuestScheduleId;
-            var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
-            var questStateManager = QuestManager.GetQuestStateManager(client, quest);
+            var quest = QuestManager.GetQuestByScheduleId(request.QuestScheduleId)
+                ?? throw new ResponseErrorException(Shared.Model.ErrorCode.ERROR_CODE_QUEST_INTERNAL_ERROR);
 
-            if (questStateManager.GetActiveQuestScheduleIds().Contains(questScheduleId))
+            var questStateManager = QuestManager.GetQuestStateManager(client, quest);
+            if (questStateManager.GetActiveQuestScheduleIds().Contains(quest.QuestScheduleId))
             {
                 return res;
             }
 
-            questStateManager.AddNewQuest(QuestManager.GetQuestByScheduleId(questScheduleId), 0);
+            questStateManager.AddNewQuest(quest, 0);
             res.QuestProcessStateList.AddRange(quest.ToCDataQuestList(0).QuestProcessStateList);
 
             return res;
