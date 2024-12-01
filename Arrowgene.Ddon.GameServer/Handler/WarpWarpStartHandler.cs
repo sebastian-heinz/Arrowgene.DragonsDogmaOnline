@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SWarpWarpStartNtc> packet)
         {
-            if(client.LastWarpPointId != 0 && client.Party.GetPlayerPartyMember(client).IsLeader)
+            if(client.LastWarpPointId != 0 && (client.Party?.GetPlayerPartyMember(client).IsLeader ?? false))
             {
                 S2CWarpLeaderWarpNtc ntc = new S2CWarpLeaderWarpNtc()
                 {
