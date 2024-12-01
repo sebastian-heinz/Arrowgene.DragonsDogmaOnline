@@ -781,6 +781,10 @@ namespace Arrowgene.Ddon.GameServer.Quests
             foreach (var priorityQuestScheduleId in priorityQuestScheduleIds)
             {
                 var quest = QuestManager.GetQuestByScheduleId(priorityQuestScheduleId);
+                if (quest is null)
+                {
+                    continue;
+                }
                 var questStateManager = quest.IsPersonal ? leaderClient.QuestState : leaderClient.Party.QuestState;
                 var questState = questStateManager.GetQuestState(priorityQuestScheduleId);
                 prioNtc.PriorityQuestList.Add(quest.ToCDataPriorityQuest(questState.Step));

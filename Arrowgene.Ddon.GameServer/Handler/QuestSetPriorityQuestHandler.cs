@@ -26,17 +26,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var priorityQuests = Server.Database.GetPriorityQuestScheduleIds(client.Character.CommonId);
             foreach (var questScheduleId in priorityQuests)
             {
-                if (!QuestManager.IsQuestEnabled(questScheduleId))
+                var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
+                if (!QuestManager.IsQuestEnabled(questScheduleId) || quest is null)
                 {
                     Logger.Error(client, $"Priority quest for quest state which doesn't exist or is not enabled, schedule {questScheduleId}");
                     Server.Database.DeletePriorityQuest(client.Character.CommonId, questScheduleId);
                     continue;
                 }
 
-                var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
                 var questStateManager = QuestManager.GetQuestStateManager(client, quest);
                 var questState = questStateManager.GetQuestState(questScheduleId);
-                ntc.PriorityQuestList.Add(quest.ToCDataPriorityQuest(questState.Step));
+                ntc.PriorityQuestList.Add(quest.ToCDataPriorityQuest(questState?.Step ?? 0));
             }
 
             client.Party.SendToAll(ntc);
