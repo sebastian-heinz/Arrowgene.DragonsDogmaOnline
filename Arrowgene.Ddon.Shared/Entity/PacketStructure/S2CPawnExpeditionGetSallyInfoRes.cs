@@ -17,6 +17,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             ClanSallySpotInfoList = new();
         }
 
+        public byte SallyCount { get; set; }
         public List<CDataCommonU32> AreaIdList { get; set; }
         public List<CDataAreaSpotSet> HotSpotInfoList { get; set; }
         public List<CDataCommonU32> ActiveBuffLineupList { get; set; }
@@ -27,6 +28,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, S2CPawnExpeditionGetSallyInfoRes obj)
             {
                 WriteServerResponse(buffer, obj);
+                WriteByte(buffer, obj.SallyCount);
                 WriteEntityList(buffer, obj.AreaIdList);
                 WriteEntityList(buffer, obj.HotSpotInfoList);
                 WriteEntityList(buffer, obj.ActiveBuffLineupList);
@@ -37,6 +39,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 S2CPawnExpeditionGetSallyInfoRes obj = new S2CPawnExpeditionGetSallyInfoRes();
                 ReadServerResponse(buffer, obj);
+                obj.SallyCount = ReadByte(buffer);
                 obj.AreaIdList = ReadEntityList<CDataCommonU32>(buffer);
                 obj.HotSpotInfoList = ReadEntityList<CDataAreaSpotSet>(buffer);
                 obj.ActiveBuffLineupList = ReadEntityList<CDataCommonU32>(buffer);
