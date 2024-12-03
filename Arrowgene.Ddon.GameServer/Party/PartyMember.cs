@@ -9,6 +9,7 @@ public abstract class PartyMember
 {
     public byte MemberType { get; set; }
     public int MemberIndex { get; set; }
+    public uint CommonId { get; set; }
     public uint PawnId { get; set; }
     public bool IsLeader { get; set; }
     public bool IsPawn { get; set; }

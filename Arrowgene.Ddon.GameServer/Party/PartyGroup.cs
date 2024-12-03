@@ -742,6 +742,17 @@ namespace Arrowgene.Ddon.GameServer.Party
             {
                 for (int i = 0; i < MaxSlots; i++)
                 {
+                    if (_slots[i] != null && _slots[i].CommonId == partyMember.CommonId)
+                    {
+                        // This character is already in the party, so fail gracefully without letting them take a second slot.
+                        Logger.Error($"[PartyId:{Id}][TakeSlot] Party member already present.");
+                        slotIndex = i;
+                        break;
+                    }
+                }
+
+                for (int i = 0; i < MaxSlots; i++)
+                {
                     if (_slots[i] == null)
                     {
                         slotIndex = i;
@@ -789,6 +800,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             PlayerPartyMember partyMember = new PlayerPartyMember(client, _partyManager.Server);
             partyMember.IsPawn = false;
             partyMember.MemberType = 1;
+            partyMember.CommonId = client.Character.CommonId;
             partyMember.PawnId = 0;
             partyMember.IsPlayEntry = false;
             partyMember.AnyValueList = new byte[8];
@@ -804,6 +816,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             PawnPartyMember partyMember = new PawnPartyMember();
             partyMember.Pawn = pawn;
             partyMember.IsPawn = true;
+            partyMember.CommonId = pawn.CommonId;
             partyMember.MemberType = 2;
             partyMember.PawnId = pawn.PawnId;
             partyMember.IsPlayEntry = false;
