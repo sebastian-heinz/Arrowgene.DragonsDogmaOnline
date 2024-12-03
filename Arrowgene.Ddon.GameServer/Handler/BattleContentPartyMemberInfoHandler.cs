@@ -23,7 +23,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CBattleContentPartyMemberInfoRes Handle(GameClient client, C2SBattleContentPartyMemberInfoReq request)
         {
-            var leader = client.Party.Leader.Client.Character;
+            var leader = client.Party.Leader?.Client.Character
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_LEADER_ABSENCE);
 
             bool contentSynced = true;
             foreach (var memberClient in client.Party.Clients)

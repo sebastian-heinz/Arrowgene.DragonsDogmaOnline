@@ -827,7 +827,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             lock (_TrialsInProgress)
             {
-                if (TrialInProgress(client.Party) && client.Party.Leader.Client == client)
+                if (TrialInProgress(client.Party) && client.Party.Leader?.Client == client)
                 {
                     EndTrial(client.Party, GetPartyState(client.Party), SoulOrdealEndState.Failed);
                 }

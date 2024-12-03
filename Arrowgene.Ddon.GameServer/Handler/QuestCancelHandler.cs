@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
-                if (client.Party.Leader.Client == client) //Only the leader should be able to inform the party quest state.
+                if (client.Party.Leader?.Client == client) //Only the leader should be able to inform the party quest state.
                 {
                     questStateManager.CancelQuest(quest.QuestScheduleId);
 
