@@ -3,6 +3,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
+using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 

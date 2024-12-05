@@ -9,10 +9,7 @@
   "discoverable": true,
   "order_conditions": [
     { "type": "SoloWithPawns" },
-    {
-      "type": "MainQuestCompleted",
-      "Param1": 4
-    }
+    { "type": "MainQuestCompleted", "Param1": 4 }
   ],
   "rewards": [
     {

@@ -38,7 +38,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (var questScheduleId in activeQuests)
             {
                 var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
-                if (quest is null) { continue; }
+                if (quest is null) 
+                { 
+                    continue; 
+                }
                 var questStateManager = QuestManager.GetQuestStateManager(client, quest);
                 var questState = questStateManager.GetQuestState(questScheduleId);
                 pcap.QuestOrderList.Add(quest.ToCDataQuestOrderList(questState.Step));
