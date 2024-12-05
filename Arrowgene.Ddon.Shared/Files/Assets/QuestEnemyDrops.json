@@ -3,7 +3,7 @@
     {
       "id": 1,
       "name": "Goblin (Lv1-9)",
-      "enemy_id": [ "0x010100" ],
+      "enemy_id": ["0x010100"],
       "min_level": 1,
       "max_level": 9,
       "mdlType": 0,
@@ -46,7 +46,7 @@
     {
       "id": 3,
       "name": "Sling Goblin (Rock/Torch) (Lv1-9)",
-      "enemy_id": [ "0x010103", "0x010105" ],
+      "enemy_id": ["0x010103", "0x010105"],
       "min_level": 1,
       "max_level": 9,
       "mdlType": 0,
@@ -192,7 +192,7 @@
     {
       "id": 9,
       "name": "Cyclops (Lv1-19)",
-      "enemy_id": [ "0x015000", "0x015001", "0x085110", "0x085111", "0x085112", "0x085113", "0x085114" ],
+      "enemy_id": ["0x015000", "0x015001", "0x085110", "0x085111", "0x085112", "0x085113", "0x085114"],
       "min_level": 1,
       "max_level": 19,
       "mdlType": 0,
@@ -303,7 +303,7 @@
     {
       "id": 14,
       "name": "Orc Soldier (Lv1-9)",
-      "enemy_id": [ "0x015800", "0x085000", "0x085001", "0x085002", "0x085003" ],
+      "enemy_id": ["0x015800", "0x085000", "0x085001", "0x085002", "0x085003"],
       "min_level": 1,
       "max_level": 9,
       "mdlType": 0,
@@ -407,7 +407,7 @@
     {
       "id": 18,
       "name": "Redcap Redcap/Fighter/Slinger (Lv20+)",
-      "enemy_id": [ "0x011110", "0x011111", "0x011112" ],
+      "enemy_id": ["0x011110", "0x011111", "0x011112"],
       "min_level": 20,
       "mdlType": 0,
       "items": [
@@ -577,7 +577,7 @@
     {
       "id": 26,
       "name": "Skeleton (Lv1-9)",
-      "enemy_id": [ "0x010300" ],
+      "enemy_id": ["0x010300"],
       "min_level": 1,
       "max_level": 9,
       "mdlType": 0,
@@ -603,7 +603,7 @@
     {
       "id": 27,
       "name": "Skeleton (Lv10-89)",
-      "enemy_id": [ "0x010300" ],
+      "enemy_id": ["0x010300"],
       "min_level": 10,
       "max_level": 89,
       "mdlType": 0,
@@ -637,7 +637,7 @@
     {
       "id": 28,
       "name": "Slime (Lv1-14)",
-      "enemy_id": [ "0x010900" ],
+      "enemy_id": ["0x010900"],
       "min_level": 1,
       "max_level": 14,
       "mdlType": 0,
@@ -655,7 +655,7 @@
     {
       "id": 29,
       "name": "Slime (Lv15-79)",
-      "enemy_id": [ "0x010900" ],
+      "enemy_id": ["0x010900"],
       "min_level": 15,
       "max_level": 79,
       "mdlType": 0,
@@ -681,7 +681,7 @@
     {
       "id": 30,
       "name": "Slime (Lv80+)",
-      "enemy_id": [ "0x010900" ],
+      "enemy_id": ["0x010900"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -714,7 +714,7 @@
     {
       "id": 31,
       "name": "Wolf (Lv1-9)",
-      "enemy_id": [ "0x010200" ],
+      "enemy_id": ["0x010200"],
       "min_level": 1,
       "max_level": 9,
       "mdlType": 0,
@@ -740,7 +740,7 @@
     {
       "id": 32,
       "name": "Wolf (Lv10-79)",
-      "enemy_id": [ "0x010200" ],
+      "enemy_id": ["0x010200"],
       "min_level": 10,
       "max_level": 79,
       "mdlType": 0,
@@ -774,7 +774,7 @@
     {
       "id": 33,
       "name": "Wolf (Lv80+)",
-      "enemy_id": [ "0x010200" ],
+      "enemy_id": ["0x010200"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -807,7 +807,7 @@
     {
       "id": 34,
       "name": "Brute Ape (Lv1-29)",
-      "enemy_id": [ "0x015504" ],
+      "enemy_id": ["0x015504"],
       "min_level": 1,
       "max_level": 29,
       "mdlType": 0,
@@ -833,7 +833,7 @@
     {
       "id": 35,
       "name": "Brute Ape (Lv30+)",
-      "enemy_id": [ "0x015504" ],
+      "enemy_id": ["0x015504"],
       "min_level": 30,
       "mdlType": 0,
       "items": [
@@ -866,7 +866,7 @@
     {
       "id": 36,
       "name": "Rogue Seeker (Lv1+)",
-      "enemy_id": [ "0x011001" ],
+      "enemy_id": ["0x011001"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -899,7 +899,7 @@
     {
       "id": 37,
       "name": "Rogue Fighter (Lv1+)",
-      "enemy_id": [ "0x011000" ],
+      "enemy_id": ["0x011000"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -924,7 +924,7 @@
     {
       "id": 38,
       "name": "Rogue Mage (Lv1+)",
-      "enemy_id": [ "0x011005" ],
+      "enemy_id": ["0x011005"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -949,7 +949,7 @@
     {
       "id": 39,
       "name": "Rogue Healer (Lv1+)",
-      "enemy_id": [ "0x011003" ],
+      "enemy_id": ["0x011003"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -982,7 +982,7 @@
     {
       "id": 40,
       "name": "Rogue Defender (Lv1+)",
-      "enemy_id": [ "0x011004" ],
+      "enemy_id": ["0x011004"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -1007,7 +1007,7 @@
     {
       "id": 41,
       "name": "Rogue Warrior (Lv1+)",
-      "enemy_id": [ "0x011006" ],
+      "enemy_id": ["0x011006"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -1032,7 +1032,7 @@
     {
       "id": 42,
       "name": "Rogue Hunter (Lv1+)",
-      "enemy_id": [ "0x011002" ],
+      "enemy_id": ["0x011002"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -1057,7 +1057,7 @@
     {
       "id": 43,
       "name": "Chicken (Lv1+)",
-      "enemy_id": [ "0x019000", "0x019001" ],
+      "enemy_id": ["0x019000", "0x019001"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -1074,7 +1074,7 @@
     {
       "id": 44,
       "name": "Pig (Lv1-19)",
-      "enemy_id": [ "0x018601", "0x018602", "0x018603", "0x018604" ],
+      "enemy_id": ["0x018601", "0x018602", "0x018603", "0x018604"],
       "min_level": 1,
       "max_level": 19,
       "mdlType": 0,
@@ -1100,7 +1100,7 @@
     {
       "id": 45,
       "name": "Pig (Lv20+)",
-      "enemy_id": [ "0x018601", "0x018602", "0x018603", "0x018604" ],
+      "enemy_id": ["0x018601", "0x018602", "0x018603", "0x018604"],
       "min_level": 20,
       "mdlType": 0,
       "items": [
@@ -1133,7 +1133,7 @@
     {
       "id": 46,
       "name": "Deep Slime (Lv1-14)",
-      "enemy_id": [ "0x010901" ],
+      "enemy_id": ["0x010901"],
       "min_level": 1,
       "max_level": 14,
       "mdlType": 0,
@@ -1151,7 +1151,7 @@
     {
       "id": 47,
       "name": "Deep Slime (Lv15-79)",
-      "enemy_id": [ "0x010901" ],
+      "enemy_id": ["0x010901"],
       "min_level": 15,
       "max_level": 79,
       "mdlType": 0,
@@ -1177,7 +1177,7 @@
     {
       "id": 48,
       "name": "Deep Slime (Lv80+)",
-      "enemy_id": [ "0x010901" ],
+      "enemy_id": ["0x010901"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -1210,7 +1210,7 @@
     {
       "id": 49,
       "name": "Sulfur Saurian (Lv1-14)",
-      "enemy_id": [ "0x010410" ],
+      "enemy_id": ["0x010410"],
       "min_level": 1,
       "max_level": 14,
       "mdlType": 0,
@@ -1244,7 +1244,7 @@
     {
       "id": 50,
       "name": "Sulfur Saurian (Lv15-79)",
-      "enemy_id": [ "0x010410" ],
+      "enemy_id": ["0x010410"],
       "min_level": 15,
       "max_level": 79,
       "mdlType": 0,
@@ -1286,7 +1286,7 @@
     {
       "id": 51,
       "name": "Sulfur Saurian (Lv80+)",
-      "enemy_id": [ "0x010410" ],
+      "enemy_id": ["0x010410"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -1335,7 +1335,7 @@
     {
       "id": 52,
       "name": "Orc Soldier (Lv10-29)",
-      "enemy_id": [ "0x015800", "0x085000", "0x085001", "0x085002", "0x085003" ],
+      "enemy_id": ["0x015800", "0x085000", "0x085001", "0x085002", "0x085003"],
       "min_level": 10,
       "max_level": 29,
       "mdlType": 0,
@@ -1361,7 +1361,7 @@
     {
       "id": 53,
       "name": "Orc Soldier (Lv30+)",
-      "enemy_id": [ "0x015800", "0x085000", "0x085001", "0x085002", "0x085003" ],
+      "enemy_id": ["0x015800", "0x085000", "0x085001", "0x085002", "0x085003"],
       "min_level": 30,
       "mdlType": 0,
       "items": [
@@ -1394,7 +1394,7 @@
     {
       "id": 54,
       "name": "Sphinx (Lv1-24)",
-      "enemy_id": [ "0x015302", "0x070700"],
+      "enemy_id": ["0x015302", "0x070700"],
       "min_level": 1,
       "max_level": 24,
       "mdlType": 0,
@@ -1420,7 +1420,7 @@
     {
       "id": 55,
       "name": "Sphinx (Lv25-79)",
-      "enemy_id": [ "0x015302", "0x070700" ],
+      "enemy_id": ["0x015302", "0x070700"],
       "min_level": 25,
       "max_level": 79,
       "mdlType": 0,
@@ -1454,7 +1454,7 @@
     {
       "id": 56,
       "name": "Sphinx (Lv80+)",
-      "enemy_id": [ "0x015302", "0x070700" ],
+      "enemy_id": ["0x015302", "0x070700"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -1495,7 +1495,7 @@
     {
       "id": 57,
       "name": "Harpy (Lv1-24)",
-      "enemy_id": [ "0x010600" ],
+      "enemy_id": ["0x010600"],
       "min_level": 1,
       "max_level": 24,
       "mdlType": 0,
@@ -1521,7 +1521,7 @@
     {
       "id": 58,
       "name": "Harpy (Lv25-79)",
-      "enemy_id": [ "0x010600" ],
+      "enemy_id": ["0x010600"],
       "min_level": 25,
       "max_level": 79,
       "mdlType": 0,
@@ -1555,7 +1555,7 @@
     {
       "id": 59,
       "name": "Harpy (Lv80+)",
-      "enemy_id": [ "0x010600" ],
+      "enemy_id": ["0x010600"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -1588,7 +1588,7 @@
     {
       "id": 60,
       "name": "Armored Cyclops (Lv1-19)",
-      "enemy_id": [ "0x015002", "0x015003" ],
+      "enemy_id": ["0x015002", "0x015003"],
       "min_level": 1,
       "max_level": 19,
       "mdlType": 0,
@@ -1622,7 +1622,7 @@
     {
       "id": 61,
       "name": "Armored Cyclops (Lv20-33)",
-      "enemy_id": [ "0x015002", "0x015003" ],
+      "enemy_id": ["0x015002", "0x015003"],
       "min_level": 20,
       "max_level": 33,
       "mdlType": 0,
@@ -1664,7 +1664,7 @@
     {
       "id": 62,
       "name": "Armored Cyclops (Lv34-54)",
-      "enemy_id": [ "0x015002", "0x015003" ],
+      "enemy_id": ["0x015002", "0x015003"],
       "min_level": 34,
       "max_level": 54,
       "mdlType": 0,
@@ -1714,7 +1714,7 @@
     {
       "id": 63,
       "name": "Armored Cyclops (Lv55-79)",
-      "enemy_id": [ "0x015002", "0x015003" ],
+      "enemy_id": ["0x015002", "0x015003"],
       "min_level": 55,
       "max_level": 79,
       "mdlType": 0,
@@ -1772,7 +1772,7 @@
     {
       "id": 64,
       "name": "Armored Cyclops (Lv80+)",
-      "enemy_id": [ "0x015002", "0x015003" ],
+      "enemy_id": ["0x015002", "0x015003"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -1837,7 +1837,7 @@
     {
       "id": 65,
       "name": "Golem (Lv1-29)",
-      "enemy_id": [ "0x015100" ],
+      "enemy_id": ["0x015100"],
       "min_level": 1,
       "max_level": 29,
       "mdlType": 0,
@@ -1863,7 +1863,7 @@
     {
       "id": 66,
       "name": "Golem (Lv30-45)",
-      "enemy_id": [ "0x015100" ],
+      "enemy_id": ["0x015100"],
       "min_level": 30,
       "max_level": 45,
       "mdlType": 0,
@@ -1897,7 +1897,7 @@
     {
       "id": 67,
       "name": "Ogre (Lv1-29)",
-      "enemy_id": [ "0x015500" ],
+      "enemy_id": ["0x015500"],
       "min_level": 1,
       "max_level": 29,
       "mdlType": 0,
@@ -1923,7 +1923,7 @@
     {
       "id": 68,
       "name": "Ogre (Lv30+)",
-      "enemy_id": [ "0x015500" ],
+      "enemy_id": ["0x015500"],
       "min_level": 30,
       "mdlType": 0,
       "items": [
@@ -1956,7 +1956,7 @@
     {
       "id": 69,
       "name": "Undead (Lv1-3)",
-      "enemy_id": [ "0x010500", "0x010501" ],
+      "enemy_id": ["0x010500", "0x010501"],
       "min_level": 1,
       "max_level": 3,
       "mdlType": 0,
@@ -1974,7 +1974,7 @@
     {
       "id": 70,
       "name": "Undead (Lv4-24)",
-      "enemy_id": [ "0x010500", "0x010501" ],
+      "enemy_id": ["0x010500", "0x010501"],
       "min_level": 4,
       "max_level": 24,
       "mdlType": 0,
@@ -2000,7 +2000,7 @@
     {
       "id": 71,
       "name": "Undead (Lv25-79)",
-      "enemy_id": [ "0x010500", "0x010501" ],
+      "enemy_id": ["0x010500", "0x010501"],
       "min_level": 25,
       "max_level": 79,
       "mdlType": 0,
@@ -2034,7 +2034,7 @@
     {
       "id": 72,
       "name": "Undead (Lv80+)",
-      "enemy_id": [ "0x010500", "0x010501" ],
+      "enemy_id": ["0x010500", "0x010501"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -2075,7 +2075,7 @@
     {
       "id": 73,
       "name": "Sword Undead (Lv1-24)",
-      "enemy_id": [ "0x010503" ],
+      "enemy_id": ["0x010503"],
       "min_level": 1,
       "max_level": 24,
       "mdlType": 0,
@@ -2101,7 +2101,7 @@
     {
       "id": 74,
       "name": "Sword Undead (Lv25-79)",
-      "enemy_id": [ "0x010503" ],
+      "enemy_id": ["0x010503"],
       "min_level": 25,
       "max_level": 79,
       "mdlType": 0,
@@ -2135,7 +2135,7 @@
     {
       "id": 75,
       "name": "Sword Undead (Lv80+)",
-      "enemy_id": [ "0x010503" ],
+      "enemy_id": ["0x010503"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -2176,7 +2176,7 @@
     {
       "id": 76,
       "name": "Undead Stout (Lv1-24)",
-      "enemy_id": [ "0x010502" ],
+      "enemy_id": ["0x010502"],
       "min_level": 1,
       "max_level": 24,
       "mdlType": 0,
@@ -2202,7 +2202,7 @@
     {
       "id": 77,
       "name": "Undead Stout (Lv25-79)",
-      "enemy_id": [ "0x010502" ],
+      "enemy_id": ["0x010502"],
       "min_level": 25,
       "max_level": 79,
       "mdlType": 0,
@@ -2236,7 +2236,7 @@
     {
       "id": 78,
       "name": "Undead Stout (Lv80+)",
-      "enemy_id": [ "0x010502" ],
+      "enemy_id": ["0x010502"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -2277,7 +2277,7 @@
     {
       "id": 79,
       "name": "Wyrm (Lv1-79)",
-      "enemy_id": [ "0x015701", "0x070910" ],
+      "enemy_id": ["0x015701", "0x070910"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -2311,7 +2311,7 @@
     {
       "id": 80,
       "name": "Wyrm (Lv80+)",
-      "enemy_id": [ "0x015701", "0x070910" ],
+      "enemy_id": ["0x015701", "0x070910"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -2344,7 +2344,7 @@
     {
       "id": 81,
       "name": "Chimera (Lv1-34)",
-      "enemy_id": [ "0x015200", "0x070800" ],
+      "enemy_id": ["0x015200", "0x070800"],
       "min_level": 1,
       "max_level": 34,
       "mdlType": 0,
@@ -2378,7 +2378,7 @@
     {
       "id": 82,
       "name": "Chimera (Lv35-55)",
-      "enemy_id": [ "0x015200", "0x070800" ],
+      "enemy_id": ["0x015200", "0x070800"],
       "min_level": 35,
       "max_level": 54,
       "mdlType": 0,
@@ -2420,7 +2420,7 @@
     {
       "id": 83,
       "name": "Chimera (Lv55-79)",
-      "enemy_id": [ "0x015200", "0x070800" ],
+      "enemy_id": ["0x015200", "0x070800"],
       "min_level": 55,
       "max_level": 79,
       "mdlType": 0,
@@ -2462,7 +2462,7 @@
     {
       "id": 84,
       "name": "Chimera (Lv80+)",
-      "enemy_id": [ "0x015200", "0x070800" ],
+      "enemy_id": ["0x015200", "0x070800"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -2511,7 +2511,7 @@
     {
       "id": 85,
       "name": "Giant Sulfur Saurian (Lv1-14)",
-      "enemy_id": [ "0x010411" ],
+      "enemy_id": ["0x010411"],
       "min_level": 1,
       "max_level": 14,
       "mdlType": 0,
@@ -2553,7 +2553,7 @@
     {
       "id": 86,
       "name": "Giant Sulfur Saurian (Lv15-79)",
-      "enemy_id": [ "0x010411" ],
+      "enemy_id": ["0x010411"],
       "min_level": 15,
       "max_level": 79,
       "mdlType": 0,
@@ -2603,7 +2603,7 @@
     {
       "id": 87,
       "name": "Giant Sulfur Saurian (Lv80+)",
-      "enemy_id": [ "0x010411" ],
+      "enemy_id": ["0x010411"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -2660,7 +2660,7 @@
     {
       "id": 88,
       "name": "Giant Saurian (Lv15-79)",
-      "enemy_id": [ "0x010401" ],
+      "enemy_id": ["0x010401"],
       "min_level": 15,
       "max_level": 79,
       "mdlType": 0,
@@ -2694,7 +2694,7 @@
     {
       "id": 89,
       "name": "Giant Saurian (Lv80+)",
-      "enemy_id": [ "0x010401" ],
+      "enemy_id": ["0x010401"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -2735,7 +2735,7 @@
     {
       "id": 90,
       "name": "Cyclops (Lv20-34)",
-      "enemy_id": [ "0x015000", "0x015001", "0x085110", "0x085111", "0x085112", "0x085113", "0x085114" ],
+      "enemy_id": ["0x015000", "0x015001", "0x085110", "0x085111", "0x085112", "0x085113", "0x085114"],
       "min_level": 20,
       "max_level": 34,
       "mdlType": 0,
@@ -2769,7 +2769,7 @@
     {
       "id": 91,
       "name": "Cyclops (Lv35-55)",
-      "enemy_id": [ "0x015000", "0x015001", "0x085110", "0x085111", "0x085112", "0x085113", "0x085114" ],
+      "enemy_id": ["0x015000", "0x015001", "0x085110", "0x085111", "0x085112", "0x085113", "0x085114"],
       "min_level": 35,
       "max_level": 55,
       "mdlType": 0,
@@ -2811,7 +2811,7 @@
     {
       "id": 92,
       "name": "Cyclops (Lv56-79)",
-      "enemy_id": [ "0x015000", "0x015001", "0x085110", "0x085111", "0x085112", "0x085113", "0x085114" ],
+      "enemy_id": ["0x015000", "0x015001", "0x085110", "0x085111", "0x085112", "0x085113", "0x085114"],
       "min_level": 56,
       "max_level": 79,
       "mdlType": 0,
@@ -2861,7 +2861,7 @@
     {
       "id": 93,
       "name": "Cyclops (Lv80+)",
-      "enemy_id": [ "0x015000", "0x015001", "0x085110", "0x085111", "0x085112", "0x085113", "0x085114" ],
+      "enemy_id": ["0x015000", "0x015001", "0x085110", "0x085111", "0x085112", "0x085113", "0x085114"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -2918,7 +2918,7 @@
     {
       "id": 94,
       "name": "Behemoth (Lv1-40)",
-      "enemy_id": [ "0x015709", "0x070930" ],
+      "enemy_id": ["0x015709", "0x070930"],
       "min_level": 1,
       "max_level": 40,
       "mdlType": 0,
@@ -2952,7 +2952,7 @@
     {
       "id": 95,
       "name": "Behemoth (Lv41-55)",
-      "enemy_id": [ "0x015709", "0x070930" ],
+      "enemy_id": ["0x015709", "0x070930"],
       "min_level": 41,
       "max_level": 55,
       "mdlType": 0,
@@ -2986,7 +2986,7 @@
     {
       "id": 20,
       "name": "Behemoth (Lv56-79)",
-      "enemy_id": [ "0x015709", "0x070930" ],
+      "enemy_id": ["0x015709", "0x070930"],
       "min_level": 56,
       "max_level": 79,
       "mdlType": 0,
@@ -3036,7 +3036,7 @@
     {
       "id": 97,
       "name": "Behemoth (Lv80+)",
-      "enemy_id": [ "0x015709", "0x070930" ],
+      "enemy_id": ["0x015709", "0x070930"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -3093,7 +3093,7 @@
     {
       "id": 98,
       "name": "Snow Harpy (Lv1-24)",
-      "enemy_id": [ "0x010601" ],
+      "enemy_id": ["0x010601"],
       "min_level": 1,
       "max_level": 24,
       "mdlType": 0,
@@ -3119,7 +3119,7 @@
     {
       "id": 99,
       "name": "Snow Harpy (Lv25-79)",
-      "enemy_id": [ "0x010601" ],
+      "enemy_id": ["0x010601"],
       "min_level": 25,
       "max_level": 79,
       "mdlType": 0,
@@ -3153,7 +3153,7 @@
     {
       "id": 100,
       "name": "Snow Harpy (Lv80+)",
-      "enemy_id": [ "0x010601" ],
+      "enemy_id": ["0x010601"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -3186,7 +3186,7 @@
     {
       "id": 101,
       "name": "Hobgoblin (Lv30+)",
-      "enemy_id": [ "0x010110" ],
+      "enemy_id": ["0x010110"],
       "min_level": 30,
       "mdlType": 0,
       "items": [
@@ -3219,7 +3219,7 @@
     {
       "id": 102,
       "name": "Griffin (Lv1-34)",
-      "enemy_id": [ "0x015300", "0x070600" ],
+      "enemy_id": ["0x015300", "0x070600"],
       "min_level": 1,
       "max_level": 34,
       "mdlType": 0,
@@ -3253,7 +3253,7 @@
     {
       "id": 103,
       "name": "Griffin (Lv35-55)",
-      "enemy_id": [ "0x015300", "0x070600" ],
+      "enemy_id": ["0x015300", "0x070600"],
       "min_level": 35,
       "max_level": 55,
       "mdlType": 0,
@@ -3287,7 +3287,7 @@
     {
       "id": 104,
       "name": "Griffin (Lv56-79)",
-      "enemy_id": [ "0x015300", "0x070600" ],
+      "enemy_id": ["0x015300", "0x070600"],
       "min_level": 56,
       "max_level": 79,
       "mdlType": 0,
@@ -3329,7 +3329,7 @@
     {
       "id": 105,
       "name": "Griffin (Lv80+)",
-      "enemy_id": [ "0x015300", "0x070600" ],
+      "enemy_id": ["0x015300", "0x070600"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -3378,7 +3378,7 @@
     {
       "id": 106,
       "name": "Black Griffin (Lv1-55)",
-      "enemy_id": [ "0x070610" ],
+      "enemy_id": ["0x070610"],
       "min_level": 1,
       "max_level": 55,
       "mdlType": 0,
@@ -3412,7 +3412,7 @@
     {
       "id": 107,
       "name": "Black Griffin (Lv56-79)",
-      "enemy_id": [ "0x070610" ],
+      "enemy_id": ["0x070610"],
       "min_level": 56,
       "max_level": 79,
       "mdlType": 0,
@@ -3454,7 +3454,7 @@
     {
       "id": 108,
       "name": "Black Griffin (Lv80+)",
-      "enemy_id": [ "0x070610" ],
+      "enemy_id": ["0x070610"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -3503,7 +3503,7 @@
     {
       "id": 109,
       "name": "Colossus (Lv1-19)",
-      "enemy_id": [ "0x015020", "0x070041", "0x070042" ],
+      "enemy_id": ["0x015020", "0x070041", "0x070042"],
       "min_level": 1,
       "max_level": 19,
       "mdlType": 0,
@@ -3529,7 +3529,7 @@
     {
       "id": 110,
       "name": "Colossus (Lv20-34)",
-      "enemy_id": [ "0x015020", "0x070041", "0x070042" ],
+      "enemy_id": ["0x015020", "0x070041", "0x070042"],
       "min_level": 20,
       "max_level": 34,
       "mdlType": 0,
@@ -3563,7 +3563,7 @@
     {
       "id": 111,
       "name": "Colossus (Lv35-79)",
-      "enemy_id": [ "0x015020", "0x070041", "0x070042" ],
+      "enemy_id": ["0x015020", "0x070041", "0x070042"],
       "min_level": 35,
       "max_level": 79,
       "mdlType": 0,
@@ -3605,7 +3605,7 @@
     {
       "id": 112,
       "name": "Colossus (Lv80+)",
-      "enemy_id": [ "0x015020", "0x070041", "0x070042" ],
+      "enemy_id": ["0x015020", "0x070041", "0x070042"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -3654,7 +3654,7 @@
     {
       "id": 113,
       "name": "Lindwurm (Lv1-40)",
-      "enemy_id": [ "0x015707", "0x070940" ],
+      "enemy_id": ["0x015707", "0x070940"],
       "min_level": 1,
       "max_level": 40,
       "mdlType": 0,
@@ -3680,7 +3680,7 @@
     {
       "id": 114,
       "name": "Lindwurm (Lv41-79)",
-      "enemy_id": [ "0x015707", "0x070940" ],
+      "enemy_id": ["0x015707", "0x070940"],
       "min_level": 41,
       "max_level": 79,
       "mdlType": 0,
@@ -3730,7 +3730,7 @@
     {
       "id": 115,
       "name": "Dread Ape (Lv1-29)",
-      "enemy_id": [ "0x015502" ],
+      "enemy_id": ["0x015502"],
       "min_level": 1,
       "max_level": 29,
       "mdlType": 0,
@@ -3764,7 +3764,7 @@
     {
       "id": 116,
       "name": "Dread Ape (Lv30+)",
-      "enemy_id": [ "0x015502" ],
+      "enemy_id": ["0x015502"],
       "min_level": 30,
       "mdlType": 0,
       "items": [
@@ -3805,7 +3805,7 @@
     {
       "id": 117,
       "name": "Skeleton Sorcerer (Lv30-79)",
-      "enemy_id": [ "0x010309", "0x075130", "0x075131", "0x075300" ],
+      "enemy_id": ["0x010309", "0x075130", "0x075131", "0x075300"],
       "min_level": 30,
       "max_level": 79,
       "mdlType": 0,
@@ -3839,7 +3839,7 @@
     {
       "id": 118,
       "name": "Skeleton Sorcerer (Lv80+)",
-      "enemy_id": [ "0x010309", "0x075130", "0x075131", "0x075300" ],
+      "enemy_id": ["0x010309", "0x075130", "0x075131", "0x075300"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -3880,7 +3880,7 @@
     {
       "id": 119,
       "name": "Spider (Lv1+)",
-      "enemy_id": [ "0x018800" ],
+      "enemy_id": ["0x018800"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -3905,7 +3905,7 @@
     {
       "id": 120,
       "name": "Boar (Lv1-19)",
-      "enemy_id": [ "0x018600" ],
+      "enemy_id": ["0x018600"],
       "min_level": 1,
       "max_level": 19,
       "mdlType": 0,
@@ -3931,7 +3931,7 @@
     {
       "id": 121,
       "name": "Boar (Lv30+)",
-      "enemy_id": [ "0x018600" ],
+      "enemy_id": ["0x018600"],
       "min_level": 30,
       "mdlType": 0,
       "items": [
@@ -3964,7 +3964,7 @@
     {
       "id": 122,
       "name": "Grimwarg (Lv1-32)",
-      "enemy_id": [ "0x010205" ],
+      "enemy_id": ["0x010205"],
       "min_level": 1,
       "max_level": 32,
       "mdlType": 0,
@@ -3982,7 +3982,7 @@
     {
       "id": 123,
       "name": "Grimwarg (Lv33-40)",
-      "enemy_id": [ "0x010205" ],
+      "enemy_id": ["0x010205"],
       "min_level": 33,
       "max_level": 40,
       "mdlType": 0,
@@ -4008,7 +4008,7 @@
     {
       "id": 124,
       "name": "Grimwarg (Lv41-79)",
-      "enemy_id": [ "0x010205" ],
+      "enemy_id": ["0x010205"],
       "min_level": 41,
       "max_level": 79,
       "mdlType": 0,
@@ -4042,7 +4042,7 @@
     {
       "id": 125,
       "name": "Grimwarg (Lv80+)",
-      "enemy_id": [ "0x010205" ],
+      "enemy_id": ["0x010205"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -4083,7 +4083,7 @@
     {
       "id": 126,
       "name": "Ent (Lv1-29)",
-      "enemy_id": [ "0x015031" ],
+      "enemy_id": ["0x015031"],
       "min_level": 1,
       "max_level": 29,
       "mdlType": 0,
@@ -4109,7 +4109,7 @@
     {
       "id": 127,
       "name": "Ent (Lv30-54)",
-      "enemy_id": [ "0x015031" ],
+      "enemy_id": ["0x015031"],
       "min_level": 30,
       "max_level": 54,
       "mdlType": 0,
@@ -4143,7 +4143,7 @@
     {
       "id": 128,
       "name": "Ent (Lv55+)",
-      "enemy_id": [ "0x015031" ],
+      "enemy_id": ["0x015031"],
       "min_level": 55,
       "mdlType": 0,
       "items": [
@@ -4184,7 +4184,7 @@
     {
       "id": 129,
       "name": "Goat (Lv1+)",
-      "enemy_id": [ "0x019100" ],
+      "enemy_id": ["0x019100"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -4201,7 +4201,7 @@
     {
       "id": 130,
       "name": "Direwolf (Lv1-14)",
-      "enemy_id": [ "0x010201" ],
+      "enemy_id": ["0x010201"],
       "min_level": 1,
       "max_level": 14,
       "mdlType": 0,
@@ -4219,7 +4219,7 @@
     {
       "id": 131,
       "name": "Direwolf (15-40)",
-      "enemy_id": [ "0x010201" ],
+      "enemy_id": ["0x010201"],
       "min_level": 15,
       "max_level": 40,
       "mdlType": 0,
@@ -4245,7 +4245,7 @@
     {
       "id": 132,
       "name": "Direwolf (Lv41-79)",
-      "enemy_id": [ "0x010201" ],
+      "enemy_id": ["0x010201"],
       "min_level": 41,
       "max_level": 79,
       "mdlType": 0,
@@ -4279,7 +4279,7 @@
     {
       "id": 133,
       "name": "Direwolf (Lv80+)",
-      "enemy_id": [ "0x010201" ],
+      "enemy_id": ["0x010201"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -4320,7 +4320,7 @@
     {
       "id": 134,
       "name": "Sling Hobgoblin (Torch) (Lv15-29)",
-      "enemy_id": [ "0x010114" ],
+      "enemy_id": ["0x010114"],
       "min_level": 15,
       "max_level": 29,
       "mdlType": 0,
@@ -4346,7 +4346,7 @@
     {
       "id": 135,
       "name": "Sling Hobgoblin (Torch) (Lv30+)",
-      "enemy_id": [ "0x010114" ],
+      "enemy_id": ["0x010114"],
       "min_level": 30,
       "mdlType": 0,
       "items": [
@@ -4379,7 +4379,7 @@
     {
       "id": 136,
       "name": "Sling Hobgoblin (Oil) (Lv1-14)",
-      "enemy_id": [ "0x010112" ],
+      "enemy_id": ["0x010112"],
       "min_level": 1,
       "max_level": 14,
       "mdlType": 0,
@@ -4397,7 +4397,7 @@
     {
       "id": 137,
       "name": "Sling Hobgoblin (Oil) (Lv15-29)",
-      "enemy_id": [ "0x010112" ],
+      "enemy_id": ["0x010112"],
       "min_level": 15,
       "max_level": 29,
       "mdlType": 0,
@@ -4423,7 +4423,7 @@
     {
       "id": 138,
       "name": "Sling Hobgoblin (Oil) (Lv30+)",
-      "enemy_id": [ "0x010112" ],
+      "enemy_id": ["0x010112"],
       "min_level": 30,
       "mdlType": 0,
       "items": [
@@ -4456,7 +4456,7 @@
     {
       "id": 139,
       "name": "Shadow Chimera (Lv1-79)",
-      "enemy_id": [ "0x015203" ],
+      "enemy_id": ["0x015203"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -4490,7 +4490,7 @@
     {
       "id": 140,
       "name": "Shadow Chimera (Lv80+)",
-      "enemy_id": [ "0x015203" ],
+      "enemy_id": ["0x015203"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -4531,7 +4531,7 @@
     {
       "id": 141,
       "name": "Goblin Bomber (Lv1-24)",
-      "enemy_id": [ "0x011150" ],
+      "enemy_id": ["0x011150"],
       "min_level": 1,
       "max_level": 24,
       "mdlType": 0,
@@ -4557,7 +4557,7 @@
     {
       "id": 142,
       "name": "Goblin Bomber (Lv25+)",
-      "enemy_id": [ "0x011150" ],
+      "enemy_id": ["0x011150"],
       "min_level": 25,
       "mdlType": 0,
       "items": [
@@ -4590,7 +4590,7 @@
     {
       "id": 143,
       "name": "Zuhl Lv(Lv1+)",
-      "enemy_id": [ "0x020402", "0x071300", "0x080300" ],
+      "enemy_id": ["0x020402", "0x071300", "0x080300"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -4615,7 +4615,7 @@
     {
       "id": 144,
       "name": "Orc Trooper (Lv1-55)",
-      "enemy_id": [ "0x015812" ],
+      "enemy_id": ["0x015812"],
       "min_level": 1,
       "max_level": 55,
       "mdlType": 0,
@@ -4641,7 +4641,7 @@
     {
       "id": 145,
       "name": "Orc Trooper (Lv56+)",
-      "enemy_id": [ "0x015812" ],
+      "enemy_id": ["0x015812"],
       "min_level": 56,
       "mdlType": 0,
       "items": [
@@ -4674,7 +4674,7 @@
     {
       "id": 146,
       "name": "Captain Orc (Lv1-39)",
-      "enemy_id": [ "0x015820" ],
+      "enemy_id": ["0x015820"],
       "min_level": 1,
       "max_level": 39,
       "mdlType": 0,
@@ -4692,7 +4692,7 @@
     {
       "id": 147,
       "name": "Captain Orc (Lv40-55)",
-      "enemy_id": [ "0x015820" ],
+      "enemy_id": ["0x015820"],
       "min_level": 40,
       "max_level": 55,
       "mdlType": 0,
@@ -4718,7 +4718,7 @@
     {
       "id": 148,
       "name": "Captain Orc (Lv56+)",
-      "enemy_id": [ "0x015820" ],
+      "enemy_id": ["0x015820"],
       "min_level": 56,
       "mdlType": 0,
       "items": [
@@ -4751,7 +4751,7 @@
     {
       "id": 149,
       "name": "Worm (Lv1+)",
-      "enemy_id": [ "0x010800" ],
+      "enemy_id": ["0x010800"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -4768,7 +4768,7 @@
     {
       "id": 150,
       "name": "Gargoyle (Lv1+)",
-      "enemy_id": [ "0x010603" ],
+      "enemy_id": ["0x010603"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -4785,7 +4785,7 @@
     {
       "id": 151,
       "name": "Sludgeman (Lv1-79)",
-      "enemy_id": [ "0x010510" ],
+      "enemy_id": ["0x010510"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -4811,7 +4811,7 @@
     {
       "id": 152,
       "name": "Sludgeman (Lv80+)",
-      "enemy_id": [ "0x010510" ],
+      "enemy_id": ["0x010510"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -4844,7 +4844,7 @@
     {
       "id": 153,
       "name": "Damned Goblin/Fighter (Lv1-44)",
-      "enemy_id": [ "0x011123", "0x011125" ],
+      "enemy_id": ["0x011123", "0x011125"],
       "min_level": 1,
       "max_level": 44,
       "mdlType": 0,
@@ -4862,7 +4862,7 @@
     {
       "id": 154,
       "name": "Damned Goblin/Fighter (Lv45+)",
-      "enemy_id": [ "0x011123", "0x011125" ],
+      "enemy_id": ["0x011123", "0x011125"],
       "min_level": 45,
       "mdlType": 0,
       "items": [
@@ -4887,7 +4887,7 @@
     {
       "id": 155,
       "name": "Damned Wolf (Lv1-79)",
-      "enemy_id": [ "0x010208" ],
+      "enemy_id": ["0x010208"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -4913,7 +4913,7 @@
     {
       "id": 156,
       "name": "Damned Wolf (Lv80+)",
-      "enemy_id": [ "0x010208" ],
+      "enemy_id": ["0x010208"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -4946,7 +4946,7 @@
     {
       "id": 157,
       "name": "Blob (Lv1-79)",
-      "enemy_id": [ "0x010910" ],
+      "enemy_id": ["0x010910"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -4972,7 +4972,7 @@
     {
       "id": 158,
       "name": "Blob (Lv80+)",
-      "enemy_id": [ "0x010910" ],
+      "enemy_id": ["0x010910"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -5005,7 +5005,7 @@
     {
       "id": 159,
       "name": "Damned Golem (Lv1-55)",
-      "enemy_id": [ "0x015103" ],
+      "enemy_id": ["0x015103"],
       "min_level": 1,
       "max_level": 55,
       "mdlType": 0,
@@ -5031,7 +5031,7 @@
     {
       "id": 160,
       "name": "Damned Golem (Lv56+)",
-      "enemy_id": [ "0x015103" ],
+      "enemy_id": ["0x015103"],
       "min_level": 56,
       "mdlType": 0,
       "items": [
@@ -5064,7 +5064,7 @@
     {
       "id": 161,
       "name": "Geo Golem (Lv1-55)",
-      "enemy_id": [ "0x015104" ],
+      "enemy_id": ["0x015104"],
       "min_level": 1,
       "max_level": 55,
       "mdlType": 0,
@@ -5098,7 +5098,7 @@
     {
       "id": 162,
       "name": "Geo Golem (Lv56+)",
-      "enemy_id": [ "0x015104" ],
+      "enemy_id": ["0x015104"],
       "min_level": 56,
       "mdlType": 0,
       "items": [
@@ -5139,7 +5139,7 @@
     {
       "id": 163,
       "name": "Skeleton Mage (Lv1-19)",
-      "enemy_id": [ "0x010308", "0x075120" ],
+      "enemy_id": ["0x010308", "0x075120"],
       "min_level": 1,
       "max_level": 19,
       "mdlType": 0,
@@ -5165,7 +5165,7 @@
     {
       "id": 164,
       "name": "Skeleton Mage (Lv20-79)",
-      "enemy_id": [ "0x010308", "0x075120" ],
+      "enemy_id": ["0x010308", "0x075120"],
       "min_level": 20,
       "max_level": 79,
       "mdlType": 0,
@@ -5199,7 +5199,7 @@
     {
       "id": 165,
       "name": "Skeleton Mage (Lv80+)",
-      "enemy_id": [ "0x010308", "0x075120" ],
+      "enemy_id": ["0x010308", "0x075120"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -5240,7 +5240,7 @@
     {
       "id": 166,
       "name": "Warrior Undead (Lv1-79)",
-      "enemy_id": [ "0x010504" ],
+      "enemy_id": ["0x010504"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -5266,7 +5266,7 @@
     {
       "id": 167,
       "name": "Warrior Undead (Lv80+)",
-      "enemy_id": [ "0x010504" ],
+      "enemy_id": ["0x010504"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -5299,7 +5299,7 @@
     {
       "id": 168,
       "name": "Eliminator (Lv1+)",
-      "enemy_id": [ "0x010508" ],
+      "enemy_id": ["0x010508"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -5316,7 +5316,7 @@
     {
       "id": 169,
       "name": "Living Armor (Lv1-79)",
-      "enemy_id": [ "0x010306" ],
+      "enemy_id": ["0x010306"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -5342,7 +5342,7 @@
     {
       "id": 170,
       "name": "Living Armor (Lv80+)",
-      "enemy_id": [ "0x010306" ],
+      "enemy_id": ["0x010306"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -5375,7 +5375,7 @@
     {
       "id": 171,
       "name": "Alchemized Griffin (Lv1-79)",
-      "enemy_id": [ "0x015304" ],
+      "enemy_id": ["0x015304"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -5425,7 +5425,7 @@
     {
       "id": 172,
       "name": "Alchemized Griffin (Lv80+)",
-      "enemy_id": [ "0x015304" ],
+      "enemy_id": ["0x015304"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -5482,7 +5482,7 @@
     {
       "id": 173,
       "name": "Alchemized Skeleton (Lv1-45)",
-      "enemy_id": [ "0x010312" ],
+      "enemy_id": ["0x010312"],
       "min_level": 1,
       "max_level": 45,
       "mdlType": 0,
@@ -5508,7 +5508,7 @@
     {
       "id": 174,
       "name": "Alchemized Skeleton (Lv46-79)",
-      "enemy_id": [ "0x010312" ],
+      "enemy_id": ["0x010312"],
       "min_level": 46,
       "max_level": 79,
       "mdlType": 0,
@@ -5542,7 +5542,7 @@
     {
       "id": 175,
       "name": "Alchemized Skeleton (Lv80+)",
-      "enemy_id": [ "0x010312" ],
+      "enemy_id": ["0x010312"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -5583,7 +5583,7 @@
     {
       "id": 176,
       "name": "Alchemized Goblin (Lv1-49)",
-      "enemy_id": [ "0x011120", "0x011121" ],
+      "enemy_id": ["0x011120", "0x011121"],
       "min_level": 1,
       "max_level": 49,
       "mdlType": 0,
@@ -5609,7 +5609,7 @@
     {
       "id": 177,
       "name": "Alchemized Goblin/Fighter (Lv50+)",
-      "enemy_id": [ "0x011120", "0x011121" ],
+      "enemy_id": ["0x011120", "0x011121"],
       "min_level": 50,
       "mdlType": 0,
       "items": [
@@ -5642,7 +5642,7 @@
     {
       "id": 178,
       "name": "Skeleton Knight (Lv25-79)",
-      "enemy_id": [ "0x010301" ],
+      "enemy_id": ["0x010301"],
       "min_level": 25,
       "max_level": 79,
       "mdlType": 0,
@@ -5676,7 +5676,7 @@
     {
       "id": 179,
       "name": "Skeleton Knight (Lv80+)",
-      "enemy_id": [ "0x010301" ],
+      "enemy_id": ["0x010301"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -5717,7 +5717,7 @@
     {
       "id": 180,
       "name": "Alchemized Wolf (Lv1-49)",
-      "enemy_id": [ "0x010207" ],
+      "enemy_id": ["0x010207"],
       "min_level": 1,
       "max_level": 49,
       "mdlType": 0,
@@ -5743,7 +5743,7 @@
     {
       "id": 181,
       "name": "Alchemized Wolf (Lv50-79)",
-      "enemy_id": [ "0x010207" ],
+      "enemy_id": ["0x010207"],
       "min_level": 50,
       "max_level": 79,
       "mdlType": 0,
@@ -5777,7 +5777,7 @@
     {
       "id": 182,
       "name": "Alchemized Wolf (Lv80+)",
-      "enemy_id": [ "0x010207" ],
+      "enemy_id": ["0x010207"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -5818,7 +5818,7 @@
     {
       "id": 183,
       "name": "Blue Newt (Lv1-14)",
-      "enemy_id": [ "0x010460" ],
+      "enemy_id": ["0x010460"],
       "min_level": 1,
       "max_level": 14,
       "mdlType": 0,
@@ -5852,7 +5852,7 @@
     {
       "id": 184,
       "name": "Blue Newt (Lv15-79)",
-      "enemy_id": [ "0x010460" ],
+      "enemy_id": ["0x010460"],
       "min_level": 15,
       "max_level": 79,
       "mdlType": 0,
@@ -5894,7 +5894,7 @@
     {
       "id": 185,
       "name": "Blue Newt (Lv80+)",
-      "enemy_id": [ "0x010460" ],
+      "enemy_id": ["0x010460"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -5943,7 +5943,7 @@
     {
       "id": 186,
       "name": "Large Newt (Lv1-79)",
-      "enemy_id": [ "0x010461" ],
+      "enemy_id": ["0x010461"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -5977,7 +5977,7 @@
     {
       "id": 187,
       "name": "Large Newt (Lv80+)",
-      "enemy_id": [ "0x010461" ],
+      "enemy_id": ["0x010461"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -6018,7 +6018,7 @@
     {
       "id": 188,
       "name": "Forest Goblin/Fighter/Slinger (Lv1-39)",
-      "enemy_id": [ "0x011100", "0x011101", "0x011102" ],
+      "enemy_id": ["0x011100", "0x011101", "0x011102"],
       "min_level": 1,
       "max_level": 39,
       "mdlType": 0,
@@ -6044,7 +6044,7 @@
     {
       "id": 189,
       "name": "Forest Goblin/Fighter/Slinger (Lv40+)",
-      "enemy_id": [ "0x011100", "0x011101", "0x011102" ],
+      "enemy_id": ["0x011100", "0x011101", "0x011102"],
       "min_level": 40,
       "mdlType": 0,
       "items": [
@@ -6077,7 +6077,7 @@
     {
       "id": 190,
       "name": "Mist Fighter (Lv1-17)",
-      "enemy_id": [ "0x011030" ],
+      "enemy_id": ["0x011030"],
       "min_level": 1,
       "max_level": 17,
       "mdlType": 0,
@@ -6095,7 +6095,7 @@
     {
       "id": 191,
       "name": "Mist Fighter (Lv18+)",
-      "enemy_id": [ "0x011030" ],
+      "enemy_id": ["0x011030"],
       "min_level": 18,
       "mdlType": 0,
       "items": [
@@ -6120,7 +6120,7 @@
     {
       "id": 192,
       "name": "Mist Warrior (Lv1+)",
-      "enemy_id": [ "0x011034" ],
+      "enemy_id": ["0x011034"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -6137,7 +6137,7 @@
     {
       "id": 193,
       "name": "Shadow Harpy (Lv1-44)",
-      "enemy_id": [ "0x010607" ],
+      "enemy_id": ["0x010607"],
       "min_level": 1,
       "max_level": 44,
       "mdlType": 0,
@@ -6155,7 +6155,7 @@
     {
       "id": 194,
       "name": "Shadow Harpy (Lv45-55)",
-      "enemy_id": [ "0x010607" ],
+      "enemy_id": ["0x010607"],
       "min_level": 45,
       "max_level": 55,
       "mdlType": 0,
@@ -6181,7 +6181,7 @@
     {
       "id": 195,
       "name": "Shadow Harpy (Lv56+)",
-      "enemy_id": [ "0x010607" ],
+      "enemy_id": ["0x010607"],
       "min_level": 56,
       "mdlType": 0,
       "items": [
@@ -6214,7 +6214,7 @@
     {
       "id": 196,
       "name": "Shadow Goblin/Fighter/Leader (Lv1-54)",
-      "enemy_id": [ "0x011130", "0x011131", "0x011160" ],
+      "enemy_id": ["0x011130", "0x011131", "0x011160"],
       "min_level": 1,
       "max_level": 54,
       "mdlType": 0,
@@ -6240,7 +6240,7 @@
     {
       "id": 197,
       "name": "Shadow Goblin/Fighter/Leader (Lv55+)",
-      "enemy_id": [ "0x011130", "0x011131", "0x011160" ],
+      "enemy_id": ["0x011130", "0x011131", "0x011160"],
       "min_level": 55,
       "mdlType": 0,
       "items": [
@@ -6273,7 +6273,7 @@
     {
       "id": 198,
       "name": "Mist Sorcerer (Lv1-17)",
-      "enemy_id": [ "0x011033" ],
+      "enemy_id": ["0x011033"],
       "min_level": 1,
       "max_level": 17,
       "mdlType": 0,
@@ -6291,7 +6291,7 @@
     {
       "id": 199,
       "name": "Mist Sorcerer (Lv18+)",
-      "enemy_id": [ "0x011033" ],
+      "enemy_id": ["0x011033"],
       "min_level": 18,
       "mdlType": 0,
       "items": [
@@ -6308,7 +6308,7 @@
     {
       "id": 200,
       "name": "Banded Fighter (Lv1+)",
-      "enemy_id": [ "0x011010" ],
+      "enemy_id": ["0x011010"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -6333,7 +6333,7 @@
     {
       "id": 201,
       "name": "Banded Hunter (Lv1+)",
-      "enemy_id": [ "0x011012" ],
+      "enemy_id": ["0x011012"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -6358,7 +6358,7 @@
     {
       "id": 202,
       "name": "Saurian Sage (Lv1-79)",
-      "enemy_id": [ "0x010430" ],
+      "enemy_id": ["0x010430"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -6400,7 +6400,7 @@
     {
       "id": 203,
       "name": "Saurian Sage (Lv80+)",
-      "enemy_id": [ "0x010430" ],
+      "enemy_id": ["0x010430"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -6449,7 +6449,7 @@
     {
       "id": 204,
       "name": "Infected Snow Harpy (Lv1-79)",
-      "enemy_id": [ "0x010612" ],
+      "enemy_id": ["0x010612"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -6475,7 +6475,7 @@
     {
       "id": 205,
       "name": "Infected Snow Harpy (Lv80+)",
-      "enemy_id": [ "0x010612" ],
+      "enemy_id": ["0x010612"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -6508,7 +6508,7 @@
     {
       "id": 206,
       "name": "Infected Griffin (Lv1-79)",
-      "enemy_id": [ "0x015306" ],
+      "enemy_id": ["0x015306"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -6534,7 +6534,7 @@
     {
       "id": 207,
       "name": "Infected Griffin (Lv80+)",
-      "enemy_id": [ "0x015306" ],
+      "enemy_id": ["0x015306"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -6567,7 +6567,7 @@
     {
       "id": 208,
       "name": "Infected Gorecyclops (Lv1-79)",
-      "enemy_id": [ "0x015012" ],
+      "enemy_id": ["0x015012"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -6593,7 +6593,7 @@
     {
       "id": 209,
       "name": "Infected Gorecyclops (Lv80+)",
-      "enemy_id": [ "0x015012" ],
+      "enemy_id": ["0x015012"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -6625,8 +6625,66 @@
     },
     {
       "id": 210,
+      "name": "Infected Behemoth (Lv1-79)",
+      "enemy_id": ["0x015712"],
+      "min_level": 1,
+      "mdlType": 0,
+      "items": [
+        [
+          11408,
+          1,
+          1,
+          0,
+          false,
+          0.8
+        ],
+        [
+          11777,
+          1,
+          3,
+          0,
+          false,
+          0.9
+        ]
+      ]
+    },
+    {
+      "id": 211,
+      "name": "Infected Behemoth (Lv80+)",
+      "enemy_id": ["0x015712"],
+      "min_level": 80,
+      "mdlType": 0,
+      "items": [
+        [
+          11408,
+          1,
+          1,
+          0,
+          false,
+          0.8
+        ],
+        [
+          11777,
+          1,
+          3,
+          0,
+          false,
+          0.4
+        ],
+        [
+          17879,
+          1,
+          3,
+          0,
+          false,
+          0.8
+        ]
+      ]
+    },
+    {
+      "id": 212,
       "name": "Nightmare (Lv1-79)",
-      "enemy_id": [ "0x015305" ],
+      "enemy_id": ["0x015305"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -6650,9 +6708,9 @@
       ]
     },
     {
-      "id": 211,
+      "id": 213,
       "name": "Nightmare (Lv80+)",
-      "enemy_id": [ "0x015305" ],
+      "enemy_id": ["0x015305"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -6683,9 +6741,9 @@
       ]
     },
     {
-      "id": 212,
+      "id": 214,
       "name": "Infected Hobgoblins/Fighter (Lv1+)",
-      "enemy_id": [ "0x010160", "0x010161" ],
+      "enemy_id": ["0x010160", "0x010161"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -6708,9 +6766,9 @@
       ]
     },
     {
-      "id": 213,
+      "id": 215,
       "name": "Infected Direwolf (Lv1-79)",
-      "enemy_id": [ "0x010209" ],
+      "enemy_id": ["0x010209"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -6742,9 +6800,9 @@
       ]
     },
     {
-      "id": 214,
+      "id": 216,
       "name": "Infected Direwolf (Lv80+)",
-      "enemy_id": [ "0x010209" ],
+      "enemy_id": ["0x010209"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -6783,9 +6841,9 @@
       ]
     },
     {
-      "id": 215,
+      "id": 217,
       "name": "Bolt Grimwarg (Lv1-79)",
-      "enemy_id": [ "0x010211" ],
+      "enemy_id": ["0x010211"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -6817,9 +6875,9 @@
       ]
     },
     {
-      "id": 216,
+      "id": 218,
       "name": "Bolt Grimwarg (Lv80+)",
-      "enemy_id": [ "0x010211" ],
+      "enemy_id": ["0x010211"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -6858,9 +6916,9 @@
       ]
     },
     {
-      "id": 217,
+      "id": 219,
       "name": "Eliminator Slay (Lv1+)",
-      "enemy_id": [ "0x010530" ],
+      "enemy_id": ["0x010530"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -6875,9 +6933,9 @@
       ]
     },
     {
-      "id": 219,
+      "id": 221,
       "name": "Golem (Lv46+)",
-      "enemy_id": [ "0x015100" ],
+      "enemy_id": ["0x015100"],
       "min_level": 46,
       "mdlType": 0,
       "items": [
@@ -6908,9 +6966,9 @@
       ]
     },
     {
-      "id": 220,
+      "id": 222,
       "name": "Gorecyclops (Lv1-79)",
-      "enemy_id": [ "0x015010", "0x070050", "0x070051" ],
+      "enemy_id": ["0x015010", "0x070050", "0x070051"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -6926,9 +6984,9 @@
       ]
     },
     {
-      "id": 221,
+      "id": 223,
       "name": "Gorecyclops (Lv80+)",
-      "enemy_id": [ "0x015010", "0x070050", "0x070051" ],
+      "enemy_id": ["0x015010", "0x070050", "0x070051"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -6951,9 +7009,9 @@
       ]
     },
     {
-      "id": 222,
+      "id": 224,
       "name": "Gorechimera (Lv1-79)",
-      "enemy_id": [ "0x015201", "0x070820" ],
+      "enemy_id": ["0x015201", "0x070820"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -6969,9 +7027,9 @@
       ]
     },
     {
-      "id": 223,
+      "id": 225,
       "name": "Gorechimera (Lv80+)",
-      "enemy_id": [ "0x015201", "0x070820" ],
+      "enemy_id": ["0x015201", "0x070820"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -6994,9 +7052,9 @@
       ]
     },
     {
-      "id": 224,
+      "id": 226,
       "name": "Strix (Lv1+)",
-      "enemy_id": [ "0x010610" ],
+      "enemy_id": ["0x010610"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -7011,9 +7069,9 @@
       ]
     },
     {
-      "id": 225,
+      "id": 227,
       "name": "Flame Skeleton (Lv1-79)",
-      "enemy_id": [ "0x010314" ],
+      "enemy_id": ["0x010314"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -7029,9 +7087,9 @@
       ]
     },
     {
-      "id": 226,
+      "id": 228,
       "name": "Flame Skeleton (Lv80+)",
-      "enemy_id": [ "0x010314" ],
+      "enemy_id": ["0x010314"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -7054,9 +7112,9 @@
       ]
     },
     {
-      "id": 227,
+      "id": 229,
       "name": "Flame Skeleton Brute (Lv1-79)",
-      "enemy_id": [ "0x010320" ],
+      "enemy_id": ["0x010320"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -7080,9 +7138,9 @@
       ]
     },
     {
-      "id": 228,
+      "id": 230,
       "name": "Flame Skeleton Brute (Lv80+)",
-      "enemy_id": [ "0x010320" ],
+      "enemy_id": ["0x010320"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -7113,9 +7171,9 @@
       ]
     },
     {
-      "id": 229,
+      "id": 231,
       "name": "Moth (Lv1+)",
-      "enemy_id": [ "0x011210", "0x011211" ],
+      "enemy_id": ["0x011210", "0x011211"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -7131,9 +7189,9 @@
       ]
     },
     {
-      "id": 230,
+      "id": 232,
       "name": "Pixies (Lv1+)",
-      "enemy_id": [ "0x010150", "0x010151", "0x010152", "0x010153", "0x010155" ],
+      "enemy_id": ["0x010150", "0x010151", "0x010152", "0x010153", "0x010155"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -7148,9 +7206,9 @@
       ]
     },
     {
-      "id": 231,
+      "id": 233,
       "name": "Buck (Lv1-19)",
-      "enemy_id": [ "0x018200" ],
+      "enemy_id": ["0x018200"],
       "min_level": 1,
       "max_level": 19,
       "mdlType": 0,
@@ -7174,9 +7232,9 @@
       ]
     },
     {
-      "id": 232,
+      "id": 234,
       "name": "Buck (Lv20+)",
-      "enemy_id": [ "0x018200" ],
+      "enemy_id": ["0x018200"],
       "min_level": 20,
       "mdlType": 0,
       "items": [
@@ -7207,9 +7265,9 @@
       ]
     },
     {
-      "id": 233,
+      "id": 235,
       "name": "Siren (Lv1-79)",
-      "enemy_id": [ "0x010605" ],
+      "enemy_id": ["0x010605"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -7225,9 +7283,9 @@
       ]
     },
     {
-      "id": 234,
+      "id": 236,
       "name": "Siren (Lv80+)",
-      "enemy_id": [ "0x010605" ],
+      "enemy_id": ["0x010605"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -7250,9 +7308,9 @@
       ]
     },
     {
-      "id": 235,
+      "id": 237,
       "name": "Ghost (Lv1-79)",
-      "enemy_id": [ "0x015620" ],
+      "enemy_id": ["0x015620"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -7268,9 +7326,9 @@
       ]
     },
     {
-      "id": 236,
+      "id": 238,
       "name": "Ghost (Lv80+)",
-      "enemy_id": [ "0x015620" ],
+      "enemy_id": ["0x015620"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -7293,9 +7351,9 @@
       ]
     },
     {
-      "id": 237,
+      "id": 239,
       "name": "Ghost Mail (Lv1-79)",
-      "enemy_id": [ "0x010311" ],
+      "enemy_id": ["0x010311"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -7319,9 +7377,9 @@
       ]
     },
     {
-      "id": 238,
+      "id": 240,
       "name": "Ghost Mail (Lv80+)",
-      "enemy_id": [ "0x010311" ],
+      "enemy_id": ["0x010311"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -7352,9 +7410,9 @@
       ]
     },
     {
-      "id": 239,
+      "id": 241,
       "name": "Warg (Lv1-79)",
-      "enemy_id": [ "0x010203" ],
+      "enemy_id": ["0x010203"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -7370,9 +7428,9 @@
       ]
     },
     {
-      "id": 240,
+      "id": 242,
       "name": "Warg (Lv80+)",
-      "enemy_id": [ "0x010203" ],
+      "enemy_id": ["0x010203"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -7395,9 +7453,9 @@
       ]
     },
     {
-      "id": 241,
+      "id": 243,
       "name": "Tarasque (Lv1-79)",
-      "enemy_id": [ "0x015720" ],
+      "enemy_id": ["0x015720"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -7413,9 +7471,9 @@
       ]
     },
     {
-      "id": 242,
+      "id": 244,
       "name": "Tarasque (Lv80+)",
-      "enemy_id": [ "0x015720" ],
+      "enemy_id": ["0x015720"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -7438,9 +7496,9 @@
       ]
     },
     {
-      "id": 243,
+      "id": 245,
       "name": "Wisened Tarasque (Lv1-79)",
-      "enemy_id": [ "0x015721" ],
+      "enemy_id": ["0x015721"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -7456,9 +7514,9 @@
       ]
     },
     {
-      "id": 244,
+      "id": 246,
       "name": "Wisened Tarasque (Lv80+)",
-      "enemy_id": [ "0x015721" ],
+      "enemy_id": ["0x015721"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -7481,9 +7539,9 @@
       ]
     },
     {
-      "id": 246,
+      "id": 248,
       "name": "Little Spine (Lv1+)",
-      "enemy_id": [ "0x015507" ],
+      "enemy_id": ["0x015507"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -7498,9 +7556,9 @@
       ]
     },
     {
-      "id": 247,
+      "id": 249,
       "name": "Foot-Biter (Lv1+)",
-      "enemy_id": [ "0x011500" ],
+      "enemy_id": ["0x011500"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -7515,9 +7573,9 @@
       ]
     },
     {
-      "id": 248,
+      "id": 250,
       "name": "Phindymian Ent (Lv1+)",
-      "enemy_id": [ "0x015032", "0x070520" ],
+      "enemy_id": ["0x015032", "0x070520"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -7540,9 +7598,9 @@
       ]
     },
     {
-      "id": 249,
+      "id": 251,
       "name": "White Chimera (Lv1-55)",
-      "enemy_id": [ "0x015202", "0x070810" ],
+      "enemy_id": ["0x015202", "0x070810"],
       "min_level": 1,
       "max_level": 55,
       "mdlType": 0,
@@ -7582,9 +7640,9 @@
       ]
     },
     {
-      "id": 250,
+      "id": 252,
       "name": "White Chimera (Lv56-79)",
-      "enemy_id": [ "0x015202", "0x070810" ],
+      "enemy_id": ["0x015202", "0x070810"],
       "min_level": 56,
       "max_level": 79,
       "mdlType": 0,
@@ -7632,9 +7690,9 @@
       ]
     },
     {
-      "id": 251,
+      "id": 253,
       "name": "White Chimera (Lv80+)",
-      "enemy_id": [ "0x015202", "0x070810" ],
+      "enemy_id": ["0x015202", "0x070810"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -7689,9 +7747,9 @@
       ]
     },
     {
-      "id": 252,
+      "id": 254,
       "name": "Green Guardian (Lv1-79)",
-      "enemy_id": [ "0x010210" ],
+      "enemy_id": ["0x010210"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -7707,9 +7765,9 @@
       ]
     },
     {
-      "id": 253,
+      "id": 255,
       "name": "Green Guardian (Lv80+)",
-      "enemy_id": [ "0x010210" ],
+      "enemy_id": ["0x010210"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -7724,9 +7782,9 @@
       ]
     },
     {
-      "id": 254,
+      "id": 256,
       "name": "Spineback (Lv1+)",
-      "enemy_id": [ "0x015506", "0x070210", "0x070211" ],
+      "enemy_id": ["0x015506", "0x070210", "0x070211"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -7741,9 +7799,9 @@
       ]
     },
     {
-      "id": 255,
+      "id": 257,
       "name": "Mole Troll (Lv1+)",
-      "enemy_id": [ "0x015041", "0x070410" ],
+      "enemy_id": ["0x015041", "0x070410"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -7782,9 +7840,9 @@
       ]
     },
     {
-      "id": 256,
+      "id": 258,
       "name": "Wild Boar (Lv1+)",
-      "enemy_id": [ "0x019300", "0x019301" ],
+      "enemy_id": ["0x019300", "0x019301"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -7799,9 +7857,9 @@
       ]
     },
     {
-      "id": 257,
+      "id": 259,
       "name": "Severely Infected Warg (Lv1-79)",
-      "enemy_id": [ "0x010220" ],
+      "enemy_id": ["0x010220"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -7825,9 +7883,9 @@
       ]
     },
     {
-      "id": 258,
+      "id": 260,
       "name": "Severely Infected Warg (Lv80+)",
-      "enemy_id": [ "0x010220" ],
+      "enemy_id": ["0x010220"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -7858,9 +7916,9 @@
       ]
     },
     {
-      "id": 259,
+      "id": 261,
       "name": "Stymphalides (Lv1+)",
-      "enemy_id": [ "0x010611" ],
+      "enemy_id": ["0x010611"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -7875,9 +7933,9 @@
       ]
     },
     {
-      "id": 260,
+      "id": 262,
       "name": "Severely Infected Stymphalides (Lv1+)",
-      "enemy_id": [ "0x010614" ],
+      "enemy_id": ["0x010614"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -7900,9 +7958,9 @@
       ]
     },
     {
-      "id": 261,
+      "id": 263,
       "name": "Bolt Skeleton (Lv1-79)",
-      "enemy_id": [ "0x010316" ],
+      "enemy_id": ["0x010316"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -7926,9 +7984,9 @@
       ]
     },
     {
-      "id": 262,
+      "id": 264,
       "name": "Bolt Skeleton (Lv80+)",
-      "enemy_id": [ "0x010316" ],
+      "enemy_id": ["0x010316"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -7959,9 +8017,9 @@
       ]
     },
     {
-      "id": 263,
+      "id": 265,
       "name": "Bolt Skeleton Brute (Lv1-79)",
-      "enemy_id": [ "0x010322" ],
+      "enemy_id": ["0x010322"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -7985,9 +8043,9 @@
       ]
     },
     {
-      "id": 264,
+      "id": 266,
       "name": "Bolt Skeleton Brute (Lv80+)",
-      "enemy_id": [ "0x010322" ],
+      "enemy_id": ["0x010322"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -8018,9 +8076,9 @@
       ]
     },
     {
-      "id": 265,
+      "id": 267,
       "name": "Bifrest (Lv80+)",
-      "enemy_id": [ "0x015321", "0x070640", "0x070641" ],
+      "enemy_id": ["0x015321", "0x070640", "0x070641"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -8043,9 +8101,9 @@
       ]
     },
     {
-      "id": 266,
+      "id": 268,
       "name": "Bifrest (Lv1-79)",
-      "enemy_id": [ "0x015321", "0x070640", "0x070641" ],
+      "enemy_id": ["0x015321", "0x070640", "0x070641"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -8061,9 +8119,9 @@
       ]
     },
     {
-      "id": 267,
+      "id": 269,
       "name": "Frog (Lv1+)",
-      "enemy_id": [ "0x019200", "0x019201" ],
+      "enemy_id": ["0x019200", "0x019201"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -8078,9 +8136,9 @@
       ]
     },
     {
-      "id": 268,
+      "id": 270,
       "name": "Grigori (Lv1+)",
-      "enemy_id": [ "0x015900" ],
+      "enemy_id": ["0x015900"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -8095,9 +8153,9 @@
       ]
     },
     {
-      "id": 269,
+      "id": 271,
       "name": "Bearded Grigori (Lv1+)",
-      "enemy_id": [ "0x015920" ],
+      "enemy_id": ["0x015920"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -8120,9 +8178,9 @@
       ]
     },
     {
-      "id": 270,
+      "id": 272,
       "name": "Troll (Lv1-19)",
-      "enemy_id": [ "0x015040" ],
+      "enemy_id": ["0x015040"],
       "min_level": 1,
       "max_level": 19,
       "mdlType": 0,
@@ -8138,9 +8196,9 @@
       ]
     },
     {
-      "id": 271,
+      "id": 273,
       "name": "Troll (Lv20-29)",
-      "enemy_id": [ "0x015040" ],
+      "enemy_id": ["0x015040"],
       "min_level": 20,
       "max_level": 29,
       "mdlType": 0,
@@ -8164,9 +8222,9 @@
       ]
     },
     {
-      "id": 272,
+      "id": 274,
       "name": "Troll (Lv30+)",
-      "enemy_id": [ "0x015040" ],
+      "enemy_id": ["0x015040"],
       "min_level": 30,
       "mdlType": 0,
       "items": [
@@ -8197,9 +8255,9 @@
       ]
     },
     {
-      "id": 273,
+      "id": 275,
       "name": "Infected Orcs (Lv1+)",
-      "enemy_id": [ "0x015813", "0x015814", "0x015815" ],
+      "enemy_id": ["0x015813", "0x015814", "0x015815"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -8214,9 +8272,9 @@
       ]
     },
     {
-      "id": 274,
+      "id": 276,
       "name": "Shadow Wolf (Lv1-44)",
-      "enemy_id": [ "0x010206" ],
+      "enemy_id": ["0x010206"],
       "min_level": 1,
       "max_level": 44,
       "mdlType": 0,
@@ -8232,9 +8290,9 @@
       ]
     },
     {
-      "id": 275,
+      "id": 277,
       "name": "Shadow Wolf (Lv45-55)",
-      "enemy_id": [ "0x010206" ],
+      "enemy_id": ["0x010206"],
       "min_level": 45,
       "max_level": 55,
       "mdlType": 0,
@@ -8258,9 +8316,9 @@
       ]
     },
     {
-      "id": 276,
+      "id": 278,
       "name": "Shadow Wolf (Lv56+)",
-      "enemy_id": [ "0x010206" ],
+      "enemy_id": ["0x010206"],
       "min_level": 56,
       "mdlType": 0,
       "items": [
@@ -8291,9 +8349,9 @@
       ]
     },
     {
-      "id": 277,
+      "id": 279,
       "name": "Giant Saurian Sage (Lv1-79)",
-      "enemy_id": [ "0x010431" ],
+      "enemy_id": ["0x010431"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -8333,9 +8391,9 @@
       ]
     },
     {
-      "id": 278,
+      "id": 280,
       "name": "Giant Saurian Sage (Lv80+)",
-      "enemy_id": [ "0x010431" ],
+      "enemy_id": ["0x010431"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -8382,9 +8440,9 @@
       ]
     },
     {
-      "id": 279,
+      "id": 281,
       "name": "Ruby Eye (Lv1-44)",
-      "enemy_id": [ "0x015411" ],
+      "enemy_id": ["0x015411"],
       "min_level": 1,
       "max_level": 44,
       "mdlType": 0,
@@ -8408,9 +8466,9 @@
       ]
     },
     {
-      "id": 280,
+      "id": 282,
       "name": "Ruby Eye (Lv45+)",
-      "enemy_id": [ "0x015411" ],
+      "enemy_id": ["0x015411"],
       "min_level": 45,
       "mdlType": 0,
       "items": [
@@ -8441,9 +8499,9 @@
       ]
     },
     {
-      "id": 281,
+      "id": 283,
       "name": "Rock Saurian (Lv1-79)",
-      "enemy_id": [ "0x010450" ],
+      "enemy_id": ["0x010450"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -8475,9 +8533,9 @@
       ]
     },
     {
-      "id": 282,
+      "id": 284,
       "name": "Rock Saurian (Lv80+)",
-      "enemy_id": [ "0x010450" ],
+      "enemy_id": ["0x010450"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -8516,9 +8574,9 @@
       ]
     },
     {
-      "id": 283,
+      "id": 285,
       "name": "Rock Saurian Spinel (Lv1-14)",
-      "enemy_id": [ "0x010451" ],
+      "enemy_id": ["0x010451"],
       "min_level": 1,
       "max_level": 14,
       "mdlType": 0,
@@ -8550,9 +8608,9 @@
       ]
     },
     {
-      "id": 284,
+      "id": 286,
       "name": "Rock Saurian Spinel (Lv15-79)",
-      "enemy_id": [ "0x010451" ],
+      "enemy_id": ["0x010451"],
       "min_level": 15,
       "max_level": 79,
       "mdlType": 0,
@@ -8592,9 +8650,9 @@
       ]
     },
     {
-      "id": 285,
+      "id": 287,
       "name": "Rock Saurian Spinel (Lv80+)",
-      "enemy_id": [ "0x010451" ],
+      "enemy_id": ["0x010451"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -8641,9 +8699,9 @@
       ]
     },
     {
-      "id": 286,
+      "id": 288,
       "name": "High Pixies (Lv1+)",
-      "enemy_id": [ "0x010190", "0x010191", "0x010192" ],
+      "enemy_id": ["0x010190", "0x010191", "0x010192"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -8666,9 +8724,9 @@
       ]
     },
     {
-      "id": 287,
+      "id": 289,
       "name": "Lotus Fin (Lv90+)",
-      "enemy_id": [ "0x015718" ],
+      "enemy_id": ["0x015718"],
       "min_level": 90,
       "mdlType": 0,
       "items": [
@@ -8691,9 +8749,9 @@
       ]
     },
     {
-      "id": 288,
+      "id": 290,
       "name": "Pyre Saurian (Lv95+)",
-      "enemy_id": [ "0x010440" ],
+      "enemy_id": ["0x010440"],
       "min_level": 95,
       "mdlType": 0,
       "items": [
@@ -8716,9 +8774,9 @@
       ]
     },
     {
-      "id": 289,
+      "id": 291,
       "name": "Severely Infected Pixie (Lv1+)",
-      "enemy_id": [ "0x010170", "0x010171", "0x0010172" ],
+      "enemy_id": ["0x010170", "0x010171", "0x0010172"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -8741,9 +8799,9 @@
       ]
     },
     {
-      "id": 290,
+      "id": 292,
       "name": "Severely Infected Demon (Lv1+)",
-      "enemy_id": [ "0x015910" ],
+      "enemy_id": ["0x015910"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -8766,9 +8824,9 @@
       ]
     },
     {
-      "id": 291,
+      "id": 293,
       "name": "Severely Infected Gorecyclops (Lv1-79)",
-      "enemy_id": [ "0x015017" ],
+      "enemy_id": ["0x015017"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -8800,9 +8858,9 @@
       ]
     },
     {
-      "id": 292,
+      "id": 294,
       "name": "Severely Infected Gorecyclops (Lv80+)",
-      "enemy_id": [ "0x015017" ],
+      "enemy_id": ["0x015017"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -8841,9 +8899,9 @@
       ]
     },
     {
-      "id": 293,
+      "id": 295,
       "name": "Severely Infected Griffin (Lv1-79)",
-      "enemy_id": [ "0x015310" ],
+      "enemy_id": ["0x015310"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -8867,9 +8925,9 @@
       ]
     },
     {
-      "id": 294,
+      "id": 296,
       "name": "Severely Infected Griffin (Lv80+)",
-      "enemy_id": [ "0x015310" ],
+      "enemy_id": ["0x015310"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -8900,9 +8958,9 @@
       ]
     },
     {
-      "id": 295,
+      "id": 297,
       "name": "Severely Infected Behemoth (Lv1-79)",
-      "enemy_id": [ "0x015717" ],
+      "enemy_id": ["0x015717"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -8926,9 +8984,9 @@
       ]
     },
     {
-      "id": 296,
+      "id": 298,
       "name": "Severely Infected Behemoth (Lv80+)",
-      "enemy_id": [ "0x015717" ],
+      "enemy_id": ["0x015717"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -8959,9 +9017,9 @@
       ]
     },
     {
-      "id": 297,
+      "id": 299,
       "name": "Pixie King (Lv1+)",
-      "enemy_id": [ "0x010195" ],
+      "enemy_id": ["0x010195"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -8984,9 +9042,9 @@
       ]
     },
     {
-      "id": 298,
+      "id": 300,
       "name": "Witch (Lv1-40)",
-      "enemy_id": [ "0x015604" ],
+      "enemy_id": ["0x015604"],
       "min_level": 1,
       "max_level": 40,
       "mdlType": 0,
@@ -9018,9 +9076,9 @@
       ]
     },
     {
-      "id": 299,
+      "id": 301,
       "name": "Witch (Lv41-79)",
-      "enemy_id": [ "0x015604" ],
+      "enemy_id": ["0x015604"],
       "min_level": 41,
       "max_level": 79,
       "mdlType": 0,
@@ -9060,9 +9118,9 @@
       ]
     },
     {
-      "id": 300,
+      "id": 302,
       "name": "Witch (Lv80+)",
-      "enemy_id": [ "0x015604" ],
+      "enemy_id": ["0x015604"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -9109,9 +9167,9 @@
       ]
     },
     {
-      "id": 301,
+      "id": 303,
       "name": "Cragger (Lv1+)",
-      "enemy_id": [ "0x015508" ],
+      "enemy_id": ["0x015508"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -9134,9 +9192,9 @@
       ]
     },
     {
-      "id": 302,
+      "id": 304,
       "name": "Little Crag (Lv1+)",
-      "enemy_id": [ "0x015509" ],
+      "enemy_id": ["0x015509"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -9151,9 +9209,9 @@
       ]
     },
     {
-      "id": 303,
+      "id": 305,
       "name": "Wight (Lv1-24)",
-      "enemy_id": [ "0x015600", "0x0075700" ],
+      "enemy_id": ["0x015600", "0x0075700"],
       "min_level": 1,
       "max_level": 24,
       "mdlType": 0,
@@ -9177,9 +9235,9 @@
       ]
     },
     {
-      "id": 304,
+      "id": 306,
       "name": "Wight (Lv25-79)",
-      "enemy_id": [ "0x015600", "0x0075700" ],
+      "enemy_id": ["0x015600", "0x0075700"],
       "min_level": 25,
       "max_level": 79,
       "mdlType": 0,
@@ -9211,9 +9269,9 @@
       ]
     },
     {
-      "id": 305,
+      "id": 307,
       "name": "Wight (Lv80+)",
-      "enemy_id": [ "0x015600", "0x0075700" ],
+      "enemy_id": ["0x015600", "0x0075700"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -9252,9 +9310,9 @@
       ]
     },
     {
-      "id": 306,
+      "id": 308,
       "name": "Leech (Lv1+)",
-      "enemy_id": [ "0x010810" ],
+      "enemy_id": ["0x010810"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -9269,9 +9327,9 @@
       ]
     },
     {
-      "id": 307,
+      "id": 309,
       "name": "War-Ready Gorecyclops (Lv1-79)",
-      "enemy_id": [ "0x015060" ],
+      "enemy_id": ["0x015060"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -9287,9 +9345,9 @@
       ]
     },
     {
-      "id": 308,
+      "id": 310,
       "name": "War-Ready Gorecyclops (Lv80+)",
-      "enemy_id": [ "0x015060" ],
+      "enemy_id": ["0x015060"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -9312,9 +9370,9 @@
       ]
     },
     {
-      "id": 309,
+      "id": 311,
       "name": "Solider Dwarf Orcs (Lv1-80+)",
-      "enemy_id": [ "0x015821", "0x015822", "0x015823", "0x015824" ],
+      "enemy_id": ["0x015821", "0x015822", "0x015823", "0x015824"],
       "min_level": 1,
       "max_level": 80,
       "mdlType": 0,
@@ -9330,9 +9388,9 @@
       ]
     },
     {
-      "id": 310,
+      "id": 312,
       "name": "War-Ready Grimwarg (Lv1-80+)",
-      "enemy_id": [ "0x010230" ],
+      "enemy_id": ["0x010230"],
       "min_level": 1,
       "max_level": 80,
       "mdlType": 0,
@@ -9356,9 +9414,9 @@
       ]
     },
     {
-      "id": 311,
+      "id": 313,
       "name": "Greater Goblins (Sword/Torch) (Lv1-85+)",
-      "enemy_id": [ "0x010130", "0x010131" ],
+      "enemy_id": ["0x010130", "0x010131"],
       "min_level": 1,
       "max_level": 85,
       "mdlType": 0,
@@ -9374,9 +9432,9 @@
       ]
     },
     {
-      "id": 312,
+      "id": 314,
       "name": "Grim Goblins (Lv1+)",
-      "enemy_id": [ "0x010120", "0x010121", "0x010123", "0x010124" ],
+      "enemy_id": ["0x010120", "0x010121", "0x010123", "0x010124"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -9391,9 +9449,9 @@
       ]
     },
     {
-      "id": 313,
+      "id": 315,
       "name": "War-Ready Saurian (Lv1-85+)",
-      "enemy_id": [ "0x010470" ],
+      "enemy_id": ["0x010470"],
       "min_level": 1,
       "max_level": 85,
       "mdlType": 0,
@@ -9425,9 +9483,9 @@
       ]
     },
     {
-      "id": 314,
+      "id": 316,
       "name": "War-Ready Ogre (Lv88+)",
-      "enemy_id": [ "0x015510" ],
+      "enemy_id": ["0x015510"],
       "min_level": 88,
       "mdlType": 0,
       "items": [
@@ -9458,9 +9516,9 @@
       ]
     },
     {
-      "id": 315,
+      "id": 317,
       "name": "General Orc (Lv1-39)",
-      "enemy_id": [ "0x015830" ],
+      "enemy_id": ["0x015830"],
       "min_level": 1,
       "max_level": 39,
       "mdlType": 0,
@@ -9484,9 +9542,9 @@
       ]
     },
     {
-      "id": 316,
+      "id": 318,
       "name": "General Orc (Lv40-55)",
-      "enemy_id": [ "0x015830" ],
+      "enemy_id": ["0x015830"],
       "min_level": 40,
       "max_level": 55,
       "mdlType": 0,
@@ -9518,9 +9576,9 @@
       ]
     },
     {
-      "id": 317,
+      "id": 319,
       "name": "General Orc (Lv56+)",
-      "enemy_id": [ "0x015830" ],
+      "enemy_id": ["0x015830"],
       "min_level": 56,
       "mdlType": 0,
       "items": [
@@ -9559,9 +9617,9 @@
       ]
     },
     {
-      "id": 321,
+      "id": 323,
       "name": "Squad Leader Dwarf Orc (Lv1-85+)",
-      "enemy_id": [ "0x015826" ],
+      "enemy_id": ["0x015826"],
       "min_level": 1,
       "max_level": 85,
       "mdlType": 0,
@@ -9577,9 +9635,9 @@
       ]
     },
     {
-      "id": 322,
+      "id": 324,
       "name": "Skeleton Cyclops (Lv1-??)",
-      "enemy_id": [ "0x015050" ],
+      "enemy_id": ["0x015050"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -9602,9 +9660,9 @@
       ]
     },
     {
-      "id": 323,
+      "id": 325,
       "name": "Skeleton Warg (Lv85+)",
-      "enemy_id": [ "0x010221" ],
+      "enemy_id": ["0x010221"],
       "min_level": 85,
       "mdlType": 0,
       "items": [
@@ -9619,9 +9677,9 @@
       ]
     },
     {
-      "id": 324,
+      "id": 326,
       "name": "Saurian (Lv80+)",
-      "enemy_id": [ "0x010400" ],
+      "enemy_id": ["0x010400"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -9660,9 +9718,9 @@
       ]
     },
     {
-      "id": 325,
+      "id": 327,
       "name": "Goblin Shamans (Lv1+)",
-      "enemy_id": [ "0x010140" ],
+      "enemy_id": ["0x010140"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -9685,9 +9743,9 @@
       ]
     },
     {
-      "id": 326,
+      "id": 328,
       "name": "Goremanticore (Lv85+)",
-      "enemy_id": [ "0x015211" ],
+      "enemy_id": ["0x015211"],
       "min_level": 85,
       "mdlType": 0,
       "items": [
@@ -9718,9 +9776,9 @@
       ]
     },
     {
-      "id": 327,
+      "id": 329,
       "name": "War-Ready Giant Saurian (Lv1-85+)",
-      "enemy_id": [ "0x010471" ],
+      "enemy_id": ["0x010471"],
       "min_level": 1,
       "max_level": 85,
       "mdlType": 0,
@@ -9744,9 +9802,9 @@
       ]
     },
     {
-      "id": 328,
+      "id": 330,
       "name": "War-Ready Goremanticore (Lv1+)",
-      "enemy_id": [ "0x015220" ],
+      "enemy_id": ["0x015220"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -9769,9 +9827,9 @@
       ]
     },
     {
-      "id": 329,
+      "id": 331,
       "name": "Catoblepas (Lv1+)",
-      "enemy_id": [ "0x015730" ],
+      "enemy_id": ["0x015730"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -9802,27 +9860,23 @@
       ]
     },
     {
-      "id": 330,
+      "id": 332,
       "name": "Geo Saurian (Lv1-??) INCONCLUSIVE",
       "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
-      "id": 331,
+      "id": 333,
       "name": "Giant Geo Saurian (Lv1-??) INCONCLUSIVE",
       "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
-      "id": 332,
+      "id": 334,
       "name": "Banded Healer (Lv1+)",
-      "enemy_id": [ "0x011013" ],
+      "enemy_id": ["0x011013"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -9845,9 +9899,9 @@
       ]
     },
     {
-      "id": 333,
+      "id": 335,
       "name": "Banded Seeker (Lv1+)",
-      "enemy_id": [ "0x011011" ],
+      "enemy_id": ["0x011011"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -9870,9 +9924,9 @@
       ]
     },
     {
-      "id": 334,
+      "id": 336,
       "name": "Banded Mage (Lv1+)",
-      "enemy_id": [ "0x011015" ],
+      "enemy_id": ["0x011015"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -9895,9 +9949,9 @@
       ]
     },
     {
-      "id": 335,
+      "id": 337,
       "name": "Cockatrice (Lv1-42)",
-      "enemy_id": [ "0x015301" ],
+      "enemy_id": ["0x015301"],
       "min_level": 1,
       "max_level": 42,
       "mdlType": 0,
@@ -9921,9 +9975,9 @@
       ]
     },
     {
-      "id": 336,
+      "id": 338,
       "name": "Cockatrice (Lv43-55)",
-      "enemy_id": [ "0x015301" ],
+      "enemy_id": ["0x015301"],
       "min_level": 43,
       "max_level": 55,
       "mdlType": 0,
@@ -9955,9 +10009,9 @@
       ]
     },
     {
-      "id": 337,
+      "id": 339,
       "name": "Cockatrice (Lv56-79)",
-      "enemy_id": [ "0x015301" ],
+      "enemy_id": ["0x015301"],
       "min_level": 56,
       "max_level": 79,
       "mdlType": 0,
@@ -9997,9 +10051,9 @@
       ]
     },
     {
-      "id": 338,
+      "id": 340,
       "name": "Cockatrice (Lv80+)",
-      "enemy_id": [ "0x015301" ],
+      "enemy_id": ["0x015301"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -10046,9 +10100,9 @@
       ]
     },
     {
-      "id": 339,
+      "id": 341,
       "name": "Manticore (Lv1-79)",
-      "enemy_id": [ "0x015210", "0x0070830" ],
+      "enemy_id": ["0x015210", "0x0070830"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -10080,9 +10134,9 @@
       ]
     },
     {
-      "id": 340,
+      "id": 342,
       "name": "Manticore (Lv80+)",
-      "enemy_id": [ "0x015210", "0x0070830" ],
+      "enemy_id": ["0x015210", "0x0070830"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -10121,9 +10175,9 @@
       ]
     },
     {
-      "id": 341,
+      "id": 343,
       "name": "Death (Lv1+)",
-      "enemy_id": [ "0x015603" ],
+      "enemy_id": ["0x015603"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -10146,9 +10200,9 @@
       ]
     },
     {
-      "id": 342,
+      "id": 344,
       "name": "Blaze Harpy (Lv95+)",
-      "enemy_id": [ "0x010608" ],
+      "enemy_id": ["0x010608"],
       "min_level": 95,
       "mdlType": 0,
       "items": [
@@ -10171,9 +10225,9 @@
       ]
     },
     {
-      "id": 343,
+      "id": 345,
       "name": "War-Ready Nightmare (Lv93+)",
-      "enemy_id": [ "0x015330" ],
+      "enemy_id": ["0x015330"],
       "min_level": 93,
       "mdlType": 0,
       "items": [
@@ -10196,18 +10250,16 @@
       ]
     },
     {
-      "id": 344,
+      "id": 346,
       "name": "Dagon (Lv1-??) INCONCLUSIVE",
-      "ignore":  true,
+      "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
-      "id": 345,
+      "id": 347,
       "name": "Drake (Lv1-79)",
-      "enemy_id": [ "0x015700", "0x070900" ],
+      "enemy_id": ["0x015700", "0x070900"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -10239,9 +10291,9 @@
       ]
     },
     {
-      "id": 346,
+      "id": 348,
       "name": "Drake (Lv80+)",
-      "enemy_id": [ "0x015700", "0x070900" ],
+      "enemy_id": ["0x015700", "0x070900"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -10280,9 +10332,9 @@
       ]
     },
     {
-      "id": 347,
+      "id": 349,
       "name": "Electric Slime (Lv1-79)",
-      "enemy_id": [ "0x010907" ],
+      "enemy_id": ["0x010907"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -10298,9 +10350,9 @@
       ]
     },
     {
-      "id": 348,
+      "id": 350,
       "name": "Electric Slime (Lv80+)",
-      "enemy_id": [ "0x010907" ],
+      "enemy_id": ["0x010907"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -10323,9 +10375,9 @@
       ]
     },
     {
-      "id": 349,
+      "id": 351,
       "name": "Mist Drake (Lv1-79)",
-      "enemy_id": [ "0x015710" ],
+      "enemy_id": ["0x015710"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -10349,9 +10401,9 @@
       ]
     },
     {
-      "id": 350,
+      "id": 352,
       "name": "Mist Drake (Lv80+)",
-      "enemy_id": [ "0x015710" ],
+      "enemy_id": ["0x015710"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -10382,9 +10434,9 @@
       ]
     },
     {
-      "id": 351,
+      "id": 353,
       "name": "Dark Skeleton (Lv1-79)",
-      "enemy_id": [ "0x010318" ],
+      "enemy_id": ["0x010318"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -10408,9 +10460,9 @@
       ]
     },
     {
-      "id": 352,
+      "id": 354,
       "name": "Dark Skeleton (Lv80+)",
-      "enemy_id": [ "0x010318" ],
+      "enemy_id": ["0x010318"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -10441,9 +10493,9 @@
       ]
     },
     {
-      "id": 353,
+      "id": 355,
       "name": "Dark Corpses (Lv1+)",
-      "enemy_id": [ "0x010516", "0x010520" ],
+      "enemy_id": ["0x010516", "0x010520"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -10458,9 +10510,9 @@
       ]
     },
     {
-      "id": 354,
+      "id": 356,
       "name": "Bolt Corpses (Lv1+)",
-      "enemy_id": [ "0x010514", "0x010518" ],
+      "enemy_id": ["0x010514", "0x010518"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -10475,9 +10527,9 @@
       ]
     },
     {
-      "id": 355,
+      "id": 357,
       "name": "Ancestor Orc (Lv1-80+)",
-      "enemy_id": [ "0x015931", "0x015832", "0x015833" ],
+      "enemy_id": ["0x015931", "0x015832", "0x015833"],
       "min_level": 1,
       "max_level": 80,
       "mdlType": 0,
@@ -10493,9 +10545,9 @@
       ]
     },
     {
-      "id": 356,
+      "id": 358,
       "name": "Ancestor Origin (Lv1-??)",
-      "enemy_id": [ "0x015870" ],
+      "enemy_id": ["0x015870"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -10518,9 +10570,9 @@
       ]
     },
     {
-      "id": 357,
+      "id": 359,
       "name": "Captain Ancestor Orc (Lv1-??) INCONCLUSIVE",
-      "enemy_id": [ "0x015839" ],
+      "enemy_id": ["0x015839"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -10543,9 +10595,9 @@
       ]
     },
     {
-      "id": 358,
+      "id": 360,
       "name": "Hellhound (Lv95+)",
-      "enemy_id": [ "0x010202" ],
+      "enemy_id": ["0x010202"],
       "min_level": 95,
       "mdlType": 0,
       "items": [
@@ -10560,9 +10612,9 @@
       ]
     },
     {
-      "id": 359,
+      "id": 361,
       "name": "Blaze Wolf (Lv1-??) INCONCLUSIVE",
-      "enemy_id": [ "0x010212" ],
+      "enemy_id": ["0x010212"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -10577,9 +10629,9 @@
       ]
     },
     {
-      "id": 360,
+      "id": 362,
       "name": "White Griffin (Lv1-79)",
-      "enemy_id": [ "0x015320", "0x070620" ],
+      "enemy_id": ["0x015320", "0x070620"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -10603,9 +10655,9 @@
       ]
     },
     {
-      "id": 361,
+      "id": 363,
       "name": "White Griffin (Lv80+)",
-      "enemy_id": [ "0x015320", "0x070620" ],
+      "enemy_id": ["0x015320", "0x070620"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -10636,36 +10688,30 @@
       ]
     },
     {
-      "id": 362,
+      "id": 364,
       "name": "Legion (Lv1-??) INCONCLUSIVE",
       "mdlType": 0,
       "ignore": true,
-      "items": [
-
-      ]
-    },
-    {
-      "id": 363,
-      "name": "Legion Leader (Lv1-??) INCONCLUSIVE",
-      "ignore":  true,
-      "mdlType": 0,
-      "items": [
-
-      ]
-    },
-    {
-      "id": 364,
-      "name": "Gigant Machina Trinity (Lv1-??) INCONCLUSIVE",
-      "ignore":  true,
-      "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
       "id": 365,
+      "name": "Legion Leader (Lv1-??) INCONCLUSIVE",
+      "ignore": true,
+      "mdlType": 0,
+      "items": []
+    },
+    {
+      "id": 366,
+      "name": "Gigant Machina Trinity (Lv1-??) INCONCLUSIVE",
+      "ignore": true,
+      "mdlType": 0,
+      "items": []
+    },
+    {
+      "id": 367,
       "name": "Blaze Goblins (Lv1-??)",
-      "enemy_id": [ "0x011170", "0x011171", "0x011172", "0x011173" ],
+      "enemy_id": ["0x011170", "0x011171", "0x011172", "0x011173"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -10680,9 +10726,9 @@
       ]
     },
     {
-      "id": 366,
+      "id": 368,
       "name": "Blaze Grigori (Lv1-??)",
-      "enemy_id": [ "0x015930" ],
+      "enemy_id": ["0x015930"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -10697,9 +10743,9 @@
       ]
     },
     {
-      "id": 367,
+      "id": 369,
       "name": "Blaze Chimera (Lv1-??) INCONCLUSIVE",
-      "enemy_id": [ "0x015204" ],
+      "enemy_id": ["0x015204"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -10715,18 +10761,16 @@
       ]
     },
     {
-      "id": 368,
+      "id": 370,
       "name": "Grand Ent (Lv1-??) INCONCLUSIVE",
       "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
-      "id": 369,
+      "id": 371,
       "name": "Banded Defender (Lv1+)",
-      "enemy_id": [ "0x011014" ],
+      "enemy_id": ["0x011014"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -10749,10 +10793,10 @@
       ]
     },
     {
-      "id": 370,
+      "id": 372,
       "name": "Mist Wyrm (Lv1-79)",
       "mdlType": 0,
-      "enemy_id": [ "0x015711" ],
+      "enemy_id": ["0x015711"],
       "min_level": 1,
       "max_level": 79,
       "items": [
@@ -10775,9 +10819,9 @@
       ]
     },
     {
-      "id": 371,
+      "id": 373,
       "name": "Mist Wyrm (Lv80+)",
-      "enemy_id": [ "0x015711" ],
+      "enemy_id": ["0x015711"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -10808,9 +10852,9 @@
       ]
     },
     {
-      "id": 372,
+      "id": 374,
       "name": "Silver Roar (Lv1-45)",
-      "enemy_id": [ "0x015505" ],
+      "enemy_id": ["0x015505"],
       "min_level": 1,
       "max_level": 45,
       "mdlType": 0,
@@ -10834,9 +10878,9 @@
       ]
     },
     {
-      "id": 373,
+      "id": 375,
       "name": "Silver Roar (Lv46+)",
-      "enemy_id": [ "0x015505" ],
+      "enemy_id": ["0x015505"],
       "min_level": 46,
       "mdlType": 0,
       "items": [
@@ -10867,9 +10911,9 @@
       ]
     },
     {
-      "id": 374,
+      "id": 376,
       "name": "Empress Ghost (Lv1-55)",
-      "enemy_id": [ "0x015605" ],
+      "enemy_id": ["0x015605"],
       "min_level": 1,
       "max_level": 55,
       "mdlType": 0,
@@ -10901,9 +10945,9 @@
       ]
     },
     {
-      "id": 375,
+      "id": 377,
       "name": "Empress Ghost (Lv56+)",
-      "enemy_id": [ "0x015605" ],
+      "enemy_id": ["0x015605"],
       "min_level": 56,
       "mdlType": 0,
       "items": [
@@ -10942,9 +10986,9 @@
       ]
     },
     {
-      "id": 376,
+      "id": 378,
       "name": "Frost Skeleton Brute (Lv1-79)",
-      "enemy_id": [ "0x010321" ],
+      "enemy_id": ["0x010321"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -10968,9 +11012,9 @@
       ]
     },
     {
-      "id": 377,
+      "id": 379,
       "name": "Frost Skeleton Brute (Lv80+)",
-      "enemy_id": [ "0x010321" ],
+      "enemy_id": ["0x010321"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -11001,9 +11045,9 @@
       ]
     },
     {
-      "id": 378,
+      "id": 380,
       "name": "Lux Skeleton Brute (Lv1-79)",
-      "enemy_id": [ "0x010323" ],
+      "enemy_id": ["0x010323"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -11027,9 +11071,9 @@
       ]
     },
     {
-      "id": 379,
+      "id": 381,
       "name": "Lux Skeleton Brute (Lv80+)",
-      "enemy_id": [ "0x010323" ],
+      "enemy_id": ["0x010323"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -11060,9 +11104,9 @@
       ]
     },
     {
-      "id": 380,
+      "id": 382,
       "name": "Death Knight (Lv1-55)",
-      "enemy_id": [ "0x010310" ],
+      "enemy_id": ["0x010310"],
       "min_level": 1,
       "max_level": 55,
       "mdlType": 0,
@@ -11086,9 +11130,9 @@
       ]
     },
     {
-      "id": 381,
+      "id": 383,
       "name": "Death Knight (Lv56-79)",
-      "enemy_id": [ "0x010310" ],
+      "enemy_id": ["0x010310"],
       "min_level": 56,
       "max_level": 79,
       "mdlType": 0,
@@ -11120,9 +11164,9 @@
       ]
     },
     {
-      "id": 382,
+      "id": 384,
       "name": "Death Knight (Lv80+)",
-      "enemy_id": [ "0x010310" ],
+      "enemy_id": ["0x010310"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -11161,9 +11205,9 @@
       ]
     },
     {
-      "id": 383,
+      "id": 385,
       "name": "Mogok (Lv1+)",
-      "enemy_id": [ "0x015840" ],
+      "enemy_id": ["0x015840"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -11186,9 +11230,9 @@
       ]
     },
     {
-      "id": 384,
+      "id": 386,
       "name": "Cursed Dragon (Lv.69)",
-      "enemy_id": [ "0x015706" ],
+      "enemy_id": ["0x015706"],
       "min_level": 69,
       "mdlType": 0,
       "items": [
@@ -11219,18 +11263,16 @@
       ]
     },
     {
-      "id": 385,
+      "id": 387,
       "name": "Golgorran (Lv1-??) INCONCLUSIVE",
-      "ignore":  true,
+      "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
-      "id": 386,
+      "id": 388,
       "name": "Alchemized Harpy (Lv1-49)",
-      "enemy_id": [ "0x010606" ],
+      "enemy_id": ["0x010606"],
       "min_level": 1,
       "max_level": 49,
       "mdlType": 0,
@@ -11246,9 +11288,9 @@
       ]
     },
     {
-      "id": 387,
+      "id": 389,
       "name": "Alchemized Harpy (Lv50-79)",
-      "enemy_id": [ "0x010606" ],
+      "enemy_id": ["0x010606"],
       "min_level": 50,
       "max_level": 79,
       "mdlType": 0,
@@ -11272,9 +11314,9 @@
       ]
     },
     {
-      "id": 388,
+      "id": 390,
       "name": "Alchemized Harpy (Lv80+)",
-      "enemy_id": [ "0x010606" ],
+      "enemy_id": ["0x010606"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -11305,9 +11347,9 @@
       ]
     },
     {
-      "id": 390,
+      "id": 392,
       "name": "Goliath (Lv1-55)",
-      "enemy_id": [ "0x015102" ],
+      "enemy_id": ["0x015102"],
       "min_level": 1,
       "max_level": 55,
       "mdlType": 0,
@@ -11339,9 +11381,9 @@
       ]
     },
     {
-      "id": 391,
+      "id": 393,
       "name": "Goliath (Lv56+)",
-      "enemy_id": [ "0x015102" ],
+      "enemy_id": ["0x015102"],
       "min_level": 56,
       "mdlType": 0,
       "items": [
@@ -11380,10 +11422,10 @@
       ]
     },
     {
-      "id": 392,
+      "id": 394,
       "name": "Mergan Element Archer (Lv1+)",
       "mdlType": 0,
-      "enemy_id": [ "0x011027" ],
+      "enemy_id": ["0x011027"],
       "min_level": 1,
       "items": [
         [
@@ -11405,59 +11447,9 @@
       ]
     },
     {
-      "id": 393,
-      "name": "Mergan Fighter (Lv1+)",
-      "enemy_id": [ "0x011020" ],
-      "min_level": 1,
-      "mdlType": 0,
-      "items": [
-        [
-          8023,
-          1,
-          1,
-          0,
-          false,
-          0.3
-        ],
-        [
-          8033,
-          1,
-          1,
-          0,
-          false,
-          0.9
-        ]
-      ]
-    },
-    {
-      "id": 394,
-      "name": "Mergan Seeker (Lv1+)",
-      "enemy_id": [ "0x011021" ],
-      "min_level": 1,
-      "mdlType": 0,
-      "items": [
-        [
-          8033,
-          1,
-          1,
-          0,
-          false,
-          0.9
-        ],
-        [
-          8023,
-          1,
-          1,
-          0,
-          false,
-          0.1
-        ]
-      ]
-    },
-    {
       "id": 395,
-      "name": "Mergan Hunter (Lv1+)",
-      "enemy_id": [ "0x011022" ],
+      "name": "Mergan Fighter (Lv1+)",
+      "enemy_id": ["0x011020"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -11481,8 +11473,58 @@
     },
     {
       "id": 396,
+      "name": "Mergan Seeker (Lv1+)",
+      "enemy_id": ["0x011021"],
+      "min_level": 1,
+      "mdlType": 0,
+      "items": [
+        [
+          8033,
+          1,
+          1,
+          0,
+          false,
+          0.9
+        ],
+        [
+          8023,
+          1,
+          1,
+          0,
+          false,
+          0.1
+        ]
+      ]
+    },
+    {
+      "id": 397,
+      "name": "Mergan Hunter (Lv1+)",
+      "enemy_id": ["0x011022"],
+      "min_level": 1,
+      "mdlType": 0,
+      "items": [
+        [
+          8023,
+          1,
+          1,
+          0,
+          false,
+          0.3
+        ],
+        [
+          8033,
+          1,
+          1,
+          0,
+          false,
+          0.9
+        ]
+      ]
+    },
+    {
+      "id": 398,
       "name": "Mergan Mage (Lv1+)",
-      "enemy_id": [ "0x011025" ],
+      "enemy_id": ["0x011025"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -11505,9 +11547,9 @@
       ]
     },
     {
-      "id": 397,
+      "id": 399,
       "name": "Mergan Warrior (Lv1+)",
-      "enemy_id": [ "0x011026" ],
+      "enemy_id": ["0x011026"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -11530,9 +11572,9 @@
       ]
     },
     {
-      "id": 398,
+      "id": 400,
       "name": "Alchemy Eye (Lv1-55)",
-      "enemy_id": [ "0x015420" ],
+      "enemy_id": ["0x015420"],
       "min_level": 1,
       "max_level": 55,
       "mdlType": 0,
@@ -11556,9 +11598,9 @@
       ]
     },
     {
-      "id": 399,
+      "id": 401,
       "name": "Alchemy Eye (Lv56+)",
-      "enemy_id": [ "0x015420" ],
+      "enemy_id": ["0x015420"],
       "min_level": 56,
       "mdlType": 0,
       "items": [
@@ -11589,27 +11631,23 @@
       ]
     },
     {
-      "id": 400,
-      "name": "Skeleton Lord (Lv1-??) INCONCLUSIVE",
-      "ignore" : true,
-      "mdlType": 0,
-      "items": [
-
-      ]
-    },
-    {
-      "id": 401,
-      "name": "Iris (Lv1-??) INCONCLUSIVE",
-      "ignore":  true,
-      "mdlType": 0,
-      "items": [
-
-      ]
-    },
-    {
       "id": 402,
+      "name": "Skeleton Lord (Lv1-??) INCONCLUSIVE",
+      "ignore": true,
+      "mdlType": 0,
+      "items": []
+    },
+    {
+      "id": 403,
+      "name": "Iris (Lv1-??) INCONCLUSIVE",
+      "ignore": true,
+      "mdlType": 0,
+      "items": []
+    },
+    {
+      "id": 404,
       "name": "Skull Lord (Lv1-44)",
-      "enemy_id": [ "0x010313" ],
+      "enemy_id": ["0x010313"],
       "min_level": 1,
       "max_level": 44,
       "mdlType": 0,
@@ -11625,9 +11663,9 @@
       ]
     },
     {
-      "id": 403,
+      "id": 405,
       "name": "Skull Lord (Lv45-79)",
-      "enemy_id": [ "0x010313" ],
+      "enemy_id": ["0x010313"],
       "min_level": 45,
       "max_level": 79,
       "mdlType": 0,
@@ -11651,9 +11689,9 @@
       ]
     },
     {
-      "id": 404,
+      "id": 406,
       "name": "Skull Lord (Lv80+)",
-      "enemy_id": [ "0x010313" ],
+      "enemy_id": ["0x010313"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -11684,9 +11722,9 @@
       ]
     },
     {
-      "id": 405,
+      "id": 407,
       "name": "Mergan Defender (Lv1+)",
-      "enemy_id": [ "0x011024" ],
+      "enemy_id": ["0x011024"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -11709,9 +11747,9 @@
       ]
     },
     {
-      "id": 406,
+      "id": 408,
       "name": "Mergan Healer (Lv1+)",
-      "enemy_id": [ "0x011023" ],
+      "enemy_id": ["0x011023"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -11742,54 +11780,44 @@
       ]
     },
     {
-      "id": 407,
+      "id": 409,
       "name": "Diamantes (Lv1-??) INCONCLUSIVE",
       "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
-    },
-    {
-      "id": 408,
-      "name": "White Dragon (Lv1-??) INCONCLUSIVE",
-      "ignore":  true,
-      "mdlType": 0,
-      "items": [
-
-      ]
-    },
-    {
-      "id": 409,
-      "name": "Spirit Dragon Willmia (Lv1-??) INCONCLUSIVE",
-      "ignore": true,
-      "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
       "id": 410,
-      "name": "Black Knight (Lv1-??) INCONCLUSIVE",
+      "name": "White Dragon (Lv1-??) INCONCLUSIVE",
       "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
       "id": 411,
-      "name": "Baphomet (Lv1-??) INCONCLUSIVE",
+      "name": "Spirit Dragon Willmia (Lv1-??) INCONCLUSIVE",
       "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
       "id": 412,
+      "name": "Black Knight (Lv1-??) INCONCLUSIVE",
+      "ignore": true,
+      "mdlType": 0,
+      "items": []
+    },
+    {
+      "id": 413,
+      "name": "Baphomet (Lv1-??) INCONCLUSIVE",
+      "ignore": true,
+      "mdlType": 0,
+      "items": []
+    },
+    {
+      "id": 414,
       "name": "Mudman (Lv1-24)",
-      "enemy_id": [ "0x010509" ],
+      "enemy_id": ["0x010509"],
       "min_level": 1,
       "max_level": 24,
       "mdlType": 0,
@@ -11813,9 +11841,9 @@
       ]
     },
     {
-      "id": 413,
+      "id": 415,
       "name": "Mudman (Lv25-79)",
-      "enemy_id": [ "0x010509" ],
+      "enemy_id": ["0x010509"],
       "min_level": 25,
       "max_level": 79,
       "mdlType": 0,
@@ -11847,9 +11875,9 @@
       ]
     },
     {
-      "id": 414,
+      "id": 416,
       "name": "Mudman (Lv80+)",
-      "enemy_id": [ "0x010509" ],
+      "enemy_id": ["0x010509"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -11888,9 +11916,9 @@
       ]
     },
     {
-      "id": 415,
+      "id": 417,
       "name": "Skeleton Brute (Lv1-79)",
-      "enemy_id": [ "0x010307" ],
+      "enemy_id": ["0x010307"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -11906,9 +11934,9 @@
       ]
     },
     {
-      "id": 416,
+      "id": 418,
       "name": "Skeleton Brute (Lv80+)",
-      "enemy_id": [ "0x010307" ],
+      "enemy_id": ["0x010307"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -11923,9 +11951,9 @@
       ]
     },
     {
-      "id": 417,
+      "id": 419,
       "name": "Frost Corpse (Lv1-79)",
-      "enemy_id": [ "0x010511", "0x010512" ],
+      "enemy_id": ["0x010511", "0x010512"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -11949,9 +11977,9 @@
       ]
     },
     {
-      "id": 418,
+      "id": 420,
       "name": "Frost Corpse (Lv80+)",
-      "enemy_id": [ "0x010511", "0x010512" ],
+      "enemy_id": ["0x010511", "0x010512"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -11982,9 +12010,9 @@
       ]
     },
     {
-      "id": 419,
+      "id": 421,
       "name": "Flame Corpse (Lv1+)",
-      "enemy_id": [ "0x010513", "0x010517" ],
+      "enemy_id": ["0x010513", "0x010517"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -11999,9 +12027,9 @@
       ]
     },
     {
-      "id": 420,
+      "id": 422,
       "name": "Angules (Lv1-40)",
-      "enemy_id": [ "0x015708", "0x070920" ],
+      "enemy_id": ["0x015708", "0x070920"],
       "min_level": 1,
       "max_level": 40,
       "mdlType": 0,
@@ -12033,9 +12061,9 @@
       ]
     },
     {
-      "id": 421,
+      "id": 423,
       "name": "Angules (Lv41-55)",
-      "enemy_id": [ "0x015708", "0x070920" ],
+      "enemy_id": ["0x015708", "0x070920"],
       "min_level": 41,
       "max_level": 55,
       "mdlType": 0,
@@ -12075,9 +12103,9 @@
       ]
     },
     {
-      "id": 422,
+      "id": 424,
       "name": "Angules (Lv56-79)",
-      "enemy_id": [ "0x015708", "0x070920" ],
+      "enemy_id": ["0x015708", "0x070920"],
       "min_level": 56,
       "max_level": 79,
       "mdlType": 0,
@@ -12125,9 +12153,9 @@
       ]
     },
     {
-      "id": 423,
+      "id": 425,
       "name": "Angules (Lv80+)",
-      "enemy_id": [ "0x015708", "0x070920" ],
+      "enemy_id": ["0x015708", "0x070920"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -12182,9 +12210,9 @@
       ]
     },
     {
-      "id": 424,
+      "id": 426,
       "name": "Aqua Jelly (Lv1-79)",
-      "enemy_id": [ "0x010904" ],
+      "enemy_id": ["0x010904"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -12200,9 +12228,9 @@
       ]
     },
     {
-      "id": 425,
+      "id": 427,
       "name": "Aqua Jelly (Lv80+)",
-      "enemy_id": [ "0x010904" ],
+      "enemy_id": ["0x010904"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -12225,9 +12253,9 @@
       ]
     },
     {
-      "id": 426,
+      "id": 428,
       "name": "Acid Blob (Lv1-79)",
-      "enemy_id": [ "0x010911" ],
+      "enemy_id": ["0x010911"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -12251,9 +12279,9 @@
       ]
     },
     {
-      "id": 427,
+      "id": 429,
       "name": "Acid Blob (Lv80+)",
-      "enemy_id": [ "0x010911" ],
+      "enemy_id": ["0x010911"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -12284,9 +12312,9 @@
       ]
     },
     {
-      "id": 428,
+      "id": 430,
       "name": "Stone Blob (Lv95+)",
-      "enemy_id": [ "0x010915" ],
+      "enemy_id": ["0x010915"],
       "min_level": 95,
       "mdlType": 0,
       "items": [
@@ -12301,18 +12329,16 @@
       ]
     },
     {
-      "id": 429,
+      "id": 431,
       "name": "Giant Unspeakable Meat (Lv1-??) INCONCLUSIVE",
       "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
-      "id": 430,
+      "id": 432,
       "name": "Ooze (Lv1-79)",
-      "enemy_id": [ "0x010902" ],
+      "enemy_id": ["0x010902"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -12336,9 +12362,9 @@
       ]
     },
     {
-      "id": 431,
+      "id": 433,
       "name": "Ooze (Lv80+)",
-      "enemy_id": [ "0x010902" ],
+      "enemy_id": ["0x010902"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -12369,9 +12395,9 @@
       ]
     },
     {
-      "id": 432,
+      "id": 434,
       "name": "Lapis Eye (Lv1-44)",
-      "enemy_id": [ "0x015412" ],
+      "enemy_id": ["0x015412"],
       "min_level": 1,
       "max_level": 44,
       "mdlType": 0,
@@ -12395,9 +12421,9 @@
       ]
     },
     {
-      "id": 433,
+      "id": 435,
       "name": "Lapis Eye (Lv45+)",
-      "enemy_id": [ "0x015412" ],
+      "enemy_id": ["0x015412"],
       "min_level": 45,
       "mdlType": 0,
       "items": [
@@ -12428,9 +12454,9 @@
       ]
     },
     {
-      "id": 434,
+      "id": 436,
       "name": "Emerald Eye (Lv1-44)",
-      "enemy_id": [ "0x015413" ],
+      "enemy_id": ["0x015413"],
       "min_level": 1,
       "max_level": 44,
       "mdlType": 0,
@@ -12454,9 +12480,9 @@
       ]
     },
     {
-      "id": 435,
+      "id": 437,
       "name": "Emerald Eye (Lv45+)",
-      "enemy_id": [ "0x015413" ],
+      "enemy_id": ["0x015413"],
       "min_level": 45,
       "mdlType": 0,
       "items": [
@@ -12487,18 +12513,16 @@
       ]
     },
     {
-      "id": 436,
+      "id": 438,
       "name": "Megado Guard (Lv1-??) INCONCLUSIVE",
       "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
-      "id": 437,
+      "id": 439,
       "name": "Fodden (Lv90+)",
-      "enemy_id": [ "0x015042" ],
+      "enemy_id": ["0x015042"],
       "min_level": 90,
       "mdlType": 0,
       "items": [
@@ -12513,9 +12537,9 @@
       ]
     },
     {
-      "id": 438,
+      "id": 440,
       "name": "Armored Insect (Lv1-??) INCONCLUSIVE",
-      "enemy_id": [ "0x010820", "0x0010821" ],
+      "enemy_id": ["0x010820", "0x0010821"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -12530,9 +12554,9 @@
       ]
     },
     {
-      "id": 439,
+      "id": 441,
       "name": "Frost Skeleton (Lv1-79)",
-      "enemy_id": [ "0x010315" ],
+      "enemy_id": ["0x010315"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -12556,9 +12580,9 @@
       ]
     },
     {
-      "id": 440,
+      "id": 442,
       "name": "Frost Skeleton (Lv80+)",
-      "enemy_id": [ "0x010315" ],
+      "enemy_id": ["0x010315"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -12589,9 +12613,9 @@
       ]
     },
     {
-      "id": 441,
+      "id": 443,
       "name": "Ghoul (Lv1-45)",
-      "enemy_id": [ "0x015503", "0x070200" ],
+      "enemy_id": ["0x015503", "0x070200"],
       "min_level": 1,
       "max_level": 45,
       "mdlType": 0,
@@ -12615,9 +12639,9 @@
       ]
     },
     {
-      "id": 442,
+      "id": 444,
       "name": "Ghoul (Lv46+)",
-      "enemy_id": [ "0x015503", "0x070200" ],
+      "enemy_id": ["0x015503", "0x070200"],
       "min_level": 46,
       "mdlType": 0,
       "items": [
@@ -12648,9 +12672,9 @@
       ]
     },
     {
-      "id": 443,
+      "id": 445,
       "name": "Frost Machina (Lv1+)",
-      "enemy_id": [ "0x015851" ],
+      "enemy_id": ["0x015851"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -12665,27 +12689,23 @@
       ]
     },
     {
-      "id": 444,
+      "id": 446,
       "name": "Merman (Lv1-??) INCONCLUSIVE",
       "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
-      "id": 445,
+      "id": 447,
       "name": "Poison Merman (Lv1-??) INCONCLUSIVE",
       "mdlType": 0,
       "ignore": true,
-      "items": [
-
-      ]
+      "items": []
     },
     {
-      "id": 446,
+      "id": 448,
       "name": "Freezing Slime (Lv1-79)",
-      "enemy_id": [ "0x010906" ],
+      "enemy_id": ["0x010906"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -12701,9 +12721,9 @@
       ]
     },
     {
-      "id": 447,
+      "id": 449,
       "name": "Freezing Slime (Lv80+)",
-      "enemy_id": [ "0x010906" ],
+      "enemy_id": ["0x010906"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -12726,9 +12746,9 @@
       ]
     },
     {
-      "id": 448,
+      "id": 450,
       "name": "Oil Jelly (Lv1-79)",
-      "enemy_id": [ "0x010920" ],
+      "enemy_id": ["0x010920"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -12744,9 +12764,9 @@
       ]
     },
     {
-      "id": 449,
+      "id": 451,
       "name": "Oil Jelly (Lv80+)",
-      "enemy_id": [ "0x010920" ],
+      "enemy_id": ["0x010920"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -12769,9 +12789,9 @@
       ]
     },
     {
-      "id": 450,
+      "id": 452,
       "name": "Photon Slime (Lv1-79)",
-      "enemy_id": [ "0x010908" ],
+      "enemy_id": ["0x010908"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -12787,9 +12807,9 @@
       ]
     },
     {
-      "id": 451,
+      "id": 453,
       "name": "Photon Slime (Lv80+)",
-      "enemy_id": [ "0x010908" ],
+      "enemy_id": ["0x010908"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -12812,9 +12832,9 @@
       ]
     },
     {
-      "id": 452,
+      "id": 454,
       "name": "Medusa (Lv1-79)",
-      "enemy_id": [ "0x015610" ],
+      "enemy_id": ["0x015610"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -12838,9 +12858,9 @@
       ]
     },
     {
-      "id": 453,
+      "id": 455,
       "name": "Medusa (Lv80-84)",
-      "enemy_id": [ "0x015610" ],
+      "enemy_id": ["0x015610"],
       "min_level": 80,
       "max_level": 84,
       "mdlType": 0,
@@ -12872,9 +12892,9 @@
       ]
     },
     {
-      "id": 454,
+      "id": 456,
       "name": "Medusa (Lv85+)",
-      "enemy_id": [ "0x015610" ],
+      "enemy_id": ["0x015610"],
       "min_level": 85,
       "mdlType": 0,
       "items": [
@@ -12913,9 +12933,9 @@
       ]
     },
     {
-      "id": 455,
+      "id": 457,
       "name": "Lux Corpses (Lv80+)",
-      "enemy_id": [ "0x010515", "0x010519" ],
+      "enemy_id": ["0x010515", "0x010519"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -12930,18 +12950,16 @@
       ]
     },
     {
-      "id": 456,
+      "id": 458,
       "name": "Valefar (Lv1-??) INCONCLUSIVE",
       "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
-      "id": 457,
+      "id": 459,
       "name": "Burned Ent (Lv95+)",
-      "enemy_id": [ "0x015033" ],
+      "enemy_id": ["0x015033"],
       "min_level": 95,
       "mdlType": 0,
       "items": [
@@ -12956,9 +12974,9 @@
       ]
     },
     {
-      "id": 458,
+      "id": 460,
       "name": "Pyro Slime (Lv1-79)",
-      "enemy_id": [ "0x010905" ],
+      "enemy_id": ["0x010905"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -12974,9 +12992,9 @@
       ]
     },
     {
-      "id": 459,
+      "id": 461,
       "name": "Pyro Slime (Lv80+)",
-      "enemy_id": [ "0x010905" ],
+      "enemy_id": ["0x010905"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -12999,9 +13017,9 @@
       ]
     },
     {
-      "id": 460,
+      "id": 462,
       "name": "Maneater (Lv1+)",
-      "enemy_id": [ "0x011400", "0x011401" ],
+      "enemy_id": ["0x011400", "0x011401"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -13016,9 +13034,9 @@
       ]
     },
     {
-      "id": 461,
+      "id": 463,
       "name": "Evil Eye (Lv90+)",
-      "enemy_id": [ "0x011410", "0x011411" ],
+      "enemy_id": ["0x011410", "0x011411"],
       "min_level": 90,
       "mdlType": 0,
       "items": [
@@ -13033,36 +13051,30 @@
       ]
     },
     {
-      "id": 462,
+      "id": 464,
       "name": "Tentacle Evil Eye (Lv1-??) INCONCLUSIVE",
       "mdlType": 0,
-      "ignore":  true,
-      "items": [
-
-      ]
-    },
-    {
-      "id": 463,
-      "name": "Flame Skeleton Cyclops (Lv1-??) INCONCLUSIVE",
       "ignore": true,
-      "mdlType": 0,
-      "items": [
-
-      ]
-    },
-    {
-      "id": 464,
-      "name": "Ushumgal (Lv1-??) INCONCLUSIVE",
-      "ignore": true,
-      "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
       "id": 465,
+      "name": "Flame Skeleton Cyclops (Lv1-??) INCONCLUSIVE",
+      "ignore": true,
+      "mdlType": 0,
+      "items": []
+    },
+    {
+      "id": 466,
+      "name": "Ushumgal (Lv1-??) INCONCLUSIVE",
+      "ignore": true,
+      "mdlType": 0,
+      "items": []
+    },
+    {
+      "id": 467,
       "name": "Ifrit (Lv95+)",
-      "enemy_id": [ "0x020803", "0x020804" ],
+      "enemy_id": ["0x020803", "0x020804"],
       "min_level": 95,
       "mdlType": 0,
       "items": [
@@ -13077,182 +13089,99 @@
       ]
     },
     {
-      "id": 466,
+      "id": 468,
       "name": "War Master (Lv1-??) INCONCLUSIVE",
       "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
-    },
-    {
-      "id": 467,
-      "name": "Beast Master (Lv1-??) INCONCLUSIVE",
-      "ignore": true,
-      "mdlType": 0,
-      "items": [
-
-      ]
-    },
-    {
-      "id": 468,
-      "name": "The Evil Dragon (Lv1-??) INCONCLUSIVE",
-      "ignore": true,
-      "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
       "id": 469,
-      "name": "Arisen of the Black Dragon (Lv1-??) INCONCLUSIVE",
+      "name": "Beast Master (Lv1-??) INCONCLUSIVE",
       "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
       "id": 470,
-      "name": "Black Dragon (Lv1-??) INCONCLUSIVE",
+      "name": "The Evil Dragon (Lv1-??) INCONCLUSIVE",
       "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
       "id": 471,
-      "name": "Former Commander Leo (Lv1-??) INCONCLUSIVE",
+      "name": "Arisen of the Black Dragon (Lv1-??) INCONCLUSIVE",
       "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
       "id": 472,
-      "name": "Ukobach (Lv1-??) INCONCLUSIVE",
+      "name": "Black Dragon (Lv1-??) INCONCLUSIVE",
       "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
       "id": 473,
-      "name": "Frost Skeleton Cyclops (Lv1-??) INCONCLUSIVE",
+      "name": "Former Commander Leo (Lv1-??) INCONCLUSIVE",
       "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
       "id": 474,
-      "name": "Frost Machina Trinity (Lv1-??) INCONCLUSIVE",
+      "name": "Ukobach (Lv1-??) INCONCLUSIVE",
       "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
       "id": 475,
-      "name": "Bolt Skeleton Cyclops (Lv1-??) INCONCLUSIVE",
+      "name": "Frost Skeleton Cyclops (Lv1-??) INCONCLUSIVE",
       "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
       "id": 476,
-      "name": "Bolt Machina (Lv1-??) INCONCLUSIVE",
+      "name": "Frost Machina Trinity (Lv1-??) INCONCLUSIVE",
       "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
       "id": 477,
-      "name": "Bolt Machina Trinity (Lv1-??) INCONCLUSIVE",
+      "name": "Bolt Skeleton Cyclops (Lv1-??) INCONCLUSIVE",
       "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
       "id": 478,
-      "name": "Dark Skeleton Brute (Lv1-79)",
-      "enemy_id": [ "0x010324" ],
-      "min_level": 1,
-      "max_level": 79,
+      "name": "Bolt Machina (Lv1-??) INCONCLUSIVE",
+      "ignore": true,
       "mdlType": 0,
-      "items": [
-        [
-          8015,
-          1,
-          1,
-          0,
-          false,
-          0.4
-        ],
-        [
-          7850,
-          1,
-          1,
-          0,
-          false,
-          0.9
-        ]
-      ]
+      "items": []
     },
     {
       "id": 479,
-      "name": "Dark Skeleton Brute (Lv80+)",
-      "enemy_id": [ "0x010324" ],
-      "min_level": 80,
+      "name": "Bolt Machina Trinity (Lv1-??) INCONCLUSIVE",
+      "ignore": true,
       "mdlType": 0,
-      "items": [
-        [
-          7850,
-          1,
-          2,
-          0,
-          false,
-          0.9
-        ],
-        [
-          8015,
-          1,
-          1,
-          0,
-          false,
-          0.6
-        ],
-        [
-          17873,
-          1,
-          1,
-          0,
-          false,
-          0.3
-        ]
-      ]
+      "items": []
     },
     {
       "id": 480,
-      "name": "Lux Skeleton (Lv1-79)",
-      "enemy_id": [ "0x010317" ],
+      "name": "Dark Skeleton Brute (Lv1-79)",
+      "enemy_id": ["0x010324"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
       "items": [
         [
-          8014,
+          8015,
           1,
           1,
           0,
@@ -13260,9 +13189,9 @@
           0.4
         ],
         [
-          7803,
+          7850,
           1,
-          2,
+          1,
           0,
           false,
           0.9
@@ -13271,13 +13200,13 @@
     },
     {
       "id": 481,
-      "name": "Lux Skeleton (Lv80+)",
-      "enemy_id": [ "0x010317" ],
+      "name": "Dark Skeleton Brute (Lv80+)",
+      "enemy_id": ["0x010324"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
         [
-          7803,
+          7850,
           1,
           2,
           0,
@@ -13285,7 +13214,7 @@
           0.9
         ],
         [
-          8014,
+          8015,
           1,
           1,
           0,
@@ -13304,8 +13233,67 @@
     },
     {
       "id": 482,
+      "name": "Lux Skeleton (Lv1-79)",
+      "enemy_id": ["0x010317"],
+      "min_level": 1,
+      "max_level": 79,
+      "mdlType": 0,
+      "items": [
+        [
+          8014,
+          1,
+          1,
+          0,
+          false,
+          0.4
+        ],
+        [
+          7803,
+          1,
+          2,
+          0,
+          false,
+          0.9
+        ]
+      ]
+    },
+    {
+      "id": 483,
+      "name": "Lux Skeleton (Lv80+)",
+      "enemy_id": ["0x010317"],
+      "min_level": 80,
+      "mdlType": 0,
+      "items": [
+        [
+          7803,
+          1,
+          2,
+          0,
+          false,
+          0.9
+        ],
+        [
+          8014,
+          1,
+          1,
+          0,
+          false,
+          0.6
+        ],
+        [
+          17873,
+          1,
+          1,
+          0,
+          false,
+          0.3
+        ]
+      ]
+    },
+    {
+      "id": 484,
       "name": "Dim Slime (Lv1-79)",
-      "enemy_id": [ "0x010909" ],
+      "enemy_id": ["0x010909"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -13321,9 +13309,9 @@
       ]
     },
     {
-      "id": 483,
+      "id": 485,
       "name": "Dim Slime (Lv80+)",
-      "enemy_id": [ "0x010909" ],
+      "enemy_id": ["0x010909"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -13346,9 +13334,9 @@
       ]
     },
     {
-      "id": 484,
+      "id": 486,
       "name": "Phindymian Fighter (Lv1+)",
-      "enemy_id": [ "0x011060" ],
+      "enemy_id": ["0x011060"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -13363,9 +13351,9 @@
       ]
     },
     {
-      "id": 485,
+      "id": 487,
       "name": "Phindymian Seeker (Lv1+)",
-      "enemy_id": [ "0x011061" ],
+      "enemy_id": ["0x011061"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -13380,43 +13368,9 @@
       ]
     },
     {
-      "id": 486,
-      "name": "Phindymian Hunter (Lv1+)",
-      "enemy_id": [ "0x011062" ],
-      "min_level": 1,
-      "mdlType": 0,
-      "items": [
-        [
-          11408,
-          1,
-          1,
-          0,
-          false,
-          0.4
-        ]
-      ]
-    },
-    {
-      "id": 487,
-      "name": "Phindymian Preist (Lv1+)",
-      "enemy_id": [ "0x011063" ],
-      "min_level": 1,
-      "mdlType": 0,
-      "items": [
-        [
-          11408,
-          1,
-          1,
-          0,
-          false,
-          0.2
-        ]
-      ]
-    },
-    {
       "id": 488,
-      "name": "Phindymian Defender (Lv1+)",
-      "enemy_id": [ "0x011064" ],
+      "name": "Phindymian Hunter (Lv1+)",
+      "enemy_id": ["0x011062"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -13432,8 +13386,42 @@
     },
     {
       "id": 489,
+      "name": "Phindymian Preist (Lv1+)",
+      "enemy_id": ["0x011063"],
+      "min_level": 1,
+      "mdlType": 0,
+      "items": [
+        [
+          11408,
+          1,
+          1,
+          0,
+          false,
+          0.2
+        ]
+      ]
+    },
+    {
+      "id": 490,
+      "name": "Phindymian Defender (Lv1+)",
+      "enemy_id": ["0x011064"],
+      "min_level": 1,
+      "mdlType": 0,
+      "items": [
+        [
+          11408,
+          1,
+          1,
+          0,
+          false,
+          0.4
+        ]
+      ]
+    },
+    {
+      "id": 491,
       "name": "Phindymian Sorcerer (Lv1+)",
-      "enemy_id": [ "0x011065" ],
+      "enemy_id": ["0x011065"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -13448,9 +13436,9 @@
       ]
     },
     {
-      "id": 490,
+      "id": 492,
       "name": "Phindymian Warrior (Lv1+)",
-      "enemy_id": [ "0x011066" ],
+      "enemy_id": ["0x011066"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -13465,9 +13453,9 @@
       ]
     },
     {
-      "id": 491,
+      "id": 493,
       "name": "Phindymian Element Archer (Lv1+)",
-      "enemy_id": [ "0x011067" ],
+      "enemy_id": ["0x011067"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -13483,9 +13471,9 @@
       ]
     },
     {
-      "id": 492,
+      "id": 494,
       "name": "Scourge (Lv1+)",
-      "enemy_id": [ "0x020601", "0x071310" ],
+      "enemy_id": ["0x020601", "0x071310"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -13508,18 +13496,16 @@
       ]
     },
     {
-      "id": 493,
+      "id": 495,
       "name": "Severely Infected Scourge (Lv1-??) INCONCLUSIVE",
       "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
-      "id": 494,
+      "id": 496,
       "name": "Red Zuhl (Lv1-??) INCONCLUSIVE",
-      "enemy_id": [ "0x020404" ],
+      "enemy_id": ["0x020404"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -13534,45 +13520,37 @@
       ]
     },
     {
-      "id": 495,
+      "id": 497,
       "name": "Shadow Grigori (Lv1-??) INCONCLUSIVE",
       "mdlType": 0,
       "ignore": true,
-      "items": [
-
-      ]
-    },
-    {
-      "id": 496,
-      "name": "Shadow Master (Lv1-??) INCONCLUSIVE",
-      "ignore": true,
-      "mdlType": 0,
-      "items": [
-
-      ]
-    },
-    {
-      "id": 497,
-      "name": "Gorgon (Lv1-??) INCONCLUSIVE",
-      "ignore": true,
-      "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
       "id": 498,
-      "name": "Rage Ghost (Lv1-??) INCONCLUSIVE",
+      "name": "Shadow Master (Lv1-??) INCONCLUSIVE",
       "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
       "id": 499,
+      "name": "Gorgon (Lv1-??) INCONCLUSIVE",
+      "ignore": true,
+      "mdlType": 0,
+      "items": []
+    },
+    {
+      "id": 500,
+      "name": "Rage Ghost (Lv1-??) INCONCLUSIVE",
+      "ignore": true,
+      "mdlType": 0,
+      "items": []
+    },
+    {
+      "id": 501,
       "name": "Grudge Ghost (Lv1-??)",
-      "enemy_id": [ "0x015622" ],
+      "enemy_id": ["0x015622"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -13587,9 +13565,9 @@
       ]
     },
     {
-      "id": 500,
+      "id": 502,
       "name": "Misery Ghost (Lv85+)",
-      "enemy_id": [ "0x015621" ],
+      "enemy_id": ["0x015621"],
       "min_level": 85,
       "mdlType": 0,
       "items": [
@@ -13604,9 +13582,9 @@
       ]
     },
     {
-      "id": 501,
+      "id": 503,
       "name": "White Tarasque (Lv90+)",
-      "enemy_id": [ "0x015723" ],
+      "enemy_id": ["0x015723"],
       "min_level": 90,
       "mdlType": 0,
       "items": [
@@ -13621,18 +13599,16 @@
       ]
     },
     {
-      "id": 502,
+      "id": 504,
       "name": "Vile Eye (Lv1-??) INCONCLUSIVE",
       "ignore": true,
       "mdlType": 0,
-      "items": [
-
-      ]
+      "items": []
     },
     {
-      "id": 503,
+      "id": 505,
       "name": "Volt Eye (Lv1+)",
-      "enemy_id": [ "0x015406" ],
+      "enemy_id": ["0x015406"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -13647,9 +13623,9 @@
       ]
     },
     {
-      "id": 504,
+      "id": 506,
       "name": "Crystal Eye (Lv1-44)",
-      "enemy_id": [ "0x015410" ],
+      "enemy_id": ["0x015410"],
       "min_level": 1,
       "max_level": 44,
       "mdlType": 0,
@@ -13673,9 +13649,9 @@
       ]
     },
     {
-      "id": 505,
+      "id": 507,
       "name": "Crystal Eye (Lv45+)",
-      "enemy_id": [ "0x015410" ],
+      "enemy_id": ["0x015410"],
       "min_level": 45,
       "mdlType": 0,
       "items": [
@@ -13706,9 +13682,9 @@
       ]
     },
     {
-      "id": 506,
+      "id": 508,
       "name": "Glutton Ooze (Lv1-79)",
-      "enemy_id": [ "0x010903" ],
+      "enemy_id": ["0x010903"],
       "min_level": 1,
       "max_level": 79,
       "mdlType": 0,
@@ -13732,9 +13708,9 @@
       ]
     },
     {
-      "id": 507,
+      "id": 509,
       "name": "Glutton Ooze (Lv80+)",
-      "enemy_id": [ "0x010903" ],
+      "enemy_id": ["0x010903"],
       "min_level": 80,
       "mdlType": 0,
       "items": [
@@ -13765,43 +13741,9 @@
       ]
     },
     {
-      "id": 508,
-      "name": "Scarlet Fighter (Lv1-??)",
-      "enemy_id": [ "0x011070" ],
-      "min_level": 1,
-      "mdlType": 0,
-      "items": [
-        [
-          7827,
-          1,
-          1,
-          0,
-          false,
-          0.8
-        ]
-      ]
-    },
-    {
-      "id": 509,
-      "name": "Scarlet Seeker",
-      "enemy_id": [ "0x011071" ],
-      "min_level": 1,
-      "mdlType": 0,
-      "items": [
-        [
-          7827,
-          1,
-          1,
-          0,
-          false,
-          0.8
-        ]
-      ]
-    },
-    {
       "id": 510,
-      "name": "Scarlet Hunter",
-      "enemy_id": [ "0x011072" ],
+      "name": "Scarlet Fighter (Lv1-??)",
+      "enemy_id": ["0x011070"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -13817,8 +13759,8 @@
     },
     {
       "id": 511,
-      "name": "Scarlet Healer",
-      "enemy_id": [ "0x011073" ],
+      "name": "Scarlet Seeker",
+      "enemy_id": ["0x011071"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -13834,8 +13776,8 @@
     },
     {
       "id": 512,
-      "name": "Scarlet Defender",
-      "enemy_id": [ "0x011074" ],
+      "name": "Scarlet Hunter",
+      "enemy_id": ["0x011072"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -13851,8 +13793,8 @@
     },
     {
       "id": 513,
-      "name": "Scarlet Mage",
-      "enemy_id": [ "0x011075" ],
+      "name": "Scarlet Healer",
+      "enemy_id": ["0x011073"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -13868,8 +13810,8 @@
     },
     {
       "id": 514,
-      "name": "Scarlet Warrior",
-      "enemy_id": [ "0x011076" ],
+      "name": "Scarlet Defender",
+      "enemy_id": ["0x011074"],
       "min_level": 1,
       "mdlType": 0,
       "items": [
@@ -13885,12 +13827,44 @@
     },
     {
       "id": 515,
-      "name": "Black Knight Phantom (Lv1-??) INCONCLUSIVE",
-      "ignore":  true,
+      "name": "Scarlet Mage",
+      "enemy_id": ["0x011075"],
+      "min_level": 1,
       "mdlType": 0,
       "items": [
-
+        [
+          7827,
+          1,
+          1,
+          0,
+          false,
+          0.8
+        ]
       ]
+    },
+    {
+      "id": 516,
+      "name": "Scarlet Warrior",
+      "enemy_id": ["0x011076"],
+      "min_level": 1,
+      "mdlType": 0,
+      "items": [
+        [
+          7827,
+          1,
+          1,
+          0,
+          false,
+          0.8
+        ]
+      ]
+    },
+    {
+      "id": 517,
+      "name": "Black Knight Phantom (Lv1-??) INCONCLUSIVE",
+      "ignore": true,
+      "mdlType": 0,
+      "items": []
     }
   ]
 }
