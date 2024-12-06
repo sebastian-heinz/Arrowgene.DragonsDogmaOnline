@@ -1,17 +1,20 @@
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Network;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.Server.Network
 {
     public class PacketQueue : Queue<(Client Client, Packet Packet)>
     {
-        public PacketQueue() { }
+        public PacketQueue() : base() { }
+        public PacketQueue(IEnumerable<(Client Client, Packet Packet)> collection) : base(collection) { }
         public void Send()
         {
-            foreach ((Client Client, Packet Packet) in this)
+            while (this.Any())
             {
-                Client.Send(Packet);
+                (var client, var packet) = this.Dequeue();
+                client.Send(packet);
             }
         }
 

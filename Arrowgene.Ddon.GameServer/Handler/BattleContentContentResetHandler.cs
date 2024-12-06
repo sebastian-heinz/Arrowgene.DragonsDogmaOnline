@@ -1,17 +1,10 @@
 using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared.Csv;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Security.Cryptography;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -56,12 +49,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // Set current job back to level 1 stats
             var jobResults = Server.JobManager.SetJob(client, client.Character, client.Character.Job);
-            foreach (var otherClient in Server.ClientLookup.GetAll())
-            {
-                otherClient.Send((S2CJobChangeJobNtc)jobResults.jobNtc);
-            }
-            client.Send((S2CJobChangeJobNtc)jobResults.jobNtc);
-            client.Send((S2CItemUpdateCharacterItemNtc)jobResults.itemNtc);
+            jobResults.Send();
 
             // Reset progress
             client.Character.BbmProgress.StartTime = 0;
