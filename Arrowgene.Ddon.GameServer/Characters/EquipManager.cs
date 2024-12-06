@@ -258,6 +258,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 client.Enqueue(updateCharacterItemNtc, queue);
                 server.ClientLookup.EnqueueToAll(changePawnEquipNtc, queue);
+
+                return queue;
             }
 
             throw new ResponseErrorException(ErrorCode.ERROR_CODE_FAIL); //TODO: Find a better code.

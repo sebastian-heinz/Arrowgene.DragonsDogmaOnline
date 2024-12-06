@@ -533,7 +533,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
             {
                 if (!ActiveQuests.ContainsKey(questScheduleId))
                 {
-                    ActiveQuests[questScheduleId] = new QuestState();
+                    var quest = GetQuest(questScheduleId);
+                    ActiveQuests[questScheduleId] = new QuestState()
+                    {
+                        QuestId = quest.QuestId,
+                        QuestScheduleId = quest.QuestScheduleId,
+                        QuestType = quest.QuestType,
+                        Step = 0,
+                    };
                 }
 
                 if (!ActiveQuests[questScheduleId].ProcessState.ContainsKey(processNo))
@@ -643,6 +650,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
     public class SharedQuestStateManager : QuestStateManager
     {
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SharedQuestStateManager));
+
         private readonly PartyGroup Party;
         private readonly DdonGameServer Server;
 
@@ -781,8 +790,25 @@ namespace Arrowgene.Ddon.GameServer.Quests
             foreach (var priorityQuestScheduleId in priorityQuestScheduleIds)
             {
                 var quest = QuestManager.GetQuestByScheduleId(priorityQuestScheduleId);
-                var questStateManager = quest.IsPersonal ? leaderClient.QuestState : leaderClient.Party.QuestState;
+                if (quest == null)
+                {
+                    Logger.Error(requestingClient, $"No quest object exists for ${priorityQuestScheduleId}");
+                    continue;
+                }
+
+                var questStateManager = QuestManager.GetQuestStateManager(requestingClient, quest);
+                if (questStateManager == null)
+                {
+                    Logger.Error(requestingClient, $"Unable to fetch the quest state manager for ${priorityQuestScheduleId}");
+                    continue;
+                }
+
                 var questState = questStateManager.GetQuestState(priorityQuestScheduleId);
+                if (questState == null)
+                {
+                    Logger.Error(requestingClient, $"Failed to find quest state for ${priorityQuestScheduleId}");
+                    continue;
+                }
                 prioNtc.PriorityQuestList.Add(quest.ToCDataPriorityQuest(questState.Step));
             }
             Party.EnqueueToAll(prioNtc, packets);

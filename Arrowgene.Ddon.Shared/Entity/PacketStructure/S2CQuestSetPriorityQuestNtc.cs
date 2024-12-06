@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             PriorityQuestList = new List<CDataPriorityQuest>();
         }
 
-        public UInt32 CharacterId {  get; set; }
+        public uint CharacterId {  get; set; }
         public List<CDataPriorityQuest> PriorityQuestList {  get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CQuestSetPriorityQuestNtc>

@@ -280,25 +280,27 @@ namespace Arrowgene.Ddon.GameServer
             return 0;
         }
     
-        public void AnnouncePlayerList()
+        public void AnnouncePlayerList(Character exception = null)
         {
             List<RpcCharacterData> rpcCharacterDatas = new List<RpcCharacterData>();
-            foreach (var character in Server.ClientLookup.GetAllCharacter().Where(x => x.Stage.Id != 0))
-                {
-                    rpcCharacterDatas.Add(new(character));
-                }
-            
+            foreach (var character in Server.ClientLookup.GetAllCharacter())
+            {
+                if (character == exception) continue;
+                rpcCharacterDatas.Add(new(character));
+            }
+            Logger.Info($"Announcing player list for channel {Server.Id} with {rpcCharacterDatas.Count} players over RPC.");
             AnnounceOthers("internal/tracking", RpcInternalCommand.NotifyPlayerList, rpcCharacterDatas);
             CharacterTrackingMap[(ushort) Server.Id].Update(DateTime.Now, rpcCharacterDatas);
         }
 
         public void ReceivePlayerList(ushort channelId, DateTime timestamp, List<RpcCharacterData> characterDatas)
         {
+            Logger.Info($"Recieving player list from channel {channelId} with {characterDatas.Count} players.");
             if (CharacterTrackingMap.ContainsKey(channelId))
             {
                 if (!CharacterTrackingMap[channelId].Update(timestamp, characterDatas))
                 {
-                    Logger.Info($"Out of date character list discarded for channel ID {channelId}");
+                    Logger.Error($"Out of date character list discarded for channel ID {channelId}");
                 }
             }
         }

@@ -1,4 +1,5 @@
 #nullable enable
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
@@ -36,9 +37,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CCraftStartCraftRes Handle(GameClient client, C2SCraftStartCraftReq request)
         {
-            CDataMDataCraftRecipe recipe = Server.AssetRepository.CraftingRecipesAsset
+            CDataMDataCraftRecipe recipe;
+            try
+            {
+                recipe = Server.AssetRepository.CraftingRecipesAsset
                 .SelectMany(recipes => recipes.RecipeList)
                 .Single(recipe => recipe.RecipeID == request.RecipeID);
+            }
+            catch (InvalidOperationException)
+            {
+                Logger.Error($"Duplicate recipe ID {request.RecipeID}!!!");
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_CRAFT_RECIPE_NOT_FOUND, $"Duplicate recipe ID {request.RecipeID}");
+            }
+            
             ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, recipe.ItemID);
 
 
