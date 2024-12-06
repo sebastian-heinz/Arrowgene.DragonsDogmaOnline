@@ -1,4 +1,4 @@
-﻿namespace Arrowgene.Ddon.Rpc.Command
+namespace Arrowgene.Ddon.Rpc.Command
 {
     public class RpcCommandResult
     {
@@ -6,6 +6,7 @@
         {
             Command = command;
             Success = success;
+            Message = string.Empty;
         }
 
         public IRpcCommand Command { get; }
