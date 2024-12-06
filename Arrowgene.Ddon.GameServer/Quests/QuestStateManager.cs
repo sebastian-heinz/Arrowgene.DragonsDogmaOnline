@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
@@ -10,6 +11,7 @@ using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Drawing;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Quests
@@ -557,6 +559,27 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public abstract PacketQueue DistributeQuestRewards(uint questScheduleId, DbConnection? connectionIn = null);
         public abstract PacketQueue UpdatePriorityQuestList(GameClient requestingClient, DbConnection? connectionIn = null);
 
+        private uint CalculateTotalPointAmount(DdonGameServer server, GameClient client, CDataQuestExp point)
+        {
+            uint amount = point.Reward;
+            double modifier = 1.0;
+            switch (point.Type)
+            {
+                case ExpType.ExperiencePoints:
+                    amount = server.ExpManager.GetAdjustedExp(client.GameMode, RewardSource.Quest, null, point.Reward, 0);
+                    break;
+                case ExpType.JobPoints:
+                    modifier = (uint)(amount * server.Setting.GameLogicSetting.JpModifier);
+                    break;
+                case ExpType.PlayPoints:
+                    amount = (uint)(amount * server.Setting.GameLogicSetting.PpModifier);
+                    break;
+                default:
+                    break;
+            }
+            return amount;
+        }
+
         protected PacketQueue SendWalletRewards(DdonGameServer server, GameClient client, Quest quest, DbConnection? connectionIn = null)
         {
             PacketQueue packets = new();
@@ -581,39 +604,46 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 client.Enqueue(updateCharacterItemNtc, packets);
             }
 
-            foreach (var expPoint in quest.ExpRewards)
+            foreach (var point in quest.ExpRewards)
             {
-                uint amount = expPoint.Reward;
-                double modifier = 1.0;
-                switch (expPoint.Type)
+                uint amount = CalculateTotalPointAmount(server, client, point);
+                if (amount == 0)
+                {
+                    continue;
+                }
+
+                switch (point.Type)
                 {
                     case ExpType.ExperiencePoints:
-                        modifier = server.Setting.GameLogicSetting.ExpModifier;
+                        packets.AddRange(server.ExpManager.AddExp(client, client.Character, amount, RewardSource.Quest, quest.QuestType, connectionIn));
+                        if (server.Setting.GameLogicSetting.EnableMainPartyPawnsQuestRewards)
+                        {
+                            foreach (PartyMember member in client.Party.Members)
+                            {
+                                if (member is PawnPartyMember pawnMember && client.Character.Pawns.Contains(pawnMember.Pawn))
+                                {
+                                    packets.AddRange(server.ExpManager.AddExp(client, pawnMember.Pawn, amount, RewardSource.Quest, quest.QuestType, connectionIn));
+                                }
+                            }
+                        }
                         break;
                     case ExpType.JobPoints:
-                        modifier = server.Setting.GameLogicSetting.JpModifier;
+                        packets.AddRange(server.ExpManager.AddJp(client, client.Character, amount, RewardSource.Quest, quest.QuestType, connectionIn));
+                        if (server.Setting.GameLogicSetting.EnableMainPartyPawnsQuestRewards)
+                        {
+                            foreach (PartyMember member in client.Party.Members)
+                            {
+                                if (member is PawnPartyMember pawnMember && client.Character.Pawns.Contains(pawnMember.Pawn))
+                                {
+                                    packets.AddRange(server.ExpManager.AddJp(client, pawnMember.Pawn, amount, RewardSource.Quest, quest.QuestType, connectionIn));
+                                }
+                            }
+                        }
                         break;
                     case ExpType.PlayPoints:
-                        modifier = server.Setting.GameLogicSetting.PpModifier;
+                        var ntc = server.PPManager.AddPlayPoint(client, amount, type: 1, connectionIn: connectionIn);
+                        client.Enqueue(ntc, packets);
                         break;
-                }
-
-                amount = (uint)(amount * modifier);
-
-                if (expPoint.Type == ExpType.ExperiencePoints)
-                {
-                    var ntcs = server.ExpManager.AddExp(client, client.Character, amount, RewardSource.Quest, quest.QuestType, connectionIn);
-                    packets.AddRange(ntcs);
-                }
-                else if (expPoint.Type == ExpType.JobPoints)
-                {
-                    var ntcs = server.ExpManager.AddJp(client, client.Character, amount, RewardSource.Quest, quest.QuestType, connectionIn);
-                    packets.AddRange(ntcs);
-                }
-                else if (expPoint.Type == ExpType.PlayPoints)
-                {
-                    var ntc = server.PPManager.AddPlayPoint(client, amount, type: 1, connectionIn: connectionIn);
-                    client.Enqueue(ntc, packets);
                 }
             }
             
@@ -630,7 +660,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 packets.AddRange(completeNtcs);
             }
             
-
             return packets;
         }
 

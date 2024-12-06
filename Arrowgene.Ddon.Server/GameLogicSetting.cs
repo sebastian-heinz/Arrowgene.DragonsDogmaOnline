@@ -169,43 +169,53 @@ namespace Arrowgene.Ddon.Server
         /// <summary>
         /// Global modifier for exp calculations to scale up or down.
         /// </summary>
-        [DataMember(Order = 26)] public double ExpModifier { get; set; }
+        [DataMember(Order = 27)] public double EnemyExpModifier { get; set; }
+
+        /// <summary>
+        /// Global modifier for quest exp calculations to scale up or down.
+        /// </summary>
+        [DataMember(Order = 28)] public double QuestExpModifier { get; set; }
 
         /// <summary>
         /// Global modifier for pp calculations to scale up or down.
         /// </summary>
-        [DataMember(Order = 26)] public double PpModifier { get; set; }
+        [DataMember(Order = 29)] public double PpModifier { get; set; }
 
         /// <summary>
         /// Global modifier for BO calculations to scale up or down.
         /// </summary>
-        [DataMember(Order = 26)] public double BoModifier { get; set; }
+        [DataMember(Order = 30)] public double BoModifier { get; set; }
 
         /// <summary>
         /// Global modifier for HO calculations to scale up or down.
         /// </summary>
-        [DataMember(Order = 26)] public double HoModifier { get; set; }
+        [DataMember(Order = 31)] public double HoModifier { get; set; }
 
         /// <summary>
         /// Global modifier for JP calculations to scale up or down.
         /// </summary>
-        [DataMember(Order = 26)] public double JpModifier { get; set; }
+        [DataMember(Order = 32)] public double JpModifier { get; set; }
 
         /// <summary>
         /// Configures the maximum amount of reward box slots.
         /// </summary>
-        [DataMember(Order = 27)] public byte RewardBoxMax { get; set; }
+        [DataMember(Order = 33)] public byte RewardBoxMax { get; set; }
 
         /// <summary>
         /// Configures the maximum amount of quests that can be ordered at one time.
         /// </summary>
-        [DataMember(Order = 27)] public byte QuestOrderMax { get; set; }
+        [DataMember(Order = 34)] public byte QuestOrderMax { get; set; }
 
         /// <summary>
         /// Configures if epitaph rewards are limited once per weekly reset.
         /// </summary>
-        [DataMember(Order = 28)] public bool EnableEpitaphWeeklyRewards { get; set; }
+        [DataMember(Order = 35)] public bool EnableEpitaphWeeklyRewards { get; set; }
 
+        /// Enables main pawns in party to gain EXP and JP from quests
+        /// Original game apparantly did not have pawns share quest reward, so will set to false for default, 
+        /// change as needed
+        /// </summary>
+        [DataMember(Order = 36)] public bool EnableMainPartyPawnsQuestRewards { get; set; }
 
         /// <summary>
         /// Various URLs used by the client.
@@ -290,7 +300,8 @@ namespace Arrowgene.Ddon.Server
             DefaultMaxBazaarExhibits = 5;
             DefaultWarpFavorites = 3;
 
-            ExpModifier = 1.0;
+            EnemyExpModifier = 1.0;
+            QuestExpModifier = 1.0;
             PpModifier = 1.0;
             BoModifier = 1.0;
             HoModifier = 1.0;
@@ -299,6 +310,7 @@ namespace Arrowgene.Ddon.Server
             QuestOrderMax = 20;
 
             EnableEpitaphWeeklyRewards = false;
+            EnableMainPartyPawnsQuestRewards = false;
 
             string urlDomain = $"http://localhost:{52099}";
             UrlManual = $"{urlDomain}/manual_nfb/";
@@ -352,7 +364,8 @@ namespace Arrowgene.Ddon.Server
             DefaultMaxBazaarExhibits = setting.DefaultMaxBazaarExhibits;
             DefaultWarpFavorites = setting.DefaultWarpFavorites;
 
-            ExpModifier = setting.ExpModifier;
+            EnemyExpModifier = setting.EnemyExpModifier;
+            QuestExpModifier = setting.QuestExpModifier;
             PpModifier = setting.PpModifier;
             BoModifier = setting.BoModifier;
             HoModifier = setting.HoModifier;
@@ -361,6 +374,7 @@ namespace Arrowgene.Ddon.Server
             QuestOrderMax = setting.QuestOrderMax;
 
             EnableEpitaphWeeklyRewards = setting.EnableEpitaphWeeklyRewards;
+            EnableMainPartyPawnsQuestRewards = setting.EnableMainPartyPawnsQuestRewards;
 
             UrlManual = setting.UrlManual;
             UrlShopDetail = setting.UrlShopDetail;
@@ -436,9 +450,13 @@ namespace Arrowgene.Ddon.Server
             {
                 PawnCatchupMultiplier = 1.0;
             }
-            if (ExpModifier < 0)
+            if (EnemyExpModifier < 0)
             {
-                ExpModifier = 1.0;
+                EnemyExpModifier = 1.0;
+            }
+            if (QuestExpModifier < 0)
+            {
+                QuestExpModifier = 1.0;
             }
             if (PpModifier < 0)
             {
