@@ -24,6 +24,10 @@
                 {
                     "item_id": 15997,
                     "num": 3
+                },
+                {
+                    "item_id": 7795,
+                    "num": 1000
                 }
             ]
         },
@@ -49,7 +53,6 @@
                     "enemy_id": "0x080501",
                     "level": 80,
                     "exp": 0,
-                    "blood_orbs": 1000,
                     "is_boss": true
                 }
             ]

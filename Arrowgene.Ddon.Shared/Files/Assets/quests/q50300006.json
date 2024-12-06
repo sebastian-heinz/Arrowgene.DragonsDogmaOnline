@@ -20,11 +20,15 @@
     "rewards": [
         {
             "type": "fixed",
-            "comment": "Yellow Dye",
+            "comment": "Yellow Dye, Blood Orb",
             "loot_pool": [
                 {
                     "item_id": 8138,
                     "num": 1
+                },
+                {
+                    "item_id": 7795,
+                    "num": 1000
                 }
             ]
         },
@@ -159,7 +163,6 @@
                     "enemy_id": "0x080100",
                     "level": 60,
                     "exp": 0,
-                    "blood_orbs": 1000,
                     "is_boss": true
                 }
             ]

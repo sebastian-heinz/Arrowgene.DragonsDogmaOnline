@@ -899,11 +899,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return multiplier;
         }
 
+        private double ModifierBasedOnSource(RewardSource source)
+        {
+            return source == RewardSource.Enemy ? _GameSettings.EnemyExpModifier : _GameSettings.QuestExpModifier;
+        }
+
         public uint GetAdjustedExp(GameMode gameMode, RewardSource source, PartyGroup party, uint baseExpAmount, uint targetLv)
         {
             if (_Server.GpCourseManager.DisablePartyExpAdjustment())
             {
-                return (uint)(baseExpAmount * _GameSettings.ExpModifier);
+                return (uint)(baseExpAmount * ModifierBasedOnSource(source));
             }
 
             double multiplier = 1.0;
@@ -913,8 +918,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 var partyRangeMultiplier = CalculatePartyRangeMultipler(gameMode, party);
                 multiplier = Math.Min(partyRangeMultiplier, targetMultiplier);
             }
-            
-            return (uint)(multiplier * baseExpAmount * _GameSettings.ExpModifier);
+            else if (source == RewardSource.Quest)
+            {
+                // Currently no adjustments
+            }
+
+            return (uint)(multiplier * baseExpAmount * ModifierBasedOnSource(source));
         }
 
         private uint GetMaxAllowedPartyRange()
@@ -996,13 +1005,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             if (!_GameSettings.EnablePawnCatchup || gameMode == GameMode.BitterblackMaze)
             {
-                return (uint)(baseExpAmount * _GameSettings.ExpModifier);
+                return (uint)(baseExpAmount * ModifierBasedOnSource(source));
             }
 
             var targetMultiplier = CalculatePawnCatchupTargetLvMultiplier(gameMode, pawn, targetLv);
             var multiplier = _GameSettings.PawnCatchupMultiplier * targetMultiplier;
 
-            return (uint)(multiplier * baseExpAmount * _GameSettings.ExpModifier);
+            return (uint)(multiplier * baseExpAmount * ModifierBasedOnSource(source));
         }
     }
 }
