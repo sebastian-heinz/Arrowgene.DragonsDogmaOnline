@@ -1,5 +1,4 @@
 using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -534,7 +533,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
             {
                 if (!ActiveQuests.ContainsKey(questScheduleId))
                 {
-                    ActiveQuests[questScheduleId] = new QuestState();
+                    var quest = GetQuest(questScheduleId);
+                    ActiveQuests[questScheduleId] = new QuestState()
+                    {
+                        QuestId = quest.QuestId,
+                        QuestScheduleId = quest.QuestScheduleId,
+                        QuestType = quest.QuestType,
+                        Step = 0,
+                    };
                 }
 
                 if (!ActiveQuests[questScheduleId].ProcessState.ContainsKey(processNo))

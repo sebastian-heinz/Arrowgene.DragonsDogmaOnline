@@ -101,9 +101,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
             
             var progress = character.BbmProgress;
 
-            var match = server.AssetRepository.BitterblackMazeAsset.Stages.Select(x => x.Value).Where(x => x.ContentId == progress.ContentId).FirstOrDefault();
+            var match = server.AssetRepository.BitterblackMazeAsset.Stages.Select(x => x.Value).Where(x => x.ContentId == progress.ContentId).FirstOrDefault()
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_FAIL); // TODO: Better error code.
 
-            var stageProgression = server.AssetRepository.BitterblackMazeAsset.StageProgressionList.Where(x => x.Id == match.ContentId).FirstOrDefault();
+            var stageProgression = server.AssetRepository.BitterblackMazeAsset.StageProgressionList.Where(x => x.Id == match.ContentId).FirstOrDefault()
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_FAIL); // TODO: Better error code.
+
             if (stageProgression.ConnectionList.Count > 0)
             {
                 var clearNtc = new S2CBattleContentClearTierNtc()
