@@ -8,6 +8,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.BattleContent;
 using Arrowgene.Ddon.Shared.Model.Clan;
 using Arrowgene.Ddon.Shared.Model.Quest;
+using Arrowgene.Ddon.Shared.Model.Scheduler;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -419,6 +420,9 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertEpitaphWeeklyReward(uint characterId, uint epitaphId, DbConnection? connectionIn = null) { return true; }
         public HashSet<uint> GetEpitaphClaimedWeeklyRewards(uint characterId, DbConnection? connectionIn = null) { return new(); }
 
+        public Dictionary<TaskType, SchedulerTaskEntry> SelectAllTaskEntries() { return new(); }
+        public bool UpdateScheduleInfo(TaskType type, long timestamp) { return true; }
+
         public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
         public void AddParameter(DbCommand command, string name, string value) { }
         public void AddParameter(DbCommand command, string name, Int32 value) { }
@@ -443,7 +447,7 @@ namespace Arrowgene.Ddon.Test.Database
         public byte[] GetBytes(DbDataReader reader, string column, int size) { return null; }
         public List<CDataRegisterdPawnList> SelectRegisteredPawns(Character searchingCharacter, CDataPawnSearchParameter searchParams) { return new List<CDataRegisterdPawnList>(); }
         public List<CDataRegisterdPawnList> SelectRegisteredPawns(DbConnection conn, Character searchingCharacter, CDataPawnSearchParameter searchParams) { return new List<CDataRegisterdPawnList>(); }
-        public void DeleteWeeklyRewards(DbConnection? connectionIn = null) { }
+        public void DeleteWeeklyEpitaphClaimedRewards(DbConnection? connectionIn = null) { }
     }
 
     class MockMigrationStrategy : IMigrationStrategy

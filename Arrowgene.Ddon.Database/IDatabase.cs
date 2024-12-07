@@ -11,6 +11,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.BattleContent;
 using Arrowgene.Ddon.Shared.Model.Clan;
 using Arrowgene.Ddon.Shared.Model.Quest;
+using Arrowgene.Ddon.Shared.Model.Scheduler;
 
 namespace Arrowgene.Ddon.Database
 {
@@ -590,6 +591,10 @@ namespace Arrowgene.Ddon.Database
 
         bool InsertEpitaphWeeklyReward(uint characterId, uint epitaphId, DbConnection? connectionIn = null);
         HashSet<uint> GetEpitaphClaimedWeeklyRewards(uint characterId, DbConnection? connectionIn = null);
-        void DeleteWeeklyRewards(DbConnection? connectionIn = null);
+        void DeleteWeeklyEpitaphClaimedRewards(DbConnection? connectionIn = null);
+
+        // Scheduler
+        Dictionary<TaskType, SchedulerTaskEntry> SelectAllTaskEntries();
+        bool UpdateScheduleInfo(TaskType type, long timestamp);
     }
 }

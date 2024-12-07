@@ -782,3 +782,11 @@ CREATE TABLE IF NOT EXISTS ddon_epitaph_claimed_weekly_rewards (
     CONSTRAINT "pk_ddon_epitaph_claimed_weekly_rewards" PRIMARY KEY ("character_id", "epitaph_id"),
 	CONSTRAINT "fk_ddon_epitaph_claimed_weekly_rewards_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character"("character_id") ON DELETE CASCADE
 );
+
+
+CREATE TABLE IF NOT EXISTS ddon_schedule_next (
+	"type"	INTEGER NOT NULL,
+	"timestamp"	BIGINT NOT NULL,
+	PRIMARY KEY("type")
+);
+INSERT INTO ddon_schedule_next(type, timestamp) VALUES (19, 0);
