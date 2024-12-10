@@ -20,6 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
             pawn.PawnState = PawnState.Lost;
+            // TODO: Save on DB
 
             S2CPawnPawnLostNtc ntc = new S2CPawnPawnLostNtc()
             {
