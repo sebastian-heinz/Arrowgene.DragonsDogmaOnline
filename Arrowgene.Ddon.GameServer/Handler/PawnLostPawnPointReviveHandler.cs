@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
             pawn.PawnState = PawnState.Wait;
-            // TODO: Update on DB
+            Server.Database.UpdatePawnBaseInfo(pawn);
 
             client.Character.StatusInfo.RevivePoint = (byte) Math.Max(0, client.Character.StatusInfo.RevivePoint-1);
             Database.UpdateStatusInfo(client.Character);

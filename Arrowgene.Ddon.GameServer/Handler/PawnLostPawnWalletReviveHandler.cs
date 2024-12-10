@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
             pawn.PawnState = PawnState.Wait;
-            // TODO: Update on DB
+            Server.Database.UpdatePawnBaseInfo(pawn);
 
             if (request.Type != WalletType.RiftPoints)
             {

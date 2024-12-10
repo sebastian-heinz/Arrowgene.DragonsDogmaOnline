@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Model
             };
             TrainingStatus = new Dictionary<JobId, byte[]>();
             IsRented = false;
-            PawnState = PawnState.Lost;
+            PawnState = PawnState.Wait;
         }
         
         public Pawn(uint ownerCharacterId):this()
@@ -100,12 +100,5 @@ namespace Arrowgene.Ddon.Shared.Model
                 // TODO: Add rest of fileds so full structure can be populated here
             };
         }
-    }
-
-    public enum PawnState : byte {
-        Wait = 0,
-        Lost = 1,
-        Crafting = 2,
-        Expedition = 3
     }
 }
