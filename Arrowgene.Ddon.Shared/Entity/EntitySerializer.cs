@@ -224,6 +224,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataLobbyContextPlayer.Serializer());
             Create(new CDataLobbyMemberInfoSerializer());
             Create(new CDataLoginSettingSerializer());
+            Create(new CDataLostPawnList.Serializer());
             Create(new CDataLotQuestOrderList.Serializer());
             Create(new CDataMailInfo.Serializer());
             Create(new CDataMailTextInfo.Serializer());
