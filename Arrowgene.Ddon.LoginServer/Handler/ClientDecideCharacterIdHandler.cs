@@ -3,6 +3,7 @@ using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -18,7 +19,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         public ClientDecideCharacterIdHandler(DdonLoginServer server) : base(server)
         {
-            foreach (CDataGameServerListInfo serverListInfo in Server.AssetRepository.ServerList)
+            foreach (ServerInfo serverListInfo in Server.AssetRepository.ServerList)
             {
                 Logger.Info(
                     $"Asset GameServer Entry:{serverListInfo.Id} \"{serverListInfo.Name}\" {serverListInfo.Addr}:{serverListInfo.Port}");
@@ -45,7 +46,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             CDataGameServerListInfo serverListInfo;
             lock(LoadBalanceLock)
             {   
-                serverListInfo = Server.AssetRepository.ServerList[LoadBalanceServerIndex];
+                serverListInfo = Server.AssetRepository.ServerList[LoadBalanceServerIndex].ToCDataGameServerListInfo();
                 LoadBalanceServerIndex = (LoadBalanceServerIndex + 1) % Server.AssetRepository.ServerList.Count;
             }
 

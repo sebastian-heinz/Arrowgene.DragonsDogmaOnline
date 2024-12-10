@@ -91,7 +91,7 @@ namespace Arrowgene.Ddon.Shared.Model
                 .Select(tuple => new CDataEquipItemInfo()
                 {
                     ItemId = tuple.item?.ItemId ?? 0,
-                    Unk0 = tuple.item?.Unk3 ?? 0,
+                    Unk0 = tuple.item?.SafetySetting ?? 0,
                     EquipType = equipType,
                     EquipSlot = tuple.slot,
                     Color = tuple.item?.Color ?? 0,

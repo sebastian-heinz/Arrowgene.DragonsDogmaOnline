@@ -8,6 +8,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public override PacketId Id => PacketId.S2C_CHAT_SEND_TELL_MSG_RES;
 
+        public S2CChatSendTellMsgRes()
+        {
+            CharacterBaseInfo = new();
+        }
+
         public CDataCommunityCharacterBaseInfo CharacterBaseInfo { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CChatSendTellMsgRes>

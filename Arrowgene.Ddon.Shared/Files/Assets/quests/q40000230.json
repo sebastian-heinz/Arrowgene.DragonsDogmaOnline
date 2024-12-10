@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40000230,
+  "base_level": 23,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Area Order: Pawn Cathedral Outskirts Demon Extermination",
+  "light_quest_details": {
+    "area_id": 3,
+    "board_type": 1,
+    "board_id": 13
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 2919
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 5855
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1307
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "71",
+      "level": 23,
+      "amount": 1
+    }
+  ]
+}

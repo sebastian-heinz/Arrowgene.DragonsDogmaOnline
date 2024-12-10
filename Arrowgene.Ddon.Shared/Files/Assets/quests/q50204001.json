@@ -1,0 +1,199 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "ExtremeMission",
+    "comment": "Onset of Darkness: Restricted Stage",
+    "quest_id": 50204001,
+    "base_level": 80,
+    "minimum_item_rank": 72,
+    "discoverable": false,
+    "mission_params": {
+        "group": 2,
+        "minimum_members": 1,
+        "playtime": 600,
+        "solo_only": false,
+        "max_pawns": 3,
+        "phase_groups": []
+    },
+    "order_conditions": [
+        {"type": "ClearExtremeMission", "Param1": 50204002}
+    ],
+    "rewards": [
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 41,
+                    "num": 1
+                },
+                {
+                    "item_id": 7795,
+                    "num": 2000
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 14877,
+                    "num": 1
+                },
+                {
+                    "item_id": 14993,
+                    "num": 1
+                },
+                {
+                    "item_id": 15203,
+                    "num": 1
+                },
+                {
+                    "item_id": 15364,
+                    "num": 1
+                },
+                {
+                    "item_id": 15589,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "jp",
+            "amount": 4000
+        },
+        {
+            "type": "exp",
+            "amount": 250000
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "comment": "Boss",
+            "stage_id": {
+                "id": 458,
+                "group_id": 1
+            },
+            "enemies": [
+                {
+                    "comment": "Black Knight (Fan of Swords)",
+                    "enemy_id": "0x080502",
+                    "level": 80,
+                    "exp": 0,
+                    "is_boss": true
+                }
+            ]
+        },
+        {
+            "comment": "Boss",
+            "stage_id": {
+                "id": 458,
+                "group_id": 2
+            },
+            "enemies": [
+                {
+                    "comment": "Black Knight Phantom",
+                    "enemy_id": "0x080500",
+                    "level": 80,
+                    "exp": 0,
+                    "start_think_tbl_no": 1,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "comment": "Black Knight Phantom",
+                    "enemy_id": "0x080500",
+                    "level": 80,
+                    "exp": 0,
+                    "start_think_tbl_no": 1,
+                    "enemy_target_types_id": 1
+                }
+            ]
+        },
+        {
+            "comment": "Boss",
+            "stage_id": {
+                "id": 458,
+                "group_id": 2
+            },
+            "enemies": [
+                {
+                    "comment": "Black Knight Phantom",
+                    "enemy_id": "0x080500",
+                    "level": 80,
+                    "exp": 0,
+                    "start_think_tbl_no": 1,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "comment": "Black Knight Phantom",
+                    "enemy_id": "0x080500",
+                    "level": 80,
+                    "exp": 0,
+                    "start_think_tbl_no": 1,
+                    "enemy_target_types_id": 1
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "blocks": [
+                {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 458
+                    }
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Start",
+                    "groups": [0]
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [],
+                    "stage_id": {
+                        "id": 458
+                    },
+                    "event_id": 5
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 458
+                    }
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "EmHpLess", "Param1": 889, "Param2": 1, "Param3": 0, "Param4": 41}
+                    ]
+                },
+                {
+                    "type": "KillGroup",
+                    "groups": [1]
+                },
+                {
+                    "type": "ExtendTime",
+                    "amount": 120
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "EmHpLess", "Param1": 889, "Param2": 1, "Param3": 0, "Param4": 36}
+                    ]
+                },
+                {
+                    "type": "KillGroup",
+                    "groups": [2]
+                },
+                {
+                    "type": "ExtendTime",
+                    "amount": 120
+                }
+            ]
+        }
+    ]
+}

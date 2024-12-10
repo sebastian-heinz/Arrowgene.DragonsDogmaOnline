@@ -1,5 +1,4 @@
 using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -31,12 +30,22 @@ namespace Arrowgene.Ddon.GameServer.Quests
             quest.EnemyGroups = questAsset.EnemyGroups;
             quest.ResetPlayerAfterQuest = questAsset.ResetPlayerAfterQuest;
             quest.OrderConditions = questAsset.OrderConditions;
+            quest.StageId = questAsset.StageId;
+            quest.MissionParams = questAsset.MissionParams;
+            quest.ServerActions = questAsset.ServerActions;
+            quest.QuestOrderBackgroundImage = questAsset.QuestOrderBackgroundImage;
+            quest.LightQuestDetail = questAsset.LightQuestDetail;
+            quest.Enabled = questAsset.Enabled;
+            quest.OverrideEnemySpawn = questAsset.OverrideEnemySpawn;
 
-            quest.ExpRewards.Add(new CDataQuestExp()
+            foreach (var pointReward in questAsset.PointRewards)
             {
-                Type = questAsset.ExpType,
-                Reward = questAsset.ExpReward
-            });
+                quest.ExpRewards.Add(new CDataQuestExp()
+                {
+                    Type = pointReward.ExpType,
+                    Reward = pointReward.ExpReward
+                });
+            }
 
             foreach (var walletReward in questAsset.RewardCurrency)
             {
@@ -61,6 +70,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 }
             }
 
+            foreach (var (_, enemyGroup) in questAsset.EnemyGroups)
+            {
+                quest.UniqueEnemyGroups.Add(enemyGroup.StageId);
+            }
+
             foreach (var process in quest.Processes)
             {
                 foreach (var block in process.Blocks)
@@ -78,6 +92,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             }
                             break;
                         case QuestBlockType.DeliverItems:
+                        case QuestBlockType.NewDeliverItems:
+                        case QuestBlockType.DeliverItemsLight:
                             foreach (var request in block.DeliveryRequests)
                             {
                                 quest.DeliveryItems.Add(new QuestDeliveryItem()
@@ -85,6 +101,25 @@ namespace Arrowgene.Ddon.GameServer.Quests
                                     ItemId = request.ItemId,
                                     Amount = request.Amount,
                                 });
+                            }
+                            break;
+                        case QuestBlockType.KillTargetEnemies:
+                            if (block.TargetEnemy.EnemyId > 0)
+                            {
+                                quest.EnemyHunts.Add(new QuestEnemyHunt()
+                                {
+                                    ProcessNo = process.ProcessNo,
+                                    SequenceNo = 0,
+                                    BlockNo = block.BlockNo,
+                                    EnemyId = block.TargetEnemy.EnemyId,
+                                    MinimumLevel = block.TargetEnemy.Level,
+                                    Amount = block.TargetEnemy.Amount,
+                                });
+
+                                if (quest.QuestType == QuestType.Light)
+                                {
+                                    quest.SaveWorkAsStep = true;
+                                }
                             }
                             break;
                     }
@@ -96,7 +131,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return quest;
         }
 
-        public GenericQuest(QuestId questId, QuestId questScheduleId, QuestType questType, bool discoverable) : base(questId, questScheduleId, questType, discoverable)
+        public GenericQuest(QuestId questId, uint questScheduleId, QuestType questType, bool discoverable) : base(questId, questScheduleId, questType, discoverable)
         {
             QuestLayoutFlagSetInfo = new List<QuestLayoutFlagSetInfo>();
         }
@@ -119,7 +154,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
             else
             {
-                var proccessState = client.Party.QuestState.GetProcessState(QuestId, 0);
+                var questStateManager = QuestManager.GetQuestStateManager(client, this);
+
+                var proccessState = questStateManager.GetProcessState(QuestScheduleId, 0);
                 // We need to signal the current block
                 client.Party.SendToAll(new S2CQuestQuestProgressWorkSaveNtc()
                 {
@@ -139,13 +176,15 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         public override List<CDataQuestProcessState> StateMachineExecute(DdonGameServer server, GameClient client, QuestProcessState processState, out QuestProgressState questProgressState)
         {
+            var questStateManager = QuestManager.GetQuestStateManager(client, this);
+
             if (processState.ProcessNo >= Processes.Count)
             {
                 questProgressState = QuestProgressState.Unknown;
                 return new List<CDataQuestProcessState>();
             }
 
-            var process = Processes[processState.ProcessNo];
+            var process = Processes[processState.ProcessNo];           
             if ((processState.BlockNo) >= process.Blocks.Count)
             {
                 questProgressState = QuestProgressState.Unknown;
@@ -158,10 +197,10 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 questProgressState = QuestProgressState.Complete;
             }
             else if (questBlock.IsCheckpoint)
-            {
+            {               
                 questProgressState = QuestProgressState.Checkpoint;
             }
-            else if (questBlock.AnnounceType == QuestAnnounceType.Accept)
+            else if (questBlock.AnnounceType == QuestAnnounceType.Accept || questBlock.AnnounceType == QuestAnnounceType.Start)
             {
                 questProgressState = QuestProgressState.Accepted;
             }
@@ -175,7 +214,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 foreach (var enemyGroupId in questBlock.EnemyGroupIds)
                 {
                     var enemyGroup = EnemyGroups[enemyGroupId];
-                    client.Party.QuestState.SetInstanceEnemies(this, enemyGroup.StageId, (ushort)enemyGroup.SubGroupId, enemyGroup.CreateNewInstance());
+                    questStateManager.SetInstanceEnemies(this, enemyGroup.StageId, (ushort)enemyGroup.SubGroupId, enemyGroup.CreateNewInstance());
                 }
             }
             else
@@ -183,8 +222,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 foreach (var enemyGroupId in questBlock.EnemyGroupIds)
                 {
                     var enemies = EnemyGroups[enemyGroupId];
-                    client.Party.QuestState.SetInstanceEnemies(this, enemies.StageId, (ushort)enemies.SubGroupId, new List<InstancedEnemy>());
+                    questStateManager.SetInstanceEnemies(this, enemies.StageId, (ushort)enemies.SubGroupId, new List<InstancedEnemy>());
                 }
+            }
+
+            if (questBlock.BlockType == QuestBlockType.ExtendTime && BoardManager.BoardIdIsExm(client.Party.ContentId))
+            {
+                var newEndTime = server.PartyQuestContentManager.ExtendTimer(client.Party.Id, questBlock.TimeAmount);
+                client.Party.SendToAll(new S2CQuestPlayAddTimerNtc() { PlayEndDateTime = newEndTime });
             }
 
             foreach (var item in questBlock.HandPlayerItems)
@@ -200,11 +245,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
             foreach (var item in questBlock.ConsumePlayerItems)
             {
                 var result = server.ItemManager.ConsumeItemByIdFromItemBag(server, client.Character, item.ItemId, item.Amount);
-                client.Send(new S2CItemUpdateCharacterItemNtc()
+                if (result != null)
                 {
-                    UpdateType = 0,
-                    UpdateItemList = new List<CDataItemUpdateResult>() { result }
-                });
+                    client.Send(new S2CItemUpdateCharacterItemNtc()
+                    {
+                        UpdateType = 0,
+                        UpdateItemList = new List<CDataItemUpdateResult>() { result }
+                    });
+                }
             }
 
             bool ShouldResetGroup = false;
@@ -217,6 +265,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
             if (questBlock.ResetGroup || ShouldResetGroup)
             {
                 ResetEnemiesForBlock(client, questBlock);
+            }
+
+            if (questBlock.BlockType == QuestBlockType.ReturnCheckpoint && questBlock.ProcessNo == questBlock.CheckpointDetails.ProcessNo)
+            {
+                questBlock = process.Blocks[questBlock.CheckpointDetails.BlockNo];
             }
 
             return new List<CDataQuestProcessState>()
@@ -236,6 +289,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             List<CDataQuestCommand> resultCommands = new List<CDataQuestCommand>();
             List<CDataQuestCommand> checkCommands = new List<CDataQuestCommand>();
+            List<CDataQuestProgressWork> workCommands = new List<CDataQuestProgressWork>();
 
             ParseQuestFlags(questBlock.QuestFlags, resultCommands, checkCommands);
 
@@ -265,7 +319,35 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     case QuestAnnounceType.Update:
                         resultCommands.Add(QuestManager.ResultCommand.UpdateAnnounce());
                         break;
+                    case QuestAnnounceType.Start:
+                        // resultCommands.Add(QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Start));
+                        resultCommands.Add(QuestManager.ResultCommand.StartMissionAnnounce());
+                        resultCommands.Add(QuestManager.ResultCommand.Unknown(127));
+                        resultCommands.Add(QuestManager.ResultCommand.StartContentsTimer());
+                        break;
+                    default:
+                        resultCommands.Add(QuestManager.ResultCommand.SetAnnounce(questBlock.AnnounceType));
+                        break;
                 }
+            }
+
+            if (questBlock.Announcements.GeneralAnnounceId != 0)
+            {
+                resultCommands.Add(QuestManager.ResultCommand.CallGeneralAnnounce(0, questBlock.Announcements.GeneralAnnounceId));
+            }
+
+            if (questBlock.Announcements.StageStart != 0)
+            {
+                resultCommands.Add(QuestManager.ResultCommand.StageAnnounce(0, questBlock.Announcements.StageStart));
+            }
+            else if (questBlock.Announcements.StageClear != 0)
+            {
+                resultCommands.Add(QuestManager.ResultCommand.StageAnnounce(1, questBlock.Announcements.StageClear));
+            }
+
+            if (questBlock.Announcements.EndContentsPurpose != 0)
+            {
+                resultCommands.Add(QuestManager.ResultCommand.AddEndContentsPurpose(questBlock.Announcements.EndContentsPurpose, 1));
             }
 
             foreach (var item in questBlock.HandPlayerItems)
@@ -283,11 +365,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     break;
                 case QuestBlockType.NewNpcTalkAndOrder:
                     {
+                        var questId = (questBlock.NpcOrderDetails[0].QuestId == QuestId.None) ? quest.QuestId : questBlock.NpcOrderDetails[0].QuestId;
                         checkCommands.Add(QuestManager.CheckCommand.QuestNpcTalkAndOrderUi(
                             StageManager.ConvertIdToStageNo(questBlock.NpcOrderDetails[0].StageId),
                             (int)questBlock.NpcOrderDetails[0].StageId.GroupId,
                             questBlock.NpcOrderDetails[0].StageId.LayerNo,
-                            (int)quest.QuestId));
+                            (int) questId));
                         resultCommands.Add(QuestManager.ResultCommand.QstTalkChg(questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
                     }
                     break;
@@ -295,6 +378,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     {
                         checkCommands.Add(QuestManager.CheckCommand.Prt(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.PartyGatherPoint.x, questBlock.PartyGatherPoint.y, questBlock.PartyGatherPoint.z));
                         resultCommands.Add(QuestManager.ResultCommand.Prt(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.PartyGatherPoint.x, questBlock.PartyGatherPoint.y, questBlock.PartyGatherPoint.z));
+                    }
+                    break;
+                case QuestBlockType.IsGatherPartyInStage:
+                    {
+                        checkCommands.Add(QuestManager.CheckCommand.IsGatherPartyInStage(StageManager.ConvertIdToStageNo(questBlock.StageId)));
                     }
                     break;
                 case QuestBlockType.DiscoverEnemy:
@@ -313,6 +401,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 case QuestBlockType.End:
                     {
                         resultCommands.Add(QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Clear));
+                        resultCommands.Add(QuestManager.ResultCommand.ResetDiePlayerReturnPos(0, 0));
                         resultCommands.Add(QuestManager.ResultCommand.EndEndQuest());
                     }
                     break;
@@ -425,9 +514,24 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         foreach (var item in questBlock.DeliveryRequests)
                         {
                             checkCommands.Add(QuestManager.CheckCommand.DeliverItem((int)item.ItemId, (int)item.Amount, questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
+                            workCommands.Add(new CDataQuestProgressWork()
+                            {
+                                CommandNo = (uint)QuestNotifyCommand.FulfillDeliverItem,
+                                Work01 = 0,
+                                Work02 = 1,
+                                Work03 = 2,
+                                Work04 = 3,
+                            });
                         }
                         resultCommands.Add(QuestManager.ResultCommand.SetDeliverInfo(StageManager.ConvertIdToStageNo(questBlock.StageId), questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
                     }
+                    break;
+                case QuestBlockType.NewDeliverItems:
+                    foreach (var item in questBlock.DeliveryRequests)
+                    {
+                        checkCommands.Add(QuestManager.CheckCommand.DeliverItem((int)item.ItemId, (int)item.Amount, questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
+                    }
+                    resultCommands.Add(QuestManager.ResultCommand.SetDeliverInfoQuest(StageManager.ConvertIdToStageNo(questBlock.StageId), (int)questBlock.StageId.GroupId, questBlock.StageId.LayerNo, questBlock.NpcOrderDetails[0].MsgId));
                     break;
                 case QuestBlockType.TalkToNpc:
                     {
@@ -441,9 +545,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 case QuestBlockType.NewTalkToNpc:
                     {
                         var orderDetails = questBlock.NpcOrderDetails[0];
+                        var questId = (orderDetails.QuestId == QuestId.None) ? quest.QuestId : orderDetails.QuestId;
+
                         var questCommand = questBlock.ShowMarker ?
-                            QuestManager.CheckCommand.NewTalkNpc(StageManager.ConvertIdToStageNo(orderDetails.StageId), (int)orderDetails.StageId.GroupId, orderDetails.StageId.LayerNo, (int)quest.QuestId) :
-                            QuestManager.CheckCommand.NewTalkNpcWithoutMarker(StageManager.ConvertIdToStageNo(orderDetails.StageId), (int)orderDetails.StageId.GroupId, orderDetails.StageId.LayerNo, (int)quest.QuestId);
+                            QuestManager.CheckCommand.NewTalkNpc(StageManager.ConvertIdToStageNo(orderDetails.StageId), (int)orderDetails.StageId.GroupId, orderDetails.StageId.LayerNo, (int)questId) :
+                            QuestManager.CheckCommand.NewTalkNpcWithoutMarker(StageManager.ConvertIdToStageNo(orderDetails.StageId), (int)orderDetails.StageId.GroupId, orderDetails.StageId.LayerNo, (int)questId);
                         checkCommands.Add(questCommand);
                         resultCommands.Add(QuestManager.ResultCommand.QstTalkChg(orderDetails.NpcId, orderDetails.MsgId));
                     }
@@ -461,6 +567,10 @@ namespace Arrowgene.Ddon.GameServer.Quests
                                 break;
                             case QuestType.WorldManage:
                                 checkCommands.Add(QuestManager.CheckCommand.IsOrderWorldQuest((int)questBlock.QuestOrderDetails.QuestId));
+                                break;
+                            case QuestType.WildHunt:
+                                // Hack for progressing quest after ordering it
+                                checkCommands.Add(QuestManager.CheckCommand.EmDieLight(0, 0, 0));
                                 break;
                         }
                     }
@@ -520,12 +630,36 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     {
                         // Handles kill x amount of monster type quests
                         checkCommands.Add(QuestManager.CheckCommand.EmDieLight((int)questBlock.TargetEnemy.EnemyId, (int)questBlock.TargetEnemy.Level, (int)questBlock.TargetEnemy.Amount));
+                        workCommands.Add(
+                            new CDataQuestProgressWork()
+                            {
+                                CommandNo = (uint)QuestNotifyCommand.KilledEnemyLight,
+                                Work01 = (int)questBlock.TargetEnemy.EnemyId,
+                                Work02 = (int)questBlock.TargetEnemy.Level,
+                                Work03 = 0,
+                                Work04 = 0,
+                            });
                     }
+                    break;
+                case QuestBlockType.DeliverItemsLight:
+                    {
+                        foreach (var item in questBlock.DeliveryRequests)
+                        {
+                            checkCommands.Add(QuestManager.CheckCommand.DeliverItem((int)item.ItemId, (int)item.Amount, 0, 0));
+                        }
+                    }
+                    break;
+                case QuestBlockType.ReturnCheckpoint:
+                    /* This is a pseudo block handeled at the state machine level */
+                    checkCommands.Add(QuestManager.CheckCommand.StageNoWithoutMarker(StageManager.ConvertIdToStageNo(questBlock.StageId)));
                     break;
                 case QuestBlockType.Raw:
                     /* handled generically for all blocks */
                     break;
                 case QuestBlockType.DestroyGroup:
+                    /* This is a pseudo block handeled at the state machine level */
+                    break;
+                case QuestBlockType.ExtendTime:
                     /* This is a pseudo block handeled at the state machine level */
                     break;
                 case QuestBlockType.DummyBlock:
@@ -543,6 +677,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             resultCommands.AddRange(questBlock.ResultCommands);
 
             result.ResultCommandList = resultCommands;
+            result.WorkList = workCommands;
 
             List<List<CDataQuestCommand>> complexCheckCommands = new List<List<CDataQuestCommand>>();
             if (checkCommands.Count > 0)

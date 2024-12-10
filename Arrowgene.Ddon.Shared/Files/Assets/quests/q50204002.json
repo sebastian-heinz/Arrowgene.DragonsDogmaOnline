@@ -1,0 +1,86 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "ExtremeMission",
+    "comment": "Onset of Darkness (EM8)",
+    "quest_id": 50204002,
+    "base_level": 80,
+    "minimum_item_rank": 67,
+    "discoverable": false,
+    "mission_params": {
+        "group": 2,
+        "minimum_members": 1,
+        "playtime": 900,
+        "solo_only": false,
+        "max_pawns": 3,
+        "phase_groups": []
+    },
+    "order_conditions": [
+        {"type": "ClearExtremeMission", "Param1": 50203000}
+    ],
+    "rewards": [
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 15997,
+                    "num": 3
+                },
+                {
+                    "item_id": 7795,
+                    "num": 1000
+                }
+            ]
+        },
+        {
+            "type": "jp",
+            "amount": 2000
+        },
+        {
+            "type": "exp",
+            "amount": 80000
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "comment": "Boss",
+            "stage_id": {
+                "id": 458,
+                "group_id": 1
+            },
+            "enemies": [
+                {
+                    "comment": "Black Knight",
+                    "enemy_id": "0x080501",
+                    "level": 80,
+                    "exp": 0,
+                    "is_boss": true
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "blocks": [
+                {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 458
+                    }
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Start",
+                    "groups": [0]
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [],
+                    "stage_id": {
+                        "id": 458
+                    },
+                    "event_id": 5
+                }
+            ]
+        }
+    ]
+}

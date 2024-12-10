@@ -1,6 +1,9 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -27,6 +30,34 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             party.Leave(client);
             Logger.Info(client, $"Left PartyId:{party.Id}");
+
+            if (party.ContentId != 0)
+            {
+                var data = Server.BoardManager.GetGroupDataForCharacter(client.Character);
+                if (!data.IsInRecreate)
+                {
+                    Server.BoardManager.RemoveCharacterFromGroup(client.Character);
+                    Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Online);
+
+                    if (BoardManager.BoardIdIsExm(party.ContentId))
+                    {
+                        Server.PartyQuestContentManager.RemovePartyMember(party.Id, client.Character);
+                    }
+                }
+                else
+                {
+                    Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.EntryBoard);
+                }
+            }
+            else
+            {
+                Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Online);
+            }
+
+            if (party.MemberCount() == 1 && party.Leader != null && !BoardManager.BoardIdIsExm(party.ContentId))
+            {
+                Server.CharacterManager.UpdateOnlineStatus(party.Leader.Client, party.Leader.Client.Character, OnlineStatus.Online);
+            }
 
             S2CPartyPartyLeaveNtc partyLeaveNtc = new S2CPartyPartyLeaveNtc();
             partyLeaveNtc.CharacterId = client.Character.CharacterId;

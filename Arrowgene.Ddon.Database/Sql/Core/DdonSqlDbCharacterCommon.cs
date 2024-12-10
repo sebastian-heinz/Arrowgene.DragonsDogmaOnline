@@ -137,7 +137,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                     var item = new Item();
                                     item.UId = GetString(reader2, "item_uid");
                                     item.ItemId = GetUInt32(reader2, "item_id");
-                                    item.Unk3 = GetByte(reader2, "unk3");
+                                    item.SafetySetting = GetByte(reader2, "safety");
                                     item.Color = GetByte(reader2, "color");
                                     item.PlusValue = GetByte(reader2, "plus_value");
                                     item.EquipPoints = GetUInt32(reader2, "equip_points");
@@ -180,7 +180,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                     var item = new Item();
                                     item.UId = GetString(reader2, "item_uid");
                                     item.ItemId = GetUInt32(reader2, "item_id");
-                                    item.Unk3 = GetByte(reader2, "unk3");
+                                    item.SafetySetting = GetByte(reader2, "safety");
                                     item.Color = GetByte(reader2, "color");
                                     item.PlusValue = GetByte(reader2, "plus_value");
                                     item.EquipPoints = GetUInt32(reader2, "equip_points");
@@ -259,7 +259,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         {
             foreach(CDataCharacterJobData characterJobData in common.CharacterJobDataList)
             {
-                ReplaceCharacterJobData(conn, common.CommonId, characterJobData);
+                ReplaceCharacterJobData(common.CommonId, characterJobData, conn);
             }
 
             foreach(CDataNormalSkillParam normalSkillParam in common.LearnedNormalSkills)

@@ -1,0 +1,100 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Seeking Alchemical Extract",
+    "quest_id": 20995000,
+    "base_level": 60,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "MergodaRuins",
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 6600
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 4620
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 1180
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 9452,
+                    "num": 3
+                },
+                {
+                    "item_id": 9453,
+                    "num": 1
+                },
+                {
+                    "item_id": 7802,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 74,
+                "group_id": 8
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015711",
+                    "level": 60,
+                    "exp": 45000,
+                    "named_enemy_params_id": 634,
+                    "is_boss": true
+                },
+                {
+                    "enemy_id": "0x015711",
+                    "level": 60,
+                    "exp": 45000,
+                    "named_enemy_params_id": 633,
+                    "is_boss": true
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 237,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "Actaeon",
+            "message_id": 11372
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [0]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 237,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Actaeon",
+            "message_id": 11842
+        }
+    ]
+}

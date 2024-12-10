@@ -38,9 +38,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataContextSetBase baseContext = packet.Structure.Base;
             Tuple<CDataContextSetBase,CDataContextSetAdditional> context = ContextManager.GetContext(client.Party, baseContext.UniqueId);
 
-            int originalBaseIndex = baseContext.MasterIndex;
-            int originalAdditionalContext = (context != null) ? context.Item2.MasterIndex : -99;
-
             int clientIndex = Math.Max(client.Party.ClientIndex(client), 0);
             baseContext.MasterIndex = clientIndex; //Likely hacky.
 
@@ -64,7 +61,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 client.Party.SendToAll(response);
             }
 
-            Logger.Debug($"ContextGetSetContextHandler: ContextId: {baseContext.ContextId}, UniqueId: 0x{baseContext.UniqueId:x16}, Context: {originalBaseIndex}/{originalAdditionalContext}/{clientIndex}");
+            Logger.Debug($"ContextGetSetContextHandler: ContextId: {baseContext.ContextId}, UniqueId: 0x{baseContext.UniqueId:x16}");
 
             ContextManager.AssignMaster(client, baseContext.UniqueId, clientIndex);
         }

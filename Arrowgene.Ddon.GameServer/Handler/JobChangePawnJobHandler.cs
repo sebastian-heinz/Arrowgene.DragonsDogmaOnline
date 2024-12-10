@@ -1,6 +1,8 @@
 using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Instance;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
@@ -8,34 +10,27 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class JobChangePawnJobHandler : GameStructurePacketHandler<C2SJobChangePawnJobReq>
+    public class JobChangePawnJobHandler : GameRequestPacketQueueHandler<C2SJobChangePawnJobReq, S2CJobChangePawnJobRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(JobChangePawnJobHandler));
         
-        private readonly JobManager jobManager;
 
         public JobChangePawnJobHandler(DdonGameServer server) : base(server)
         {
-            jobManager = server.JobManager;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SJobChangePawnJobReq> packet)
+        public override PacketQueue Handle(GameClient client, C2SJobChangePawnJobReq request)
         {
-            (S2CJobChangePawnJobRes jobRes, S2CItemUpdateCharacterItemNtc itemNtc, S2CJobChangePawnJobNtc jobNtc) jobResult = (null, null, null);
+            PacketQueue queue = new();
+            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).SingleOrDefault()
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID);
 
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
             Server.Database.ExecuteInTransaction(connection =>
             {
-                jobResult = ((S2CJobChangePawnJobRes, S2CItemUpdateCharacterItemNtc, S2CJobChangePawnJobNtc))
-                jobManager.SetJob(client, pawn, packet.Structure.JobId, connection);
+                queue.AddRange(Server.JobManager.SetJob(client, pawn, request.JobId, connection));
             });
 
-            foreach (GameClient otherClient in Server.ClientLookup.GetAll())
-            {
-                otherClient.Send(jobResult.jobNtc);
-            }
-            client.Send(jobResult.itemNtc);
-            client.Send(jobResult.jobRes);
+            return queue;
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Arrowgene.Ddon.Shared.Model;
+namespace Arrowgene.Ddon.Shared.Model;
 
 public enum ErrorCode : uint
 {
@@ -733,4 +733,6 @@ public enum ErrorCode : uint
     ERROR_CODE_CLAN_SHOP_INVALID_LINEUP_ID = 0x0EE4A,
     ERROR_CODE_CLAN_SHOP_INTERNAL_ERROR = 0x0EE4B,
     ERROR_CODE_CLAN_SHOP_NOT_PERMISSION = 0x0EE4C,
+
+    ERROR_CODE_ITEM_SAFETY_SETTING = 14032, //TODO: Figure out string for this?
 }

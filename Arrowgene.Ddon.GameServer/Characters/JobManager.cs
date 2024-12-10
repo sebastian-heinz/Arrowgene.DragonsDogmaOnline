@@ -2,8 +2,8 @@
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -30,10 +30,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
             _Server = server;
         }
 
-        public (IPacketStructure jobRes, IPacketStructure itemNtc, IPacketStructure jobNtc) SetJob(GameClient client, CharacterCommon common, JobId jobId, DbConnection? connectionIn = null)
+        public PacketQueue SetJob(GameClient client, CharacterCommon common, JobId jobId, DbConnection? connectionIn = null)
         {
             // TODO: Reject job change if there's no primary and secondary weapon for the new job in storage
             // (or give a lvl 1 weapon for free?)
+
+            PacketQueue queue = new();
+
+            if (!HasEmptySlotsForTemplateSwap(client, common, common.Job, jobId))
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_JOBCHANGE_ITEM_CAPACITY_OVER);
+            }
 
             JobId oldJobId = common.Job;
             common.Job = jobId;
@@ -41,7 +48,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, oldJobId, jobId, EquipType.Performance, connectionIn));
             updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, oldJobId, jobId, EquipType.Visual, connectionIn));
-            client.Send(updateCharacterItemNtc);
 
             CDataCharacterJobData? activeCharacterJobData = common.ActiveCharacterJobData;
 
@@ -54,7 +60,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 activeCharacterJobData.Lv = 1;
                 // TODO: All the other stats
                 common.CharacterJobDataList.Add(activeCharacterJobData);
-                _Server.Database.ReplaceCharacterJobData(common.CommonId, activeCharacterJobData);
+                _Server.Database.ReplaceCharacterJobData(common.CommonId, activeCharacterJobData, connectionIn);
             }
 
             // TODO: Figure out if CDataEquipItemInfo should be the equipment templates or just the currently equipped items
@@ -91,6 +97,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 changeJobNotice.LearnNormalSkillParamList = normalSkills;
                 changeJobNotice.EquipJobItemList = jobItems;
                 // TODO: Unk0
+                
 
                 updateCharacterItemNtc.UpdateType = ItemNoticeType.ChangeJob;
 
@@ -107,8 +114,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     .FirstOrDefault(new CDataPlayPointData());
                 changeJobResponse.Unk0.Unk0 = (byte)jobId;
                 changeJobResponse.Unk0.Unk1 = character.Storage.GetAllStoragesAsCDataCharacterItemSlotInfoList();
+                
+                client.Enqueue(changeJobResponse, queue);
+                client.Enqueue(updateCharacterItemNtc, queue);
+                foreach (GameClient otherClient in _Server.ClientLookup.GetAll())
+                {
+                    otherClient.Enqueue(changeJobNotice, queue);
+                }
 
-                return (changeJobResponse, updateCharacterItemNtc, changeJobNotice);
+                return queue;
             }
             else if (common is Pawn)
             {
@@ -140,7 +154,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 changeJobResponse.TrainingStatus = pawn.TrainingStatus.GetValueOrDefault(pawn.Job, new byte[64]);
                 changeJobResponse.SpSkillList = pawn.SpSkills.GetValueOrDefault(pawn.Job, new List<CDataSpSkill>());
 
-                return (changeJobResponse, updateCharacterItemNtc, changeJobNotice);
+                client.Enqueue(changeJobResponse, queue);
+                client.Enqueue(updateCharacterItemNtc, queue);
+                foreach (GameClient otherClient in _Server.ClientLookup.GetAll())
+                {
+                    otherClient.Enqueue(changeJobNotice, queue);
+                }
+
+                return queue;
             }
             else
             {
@@ -180,7 +201,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         }
                         else
                         {
-                            throw ex;
+                            throw;
                         }
                     }
                 }
@@ -211,7 +232,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                                     }
                                     else
                                     {
-                                        throw ex;
+                                        throw;
                                     }
                                 }
                                 break;
@@ -238,7 +259,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             }
                             else
                             {
-                                throw ex;
+                                throw;
                             }
                         }
                     }
@@ -264,7 +285,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             }
                             else
                             {
-                                throw ex;
+                                throw;
                             }
                         }
                     }
@@ -275,6 +296,36 @@ namespace Arrowgene.Ddon.GameServer.Characters
             _Server.Database.UpdateCharacterCommonBaseInfo(common, connectionIn);
 
             return itemUpdateResultList;
+        }
+
+        private static bool HasEmptySlotsForTemplateSwap(GameClient client, CharacterCommon common, JobId oldJobId, JobId newJobId)
+        {
+            var availableSlots = client.Character.Storage.GetStorage(StorageType.StorageBoxNormal).EmptySlots();
+
+            var neededSlots = common.Equipment.GetItems(EquipType.Performance)
+                .Concat(common.Equipment.GetItems(EquipType.Visual))
+                .Where(x => x != null)
+                .ToList()
+                .Count;
+
+            // If the item isn't moving, it doesn't need a space in the box.
+            foreach (var equipType in new List<EquipType>(){ EquipType.Performance, EquipType.Visual })
+            {
+                List<Item?> oldEquipment = common.Equipment.GetItems(equipType);
+                List<Item?> newEquipmentTemplate = common.EquipmentTemplate.GetEquipment(newJobId, equipType);
+
+                for (int i = 0; i < oldEquipment.Count; i++)
+                {
+                    if (oldEquipment[i] != null && newEquipmentTemplate[i] != null && oldEquipment[i] == newEquipmentTemplate[i])
+                    {
+                        neededSlots--;
+                    }
+                }
+            }
+            
+            // TODO: Account for one-to-one swaps, as well as jewelry shuffling order.
+
+            return neededSlots <= availableSlots;
         }
 
         public void UnlockSkill(IDatabase database, GameClient client, CharacterCommon character, JobId job, uint skillId, byte skillLv)
@@ -694,9 +745,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
             database.ReplaceEquippedAbilities(character.CommonId, character.Job, equippedAbilities);
         }
 
-        public bool UnlockSecretAbility(CharacterCommon Character, SecretAbility secretAbilityType)
+        public void UnlockSecretAbility(GameClient client, CharacterCommon character, SecretAbility secretAbilityType)
         {
-            return _Server.Database.InsertSecretAbilityUnlock(Character.CommonId, secretAbilityType);
+            // MSG_GROUP_TYPE_GET_SECRET_ABILITY = 0x30,
+            if (_Server.Database.InsertSecretAbilityUnlock(character.CommonId, secretAbilityType))
+            {
+                var newAbility = new Ability()
+                {
+                    Job = 0,
+                    AbilityId = (uint)secretAbilityType,
+                    AbilityLv = 1
+                };
+                character.LearnedAbilities.Add(newAbility);
+                _Server.Database.InsertLearnedAbility(character.CommonId, newAbility);
+            }
         }
 
         public static CDataPresetAbilityParam MakePresetAbilityParam(CharacterCommon character, List<Ability> abilities, byte presetNo, string presetName = "")

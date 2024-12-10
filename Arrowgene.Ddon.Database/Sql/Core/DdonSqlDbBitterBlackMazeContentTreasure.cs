@@ -84,16 +84,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
 
-        public List<BitterblackMazeTreasure> SelectBBMContentTreasure(uint characterId)
-        {
-            using TCon connection = OpenNewConnection();
-            return SelectBBMContentTreasure(connection, characterId);
-        }
-
-        public List<BitterblackMazeTreasure> SelectBBMContentTreasure(TCon connection, uint characterId)
+        public List<BitterblackMazeTreasure> SelectBBMContentTreasure(uint characterId, DbConnection? connectionIn = null)
         {
             List<BitterblackMazeTreasure> results = new List<BitterblackMazeTreasure>();
-            ExecuteInTransaction(connection =>
+            ExecuteQuerySafe(connectionIn, (connection) =>
             {
                 ExecuteReader(connection, SqlSelectBBMContentTreasure, command =>
                 {
@@ -109,7 +103,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     }
                 });
             });
-
             return results;
         }
     }

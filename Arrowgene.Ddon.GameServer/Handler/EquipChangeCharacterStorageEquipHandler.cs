@@ -3,12 +3,12 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class EquipChangeCharacterStorageEquipHandler : GameStructurePacketHandler<C2SEquipChangeCharacterStorageEquipReq>
+    public class EquipChangeCharacterStorageEquipHandler : GameRequestPacketQueueHandler<C2SEquipChangeCharacterStorageEquipReq, S2CEquipChangeCharacterStorageEquipRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(EquipChangeCharacterStorageEquipHandler));
 
@@ -19,35 +19,34 @@ namespace Arrowgene.Ddon.GameServer.Handler
             equipManager = server.EquipManager;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SEquipChangeCharacterStorageEquipReq> packet)
+        public override PacketQueue Handle(GameClient client, C2SEquipChangeCharacterStorageEquipReq request)
         {
-            (S2CItemUpdateCharacterItemNtc itemNtc, S2CEquipChangeCharacterEquipNtc equipNtc) equipResult = (null, null);
+            PacketQueue queue = new();
+
+            if (!Server.EquipManager.CanMeetStorageRequirements(Server, client, client.Character, request.ChangeCharacterEquipList, new List<StorageType>() { StorageType.StorageBoxNormal }))
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_STORAGE_CAPACITY_OVER);
+            }
 
             Server.Database.ExecuteInTransaction(connection =>
             {
-                equipResult = ((S2CItemUpdateCharacterItemNtc, S2CEquipChangeCharacterEquipNtc))
-                equipManager.HandleChangeEquipList(
+            queue.AddRange(equipManager.HandleChangeEquipList(
                     Server, 
                     client, 
                     client.Character, 
-                    packet.Structure.ChangeCharacterEquipList, 
+                    request.ChangeCharacterEquipList, 
                     ItemNoticeType.ChangeStorageEquip, 
                     ItemManager.BoxStorageTypes,
-                    connection);
+                    connection));
             });
 
-            client.Send(equipResult.itemNtc);
-
-            foreach (Client otherClient in Server.ClientLookup.GetAll())
+            client.Enqueue(new S2CEquipChangeCharacterStorageEquipRes()
             {
-                otherClient.Send(equipResult.equipNtc);
-            }
-
-            client.Send(new S2CEquipChangeCharacterStorageEquipRes()
-            {
-                CharacterEquipList = packet.Structure.ChangeCharacterEquipList
+                CharacterEquipList = request.ChangeCharacterEquipList
                 // TODO: Unk0
-            });
+            }, queue);
+
+            return queue;
         }
     }
 }

@@ -1,0 +1,310 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "ExtremeMission",
+    "comment": "Drawn to Ancient Power (EM2)",
+    "quest_id": 50102020,
+    "base_level": 60,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "mission_params": {
+        "group": 1,
+        "minimum_members": 1,
+        "playtime": 1500,
+        "solo_only": false,
+        "max_pawns": 3,
+        "phase_groups": []
+    },
+    "order_conditions": [
+        {"type": "ClearExtremeMission", "Param1": 50101020}
+    ],
+    "rewards": [
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 9457,
+                    "num": 3
+                },
+                {
+                    "item_id": 7795,
+                    "num": 200
+                }
+            ]
+        },
+        {
+            "type": "jp",
+            "amount": 1500
+        },
+        {
+            "type": "exp",
+            "amount": 25000
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "comment": "Phase 1",
+            "stage_id": {
+                "id": 286,
+                "group_id": 1
+            },
+            "placement_type": "Manual",
+            "enemies": [
+                {
+                    "comment": "Shadow Chimera",
+                    "enemy_id": "0x015203",
+                    "index": 1,
+                    "level": 60,
+                    "exp": 0,
+                    "is_boss": true
+                },
+                {
+                    "comment": "White Chimera",
+                    "enemy_id": "0x015202",
+                    "index": 0,
+                    "level": 60,
+                    "exp": 0,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Chimera",
+                    "enemy_id": "0x015200",
+                    "index": 2,
+                    "level": 60,
+                    "exp": 0,
+                    "is_boss": true
+                }
+            ]
+        },
+        {
+            "comment": "Phase 2",
+            "stage_id": {
+                "id": 286,
+                "group_id": 1
+            },
+            "placement_type": "Manual",
+            "enemies": [
+                {
+                    "comment": "Cyclops",
+                    "enemy_id": "0x015001",
+                    "index": 3,
+                    "level": 60,
+                    "exp": 0,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Cyclops",
+                    "enemy_id": "0x015001",
+                    "index": 4,
+                    "level": 60,
+                    "exp": 0,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Captain Orc (Lord of a Hundred Battles)",
+                    "enemy_id": "0x015820",
+                    "index": 5,
+                    "level": 60,
+                    "exp": 0,
+                    "named_enemy_params_id": 698,
+                    "is_boss": true
+                }
+            ]
+        },
+        {
+            "comment": "Phase 2 Adds",
+            "stage_id": {
+                "id": 286,
+                "group_id": 0
+            },
+            "placement_type": "Manual",
+            "enemies": [
+                {
+                    "comment": "Orc Tropper",
+                    "enemy_id": "0x015812",
+                    "index": 13,
+                    "level": 60,
+                    "exp": 0
+                },
+                {
+                    "comment": "Orc Tropper",
+                    "enemy_id": "0x015812",
+                    "index": 9,
+                    "level": 60,
+                    "exp": 0
+                },
+                {
+                    "comment": "Orc Tropper",
+                    "enemy_id": "0x015812",
+                    "index": 2,
+                    "level": 60,
+                    "exp": 0
+                },
+                {
+                    "comment": "Orc Tropper",
+                    "enemy_id": "0x015812",
+                    "index": 15,
+                    "level": 60,
+                    "exp": 0
+                }
+            ]
+        },
+        {
+            "comment": "Phase 3",
+            "stage_id": {
+                "id": 286,
+                "group_id": 0
+            },
+            "placement_type": "Manual",
+            "enemies": [
+                {
+                    "comment": "Rock Saurian",
+                    "enemy_id": "0x010450",
+                    "index": 3,
+                    "level": 60,
+                    "exp": 0
+                },
+                {
+                    "comment": "Rock Saurian",
+                    "enemy_id": "0x010450",
+                    "index": 11,
+                    "level": 60,
+                    "exp": 0
+                },
+                {
+                    "comment": "Geo Golem",
+                    "enemy_id": "0x015104",
+                    "index": 5,
+                    "level": 60,
+                    "exp": 0,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Rock Saurian",
+                    "enemy_id": "0x010450",
+                    "index": 18,
+                    "level": 60,
+                    "exp": 0
+                },
+                {
+                    "comment": "Rock Saurian",
+                    "enemy_id": "0x010450",
+                    "index": 15,
+                    "level": 60,
+                    "exp": 0
+                }
+            ]
+        },
+        {
+            "comment": "Phase 4",
+            "stage_id": {
+                "id": 286,
+                "group_id": 0
+            },
+            "placement_type": "Manual",
+            "enemies": [
+                {
+                    "comment": "Mist Drake",
+                    "enemy_id": "0x015710",
+                    "index": 0,
+                    "level": 60,
+                    "exp": 0,
+                    "named_enemy_params_id": 682,
+                    "is_boss": true
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "blocks": [
+                {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 286
+                    }
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "EventEnd", "Param1": 419, "Param2": 0}
+                    ]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Start",
+                    "stage_start": 1,
+                    "groups": [0]
+                },
+                {
+                    "type": "IsStageNo",
+                    "stage_clear": 1,
+                    "stage_id": {
+                        "id": 286
+                    }
+                },
+                {
+                    "type": "KillGroup",
+                    "stage_start": 2,
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 2, "comment": "Starts adds process"}
+                    ],
+                    "groups": [1]
+                },
+                {
+                    "type": "KillGroup",
+                    "reset_group": false,
+                    "groups": [2]
+                },
+                {
+                    "type": "IsStageNo",
+                    "stage_clear": 2,
+                    "stage_id": {
+                        "id": 286
+                    }
+                },
+                {
+                    "type": "KillGroup",
+                    "stage_start": 3,
+                    "groups": [3]
+                },
+                {
+                    "type": "IsStageNo",
+                    "stage_clear": 3,
+                    "stage_id": {
+                        "id": 286
+                    }
+                },
+                {
+                    "type": "KillGroup",
+                    "stage_start": 4,
+                    "groups": [4]
+                },
+                {
+                    "type": "IsStageNo",
+                    "stage_clear": 4,
+                    "stage_id": {
+                        "id": 286
+                    }
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [2]
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "EmHpLess", "Param1": 419, "Param2": 1, "Param3": 5, "Param4": 50}
+                    ]
+                },
+                {
+                    "type": "SpawnGroup",
+                    "groups": [2]
+                }
+            ]
+        }
+   ]
+}

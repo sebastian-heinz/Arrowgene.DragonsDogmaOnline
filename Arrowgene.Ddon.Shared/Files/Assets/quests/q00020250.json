@@ -1,0 +1,104 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "The New Generation",
+    "quest_id": 20250,
+    "next_quest": 0,
+    "base_level": 77,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "order_conditions": [
+        {"type": "MinimumLevel", "Param1": 77},
+        {"type": "SoloWithPawns"},
+        {"type": "MainQuestCompleted", "Param1": 20240}
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 50000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 64000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 5400
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 16201,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "npc_id": "Joseph",
+                    "message_id": 16007,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"}
+                    ]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 383
+                    },
+                    "event_id": 30,
+                    "jump_type": "Before",
+                    "jump_stage_id": {
+                        "id": 383
+                    },
+                    "start_pos_no": 6
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "event_id": 172,
+                    "jump_type": "Before",
+                    "jump_stage_id": {
+                        "id": 3
+                    },
+                    "start_pos_no": 1
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 371
+                    },
+                    "event_id": 45,
+                    "jump_type": "Before",
+                    "jump_stage_id": {
+                        "id": 371
+                    },
+                    "start_pos_no": 0
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "StageNo", "Param1": 200}
+                    ],
+                    "result_commands": [
+                        {"type": "StageJump", "Param1": 200, "Param2": 1}
+                    ]
+                }
+            ]
+        }
+    ]
+}

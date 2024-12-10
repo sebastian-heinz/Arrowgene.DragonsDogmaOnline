@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model.Quest;
@@ -12,7 +13,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
         public override AccountStateType AccountState => AccountStateType.User;
 
         public override string Key => "finishquest";
-        public override string HelpText => "usage: `/finishquest [questid]` - Finish quests.";
+        public override string HelpText => "usage: `/finishquest [questScheduleId]` - Finish quests.";
 
         private DdonGameServer _server;
 
@@ -29,11 +30,11 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                 return;
             }
 
-            QuestId? questId = null;
+            uint questScheduleId = 0;
             // Try by id
-            if (uint.TryParse(command[0], out uint parsedQuestId))
+            if (uint.TryParse(command[0], out uint parsedQuestScheduleId))
             {
-                questId = (QuestId)parsedQuestId;
+                questScheduleId = parsedQuestScheduleId;
             }
             else
             {
@@ -41,19 +42,17 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                 return;
             }
 
-            Quest quest = QuestManager.GetQuest((QuestId)questId);
-
+            Quest quest = QuestManager.GetQuestByScheduleId(parsedQuestScheduleId);
             if (quest is null)
             {
                 responses.Add(ChatResponse.CommandError(client, $"Invalid questId \"{command[0]}\". This quest does not exist."));
                 return;
             }
-
             //Super jank. Leaves lots of red icons over peoples heads, but doesn't immediately require relogs.
-            client.Party.QuestState.CompletePartyQuestProgress(_server, client.Party, quest.QuestId);
+
             S2CQuestCompleteNtc completeNtc = new S2CQuestCompleteNtc()
             {
-                QuestScheduleId = (uint)quest.QuestId,
+                QuestScheduleId = quest.QuestScheduleId,
                 RandomRewardNum = quest.RandomRewardNum(),
                 ChargeRewardNum = quest.RewardParams.ChargeRewardNum,
                 ProgressBonusNum = quest.RewardParams.ProgressBonusNum,
@@ -62,19 +61,29 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
                 IsHelpReward = quest.RewardParams.IsHelpReward,
                 IsPartyBonus = quest.RewardParams.IsPartyBonus,
             };
-            client.Party.SendToAll(completeNtc);
 
-            client.Party.QuestState.UpdatePriorityQuestList(_server, client.Party);
-
-            if (quest.ResetPlayerAfterQuest)
+            if (quest.IsPersonal)
             {
-                foreach (var memberClient in client.Party.Clients)
+                client.QuestState.CompleteQuest(quest.QuestScheduleId);
+                client.Send(completeNtc);
+            }
+            else
+            {
+                client.Party.QuestState.CompleteQuestProgress(quest.QuestScheduleId);
+                client.Party.QuestState.UpdatePriorityQuestList(client).Send();
+                client.Party.SendToAll(completeNtc);
+
+                if (quest.ResetPlayerAfterQuest)
                 {
-                    _server.CharacterManager.UpdateCharacterExtendedParamsNtc(memberClient, memberClient.Character);
+                    foreach (var memberClient in client.Party.Clients)
+                    {
+                        _server.CharacterManager.UpdateCharacterExtendedParamsNtc(memberClient, memberClient.Character);
+                    }
                 }
             }
+            
 
-            responses.Add(ChatResponse.ServerMessage(client, $"Finishing {questId.ToString()} ({questId})."));
+            responses.Add(ChatResponse.ServerMessage(client, $"Finishing {quest.QuestId.ToString()} ({quest.QuestId})."));
         }
     }
 }

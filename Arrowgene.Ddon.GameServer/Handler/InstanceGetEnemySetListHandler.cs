@@ -1,17 +1,16 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Crypto;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class InstanceGetEnemySetListHandler : StructurePacketHandler<GameClient, C2SInstanceGetEnemySetListReq>
+    public class InstanceGetEnemySetListHandler : GameRequestPacketHandler<C2SInstanceGetEnemySetListReq, S2CInstanceGetEnemySetListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceGetEnemySetListHandler));
 
@@ -19,20 +18,27 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SInstanceGetEnemySetListReq> request)
+        public override S2CInstanceGetEnemySetListRes Handle(GameClient client, C2SInstanceGetEnemySetListReq request)
         {
-            StageId stageId = StageId.FromStageLayoutId(request.Structure.LayoutId);
-            byte subGroupId = request.Structure.SubGroupId;
+            StageId stageId = StageId.FromStageLayoutId(request.LayoutId);
+            byte subGroupId = request.SubGroupId;
             client.Character.Stage = stageId;
 
-            Logger.Info($"GroupId={request.Structure.LayoutId.GroupId}, SubGroupId={request.Structure.SubGroupId}, LayerNo={request.Structure.LayoutId.LayerNo}");
+            Logger.Info($"GroupId={request.LayoutId.GroupId}, SubGroupId={request.SubGroupId}, LayerNo={request.LayoutId.LayerNo}");
 
             Quest quest = null;
             bool IsQuestControlled = false;
-            foreach (var questId in client.Party.QuestState.StageQuests(stageId))
+            foreach (var questScheduleId in QuestManager.CollectQuestScheduleIds(client, stageId))
             {
-                quest = QuestManager.GetQuest(questId);
-                if (client.Party.QuestState.HasEnemiesInCurrentStageGroup(quest, stageId, subGroupId))
+                quest = QuestManager.GetQuestByScheduleId(questScheduleId);
+
+                var questStateManager = QuestManager.GetQuestStateManager(client, quest);
+                if (quest.OverrideEnemySpawn && quest.HasEnemiesInInCurrentStage(stageId))
+                {
+                    IsQuestControlled = true;
+                    break;
+                }
+                else if (!quest.OverrideEnemySpawn && questStateManager.HasEnemiesInCurrentStageGroup(quest, stageId, subGroupId))
                 {
                     IsQuestControlled = true;
                     break;
@@ -46,27 +52,57 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 RandomSeed = CryptoRandom.Instance.GetRandomUInt32(),
             };
 
-            client.Party.InstanceEnemyManager.SetInstanceSubgroupId(stageId, subGroupId);
+            List<InstancedEnemy> instancedEnemyList;
+
+            bool notifyStrongEnemy = false;
             if (IsQuestControlled && quest != null)
             {
                 response.QuestId = (uint) quest.QuestId;
-                response.EnemyList = client.Party.QuestState.GetInstancedEnemies(quest, stageId, subGroupId).Select(enemy => new CDataLayoutEnemyData()
-                {
-                    PositionIndex = (byte)(enemy.Index),
-                    EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
-                }).ToList();
+
+                var questStateManager = QuestManager.GetQuestStateManager(client, quest);
+                instancedEnemyList = questStateManager.GetInstancedEnemies(quest, stageId, subGroupId);
+            }
+            else if (Server.EpitaphRoadManager.TrialHasEnemies(client.Party, stageId, subGroupId))
+            {
+                instancedEnemyList = Server.EpitaphRoadManager.GetInstancedEnemies(client.Party, stageId, subGroupId);
             }
             else
             {
-                response.EnemyList = client.Party.InstanceEnemyManager.GetAssets(stageId, subGroupId).Select((enemy, index) => new CDataLayoutEnemyData()
-                {
-                    PositionIndex = (byte)index,
-                    EnemyInfo = enemy.asCDataStageLayoutEnemyPresetEnemyInfoClient()
-                })
-                .ToList();
+                instancedEnemyList = client.Party.InstanceEnemyManager.GetAssets(stageId).Where(x => x.Subgroup == subGroupId).Select(x => new InstancedEnemy(x)).ToList();
             }
 
-            if (subGroupId > 0)
+            foreach (var enemy in instancedEnemyList)
+            {
+                var em = client.Party.InstanceEnemyManager.GetInstanceEnemy(stageId, enemy.Index);
+                if (em == null)
+                {
+                    em = enemy;
+                    // TODO: Add for HOBO dungeon
+                    if (StageManager.IsEpitaphRoadStageId(stageId))
+                    {
+                        enemy.BloodOrbs = Server.EpitaphRoadManager.CalculateBloodOrbBonus(client.Party, em);
+                    }
+                    client.Party.InstanceEnemyManager.SetInstanceEnemy(stageId, em.Index, em);
+                }
+
+                response.EnemyList.Add(new CDataLayoutEnemyData()
+                {
+                    PositionIndex = em.Index,
+                    EnemyInfo = em.asCDataStageLayoutEnemyPresetEnemyInfoClient()
+                });
+
+                if (em.NotifyStrongEnemy)
+                {
+                    notifyStrongEnemy = true;
+                }
+            }
+
+            if (notifyStrongEnemy)
+            {
+                // TODO: Send NTC which creates popup
+            }
+
+            if (subGroupId > 0 && response.EnemyList.Count > 0)
             {
                 S2CInstanceEnemySubGroupAppearNtc subgroupNtc = new S2CInstanceEnemySubGroupAppearNtc()
                 {
@@ -77,7 +113,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 client.Party.SendToAll(subgroupNtc);
             }
 
-            client.Send(response);
+            return response;
         }
     }
 }

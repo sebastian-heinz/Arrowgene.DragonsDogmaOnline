@@ -34,19 +34,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
             craftResetCraftpointRes.CraftSkillList = pawn.CraftData.PawnCraftSkillList;
             Server.Database.UpdatePawnBaseInfo(pawn);
 
-            CDataWalletPoint resetCraftSkillWalletPoint = client.Character.WalletPointList.Find(l => l.Type == WalletType.ResetCraftSkills);
-            resetCraftSkillWalletPoint.Value--;
+            var updateWalletPoint = Server.WalletManager.RemoveFromWallet(
+                client.Character,
+                WalletType.ResetCraftSkills,
+                1
+            ) ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CRAFT_SKILL_RESET_ZERO_POINT);
+
             S2CItemUpdateCharacterItemNtc itemUpdateNtc = new S2CItemUpdateCharacterItemNtc();
             itemUpdateNtc.UpdateType = ItemNoticeType.ResetCraftpoint;
-            itemUpdateNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint()
-            {
-                Type = WalletType.ResetCraftSkills,
-                Value = resetCraftSkillWalletPoint.Value,
-                AddPoint = -1,
-                ExtraBonusPoint = 0
-            });
-            Server.Database.UpdateWalletPoint(client.Character.CharacterId, resetCraftSkillWalletPoint);
-
+            itemUpdateNtc.UpdateWalletList.Add(updateWalletPoint);
             client.Send(itemUpdateNtc);
             client.Send(craftResetCraftpointRes);
         }

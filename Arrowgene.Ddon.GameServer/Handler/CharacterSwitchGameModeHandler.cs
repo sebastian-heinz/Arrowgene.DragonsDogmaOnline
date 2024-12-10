@@ -436,7 +436,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (tuple.Item3.ItemId != 0)
                 {
-                    bbmCharacter.Storage.GetStorage(tuple.Item1).AddItem(tuple.Item3, tuple.Item2);
+                    bbmCharacter.Storage.GetStorage(tuple.Item1).AddItem(new Item(tuple.Item3), tuple.Item2);
                 }
             }
 
@@ -470,23 +470,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Dictionary<JobId, List<LearnedNormalSkill>> learnedNormalSkillsMap = Server.AssetRepository.LearnedNormalSkillsAsset.LearnedNormalSkills;
             foreach (var (jobId, skills) in learnedNormalSkillsMap)
             {
-                foreach (var learnedSkill in skills)
+                for (int i = 0; i < skills.Count; i++)
                 {
-                    uint index = 1;
+                    var learnedSkill = skills[i];
                     foreach (var skillNo in learnedSkill.SkillNo)
                     {
                         CDataNormalSkillParam newSkill = new CDataNormalSkillParam()
                         {
                             Job = jobId,
-                            Index = index,
+                            Index = (uint)(i + 1),
                             SkillNo = skillNo,
                             PreSkillNo = 0
                         };
 
                         bbmCharacter.LearnedNormalSkills.Add(newSkill);
                         Server.Database.InsertIfNotExistsNormalSkillParam(bbmCharacter.CommonId, newSkill);
-
-                        index++;
                     }
                 }
             }

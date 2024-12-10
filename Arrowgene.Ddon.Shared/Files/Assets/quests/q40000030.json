@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40000030,
+  "base_level": 40,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Area Order: Fort Subjugation Mission",
+  "light_quest_details": {
+    "area_id": 8,
+    "board_type": 1,
+    "board_id": 10
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 7547
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 19506
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 2309
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "88",
+      "level": 40,
+      "amount": 1
+    }
+  ]
+}

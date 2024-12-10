@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40000242,
+  "base_level": 51,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "!untranslated!",
+  "light_quest_details": {
+    "area_id": 12,
+    "board_type": 1,
+    "board_id": 9
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 7688
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 18675
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1659
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "33",
+      "level": 51,
+      "amount": 3
+    }
+  ]
+}

@@ -80,14 +80,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             new CDataCharacterReleaseElement(ContentsRelease.ExtremeMission1),
             new CDataCharacterReleaseElement(ContentsRelease.ChangeVocations),
             new CDataCharacterReleaseElement(ContentsRelease.ExtremeMission2),
-            // new CDataCharacterReleaseElement(ContentsRelease.CreateandJoinClans),
+            new CDataCharacterReleaseElement(ContentsRelease.CreateandJoinClans),
             new CDataCharacterReleaseElement(ContentsRelease.ExtremeMission3),
             new CDataCharacterReleaseElement(ContentsRelease.MainMenu),
             new CDataCharacterReleaseElement(ContentsRelease.AppraisalExchangeofDragonArmor),
             new CDataCharacterReleaseElement(ContentsRelease.MyrmidonsPledge),
             new CDataCharacterReleaseElement(ContentsRelease.AdventureBroker), // This was called "PartyMenu" or "冒険仲介係"
             new CDataCharacterReleaseElement(ContentsRelease.MatchingProfile),
-            // new CDataCharacterReleaseElement(ContentsRelease.QuickParty),
+            new CDataCharacterReleaseElement(ContentsRelease.QuickParty), // Also unlocks board for EM
             new CDataCharacterReleaseElement(ContentsRelease.OrbEnemy),
             new CDataCharacterReleaseElement(ContentsRelease.WarSkillAugmentation),
             new CDataCharacterReleaseElement(ContentsRelease.FighterWarSkillAugmentation),

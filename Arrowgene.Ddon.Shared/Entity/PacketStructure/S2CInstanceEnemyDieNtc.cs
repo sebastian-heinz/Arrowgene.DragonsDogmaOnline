@@ -1,7 +1,6 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
-using System;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
@@ -10,7 +9,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public PacketId Id => PacketId.S2C_INSTANCE_ENEMY_DIE_NTC;
 
         public CDataStageLayoutId LayoutId { get; set; }
-        public UInt32 SetId { get; set; }
+        public uint SetId { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CInstanceEnemyDieNtc>
         {

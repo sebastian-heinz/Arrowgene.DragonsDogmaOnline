@@ -129,7 +129,7 @@ public class PartyManager
         return true;
     }
 
-    public PartyGroup NewParty()
+    public PartyGroup NewParty(ulong boardId = 0)
     {
         if (!_idPool.TryPop(out uint partyId))
         {
@@ -143,7 +143,7 @@ public class PartyManager
             }
         }
 
-        PartyGroup party = new PartyGroup(partyId, this);
+        PartyGroup party = new PartyGroup(partyId, this, boardId);
         if (!_parties.TryAdd(partyId, party))
         {
             Logger.Error("Could not create party, failed to add new party (!_parties.TryAdd(partyId, party))");

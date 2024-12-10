@@ -7,9 +7,16 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
+using YamlDotNet.Core.Tokens;
+using YamlDotNet.Core;
+using Arrowgene.Ddon.GameServer.Quests;
+using Arrowgene.Ddon.Server.Network;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -26,31 +33,31 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static readonly uint STACK_BOX_MAX = 999;
 
         public static readonly List<StorageType> AllItemStorages = Enum.GetValues(typeof(StorageType)).Cast<StorageType>().ToList();
-        public static readonly List<StorageType> ItemBagStorageTypes = new List<StorageType> { 
-            StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob, 
-            StorageType.KeyItems 
+        public static readonly List<StorageType> ItemBagStorageTypes = new List<StorageType> {
+            StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob,
+            StorageType.KeyItems
         };
-        public static readonly List<StorageType> BoxStorageTypes = new List<StorageType> { 
-            StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, 
-            StorageType.StorageChestDrawer1, StorageType.StorageChestDrawer2, StorageType.StorageChestDrawer3 
+        public static readonly List<StorageType> BoxStorageTypes = new List<StorageType> {
+            StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion,
+            StorageType.StorageChestDrawer1, StorageType.StorageChestDrawer2, StorageType.StorageChestDrawer3
         };
         public static readonly List<StorageType> BothStorageTypes = ItemBagStorageTypes.Concat(BoxStorageTypes).ToList();
-        public static readonly List<StorageType> EquipmentStorages = new List<StorageType> { 
-            StorageType.CharacterEquipment, StorageType.PawnEquipment, 
-            StorageType.ItemBagEquipment, 
-            StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion, 
-            StorageType.StorageChestDrawer1, StorageType.StorageChestDrawer2, StorageType.StorageChestDrawer3 
+        public static readonly List<StorageType> EquipmentStorages = new List<StorageType> {
+            StorageType.CharacterEquipment, StorageType.PawnEquipment,
+            StorageType.ItemBagEquipment,
+            StorageType.StorageBoxNormal, StorageType.StorageBoxExpansion,
+            StorageType.StorageChestDrawer1, StorageType.StorageChestDrawer2, StorageType.StorageChestDrawer3
         };
-        public static readonly List<StorageType> BbmEmbodyStorages = new List<StorageType> { StorageType.StorageBoxNormal, StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob};
+        public static readonly List<StorageType> BbmEmbodyStorages = new List<StorageType> { StorageType.StorageBoxNormal, StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob };
 
-        private static readonly Dictionary<uint, (WalletType Type, uint Quantity)> ItemIdWalletTypeAndQuantity = new Dictionary<uint, (WalletType Type, uint Amount)>() { 
+        private static readonly Dictionary<uint, (WalletType Type, uint Quantity)> ItemIdWalletTypeAndQuantity = new Dictionary<uint, (WalletType Type, uint Amount)>() {
             {7789, (WalletType.Gold, 1)},
             {7790, (WalletType.Gold, 10)},
             {7791, (WalletType.Gold, 100)},
             {7792, (WalletType.RiftPoints,1)},
             {7793, (WalletType.RiftPoints,10)},
             {7794, (WalletType.RiftPoints,100)},
-            {7795, (WalletType.BloodOrbs,1)}, // Doesn't show up 
+            {7795, (WalletType.BloodOrbs,1)}, // Doesn't show up
             {7796, (WalletType.BloodOrbs,10)}, // Doesn't show up
             {7797, (WalletType.BloodOrbs,100)}, // Doesn't show up
             {18742, (WalletType.HighOrbs,1)},
@@ -67,6 +74,69 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {11262,(WalletType.ResetCraftSkills,1)}
             // TODO: Find all items that add wallet points
         };
+
+        private static readonly Dictionary<uint, uint> AbilityItems = new Dictionary<uint, uint>()
+        {
+            {16100, 448}, // 習得の書【友癒】,Book of Acquisition (Companion Healing),
+            {16101, 449}, // 習得の書【重歩 軽】,Book of Acquisition (Heavy Steps: Light),
+            {16102, 450},// 習得の書【穿歩 軽】,Book of Acquisition (Deft Footing: Light),
+            {16103, 451}, // 習得の書【延泉 軽】,Book of Acquisition (Extended Springs: Light),
+            {16104, 452}, // 習得の書【探採 軽】,Book of Acquisition (Gathering: Light),
+            {16105, 453}, // 習得の書【薬効 軽】,Book of Acquisition (Efficacy: Light),
+            {16106, 454}, // 習得の書【効延 軽】,Book of Acquisition (Effect Extension: Light),
+            {16107, 455}, // 習得の書【巧掘 軽】,Book of Acquisition (Expert Excavator: Light),
+            {16108, 456}, // 習得の書【流断 軽】,Book of Acquisition (Flow: Light),
+            {16109, 457}, // 習得の書【宝眼 軽】,Book of Acquisition (Treasure Eye: Light),
+            {16110, 458}, // 習得の書【根性 軽】,Book of Acquisition (Willpower: Light),
+            {16111, 459}, // 習得の書【安着 軽】,Book of Acquisition (Safe Landing: Light),
+            {19199, 248}, // 習得の書【抗毒】,Book of Acquisition (Resist Poison),
+            {19200, 249}, // 習得の書【抗遅】,Book of Acquisition (Anti-slow),
+            {19201, 250}, // 習得の書【抗眠】,Book of Acquisition (Anti-sleep),
+            {19202, 251}, // 習得の書【抗絶】,Book of Acquisition (Anti-stun),
+            {19203, 252}, // 習得の書【抗水】,Book of Acquisition (Anti-drench),
+            {19204, 253}, // 習得の書【抗油】,Book of Acquisition (Anti-oil),
+            {19205, 254}, // 習得の書【抗封】,Book of Acquisition (Anti-seal),
+            {19206, 255}, // 習得の書【抗軟】,Book of Acquisition (Anti-subdue),
+            {19207, 256}, // 習得の書【抗石】,Book of Acquisition (Anti-petrify),
+            {19208, 257}, // 習得の書【抗金】,Book of Acquisition (Anti-goldify),
+            {19209, 258}, // 習得の書【親炎】,Book of Acquisition (Close to Fire),
+            {19210, 259}, // 習得の書【親氷】,Book of Acquisition (Close to Ice),
+            {19211, 260}, // 習得の書【親雷】,Book of Acquisition (Close to Thunder),
+            {19212, 261}, // 習得の書【親聖】,Book of Acquisition (Close to Holy),
+            {19213, 262}, // 習得の書【親闇】,Book of Acquisition (Close to Dark),
+            {19214, 263}, // 習得の書【制毒】,Book of Acquisition (Control Poison),
+            {19215, 264}, // 習得の書【制遅】,Book of Acquisition (Control Slow),
+            {19216, 265}, // 習得の書【制眠】,Book of Acquisition (Control Sleep),
+            {19217, 266}, // 習得の書【制絶】,Book of Acquisition (Control Stun),
+            {19218, 267}, // 習得の書【速乾】,Book of Acquisition (Quick Drying),
+            {19219, 268}, // 習得の書【速清】,Book of Acquisition (Quick Clean),
+            {19220, 269}, // 習得の書【縮封】,Book of Acquisition (Quick Seal),
+            {19221, 270}, // 習得の書【縮軟】,Book of Acquisition (Reduce Subdue),
+            {19222, 273}, // 習得の書【縮焼】,Book of Acquisition (Reduce Tar),
+            {19223, 274}, // 習得の書【縮凍】,Book of Acquisition (Reduce Freeze),
+            {19224, 275}, // 習得の書【縮霧】,Book of Acquisition (Reduce Blind),
+            {19225, 276}, // 習得の書【縮炎】,Book of Acquisition (Reduce Fire),
+            {19226, 277}, // 習得の書【縮氷】,Book of Acquisition (Reduce Ice),
+            {19227, 278}, // 習得の書【縮雷】,Book of Acquisition (Reduce Thunder),
+            {19228, 279}, // 習得の書【縮聖】,Book of Acquisition (Reduce Holy),
+            {19229, 280}, // 習得の書【縮闇】,Book of Acquisition (Reduce Dark),
+            {19230, 281}, // 習得の書【縮攻】,Book of Acquisition (Reduce Physical Attack Down),
+            {19231, 282}, // 習得の書【縮防】,Book of Acquisition (Reduce Defense Down),
+            {19232, 283}, // 習得の書【縮念】,Book of Acquisition (Reduce Magick Attack Down),
+            {19233, 284}, // 習得の書【縮衰】,Book of Acquisition (Reduce Magick Defense Down),
+            {19234, 271}, // 習得の書【縮石】,Book of Acquisition (Reduce Petrify),
+            {19235, 272}, // 習得の書【縮金】,Book of Acquisition (Reduce Goldify),
+        };
+
+        public bool IsSecretAbilityItem(uint itemId)
+        {
+            return AbilityItems.ContainsKey(itemId);
+        }
+
+        public uint GetAbilityId(uint itemId)
+        {
+            return AbilityItems[itemId];
+        }
 
         public bool IsItemWalletPoint(uint itemId)
         {
@@ -112,23 +182,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
         // old = 'プレイポイント'
         // new = 'Play Point'
 
-        public void GatherItem(DdonServer<GameClient> server, Character character, S2CItemUpdateCharacterItemNtc ntc, InstancedGatheringItem gatheringItem, uint pickedGatherItems, DbConnection? connectionIn = null)
+        public void GatherItem(DdonGameServer server, Character character, S2CItemUpdateCharacterItemNtc ntc, InstancedGatheringItem gatheringItem, uint pickedGatherItems, DbConnection? connectionIn = null)
         {
             if(ItemIdWalletTypeAndQuantity.ContainsKey(gatheringItem.ItemId)) {
                 var walletTypeAndQuantity = ItemIdWalletTypeAndQuantity[gatheringItem.ItemId];
                 uint totalQuantityToAdd = walletTypeAndQuantity.Quantity * gatheringItem.ItemNum;
-                
-                CDataWalletPoint characterWalletPoint = character.WalletPointList.Where(wp => wp.Type == walletTypeAndQuantity.Type).First();
-                characterWalletPoint.Value += totalQuantityToAdd; // TODO: Cap to maximum for that wallet
 
-                server.Database.UpdateWalletPoint(character.CharacterId, characterWalletPoint, connectionIn);
+                ntc.UpdateWalletList.Add(
+                    server.WalletManager.AddToWallet(character, walletTypeAndQuantity.Type, totalQuantityToAdd, 0, connectionIn
+                ));
 
-                CDataUpdateWalletPoint walletUpdate = new CDataUpdateWalletPoint();
-                walletUpdate.Type = walletTypeAndQuantity.Type;
-                walletUpdate.AddPoint = (int) totalQuantityToAdd;
-                walletUpdate.Value = characterWalletPoint.Value;
-                ntc.UpdateWalletList.Add(walletUpdate);
-                
                 gatheringItem.ItemNum -= pickedGatherItems;
             } else {
                 List<CDataItemUpdateResult> results = AddItem(server, character, true, gatheringItem.ItemId, pickedGatherItems, connectionIn:connectionIn);
@@ -227,7 +290,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             ntcData.ItemList.ItemUId = item.UId;
             ntcData.ItemList.ItemId = item.ItemId;
             ntcData.ItemList.ItemNum = finalItemNum;
-            ntcData.ItemList.Unk3 = item.Unk3;
+            ntcData.ItemList.SafetySetting = item.SafetySetting;
             ntcData.ItemList.StorageType = fromStorageType;
             ntcData.ItemList.SlotNo = slotNo;
             ntcData.ItemList.Color = item.Color;
@@ -297,12 +360,45 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // Equipment is a special case. It can't be stacked, even on the storage box. So we limit in there too
                     return DoAddItem(server.Database, character, destinationStorage, itemId, num, clientItemInfo.StackLimit, plusvalue, connectionIn);
                 }
+                if (destinationStorage == StorageType.ItemPost) // Item Post doesn't combine stacks.
+                {
+                    return DoAddItemNoStack(server.Database, character, destinationStorage, itemId, num, plusvalue, connectionIn);
+                }
                 else
                 {
                     // Move to storage box without stack limit if it's not equipment
                     return DoAddItem(server.Database, character, destinationStorage, itemId, num, STACK_BOX_MAX, connectionIn:connectionIn);
                 }
             }
+        }
+
+        public uint PredictAddItemSlots(Character character, StorageType destinationStorageType, uint itemId, long num)
+        {
+            long itemsToAdd = num;
+            Storage storage = character.Storage.GetStorage(destinationStorageType);
+            ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(_Server.AssetRepository.ClientItemInfos, itemId);
+            uint stackLimit = clientItemInfo.StorageType != StorageType.ItemBagEquipment && BoxStorageTypes.Contains(destinationStorageType) ? STACK_BOX_MAX : clientItemInfo.StackLimit;
+
+            long existingAvailableStackSlots = storage.Items
+                .Where(x => x != null && x.Item1.ItemId == itemId && x.Item2 < stackLimit)
+                .Sum(x => stackLimit - x!.Item2);
+
+            if (itemsToAdd < existingAvailableStackSlots)
+            {
+                return 0;
+            }
+
+            long requiredFreeStacks = itemsToAdd - existingAvailableStackSlots;
+            uint slotsRequired = (uint) Math.Ceiling(((double) requiredFreeStacks) / stackLimit);
+            
+            return slotsRequired;
+        }
+
+        public bool CanAddItem(Character character, StorageType destinationStorageType, uint itemId, long num)
+        {
+            uint slotsRequired = PredictAddItemSlots(character, destinationStorageType, itemId, num);
+            uint freeSlots = character.Storage.GetStorage(destinationStorageType).EmptySlots();
+            return freeSlots >= slotsRequired;
         }
 
         private List<CDataItemUpdateResult> DoAddItem(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, uint stackLimit = UInt32.MaxValue, byte plusvalue = 0, DbConnection? connectionIn = null)
@@ -328,13 +424,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 uint newItemNum = Math.Min(stackLimit, oldItemNum + itemsToAdd);
                 uint addedItems = newItemNum - oldItemNum;
                 itemsToAdd -= addedItems;
-                
+
                 Storage destinationStorage = character.Storage.GetStorage(destinationStorageType);
                 if (item == null)
                 {
                     item = new Item() {
                         ItemId = itemId,
-                        Unk3 = 0,
+                        SafetySetting = 0,
                         Color = 0,
                         PlusValue = plusvalue,
                         EquipPoints = 0,
@@ -359,7 +455,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 result.ItemList.ItemUId = item.UId;
                 result.ItemList.ItemId = item.ItemId;
                 result.ItemList.ItemNum = newItemNum;
-                result.ItemList.Unk3 = item.Unk3;
+                result.ItemList.SafetySetting = item.SafetySetting;
                 result.ItemList.StorageType = destinationStorageType;
                 result.ItemList.SlotNo = slot;
                 result.ItemList.Color = item.Color;
@@ -372,6 +468,62 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 result.ItemList.AddStatusParamList = item.AddStatusParamList;
                 result.ItemList.Unk2List = item.Unk2List;
                 result.UpdateItemNum = (int) addedItems;
+                results.Add(result);
+            }
+            return results;
+        }
+
+        // TODO: Maybe make this more smoothly a part of the existing DoAddItem.
+        private List<CDataItemUpdateResult> DoAddItemNoStack(IDatabase database, Character character, StorageType destinationStorageType, uint itemId, uint num, byte plusvalue = 0, DbConnection? connectionIn = null)
+        {
+            // Add to existing stacks or make new stacks until there are no more items to add
+            // The stack limit is specified by the stackLimit arg
+            List<CDataItemUpdateResult> results = new List<CDataItemUpdateResult>();
+            uint itemsToAdd = num;
+            while (itemsToAdd > 0)
+            {
+                uint oldItemNum = 0;
+                uint newItemNum = num;
+                uint addedItems = newItemNum - oldItemNum;
+                itemsToAdd -= addedItems;
+
+                Storage destinationStorage = character.Storage.GetStorage(destinationStorageType);
+                Item? item = new Item()
+                {
+                    ItemId = itemId,
+                    SafetySetting = 0,
+                    Color = 0,
+                    PlusValue = plusvalue,
+                    EquipPoints = 0,
+                    EquipElementParamList = new List<CDataEquipElementParam>(),
+                    AddStatusParamList = new List<CDataAddStatusParam>(),
+                    Unk2List = new List<CDataEquipItemInfoUnk2>()
+                };
+                ushort slot = destinationStorage.AddItem(item, newItemNum);
+
+                database.ReplaceStorageItem(character.ContentCharacterId, destinationStorageType, slot, newItemNum, item, connectionIn);
+                if (BitterblackMazeManager.IsMazeReward(item.ItemId))
+                {
+                    item = BitterblackMazeManager.ApplyCrest(database, character, item, connectionIn);
+                }
+
+                CDataItemUpdateResult result = new CDataItemUpdateResult();
+                result.ItemList.ItemUId = item.UId;
+                result.ItemList.ItemId = item.ItemId;
+                result.ItemList.ItemNum = newItemNum;
+                result.ItemList.SafetySetting = item.SafetySetting;
+                result.ItemList.StorageType = destinationStorageType;
+                result.ItemList.SlotNo = slot;
+                result.ItemList.Color = item.Color;
+                result.ItemList.PlusValue = item.PlusValue;
+                result.ItemList.Bind = false;
+                result.ItemList.EquipPoint = item.EquipPoints;
+                result.ItemList.EquipCharacterID = 0;
+                result.ItemList.EquipPawnID = 0;
+                result.ItemList.EquipElementParamList = item.EquipElementParamList;
+                result.ItemList.AddStatusParamList = item.AddStatusParamList;
+                result.ItemList.Unk2List = item.Unk2List;
+                result.UpdateItemNum = (int)addedItems;
                 results.Add(result);
             }
             return results;
@@ -406,7 +558,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             storage.SetItem(item, num, slotNo);
 
             server.Database.InsertStorageItem(character.ContentCharacterId, storage.Type, slotNo, num, item, connectionIn);
-            
+
             foreach (var crest in item.EquipElementParamList)
             {
                 server.Database.InsertCrest(character.CommonId, item.UId, crest.SlotNo, crest.CrestId, crest.Add, connectionIn);
@@ -609,7 +761,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.ItemUId = item.UId;
             updateResult.ItemList.ItemId = item.ItemId;
             updateResult.ItemList.ItemNum = itemNum;
-            updateResult.ItemList.Unk3 = item.Unk3;
+            updateResult.ItemList.SafetySetting = item.SafetySetting;
             updateResult.ItemList.StorageType = storageType;
             updateResult.ItemList.SlotNo = slotNo;
             updateResult.ItemList.Color = item.Color;
@@ -651,7 +803,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             updateResult.ItemList.ItemUId = newItem.UId;
             updateResult.ItemList.ItemId = newItem.ItemId;
             updateResult.ItemList.ItemNum = 1;
-            updateResult.ItemList.Unk3 = newItem.Unk3;
+            updateResult.ItemList.SafetySetting = newItem.SafetySetting;
             updateResult.ItemList.StorageType = storageType;
             updateResult.ItemList.SlotNo = slotNo;
             updateResult.ItemList.Color = newItem.Color;
@@ -763,6 +915,39 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return results;
+        }
+
+        public void SetSafetySetting(GameClient client, Character character, List<CDataItemUIdList> uids, bool safetySetting)
+        {
+            List<(ushort SlotNo, Item Item, uint Amount, Storage Storage)> items = new();
+
+            var ntc = new S2CItemUpdateCharacterItemNtc()
+            {
+                UpdateType = ItemNoticeType.Default // TODO: Investigate.
+            };
+
+            uint updateItemNum = 0;
+            foreach (var reqitem in uids)
+            {
+                (StorageType storageType, Tuple<ushort, Item, uint> itemProps) = character.Storage.FindItemByUIdInStorage(ItemManager.AllItemStorages, reqitem.UId);
+                var (slotNo, item, amount) = itemProps;
+                var storage = character.Storage.GetStorage(storageType);
+
+                item.SafetySetting = (byte)(safetySetting ? 1 : 0);
+                items.Add((slotNo, item, amount, storage));
+
+                ntc.UpdateItemList.Add(CreateItemUpdateResult(character, item, storageType, slotNo, amount, ++updateItemNum));
+            }
+
+            _Server.Database.ExecuteInTransaction(conn =>
+            {
+                foreach (var item in items)
+                {
+                    UpdateItem(_Server, character, item.Item, item.Storage, item.SlotNo, item.Amount, conn);
+                }
+            });
+
+            client.Send(ntc);
         }
     }
 

@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading;
 
@@ -33,6 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             public double PawnCraftBonus = 0.0;
             public bool DisablePartyExpAdjustment = false;
             public double EnemyBloodOrbMultiplier = 0.0;
+            public bool InfiniteRevive = false;
         };
 
         private void ApplyCourseEffects(uint courseId)
@@ -67,6 +69,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             break;
                         case GPCourseId.BloodOrbUp:
                             _CourseBonus.EnemyBloodOrbMultiplier += (effect.Param0 / 100.0);
+                            break;
+                        case GPCourseId.InfiniteRevive:
+                            _CourseBonus.InfiniteRevive = true;
                             break;
                     }
                 }
@@ -105,6 +110,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             break;
                         case GPCourseId.BloodOrbUp:
                             _CourseBonus.EnemyBloodOrbMultiplier -= (effect.Param0 / 100.0);
+                            break;
+                        case GPCourseId.InfiniteRevive:
+                            _CourseBonus.InfiniteRevive = false;
                             break;
                     }
                 }
@@ -232,6 +240,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             lock (_CourseBonus)
             {
                 return _CourseBonus.EnemyBloodOrbMultiplier;
+            }
+        }
+
+        public bool InfiniteReviveRefresh()
+        {
+            lock (_CourseBonus)
+            {
+                return _CourseBonus.InfiniteRevive;
             }
         }
     }

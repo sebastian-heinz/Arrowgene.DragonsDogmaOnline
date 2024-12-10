@@ -1,10 +1,11 @@
-using System.Collections.Generic;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Chat
 {
@@ -13,13 +14,11 @@ namespace Arrowgene.Ddon.GameServer.Chat
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ChatManager));
 
         private readonly List<IChatHandler> _handler;
-        private readonly GameRouter _router;
         private readonly DdonGameServer _server;
 
-        public ChatManager(DdonGameServer server, GameRouter router)
+        public ChatManager(DdonGameServer server)
         {
             _server = server;
-            _router = router;
             _handler = new List<IChatHandler>();
         }
 
@@ -52,7 +51,7 @@ namespace Arrowgene.Ddon.GameServer.Chat
                 response.Recipients.Add(client);
             }
 
-            _router.Send(response);
+            Send(response);
         }
 
         public void SendMessage(string message, string firstName, string lastName, LobbyChatMsgType type,
@@ -72,19 +71,43 @@ namespace Arrowgene.Ddon.GameServer.Chat
                 PhrasesIndex = 0
             };
             response.Recipients.AddRange(recipients);
-            _router.Send(response);
+            Send(response);
         }
         
-        // TODO: add support for sending tell messages across worlds - requires some form of access to available worlds and their associated clients
-        public void SendTellMessage(uint handleId, CDataCommunityCharacterBaseInfo senderCharacterInfo, CDataCommunityCharacterBaseInfo receiverCharacterInfo, C2SChatSendTellMsgReq request, GameClient sender, GameClient receiver)
+        public void SendTellMessage(GameClient sender, GameClient receiver, C2SChatSendTellMsgReq request)
         {
-            ChatResponse senderChatResponse = GetTellChatResponse(handleId, receiverCharacterInfo, request);
+            var senderCharacterInfo = sender.Character.GetCommunityCharacterBaseInfo();
+            var receiverCharacterInfo = receiver.Character.GetCommunityCharacterBaseInfo();
+            ChatResponse senderChatResponse = GetTellChatResponse(senderCharacterInfo.CharacterId, receiverCharacterInfo, request);
             senderChatResponse.Recipients.Add(sender);
-            ChatResponse receiverChatResponse = GetTellChatResponse(handleId, senderCharacterInfo, request);
+            ChatResponse receiverChatResponse = GetTellChatResponse(senderCharacterInfo.CharacterId, senderCharacterInfo, request);
             receiverChatResponse.Recipients.Add(receiver);
 
-            _router.Send(senderChatResponse);
-            _router.Send(receiverChatResponse);
+            Send(senderChatResponse);
+            Send(receiverChatResponse);
+        }
+
+        public void SendTellMessageForeign(GameClient client, C2SChatSendTellMsgReq request)
+        {
+            _server.RpcManager.AnnounceTellChat(client, request);
+
+            ChatResponse senderChatResponse = new ChatResponse
+            {
+                HandleId = request.CharacterInfo.CharacterId,
+                Deliver = false,
+                FirstName = request.CharacterInfo.CharacterName.FirstName,
+                LastName = request.CharacterInfo.CharacterName.LastName,
+                ClanName = request.CharacterInfo.ClanName,
+                CharacterId = request.CharacterInfo.CharacterId,
+                Type = LobbyChatMsgType.Tell,
+                Message = request.Message,
+                MessageFlavor = request.MessageFlavor,
+                PhrasesCategory = request.PhrasesCategory,
+                PhrasesIndex = request.PhrasesIndex
+            };
+
+            senderChatResponse.Recipients.Add(client);
+            Send(senderChatResponse);
         }
 
         public void Handle(GameClient client, ChatMessage message)
@@ -132,7 +155,7 @@ namespace Arrowgene.Ddon.GameServer.Chat
             {
                 case LobbyChatMsgType.Say:
                 case LobbyChatMsgType.Shout:
-                    response.Recipients.AddRange(_server.Clients);
+                    response.Recipients.AddRange(_server.ClientLookup.GetAll());
                     break;
                 case LobbyChatMsgType.Party:
                     PartyGroup party = client.Party;
@@ -141,12 +164,27 @@ namespace Arrowgene.Ddon.GameServer.Chat
                         response.Recipients.AddRange(party.Clients);
                     }
                     break;
+                case LobbyChatMsgType.Clan:
+                    if (client.Character.ClanId == 0)
+                    {
+                        response.Recipients.Add(client);
+                        break;
+                    }
+
+                    response.Recipients.AddRange(_server.ClientLookup.GetAll().Where(
+                        x => x.Character != null 
+                        && client.Character != null
+                        && x.Character.ClanId == client.Character.ClanId)
+                    );
+
+                    _server.RpcManager.AnnounceClanChat(client, response);
+                    break;
                 default:
                     response.Recipients.Add(client);
                     break;
             }
 
-            _router.Send(response);
+            Send(response);
         }
         
         public static S2CLobbyChatMsgNotice GetTellMsgNtc(uint handleId, CDataCommunityCharacterBaseInfo characterInfo, C2SChatSendTellMsgReq request)
@@ -179,6 +217,33 @@ namespace Arrowgene.Ddon.GameServer.Chat
                 PhrasesCategory = request.PhrasesCategory,
                 PhrasesIndex = request.PhrasesIndex
             };
+        }
+
+        public void Send(ChatResponse response)
+        {
+            S2CLobbyChatMsgNotice notice = new S2CLobbyChatMsgNotice
+            {
+                HandleId = response.HandleId,
+                Type = response.Type,
+                MessageFlavor = response.MessageFlavor,
+                PhrasesCategory = response.PhrasesCategory,
+                PhrasesIndex = response.PhrasesIndex,
+                Message = response.Message,
+                CharacterBaseInfo =
+                {
+                    CharacterId = response.CharacterId,
+                    CharacterName =
+                    {
+                        FirstName = response.FirstName,
+                        LastName = response.LastName
+                    },
+                    ClanName = response.ClanName
+                }
+            };
+            foreach (GameClient client in response.Recipients.Distinct())
+            {
+                client.Send(notice);
+            }
         }
     }
 }

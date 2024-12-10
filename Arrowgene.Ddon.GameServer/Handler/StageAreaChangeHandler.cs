@@ -1,18 +1,15 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Context;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class StageAreaChangeHandler : GameRequestPacketHandler<C2SStageAreaChangeReq, S2CStageAreaChangeRes>
+    public class StageAreaChangeHandler : GameRequestPacketQueueHandler<C2SStageAreaChangeReq, S2CStageAreaChangeRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(StageAreaChangeHandler));
 
@@ -20,11 +17,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override S2CStageAreaChangeRes Handle(GameClient client, C2SStageAreaChangeReq packet)
+        public override PacketQueue Handle(GameClient client, C2SStageAreaChangeReq packet)
         {
+            PacketQueue queue = new();
             S2CStageAreaChangeRes res = new S2CStageAreaChangeRes();
             res.StageNo = (uint) StageManager.ConvertIdToStageNo(packet.StageId);
-            res.IsBase = false; // This is set true for audience chamber and WDT for exmaple
+            res.IsBase = false; // This is set true for audience chamber and WDT for example
+
+            // Order is notices sent manually, then the response, then other queued notices for Epitaph Road stuff.
+            client.Enqueue(res, queue); 
 
             uint previousStageId = client.Character.Stage.Id;
 
@@ -42,11 +43,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 pawn.StageNo = res.StageNo;
             }
 
-            Logger.Info($"StageNo: {client.Character.StageNo} StageId: {packet.StageId}");
-
             if (StageManager.IsSafeArea(client.Character.Stage))
             {
                 res.IsBase = true;
+                client.Character.LastSafeStageId = packet.StageId;
 
                 bool shouldReset = true;
                 // Check to see if all player members are in a safe area.
@@ -69,12 +69,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (shouldReset)
                 {
+                    Server.EpitaphRoadManager.ResetInstance(client.Party);
                     client.Party.ResetInstance();
                     client.Party.SendToAll(new S2CInstanceAreaResetNtc());
                 }
             }
 
-            return res;
+            if (client.Party.ExmInProgress && BoardManager.BoardIdIsExm(client.Party.ContentId))
+            {
+                var quest = QuestManager.GetQuestByBoardId(client.Party.ContentId);
+                if (quest != null)
+                {
+                    quest.HandleAreaChange(client, client.Character.Stage);
+                }
+            }
+
+            Server.EpitaphRoadManager.AreaChange(client, packet.StageId, queue);
+            return queue;
         }
     }
 }

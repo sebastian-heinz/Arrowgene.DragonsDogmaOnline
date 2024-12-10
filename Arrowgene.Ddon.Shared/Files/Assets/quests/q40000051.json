@@ -1,0 +1,50 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40000051,
+  "base_level": 11,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Remedy Ingredients",
+  "light_quest_details": {
+    "area_id": 1,
+    "board_type": 1,
+    "board_id": 3
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 543
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 350
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 158
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "DeliverItemsLight",
+      "announce_type": "Accept",
+      "items": [
+        {
+          "id": 7980,
+          "amount": 3
+        }
+      ]
+    }
+  ]
+}

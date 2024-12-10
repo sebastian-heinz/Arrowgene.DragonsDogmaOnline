@@ -1,0 +1,64 @@
+{
+    "comment": "Memory of Megadosys - Section 3: Trial 3",
+    "stage_id": {
+        "id": 559,
+        "group_id": 122
+    },
+    "pos_id": 0,
+    "unlock_cost": [
+        {"item_id": 18659, "amount": 120}
+    ],
+    "unlocks": [],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
+                {"type": "CannotBeAffectedByAbnormalStatus", "priority": "Secondary", "Param1": 3},
+                {"type": "CompleteConditionsWithinTimeLimit", "priority": "Secondary", "Param1": 150}
+            ],
+            "cost": [],
+            "item_rewards": [
+                {"item_id": 18659, "amount": 40},
+                {"item_id": 18742, "amount": 40},
+                {"item_id": 21390, "amount": 3, "type": "Random"}
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 559,
+                        "group_id": 20
+                    },
+                    "placement_type": "Manual",
+                    "enemies": [
+                        {
+                            "comment" : "Shadow Goblin",
+                            "enemy_id": "0x011160",
+                            "level": 94,
+                            "exp": 6746,
+                            "named_enemy_params_id": 2286,
+                            "index": 7
+                        },
+                        {
+                            "comment" : "Shadow Goblin",
+                            "enemy_id": "0x011160",
+                            "level": 94,
+                            "exp": 6746,
+                            "named_enemy_params_id": 2286,
+                            "index": 6
+                        },
+                        {
+                            "comment" : "White Chimera",
+                            "enemy_id": "0x070810",
+                            "level": 94,
+                            "exp": 840000,
+                            "named_enemy_params_id": 2287,
+                            "index": 5,
+                            "is_boss": true
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

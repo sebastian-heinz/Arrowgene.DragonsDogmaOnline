@@ -3,11 +3,13 @@
     "type": "Main",
     "comment": "Be Forevermore, White Dragon",
     "quest_id": 30,
-    "next_quest": 0,
+    "next_quest": 20010,
     "base_level": 55,
     "minimum_item_rank": 0,
     "discoverable": true,
-    "order_conditions": [],
+    "order_conditions": [
+        {"type": "MainQuestCompleted", "Param1": 24}
+    ],
     "rewards": [],
     "enemy_groups": [],
     "processes": [
@@ -22,7 +24,8 @@
                     },
                     "flags": [
                         {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
-                        {"type": "WorldManageLayout", "action": "Set", "value": 7389, "quest_id": 70032001, "comment": "The White Dragon (Less Less Dead)"}
+                        {"type": "WorldManageLayout", "action": "Set", "value": 7389, "quest_id": 70032001, "comment": "The White Dragon (Less Less Dead)"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"}
                     ],
                     "npc_id": "Joseph",
                     "message_id": 0
@@ -43,10 +46,10 @@
                         "id": 3
                     },
                     "event_id": 100
-				},
+                },
                 {
                     "type": "PlayEvent",
-					"announce_type": "Accept",
+                    "announce_type": "Accept",
                     "stage_id": {
                         "id": 76
                     },

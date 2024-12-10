@@ -31,14 +31,4 @@
             <TargetPath>Files\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
         </ContentWithTargetPath>
     </ItemGroup>
-
-    <ItemGroup>
-      <ContentWithTargetPath Remove="files\assets\ElementAttachInfo.json" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Update="Files\Assets\ElementAttachInfo.json">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-    </ItemGroup>
 </Project>

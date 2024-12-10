@@ -76,6 +76,15 @@ There exists an implementation of the following main story quests.
 | [The Great Alchemist](http://ddon.wikidot.com/mq:thegreatalchemist) | Some quirks with the lighting. Also, having hard time to get proper spawn point for second boss.
 | [Be Forevermore, White Dragon](http://ddon.wikidot.com/mq:beforevermorewhitedragon) | Some weird flashing with the dragon. Seems cutscene uses it's own model instead of the one from the world manage quest.
 
+### Season 2.0
+- [The Storm That Brought A Tragedy](http://ddon.wikidot.com/mq:thestormthatbroughtatragedy)
+- [The Girl Who Lost Her Memories](http://ddon.wikidot.com/mq:thegirlwholosthermemories)
+- [The Corruption and the Knights](http://ddon.wikidot.com/mq:thecorruptionandtheknights)
+- [Exploring the Den of Monsters](http://ddon.wikidot.com/mq:exploringthedenofmonsters)
+- [Eliminate the Corrosion Infestation](http://ddon.wikidot.com/mq:eliminatethecorrosioninfestation)
+- [The Man From Another Land](http://ddon.wikidot.com/mq:themanfromanotherland)
+- [The Fate of Lestania](http://ddon.wikidot.com/mq:thefateoflestania)
+
 ### Season 3.3
 
 | Quest Name | Comment |

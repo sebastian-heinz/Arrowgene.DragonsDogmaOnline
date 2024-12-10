@@ -1,15 +1,11 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model.Quest;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestSetPriorityQuestHandler : GameStructurePacketHandler<C2SQuestSetPriorityQuestReq>
+    public class QuestSetPriorityQuestHandler : GameRequestPacketHandler<C2SQuestSetPriorityQuestReq, S2CQuestSetPriorityQuestRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestSetPriorityQuestHandler));
         
@@ -17,31 +13,53 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SQuestSetPriorityQuestReq> packet)
+        public override S2CQuestSetPriorityQuestRes Handle(GameClient client, C2SQuestSetPriorityQuestReq request)
         {
-            QuestId questId = (QuestId)packet.Structure.QuestScheduleId;
-
             S2CQuestSetPriorityQuestNtc ntc = new S2CQuestSetPriorityQuestNtc()
             {
                 CharacterId = client.Character.CharacterId
             };
 
-            Server.Database.InsertPriorityQuest(client.Character.CommonId, questId);
+            Server.Database.InsertPriorityQuest(client.Character.CommonId, request.QuestScheduleId);
 
-            var prioirtyQuests = Server.Database.GetPriorityQuests(client.Character.CommonId);
-            foreach (var priorityQuestId in prioirtyQuests)
+            var priorityQuests = Server.Database.GetPriorityQuestScheduleIds(client.Character.CommonId);
+            foreach (var questScheduleId in priorityQuests)
             {
-                var quest = QuestManager.GetQuest(priorityQuestId);
-                var questState = client.Party.QuestState.GetQuestState(questId);
-                ntc.PriorityQuestList.Add(quest.ToCDataPriorityQuest(questState.Step));
+                if (!QuestManager.IsQuestEnabled(questScheduleId))
+                {
+                    Logger.Error(client, $"Priority quest for quest state which doesn't exist or is not enabled, schedule {questScheduleId}");
+                    Server.Database.DeletePriorityQuest(client.Character.CommonId, questScheduleId);
+                    continue;
+                }
+                var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
+                if (quest == null)
+                {
+                    Logger.Error(client, $"No quest object exists for ${questScheduleId}");
+                    continue;
+                }
+
+                var questStateManager = QuestManager.GetQuestStateManager(client, quest);
+                if (questStateManager == null)
+                {
+                    Logger.Error(client, $"Unable to fetch the quest state manager for ${questScheduleId}");
+                    continue;
+                }
+
+                var questState = questStateManager.GetQuestState(questScheduleId);
+                if (questState == null)
+                {
+                    Logger.Error(client, $"Failed to find quest state for ${questScheduleId}");
+                    continue;
+                }
+                ntc.PriorityQuestList.Add(quest.ToCDataPriorityQuest(questState?.Step ?? 0));
             }
 
             client.Party.SendToAll(ntc);
 
-            client.Send(new S2CQuestSetPriorityQuestRes()
+            return new S2CQuestSetPriorityQuestRes()
             {
-                QuestScheduleId = packet.Structure.QuestScheduleId
-            });
+                QuestScheduleId = request.QuestScheduleId
+            };
         }
     }
 }

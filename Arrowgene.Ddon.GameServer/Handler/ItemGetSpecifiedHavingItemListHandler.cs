@@ -39,7 +39,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         SlotNo = match.Item1,
                         StorageType = storage.Key,
                         Unk2List = item.Unk2List,
-                        Unk3 = item.Unk3,
+                        SafetySetting = item.SafetySetting,
                     });
                 }
             }

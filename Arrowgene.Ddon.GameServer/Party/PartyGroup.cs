@@ -1,6 +1,8 @@
 using Arrowgene.Ddon.GameServer.Context;
 using Arrowgene.Ddon.GameServer.Instance;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -28,19 +30,23 @@ namespace Arrowgene.Ddon.GameServer.Party
         private PlayerPartyMember _host;
         private bool _isBreakup;
 
+        public readonly ulong ContentId;
+        public bool ExmInProgress;
+
         public InstanceEnemyManager InstanceEnemyManager { get; }
 
-        public PartyQuestState QuestState { get; }
+        public SharedQuestStateManager QuestState { get; }
 
         public Dictionary<uint, Dictionary<ulong, uint>> InstanceOmData { get; }
 
-        public PartyGroup(uint id, PartyManager partyManager)
+        public PartyGroup(uint id, PartyManager partyManager, ulong contentId)
         {
             MaxSlots = MaxPartyMember;
             _lock = new object();
             _slots = new PartyMember[MaxSlots];
             _partyManager = partyManager;
             _isBreakup = false;
+            ContentId = contentId;
 
             Id = id;
 
@@ -51,7 +57,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
             InstanceOmData = new Dictionary<uint, Dictionary<ulong, uint>>();
 
-            QuestState = new PartyQuestState();
+            QuestState = new SharedQuestStateManager(this, partyManager.Server);
         }
 
         // Contexts[UID] = ContextData
@@ -119,6 +125,14 @@ namespace Arrowgene.Ddon.GameServer.Party
                 }
 
                 return members;
+            }
+        }
+
+        public bool IsSolo
+        {
+            get
+            {
+                return Clients.Count <= 1;
             }
         }
 
@@ -265,13 +279,12 @@ namespace Arrowgene.Ddon.GameServer.Party
             lock (_lock)
             {
                 PlayerPartyMember partyMember = GetPlayerPartyMember(client);
-                if (partyMember == null)
+                if (partyMember == null && MemberCount() > 0)
                 {
                     Logger.Error(client, $"[PartyId:{Id}][Join(GameClient)] has no slot");
                     return ErrorRes<PlayerPartyMember>.Fail;
                 }
 
-                client.Party = this;
                 if (_leader == null && _host == null)
                 {
                     // first to join the party
@@ -279,6 +292,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                     _leader = partyMember;
                     _host = partyMember;
                 }
+                client.Party = this;
 
                 partyMember.JoinState = JoinState.On;
                 Logger.Info(client, $"[PartyId:{Id}][Join(GameClient)] joined");
@@ -559,6 +573,16 @@ namespace Arrowgene.Ddon.GameServer.Party
             SendToAll(packet);
         }
 
+        public void EnqueueToAll<TResStruct>(TResStruct res, PacketQueue queue)
+            where TResStruct : class, IPacketStructure, new()
+        {
+            StructurePacket<TResStruct> packet = new StructurePacket<TResStruct>(res);
+            foreach(GameClient client in Clients)
+            {
+                queue.Enqueue((client, packet));
+            }
+        }
+
         public void SendToAll(Packet packet)
         {
             foreach (GameClient client in Clients)
@@ -572,6 +596,21 @@ namespace Arrowgene.Ddon.GameServer.Party
             StructurePacket<TResStruct> packet = new StructurePacket<TResStruct>(res);
             SendToAllExcept(packet, exceptions);
         }
+
+        public void EnqueueToAllExcept<TResStruct>(TResStruct res, PacketQueue queue, params GameClient[] exceptions)
+            where TResStruct : class, IPacketStructure, new()
+        {
+            StructurePacket<TResStruct> packet = new StructurePacket<TResStruct>(res);
+            foreach (GameClient client in Clients)
+            {
+                if (exceptions.Contains(client))
+                {
+                    continue;
+                }
+                queue.Enqueue((client, packet));
+            }
+        }
+
 
         public void SendToAllExcept(Packet packet, params GameClient[] exceptions)
         {
@@ -613,15 +652,20 @@ namespace Arrowgene.Ddon.GameServer.Party
         public void ResetInstance()
         {
             InstanceEnemyManager.Clear();
+            Contexts.Clear();
+            QuestState.ResetInstance();
             foreach (GameClient client in Clients)
             {
                 client.InstanceGatheringItemManager.Clear();
                 client.InstanceBbmItemManager.Reset();
+                client.InstanceEventDropItemManager.Reset();
+                client.InstanceEpiDropItemManager.Reset();
+                client.InstanceEpiGatheringManager.Reset();
                 client.InstanceDropItemManager.Clear();
+                client.InstanceQuestDropManager.Clear();
                 client.Character.ContextOwnership.Clear();
             }
             OmManager.ResetAllOmData(InstanceOmData);
-            QuestState.ResetInstanceQuestState();
         }
 
         public PartyMember GetPartyMemberByCharacter(CharacterCommon characterCommon)
@@ -698,11 +742,28 @@ namespace Arrowgene.Ddon.GameServer.Party
             {
                 for (int i = 0; i < MaxSlots; i++)
                 {
+                    if (_slots[i] != null && _slots[i].CommonId == partyMember.CommonId)
+                    {
+                        // This character is already in the party, so fail gracefully without letting them take a second slot.
+                        Logger.Error($"[PartyId:{Id}][TakeSlot] Party member already present.");
+                        slotIndex = i;
+                        break;
+                    }
+                }
+
+                for (int i = 0; i < MaxSlots; i++)
+                {
                     if (_slots[i] == null)
                     {
                         slotIndex = i;
                         break;
                     }
+                }
+
+                if (slotIndex == InvalidSlotIndex)
+                {
+                    Logger.Error($"[PartyId:{Id}][TakeSlot] (no empty slot)");
+                    return InvalidSlotIndex;
                 }
 
                 partyMember.MemberIndex = slotIndex;
@@ -736,10 +797,10 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         private PlayerPartyMember CreatePartyMember(GameClient client)
         {
-            PlayerPartyMember partyMember = new PlayerPartyMember();
-            partyMember.Client = client;
+            PlayerPartyMember partyMember = new PlayerPartyMember(client, _partyManager.Server);
             partyMember.IsPawn = false;
             partyMember.MemberType = 1;
+            partyMember.CommonId = client.Character.CommonId;
             partyMember.PawnId = 0;
             partyMember.IsPlayEntry = false;
             partyMember.AnyValueList = new byte[8];
@@ -755,6 +816,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             PawnPartyMember partyMember = new PawnPartyMember();
             partyMember.Pawn = pawn;
             partyMember.IsPawn = true;
+            partyMember.CommonId = pawn.CommonId;
             partyMember.MemberType = 2;
             partyMember.PawnId = pawn.PawnId;
             partyMember.IsPlayEntry = false;
@@ -769,7 +831,7 @@ namespace Arrowgene.Ddon.GameServer.Party
         public int ClientIndex(GameClient client)
         {
             if (!Members.Any() || !Clients.Any()) return 0;
-            
+
             var ind = Members.FindIndex(member =>
                 member is PlayerPartyMember playerMember
                 && playerMember.Client == client

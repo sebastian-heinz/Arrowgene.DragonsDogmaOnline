@@ -1,0 +1,56 @@
+{
+    "comment": "Heroic Spirit Sleeping Path: Rathnite Foothills - Final Trial",
+    "stage_id": {
+        "id": 553,
+        "group_id": 45
+    },
+    "pos_id": 7,
+    "unlock_cost": [],
+    "unlocks": [
+        {"stage_id": 553, "group_id": 98, "pos_id": 0}
+    ],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
+                {"type": "CannotDieMoreThanOnce", "priority": "Secondary"},
+                {"type": "CannotBeAffectedByAbnormalStatus", "priority": "Secondary", "Param1": 1},
+                {"type": "ItemNoteUsedMoreThanOnce", "priority": "Secondary"}
+            ],
+            "cost": [],
+            "item_rewards": [
+                {"item_id": 18656, "amount": 80},
+                {"item_id": 18742, "amount": 20}
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 553,
+                        "group_id": 56
+                    },
+                    "enemies": [
+                        {
+                            "comment" : "War-Ready Goremanticore",
+                            "enemy_id": "0x015220",
+                            "level": 85,
+                            "exp": 85000,
+                            "pp": 15,
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true
+                        },
+                        {
+                            "comment" : "War-Ready Gorecyclops",
+                            "enemy_id": "0x015060",
+                            "level": 85,
+                            "exp": 85000,
+                            "pp": 15,
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true
+                        }
+                   ]
+                }
+            ]
+        }
+    ]
+}

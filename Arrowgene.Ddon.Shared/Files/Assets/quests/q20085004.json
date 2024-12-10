@@ -6,7 +6,7 @@
     "base_level": 47,
     "minimum_item_rank": 0,
     "discoverable": true,
-  "area_id": "EasternZandora",	
+    "area_id": "EasternZandora",
     "rewards": [
         {
             "type": "wallet",
@@ -35,7 +35,7 @@
                 },
                 {
                     "item_id": 9363,
-                    "num": 3					
+                    "num": 3
                 }
             ]
         },
@@ -61,7 +61,7 @@
                     "enemy_id": "0x015103",
                     "level": 48,
                     "exp": 13000,
-                    "is_boss": true			
+                    "is_boss": true
                 }
             ]
         }
@@ -92,7 +92,7 @@
             "stage_id": {
                 "id": 1,
                 "group_id": 1,
-                "layer_no": 1				
+                "layer_no": 1
             },
             "announce_type": "Update",
             "npc_id": "Rick",

@@ -1,0 +1,264 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "Loeg's Illness",
+    "quest_id": 20100,
+    "next_quest": 20110,
+    "base_level": 64,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "order_conditions": [
+        {"type": "MinimumLevel", "Param1": 64},
+        {"type": "MainQuestCompleted", "Param1": 20090}
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 108000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 25000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 1500
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 13118,
+                    "num": 1
+                },
+                {
+                    "item_id": 11510,
+                    "num": 5
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NewNpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1,
+                        "layer_no": 1
+                    },
+                    "npc_id": "Mayleaf0",
+                    "message_id": 15354,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"},
+                        {"type": "QstLayout", "action": "Set", "value": 2773, "comment": "Spawns Mayleaf"}
+                    ]
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Accept",
+                    "stage_id": {
+                        "id": 350
+                    },
+                    "location": {
+                        "x": -2143,
+                        "y": 18,
+                        "z": 9
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2774, "comment": "Spawns Lise, Cecily, Loeg"}
+                    ]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 350
+                    },
+                    "event_id": 5
+                },
+                {
+                    "type": "TalkToNpc",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 78
+                    },
+                    "npc_id": "Camus",
+                    "message_id": 15365
+                },
+                {
+                    "type": "TalkToNpc",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 78
+                    },
+                    "npc_id": "Alvar",
+                    "message_id": 16737
+                },
+                {
+                    "type": "MyQstFlags",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "set_flags": [ 1 ],
+                    "check_flags": [ 2, 3, 4, 5 ]
+                },
+                {
+                    "type": "TalkToNpc",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 78
+                    },
+                    "npc_id": "Camus",
+                    "message_id": 15366
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 350
+                    },
+                    "location": {
+                        "x": -2143,
+                        "y": 18,
+                        "z": 9
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 350
+                    },
+                    "event_id": 10
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1,
+                        "layer_no": 1
+                    },
+                    "npc_id": "Mayleaf0",
+                    "message_id": 15381
+                }
+            ]
+        },
+        {
+            "comment": "Process 1",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [ 1 ]
+                },
+                {
+                    "type": "CollectItem",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 1,
+                        "layer_no": 1
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2775}
+                    ]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 2775}
+                    ],
+                    "set_flags": [ 2 ]
+                }
+            ]
+        },
+        {
+            "comment": "Process 2",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [ 1 ]
+                },
+                {
+                    "type": "CollectItem",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 2,
+                        "layer_no": 1
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2776}
+                    ]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 2776}
+                    ],
+                    "set_flags": [ 3 ]
+                }
+            ]
+        },
+        {
+            "comment": "Process 3",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [ 1 ]
+                },
+                {
+                    "type": "CollectItem",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 3,
+                        "layer_no": 1
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2777}
+                    ]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 2777}
+                    ],
+                    "set_flags": [ 4 ]
+                }
+            ]
+        },
+        {
+            "comment": "Process 4",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [ 1 ]
+                },
+                {
+                    "type": "CollectItem",
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 4,
+                        "layer_no": 1
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2778}
+                    ]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 2778}
+                    ],
+                    "set_flags": [ 5 ]
+                }
+            ]
+        }
+    ]
+}

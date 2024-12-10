@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40200108,
+  "base_level": 70,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "What Attacked the Cows",
+  "light_quest_details": {
+    "area_id": 17,
+    "board_type": 1,
+    "board_id": 21
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 38782
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 41096
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 2504
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "55",
+      "level": 70,
+      "amount": 3
+    }
+  ]
+}

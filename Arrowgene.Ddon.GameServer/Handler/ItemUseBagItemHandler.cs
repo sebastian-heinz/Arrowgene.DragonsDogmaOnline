@@ -8,6 +8,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.GameServer.Characters;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -16,9 +17,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ItemUseBagItemHandler));
 
         private static readonly StorageType DestinationStorageType = StorageType.ItemBagConsumable;
+        private DdonGameServer _Server;
 
         public ItemUseBagItemHandler(DdonGameServer server) : base(server)
         {
+            _Server = server;
         }
 
         public override void Handle(GameClient client, StructurePacket<C2SItemUseBagItemReq> req)
@@ -43,11 +46,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 UpdateType = ItemNoticeType.UseBag
             };
 
+            if (_Server.ItemManager.IsSecretAbilityItem(item.ItemId))
+            {
+                _Server.JobManager.UnlockSecretAbility(client, client.Character, (SecretAbility) _Server.ItemManager.GetAbilityId(item.ItemId));
+            }
+
+            if (_Server.EpitaphRoadManager.TrialInProgress(client.Party))
+            {
+                _Server.EpitaphRoadManager.EvaluateItemUsed(client.Party, item.ItemId);
+            }
+
             CDataItemUpdateResult ntcData0 = new CDataItemUpdateResult();
             ntcData0.ItemList.ItemUId = item.UId;
             ntcData0.ItemList.ItemId = item.ItemId;
             ntcData0.ItemList.ItemNum = itemNum;
-            ntcData0.ItemList.Unk3 = item.Unk3;
+            ntcData0.ItemList.SafetySetting = item.SafetySetting;
             ntcData0.ItemList.StorageType = DestinationStorageType;
             ntcData0.ItemList.SlotNo = slotNo;
             ntcData0.ItemList.Color = item.Color; // ?
@@ -79,9 +92,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Lantern start NTC
             // TODO: Figure out all item IDs that do lantern stuff
             if (item.ItemId == 55)
-            { 
-                client.Send(SelectedDump.lantern2_27_16); 
-                // TODO: Send S2C_CHARACTER_START_LANTERN_OTHER_NOTICE to other party members?
+            {
+                // client.Send(SelectedDump.lantern2_27_16);
+                // TODO: Start a timer to estinguish after LaternBurnTimeInSeconds expires
+                client.Character.IsLanternLit = true;
+                client.Send(new S2CCharacterStartLanternNtc() { RemainTime = _Server.Setting.GameLogicSetting.LaternBurnTimeInSeconds});
+                // client.Party.SendToAllExcept(new S2CCharacterStartLanternOtherNtc() { CharacterId = client.Character.CharacterId }, client);
             }
         }
     }

@@ -1,0 +1,496 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "ExtremeMission",
+    "comment": "The Call of the Catacombs (EM1)",
+    "quest_id": 50101020,
+    "base_level": 58,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "mission_params": {
+        "group": 1,
+        "minimum_members": 1,
+        "playtime": 1200,
+        "solo_only": false,
+        "max_pawns": 3,
+        "phase_groups": []
+    },
+    "order_conditions": [
+        {"type": "MainQuestCompleted", "Param1": 30}
+    ],
+    "rewards": [
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 9456,
+                    "num": 3
+                },
+                {
+                    "item_id": 7795,
+                    "num": 200
+                }
+            ]
+        },
+        {
+            "type": "jp",
+            "amount": 800
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 293,
+                "group_id": 17
+            },
+            "enemies": [
+                {
+                    "comment": "Orc Soldier",
+                    "enemy_id": "0x015800",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Orc Soldier",
+                    "enemy_id": "0x015800",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Orc Soldier",
+                    "enemy_id": "0x015800",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Orc Soldier",
+                    "enemy_id": "0x015800",
+                    "level": 58,
+                    "exp": 0
+                }
+            ]
+        },
+        {
+            "comment": "Key Monsters",
+            "stage_id": {
+                "id": 293,
+                "group_id": 20
+            },
+            "enemies": [
+                {
+                    "comment": "Captain Orc",
+                    "enemy_id": "0x015820",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Grimwarg",
+                    "enemy_id": "0x010205",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Grimwarg",
+                    "enemy_id": "0x010205",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Grimwarg",
+                    "enemy_id": "0x010205",
+                    "level": 58,
+                    "exp": 0
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 293,
+                "group_id": 3
+            },
+            "enemies": [
+                {
+                    "comment": "Frost Corpse Punisher",
+                    "enemy_id": "0x010511",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Frost Corpse Punisher",
+                    "enemy_id": "0x010511",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Wight",
+                    "enemy_id": "0x015600",
+                    "level": 58,
+                    "exp": 0,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Frost Corpse Punisher",
+                    "enemy_id": "0x010511",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Frost Corpse Punisher",
+                    "enemy_id": "0x010511",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Wight",
+                    "enemy_id": "0x015600",
+                    "level": 58,
+                    "exp": 0,
+                    "is_boss": true
+                }
+            ]
+        },
+        {
+            "comment": "Key Monsters",
+            "stage_id": {
+                "id": 293,
+                "group_id": 21
+            },
+            "enemies": [
+                {
+                    "comment": "Living Armor",
+                    "enemy_id": "0x010306",
+                    "level": 58,
+                    "exp": 0,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Living Armor",
+                    "enemy_id": "0x010306",
+                    "level": 58,
+                    "exp": 0,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Skull Lord",
+                    "enemy_id": "0x010313",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Skull Lord",
+                    "enemy_id": "0x010313",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Skeleton Sorcerer",
+                    "enemy_id": "0x010309",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Skeleton Sorcerer",
+                    "enemy_id": "0x010309",
+                    "level": 58,
+                    "exp": 0
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 293,
+                "group_id": 7
+            },
+            "starting_index": 1,
+            "enemies": [
+                {
+                    "comment": "Shadow Goblin",
+                    "enemy_id": "0x011130",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Shadow Goblin",
+                    "enemy_id": "0x011130",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Shadow Goblin",
+                    "enemy_id": "0x011130",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Shadow Goblin",
+                    "enemy_id": "0x011130",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Shadow Goblin",
+                    "enemy_id": "0x011130",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Shadow Goblin",
+                    "enemy_id": "0x011130",
+                    "level": 58,
+                    "exp": 0
+                }
+            ]
+        },
+        {
+            "comment": "Key Monsters",
+            "stage_id": {
+                "id": 293,
+                "group_id": 22
+            },
+            "starting_index": 1,
+            "enemies": [
+                {
+                    "comment": "Shadow Chimera",
+                    "enemy_id": "0x015203",
+                    "level": 58,
+                    "exp": 0,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Shadow Goblin",
+                    "enemy_id": "0x011130",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Shadow Goblin",
+                    "enemy_id": "0x011130",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Shadow Goblin",
+                    "enemy_id": "0x011130",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Shadow Goblin",
+                    "enemy_id": "0x011130",
+                    "level": 58,
+                    "exp": 0
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 293,
+                "group_id": 10
+            },
+            "comment": "Boss Node (6)",
+            "enemies": [
+                {
+                    "comment": "Death Knight",
+                    "enemy_id": "0x010310",
+                    "named_enemy_params_id": 631,
+                    "level": 58,
+                    "exp": 0,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Witch",
+                    "enemy_id": "0x015604",
+                    "level": 58,
+                    "exp": 0,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Witch",
+                    "enemy_id": "0x015604",
+                    "level": 58,
+                    "exp": 0,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Witch",
+                    "enemy_id": "0x015604",
+                    "level": 58,
+                    "exp": 0,
+                    "is_boss": true
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 293,
+                "group_id": 11
+            },
+            "enemies": [
+                {
+                    "comment": "Sludgeman",
+                    "enemy_id": "0x010510",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Sludgeman",
+                    "enemy_id": "0x010510",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Sludgeman",
+                    "enemy_id": "0x010510",
+                    "level": 58,
+                    "exp": 0
+                },
+                {
+                    "comment": "Sludgeman",
+                    "enemy_id": "0x010510",
+                    "level": 58,
+                    "exp": 0
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 293,
+                "group_id": 16
+            },
+            "enemies": [
+                {
+                    "comment": "Ghost Mail",
+                    "enemy_id": "0x010311",
+                    "level": 58,
+                    "exp": 0,
+                    "named_enemy_params_id": 705,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Ghost Mail",
+                    "enemy_id": "0x010311",
+                    "level": 58,
+                    "exp": 0,
+                    "named_enemy_params_id": 705,
+                    "is_boss": true
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "blocks": [
+                {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 293
+                    }
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "EventEnd", "Param1": 733, "Param2": 0}
+                    ]
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "groups": [0],
+                    "announce_type": "Start"
+                },
+                {
+                    "type": "KillGroup",
+                    "reset_group": false,
+                    "announce_type": "Update",
+                    "groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "groups": [1]
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "groups": [2]
+                },
+                {
+                    "type": "KillGroup",
+                    "reset_group": false,
+                    "groups": [2]
+                },
+                {
+                    "type": "KillGroup",
+                    "groups": [3]
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "groups": [4]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [4]
+                },
+                {
+                    "type": "KillGroup",
+                    "groups": [5]
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 1, "comment": "Spawns other monster subgroups"}
+                    ],
+                    "groups": [6]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [6]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [2, 3]
+                }
+            ]
+        },
+        {
+            "comment": "Boss trash (1)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+                },
+                {
+                    "type": "KillGroup",
+                    "groups": [7]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "set_flags": [2]
+                }
+            ]
+        },
+        {
+            "comment": "Boss trash (2)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "EmHpLess", "Param1": 733, "Param2": 10, "Param3": 0, "Param4": 50}
+                    ]
+                },
+                {
+                    "type": "KillGroup",
+                    "groups": [8]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "set_flags": [3]
+                }
+            ]
+        }
+    ]
+}

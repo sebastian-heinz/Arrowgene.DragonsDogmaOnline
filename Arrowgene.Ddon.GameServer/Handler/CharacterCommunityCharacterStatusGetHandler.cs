@@ -1,60 +1,72 @@
-﻿using System.Collections.Generic;
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterCommunityCharacterStatusGetHandler : GameStructurePacketHandler<C2SCharacterCommunityCharacterStatusGetReq>
+    public class CharacterCommunityCharacterStatusGetHandler : GameRequestPacketHandler<C2SCharacterCommunityCharacterStatusGetReq, S2CCharacterCommunityCharacterStatusGetRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterCommunityCharacterStatusGetHandler));
-
 
         public CharacterCommunityCharacterStatusGetHandler(DdonGameServer server) : base(server)
         {
         }
 
-        // public override PacketId Id => PacketId.C2S_CHARACTER_COMMUNITY_CHARACTER_STATUS_GET_REQ;
-
-        public override void Handle(GameClient client, StructurePacket<C2SCharacterCommunityCharacterStatusGetReq> packet)
+        public override S2CCharacterCommunityCharacterStatusGetRes Handle(GameClient client, C2SCharacterCommunityCharacterStatusGetReq request)
         {
-            // client.Send(InGameDump.Dump_65);
-
             List<CDataCharacterListElement> updateCharacterList = new List<CDataCharacterListElement>();
             List<CDataUpdateMatchingProfileInfo> updateMatchingProfileList = new List<CDataUpdateMatchingProfileInfo>();
-            
-            List<ContactListEntity> friends = Database.SelectContactsByCharacterId(client.Character.CharacterId);
-            
-            foreach (var f in friends)
+
+            List<(ContactListEntity, CDataCharacterListElement)> friends = Database.SelectFullContactListByCharacterId(client.Character.CharacterId);
+
+            foreach ((ContactListEntity contact, CDataCharacterListElement character) in friends)
             {
-                if (f.Type != ContactListType.FriendList || f.Status != ContactListStatus.Accepted)
+                if (contact.Type != ContactListType.FriendList || contact.Status != ContactListStatus.Accepted)
                 {
                     continue;
                 }
-                Character otherCharacter =
-                    ContactListManager.getCharWithOnlineStatus(Server,Database, f.GetOtherCharacterId(client.Character.CharacterId));
-                updateCharacterList.Add(ContactListManager.CharacterToListEml(otherCharacter));
+
+                var matchClient = Server.ClientLookup.GetClientByCharacterId(character.CommunityCharacterBaseInfo.CharacterId);
+                if (matchClient != null)
+                {
+                    character.OnlineStatus = matchClient.Character?.OnlineStatus ?? OnlineStatus.Offline;
+                    character.ServerId = (ushort)Server.Id;
+                }
+                else
+                {
+                    var matchServer = Server.RpcManager.FindPlayerById(character.CommunityCharacterBaseInfo.CharacterId);
+                    if (matchServer != 0)
+                    {
+                        character.OnlineStatus = OnlineStatus.Online; // TODO
+                        character.ServerId = matchServer;
+                    }
+                    else
+                    {
+                        character.OnlineStatus = OnlineStatus.Offline;
+                    }
+                }
+
+                updateCharacterList.Add(character);
                 updateMatchingProfileList.Add(new CDataUpdateMatchingProfileInfo()
                 {
-                    CharacterId = otherCharacter.CharacterId,
-                    Comment = otherCharacter.MatchingProfile.Comment
+                    CharacterId = character.CommunityCharacterBaseInfo.CharacterId,
+                    Comment = character.MatchingProfile,
                 });
             }
-            
+
             client.Send(new S2CCharacterCommunityCharacterStatusUpdateNtc()
             {
                 UpdateCharacterList = updateCharacterList,
                 UpdateMatchingProfileList = updateMatchingProfileList
             });
-            
-            client.Send(new S2CCharacterCommunityCharacterStatusGetRes()
+
+            return new S2CCharacterCommunityCharacterStatusGetRes()
             {
-                Result = updateCharacterList.Count + 1
-            });
+                Result = (uint)(updateCharacterList.Count + 1) // ???
+            };
         }
     }
 }

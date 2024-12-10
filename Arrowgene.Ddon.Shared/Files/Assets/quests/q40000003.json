@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40000003,
+  "base_level": 1,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "On the Outskirts",
+  "light_quest_details": {
+    "area_id": 1,
+    "board_type": 1,
+    "board_id": 1
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 90
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 101
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 10
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "4",
+      "level": 1,
+      "amount": 3
+    }
+  ]
+}

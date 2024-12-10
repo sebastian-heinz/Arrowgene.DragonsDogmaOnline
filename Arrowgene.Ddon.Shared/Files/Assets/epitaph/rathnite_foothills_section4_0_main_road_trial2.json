@@ -1,0 +1,55 @@
+{
+    "comment": "Heroic Spirit Sleeping Path: Rathnite Foothills - Section 4: Main Road Trial 2",
+    "stage_id": {
+        "id": 553,
+        "group_id": 45
+    },
+    "pos_id": 0,
+    "unlock_cost": [],
+    "unlocks": [],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {"type": "EliminateTheEnemy", "priority": "Primary"}
+            ],
+            "cost": [],
+            "item_rewards": [
+                {"item_id": 18656, "amount": 40},
+                {"item_id": 18742, "amount": 10}
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 553,
+                        "group_id": 4
+                    },
+                    "enemies": [
+                        {
+                            "comment" : "Sword Soldier Dwarf Orc",
+                            "enemy_id": "0x015821",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Sword Soldier Dwarf Orc",
+                            "enemy_id": "0x015821",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Colossus",
+                            "enemy_id": "0x070041",
+                            "level": 85,
+                            "exp": 85000,
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true
+                        }
+                   ]
+                }
+            ]
+        }
+    ]
+}

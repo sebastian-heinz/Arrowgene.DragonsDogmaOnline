@@ -1,0 +1,132 @@
+{
+    "comment": "Memory of Megadosys - Section 3: Trial 2",
+    "stage_id": {
+        "id": 559,
+        "group_id": 121
+    },
+    "pos_id": 0,
+    "unlock_cost": [
+        {"item_id": 18659, "amount": 120}
+    ],
+    "unlocks": [],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {"type": "DefeatEnemyCount", "priority": "Primary", "Param1": 50},
+                {"type": "ItemNoteUsedMoreThanOnce", "priority": "Secondary"},
+                {"type": "CompleteConditionsWithinTimeLimit", "priority": "Secondary", "Param1": 105}
+            ],
+            "cost": [],
+            "item_rewards": [
+                {"item_id": 18659, "amount": 40},
+                {"item_id": 18742, "amount": 40},
+                {"item_id": 21390, "amount": 3, "type": "Random"}
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 559,
+                        "group_id": 22
+                    },
+                    "placement_type": "Manual",
+                    "enemies": [
+                        {
+                            "comment" : "Wight",
+                            "enemy_id": "0x075700",
+                            "level": 94,
+                            "exp": 6746,
+                            "named_enemy_params_id": 2287,
+                            "index": 5,
+                            "repop_count": 50,
+                            "is_boss": true
+                        },
+                        {
+                            "comment" : "Wight",
+                            "enemy_id": "0x075700",
+                            "level": 94,
+                            "exp": 6746,
+                            "named_enemy_params_id": 2287,
+                            "index": 8,
+                            "repop_count": 50,
+                            "is_boss": true
+                        },
+                        {
+                            "comment" : "Wight",
+                            "enemy_id": "0x075700",
+                            "level": 94,
+                            "exp": 6746,
+                            "named_enemy_params_id": 2287,
+                            "index": 12,
+                            "repop_count": 50,
+                            "is_boss": true
+                        },
+                        {
+                            "comment" : "Rabbit",
+                            "enemy_id": "0x015622",
+                            "level": 1,
+                            "exp": 10,
+                            "named_enemy_params_id": 2286,
+                            "index": 4,
+                            "repop_count": 50
+                        },
+                        {
+                            "comment" : "Rabbit",
+                            "enemy_id": "0x015622",
+                            "level": 1,
+                            "exp": 10,
+                            "named_enemy_params_id": 2286,
+                            "index": 6,
+                            "repop_count": 50
+                        },
+                        {
+                            "comment" : "Rabbit",
+                            "enemy_id": "0x015622",
+                            "level": 1,
+                            "exp": 10,
+                            "named_enemy_params_id": 2286,
+                            "index": 7,
+                            "repop_count": 50
+                        },
+                        {
+                            "comment" : "Rabbit",
+                            "enemy_id": "0x015622",
+                            "level": 1,
+                            "exp": 10,
+                            "named_enemy_params_id": 2286,
+                            "index": 9,
+                            "repop_count": 50
+                        },
+                        {
+                            "comment" : "Rabbit",
+                            "enemy_id": "0x015622",
+                            "level": 1,
+                            "exp": 10,
+                            "named_enemy_params_id": 2286,
+                            "index": 10,
+                            "repop_count": 50
+                        },
+                        {
+                            "comment" : "Rabbit",
+                            "enemy_id": "0x015622",
+                            "level": 1,
+                            "exp": 10,
+                            "named_enemy_params_id": 2286,
+                            "index": 11,
+                            "repop_count": 50
+                        },
+                        {
+                            "comment" : "Rabbit",
+                            "enemy_id": "0x015622",
+                            "level": 1,
+                            "exp": 13,
+                            "named_enemy_params_id": 2286,
+                            "index": 6,
+                            "repop_count": 50
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

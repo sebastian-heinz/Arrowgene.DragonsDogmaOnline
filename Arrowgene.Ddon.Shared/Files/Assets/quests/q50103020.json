@@ -1,0 +1,313 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "ExtremeMission",
+    "comment": "The Ancient City's Legacy (EM3)",
+    "quest_id": 50103020,
+    "base_level": 60,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "mission_params": {
+        "group": 1,
+        "minimum_members": 1,
+        "playtime": 1200,
+        "solo_only": false,
+        "max_pawns": 3,
+        "phase_groups": []
+    },
+    "order_conditions": [
+        {"type": "ClearExtremeMission", "Param1": 50102020}
+    ],
+    "rewards": [
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 9788,
+                    "num": 3
+                },
+                {
+                    "item_id": 7795,
+                    "num": 200
+                }
+            ]
+        },
+        {
+            "type": "jp",
+            "amount": 1500
+        },
+        {
+            "type": "exp",
+            "amount": 25000
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "comment": "Group 1",
+            "stage_id": {
+                "id": 290,
+                "group_id": 5
+            },
+            "enemies": [
+                {
+                    "comment": "Silver Roar",
+                    "enemy_id": "0x015505",
+                    "level": 60,
+                    "exp": 0,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Ghoul",
+                    "enemy_id": "0x015503",
+                    "level": 60,
+                    "exp": 0,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Ghoul",
+                    "enemy_id": "0x015503",
+                    "level": 60,
+                    "exp": 0,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Orc Bringer",
+                    "enemy_id": "0x015811",
+                    "level": 60,
+                    "exp": 0
+                },
+                {
+                    "comment": "Orc Solider",
+                    "enemy_id": "0x015800",
+                    "level": 60,
+                    "exp": 0
+                },
+                {
+                    "comment": "Orc Solider",
+                    "enemy_id": "0x015800",
+                    "level": 60,
+                    "exp": 0
+                }
+            ]
+        },
+        {
+            "comment": "Group 2",
+            "stage_id": {
+                "id": 290,
+                "group_id": 8
+            },
+            "enemies": [
+                {
+                    "comment": "Nightmare",
+                    "enemy_id": "0x015305",
+                    "level": 60,
+                    "exp": 0,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Ent",
+                    "enemy_id": "0x015031",
+                    "level": 60,
+                    "exp": 0,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Ent",
+                    "enemy_id": "0x015031",
+                    "level": 60,
+                    "exp": 0,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Orc Bringer",
+                    "enemy_id": "0x015811",
+                    "level": 60,
+                    "exp": 0
+                },
+                {
+                    "comment": "Orc Bringer",
+                    "enemy_id": "0x015811",
+                    "level": 60,
+                    "exp": 0
+                }
+            ]
+        },
+        {
+            "comment": "Group 3",
+            "stage_id": {
+                "id": 290,
+                "group_id": 10
+            },
+            "placement_type": "Manual",
+            "enemies": [
+                {
+                    "comment": "Mole Troll",
+                    "enemy_id": "0x015041",
+                    "level": 60,
+                    "exp": 0,
+                    "index": 0,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Mudman",
+                    "enemy_id": "0x010509",
+                    "level": 60,
+                    "exp": 0,
+                    "index": 4
+                },
+                {
+                    "comment": "Mudman",
+                    "enemy_id": "0x010509",
+                    "level": 60,
+                    "exp": 0,
+                    "index": 9
+                },
+                {
+                    "comment": "Mudman",
+                    "enemy_id": "0x010509",
+                    "level": 60,
+                    "exp": 0,
+                    "index": 5
+                },
+                {
+                    "comment": "Mudman",
+                    "enemy_id": "0x010509",
+                    "level": 60,
+                    "exp": 0,
+                    "index": 7
+                }
+            ]
+        },
+        {
+            "comment": "Group 4",
+            "stage_id": {
+                "id": 290,
+                "group_id": 12
+            },
+            "enemies": [
+                {
+                    "comment": "Mist Wyrm",
+                    "enemy_id": "0x015711",
+                    "level": 60,
+                    "exp": 0,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Mogok",
+                    "enemy_id": "0x015840",
+                    "level": 60,
+                    "exp": 0,
+                    "is_boss": true
+                }
+            ]
+        },
+        {
+            "comment": "Group 4 Adds",
+            "stage_id": {
+                "id": 290,
+                "group_id": 23
+            },
+            "enemies": [
+                {
+                    "comment": "Grimwarg",
+                    "enemy_id": "0x010205",
+                    "level": 60,
+                    "exp": 0,
+                    "repop_count": 50,
+                    "repop_wait_second": 60
+                },
+                {
+                    "comment": "Grimwarg",
+                    "enemy_id": "0x010205",
+                    "level": 60,
+                    "exp": 0,
+                    "repop_count": 50,
+                    "repop_wait_second": 60
+                },
+                {
+                    "comment": "Grimwarg",
+                    "enemy_id": "0x010205",
+                    "level": 60,
+                    "exp": 0,
+                    "repop_count": 50,
+                    "repop_wait_second": 60
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "blocks": [
+                {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 290
+                    }
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "EventEnd", "Param1": 702, "Param2": 0}
+                    ]
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "announce_type": "Start",
+                    "groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "reset_group": false,
+                    "end_contents_announce": 1,
+                    "groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "end_contents_announce": 2,
+                    "groups": [1]
+                },
+                {
+                    "type": "KillGroup",
+                    "end_contents_announce": 3,
+                    "groups": [2]
+                },
+                {
+                    "type": "KillGroup",
+                    "end_contents_announce": 4,
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 1, "comment": "Start Adds Spawner"}
+                    ],
+                    "groups": [3]
+                },
+                {
+                    "type": "IsStageNo",
+                    "flags": [
+                        {"type": "MyQst", "action": "Set", "value": 2, "comment": "Destroy Adds still alive"}
+                    ],
+                    "stage_id": {
+                        "id": 290
+                    }
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "comment": "Wait for fight to start",
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+                },
+                {
+                    "type": "SpawnGroup",
+                    "groups": [4],
+                    "check_commands": [
+                        {"type": "MyQstFlagOn", "Param1": 2}
+                    ]
+                },
+                {
+                    "type": "DestroyGroup",
+                    "groups": [4]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40000144,
+  "base_level": 17,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Monsters Beyond",
+  "light_quest_details": {
+    "area_id": 4,
+    "board_type": 1,
+    "board_id": 11
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1076
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1292
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 398
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "49",
+      "level": 17,
+      "amount": 3
+    }
+  ]
+}

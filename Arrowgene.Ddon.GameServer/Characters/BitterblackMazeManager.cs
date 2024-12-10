@@ -1,24 +1,16 @@
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Appraisal;
 using Arrowgene.Ddon.Shared.Model.BattleContent;
-using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using YamlDotNet.Core;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -56,14 +48,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return levelCap;
         }
 
-        public static CDataBattleContentStatus GetUpdatedContentStatus(DdonGameServer server, Character character)
+        public static CDataBattleContentStatus GetUpdatedContentStatus(DdonGameServer server, Character character, DbConnection? connectionIn = null)
         {
             var progress = character.BbmProgress;
 
-            var rewards = server.Database.SelectBBMRewards(character.CharacterId);
+            var rewards = server.Database.SelectBBMRewards(character.CharacterId, connectionIn);
 
             var availableRewards = new List<CDataBattleContentAvailableRewards>();
-            var trackedRewards = server.Database.SelectBBMContentTreasure(character.CharacterId);
+            var trackedRewards = server.Database.SelectBBMContentTreasure(character.CharacterId, connectionIn);
             foreach (var stage in server.AssetRepository.BitterblackMazeAsset.Stages)
             {
                 var matches = trackedRewards.Select(x => x.ContentId == stage.Value.ContentId).ToList();
@@ -103,13 +95,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return contentStatus;
         }
 
-        public static void HandleTierClear(DdonGameServer server, GameClient client, Character character, StageId stageId)
+        public static PacketQueue HandleTierClear(DdonGameServer server, GameClient client, Character character, StageId stageId, DbConnection? connectionIn = null)
         {
+            PacketQueue packets = new();
+            
             var progress = character.BbmProgress;
 
-            var match = server.AssetRepository.BitterblackMazeAsset.Stages.Select(x => x.Value).Where(x => x.ContentId == progress.ContentId).FirstOrDefault();
+            var match = server.AssetRepository.BitterblackMazeAsset.Stages.Select(x => x.Value).Where(x => x.ContentId == progress.ContentId).FirstOrDefault()
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_FAIL); // TODO: Better error code.
 
-            var stageProgression = server.AssetRepository.BitterblackMazeAsset.StageProgressionList.Where(x => x.Id == match.ContentId).FirstOrDefault();
+            var stageProgression = server.AssetRepository.BitterblackMazeAsset.StageProgressionList.Where(x => x.Id == match.ContentId).FirstOrDefault()
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_FAIL); // TODO: Better error code.
+
             if (stageProgression.ConnectionList.Count > 0)
             {
                 var clearNtc = new S2CBattleContentClearTierNtc()
@@ -117,7 +114,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     Unk0 = progress.ContentId,
                     TierName = match.ContentName
                 };
-                client.Send(clearNtc);
+                client.Enqueue(clearNtc, packets);
 
                 progress.ContentId = stageProgression.ConnectionList[0].Value;
                 progress.Tier += 1;
@@ -131,25 +128,28 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     ContentName = (match.ContentMode == BattleContentMode.Rotunda) ? "Bitterblack Maze Rotunda" : "Bitterblack Maze Abyss",
                     ClearTime = (ulong) (DateTimeOffset.UtcNow.ToUnixTimeSeconds() - (long) progress.StartTime)
                 };
-                client.Send(clearNtc);
+                client.Enqueue(clearNtc, packets);
 
                 progress.ContentId = 0;
                 progress.Tier = 0;
             }
-            server.Database.UpdateBBMProgress(character.CharacterId, progress);
+            server.Database.UpdateBBMProgress(character.CharacterId, progress, connectionIn);
 
-            var rewards = server.Database.SelectBBMRewards(character.CharacterId);
+            var rewards = server.Database.SelectBBMRewards(character.CharacterId, connectionIn);
             // TODO: handle BattleContentRewardBonus.Up (some sort of reward bonus)
             // TODO: Is there a reason we wouldn't get a reward here?
-            rewards.GoldMarks += 1;
-            rewards.SilverMarks += 5;
-            rewards.RedMarks += 15;
-            server.Database.UpdateBBMRewards(character.CharacterId, rewards);
+            var marks = GetMarksForStage(server.AssetRepository.BitterblackMazeAsset, stageId);
+            rewards.GoldMarks += marks.Gold;
+            rewards.SilverMarks += marks.Silver;
+            rewards.RedMarks += marks.Red;
+            server.Database.UpdateBBMRewards(character.CharacterId, rewards, connectionIn);
 
             // Update the situation information
             S2CBattleContentProgressNtc progressNtc = new S2CBattleContentProgressNtc();
-            progressNtc.BattleContentStatusList.Add(BitterblackMazeManager.GetUpdatedContentStatus(server, character));
-            client.Send(progressNtc);
+            progressNtc.BattleContentStatusList.Add(BitterblackMazeManager.GetUpdatedContentStatus(server, character, connectionIn));
+            client.Enqueue(progressNtc, packets);
+
+            return packets;
         }
 
         public static bool IsMazeReward(uint itemId)
@@ -301,13 +301,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             if (chestType == ChestType.Purple || chestType == ChestType.Bracelet || chestType == ChestType.Earring)
             {
-                uint rareItem = RollRareArmor(stageId);
+                uint rareItem = RollRareArmor(assets, stageId);
                 if (rareItem > 0)
                 {
                     results.Add(new InstancedGatheringItem()
                     {
                         ItemId = rareItem,
                         ItemNum = 1,
+                        Quality = 1,
                     });
                 }
             }
@@ -319,12 +320,24 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 var treasure = server.Database.SelectBBMContentTreasure(character.CharacterId).Where(x => x.ContentId == character.BbmProgress.ContentId).ToList();
                 if (treasure.Count == 0)
                 {
-                    uint itemId = (chestType == ChestType.Bracelet) ? BitterblackMazeManager.BitterblackBraceletItemId : BitterblackMazeManager.BitterblackEarringItemId;
+                    uint itemId;
+                    uint quality;
+                    if (RollRewardChance(DetermineJewelryChance(assets, stageId)))
+                    {
+                        itemId = (chestType == ChestType.Bracelet) ? BitterblackMazeManager.BitterblackBraceletItemId : BitterblackMazeManager.BitterblackEarringItemId;
+                        quality = 1;
+                    }
+                    else
+                    {
+                        var items = BitterblackMazeManager.SelectGearType(assets.HighQualityWeapons[jobId], DetermineEquipClass(assets.HighQualityArmors, jobId), assets.HighQualityOther);
+                        itemId = BitterblackMazeManager.SelectGear(server, items, chestType, stageId);
+                        quality = 0;
+                    }
                     results.Add(new InstancedGatheringItem()
                     {
                         ItemId = itemId,
                         ItemNum = 1,
-                        Quality = 1
+                        Quality = quality
                     });
                 }
             }
@@ -369,7 +382,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             if (chestType != ChestType.Earring && chestType != ChestType.Bracelet)
             {
-                foreach (var item in gChestTrash)
+                foreach (var item in assets.ChestTrash)
                 {
                     if (Random.Shared.Next(5) < 4)
                     {
@@ -377,7 +390,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         continue;
                     }
 
-                    uint numItems = (uint)Random.Shared.Next((int)(item.Item2 + 1));
+                    uint numItems = (uint)Random.Shared.Next((int)(item.Amount + 1));
                     if (numItems > 0)
                     {
                         // Stick consumable in the front of the list
@@ -393,11 +406,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             if (results.Count == 0)
             {
                 // Stick something in the chest so it is not empty
-                var item = gChestTrash[Random.Shared.Next(gChestTrash.Count)];
-                uint numItems = (uint)Random.Shared.Next((int)(item.Item2 + 1));
+                var item = assets.ChestTrash[Random.Shared.Next(assets.ChestTrash.Count)];
+                uint numItems = (uint)Random.Shared.Next((int)(item.Amount + 1));
                 results.Add(new InstancedGatheringItem()
                 {
-                    ItemId = item.Item1,
+                    ItemId = item.ItemId,
                     ItemNum = numItems > 0 ? numItems : 1
                 });
             }
@@ -451,10 +464,27 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 case ChestType.Orange:
                 case ChestType.Purple:
+                case ChestType.Bracelet:
+                case ChestType.Earring:
                     return lootRange.SealedRange;
                 default:
                     return lootRange.NormalRange;
             }
+        }
+
+        private static double DetermineRareChance(BitterblackMazeAsset assets, StageId stageId)
+        {
+            return assets.LootRanges[stageId.Id].RareChance;
+        }
+
+        private static double DetermineJewelryChance(BitterblackMazeAsset assets, StageId stageId)
+        {
+            return assets.LootRanges[stageId.Id].JewelryChance;
+        }
+
+        private static (uint Gold, uint Silver, uint Red) GetMarksForStage(BitterblackMazeAsset assets, StageId stageId)
+        {
+            return assets.LootRanges[stageId.Id].Marks;
         }
 
         private static uint SelectGear(DdonGameServer server, List<uint> items, ChestType chestType, StageId stageId)
@@ -487,48 +517,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return itemId;
         }
 
-        private static uint RollRareArmor(StageId stageId)
+        private static uint RollRareArmor(BitterblackMazeAsset assets, StageId stageId)
         {
             uint itemId = 0;
-            var dropTable = StageManager.IsBitterBlackMazeBossStageId(stageId) ? gRareRotundaDrops : gRareAbyssNormalDrops;
-            if (Random.Shared.Next(100) > 98)
+            var dropTable = StageManager.IsBitterBlackMazeBossStageId(stageId) ? assets.RotundaRare : assets.AbyssRare;
+            if (RollRewardChance(DetermineRareChance(assets, stageId)))
             {
                 itemId = dropTable[Random.Shared.Next(dropTable.Count)];
             }
             return itemId;
         }
 
-        private static readonly List<(uint, uint)> gChestTrash = new List<(uint, uint)>()
+        private static bool RollRewardChance(double chance)
         {
-            // ItemId, Max
-            (55,   5), // Lantern Kindling
-            (9361, 2), // Quality Gala Extract
-            (41,   1), // Panacea
-            (7552, 2), // Healing Elixer
-        };
-
-        private static readonly List<uint> gRareRotundaDrops = new List<uint>()
-        {
-            21396, // カースドヘルム,Cursed Helm,
-            21397, // カースドアーマー,Cursed Armor,
-            21398, // カースドアーム,Cursed Arms,
-            21399, // カースドキュイス,Cursed Cuisses,
-            21400, // ケイオスマスク,Chaos Mask,
-            21401, // ケイオスローブ,Chaos Robe,
-            21402, // ケイオスグローブ,Chaos Gloves,
-            21403, // ケイオスレッグス,Chaos Legs,
-        };
-
-        private static readonly List<uint> gRareAbyssNormalDrops = new List<uint>()
-        {
-            24601, // プレアードヘルム,Pleiades Helm,
-            24605, // ヴァルキリアヘルム,Valkyrian Helm,
-            24609, // プレアードローブ,Pleiades Robe,
-            24614, // ヴァルキリアアーマー,Valkyrian Armor,
-            24615, // プレアードウェア,Pleiades Clothing,
-            24616, // ヴァルキリアアーム,Valkyrian Arms,
-            24617, // プレアードパンツ,Pleiades Pants,
-            24618, // ヴァルキリアレッグス,Valkyrian Legs,
-        };
+            return chance >= Random.Shared.NextDouble();
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿using Arrowgene.Buffers;
+using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure;
 
@@ -8,7 +8,7 @@ public class CDataCommunityCharacterBaseInfo
     {
         CharacterId = 0;
         CharacterName = new CDataCharacterName();
-        ClanName = "";
+        ClanName = string.Empty;
     }
     
     public uint CharacterId { get; set; }

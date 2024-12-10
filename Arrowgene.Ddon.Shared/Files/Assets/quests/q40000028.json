@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40000028,
+  "base_level": 37,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Gritten Fort: Cooperation",
+  "light_quest_details": {
+    "area_id": 8,
+    "board_type": 1,
+    "board_id": 10
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 2079
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 8427
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1093
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "41",
+      "level": 37,
+      "amount": 3
+    }
+  ]
+}

@@ -1,0 +1,203 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "ExtremeMission",
+    "comment": "Ancient Place of Rituals (Grand Mission)",
+    "quest_id": 50300001,
+    "base_level": 45,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "mission_params": {
+        "group": 9,
+        "minimum_members": 1,
+        "maximum_members": 8,
+        "playtime": 900,
+        "solo_only": false,
+        "max_pawns": 7,
+        "loot_distribution": "TimeBased",
+        "phase_groups": []
+    },
+    "order_conditions": [],
+    "rewards": [
+        {
+            "type": "fixed",
+            "comment": "Green Dye, Blood Orb",
+            "loot_pool": [
+                {
+                    "item_id": 8136,
+                    "num": 1
+                },
+                {
+                    "item_id": 7795,
+                    "num": 200
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "comment": "Lestania Glass",
+            "loot_pool": [
+                {
+                    "item_id": 9458,
+                    "num": 1,
+                    "chance": 0.37
+                },
+                {
+                    "item_id": 9458,
+                    "num": 5,
+                    "chance": 0.25
+                },
+                {
+                    "item_id": 9458,
+                    "num": 24,
+                    "chance": 0.20
+                },
+                {
+                    "item_id": 9458,
+                    "num": 36,
+                    "chance": 0.10
+                },
+                {
+                    "item_id": 9458,
+                    "num": 48,
+                    "chance": 0.05
+                },
+                {
+                    "item_id": 9458,
+                    "num": 60,
+                    "chance": 0.03
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "comment": "Lestania Amber",
+            "loot_pool": [
+                {
+                    "item_id": 9459,
+                    "num": 0,
+                    "chance": 0.50
+                },
+                {
+                    "item_id": 9459,
+                    "num": 18,
+                    "chance": 0.20
+                },
+                {
+                    "item_id": 9459,
+                    "num": 27,
+                    "chance": 0.15
+                },
+                {
+                    "item_id": 9459,
+                    "num": 36,
+                    "chance": 0.10
+                },
+                {
+                    "item_id": 9459,
+                    "num": 45,
+                    "chance": 0.05
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "comment": "Unappraised Moon Trinket (Soldier)",
+            "loot_pool": [
+                {
+                    "item_id": 11759,
+                    "num": 1,
+                    "chance": 0.40
+                },
+                {
+                    "item_id": 11759,
+                    "num": 2,
+                    "chance": 0.30
+                },
+                {
+                    "item_id": 11759,
+                    "num": 3,
+                    "chance": 0.20
+                },
+                {
+                    "item_id": 11759,
+                    "num": 4,
+                    "chance": 0.10
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "comment": "Unappraised Moon Trinket (General)",
+            "loot_pool": [
+                {
+                    "item_id": 13476,
+                    "num": 0,
+                    "chance": 0.90
+                },
+                {
+                    "item_id": 13476,
+                    "num": 1,
+                    "chance": 0.10
+                }
+            ]
+        },
+        {
+            "type": "jp",
+            "amount": 200
+        },
+        {
+            "type": "exp",
+            "amount": 50000
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "comment": "Boss",
+            "stage_id": {
+                "id": 82,
+                "group_id": 0
+            },
+            "enemies": [
+                {
+                    "comment": "Grand Ent",
+                    "enemy_id": "0x080200",
+                    "level": 45,
+                    "exp": 0,
+                    "is_boss": true
+                }
+            ]
+        },
+        {
+            "comment": "None",
+            "stage_id": {
+                "id": 82,
+                "group_id": 1
+            },
+            "enemies": []
+        }
+    ],
+    "processes": [
+        {
+            "blocks": [
+                {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 82
+                    }
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Start",
+                    "groups": [0]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 82
+                    },
+                    "event_id": 10
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,189 @@
+{
+    "comment": "Memory of Megadosys - Section 1: Trial 1",
+    "stage_id": {
+        "id": 559,
+        "group_id": 102
+    },
+    "pos_id": 0,
+    "unlock_cost": [
+        {"item_id": 18659, "amount": 10}
+    ],
+    "unlocks": [],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
+                {"type": "ItemNoteUsedMoreThanOnce", "priority": "Secondary"},
+                {"type": "CompleteConditionsWithinTimeLimit", "priority": "Secondary", "Param1": 90}
+            ],
+            "cost": [],
+            "item_rewards": [
+                {"item_id": 18659, "amount": 11},
+                {"item_id": 18742, "amount": 40},
+                {"item_id": 21391, "amount": 3, "type": "Random"}
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 559,
+                        "group_id": 60
+                    },
+                    "starting_index": 3,
+                    "enemies": [
+                        {
+                            "comment" : "Megado Guard (hunter)",
+                            "enemy_id": "0x011082",
+                            "level": 93,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "hm_present_no": 104
+                        },
+                        {
+                            "comment" : "Megado Guard (fighter)",
+                            "enemy_id": "0x011080",
+                            "level": 94,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "hm_present_no": 102
+                        },
+                        {
+                            "comment" : "Megado Guard (hunter)",
+                            "enemy_id": "0x011082",
+                            "level": 93,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "hm_present_no": 104
+                        },
+                        {
+                            "comment" : "Megado Guard (fighter)",
+                            "enemy_id": "0x011080",
+                            "level": 94,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "hm_present_no": 102
+                        },
+                        {
+                            "comment" : "Megado Guard (hunter)",
+                            "enemy_id": "0x011082",
+                            "level": 93,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "hm_present_no": 104
+                        },
+                        {
+                            "comment" : "Megado Guard (fighter)",
+                            "enemy_id": "0x011080",
+                            "level": 94,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "hm_present_no": 102
+                        },
+                        {
+                            "comment" : "Megado Guard (hunter)",
+                            "enemy_id": "0x011082",
+                            "level": 93,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "hm_present_no": 104
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "trial_name": "Trial of Souls",
+            "constraints": [
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
+                {"type": "ItemNoteUsedMoreThanOnce", "priority": "Secondary"},
+                {"type": "CompleteConditionsWithinTimeLimit", "priority": "Secondary", "Param1": 120}
+            ],
+            "cost": [
+                {"item_id": 18659, "amount": 10}
+            ],
+            "item_rewards": [
+                {"item_id": 18742, "amount": 80},
+                {
+                    "type": "pool", "rolls": 1,
+                    "items": [
+                        {"type": "Random", "item_id": 9209, "amount": 3},
+                        {"type": "Random", "item_id": 9210, "amount": 3},
+                        {"type": "Random", "item_id": 11725, "amount": 3},
+                        {"type": "Random", "item_id": 13662, "amount": 3},
+                        {"type": "Random", "item_id": 9231, "amount": 3},
+                        {"type": "Random", "item_id": 9232, "amount": 3},
+                        {"type": "Random", "item_id": 11736, "amount": 3},
+                        {"type": "Random", "item_id": 13673, "amount": 3}
+                    ]
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 559,
+                        "group_id": 60
+                    },
+                    "starting_index": 3,
+                    "enemies": [
+                        {
+                            "comment" : "Megado Guard (warrior)",
+                            "enemy_id": "0x011083",
+                            "level": 93,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "hm_present_no": 105
+                        },
+                        {
+                            "comment" : "Megado Guard (warrior)",
+                            "enemy_id": "0x011083",
+                            "level": 93,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "hm_present_no": 105
+                        },
+                        {
+                            "comment" : "Megado Guard (warrior)",
+                            "enemy_id": "0x011083",
+                            "level": 93,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "hm_present_no": 105
+                        },
+                        {
+                            "comment" : "Megado Guard (warrior)",
+                            "enemy_id": "0x011083",
+                            "level": 93,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "hm_present_no": 105
+                        },
+                        {
+                            "comment" : "Mist Priest",
+                            "enemy_id": "0x011032",
+                            "level": 93,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "hm_present_no": 70
+                        },
+                        {
+                            "comment" : "Mist Priest",
+                            "enemy_id": "0x011032",
+                            "level": 93,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "hm_present_no": 70
+                        },
+                        {
+                            "comment" : "Mist Priest",
+                            "enemy_id": "0x011032",
+                            "level": 93,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286,
+                            "hm_present_no": 70
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

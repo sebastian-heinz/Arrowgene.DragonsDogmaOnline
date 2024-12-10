@@ -1,0 +1,64 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Seeking the Master: Fighter",
+    "quest_id": 60000050,
+    "next_quest": 0,
+    "base_level": 18,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {"id": 2},
+    "order_conditions": [
+        {
+            "type": "MinimumVocationLevel",
+            "Param1": 1,
+            "Param2": 18
+        }
+    ],
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 300
+        },
+        {
+            "type": "exp",
+            "amount": 2500
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 9381,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 2,
+                "group_id": 1
+            },
+            "npc_id": "Renton0",
+            "message_id": 14011
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 66,
+                "group_id": 1
+            },
+            "announce_type": "Accept",
+            "npc_id": "Vanessa0",
+            "message_id": 14014
+        }
+    ]
+}

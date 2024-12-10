@@ -75,7 +75,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 lock (HubMembers[previousStageId])
                 {
                     HubMembers[previousStageId].Remove(client);
-                    foreach (GameClient otherClient in Server.ClientLookup.GetAll())
+                    foreach (GameClient otherClient in Server.ClientLookup.GetAll().Where(x => x.Character != null))
                     {
                         if (HubMembers[previousStageId].Contains(otherClient))
                         {
@@ -97,7 +97,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 lock (HubMembers[targetStageId])
                 {
-                    foreach (GameClient otherClient in HubMembers[targetStageId])
+                    foreach (GameClient otherClient in HubMembers[targetStageId].Where(x => x.Character != null))
                     {
                         uint otherId = otherClient.Character.CharacterId;
                         if (!otherClient.Character.LastSeenLobby.TryGetValue(id, out var lastStage) || lastStage != targetStageId)
@@ -157,6 +157,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public void LeaveAllHubs(GameClient client)
         {
+            foreach (var otherClient in Server.ClientLookup.GetAll())
+            {
+                otherClient.Character?.LastSeenLobby.Remove(client.Character.CharacterId);
+            }
+
             foreach (var hub in HubMembers.Values)
             {
                 hub.Remove(client);

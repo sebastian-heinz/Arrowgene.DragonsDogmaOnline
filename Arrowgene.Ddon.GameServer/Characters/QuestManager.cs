@@ -1,21 +1,13 @@
-using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Quests;
-using Arrowgene.Ddon.GameServer.Quests.MainQuests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
-using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text.Json;
-using YamlDotNet.Core.Events;
-using YamlDotNet.Core.Tokens;
-using static Arrowgene.Ddon.GameServer.Characters.QuestManager;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -27,62 +19,154 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
         }
 
-        private static Dictionary<QuestId, Quest> gQuests = new Dictionary<QuestId, Quest>();
+        /**
+         * @note gQuests contains a map of <QuestScheduleId:QuestId>.
+         * @note gVarientQuests maps QuestId:HashSet<QuestScheduleId>.
+         * 
+         * A QuestScheduleId should always get us back to a unique quest object.
+         * A QuestId can return us a list of related QuestScheduleIds which all use the same QuestId.
+         */
+        private static Dictionary<uint, Quest> gQuests = new Dictionary<uint, Quest>();
+        private static readonly Dictionary<QuestId, List<Quest>> gVariantQuests = new();
+
+        private static Dictionary<uint, HashSet<uint>> gTutorialQuests = new Dictionary<uint, HashSet<uint>>();
+        private static Dictionary<QuestAreaId, HashSet<QuestId>> gWorldQuests = new Dictionary<QuestAreaId, HashSet<QuestId>>();
 
         public static void LoadQuests(AssetRepository assetRepository)
         {
-            // TODO: Load additional quests from file?
-            // TODO: Once everything is comfortably understood, we can probably serialize
-            // TODO: the quest data and load it from file when the server starts instead
-
-            // Main Quests
-            // gQuests[QuestId.TheSlumberingGod] = new Mq000002_TheSlumberingGod();
-            // gQuests[QuestId.TheGreatAlchemist] = new Mq000025_TheGreatAlchemist();
-            // gQuests[QuestId.HopesBitterEnd] = new Mq030260_HopesBitterEnd();
-
-            // Load Quests defined in files
+            // TODO: Quests should probably operate on the QuestScheduleID instead of QuestId so the global list can still contain all quests
+            // TODO: Then quests can be distributed to different lists for faster lookup (like world by area id or personal by stageno)
             foreach (var questAsset in assetRepository.QuestAssets.Quests)
             {
-                gQuests[questAsset.QuestId] = GenericQuest.FromAsset(questAsset);
+                gQuests[questAsset.QuestScheduleId] = GenericQuest.FromAsset(questAsset);
+
+                var quest = gQuests[questAsset.QuestScheduleId];
+                if (!quest.Enabled)
+                {
+                    continue;
+                }
+
+                if (!gVariantQuests.ContainsKey(quest.QuestId))
+                {
+                    gVariantQuests[quest.QuestId] = new List<Quest>();
+                }
+                gVariantQuests[quest.QuestId].Add(quest);
+
+                if (quest.QuestType == QuestType.Tutorial)
+                {
+                    uint stageNo = (uint)StageManager.ConvertIdToStageNo(quest.StageId);
+                    if (!gTutorialQuests.ContainsKey(stageNo))
+                    {
+                        gTutorialQuests[stageNo] = new HashSet<uint>();
+                    }
+                    gTutorialQuests[stageNo].Add(quest.QuestScheduleId);
+                }
+                else if (quest.QuestType == QuestType.World)
+                {
+                    if (!gWorldQuests.ContainsKey(quest.QuestAreaId))
+                    {
+                        gWorldQuests[quest.QuestAreaId] = new HashSet<QuestId>();
+                    }
+                    gWorldQuests[quest.QuestAreaId].Add(quest.QuestId);
+                }
             }
         }
 
-        /**
-         * @brief Should only be called when loading additional quests from file.
-         */
-        public static void AddQuest(Quest quest)
+        public static HashSet<uint> GetQuestsByType(QuestType type)
         {
-            gQuests[quest.QuestId] = quest;
-        }
-
-        public static List<KeyValuePair<QuestId, Quest>> GetQuestsByType(QuestType type)
-        {
-            List<KeyValuePair<QuestId, Quest>> results = new List<KeyValuePair<QuestId, Quest>>();
+            HashSet<uint> results = new HashSet<uint>();
 
             // TODO: We probably need to optimize this as more quests are added
-            foreach (var quest in gQuests)
+            foreach (var (scheduleId, quest) in gQuests)
             {
-                if (quest.Value.QuestType == type)
+                if (quest.QuestType == type)
                 {
-                    results.Add(quest);
+                    results.Add(quest.QuestScheduleId);
                 }
             }
 
             return results;
         }
 
-        public static Quest GetQuest(QuestId questId)
+        public static HashSet<QuestId> GetWorldQuestIdsByAreaId(QuestAreaId areaId)
         {
-            if (!gQuests.ContainsKey(questId))
+            if (!gWorldQuests.ContainsKey(areaId))
             {
-                return null;
+                return new HashSet<QuestId>();
             }
-            return gQuests[questId];
+
+            return gWorldQuests[areaId];
         }
 
-        public static Quest GetQuest(uint questId)
+        public static Quest GetQuestByBoardId(ulong boardId)
         {
-            return GetQuest((QuestId)questId);
+            uint questId = BoardManager.GetQuestIdFromBoardId(boardId);
+            return GetQuestByScheduleId(questId);
+        }
+
+        public static HashSet<uint> GetTutorialQuestsByStageNo(uint stageNo)
+        {
+            if (!gTutorialQuests.ContainsKey(stageNo))
+            {
+                return new HashSet<uint>();
+            }
+
+            return gTutorialQuests[stageNo];
+        }
+
+        public static bool IsVariantQuest(QuestId baseQuestId)
+        {
+            return gVariantQuests.ContainsKey(baseQuestId);
+        }
+
+        public static Quest GetQuestByScheduleId(uint questScheduleId)
+        {
+            if (!gQuests.ContainsKey(questScheduleId))
+            {
+                Logger.Error($"GetQuestByScheduleId: Invalid questScheduleId {questScheduleId}");
+                return null;
+            }
+
+            return gQuests[questScheduleId];
+        }
+
+        public static List<Quest> GetQuestsByQuestId(QuestId questId)
+        {
+            if (gVariantQuests.ContainsKey(questId))
+            {
+                return gVariantQuests[questId];
+            }
+            return new List<Quest>();
+        }
+
+        public static Quest RollQuestForQuestId(QuestId questId)
+        {
+            var quests = GetQuestsByQuestId(questId);
+            return quests[Random.Shared.Next(0, quests.Count)];
+        }
+
+        public static bool IsQuestEnabled(uint questScheduleId)
+        {
+            var quest = GetQuestByScheduleId(questScheduleId);
+            return (quest == null) ? false : quest.Enabled;
+        }
+
+        public static QuestStateManager GetQuestStateManager(GameClient client, Quest quest)
+        {
+            return quest.IsPersonal ? client.QuestState : client.Party.QuestState;
+        }
+
+        public static HashSet<uint> CollectQuestScheduleIds(GameClient client, StageId stageId)
+        {
+            var questScheduleIds = new HashSet<uint>();
+
+            questScheduleIds.UnionWith(client.Party.QuestState.StageQuests(stageId));
+            if (client.Party.Clients.Count == 1)
+            {
+                questScheduleIds.UnionWith(client.QuestState.StageQuests(stageId));
+            }
+
+            return questScheduleIds;
         }
 
         public class LayoutFlag
@@ -112,17 +196,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
             public static CDataQuestOrderConditionParam MinimumLevelRestriction(uint level)
             {
-                return new CDataQuestOrderConditionParam() { Type = 0x1, Param01 = (int) level };
+                return new CDataQuestOrderConditionParam() { Type = 0x1, Param01 = (int)level };
             }
 
             public static CDataQuestOrderConditionParam MinimumVocationRestriction(JobId jobId, uint level)
             {
-                return new CDataQuestOrderConditionParam() { Type = 0x2, Param01 = (int)jobId, Param02 = (int) level};
+                return new CDataQuestOrderConditionParam() { Type = 0x2, Param01 = (int)jobId, Param02 = (int)level };
             }
 
             public static CDataQuestOrderConditionParam Solo()
             {
-                return new CDataQuestOrderConditionParam() { Type = 0x3};
+                return new CDataQuestOrderConditionParam() { Type = 0x3 };
             }
 
             public static CDataQuestOrderConditionParam MainQuestCompletionRestriction(QuestId questId)
@@ -130,14 +214,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new CDataQuestOrderConditionParam() { Type = 0x6, Param01 = (int)questId };
             }
 
-            public static CDataQuestOrderConditionParam ClearPersonalQuestRestriction(int param01, int param02 = 0)
+            public static CDataQuestOrderConditionParam ClearTutorialQuestRestriction(int param01, int param02 = 0)
             {
                 return new CDataQuestOrderConditionParam() { Type = 0x7, Param01 = param01, Param02 = param02 };
             }
 
-            public static CDataQuestOrderConditionParam ClearPersonalQuestRestriction(QuestId questId, int param02 = 0)
+            public static CDataQuestOrderConditionParam ClearTutorialQuestRestriction(QuestId questId, int param02 = 0)
             {
-                return new CDataQuestOrderConditionParam() { Type = 0x7, Param01 = (int) questId, Param02 = param02 };
+                return new CDataQuestOrderConditionParam() { Type = 0x7, Param01 = (int)questId, Param02 = param02 };
             }
         }
 
@@ -145,7 +229,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             return new CDataQuestProcessState()
             {
-                ProcessNo = processNo, SequenceNo = sequenceNo, BlockNo = blockNo,
+                ProcessNo = processNo,
+                SequenceNo = sequenceNo,
+                BlockNo = blockNo,
                 ResultCommandList = resultCommands,
                 CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(checkCommands)
             };
@@ -254,7 +340,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             /**
              * @brief
-             * @param enemyId
+             * @param enemyNameId (NOT enemyId)
              * @param enemyLv
              * @param enemyNum
              */
@@ -2205,7 +2291,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              */
             public static CDataQuestCommand UpdateAnnounce(QuestAnnounceType announceType = QuestAnnounceType.Accept, int param02 = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.UpdateAnnounce, Param01 = (int) announceType, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.UpdateAnnounce, Param01 = (int)announceType, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
             /**
@@ -2861,7 +2947,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              */
             public static CDataQuestCommand EventExecCont(StageNo stageNo, int eventNo, StageNo jumpStageNo, int jumpStartPosNo)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.EventExecCont, Param01 = (int)stageNo, Param02 = eventNo, Param03 = (int) jumpStageNo, Param04 = jumpStartPosNo };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.EventExecCont, Param01 = (int)stageNo, Param02 = eventNo, Param03 = (int)jumpStageNo, Param04 = jumpStartPosNo };
             }
 
             /**
@@ -3101,7 +3187,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              */
             public static CDataQuestProgressWork KilledTargetEnemySetGroup(int flagNo, StageNo stageNo, int groupNo, int work04 = 0)
             {
-                return new CDataQuestProgressWork() { CommandNo = (uint) QuestNotifyCommand.KilledTargetEnemySetGroup, Work01 = flagNo, Work02 = (int)stageNo, Work03 = groupNo, Work04 = work04 };
+                return new CDataQuestProgressWork() { CommandNo = (uint)QuestNotifyCommand.KilledTargetEnemySetGroup, Work01 = flagNo, Work02 = (int)stageNo, Work03 = groupNo, Work04 = work04 };
             }
 
             /**
@@ -3121,7 +3207,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              */
             public static CDataQuestProgressWork KilledTargetEnemySetGroup1(NpcId npcId, int work02 = 0, int work03 = 0, int work04 = 0)
             {
-                return new CDataQuestProgressWork() { CommandNo = (uint)QuestNotifyCommand.FulfillDeliverItem, Work01 = (int) npcId, Work02 = work02, Work03 = work03, Work04 = work04 };
+                return new CDataQuestProgressWork() { CommandNo = (uint)QuestNotifyCommand.FulfillDeliverItem, Work01 = (int)npcId, Work02 = work02, Work03 = work03, Work04 = work04 };
             }
         }
 
@@ -3130,9 +3216,39 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return (((uint)questId) >= 40000000) && (((uint)questId) < 50000000);
         }
 
+        public static bool IsBoardQuest(Quest quest)
+        {
+            return IsBoardQuest(quest.QuestId);
+        }
+
+        public static bool IsTutorialQuest(QuestId questId)
+        {
+            return (((uint)questId) >= 60000000) && (((uint)questId) < 70000000);
+        }
+
+        public static bool IsTutorialQuest(Quest quest)
+        {
+            return IsTutorialQuest(quest.QuestId);
+        }
+
         public static bool IsWorldQuest(QuestId questId)
         {
             return (((uint)questId) >= 20000000) && (((uint)questId) < 30000000);
+        }
+
+        public static bool IsWorldQuest(Quest quest)
+        {
+            return IsWorldQuest(quest.QuestId);
+        }
+
+        public static bool IsClanQuest(QuestId questId)
+        {
+            return (((uint)questId) >= 30000000) && (((uint)questId) < 40000000);
+        }
+
+        public static bool IsClanQuest(Quest quest)
+        {
+            return IsClanQuest(quest.QuestId);
         }
     }
 }

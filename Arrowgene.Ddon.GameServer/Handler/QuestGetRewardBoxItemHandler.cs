@@ -47,25 +47,50 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 UpdateType = 0
             };
 
-
-            foreach (var boxReward in packet.GetRewardBoxItemList)
+            // If a quest has multiple slots with the same reward, coalesce them into a single slot.
+            // This can happen when a quest has multiple random rewards and they random to the same item and amount
+            Dictionary<string, CDataRewardBoxItem> coalescedRewards = new Dictionary<string, CDataRewardBoxItem>();
+            foreach (var reward in rewards)
             {
-                var reward = rewards.Single(x => x.UID == boxReward.UID);
-                if (Server.ItemManager.IsItemWalletPoint(reward.ItemId))
+                if (!coalescedRewards.ContainsKey(reward.UID))
                 {
-                    (WalletType walletType, uint amount) = Server.ItemManager.ItemToWalletPoint(reward.ItemId);
-                    var result = Server.WalletManager.AddToWallet(client.Character, walletType, amount);
-                    updateCharacterItemNtc.UpdateWalletList.Add(result);
+                    coalescedRewards[reward.UID] = reward;
                 }
                 else
                 {
-                    var result = Server.ItemManager.AddItem(Server, client.Character, false, reward.ItemId, reward.Num);
-                    updateCharacterItemNtc.UpdateItemList.AddRange(result);
+                    coalescedRewards[reward.UID].Num += reward.Num;
                 }
             }
-            client.Send(updateCharacterItemNtc);
 
-            Server.RewardManager.DeleteQuestBoxReward(client, questBoxReward.UniqRewardId);
+            var distinctRewards = packet.GetRewardBoxItemList.Select(x => x.UID).Distinct().ToList();
+
+            var slotCount = coalescedRewards.Sum(x => distinctRewards.Contains(x.Key) ? Server.ItemManager.PredictAddItemSlots(client.Character, StorageType.StorageBoxNormal, x.Value.ItemId, x.Value.Num) : 0);
+            if (slotCount > client.Character.Storage.GetStorage(StorageType.StorageBoxNormal).EmptySlots())
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_STORAGE_OVERFLOW);
+            }
+
+            Server.Database.ExecuteInTransaction(connection =>
+            {
+                foreach (var rewardUID in distinctRewards)
+                {
+                    var reward = coalescedRewards[rewardUID];
+                    if (Server.ItemManager.IsItemWalletPoint(reward.ItemId))
+                    {
+                        (WalletType walletType, uint amount) = Server.ItemManager.ItemToWalletPoint(reward.ItemId);
+                        var result = Server.WalletManager.AddToWallet(client.Character, walletType, amount * reward.Num, connectionIn: connection);
+                        updateCharacterItemNtc.UpdateWalletList.Add(result);
+                    }
+                    else if (reward.Num > 0)
+                    {
+                        var result = Server.ItemManager.AddItem(Server, client.Character, false, reward.ItemId, reward.Num, connectionIn: connection);
+                        updateCharacterItemNtc.UpdateItemList.AddRange(result);
+                    }
+                }
+                Server.RewardManager.DeleteQuestBoxReward(client, questBoxReward.UniqRewardId, connectionIn: connection);
+            });
+
+            client.Send(updateCharacterItemNtc);
 
             return new S2CQuestGetRewardBoxItemRes();
         }

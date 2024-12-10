@@ -16,21 +16,21 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
 
         public CDataStageLayoutId LayoutId { get; set; }
-        public UInt32 PosId { get; set; }
+        public uint SubGroupId { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SInstancePlTouchOmNtc>
         {
             public override void Write(IBuffer buffer, C2SInstancePlTouchOmNtc obj)
             {
                 WriteEntity<CDataStageLayoutId>(buffer, obj.LayoutId);
-                WriteUInt32(buffer, obj.PosId);
+                WriteUInt32(buffer, obj.SubGroupId);
             }
 
             public override C2SInstancePlTouchOmNtc Read(IBuffer buffer)
             {
                 C2SInstancePlTouchOmNtc obj = new C2SInstancePlTouchOmNtc();
                 obj.LayoutId = ReadEntity<CDataStageLayoutId>(buffer);
-                obj.PosId = ReadUInt32(buffer);
+                obj.SubGroupId = ReadUInt32(buffer);
                 return obj;
             }
         }

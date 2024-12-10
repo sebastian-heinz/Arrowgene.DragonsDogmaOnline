@@ -1,16 +1,12 @@
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
-using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using System;
-using System.Linq;
+using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class InnStayInnHandler : StructurePacketHandler<GameClient, C2SInnStayInnReq>
+    public class InnStayInnHandler : GameStructurePacketHandler<C2SInnStayInnReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InnStayInnHandler));
 
@@ -24,15 +20,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             WalletType priceWalletType = InnGetStayPriceHandler.PointType;
             uint price = InnGetStayPriceHandler.Point;
 
-            // Update character wallet
-            CDataWalletPoint wallet = client.Character.WalletPointList.Where(wp => wp.Type == priceWalletType).Single();
-            wallet.Value = (uint) Math.Max(0, (int)wallet.Value - (int)price);
-            Database.UpdateWalletPoint(client.Character.CharacterId, wallet);
+            var walletUpdate = Server.WalletManager.RemoveFromWallet(client.Character, priceWalletType, price)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_INN_LACK_MONEY);
 
             client.Send(new S2CInnStayInnRes()
             {
-                PointType = wallet.Type,
-                Point = wallet.Value
+                PointType = priceWalletType,
+                Point = walletUpdate.Value
             });
         }
     }

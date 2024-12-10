@@ -1,4 +1,5 @@
 #nullable enable
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -22,6 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CShopGetShopGoodsListRes shop = client.InstanceShopManager.GetAssets(client.Character.LastEnteredShopId);
             CDataGoodsParam good = shop.GoodsParamList.Where(good => good.Index == packet.GoodsIndex).Single();
+            ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, good.ItemId);
 
             uint boughtAmount = packet.Num;
             uint totalPrice = good.Price * boughtAmount;
@@ -32,17 +34,32 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             bool sendToItemBag;
+            StorageType destinationStorage;
             switch(packet.Destination) {
                 case 19:
                     // If packet.Structure.Destination is 19: Send to corresponding item bag
                     sendToItemBag = true;
+                    destinationStorage = clientItemInfo.StorageType;
                     break;
                 case 20:
                     // If packet.Structure.Destination is 20: Send to storage 
                     sendToItemBag = false;
+                    destinationStorage = StorageType.StorageBoxNormal;
                     break;
                 default:
                     throw new Exception("Unexpected destination when buying goods: "+packet.Destination);
+            }
+
+            if (!Server.ItemManager.CanAddItem(client.Character, destinationStorage, good.ItemId, boughtAmount))
+            {
+                if (sendToItemBag)
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_BAG_CAPACITY_OVER);
+                }
+                else
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_STORAGE_CAPACITY_OVER);
+                }
             }
 
             S2CItemUpdateCharacterItemNtc itemNtc = new S2CItemUpdateCharacterItemNtc()
@@ -72,6 +89,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     itemNtc.UpdateWalletList = new List<CDataUpdateWalletPoint>()
                     {
                         Server.WalletManager.RemoveFromWallet(client.Character, shop.WalletType, totalPrice, connection)
+                            ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_SHOP_LACK_MONEY)
                     };
                     itemNtc.UpdateItemList = itemUpdateResults;
                 }

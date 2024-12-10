@@ -1,0 +1,223 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "The Girl Who Lost Her Memories",
+    "quest_id": 20020,
+    "next_quest": 20030,
+    "base_level": 55,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "order_conditions": [
+        {"type": "MinimumLevel", "Param1": 55},
+        {"type": "MainQuestCompleted", "Param1": 20010}
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 128000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 18000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 1200
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 13043,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 83
+            },
+            "enemies": [
+                {
+                    "comment": "Zuhl",
+                    "enemy_id": "0x020402",
+                    "level": 53,
+                    "exp": 62540,
+                    "is_boss": true
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NewNpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1,
+                        "layer_no": 1
+                    },
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"},
+                        {"type": "QstLayout", "action": "Set", "value": 2692, "comment": "Spawns Gurdolin, Lise and Elliot"}
+                    ],
+                    "npc_id": "Lise0",
+                    "message_id": 15008
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Accept",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 3026, "comment": "Elliot and Cecily"}
+                    ],
+                    "stage_id": {
+                        "id": 350
+                    },
+                    "location": {
+                        "x": -2253,
+                        "y": 18,
+                        "z": -37
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 350
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 3026, "comment": "Elliot and Cecily"},
+                        {"type": "QstLayout", "action": "Set", "value": 3440, "comment": "Elliot and Cecily (in the house)"},
+                        {"type": "QstLayout", "action": "Set", "value": 2764, "comment": "Elliot and Cecily (in breya coast)"}
+                    ],
+                    "event_id": 0
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 1,
+                        "layer_no": 2
+                    },
+                    "npc_id": "Elliot0",
+                    "message_id": 15022
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 3440, "comment": "Elliot and Cecily (in the house)"}
+                    ],
+                    "stage_id": {
+                        "id": 1
+                    },
+                    "location": {
+                        "x": -222265,
+                        "y": 409,
+                        "z": -78109
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 1
+                    },
+                    "event_id": 110
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "groups": [0]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 1
+                    },
+                    "event_id": 115
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 1
+                    },
+                    "location": {
+                        "x": -204091,
+                        "y": 3345,
+                        "z": -74870
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 1
+                    },
+                    "event_id": 120
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "location": {
+                        "x": -349,
+                        "y": 9164,
+                        "z": -29
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 2692, "comment": "Spawns Gurdolin, Lise and Elliot"}
+                    ]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "event_id": 115,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"}
+                    ]
+                },
+                {
+                    "type": "TalkToNpc",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 3027, "comment": "Spawns Cici, Gurdolin, Lise and Elliot"}
+                    ],
+                    "npc_id": "Joseph",
+                    "message_id": 15078,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Set", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"}
+                    ]
+                },
+                {
+                    "type": "TalkToNpc",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "npc_id": "Klaus0",
+                    "message_id": 15079
+                }
+            ]
+        }
+    ]
+}

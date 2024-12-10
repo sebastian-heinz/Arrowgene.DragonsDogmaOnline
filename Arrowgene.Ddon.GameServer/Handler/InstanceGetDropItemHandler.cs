@@ -18,12 +18,31 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceGetDropItemReq> packet)
         {
-            List<InstancedGatheringItem> items = client.InstanceDropItemManager.GetAssets(packet.Structure.LayoutId, packet.Structure.SetId);
-            
-            S2CInstanceGetDropItemRes res = new S2CInstanceGetDropItemRes();
-            res.LayoutId = packet.Structure.LayoutId;
-            res.SetId = packet.Structure.SetId;
-            res.GatheringItemGetRequestList = packet.Structure.GatheringItemGetRequestList;
+            // This call is for when an item is claimed from a bag. It needs the drops rolled from the enemy to keep track of the items left.
+
+            List<InstancedGatheringItem> items = new List<InstancedGatheringItem>();
+
+            if (client.InstanceQuestDropManager.IsQuestDrop(packet.Structure.LayoutId, packet.Structure.SetId))
+            {
+                items.AddRange(client.InstanceQuestDropManager.FetchEnemyLoot());
+            } else
+            {
+                items.AddRange(client.InstanceDropItemManager.GetAssets(packet.Structure.LayoutId, (int)packet.Structure.SetId));
+            }
+
+            // Special Event Items
+            items.AddRange(client.InstanceEventDropItemManager.FetchEventItems(client, packet.Structure.LayoutId, packet.Structure.SetId));
+
+            // Add Epitaph Items
+            items.AddRange(client.InstanceEpiDropItemManager.FetchItems(client, packet.Structure.LayoutId, packet.Structure.SetId));
+
+            S2CInstanceGetDropItemRes res = new()
+            {
+                LayoutId = packet.Structure.LayoutId,
+                SetId = packet.Structure.SetId,
+                GatheringItemGetRequestList = packet.Structure.GatheringItemGetRequestList
+            };
+
             client.Send(res);
 
             S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc()

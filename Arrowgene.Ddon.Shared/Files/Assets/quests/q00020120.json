@@ -1,0 +1,300 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "The Lone Arisen",
+    "quest_id": 20120,
+    "next_quest": 20130,
+    "base_level": 65,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "order_conditions": [
+        {"type": "MinimumLevel", "Param1": 65},
+        {"type": "MainQuestCompleted", "Param1": 20110}
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 118000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 38000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 2800
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 13480,
+                    "num": 1
+                },
+                {
+                    "item_id": 11407,
+                    "num": 3
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 405,
+                "group_id": 13
+            },
+            "enemies": [
+                {
+                    "comment": "Ghost Mail",
+                    "enemy_id": "0x010311",
+                    "level": 65,
+                    "exp": 157620,
+                    "is_boss": true
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 405,
+                "group_id": 15
+            },
+            "enemies": [
+                {
+                    "comment": "Ghost",
+                    "enemy_id": "0x015620",
+                    "level": 64,
+                    "exp": 15762
+                },
+                {
+                    "comment": "Ghost",
+                    "enemy_id": "0x015620",
+                    "level": 64,
+                    "exp": 15762
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 405,
+                "group_id": 16
+            },
+            "enemies": [
+                {
+                    "comment": "Gigant Machina",
+                    "enemy_id": "0x015850",
+                    "level": 65,
+                    "exp": 157620,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Ghost",
+                    "enemy_id": "0x015620",
+                    "level": 64,
+                    "exp": 15762
+                },
+                {
+                    "comment": "Ghost",
+                    "enemy_id": "0x015620",
+                    "level": 64,
+                    "exp": 15762
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "npc_id": "Joseph",
+                    "message_id": 15422,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"},
+                        {"type": "QstLayout", "action": "Set", "value": 3851, "comment": "Spawns Gurdolin and Elliot"}
+                    ]
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "announce_type": "Accept",
+                    "stage_id": {
+                        "id": 350,
+                        "group_id": 1,
+                        "layer_no": 1
+                    },
+                    "npc_id": "Loeg",
+                    "message_id": 15423,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2457, "comment": "Spawns Loeg, Cecily and Lise"}
+                    ]
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 1
+                    },
+                    "location": {
+                        "x": -34712,
+                        "y": 15182,
+                        "z": -176358
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2466, "comment": "Spawns Leo"},
+                        {"type": "QstLayout", "action": "Set", "value": 3378, "comment": "Spawns Loeg"}
+                    ]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 1
+                    },
+                    "event_id": 145
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 1,
+                        "layer_no": 1
+                    },
+                    "npc_id": "Leo0",
+                    "message_id": 15443
+                },
+                {
+                    "type": "IsStageNo",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 405
+                    }
+                },
+                {
+                    "type": "OmInteractEvent",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2467, "comment": "Spawns Collection Point"}
+                    ],
+                    "quest_type": "MyQuest",
+                    "interact_type": "Release",
+                    "stage_id": {
+                        "id": 405,
+                        "group_id": 1,
+                        "layer_no": 5
+                    }
+                },
+                {
+                    "type": "OmInteractEvent",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2469, "comment": "Spawns Collection Point"}
+                    ],
+                    "quest_type": "MyQuest",
+                    "interact_type": "Release",
+                    "stage_id": {
+                        "id": 405,
+                        "group_id": 2,
+                        "layer_no": 1
+                    }
+                },
+                {
+                    "type": "OmInteractEvent",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2472, "comment": "Spawns Collection Point"}
+                    ],
+                    "quest_type": "MyQuest",
+                    "interact_type": "Release",
+                    "stage_id": {
+                        "id": 405,
+                        "group_id": 5,
+                        "layer_no": 1
+                    }
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "announce_type": "Update",
+                    "groups": [ 0, 1 ]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [ 0, 1 ]
+                },
+                {
+                    "type": "OmInteractEvent",
+                    "checkpoint": true,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2471, "comment": "Spawns Collection Point"}
+                    ],
+                    "quest_type": "MyQuest",
+                    "interact_type": "Release",
+                    "stage_id": {
+                        "id": 405,
+                        "group_id": 4,
+                        "layer_no": 1
+                    }
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "announce_type": "Update",
+                    "groups": [ 2 ]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [ 2 ]
+                },
+                {
+                    "type": "OmInteractEvent",
+                    "checkpoint": true,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 2470, "comment": "Spawns Collection Point"}
+                    ],
+                    "quest_type": "MyQuest",
+                    "interact_type": "Release",
+                    "stage_id": {
+                        "id": 405,
+                        "group_id": 3,
+                        "layer_no": 1
+                    }
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 1,
+                        "group_id": 1,
+                        "layer_no": 1
+                    },
+                    "npc_id": "Leo0",
+                    "message_id": 15444
+                },
+                {
+                    "type": "TalkToNpc",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "announce_type": "Update",
+                    "npc_id": "Joseph",
+                    "message_id": 15446
+                }
+            ]
+        }
+    ]
+}

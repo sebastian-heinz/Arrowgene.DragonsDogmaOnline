@@ -3,6 +3,7 @@ using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections.Generic;
@@ -64,8 +65,8 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             //An actual questId is needed for the client to actually accept the progress update.
             //I assume we could slip something in whenever it asks for the quest list, but this works for now.
             //Or, refactor after the BBI PR to use S2C_BATTLE_71_12_16_NTC;
-            QuestId baseId = (QuestId)70000001;
-            var baseQuest = QuestManager.GetQuest(baseId);
+            uint scheduleId = 70000001;
+            var baseQuest = QuestManager.GetQuestByScheduleId(scheduleId);
             if (baseQuest is null)
             {
                 responses.Add(ChatResponse.CommandError(client, $"Missing base quest."));
@@ -73,19 +74,14 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             }
             var questResultCommands = new List<CDataQuestCommand>()
             {
-                new CDataQuestCommand()
-                {
-                    Command = (ushort)QuestResultCommand.StageJump,
-                    Param01 = stageNo,
-                    Param02 = startingLocation
-                }
+                QuestManager.ResultCommand.StageJump((StageNo) stageNo, startingLocation)
             };
 
             //Send fake progress update to trigger the warp command.
             S2CQuestQuestProgressNtc progressNtc = new S2CQuestQuestProgressNtc()
             {
                 ProgressCharacterId = client.Character.CharacterId,
-                QuestScheduleId = (uint)baseId,
+                QuestScheduleId = scheduleId,
                 QuestProcessStateList = new List<CDataQuestProcessState>()
                 {
                     new CDataQuestProcessState()
@@ -103,7 +99,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command.Commands
             S2CQuestQuestProgressNtc resetNtc = new S2CQuestQuestProgressNtc()
             {
                 ProgressCharacterId = client.Character.CharacterId,
-                QuestScheduleId = (uint)baseId,
+                QuestScheduleId = scheduleId,
                 QuestProcessStateList = new List<CDataQuestProcessState>()
                 {
                     new CDataQuestProcessState()

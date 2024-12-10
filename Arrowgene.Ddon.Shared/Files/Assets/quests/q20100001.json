@@ -41,22 +41,6 @@
       ]
     }
   ],
-  "enemy_groups": [
-    {
-      "stage_id": {
-        "id": 1,
-        "group_id": 196
-      },
-      "enemies": [
-        {
-          "enemy_id": "0x015002",
-          "level": 30,
-          "exp": 6500,
-          "is_boss": true
-        }
-      ]
-    }
-  ],
   "blocks": [
     {
       "type": "NewNpcTalkAndOrder",
@@ -77,10 +61,11 @@
       "message_id": 10800
     },
     {
-      "type": "DeliverItems",
+      "type": "NewDeliverItems",
       "stage_id": {
         "id": 97,
-        "group_id": 1
+        "group_id": 1,
+        "layer_no": 1
       },
       "npc_id": "August",
       "announce_type": "Accept",

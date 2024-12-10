@@ -109,7 +109,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     CurrentEquipInfo = CurrentEquipInfo
                 };
 
-            var craftInfo = Server.AssetRepository.CostExpScalingAsset.CostExpScalingInfo[clientItemInfo.Rank];
+            var craftInfo = Server.AssetRepository.CostExpScalingAsset.GetScalingInfo(clientItemInfo.Rank);
             uint totalCost = craftInfo.Cost;
             uint pawnExp = craftInfo.Exp;
 
@@ -131,7 +131,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,
-                            Server.CraftManager.CalculateRecipeCost(totalCost, costPerformanceLevels));
+                            Server.CraftManager.CalculateRecipeCost(totalCost, costPerformanceLevels))
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CRAFT_INTERNAL, "Insufficient gold.");
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
             client.Send(updateCharacterItemNtc);
 

@@ -22,7 +22,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
            //  Refresh revival at 5:00AM JST.
 
-            if(Server.LastRevivalPowerRechargeTime.ContainsKey(client.Character.CharacterId))
+            if (Server.GpCourseManager.InfiniteReviveRefresh())
+            {
+                res.RemainTime = 0;
+            }
+            else if(Server.LastRevivalPowerRechargeTime.ContainsKey(client.Character.CharacterId))
             {
                 DateTime utcNow = DateTime.UtcNow;
                 TimeZoneInfo jstZone = TimeZoneInfo.FindSystemTimeZoneById("Tokyo Standard Time");

@@ -7,6 +7,9 @@
     "base_level": 40,
     "minimum_item_rank": 0,
     "discoverable": true,
+    "order_conditions": [
+        {"type": "MainQuestCompleted", "Param1": 11}
+    ],
     "rewards": [
         {
             "type": "exp",
@@ -90,7 +93,8 @@
                 {"type": "WorldManageLayout", "action": "Set", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
                 {"type": "WorldManageLayout", "action": "Clear", "value": 1219, "quest_id": 70000001, "comment": "Iris"},
                 {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
-                {"type": "WorldManageLayout", "action": "Set", "value": 1294, "quest_id": 70000001, "comment": "The White Dragon (Less Dead)"}
+                {"type": "WorldManageLayout", "action": "Set", "value": 1294, "quest_id": 70000001, "comment": "The White Dragon (Less Dead)"},
+                {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"}
             ],
             "npc_id": "Joseph",
             "message_id": 7898

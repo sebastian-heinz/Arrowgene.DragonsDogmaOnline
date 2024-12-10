@@ -23,9 +23,13 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         Dana = 19, // Dana, Dana Centrum
         Morfaul = 20, // Morfaul, Morfaul Centrum
         Glyndwr = 21, // Glyndwr, Glyndwr Centrum
-
+        ManunVillage = 22,
+        TowerOfIvanos = 23,
+        ClanBoard = 24, // For the first set of clan quests
+        ClanBoardHighDifficulty = 25, // For the second quest of clan quests
         RathniteFoothills = 26, // All of Rathnite Foothills
         FelyanaWilderness = 27, // All of Felyana Wilderness
+        SpecialQuestBoard = 28, // In WDT, possibly elsewhere.
         EliGuardTower = 29, // Eli Guard Tower
         Megado = 30, // Fortress City Megado: Residential District
         NorthernBanditHideout = 31, // Urteca Mountains, Northern Bandit Hideout

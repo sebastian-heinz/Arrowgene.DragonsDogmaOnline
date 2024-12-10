@@ -7,6 +7,9 @@
     "base_level": 43,
     "minimum_item_rank": 0,
     "discoverable": true,
+    "order_conditions": [
+        {"type": "MainQuestCompleted", "Param1": 15}
+    ],
     "rewards": [
         {
             "type": "exp",
@@ -123,8 +126,8 @@
                     "comment" : "Colossus",
                     "enemy_id": "0x015020",
                     "level": 43,
-                    "exp": 5264,
-                    "is_boss_bgm": true
+                    "exp": 52640,
+                    "is_boss": true
                 },
                 {
                     "comment" : "General Orc",
@@ -151,7 +154,8 @@
                         {"type": "WorldManageLayout", "action": "Clear", "value": 1219, "quest_id": 70000001, "comment": "Iris"},
                         {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
                         {"type": "WorldManageLayout", "action": "Set", "value": 1294, "quest_id": 70000001, "comment": "The White Dragon (Less Dead)"},
-                        {"type": "WorldManageLayout", "action": "Set", "value": 3859, "quest_id": 70002001, "comment": "Floor Mounted Levers in for gardnox, Large Door"}
+                        {"type": "WorldManageLayout", "action": "Set", "value": 3859, "quest_id": 70002001, "comment": "Floor Mounted Levers in for gardnox, Large Door"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"}
                     ],
                     "npc_id": "Leo0",
                     "message_id": 0

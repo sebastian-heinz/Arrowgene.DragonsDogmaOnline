@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40000185,
+  "base_level": 42,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "If Your Hands are Free",
+  "light_quest_details": {
+    "area_id": 11,
+    "board_type": 1,
+    "board_id": 8
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 5767
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 11532
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1289
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "28",
+      "level": 42,
+      "amount": 3
+    }
+  ]
+}

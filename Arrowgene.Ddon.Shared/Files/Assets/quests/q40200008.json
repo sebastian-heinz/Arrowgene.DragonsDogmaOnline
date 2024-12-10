@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40200008,
+  "base_level": 60,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Cooperate with Subjugation",
+  "light_quest_details": {
+    "area_id": 13,
+    "board_type": 1,
+    "board_id": 16
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 15013
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 27985
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 2049
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "211",
+      "level": 60,
+      "amount": 2
+    }
+  ]
+}

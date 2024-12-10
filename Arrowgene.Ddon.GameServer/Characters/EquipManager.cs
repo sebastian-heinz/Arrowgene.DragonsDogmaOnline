@@ -1,6 +1,6 @@
 #nullable enable
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(EquipManager));
 
-        private static readonly List<EquipSlot> EnsembleSlots = new List<EquipSlot>()
+        public static readonly List<EquipSlot> EnsembleSlots = new List<EquipSlot>()
         {
             EquipSlot.ArmorLeg,
             EquipSlot.ArmorHelm,
@@ -119,8 +119,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public (IPacketStructure, IPacketStructure) HandleChangeEquipList(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, List<CDataCharacterEquipInfo> changeCharacterEquipList, ItemNoticeType updateType, List<StorageType> storageTypes, DbConnection? connectionIn = null)
+        public PacketQueue HandleChangeEquipList(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, List<CDataCharacterEquipInfo> changeCharacterEquipList, ItemNoticeType updateType, List<StorageType> storageTypes, DbConnection? connectionIn = null)
         {
+            PacketQueue queue = new();
+
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
             {
                 UpdateType = updateType
@@ -157,7 +159,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                     // Set in equipment template
                     //TODO: Move this lookup to memory instead of the DB if possible.
-                    characterToEquipTo.EquipmentTemplate.SetEquipItem(server.Database.SelectStorageItemByUId(itemUId), characterToEquipTo.Job, equipType, equipSlot);
+                    characterToEquipTo.EquipmentTemplate.SetEquipItem(server.Database.SelectStorageItemByUId(itemUId, connectionIn), characterToEquipTo.Job, equipType, equipSlot);
 
                     server.Database.ReplaceEquipItem(characterToEquipTo.CommonId, characterToEquipTo.Job, equipType, equipSlot, itemUId, connectionIn);
                     
@@ -238,7 +240,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // TODO: Unk0
                 };
 
-                return (updateCharacterItemNtc, changeCharacterEquipNtc);
+                client.Enqueue(updateCharacterItemNtc, queue);
+                server.ClientLookup.EnqueueToAll(changeCharacterEquipNtc, queue);
+
+                return queue;
             } 
             else if(characterToEquipTo is Pawn pawn)
             {
@@ -251,7 +256,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // TODO: Unk0
                 };
 
-                return (updateCharacterItemNtc, changePawnEquipNtc);
+                client.Enqueue(updateCharacterItemNtc, queue);
+                server.ClientLookup.EnqueueToAll(changePawnEquipNtc, queue);
+
+                return queue;
             }
 
             throw new ResponseErrorException(ErrorCode.ERROR_CODE_FAIL); //TODO: Find a better code.
@@ -323,6 +331,46 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return false;
         }
 
+        public bool CanMeetStorageRequirements(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, List<CDataCharacterEquipInfo> changeCharacterEquipList, List<StorageType> storageTypes)
+        {
+            int slotsRequired = 0;
+            int freeSlots = storageTypes.Sum(x => client.Character.Storage.GetStorage(x).EmptySlots());
+
+            // Check regular removals
+            slotsRequired += changeCharacterEquipList.Sum(x => x.EquipItemUId.Length == 0 ? 1 : 0);
+
+            // Check removals caused by equipped an ensemble
+            foreach (var changeItem in changeCharacterEquipList)
+            {
+                // This is actually a removal, so skip it.
+                if (changeItem.EquipItemUId.Length == 0)
+                {
+                    continue;
+                }
+
+                var itemInfo = server.ItemManager.LookupInfoByUID(server, changeItem.EquipItemUId);
+                if (itemInfo.SubCategory == ItemSubCategory.EquipEnsemble)
+                {
+                    foreach (EquipSlot slot in EnsembleSlots)
+                    {
+                        var equip = characterToEquipTo.EquipmentTemplate.GetEquipItem(characterToEquipTo.Job, changeItem.EquipType, slot);
+                        if (equip == null && (byte)slot == changeItem.EquipCategory)
+                        {
+                            // Equipping an ensemble into an open body slot frees one storage space.
+                            slotsRequired += -1;
+                        }
+                        else if (equip != null)
+                        {
+                            // Equipped an ensemble will force some other item to be removed, taking up one storage space.
+                            slotsRequired += 1;
+                        }
+                    }
+                }
+            }
+
+            return slotsRequired <= freeSlots;
+        }
+
         public uint CalculateItemRank(DdonGameServer server, CharacterCommon characterCommon)
         {
             uint itemRank = 0;
@@ -330,7 +378,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             if (CharacterHasEnsembleEquipped(server, characterCommon))
             {
                 var mainHand = characterCommon.EquipmentTemplate.GetEquipItem(characterCommon.Job, EquipType.Performance, EquipSlot.WepMain);
-                itemRank = server.ItemManager.LookupInfoByItemID(server, mainHand.ItemId).Rank;
+                itemRank = mainHand is not null ? server.ItemManager.LookupInfoByItemID(server, mainHand.ItemId).Rank : 0u;
 
                 foreach (EquipSlot slot in EnsembleSlots)
                 {

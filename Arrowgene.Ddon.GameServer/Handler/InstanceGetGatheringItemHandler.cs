@@ -7,8 +7,6 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using Microsoft.VisualBasic;
-using System;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -40,9 +38,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         gatheredItem = client.InstanceBbmItemManager.FetchBitterblackItems(Server, client, stageId, posId)[(int)gatheringItemRequest.SlotNo];
                     }
+                    else if (StageManager.IsEpitaphRoadStageId(stageId))
+                    {
+                        gatheredItem = client.InstanceEpiGatheringManager.FetchItems(client, stageId, posId)[(int)gatheringItemRequest.SlotNo];
+                    }
                     else
                     {
-                        gatheredItem = client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, req.Structure.PosId)[(int)gatheringItemRequest.SlotNo];
+                        gatheredItem = client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, (int)req.Structure.PosId)[(int)gatheringItemRequest.SlotNo];
                     }
 
                     Server.ItemManager.GatherItem(Server, client.Character, ntc, gatheredItem, gatheringItemRequest.Num, connection);
@@ -67,26 +69,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     EquipType = EquipType.Performance,
                 };
 
-                (S2CItemUpdateCharacterItemNtc itemNtc, S2CEquipChangeCharacterEquipNtc equipNtc) equipResult = (null, null);
+                PacketQueue queue = new();
                 Server.Database.ExecuteInTransaction(connection =>
                 {
-                    equipResult =((S2CItemUpdateCharacterItemNtc itemNtc, S2CEquipChangeCharacterEquipNtc equipNtc)) Server.EquipManager.HandleChangeEquipList(
+                    queue.AddRange(Server.EquipManager.HandleChangeEquipList(
                         Server,
                         client,
                         client.Character,
                         new List<CDataCharacterEquipInfo>() { equipInfo },
                         ItemNoticeType.GatherEquipItem,
                         new List<StorageType>() { StorageType.ItemBagEquipment },
-                        connection);
+                        connection));
                 });
-                client.Send(equipResult.itemNtc);
-
-                // TODO: Can this be optimized? So only players who need to see
-                //       get the update?
-                foreach (var otherClient in Server.ClientLookup.GetAll())
-                {
-                    otherClient.Send(equipResult.equipNtc);
-                }
+                queue.Send();
             }
         }
     }

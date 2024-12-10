@@ -1,0 +1,195 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "ExtremeMission",
+    "comment": "The Dazzling Gold (Grand Mission)",
+    "quest_id": 50300006,
+    "base_level": 60,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "mission_params": {
+        "group": 9,
+        "minimum_members": 1,
+        "maximum_members": 8,
+        "playtime": 900,
+        "solo_only": false,
+        "max_pawns": 7,
+        "loot_distribution": "TimeBased",
+        "phase_groups": []
+    },
+    "order_conditions": [],
+    "rewards": [
+        {
+            "type": "fixed",
+            "comment": "Yellow Dye, Blood Orb",
+            "loot_pool": [
+                {
+                    "item_id": 8138,
+                    "num": 1
+                },
+                {
+                    "item_id": 7795,
+                    "num": 1000
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "comment": "Golden Wedge",
+            "loot_pool": [
+                {
+                    "item_id": 10996,
+                    "num": 1,
+                    "chance": 0.37
+                },
+                {
+                    "item_id": 10996,
+                    "num": 3,
+                    "chance": 0.25
+                },
+                {
+                    "item_id": 10996,
+                    "num": 7,
+                    "chance": 0.20
+                },
+                {
+                    "item_id": 10996,
+                    "num": 22,
+                    "chance": 0.10
+                },
+                {
+                    "item_id": 10996,
+                    "num": 37,
+                    "chance": 0.05
+                },
+                {
+                    "item_id": 10996,
+                    "num": 45,
+                    "chance": 0.03
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "comment": "Golden Ritual Instrument",
+            "loot_pool": [
+                {
+                    "item_id": 10997,
+                    "num": 1,
+                    "chance": 0.30
+                },
+                {
+                    "item_id": 10997,
+                    "num": 4,
+                    "chance": 0.25
+                },
+                {
+                    "item_id": 10997,
+                    "num": 12,
+                    "chance": 0.20
+                },
+                {
+                    "item_id": 10997,
+                    "num": 20,
+                    "chance": 0.15
+                },
+                {
+                    "item_id": 10997,
+                    "num": 25,
+                    "chance": 0.05
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "comment": "Unappraised Moon Trinket (Soldier)",
+            "loot_pool": [
+                {
+                    "item_id": 11759,
+                    "num": 1,
+                    "chance": 0.40
+                },
+                {
+                    "item_id": 11759,
+                    "num": 2,
+                    "chance": 0.30
+                },
+                {
+                    "item_id": 11759,
+                    "num": 3,
+                    "chance": 0.20
+                },
+                {
+                    "item_id": 11759,
+                    "num": 4,
+                    "chance": 0.10
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "comment": "Unappraised Moon Trinket (General)",
+            "loot_pool": [
+                {
+                    "item_id": 13476,
+                    "num": 0,
+                    "chance": 0.90
+                },
+                {
+                    "item_id": 13476,
+                    "num": 1,
+                    "chance": 0.10
+                }
+            ]
+        },
+        {
+            "type": "jp",
+            "amount": 1500
+        },
+        {
+            "type": "exp",
+            "amount": 100000
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "comment": "Boss",
+            "stage_id": {
+                "id": 75,
+                "group_id": 0
+            },
+            "enemies": [
+                {
+                    "comment": "Golgorran",
+                    "enemy_id": "0x080100",
+                    "level": 60,
+                    "exp": 0,
+                    "is_boss": true
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "blocks": [
+                {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 75
+                    }
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Start",
+                    "groups": [0]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 75
+                    },
+                    "event_id": 5
+                }
+            ]
+        }
+    ]
+}

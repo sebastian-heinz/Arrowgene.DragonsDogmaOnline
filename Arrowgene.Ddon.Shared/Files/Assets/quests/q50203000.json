@@ -1,0 +1,227 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "ExtremeMission",
+    "comment": "Earth's Fury (EM7)",
+    "quest_id": 50203000,
+    "base_level": 75,
+    "minimum_item_rank": 52,
+    "discoverable": false,
+    "mission_params": {
+        "group": 2,
+        "minimum_members": 1,
+        "playtime": 600,
+        "solo_only": false,
+        "max_pawns": 3,
+        "phase_groups": []
+    },
+    "order_conditions": [
+        {"type": "ClearExtremeMission", "Param1": 50202000}
+    ],
+    "rewards": [
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 15940,
+                    "num": 3
+                },
+                {
+                    "item_id": 7795,
+                    "num": 750
+                }
+            ]
+        },
+        {
+            "type": "jp",
+            "amount": 1650
+        },
+        {
+            "type": "exp",
+            "amount": 65000
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "comment": "Boss",
+            "stage_id": {
+                "id": 459,
+                "group_id": 1
+            },
+            "enemies": [
+                {
+                    "comment": "Wisened Tarasque",
+                    "enemy_id": "0x080600",
+                    "level": 75,
+                    "exp": 0,
+                    "is_boss": true
+                }
+            ]
+        },
+        {
+            "comment": "Timegroup (1)",
+            "stage_id": {
+                "id": 459,
+                "group_id": 5
+            },
+            "enemies": [
+                {
+                    "comment": "Gorechimera",
+                    "enemy_id": "0x015201",
+                    "level": 75,
+                    "exp": 0,
+                    "is_boss": true,
+                    "named_enemy_params_id": 1570
+                },
+                {
+                    "comment": "Severly Infected Stymphalides",
+                    "enemy_id": "0x010614",
+                    "level": 75,
+                    "exp": 0,
+                    "infection_type": 2,
+                    "named_enemy_params_id": 1459
+                }
+            ]
+        },
+        {
+            "comment": "Timegroup (2)",
+            "stage_id": {
+                "id": 459,
+                "group_id": 6
+            },
+            "enemies": [
+                {
+                    "comment": "Severely Infected Gorecyclops",
+                    "enemy_id": "0x015017",
+                    "level": 75,
+                    "exp": 0,
+                    "is_boss": true,
+                    "infection_type": 2,
+                    "named_enemy_params_id": 1570
+                },
+                {
+                    "comment": "Severly Infected Warg",
+                    "enemy_id": "0x010220",
+                    "level": 75,
+                    "exp": 0,
+                    "infection_type": 2,
+                    "named_enemy_params_id": 1459
+                }
+            ]
+        },
+        {
+            "comment": "Timegroup (3)",
+            "stage_id": {
+                "id": 459,
+                "group_id": 7
+            },
+            "enemies": [
+                {
+                    "comment": "Medusa",
+                    "enemy_id": "0x015610",
+                    "level": 75,
+                    "exp": 0,
+                    "is_boss": true,
+                    "named_enemy_params_id": 1570
+                },
+                {
+                    "comment": "Eliminator",
+                    "enemy_id": "0x010508",
+                    "level": 75,
+                    "exp": 0,
+                    "named_enemy_params_id": 1460
+                },
+                {
+                    "comment": "Eliminator",
+                    "enemy_id": "0x010508",
+                    "level": 75,
+                    "exp": 0,
+                    "named_enemy_params_id": 1460
+                },
+                {
+                    "comment": "Eliminator",
+                    "enemy_id": "0x010508",
+                    "level": 75,
+                    "exp": 0,
+                    "named_enemy_params_id": 1460
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "blocks": [
+                {
+                    "type": "IsGatherPartyInStage",
+                    "announce_type": "Start",
+                    "stage_id": {
+                        "id": 459
+                    }
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Caution",
+                    "reset_group": false,
+                    "groups": [0]
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 459
+                    }
+                },
+                {
+                    "type": "KillGroup",
+                    "groups": [1]
+                },
+                {
+                    "type": "ExtendTime",
+                    "amount": 240
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 459
+                    }
+                },
+                {
+                    "type": "KillGroup",
+                    "groups": [2]
+                },
+                {
+                    "type": "ExtendTime",
+                    "amount": 240
+                }
+            ]
+        },
+        {
+            "blocks": [
+                {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 459
+                    }
+                },
+                {
+                    "type": "KillGroup",
+                    "groups": [3]
+                },
+                {
+                    "type": "ExtendTime",
+                    "amount": 240
+                }
+            ]
+        }
+    ]
+}

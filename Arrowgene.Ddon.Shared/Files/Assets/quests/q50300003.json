@@ -1,0 +1,195 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "ExtremeMission",
+    "comment": "The Lost Order (Grand Mission)",
+    "quest_id": 50300003,
+    "base_level": 55,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "mission_params": {
+        "group": 9,
+        "minimum_members": 1,
+        "maximum_members": 8,
+        "playtime": 900,
+        "solo_only": false,
+        "max_pawns": 7,
+        "loot_distribution": "TimeBased",
+        "phase_groups": []
+    },
+    "order_conditions": [],
+    "rewards": [
+        {
+            "type": "fixed",
+            "comment": "Pink Dye, Blood Orb",
+            "loot_pool": [
+                {
+                    "item_id": 8139,
+                    "num": 1
+                },
+                {
+                    "item_id": 7795,
+                    "num": 500
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "comment": "Disordering Drop",
+            "loot_pool": [
+                {
+                    "item_id": 9461,
+                    "num": 2,
+                    "chance": 0.37
+                },
+                {
+                    "item_id": 9461,
+                    "num": 5,
+                    "chance": 0.25
+                },
+                {
+                    "item_id": 9461,
+                    "num": 8,
+                    "chance": 0.20
+                },
+                {
+                    "item_id": 9461,
+                    "num": 15,
+                    "chance": 0.10
+                },
+                {
+                    "item_id": 9461,
+                    "num": 30,
+                    "chance": 0.05
+                },
+                {
+                    "item_id": 9461,
+                    "num": 45,
+                    "chance": 0.03
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "comment": "Water of Chaos",
+            "loot_pool": [
+                {
+                    "item_id": 9462,
+                    "num": 1,
+                    "chance": 0.30
+                },
+                {
+                    "item_id": 9462,
+                    "num": 3,
+                    "chance": 0.25
+                },
+                {
+                    "item_id": 9462,
+                    "num": 8,
+                    "chance": 0.20
+                },
+                {
+                    "item_id": 9462,
+                    "num": 10,
+                    "chance": 0.15
+                },
+                {
+                    "item_id": 9462,
+                    "num": 20,
+                    "chance": 0.05
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "comment": "Unappraised Moon Trinket (Soldier)",
+            "loot_pool": [
+                {
+                    "item_id": 11759,
+                    "num": 1,
+                    "chance": 0.40
+                },
+                {
+                    "item_id": 11759,
+                    "num": 2,
+                    "chance": 0.30
+                },
+                {
+                    "item_id": 11759,
+                    "num": 3,
+                    "chance": 0.20
+                },
+                {
+                    "item_id": 11759,
+                    "num": 4,
+                    "chance": 0.10
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "comment": "Unappraised Moon Trinket (General)",
+            "loot_pool": [
+                {
+                    "item_id": 13476,
+                    "num": 0,
+                    "chance": 0.90
+                },
+                {
+                    "item_id": 13476,
+                    "num": 1,
+                    "chance": 0.10
+                }
+            ]
+        },
+        {
+            "type": "jp",
+            "amount": 300
+        },
+        {
+            "type": "exp",
+            "amount": 85000
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "comment": "Boss",
+            "stage_id": {
+                "id": 308,
+                "group_id": 10
+            },
+            "enemies": [
+                {
+                    "comment": "Zuhl",
+                    "enemy_id": "0x080300",
+                    "level": 55,
+                    "exp": 0,
+                    "is_boss": true
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "blocks": [
+                {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 308
+                    }
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Start",
+                    "groups": [0]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 308
+                    },
+                    "event_id": 5
+                }
+            ]
+        }
+    ]
+}

@@ -1,13 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -25,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SInstanceGetGatheringItemListReq> req)
         {
             bool isGatheringItemBreak = false;
-            if(!client.InstanceGatheringItemManager.HasAssetsInstanced(req.Structure.LayoutId, req.Structure.PosId) && req.Structure.GatheringItemUId.Length > 0 && Random.Shared.NextDouble() < BREAK_CHANCE)
+            if(!client.InstanceGatheringItemManager.HasAssetsInstanced(req.Structure.LayoutId, (int)req.Structure.PosId) && req.Structure.GatheringItemUId.Length > 0 && Random.Shared.NextDouble() < BREAK_CHANCE)
             {
                 isGatheringItemBreak = true;
 
@@ -42,9 +41,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 gatheringItems.AddRange(client.InstanceBbmItemManager.FetchBitterblackItems(Server, client, stageId, posId));
             }
+            else if (StageManager.IsEpitaphRoadStageId(stageId))
+            {
+                gatheringItems.AddRange(client.InstanceEpiGatheringManager.FetchItems(client, stageId, posId));
+            }
             else
             {
-                gatheringItems.AddRange(client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, posId));
+                gatheringItems.AddRange(client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, (int)posId));
             }
 
             S2CInstanceGetGatheringItemListRes res = new S2CInstanceGetGatheringItemListRes();

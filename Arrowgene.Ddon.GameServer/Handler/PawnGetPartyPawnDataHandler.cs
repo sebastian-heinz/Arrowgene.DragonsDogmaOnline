@@ -1,17 +1,14 @@
-using System.Collections.Generic;
-using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PawnGetPartyPawnDataHandler : GameStructurePacketHandler<C2SPawnGetPartyPawnDataReq>
+    public class PawnGetPartyPawnDataHandler : GameRequestPacketHandler<C2SPawnGetPartyPawnDataReq, S2CPawnGetPartyPawnDataRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnGetPartyPawnDataHandler));
 
@@ -24,13 +21,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             _OrbUnlockManager = server.OrbUnlockManager;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SPawnGetPartyPawnDataReq> packet)
+        public override S2CPawnGetPartyPawnDataRes Handle(GameClient client, C2SPawnGetPartyPawnDataReq packet)
         {
             // var owner = Server.CharacterManager.SelectCharacter(packet.Structure.CharacterId);
-            GameClient owner = this.Server.ClientLookup.GetClientByCharacterId(packet.Structure.CharacterId);
+            GameClient owner = this.Server.ClientLookup.GetClientByCharacterId(packet.CharacterId)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CHARACTER_PARAM_NOT_FOUND);
             // TODO: Move this to a function or lookup class
             List<Pawn> pawns = owner.Character.Pawns.Concat(client.Character.RentedPawns).ToList();
-            Pawn pawn = pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).First();
+
+            Pawn pawn = pawns
+                .Find(pawn => pawn.PawnId == packet.PawnId)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_NOT_FOUNDED);
 
             var res = new S2CPawnGetPartyPawnDataRes();
             res.CharacterId = pawn.CharacterId;
@@ -44,13 +45,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CPawnGetPawnOrbDevoteInfoNtc ntc = new S2CPawnGetPawnOrbDevoteInfoNtc()
             {
-                CharacterId = packet.Structure.CharacterId,
+                CharacterId = packet.CharacterId,
                 PawnId = pawn.PawnId,
                 OrbPageStatusList = _OrbUnlockManager.GetOrbPageStatus(pawn)
             };
             client.Send(ntc);
 
-            client.Send(res);
+            return res;
         }
     }
 }

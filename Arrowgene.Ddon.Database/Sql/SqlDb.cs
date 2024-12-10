@@ -60,12 +60,10 @@ namespace Arrowgene.Ddon.Database.Sql
                 transaction.Commit();
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 transaction.Rollback();
-                connection.Close();
-                Exception(ex);
-                return false;
+                throw;
             }
             finally
             {

@@ -1,0 +1,265 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "ExtremeMission",
+    "comment": "The Shining Gate (EM4)",
+    "quest_id": 50104000,
+    "base_level": 60,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "mission_params": {
+        "group": 1,
+        "minimum_members": 1,
+        "playtime": 1200,
+        "solo_only": false,
+        "max_pawns": 3,
+        "phase_groups": []
+    },
+    "order_conditions": [
+        {"type": "ClearExtremeMission", "Param1": 50103020}
+    ],
+    "rewards": [
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 9789,
+                    "num": 3
+                },
+                {
+                    "item_id": 7795,
+                    "num": 1000
+                }
+            ]
+        },
+        {
+            "type": "jp",
+            "amount": 1500
+        },
+        {
+            "type": "exp",
+            "amount": 25000
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "comment": "Boss",
+            "stage_id": {
+                "id": 289,
+                "group_id": 0
+            },
+            "enemies": [
+                {
+                    "comment": "Golgorran",
+                    "enemy_id": "0x021002",
+                    "level": 60,
+                    "exp": 0,
+                    "named_enemy_params_id": 440,
+                    "is_boss": true
+                }
+            ]
+        },
+        {
+            "comment": "First Group",
+            "stage_id": {
+                "id": 288,
+                "group_id": 5
+            },
+            "enemies": [
+                {
+                    "comment": "Alchemized Skeleton",
+                    "enemy_id": "0x010312",
+                    "level": 60,
+                    "exp": 0
+                },
+                {
+                    "comment": "Alchemized Skeleton",
+                    "enemy_id": "0x010312",
+                    "level": 60,
+                    "exp": 0
+                },
+                {
+                    "comment": "Mergan Defender",
+                    "enemy_id": "0x011024",
+                    "level": 60,
+                    "exp": 0,
+                    "hm_present_no": 63
+                },
+                {
+                    "comment": "Mergan Defender",
+                    "enemy_id": "0x011024",
+                    "level": 60,
+                    "exp": 0,
+                    "hm_present_no": 63
+                },
+                {
+                    "comment": "Mergan Hunter",
+                    "enemy_id": "0x011022",
+                    "level": 60,
+                    "exp": 0,
+                    "hm_present_no": 61
+                },
+                {
+                    "comment": "Mergan Mage",
+                    "enemy_id": "0x011025",
+                    "level": 60,
+                    "exp": 0,
+                    "hm_present_no": 64
+                },
+                {
+                    "comment": "Mergan Element Archer",
+                    "enemy_id": "0x011027",
+                    "level": 60,
+                    "exp": 0,
+                    "hm_present_no": 66
+                },
+                {
+                    "comment": "Mergan Healer",
+                    "enemy_id": "0x011023",
+                    "level": 60,
+                    "exp": 0,
+                    "hm_present_no": 62
+                }
+            ]
+        },
+        {
+            "comment": "Second Group",
+            "stage_id": {
+                "id": 288,
+                "group_id": 7
+            },
+            "enemies": [
+                {
+                    "comment": "Gigant Machina",
+                    "enemy_id": "0x015850",
+                    "level": 60,
+                    "exp": 0,
+                    "is_boss": true
+                }
+            ]
+        },
+        {
+            "comment": "Third Group",
+            "stage_id": {
+                "id": 288,
+                "group_id": 10
+            },
+            "enemies": [
+                {
+                    "comment": "Drake",
+                    "enemy_id": "0x015700",
+                    "level": 60,
+                    "exp": 0,
+                    "is_boss": true,
+                    "named_enemy_params_id": 708
+                },
+                {
+                    "comment": "Wyrm",
+                    "enemy_id": "0x015701",
+                    "level": 60,
+                    "exp": 0,
+                    "is_boss": true,
+                    "named_enemy_params_id": 709
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "blocks": [
+                {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 288
+                    }
+                },
+                {
+                    "type": "Raw",
+                    "check_commands": [
+                        {"type": "EventEnd", "Param1": 421, "Param2": 0}
+                    ]
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "groups": [1],
+                    "announce_type": "Start"
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [1]
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "groups": [2],
+                    "announce_type": "Update"
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [2]
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "groups": [3],
+                    "announce_type": "Update"
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [3]
+                },
+                {
+                    "type": "IsStageNo",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 1245, "comment": "Enables teleporter"},
+                        {"type": "MyQst", "action": "Set", "value": 1245, "comment": "Enables teleporter"}
+                    ],
+                    "announce_type": "Update",
+                    "stage_id": {
+                        "id": 289
+                    }
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "stage_id": {
+                        "id": 289
+                    },
+                    "location": {
+                        "x": -3230,
+                        "y": 1250,
+                        "z": 14
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [],
+                    "stage_id": {
+                        "id": 289
+                    },
+                    "event_id": 0,
+                    "jump_stage_id": {
+                        "id": 289
+                    },
+                    "start_pos_no": 1
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "groups": [0]
+                },
+                {
+                    "type": "PlayEvent",
+                    "flags": [],
+                    "stage_id": {
+                        "id": 289
+                    },
+                    "event_id": 5
+                }
+            ]
+        }
+    ]
+}

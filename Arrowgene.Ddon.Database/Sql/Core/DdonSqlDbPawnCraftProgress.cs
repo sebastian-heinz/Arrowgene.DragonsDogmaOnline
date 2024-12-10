@@ -1,4 +1,6 @@
+using System.ComponentModel.Design;
 using System.Data.Common;
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
@@ -47,15 +49,18 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return true;
         }
 
-        public bool InsertPawnCraftProgress(CraftProgress craftProgress)
+        public bool InsertPawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return InsertPawnCraftProgress(connection, craftProgress);
-        }
-
-        public bool InsertPawnCraftProgress(TCon connection, CraftProgress craftProgress)
-        {
-            return ExecuteNonQuery(connection, SqlInsertPawnCraftProgress, command => { AddAllParameters(command, craftProgress); }) == 1;
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
+            {
+                return ExecuteNonQuery(connection, SqlInsertPawnCraftProgress, command => { AddAllParameters(command, craftProgress); }) == 1;
+            }
+            finally
+            {
+                if (!isTransaction) connection.Dispose();
+            }
         }
 
         public bool InsertIfNotExistsPawnCraftProgress(CraftProgress craftProgress)

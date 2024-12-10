@@ -26,11 +26,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CQuestCancelPriorityQuestRes Handle(GameClient client, C2SQuestCancelPriorityQuestReq packet)
         {
-            QuestId questId = (QuestId) packet.QuestScheduleId;
+            Server.Database.DeletePriorityQuest(client.Character.CommonId, packet.QuestScheduleId);
 
-            Server.Database.DeletePriorityQuest(client.Character.CommonId, questId);
-
-            client.Party.QuestState.UpdatePriorityQuestList(Server, client.Party);
+            client.Party.QuestState.UpdatePriorityQuestList(client).Send();
 
             return new S2CQuestCancelPriorityQuestRes()
             {

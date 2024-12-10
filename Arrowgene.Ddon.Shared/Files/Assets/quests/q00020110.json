@@ -1,0 +1,215 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "A Strange Land's Light",
+    "quest_id": 20110,
+    "next_quest": 20120,
+    "base_level": 65,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "order_conditions": [
+        {"type": "MinimumLevel", "Param1": 65},
+        {"type": "MainQuestCompleted", "Param1": 20100}
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 113000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 35000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 2600
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 14190,
+                    "num": 1
+                },
+                {
+                    "item_id": 11407,
+                    "num": 3
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 409,
+                "group_id": 1
+            },
+            "enemies": [
+                {
+                    "comment": "Frost Machina",
+                    "enemy_id": "0x015851",
+                    "level": 64,
+                    "exp": 157620,
+                    "named_enemy_params_id": 939,
+                    "is_boss": true
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 337,
+                "group_id": 1
+            },
+            "enemies": []
+        }
+    ],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NewNpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1,
+                        "layer_no": 1
+                    },
+                    "npc_id": "Cecily0",
+                    "message_id": 0,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"},
+                        {"type": "QstLayout", "action": "Set", "value": 2849, "comment": "Spawns Cecily"}
+                    ]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "event_id": 145,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"}
+                    ]
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "announce_type": "Accept",
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 2,
+                        "layer_no": 1
+                    },
+                    "npc_id": "Gurdolin3",
+                    "message_id": 15395,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Set", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
+                        {"type": "QstLayout", "action": "Set", "value": 3317, "comment": "Spawns Gurdolin, Elliot, Loeg and Lise"},
+                        {"type": "QstLayout", "action": "Clear", "value": 2849, "comment": "Spawns Cecily"}
+                    ]
+                },
+                {
+                    "type": "TalkToNpc",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 5
+                    },
+                    "npc_id": "Zerkin",
+                    "message_id": 15396
+                },
+                {
+                    "type": "IsStageNo",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 336
+                    }
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 336,
+                        "group_id": 1,
+                        "layer_no": 3
+                    },
+                    "npc_id": "Cecily0",
+                    "message_id": 15398,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 3317, "comment": "Spawns Gurdolin, Elliot, Loeg and Lise"},
+                        {"type": "QstLayout", "action": "Set", "value": 3318, "comment": "Spawns Gurdolin, Loeg, Cecily, Lise and Elliot"}
+                    ]
+                },
+                {
+                    "type": "IsStageNo",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 409
+                    }
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "groups": [ 0 ]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [ 0 ]
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 337
+                    },
+                    "location": {
+                        "x": 30855,
+                        "y": 19538,
+                        "z": -31490
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 337
+                    },
+                    "event_id": 0
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 337,
+                        "group_id": 1,
+                        "layer_no": 1
+                    },
+                    "npc_id": "Elliot0",
+                    "message_id": 15420,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 3318, "comment": "Spawns Gurdolin, Loeg, Cecily, Lise and Elliot"},
+                        {"type": "QstLayout", "action": "Set", "value": 2851, "comment": "Spawns Elliot"}
+                    ]
+                },
+                {
+                    "type": "TalkToNpc",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "npc_id": "Joseph",
+                    "message_id": 15421
+                }
+            ]
+        }
+    ]
+}

@@ -7,6 +7,9 @@
     "base_level": 41,
     "minimum_item_rank": 0,
     "discoverable": true,
+    "order_conditions": [
+        {"type": "MainQuestCompleted", "Param1": 13}
+    ],
     "rewards": [
         {
             "type": "exp",
@@ -197,7 +200,8 @@
                     "comment" : "Behemoth",
                     "enemy_id": "0x015709",
                     "level": 40,
-                    "exp": 3742
+                    "exp": 37420,
+                    "is_boss": true
                 }
             ]
         }
@@ -219,7 +223,8 @@
                         {"type": "WorldManageLayout", "action": "Set", "value": 1294, "quest_id": 70000001, "comment": "The White Dragon (Less Dead)"},
                         {"type": "QstLayout", "action": "Set", "value": 1009, "comment": "Spawns Gerd in the Audience Chamber"},
                         {"type": "QstLayout", "action": "Set", "value": 1239, "comment": "Spawns Heinz in the Audience Chamber"},
-                        {"type": "QstLayout", "action": "Set", "value": 1240, "comment": "Spawns Vanessa in the Audience Chamber"}
+                        {"type": "QstLayout", "action": "Set", "value": 1240, "comment": "Spawns Vanessa in the Audience Chamber"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"}
                     ],
                     "npc_id": "Gerd1",
                     "message_id": 0

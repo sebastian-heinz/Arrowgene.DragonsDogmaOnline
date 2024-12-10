@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40000208,
+  "base_level": 36,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "White Wings: Cooperation (Mysree Grove)",
+  "light_quest_details": {
+    "area_id": 6,
+    "board_type": 1,
+    "board_id": 12
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 3947
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 15492
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 2075
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "73",
+      "level": 36,
+      "amount": 1
+    }
+  ]
+}

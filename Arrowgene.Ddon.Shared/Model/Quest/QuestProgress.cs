@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
     public class QuestProgress
     {
         public uint CharacterCommonId { get; set; }
-        public QuestId QuestId { get; set; }
+        public uint QuestScheduleId { get; set; }
         public QuestType QuestType { get; set; }
         public uint Step { get; set; }
     }

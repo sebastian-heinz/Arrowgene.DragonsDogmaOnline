@@ -1,0 +1,210 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "The Darkness of the Heart",
+    "quest_id": 20200,
+    "next_quest": 20210,
+    "base_level": 71,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "order_conditions": [
+        {"type": "MinimumLevel", "Param1": 71},
+        {"type": "MainQuestCompleted", "Param1": 20190}
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 500000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 54000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 4400
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 13485,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 371,
+                "group_id": 19
+            },
+            "enemies": [
+                {
+                    "comment": "Severely Infected Behemoth",
+                    "enemy_id": "0x015717",
+                    "level": 71,
+                    "exp": 387000,
+                    "named_enemy_params_id": 1235,
+                    "infection_type": 1,
+                    "is_boss": true
+                }
+            ]
+        },
+        {
+            "comment": "Prevent monsters spawning during the quest",
+            "stage_id": {
+                "id": 371,
+                "group_id": 16
+            },
+            "enemies": []
+        },
+        {
+            "comment": "Prevent monsters spawning during the quest",
+            "stage_id": {
+                "id": 371,
+                "group_id": 78
+            },
+            "enemies": []
+        }
+
+    ],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "npc_id": "Joseph",
+                    "message_id": 15723,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 4053, "quest_id": 70022001, "comment": "Spawns Geroid"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 4066, "quest_id": 70023001, "comment": "Spawns Geroid"}
+                    ]
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Accept",
+                    "stage_id": {
+                        "id": 435
+                    },
+                    "location": {
+                        "x": 260,
+                        "y": 2,
+                        "z": 262
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 3966, "comment": "Gearóid, Gearóid's Escort Guard, Cecily, Gurdolin, Elliot, Lise"}
+                    ]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 435
+                    },
+                    "event_id": 0
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 371
+                    },
+                    "location": {
+                        "x": -9714,
+                        "y": 1121,
+                        "z": -31048
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 371
+                    },
+                    "event_id": 20
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "groups": [ 0 ],
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 3966, "comment": "Gearóid, Gearóid's Escort Guard, Cecily, Gurdolin, Elliot, Lise"},
+                        {"type": "QstLayout", "action": "Set", "value": 3968, "comment": "Cecily, Gurdolin, Lise and Elliot"},
+                        {"type": "QstLayout", "action": "Set", "value": 3971, "comment": "Spawns Wall"}
+                    ]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 371
+                    },
+                    "event_id": 25
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "stage_id": {
+                        "id": 371,
+                        "group_id": 3,
+                        "layer_no": 0
+                    },
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "npc_id": "Cecily0",
+                    "message_id": 15799,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Clear", "value": 3968, "comment": "Cecily, Gurdolin, Lise and Elliot"},
+                        {"type": "QstLayout", "action": "Clear", "value": 3971, "comment": "Spawns Wall"},
+                        {"type": "QstLayout", "action": "Set", "value": 3972, "comment": "Cecily, Gurdolin, Lise and Elliot"}
+                    ]
+                },
+                {
+                    "comment": "There is supposed to be an NPC here, but I can't figure out how to spawn him",
+                    "type": "IsStageNo",
+                    "stage_id": {
+                        "id": 435
+                    },
+                    "announce_type": "Update",
+                    "checkpoint": true
+                },
+                {
+                    "type": "PartyGather",
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 371
+                    },
+                    "location": {
+                        "x": -33479,
+                        "y": 1084,
+                        "z": -17725
+                    }
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 371
+                    },
+                    "event_id": 30
+                },
+                {
+                    "type": "TalkToNpc",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "announce_type": "Update",
+                    "checkpoint": true,
+                    "npc_id": "Joseph",
+                    "message_id": 15819
+                }
+            ]
+        }
+    ]
+}

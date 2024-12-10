@@ -1,9 +1,12 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -40,6 +43,30 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             var partyLeader = party.Leader.Client.Character;
+
+            res.ContentNumber = party.ContentId;
+            if (BoardManager.BoardIdIsExm(party.ContentId))
+            {
+                Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.Contents);
+            }
+            else
+            {
+                Server.CharacterManager.UpdateOnlineStatus(party.Leader.Client, partyLeader, OnlineStatus.PtLeader);
+                if (partyLeader.CharacterId != client.Character.CharacterId)
+                {
+                    Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.PtMember);
+                }
+            }
+
+            var progress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All);
+            foreach (var questProgress in progress)
+            {
+                var quest = QuestManager.GetQuestByScheduleId(questProgress.QuestScheduleId);
+                if (quest != null && quest.IsPersonal)
+                { 
+                    join.Value.QuestState.AddNewQuest(questProgress.QuestScheduleId, questProgress.Step);
+                }
+            }
 
             S2CPartyPartyJoinNtc ntc = new S2CPartyPartyJoinNtc();
             ntc.HostCharacterId = party.Host.Client.Character.CharacterId;

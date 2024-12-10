@@ -7,6 +7,9 @@
     "base_level": 16,
     "minimum_item_rank": 0,
     "discoverable": true,
+    "order_conditions": [
+        {"type": "MainQuestCompleted", "Param1": 5}
+    ],
     "rewards": [
         {
             "type": "exp",
@@ -50,7 +53,7 @@
                 "id": 67,
                 "group_id": 2
             },
-			"placement_type": "Manual",
+            "placement_type": "Manual",
             "enemies": [
                 {
                     "enemy_id": "0x015040",
@@ -58,39 +61,39 @@
                     "exp": 4660,
                     "named_enemy_params_id": 141,
                     "is_boss": true,
-					"index": 6
+                    "index": 6
                 },
                 {
                     "enemy_id": "0x010200",
                     "level": 18,
-					"named_enemy_params_id": 142,
-					"index": 3,
+                    "named_enemy_params_id": 142,
+                    "index": 3,
                     "exp": 64,
-					"index": 4
+                    "index": 4
                 },
-				{
+                {
                     "enemy_id": "0x010200",
                     "level": 18,
-					"named_enemy_params_id": 142,
-					"index": 3,
+                    "named_enemy_params_id": 142,
+                    "index": 3,
                     "exp": 64,
-					"index": 10
+                    "index": 10
                 },
-				{
+                {
                     "enemy_id": "0x010200",
                     "level": 18,
-					"named_enemy_params_id": 142,
-					"index": 3,
+                    "named_enemy_params_id": 142,
+                    "index": 3,
                     "exp": 64,
-					"index": 11
+                    "index": 11
                 },
-				{
+                {
                     "enemy_id": "0x010200",
                     "level": 18,
-					"named_enemy_params_id": 142,
-					"index": 3,
+                    "named_enemy_params_id": 142,
+                    "index": 3,
                     "exp": 64,
-					"index": 12
+                    "index": 12
                 }
             ]
         }
@@ -107,7 +110,8 @@
                 {"type": "WorldManageLayout", "action": "Set", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
                 {"type": "WorldManageLayout", "action": "Set", "value": 1219, "quest_id": 70000001, "comment": "Iris"},
                 {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
-                {"type": "WorldManageLayout", "action": "Set", "value": 1293, "quest_id": 70000001, "comment": "The White Dragon (Dead)"}
+                {"type": "WorldManageLayout", "action": "Set", "value": 1293, "quest_id": 70000001, "comment": "The White Dragon (Dead)"},
+                {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"}
             ],
             "npc_id": "Joseph",
             "message_id": 7603
@@ -132,7 +136,7 @@
             "stage_id": {
                 "id": 1
             },
-			"flags": [
+            "flags": [
                 {"type": "QstLayout", "action": "Clear", "value": 977, "comment": "Spawns Gerd and the White Knights outside Glowworm Cave"}
             ],
             "event_id": 20
@@ -155,7 +159,7 @@
             "stage_id": {
                 "id": 67
             },
-			"jump_stage_id": {
+            "jump_stage_id": {
                 "id": 67
             },
             "start_pos_no": 2,
@@ -176,7 +180,7 @@
             },
             "event_id": 10
         },
-		{
+        {
             "type": "PlayEvent",
             "stage_id": {
                 "id": 67

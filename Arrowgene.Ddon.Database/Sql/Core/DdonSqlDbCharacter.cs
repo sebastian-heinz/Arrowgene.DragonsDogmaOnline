@@ -1,9 +1,11 @@
 using Arrowgene.Ddon.Shared.Csv;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Linq;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -160,10 +162,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return characterUpdateRowsAffected > NoRowsAffected;
         }
 
-        public Character SelectCharacter(uint characterId)
+        public Character SelectCharacter(uint characterId, DbConnection? connectionIn = null)
         {
             Character character = null;
-            ExecuteInTransaction(conn => {
+            ExecuteQuerySafe(connectionIn, conn => {
                 ExecuteReader(conn, SqlSelectAllCharacterData,
                 command => { AddParameter(command, "@character_id", characterId); }, reader =>
                 {
@@ -173,7 +175,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     }
                 });
 
-                QueryCharacterData(conn, character);
+                if (character != null)
+                {
+                    QueryCharacterData(conn, character);
+                }
             });
             return character;
         }
@@ -234,15 +239,33 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool DeleteCharacter(uint characterId)
         {
-            uint bbmCharacterId = SelectBBMCharacterId(characterId);
-            if (bbmCharacterId > 0)
+            int rowsAffected = 0;
+            ExecuteInTransaction(conn =>
             {
-                ExecuteNonQuery(SqlDeleteCharacter,
-                command => { AddParameter(command, "@character_id", bbmCharacterId); });
-            }
+                var clan = SelectClanMembershipByCharacterId(characterId, conn);
+                if (clan != 0)
+                {
+                    if (GetClanMemberList(clan, conn).Count == 1)
+                    {
+                        DeleteClan(clan, conn);
+                    }
+                    else
+                    {
+                        IncrementClanMemberNum(-1, clan, conn);
+                    }
+                }
 
-            int rowsAffected = ExecuteNonQuery(SqlDeleteCharacter,
-                command => { AddParameter(command, "@character_id", characterId); });
+                uint bbmCharacterId = SelectBBMCharacterId(characterId, conn);
+                if (bbmCharacterId > 0)
+                {
+                    ExecuteNonQuery(conn, SqlDeleteCharacter,
+                    command => { AddParameter(command, "@character_id", bbmCharacterId); });
+                }
+
+                rowsAffected = ExecuteNonQuery(conn, SqlDeleteCharacter,
+                    command => { AddParameter(command, "@character_id", characterId); });
+            });
+            
             return rowsAffected > NoRowsAffected;
         }
 
@@ -297,7 +320,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         
                         item.UId = GetString(reader2, "item_uid");
                         item.ItemId = GetUInt32(reader2, "item_id");
-                        item.Unk3 = GetByte(reader2, "unk3");
+                        item.SafetySetting = GetByte(reader2, "safety");
                         item.Color = GetByte(reader2, "color");
                         item.PlusValue = GetByte(reader2, "plus_value");
                         item.EquipPoints = GetUInt32(reader2, "equip_points");
@@ -372,6 +395,32 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         character.AbilityPresets.Add(ReadAbilityPreset(reader));
                     }
                 });
+
+            // Quest Completion
+            foreach (var questType in Enum.GetValues(typeof(QuestType)).Cast<QuestType>())
+            {
+                ExecuteReader(conn, SqlSelectCompletedQuestByType,
+                   command => {
+                       AddParameter(command, "@character_common_id", character.CommonId);
+                       AddParameter(command, "@quest_type", (uint)questType);
+                   }, reader => {
+                       while (reader.Read())
+                       {
+                           var quest = new CompletedQuest()
+                           {
+                               QuestId = (QuestId)GetUInt32(reader, "quest_id"),
+                               QuestType = questType,
+                               ClearCount = GetUInt32(reader, "clear_count")
+                           };
+
+                           character.CompletedQuests.TryAdd(quest.QuestId, quest);
+                       }
+                   });
+            }
+
+            //Clan membership
+            character.ClanId = SelectClanMembershipByCharacterId(character.CharacterId, conn);
+            character.ClanName = GetClanNameByClanId(character.ClanId);
         }
 
         public bool UpdateMyPawnSlot(uint characterId, uint num)
@@ -430,7 +479,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach(CDataJobPlayPoint playPoint in character.PlayPointList)
             {
-                ReplaceCharacterPlayPointData(conn, character.ContentCharacterId, playPoint);
+                ReplaceCharacterPlayPointData(character.ContentCharacterId, playPoint, conn);
             }
 
             ExecuteNonQuery(conn, SqlInsertCharacterStamp, (Action<TCom>)(command =>
@@ -569,7 +618,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
                         item.UId = GetString(reader, "item_uid");
                         item.ItemId = GetUInt32(reader, "item_id");
-                        item.Unk3 = GetByte(reader, "unk3");
+                        item.SafetySetting = GetByte(reader, "safety");
                         item.Color = GetByte(reader, "color");
                         item.PlusValue = GetByte(reader, "plus_value");
                         item.EquipPoints = GetUInt32(reader, "equip_points");

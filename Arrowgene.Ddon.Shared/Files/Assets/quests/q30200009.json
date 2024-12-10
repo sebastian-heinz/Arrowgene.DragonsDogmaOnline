@@ -1,0 +1,48 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 30200009,
+  "base_level": 70,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Eliminate the Threat",
+  "light_quest_details": {
+    "board_type": 2,
+    "board_id": 24,
+    "get_cp": 26,
+    "order_limit": 7
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 38782
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 41096
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 2504
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "254",
+      "level": 70,
+      "amount": 1
+    }
+  ]
+}

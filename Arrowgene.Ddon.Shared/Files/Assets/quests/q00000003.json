@@ -8,9 +8,8 @@
     "minimum_item_rank": 0,
     "discoverable": true,
     "order_conditions": [
-        {
-            "type": "Solo"
-        }
+        {"type": "Solo"},
+        {"type": "MainQuestCompleted", "Param1": 2}
     ],
     "rewards": [
         {
@@ -107,7 +106,8 @@
                 {"type": "WorldManageLayout", "action": "Set", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
                 {"type": "WorldManageLayout", "action": "Set", "value": 1219, "quest_id": 70000001, "comment": "Iris"},
                 {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
-                {"type": "WorldManageLayout", "action": "Set", "value": 1293, "quest_id": 70000001, "comment": "The White Dragon (Dead)"}
+                {"type": "WorldManageLayout", "action": "Set", "value": 1293, "quest_id": 70000001, "comment": "The White Dragon (Dead)"},
+                {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"}
             ],
             "stage_id": {
                 "id": 3,
@@ -118,7 +118,6 @@
         },
         {
             "type": "Raw",
-            "announce_type": "Accept",
             "flags": [
                 {"type": "QstLayout", "action": "Set", "value": 972, "comment": "Spawns Heinz and Gerd in Tel"}
             ],
@@ -131,7 +130,7 @@
         },
         {
             "type": "PartyGather",
-            "checkpoint": true,
+            "announce_type": "Accept",
             "stage_id": {
                 "id": 1
             },
@@ -143,7 +142,6 @@
         },
         {
             "type": "Raw",
-            "announce_type": "Update",
             "check_commands": [
                 {"type": "EventEnd", "Param1": 100, "Param2": 10}
             ],
@@ -153,6 +151,7 @@
         },
         {
             "type": "IsStageNo",
+            "announce_type": "Update",
             "checkpoint": true,
             "stage_id": {
                 "id": 25
@@ -217,7 +216,6 @@
         },
         {
             "type": "Raw",
-            "announce_type": "Update",
             "check_commands": [
                 {"type": "EventEnd", "Param1": 100, "Param2": 15}
             ],
@@ -227,6 +225,7 @@
         },
         {
             "type": "TalkToNpc",
+            "announce_type": "Update",
             "checkpoint": true,
             "stage_id": {
                 "id": 3,

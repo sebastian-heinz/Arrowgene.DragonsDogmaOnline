@@ -58,7 +58,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (packet.Price > 0)
             {
-                _playPointManager.RemovePlayPoint(client, packet.Price);
+                _playPointManager.RemovePlayPoint(client, packet.Price, packet.JobId);
             }
 
             return new S2CJobJobValueShopBuyItemRes()

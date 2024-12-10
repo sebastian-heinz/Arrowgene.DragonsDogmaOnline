@@ -97,9 +97,10 @@
       "groups": [ 0 ]
     },
     {
-      "type": "DeliverItems",
+      "type": "NewDeliverItems",
       "stage_id": {
         "id": 130,
+        "group_id": 1,
         "group_id": 1
       },
       "npc_id": "LightlyEquippedSoldier",

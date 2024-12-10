@@ -1,0 +1,155 @@
+{
+    "comment": "Heroic Spirit Sleeping Path: Rathnite Foothills - Section 4: 3rd Space Trial 1",
+    "stage_id": {
+        "id": 553,
+        "group_id": 45
+    },
+    "pos_id": 6,
+    "unlock_cost": [],
+    "unlocks": [],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
+                {"type": "ItemNoteUsedMoreThanOnce", "priority": "Secondary"},
+                {"type": "CannotBeAffectedByAbnormalStatus", "priority": "Secondary", "Param1": 3}
+            ],
+            "cost": [],
+            "item_rewards": [
+                {"item_id": 18656, "amount": 80},
+                {"item_id": 18742, "amount": 10}
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 553,
+                        "group_id": 51
+                    },
+                    "enemies": [
+                        {
+                            "comment" : "Shadow Wolf",
+                            "enemy_id": "0x010206",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Shadow Wolf",
+                            "enemy_id": "0x010206",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Shadow Wolf",
+                            "enemy_id": "0x010206",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Shadow Sling Goblin",
+                            "enemy_id": "0x011132",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Shadow Sling Goblin",
+                            "enemy_id": "0x011132",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Shadow Chimera",
+                            "enemy_id": "0x015203",
+                            "level": 85,
+                            "exp": 85000,
+                            "pp": 3,
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true
+                        }
+                  ]
+                }
+            ]
+        },
+        {
+            "trial_name": "Trial of the Souls",
+            "constraints": [
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
+                {"type": "ItemNoteUsedMoreThanOnce", "priority": "Secondary"},
+                {"type": "CannotBeAffectedByAbnormalStatus", "priority": "Secondary", "Param1": 3}
+            ],
+            "cost": [
+                {"item_id": 18656, "amount": 40}
+            ],
+            "item_rewards": [
+                {"item_id": 18742, "amount": 20},
+                {
+                    "type": "pool", "rolls": 1,
+                    "items": [
+                        {"type": "Random", "item_id": 9254, "amount": 3},
+                        {"type": "Random", "item_id": 9347, "amount": 3},
+                        {"type": "Random", "item_id": 13698, "amount": 3}
+                    ]
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 553,
+                        "group_id": 51
+                    },
+                    "enemies": [
+                        {
+                            "comment" : "War-Ready Grimwarg",
+                            "enemy_id": "0x010230",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "War-Ready Grimwarg",
+                            "enemy_id": "0x010230",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "War-Ready Grimwarg",
+                            "enemy_id": "0x010230",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "War-Ready Grimwarg",
+                            "enemy_id": "0x010230",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "War-Ready Grimwarg",
+                            "enemy_id": "0x010230",
+                            "level": 85,
+                            "exp": 8500,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "War-Ready Goremanticore",
+                            "enemy_id": "0x015220",
+                            "level": 85,
+                            "exp": 85000,
+                            "pp": 3,
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true
+                        }
+                   ]
+                }
+            ]
+        }
+    ]
+}
