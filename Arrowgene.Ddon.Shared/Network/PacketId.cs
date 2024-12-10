@@ -486,9 +486,9 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_PAWN_LOST_PAWN_GOLDEN_REVIVE_RES = new PacketId(8, 23, 2, "S2C_PAWN_LOST_PAWN_GOLDEN_REVIVE_RES", ServerType.Game, PacketSource.Server); // ロストポーン復活(黄金石消費)に
         public static readonly PacketId C2S_PAWN_LOST_PAWN_WALLET_REVIVE_REQ = new PacketId(8, 24, 1, "C2S_PAWN_LOST_PAWN_WALLET_REVIVE_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_PAWN_LOST_PAWN_WALLET_REVIVE_RES = new PacketId(8, 24, 2, "S2C_PAWN_LOST_PAWN_WALLET_REVIVE_RES", ServerType.Game, PacketSource.Server); // ロストポーン復活(通貨消費)に
-        public static readonly PacketId C2S_PAWN_8_25_1_REQ = new PacketId(8, 25, 1, "C2S_PAWN_8_25_1_REQ", ServerType.Game, PacketSource.Client); // C2S_RENTAL_PAWN_LOST_REQ?
-        public static readonly PacketId S2C_PAWN_8_25_2_RES = new PacketId(8, 25, 2, "S2C_PAWN_8_25_2_RES", ServerType.Game, PacketSource.Server); // S2C_RENTAL_PAWN_LOST_RES?
-        public static readonly PacketId S2C_PAWN_8_25_16_NTC = new PacketId(8, 25, 16, "S2C_PAWN_8_25_16_NTC", ServerType.Game, PacketSource.Server); // S2C_RENTAL_PAWN_LOST_NTC?
+        public static readonly PacketId C2S_PAWN_RENTAL_PAWN_LOST_REQ = new PacketId(8, 25, 1, "C2S_PAWN_RENTAL_PAWN_LOST_REQ", ServerType.Game, PacketSource.Client, "C2S_PAWN_8_25_1_REQ");
+        public static readonly PacketId S2C_PAWN_RENTAL_PAWN_LOST_RES = new PacketId(8, 25, 2, "S2C_PAWN_RENTAL_PAWN_LOST_RES", ServerType.Game, PacketSource.Server, "S2C_PAWN_8_25_2_RES");
+        public static readonly PacketId S2C_PAWN_RENTAL_PAWN_LOST_NTC = new PacketId(8, 25, 16, "S2C_PAWN_RENTAL_PAWN_LOST_NTC", ServerType.Game, PacketSource.Server, "S2C_PAWN_8_25_16_NTC");
         public static readonly PacketId C2S_PAWN_UPDATE_PAWN_REACTION_LIST_REQ = new PacketId(8, 26, 1, "C2S_PAWN_UPDATE_PAWN_REACTION_LIST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_PAWN_UPDATE_PAWN_REACTION_LIST_RES = new PacketId(8, 26, 2, "S2C_PAWN_UPDATE_PAWN_REACTION_LIST_RES", ServerType.Game, PacketSource.Server); // ポーンリアクションリスト更新に
         public static readonly PacketId S2C_PAWN_UPDATE_PAWN_REACTION_LIST_NTC = new PacketId(8, 26, 16, "S2C_PAWN_UPDATE_PAWN_REACTION_LIST_NTC", ServerType.Game, PacketSource.Server, "S2C_PAWN_8_26_16_NTC");
@@ -2418,9 +2418,9 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_PAWN_LOST_PAWN_GOLDEN_REVIVE_RES);
             AddPacketIdEntry(packetIds, C2S_PAWN_LOST_PAWN_WALLET_REVIVE_REQ);
             AddPacketIdEntry(packetIds, S2C_PAWN_LOST_PAWN_WALLET_REVIVE_RES);
-            AddPacketIdEntry(packetIds, C2S_PAWN_8_25_1_REQ);
-            AddPacketIdEntry(packetIds, S2C_PAWN_8_25_2_RES);
-            AddPacketIdEntry(packetIds, S2C_PAWN_8_25_16_NTC);
+            AddPacketIdEntry(packetIds, C2S_PAWN_RENTAL_PAWN_LOST_REQ);
+            AddPacketIdEntry(packetIds, S2C_PAWN_RENTAL_PAWN_LOST_RES);
+            AddPacketIdEntry(packetIds, S2C_PAWN_RENTAL_PAWN_LOST_NTC);
             AddPacketIdEntry(packetIds, C2S_PAWN_UPDATE_PAWN_REACTION_LIST_REQ);
             AddPacketIdEntry(packetIds, S2C_PAWN_UPDATE_PAWN_REACTION_LIST_RES);
             AddPacketIdEntry(packetIds, S2C_PAWN_UPDATE_PAWN_REACTION_LIST_NTC);
