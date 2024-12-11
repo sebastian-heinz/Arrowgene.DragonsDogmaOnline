@@ -224,6 +224,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataLobbyContextPlayer.Serializer());
             Create(new CDataLobbyMemberInfoSerializer());
             Create(new CDataLoginSettingSerializer());
+            Create(new CDataLostPawnList.Serializer());
             Create(new CDataLotQuestOrderList.Serializer());
             Create(new CDataMailInfo.Serializer());
             Create(new CDataMailTextInfo.Serializer());
@@ -694,7 +695,12 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPawnGetPawnTotalScoreReq.Serializer());
             Create(new C2SPawnGetRegisteredPawnDataReq.Serializer());
             Create(new C2SPawnJoinPartyMypawnReq.Serializer());
+            Create(new C2SPawnLostPawnReviveReq.Serializer());
+            Create(new C2SPawnLostPawnPointReviveReq.Serializer());
+            Create(new C2SPawnLostPawnGoldenReviveReq.Serializer());
+            Create(new C2SPawnLostPawnWalletReviveReq.Serializer());
             Create(new C2SPawnPawnLostReq.Serializer());
+            Create(new C2SPawnRentalPawnLostReq.Serializer());
             Create(new C2SPawnSpSkillDeleteStockSkillReq.Serializer());
             Create(new C2SPawnSpSkillGetActiveSkillReq.Serializer());
             Create(new C2SPawnSpSkillGetStockSkillReq.Serializer());
@@ -1259,7 +1265,14 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPawnGetPawnTotalScoreRes.Serializer());
             Create(new S2CPawnGetRegisteredPawnDataRes.Serializer());
             Create(new S2CPawnJoinPartyMypawnRes.Serializer());
+            Create(new S2CPawnLostPawnReviveRes.Serializer());
+            Create(new S2CPawnLostPawnPointReviveRes.Serializer());
+            Create(new S2CPawnLostPawnGoldenReviveRes.Serializer());
+            Create(new S2CPawnLostPawnWalletReviveRes.Serializer());
+            Create(new S2CPawnPawnLostNtc.Serializer());
             Create(new S2CPawnPawnLostRes.Serializer());
+            Create(new S2CPawnRentalPawnLostNtc.Serializer());
+            Create(new S2CPawnRentalPawnLostRes.Serializer());
             Create(new S2CPawnSpSkillDeleteStockSkillRes.Serializer());
             Create(new S2CPawnSpSkillGetActiveSkillRes.Serializer());
             Create(new S2CPawnSpSkillGetStockSkillRes.Serializer());

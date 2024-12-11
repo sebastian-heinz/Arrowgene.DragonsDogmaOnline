@@ -18,6 +18,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             "name",
             "hm_type",
             "pawn_type",
+            "pawn_state",
             "training_points",
             "available_training",
             "craft_exp",
@@ -718,6 +719,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             pawn.Name = GetString(reader, "name");
             pawn.HmType = GetByte(reader, "hm_type");
             pawn.PawnType = (PawnType)GetByte(reader, "pawn_type");
+            pawn.PawnState = (PawnState)GetByte(reader, "pawn_state");
             pawn.TrainingPoints = GetUInt32(reader, "training_points");
             pawn.AvailableTraining = GetUInt32(reader, "available_training");
             pawn.IsOfficialPawn = GetBoolean(reader, "is_official_pawn");
@@ -765,6 +767,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@name", pawn.Name);
             AddParameter(command, "@hm_type", pawn.HmType);
             AddParameter(command, "@pawn_type", (byte)pawn.PawnType);
+            AddParameter(command, "@pawn_state", (byte)pawn.PawnState);
             AddParameter(command, "@training_points", pawn.TrainingPoints);
             AddParameter(command, "@available_training", pawn.AvailableTraining);
             AddParameter(command, "@is_official_pawn", false);

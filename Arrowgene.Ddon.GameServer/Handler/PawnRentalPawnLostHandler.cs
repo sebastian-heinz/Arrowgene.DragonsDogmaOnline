@@ -8,33 +8,32 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PawnPawnLostHandler : GameStructurePacketHandler<C2SPawnPawnLostReq>
+    public class PawnRentalPawnLostHandler : GameStructurePacketHandler<C2SPawnRentalPawnLostReq>
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnPawnLostHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnRentalPawnLostHandler));
         
-        public PawnPawnLostHandler(DdonGameServer server) : base(server)
+        public PawnRentalPawnLostHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SPawnPawnLostReq> packet)
+        public override void Handle(GameClient client, StructurePacket<C2SPawnRentalPawnLostReq> packet)
         {
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
-            pawn.PawnState = PawnState.Lost;
-            Server.Database.UpdatePawnBaseInfo(pawn);
+            Pawn pawn = client.Character.RentedPawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
+            // TODO: Decrement by one the rented pawn's adventure count
 
-            S2CPawnPawnLostNtc ntc = new S2CPawnPawnLostNtc()
+            S2CPawnRentalPawnLostNtc ntc = new S2CPawnRentalPawnLostNtc()
             {
                 PawnId = pawn.PawnId,
                 PawnName = pawn.Name,
-                IsLost = pawn.PawnState == PawnState.Lost
+                AdventureCount = 5
             };
             client.Party.SendToAll(ntc);
 
-            client.Send(new S2CPawnPawnLostRes()
+            client.Send(new S2CPawnRentalPawnLostRes()
             {
                 PawnId = pawn.PawnId,
                 PawnName = pawn.Name,
-                IsLost = pawn.PawnState == PawnState.Lost
+                AdventureCount = 5
             });
 
             int pawnIndex = client.Party.Members.FindIndex(x => x is PawnPartyMember xpawn && xpawn.PawnId == packet.Structure.PawnId);

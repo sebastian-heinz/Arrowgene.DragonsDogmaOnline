@@ -80,6 +80,7 @@ CREATE TABLE IF NOT EXISTS "ddon_pawn"
     "name"                        TEXT                              NOT NULL,
     "hm_type"                     SMALLINT                          NOT NULL,
     "pawn_type"                   SMALLINT                          NOT NULL,
+    "pawn_state"                  SMALLINT                          NOT NULL,
     "training_points"             INTEGER                           NOT NULL,
     "available_training"          INTEGER                           NOT NULL,
     "craft_rank"                  INTEGER                           NOT NULL,
