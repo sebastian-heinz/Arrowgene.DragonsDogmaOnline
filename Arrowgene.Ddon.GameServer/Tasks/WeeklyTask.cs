@@ -12,6 +12,7 @@ namespace Arrowgene.Ddon.GameServer.Tasks
 
         /// <summary>
         /// Creates a task which runs on a weekly cadence.
+        /// Uses the timezone of the head server when calculating times.
         /// </summary>
         /// <param name="scheduleType">The type of event this is associated with</param>
         /// <param name="day">The day during the week the reset should occur.</param>

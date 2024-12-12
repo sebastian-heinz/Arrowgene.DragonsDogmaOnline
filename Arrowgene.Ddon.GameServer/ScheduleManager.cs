@@ -45,7 +45,7 @@ namespace Arrowgene.Ddon.GameServer
             }
         }
 
-        public void Start()
+        public void StartServerTasks()
         {
             Dictionary<TaskType, SchedulerTaskEntry> entries = Server.Database.SelectAllTaskEntries();
 

@@ -4,8 +4,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
 {
     public class TaskSchedulerMigration : IMigrationStrategy
     {
-        public uint From => 25;
-        public uint To => 26;
+        public uint From => 26;
+        public uint To => 27;
 
         private readonly DatabaseSetting DatabaseSetting;
 

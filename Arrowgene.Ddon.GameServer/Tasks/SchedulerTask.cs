@@ -13,6 +13,12 @@ namespace Arrowgene.Ddon.GameServer.Tasks
             Interval = interval;
         }
 
+        /// <summary>
+        /// Runs on the head server. Should deal with things like modifying the database.
+        /// Should use the RPC manage if it is required to update clients on different channels
+        /// or send annoucements to players.
+        /// </summary>
+        /// <param name="server"></param>
         public abstract void RunTask(DdonGameServer server);
         public abstract long NextTimestamp();
 

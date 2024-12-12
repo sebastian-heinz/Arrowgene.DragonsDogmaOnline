@@ -130,8 +130,13 @@ namespace Arrowgene.Ddon.GameServer
         public override void Start()
         {
             QuestManager.LoadQuests(this);
-            ScheduleManager.Start();
             GpCourseManager.EvaluateCourses();
+
+            if (ServerUtils.IsHeadServer(this))
+            {
+                ScheduleManager.StartServerTasks();
+            }
+            
             LoadChatHandler();
             LoadPacketHandler();
             base.Start();
