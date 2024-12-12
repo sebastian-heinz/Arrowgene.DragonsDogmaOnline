@@ -50,12 +50,16 @@
         "id": 1,
         "group_id": 196
       },
+        "placement_type": "manual",
       "enemies": [
         {
-          "enemy_id": "0x015002",
+          "enemy_id": "0x015020",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 53,
           "level": 30,
-          "exp": 6500,
-          "is_boss": true
+          "exp": 5446,
+          "is_boss": true,
+          "index": 5
         }
       ]
     }
@@ -79,8 +83,9 @@
       "npc_id": "WearyHarpy",
       "message_id": 10800
     },
+    
     {
-      "type": "NewDeliverItems",
+      "type": "DeliverItems",
       "stage_id": {
         "id": 1,
         "group_id": 1,
@@ -96,6 +101,7 @@
       ],
       "message_id": 10737
     },
+
     {
       "type": "NewDeliverItems",
       "stage_id": {
@@ -113,6 +119,8 @@
       ],
       "message_id": 10737
     },
+
+    
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
       "announce_type": "Update",
@@ -121,6 +129,7 @@
     {
       "type": "KillGroup",
       "announce_type": "Update",
+      "reset_group": false,
       "groups": [ 0 ]
     },
     {

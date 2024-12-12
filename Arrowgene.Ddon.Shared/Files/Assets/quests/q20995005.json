@@ -10,7 +10,7 @@
     "rewards": [
         {
             "type": "exp",
-            "amount": 2960
+            "amount": 3630
         },
         {
             "type": "wallet",
@@ -20,21 +20,21 @@
         {
             "type": "wallet",
             "wallet_type": "RiftPoints",
-            "amount": 330
+            "amount": 360
         },
         {
             "type": "select",
             "loot_pool": [
                 {
-                    "item_id": 7833,
-                    "num": 2
+                    "item_id": 7823,
+                    "num": 1
                 },
                 {
                     "item_id": 8031,
                     "num": 2
                 },
                 {
-                    "item_id": 7555,
+                    "item_id": 9378,
                     "num": 2
                 }
             ]
@@ -44,32 +44,30 @@
         {
             "stage_id": {
                 "id": 76,
-                "group_id": 10
+                "group_id": 4,
+                "sub_group_id": 0,
+                "layer_no": 0
+                
             },
+                "placement_type": "manual",
             "enemies": [
                 {
                     "enemy_id": "0x015304",
                     "level": 55,
-                    "exp": 21000,
-                    "is_boss": true
-                },
-                {
-                    "enemy_id": "0x010606",
-                    "level": 55,
-                    "exp": 1500,
-                    "is_boss": false
-                },
-                {
-                    "enemy_id": "0x010606",
-                    "level": 55,
-                    "exp": 1500,
-                    "is_boss": false
-                },
-                {
-                    "enemy_id": "0x010606",
-                    "level": 55,
-                    "exp": 1500,
-                    "is_boss": false
+                    "start_think_tbl_no": 1,
+		            "named_enemy_params_id": 54,
+                    "exp": 19700,
+                    "is_boss": true,
+                    "index": 15,
+                    "drop_items": [
+                        {
+                        "item_id": 7823,
+                        "item_min": 1,
+                        "item_max": 3,
+                        "quality": 1,
+                        "drop_chance": 0.9
+                      }
+                    ]
                 }
             ]
         }
@@ -96,6 +94,7 @@
         {
             "type": "KillGroup",
             "announce_type": "Update",
+            "reset_group": false,
             "groups": [0]
         },
         {

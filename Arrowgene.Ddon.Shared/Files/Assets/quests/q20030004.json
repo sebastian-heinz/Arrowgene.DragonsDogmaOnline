@@ -28,13 +28,13 @@
       "loot_pool": [
         {
           "comment": "Victory Bracers",
-          "item_id": 708,
+          "item_id": 711,
           "num": 1
         },
         {
           "comment": "Demon Amulet",
-          "item_id": 9383,
-          "num": 2
+          "item_id": 923,
+          "num": 1
         },
         {
           "comment": "Enhanced Lockpick",
@@ -42,20 +42,34 @@
           "num": 2
         }
       ]
-    }
-  ],
+  },
+  {
+      "type": "random",
+      "loot_pool": [
+          {
+              "item_id": 8844,
+              "num": 1,
+              "chance": 0.5
+          }
+      ]
+  }
+],
   "enemy_groups": [
     {
       "stage_id": {
         "id": 154,
         "group_id": 2
       },
+        "placement_type": "manual",
       "enemies": [
         {
           "enemy_id": "0x015600",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 54,
           "level": 30,
-          "exp": 6500,
-          "is_boss": true
+          "exp": 5446,
+          "is_boss": true,
+          "index": 7
         }
       ]
     }
@@ -87,6 +101,7 @@
     {
       "type": "KillGroup",
       "announce_type": "Update",
+      "reset_group": false,
       "groups": [ 0 ]
     },
     {

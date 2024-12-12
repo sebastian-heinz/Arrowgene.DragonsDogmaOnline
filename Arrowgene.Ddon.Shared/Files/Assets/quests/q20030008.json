@@ -28,22 +28,32 @@
       "loot_pool": [
         {
           "comment": "Healing Elixir",
-          "item_id": 7552,
-          "num": 2
+          "item_id": 2594,
+          "num": 1
         },
         {
           "comment": "Quality Gala Extract",
-          "item_id": 9361,
-          "num": 2
+          "item_id": 3635,
+          "num": 1
         },
         {
           "comment": "Small Thief Key",
-          "item_id": 9429,
-          "num": 3
+          "item_id": 9412,
+          "num": 2
         }
       ]
-    }
-  ],
+  },
+  {
+      "type": "random",
+      "loot_pool": [
+          {
+              "item_id": 8992,
+              "num": 1,
+              "chance": 0.6
+          }
+      ]
+  }
+],
   "enemy_groups": [
     {
       "stage_id": {
@@ -53,8 +63,10 @@
       "enemies": [
         {
           "enemy_id": "0x015500",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
           "level": 32,
-          "exp": 5500,
+          "exp": 5636,
           "is_boss": true
         }
       ]
@@ -87,6 +99,7 @@
     {
       "type": "KillGroup",
       "announce_type": "Update",
+      "reset_group": false,
       "groups": [ 0 ]
     },
     {

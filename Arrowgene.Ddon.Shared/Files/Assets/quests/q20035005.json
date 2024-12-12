@@ -27,16 +27,16 @@
       "type": "select",
       "loot_pool": [
         {
-          "item_id": 605,
-          "num": 1
-        },
-        {
-          "item_id": 9411,
-          "num": 2
-        },
-        {
-          "item_id": 52,
+          "item_id": 7937,
           "num": 3
+        },
+        {
+          "item_id": 9377,
+          "num": 3
+        },
+        {
+          "item_id": 9412,
+          "num": 1
         }
       ]
     }
@@ -45,23 +45,29 @@
     {
       "stage_id": {
         "id": 1,
-        "group_id": 212
+        "group_id": 214
       },
       "enemies": [
         {
           "enemy_id": "0x015502",
-          "level": 31,
-          "exp": 5500,
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 54,
+          "level": 30,
+          "exp": 5446,
           "is_boss": true
         },
         {
           "enemy_id": "0x015504",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
           "level": 28,
           "exp": 300,
           "is_boss": false
         },
         {
           "enemy_id": "0x015504",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
           "level": 28,
           "exp": 300,
           "is_boss": false

@@ -31,9 +31,17 @@
           "num": 1
         },
         {
+          "item_id": 425,
+          "num": 1
+        },
+        {
+          "item_id": 8148,
+          "num": 1
+        },
+        {
           "item_id": 39,
           "num": 2
-        }
+        }       
       ]
     },
     {
@@ -55,47 +63,45 @@
       },
       "enemies": [
         {
-          "enemy_id": "0x015800",
+          "enemy_id": "0x015801",
+          "named_enemy_params_id": 53,
           "level": 10,
-          "exp": 94,
+          "exp": 136,
           "is_boss": false
         },
         {
-          "enemy_id": "0x015800",
+          "enemy_id": "0x015801",
+          "named_enemy_params_id": 53,
           "level": 10,
-          "exp": 94,
+          "exp": 136,
           "is_boss": false
         },
         {
-          "enemy_id": "0x015800",
+          "enemy_id": "0x015801",
+          "named_enemy_params_id": 53,
           "level": 10,
-          "exp": 94,
-          "is_boss": false
-        }
-      ]
-    },
-    {
-      "stage_id": {
-        "id": 1,
-        "group_id": 34
-      },
-      "enemies": [
-        {
-          "enemy_id": "0x015800",
-          "level": 10,
-          "exp": 94,
+          "exp": 136,
           "is_boss": false
         },
         {
-          "enemy_id": "0x015800",
+          "enemy_id": "0x015801",
+          "named_enemy_params_id": 53,
           "level": 10,
-          "exp": 94,
+          "exp": 136,
           "is_boss": false
         },
         {
-          "enemy_id": "0x015800",
+          "enemy_id": "0x015801",
+          "named_enemy_params_id": 53,
           "level": 10,
-          "exp": 94,
+          "exp": 136,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015801",
+          "named_enemy_params_id": 53,
+          "level": 10,
+          "exp": 136,
           "is_boss": false
         }
       ]
@@ -119,11 +125,8 @@
     {
       "type": "KillGroup",
       "announce_type": "Update",
+      "reset_group": false,
       "groups": [ 0 ]
-    },
-    {
-      "type": "KillGroup",
-      "groups": [ 1 ]
     },
     {
       "type": "TalkToNpc",

@@ -44,8 +44,8 @@
             "type": "random",
             "loot_pool": [
                 {
-                    "item_id": 34,
-                    "num": 9,
+                    "item_id": 35,
+                    "num": 4,
                     "chance": 1.0
                 }
             ]
@@ -60,8 +60,11 @@
             "enemies": [
                 {
                     "enemy_id": "0x015020",
+                    "start_think_tbl_no": 1,
+                    "named_enemy_params_id": 54,
                     "level": 43,
-                    "exp": 12000,
+                    "exp": 6824,
+                    "scale": 120,
                     "is_boss": true
                 }
             ]
@@ -86,6 +89,7 @@
         {
             "type": "KillGroup",
             "announce_type": "Update",
+            "reset_group": false,
             "groups": [ 0 ]
         },
         {

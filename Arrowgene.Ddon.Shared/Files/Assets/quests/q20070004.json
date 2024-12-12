@@ -31,7 +31,7 @@
           "num": 3
         },
         {
-          "item_id": 9414,
+          "item_id": 9410,
           "num": 2
         },
         {
@@ -48,23 +48,14 @@
         "group_id": 9
       },
       "enemies": [
+        
         {
-          "enemy_id": "0x015800",
-          "level": 44,
-          "exp": 1000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015800",
-          "level": 44,
-          "exp": 1000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015820",
+          "enemy_id": "0x015709",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 54,
           "level": 45,
-          "exp": 1200,
-          "is_boss": false
+          "exp": 6476,
+          "is_boss": true
         }
       ]
     }
@@ -96,6 +87,7 @@
     {
       "type": "KillGroup",
       "announce_type": "Update",
+      "reset_group": false,
       "groups": [ 0 ]
     },
     {

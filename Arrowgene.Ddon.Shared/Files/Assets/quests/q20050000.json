@@ -49,30 +49,36 @@
       "enemies": [
         {
           "comment": "Redcap",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 53,
           "enemy_id": "0x011110",
           "level": 10,
           "exp": 70
         },
         {
           "comment": "Redcap",
+          "enemy_id": "0x011111",
+          "level": 10,
+          "exp": 70
+        },
+        {
+          "comment": "Redcap",
+          "enemy_id": "0x011111",
+          "level": 10,
+          "exp": 70
+        },
+        {
+          "comment": "Redcap",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 53,
           "enemy_id": "0x011110",
           "level": 10,
           "exp": 70
         },
         {
           "comment": "Redcap",
-          "enemy_id": "0x011110",
-          "level": 10,
-          "exp": 70
-        },
-        {
-          "comment": "Redcap",
-          "enemy_id": "0x011110",
-          "level": 10,
-          "exp": 70
-        },
-        {
-          "comment": "Redcap",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 53,
           "enemy_id": "0x011110",
           "level": 10,
           "exp": 70
@@ -88,25 +94,45 @@
       "enemies": [
         {
           "comment": "Redcap",
-          "enemy_id": "0x011110",
+          "enemy_id": "0x011112",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 53,
           "level": 10,
           "exp": 70
         },
         {
           "comment": "Redcap",
-          "enemy_id": "0x011110",
+          "enemy_id": "0x011112",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 53,
           "level": 10,
           "exp": 70
         },
         {
           "comment": "Redcap",
-          "enemy_id": "0x011110",
+          "enemy_id": "0x011111",
           "level": 10,
           "exp": 70
         },
         {
           "comment": "Redcap",
-          "enemy_id": "0x011110",
+          "enemy_id": "0x011112",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 53,
+          "level": 10,
+          "exp": 70
+        },
+        {
+          "comment": "Redcap",
+          "enemy_id": "0x011111",
+          "level": 10,
+          "exp": 70
+        },
+        {
+          "comment": "Redcap",
+          "enemy_id": "0x011112",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 53,
           "level": 10,
           "exp": 70
         }
