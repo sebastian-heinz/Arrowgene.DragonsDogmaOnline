@@ -1,6 +1,5 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -20,15 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.GameTimeBaseInfo.OriginalRealTimeSec = WeatherManager.OriginalRealTimeSec;
             res.GameTimeBaseInfo.GameTimeOneDayMin = Server.Setting.GameLogicSetting.GameClockTimescale;
             res.WeatherLoop = Server.WeatherManager.WeatherLoopList;
-
-            //TODO: Investigate these values. The moon cycles but predicting the current phase serverside is still unclear.
-            res.MoonAgeLoopSec = Server.Setting.GameLogicSetting.GameClockTimescale * 60;
-            res.MoonSchedule.Add(new CDataMoonSchedule()
-            {
-                BeginTimeSec = long.MinValue,
-                EndTimeSec = long.MaxValue,
-                MoonAge = 14
-            });
+            res.MoonAgeLoopSec = WeatherManager.MoonAgeLoopSec;
 
             return res;
         }
