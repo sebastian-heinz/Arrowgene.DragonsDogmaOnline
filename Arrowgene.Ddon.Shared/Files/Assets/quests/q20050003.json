@@ -12,16 +12,16 @@
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 480
+      "amount": 440
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 70
+      "amount": 80
     },
     {
       "type": "exp",
-      "amount": 570
+      "amount": 630
     },
     {
       "type": "select",
@@ -35,7 +35,15 @@
           "num": 3
         },
         {
-          "item_id": 9394,
+          "item_id": 66,
+          "num": 1
+        },
+        {
+          "item_id": 71,
+          "num": 1
+        },
+        {
+          "item_id": 93214,
           "num": 3
         }
       ]
@@ -45,7 +53,12 @@
       "loot_pool": [
         {
           "item_id": 34,
-          "num": 1,
+          "num": 2,
+          "chance": 1.0
+        },
+        {
+          "item_id": 45,
+          "num": 2,
           "chance": 1.0
         }
       ]
@@ -60,26 +73,30 @@
       "enemies": [
         {
           "enemy_id": "0x010401",
+          "named_enemy_params_id": 53,
           "level": 13,
-          "exp": 94,
+          "exp": 214,
           "is_boss": false
         },
         {
           "enemy_id": "0x010401",
+          "named_enemy_params_id": 53,
           "level": 13,
-          "exp": 94,
+          "exp": 214,
           "is_boss": false
         },
         {
           "enemy_id": "0x010401",
+          "named_enemy_params_id": 53,
           "level": 13,
-          "exp": 94,
+          "exp": 214,
           "is_boss": false
         },
         {
           "enemy_id": "0x010401",
+          "named_enemy_params_id": 53,
           "level": 13,
-          "exp": 94,
+          "exp": 214,
           "is_boss": false
         }
       ]
@@ -93,8 +110,9 @@
         {
           "comment": "Ent",
           "enemy_id": "0x015031",
+          "named_enemy_params_id": 54,
           "level": 16,
-          "exp": 2700,
+          "exp": 1060,
           "is_boss": true
         }
       ]
@@ -111,17 +129,24 @@
       "message_id": 11830
     },
     {
-      "type": "SeekOutEnemiesAtMarkedLocation",
+      "type": "DiscoverEnemy",
       "announce_type": "Accept",
       "groups": [ 0 ]
     },
     {
       "type": "KillGroup",
-      "announce_type": "Update",
+      "announce_type": "Accept",
+      "reset_group": false,
       "groups": [ 0 ]
     },
     {
+      "type": "DiscoverEnemy",
+      "announce_type": "Update",
+      "groups": [ 1 ]
+    },
+    {
       "type": "KillGroup",
+      "reset_group": false,
       "groups": [ 1 ]
     },
     {

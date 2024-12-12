@@ -11,24 +11,24 @@
   "rewards": [
     {
       "type": "exp",
-      "amount": 1020
+      "amount": 1120
     },
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 850
+      "amount": 930
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 130
+      "amount": 140
     },
     {
       "type": "select",
       "loot_pool": [
         {
           "item_id": 7894,
-          "num": 3
+          "num": 5
         },
         {
           "item_id": 9402,
@@ -39,40 +39,62 @@
           "num": 1
         }
       ]
+    },
+    {
+      "type": "random",
+      "loot_pool": [
+        {
+          "item_id": 7777,
+          "num": 1,
+          "chance": 1.0
+        }
+      ]
     }
   ],
   "enemy_groups": [
     {
       "stage_id": {
         "id": 1,
-        "group_id": 265
+        "group_id": 268
       },
       "enemies": [
         {
           "enemy_id": "0x011000",
+          "named_enemy_params_id": 53,
           "level": 34,
-          "exp": 550,
+          "exp": 1264,
           "is_boss": false,
           "hm_present_no": 45
         },
         {
           "enemy_id": "0x011000",
+          "named_enemy_params_id": 53,
           "level": 34,
-          "exp": 550,
+          "exp": 1264,
+          "is_boss": false,
+          "hm_present_no": 45
+        },
+        {
+          "enemy_id": "0x011000",
+          "named_enemy_params_id": 53,
+          "level": 34,
+          "exp": 1264,
           "is_boss": false,
           "hm_present_no": 45
         },
         {
           "enemy_id": "0x011003",
+          "named_enemy_params_id": 53,
           "level": 34,
-          "exp": 550,
+          "exp": 1264,
           "is_boss": false,
           "hm_present_no": 48
         },
         {
           "enemy_id": "0x011003",
+          "named_enemy_params_id": 53,
           "level": 34,
-          "exp": 550,
+          "exp": 1264,
           "is_boss": false,
           "hm_present_no": 48
         }

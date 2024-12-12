@@ -52,53 +52,60 @@
       },
       "enemies": [
         {
-          "comment": "Skeleton Mage",
-          "enemy_id": "0x010308",
+          "comment": "Skeleton Sorc",
+          "enemy_id": "0x010309",
+          "start_think_tbl_no": 1,
           "named_enemy_params_id": 54,
-          "level": 20,
-          "exp": 510
-        },
-        {
-          "comment": "Skeleton Mage",
-          "enemy_id": "0x010308",
-          "named_enemy_params_id": 54,
-          "level": 20,
+          "level": 21,
           "exp": 510
         },
         {
           "comment": "Skeleton Knight",
-          "enemy_id": "0x010301",
-          "named_enemy_params_id": 53,
-          "level": 20,
+          "enemy_id": "0x010309",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 54,
+          "level": 18,
           "exp": 384
         },
         {
           "comment": "Skeleton Knight",
           "enemy_id": "0x010301",
+          "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
-          "level": 20,
+          "level": 18,
           "exp": 384
         },
         {
           "comment": "Skeleton Knight",
           "enemy_id": "0x010301",
+          "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
-          "level": 20,
+          "level": 18,
           "exp": 384
         },
         {
           "comment": "Skeleton Knight",
           "enemy_id": "0x010301",
+          "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
-          "level": 20,
+          "level": 18,
           "exp": 384
         },
         {
           "comment": "Skeleton Knight",
           "enemy_id": "0x010301",
+          "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
-          "level": 20,
+          "level": 18,
           "exp": 384
+        },
+        {
+          "comment": "Skeleton Sorc",
+          "enemy_id": "0x010309",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
+          "level": 21,
+          "exp": 510
         }
       ]
     }

@@ -39,7 +39,22 @@
           "num": 1
         }
       ]
-    }
+    },
+    {
+          "type": "random",
+          "loot_pool": [
+            {
+              "item_id": 9412,
+              "num": 2,
+              "chance": 1.0
+            },
+            {
+              "item_id": 9408,
+              "num": 1,
+              "chance": 1.0
+            }
+          ]
+        }
   ],
   "enemy_groups": [
     {
@@ -49,9 +64,36 @@
       },
       "enemies": [
         {
-          "enemy_id": "0x015600",
-          "level": 44,
-          "exp": 12500,
+          "enemy_id": "0x010309",
+          "start_think_tbl_no": 1,
+          "is_manual_set": true,
+		      "level": 43,
+          "exp": 5264,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010309",
+          "start_think_tbl_no": 1,
+          "is_manual_set": true,
+		      "level": 43,
+          "exp": 5264,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010309",
+          "start_think_tbl_no": 1,
+          "is_manual_set": true,
+		      "level": 43,
+          "exp": 5264,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015604",
+          "start_think_tbl_no": 2,
+		      "named_enemy_params_id": 54,
+          "is_manual_set": false,
+          "level": 43,
+          "exp": 6254,
           "is_boss": true
         }
       ]
@@ -60,13 +102,17 @@
   "blocks": [
     {
       "type": "DiscoverEnemy",
+      "spawn_time_start": "(18 * 3600000) + (0 * 60000)",
+      "spawn_time_end": "(6 * 3600000) + (59 * 60000)",
       "groups": [ 0 ]
     },
-    {
-      "type": "KillGroup",
+    { "type": "KillGroup",
       "announce_type": "Accept",
       "reset_group": false,
       "groups": [ 0 ]
     }
   ]
 }
+
+ 
+

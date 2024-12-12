@@ -11,7 +11,7 @@
         {
             "type": "wallet",
             "wallet_type": "Gold",
-            "amount": 1290
+            "amount": 1260
         },
         {
             "type": "wallet",
@@ -20,7 +20,7 @@
         },
         {
             "type": "exp",
-            "amount": 1290
+            "amount": 1260
         },
         {
             "type": "select",
@@ -59,26 +59,34 @@
             "enemies": [
                 {
                     "enemy_id": "0x010311",
-                    "level": 48,
-                    "exp": 2200,
+                    "start_think_tbl_no": 1,
+                    "named_enemy_params_id": 53,
+                    "level": 46,
+                    "exp": 5540,
                     "is_boss": false				
         },
         {
                     "enemy_id": "0x010302",
+                    "start_think_tbl_no": 1,
+                    "named_enemy_params_id": 53,
                     "level": 46,
-                    "exp": 1200,
+                    "exp": 5540,
                     "is_boss": false				
         },
         {
                     "enemy_id": "0x010302",
+                    "start_think_tbl_no": 1,
+                    "named_enemy_params_id": 53,
                     "level": 46,
-                    "exp": 1200,
+                    "exp": 5540,
                     "is_boss": false
         },
         {					
-                    "enemy_id": "0x010311",
-                    "level": 48,
-                    "exp": 2200,
+                    "enemy_id": "0x010302",
+                    "start_think_tbl_no": 1,
+                    "named_enemy_params_id": 53,
+                    "level": 46,
+                    "exp": 5540,
                     "is_boss": false				
                 }
             ]
@@ -103,6 +111,7 @@
         {
             "type": "KillGroup",
             "announce_type": "Update",
+            "reset_group": false,
             "groups": [0]
         },
         {

@@ -46,23 +46,50 @@
       "enemies": [
         {
           "comment": "Giant Saurian",
-          "enemy_id": "0x010401",
+          "start_think_tbl_no": 1,
+		      "enemy_id": "0x010401",
           "level": 16,
-          "exp": 120,
+          "exp": 310,
           "is_boss": false
         },
         {
           "comment": "Giant Saurian",
-          "enemy_id": "0x010401",
+          "start_think_tbl_no": 1,
+		      "enemy_id": "0x010401",
           "level": 16,
-          "exp": 120,
+          "exp": 310,
           "is_boss": false
         },
         {
           "comment": "Giant Saurian",
-          "enemy_id": "0x010401",
+          "start_think_tbl_no": 1,
+		      "enemy_id": "0x010401",
           "level": 16,
-          "exp": 120,
+          "exp": 310,
+          "is_boss": false
+        },
+        {
+          "comment": "Giant Saurian",
+          "start_think_tbl_no": 1,
+		      "enemy_id": "0x010401",
+          "level": 16,
+          "exp": 310,
+          "is_boss": false
+        },
+        {
+          "comment": "Giant Saurian",
+          "start_think_tbl_no": 1,
+		      "enemy_id": "0x010401",
+          "level": 16,
+          "exp": 310,
+          "is_boss": false
+        },
+        {
+          "comment": "Giant Saurian",
+          "start_think_tbl_no": 1,
+		      "enemy_id": "0x010401",
+          "level": 16,
+          "exp": 310,
           "is_boss": false
         }
       ]

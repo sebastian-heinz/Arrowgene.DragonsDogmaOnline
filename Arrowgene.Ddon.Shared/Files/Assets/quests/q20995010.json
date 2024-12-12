@@ -44,31 +44,49 @@
         {
             "stage_id": {
                 "id": 84,
-                "group_id": 0
+                "group_id": 11
             },
             "enemies": [
                 {
-                    "enemy_id": "0x010311",
+                    "enemy_id": "0x010313",
                     "level": 52,
-                    "exp": 2500,
+		    "named_enemy_params_id": 556,
+                    "exp": 6146,
                     "is_boss": false
                 },
                 {
                     "enemy_id": "0x010311",
+		    "named_enemy_params_id": 650,
                     "level": 52,
-                    "exp": 2500,
+                    "exp": 5936,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x010313",
+                    "level": 52,
+		    "named_enemy_params_id": 556,
+                    "exp": 6146,
                     "is_boss": false
                 },
                 {
                     "enemy_id": "0x010311",
+		    "named_enemy_params_id": 650,
                     "level": 52,
-                    "exp": 2500,
+                    "exp": 5936,
                     "is_boss": false
                 },
                 {
                     "enemy_id": "0x010311",
+		    "named_enemy_params_id": 650,
                     "level": 52,
-                    "exp": 2500,
+                    "exp": 5936,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x010311",
+		    "named_enemy_params_id": 650,
+                    "level": 52,
+                    "exp": 5936,
                     "is_boss": false
                 }
             ]

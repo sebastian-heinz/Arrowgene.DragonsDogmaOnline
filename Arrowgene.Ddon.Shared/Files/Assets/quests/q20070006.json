@@ -57,19 +57,59 @@
         "id": 130,
         "group_id": 0
       },
+        "placement_type": "manual",
       "enemies": [
         {
           "enemy_id": "0x015604",
+          "start_think_tbl_no": 2,
+          "named_enemy_params_id": 53,
           "level": 44,
-          "exp": 14500,
-          "is_boss": true
+          "exp": 6824,
+          "is_boss": true,
+          "index": 0
+        },
+        {
+          "enemy_id": "0x010510",
+          "start_think_tbl_no": 1,
+          "is_manual_set": true,
+          "level": 43,
+          "exp": 5264,
+          "is_boss": false,
+          "index": 6
+        },
+        {
+          "enemy_id": "0x010510",
+          "start_think_tbl_no": 1,
+          "is_manual_set": true,
+          "level": 43,
+          "exp": 5264,
+          "is_boss": false,
+          "index": 5
+        },
+        {
+          "enemy_id": "0x010510",
+          "start_think_tbl_no": 1,
+          "is_manual_set": true,
+          "level": 43,
+          "exp": 5264,
+          "is_boss": false,
+          "index": 1
+        },
+        {
+          "enemy_id": "0x010510",
+          "start_think_tbl_no": 1,
+          "is_manual_set": true,
+          "level": 43,
+          "exp": 5264,
+          "is_boss": false,
+          "index": 3
         }
       ]
     }
   ],
   "blocks": [
     {
-      "type": "NewNpcTalkAndOrder",
+      "type": "NpcTalkAndOrder",
       "flags": [
         {
           "type": "QstLayout",
@@ -84,7 +124,7 @@
         "layer_no": 1
       },
       "npc_id": "LightlyEquippedSoldier",
-      "message_id": 11372
+      "message_id": 13287
     },
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
@@ -93,15 +133,27 @@
     },
     {
       "type": "KillGroup",
-      "announce_type": "Update",
-      "groups": [ 0 ]
+      "announce_type": "Accept",
+      "reset_group": false,
+       "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 130,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "LightlyEquippedSoldier",
+      "announce_type": "Update",      
+      "message_id": 13288
     },
     {
       "type": "NewDeliverItems",
       "stage_id": {
         "id": 130,
         "group_id": 1,
-        "group_id": 1
+        "layer_no": 1
       },
       "npc_id": "LightlyEquippedSoldier",
       "announce_type": "Update",
@@ -111,18 +163,8 @@
           "amount": 3
         }
       ],
-      "message_id": 10737
-    },
-    {
-      "type": "NewTalkToNpc",
-      "stage_id": {
-        "id": 130,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "announce_type": "Update",
-      "npc_id": "LightlyEquippedSoldier",
-      "message_id": 11835
+      "message_id": 13337
     }
   ]
 }
+    

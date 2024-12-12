@@ -47,13 +47,19 @@
         "id": 1,
         "group_id": 26
       },
+      "placement_type": "manual",
       "enemies": [
         {
-          "comment": "Cyclops",
+          "comment": "Vigilant Cyclops",
           "enemy_id": "0x015000",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 53,
           "level": 12,
-          "exp": 1860,
-          "is_boss": true
+          "exp": 816,
+          "is_boss": true,
+          "is_manual_set": false,
+          "index": 0
+          
         }
       ]
     }

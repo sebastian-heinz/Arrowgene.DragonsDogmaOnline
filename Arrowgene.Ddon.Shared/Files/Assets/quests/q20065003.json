@@ -45,15 +45,23 @@
     {
       "stage_id": {
         "id": 1,
-        "group_id": 149
+        "group_id": 148
       },
+      "placement_type": "manual",
       "enemies": [
         {
+          "comment": "Silv roar",
           "enemy_id": "0x015505",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 56,
           "level": 41,
-          "exp": 12500,
-          "is_boss": true
+          "exp": 6590,
+          "is_boss": true,
+          "is_manual_set": false,
+          "index": 4
         }
+        
+        
       ]
     }
   ],

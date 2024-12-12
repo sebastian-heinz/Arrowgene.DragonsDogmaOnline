@@ -58,9 +58,11 @@
             },
             "enemies": [
                 {
-                    "enemy_id": "0x015103",
-                    "level": 48,
-                    "exp": 13000,
+                    "enemy_id": "0x015100",
+                    "start_think_tbl_no": 3,
+                    "named_enemy_params_id": 53,
+                    "level": 47,
+                    "exp": 6824,
                     "is_boss": true
                 }
             ]
@@ -85,6 +87,7 @@
         {
             "type": "KillGroup",
             "announce_type": "Update",
+            "reset_group": false,
             "groups": [0]
         },
         {

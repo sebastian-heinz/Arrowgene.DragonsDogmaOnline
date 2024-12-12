@@ -36,16 +36,7 @@
                 {
                     "item_id": 7554,
                     "num": 3
-                }
-            ]
-        },
-        {
-            "type": "random",
-            "loot_pool": [
-                {
-                    "item_id": 34,
-                    "num": 9,
-                    "chance": 1.0
+                
                 }
             ]
         }
@@ -56,12 +47,16 @@
                 "id": 1,
                 "group_id": 440
             },
+            "placement_type": "manual",
             "enemies": [
                 {
                     "enemy_id": "0x015203",
+                    "start_think_tbl_no": 1,
+		            "named_enemy_params_id": 53,
                     "level": 47,
-                    "exp": 13000,
-                    "is_boss": true							
+                    "exp": 6706,
+                    "is_boss": true,	
+                    "index": 0					
                 }
             ]
         }
@@ -88,6 +83,7 @@
         {
             "type": "KillGroup",
             "announce_type": "Update",
+            "reset_group": false,
             "groups": [0]
         },
         {
