@@ -562,17 +562,10 @@ namespace Arrowgene.Ddon.GameServer.Quests
         private uint CalculateTotalPointAmount(DdonGameServer server, GameClient client, CDataQuestExp point)
         {
             uint amount = point.Reward;
-            double modifier = 1.0;
             switch (point.Type)
             {
                 case ExpType.ExperiencePoints:
                     amount = server.ExpManager.GetAdjustedExp(client.GameMode, RewardSource.Quest, null, point.Reward, 0);
-                    break;
-                case ExpType.JobPoints:
-                    modifier = (uint)(amount * server.Setting.GameLogicSetting.JpModifier);
-                    break;
-                case ExpType.PlayPoints:
-                    amount = (uint)(amount * server.Setting.GameLogicSetting.PpModifier);
                     break;
                 default:
                     break;

@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(GenericQuest));
 
-        public static GenericQuest FromAsset(QuestAssetData questAsset)
+        public static GenericQuest FromAsset(DdonGameServer server, QuestAssetData questAsset)
         {
             var quest = new GenericQuest(questAsset.QuestId, questAsset.QuestScheduleId, questAsset.Type, questAsset.Discoverable);
 
@@ -40,19 +40,21 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             foreach (var pointReward in questAsset.PointRewards)
             {
+                var reward = server.ExpManager.GetScaledPointAmount(RewardSource.Quest, pointReward.ExpType, pointReward.ExpReward);
                 quest.ExpRewards.Add(new CDataQuestExp()
                 {
                     Type = pointReward.ExpType,
-                    Reward = pointReward.ExpReward
+                    Reward = reward
                 });
             }
 
             foreach (var walletReward in questAsset.RewardCurrency)
             {
+                var amount = server.WalletManager.GetScaledWalletAmount(walletReward.WalletType, walletReward.Amount);
                 quest.WalletRewards.Add(new CDataWalletPoint()
                 {
                     Type = walletReward.WalletType,
-                    Value = walletReward.Amount
+                    Value = amount
                 });
             }
 
