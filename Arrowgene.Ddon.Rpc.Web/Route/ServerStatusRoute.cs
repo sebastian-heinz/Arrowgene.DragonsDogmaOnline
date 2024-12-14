@@ -29,6 +29,7 @@ namespace Arrowgene.Ddon.Rpc.Web.Route
             public uint LoginNum { get; set; }
             public string Addr { get; set; }
             public ushort Port { get; set; }
+            public ushort RpcPort { get; set; }
             public bool IsHide { get; set; }
 
             public ServerStatus()
@@ -42,6 +43,7 @@ namespace Arrowgene.Ddon.Rpc.Web.Route
                 LoginNum = 0;
                 Addr = "";
                 Port = 0;
+                RpcPort = 0;
                 IsHide = false;
             }
         }
@@ -73,6 +75,7 @@ namespace Arrowgene.Ddon.Rpc.Web.Route
                         LoginNum = (uint)connections.Count(x => x.ServerId == server.Id && x.Type == ConnectionType.GameServer),
                         Addr = server.Addr,
                         Port = server.Port,
+                        RpcPort = server.RpcPort,
                         IsHide = server.IsHide
                     });
                 }
