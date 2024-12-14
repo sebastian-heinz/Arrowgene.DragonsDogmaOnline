@@ -906,13 +906,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
             switch (type)
             {
                 case ExpType.ExperiencePoints:
-                    modifier = (source == RewardSource.Enemy) ? _GameSettings.EnemyExpModifier : _GameSettings.QuestExpModifier;
+                    modifier = (source == RewardSource.Enemy) ? _GameSettings.EnemyExpModifier.Value : _GameSettings.QuestExpModifier.Value;
                     break;
                 case ExpType.JobPoints:
-                    modifier = _GameSettings.JpModifier;
+                    modifier = _GameSettings.JpModifier.Value;
                     break;
                 case ExpType.PlayPoints:
-                    modifier = _GameSettings.PpModifier;
+                    modifier = _GameSettings.PpModifier.Value;
                     break;
                 default:
                     modifier = 1.0;

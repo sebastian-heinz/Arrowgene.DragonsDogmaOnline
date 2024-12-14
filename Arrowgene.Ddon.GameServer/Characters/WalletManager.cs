@@ -107,16 +107,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
             switch (type)
             {
                 case WalletType.Gold:
-                    modifier = Server.Setting.GameLogicSetting.GoldModifier;
+                    modifier = Server.Setting.GameLogicSetting.GoldModifier.Value;
                     break;
                 case WalletType.RiftPoints:
-                    modifier = Server.Setting.GameLogicSetting.RiftModifier;
+                    modifier = Server.Setting.GameLogicSetting.RiftModifier.Value;
                     break;
                 case WalletType.BloodOrbs:
-                    modifier = Server.Setting.GameLogicSetting.BoModifier;
+                    modifier = Server.Setting.GameLogicSetting.BoModifier.Value;
                     break;
                 case WalletType.HighOrbs:
-                    modifier = Server.Setting.GameLogicSetting.HoModifier;
+                    modifier = Server.Setting.GameLogicSetting.HoModifier.Value;
                     break;
                 default:
                     modifier = 1.0;
