@@ -625,6 +625,21 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             }
                         }
                         break;
+                    case QuestBlockType.TouchNpc:
+                        {
+                            if (!Enum.TryParse(jblock.GetProperty("npc_id").GetString(), true, out NpcId npcId))
+                            {
+                                Logger.Error($"Unable to parse the npc_id in block @ index {blockIndex - 1}.");
+                                return false;
+                            }
+
+                            questBlock.NpcOrderDetails.Add(new QuestNpcOrder()
+                            {
+                                NpcId = npcId,
+                                StageId = AssetCommonDeserializer.ParseStageId(jblock.GetProperty("stage_id"))
+                            });
+                        }
+                        break;
                     case QuestBlockType.IsQuestOrdered:
                         {
                             if (!Enum.TryParse(jblock.GetProperty("quest_type").GetString(), true, out QuestType questType))

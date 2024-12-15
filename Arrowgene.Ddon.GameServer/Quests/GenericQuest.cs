@@ -561,6 +561,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         resultCommands.Add(QuestManager.ResultCommand.QstTalkChg(orderDetails.NpcId, orderDetails.MsgId));
                     }
                     break;
+                case QuestBlockType.TouchNpc:
+                    {
+                        checkCommands.Add(QuestManager.CheckCommand.TouchActToNpc(StageManager.ConvertIdToStageNo(questBlock.NpcOrderDetails[0].StageId), questBlock.NpcOrderDetails[0].NpcId));
+                    }
+                    break;
                 case QuestBlockType.IsQuestOrdered:
                     {
                         switch (questBlock.QuestOrderDetails.QuestType)
