@@ -32,13 +32,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static Dictionary<uint, HashSet<uint>> gTutorialQuests = new Dictionary<uint, HashSet<uint>>();
         private static Dictionary<QuestAreaId, HashSet<QuestId>> gWorldQuests = new Dictionary<QuestAreaId, HashSet<QuestId>>();
 
-        public static void LoadQuests(AssetRepository assetRepository)
+        public static void LoadQuests(DdonGameServer server)
         {
+            var assetRepository = server.AssetRepository;
+
             // TODO: Quests should probably operate on the QuestScheduleID instead of QuestId so the global list can still contain all quests
             // TODO: Then quests can be distributed to different lists for faster lookup (like world by area id or personal by stageno)
             foreach (var questAsset in assetRepository.QuestAssets.Quests)
             {
-                gQuests[questAsset.QuestScheduleId] = GenericQuest.FromAsset(questAsset);
+                gQuests[questAsset.QuestScheduleId] = GenericQuest.FromAsset(server, questAsset);
 
                 var quest = gQuests[questAsset.QuestScheduleId];
                 if (!quest.Enabled)

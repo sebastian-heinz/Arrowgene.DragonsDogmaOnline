@@ -10,6 +10,7 @@ using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Drawing;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
@@ -509,7 +510,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                     if (client.GameMode == GameMode.Normal)
                     {
-                        addJobPoint += (uint)(LEVEL_UP_JOB_POINTS_EARNED[targetLevel] * _Server.Setting.GameLogicSetting.JpModifier);
+                        addJobPoint += GetScaledPointAmount(RewardSource.None, ExpType.JobPoints, LEVEL_UP_JOB_POINTS_EARNED[targetLevel]);
                     }
                 }
 
@@ -899,16 +900,32 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return multiplier;
         }
 
-        private double ModifierBasedOnSource(RewardSource source)
+        public uint GetScaledPointAmount(RewardSource source, ExpType type, uint amount)
         {
-            return source == RewardSource.Enemy ? _GameSettings.EnemyExpModifier : _GameSettings.QuestExpModifier;
+            double modifier = 1.0;
+            switch (type)
+            {
+                case ExpType.ExperiencePoints:
+                    modifier = (source == RewardSource.Enemy) ? _GameSettings.EnemyExpModifier.Value : _GameSettings.QuestExpModifier.Value;
+                    break;
+                case ExpType.JobPoints:
+                    modifier = _GameSettings.JpModifier.Value;
+                    break;
+                case ExpType.PlayPoints:
+                    modifier = _GameSettings.PpModifier.Value;
+                    break;
+                default:
+                    modifier = 1.0;
+                    break;
+            }
+            return (uint)(amount * modifier);
         }
 
         public uint GetAdjustedExp(GameMode gameMode, RewardSource source, PartyGroup party, uint baseExpAmount, uint targetLv)
         {
             if (_Server.GpCourseManager.DisablePartyExpAdjustment())
             {
-                return (uint)(baseExpAmount * ModifierBasedOnSource(source));
+                return baseExpAmount;
             }
 
             double multiplier = 1.0;
@@ -923,7 +940,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 // Currently no adjustments
             }
 
-            return (uint)(multiplier * baseExpAmount * ModifierBasedOnSource(source));
+            return (uint)(multiplier * baseExpAmount);
         }
 
         private uint GetMaxAllowedPartyRange()
@@ -1005,13 +1022,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             if (!_GameSettings.EnablePawnCatchup || gameMode == GameMode.BitterblackMaze)
             {
-                return (uint)(baseExpAmount * ModifierBasedOnSource(source));
+                return baseExpAmount;
             }
 
             var targetMultiplier = CalculatePawnCatchupTargetLvMultiplier(gameMode, pawn, targetLv);
             var multiplier = _GameSettings.PawnCatchupMultiplier * targetMultiplier;
 
-            return (uint)(multiplier * baseExpAmount * ModifierBasedOnSource(source));
+            return (uint)(multiplier * baseExpAmount);
         }
     }
 }

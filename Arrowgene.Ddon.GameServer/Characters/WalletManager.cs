@@ -100,5 +100,30 @@ namespace Arrowgene.Ddon.GameServer.Characters
             CDataWalletPoint Wallet = Character.WalletPointList.Where(wp => wp.Type == Type).Single();
             return Wallet.Value;
         }
+
+        public uint GetScaledWalletAmount(WalletType type, uint amount)
+        {
+            double modifier = 1.0;
+            switch (type)
+            {
+                case WalletType.Gold:
+                    modifier = Server.Setting.GameLogicSetting.GoldModifier.Value;
+                    break;
+                case WalletType.RiftPoints:
+                    modifier = Server.Setting.GameLogicSetting.RiftModifier.Value;
+                    break;
+                case WalletType.BloodOrbs:
+                    modifier = Server.Setting.GameLogicSetting.BoModifier.Value;
+                    break;
+                case WalletType.HighOrbs:
+                    modifier = Server.Setting.GameLogicSetting.HoModifier.Value;
+                    break;
+                default:
+                    modifier = 1.0;
+                    break;
+            }
+
+            return (uint)(amount * modifier);
+        }
     }
 }

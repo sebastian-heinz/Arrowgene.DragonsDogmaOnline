@@ -174,7 +174,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
 
                 uint calcExp = _gameServer.ExpManager.GetAdjustedExp(client.GameMode, RewardSource.Enemy, client.Party, enemyKilled.GetDroppedExperience(), enemyKilled.Lv);
-                uint calcPP = (uint)(enemyKilled.GetDroppedPlayPoints() * _gameServer.Setting.GameLogicSetting.PpModifier);
+                uint calcPP = _gameServer.ExpManager.GetScaledPointAmount(RewardSource.Enemy, ExpType.PlayPoints, enemyKilled.GetDroppedPlayPoints());
 
                 foreach (PartyMember member in client.Party.Members)
                 {
@@ -209,7 +209,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         if (enemyKilled.BloodOrbs > 0)
                         {
                             // Drop BO
-                            uint gainedBo = (uint) (enemyKilled.BloodOrbs * _gameServer.Setting.GameLogicSetting.BoModifier);
+                            uint gainedBo = (uint) (enemyKilled.BloodOrbs * _gameServer.Setting.GameLogicSetting.BoModifier.Value);
                             uint bonusBo = (uint) (gainedBo * _gameServer.GpCourseManager.EnemyBloodOrbBonus());
                             CDataUpdateWalletPoint boUpdateWalletPoint = _gameServer.WalletManager.AddToWallet(memberClient.Character, WalletType.BloodOrbs, gainedBo + bonusBo, bonusBo, connectionIn: connectionIn);
                             updateCharacterItemNtc.UpdateWalletList.Add(boUpdateWalletPoint);
@@ -218,7 +218,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         if (enemyKilled.HighOrbs > 0)
                         {
                             // Drop HO
-                            uint gainedHo = (uint)(enemyKilled.HighOrbs * _gameServer.Setting.GameLogicSetting.HoModifier);
+                            uint gainedHo = (uint)(enemyKilled.HighOrbs * _gameServer.Setting.GameLogicSetting.HoModifier.Value);
                             CDataUpdateWalletPoint hoUpdateWalletPoint = _gameServer.WalletManager.AddToWallet(memberClient.Character, WalletType.HighOrbs, gainedHo, connectionIn: connectionIn);
                             updateCharacterItemNtc.UpdateWalletList.Add(hoUpdateWalletPoint);
                         }

@@ -127,7 +127,7 @@ namespace Arrowgene.Ddon.GameServer
 
         public override void Start()
         {
-            QuestManager.LoadQuests(this.AssetRepository);
+            QuestManager.LoadQuests(this);
             GpCourseManager.EvaluateCourses();
             LoadChatHandler();
             LoadPacketHandler();
