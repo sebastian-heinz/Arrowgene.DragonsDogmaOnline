@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using YamlDotNet.Core.Tokens;
 
 namespace Arrowgene.Ddon.Shared.AssetReader
 {
@@ -425,16 +426,17 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         Logger.Error($"Unable to parse the quest announce type of BlockNo={blockIndex}.");
                         return false;
                     }
-                    questBlock.AnnounceType = announceType;
+
+                    // Handles special pseudo announce types
+                    QuestBlock.EvaluateAnnounceType(questBlock, announceType);
                 }
 
-                ParseAnnoucementSubtypes(questBlock, jblock);
-
-                questBlock.IsCheckpoint = false;
                 if (jblock.TryGetProperty("checkpoint", out JsonElement jCheckpoint))
                 {
                     questBlock.IsCheckpoint = jCheckpoint.GetBoolean();
                 }
+
+                ParseAnnoucementSubtypes(questBlock, jblock);
 
                 if (jblock.TryGetProperty("stage_id", out JsonElement jStageId))
                 {

@@ -1,0 +1,171 @@
+{
+    "comment": "Missing reward for 500x area points for Rathnite Foothills (18)",
+    "state_machine": "GenericStateMachine",
+    "type": "Main",
+    "comment": "In Search of Hope",
+    "quest_id": 30020,
+    "next_quest": 0,
+    "base_level": 80,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "order_conditions": [
+        {"type": "MinimumLevel", "Param1": 80},
+        {"type": "MainQuestCompleted", "Param1": 30010}
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 700000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 70000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 7000
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "comment": "Unappraised Snow Trinket (General)",
+                    "item_id": 18731,
+                    "num": 2
+                },
+                {
+                    "comment": "Royal Crest Medal (Rathnite District)",
+                    "item_id": 18815,
+                    "num": 5
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 461,
+                "group_id": 2
+            },
+            "placement_type": "Manual",
+            "enemies": [
+                {
+                    "comment": "Prisoner's Guard",
+                    "enemy_id": "0x015821",
+                    "start_think_tbl_no": 1,
+                    "level": 80,
+                    "exp": 4200,
+                    "index": 0,
+                    "named_enemy_params_id": 1751
+                },
+                {
+                    "comment": "Prisoner's Guard",
+                    "enemy_id": "0x015821",
+                    "start_think_tbl_no": 1,
+                    "level": 80,
+                    "exp": 4200,
+                    "index": 1,
+                    "named_enemy_params_id": 1751
+                },
+                {
+                    "comment": "Prisoner's Guard",
+                    "enemy_id": "0x015821",
+                    "start_think_tbl_no": 1,
+                    "level": 80,
+                    "exp": 4200,
+                    "index": 7,
+                    "named_enemy_params_id": 1751
+                }
+            ]
+        }
+    ],
+    "processes": [
+        {
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "npc_id": "Joseph",
+                    "message_id": 21247,
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 3283, "quest_id": 70030001, "comment": "Spawns NPCs and Shops in Rathnite Foothills"}
+                    ]
+                },
+                {
+                    "type": "PartyGather",
+                    "checkpoint": true,
+                    "announce_type": "Accept",
+                    "stage_id": {
+                        "id": 461
+                    },
+                    "location": {
+                        "x": 834,
+                        "y": 4614,
+                        "z": 1370
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 5409, "comment": "Spawns Quintus"},
+                        {"type": "QstLayout", "action": "Set", "value": 6602, "comment": "Spawns Cannons"}
+                    ]
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 461
+                    },
+                    "event_id": 15
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "announce_type": "CheckpointAndUpdate",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 5379, "comment": "Spawn Gurdolin, Lise and Elliot"},
+                        {"type": "QstLayout", "action": "Set", "value": 5770, "comment": "Spawn Gillian"}
+                    ],
+                    "stage_id": {
+                        "id": 461,
+                        "group_id": 4,
+                        "layer_no": 0
+                    },
+                    "npc_id": "Gillian0",
+                    "message_id": 21268
+                },
+                {
+                    "comment": "This interaction is supposed to be with the NPC Endale, but he is missing from the stage",
+                    "type": "TalkToNpc",
+                    "announce_type": "CheckpointAndUpdate",
+                    "stage_id": {
+                        "id": 511
+                    },
+                    "npc_id": "Bruno",
+                    "message_id": 24159
+                },
+                {
+                    "type": "NewTalkToNpc",
+                    "announce_type": "CheckpointAndUpdate",
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 5379, "comment": "Spawn Gurdolin, Lise and Elliot"},
+                        {"type": "QstLayout", "action": "Clear", "value": 5770, "comment": "Spawn Gillian"},
+                        {"type": "QstLayout", "action": "Set", "value": 5769, "comment": "Spawn Gillian and Liberation Soliders"}
+                    ],
+                    "stage_id": {
+                        "id": 461,
+                        "group_id": 3,
+                        "layer_no": 0
+                    },
+                    "npc_id": "Gillian0",
+                    "message_id": 24161
+                },
+                {
+                    "type": "Raw"
+                }
+            ]
+        }
+    ]
+}
