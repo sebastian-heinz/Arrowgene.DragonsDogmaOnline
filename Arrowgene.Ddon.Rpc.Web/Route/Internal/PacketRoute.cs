@@ -168,6 +168,9 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                                 Message = $"AnnouncePacketClan Ch.{_entry.Origin} ClanID {data.ClanId} -> {packet.Id}"
                             };
                         }
+                    case RpcInternalCommand.EpitaphRoadWeeklyReset:
+                        gameServer.EpitaphRoadManager.PerformWeeklyReset();
+                        return new RpcCommandResult(this, true);
                     default:
                         return new RpcCommandResult(this, false);
                 }

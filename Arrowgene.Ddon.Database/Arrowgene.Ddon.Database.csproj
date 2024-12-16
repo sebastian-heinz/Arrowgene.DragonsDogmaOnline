@@ -41,5 +41,8 @@
       <None Update="Files\Database\Script\migration_epitaph_road.sql">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
+      <None Update="Files\Database\Script\migration_scheduling.sql">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 </Project>

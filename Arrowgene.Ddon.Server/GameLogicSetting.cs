@@ -240,7 +240,7 @@ namespace Arrowgene.Ddon.Server
         /// <summary>
         /// Configures if epitaph rewards are limited once per weekly reset.
         /// </summary>
-        [DataMember(Order = 37)] public bool EnableEpitaphWeeklyRewards { get; set; }
+        [DataMember(Order = 37)] public bool? EnableEpitaphWeeklyRewards { get; set; } = true;
 
         /// Enables main pawns in party to gain EXP and JP from quests
         /// Original game apparantly did not have pawns share quest reward, so will set to false for default, 
@@ -449,6 +449,8 @@ namespace Arrowgene.Ddon.Server
             UrlCampaign ??= string.Empty;
             UrlChargeB ??= string.Empty;
             UrlCompanionImage ??= string.Empty;
+
+            EnableEpitaphWeeklyRewards ??= true;
 
             EnemyExpModifier ??= 1;
             QuestExpModifier ??= 1;

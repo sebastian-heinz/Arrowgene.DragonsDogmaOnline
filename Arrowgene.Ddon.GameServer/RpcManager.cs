@@ -9,9 +9,11 @@ using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Security.Claims;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -140,6 +142,11 @@ namespace Arrowgene.Ddon.GameServer
         public List<CDataGameServerListInfo> ServerListInfo()
         {
             return ChannelInfo.Keys.Select(x => ServerListInfo(x)).ToList();
+        }
+
+        public ServerInfo HeadServer()
+        {
+            return ChannelInfo.Values.ToList().OrderBy(x => x.Id).ToList()[0];
         }
 
         public CDataGameServerListInfo ServerListInfo(ushort channelId)
@@ -411,6 +418,11 @@ namespace Arrowgene.Ddon.GameServer
             {
                 AnnounceClan(clanId, "internal/packet", RpcInternalCommand.AnnouncePacketClan, data);
             }
+        }
+
+        public void AnnounceEpitaphWeeklyReset()
+        {
+            AnnounceAll("internal/packet", RpcInternalCommand.EpitaphRoadWeeklyReset, null);
         }
     }
 }

@@ -49,7 +49,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return results;
         }
 
-        public void DeleteWeeklyRewards(DbConnection? connectionIn = null)
+        public void DeleteWeeklyEpitaphClaimedRewards(DbConnection? connectionIn = null)
         {
             ExecuteQuerySafe(connectionIn, (connection) =>
             {

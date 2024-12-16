@@ -10,5 +10,7 @@ namespace Arrowgene.Ddon.Shared.Model.Rpc
 
         AnnouncePacketAll, // RpcPacketData
         AnnouncePacketClan, // RpcPacketData
+
+        EpitaphRoadWeeklyReset
     }
 }

@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,11 +15,11 @@ namespace Arrowgene.Ddon.GameServer.Chat
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ChatManager));
 
         private readonly List<IChatHandler> _handler;
-        private readonly DdonGameServer _server;
+        private readonly DdonGameServer _Server;
 
         public ChatManager(DdonGameServer server)
         {
-            _server = server;
+            _Server = server;
             _handler = new List<IChatHandler>();
         }
 
@@ -42,7 +43,7 @@ namespace Arrowgene.Ddon.GameServer.Chat
             response.PhrasesIndex = 0;
             foreach (uint characterId in characterIds)
             {
-                GameClient client = _server.ClientLookup.GetClientByCharacterId(characterId);
+                GameClient client = _Server.ClientLookup.GetClientByCharacterId(characterId);
                 if (client == null)
                 {
                     continue;
@@ -73,6 +74,11 @@ namespace Arrowgene.Ddon.GameServer.Chat
             response.Recipients.AddRange(recipients);
             Send(response);
         }
+
+        public void BroadcastMessage(LobbyChatMsgType type, string message)
+        {
+            SendMessage(message, string.Empty, string.Empty, type, _Server.ClientLookup.GetAll());
+        }
         
         public void SendTellMessage(GameClient sender, GameClient receiver, C2SChatSendTellMsgReq request)
         {
@@ -89,7 +95,7 @@ namespace Arrowgene.Ddon.GameServer.Chat
 
         public void SendTellMessageForeign(GameClient client, C2SChatSendTellMsgReq request)
         {
-            _server.RpcManager.AnnounceTellChat(client, request);
+            _Server.RpcManager.AnnounceTellChat(client, request);
 
             ChatResponse senderChatResponse = new ChatResponse
             {
@@ -155,7 +161,7 @@ namespace Arrowgene.Ddon.GameServer.Chat
             {
                 case LobbyChatMsgType.Say:
                 case LobbyChatMsgType.Shout:
-                    response.Recipients.AddRange(_server.ClientLookup.GetAll());
+                    response.Recipients.AddRange(_Server.ClientLookup.GetAll());
                     break;
                 case LobbyChatMsgType.Party:
                     PartyGroup party = client.Party;
@@ -171,13 +177,13 @@ namespace Arrowgene.Ddon.GameServer.Chat
                         break;
                     }
 
-                    response.Recipients.AddRange(_server.ClientLookup.GetAll().Where(
+                    response.Recipients.AddRange(_Server.ClientLookup.GetAll().Where(
                         x => x.Character != null 
                         && client.Character != null
                         && x.Character.ClanId == client.Character.ClanId)
                     );
 
-                    _server.RpcManager.AnnounceClanChat(client, response);
+                    _Server.RpcManager.AnnounceClanChat(client, response);
                     break;
                 default:
                     response.Recipients.Add(client);

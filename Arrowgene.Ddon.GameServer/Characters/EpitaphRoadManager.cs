@@ -1290,7 +1290,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 results.AddRange(RollWeeklyChestReward(dungeonInfo, reward));
 
-                if (_Server.Setting.GameLogicSetting.EnableEpitaphWeeklyRewards)
+                if (_Server.Setting.GameLogicSetting.EnableEpitaphWeeklyRewards.Value)
                 {
                     character.EpitaphRoadState.WeeklyRewardsClaimed.Add(reward.EpitaphId);
                     _Server.Database.InsertEpitaphWeeklyReward(character.CharacterId, reward.EpitaphId);
@@ -1320,6 +1320,23 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return results;
+        }
+
+        /// <summary>
+        /// Called by the task manager. The main task will signal all channels
+        /// to flush the cached information queried by the player when first
+        /// logging in and send a notification to all players that the action
+        /// occurred.
+        /// </summary>
+        public void PerformWeeklyReset()
+        {
+            _Server.ChatManager.BroadcastMessage(LobbyChatMsgType.ManagementAlertN, "Epitaph Road Weekly Rewards Reset");
+
+            // Clear out cached data related to epitaph weekly rewards
+            foreach (var client in _Server.ClientLookup.GetAll())
+            {
+                client.Character.EpitaphRoadState.WeeklyRewardsClaimed.Clear();
+            }
         }
     }
 }
