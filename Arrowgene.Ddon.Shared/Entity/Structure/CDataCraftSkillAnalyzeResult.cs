@@ -1,8 +1,6 @@
-using System;
-using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Model;
-        
+
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataCraftSkillAnalyzeResult
@@ -13,8 +11,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 
         public CraftSkillType SkillType { get; set; }
         public byte Rate {  get; set; }
-        public UInt32 Value0 { get; set; }
-        public UInt32 Value1 { get; set; }
+        public uint Value0 { get; set; }
+        public uint Value1 { get; set; }
 
         public class Serializer : EntitySerializer<CDataCraftSkillAnalyzeResult>
         {

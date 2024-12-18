@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             RefineUID = string.Empty;
             CraftMaterialList = new List<CDataCraftMaterial>();
             CraftSupportPawnIDList = new List<CDataCraftSupportPawnID>();
-            Unk3 = new List<CDataCommonU32>();
+            CraftMasterLegendPawnIDList = new List<CDataCraftSupportPawnID>();
         }
 
         public string ItemUID { get; set; }
@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataCraftMaterial> CraftMaterialList { get; set; }
         public uint CraftMainPawnID { get; set; }
         public List<CDataCraftSupportPawnID> CraftSupportPawnIDList { get; set; }
-        public List<CDataCommonU32> Unk3 { get; set; } // Never populates?
+        public List<CDataCraftSupportPawnID> CraftMasterLegendPawnIDList { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SCraftStartQualityUpReq>
         {
@@ -36,7 +36,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteEntityList<CDataCraftMaterial>(buffer, obj.CraftMaterialList);
                 WriteUInt32(buffer, obj.CraftMainPawnID);
                 WriteEntityList<CDataCraftSupportPawnID>(buffer, obj.CraftSupportPawnIDList);
-                WriteEntityList<CDataCommonU32>(buffer, obj.Unk3);
+                WriteEntityList<CDataCraftSupportPawnID>(buffer, obj.CraftMasterLegendPawnIDList);
             }
 
             public override C2SCraftStartQualityUpReq Read(IBuffer buffer)
@@ -48,7 +48,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.CraftMaterialList = ReadEntityList<CDataCraftMaterial>(buffer);
                 obj.CraftMainPawnID = ReadUInt32(buffer);
                 obj.CraftSupportPawnIDList = ReadEntityList<CDataCraftSupportPawnID>(buffer);
-                obj.Unk3 = ReadEntityList<CDataCommonU32>(buffer);
+                obj.CraftMasterLegendPawnIDList = ReadEntityList<CDataCraftSupportPawnID>(buffer);
                 return obj;
             }
         }

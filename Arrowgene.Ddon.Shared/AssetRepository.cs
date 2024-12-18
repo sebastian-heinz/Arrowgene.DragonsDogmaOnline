@@ -44,7 +44,9 @@ namespace Arrowgene.Ddon.Shared
         public const string JobValueShopKey = "JobValueShop.csv";
         public const string StampBonusKey = "StampBonus.csv";
         public const string SpecialShopKey = "SpecialShops.json";
-        public const string PawnCostReductionKey = "PawnCostReduction.json"; 
+        public const string PawnCostReductionKey = "PawnCostReduction.json";
+        public const string PawnCraftSkillCostRateKey = "PawnCraftSkillCostRate.csv";
+        public const string PawnCraftSkillSpeedRateKey = "PawnCraftSkillSpeedRate.csv";
         public const string BitterblackMazeKey = "BitterblackMaze.json";
         public const string QuestDropItemsKey = "QuestEnemyDrops.json";
         public const string RecruitmentBoardCategoryKey = "RecruitmentGroups.json";
@@ -99,7 +101,6 @@ namespace Arrowgene.Ddon.Shared
             JobValueShopAsset = new List<(JobId, CDataJobValueShopItem)>();
             CostExpScalingAsset = new CostExpScalingAsset();
             SpecialShopAsset = new SpecialShopAsset();
-            PawnCostReductionAsset = new PawnCostReductionAsset();
             BitterblackMazeAsset = new BitterblackMazeAsset();
             QuestDropItemAsset = new QuestDropItemAsset();
             RecruitmentBoardCategoryAsset = new RecruitmentBoardCategoryAsset();
@@ -108,6 +109,8 @@ namespace Arrowgene.Ddon.Shared
             ClanShopAsset = new Dictionary<uint, ClanShopAsset>();
             EpitaphRoadAssets = new EpitaphRoadAsset();
             EpitaphTrialAssets = new EpitaphTrialAsset();
+            PawnCraftSkillCostRateAsset = new();
+            PawnCraftSkillSpeedRateAsset = new();
         }
 
         public List<CDataErrorMessage> ClientErrorCodes { get; private set; }
@@ -134,7 +137,8 @@ namespace Arrowgene.Ddon.Shared
         public List<(JobId, CDataJobValueShopItem)> JobValueShopAsset { get; private set; }
         public List<CDataStampBonusAsset> StampBonusAsset { get; private set; }
         public SpecialShopAsset SpecialShopAsset { get; private set; }
-        public PawnCostReductionAsset PawnCostReductionAsset { get; private set; }
+        public List<PawnCraftSkillCostRate> PawnCraftSkillCostRateAsset { get; private set; }
+        public List<PawnCraftSkillSpeedRate> PawnCraftSkillSpeedRateAsset { get; private set; }
         public BitterblackMazeAsset BitterblackMazeAsset { get; private set; }
         public QuestDropItemAsset QuestDropItemAsset { get; private set; }
         public RecruitmentBoardCategoryAsset RecruitmentBoardCategoryAsset { get; private set; }
@@ -169,7 +173,6 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => StampBonusAsset = value, StampBonusKey, new StampBonusCsv());
             RegisterAsset(value => CostExpScalingAsset = value, CostExpScalingInfoKey, new CostExpScalingAssetDeserializer());
             RegisterAsset(value => SpecialShopAsset = value, SpecialShopKey, new SpecialShopDeserializer());
-            RegisterAsset(value => PawnCostReductionAsset = value, PawnCostReductionKey, new PawnCostReductionAssetDeserializer());
             RegisterAsset(value => BitterblackMazeAsset = value, BitterblackMazeKey, new BitterblackMazeAssetDeserializer());
             RegisterAsset(value => QuestDropItemAsset = value, QuestDropItemsKey, new QuestDropAssetDeserializer());
             RegisterAsset(value => RecruitmentBoardCategoryAsset = value, RecruitmentBoardCategoryKey, new RecruitmentBoardCategoryDeserializer());
@@ -177,6 +180,8 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => BonusDungeonAsset = value, BonusDungeonKey, new BonusDungeonAssetDeserializer());
             RegisterAsset(value => ClanShopAsset = value.ToDictionary(key => key.LineupId, value => value), ClanShopKey, new ClanShopCsv());
             RegisterAsset(value => EpitaphRoadAssets = value, EpitaphRoadKey, new EpitaphRoadAssertDeserializer());
+            RegisterAsset(value => PawnCraftSkillCostRateAsset = value, PawnCraftSkillCostRateKey, new PawnCraftSkillCostRateCsv());
+            RegisterAsset(value => PawnCraftSkillSpeedRateAsset = value, PawnCraftSkillSpeedRateKey, new PawnCraftSkillSpeedRateCsv());
 
             // This must be set before calling QuestAssertDeserializer and EpitaphTrialAssertDeserializer
             var commonEnemyDeserializer = new AssetCommonDeserializer(this.NamedParamAsset);

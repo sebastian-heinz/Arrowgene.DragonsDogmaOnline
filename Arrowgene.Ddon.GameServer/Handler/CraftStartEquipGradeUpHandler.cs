@@ -7,6 +7,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Craft;
 using Arrowgene.Logging;
 
 
@@ -32,6 +33,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Item equipItem = ramItem.Item2.Item2;
             uint charid = client.Character.CharacterId;
             uint craftpawnid = request.CraftMainPawnID;
+            ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
 
             // Fetch the crafting recipe data for the item
             CDataMDataCraftGradeupRecipe recipeData = Server.AssetRepository.CraftingGradeUpRecipesAsset
@@ -77,40 +79,36 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
+
             Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnID);
-            List<Pawn> pawns = new List<Pawn> { leadPawn };
-            pawns.AddRange(request.CraftSupportPawnIDList.Select(p => Server.CraftManager.FindPawn(client, p.PawnId)));
-            List<uint> enhancementLevels = new List<uint>();
-            List<uint> costPerformanceLevels = new List<uint>();
-            List<uint> qualityLevels = new List<uint>();
 
-            foreach (Pawn pawn in pawns)
+            List<CraftPawn> craftPawns = new()
             {
-                if (pawn != null)
-                {
-                    enhancementLevels.Add(CraftManager.GetPawnEquipmentEnhancementLevel(pawn));
-                    costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
-                    qualityLevels.Add(CraftManager.GetPawnEquipmentQualityLevel(pawn));
-                }
-                else
-                {
-                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID, "Couldn't find the Pawn ID.");
-                }
-            }
+                new CraftPawn(leadPawn, CraftPosition.Leader)
+            };
+            craftPawns.AddRange(request.CraftSupportPawnIDList.Select(p => new CraftPawn(Server.CraftManager.FindPawn(client, p.PawnId), CraftPosition.Assistant)));
+            craftPawns.AddRange(request.CraftMasterLegendPawnIDList.Select(p => new CraftPawn(CraftManager.CraftMasterLegendPawnInfoList.Single(m => m.PawnId == p.PawnId))));
 
-            double calculatedOdds = CraftManager.CalculateEquipmentQualityIncreaseRate(qualityLevels);
-            CraftCalculationResult enhnacementResult = _craftManager.CalculateEquipmentEnhancement(enhancementLevels, (uint)calculatedOdds);
+            double calculatedOdds = CraftManager.CalculateEquipmentQualityIncreaseRate(craftPawns);
+            CraftCalculationResult enhnacementResult = _craftManager.CalculateEquipmentEnhancement(craftPawns, (uint)calculatedOdds);
             bool isGreatSuccess = enhnacementResult.IsGreatSuccess;
             uint addEquipPoint = enhnacementResult.CalculatedValue;
 
             currentTotalEquipPoint += addEquipPoint;
 
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,
-                            Server.CraftManager.CalculateRecipeCost(recipeData.Cost, costPerformanceLevels))
+                            Server.CraftManager.CalculateRecipeCost(recipeData.Cost, itemInfo, craftPawns))
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CRAFT_INTERNAL, "Insufficient gold.");
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
-            ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
+            if (request.CraftMasterLegendPawnIDList.Count > 0)
+            {
+                uint totalGPcost = (uint)request.CraftMasterLegendPawnIDList.Sum(p => CraftManager.CraftMasterLegendPawnInfoList.Single(m => m.PawnId == p.PawnId).RentalCost);
+                CDataUpdateWalletPoint updateGP = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.GoldenGemstones, totalGPcost)
+                    ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_GP_LACK_GP);
+                updateCharacterItemNtc.UpdateWalletList.Add(updateGP);
+            }
+
             byte currentStars = (byte)itemInfo.Quality;
             uint remainingPoints = currentTotalEquipPoint;
             List<CDataCommonU32> gradeupList = new List<CDataCommonU32>();
