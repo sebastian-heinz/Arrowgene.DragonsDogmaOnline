@@ -25,8 +25,7 @@ namespace Arrowgene.Ddon.GameServer.Tasks
         {
             Logger.Info("Performing weekly epitaph reset");
             server.Database.DeleteWeeklyEpitaphClaimedRewards();
-
-            server.RpcManager.AnnounceEpitaphWeeklyReset();
+            server.RpcManager.AnnounceAll("internal/packet", RpcInternalCommand.EpitaphRoadWeeklyReset, null);
         }
     }
 }

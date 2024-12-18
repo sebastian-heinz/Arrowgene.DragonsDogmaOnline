@@ -1,9 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading.Channels;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
@@ -16,12 +20,17 @@ namespace Arrowgene.Ddon.LoginServer.Handler
         private readonly LoginServerSetting _setting;
         private readonly object _tokensInFLightLock;
         private readonly HashSet<string> _tokensInFlight;
+        private readonly HttpClient _httpClient = new HttpClient();
 
         public ClientLoginHandler(DdonLoginServer server) : base(server)
         {
             _setting = server.Setting;
             _tokensInFLightLock = new object();
             _tokensInFlight = new HashSet<string>();
+
+            string authToken = server.AssetRepository.ServerList.Find(x => x.Id == server.Id)?.RpcAuthToken ??
+                throw new Exception($"Server with ID {server.Id} was not found in the ServerList asset.");
+            _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Internal", $"{server.Id}:{authToken}");
         }
 
         public override void Handle(LoginClient client, StructurePacket<C2LLoginReq> packet)
@@ -106,6 +115,15 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     Logger.Error(client, $"Already logged in");
                     res.Error = (uint) ErrorCode.ERROR_CODE_AUTH_MULTIPLE_LOGIN;
                     client.Send(res);
+
+                    if (_setting.KickOnMultipleLogin)
+                    {
+                        foreach (var conn in connections)
+                        {
+                            RequestKick(conn);
+                        }
+                    }
+
                     return;
                 }
                 
@@ -171,6 +189,28 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 _tokensInFlight.Add(token);
                 return true;
             }
+        }
+
+        private void RequestKick(Connection connection)
+        {
+            if (connection.Type == ConnectionType.LoginServer)
+            {
+                // Can't talk to the login server, but there's usually not a stuck connection here.
+                return;
+            }
+
+            var channel = Server.AssetRepository.ServerList.Find(x => x.Id == connection.ServerId);
+            var route = $"http://{channel.Addr}:{channel.RpcPort}/rpc/internal/command";
+
+            var wrappedObject = new RpcWrappedObject()
+            {
+                Command = RpcInternalCommand.KickInternal,
+                Origin = (ushort)Server.Id,
+                Data = connection.AccountId
+            };
+
+            var json = JsonSerializer.Serialize(wrappedObject);
+            _ = _httpClient.PostAsync(route, new StringContent(json));
         }
     }
 }

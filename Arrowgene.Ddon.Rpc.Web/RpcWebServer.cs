@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.Rpc.Web
             #region Internal RPC
             InternalMiddleware internalMiddleware = new InternalMiddleware(_gameServer);
 
-            Route.Internal.TrackingRoute trackingRoute = new(this);
+            Route.Internal.CommandRoute trackingRoute = new(this);
             internalMiddleware.Require(trackingRoute.Route);
             _webServer.AddRoute(trackingRoute);
 

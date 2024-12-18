@@ -520,7 +520,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     ClanQuestClearCount[characterId][quest.QuestScheduleId] = ClanQuestClearCount[characterId].GetValueOrDefault(quest.QuestScheduleId) + 1;
                     
-                    Server.RpcManager.AnnounceOthers("internal/tracking", RpcInternalCommand.NotifyClanQuestCompletion, new RpcQuestCompletionData()
+                    Server.RpcManager.AnnounceOthers("internal/command", RpcInternalCommand.NotifyClanQuestCompletion, new RpcQuestCompletionData()
                     {
                         CharacterId = characterId,
                         QuestStatus = ClanQuestClearCount[characterId]
