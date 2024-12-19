@@ -35,6 +35,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             public bool DisablePartyExpAdjustment = false;
             public double EnemyBloodOrbMultiplier = 0.0;
             public bool InfiniteRevive = false;
+            public uint BazaarExhibitExtend = 0;
+            public ulong BazaarReExhibitShorten = 0;
         };
 
         private void ApplyCourseEffects(uint courseId)
@@ -72,6 +74,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             break;
                         case GPCourseId.InfiniteRevive:
                             _CourseBonus.InfiniteRevive = true;
+                            break;
+                        case GPCourseId.BazaarExhibitExtend:
+                            _CourseBonus.BazaarExhibitExtend += effect.Param0;
+                            break;
+                        case GPCourseId.BazaarReExhibitShorten:
+                            _CourseBonus.BazaarReExhibitShorten += effect.Param0;
                             break;
                     }
                 }
@@ -248,6 +256,22 @@ namespace Arrowgene.Ddon.GameServer.Characters
             lock (_CourseBonus)
             {
                 return _CourseBonus.InfiniteRevive;
+            }
+        }
+
+        public uint BazaarExhibitExtend()
+        {
+            lock (_CourseBonus)
+            {
+                return _CourseBonus.BazaarExhibitExtend;
+            }
+        }
+
+        public ulong BazaarReExhibitShorten()
+        {
+            lock (_CourseBonus)
+            {
+                return _CourseBonus.BazaarReExhibitShorten;
             }
         }
     }

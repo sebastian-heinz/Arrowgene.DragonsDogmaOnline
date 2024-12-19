@@ -154,7 +154,16 @@ namespace Arrowgene.Ddon.GameServer
             foreach (BazaarExhibition exhibition in exhibitionsToReceive)
             {
                 exhibition.Info.State = BazaarExhibitionState.Idle;
-                exhibition.Info.Expire = now.AddSeconds(Server.Setting.GameLogicSetting.BazaarCooldownTimeSeconds);
+                ulong totalCooldown;
+                try
+                {
+                    totalCooldown = Server.Setting.GameLogicSetting.BazaarCooldownTimeSeconds - Server.GpCourseManager.BazaarReExhibitShorten();
+                }
+                catch (OverflowException _)
+                {
+                    totalCooldown = 0;
+                }
+                exhibition.Info.Expire = now.AddSeconds(totalCooldown);
                 Server.Database.UpdateBazaarExhibiton(exhibition);
             }
 
