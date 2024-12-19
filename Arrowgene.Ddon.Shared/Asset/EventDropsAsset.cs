@@ -23,6 +23,11 @@ namespace Arrowgene.Ddon.Shared.Asset
         public HashSet<uint> StageIds { get; set; }
         public HashSet<uint> EnemyIds { get; set; }
 
+        public EventItemConstraint EmClassConstraint; // Boss or Regular Enemy
+
+        public EventItemConstraint EmLvConstraint;
+        public (uint Lv, uint MinLv, uint MaxLv) EmLvConstraintParams { get; set; }
+
         public bool RequiresLanternLit { get; set; }
 
         public EventItemConstraint ItemConstraint { get; set; }

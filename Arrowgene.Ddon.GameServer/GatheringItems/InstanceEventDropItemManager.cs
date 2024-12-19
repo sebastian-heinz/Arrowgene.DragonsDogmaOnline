@@ -38,6 +38,16 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
                 return false;
             }
 
+            if (item.EmLvConstraint != EventItemConstraint.None && !EvaluateEmLvConstraint(item, enemy))
+            {
+                return false;
+            }
+
+            if (!EvaluateEmClassConstraint(item, enemy))
+            {
+                return false;
+            }
+
             if (item.RequiredItemsEquipped.Count > 0)
             {
                 if (item.ItemConstraint == EventItemConstraint.All)
@@ -77,6 +87,52 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
             }
 
             return true;
+        }
+
+        private bool EvaluateEmLvConstraint(EventItem item, Enemy enemy)
+        {
+            if (item.EmLvConstraint == EventItemConstraint.InRange)
+            {
+                return enemy.Lv >= item.EmLvConstraintParams.MinLv && enemy.Lv <= item.EmLvConstraintParams.MaxLv;
+            }
+            else if (item.EmLvConstraint == EventItemConstraint.LessThan)
+            {
+                return enemy.Lv < item.EmLvConstraintParams.Lv;
+            }
+            else if (item.EmLvConstraint == EventItemConstraint.LessThanOrEqual)
+            {
+                return enemy.Lv <= item.EmLvConstraintParams.Lv;
+            }
+            else if (item.EmLvConstraint == EventItemConstraint.GreaterThan)
+            {
+                return enemy.Lv > item.EmLvConstraintParams.Lv;
+            }
+            else if (item.EmLvConstraint == EventItemConstraint.GreaterThanOrEqual)
+            {
+                return enemy.Lv >= item.EmLvConstraintParams.Lv;
+            }
+
+            // An invalid constraint type was passed
+            return false;
+        }
+
+        private bool EvaluateEmClassConstraint(EventItem item, Enemy enemy)
+        {
+            if (item.EmClassConstraint == EventItemConstraint.None)
+            {
+                return true;
+            }
+            else if (item.EmClassConstraint == EventItemConstraint.IsBoss)
+            {
+                return enemy.IsBossGauge;
+            }
+            else if (item.EmClassConstraint == EventItemConstraint.IsNotBoss)
+            {
+                return !enemy.IsBossGauge;
+            }
+
+            // An invalid constraint type was passed 
+            return false;
         }
 
         public List<InstancedGatheringItem> FetchEventItems(GameClient client, CDataStageLayoutId layoutId, uint posId)

@@ -10,6 +10,13 @@ namespace Arrowgene.Ddon.Shared.Model
     {
         None,
         All,
-        AtLeastOne
+        AtLeastOne,
+        LessThan,           // The value is < a
+        LessThanOrEqual,    // The value <= a
+        GreaterThan,        // The value is > a
+        GreaterThanOrEqual, // The value is >= a
+        InRange,            // The Value is in the range [a, b]
+        IsBoss,
+        IsNotBoss,
     }
 }
