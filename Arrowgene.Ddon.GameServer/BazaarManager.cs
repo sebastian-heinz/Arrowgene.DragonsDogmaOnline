@@ -11,10 +11,6 @@ namespace Arrowgene.Ddon.GameServer
     {
         private static readonly double TAXES = 0.05; // 5%, value taken from the ingame menu
 
-        // TODO: Make it configurable
-        private static readonly TimeSpan EXHIBITION_TIME_SPAN = TimeSpan.FromDays(3);
-        private static readonly TimeSpan COOLDOWN_TIME_SPAN = TimeSpan.FromDays(1);
-
         public BazaarManager(DdonGameServer server)
         {
             Server = server;
@@ -43,7 +39,7 @@ namespace Arrowgene.Ddon.GameServer
             exhibition.Info.ItemInfo.ExhibitionTime = now;
             exhibition.Info.State = BazaarExhibitionState.OnSale;
             exhibition.Info.Proceeds = calculateProceeds(exhibition.Info.ItemInfo.ItemBaseInfo);
-            exhibition.Info.Expire = now.Add(EXHIBITION_TIME_SPAN);
+            exhibition.Info.Expire = now.AddSeconds(Server.Setting.GameLogicSetting.BazaarExhibitionTimeSeconds);
 
             ulong bazaarId = Server.Database.InsertBazaarExhibition(exhibition);
             return bazaarId;
@@ -63,7 +59,7 @@ namespace Arrowgene.Ddon.GameServer
             exhibition.Info.ItemInfo.ItemBaseInfo.Price = newPrice;
             exhibition.Info.ItemInfo.ExhibitionTime = now;
             exhibition.Info.Proceeds = calculateProceeds(exhibition.Info.ItemInfo.ItemBaseInfo);
-            exhibition.Info.Expire = now.Add(EXHIBITION_TIME_SPAN);
+            exhibition.Info.Expire = now.AddSeconds(Server.Setting.GameLogicSetting.BazaarExhibitionTimeSeconds);
             Server.Database.UpdateBazaarExhibiton(exhibition);
 
             return exhibition.Info.ItemInfo.BazaarId;
@@ -158,7 +154,7 @@ namespace Arrowgene.Ddon.GameServer
             foreach (BazaarExhibition exhibition in exhibitionsToReceive)
             {
                 exhibition.Info.State = BazaarExhibitionState.Idle;
-                exhibition.Info.Expire = now.Add(COOLDOWN_TIME_SPAN);
+                exhibition.Info.Expire = now.AddSeconds(Server.Setting.GameLogicSetting.BazaarCooldownTimeSeconds);
                 Server.Database.UpdateBazaarExhibiton(exhibition);
             }
 
