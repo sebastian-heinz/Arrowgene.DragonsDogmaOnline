@@ -9,7 +9,9 @@ namespace Arrowgene.Ddon.Server
         [DataMember(Order = 90)] public bool AccountRequired { get; set; }
         [DataMember(Order = 105)] public uint NoOperationTimeOutTime { get; set; }
         [DataMember(Order = 110)] public bool KickOnMultipleLogin { get; set; }
-        
+        [DataMember(Order = 111)] public int KickOnMultipleLoginTries { get; set; }
+        [DataMember(Order = 112)] public int KickOnMultipleLoginTimer { get; set; }
+
         public LoginServerSetting()
         {
             ServerSetting = new ServerSetting();
@@ -21,6 +23,8 @@ namespace Arrowgene.Ddon.Server
             AccountRequired = false;
             NoOperationTimeOutTime = 14400;
             KickOnMultipleLogin = false;
+            KickOnMultipleLoginTries = 3;
+            KickOnMultipleLoginTimer = 5000;
         }
 
         public LoginServerSetting(LoginServerSetting setting)
@@ -29,6 +33,8 @@ namespace Arrowgene.Ddon.Server
             AccountRequired = setting.AccountRequired;
             NoOperationTimeOutTime = setting.NoOperationTimeOutTime;
             KickOnMultipleLogin = setting.KickOnMultipleLogin;
+            KickOnMultipleLoginTries = setting.KickOnMultipleLoginTries;
+            KickOnMultipleLoginTimer = setting.KickOnMultipleLoginTimer;
         }
     }
 }

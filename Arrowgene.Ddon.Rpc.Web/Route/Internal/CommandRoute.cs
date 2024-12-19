@@ -49,7 +49,7 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                         }
                     case RpcInternalCommand.KickInternal:
                         {
-                            uint target = _entry.GetData<uint>();
+                            int target = _entry.GetData<int>();
                             foreach (var client in gameServer.ClientLookup.GetAll())
                             {
                                 if (client.Account.Id == target)
@@ -57,6 +57,7 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                                     client.Close();
                                 }
                             }
+                            gameServer.Database.DeleteConnection(gameServer.Id, target);
                             return new RpcCommandResult(this, true);
                         }
                     default:

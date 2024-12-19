@@ -1,2 +1,2 @@
-﻿#Id,Name,Brief,MaxLoginNum,IpAddress,Port,IsHide,RpcPort,RpcAuth
-10,Local Host,Brief,1000,127.0.0.1,52000,false,52099,AuthToken
+﻿#Id,Name,Brief,MaxLoginNum,IpAddress,Port,IsHide,RpcPort,RpcAuth,LoginId
+10,Local Host,Brief,1000,127.0.0.1,52000,false,52099,AuthToken,1
