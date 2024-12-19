@@ -242,11 +242,24 @@ namespace Arrowgene.Ddon.Server
         /// </summary>
         [DataMember(Order = 37)] public bool? EnableEpitaphWeeklyRewards { get; set; } = true;
 
+        /// <summary>
         /// Enables main pawns in party to gain EXP and JP from quests
         /// Original game apparantly did not have pawns share quest reward, so will set to false for default, 
         /// change as needed
         /// </summary>
         [DataMember(Order = 38)] public bool EnableMainPartyPawnsQuestRewards { get; set; }
+
+        /// <summary>
+        /// Specifies the time in seconds that a bazaar exhibit will last.
+        /// By default, the equivalent of 3 days
+        /// </summary>
+        [DataMember(Order = 37)] public ulong BazaarExhibitionTimeSeconds { get; set; }
+
+        /// <summary>
+        /// Specifies the time in seconds that a slot in the bazaar won't be able to be used again.
+        /// By default, the equivalent of 1 day
+        /// </summary>
+        [DataMember(Order = 38)] public ulong BazaarCooldownTimeSeconds { get; set; }
 
         /// <summary>
         /// Various URLs used by the client.
@@ -334,6 +347,9 @@ namespace Arrowgene.Ddon.Server
             EnableEpitaphWeeklyRewards = false;
             EnableMainPartyPawnsQuestRewards = false;
 
+            BazaarExhibitionTimeSeconds = (ulong) TimeSpan.FromDays(3).TotalSeconds;
+            BazaarCooldownTimeSeconds = (ulong) TimeSpan.FromDays(1).TotalSeconds;
+
             string urlDomain = $"http://localhost:{52099}";
             UrlManual = $"{urlDomain}/manual_nfb/";
             UrlShopDetail = $"{urlDomain}/shop/ingame/stone/detail";
@@ -399,6 +415,9 @@ namespace Arrowgene.Ddon.Server
 
             EnableEpitaphWeeklyRewards = setting.EnableEpitaphWeeklyRewards;
             EnableMainPartyPawnsQuestRewards = setting.EnableMainPartyPawnsQuestRewards;
+
+            BazaarExhibitionTimeSeconds = setting.BazaarExhibitionTimeSeconds;
+            BazaarCooldownTimeSeconds = setting.BazaarCooldownTimeSeconds;
 
             UrlManual = setting.UrlManual;
             UrlShopDetail = setting.UrlShopDetail;
