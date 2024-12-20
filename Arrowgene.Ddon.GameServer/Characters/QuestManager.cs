@@ -32,6 +32,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static Dictionary<uint, HashSet<uint>> gTutorialQuests = new Dictionary<uint, HashSet<uint>>();
         private static Dictionary<QuestAreaId, HashSet<QuestId>> gWorldQuests = new Dictionary<QuestAreaId, HashSet<QuestId>>();
 
+        /// <summary>
+        /// QuestScheduleIds that are requested as part of World Manage Quests from pcaps. 
+        /// We know they can't be found, so don't audibly complain about them.
+        /// TODO: Remove this when those quests are handled properly.
+        /// </summary>
+        private static readonly HashSet<uint> KnownBadQuestScheduleIds = new HashSet<uint>()
+        {
+            25077, 43645, 43646, 47734, 47736, 47737, 47738, 47739, 49692, 77644, 151381, 208640, 233576, 259411, 259412, 287378, 315624
+        };
+
         public static void LoadQuests(DdonGameServer server)
         {
             var assetRepository = server.AssetRepository;
@@ -125,7 +135,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             if (!gQuests.ContainsKey(questScheduleId))
             {
-                Logger.Error($"GetQuestByScheduleId: Invalid questScheduleId {questScheduleId}");
+                if (!KnownBadQuestScheduleIds.Contains(questScheduleId))
+                {
+                    Logger.Error($"GetQuestByScheduleId: Invalid questScheduleId {questScheduleId}");
+                }
+
                 return null;
             }
 

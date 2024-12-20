@@ -77,6 +77,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     HubMembers[previousStageId].Remove(client);
                     foreach (GameClient otherClient in Server.ClientLookup.GetAll().Where(x => x.Character != null))
                     {
+                        if (otherClient == client) continue;
+
                         if (HubMembers[previousStageId].Contains(otherClient))
                         {
                             // They saw us leave, and do not need to be updated, their clients discard the context automatically.
@@ -99,6 +101,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     foreach (GameClient otherClient in HubMembers[targetStageId].Where(x => x.Character != null))
                     {
+                        if (otherClient == client) continue;
+
                         uint otherId = otherClient.Character.CharacterId;
                         if (!otherClient.Character.LastSeenLobby.TryGetValue(id, out var lastStage) || lastStage != targetStageId)
                         {
