@@ -1322,6 +1322,22 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return results;
         }
 
+        public bool CheckUnlockConditions(GameClient client, EpitaphBarrier barrier)
+        {
+            foreach (var sectionId in barrier.DependentSectionIds)
+            {
+                var sectionInfo = _Server.EpitaphRoadManager.GetSectionById(sectionId);
+                foreach (var unlockId in sectionInfo.UnlockDependencies)
+                {
+                    if (!client.Character.EpitaphRoadState.UnlockedContent.Contains(unlockId))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
         /// <summary>
         /// Called by the task manager. The main task will signal all channels
         /// to flush the cached information queried by the player when first

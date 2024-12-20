@@ -29,6 +29,7 @@ using Arrowgene.Ddon.GameServer.Chat.Log;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Scripting;
 using Arrowgene.Ddon.GameServer.Shop;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Handler;
@@ -53,6 +54,7 @@ namespace Arrowgene.Ddon.GameServer
             : base(ServerType.Game, setting.ServerSetting, database, assetRepository)
         {
             Setting = new GameServerSetting(setting);
+            ScriptManager = new ScriptManager(this);
             ClientLookup = new GameClientLookup();
             ChatLogHandler = new ChatLogHandler();
             ChatManager = new ChatManager(this);
@@ -91,6 +93,7 @@ namespace Arrowgene.Ddon.GameServer
 
         public event EventHandler<ClientConnectionChangeArgs> ClientConnectionChangeEvent;
         public GameServerSetting Setting { get; }
+        public ScriptManager ScriptManager { get; }
         public ChatManager ChatManager { get; }
         public ItemManager ItemManager { get; }
         public CraftManager CraftManager { get; }
@@ -129,6 +132,8 @@ namespace Arrowgene.Ddon.GameServer
 
         public override void Start()
         {
+            ScriptManager.Initialize();
+
             QuestManager.LoadQuests(this);
             GpCourseManager.EvaluateCourses();
 
@@ -136,7 +141,7 @@ namespace Arrowgene.Ddon.GameServer
             {
                 ScheduleManager.StartServerTasks();
             }
-            
+
             LoadChatHandler();
             LoadPacketHandler();
             base.Start();

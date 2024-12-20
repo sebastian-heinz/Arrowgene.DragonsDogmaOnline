@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -445,6 +445,26 @@ namespace Arrowgene.Ddon.Shared
             path = path.Replace(Path.DirectorySeparatorChar, '\\');
             path = path.Replace(Path.AltDirectorySeparatorChar, '\\');
             return path;
+        }
+
+        /// <summary>
+        /// Implements a safer way to read all lines in a file when there is contention on the file access.
+        /// </summary>
+        /// <param name="path">Path to a text based file to read</param>
+        /// <returns>Returns the contents of the file read as a string</returns>
+        public static string ReadAllText(string path)
+        {
+            List<string> content = new List<string>();
+            using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                while (!reader.EndOfStream)
+                {
+                    content.Add(reader.ReadLine());
+                }
+            }
+
+            return string.Join("\n", content);
         }
     }
 }

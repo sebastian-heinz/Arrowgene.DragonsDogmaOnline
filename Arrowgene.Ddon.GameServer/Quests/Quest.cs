@@ -56,7 +56,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
     public abstract class Quest
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Quest));
-
+        private DdonGameServer Server { get; set; }
         protected List<QuestProcess> Processes { get; set; }
         public readonly QuestId QuestId;
         public readonly bool IsDiscoverable;
@@ -73,8 +73,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public bool SaveWorkAsStep { get; protected set; }
         public List<QuestOrderCondition> OrderConditions { get; protected set; }
         public QuestRewardParams RewardParams { get; protected set; }
-        public List<CDataWalletPoint> WalletRewards { get; protected set; }
-        public List<CDataQuestExp> ExpRewards { get; protected set; }
+        protected List<CDataWalletPoint> WalletRewards { get; set; }
+        protected List<CDataQuestExp> ExpRewards { get; set; }
         public List<QuestRewardItem> ItemRewards { get; protected set; }
         public List<QuestRewardItem> SelectableRewards { get; protected set; }
         public List<CDataCharacterReleaseElement> ContentsReleaseRewards { get; protected set; }
@@ -97,9 +97,37 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     || QuestType == QuestType.Tutorial;
             } 
         }
-
-        public Quest(QuestId questId, uint questScheduleId, QuestType questType, bool isDiscoverable = false)
+        public List<CDataWalletPoint> ScaledWalletRewards()
         {
+            var result = new List<CDataWalletPoint>();
+            foreach (var walletPoint in WalletRewards)
+            {
+                result.Add(new CDataWalletPoint()
+                {
+                    Type = walletPoint.Type,
+                    Value = Server.WalletManager.GetScaledWalletAmount(walletPoint.Type, walletPoint.Value)
+                });
+            }
+            return result;
+        }
+
+        public List<CDataQuestExp> ScaledExpRewards()
+        {
+            var result = new List<CDataQuestExp>();
+            foreach (var pointReward in ExpRewards)
+            {
+                result.Add(new CDataQuestExp()
+                {
+                    Type = pointReward.Type,
+                    Reward = Server.ExpManager.GetScaledPointAmount(RewardSource.Quest, pointReward.Type, pointReward.Reward)
+                });
+            }
+            return result;
+        }
+
+        public Quest(DdonGameServer server, QuestId questId, uint questScheduleId, QuestType questType, bool isDiscoverable = false)
+        {
+            Server = server;
             QuestId = questId;
             QuestType = questType;
             QuestScheduleId = questScheduleId;
@@ -261,8 +289,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 BaseLevel = BaseLevel,
                 ContentJoinItemRank = MinimumItemRank,
                 IsClientOrder = step > 0,
-                BaseExp = ExpRewards,
-                BaseWalletPoints = WalletRewards,
+                BaseExp = ScaledExpRewards(),
+                BaseWalletPoints = ScaledWalletRewards(),
                 FixedRewardItemList = GetQuestFixedRewards(),
                 FixedRewardSelectItemList = GetQuestSelectableRewards(),
                 QuestOrderConditionParamList = GetQuestOrderConditions(),
@@ -308,8 +336,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 IsClientOrder = step > 0,
                 IsEnable = true,
                 CanProgress = true,
-                BaseExp = ExpRewards,
-                BaseWalletPoints = WalletRewards,
+                BaseExp = ScaledExpRewards(),
+                BaseWalletPoints = ScaledWalletRewards(),
                 FixedRewardItem = GetQuestFixedRewards(),
                 FixedRewardSelectItem = GetQuestSelectableRewards(),
                 QuestOrderConditionParam = GetQuestOrderConditions(),

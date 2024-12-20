@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         public static GenericQuest FromAsset(DdonGameServer server, QuestAssetData questAsset)
         {
-            var quest = new GenericQuest(questAsset.QuestId, questAsset.QuestScheduleId, questAsset.Type, questAsset.Discoverable);
+            var quest = new GenericQuest(server, questAsset.QuestId, questAsset.QuestScheduleId, questAsset.Type, questAsset.Discoverable);
 
             quest.QuestAreaId = questAsset.QuestAreaId;
             quest.NewsImageId = questAsset.NewsImageId;
@@ -40,21 +40,19 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             foreach (var pointReward in questAsset.PointRewards)
             {
-                var reward = server.ExpManager.GetScaledPointAmount(RewardSource.Quest, pointReward.ExpType, pointReward.ExpReward);
                 quest.ExpRewards.Add(new CDataQuestExp()
                 {
                     Type = pointReward.ExpType,
-                    Reward = reward
+                    Reward = pointReward.ExpReward
                 });
             }
 
             foreach (var walletReward in questAsset.RewardCurrency)
             {
-                var amount = server.WalletManager.GetScaledWalletAmount(walletReward.WalletType, walletReward.Amount);
                 quest.WalletRewards.Add(new CDataWalletPoint()
                 {
                     Type = walletReward.WalletType,
-                    Value = amount
+                    Value = walletReward.Amount
                 });
             }
 
@@ -133,7 +131,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return quest;
         }
 
-        public GenericQuest(QuestId questId, uint questScheduleId, QuestType questType, bool discoverable) : base(questId, questScheduleId, questType, discoverable)
+        public GenericQuest(DdonGameServer server, QuestId questId, uint questScheduleId, QuestType questType, bool discoverable) : 
+            base(server, questId, questScheduleId, questType, discoverable)
         {
             QuestLayoutFlagSetInfo = new List<QuestLayoutFlagSetInfo>();
         }

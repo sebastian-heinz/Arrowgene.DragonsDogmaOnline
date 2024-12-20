@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.GameServer
     public class GameServerSetting
     {
         [DataMember(Order = 1)] public ServerSetting ServerSetting { get; set; }
-        [DataMember(Order = 2)] public GameLogicSetting GameLogicSetting { get; set; }
+        public GameLogicSetting GameLogicSetting { get; set; }
 
         public GameServerSetting()
         {
@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer
         public GameServerSetting(GameServerSetting setting)
         {
             ServerSetting = new ServerSetting(setting.ServerSetting);
-            GameLogicSetting = new GameLogicSetting(setting.GameLogicSetting);
+            GameLogicSetting = setting.GameLogicSetting;
         }
 
         // Note: method is called after the object is completely deserialized - constructors are skipped.

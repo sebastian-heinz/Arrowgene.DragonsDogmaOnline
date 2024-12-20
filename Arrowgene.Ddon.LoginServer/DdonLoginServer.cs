@@ -41,7 +41,7 @@ namespace Arrowgene.Ddon.LoginServer
             : base(ServerType.Login, setting.ServerSetting, database, assetRepository)
         {
             Setting = new LoginServerSetting(setting);
-            GameSetting = new GameLogicSetting(gameSetting);
+            GameSetting = gameSetting;
             ClientLookup = new LoginClientLookup();
             LoadPacketHandler();
         }

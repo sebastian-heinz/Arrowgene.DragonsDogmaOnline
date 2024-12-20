@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Arrowgene.Ddon.GameServer.Scripting;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -14,7 +15,17 @@ public class CraftManagerTest
 
     public CraftManagerTest()
     {
-        _mockServer = new DdonGameServer(new GameServerSetting(), new MockDatabase(), new AssetRepository("TestFiles"));
+        var settings = new GameServerSetting();
+        settings.GameLogicSetting.GameClockTimescale = 90;
+        settings.GameLogicSetting.WeatherSequenceLength = 20;
+        settings.GameLogicSetting.WeatherStatistics = new List<(uint MeanLength, uint Weight)>()
+        {
+            (60 * 30, 1), // Fair
+            (60 * 30, 1), // Cloudy
+            (60 * 30, 1), // Rainy
+        };
+
+        _mockServer = new DdonGameServer(settings, new MockDatabase(), new AssetRepository("TestFiles"));
         _craftManager = new CraftManager(_mockServer);
     }
 

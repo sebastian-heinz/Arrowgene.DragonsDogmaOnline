@@ -1,15 +1,9 @@
 using Arrowgene.Ddon.GameServer.Dump;
-using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity;
-using Arrowgene.Ddon.Shared.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Network;
-using System.IO;
+using Arrowgene.Ddon.Shared.Model;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {

@@ -22,6 +22,7 @@
     <ItemGroup>
         <PackageReference Include="Arrowgene.Buffers" Version="1.0.2" />
         <PackageReference Include="Arrowgene.Logging" Version="1.2.1" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.12.0" />
         <PackageReference Include="YamlDotNet" Version="13.7.1" />
     </ItemGroup>
 
@@ -30,5 +31,38 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <TargetPath>Files\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
         </ContentWithTargetPath>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ContentWithTargetPath Remove="Files\Assets\scripts\HellWorld.csx" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Files\Assets\scripts\events\" />
+      <Folder Include="Files\Assets\scripts\quests\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Update="Files\Assets\scripts\extended_facilities\Anita1.csx">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Files\Assets\scripts\extended_facilities\Damad1.csx">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Files\Assets\scripts\extended_facilities\Isel1.csx">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Files\Assets\scripts\extended_facilities\Pehr1.csx">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Files\Assets\scripts\GameLogicSettings.csx">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Files\Assets\scripts\HellWorld.csx">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Files\Assets\scripts\Settings.csx">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 </Project>

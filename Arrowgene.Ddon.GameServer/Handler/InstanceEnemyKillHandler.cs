@@ -173,7 +173,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                 }
 
-                uint calcExp = _gameServer.ExpManager.GetAdjustedExp(client.GameMode, RewardSource.Enemy, client.Party, enemyKilled.GetDroppedExperience(), enemyKilled.Lv);
+                uint baseEnemyExp = _gameServer.ExpManager.GetScaledPointAmount(RewardSource.Enemy, ExpType.ExperiencePoints, enemyKilled.GetDroppedExperience());
+                uint calcExp = _gameServer.ExpManager.GetAdjustedExp(client.GameMode, RewardSource.Enemy, client.Party, baseEnemyExp, enemyKilled.Lv);
                 uint calcPP = _gameServer.ExpManager.GetScaledPointAmount(RewardSource.Enemy, ExpType.PlayPoints, enemyKilled.GetDroppedPlayPoints());
 
                 foreach (PartyMember member in client.Party.Members)

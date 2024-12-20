@@ -1,15 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Threading;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer;
 using Arrowgene.Ddon.LoginServer;
 using Arrowgene.Ddon.Rpc.Web;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.WebServer;
 using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Threading;
 
 namespace Arrowgene.Ddon.Cli.Command
 {
@@ -20,6 +20,7 @@ namespace Arrowgene.Ddon.Cli.Command
         private readonly Setting _setting;
         private DdonLoginServer _loginServer;
         private DdonGameServer _gameServer;
+        private ScriptedServerSettings _scriptServerSettings;
         private DdonWebServer _webServer;
         private RpcWebServer _rpcWebServer;
         private IDatabase _database;
@@ -108,6 +109,12 @@ namespace Arrowgene.Ddon.Cli.Command
             {
                 _assetRepository = new AssetRepository(_setting.AssetPath);
                 _assetRepository.Initialize();
+            }
+
+            if (_scriptServerSettings == null)
+            {
+                _scriptServerSettings = new ScriptedServerSettings(_setting.GameServerSetting.GameLogicSetting, _setting.AssetPath);
+                _scriptServerSettings.LoadSettings();
             }
 
             if (_loginServer == null)

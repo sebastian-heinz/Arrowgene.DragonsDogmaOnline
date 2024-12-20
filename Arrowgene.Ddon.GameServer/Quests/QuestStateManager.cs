@@ -582,7 +582,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 UpdateType = ItemNoticeType.Quest
             };
 
-            foreach (var walletReward in quest.WalletRewards)
+            foreach (var walletReward in quest.ScaledWalletRewards())
             {
                 updateCharacterItemNtc.UpdateWalletList.Add(server.WalletManager.AddToWallet(
                     client.Character, 
@@ -597,7 +597,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 client.Enqueue(updateCharacterItemNtc, packets);
             }
 
-            foreach (var point in quest.ExpRewards)
+            foreach (var point in quest.ScaledExpRewards())
             {
                 uint amount = CalculateTotalPointAmount(server, client, point);
                 if (amount == 0)
