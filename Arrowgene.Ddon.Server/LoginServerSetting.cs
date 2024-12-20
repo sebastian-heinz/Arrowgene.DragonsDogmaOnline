@@ -14,6 +14,27 @@ namespace Arrowgene.Ddon.Server
 
         public LoginServerSetting()
         {
+            SetDefaultValues();
+        }
+
+        public LoginServerSetting(LoginServerSetting setting)
+        {
+            ServerSetting = new ServerSetting(setting.ServerSetting);
+            AccountRequired = setting.AccountRequired;
+            NoOperationTimeOutTime = setting.NoOperationTimeOutTime;
+            KickOnMultipleLogin = setting.KickOnMultipleLogin;
+            KickOnMultipleLoginTries = setting.KickOnMultipleLoginTries;
+            KickOnMultipleLoginTimer = setting.KickOnMultipleLoginTimer;
+        }
+
+        [OnDeserializing]
+        void OnDeserializing(StreamingContext context)
+        {
+            SetDefaultValues();
+        }
+
+        void SetDefaultValues()
+        {
             ServerSetting = new ServerSetting();
             ServerSetting.Id = 1;
             ServerSetting.Name = "Login";
@@ -25,16 +46,6 @@ namespace Arrowgene.Ddon.Server
             KickOnMultipleLogin = false;
             KickOnMultipleLoginTries = 3;
             KickOnMultipleLoginTimer = 5000;
-        }
-
-        public LoginServerSetting(LoginServerSetting setting)
-        {
-            ServerSetting = new ServerSetting(setting.ServerSetting);
-            AccountRequired = setting.AccountRequired;
-            NoOperationTimeOutTime = setting.NoOperationTimeOutTime;
-            KickOnMultipleLogin = setting.KickOnMultipleLogin;
-            KickOnMultipleLoginTries = setting.KickOnMultipleLoginTries;
-            KickOnMultipleLoginTimer = setting.KickOnMultipleLoginTimer;
         }
     }
 }

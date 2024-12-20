@@ -61,7 +61,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             character.EpitaphRoadState.UnlockedContent = _Server.Database.GetEpitaphRoadUnlocks(character.CharacterId, connectionIn);
 
-            if (_Server.Setting.GameLogicSetting.EnableEpitaphWeeklyRewards.Value)
+            if (_Server.Setting.GameLogicSetting.EnableEpitaphWeeklyRewards)
             {
                 character.EpitaphRoadState.WeeklyRewardsClaimed = _Server.Database.GetEpitaphClaimedWeeklyRewards(character.CharacterId, connectionIn);
             }

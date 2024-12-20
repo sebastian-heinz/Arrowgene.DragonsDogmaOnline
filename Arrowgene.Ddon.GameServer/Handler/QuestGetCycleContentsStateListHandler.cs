@@ -1,6 +1,5 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Dump;
-using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -36,8 +35,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntc.WorldManageQuestOrderList = pcap.WorldManageQuestOrderList; // Recover paths + change vocation
 
             ntc.QuestDefine = pcap.QuestDefine; // Recover quest log data to be able to accept quests
-            ntc.QuestDefine.OrderMaxNum = Server.Setting.GameLogicSetting.QuestOrderMax.Value;
-            ntc.QuestDefine.RewardBoxMaxNum = Server.Setting.GameLogicSetting.RewardBoxMax.Value;
+            ntc.QuestDefine.OrderMaxNum = Server.Setting.GameLogicSetting.QuestOrderMax;
+            ntc.QuestDefine.RewardBoxMaxNum = Server.Setting.GameLogicSetting.RewardBoxMax;
 
             // pcap.MainQuestIdList; (this will add back all missing functionality which depends on complete MSQ)
             var completedMsq = client.Character.CompletedQuests.Values.Where(x => x.QuestType == QuestType.Main);

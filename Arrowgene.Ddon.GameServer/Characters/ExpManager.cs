@@ -10,7 +10,6 @@ using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Drawing;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
@@ -906,13 +905,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
             switch (type)
             {
                 case ExpType.ExperiencePoints:
-                    modifier = (source == RewardSource.Enemy) ? _GameSettings.EnemyExpModifier.Value : _GameSettings.QuestExpModifier.Value;
+                    modifier = (source == RewardSource.Enemy) ? _GameSettings.EnemyExpModifier : _GameSettings.QuestExpModifier;
                     break;
                 case ExpType.JobPoints:
-                    modifier = _GameSettings.JpModifier.Value;
+                    modifier = _GameSettings.JpModifier;
                     break;
                 case ExpType.PlayPoints:
-                    modifier = _GameSettings.PpModifier.Value;
+                    modifier = _GameSettings.PpModifier;
                     break;
                 default:
                     modifier = 1.0;

@@ -1,4 +1,4 @@
-﻿using System.Runtime.Serialization;
+using System.Runtime.Serialization;
 using Arrowgene.Ddon.Server;
 
 namespace Arrowgene.Ddon.GameServer
@@ -11,13 +11,7 @@ namespace Arrowgene.Ddon.GameServer
 
         public GameServerSetting()
         {
-            ServerSetting = new ServerSetting();
-            ServerSetting.Id = 10;
-            ServerSetting.Name = "Game";
-            ServerSetting.ServerPort = 52000;
-            ServerSetting.ServerSocketSettings.Identity = "Game";
-
-            GameLogicSetting = new GameLogicSetting();
+            SetDefaultValues();
         }
 
         public GameServerSetting(GameServerSetting setting)
@@ -40,6 +34,23 @@ namespace Arrowgene.Ddon.GameServer
             }
             
             GameLogicSetting ??= new GameLogicSetting();
+        }
+
+        [OnDeserializing]
+        void OnDeserializing(StreamingContext context)
+        {
+            SetDefaultValues();
+        }
+
+        void SetDefaultValues()
+        {
+            ServerSetting = new ServerSetting();
+            ServerSetting.Id = 10;
+            ServerSetting.Name = "Game";
+            ServerSetting.ServerPort = 52000;
+            ServerSetting.ServerSocketSettings.Identity = "Game";
+
+            GameLogicSetting = new GameLogicSetting();
         }
     }
 }

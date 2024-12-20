@@ -1,10 +1,8 @@
-using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.GameServer.Quests;
+using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System.Collections.Generic;
-using Arrowgene.Ddon.Shared.Model.Quest;
-using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Database.Model;
 using System.Data.Common;
 
 namespace Arrowgene.Ddon.GameServer.Characters
@@ -24,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             var rewards = quest.GenerateBoxRewards();
 
             var currentRewards = GetQuestBoxRewards(client, connectionIn);
-            if (currentRewards.Count >= _Server.Setting.GameLogicSetting.RewardBoxMax.Value)
+            if (currentRewards.Count >= _Server.Setting.GameLogicSetting.RewardBoxMax)
             {
                 return false;
             }

@@ -1,5 +1,4 @@
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Ddon.Shared.Model.Scheduler;
 using Arrowgene.Logging;
@@ -18,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Tasks
 
         public override bool IsEnabled(DdonGameServer server)
         {
-            return server.Setting.GameLogicSetting.EnableEpitaphWeeklyRewards.Value;
+            return server.Setting.GameLogicSetting.EnableEpitaphWeeklyRewards;
         }
 
         public override void RunTask(DdonGameServer server)

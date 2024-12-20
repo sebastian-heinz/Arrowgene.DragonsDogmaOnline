@@ -2,29 +2,9 @@ using Arrowgene.Ddon.Shared.Model;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
-using YamlDotNet.Serialization;
 
 namespace Arrowgene.Ddon.Server
 {
-    [DataContract]
-    public class DefaultDataMember<T>
-    {
-        private T _DefaultValue;
-        private T? _Value;
-
-        [DataMember]
-        public T Value { 
-            get => _Value ?? _DefaultValue;
-            set => _Value = Value;
-        }
-
-        public DefaultDataMember(T defaultValue)
-        {
-            _DefaultValue = defaultValue;
-        }
-    }
-
-
     [DataContract]
     public class GameLogicSetting
     {
@@ -189,58 +169,58 @@ namespace Arrowgene.Ddon.Server
         /// <summary>
         /// Global modifier for enemy exp calculations to scale up or down.
         /// </summary>
-        [DataMember(Order = 27)] public double? EnemyExpModifier { get; set; } = 1.0;
+        [DataMember(Order = 27)] public double EnemyExpModifier { get; set; }
 
         /// <summary>
         /// Global modifier for quest exp calculations to scale up or down.
         /// </summary>
         
-        [DataMember(Order = 28)] public double? QuestExpModifier { get; set; } = 1.0;
+        [DataMember(Order = 28)] public double QuestExpModifier { get; set; }
 
         /// <summary>
         /// Global modifier for pp calculations to scale up or down.
         /// </summary>
-        [DataMember(Order = 29)] public double? PpModifier { get; set; } = 1.0;
+        [DataMember(Order = 29)] public double PpModifier { get; set; }
 
         /// <summary>
         /// Global modifier for Gold calculations to scale up or down.
         /// </summary>
-        [DataMember(Order = 30)] public double? GoldModifier { get; set; } = 1.0;
+        [DataMember(Order = 30)] public double GoldModifier { get; set; }
 
         /// <summary>
         /// Global modifier for Rift calculations to scale up or down.
         /// </summary>
-        [DataMember(Order = 31)] public double? RiftModifier { get; set; } = 1.0;
+        [DataMember(Order = 31)] public double RiftModifier { get; set; }
 
         /// <summary>
         /// Global modifier for BO calculations to scale up or down.
         /// </summary>
-        [DataMember(Order = 32)] public double? BoModifier { get; set; } = 1.0;
+        [DataMember(Order = 32)] public double BoModifier { get; set; }
 
         /// <summary>
         /// Global modifier for HO calculations to scale up or down.
         /// </summary>
-        [DataMember(Order = 33)] public double? HoModifier { get; set; } = 1.0;
+        [DataMember(Order = 33)] public double HoModifier { get; set; }
 
         /// <summary>
         /// Global modifier for JP calculations to scale up or down.
         /// </summary>
-        [DataMember(Order = 34)] public double? JpModifier { get; set; } = 1.0;
+        [DataMember(Order = 34)] public double JpModifier { get; set; }
 
         /// <summary>
         /// Configures the maximum amount of reward box slots.
         /// </summary>
-        [DataMember(Order = 35)] public byte? RewardBoxMax { get; set; } = 100;
+        [DataMember(Order = 35)] public byte RewardBoxMax { get; set; }
 
         /// <summary>
         /// Configures the maximum amount of quests that can be ordered at one time.
         /// </summary>
-        [DataMember(Order = 36)] public byte? QuestOrderMax { get; set; } = 20;
+        [DataMember(Order = 36)] public byte QuestOrderMax { get; set; }
 
         /// <summary>
         /// Configures if epitaph rewards are limited once per weekly reset.
         /// </summary>
-        [DataMember(Order = 37)] public bool? EnableEpitaphWeeklyRewards { get; set; } = true;
+        [DataMember(Order = 37)] public bool EnableEpitaphWeeklyRewards { get; set; }
 
         /// <summary>
         /// Enables main pawns in party to gain EXP and JP from quests
@@ -286,6 +266,11 @@ namespace Arrowgene.Ddon.Server
         [DataMember(Order = 200)] public string UrlCompanionImage { get; set; }
 
         public GameLogicSetting()
+        {
+            SetDefaultValues();
+        }
+
+        void SetDefaultValues()
         {
             LaternBurnTimeInSeconds = 1500;
             AdditionalProductionSpeedFactor = 1.0;
@@ -372,6 +357,12 @@ namespace Arrowgene.Ddon.Server
             UrlCompanionImage = $"{urlDomain}/";
         }
 
+        [OnDeserializing]
+        void OnDeserializing(StreamingContext context)
+        {
+            SetDefaultValues();
+        }
+
         public GameLogicSetting(GameLogicSetting setting)
         {
             LaternBurnTimeInSeconds = setting.LaternBurnTimeInSeconds;
@@ -444,44 +435,6 @@ namespace Arrowgene.Ddon.Server
         [OnDeserialized]
         void OnDeserialized(StreamingContext context)
         {
-            // Initialize reference types so tests work properly.
-            AdjustPartyEnemyExpTiers ??= new();
-            AdjustTargetLvEnemyExpTiers ??= new();
-            WeatherStatistics ??= new();
-            WalletLimits ??= new();
-            UrlManual ??= string.Empty;
-            UrlShopDetail ??= string.Empty;
-            UrlShopCounterA ??= string.Empty;
-            UrlShopAttention ??= string.Empty;
-            UrlShopStoneLimit ??= string.Empty;
-            UrlShopCounterB ??= string.Empty;
-            UrlChargeCallback ??= string.Empty;
-            UrlChargeA ??= string.Empty;
-            UrlSample9 ??= string.Empty;
-            UrlSample10 ??= string.Empty;
-            UrlCampaignBanner ??= string.Empty;
-            UrlSupportIndex ??= string.Empty;
-            UrlPhotoupAuthorize ??= string.Empty;
-            UrlApiA ??= string.Empty;
-            UrlApiB ??= string.Empty;
-            UrlIndex ??= string.Empty;
-            UrlCampaign ??= string.Empty;
-            UrlChargeB ??= string.Empty;
-            UrlCompanionImage ??= string.Empty;
-
-            EnableEpitaphWeeklyRewards ??= true;
-
-            EnemyExpModifier ??= 1;
-            QuestExpModifier ??= 1;
-            PpModifier ??= 1;
-            GoldModifier ??= 1;
-            RiftModifier ??= 1;
-            BoModifier ??= 1;
-            HoModifier ??= 1;
-            JpModifier ??= 1;
-            RewardBoxMax ??= 100;
-            QuestOrderMax ??= 20;
-
             if (RookiesRingBonus < 0)
             {
                 RookiesRingBonus = 1.0;
