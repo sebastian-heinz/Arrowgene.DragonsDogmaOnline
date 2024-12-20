@@ -1,11 +1,16 @@
-using System;
-using System.Collections.Generic;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
@@ -16,6 +21,9 @@ namespace Arrowgene.Ddon.LoginServer.Handler
         private readonly LoginServerSetting _setting;
         private readonly object _tokensInFLightLock;
         private readonly HashSet<string> _tokensInFlight;
+
+        private readonly HttpClient _httpClient = new HttpClient();
+        private bool _httpReady = false;
 
         public ClientLoginHandler(DdonLoginServer server) : base(server)
         {
@@ -101,14 +109,32 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 }
 
                 List<Connection> connections = Database.SelectConnectionsByAccountId(account.Id);
-                if (connections.Count > 0)
+
+                if (_setting.KickOnMultipleLogin)
                 {
-                    Logger.Error(client, $"Already logged in");
-                    res.Error = (uint) ErrorCode.ERROR_CODE_AUTH_MULTIPLE_LOGIN;
+                    for (uint tryCount = 0; tryCount < _setting.KickOnMultipleLoginTries; tryCount++)
+                    {
+                        if (connections.Any())
+                        {
+                            connections.ForEach(x => RequestKick(x));
+                            Thread.Sleep(_setting.KickOnMultipleLoginTimer);
+                            connections = Database.SelectConnectionsByAccountId(account.Id);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+
+                if (connections.Any())
+                {
+                    Logger.Error(client, $"Already logged in.");
+                    res.Error = (uint)ErrorCode.ERROR_CODE_AUTH_MULTIPLE_LOGIN;
                     client.Send(res);
                     return;
                 }
-                
+
                 // Order Important,
                 // account need to be only assigned after
                 // verification that no connection exists, and before
@@ -171,6 +197,46 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 _tokensInFlight.Add(token);
                 return true;
             }
+        }
+
+        private void RequestKick(Connection connection)
+        {
+            // Timing issues with loading files vs server process startup.
+            if (!_httpReady)
+            {
+                lock(_httpClient)
+                {
+                    ServerInfo serverInfo = Server.AssetRepository.ServerList.Find(x => x.LoginId == Server.Id);
+                    if (serverInfo is null)
+                    {
+                        Logger.Error($"Login server with ID {Server.Id} was not found in the ServerList asset.");
+                        return;
+                    }
+
+                    // The login server auths as though it was the game server.
+                    _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Internal", $"{serverInfo.Id}:{serverInfo.RpcAuthToken}");
+                    _httpReady = true;
+                }
+            }
+
+            if (connection.Type == ConnectionType.LoginServer)
+            {
+                // Can't talk to the login server, but there's usually not a stuck connection here.
+                return;
+            }
+
+            var channel = Server.AssetRepository.ServerList.Find(x => x.Id == connection.ServerId);
+            var route = $"http://{channel.Addr}:{channel.RpcPort}/rpc/internal/command";
+
+            var wrappedObject = new RpcWrappedObject()
+            {
+                Command = RpcInternalCommand.KickInternal,
+                Origin = (ushort)Server.Id,
+                Data = connection.AccountId
+            };
+
+            var json = JsonSerializer.Serialize(wrappedObject);
+            _ = _httpClient.PostAsync(route, new StringContent(json));
         }
     }
 }

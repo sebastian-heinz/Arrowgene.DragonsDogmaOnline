@@ -5,7 +5,7 @@ namespace Arrowgene.Ddon.Shared.Csv;
 
 public class GameServerListInfoCsv : CsvReaderWriter<ServerInfo>
 {
-    protected override int NumExpectedItems => 9;
+    protected override int NumExpectedItems => 10;
     protected override ServerInfo CreateInstance(string[] properties)
     {
         if (!ushort.TryParse(properties[0], out ushort id)) return null;
@@ -17,6 +17,7 @@ public class GameServerListInfoCsv : CsvReaderWriter<ServerInfo>
         if (!bool.TryParse(properties[6], out bool isHide)) return null;
         if (!ushort.TryParse(properties[7], out ushort rpcPort)) return null;
         string authToken = properties[8];
+        if (!ushort.TryParse(properties[9], out ushort loginId)) return null;
 
         return new ServerInfo()
         {
@@ -30,6 +31,7 @@ public class GameServerListInfoCsv : CsvReaderWriter<ServerInfo>
             IsHide = isHide,
             RpcPort = rpcPort,
             RpcAuthToken = authToken,
+            LoginId = loginId,
         };
     }
 }

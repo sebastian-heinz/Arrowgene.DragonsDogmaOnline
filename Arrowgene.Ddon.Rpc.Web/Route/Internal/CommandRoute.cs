@@ -5,21 +5,20 @@ using Arrowgene.Logging;
 using Arrowgene.WebServer;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using static Arrowgene.Ddon.GameServer.RpcManager;
 
 namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
 {
-    public class TrackingRoute : RpcRouteTemplate
+    public class CommandRoute : RpcRouteTemplate
     {
-        public class InternalTrackingCommand : RpcBodyCommand<RpcUnwrappedObject>
+        public class InternalCommand : RpcBodyCommand<RpcUnwrappedObject>
         {
-            private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(InternalTrackingCommand));
+            private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(InternalCommand));
 
-            public InternalTrackingCommand(RpcUnwrappedObject entry) : base(entry)
+            public InternalCommand(RpcUnwrappedObject entry) : base(entry)
             {
             }
 
-            public override string Name => "InternalTrackingCommand";
+            public override string Name => "InternalCommand";
 
             public override RpcCommandResult Execute(DdonGameServer gameServer)
             {
@@ -43,21 +42,39 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                                 Message = $"NotifyClanQuestCompletion for CharacterId {data.CharacterId}"
                             };
                         }
+                    case RpcInternalCommand.EpitaphRoadWeeklyReset:
+                        {
+                            gameServer.EpitaphRoadManager.PerformWeeklyReset();
+                            return new RpcCommandResult(this, true);
+                        }
+                    case RpcInternalCommand.KickInternal:
+                        {
+                            int target = _entry.GetData<int>();
+                            foreach (var client in gameServer.ClientLookup.GetAll())
+                            {
+                                if (client.Account.Id == target)
+                                {
+                                    client.Close();
+                                }
+                            }
+                            gameServer.Database.DeleteConnection(gameServer.Id, target);
+                            return new RpcCommandResult(this, true);
+                        }
                     default:
                         return new RpcCommandResult(this, false);
                 }
             }
         }
 
-        public TrackingRoute(IRpcExecuter executer) : base(executer)
+        public CommandRoute(IRpcExecuter executer) : base(executer)
         {
         }
 
-        public override string Route => "/rpc/internal/tracking";
+        public override string Route => "/rpc/internal/command";
 
         public async override Task<WebResponse> Post(WebRequest request)
         {
-            return await HandleBody<RpcUnwrappedObject, InternalTrackingCommand>(request);
+            return await HandleBody<RpcUnwrappedObject, InternalCommand>(request);
         }
     }
 }

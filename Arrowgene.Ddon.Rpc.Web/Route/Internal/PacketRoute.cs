@@ -1,17 +1,14 @@
 using Arrowgene.Ddon.GameServer;
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Rpc.Command;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Clan;
-using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.WebServer;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using static Arrowgene.Ddon.GameServer.RpcManager;
 
@@ -168,9 +165,7 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                                 Message = $"AnnouncePacketClan Ch.{_entry.Origin} ClanID {data.ClanId} -> {packet.Id}"
                             };
                         }
-                    case RpcInternalCommand.EpitaphRoadWeeklyReset:
-                        gameServer.EpitaphRoadManager.PerformWeeklyReset();
-                        return new RpcCommandResult(this, true);
+                    
                     default:
                         return new RpcCommandResult(this, false);
                 }

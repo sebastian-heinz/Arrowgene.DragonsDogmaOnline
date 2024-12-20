@@ -9,13 +9,10 @@ using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
-using System.Security.Claims;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.GameServer
@@ -59,52 +56,6 @@ namespace Arrowgene.Ddon.GameServer
         private readonly Dictionary<ushort, ServerInfo> ChannelInfo;
 
         private readonly Dictionary<ushort, RpcTrackingMap> CharacterTrackingMap;
-
-        public class RpcWrappedObject
-        {
-            public RpcInternalCommand Command { get; set; }
-            public ushort Origin { get; set; }
-            public object Data { get; set; }
-            public DateTime Timestamp { get; set; }
-            public RpcWrappedObject()
-            {
-                Timestamp = DateTime.UtcNow;
-            }
-        }
-
-        public class RpcUnwrappedObject
-        {
-            public RpcInternalCommand Command { get; set; }
-            public ushort Origin { get; set; }
-            public DateTime Timestamp { get; set; }
-
-            [JsonConverter(typeof(DataJsonConverter))]
-            public string Data { get; set; }
-            public T GetData<T>()
-            {
-                return JsonSerializer.Deserialize<T>(Data);
-            }
-
-            // Hack to deserialize nested objects.
-            internal class DataJsonConverter : JsonConverter<string>
-            {
-                public override string Read(
-                    ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
-                {
-                    using (var jsonDoc = JsonDocument.ParseValue(ref reader))
-                    {
-                        return jsonDoc.RootElement.GetRawText();
-                    }
-                }
-
-                public override void Write(
-                    Utf8JsonWriter writer, string value, JsonSerializerOptions options)
-                {
-                    throw new NotImplementedException();
-                }
-            }
-        }
-
 
         public RpcManager(DdonGameServer server)
         {
@@ -296,7 +247,7 @@ namespace Arrowgene.Ddon.GameServer
                 rpcCharacterDatas.Add(new(character));
             }
             Logger.Info($"Announcing player list for channel {Server.Id} with {rpcCharacterDatas.Count} players over RPC.");
-            AnnounceOthers("internal/tracking", RpcInternalCommand.NotifyPlayerList, rpcCharacterDatas);
+            AnnounceOthers("internal/command", RpcInternalCommand.NotifyPlayerList, rpcCharacterDatas);
             CharacterTrackingMap[(ushort) Server.Id].Update(DateTime.Now, rpcCharacterDatas);
         }
 
@@ -418,11 +369,6 @@ namespace Arrowgene.Ddon.GameServer
             {
                 AnnounceClan(clanId, "internal/packet", RpcInternalCommand.AnnouncePacketClan, data);
             }
-        }
-
-        public void AnnounceEpitaphWeeklyReset()
-        {
-            AnnounceAll("internal/packet", RpcInternalCommand.EpitaphRoadWeeklyReset, null);
         }
     }
 }
