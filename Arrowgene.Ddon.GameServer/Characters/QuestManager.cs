@@ -35,6 +35,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         /// <summary>
         /// QuestScheduleIds that are requested as part of World Manage Quests from pcaps. 
         /// We know they can't be found, so don't audibly complain about them.
+        /// TODO: Remove this when those quests are handled properly.
         /// </summary>
         private static readonly HashSet<uint> KnownBadQuestScheduleIds = new HashSet<uint>()
         {
