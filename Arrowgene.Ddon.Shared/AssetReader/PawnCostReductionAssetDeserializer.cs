@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
             var asset = new PawnCostReductionAsset();
 
-            string json = File.ReadAllText(path);
+            string json = Util.ReadAllText(path);
             using (JsonDocument document = JsonDocument.Parse(json))
             {
                 var costReductionElements = document.RootElement.EnumerateArray().ToList();

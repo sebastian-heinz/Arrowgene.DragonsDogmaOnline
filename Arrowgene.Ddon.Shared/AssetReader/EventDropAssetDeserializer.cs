@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
             EventDropsAsset asset = new EventDropsAsset();
 
-            string json = File.ReadAllText(path);
+            string json = Util.ReadAllText(path);
             JsonDocument document = JsonDocument.Parse(json);
 
             foreach (var jEventItem in document.RootElement.EnumerateArray())

@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
             SecretAbilityAsset asset = new SecretAbilityAsset();
 
-            string json = File.ReadAllText(path);
+            string json = Util.ReadAllText(path);
             JsonDocument document = JsonDocument.Parse(json);
 
             var secretAbilities = document.RootElement.GetProperty("default_abilitiles").EnumerateArray().ToList();

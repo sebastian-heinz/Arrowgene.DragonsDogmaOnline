@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
             BitterblackMazeAsset asset = new BitterblackMazeAsset();
 
-            string json = File.ReadAllText(path);
+            string json = Util.ReadAllText(path);
             JsonDocument document = JsonDocument.Parse(json);
 
             var configurations = document.RootElement.GetProperty("maze_configurations").EnumerateObject();

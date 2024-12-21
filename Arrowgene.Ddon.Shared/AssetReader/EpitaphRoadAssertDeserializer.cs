@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
             EpitaphRoadAsset asset = new EpitaphRoadAsset();
 
-            string json = File.ReadAllText(path);
+            string json = Util.ReadAllText(path);
             JsonDocument document = JsonDocument.Parse(json);
 
             foreach (var jEpiPath in document.RootElement.GetProperty("paths").EnumerateArray())
