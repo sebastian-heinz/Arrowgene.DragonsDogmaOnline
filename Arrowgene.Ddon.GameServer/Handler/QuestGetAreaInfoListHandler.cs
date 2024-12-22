@@ -1,11 +1,13 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestGetAreaInfoListHandler : PacketHandler<GameClient>
+    public class QuestGetAreaInfoListHandler : GameRequestPacketHandler<C2SQuestGetAreaInfoListReq, S2CQuestGetAreaInfoListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetAreaInfoListHandler));
 
@@ -15,12 +17,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_QUEST_GET_AREA_INFO_LIST_REQ;
-
-        public override void Handle(GameClient client, IPacket request)
+        public override S2CQuestGetAreaInfoListRes Handle(GameClient client, C2SQuestGetAreaInfoListReq request)
         {
-            Packet response = new Packet(PacketId.S2C_QUEST_GET_AREA_INFO_LIST_RES, PcapData);
-            client.Send(response);
+            var pcap = EntitySerializer.Get<S2CQuestGetAreaInfoListRes>().Read(PcapData);
+            return pcap;
         }
     }
 }

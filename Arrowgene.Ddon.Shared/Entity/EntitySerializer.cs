@@ -145,6 +145,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             //Create(new CDataCycleContentsNewsDetail.Serializer());
             //Create(new CDataCycleContentsRank.Serializer());
             Create(new CDataCycleContentsStateList.Serializer());
+            Create(new CDataCycleContentsNews.Serializer());
+            Create(new CDataCycleContentsNewsDetail.Serializer());
+            Create(new CDataCycleContentsRank.Serializer());
 
             Create(new CDataDeliveredItem.Serializer());
             Create(new CDataDeliveredItemRecord.Serializer());

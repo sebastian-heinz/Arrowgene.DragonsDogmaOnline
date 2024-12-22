@@ -1,14 +1,14 @@
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class AreaGetAreaSupplyInfoHandler : PacketHandler<GameClient>
+    /// <summary>
+    /// Client requests what supply items it is currently eligible for, not the whole list. 
+    /// </summary>
+    public class AreaGetAreaSupplyInfoHandler : GameRequestPacketHandler<C2SAreaGetAreaSupplyInfoReq, S2CAreaGetAreaSupplyInfoRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(AreaGetAreaSupplyInfoHandler));
 
@@ -18,12 +18,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_AREA_GET_AREA_SUPPLY_INFO_REQ;
-
-        public override void Handle(GameClient client, IPacket request)
+        public override S2CAreaGetAreaSupplyInfoRes Handle(GameClient client, C2SAreaGetAreaSupplyInfoReq request)
         {
-            Packet response = new Packet(PacketId.S2C_AREA_GET_AREA_SUPPLY_INFO_RES, PcapData);
-            client.Send(response);
+            var pcap = EntitySerializer.Get<S2CAreaGetAreaSupplyInfoRes>().Read(PcapData);
+
+            return pcap;
         }
     }
 }
