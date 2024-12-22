@@ -1,14 +1,12 @@
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class AreaGetAreaBaseInfoListHandler : PacketHandler<GameClient>
+    public class AreaGetAreaBaseInfoListHandler : GameRequestPacketHandler<C2SAreaGetAreaBaseInfoListReq, S2CAreaGetAreaBaseInfoListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(AreaGetAreaBaseInfoListHandler));
 
@@ -17,9 +15,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_AREA_GET_AREA_BASE_INFO_LIST_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override S2CAreaGetAreaBaseInfoListRes Handle(GameClient client, C2SAreaGetAreaBaseInfoListReq request)
         {
             // client.Send(InGameDump.Dump_58);
             S2CAreaGetAreaBaseInfoListRes pcap = EntitySerializer.Get<S2CAreaGetAreaBaseInfoListRes>().Read(InGameDump.data_Dump_58);
@@ -29,7 +25,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 areaBaseInfo.CanRankUp = false;
                 areaBaseInfo.ClanAreaPoint = 0;
             }
-            client.Send(pcap);
+            
+            return pcap;
         }
     }
 }
