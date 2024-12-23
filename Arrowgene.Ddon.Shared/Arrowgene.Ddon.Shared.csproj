@@ -58,11 +58,5 @@
       <None Update="Files\Assets\scripts\GameLogicSettings.csx">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </None>
-      <None Update="Files\Assets\scripts\HellWorld.csx">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Files\Assets\scripts\Settings.csx">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
     </ItemGroup>
 </Project>

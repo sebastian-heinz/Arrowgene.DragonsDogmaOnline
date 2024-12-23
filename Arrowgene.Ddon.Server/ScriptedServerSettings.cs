@@ -7,7 +7,6 @@ using Microsoft.CodeAnalysis.Scripting;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 
 namespace Arrowgene.Ddon.Server
 {
@@ -22,7 +21,7 @@ namespace Arrowgene.Ddon.Server
 
         private string ScriptsRoot { get; set; }
         private Dictionary<string, Script> CompiledScripts;
-        private GameLogicSetting GameLogicSetting;
+        public GameLogicSetting GameLogicSetting { get; private set; }
         public FileSystemWatcher Watcher { get; private set; }
 
         public Script GameLogicSettings
@@ -43,11 +42,11 @@ namespace Arrowgene.Ddon.Server
             }
         }
 
-        public ScriptedServerSettings(GameLogicSetting gameLogicSetting, string AssetsPath)
+        public ScriptedServerSettings(string AssetsPath)
         {
             ScriptsRoot = $"{AssetsPath}\\scripts";
 
-            GameLogicSetting = gameLogicSetting;
+            GameLogicSetting = new GameLogicSetting();
 
             CompiledScripts = new Dictionary<string, Script>();
 

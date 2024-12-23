@@ -55,7 +55,6 @@ namespace Arrowgene.Ddon.Test.GameServer
         public void RoundTrip_SerializeAndDeserialize_ShouldMaintainObjectState()
         {
             Setting originalSetting = new Setting();
-            originalSetting.GameServerSetting.GameLogicSetting.AdditionalProductionSpeedFactor = 2.0;
 
             string json = Setting.Serialize(originalSetting);
             Setting deserializedSetting = Setting.Deserialize(json);

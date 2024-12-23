@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Tasks
 
         public override bool IsEnabled(DdonGameServer server)
         {
-            return server.Setting.GameLogicSetting.EnableEpitaphWeeklyRewards;
+            return server.GameLogicSettings.EnableEpitaphWeeklyRewards;
         }
 
         public override void RunTask(DdonGameServer server)

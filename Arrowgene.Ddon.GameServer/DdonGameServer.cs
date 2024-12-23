@@ -50,10 +50,11 @@ namespace Arrowgene.Ddon.GameServer
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonGameServer));
 
-        public DdonGameServer(GameServerSetting setting, IDatabase database, AssetRepository assetRepository)
+        public DdonGameServer(GameServerSetting setting, GameLogicSetting gameLogicSettings, IDatabase database, AssetRepository assetRepository)
             : base(ServerType.Game, setting.ServerSetting, database, assetRepository)
         {
-            Setting = new GameServerSetting(setting);
+            ServerSetting = new GameServerSetting(setting);
+            GameLogicSettings = gameLogicSettings;
             ScriptManager = new ScriptManager(this);
             ClientLookup = new GameClientLookup();
             ChatLogHandler = new ChatLogHandler();
@@ -92,7 +93,8 @@ namespace Arrowgene.Ddon.GameServer
         }
 
         public event EventHandler<ClientConnectionChangeArgs> ClientConnectionChangeEvent;
-        public GameServerSetting Setting { get; }
+        public GameServerSetting ServerSetting { get; }
+        public GameLogicSetting GameLogicSettings { get; }
         public ScriptManager ScriptManager { get; }
         public ChatManager ChatManager { get; }
         public ItemManager ItemManager { get; }
@@ -188,7 +190,7 @@ namespace Arrowgene.Ddon.GameServer
         public override GameClient NewClient(ITcpSocket socket)
         {
             GameClient newClient = new GameClient(socket,
-                new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver), this);
+                new PacketFactory(ServerSetting.ServerSetting, PacketIdResolver.GamePacketIdResolver), this);
             ClientLookup.Add(newClient);
             return newClient;
         }

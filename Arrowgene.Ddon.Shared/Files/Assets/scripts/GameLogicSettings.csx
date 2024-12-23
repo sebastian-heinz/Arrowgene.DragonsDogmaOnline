@@ -16,13 +16,22 @@ GameLogicSetting.RookiesRingMaxLevel = 89;
 GameLogicSetting.RookiesRingBonus = 1.0;
 
 // EXP Penalty Settings
-GameLogicSetting.AdjustPartyEnemyExp = true;
+
+/**
+ * @brief Handles EXP penalties for the party based on the
+ * difference between the lowest leveled member and highest
+ * leveled member of the party. If the range is larger than
+ * the last entry in AdjustPartyEnemyExpTiers, a 0% exp rate
+ * is automatically applied.
+ *
+ * Can be turned on/off by configuring AdjustPartyEnemyExp.
+ */
+GameLogicSetting.EnableAdjustPartyEnemyExp = true;
 GameLogicSetting.AdjustPartyEnemyExpTiers = new List<(uint MinLv, uint MaxLv, double ExpMultiplier)>()
 {
-    // 1.0 = 100%, 0 = 0%
-    // If the range is larger than the last entry,
-    // a 0% exp rate is automatically applied if
-    // AdjustPartyEnemyExp = true
+    // MinLv and MaxLv define the relative level difference between the levels of the lowest and
+    // highest members in the party.
+    // The ExpMultiplier value can be a value between [0.0, 1.0] (1.0 = 100%, 0.0 = 0%)
     //
     // MinLv, MaxLv, ExpMultiplier
     (      0,     2,           1.0),
@@ -32,9 +41,20 @@ GameLogicSetting.AdjustPartyEnemyExpTiers = new List<(uint MinLv, uint MaxLv, do
     (      9,    10,           0.5),
 };
 
-GameLogicSetting.AdjustTargetLvEnemyExp = false;
+/**
+ * @brief Handles EXP penalties based on the highest leveled member
+ * in the party and the level of the target enemy. If the range is
+ * larger than the last entry in AdjustTargetLvEnemyExpTiers, a 0%
+ * exp rate is automatically applied.
+ *
+ * Can be turned on/off by configuring AdjustTargetLvEnemyExp.
+ */
+GameLogicSetting.EnableAdjustTargetLvEnemyExp = false;
 GameLogicSetting.AdjustTargetLvEnemyExpTiers = new List<(uint MinLv, uint MaxLv, double ExpMultiplier)>()
 {
+    // MinLv and MaxLv define the relative level difference between the target and highest member in the party.
+    // The ExpMultiplier value can be a value between [0.0, 1.0] (1.0 = 100%, 0.0 = 0%)
+    //
     // MinLv, MaxLv, ExpMultiplier
     (      0,     2,           1.0),
     (      3,     4,           0.9),

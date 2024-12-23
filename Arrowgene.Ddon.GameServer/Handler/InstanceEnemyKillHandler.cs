@@ -210,7 +210,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         if (enemyKilled.BloodOrbs > 0)
                         {
                             // Drop BO
-                            uint gainedBo = (uint) (enemyKilled.BloodOrbs * _gameServer.Setting.GameLogicSetting.BoModifier);
+                            uint gainedBo = (uint) (enemyKilled.BloodOrbs * _gameServer.GameLogicSettings.BoModifier);
                             uint bonusBo = (uint) (gainedBo * _gameServer.GpCourseManager.EnemyBloodOrbBonus());
                             CDataUpdateWalletPoint boUpdateWalletPoint = _gameServer.WalletManager.AddToWallet(memberClient.Character, WalletType.BloodOrbs, gainedBo + bonusBo, bonusBo, connectionIn: connectionIn);
                             updateCharacterItemNtc.UpdateWalletList.Add(boUpdateWalletPoint);
@@ -219,7 +219,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         if (enemyKilled.HighOrbs > 0)
                         {
                             // Drop HO
-                            uint gainedHo = (uint)(enemyKilled.HighOrbs * _gameServer.Setting.GameLogicSetting.HoModifier);
+                            uint gainedHo = (uint)(enemyKilled.HighOrbs * _gameServer.GameLogicSettings.HoModifier);
                             CDataUpdateWalletPoint hoUpdateWalletPoint = _gameServer.WalletManager.AddToWallet(memberClient.Character, WalletType.HighOrbs, gainedHo, connectionIn: connectionIn);
                             updateCharacterItemNtc.UpdateWalletList.Add(hoUpdateWalletPoint);
                         }

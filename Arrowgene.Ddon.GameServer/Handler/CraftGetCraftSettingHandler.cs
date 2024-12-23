@@ -381,7 +381,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // No idea what this is for - probably dead stuff from season 2
                 ReasonableCraftLv = 5,
                 CraftItemLv = 15,
-                CreateCountMax = Server.Setting.GameLogicSetting.CraftConsumableProductionTimesMax,
+                CreateCountMax = Server.GameLogicSettings.CraftConsumableProductionTimesMax,
                 CraftMasterLegendPawnInfoList = CraftMasterLegendPawnInfoList,
                 Unk1 = 49,
                 Unk2 = 30,

@@ -609,7 +609,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 {
                     case ExpType.ExperiencePoints:
                         packets.AddRange(server.ExpManager.AddExp(client, client.Character, amount, RewardSource.Quest, quest.QuestType, connectionIn));
-                        if (server.Setting.GameLogicSetting.EnableMainPartyPawnsQuestRewards)
+                        if (server.GameLogicSettings.EnableMainPartyPawnsQuestRewards)
                         {
                             foreach (PartyMember member in client.Party.Members)
                             {
@@ -622,7 +622,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         break;
                     case ExpType.JobPoints:
                         packets.AddRange(server.ExpManager.AddJp(client, client.Character, amount, RewardSource.Quest, quest.QuestType, connectionIn));
-                        if (server.Setting.GameLogicSetting.EnableMainPartyPawnsQuestRewards)
+                        if (server.GameLogicSettings.EnableMainPartyPawnsQuestRewards)
                         {
                             foreach (PartyMember member in client.Party.Members)
                             {

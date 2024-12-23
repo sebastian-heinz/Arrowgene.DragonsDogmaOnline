@@ -45,7 +45,7 @@ namespace Arrowgene.Ddon.Server
         /// <summary>
         /// Configures if party exp is adjusted based on level differences of members.
         /// </summary>
-        public bool AdjustPartyEnemyExp { get; set; }
+        public bool EnableAdjustPartyEnemyExp { get; set; }
 
         /// <summary>
         /// List of the inclusive ranges of (MinLv, Maxlv, ExpMultiplier). ExpMultiplier is a value
@@ -57,7 +57,7 @@ namespace Arrowgene.Ddon.Server
         /// <summary>
         /// Configures if exp is adjusted based on level differences of members vs target level.
         /// </summary>
-        public bool AdjustTargetLvEnemyExp { get; set; }
+        public bool EnableAdjustTargetLvEnemyExp { get; set; }
 
         /// <summary>
         /// List of the inclusive ranges of (MinLv, Maxlv, ExpMultiplier). ExpMultiplier is a value from
