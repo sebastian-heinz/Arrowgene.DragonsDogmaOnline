@@ -12,6 +12,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         public override string ModuleRoot => "extended_facilities";
         public override string Filter => "*.csx";
         public override bool ScanSubdirectories => true;
+        public override bool EnableHotLoad => true;
 
         public Dictionary<NpcId, INpcExtendedFacility> NpcExtendedFacilities { get; private set; }
 
@@ -37,7 +38,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
                 .AddImports("Arrowgene.Ddon.Shared.Model.Quest");
         }
 
-        public override bool EvaluateResult(ScriptState<object> result)
+        public override bool EvaluateResult(string path, ScriptState<object> result)
         {
             if (result == null)
             {

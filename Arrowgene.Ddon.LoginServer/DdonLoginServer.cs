@@ -26,6 +26,7 @@ using Arrowgene.Ddon.LoginServer.Handler;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Handler;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Server.Scripting.interfaces;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;

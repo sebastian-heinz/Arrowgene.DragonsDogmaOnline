@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.Cli.Command
         private readonly Setting _setting;
         private DdonLoginServer _loginServer;
         private DdonGameServer _gameServer;
-        private ScriptedServerSettings _scriptServerSettings;
+        private ServerScriptManager _serverScriptManager;
         private DdonWebServer _webServer;
         private RpcWebServer _rpcWebServer;
         private IDatabase _database;
@@ -111,15 +111,15 @@ namespace Arrowgene.Ddon.Cli.Command
                 _assetRepository.Initialize();
             }
 
-            if (_scriptServerSettings == null)
+            if (_serverScriptManager == null)
             {
-                _scriptServerSettings = new ScriptedServerSettings(_setting.AssetPath);
-                _scriptServerSettings.LoadSettings();
+                _serverScriptManager = new ServerScriptManager(_setting.AssetPath);
+                _serverScriptManager.Initialize();
             }
 
             if (_loginServer == null)
             {
-                _loginServer = new DdonLoginServer(_setting.LoginServerSetting, _scriptServerSettings.GameLogicSetting, _database, _assetRepository);
+                _loginServer = new DdonLoginServer(_setting.LoginServerSetting, _serverScriptManager.GameServerSettings.GameLogicSetting, _database, _assetRepository);
             }
 
             if (_webServer == null)
@@ -129,7 +129,7 @@ namespace Arrowgene.Ddon.Cli.Command
 
             if (_gameServer == null)
             {
-                _gameServer = new DdonGameServer(_setting.GameServerSetting, _scriptServerSettings.GameLogicSetting, _database, _assetRepository);
+                _gameServer = new DdonGameServer(_setting.GameServerSetting, _serverScriptManager.GameServerSettings.GameLogicSetting, _database, _assetRepository);
             }
 
             if (_rpcWebServer == null)

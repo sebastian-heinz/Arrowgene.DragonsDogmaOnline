@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using Arrowgene.Ddon.GameServer.Scripting;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Scripting.interfaces;
+using Arrowgene.Ddon.Server.Scripting.utils;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -13,22 +15,23 @@ public class CraftManagerTest
 {
     private readonly DdonGameServer _mockServer;
     private readonly CraftManager _craftManager;
+    private readonly ScriptableSettings _scriptableSettings;
 
     public CraftManagerTest()
     {
-        
         var settings = new GameServerSetting();
 
-        var gameLogicSetting = new GameLogicSetting();
-        gameLogicSetting.GameClockTimescale = 90;
-        gameLogicSetting.WeatherSequenceLength = 20;
-        gameLogicSetting.WeatherStatistics = new List<(uint MeanLength, uint Weight)>()
+        _scriptableSettings = new ScriptableSettings();
+        _scriptableSettings.Set("GameLogicSettings", "GameClockTimescale", 90);
+        _scriptableSettings.Set("GameLogicSettings", "WeatherSequenceLength", 20);
+        _scriptableSettings.Set("GameLogicSettings", "WeatherStatistics", new List<(uint MeanLength, uint Weight)>()
         {
             (60 * 30, 1), // Fair
             (60 * 30, 1), // Cloudy
             (60 * 30, 1), // Rainy
-        };
+        });
 
+        var gameLogicSetting = new GameLogicSetting(_scriptableSettings);
         _mockServer = new DdonGameServer(settings, gameLogicSetting, new MockDatabase(), new AssetRepository("TestFiles"));
         _craftManager = new CraftManager(_mockServer);
     }
@@ -37,7 +40,7 @@ public class CraftManagerTest
     public void GetCraftingTimeReductionRate_ShouldReturnCorrectValue()
     {
         List<uint> productionSpeedLevels = new List<uint> { 10, 20, 30 };
-        _mockServer.GameLogicSettings.AdditionalProductionSpeedFactor = 1.0;
+        _scriptableSettings.Set("GameLogicSettings", "AdditionalProductionSpeedFactor", 1.0);
 
         double result = _craftManager.GetCraftingTimeReductionRate(productionSpeedLevels);
 
@@ -49,7 +52,7 @@ public class CraftManagerTest
     {
         List<uint> productionSpeedLevels = new List<uint> { 70, 70, 70, 70 };
         const uint recipeTime = 100;
-        _mockServer.GameLogicSettings.AdditionalProductionSpeedFactor = 1.0;
+        _scriptableSettings.Set("GameLogicSettings", "AdditionalProductionSpeedFactor", 1.0);
 
         uint result = _craftManager.CalculateRecipeProductionSpeed(recipeTime, productionSpeedLevels);
 
@@ -61,7 +64,7 @@ public class CraftManagerTest
     {
         List<uint> productionSpeedLevels = new List<uint> { 70, 70, 70, 70 };
         const uint recipeTime = 100;
-        _mockServer.GameLogicSettings.AdditionalProductionSpeedFactor = 100;
+        _scriptableSettings.Set("GameLogicSettings", "AdditionalProductionSpeedFactor", 100.0);
 
         uint result = _craftManager.CalculateRecipeProductionSpeed(recipeTime, productionSpeedLevels);
 

@@ -2,6 +2,7 @@
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Server.Scripting.interfaces;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;

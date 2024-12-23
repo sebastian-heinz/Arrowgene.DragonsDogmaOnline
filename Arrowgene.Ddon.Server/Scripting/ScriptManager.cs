@@ -1,55 +1,40 @@
+using Arrowgene.Ddon.GameServer.Scripting;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared;
 using Arrowgene.Logging;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using static Arrowgene.Ddon.Server.ServerScriptManager;
 
-namespace Arrowgene.Ddon.GameServer.Scripting
+namespace Arrowgene.Ddon.Shared.Scripting
 {
-    public class ScriptManager
+    public abstract class ScriptManager<T>
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ScriptManager));
-        public class GlobalVariables
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ScriptManager<T>));
+
+        protected Dictionary<string, ScriptModule> ScriptModules { get; private set; }
+        public string ScriptsRoot { get; private set; }
+        public T GlobalVariables { get; protected set; }
+
+        public ScriptManager(string assetsPath)
         {
-            public GlobalVariables(DdonGameServer server)
-            {
-                Server = server;
-            }
-
-            public DdonGameServer Server { get; }
-        };
-
-        public NpcExtendedFacilityModule NpcExtendedFacilityModule { get; private set; } = new NpcExtendedFacilityModule();
-
-        private Dictionary<string, ScriptModule> ScriptModules;
-
-        public ScriptManager(DdonGameServer server)
-        {
-            Server = server;
-            ScriptsRoot = $"{server.AssetRepository.AssetsPath}\\scripts";
-
-            ScriptModules = new Dictionary<string, ScriptModule>()
-            {
-                {NpcExtendedFacilityModule.ModuleRoot, NpcExtendedFacilityModule}
-            };
-
-            Globals = new GlobalVariables(Server);
+            ScriptModules = new Dictionary<string, ScriptModule>();
+            ScriptsRoot = $"{assetsPath}\\scripts";
         }
 
-        private DdonGameServer Server { get; }
-        private string ScriptsRoot { get; }
-        private GlobalVariables Globals { get; }
+        public abstract void Initialize();
 
-        public void Initialize()
+        protected void Initialize(T globalVariables)
         {
+            GlobalVariables = globalVariables;
+
             CompileScripts();
             SetupFileWatchers();
         }
 
-        private void CompileScript(ScriptModule module, string path)
+        protected void CompileScript(ScriptModule module, string path)
         {
             try
             {
@@ -58,11 +43,11 @@ namespace Arrowgene.Ddon.GameServer.Scripting
                 var script = CSharpScript.Create(
                     code: Util.ReadAllText(path),
                     options: module.Options(),
-                    globalsType: typeof(GlobalVariables)
+                    globalsType: typeof(T)
                 );
 
-                var result = script.RunAsync(Globals).Result;
-                if (!module.EvaluateResult(result))
+                var result = script.RunAsync(GlobalVariables).Result;
+                if (!module.EvaluateResult(path, result))
                 {
                     Logger.Error($"Failed to evaluate the result of executing '{path}'");
                 }
@@ -74,7 +59,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
             }
         }
 
-        private void CompileScripts()
+        protected void CompileScripts()
         {
             foreach (var module in ScriptModules.Values)
             {
@@ -83,6 +68,11 @@ namespace Arrowgene.Ddon.GameServer.Scripting
                 Logger.Info($"Compiling scripts for module '{module.ModuleRoot}'");
                 foreach (var file in Directory.EnumerateFiles(path))
                 {
+                    if (Path.GetExtension(file) != ".csx")
+                    {
+                        continue;
+                    }
+
                     module.Scripts.Add(file);
                     CompileScript(module, file);
                 }
@@ -93,6 +83,11 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         {
             foreach (var module in ScriptModules.Values)
             {
+                if (!module.EnableHotLoad)
+                {
+                    continue;
+                }
+
                 var watcher = new FileSystemWatcher($"{ScriptsRoot}\\{module.ModuleRoot}");
                 watcher.Filter = module.Filter;
                 watcher.NotifyFilter = (NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.CreationTime);
@@ -108,11 +103,13 @@ namespace Arrowgene.Ddon.GameServer.Scripting
             // Enable all the watchers
             foreach (var module in ScriptModules.Values)
             {
-                module.Watcher.EnableRaisingEvents = true;
+                if (module.EnableHotLoad)
+                {
+                    module.Watcher.EnableRaisingEvents = true;
+                }
             }
         }
-
-        private void OnChanged(object sender, FileSystemEventArgs e)
+        protected void OnChanged(object sender, FileSystemEventArgs e)
         {
             if (e.ChangeType != WatcherChangeTypes.Changed)
             {

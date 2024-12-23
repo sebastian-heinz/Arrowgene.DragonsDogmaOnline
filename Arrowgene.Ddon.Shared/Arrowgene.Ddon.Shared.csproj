@@ -38,25 +38,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Files\Assets\scripts\events\" />
-      <Folder Include="Files\Assets\scripts\quests\" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Update="Files\Assets\scripts\extended_facilities\Anita1.csx">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Files\Assets\scripts\extended_facilities\Damad1.csx">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Files\Assets\scripts\extended_facilities\Isel1.csx">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Files\Assets\scripts\extended_facilities\Pehr1.csx">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
-      <None Update="Files\Assets\scripts\GameLogicSettings.csx">
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-      </None>
+        <Content Include="Files\Assets\scripts\**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 </Project>
