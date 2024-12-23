@@ -1,11 +1,12 @@
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class AreaGetSpotInfoListHandler : PacketHandler<GameClient>
+    public class AreaGetSpotInfoListHandler : GameRequestPacketHandler<C2SAreaGetSpotInfoListReq, S2CAreaGetSpotInfoListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(AreaGetSpotInfoListHandler));
 
@@ -15,12 +16,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_AREA_GET_SPOT_INFO_LIST_REQ;
-
-        public override void Handle(GameClient client, IPacket request)
+        public override S2CAreaGetSpotInfoListRes Handle(GameClient client, C2SAreaGetSpotInfoListReq request)
         {
-            Packet response = new Packet(PacketId.S2C_AREA_GET_SPOT_INFO_LIST_RES, PcapData);
-            client.Send(response);
+            var pcap = EntitySerializer.Get<S2CAreaGetSpotInfoListRes>().Read(PcapData);
+            pcap.SpotInfoList = new();
+
+            // TODO: Parse rank info and quest completion to determine which spots to release.
+            foreach (var spot in Server.AssetRepository.AreaRankSpotInfoAsset.Where(x => (uint)x.AreaId == request.AreaId))
+            {
+                pcap.SpotInfoList.Add(new()
+                {
+                    SpotId = spot.SpotId,
+                    TextIndex = spot.TextIndex,
+                    StageId = 2,
+                    IsRelease = true
+                });
+            }
+
+            return pcap;
         }
     }
 }
