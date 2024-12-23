@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using Arrowgene.Ddon.Shared.Model;
@@ -24,12 +25,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlSelectActiveBazaarExhibitionsByItemIdExcludingOwn = $"SELECT \"bazaar_id\", {BuildQueryField(BazaarExhibitionFields)} FROM \"{BazaarExhibitionTableName}\" " +
                                                                $"WHERE \"item_id\" = @item_id " +
                                                                $"AND \"state\" = {(byte)BazaarExhibitionState.OnSale} " +
-                                                               $"AND \"expire\" > DATETIME(\"now\") " +
+                                                               $"AND \"expire\" > @now " +
                                                                $"AND \"character_id\" <> @excluded_character_id " +
                                                                $"ORDER BY price ASC;";
         
         private static readonly string SqlDeleteBazaarExhibitionByBazaarId = $"DELETE FROM \"{BazaarExhibitionTableName}\" WHERE \"bazaar_id\"=@bazaar_id;";
-        private static readonly string SqlDeleteBazaarExhibitionOutdated = $"DELETE FROM \"{BazaarExhibitionTableName}\" WHERE \"state\"={(byte)BazaarExhibitionState.Idle} AND \"expire\" < DATETIME(\"now\");";
+        private static readonly string SqlDeleteBazaarExhibitionOutdated = $"DELETE FROM \"{BazaarExhibitionTableName}\" WHERE \"state\"={(byte)BazaarExhibitionState.Idle} AND \"expire\" < @now;";
 
 
         private static readonly string SqlUpdateBazaarExhibitionByBazaarId = $"UPDATE \"{BazaarExhibitionTableName}\" SET {BuildQueryUpdate(BazaarExhibitionFields)} WHERE \"bazaar_id\"=@bazaar_id";
@@ -95,7 +96,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         
         public int DeleteBazaarExhibitionsOutdated(TCon conn)
         {
-            int rowsAffected = ExecuteNonQuery(conn, SqlDeleteBazaarExhibitionOutdated, command => {});
+            int rowsAffected = ExecuteNonQuery(conn, SqlDeleteBazaarExhibitionOutdated, command =>
+            {
+                AddParameter(command, "@now", DateTimeOffset.UtcNow.UtcDateTime);
+            });
             return rowsAffected;
         }
         
@@ -167,6 +171,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 {
                     AddParameter(command, "@item_id", itemId);
                     AddParameter(command, "@excluded_character_id", excludedCharacterId);
+                    AddParameter(command, "@now", DateTimeOffset.UtcNow.UtcDateTime);
                 }, reader =>
                 {
                     while (reader.Read())
