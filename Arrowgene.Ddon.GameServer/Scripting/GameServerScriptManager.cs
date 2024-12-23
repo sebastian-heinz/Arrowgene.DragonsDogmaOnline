@@ -21,6 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         private DdonGameServer Server { get; }
         private GlobalVariables Globals { get; }
         public NpcExtendedFacilityModule NpcExtendedFacilityModule { get; private set; } = new NpcExtendedFacilityModule();
+        public GameItemModule GameItemModule { get; private set; } = new GameItemModule();
 
         public GameServerScriptManager(DdonGameServer server) : base(server.AssetRepository.AssetsPath)
         {
@@ -29,6 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
 
             // Add modules to the list so the generic logic can iterate over all scripting modules
             ScriptModules[NpcExtendedFacilityModule.ModuleRoot] = NpcExtendedFacilityModule;
+            ScriptModules[GameItemModule.ModuleRoot] = GameItemModule;
         }
 
         public override void Initialize()

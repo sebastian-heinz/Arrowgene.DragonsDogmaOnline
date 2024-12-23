@@ -22,13 +22,32 @@ public class CraftManagerTest
         var settings = new GameServerSetting();
 
         _scriptableSettings = new ScriptableSettings();
-        _scriptableSettings.Set("GameLogicSettings", "GameClockTimescale", 90);
-        _scriptableSettings.Set("GameLogicSettings", "WeatherSequenceLength", 20);
+        _scriptableSettings.Set<uint>("GameLogicSettings", "GameClockTimescale", 90);
+        _scriptableSettings.Set<uint>("GameLogicSettings", "WeatherSequenceLength", 20);
         _scriptableSettings.Set("GameLogicSettings", "WeatherStatistics", new List<(uint MeanLength, uint Weight)>()
         {
             (60 * 30, 1), // Fair
             (60 * 30, 1), // Cloudy
             (60 * 30, 1), // Rainy
+        });
+        _scriptableSettings.Set("GameLogicSettings", "WalletLimits", new Dictionary<WalletType, uint>()
+        {
+            {WalletType.Gold, 999999999},
+            {WalletType.RiftPoints, 999999999},
+            {WalletType.BloodOrbs, 500000},
+            {WalletType.SilverTickets, 999999999},
+            {WalletType.GoldenGemstones, 99999},
+            {WalletType.RentalPoints, 99999},
+            {WalletType.ResetJobPoints, 99},
+            {WalletType.ResetCraftSkills, 99},
+            {WalletType.HighOrbs, 5000},
+            {WalletType.DominionPoints, 999999999},
+            {WalletType.AdventurePassPoints, 80},
+            {WalletType.UnknownTickets, 999999999},
+            {WalletType.BitterblackMazeResetTicket, 3},
+            {WalletType.GoldenDragonMark, 30},
+            {WalletType.SilverDragonMark, 150},
+            {WalletType.RedDragonMark, 99999},
         });
 
         var gameLogicSetting = new GameLogicSetting(_scriptableSettings);
@@ -40,7 +59,7 @@ public class CraftManagerTest
     public void GetCraftingTimeReductionRate_ShouldReturnCorrectValue()
     {
         List<uint> productionSpeedLevels = new List<uint> { 10, 20, 30 };
-        _scriptableSettings.Set("GameLogicSettings", "AdditionalProductionSpeedFactor", 1.0);
+        _scriptableSettings.Set<double>("GameLogicSettings", "AdditionalProductionSpeedFactor", 1.0);
 
         double result = _craftManager.GetCraftingTimeReductionRate(productionSpeedLevels);
 
@@ -52,7 +71,7 @@ public class CraftManagerTest
     {
         List<uint> productionSpeedLevels = new List<uint> { 70, 70, 70, 70 };
         const uint recipeTime = 100;
-        _scriptableSettings.Set("GameLogicSettings", "AdditionalProductionSpeedFactor", 1.0);
+        _scriptableSettings.Set<double>("GameLogicSettings", "AdditionalProductionSpeedFactor", 1.0);
 
         uint result = _craftManager.CalculateRecipeProductionSpeed(recipeTime, productionSpeedLevels);
 
@@ -64,7 +83,7 @@ public class CraftManagerTest
     {
         List<uint> productionSpeedLevels = new List<uint> { 70, 70, 70, 70 };
         const uint recipeTime = 100;
-        _scriptableSettings.Set("GameLogicSettings", "AdditionalProductionSpeedFactor", 100.0);
+        _scriptableSettings.Set<double>("GameLogicSettings", "AdditionalProductionSpeedFactor", 100.0);
 
         uint result = _craftManager.CalculateRecipeProductionSpeed(recipeTime, productionSpeedLevels);
 

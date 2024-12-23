@@ -1,14 +1,11 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using Arrowgene.Ddon.GameServer.Dump;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using System.Collections.Generic;
 using System.Linq;
-using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.GameServer.Characters;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -49,6 +46,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (_Server.ItemManager.IsSecretAbilityItem(item.ItemId))
             {
                 _Server.JobManager.UnlockSecretAbility(client, client.Character, (SecretAbility) _Server.ItemManager.GetAbilityId(item.ItemId));
+            }
+
+            if (_Server.ScriptManager.GameItemModule.HasItem(item.ItemId))
+            {
+                _Server.ScriptManager.GameItemModule.GetItemInterface(item.ItemId)?.OnUse(_Server, client);
             }
 
             if (_Server.EpitaphRoadManager.TrialInProgress(client.Party))

@@ -3,8 +3,10 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Logging;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Scripting;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using static Arrowgene.Ddon.Server.ServerScriptManager;
 
@@ -34,19 +36,20 @@ namespace Arrowgene.Ddon.Shared.Scripting
             SetupFileWatchers();
         }
 
-        protected void CompileScript(ScriptModule module, string path)
+        protected async void CompileScript(ScriptModule module, string path)
         {
             try
             {
                 Logger.Info(path);
 
+                var code = Util.ReadAllText(path);
                 var script = CSharpScript.Create(
-                    code: Util.ReadAllText(path),
+                    code: code,
                     options: module.Options(),
                     globalsType: typeof(T)
                 );
 
-                var result = script.RunAsync(GlobalVariables).Result;
+                var result = await script.RunAsync(GlobalVariables);
                 if (!module.EvaluateResult(path, result))
                 {
                     Logger.Error($"Failed to evaluate the result of executing '{path}'");
@@ -66,13 +69,8 @@ namespace Arrowgene.Ddon.Shared.Scripting
                 var path = $"{ScriptsRoot}\\{module.ModuleRoot}";
 
                 Logger.Info($"Compiling scripts for module '{module.ModuleRoot}'");
-                foreach (var file in Directory.EnumerateFiles(path))
+                foreach (var file in Directory.GetFiles(path, "*.csx", SearchOption.AllDirectories))
                 {
-                    if (Path.GetExtension(file) != ".csx")
-                    {
-                        continue;
-                    }
-
                     module.Scripts.Add(file);
                     CompileScript(module, file);
                 }

@@ -449,22 +449,34 @@ namespace Arrowgene.Ddon.Shared
 
         /// <summary>
         /// Implements a safer way to read all lines in a file when there is contention on the file access.
+        /// Note that, it is possible that sometimes when the file is read, due to file system quirkyness
+        /// it might read back a zero length string. Due to this behavior, there is a retry mechanism of
+        /// 4 attempts. If the file is truly empty, it will have a worse case scenario of reading the
+        /// empty file MAX_ATTEMPTS times.
         /// </summary>
         /// <param name="path">Path to a text based file to read</param>
         /// <returns>Returns the contents of the file read as a string</returns>
         public static string ReadAllText(string path)
         {
-            List<string> content = new List<string>();
-            using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-            using (StreamReader reader = new StreamReader(stream))
+            uint attempts = 0;
+            const uint MAX_ATTEMPTS = 5;
+            
+            string content;
+            do
             {
-                while (!reader.EndOfStream)
+                List<string> lines = new List<string>();
+                using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                using (StreamReader reader = new StreamReader(stream))
                 {
-                    content.Add(reader.ReadLine());
+                    while (!reader.EndOfStream)
+                    {
+                        lines.Add(reader.ReadLine());
+                    }
+                    content = string.Join("\n", lines);
                 }
-            }
+            } while (content == "" && attempts++ < MAX_ATTEMPTS);
 
-            return string.Join("\n", content);
+            return content;   
         }
     }
 }

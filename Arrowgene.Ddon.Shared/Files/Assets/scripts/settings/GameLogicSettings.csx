@@ -22,11 +22,6 @@ double AdditionalProductionSpeedFactor = 1.0;
 double AdditionalCostPerformanceFactor = 1.0;
 double CraftConsumableProductionTimesMax = 10;
 
-// Exp Ring Settings
-bool EnableRookiesRing = false;
-uint RookiesRingMaxLevel = 89;
-double RookiesRingBonus = 1.0;
-
 // EXP Penalty Settings
 
 /**

@@ -699,30 +699,25 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return totalExp;
         }
 
-        private double RookiesRingBonus()
-        {
-            return _GameSettings.RookiesRingBonus;
-        }
-
-        private uint RookiesRingMaxLevel()
-        {
-            return _GameSettings.RookiesRingMaxLevel;
-        }
-
         private uint GetRookiesRingBonus(CharacterCommon characterCommon, uint baseExpAmount)
         {
-            if (characterCommon.ActiveCharacterJobData.Lv > RookiesRingMaxLevel())
+            if (!_Server.GameLogicSettings.Get<bool>("RookiesRing", "EnableRookiesRing"))
             {
                 return 0;
             }
 
-            if (!characterCommon.Equipment.GetItems(EquipType.Performance).Exists(x => x?.ItemId == 11718))
+            if (!characterCommon.Equipment.GetItems(EquipType.Performance).Exists(x => x?.ItemId == (uint) ItemId.RookiesRing))
             {
                 return 0;
             }
 
-            double result = baseExpAmount * RookiesRingBonus();
-            return (uint)result;
+            var rookiesRingInterface = _Server.ScriptManager.GameItemModule.GetItemInterface(ItemId.RookiesRing);
+            if (rookiesRingInterface == null)
+            {
+                return baseExpAmount;
+            }
+
+            return (uint)(baseExpAmount * rookiesRingInterface.GetBonusMultiplier(_Server, characterCommon));
         }
 
         private uint GetCourseExpBonus(CharacterCommon characterCommon, uint baseExpAmount, RewardSource source, QuestType questType)

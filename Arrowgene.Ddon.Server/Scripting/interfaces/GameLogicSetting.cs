@@ -17,6 +17,11 @@ namespace Arrowgene.Ddon.Server.Scripting.interfaces
             return SettingsData.Get<T>("GameLogicSettings", key);
         }
 
+        public T Get<T>(string scriptName, string key)
+        {
+            return SettingsData.Get<T>(scriptName, key);
+        }
+
         /// <summary>
         /// Additional factor to change how long crafting a recipe will take to finish.
         /// </summary>
@@ -36,30 +41,6 @@ namespace Arrowgene.Ddon.Server.Scripting.interfaces
             get
             {
                 return GetSetting<double>("AdditionalCostPerformanceFactor");
-            }
-        }
-
-        /// <summary>
-        /// Sets the maximim level that the exp ring will reward a bonus.
-        /// </summary>
-        public uint RookiesRingMaxLevel
-        { 
-            get
-            {
-                return GetSetting<uint>("RookiesRingMaxLevel");
-            }
-        }
-
-        /// <summary>
-        /// The multiplier applied to the bonus amount of exp rewarded.
-        /// Must be a non-negtive value. If it is less than 0.0, a default of 1.0
-        /// will be selected.
-        /// </summary>
-        public double RookiesRingBonus 
-        { 
-            get
-            {
-                return GetSetting<double>("RookiesRingBonus");
             }
         }
 
