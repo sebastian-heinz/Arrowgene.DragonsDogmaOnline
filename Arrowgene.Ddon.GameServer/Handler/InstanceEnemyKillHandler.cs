@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.GameServer.Quests;
+using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -173,7 +174,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                 }
 
-                uint baseEnemyExp = _gameServer.ExpManager.GetScaledPointAmount(RewardSource.Enemy, ExpType.ExperiencePoints, enemyKilled.GetDroppedExperience());
+                uint baseEnemyExp = 0;
+                if (Server.GameLogicSettings.Get<bool>("GameLogicSettings", "EnableExpCalculationMixin"))
+                {
+                    var expCurveMixin = Server.ScriptManager.MixinModule.Get<IExpCurveMixin>("exp_curve");
+                    baseEnemyExp = expCurveMixin.GetExpValue(enemyKilled);
+                }
+                else
+                {
+                    baseEnemyExp = enemyKilled.GetDroppedExperience();
+                }
+                
+                baseEnemyExp = _gameServer.ExpManager.GetScaledPointAmount(RewardSource.Enemy, ExpType.ExperiencePoints, baseEnemyExp);
                 uint calcExp = _gameServer.ExpManager.GetAdjustedExp(client.GameMode, RewardSource.Enemy, client.Party, baseEnemyExp, enemyKilled.Lv);
                 uint calcPP = _gameServer.ExpManager.GetScaledPointAmount(RewardSource.Enemy, ExpType.PlayPoints, enemyKilled.GetDroppedPlayPoints());
 
