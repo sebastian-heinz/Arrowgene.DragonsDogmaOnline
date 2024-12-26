@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
             GPCourseInfoAsset asset = new GPCourseInfoAsset();
 
-            string json = File.ReadAllText(path);
+            string json = Util.ReadAllText(path);
             JsonDocument document = JsonDocument.Parse(json);
 
             var ValidCourses = document.RootElement.GetProperty("valid_courses").EnumerateArray().ToList();

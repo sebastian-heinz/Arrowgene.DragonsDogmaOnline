@@ -29,10 +29,12 @@ using Arrowgene.Ddon.GameServer.Chat.Log;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Scripting;
 using Arrowgene.Ddon.GameServer.Shop;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Handler;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Server.Scripting.interfaces;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -49,10 +51,12 @@ namespace Arrowgene.Ddon.GameServer
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonGameServer));
 
-        public DdonGameServer(GameServerSetting setting, IDatabase database, AssetRepository assetRepository)
+        public DdonGameServer(GameServerSetting setting, GameLogicSetting gameLogicSettings, IDatabase database, AssetRepository assetRepository)
             : base(ServerType.Game, setting.ServerSetting, database, assetRepository)
         {
-            Setting = new GameServerSetting(setting);
+            ServerSetting = new GameServerSetting(setting);
+            GameLogicSettings = gameLogicSettings;
+            ScriptManager = new GameServerScriptManager(this);
             ClientLookup = new GameClientLookup();
             ChatLogHandler = new ChatLogHandler();
             ChatManager = new ChatManager(this);
@@ -90,7 +94,9 @@ namespace Arrowgene.Ddon.GameServer
         }
 
         public event EventHandler<ClientConnectionChangeArgs> ClientConnectionChangeEvent;
-        public GameServerSetting Setting { get; }
+        public GameServerSetting ServerSetting { get; }
+        public GameLogicSetting GameLogicSettings { get; }
+        public GameServerScriptManager ScriptManager { get; }
         public ChatManager ChatManager { get; }
         public ItemManager ItemManager { get; }
         public CraftManager CraftManager { get; }
@@ -129,6 +135,8 @@ namespace Arrowgene.Ddon.GameServer
 
         public override void Start()
         {
+            ScriptManager.Initialize();
+
             QuestManager.LoadQuests(this);
             GpCourseManager.EvaluateCourses();
 
@@ -136,7 +144,7 @@ namespace Arrowgene.Ddon.GameServer
             {
                 ScheduleManager.StartServerTasks();
             }
-            
+
             LoadChatHandler();
             LoadPacketHandler();
             base.Start();
@@ -183,7 +191,7 @@ namespace Arrowgene.Ddon.GameServer
         public override GameClient NewClient(ITcpSocket socket)
         {
             GameClient newClient = new GameClient(socket,
-                new PacketFactory(Setting.ServerSetting, PacketIdResolver.GamePacketIdResolver), this);
+                new PacketFactory(ServerSetting.ServerSetting, PacketIdResolver.GamePacketIdResolver), this);
             ClientLookup.Add(newClient);
             return newClient;
         }

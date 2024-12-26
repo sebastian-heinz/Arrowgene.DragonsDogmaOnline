@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public WalletManager(DdonGameServer server)
         {
             Server = server;
-            WalletLimits = server.Setting.GameLogicSetting.WalletLimits;
+            WalletLimits = server.GameLogicSettings.WalletLimits;
         }
         public bool AddToWalletNtc(Client Client, Character Character, WalletType Type, uint Amount,  uint BonusAmount = 0, ItemNoticeType updateType = ItemNoticeType.Default, DbConnection? connectionIn = null)
         {
@@ -107,16 +107,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
             switch (type)
             {
                 case WalletType.Gold:
-                    modifier = Server.Setting.GameLogicSetting.GoldModifier;
+                    modifier = Server.GameLogicSettings.GoldModifier;
                     break;
                 case WalletType.RiftPoints:
-                    modifier = Server.Setting.GameLogicSetting.RiftModifier;
+                    modifier = Server.GameLogicSettings.RiftModifier;
                     break;
                 case WalletType.BloodOrbs:
-                    modifier = Server.Setting.GameLogicSetting.BoModifier;
+                    modifier = Server.GameLogicSettings.BoModifier;
                     break;
                 case WalletType.HighOrbs:
-                    modifier = Server.Setting.GameLogicSetting.HoModifier;
+                    modifier = Server.GameLogicSettings.HoModifier;
                     break;
                 default:
                     modifier = 1.0;

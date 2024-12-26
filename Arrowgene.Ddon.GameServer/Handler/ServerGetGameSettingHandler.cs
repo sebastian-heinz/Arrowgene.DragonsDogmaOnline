@@ -20,40 +20,40 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             var res = new S2CServerGetGameSettingRes.Serializer().Read(GameDump.Dump_10.AsBuffer());
 
-            res.GameSetting.JobLevelMax = Server.Setting.GameLogicSetting.JobLevelMax;
+            res.GameSetting.JobLevelMax = Server.GameLogicSettings.JobLevelMax;
             res.GameSetting.ExpRequiredPerLevel[0].ExpList = res.GameSetting.ExpRequiredPerLevel[0].ExpList.Take((int)res.GameSetting.JobLevelMax).ToList();
 
-            res.GameSetting.EnableVisualEquip = Server.Setting.GameLogicSetting.EnableVisualEquip;
+            res.GameSetting.EnableVisualEquip = Server.GameLogicSettings.EnableVisualEquip;
 
-            res.GameSetting.ClanMemberMax = Server.Setting.GameLogicSetting.ClanMemberMax;
-            res.GameSetting.CharacterNumMax = Server.Setting.GameLogicSetting.CharacterNumMax;
-            res.GameSetting.FriendListMax = Server.Setting.GameLogicSetting.FriendListMax;
+            res.GameSetting.ClanMemberMax = Server.GameLogicSettings.ClanMemberMax;
+            res.GameSetting.CharacterNumMax = Server.GameLogicSettings.CharacterNumMax;
+            res.GameSetting.FriendListMax = Server.GameLogicSettings.FriendListMax;
 
             res.GameSetting.UrlInfoList = new List<CDataURLInfo>()
             {
-                new() {Type = 1, URL = Server.Setting.GameLogicSetting.UrlManual},
-                new() {Type = 2, URL = Server.Setting.GameLogicSetting.UrlShopDetail},
-                new() {Type = 3, URL = Server.Setting.GameLogicSetting.UrlShopCounterA},
-                new() {Type = 4, URL = Server.Setting.GameLogicSetting.UrlShopAttention},
-                new() {Type = 5, URL = Server.Setting.GameLogicSetting.UrlShopStoneLimit},
-                new() {Type = 6, URL = Server.Setting.GameLogicSetting.UrlShopCounterB},
-                new() {Type = 7, URL = Server.Setting.GameLogicSetting.UrlChargeCallback},
-                new() {Type = 8, URL = Server.Setting.GameLogicSetting.UrlChargeA},
-                new() {Type = 9, URL = Server.Setting.GameLogicSetting.UrlSample9},
-                new() {Type = 10, URL = Server.Setting.GameLogicSetting.UrlSample10},
-                new() {Type = 11, URL = Server.Setting.GameLogicSetting.UrlCampaignBanner},
-                new() {Type = 12, URL = Server.Setting.GameLogicSetting.UrlSupportIndex},
-                new() {Type = 13, URL = Server.Setting.GameLogicSetting.UrlPhotoupAuthorize},
-                new() {Type = 14, URL = Server.Setting.GameLogicSetting.UrlApiA},
-                new() {Type = 15, URL = Server.Setting.GameLogicSetting.UrlApiB},
-                new() {Type = 16, URL = Server.Setting.GameLogicSetting.UrlIndex},
-                new() {Type = 17, URL = Server.Setting.GameLogicSetting.UrlCampaign},
-                new() {Type = 19, URL = Server.Setting.GameLogicSetting.UrlChargeB},
-                new() {Type = 20, URL = Server.Setting.GameLogicSetting.UrlCompanionImage},
+                new() {Type = 1, URL = Server.GameLogicSettings.UrlManual},
+                new() {Type = 2, URL = Server.GameLogicSettings.UrlShopDetail},
+                new() {Type = 3, URL = Server.GameLogicSettings.UrlShopCounterA},
+                new() {Type = 4, URL = Server.GameLogicSettings.UrlShopAttention},
+                new() {Type = 5, URL = Server.GameLogicSettings.UrlShopStoneLimit},
+                new() {Type = 6, URL = Server.GameLogicSettings.UrlShopCounterB},
+                new() {Type = 7, URL = Server.GameLogicSettings.UrlChargeCallback},
+                new() {Type = 8, URL = Server.GameLogicSettings.UrlChargeA},
+                new() {Type = 9, URL = Server.GameLogicSettings.UrlSample9},
+                new() {Type = 10, URL = Server.GameLogicSettings.UrlSample10},
+                new() {Type = 11, URL = Server.GameLogicSettings.UrlCampaignBanner},
+                new() {Type = 12, URL = Server.GameLogicSettings.UrlSupportIndex},
+                new() {Type = 13, URL = Server.GameLogicSettings.UrlPhotoupAuthorize},
+                new() {Type = 14, URL = Server.GameLogicSettings.UrlApiA},
+                new() {Type = 15, URL = Server.GameLogicSettings.UrlApiB},
+                new() {Type = 16, URL = Server.GameLogicSettings.UrlIndex},
+                new() {Type = 17, URL = Server.GameLogicSettings.UrlCampaign},
+                new() {Type = 19, URL = Server.GameLogicSettings.UrlChargeB},
+                new() {Type = 20, URL = Server.GameLogicSettings.UrlCompanionImage},
             };
 
-            res.GameSetting.PlayPointMax = Server.Setting.GameLogicSetting.PlayPointMax;
-            res.GameSetting.WalletLimits = Server.Setting.GameLogicSetting.WalletLimits.Select(x => new CDataWalletLimit()
+            res.GameSetting.PlayPointMax = Server.GameLogicSettings.PlayPointMax;
+            res.GameSetting.WalletLimits = Server.GameLogicSettings.WalletLimits.Select(x => new CDataWalletLimit()
             {
                 WalletType = x.Key,
                 MaxValue = x.Value,

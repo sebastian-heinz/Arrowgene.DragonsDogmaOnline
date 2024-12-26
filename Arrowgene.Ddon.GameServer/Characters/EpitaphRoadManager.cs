@@ -1290,7 +1290,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 results.AddRange(RollWeeklyChestReward(dungeonInfo, reward));
 
-                if (_Server.Setting.GameLogicSetting.EnableEpitaphWeeklyRewards)
+                if (_Server.GameLogicSettings.EnableEpitaphWeeklyRewards)
                 {
                     character.EpitaphRoadState.WeeklyRewardsClaimed.Add(reward.EpitaphId);
                     _Server.Database.InsertEpitaphWeeklyReward(character.CharacterId, reward.EpitaphId);
@@ -1320,6 +1320,22 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return results;
+        }
+
+        public bool CheckUnlockConditions(GameClient client, EpitaphBarrier barrier)
+        {
+            foreach (var sectionId in barrier.DependentSectionIds)
+            {
+                var sectionInfo = _Server.EpitaphRoadManager.GetSectionById(sectionId);
+                foreach (var unlockId in sectionInfo.UnlockDependencies)
+                {
+                    if (!client.Character.EpitaphRoadState.UnlockedContent.Contains(unlockId))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         /// <summary>

@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
             RecruitmentBoardCategoryAsset asset = new RecruitmentBoardCategoryAsset();
 
-            string json = File.ReadAllText(path);
+            string json = Util.ReadAllText(path);
             JsonDocument document = JsonDocument.Parse(json);
 
             foreach (var category in document.RootElement.EnumerateArray().ToList())

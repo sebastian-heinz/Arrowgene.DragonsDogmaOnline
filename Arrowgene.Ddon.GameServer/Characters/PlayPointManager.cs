@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private uint PP_MAX {  get
             {
-                return _Server.Setting.GameLogicSetting.PlayPointMax;
+                return _Server.GameLogicSettings.PlayPointMax;
             }
         }
 

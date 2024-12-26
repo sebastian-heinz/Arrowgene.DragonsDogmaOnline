@@ -122,7 +122,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             return Math.Clamp(
                 productionSpeedLevels.Select(level => level * ProductionSpeedIncrementPerLevel + ProductionSpeedMinimumPerPawn).Sum() *
-                _server.Setting.GameLogicSetting.AdditionalProductionSpeedFactor, 0, 100);
+                _server.GameLogicSettings.AdditionalProductionSpeedFactor, 0, 100);
         }
 
         public uint CalculateRecipeProductionSpeed(uint recipeTime, List<uint> productionSpeedLevels)

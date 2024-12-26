@@ -2,6 +2,7 @@
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Server.Scripting.interfaces;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -399,7 +400,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             this._Server = server;
             this._gameClientLookup = gameClientLookup;
-            this._GameSettings = server.Setting.GameLogicSetting;
+            this._GameSettings = server.GameLogicSettings;
         }
 
         private DdonGameServer _Server;
@@ -460,7 +461,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             PacketQueue packets = new();
 
             var lvCap = (client.GameMode == GameMode.Normal) 
-                ? _Server.Setting.GameLogicSetting.JobLevelMax
+                ? _Server.GameLogicSettings.JobLevelMax
                 : BitterblackMazeManager.LevelCap(client.Character.BbmProgress);
 
             CDataCharacterJobData? activeCharacterJobData = characterToAddExpTo.ActiveCharacterJobData;
@@ -698,30 +699,25 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return totalExp;
         }
 
-        private double RookiesRingBonus()
-        {
-            return _GameSettings.RookiesRingBonus;
-        }
-
-        private uint RookiesRingMaxLevel()
-        {
-            return _GameSettings.RookiesRingMaxLevel;
-        }
-
         private uint GetRookiesRingBonus(CharacterCommon characterCommon, uint baseExpAmount)
         {
-            if (characterCommon.ActiveCharacterJobData.Lv > RookiesRingMaxLevel())
+            if (!_Server.GameLogicSettings.Get<bool>("RookiesRing", "EnableRookiesRing"))
             {
                 return 0;
             }
 
-            if (!characterCommon.Equipment.GetItems(EquipType.Performance).Exists(x => x?.ItemId == 11718))
+            if (!characterCommon.Equipment.GetItems(EquipType.Performance).Exists(x => x?.ItemId == (uint) ItemId.RookiesRing))
             {
                 return 0;
             }
 
-            double result = baseExpAmount * RookiesRingBonus();
-            return (uint)result;
+            var rookiesRingInterface = _Server.ScriptManager.GameItemModule.GetItemInterface(ItemId.RookiesRing);
+            if (rookiesRingInterface == null)
+            {
+                return baseExpAmount;
+            }
+
+            return (uint)(baseExpAmount * rookiesRingInterface.GetBonusMultiplier(_Server, characterCommon));
         }
 
         private uint GetCourseExpBonus(CharacterCommon characterCommon, uint baseExpAmount, RewardSource source, QuestType questType)
@@ -846,7 +842,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private double CalculatePartyRangeMultipler(GameMode gameMode, PartyGroup party)
         {
-            if (!_GameSettings.AdjustPartyEnemyExp || gameMode == GameMode.BitterblackMaze)
+            if (!_GameSettings.EnableAdjustPartyEnemyExp || gameMode == GameMode.BitterblackMaze)
             {
                 return 1.0;
             }
@@ -873,7 +869,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private double CalculateTargetLvMultiplier(GameMode gameMode, PartyGroup party, uint targetLv)
         {
-            if (!_GameSettings.AdjustTargetLvEnemyExp || gameMode == GameMode.BitterblackMaze)
+            if (!_GameSettings.EnableAdjustTargetLvEnemyExp || gameMode == GameMode.BitterblackMaze)
             {
                 return 1.0;
             }
@@ -992,7 +988,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private double CalculatePawnCatchupTargetLvMultiplier(GameMode gameMode, Pawn pawn, uint targetLv)
         {
-            if (!_GameSettings.AdjustTargetLvEnemyExp || gameMode == GameMode.BitterblackMaze)
+            if (!_GameSettings.EnableAdjustTargetLvEnemyExp || gameMode == GameMode.BitterblackMaze)
             {
                 return 1.0;
             }

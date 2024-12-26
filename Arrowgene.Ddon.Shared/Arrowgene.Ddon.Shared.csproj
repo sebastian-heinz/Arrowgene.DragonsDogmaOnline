@@ -22,6 +22,7 @@
     <ItemGroup>
         <PackageReference Include="Arrowgene.Buffers" Version="1.0.2" />
         <PackageReference Include="Arrowgene.Logging" Version="1.2.1" />
+        <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.12.0" />
         <PackageReference Include="YamlDotNet" Version="13.7.1" />
     </ItemGroup>
 
@@ -30,5 +31,11 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <TargetPath>Files\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
         </ContentWithTargetPath>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Include="Files\Assets\scripts\**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 </Project>

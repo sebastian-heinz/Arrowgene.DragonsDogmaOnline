@@ -20,15 +20,15 @@
  * along with Arrowgene.Ddon.Cli. If not, see <https://www.gnu.org/licenses/>.
  */
 
+using Arrowgene.Ddon.Cli.Command;
+using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading;
-using Arrowgene.Ddon.Cli.Command;
-using Arrowgene.Ddon.Shared;
-using Arrowgene.Ddon.Shared.Network;
-using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Cli
 {

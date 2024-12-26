@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             {
                 Logger.Info($"{file.FullName}");
 
-                string json = File.ReadAllText(file.FullName);
+                string json = Util.ReadAllText(file.FullName);
                 JsonDocument document = JsonDocument.Parse(json);
 
                 var assetData = new EpitaphTrial();

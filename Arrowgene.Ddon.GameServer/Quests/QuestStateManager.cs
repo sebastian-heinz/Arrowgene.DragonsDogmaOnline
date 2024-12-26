@@ -582,7 +582,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 UpdateType = ItemNoticeType.Quest
             };
 
-            foreach (var walletReward in quest.WalletRewards)
+            foreach (var walletReward in quest.ScaledWalletRewards())
             {
                 updateCharacterItemNtc.UpdateWalletList.Add(server.WalletManager.AddToWallet(
                     client.Character, 
@@ -597,7 +597,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 client.Enqueue(updateCharacterItemNtc, packets);
             }
 
-            foreach (var point in quest.ExpRewards)
+            foreach (var point in quest.ScaledExpRewards())
             {
                 uint amount = CalculateTotalPointAmount(server, client, point);
                 if (amount == 0)
@@ -609,7 +609,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 {
                     case ExpType.ExperiencePoints:
                         packets.AddRange(server.ExpManager.AddExp(client, client.Character, amount, RewardSource.Quest, quest.QuestType, connectionIn));
-                        if (server.Setting.GameLogicSetting.EnableMainPartyPawnsQuestRewards)
+                        if (server.GameLogicSettings.EnableMainPartyPawnsQuestRewards)
                         {
                             foreach (PartyMember member in client.Party.Members)
                             {
@@ -622,7 +622,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         break;
                     case ExpType.JobPoints:
                         packets.AddRange(server.ExpManager.AddJp(client, client.Character, amount, RewardSource.Quest, quest.QuestType, connectionIn));
-                        if (server.Setting.GameLogicSetting.EnableMainPartyPawnsQuestRewards)
+                        if (server.GameLogicSettings.EnableMainPartyPawnsQuestRewards)
                         {
                             foreach (PartyMember member in client.Party.Members)
                             {

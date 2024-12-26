@@ -17,6 +17,6 @@
     </PropertyGroup>
     <Import Project="./../SetSourceRevision.targets" />
     <ItemGroup>
-        <ProjectReference Include="..\Arrowgene.Ddon.Server\Arrowgene.Ddon.Server.csproj" />
+      <ProjectReference Include="..\Arrowgene.Ddon.Server\Arrowgene.Ddon.Server.csproj" />
     </ItemGroup>
 </Project>

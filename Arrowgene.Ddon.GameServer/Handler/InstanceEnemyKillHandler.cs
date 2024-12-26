@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.GameServer.Quests;
+using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -173,7 +174,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                 }
 
-                uint calcExp = _gameServer.ExpManager.GetAdjustedExp(client.GameMode, RewardSource.Enemy, client.Party, enemyKilled.GetDroppedExperience(), enemyKilled.Lv);
+                // TODO: This will be revisited so we can properly handle EXP assigned by tool and
+                // TODO: EXP determined by the mixin. For now, the default behavior of the mixin
+                // TODO: is the same as the original server behavior.
+                var expCurveMixin = Server.ScriptManager.MixinModule.Get<IExpMixin>("exp");
+
+                uint baseEnemyExp = expCurveMixin.GetExpValue(enemyKilled);
+                baseEnemyExp = _gameServer.ExpManager.GetScaledPointAmount(RewardSource.Enemy, ExpType.ExperiencePoints, baseEnemyExp);
+                
+                uint calcExp = _gameServer.ExpManager.GetAdjustedExp(client.GameMode, RewardSource.Enemy, client.Party, baseEnemyExp, enemyKilled.Lv);
                 uint calcPP = _gameServer.ExpManager.GetScaledPointAmount(RewardSource.Enemy, ExpType.PlayPoints, enemyKilled.GetDroppedPlayPoints());
 
                 foreach (PartyMember member in client.Party.Members)
@@ -209,7 +218,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         if (enemyKilled.BloodOrbs > 0)
                         {
                             // Drop BO
-                            uint gainedBo = (uint) (enemyKilled.BloodOrbs * _gameServer.Setting.GameLogicSetting.BoModifier);
+                            uint gainedBo = (uint) (enemyKilled.BloodOrbs * _gameServer.GameLogicSettings.BoModifier);
                             uint bonusBo = (uint) (gainedBo * _gameServer.GpCourseManager.EnemyBloodOrbBonus());
                             CDataUpdateWalletPoint boUpdateWalletPoint = _gameServer.WalletManager.AddToWallet(memberClient.Character, WalletType.BloodOrbs, gainedBo + bonusBo, bonusBo, connectionIn: connectionIn);
                             updateCharacterItemNtc.UpdateWalletList.Add(boUpdateWalletPoint);
@@ -218,7 +227,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         if (enemyKilled.HighOrbs > 0)
                         {
                             // Drop HO
-                            uint gainedHo = (uint)(enemyKilled.HighOrbs * _gameServer.Setting.GameLogicSetting.HoModifier);
+                            uint gainedHo = (uint)(enemyKilled.HighOrbs * _gameServer.GameLogicSettings.HoModifier);
                             CDataUpdateWalletPoint hoUpdateWalletPoint = _gameServer.WalletManager.AddToWallet(memberClient.Character, WalletType.HighOrbs, gainedHo, connectionIn: connectionIn);
                             updateCharacterItemNtc.UpdateWalletList.Add(hoUpdateWalletPoint);
                         }

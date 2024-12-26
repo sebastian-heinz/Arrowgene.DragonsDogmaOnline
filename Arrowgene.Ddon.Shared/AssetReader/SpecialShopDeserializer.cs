@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
             SpecialShopAsset asset = new SpecialShopAsset();
 
-            string json = File.ReadAllText(path);
+            string json = Util.ReadAllText(path);
             JsonDocument document = JsonDocument.Parse(json);
 
             uint categoryId = 0;

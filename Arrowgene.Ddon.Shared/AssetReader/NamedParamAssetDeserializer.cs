@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
             Dictionary<uint, NamedParam> namedParams = new Dictionary<uint, NamedParam>();
 
-            string json = File.ReadAllText(path);
+            string json = Util.ReadAllText(path);
             JsonDocument document = JsonDocument.Parse(json);
             JsonElement namedParamListElement = document.RootElement.GetProperty("namedParamList");
             foreach (JsonElement namedParamListEntryElement in namedParamListElement.EnumerateArray())

@@ -25,5 +25,8 @@
         <ProjectReference Include="..\Arrowgene.Ddon.Database\Arrowgene.Ddon.Database.csproj" />
         <ProjectReference Include="..\Arrowgene.Ddon.Shared\Arrowgene.Ddon.Shared.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Settings\" />
+    </ItemGroup>
 
 </Project>

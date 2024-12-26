@@ -1,14 +1,11 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using Arrowgene.Ddon.GameServer.Dump;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using System.Collections.Generic;
 using System.Linq;
-using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.GameServer.Characters;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -49,6 +46,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (_Server.ItemManager.IsSecretAbilityItem(item.ItemId))
             {
                 _Server.JobManager.UnlockSecretAbility(client, client.Character, (SecretAbility) _Server.ItemManager.GetAbilityId(item.ItemId));
+            }
+
+            if (_Server.ScriptManager.GameItemModule.HasItem(item.ItemId))
+            {
+                _Server.ScriptManager.GameItemModule.GetItemInterface(item.ItemId)?.OnUse(_Server, client);
             }
 
             if (_Server.EpitaphRoadManager.TrialInProgress(client.Party))
@@ -96,7 +98,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // client.Send(SelectedDump.lantern2_27_16);
                 // TODO: Start a timer to estinguish after LaternBurnTimeInSeconds expires
                 client.Character.IsLanternLit = true;
-                client.Send(new S2CCharacterStartLanternNtc() { RemainTime = _Server.Setting.GameLogicSetting.LaternBurnTimeInSeconds});
+                client.Send(new S2CCharacterStartLanternNtc() { RemainTime = _Server.GameLogicSettings.LaternBurnTimeInSeconds});
                 // client.Party.SendToAllExcept(new S2CCharacterStartLanternOtherNtc() { CharacterId = client.Character.CharacterId }, client);
             }
         }

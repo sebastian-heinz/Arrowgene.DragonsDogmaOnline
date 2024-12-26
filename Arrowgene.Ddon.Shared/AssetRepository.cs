@@ -16,6 +16,8 @@ namespace Arrowgene.Ddon.Shared
 {
     public class AssetRepository
     {
+        public string AssetsPath { get; private set; }
+
         // Client data
         public const string ClientErrorCodesKey = "ClientErrorCodes.csv";
         public const string ItemListKey = "itemlist.csv";
@@ -69,6 +71,8 @@ namespace Arrowgene.Ddon.Shared
                 Logger.Error($"Could not initialize repository, '{folder}' does not exist");
                 return;
             }
+
+            AssetsPath = folder;
 
             _fileSystemWatchers = new Dictionary<string, FileSystemWatcher>();
 

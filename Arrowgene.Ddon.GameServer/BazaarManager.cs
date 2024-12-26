@@ -39,7 +39,7 @@ namespace Arrowgene.Ddon.GameServer
             exhibition.Info.ItemInfo.ExhibitionTime = now;
             exhibition.Info.State = BazaarExhibitionState.OnSale;
             exhibition.Info.Proceeds = calculateProceeds(exhibition.Info.ItemInfo.ItemBaseInfo);
-            exhibition.Info.Expire = now.AddSeconds(Server.Setting.GameLogicSetting.BazaarExhibitionTimeSeconds);
+            exhibition.Info.Expire = now.AddSeconds(Server.GameLogicSettings.BazaarExhibitionTimeSeconds);
 
             ulong bazaarId = Server.Database.InsertBazaarExhibition(exhibition);
             return bazaarId;
@@ -59,7 +59,7 @@ namespace Arrowgene.Ddon.GameServer
             exhibition.Info.ItemInfo.ItemBaseInfo.Price = newPrice;
             exhibition.Info.ItemInfo.ExhibitionTime = now;
             exhibition.Info.Proceeds = calculateProceeds(exhibition.Info.ItemInfo.ItemBaseInfo);
-            exhibition.Info.Expire = now.AddSeconds(Server.Setting.GameLogicSetting.BazaarExhibitionTimeSeconds);
+            exhibition.Info.Expire = now.AddSeconds(Server.GameLogicSettings.BazaarExhibitionTimeSeconds);
             Server.Database.UpdateBazaarExhibiton(exhibition);
 
             return exhibition.Info.ItemInfo.BazaarId;
@@ -157,7 +157,7 @@ namespace Arrowgene.Ddon.GameServer
                 ulong totalCooldown;
                 try
                 {
-                    totalCooldown = Server.Setting.GameLogicSetting.BazaarCooldownTimeSeconds - Server.GpCourseManager.BazaarReExhibitShorten();
+                    totalCooldown = Server.GameLogicSettings.BazaarCooldownTimeSeconds - Server.GpCourseManager.BazaarReExhibitShorten();
                 }
                 catch (OverflowException _)
                 {

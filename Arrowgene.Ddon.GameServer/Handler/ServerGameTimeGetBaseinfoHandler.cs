@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var res = new S2CServerGameTimeGetBaseInfoRes();
             res.GameTimeBaseInfo.OriginalGameTimeSec = WeatherManager.OriginalGameTimeSec;
             res.GameTimeBaseInfo.OriginalRealTimeSec = WeatherManager.OriginalRealTimeSec;
-            res.GameTimeBaseInfo.GameTimeOneDayMin = Server.Setting.GameLogicSetting.GameClockTimescale;
+            res.GameTimeBaseInfo.GameTimeOneDayMin = Server.GameLogicSettings.GameClockTimescale;
             res.WeatherLoop = Server.WeatherManager.WeatherLoopList;
             res.MoonAgeLoopSec = WeatherManager.MoonAgeLoopSec;
 

@@ -1,29 +1,29 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30204.135
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.LoginServer", "Arrowgene.Ddon.LoginServer\Arrowgene.Ddon.LoginServer.csproj", "{5C0F18BB-B735-4284-82A2-27506DFC9E56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arrowgene.Ddon.LoginServer", "Arrowgene.Ddon.LoginServer\Arrowgene.Ddon.LoginServer.csproj", "{5C0F18BB-B735-4284-82A2-27506DFC9E56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.Cli", "Arrowgene.Ddon.Cli\Arrowgene.Ddon.Cli.csproj", "{72B2D640-DEA0-4BA7-A3B5-899954BFBBF5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arrowgene.Ddon.Cli", "Arrowgene.Ddon.Cli\Arrowgene.Ddon.Cli.csproj", "{72B2D640-DEA0-4BA7-A3B5-899954BFBBF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.WebServer", "Arrowgene.Ddon.WebServer\Arrowgene.Ddon.WebServer.csproj", "{B6813ECD-CF44-4899-838B-94D5F85B39A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arrowgene.Ddon.WebServer", "Arrowgene.Ddon.WebServer\Arrowgene.Ddon.WebServer.csproj", "{B6813ECD-CF44-4899-838B-94D5F85B39A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.Database", "Arrowgene.Ddon.Database\Arrowgene.Ddon.Database.csproj", "{E8FD9C06-57D7-4117-97AC-DE7779A73FB1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arrowgene.Ddon.Database", "Arrowgene.Ddon.Database\Arrowgene.Ddon.Database.csproj", "{E8FD9C06-57D7-4117-97AC-DE7779A73FB1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.Shared", "Arrowgene.Ddon.Shared\Arrowgene.Ddon.Shared.csproj", "{840B5617-2B22-461F-96F5-9062303F08E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arrowgene.Ddon.Shared", "Arrowgene.Ddon.Shared\Arrowgene.Ddon.Shared.csproj", "{840B5617-2B22-461F-96F5-9062303F08E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.Server", "Arrowgene.Ddon.Server\Arrowgene.Ddon.Server.csproj", "{7D39A3F8-4E2E-4E6F-9136-86EC13D64328}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arrowgene.Ddon.Server", "Arrowgene.Ddon.Server\Arrowgene.Ddon.Server.csproj", "{7D39A3F8-4E2E-4E6F-9136-86EC13D64328}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.GameServer", "Arrowgene.Ddon.GameServer\Arrowgene.Ddon.GameServer.csproj", "{87B8E9EB-CCCF-481F-8D01-74676ED62AAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arrowgene.Ddon.GameServer", "Arrowgene.Ddon.GameServer\Arrowgene.Ddon.GameServer.csproj", "{87B8E9EB-CCCF-481F-8D01-74676ED62AAF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.Test", "Arrowgene.Ddon.Test\Arrowgene.Ddon.Test.csproj", "{86D48D8F-AA02-4BB8-9B5C-1313C8310F5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arrowgene.Ddon.Test", "Arrowgene.Ddon.Test\Arrowgene.Ddon.Test.csproj", "{86D48D8F-AA02-4BB8-9B5C-1313C8310F5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.Rpc", "Arrowgene.Ddon.Rpc\Arrowgene.Ddon.Rpc.csproj", "{2DE5385B-B8ED-491D-AC6C-895DC154C79E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arrowgene.Ddon.Rpc", "Arrowgene.Ddon.Rpc\Arrowgene.Ddon.Rpc.csproj", "{2DE5385B-B8ED-491D-AC6C-895DC154C79E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.Rpc.Web", "Arrowgene.Ddon.Rpc.Web\Arrowgene.Ddon.Rpc.Web.csproj", "{A98B686D-6C3D-473D-B69D-940ED343D7AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arrowgene.Ddon.Rpc.Web", "Arrowgene.Ddon.Rpc.Web\Arrowgene.Ddon.Rpc.Web.csproj", "{A98B686D-6C3D-473D-B69D-940ED343D7AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.Client", "Arrowgene.Ddon.Client\Arrowgene.Ddon.Client.csproj", "{DAC06C22-BD06-4592-A60A-3990B85EF7A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arrowgene.Ddon.Client", "Arrowgene.Ddon.Client\Arrowgene.Ddon.Client.csproj", "{DAC06C22-BD06-4592-A60A-3990B85EF7A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
