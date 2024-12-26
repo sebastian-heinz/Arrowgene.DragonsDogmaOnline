@@ -17,15 +17,6 @@ bool EnableVisualEquip = true;
 uint DefaultWarpFavorites = 3;
 uint LaternBurnTimeInSeconds = 1500;
 
-/**
- * @brief If enabled, overrides default EXP values assigned to enemies
- * in the InstanceEnemyKillHandler and uses the calculations inside of
- * <scriptroot>/mixins/exp_curve.csx.
- *
- * @note Currently returns same exp amount as the default setting.
- */
-bool EnableExpCalculationMixin = false;
-
 // Crafting Settings
 double AdditionalProductionSpeedFactor = 1.0;
 double AdditionalCostPerformanceFactor = 1.0;
