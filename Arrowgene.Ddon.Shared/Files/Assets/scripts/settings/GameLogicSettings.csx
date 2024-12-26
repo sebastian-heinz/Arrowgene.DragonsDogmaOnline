@@ -20,7 +20,7 @@ uint LaternBurnTimeInSeconds = 1500;
 // Crafting Settings
 double AdditionalProductionSpeedFactor = 1.0;
 double AdditionalCostPerformanceFactor = 1.0;
-double CraftConsumableProductionTimesMax = 10;
+byte CraftConsumableProductionTimesMax = 10;
 
 // EXP Penalty Settings
 
