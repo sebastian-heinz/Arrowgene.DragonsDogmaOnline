@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.Shared.Scripting
         public ScriptManager(string assetsPath)
         {
             ScriptModules = new Dictionary<string, ScriptModule>();
-            ScriptsRoot = $"{assetsPath}\\scripts";
+            ScriptsRoot = $"{assetsPath}/scripts";
         }
 
         public abstract void Initialize();
@@ -66,7 +66,7 @@ namespace Arrowgene.Ddon.Shared.Scripting
         {
             foreach (var module in ScriptModules.Values)
             {
-                var path = $"{ScriptsRoot}\\{module.ModuleRoot}";
+                var path = $"{ScriptsRoot}/{module.ModuleRoot}";
 
                 Logger.Info($"Compiling scripts for module '{module.ModuleRoot}'");
                 foreach (var file in Directory.GetFiles(path, "*.csx", SearchOption.AllDirectories))
@@ -86,7 +86,7 @@ namespace Arrowgene.Ddon.Shared.Scripting
                     continue;
                 }
 
-                var watcher = new FileSystemWatcher($"{ScriptsRoot}\\{module.ModuleRoot}");
+                var watcher = new FileSystemWatcher($"{ScriptsRoot}/{module.ModuleRoot}");
                 watcher.Filter = module.Filter;
                 watcher.NotifyFilter = (NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.CreationTime);
                 watcher.IncludeSubdirectories = module.ScanSubdirectories;
