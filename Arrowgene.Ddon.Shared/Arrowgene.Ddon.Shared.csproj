@@ -34,10 +34,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ContentWithTargetPath Remove="Files\Assets\scripts\HellWorld.csx" />
-    </ItemGroup>
-
-    <ItemGroup>
         <Content Include="Files\Assets\scripts\**">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
