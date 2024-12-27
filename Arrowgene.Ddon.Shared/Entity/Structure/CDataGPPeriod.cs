@@ -1,5 +1,5 @@
-using Arrowgene.Buffers;
 using System;
+using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -8,11 +8,12 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint GP { get; set; }
         public bool isFreeGP { get; set; }
         public DateTimeOffset Period { get; set; }
-        public CDataGPPeriod() 
-        { 
+
+        public CDataGPPeriod()
+        {
             GP = 0;
             isFreeGP = false;
-            Period = DateTimeOffset.Now;
+            Period = DateTimeOffset.UtcNow;
         }
 
         public class Serializer : EntitySerializer<CDataGPPeriod>
@@ -21,7 +22,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 WriteUInt32(buffer, obj.GP);
                 WriteBool(buffer, obj.isFreeGP);
-                WriteInt64(buffer, obj.Period.ToUnixTimeSeconds());
+                WriteUInt64(buffer, (ulong)obj.Period.ToUnixTimeSeconds());
             }
 
             public override CDataGPPeriod Read(IBuffer buffer)
@@ -29,7 +30,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 CDataGPPeriod obj = new CDataGPPeriod();
                 obj.GP = ReadUInt32(buffer);
                 obj.isFreeGP = ReadBool(buffer);
-                obj.Period = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
+                obj.Period = DateTimeOffset.FromUnixTimeSeconds((long)ReadUInt64(buffer));
                 return obj;
             }
         }

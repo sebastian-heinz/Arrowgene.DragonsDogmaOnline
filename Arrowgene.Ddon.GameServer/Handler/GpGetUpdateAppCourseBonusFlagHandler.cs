@@ -19,6 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, IPacket packet)
         {
+            // TODO: C2S_GP_GET_UPDATE_APP_COURSE_BONUS_FLAG_REQ
             client.Send(InGameDump.Dump_97);
         }
     }

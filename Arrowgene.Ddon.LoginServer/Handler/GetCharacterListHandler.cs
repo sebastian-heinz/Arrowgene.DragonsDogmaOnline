@@ -1,17 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
-using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
@@ -59,10 +57,10 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
                     CDataGPCourseValid cDataGPCourseValid = new CDataGPCourseValid()
                     {
-                        Id = c.CharacterId,
-                        CourseId = ValidCourse.Value.Id,
-                        NameA = _AssetRepo.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].Name, // Course Name
-                        NameB = _AssetRepo.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].IconPath, // Link to a icon
+                        ID = c.CharacterId,
+                        CourseID = ValidCourse.Value.Id,
+                        Name = _AssetRepo.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].Name, // Course Name
+                        ImageAddr = _AssetRepo.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].IconPath, // Link to a icon
                     };
 
                     if ((now >= ValidCourse.Value.StartTime) && (now <= ValidCourse.Value.EndTime))

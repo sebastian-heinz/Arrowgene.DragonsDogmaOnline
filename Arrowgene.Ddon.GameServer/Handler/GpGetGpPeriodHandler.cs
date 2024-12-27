@@ -1,8 +1,9 @@
+using System;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-using System;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -16,8 +17,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CGpGetGpPeriodRes Handle(GameClient client, C2SGpGetGpPeriodReq packet)
         {
-            var res = new S2CGpGetGpPeriodRes();
-            var amount = Server.WalletManager.GetWalletAmount(client.Character, Shared.Model.WalletType.GoldenGemstones);
+            S2CGpGetGpPeriodRes res = new S2CGpGetGpPeriodRes();
+            uint amount = Server.WalletManager.GetWalletAmount(client.Character, WalletType.GoldenGemstones);
 
             res.GPPeriodList.Add(new CDataGPPeriod()
             {

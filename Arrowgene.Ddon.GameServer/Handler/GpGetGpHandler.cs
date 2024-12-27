@@ -1,8 +1,9 @@
+using System;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -17,13 +18,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SGpGetGpReq> request)
         {
-            var amount = Server.WalletManager.GetWalletAmount(client.Character, Shared.Model.WalletType.GoldenGemstones);
+            uint amount = Server.WalletManager.GetWalletAmount(client.Character, WalletType.GoldenGemstones);
+            DateTimeOffset offset = DateTimeOffset.UtcNow;
 
-            client.Send(new S2CGpGetGpRes()
+            client.Send(new S2CGpGetGpRes
             {
                 GP = amount,
-                UseLimit = 0, ///TODO: Investigate.
-                RealTime = DateTimeOffset.Now
+                UseLimit = offset.AddMonths(12),
+                RealTime = offset,
+                Milliseconds = (ushort)offset.Millisecond
             });
         }
     }
