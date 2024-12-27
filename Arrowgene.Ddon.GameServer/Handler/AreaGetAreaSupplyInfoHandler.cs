@@ -19,9 +19,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CAreaGetAreaSupplyInfoRes Handle(GameClient client, C2SAreaGetAreaSupplyInfoReq request)
         {
-            var pcap = EntitySerializer.Get<S2CAreaGetAreaSupplyInfoRes>().Read(PcapData);
+            //var pcap = EntitySerializer.Get<S2CAreaGetAreaSupplyInfoRes>().Read(PcapData);
 
-            AreaRank clientRank = client.Character.AreaRanks.Find(x => x.AreaId == request.AreaId);
+            AreaRank clientRank = client.Character.AreaRanks.Find(x => x.AreaId == request.AreaId)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
             S2CAreaGetAreaSupplyInfoRes res = new();
 
             var asset = Server.AssetRepository.AreaRankSupplyAsset
