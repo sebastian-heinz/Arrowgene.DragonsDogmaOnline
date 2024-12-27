@@ -73,7 +73,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public bool CanRankUp(GameClient client, QuestAreaId areaId)
         {
-            AreaRank clientRank = client.Character.AreaRanks.Find(x => x.AreaId == areaId);
+            AreaRank clientRank = client.Character.AreaRanks.Find(x => x.AreaId == areaId)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
             Dictionary<QuestId, CompletedQuest> completedQuests = client.Character.CompletedQuests;
             List<AreaRankRequirement> requirements = Server.AssetRepository.AreaRankRequirementAsset.Where(x => x.AreaId == areaId).ToList();
 
@@ -117,7 +118,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public PacketQueue AddAreaPoint(GameClient client, QuestAreaId areaId, uint point, DbConnection? connectionIn = null)
         {
             PacketQueue queue = new PacketQueue();
-            AreaRank clientRank = client.Character.AreaRanks.Find(x => x.AreaId == areaId);
+            AreaRank clientRank = client.Character.AreaRanks.Find(x => x.AreaId == areaId)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
             if (clientRank is null || clientRank.Rank == 0) {
                 return queue;
             }

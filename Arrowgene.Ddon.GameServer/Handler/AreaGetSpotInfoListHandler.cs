@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System.Linq;
@@ -19,10 +20,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CAreaGetSpotInfoListRes Handle(GameClient client, C2SAreaGetSpotInfoListReq request)
         {
+            // TODO: This still uses the List<CDataAreaRankSeason3> Unk1 from the Pcap, the client complains if its not present.
             var pcap = EntitySerializer.Get<S2CAreaGetSpotInfoListRes>().Read(PcapData);
             pcap.SpotInfoList = new();
 
-            var clientRank = client.Character.AreaRanks.Find(x => x.AreaId == request.AreaId);
+            var clientRank = client.Character.AreaRanks.Find(x => x.AreaId == request.AreaId)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
             var completedQuests = client.Character.CompletedQuests;
 
             foreach (var spot in Server.AssetRepository.AreaRankSpotInfoAsset.Where(x => x.AreaId == request.AreaId))

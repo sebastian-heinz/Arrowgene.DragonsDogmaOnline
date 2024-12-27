@@ -40,13 +40,17 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool InsertAreaRank(uint characterId, AreaRank areaRank, DbConnection? connectionIn = null)
         {
+            Logger.Debug("Inserting area rank.");
             return ExecuteQuerySafe(connectionIn, (connection) =>
             {
                 return ExecuteNonQuery(connection, SqlInsertAreaRank, command =>
                 {
                     AddParameter(command, "@character_id", characterId);
                     AddParameter(command, "@area_id", (uint)areaRank.AreaId);
-                    AddParameter(command, areaRank);
+                    AddParameter(command, "@rank", areaRank.Rank);
+                    AddParameter(command, "@point", areaRank.Point);
+                    AddParameter(command, "@week_point", areaRank.WeekPoint);
+                    AddParameter(command, "@last_week_point", areaRank.LastWeekPoint);
                 }) == 1;
             });
         }

@@ -19,7 +19,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CAreaAreaRankUpRes Handle(GameClient client, C2SAreaAreaRankUpReq request)
         {
             S2CAreaAreaRankUpRes res = new();
-            AreaRank clientRank = client.Character.AreaRanks.Find(x => x.AreaId == request.AreaId);
+            AreaRank clientRank = client.Character.AreaRanks.Find(x => x.AreaId == request.AreaId)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
             lock (clientRank)
             {
                 clientRank.Rank += 1;
