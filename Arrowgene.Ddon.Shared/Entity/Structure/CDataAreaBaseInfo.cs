@@ -1,10 +1,11 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataAreaBaseInfo
     {
-        public uint AreaID { get; set; }
+        public QuestAreaId AreaID { get; set; }
         public uint Rank { get; set; }
         public uint CurrentPoint { get; set; }
         public uint NextPoint { get; set; }
@@ -18,7 +19,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             public override void Write(IBuffer buffer, CDataAreaBaseInfo obj)
             {
-                WriteUInt32(buffer, obj.AreaID);
+                WriteUInt32(buffer, (uint)obj.AreaID);
                 WriteUInt32(buffer, obj.Rank);
                 WriteUInt32(buffer, obj.CurrentPoint);
                 WriteUInt32(buffer, obj.NextPoint);
@@ -32,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataAreaBaseInfo Read(IBuffer buffer)
             {
                 CDataAreaBaseInfo obj = new CDataAreaBaseInfo();
-                obj.AreaID = ReadUInt32(buffer);
+                obj.AreaID = (QuestAreaId)ReadUInt32(buffer);
                 obj.Rank = ReadUInt32(buffer);
                 obj.CurrentPoint = ReadUInt32(buffer);
                 obj.NextPoint = ReadUInt32(buffer);
