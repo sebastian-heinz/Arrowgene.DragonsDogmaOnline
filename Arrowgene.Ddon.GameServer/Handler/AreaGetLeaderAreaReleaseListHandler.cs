@@ -1,7 +1,10 @@
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -16,7 +19,28 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CAreaGetLeaderAreaReleaseListRes Handle(GameClient client, C2SAreaGetLeaderAreaReleaseListReq request)
         {
             // client.Send(GameFull.Dump_117);
-            var result = new S2CAreaGetLeaderAreaReleaseListRes.Serializer().Read(GameFull.Dump_117.AsBuffer());
+            var pcap = new S2CAreaGetLeaderAreaReleaseListRes.Serializer().Read(GameFull.Dump_117.AsBuffer());
+
+            var result = new S2CAreaGetLeaderAreaReleaseListRes();
+            var clientRank = client.Character.AreaRanks;
+            var completedQuests = client.Character.CompletedQuests;
+            foreach ( var rank in clientRank)
+            {
+                var releaseList = Server.AssetRepository.AreaRankSpotInfoAsset
+                .Where(x =>
+                    x.AreaId == rank.AreaId
+                    && x.UnlockRank <= rank.Rank
+                    && (x.UnlockQuest == 0 || completedQuests.ContainsKey((QuestId)x.UnlockQuest))
+                )
+                .Select(x => new CDataCommonU32(x.SpotId))
+                .ToList();
+
+                result.ReleaseAreaInfoSetList.Add(new()
+                {
+                    AreaId = rank.AreaId,
+                    ReleaseList = releaseList
+                });
+            }
 
             return result;
         }
