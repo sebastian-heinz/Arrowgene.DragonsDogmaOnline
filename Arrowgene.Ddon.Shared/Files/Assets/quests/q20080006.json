@@ -1,120 +1,133 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "The Uninvited Ones",
-    "quest_id": 20080006,
-    "base_level": 46,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-    "area_id": "EasternZandora",
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Uninvited Ones",
+  "quest_id": 20080006,
+  "base_level": 46,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "EasternZandora",
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1160
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 200
+    },
+    {
+      "type": "exp",
+      "amount": 1260
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 1160
+          "item_id": 9278,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 200
+          "item_id": 9282,
+          "num": 1
         },
         {
-            "type": "exp",
-            "amount": 1260
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 9278,
-                    "num": 1
-                },
-                {
-                    "item_id": 9282,
-                    "num": 1
-                },
-                {
-                    "item_id": 41,
-                    "num": 1
-                }
-            ]
-        },
-        {
-            "type": "random",
-            "loot_pool": [
-                {
-                    "item_id": 34,
-                    "num": 9,
-                    "chance": 1.0
-                }
-            ]
+          "item_id": 41,
+          "num": 1
         }
-    ],
-    "enemy_groups" : [
+      ]
+    },
+    {
+      "type": "random",
+      "loot_pool": [
         {
-            "stage_id": {
-                "id": 169,
-                "group_id": 1
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x011010",
-                    "level": 46,
-                    "exp": 1200,
-                    "is_boss": false,
-                    "hm_present_no": 52
-                },
-                {
-                    "enemy_id": "0x011010",
-                    "level": 46,
-                    "exp": 1200,
-                    "is_boss": false,
-                    "hm_present_no": 52
-                },
-                {
-                    "enemy_id": "0x011012",
-                    "level": 46,
-                    "exp": 1200,
-                    "is_boss": false,
-                    "hm_present_no": 54
-                }
-            ]
+          "item_id": 34,
+          "num": 9,
+          "chance": 1.0
         }
-    ],
-    "blocks": [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 480
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 169,
+        "group_id": 1
+      },
+      "enemies": [
         {
-            "type": "NewNpcTalkAndOrder",
-            "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 1073, "comment": "Spawns WhiteKnight2 NPC"}
-            ],
-            "stage_id": {
-                "id": 1,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "npc_id": "WhiteKnight2",
-            "message_id": 11372
+          "enemy_id": "0x011010",
+          "level": 46,
+          "exp": 1200,
+          "is_boss": false,
+          "hm_present_no": 52
         },
         {
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Accept",
-            "groups": [0]
+          "enemy_id": "0x011010",
+          "level": 46,
+          "exp": 1200,
+          "is_boss": false,
+          "hm_present_no": 52
         },
         {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {
-            "type": "NewTalkToNpc",
-            "stage_id": {
-                "id": 1,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Update",
-            "npc_id": "WhiteKnight2",
-            "message_id": 11835
+          "enemy_id": "0x011012",
+          "level": 46,
+          "exp": 1200,
+          "is_boss": false,
+          "hm_present_no": 54
         }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1073,
+          "comment": "Spawns WhiteKnight2 NPC"
+        }
+      ],
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "WhiteKnight2",
+      "message_id": 11372
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "WhiteKnight2",
+      "message_id": 11835
+    }
+  ]
 }

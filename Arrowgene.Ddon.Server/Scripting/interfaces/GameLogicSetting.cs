@@ -413,6 +413,17 @@ namespace Arrowgene.Ddon.Server.Scripting.interfaces
         }
 
         /// <summary>
+        /// Global modifier for AP calculations to scale up or down.
+        /// </summary>
+        public double ApModifier
+        {
+            get
+            {
+                return GetSetting<double>("ApModifier");
+            }
+        }
+
+        /// <summary>
         /// Configures the maximum amount of reward box slots.
         /// </summary>
         public byte RewardBoxMax

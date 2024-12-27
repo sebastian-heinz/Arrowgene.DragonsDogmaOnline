@@ -1,114 +1,122 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "Door of Gemstones: Cruel Steel Claws",
-    "quest_id": 21015007,
-    "base_level": 70,
-    "minimum_item_rank": 0,
-    "discoverable": false,
-	"area_id": "ElanWaterGrove",	
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Door of Gemstones: Cruel Steel Claws",
+  "quest_id": 21015007,
+  "base_level": 70,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "ElanWaterGrove",
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2309
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1800
+    },
+    {
+      "type": "exp",
+      "amount": 7675
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 2309
+          "item_id": 15963,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 1800
+          "item_id": 7555,
+          "num": 3
         },
         {
-            "type": "exp",
-            "amount": 7675
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 15963,
-                    "num": 1
-                },
-                {					
-                    "item_id": 7555,
-                    "num": 3
-                },
-                {				
-                    "item_id": 9364,
-                    "num": 3					
-                }
-            ]
+          "item_id": 9364,
+          "num": 3
         }
-    ],
-    "enemy_groups" : [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 500
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 366,
+        "group_id": 7
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 366,
-                "group_id": 7
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015010",
-                    "level": 70,
-                    "exp": 85000,
-					"named_enemy_params_id": 1118,					
-                    "is_boss": true					
-    },
-    {
-                    "enemy_id": "0x015010",
-                    "level": 70,
-                    "exp": 85000,
-					"named_enemy_params_id": 1118,					
-                    "is_boss": true	
-    },
-    {
-                    "enemy_id": "0x010310",
-                    "level": 70,
-                    "exp": 85000,
-					"named_enemy_params_id": 1118,					
-                    "is_boss": true	
-    },
-    {
-                    "enemy_id": "0x010211",
-                    "level": 70,
-                    "exp": 3000,
-					"named_enemy_params_id": 1118,					
-                    "is_boss": false
-    },
-    {
-                    "enemy_id": "0x010211",
-                    "level": 70,
-                    "exp": 3000,
-					"named_enemy_params_id": 1118,					
-                    "is_boss": false
-    },
-    {
-                    "enemy_id": "0x010211",
-                    "level": 70,
-                    "exp": 3000,
-					"named_enemy_params_id": 1118,					
-                    "is_boss": false
-    },
-    {
-                    "enemy_id": "0x010211",
-                    "level": 70,
-                    "exp": 3000,
-					"named_enemy_params_id": 1118,					
-                    "is_boss": false					
-                }
-            ]
-        }
-    ],		
-    "blocks": [
-        {
-            "type": "DiscoverEnemy",
-            "groups": [0]
+          "enemy_id": "0x015010",
+          "level": 70,
+          "exp": 85000,
+          "named_enemy_params_id": 1118,
+          "is_boss": true
         },
         {
-            "type": "KillGroup",
-            "announce_type": "Accept",
-            "reset_group": true,
-            "groups": [0]
+          "enemy_id": "0x015010",
+          "level": 70,
+          "exp": 85000,
+          "named_enemy_params_id": 1118,
+          "is_boss": true
+        },
+        {
+          "enemy_id": "0x010310",
+          "level": 70,
+          "exp": 85000,
+          "named_enemy_params_id": 1118,
+          "is_boss": true
+        },
+        {
+          "enemy_id": "0x010211",
+          "level": 70,
+          "exp": 3000,
+          "named_enemy_params_id": 1118,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010211",
+          "level": 70,
+          "exp": 3000,
+          "named_enemy_params_id": 1118,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010211",
+          "level": 70,
+          "exp": 3000,
+          "named_enemy_params_id": 1118,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010211",
+          "level": 70,
+          "exp": 3000,
+          "named_enemy_params_id": 1118,
+          "is_boss": false
         }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": true,
+      "groups": [
+        0
+      ]
+    }
+  ]
 }

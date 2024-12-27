@@ -42,18 +42,22 @@
           "num": 2
         }
       ]
-  },
-  {
+    },
+    {
       "type": "random",
       "loot_pool": [
-          {
-              "item_id": 8992,
-              "num": 1,
-              "chance": 0.6
-          }
+        {
+          "item_id": 8992,
+          "num": 1,
+          "chance": 0.6
+        }
       ]
-  }
-],
+    },
+    {
+      "type": "ap",
+      "amount": 240
+    }
+  ],
   "enemy_groups": [
     {
       "stage_id": {
@@ -94,13 +98,17 @@
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
       "announce_type": "Accept",
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Update",
       "reset_group": false,
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "NewTalkToNpc",

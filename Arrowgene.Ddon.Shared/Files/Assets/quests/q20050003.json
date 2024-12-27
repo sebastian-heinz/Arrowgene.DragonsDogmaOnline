@@ -62,6 +62,10 @@
           "chance": 1.0
         }
       ]
+    },
+    {
+      "type": "ap",
+      "amount": 90
     }
   ],
   "enemy_groups": [
@@ -131,23 +135,31 @@
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Accept",
       "reset_group": false,
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "DiscoverEnemy",
       "announce_type": "Update",
-      "groups": [ 1 ]
+      "groups": [
+        1
+      ]
     },
     {
       "type": "KillGroup",
       "reset_group": false,
-      "groups": [ 1 ]
+      "groups": [
+        1
+      ]
     },
     {
       "type": "TalkToNpc",

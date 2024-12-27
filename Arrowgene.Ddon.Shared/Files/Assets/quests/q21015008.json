@@ -1,230 +1,246 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "Pride of The Weak",
-    "quest_id": 21015008,
-    "base_level": 70,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-	"area_id": "FaranaPlains",	
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Pride of The Weak",
+  "quest_id": 21015008,
+  "base_level": 70,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "FaranaPlains",
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2309
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 300
+    },
+    {
+      "type": "exp",
+      "amount": 9210
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 2309
+          "item_id": 7939,
+          "num": 3
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 300
+          "item_id": 9364,
+          "num": 3
         },
         {
-            "type": "exp",
-            "amount": 9210
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 7939,
-                    "num": 3
-                },
-                {					
-                    "item_id": 9364,
-                    "num": 3
-                },
-                {				
-                    "item_id": 41,
-                    "num": 3					
-                }
-            ]
+          "item_id": 41,
+          "num": 3
         }
-    ],
-  "enemy_groups" : [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 500
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 413,
+        "group_id": 2
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 413,
-                "group_id": 2
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x010460",
-                    "level": 70,
-                    "exp": 3000,
-                    "is_boss": false
-    },
-    {
-                    "enemy_id": "0x010460",
-                    "level": 70,
-                    "exp": 3000,
-                    "is_boss": false
-    },
-    {
-                    "enemy_id": "0x010460",
-                    "level": 70,
-                    "exp": 3000,
-                    "is_boss": false
-    },
-    {
-                    "enemy_id": "0x010153",
-                    "level": 70,
-                    "exp": 3000,
-                    "is_boss": false
-    },
-    {
-                    "enemy_id": "0x010153",
-                    "level": 70,
-                    "exp": 3000,
-                    "is_boss": false
-    },
-    {
-                    "enemy_id": "0x010153",
-                    "level": 70,
-                    "exp": 3000,
-                    "is_boss": false					
-                }
-            ]
+          "enemy_id": "0x010460",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
         },
         {
-            "stage_id": {
-                "id": 413,
-                "group_id": 6
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x010460",
-                    "level": 70,
-                    "exp": 3000,
-                    "is_boss": false
-    },
-    {
-                    "enemy_id": "0x010460",
-                    "level": 70,
-                    "exp": 3000,
-                    "is_boss": false
-    },
-    {
-                    "enemy_id": "0x010460",
-                    "level": 70,
-                    "exp": 3000,
-                    "is_boss": false
-    },
-    {
-                    "enemy_id": "0x010460",
-                    "level": 70,
-                    "exp": 3000,
-                    "is_boss": false
-    },
-    {
-                    "enemy_id": "0x010461",
-                    "level": 70,
-                    "exp": 3000,
-                    "is_boss": false		
-                }
-            ]
+          "enemy_id": "0x010460",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
         },
         {
-            "stage_id": {
-                "id": 413,
-                "group_id": 10
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x010461",
-                    "level": 70,
-                    "exp": 3000,
-                    "is_boss": false
-    },
-    {
-                    "enemy_id": "0x010461",
-                    "level": 70,
-                    "exp": 3000,
-                    "is_boss": false
-    },
-    {
-                    "enemy_id": "0x010153",
-                    "level": 70,
-                    "exp": 3000,
-                    "is_boss": false
-    },
-    {
-                    "enemy_id": "0x010153",
-                    "level": 70,
-                    "exp": 3000,
-                    "is_boss": false
-    },
-    {
-                    "enemy_id": "0x010153",
-                    "level": 70,
-                    "exp": 3000,
-                    "is_boss": false
-    },
-    {
-                    "enemy_id": "0x010155",
-                    "level": 70,
-                    "exp": 3000,
-                    "is_boss": false
-    },
-    {
-                    "enemy_id": "0x010155",
-                    "level": 70,
-                    "exp": 3000,
-                    "is_boss": false					
-                }
-            ]
+          "enemy_id": "0x010460",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010153",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010153",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010153",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
         }
-    ],		
-    "blocks": [	
-        {
-            "type": "NpcTalkAndOrder",	
-            "stage_id": {
-                "id": 341,
-                "group_id": 1,
-                "layer_no": 1
-            },				
-            "npc_id": "Flannan",
-            "message_id": 10800
+      ]
     },
     {
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Accept",
-            "groups": [0]
+      "stage_id": {
+        "id": 413,
+        "group_id": 6
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x010460",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
         },
         {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {			
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Update",
-            "groups": [1]			
+          "enemy_id": "0x010460",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
         },
         {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [1]
+          "enemy_id": "0x010460",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
         },
-        {			
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Update",
-            "groups": [2]
+        {
+          "enemy_id": "0x010460",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
         },
-        {				
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [2]			
-        },
-        {		
-            "type": "TalkToNpc",
-            "stage_id": {
-                "id": 341,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Update",
-            "npc_id": "Flannan",
-            "message_id": 11842			
+        {
+          "enemy_id": "0x010461",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
         }
-    ]
+      ]
+    },
+    {
+      "stage_id": {
+        "id": 413,
+        "group_id": 10
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x010461",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010461",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010153",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010153",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010153",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010155",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010155",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 341,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Flannan",
+      "message_id": 10800
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "groups": [
+        1
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [
+        1
+      ]
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "groups": [
+        2
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [
+        2
+      ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 341,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Flannan",
+      "message_id": 11842
+    }
+  ]
 }

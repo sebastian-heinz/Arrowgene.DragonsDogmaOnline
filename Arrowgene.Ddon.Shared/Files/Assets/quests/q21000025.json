@@ -1,101 +1,109 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "Door of Treasures: Bloodlust",
-    "quest_id": 21000025,
-    "base_level": 63,
-    "minimum_item_rank": 0,
-    "discoverable": false,
-	"area_id": "BloodbaneIsle",	
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Door of Treasures: Bloodlust",
+  "quest_id": 21000025,
+  "base_level": 63,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "BloodbaneIsle",
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 11880
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 250
+    },
+    {
+      "type": "exp",
+      "amount": 3783
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 11880
+          "item_id": 11504,
+          "num": 3
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 250
+          "item_id": 8033,
+          "num": 1
         },
         {
-            "type": "exp",
-            "amount": 3783
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 11504,
-                    "num": 3
-                },
-                {
-                    "item_id": 8033,
-                    "num": 1
-                },
-                {
-                    "item_id": 7555,
-                    "num": 3
-                }
-            ]
+          "item_id": 7555,
+          "num": 3
         }
-    ],
-    "enemy_groups" : [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 500
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 330,
+        "group_id": 6
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 330,
-                "group_id": 6
-            },			
-            "enemies": [
-                {
-                    "enemy_id": "0x015505",
-                    "level": 60,
-                    "exp": 40000,
-                    "is_boss": true
+          "enemy_id": "0x015505",
+          "level": 60,
+          "exp": 40000,
+          "is_boss": true
         },
         {
-                    "enemy_id": "0x015505",
-                    "level": 60,
-                    "exp": 40000,
-                    "is_boss": true
+          "enemy_id": "0x015505",
+          "level": 60,
+          "exp": 40000,
+          "is_boss": true
         },
         {
-                    "enemy_id": "0x010315",
-                    "level": 60,
-                    "exp": 3000,
-                    "is_boss": false
+          "enemy_id": "0x010315",
+          "level": 60,
+          "exp": 3000,
+          "is_boss": false
         },
         {
-                    "enemy_id": "0x010315",
-                    "level": 60,
-                    "exp": 3000,
-                    "is_boss": false
+          "enemy_id": "0x010315",
+          "level": 60,
+          "exp": 3000,
+          "is_boss": false
         },
         {
-                    "enemy_id": "0x010904",
-                    "level": 60,
-                    "exp": 1000,
-                    "is_boss": false
+          "enemy_id": "0x010904",
+          "level": 60,
+          "exp": 1000,
+          "is_boss": false
         },
         {
-                    "enemy_id": "0x010904",
-                    "level": 60,
-                    "exp": 1000,
-                    "is_boss": false					
-                }
-            ]
+          "enemy_id": "0x010904",
+          "level": 60,
+          "exp": 1000,
+          "is_boss": false
         }
-    ],
-    "blocks": [
-        {
-            "type": "DiscoverEnemy",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Accept",
-            "reset_group": false,
-            "groups": [0]
-        }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [
+        0
+      ]
+    }
+  ]
 }

@@ -1,95 +1,108 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "Fount of Nostalgia",
-    "quest_id": 21014001,
-    "base_level": 75,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-	"area_id": "ElanWaterGrove",	
-    "rewards": [
-        {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 4493
-        },
-        {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 665
-        },
-        {
-            "type": "exp",
-            "amount": 21915
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 15928,
-                    "num": 1
-                },
-                {					
-                    "item_id": 15960,
-                    "num": 3
-                },
-                {				
-                    "item_id": 7555,
-                    "num": 3					
-                }
-            ]
-        }
-    ],
-    "enemy_groups" : [
-        {
-            "stage_id": {
-                "id": 372,
-                "group_id": 4
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015321",
-                    "level": 75,
-                    "exp": 88000,
-                    "is_boss": true			
-                }
-            ]
-        }
-    ],		
-    "blocks": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Fount of Nostalgia",
+  "quest_id": 21014001,
+  "base_level": 75,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "ElanWaterGrove",
+  "rewards": [
     {
-      "type": "NpcTalkAndOrder",
-            "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 4427, "comment": "Spawns Fabio NPC"}				
-            ],	  
-      "stage_id": {
-        "id": 372,
-		"group_id": 1,
-		"layer_no": 1		
-      },
-      "npc_id": "Fabio0",
-      "message_id": 10800	  
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 4493
     },
     {
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Accept",
-            "groups": [0]
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 665
+    },
+    {
+      "type": "exp",
+      "amount": 21915
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 15928,
+          "num": 1
         },
         {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [0]
+          "item_id": 15960,
+          "num": 3
         },
-        {		
-            "type": "TalkToNpc",
-            "stage_id": {
-                "id": 372,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Update",
-            "npc_id": "12",
-            "message_id": 11842	
+        {
+          "item_id": 7555,
+          "num": 3
+        }
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 500
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 372,
+        "group_id": 4
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015321",
+          "level": 75,
+          "exp": 88000,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 4427,
+          "comment": "Spawns Fabio NPC"
+        }
+      ],
+      "stage_id": {
+        "id": 372,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Fabio0",
+      "message_id": 10800
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 372,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "12",
+      "message_id": 11842
     }
   ]
 }

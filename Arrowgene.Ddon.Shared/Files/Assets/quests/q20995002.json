@@ -1,92 +1,100 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "The Blue Dragon's Shadow",
-    "quest_id": 20995002,
-    "base_level": 51,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-    "area_id": "MergodaRuins",
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Blue Dragon's Shadow",
+  "quest_id": 20995002,
+  "base_level": 51,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "MergodaRuins",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 2940
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1680
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 330
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "exp",
-            "amount": 2940
+          "item_id": 7914,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 1680
+          "item_id": 9403,
+          "num": 3
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 330
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 7914,
-                    "num": 1
-                },
-                {
-                    "item_id": 9403,
-                    "num": 3
-                },
-                {
-                    "item_id": 41,
-                    "num": 1
-                }
-            ]
+          "item_id": 41,
+          "num": 1
         }
-    ],
-    "enemy_groups" : [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 580
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 76,
+        "group_id": 1
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 76,
-                "group_id": 1
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015707",
-                    "level": 51,
-                    "exp": 17000,
-                    "is_boss": true
-                }
-            ]
+          "enemy_id": "0x015707",
+          "level": 51,
+          "exp": 17000,
+          "is_boss": true
         }
-    ],
-    "blocks": [
-        {
-            "type": "NpcTalkAndOrder",
-            "stage_id": {
-                "id": 237,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "npc_id": "Metrophanes",
-            "message_id": 11372
-        },
-        {
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Accept",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {
-            "type": "TalkToNpc",
-            "stage_id": {
-                "id": 237,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Update",
-            "npc_id": "Metrophanes",
-            "message_id": 11842
-        }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 237,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Metrophanes",
+      "message_id": 11372
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 237,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Metrophanes",
+      "message_id": 11842
+    }
+  ]
 }

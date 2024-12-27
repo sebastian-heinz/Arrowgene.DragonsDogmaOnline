@@ -35,6 +35,10 @@
           "num": 2
         }
       ]
+    },
+    {
+      "type": "ap",
+      "amount": 40
     }
   ],
   "processes": [
@@ -53,8 +57,19 @@
         {
           "type": "MyQstFlags",
           "announce_type": "Accept",
-          "set_flags": [ 9 ],
-          "check_flags": [ 1, 2, 3, 4, 5, 6, 7, 8 ]
+          "set_flags": [
+            9
+          ],
+          "check_flags": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8
+          ]
         },
         {
           "type": "TalkToNpc",
@@ -92,7 +107,9 @@
       "blocks": [
         {
           "type": "MyQstFlags",
-          "check_flags": [ 9 ]
+          "check_flags": [
+            9
+          ]
         },
         {
           "type": "TalkToNpc",
@@ -106,7 +123,9 @@
         {
           "type": "MyQstFlags",
           "announce_type": "Update",
-          "set_flags": [ 1 ]
+          "set_flags": [
+            1
+          ]
         }
       ]
     },
@@ -115,7 +134,9 @@
       "blocks": [
         {
           "type": "MyQstFlags",
-          "check_flags": [ 9 ]
+          "check_flags": [
+            9
+          ]
         },
         {
           "type": "TalkToNpc",
@@ -129,7 +150,9 @@
         {
           "type": "MyQstFlags",
           "announce_type": "Update",
-          "set_flags": [ 2 ]
+          "set_flags": [
+            2
+          ]
         }
       ]
     },
@@ -138,7 +161,9 @@
       "blocks": [
         {
           "type": "MyQstFlags",
-          "check_flags": [ 9 ]
+          "check_flags": [
+            9
+          ]
         },
         {
           "type": "TalkToNpc",
@@ -152,7 +177,9 @@
         {
           "type": "MyQstFlags",
           "announce_type": "Update",
-          "set_flags": [ 3 ]
+          "set_flags": [
+            3
+          ]
         }
       ]
     },
@@ -161,7 +188,9 @@
       "blocks": [
         {
           "type": "MyQstFlags",
-          "check_flags": [ 9 ]
+          "check_flags": [
+            9
+          ]
         },
         {
           "type": "TalkToNpc",
@@ -175,7 +204,9 @@
         {
           "type": "MyQstFlags",
           "announce_type": "Update",
-          "set_flags": [ 4 ]
+          "set_flags": [
+            4
+          ]
         }
       ]
     },
@@ -184,7 +215,9 @@
       "blocks": [
         {
           "type": "MyQstFlags",
-          "check_flags": [ 9 ]
+          "check_flags": [
+            9
+          ]
         },
         {
           "type": "TalkToNpc",
@@ -198,7 +231,9 @@
         {
           "type": "MyQstFlags",
           "announce_type": "Update",
-          "set_flags": [ 5 ]
+          "set_flags": [
+            5
+          ]
         }
       ]
     },
@@ -207,7 +242,9 @@
       "blocks": [
         {
           "type": "MyQstFlags",
-          "check_flags": [ 9 ]
+          "check_flags": [
+            9
+          ]
         },
         {
           "type": "TalkToNpc",
@@ -221,7 +258,9 @@
         {
           "type": "MyQstFlags",
           "announce_type": "Update",
-          "set_flags": [ 6 ]
+          "set_flags": [
+            6
+          ]
         }
       ]
     },
@@ -230,7 +269,9 @@
       "blocks": [
         {
           "type": "MyQstFlags",
-          "check_flags": [ 9 ]
+          "check_flags": [
+            9
+          ]
         },
         {
           "type": "TalkToNpc",
@@ -244,7 +285,9 @@
         {
           "type": "MyQstFlags",
           "announce_type": "Update",
-          "set_flags": [ 7 ]
+          "set_flags": [
+            7
+          ]
         }
       ]
     },
@@ -253,7 +296,9 @@
       "blocks": [
         {
           "type": "MyQstFlags",
-          "check_flags": [ 9 ]
+          "check_flags": [
+            9
+          ]
         },
         {
           "type": "TalkToNpc",
@@ -267,7 +312,9 @@
         {
           "type": "MyQstFlags",
           "announce_type": "Update",
-          "set_flags": [ 8 ]
+          "set_flags": [
+            8
+          ]
         }
       ]
     }

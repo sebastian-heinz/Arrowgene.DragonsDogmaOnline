@@ -39,6 +39,10 @@
           "num": 1
         }
       ]
+    },
+    {
+      "type": "ap",
+      "amount": 480
     }
   ],
   "enemy_groups": [
@@ -48,11 +52,10 @@
         "group_id": 9
       },
       "enemies": [
-        
         {
           "enemy_id": "0x015709",
           "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 54,
+          "named_enemy_params_id": 54,
           "level": 45,
           "exp": 6476,
           "is_boss": true
@@ -82,13 +85,17 @@
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
       "announce_type": "Accept",
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Update",
       "reset_group": false,
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "NewTalkToNpc",

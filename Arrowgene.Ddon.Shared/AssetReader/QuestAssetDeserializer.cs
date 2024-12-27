@@ -189,7 +189,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                 ParseLightQuestDetails(assetData, jLightQuestDetails);
             }
-
+            
             ParseRewards(assetData, jQuest);
 
             if (!ParseServerActions(assetData, jQuest))
@@ -376,6 +376,14 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             PointType = PointType.JobPoints,
                             Amount = reward.GetProperty("amount").GetUInt32()
                         });
+                        break;
+                    case "ap":
+                        assetData.PointRewards.Add(new PointReward()
+                        {
+                            ExpType = ExpType.AreaPoints,
+                            ExpReward = reward.GetProperty("amount").GetUInt32()
+                        });
+                        assetData.LightQuestDetail.GetAp = reward.GetProperty("amount").GetUInt32();
                         break;
                     case "wallet":
                         if (!Enum.TryParse(reward.GetProperty("wallet_type").GetString(), true, out WalletType walletType))
@@ -1187,10 +1195,6 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             if (jLightQuestDetails.TryGetProperty("get_cp", out JsonElement jGetCP))
             {
                 assetData.LightQuestDetail.GetCp = jGetCP.GetUInt32();
-            }
-            if (jLightQuestDetails.TryGetProperty("get_ap", out JsonElement jGetAP))
-            {
-                assetData.LightQuestDetail.GetAp = jGetAP.GetUInt32();
             }
 
             return true;

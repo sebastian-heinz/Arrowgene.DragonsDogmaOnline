@@ -1,80 +1,84 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "Secret Dealings",
-    "quest_id": 21000097,
-    "base_level": 68,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-	"area_id": "BloodbaneIsle",	
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Secret Dealings",
+  "quest_id": 21000097,
+  "base_level": 68,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "BloodbaneIsle",
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2243
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 290
+    },
+    {
+      "type": "exp",
+      "amount": 10665
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 2243
+          "item_id": 11795,
+          "num": 3
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 290
+          "item_id": 7555,
+          "num": 3
         },
         {
-            "type": "exp",
-            "amount": 10665
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 11795,
-                    "num": 3
-                },
-                {					
-                    "item_id": 7555,
-                    "num": 3
-                },
-                {				
-                    "item_id": 9364,
-                    "num": 3					
-                }
-            ]
+          "item_id": 9364,
+          "num": 3
         }
-    ],
-    "enemy_groups" : [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 500
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 319,
+        "group_id": 1
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 319,
-                "group_id": 1
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x011130",
-                    "level": 68,
-                    "exp": 3000,
-                    "is_boss": false	
-    },
-    {
-                    "enemy_id": "0x011130",
-                    "level": 68,
-                    "exp": 3000,
-                    "is_boss": false	
-    },
-    {
-                    "enemy_id": "0x011130",
-                    "level": 68,
-                    "exp": 3000,
-                    "is_boss": false	
-    },
-    {
-                    "enemy_id": "0x015203",
-                    "level": 68,
-                    "exp": 70000,
-                    "is_boss": true						
-                }
-            ]
+          "enemy_id": "0x011130",
+          "level": 68,
+          "exp": 3000,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x011130",
+          "level": 68,
+          "exp": 3000,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x011130",
+          "level": 68,
+          "exp": 3000,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015203",
+          "level": 68,
+          "exp": 70000,
+          "is_boss": true
         }
-    ],		
-    "blocks": [
+      ]
+    }
+  ],
+  "blocks": [
     {
       "type": "NpcTalkAndOrder",
       "stage_id": {
@@ -98,27 +102,31 @@
         }
       ],
       "message_id": 10737
-        },
-        {
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {		
-            "type": "TalkToNpc",
-            "stage_id": {
-                "id": 317,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Update",
-            "npc_id": "Gunther",
-            "message_id": 11842			
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 317,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Gunther",
+      "message_id": 11842
     }
   ]
 }

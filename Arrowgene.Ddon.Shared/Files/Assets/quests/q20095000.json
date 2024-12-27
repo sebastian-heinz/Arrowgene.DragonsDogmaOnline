@@ -1,105 +1,118 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "The Fiery Titan",
-    "quest_id": 20095000,
-    "base_level": 49,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-  "area_id": "ZandoraWastelands",	
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Fiery Titan",
+  "quest_id": 20095000,
+  "base_level": 49,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "ZandoraWastelands",
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1610
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 250
+    },
+    {
+      "type": "exp",
+      "amount": 2260
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 1610
+          "item_id": 9315,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 250
+          "item_id": 9318,
+          "num": 1
         },
         {
-            "type": "exp",
-            "amount": 2260
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 9315,
-                    "num": 1
-                },
-                {
-                    "item_id": 9318,
-                    "num": 1
-                },
-                {
-                    "item_id": 9321,
-                    "num": 1					
-                }
-            ]
-        },
-        {
-            "type": "random",
-            "loot_pool": [
-                {
-                    "item_id": 34,
-                    "num": 9,
-                    "chance": 1.0
-                }
-            ]
+          "item_id": 9321,
+          "num": 1
         }
-    ],
-    "enemy_groups" : [
+      ]
+    },
+    {
+      "type": "random",
+      "loot_pool": [
         {
-            "stage_id": {
-                "id": 77,
-                "group_id": 24
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015102",
-                    "level": 49,
-                    "exp": 14000,
-                    "is_boss": true								
-                }
-            ]
+          "item_id": 34,
+          "num": 9,
+          "chance": 1.0
         }
-    ],
-    "blocks": [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 480
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 77,
+        "group_id": 24
+      },
+      "enemies": [
         {
-            "type": "NewNpcTalkAndOrder",
-            "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 1655, "comment": "Spawns Christoph NPC"}
-            ],
-            "stage_id": {
-                "id": 1,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "npc_id": "Christoph",
-            "message_id": 11372
-        },
-        {
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Accept",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {
-            "type": "NewTalkToNpc",
-            "stage_id": {
-                "id": 1,
-                "group_id": 1,
-                "layer_no": 1				
-            },
-            "announce_type": "Update",
-            "npc_id": "Christoph",
-            "message_id": 11835
+          "enemy_id": "0x015102",
+          "level": 49,
+          "exp": 14000,
+          "is_boss": true
         }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1655,
+          "comment": "Spawns Christoph NPC"
+        }
+      ],
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Christoph",
+      "message_id": 11372
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Christoph",
+      "message_id": 11835
+    }
+  ]
 }

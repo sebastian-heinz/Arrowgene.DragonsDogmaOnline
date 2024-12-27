@@ -42,6 +42,10 @@
           "num": 3
         }
       ]
+    },
+    {
+      "type": "ap",
+      "amount": 90
     }
   ],
   "enemy_groups": [
@@ -94,12 +98,16 @@
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Update",
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "TalkToNpc",

@@ -1,96 +1,104 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "Within This Beautiful Scenery",
-    "quest_id": 21000037,
-    "base_level": 63,
-    "minimum_item_rank": 0,
-    "discoverable": false,
-	"area_id": "BloodbaneIsle",	
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Within This Beautiful Scenery",
+  "quest_id": 21000037,
+  "base_level": 63,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "BloodbaneIsle",
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2078
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 265
+    },
+    {
+      "type": "exp",
+      "amount": 6976
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 2078
+          "item_id": 13223,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 265
+          "item_id": 7981,
+          "num": 5
         },
         {
-            "type": "exp",
-            "amount": 6976
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 13223,
-                    "num": 1
-                },
-                {
-                    "item_id": 7981,
-                    "num": 5
-                },
-                {
-                    "item_id": 7555,
-                    "num": 3
-                }
-            ]
+          "item_id": 7555,
+          "num": 3
         }
-    ],
-    "enemy_groups" : [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 500
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 335,
+        "group_id": 11
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 335,
-                "group_id": 11
-            },			
-            "enemies": [
-                {
-                    "enemy_id": "0x015306",
-                    "level": 63,
-                    "exp": 42000,
-                    "is_boss": true,
-                    "infection_type": 2	
+          "enemy_id": "0x015306",
+          "level": 63,
+          "exp": 42000,
+          "is_boss": true,
+          "infection_type": 2
         },
         {
-                    "enemy_id": "0x010603",
-                    "level": 63,
-                    "exp": 2000,
-                    "is_boss": false
+          "enemy_id": "0x010603",
+          "level": 63,
+          "exp": 2000,
+          "is_boss": false
         },
         {
-                    "enemy_id": "0x010603",
-                    "level": 63,
-                    "exp": 2000,
-                    "is_boss": false
+          "enemy_id": "0x010603",
+          "level": 63,
+          "exp": 2000,
+          "is_boss": false
         },
         {
-                    "enemy_id": "0x010603",
-                    "level": 63,
-                    "exp": 2000,
-                    "is_boss": false
+          "enemy_id": "0x010603",
+          "level": 63,
+          "exp": 2000,
+          "is_boss": false
         },
         {
-                    "enemy_id": "0x010160",
-                    "level": 63,
-                    "exp": 2000,
-                    "is_boss": false					
-                }
-            ]
+          "enemy_id": "0x010160",
+          "level": 63,
+          "exp": 2000,
+          "is_boss": false
         }
-    ],
-    "blocks": [
-        {
-            "type": "DiscoverEnemy",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Accept",
-            "reset_group": false,
-            "groups": [0]
-        }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [
+        0
+      ]
+    }
+  ]
 }

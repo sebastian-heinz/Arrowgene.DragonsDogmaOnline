@@ -1,46 +1,50 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "Time Restriction: Rainy Collection",
-    "quest_id": 21014006,
-    "base_level": 75,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-	"area_id": "ElanWaterGrove",	
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Time Restriction: Rainy Collection",
+  "quest_id": 21014006,
+  "base_level": 75,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "ElanWaterGrove",
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 11233
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1662
+    },
+    {
+      "type": "exp",
+      "amount": 5470
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 11233
+          "item_id": 15961,
+          "num": 3
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 1662
+          "item_id": 7555,
+          "num": 3
         },
         {
-            "type": "exp",
-            "amount": 5470
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 15961,
-                    "num": 3
-                },
-                {					
-                    "item_id": 7555,
-                    "num": 3
-                },
-                {				
-                    "item_id": 9364,
-                    "num": 3					
-                }
-            ]
+          "item_id": 9364,
+          "num": 3
         }
-    ],
-    "blocks": [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 500
+    }
+  ],
+  "blocks": [
     {
       "type": "NpcTalkAndOrder",
       "stage_id": {
@@ -64,17 +68,17 @@
         }
       ],
       "message_id": 10737
-        },
-        {
-            "type": "TalkToNpc",
-            "stage_id": {
-                "id": 339,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Update",
-            "npc_id": "Musel0",
-            "message_id": 11842			
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 339,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Musel0",
+      "message_id": 11842
     }
   ]
 }

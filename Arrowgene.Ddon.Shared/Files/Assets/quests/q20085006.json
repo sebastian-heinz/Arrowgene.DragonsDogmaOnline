@@ -1,109 +1,117 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "The Attacking Bite",
-    "quest_id": 20085006,
-    "base_level": 55,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-    "area_id": "EasternZandora",
-    "news_image": 544,		
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Attacking Bite",
+  "quest_id": 20085006,
+  "base_level": 55,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "EasternZandora",
+  "news_image": 544,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1810
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 360
+    },
+    {
+      "type": "exp",
+      "amount": 3170
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 1810
+          "item_id": 7950,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 360
+          "item_id": 7929,
+          "num": 1
         },
         {
-            "type": "exp",
-            "amount": 3170
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 7950,
-                    "num": 1
-                },
-                {
-                    "item_id": 7929,
-                    "num": 1
-                },
-                {
-                    "item_id": 7799,
-                    "num": 2
-                }
-            ]
-        },
-        {
-            "type": "random",
-            "loot_pool": [
-                {
-                    "item_id": 35,
-                    "num": 3,
-                    "chance": 1.0
-                }
-            ]
+          "item_id": 7799,
+          "num": 2
         }
-    ],
-    "enemy_groups" : [
+      ]
+    },
+    {
+      "type": "random",
+      "loot_pool": [
         {
-            "stage_id": {
-                "id": 1,
-                "group_id": 474
-            },
-            "placement_type": "manual",
-            "enemies": [
-                {
-                    "comment": "Behemoth",
-                    "enemy_id": "0x070930",
-                    "start_think_tbl_no": 1,
-		            "named_enemy_params_id": 53,
-                    "level": 55,
-                    "exp": 19700,
-                    "is_boss": true	,
-                    "index": 4				
-                }
-            ]
+          "item_id": 35,
+          "num": 3,
+          "chance": 1.0
         }
-    ],
-    "blocks": [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 690
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 474
+      },
+      "placement_type": "manual",
+      "enemies": [
         {
-            "type": "NpcTalkAndOrder",
-            "stage_id": {
-                "id": 57,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "npc_id": "Oswald",
-            "message_id": 11372
-        },
-        {
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Accept",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "reset_group": false,
-            "groups": [0]
-        },
-        {
-            "type": "TalkToNpc",
-            "stage_id": {
-                "id": 57,
-                "group_id": 1,
-                "layer_no": 1				
-            },
-            "announce_type": "Update",
-            "npc_id": "Oswald",
-            "message_id": 11835
+          "comment": "Behemoth",
+          "enemy_id": "0x070930",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
+          "level": 55,
+          "exp": 19700,
+          "is_boss": true,
+          "index": 4
         }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 57,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Oswald",
+      "message_id": 11372
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 57,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Oswald",
+      "message_id": 11835
+    }
+  ]
 }

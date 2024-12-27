@@ -1,72 +1,80 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "The Greenery Falls, Dancing",
-    "quest_id": 20105005,
-    "base_level": 41,
-    "minimum_item_rank": 0,
-    "discoverable": false,
-    "area_id": "DeenanWoods",
-    "news_image": 203,
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Greenery Falls, Dancing",
+  "quest_id": 20105005,
+  "base_level": 41,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DeenanWoods",
+  "news_image": 203,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1120
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 180
+    },
+    {
+      "type": "exp",
+      "amount": 900
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 1120
+          "item_id": 7726,
+          "num": 3
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 180
+          "item_id": 9419,
+          "num": 1
         },
         {
-            "type": "exp",
-            "amount": 900
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 7726,
-                    "num": 3
-                },
-                {
-                    "item_id": 9419,
-                    "num": 1
-                },
-                {
-                    "item_id": 9401,
-                    "num": 3
-                }
-            ]
+          "item_id": 9401,
+          "num": 3
         }
-    ],
-    "enemy_groups": [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 390
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 340
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 1,
-                "group_id": 340
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015031",
-                    "level": 41,
-                    "exp": 10000,
-                    "is_boss": true
-                }
-            ]
+          "enemy_id": "0x015031",
+          "level": 41,
+          "exp": 10000,
+          "is_boss": true
         }
-    ],
-    "blocks": [
-        {
-            "type": "DiscoverEnemy",
-            "groups": [ 0 ]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Accept",
-            "reset_group": false,
-            "groups": [ 0 ]
-        }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [
+        0
+      ]
+    }
+  ]
 }

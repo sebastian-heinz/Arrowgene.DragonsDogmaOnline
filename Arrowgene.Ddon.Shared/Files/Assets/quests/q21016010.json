@@ -1,107 +1,115 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "Guardian of The Diseased Forest",
-    "quest_id": 21016010,
-    "base_level": 70,
-    "minimum_item_rank": 0,
-    "discoverable": false,
-	"area_id": "MorrowForest",	
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Guardian of The Diseased Forest",
+  "quest_id": 21016010,
+  "base_level": 70,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "MorrowForest",
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2309
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 300
+    },
+    {
+      "type": "exp",
+      "amount": 13814
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 2309
+          "item_id": 15917,
+          "num": 3
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 300
+          "item_id": 9364,
+          "num": 3
         },
         {
-            "type": "exp",
-            "amount": 13814
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 15917,
-                    "num": 3
-                },
-                {					
-                    "item_id": 9364,
-                    "num": 3
-                },
-                {				
-                    "item_id": 41,
-                    "num": 3					
-                }
-            ]
+          "item_id": 41,
+          "num": 3
         }
-    ],
-    "enemy_groups" : [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 500
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 417,
+        "group_id": 2
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 417,
-                "group_id": 2
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015717",
-                    "level": 70,
-                    "exp": 85000,				
-                    "is_boss": true					
-    },
-    {
-                    "enemy_id": "0x010170",
-                    "level": 70,
-                    "exp": 3000,				
-                    "is_boss": false	
-    },
-    {
-                    "enemy_id": "0x010170",
-                    "level": 70,
-                    "exp": 3000,				
-                    "is_boss": false		
-    },
-    {
-                    "enemy_id": "0x010170",
-                    "level": 70,
-                    "exp": 3000,				
-                    "is_boss": false	
-    },
-    {
-                    "enemy_id": "0x010170",
-                    "level": 70,
-                    "exp": 3000,				
-                    "is_boss": false	
-    },
-    {
-                    "enemy_id": "0x010170",
-                    "level": 70,
-                    "exp": 3000,				
-                    "is_boss": false	
-    },
-    {
-                    "enemy_id": "0x010170",
-                    "level": 70,
-                    "exp": 3000,				
-                    "is_boss": false					
-                }
-            ]
-        }
-    ],		
-    "blocks": [
-        {
-            "type": "DiscoverEnemy",
-            "groups": [0]
+          "enemy_id": "0x015717",
+          "level": 70,
+          "exp": 85000,
+          "is_boss": true
         },
         {
-            "type": "KillGroup",
-            "announce_type": "Accept",
-            "reset_group": true,
-            "groups": [0]
+          "enemy_id": "0x010170",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010170",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010170",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010170",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010170",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010170",
+          "level": 70,
+          "exp": 3000,
+          "is_boss": false
         }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": true,
+      "groups": [
+        0
+      ]
+    }
+  ]
 }

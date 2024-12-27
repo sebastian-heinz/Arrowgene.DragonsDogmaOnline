@@ -25,6 +25,10 @@
       "type": "wallet",
       "wallet_type": "RiftPoints",
       "amount": 2892
+    },
+    {
+      "type": "ap",
+      "amount": 250
     }
   ],
   "blocks": [

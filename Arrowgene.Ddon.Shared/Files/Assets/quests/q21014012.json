@@ -1,118 +1,136 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "Searching For a Partner!",
-    "quest_id": 21014012,
-    "base_level": 75,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-    "area_id": "ElanWaterGrove",
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Searching For a Partner!",
+  "quest_id": 21014012,
+  "base_level": 75,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "ElanWaterGrove",
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 4493
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 665
+    },
+    {
+      "type": "exp",
+      "amount": 14610
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 4493
+          "item_id": 13483,
+          "num": 3
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 665
+          "item_id": 15962,
+          "num": 3
         },
         {
-            "type": "exp",
-            "amount": 14610
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 13483,
-                    "num": 3
-                },
-                {
-                    "item_id": 15962,
-                    "num": 3
-                },
-                {
-                    "item_id": 7555,
-                    "num": 3
-                }
-            ]
+          "item_id": 7555,
+          "num": 3
         }
-    ],
-    "enemy_groups" : [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 500
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 416,
+        "group_id": 4
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 416,
-                "group_id": 4
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015504",
-                    "level": 75,
-                    "exp": 5000
-                },
-                {
-                    "enemy_id": "0x015504",
-                    "level": 75,
-                    "exp": 5000
-                },
-                {
-                    "enemy_id": "0x015504",
-                    "level": 75,
-                    "exp": 5000
-                }
-            ]
+          "enemy_id": "0x015504",
+          "level": 75,
+          "exp": 5000
+        },
+        {
+          "enemy_id": "0x015504",
+          "level": 75,
+          "exp": 5000
+        },
+        {
+          "enemy_id": "0x015504",
+          "level": 75,
+          "exp": 5000
         }
-    ],
-    "blocks": [
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "flags": [
         {
-            "type": "NpcTalkAndOrder",
-            "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 4474, "comment": "Spawns Sullivan NPC"}
-            ],
-            "stage_id": {
-                "id": 372,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "npc_id": "561",
-            "message_id": 10800
-        },
-        {
-            "type": "NewTalkToNpc",
-            "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 4471, "comment": "Spawns Glenis NPC"}
-            ],
-            "stage_id": {
-                "id": 416,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Accept",
-            "npc_id": "562",
-            "message_id": 11842
-        },
-        {
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {
-            "type": "TalkToNpc",
-            "stage_id": {
-                "id": 372,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Update",
-            "npc_id": "561",
-            "message_id": 11842
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 4474,
+          "comment": "Spawns Sullivan NPC"
         }
-    ]
+      ],
+      "stage_id": {
+        "id": 372,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "561",
+      "message_id": 10800
+    },
+    {
+      "type": "NewTalkToNpc",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 4471,
+          "comment": "Spawns Glenis NPC"
+        }
+      ],
+      "stage_id": {
+        "id": 416,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Accept",
+      "npc_id": "562",
+      "message_id": 11842
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 372,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "561",
+      "message_id": 11842
+    }
+  ]
 }

@@ -1,82 +1,86 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "A Kind Reward",
-    "quest_id": 21016003,
-    "base_level": 73,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-	"area_id": "MorrowForest",	
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Kind Reward",
+  "quest_id": 21016003,
+  "base_level": 73,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "MorrowForest",
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 11020
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1387
+    },
+    {
+      "type": "exp",
+      "amount": 10925
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 11020
+          "item_id": 13484,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 1387
+          "item_id": 7555,
+          "num": 3
         },
         {
-            "type": "exp",
-            "amount": 10925
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 13484,
-                    "num": 1
-                },
-                {					
-                    "item_id": 7555,
-                    "num": 3
-                },
-                {				
-                    "item_id": 41,
-                    "num": 3					
-                }
-            ]
+          "item_id": 41,
+          "num": 3
         }
-    ],
-    "blocks": [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 500
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 374,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Winnie",
+      "message_id": 10800
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 341,
+        "group_id": 1
+      },
+      "npc_id": "Flannan",
+      "announce_type": "Accept",
+      "items": [
         {
-            "type": "NpcTalkAndOrder",	
-            "stage_id": {
-                "id": 374,
-                "group_id": 1,
-                "layer_no": 1
-            },				
-            "npc_id": "Winnie",
-            "message_id": 10800
-        },
-        {
-            "type": "DeliverItems",
-            "stage_id": {
-                "id": 341,
-                "group_id": 1
-            },
-            "npc_id": "Flannan",
-            "announce_type": "Accept",
-            "items": [
-                {
-                    "id": 13483,
-                    "amount": 6
-                }
-            ],
-            "message_id": 10737
-        },
-        {
-            "type": "TalkToNpc",
-            "stage_id": {
-                "id": 341,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Update",
-            "npc_id": "Flannan",
-            "message_id": 11842			
+          "id": 13483,
+          "amount": 6
         }
-    ]
+      ],
+      "message_id": 10737
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 341,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Flannan",
+      "message_id": 11842
+    }
+  ]
 }

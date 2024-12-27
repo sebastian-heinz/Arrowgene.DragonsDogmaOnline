@@ -49,6 +49,10 @@
           "chance": 1.0
         }
       ]
+    },
+    {
+      "type": "ap",
+      "amount": 390
     }
   ],
   "enemy_groups": [
@@ -57,7 +61,7 @@
         "id": 130,
         "group_id": 0
       },
-        "placement_type": "manual",
+      "placement_type": "manual",
       "enemies": [
         {
           "enemy_id": "0x015604",
@@ -129,13 +133,17 @@
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
       "announce_type": "Accept",
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Accept",
       "reset_group": false,
-       "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "TalkToNpc",
@@ -145,7 +153,7 @@
         "layer_no": 1
       },
       "npc_id": "LightlyEquippedSoldier",
-      "announce_type": "Update",      
+      "announce_type": "Update",
       "message_id": 13288
     },
     {
@@ -167,4 +175,3 @@
     }
   ]
 }
-    

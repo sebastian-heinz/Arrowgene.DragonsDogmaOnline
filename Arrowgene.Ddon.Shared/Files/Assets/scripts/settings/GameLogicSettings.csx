@@ -110,6 +110,7 @@ double RiftModifier = 1;
 double BoModifier = 1;
 double HoModifier = 1;
 double JpModifier = 1;
+double ApModifier = 1;
 
 // Wallet Settings
 var WalletLimits = new Dictionary<WalletType, uint>()

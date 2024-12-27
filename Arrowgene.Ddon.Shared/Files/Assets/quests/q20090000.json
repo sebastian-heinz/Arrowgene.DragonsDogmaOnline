@@ -1,142 +1,150 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "The Dead City's Chronicles",
-    "quest_id": 20090000,
-    "base_level": 50,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-    "area_id": "ZandoraWastelands",
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Dead City's Chronicles",
+  "quest_id": 20090000,
+  "base_level": 50,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "ZandoraWastelands",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 2500
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1650
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 280
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "exp",
-            "amount": 2500
+          "item_id": 7911,
+          "num": 2
         },
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 1650
+          "item_id": 7554,
+          "num": 3
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 280
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 7911,
-                    "num": 2
-                },
-                {
-                    "item_id": 7554,
-                    "num": 3
-                },
-                {
-                    "item_id": 9363,
-                    "num": 3
-                }
-            ]
+          "item_id": 9363,
+          "num": 3
         }
-    ],
-    "enemy_groups" : [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 580
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 77,
+        "group_id": 23
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 77,
-                "group_id": 23
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015203",
-                    "level": 50,
-                    "exp": 20000,
-                    "is_boss": true
-                },
-                {
-                    "enemy_id": "0x010607",
-                    "level": 50,
-                    "exp": 1200,
-                    "is_boss": false
-                },
-                {
-                    "enemy_id": "0x010607",
-                    "level": 50,
-                    "exp": 1200,
-                    "is_boss": false
-                },
-                {
-                    "enemy_id": "0x010607",
-                    "level": 50,
-                    "exp": 1200,
-                    "is_boss": false
-                },
-                {
-                    "enemy_id": "0x010607",
-                    "level": 50,
-                    "exp": 1200,
-                    "is_boss": false
-                }
-            ]
+          "enemy_id": "0x015203",
+          "level": 50,
+          "exp": 20000,
+          "is_boss": true
+        },
+        {
+          "enemy_id": "0x010607",
+          "level": 50,
+          "exp": 1200,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010607",
+          "level": 50,
+          "exp": 1200,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010607",
+          "level": 50,
+          "exp": 1200,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010607",
+          "level": 50,
+          "exp": 1200,
+          "is_boss": false
         }
-    ],
-    "blocks": [
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
         {
-            "type": "NewNpcTalkAndOrder",
-            "flags": [
-                {
-                    "type": "QstLayout",
-                    "action": "Set",
-                    "value": 1075,
-                    "comment": "Spawns Lise0 NPC"
-                }
-            ],
-            "stage_id": {
-                "id": 1,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "npc_id": "Lise0",
-            "message_id": 11372
-        },
-        {
-            "type": "DiscoverEnemy",
-            "announce_type": "Accept",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "reset_group": false,
-            "groups": [0]
-        },
-        {
-            "type": "CollectItem",
-            "announce_type": "Update",
-            "stage_id": {
-                "id": 77,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "flags": [
-                {
-                    "type": "QstLayout",
-                    "action": "Set",
-                    "value": 1754,
-                    "comment": "Spawns Glowing Item"
-                }
-            ]
-        },
-        {
-            "type": "NewTalkToNpc",
-            "stage_id": {
-                "id": 1,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Update",
-            "npc_id": "Lise0",
-            "message_id": 11842
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1075,
+          "comment": "Spawns Lise0 NPC"
         }
-    ]
+      ],
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Lise0",
+      "message_id": 11372
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Accept",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "CollectItem",
+      "announce_type": "Update",
+      "stage_id": {
+        "id": 77,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1754,
+          "comment": "Spawns Glowing Item"
+        }
+      ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Lise0",
+      "message_id": 11842
+    }
+  ]
 }

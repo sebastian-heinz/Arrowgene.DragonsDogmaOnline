@@ -637,6 +637,10 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         var ntc = server.PPManager.AddPlayPoint(client, amount, type: 1, connectionIn: connectionIn);
                         client.Enqueue(ntc, packets);
                         break;
+                    case ExpType.AreaPoints:
+                        var areaRankNtcs = server.AreaRankManager.AddAreaPoint(client, quest.QuestAreaId, amount, connectionIn);
+                        packets.AddRange(areaRankNtcs);
+                        break;
                 }
             }
             
@@ -652,7 +656,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 var completeNtcs = server.ClanManager.CompleteClanQuest(quest, client);
                 packets.AddRange(completeNtcs);
             }
-            
+       
             return packets;
         }
 
