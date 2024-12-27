@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Shared.Model.Scheduler;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 
 namespace Arrowgene.Ddon.GameServer
@@ -26,7 +27,8 @@ namespace Arrowgene.Ddon.GameServer
             // TODO: Load from server config
             Tasks = new List<SchedulerTask>()
             {
-                new EpitaphSchedulerTask(DayOfWeek.Monday, 5, 0)
+                new EpitaphSchedulerTask(DayOfWeek.Monday, 5, 0),
+                new AreaPointResetTask(DayOfWeek.Monday, 5, 0)
             };
         }
 

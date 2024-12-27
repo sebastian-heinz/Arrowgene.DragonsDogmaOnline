@@ -60,6 +60,35 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                             gameServer.Database.DeleteConnection(gameServer.Id, target);
                             return new RpcCommandResult(this, true);
                         }
+
+                    case RpcInternalCommand.AreaRankResetStart:
+                        {
+                            foreach (var character in gameServer.ClientLookup.GetAllCharacter())
+                            {
+                                foreach (var rank in character.AreaRanks)
+                                {
+                                    lock(rank)
+                                    {
+                                        rank.LastWeekPoint = rank.WeekPoint;
+                                        rank.WeekPoint = 0;
+                                    }
+                                }
+                                character.AreaSupply.Clear();
+                            }
+                            
+                            return new RpcCommandResult(this, true);
+                        }
+                    case RpcInternalCommand.AreaRankResetEnd:
+                        {
+                            gameServer.Database.ExecuteInTransaction(connection =>
+                            {
+                                foreach (var character in gameServer.ClientLookup.GetAllCharacter())
+                                {
+                                    character.AreaSupply = gameServer.Database.SelectAreaRankSupply(character.CharacterId, connection);
+                                }
+                            });
+                            return new RpcCommandResult(this, true);
+                        }
                     default:
                         return new RpcCommandResult(this, false);
                 }
