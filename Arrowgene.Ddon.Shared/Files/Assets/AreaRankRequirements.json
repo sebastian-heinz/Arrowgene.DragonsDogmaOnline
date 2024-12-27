@@ -1,0 +1,1287 @@
+[
+  {
+    "AreaId": "HidellPlains",
+    "RankRequirements": [
+      {
+        "Rank": 1,
+        "MinPoint": 0
+      },
+      {
+        "Rank": 2,
+        "MinPoint": 100
+      },
+      {
+        "Rank": 3,
+        "MinPoint": 200
+      },
+      {
+        "Rank": 4,
+        "MinPoint": 350
+      },
+      {
+        "Rank": 5,
+        "AreaTrial": 60010001
+      },
+      {
+        "Rank": 6,
+        "MinPoint": 500
+      },
+      {
+        "Rank": 7,
+        "MinPoint": 1000
+      },
+      {
+        "Rank": 8,
+        "MinPoint": 1500
+      },
+      {
+        "Rank": 9,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 10,
+        "AreaTrial": 60010002
+      },
+      {
+        "Rank": 11,
+        "ExtQuest": 20010
+      },
+      {
+        "Rank": 12,
+        "ExtQuest": 20010
+      },
+      {
+        "Rank": 13,
+        "AreaTrial": 60201000
+      },
+      {
+        "Rank": 14,
+        "MinPoint": 12000
+      },
+      {
+        "Rank": 15,
+        "AreaTrial": 60201001
+      }
+    ]
+  },
+  {
+    "AreaId": "BreyaCoast",
+    "RankRequirements": [
+      {
+        "Rank": 1,
+        "MinPoint": 0
+      },
+      {
+        "Rank": 2,
+        "MinPoint": 100
+      },
+      {
+        "Rank": 3,
+        "MinPoint": 200
+      },
+      {
+        "Rank": 4,
+        "MinPoint": 350
+      },
+      {
+        "Rank": 5,
+        "AreaTrial": 60020003
+      },
+      {
+        "Rank": 6,
+        "MinPoint": 500
+      },
+      {
+        "Rank": 7,
+        "MinPoint": 1000
+      },
+      {
+        "Rank": 8,
+        "MinPoint": 1500
+      },
+      {
+        "Rank": 9,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 10,
+        "AreaTrial": 60020002
+      },
+      {
+        "Rank": 11,
+        "ExtQuest": 20010
+      },
+      {
+        "Rank": 12,
+        "ExtQuest": 20070
+      },
+      {
+        "Rank": 13,
+        "AreaTrial": 60202000
+      },
+      {
+        "Rank": 14,
+        "MinPoint": 12000
+      },
+      {
+        "Rank": 15,
+        "AreaTrial": 60202001
+      }
+    ]
+  },
+  {
+    "AreaId": "MysreeForest",
+    "RankRequirements": [
+      {
+        "Rank": 1,
+        "MinPoint": 0
+      },
+      {
+        "Rank": 2,
+        "MinPoint": 100
+      },
+      {
+        "Rank": 3,
+        "MinPoint": 200
+      },
+      {
+        "Rank": 4,
+        "MinPoint": 500
+      },
+      {
+        "Rank": 5,
+        "AreaTrial": 60030001
+      },
+      {
+        "Rank": 6,
+        "MinPoint": 500
+      },
+      {
+        "Rank": 7,
+        "MinPoint": 1000
+      },
+      {
+        "Rank": 8,
+        "MinPoint": 1500
+      },
+      {
+        "Rank": 9,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 10,
+        "AreaTrial": 60030002
+      },
+      {
+        "Rank": 11,
+        "ExtQuest": 20010
+      },
+      {
+        "Rank": 12,
+        "ExtQuest": 20140
+      },
+      {
+        "Rank": 13,
+        "AreaTrial": 60203000
+      },
+      {
+        "Rank": 14,
+        "MinPoint": 12000
+      },
+      {
+        "Rank": 15,
+        "MinPoint": 60203001
+      }
+    ]
+  },
+  {
+    "AreaId": "VoldenMines",
+    "RankRequirements": [
+      {
+        "Rank": 1,
+        "MinPoint": 0
+      },
+      {
+        "Rank": 2,
+        "MinPoint": 300
+      },
+      {
+        "Rank": 3,
+        "MinPoint": 600
+      },
+      {
+        "Rank": 4,
+        "MinPoint": 1000
+      },
+      {
+        "Rank": 5,
+        "AreaTrial": 60040001
+      },
+      {
+        "Rank": 6,
+        "MinPoint": 1000
+      },
+      {
+        "Rank": 7,
+        "MinPoint": 1500
+      },
+      {
+        "Rank": 8,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 9,
+        "MinPoint": 2500
+      },
+      {
+        "Rank": 10,
+        "AreaTrial": 60040002
+      },
+      {
+        "Rank": 11,
+        "ExtQuest": 20010
+      },
+      {
+        "Rank": 12,
+        "ExtQuest": 20070
+      },
+      {
+        "Rank": 13,
+        "AreaTrial": 60204000
+      },
+      {
+        "Rank": 14,
+        "MinPoint": 12000
+      },
+      {
+        "Rank": 15,
+        "AreaTrial": 60204001
+      }
+    ]
+  },
+  {
+    "AreaId": "DoweValley",
+    "RankRequirements": [
+      {
+        "Rank": 1,
+        "MinPoint": 0
+      },
+      {
+        "Rank": 2,
+        "MinPoint": 400
+      },
+      {
+        "Rank": 3,
+        "MinPoint": 1000
+      },
+      {
+        "Rank": 4,
+        "MinPoint": 1500
+      },
+      {
+        "Rank": 5,
+        "AreaTrial": 60050001
+      },
+      {
+        "Rank": 6,
+        "MinPoint": 1000
+      },
+      {
+        "Rank": 7,
+        "MinPoint": 1500
+      },
+      {
+        "Rank": 8,
+        "MinPoint": 2500
+      },
+      {
+        "Rank": 9,
+        "MinPoint": 3000
+      },
+      {
+        "Rank": 10,
+        "AreaTrial": 60050002
+      },
+      {
+        "Rank": 11,
+        "ExtQuest": 20010
+      },
+      {
+        "Rank": 12,
+        "ExtQuest": 20140
+      },
+      {
+        "Rank": 13,
+        "AreaTrial": 60205000
+      },
+      {
+        "Rank": 14,
+        "MinPoint": 12000
+      },
+      {
+        "Rank": 15,
+        "AreaTrial": 60205001
+      }
+    ]
+  },
+  {
+    "AreaId": "MysreeGrove",
+    "RankRequirements": [
+      {
+        "Rank": 1,
+        "MinPoint": 0
+      },
+      {
+        "Rank": 2,
+        "MinPoint": 450
+      },
+      {
+        "Rank": 3,
+        "MinPoint": 900
+      },
+      {
+        "Rank": 4,
+        "MinPoint": 1350
+      },
+      {
+        "Rank": 5,
+        "AreaTrial": 60060001
+      },
+      {
+        "Rank": 6,
+        "MinPoint": 300
+      },
+      {
+        "Rank": 7,
+        "MinPoint": 1500
+      },
+      {
+        "Rank": 8,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 9,
+        "MinPoint": 3000
+      },
+      {
+        "Rank": 10,
+        "AreaTrial": 60060002
+      },
+      {
+        "Rank": 11,
+        "ExtQuest": 20010
+      },
+      {
+        "Rank": 12,
+        "ExtQuest": 20070
+      },
+      {
+        "Rank": 13,
+        "AreaTrial": 60206000
+      },
+      {
+        "Rank": 14,
+        "MinPoint": 12000
+      },
+      {
+        "Rank": 15,
+        "AreaTrial": 60206001
+      }
+    ]
+  },
+  {
+    "AreaId": "DeenanWoods",
+    "RankRequirements": [
+      {
+        "Rank": 1,
+        "MinPoint": 0
+      },
+      {
+        "Rank": 2,
+        "MinPoint": 750
+      },
+      {
+        "Rank": 3,
+        "MinPoint": 1500
+      },
+      {
+        "Rank": 4,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 5,
+        "AreaTrial": 60070001
+      },
+      {
+        "Rank": 6,
+        "MinPoint": 500
+      },
+      {
+        "Rank": 7,
+        "MinPoint": 1500
+      },
+      {
+        "Rank": 8,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 9,
+        "MinPoint": 3000
+      },
+      {
+        "Rank": 10,
+        "AreaTrial": 60070002
+      },
+      {
+        "Rank": 11,
+        "ExtQuest": 20010
+      },
+      {
+        "Rank": 12,
+        "ExtQuest": 20140
+      },
+      {
+        "Rank": 13,
+        "AreaTrial": 60207000
+      },
+      {
+        "Rank": 14,
+        "MinPoint": 12000
+      },
+      {
+        "Rank": 15,
+        "AreaTrial": 60207001
+      }
+    ]
+  },
+  {
+    "AreaId": "BetlandPlains",
+    "RankRequirements": [
+      {
+        "Rank": 1,
+        "MinPoint": 0
+      },
+      {
+        "Rank": 2,
+        "MinPoint": 450
+      },
+      {
+        "Rank": 3,
+        "MinPoint": 900
+      },
+      {
+        "Rank": 4,
+        "MinPoint": 1350
+      },
+      {
+        "Rank": 5,
+        "AreaTrial": 60080001
+      },
+      {
+        "Rank": 6,
+        "MinPoint": 300
+      },
+      {
+        "Rank": 7,
+        "MinPoint": 1500
+      },
+      {
+        "Rank": 8,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 9,
+        "MinPoint": 3000
+      },
+      {
+        "Rank": 10,
+        "AreaTrial": 60080002
+      },
+      {
+        "Rank": 11,
+        "ExtQuest": 20010
+      },
+      {
+        "Rank": 12,
+        "ExtQuest": 20070
+      },
+      {
+        "Rank": 13,
+        "AreaTrial": 60208000
+      },
+      {
+        "Rank": 14,
+        "MinPoint": 12000
+      },
+      {
+        "Rank": 15,
+        "AreaTrial": 60208001
+      }
+    ]
+  },
+  {
+    "AreaId": "NorthernBetlandPlains",
+    "RankRequirements": [
+      {
+        "Rank": 1,
+        "MinPoint": 0
+      },
+      {
+        "Rank": 2,
+        "MinPoint": 750
+      },
+      {
+        "Rank": 3,
+        "MinPoint": 1500
+      },
+      {
+        "Rank": 4,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 5,
+        "AreaTrial": 60090001
+      },
+      {
+        "Rank": 6,
+        "MinPoint": 500
+      },
+      {
+        "Rank": 7,
+        "MinPoint": 1500
+      },
+      {
+        "Rank": 8,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 9,
+        "MinPoint": 3000
+      },
+      {
+        "Rank": 10,
+        "AreaTrial": 60090002
+      },
+      {
+        "Rank": 11,
+        "ExtQuest": 20010
+      },
+      {
+        "Rank": 12,
+        "ExtQuest": 20140
+      },
+      {
+        "Rank": 13,
+        "AreaTrial": 60209000
+      },
+      {
+        "Rank": 14,
+        "MinPoint": 12000
+      },
+      {
+        "Rank": 15,
+        "AreaTrial": 60209001
+      }
+    ]
+  },
+  {
+    "AreaId": "ZandoraWastelands",
+    "RankRequirements": [
+      {
+        "Rank": 1,
+        "MinPoint": 0
+      },
+      {
+        "Rank": 2,
+        "MinPoint": 950
+      },
+      {
+        "Rank": 3,
+        "MinPoint": 1500
+      },
+      {
+        "Rank": 4,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 5,
+        "AreaTrial": 60100001
+      },
+      {
+        "Rank": 6,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 7,
+        "MinPoint": 1000
+      },
+      {
+        "Rank": 8,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 9,
+        "MinPoint": 3000
+      },
+      {
+        "Rank": 10,
+        "AreaTrial": 60100002
+      },
+      {
+        "Rank": 11,
+        "ExtQuest": 20010
+      },
+      {
+        "Rank": 12,
+        "ExtQuest": 20140
+      },
+      {
+        "Rank": 13,
+        "AreaTrial": 60210000
+      },
+      {
+        "Rank": 14,
+        "MinPoint": 12000
+      },
+      {
+        "Rank": 15,
+        "AreaTrial": 60210001
+      }
+    ]
+  },
+  {
+    "AreaId": "EasternZandora",
+    "RankRequirements": [
+      {
+        "Rank": 1,
+        "MinPoint": 0
+      },
+      {
+        "Rank": 2,
+        "MinPoint": 950
+      },
+      {
+        "Rank": 3,
+        "MinPoint": 1500
+      },
+      {
+        "Rank": 4,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 5,
+        "AreaTrial": 60110001
+      },
+      {
+        "Rank": 6,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 7,
+        "MinPoint": 1000
+      },
+      {
+        "Rank": 8,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 9,
+        "MinPoint": 3000
+      },
+      {
+        "Rank": 10,
+        "AreaTrial": 60110002
+      },
+      {
+        "Rank": 11,
+        "ExtQuest": 20010
+      },
+      {
+        "Rank": 12,
+        "ExtQuest": 20140
+      },
+      {
+        "Rank": 13,
+        "AreaTrial": 60211000
+      },
+      {
+        "Rank": 14,
+        "MinPoint": 12000
+      },
+      {
+        "Rank": 15,
+        "AreaTrial": 60211001
+      }
+    ]
+  },
+  {
+    "AreaId": "MergodaRuins",
+    "RankRequirements": [
+      {
+        "Rank": 1,
+        "MinPoint": 0
+      },
+      {
+        "Rank": 2,
+        "MinPoint": 950
+      },
+      {
+        "Rank": 3,
+        "MinPoint": 1500
+      },
+      {
+        "Rank": 4,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 5,
+        "AreaTrial": 60120001
+      },
+      {
+        "Rank": 6,
+        "MinPoint": 1000
+      },
+      {
+        "Rank": 7,
+        "MinPoint": 1500
+      },
+      {
+        "Rank": 8,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 9,
+        "MinPoint": 3000
+      },
+      {
+        "Rank": 10,
+        "AreaTrial": 60120002
+      },
+      {
+        "Rank": 11,
+        "ExtQuest": 20010
+      },
+      {
+        "Rank": 12,
+        "ExtQuest": 20140
+      },
+      {
+        "Rank": 13,
+        "AreaTrial": 60212000
+      },
+      {
+        "Rank": 14,
+        "MinPoint": 12000
+      },
+      {
+        "Rank": 15,
+        "AreaTrial": 60212001
+      }
+    ]
+  },
+  {
+    "AreaId": "BloodbaneIsle",
+    "RankRequirements": [
+      {
+        "Rank": 1,
+        "MinPoint": 0
+      },
+      {
+        "Rank": 2,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 3,
+        "MinPoint": 3000
+      },
+      {
+        "Rank": 4,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 5,
+        "AreaTrial": 60213000
+      },
+      {
+        "Rank": 6,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 7,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 8,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 9,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 10,
+        "AreaTrial": 60213001
+      },
+      {
+        "Rank": 11,
+        "ExtQuest": 20140
+      },
+      {
+        "Rank": 12,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 13,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 14,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 15,
+        "AreaTrial": 60213002
+      }
+    ]
+  },
+  {
+    "AreaId": "ElanWaterGrove",
+    "RankRequirements": [
+      {
+        "Rank": 1,
+        "MinPoint": 0
+      },
+      {
+        "Rank": 2,
+        "MinPoint": 100
+      },
+      {
+        "Rank": 3,
+        "MinPoint": 300
+      },
+      {
+        "Rank": 4,
+        "AreaTrial": 60214000
+      },
+      {
+        "Rank": 5,
+        "MinPoint": 3000
+      },
+      {
+        "Rank": 6,
+        "AreaTrial": 60214006
+      },
+      {
+        "Rank": 7,
+        "AreaTrial": 60214001
+      },
+      {
+        "Rank": 8,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 9,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 10,
+        "AreaTrial": 60214002
+      },
+      {
+        "Rank": 11,
+        "MinPoint": 1000
+      },
+      {
+        "Rank": 12,
+        "MinPoint": 3000
+      },
+      {
+        "Rank": 13,
+        "AreaTrial": 60214003
+      },
+      {
+        "Rank": 14,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 15,
+        "AreaTrial": 60214004
+      }
+    ]
+  },
+  {
+    "AreaId": "FaranaPlains",
+    "RankRequirements": [
+      {
+        "Rank": 1,
+        "MinPoint": 0
+      },
+      {
+        "Rank": 2,
+        "AreaTrial": 60215006
+      },
+      {
+        "Rank": 3,
+        "MinPoint": 300
+      },
+      {
+        "Rank": 4,
+        "AreaTrial": 60215000
+      },
+      {
+        "Rank": 5,
+        "MinPoint": 3000
+      },
+      {
+        "Rank": 6,
+        "AreaTrial": 60215005
+      },
+      {
+        "Rank": 7,
+        "AreaTrial": 60215001
+      },
+      {
+        "Rank": 8,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 9,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 10,
+        "AreaTrial": 60215002
+      },
+      {
+        "Rank": 11,
+        "MinPoint": 1000
+      },
+      {
+        "Rank": 12,
+        "MinPoint": 3000
+      },
+      {
+        "Rank": 13,
+        "AreaTrial": 60215003
+      },
+      {
+        "Rank": 14,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 15,
+        "AreaTrial": 60215004
+      }
+    ]
+  },
+  {
+    "AreaId": "MorrowForest",
+    "RankRequirements": [
+      {
+        "Rank": 1,
+        "MinPoint": 0
+      },
+      {
+        "Rank": 2,
+        "MinPoint": 100
+      },
+      {
+        "Rank": 3,
+        "MinPoint": 300
+      },
+      {
+        "Rank": 4,
+        "AreaTrial": 60216000
+      },
+      {
+        "Rank": 5,
+        "MinPoint": 3000
+      },
+      {
+        "Rank": 6,
+        "MinPoint": 3000
+      },
+      {
+        "Rank": 7,
+        "AreaTrial": 60216001
+      },
+      {
+        "Rank": 8,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 9,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 10,
+        "AreaTrial": 60216002
+      },
+      {
+        "Rank": 11,
+        "MinPoint": 1000
+      },
+      {
+        "Rank": 12,
+        "MinPoint": 3000
+      },
+      {
+        "Rank": 13,
+        "AreaTrial": 60216003
+      },
+      {
+        "Rank": 14,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 15,
+        "AreaTrial": 60216004
+      }
+    ]
+  },
+  {
+    "AreaId": "KingalCanyon",
+    "RankRequirements": [
+      {
+        "Rank": 1,
+        "MinPoint": 0
+      },
+      {
+        "Rank": 2,
+        "MinPoint": 100
+      },
+      {
+        "Rank": 3,
+        "MinPoint": 300
+      },
+      {
+        "Rank": 4,
+        "AreaTrial": 60217000
+      },
+      {
+        "Rank": 5,
+        "MinPoint": 3000
+      },
+      {
+        "Rank": 6,
+        "MinPoint": 3000
+      },
+      {
+        "Rank": 7,
+        "AreaTrial": 60217001
+      },
+      {
+        "Rank": 8,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 9,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 10,
+        "AreaTrial": 60217002
+      },
+      {
+        "Rank": 11,
+        "MinPoint": 1000
+      },
+      {
+        "Rank": 12,
+        "MinPoint": 3000
+      },
+      {
+        "Rank": 13,
+        "AreaTrial": 60217003
+      },
+      {
+        "Rank": 14,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 15,
+        "AreaTrial": 60217004
+      }
+    ]
+  },
+  {
+    "AreaId": "RathniteFoothills",
+    "RankRequirements": [
+      {
+        "Rank": 1,
+        "MinPoint": 0
+      },
+      {
+        "Rank": 2,
+        "MinPoint": 1000
+      },
+      {
+        "Rank": 3,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 4,
+        "AreaTrial": 60318000
+      },
+      {
+        "Rank": 5,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 6,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 7,
+        "ExtQuest": 30070
+      },
+      {
+        "Rank": 8,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 9,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 10,
+        "AreaTrial": 60318011
+      }
+    ]
+  },
+  {
+    "AreaId": "FeryanaWilderness",
+    "RankRequirements": [
+      {
+        "Rank": 1,
+        "MinPoint": 0
+      },
+      {
+        "Rank": 2,
+        "MinPoint": 1000
+      },
+      {
+        "Rank": 3,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 4,
+        "AreaTrial": 60319000
+      },
+      {
+        "Rank": 5,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 6,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 7,
+        "ExtQuest": 30130
+      },
+      {
+        "Rank": 8,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 9,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 10,
+        "AreaTrial": 60319011
+      }
+    ]
+  },
+  {
+    "AreaId": "MegadosysPlateau",
+    "RankRequirements": [
+      {
+        "Rank": 1,
+        "MinPoint": 0
+      },
+      {
+        "Rank": 2,
+        "MinPoint": 1000
+      },
+      {
+        "Rank": 3,
+        "MinPoint": 1000
+      },
+      {
+        "Rank": 4,
+        "AreaTrial": 60320000
+      },
+      {
+        "Rank": 5,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 6,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 7,
+        "ExtQuest": 30200
+      },
+      {
+        "Rank": 8,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 9,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 10,
+        "AreaTrial": 60320011
+      }
+    ]
+  },
+  {
+    "AreaId": "UrtecaMountains",
+    "RankRequirements": [
+      {
+        "Rank": 1,
+        "MinPoint": 0
+      },
+      {
+        "Rank": 2,
+        "MinPoint": 1000
+      },
+      {
+        "Rank": 3,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 4,
+        "AreaTrial": 60321000
+      },
+      {
+        "Rank": 5,
+        "ExtQuest": 30240
+      },
+      {
+        "Rank": 6,
+        "MinPoint": 2000
+      },
+      {
+        "Rank": 7,
+        "MinPoint": 3000
+      },
+      {
+        "Rank": 8,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 9,
+        "MinPoint": 5000
+      },
+      {
+        "Rank": 10,
+        "AreaTrial": 60321011
+      }
+    ]
+  }
+]

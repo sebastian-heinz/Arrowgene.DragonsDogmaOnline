@@ -1,0 +1,5468 @@
+[
+  {
+    "AreaId": "HidellPlains",
+    "MinRank": 1,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 34,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 500,
+        "SupplyItemList": [
+          {
+            "ItemId": 34,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 7917,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 35,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 7934,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2000,
+        "SupplyItemList": [
+          {
+            "ItemId": 35,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 7934,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 7936,
+            "ItemNum": 3
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "HidellPlains",
+    "MinRank": 10,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 35,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 500,
+        "SupplyItemList": [
+          {
+            "ItemId": 35,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 9361,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7552,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 9361,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10999,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7552,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10999,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7552,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10999,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "HidellPlains",
+    "MinRank": 15,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 35,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 500,
+        "SupplyItemList": [
+          {
+            "ItemId": 35,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 9361,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7552,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 9361,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10999,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7552,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10999,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7552,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10999,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "BreyaCoast",
+    "MinRank": 1,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 36,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 350,
+        "SupplyItemList": [
+          {
+            "ItemId": 36,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 43,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 43,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 7845,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2000,
+        "SupplyItemList": [
+          {
+            "ItemId": 43,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 7845,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 8003,
+            "ItemNum": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "BreyaCoast",
+    "MinRank": 6,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 61,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 500,
+        "SupplyItemList": [
+          {
+            "ItemId": 61,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 9382,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9382,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11000,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9382,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11000,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "BreyaCoast",
+    "MinRank": 10,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 7844,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 500,
+        "SupplyItemList": [
+          {
+            "ItemId": 9361,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 9382,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9417,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11000,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7857,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11000,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7857,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11000,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "BreyaCoast",
+    "MinRank": 15,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 7844,
+            "ItemNum": 4
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 500,
+        "SupplyItemList": [
+          {
+            "ItemId": 9361,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 9382,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9417,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11000,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7857,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11000,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7857,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 11000,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "MysreeForest",
+    "MinRank": 1,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 58,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 500,
+        "SupplyItemList": [
+          {
+            "ItemId": 58,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 1351,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 1351,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 7963,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2000,
+        "SupplyItemList": [
+          {
+            "ItemId": 1351,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 7963,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 8005,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "MysreeForest",
+    "MinRank": 7,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 7935,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 500,
+        "SupplyItemList": [
+          {
+            "ItemId": 9402,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 7935,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9411,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11001,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9411,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11001,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "MysreeForest",
+    "MinRank": 10,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 7552,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 500,
+        "SupplyItemList": [
+          {
+            "ItemId": 7552,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 9402,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9402,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11001,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7972,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11001,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7972,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11001,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "MysreeForest",
+    "MinRank": 15,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 7552,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 500,
+        "SupplyItemList": [
+          {
+            "ItemId": 7552,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 9402,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9402,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 11001,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7972,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11001,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7972,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 11001,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "VoldenMines",
+    "MinRank": 1,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 57,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 500,
+        "SupplyItemList": [
+          {
+            "ItemId": 57,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 9373,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9376,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 7863,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9401,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 9376,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 7882,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "VoldenMines",
+    "MinRank": 7,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 9401,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 500,
+        "SupplyItemList": [
+          {
+            "ItemId": 9401,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 7863,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9376,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11002,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9376,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11002,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "VoldenMines",
+    "MinRank": 10,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 9401,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 500,
+        "SupplyItemList": [
+          {
+            "ItemId": 9401,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 7553,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9416,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11002,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7872,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11002,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 7000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7872,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 11002,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "VoldenMines",
+    "MinRank": 15,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 9401,
+            "ItemNum": 4
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 500,
+        "SupplyItemList": [
+          {
+            "ItemId": 9401,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 7553,
+            "ItemNum": 4
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9416,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11002,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7872,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11002,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 7000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7872,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 11002,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "DoweValley",
+    "MinRank": 1,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 9384,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 500,
+        "SupplyItemList": [
+          {
+            "ItemId": 9384,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 7954,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9413,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 7955,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9413,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 7955,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 7972,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "DoweValley",
+    "MinRank": 6,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 9403,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 500,
+        "SupplyItemList": [
+          {
+            "ItemId": 9403,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 7553,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9410,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11003,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7957,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11003,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "DoweValley",
+    "MinRank": 10,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 7957,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 500,
+        "SupplyItemList": [
+          {
+            "ItemId": 7553,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 7957,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7957,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11003,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7939,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11003,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 7000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7939,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11003,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "DoweValley",
+    "MinRank": 15,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 7957,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 500,
+        "SupplyItemList": [
+          {
+            "ItemId": 7553,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 7957,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7957,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 11003,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7939,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11003,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 7000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7939,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 11003,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "MysreeGrove",
+    "MinRank": 1,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 7552,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 500,
+        "SupplyItemList": [
+          {
+            "ItemId": 7552,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 9361,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7553,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 9402,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9402,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 7857,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 9415,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "MysreeGrove",
+    "MinRank": 5,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 9402,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 500,
+        "SupplyItemList": [
+          {
+            "ItemId": 9415,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 7939,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7875,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11004,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7875,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11004,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "MysreeGrove",
+    "MinRank": 10,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 7553,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 500,
+        "SupplyItemList": [
+          {
+            "ItemId": 7553,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 7956,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7875,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11004,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7875,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11004,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 7000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7969,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11004,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "MysreeGrove",
+    "MinRank": 15,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 7553,
+            "ItemNum": 4
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 500,
+        "SupplyItemList": [
+          {
+            "ItemId": 7553,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 7956,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7875,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11004,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7875,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 11004,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 7000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7969,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11004,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "DeenanWoods",
+    "MinRank": 1,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 9066,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9066,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 7862,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7862,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 7956,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9421,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 7898,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 9419,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "DeenanWoods",
+    "MinRank": 6,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 9363,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9363,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 7956,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7898,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11006,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7880,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11006,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "DeenanWoods",
+    "MinRank": 10,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 9402,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7554,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 9421,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2000,
+        "SupplyItemList": [
+          {
+            "ItemId": 11006,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 7880,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7880,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11006,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 10000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7880,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11006,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "DeenanWoods",
+    "MinRank": 15,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 9402,
+            "ItemNum": 4
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7554,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 9421,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2000,
+        "SupplyItemList": [
+          {
+            "ItemId": 11006,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 7880,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7880,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11006,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 10000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7880,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11006,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "BetlandPlains",
+    "MinRank": 1,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 9429,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7553,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 9429,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7553,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 9062,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9416,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 9062,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 7851,
+            "ItemNum": 3
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "BetlandPlains",
+    "MinRank": 5,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 9416,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9416,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 7553,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7940,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11005,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7940,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11005,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "BetlandPlains",
+    "MinRank": 10,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 9387,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 40,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 7942,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7942,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11005,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7942,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11005,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 10000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7942,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11005,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "BetlandPlains",
+    "MinRank": 15,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 9387,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 40,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 7942,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7942,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11005,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7942,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11005,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 10000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7942,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 11005,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "NorthernBetlandPlains",
+    "MinRank": 1,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 9399,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9399,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 9387,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9420,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 7859,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7859,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 11007,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 9420,
+            "ItemNum": 3
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "NorthernBetlandPlains",
+    "MinRank": 5,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 7554,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7958,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 7554,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7958,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11007,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 41,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11007,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "NorthernBetlandPlains",
+    "MinRank": 10,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 7554,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2000,
+        "SupplyItemList": [
+          {
+            "ItemId": 41,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11007,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7860,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 11007,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 10000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7878,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11007,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "NorthernBetlandPlains",
+    "MinRank": 15,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 7554,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2000,
+        "SupplyItemList": [
+          {
+            "ItemId": 41,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 11007,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7860,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 11007,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 10000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7878,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 11007,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "ZandoraWastelands",
+    "MinRank": 1,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 9363,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9363,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 7554,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9423,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 7959,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 8000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7959,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11009,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "ZandoraWastelands",
+    "MinRank": 3,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 9363,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9423,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 9425,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7943,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11009,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 8000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7943,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11009,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "ZandoraWastelands",
+    "MinRank": 7,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 9364,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9364,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 9425,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7914,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11009,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 8000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7890,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11009,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "ZandoraWastelands",
+    "MinRank": 10,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 9364,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9423,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 9425,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7914,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11009,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7890,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11009,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 8000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7890,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11009,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "ZandoraWastelands",
+    "MinRank": 15,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 9364,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9423,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 9425,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7914,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11009,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7890,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11009,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 8000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7890,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 11009,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "EasternZandora",
+    "MinRank": 1,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 7554,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7554,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 9363,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9423,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 7885,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 8000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7885,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11008,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "EasternZandora",
+    "MinRank": 5,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 7554,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9423,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 9422,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7885,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11008,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 8000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7885,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11008,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "EasternZandora",
+    "MinRank": 10,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 7555,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7555,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 9422,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9796,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11008,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 8000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7886,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11008,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 25000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7886,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11008,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "EasternZandora",
+    "MinRank": 15,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 7555,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7555,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 9422,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9796,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11008,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 8000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7886,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11008,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 25000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7886,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 11008,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "MergodaRuins",
+    "MinRank": 1,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 38,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 42,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 44,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7555,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 7743,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7743,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 7892,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "MergodaRuins",
+    "MinRank": 5,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 9159,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9159,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 7743,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7892,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 7743,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7892,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11010,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "MergodaRuins",
+    "MinRank": 8,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 9425,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9425,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 7892,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9378,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 7891,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11010,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7891,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11010,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "MergodaRuins",
+    "MinRank": 10,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 7555,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7555,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 7892,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9378,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 7891,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11010,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7887,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11010,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 8000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7887,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11010,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "MergodaRuins",
+    "MinRank": 15,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 7555,
+            "ItemNum": 4
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7555,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 7892,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 3000,
+        "SupplyItemList": [
+          {
+            "ItemId": 9378,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 7891,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 11010,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7887,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11010,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 8000,
+        "SupplyItemList": [
+          {
+            "ItemId": 7887,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 11010,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "BloodbaneIsle",
+    "MinRank": 1,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 11408,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 11408,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 11408,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 10000,
+        "SupplyItemList": [
+          {
+            "ItemId": 11408,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11779,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "BloodbaneIsle",
+    "MinRank": 5,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 11408,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 11408,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 11408,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 10000,
+        "SupplyItemList": [
+          {
+            "ItemId": 11408,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 11779,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "BloodbaneIsle",
+    "MinRank": 10,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 11408,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 11408,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 11408,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 10000,
+        "SupplyItemList": [
+          {
+            "ItemId": 11408,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 11779,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "BloodbaneIsle",
+    "MinRank": 15,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 11408,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 11408,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 11408,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 10000,
+        "SupplyItemList": [
+          {
+            "ItemId": 11408,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 11779,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "ElanWaterGrove",
+    "MinRank": 1,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 11510,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 15947,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 15948,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 15947,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 15948,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 15947,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 15948,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 15937,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "ElanWaterGrove",
+    "MinRank": 10,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 11510,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 15947,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 15948,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 15947,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 15948,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 15947,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 15948,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 15937,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "ElanWaterGrove",
+    "MinRank": 15,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 11510,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 15947,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 15948,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 15947,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 15948,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 15948,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 15947,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 15949,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 16002,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 15937,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "FaranaPlains",
+    "MinRank": 1,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 11510,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 15944,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 15945,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 15944,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 15945,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 15944,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 15945,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 15936,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "FaranaPlains",
+    "MinRank": 10,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 11510,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 15944,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 15945,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 15944,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 15945,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 15944,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 15945,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 15936,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "FaranaPlains",
+    "MinRank": 15,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 11510,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 15944,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 15945,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 15944,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 15945,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 15944,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 15945,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 15936,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 15946,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 16001,
+            "ItemNum": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "MorrowForest",
+    "MinRank": 1,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 11510,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 15950,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 15951,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 15950,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 15951,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "MorrowForest",
+    "MinRank": 10,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 11510,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 15950,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 15951,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 15950,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 15951,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 15950,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 15951,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 15952,
+            "ItemNum": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "MorrowForest",
+    "MinRank": 15,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 11510,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 15950,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 15951,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 15950,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 15951,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 16003,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 15952,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 15950,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 15951,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 15938,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "KingalCanyon",
+    "MinRank": 1,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 11510,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 15953,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 15954,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 15953,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 15954,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "KingalCanyon",
+    "MinRank": 10,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 11510,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 15953,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 15954,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 15953,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 15954,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 15955,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 15953,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 15954,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "KingalCanyon",
+    "MinRank": 15,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 11510,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 1000,
+        "SupplyItemList": [
+          {
+            "ItemId": 15953,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 15954,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 15953,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 15954,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 16004,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 15955,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 15953,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 15954,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 15939,
+            "ItemNum": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "RathniteFoothills",
+    "MinRank": 1,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 17886,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 17886,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 18646,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 5
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 17886,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 18646,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 20
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 10000,
+        "SupplyItemList": [
+          {
+            "ItemId": 17886,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 18646,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 50
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "RathniteFoothills",
+    "MinRank": 5,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 17886,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 18646,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 17885,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 18507,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 17883,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 18649,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 17885,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 18507,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 17883,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 18649,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 10000,
+        "SupplyItemList": [
+          {
+            "ItemId": 17885,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 18507,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 17883,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 18649,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "RathniteFoothills",
+    "MinRank": 10,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 17886,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 18646,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 17885,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 18507,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 17883,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 18649,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 5
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 17885,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 18507,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 17883,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 18649,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 20
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 10000,
+        "SupplyItemList": [
+          {
+            "ItemId": 17885,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 18507,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 17883,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 18649,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 50
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "FeryanaWilderness",
+    "MinRank": 1,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 17917,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 17917,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 18141,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 5
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 17917,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 18141,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 20
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 10000,
+        "SupplyItemList": [
+          {
+            "ItemId": 17917,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 18141,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 50
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "FeryanaWilderness",
+    "MinRank": 5,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 17917,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 18141,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 17917,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 18141,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 17915,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 5
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 17917,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 18141,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 17915,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 17916,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 20
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 10000,
+        "SupplyItemList": [
+          {
+            "ItemId": 17917,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 18141,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 17915,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 17916,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 18142,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 18662,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "FeryanaWilderness",
+    "MinRank": 10,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 17917,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 18141,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 17917,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 18141,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 17915,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 17916,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 5
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 17917,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 18141,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 17915,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 17916,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 18142,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 20
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 10000,
+        "SupplyItemList": [
+          {
+            "ItemId": 17917,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 18141,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 17915,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 17916,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 18142,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 18662,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 3
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "MegadosysPlateau",
+    "MinRank": 1,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 21218,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 21218,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 21217,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 5
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 21218,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 21217,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 20
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 10000,
+        "SupplyItemList": [
+          {
+            "ItemId": 21218,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 21217,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 50
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "MegadosysPlateau",
+    "MinRank": 5,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 21218,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 21217,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 21218,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 21217,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 21213,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 5
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 21218,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 21217,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 21213,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 21215,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 20
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 10000,
+        "SupplyItemList": [
+          {
+            "ItemId": 21218,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 21217,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 21213,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 21215,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 21216,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 21214,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "MegadosysPlateau",
+    "MinRank": 10,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 21218,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 21217,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 21218,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 21217,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 21213,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 21215,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 5
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 21218,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 21217,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 21213,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 21215,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 21216,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 21214,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 10000,
+        "SupplyItemList": [
+          {
+            "ItemId": 21218,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 21217,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 21213,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 21215,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 21216,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 21214,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 3
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "UrtecaMountains",
+    "MinRank": 1,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 21260,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 21260,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 21259,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 5
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 21260,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 21259,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 20
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 10000,
+        "SupplyItemList": [
+          {
+            "ItemId": 21260,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 21259,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 50
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "UrtecaMountains",
+    "MinRank": 5,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 21260,
+            "ItemNum": 1
+          },
+          {
+            "ItemId": 21259,
+            "ItemNum": 1
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 21260,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 21259,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 21255,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 5
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 21260,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 21259,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 21255,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 21257,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 20
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 10000,
+        "SupplyItemList": [
+          {
+            "ItemId": 21260,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 21259,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 21255,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 21257,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 21258,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 21256,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "AreaId": "UrtecaMountains",
+    "MinRank": 10,
+    "SupplyItemInfoList": [
+      {
+        "MinAreaPoint": 0,
+        "SupplyItemList": [
+          {
+            "ItemId": 21260,
+            "ItemNum": 2
+          },
+          {
+            "ItemId": 21259,
+            "ItemNum": 2
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 2500,
+        "SupplyItemList": [
+          {
+            "ItemId": 21260,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 21259,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 21255,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 21257,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 3
+          },
+          {
+            "ItemId": 17953,
+            "ItemNum": 5
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 5000,
+        "SupplyItemList": [
+          {
+            "ItemId": 21260,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 21259,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 21255,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 21257,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 21258,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 21256,
+            "ItemNum": 4
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 3
+          }
+        ]
+      },
+      {
+        "MinAreaPoint": 10000,
+        "SupplyItemList": [
+          {
+            "ItemId": 21260,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 21259,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 21255,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 21257,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 21258,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 21256,
+            "ItemNum": 5
+          },
+          {
+            "ItemId": 10133,
+            "ItemNum": 3
+          }
+        ]
+      }
+    ]
+  }
+]

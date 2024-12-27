@@ -12,8 +12,8 @@ namespace Arrowgene.Ddon.Shared.Csv
             if (!uint.TryParse(properties[0], out uint areaId)) return null;
             if (!uint.TryParse(properties[1], out uint textIndex)) return null;
             if (!uint.TryParse(properties[2], out uint spotId)) return null;
-            if (!uint.TryParse(properties[2], out uint unlockRank)) return null;
-            if (!uint.TryParse(properties[3], out uint unlockQuest)) return null;
+            if (!uint.TryParse(properties[3], out uint unlockRank)) return null;
+            if (!uint.TryParse(properties[4], out uint unlockQuest)) return null;
 
             var obj = new AreaRankSpotInfo()
             {
