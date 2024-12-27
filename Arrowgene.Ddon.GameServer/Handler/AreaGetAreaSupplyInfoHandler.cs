@@ -1,13 +1,12 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    /// <summary>
-    /// Client requests what supply items it is currently eligible for, not the whole list. 
-    /// </summary>
     public class AreaGetAreaSupplyInfoHandler : GameRequestPacketHandler<C2SAreaGetAreaSupplyInfoReq, S2CAreaGetAreaSupplyInfoRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(AreaGetAreaSupplyInfoHandler));
@@ -22,7 +21,29 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             var pcap = EntitySerializer.Get<S2CAreaGetAreaSupplyInfoRes>().Read(PcapData);
 
-            return pcap;
+            AreaRank clientRank = client.Character.AreaRanks.Find(x => x.AreaId == request.AreaId);
+            S2CAreaGetAreaSupplyInfoRes res = new();
+
+            var asset = Server.AssetRepository.AreaRankSupplyAsset
+                .Where(x =>
+                    x.AreaId == request.AreaId
+                    && x.MinRank <= clientRank.Rank
+                )
+                .LastOrDefault()
+                ?.SupplyItemInfoList
+                ?? new();
+
+            if (asset.Count > 0)
+            {
+                res.SupplyGrade = (byte)asset.FindLastIndex(x => x.MinAreaPoint <= clientRank.LastWeekPoint);
+            }
+
+            if (client.Character.AreaSupply.ContainsKey(request.AreaId)) 
+            {
+                res.RewardItemInfoList = client.Character.AreaSupply[request.AreaId];
+            }
+
+            return res;
         }
     }
 }

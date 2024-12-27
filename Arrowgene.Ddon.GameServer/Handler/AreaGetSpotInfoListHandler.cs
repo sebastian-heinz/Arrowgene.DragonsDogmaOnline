@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System.Linq;
 
@@ -21,15 +22,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var pcap = EntitySerializer.Get<S2CAreaGetSpotInfoListRes>().Read(PcapData);
             pcap.SpotInfoList = new();
 
-            // TODO: Parse rank info and quest completion to determine which spots to release.
-            foreach (var spot in Server.AssetRepository.AreaRankSpotInfoAsset.Where(x => (uint)x.AreaId == request.AreaId))
+            var clientRank = client.Character.AreaRanks.Find(x => x.AreaId == request.AreaId);
+            var completedQuests = client.Character.CompletedQuests;
+
+            foreach (var spot in Server.AssetRepository.AreaRankSpotInfoAsset.Where(x => x.AreaId == request.AreaId))
             {
                 pcap.SpotInfoList.Add(new()
                 {
                     SpotId = spot.SpotId,
                     TextIndex = spot.TextIndex,
-                    StageId = 2,
-                    IsRelease = true
+                    StageId = 2, // TODO: Figure out if the client actually cares
+                    IsRelease = clientRank.Rank >= spot.UnlockRank
+                     && (spot.UnlockQuest == 0 || completedQuests.ContainsKey((QuestId)spot.UnlockQuest))
                 });
             }
 

@@ -1,6 +1,9 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -14,7 +17,41 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CAreaGetAreaMasterInfoRes Handle(GameClient client, C2SAreaGetAreaMasterInfoReq request)
         {
-            var result = new S2CAreaGetAreaMasterInfoRes.Serializer().Read(PcapData);
+            //var result = new S2CAreaGetAreaMasterInfoRes.Serializer().Read(PcapData);
+
+            var clientRank = client.Character.AreaRanks.Find(x => x.AreaId == request.AreaId);
+            var completedQuests = client.Character.CompletedQuests;
+
+            S2CAreaGetAreaMasterInfoRes result = new();
+
+            result.AreaId = request.AreaId;
+            result.Rank = clientRank.Rank;
+            result.Point = clientRank.Point;
+            result.WeekPoint = clientRank.WeekPoint;
+            result.LastWeekPoint = clientRank.LastWeekPoint;
+            result.ToNextPoint = Server.AreaRankManager.GetMaxPoints(request.AreaId, clientRank.Rank);
+
+            result.ReleaseList = Server.AssetRepository.AreaRankSpotInfoAsset
+                .Where(x => 
+                    x.AreaId == request.AreaId
+                    && x.UnlockRank <= clientRank.Rank
+                    && (x.UnlockQuest == 0 || completedQuests.ContainsKey((QuestId)x.UnlockQuest))
+                )
+                .Select(x => new CDataCommonU32(x.SpotId))
+                .ToList();
+
+            result.CanReceiveSupply = client.Character.AreaSupply.ContainsKey(request.AreaId) && client.Character.AreaSupply[request.AreaId].Any();
+            result.CanRankUp = Server.AreaRankManager.CanRankUp(client, request.AreaId);
+
+            result.SupplyItemInfoList = Server.AssetRepository.AreaRankSupplyAsset
+            .Where(x =>
+                x.AreaId == request.AreaId
+                && x.MinRank <= clientRank.Rank
+            )
+            .LastOrDefault()
+            ?.SupplyItemInfoList
+            ?? new();
+            result.AreaRankUpQuestInfoList = Server.AreaRankManager.RankUpQuestInfo(request.AreaId);
 
             return result;
         }
