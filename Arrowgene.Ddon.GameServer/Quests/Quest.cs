@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Context;
 using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -57,6 +58,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Quest));
         private DdonGameServer Server { get; set; }
+        public QuestSource QuestSource { get; set; }
+        public IQuest BackingObject { get; protected set; }
         protected List<QuestProcess> Processes { get; set; }
         public readonly QuestId QuestId;
         public readonly bool IsDiscoverable;
@@ -151,6 +154,24 @@ namespace Arrowgene.Ddon.GameServer.Quests
             ServerActions = new List<QuestServerAction>();
             Processes = new List<QuestProcess>();
             LightQuestDetail = new CDataLightQuestDetail();
+        }
+
+        /// <summary>
+        /// Checks to see if the quest is active. This includes checking the enabled flag
+        /// and other special conditions like between a date range, time or other conditions.
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="client"></param>
+        /// <returns></returns>
+        public virtual bool IsActive(DdonGameServer server, GameClient client)
+        {
+            bool additionalReqs = true;
+            if (BackingObject != null)
+            {
+                additionalReqs = BackingObject.AcceptRequirementsMet(server, client);
+            }
+            
+            return Enabled && additionalReqs;
         }
 
         private List<CDataQuestProcessState> GetProcessState(uint step, out uint announceNoCount)

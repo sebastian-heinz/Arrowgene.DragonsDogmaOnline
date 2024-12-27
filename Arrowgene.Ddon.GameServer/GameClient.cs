@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.GameServer
             InstanceShopManager = new InstanceShopManager(server.ShopManager);
             InstanceBbmItemManager = new InstanceBitterblackGatheringItemManager();
             InstanceQuestDropManager = new InstanceQuestDropManager();
-            InstanceEventDropItemManager = new InstanceEventDropItemManager(server.AssetRepository);
+            InstanceEventDropItemManager = new InstanceEventDropItemManager(server);
             InstanceEpiDropItemManager = new InstanceEpitaphRoadDropItemManager(server);
             InstanceEpiGatheringManager = new InstanceEpitaphRoadGatheringManager(server);
             GameMode = GameMode.Normal;

@@ -1,6 +1,6 @@
 namespace Arrowgene.Ddon.Shared.Model
 {
-    public enum ExpType : byte
+    public enum PointType : byte
     {
         ExperiencePoints = 1,
         JobPoints = 2,

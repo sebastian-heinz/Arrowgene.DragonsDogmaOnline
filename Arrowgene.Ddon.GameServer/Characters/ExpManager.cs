@@ -510,7 +510,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                     if (client.GameMode == GameMode.Normal)
                     {
-                        addJobPoint += GetScaledPointAmount(RewardSource.None, ExpType.JobPoints, LEVEL_UP_JOB_POINTS_EARNED[targetLevel]);
+                        addJobPoint += GetScaledPointAmount(RewardSource.None, PointType.JobPoints, LEVEL_UP_JOB_POINTS_EARNED[targetLevel]);
                     }
                 }
 
@@ -895,18 +895,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return multiplier;
         }
 
-        public uint GetScaledPointAmount(RewardSource source, ExpType type, uint amount)
+        public uint GetScaledPointAmount(RewardSource source, PointType type, uint amount)
         {
             double modifier = 1.0;
             switch (type)
             {
-                case ExpType.ExperiencePoints:
+                case PointType.ExperiencePoints:
                     modifier = (source == RewardSource.Enemy) ? _GameSettings.EnemyExpModifier : _GameSettings.QuestExpModifier;
                     break;
-                case ExpType.JobPoints:
+                case PointType.JobPoints:
                     modifier = _GameSettings.JpModifier;
                     break;
-                case ExpType.PlayPoints:
+                case PointType.PlayPoints:
                     modifier = _GameSettings.PpModifier;
                     break;
                 default:

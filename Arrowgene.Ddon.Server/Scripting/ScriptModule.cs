@@ -18,6 +18,13 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         /// </summary>
         public abstract bool EnableHotLoad { get; }
 
+        /// <summary>
+        /// Determines if this module is enabled or not. Intended for development;
+        /// should be used such that an in-development module can be checked in but
+        /// disabled until the feature is ready.
+        /// </summary>
+        public virtual bool IsEnabled { get; } = true;
+
         public HashSet<string> Scripts { get; set; }
 
         public ScriptModule()

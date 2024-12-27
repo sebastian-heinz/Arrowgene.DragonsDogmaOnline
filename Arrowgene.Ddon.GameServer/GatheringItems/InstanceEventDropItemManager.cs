@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,18 +13,20 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
 {
     public class InstanceEventDropItemManager
     {
+        private DdonGameServer Server;
         private Dictionary<(StageId, uint), List<InstancedGatheringItem>> EventLootTables;
         private AssetRepository AssetRepository;
 
-        public InstanceEventDropItemManager(AssetRepository assetRepository)
+        public InstanceEventDropItemManager(DdonGameServer server)
         {
+            Server = server;
             EventLootTables = new Dictionary<(StageId, uint), List<InstancedGatheringItem>>();
-            AssetRepository = assetRepository;
+            AssetRepository = Server.AssetRepository;
         }
 
-        private bool DropEnabled(Character character, EventItem item, Enemy enemy, StageId stageId)
+        private bool DropEnabled(GameClient client, EventItem item, Enemy enemy, StageId stageId)
         {
-            if (item.QuestIds.Count > 0 && !item.QuestIds.Any(x => QuestManager.IsQuestEnabled(x)))
+            if (item.QuestIds.Count > 0 && !item.QuestIds.Any(x => QuestManager.GetQuestByScheduleId(x).IsActive(Server, client)))
             {
                 return false;
             }
@@ -54,8 +57,8 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
                 {
                     foreach (var itemId in item.RequiredItemsEquipped)
                     {
-                        if (!character.Equipment.GetItems(EquipType.Performance).Exists(x => x?.ItemId == itemId) &&
-                            !character.Equipment.GetItems(EquipType.Visual).Exists(x => x?.ItemId == itemId))
+                        if (!client.Character.Equipment.GetItems(EquipType.Performance).Exists(x => x?.ItemId == itemId) &&
+                            !client.Character.Equipment.GetItems(EquipType.Visual).Exists(x => x?.ItemId == itemId))
                         {
                             return false;
                         }
@@ -66,8 +69,8 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
                     bool foundItem = false;
                     foreach (var itemId in item.RequiredItemsEquipped)
                     {
-                        if (character.Equipment.GetItems(EquipType.Performance).Exists(x => x?.ItemId == itemId) ||
-                            character.Equipment.GetItems(EquipType.Visual).Exists(x => x?.ItemId == itemId))
+                        if (client.Character.Equipment.GetItems(EquipType.Performance).Exists(x => x?.ItemId == itemId) ||
+                            client.Character.Equipment.GetItems(EquipType.Visual).Exists(x => x?.ItemId == itemId))
                         {
                             foundItem = true;
                             break;
@@ -81,7 +84,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
                 }
             }
 
-            if (item.RequiresLanternLit && !character.IsLanternLit)
+            if (item.RequiresLanternLit && !client.Character.IsLanternLit)
             {
                 return false;
             }
@@ -154,7 +157,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
                 List<InstancedGatheringItem> results = new List<InstancedGatheringItem>();
                 foreach (var item in AssetRepository.EventDropsAsset.EventItems)
                 {
-                    if (!DropEnabled(client.Character, item, enemy, stageId))
+                    if (!DropEnabled(client, item, enemy, stageId))
                     {
                         continue;
                     }

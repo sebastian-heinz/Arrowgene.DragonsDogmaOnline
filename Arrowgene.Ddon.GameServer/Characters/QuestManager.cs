@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
@@ -42,44 +43,58 @@ namespace Arrowgene.Ddon.GameServer.Characters
             25077, 43645, 43646, 47734, 47736, 47737, 47738, 47739, 49692, 77644, 151381, 208640, 233576, 259411, 259412, 287378, 315624
         };
 
+        private static void AddQuestToCategory(Quest quest)
+        {
+            if (!gVariantQuests.ContainsKey(quest.QuestId))
+            {
+                gVariantQuests[quest.QuestId] = new List<Quest>();
+            }
+            gVariantQuests[quest.QuestId].Add(quest);
+
+            if (quest.QuestType == QuestType.Tutorial)
+            {
+                uint stageNo = (uint)StageManager.ConvertIdToStageNo(quest.StageId);
+                if (!gTutorialQuests.ContainsKey(stageNo))
+                {
+                    gTutorialQuests[stageNo] = new HashSet<uint>();
+                }
+                gTutorialQuests[stageNo].Add(quest.QuestScheduleId);
+            }
+            else if (quest.QuestType == QuestType.World)
+            {
+                if (!gWorldQuests.ContainsKey(quest.QuestAreaId))
+                {
+                    gWorldQuests[quest.QuestAreaId] = new HashSet<QuestId>();
+                }
+                gWorldQuests[quest.QuestAreaId].Add(quest.QuestId);
+            }
+        }
+
         public static void LoadQuests(DdonGameServer server)
         {
             var assetRepository = server.AssetRepository;
 
-            // TODO: Quests should probably operate on the QuestScheduleID instead of QuestId so the global list can still contain all quests
-            // TODO: Then quests can be distributed to different lists for faster lookup (like world by area id or personal by stageno)
+            // Iterate over quests generated from script
+            foreach (var questScript in server.ScriptManager.QuestModule.QuestsByScheduleId.Values)
+            {
+                gQuests[questScript.QuestScheduleId] = questScript.GenerateQuest(server);
+
+                var quest = gQuests[questScript.QuestScheduleId];
+                if (quest.Enabled)
+                {
+                    AddQuestToCategory(quest);
+                }
+            }
+
+            // Iterate over quests generated from json
             foreach (var questAsset in assetRepository.QuestAssets.Quests)
             {
                 gQuests[questAsset.QuestScheduleId] = GenericQuest.FromAsset(server, questAsset);
 
                 var quest = gQuests[questAsset.QuestScheduleId];
-                if (!quest.Enabled)
+                if (quest.Enabled)
                 {
-                    continue;
-                }
-
-                if (!gVariantQuests.ContainsKey(quest.QuestId))
-                {
-                    gVariantQuests[quest.QuestId] = new List<Quest>();
-                }
-                gVariantQuests[quest.QuestId].Add(quest);
-
-                if (quest.QuestType == QuestType.Tutorial)
-                {
-                    uint stageNo = (uint)StageManager.ConvertIdToStageNo(quest.StageId);
-                    if (!gTutorialQuests.ContainsKey(stageNo))
-                    {
-                        gTutorialQuests[stageNo] = new HashSet<uint>();
-                    }
-                    gTutorialQuests[stageNo].Add(quest.QuestScheduleId);
-                }
-                else if (quest.QuestType == QuestType.World)
-                {
-                    if (!gWorldQuests.ContainsKey(quest.QuestAreaId))
-                    {
-                        gWorldQuests[quest.QuestAreaId] = new HashSet<QuestId>();
-                    }
-                    gWorldQuests[quest.QuestAreaId].Add(quest.QuestId);
+                    AddQuestToCategory(quest);
                 }
             }
         }

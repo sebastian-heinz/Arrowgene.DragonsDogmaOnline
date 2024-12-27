@@ -15,6 +15,9 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         StageClear = 10,
         UrgentUpdate = 11,
         Unknown0 = 12,
-        None = 13
+        None = 13,
+        // Pseudo Update States
+        Checkpoint = 14,
+        CheckpointAndUpdate = 15,
     }
 }

@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -14,9 +15,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(GenericQuest));
 
-        public static GenericQuest FromAsset(DdonGameServer server, QuestAssetData questAsset)
+        public static GenericQuest FromAsset(DdonGameServer server, QuestAssetData questAsset, IQuest backingObject = null)
         {
-            var quest = new GenericQuest(server, questAsset.QuestId, questAsset.QuestScheduleId, questAsset.Type, questAsset.Discoverable);
+            var quest = new GenericQuest(server, questAsset.QuestId, questAsset.QuestScheduleId, questAsset.QuestType, questAsset.Discoverable);
+
+            quest.QuestSource = questAsset.QuestSource;
+            quest.BackingObject = backingObject;
 
             quest.QuestAreaId = questAsset.QuestAreaId;
             quest.NewsImageId = questAsset.NewsImageId;
@@ -42,8 +46,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
             {
                 quest.ExpRewards.Add(new CDataQuestExp()
                 {
-                    Type = pointReward.ExpType,
-                    Reward = pointReward.ExpReward
+                    Type = pointReward.PointType,
+                    Reward = pointReward.Amount
                 });
             }
 
@@ -576,6 +580,23 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         }
                     }
                     break;
+                case QuestBlockType.IsQuestClear:
+                    {
+                        switch (questBlock.QuestIsClearDetails.QuestType)
+                        {
+                            case QuestType.Main:
+                                checkCommands.Add(QuestManager.CheckCommand.IsMainQuestClear((int)questBlock.QuestIsClearDetails.QuestId));
+                                break;
+                            case QuestType.Light:
+                                // case QuestType.World:
+                                checkCommands.Add(QuestManager.CheckCommand.IsClearLightQuest((int)questBlock.QuestIsClearDetails.QuestId));
+                                break;
+                            case QuestType.Tutorial:
+                                checkCommands.Add(QuestManager.CheckCommand.IsTutorialQuestClear((int)questBlock.QuestIsClearDetails.QuestId));
+                                break;
+                        }
+                    }
+                    break;
                 case QuestBlockType.MyQstFlags:
                     {
                         foreach (var flag in questBlock.MyQstCheckFlags)
@@ -625,6 +646,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
                                                         questBlock.QuestEvent.StartPosNo));
                                 break;
                         }
+                    }
+                    break;
+                case QuestBlockType.StageJump:
+                    {
+                        checkCommands.Add(QuestManager.CheckCommand.StageNo(StageManager.ConvertIdToStageNo(questBlock.StageId)));
+                        resultCommands.Add(QuestManager.ResultCommand.StageJump(StageManager.ConvertIdToStageNo(questBlock.StageId), (int) questBlock.JumpPos));
                     }
                     break;
                 case QuestBlockType.KillTargetEnemies:

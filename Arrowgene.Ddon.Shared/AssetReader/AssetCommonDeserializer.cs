@@ -30,7 +30,10 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             uint groupId = 0;
             foreach (var jGroup in jGroups.EnumerateArray())
             {
-                QuestEnemyGroup enemyGroup = new QuestEnemyGroup();
+                QuestEnemyGroup enemyGroup = new QuestEnemyGroup()
+                {
+                    GroupId = groupId
+                };
 
                 if (!jGroup.TryGetProperty("stage_id", out JsonElement jStageId))
                 {

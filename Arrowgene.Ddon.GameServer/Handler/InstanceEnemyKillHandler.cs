@@ -180,10 +180,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var expCurveMixin = Server.ScriptManager.MixinModule.Get<IExpMixin>("exp");
 
                 uint baseEnemyExp = expCurveMixin.GetExpValue(enemyKilled);
-                baseEnemyExp = _gameServer.ExpManager.GetScaledPointAmount(RewardSource.Enemy, ExpType.ExperiencePoints, baseEnemyExp);
+                baseEnemyExp = _gameServer.ExpManager.GetScaledPointAmount(RewardSource.Enemy, PointType.ExperiencePoints, baseEnemyExp);
                 
                 uint calcExp = _gameServer.ExpManager.GetAdjustedExp(client.GameMode, RewardSource.Enemy, client.Party, baseEnemyExp, enemyKilled.Lv);
-                uint calcPP = _gameServer.ExpManager.GetScaledPointAmount(RewardSource.Enemy, ExpType.PlayPoints, enemyKilled.GetDroppedPlayPoints());
+                uint calcPP = _gameServer.ExpManager.GetScaledPointAmount(RewardSource.Enemy, PointType.PlayPoints, enemyKilled.GetDroppedPlayPoints());
 
                 foreach (PartyMember member in client.Party.Members)
                 {

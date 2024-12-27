@@ -54,5 +54,10 @@ namespace Arrowgene.Ddon.Shared.Model
         {
             return $"StageId(Id={Id}, LayerNo={LayerNo}, GroupId={GroupId})";
         }
+
+        public static readonly StageId Lestania          = new StageId(1, 0, 0);
+        public static readonly StageId WhiteDragonTemple = new StageId(2, 0, 0);
+        public static readonly StageId AudienceChamber   = new StageId(3, 0, 0);
+        public static readonly StageId PawnCathedral     = new StageId(78, 0, 0);
     }
 }

@@ -9,7 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 
-
 namespace Arrowgene.Ddon.Shared.AssetReader
 {
     public class QuestAssetDeserializer
@@ -55,7 +54,11 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     continue;
                 }
 
-                QuestAssetData assetData = new QuestAssetData();
+                QuestAssetData assetData = new QuestAssetData()
+                {
+                    QuestSource = QuestSource.Json
+                };
+
                 if (!ParseQuest(assetData, jQuest))
                 {
                     Logger.Error($"Unable to parse '{file.FullName}'. Skipping.");
@@ -76,7 +79,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 return false;
             }
 
-            assetData.Type = questType;
+            assetData.QuestType = questType;
             assetData.QuestId = (QuestId)jQuest.GetProperty("quest_id").GetUInt32();
             assetData.BaseLevel = jQuest.GetProperty("base_level").GetUInt16();
             assetData.MinimumItemRank = jQuest.GetProperty("minimum_item_rank").GetByte();
@@ -113,7 +116,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 assetData.QuestScheduleId = jQuestScheduleId.GetUInt32();
             }
 
-            assetData.OverrideEnemySpawn = (assetData.Type == QuestType.Main || assetData.Type == QuestType.ExtremeMission);
+            assetData.OverrideEnemySpawn = (assetData.QuestType == QuestType.Main || assetData.QuestType == QuestType.ExtremeMission);
             if (jQuest.TryGetProperty("override_enemy_spawn", out JsonElement jOverrideEnemySpawn))
             {
                 assetData.OverrideEnemySpawn = jOverrideEnemySpawn.GetBoolean();
@@ -353,24 +356,24 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         }
                         break;
                     case "exp":
-                        assetData.PointRewards.Add(new PointReward()
+                        assetData.PointRewards.Add(new QuestPointReward()
                         {
-                            ExpType = ExpType.ExperiencePoints,
-                            ExpReward = reward.GetProperty("amount").GetUInt32()
+                            PointType = PointType.ExperiencePoints,
+                            Amount = reward.GetProperty("amount").GetUInt32()
                         });
                         break;
                     case "pp":
-                        assetData.PointRewards.Add(new PointReward()
+                        assetData.PointRewards.Add(new QuestPointReward()
                         {
-                            ExpType = ExpType.PlayPoints,
-                            ExpReward = reward.GetProperty("amount").GetUInt32()
+                            PointType = PointType.PlayPoints,
+                            Amount = reward.GetProperty("amount").GetUInt32()
                         });
                         break;
                     case "jp":
-                        assetData.PointRewards.Add(new PointReward()
+                        assetData.PointRewards.Add(new QuestPointReward()
                         {
-                            ExpType = ExpType.JobPoints,
-                            ExpReward = reward.GetProperty("amount").GetUInt32()
+                            PointType = PointType.JobPoints,
+                            Amount = reward.GetProperty("amount").GetUInt32()
                         });
                         break;
                     case "wallet":
@@ -378,7 +381,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         {
                             continue;
                         }
-                        assetData.RewardCurrency.Add(new QuestRewardCurrency()
+                        assetData.RewardCurrency.Add(new QuestWalletReward()
                         {
                             WalletType = walletType,
                             Amount = reward.GetProperty("amount").GetUInt32()

@@ -564,7 +564,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             uint amount = point.Reward;
             switch (point.Type)
             {
-                case ExpType.ExperiencePoints:
+                case PointType.ExperiencePoints:
                     amount = server.ExpManager.GetAdjustedExp(client.GameMode, RewardSource.Quest, null, point.Reward, 0);
                     break;
                 default:
@@ -607,7 +607,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
                 switch (point.Type)
                 {
-                    case ExpType.ExperiencePoints:
+                    case PointType.ExperiencePoints:
                         packets.AddRange(server.ExpManager.AddExp(client, client.Character, amount, RewardSource.Quest, quest.QuestType, connectionIn));
                         if (server.GameLogicSettings.EnableMainPartyPawnsQuestRewards)
                         {
@@ -620,7 +620,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             }
                         }
                         break;
-                    case ExpType.JobPoints:
+                    case PointType.JobPoints:
                         packets.AddRange(server.ExpManager.AddJp(client, client.Character, amount, RewardSource.Quest, quest.QuestType, connectionIn));
                         if (server.GameLogicSettings.EnableMainPartyPawnsQuestRewards)
                         {
@@ -633,7 +633,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             }
                         }
                         break;
-                    case ExpType.PlayPoints:
+                    case PointType.PlayPoints:
                         var ntc = server.PPManager.AddPlayPoint(client, amount, type: 1, connectionIn: connectionIn);
                         client.Enqueue(ntc, packets);
                         break;
