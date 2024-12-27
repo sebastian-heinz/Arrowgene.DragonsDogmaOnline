@@ -57,6 +57,8 @@ namespace Arrowgene.Ddon.Shared
         public const string EpitaphRoadKey = "EpitaphRoad.json";
         public const string LoadingInfoKey = "LoadingInfo.json";
         public const string AreaRankSpotInfoKey = "AreaRankSpotInfo.csv";
+        public const string AreaRankSupplyKey = "AreaRankSupply.json";
+        public const string AreaRankRequirementKey = "AreaRankRequirements.json";
 
         public const string QuestAssestKey = "quests";
         public const string EpitaphAssestKey = "epitaph";
@@ -116,7 +118,9 @@ namespace Arrowgene.Ddon.Shared
             PawnCraftSkillSpeedRateAsset = new();
             PawnCraftMasterLegendAsset = new();
             LoadingInfoAsset = new();
-            AreaRankSpotInfoAsset = new(); 
+            AreaRankSpotInfoAsset = new();
+            AreaRankSupplyAsset = new();
+            AreaRankRequirementAsset = new();
         }
 
         public Dictionary<ErrorCode, ClientErrorCode> ClientErrorCodes { get; private set; }
@@ -156,6 +160,8 @@ namespace Arrowgene.Ddon.Shared
         public EpitaphTrialAsset EpitaphTrialAssets { get; private set; }
         public List<CDataLoadingInfoSchedule> LoadingInfoAsset { get; private set; }
         public List<AreaRankSpotInfo> AreaRankSpotInfoAsset { get; private set; }
+        public List<AreaRankSupply> AreaRankSupplyAsset { get; private set; }
+        public List<AreaRankRequirement> AreaRankRequirementAsset { get; private set; }
 
         public void Initialize()
         {
@@ -194,6 +200,8 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => PawnCraftMasterLegendAsset = value, PawnCraftMasterLegendKey, new PawnCraftMasterLegendDeserializer());
             RegisterAsset(value => LoadingInfoAsset = value, LoadingInfoKey, new LoadingInfoDeserializer());
             RegisterAsset(value => AreaRankSpotInfoAsset = value, AreaRankSpotInfoKey, new AreaRankSpotInfoCsv());
+            RegisterAsset(value => AreaRankSupplyAsset = value, AreaRankSupplyKey, new AreaRankSupplyDeserializer());
+            RegisterAsset(value => AreaRankRequirementAsset = value, AreaRankRequirementKey, new AreaRankRequirementDeserializer());
 
             // This must be set before calling QuestAssertDeserializer and EpitaphTrialAssertDeserializer
             var commonEnemyDeserializer = new AssetCommonDeserializer(this.NamedParamAsset);
