@@ -600,5 +600,17 @@ namespace Arrowgene.Ddon.Database
         // Scheduler
         Dictionary<TaskType, SchedulerTaskEntry> SelectAllTaskEntries();
         bool UpdateScheduleInfo(TaskType type, long timestamp);
+
+        // Area Rank
+        bool InsertAreaRank(uint characterId, AreaRank areaRank, DbConnection? connectionIn = null);
+        bool UpdateAreaRank(uint characterId, AreaRank areaRank, DbConnection? connectionIn = null);
+        List<AreaRank> SelectAreaRank(uint characterId, DbConnection? connectionIn = null);
+        List<(uint CharacterId, AreaRank Rank)> SelectAllAreaRank(DbConnection? connectionIn = null);
+        bool ResetAreaRankPoint(DbConnection? connectionIn = null);
+        bool InsertAreaRankSupply(uint characterId, QuestAreaId areaId, uint index, uint itemId, uint num, DbConnection? connectionIn = null);
+        bool UpdateAreaRankSupply(uint characterId, QuestAreaId areaId, uint index, uint itemId, uint num, DbConnection? connectionIn = null);
+        Dictionary<QuestAreaId, List<CDataRewardItemInfo>> SelectAreaRankSupply(uint characterId, DbConnection? connectionIn = null);
+        List<CDataRewardItemInfo> SelectAreaRankSupply(uint characterId, QuestAreaId areaId, DbConnection? connectionIn = null);
+        bool DeleteAreaRankSupply(DbConnection? connectionIn = null);
     }
 }

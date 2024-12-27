@@ -423,6 +423,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             //Clan membership
             character.ClanId = SelectClanMembershipByCharacterId(character.CharacterId, conn);
             character.ClanName = GetClanNameByClanId(character.ClanId);
+
+            // Area Ranks
+            character.AreaRanks = SelectAreaRank(character.CharacterId, conn);
+            character.AreaSupply = SelectAreaRankSupply(character.CharacterId, conn);
         }
 
         public bool UpdateMyPawnSlot(uint characterId, uint num)
