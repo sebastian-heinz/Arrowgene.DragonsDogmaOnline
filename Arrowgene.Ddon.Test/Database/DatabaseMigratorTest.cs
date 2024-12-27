@@ -425,6 +425,20 @@ namespace Arrowgene.Ddon.Test.Database
 
         public Dictionary<TaskType, SchedulerTaskEntry> SelectAllTaskEntries() { return new(); }
         public bool UpdateScheduleInfo(TaskType type, long timestamp) { return true; }
+        public List<CDataRegisterdPawnList> SelectRegisteredPawns(Character searchingCharacter, CDataPawnSearchParameter searchParams) { return new List<CDataRegisterdPawnList>(); }
+        public List<CDataRegisterdPawnList> SelectRegisteredPawns(DbConnection conn, Character searchingCharacter, CDataPawnSearchParameter searchParams) { return new List<CDataRegisterdPawnList>(); }
+        public void DeleteWeeklyEpitaphClaimedRewards(DbConnection? connectionIn = null) { }
+        public bool InsertAreaRank(uint characterId, AreaRank areaRank, DbConnection? connectionIn = null) { return true; }
+        public bool UpdateAreaRank(uint characterId, AreaRank areaRank, DbConnection? connectionIn = null) { return true; }
+        public List<AreaRank> SelectAreaRank(uint characterId, DbConnection? connectionIn = null) { return new(); }
+        public List<(uint CharacterId, AreaRank Rank)> SelectAllAreaRank(DbConnection? connectionIn = null) { return new(); }
+        public bool ResetAreaRankPoint(DbConnection? connectionIn = null) { return true; }
+        public bool InsertAreaRankSupply(uint characterId, QuestAreaId areaId, uint index, uint itemId, uint num, DbConnection? connectionIn = null) { return true; }
+        public bool UpdateAreaRankSupply(uint characterId, QuestAreaId areaId, uint index, uint itemId, uint num, DbConnection? connectionIn = null) { return true; }
+        public Dictionary<QuestAreaId, List<CDataRewardItemInfo>> SelectAreaRankSupply(uint characterId, DbConnection? connectionIn = null) { return new(); }
+        public List<CDataRewardItemInfo> SelectAreaRankSupply(uint characterId, QuestAreaId areaId, DbConnection? connectionIn = null) { return new(); }
+        public bool DeleteAreaRankSupply(DbConnection? connectionIn = null) { return true; }
+
 
         public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
         public void AddParameter(DbCommand command, string name, string value) { }
@@ -451,8 +465,6 @@ namespace Arrowgene.Ddon.Test.Database
         public List<CDataRegisterdPawnList> SelectRegisteredPawns(Character searchingCharacter, CDataPawnSearchParameter searchParams) { return new List<CDataRegisterdPawnList>(); }
         public List<CDataRegisterdPawnList> SelectRegisteredPawns(DbConnection conn, Character searchingCharacter, CDataPawnSearchParameter searchParams) { return new List<CDataRegisterdPawnList>(); }
         public void DeleteWeeklyEpitaphClaimedRewards(DbConnection? connectionIn = null) { }
-
-        
     }
 
     class MockMigrationStrategy : IMigrationStrategy
