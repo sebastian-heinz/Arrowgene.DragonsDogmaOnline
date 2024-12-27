@@ -1,130 +1,138 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "A Forbidden Disclosure",
-    "quest_id": 21000048,
-    "base_level": 65,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-	"area_id": "BloodbaneIsle",
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Forbidden Disclosure",
+  "quest_id": 21000048,
+  "base_level": 65,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "BloodbaneIsle",
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 2144
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 275
+    },
+    {
+      "type": "exp",
+      "amount": 7034
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 2144
+          "item_id": 11775,
+          "num": 3
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 275
+          "item_id": 7848,
+          "num": 3
         },
         {
-            "type": "exp",
-            "amount": 7034
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 11775,
-                    "num": 3
-                },
-                {
-                    "item_id": 7848,
-                    "num": 3
-                },
-                {
-                    "item_id": 9364,
-                    "num": 3
-                }
-            ]
+          "item_id": 9364,
+          "num": 3
         }
-    ],
-    "enemy_groups" : [
-        {
-            "stage_id": {
-                "id": 321,
-                "group_id": 2
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015100",
-                    "level": 65,
-                    "exp": 50000,
-                    "is_boss": true
+      ]
     },
     {
-                    "enemy_id": "0x010162",
-                    "level": 65,
-                    "exp": 3500,
-                    "is_boss": false
-    },
-    {
-                    "enemy_id": "0x010162",
-                    "level": 65,
-                    "exp": 3500,
-                    "is_boss": false
-    },
-    {
-        "enemy_id": "0x010430",
-        "level": 65,
-        "exp": 3500,
-        "is_boss": false
-    },
-    {
-        "enemy_id": "0x010430",
-        "level": 65,
-        "exp": 3500,
-        "is_boss": false
+      "type": "ap",
+      "amount": 500
     }
-            ]
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 321,
+        "group_id": 2
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015100",
+          "level": 65,
+          "exp": 50000,
+          "is_boss": true
+        },
+        {
+          "enemy_id": "0x010162",
+          "level": 65,
+          "exp": 3500,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010162",
+          "level": 65,
+          "exp": 3500,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010430",
+          "level": 65,
+          "exp": 3500,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010430",
+          "level": 65,
+          "exp": 3500,
+          "is_boss": false
         }
-    ],
-    "blocks": [
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 317
+      },
+      "npc_id": "Rolf",
+      "message_id": 10800
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 317,
+        "group_id": 1
+      },
+      "npc_id": "Rolf",
+      "announce_type": "Accept",
+      "items": [
         {
-            "type": "NpcTalkAndOrder",
-            "stage_id": {
-                "id": 317
-            },
-            "npc_id": "Rolf",
-            "message_id": 10800
-        },
-        {
-            "type": "DeliverItems",
-            "stage_id": {
-                "id": 317,
-                "group_id": 1
-            },
-            "npc_id": "Rolf",
-            "announce_type": "Accept",
-            "items": [
-                {
-                    "id": 7956,
-                    "amount": 2
-                }
-            ],
-            "message_id": 10737
-        },
-        {
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {
-            "type": "TalkToNpc",
-            "stage_id": {
-                "id": 317,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Update",
-            "npc_id": "Rolf",
-            "message_id": 11842
+          "id": 7956,
+          "amount": 2
         }
-    ]
+      ],
+      "message_id": 10737
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 317,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Rolf",
+      "message_id": 11842
+    }
+  ]
 }

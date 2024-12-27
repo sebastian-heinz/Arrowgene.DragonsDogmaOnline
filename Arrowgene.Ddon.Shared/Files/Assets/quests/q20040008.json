@@ -37,6 +37,10 @@
           "num": 2
         }
       ]
+    },
+    {
+      "type": "ap",
+      "amount": 130
     }
   ],
   "enemy_groups": [
@@ -176,7 +180,9 @@
     {
       "type": "KillGroup",
       "announce_type": "Update",
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "NewTalkToNpc",

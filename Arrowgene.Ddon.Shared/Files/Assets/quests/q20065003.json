@@ -39,6 +39,10 @@
           "num": 3
         }
       ]
+    },
+    {
+      "type": "ap",
+      "amount": 390
     }
   ],
   "enemy_groups": [
@@ -53,28 +57,30 @@
           "comment": "Silv roar",
           "enemy_id": "0x015505",
           "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 56,
+          "named_enemy_params_id": 56,
           "level": 41,
           "exp": 6590,
           "is_boss": true,
           "is_manual_set": false,
           "index": 4
         }
-        
-        
       ]
     }
   ],
   "blocks": [
     {
       "type": "DiscoverEnemy",
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Accept",
       "reset_group": false,
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     }
   ]
 }

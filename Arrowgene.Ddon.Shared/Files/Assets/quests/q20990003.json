@@ -1,120 +1,133 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "Inherited Experience",
-    "quest_id": 20990003,
-    "base_level": 50,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-    "area_id": "MergodaRuins",
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Inherited Experience",
+  "quest_id": 20990003,
+  "base_level": 50,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "MergodaRuins",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1370
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1100
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 220
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "exp",
-            "amount": 1370
+          "item_id": 8033,
+          "num": 2
         },
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 1100
+          "item_id": 8023,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 220
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 8033,
-                    "num": 2
-                },
-                {
-                    "item_id": 8023,
-                    "num": 1
-                },
-                {
-                    "item_id": 41,
-                    "num": 2
-                }
-            ]
+          "item_id": 41,
+          "num": 2
         }
-    ],
-    "enemy_groups" : [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 580
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 58,
+        "group_id": 0
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 58,
-                "group_id": 0
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x011020",
-                    "level": 50,
-                    "exp": 1500,
-                    "is_boss": false,
-                    "hm_present_no": 59
-                },
-                {
-                    "enemy_id": "0x011023",
-                    "level": 50,
-                    "exp": 1500,
-                    "is_boss": false,
-                    "hm_present_no": 62
-                },
-                {
-                    "enemy_id": "0x011024",
-                    "level": 50,
-                    "exp": 1500,
-                    "is_boss": false,
-                    "hm_present_no": 63
-                }
-            ]
+          "enemy_id": "0x011020",
+          "level": 50,
+          "exp": 1500,
+          "is_boss": false,
+          "hm_present_no": 59
+        },
+        {
+          "enemy_id": "0x011023",
+          "level": 50,
+          "exp": 1500,
+          "is_boss": false,
+          "hm_present_no": 62
+        },
+        {
+          "enemy_id": "0x011024",
+          "level": 50,
+          "exp": 1500,
+          "is_boss": false,
+          "hm_present_no": 63
         }
-    ],
-    "blocks": [
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 56,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Ariadne",
+      "message_id": 11372
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Accept",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "reset_group": false,
+      "announce_type": "Update",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "CollectItem",
+      "announce_type": "Update",
+      "stage_id": {
+        "id": 58,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "flags": [
         {
-            "type": "NpcTalkAndOrder",
-            "stage_id": {
-                "id": 56,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "npc_id": "Ariadne",
-            "message_id": 11372
-        },
-        {
-            "type": "DiscoverEnemy",
-            "announce_type": "Accept",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "reset_group": false,
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {
-            "type": "CollectItem",
-            "announce_type": "Update",
-            "stage_id": {
-                "id": 58,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 1302, "comment": "Spawns Glowing Item"}
-            ]
-        },
-        {
-            "type": "TalkToNpc",
-            "stage_id": {
-                "id": 56,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Update",
-            "npc_id": "Ariadne",
-            "message_id": 11842
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1302,
+          "comment": "Spawns Glowing Item"
         }
-    ]
+      ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 56,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Ariadne",
+      "message_id": 11842
+    }
+  ]
 }

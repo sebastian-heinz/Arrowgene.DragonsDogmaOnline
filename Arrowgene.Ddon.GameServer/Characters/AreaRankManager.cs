@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
@@ -113,10 +114,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .ToList();
         }
 
-        public PacketQueue AddAreaPoint(GameClient client, QuestAreaId areaId, uint point)
+        public PacketQueue AddAreaPoint(GameClient client, QuestAreaId areaId, uint point, DbConnection? connectionIn = null)
         {
             PacketQueue queue = new PacketQueue();
             AreaRank clientRank = client.Character.AreaRanks.Find(x => x.AreaId == areaId);
+            if (clientRank is null || clientRank.Rank == 0) {
+                return queue;
+            }
 
             List<AreaRankRequirement> requirements = Server.AssetRepository.AreaRankRequirementAsset.Where(x => x.AreaId == areaId).ToList();
             var nextRank = requirements.Find(x => x.Rank == clientRank.Rank + 1);
@@ -145,7 +149,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }, queue);
             }
 
-            Server.Database.UpdateAreaRank(client.Character.CharacterId, clientRank);
+            Server.Database.UpdateAreaRank(client.Character.CharacterId, clientRank, connectionIn);
 
             return queue;
         }

@@ -39,21 +39,25 @@
           "num": 2
         }
       ]
-  },
+    },
+    {
+      "type": "random",
+      "loot_pool": [
         {
-              "type": "random",
-              "loot_pool": [
-                {
-                  "item_id": 9303,
-                  "num": 1,
-                  "chance": 0.4
-                },
-                {
-                  "item_id": 7852,
-                  "num": 3,
-                  "chance": 0.6
-                }
+          "item_id": 9303,
+          "num": 1,
+          "chance": 0.4
+        },
+        {
+          "item_id": 7852,
+          "num": 3,
+          "chance": 0.6
+        }
       ]
+    },
+    {
+      "type": "ap",
+      "amount": 480
     }
   ],
   "enemy_groups": [
@@ -67,7 +71,7 @@
         {
           "enemy_id": "0x015301",
           "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 54,
+          "named_enemy_params_id": 54,
           "level": 45,
           "exp": 6476,
           "is_boss": true,
@@ -79,13 +83,17 @@
   "blocks": [
     {
       "type": "DiscoverEnemy",
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Accept",
       "reset_group": false,
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     }
   ]
 }

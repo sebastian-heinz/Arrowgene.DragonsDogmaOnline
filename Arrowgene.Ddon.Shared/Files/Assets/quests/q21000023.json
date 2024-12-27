@@ -1,80 +1,84 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "A Path Hardened By Cold Winds",
-    "quest_id": 21000023,
-    "base_level": 60,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-	"area_id": "BloodbaneIsle",	
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Path Hardened By Cold Winds",
+  "quest_id": 21000023,
+  "base_level": 60,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "BloodbaneIsle",
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1980
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 250
+    },
+    {
+      "type": "exp",
+      "amount": 6809
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 1980
+          "item_id": 11504,
+          "num": 3
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 250
+          "item_id": 7901,
+          "num": 5
         },
         {
-            "type": "exp",
-            "amount": 6809
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 11504,
-                    "num": 3
-                },
-                {					
-                    "item_id": 7901,
-                    "num": 5
-                },
-                {				
-                    "item_id": 7555,
-                    "num": 3					
-                }
-            ]
+          "item_id": 7555,
+          "num": 3
         }
-    ],
-    "enemy_groups" : [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 500
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 330,
+        "group_id": 3
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 330,
-                "group_id": 3
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x010315",
-                    "level": 60,
-                    "exp": 3500,
-                    "is_boss": false
-    },
-    {
-                    "enemy_id": "0x010315",
-                    "level": 60,
-                    "exp": 3500,
-                    "is_boss": false
-    },
-    {
-                    "enemy_id": "0x010511",
-                    "level": 60,
-                    "exp": 4500,
-                    "is_boss": false
-    },
-    {
-                    "enemy_id": "0x010511",
-                    "level": 60,
-                    "exp": 4500,
-                    "is_boss": false					
-                }
-            ]
+          "enemy_id": "0x010315",
+          "level": 60,
+          "exp": 3500,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010315",
+          "level": 60,
+          "exp": 3500,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010511",
+          "level": 60,
+          "exp": 4500,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010511",
+          "level": 60,
+          "exp": 4500,
+          "is_boss": false
         }
-    ],		
-    "blocks": [
+      ]
+    }
+  ],
+  "blocks": [
     {
       "type": "NpcTalkAndOrder",
       "stage_id": {
@@ -98,27 +102,31 @@
         }
       ],
       "message_id": 10737
-        },
-        {
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {		
-            "type": "TalkToNpc",
-            "stage_id": {
-                "id": 317,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Update",
-            "npc_id": "Rolf",
-            "message_id": 11842			
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 317,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Rolf",
+      "message_id": 11842
     }
   ]
 }

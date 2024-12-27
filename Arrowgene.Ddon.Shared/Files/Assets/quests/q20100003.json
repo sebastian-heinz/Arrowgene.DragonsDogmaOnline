@@ -39,6 +39,10 @@
           "num": 1
         }
       ]
+    },
+    {
+      "type": "ap",
+      "amount": 390
     }
   ],
   "enemy_groups": [
@@ -97,12 +101,16 @@
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
       "announce_type": "Accept",
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Update",
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "NewTalkToNpc",

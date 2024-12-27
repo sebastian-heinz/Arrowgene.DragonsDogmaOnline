@@ -35,6 +35,10 @@
           "num": 2
         }
       ]
+    },
+    {
+      "type": "ap",
+      "amount": 90
     }
   ],
   "enemy_groups": [
@@ -47,7 +51,7 @@
         {
           "comment": "Giant Saurian",
           "start_think_tbl_no": 1,
-		      "enemy_id": "0x010401",
+          "enemy_id": "0x010401",
           "level": 16,
           "exp": 310,
           "is_boss": false
@@ -55,7 +59,7 @@
         {
           "comment": "Giant Saurian",
           "start_think_tbl_no": 1,
-		      "enemy_id": "0x010401",
+          "enemy_id": "0x010401",
           "level": 16,
           "exp": 310,
           "is_boss": false
@@ -63,7 +67,7 @@
         {
           "comment": "Giant Saurian",
           "start_think_tbl_no": 1,
-		      "enemy_id": "0x010401",
+          "enemy_id": "0x010401",
           "level": 16,
           "exp": 310,
           "is_boss": false
@@ -71,7 +75,7 @@
         {
           "comment": "Giant Saurian",
           "start_think_tbl_no": 1,
-		      "enemy_id": "0x010401",
+          "enemy_id": "0x010401",
           "level": 16,
           "exp": 310,
           "is_boss": false
@@ -79,7 +83,7 @@
         {
           "comment": "Giant Saurian",
           "start_think_tbl_no": 1,
-		      "enemy_id": "0x010401",
+          "enemy_id": "0x010401",
           "level": 16,
           "exp": 310,
           "is_boss": false
@@ -87,7 +91,7 @@
         {
           "comment": "Giant Saurian",
           "start_think_tbl_no": 1,
-		      "enemy_id": "0x010401",
+          "enemy_id": "0x010401",
           "level": 16,
           "exp": 310,
           "is_boss": false
@@ -98,13 +102,17 @@
   "blocks": [
     {
       "type": "DiscoverEnemy",
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Accept",
       "reset_group": false,
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     }
   ]
 }

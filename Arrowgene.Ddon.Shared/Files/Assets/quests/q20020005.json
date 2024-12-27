@@ -39,6 +39,10 @@
           "num": 1
         }
       ]
+    },
+    {
+      "type": "ap",
+      "amount": 310
     }
   ],
   "enemy_groups": [
@@ -99,24 +103,32 @@
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
       "announce_type": "Accept",
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Update",
       "reset_group": false,
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
       "announce_type": "Update",
-      "groups": [ 1 ]
+      "groups": [
+        1
+      ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Update",
       "reset_group": false,
-      "groups": [ 1 ]
+      "groups": [
+        1
+      ]
     },
     {
       "type": "NewTalkToNpc",

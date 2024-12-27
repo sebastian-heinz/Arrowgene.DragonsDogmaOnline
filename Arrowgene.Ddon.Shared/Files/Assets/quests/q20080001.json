@@ -1,108 +1,125 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "The Bound Spirit",
-    "quest_id": 20080001,
-    "base_level": 48,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-  "area_id": "EasternZandora",		
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Bound Spirit",
+  "quest_id": 20080001,
+  "base_level": 48,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "EasternZandora",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1740
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1320
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 290
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "exp",
-            "amount": 1740
+          "item_id": 7908,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 1320
+          "item_id": 9402,
+          "num": 3
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 290
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 7908,
-                    "num": 1
-                },
-                {
-                    "item_id": 9402,
-                    "num": 3
-                },
-                {
-                    "item_id": 9363,
-                    "num": 3					
-                }
-            ]
+          "item_id": 9363,
+          "num": 3
         }
-    ],
-    "enemy_groups" : [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 480
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 93,
+        "group_id": 3
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 93,
-                "group_id": 3
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015605",
-                    "level": 48,
-                    "exp": 14000,
-                    "is_boss": true							
-                }
-            ]
+          "enemy_id": "0x015605",
+          "level": 48,
+          "exp": 14000,
+          "is_boss": true
         }
-    ],	
-    "blocks": [
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
         {
-            "type": "NewNpcTalkAndOrder",
-            "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 1070, "comment": "Spawns LingeringSkeleton NPC"}
-            ],
-            "stage_id": {
-                "id": 93,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "npc_id": "LingeringSkeleton",
-            "message_id": 11372
-        },
-        {
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Accept",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {			
-            "type": "CollectItem",
-            "announce_type": "Update",
-            "stage_id": {
-                "id": 93,
-                "group_id": 2,
-                "layer_no": 1
-            },
-            "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 1765, "comment": "Spawns Glowing Item"}				
-            ]
-        },
-        {			
-		
-            "type": "NewTalkToNpc",
-            "stage_id": {
-                "id": 93,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Update",
-            "npc_id": "LingeringSkeleton",
-            "message_id": 11842
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1070,
+          "comment": "Spawns LingeringSkeleton NPC"
         }
-    ]
+      ],
+      "stage_id": {
+        "id": 93,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "LingeringSkeleton",
+      "message_id": 11372
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "CollectItem",
+      "announce_type": "Update",
+      "stage_id": {
+        "id": 93,
+        "group_id": 2,
+        "layer_no": 1
+      },
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1765,
+          "comment": "Spawns Glowing Item"
+        }
+      ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 93,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "LingeringSkeleton",
+      "message_id": 11842
+    }
+  ]
 }

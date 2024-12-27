@@ -1,86 +1,94 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "Dispatch A Clamor of Harpies",
-    "quest_id": 20015005,
-    "base_level": 8,
-    "minimum_item_rank": 0,
-    "discoverable": false,
-    "area_id": "BreyaCoast",
-    "news_image": 25,
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Dispatch A Clamor of Harpies",
+  "quest_id": 20015005,
+  "base_level": 8,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "BreyaCoast",
+  "news_image": 25,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 220
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 30
+    },
+    {
+      "type": "exp",
+      "amount": 290
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 220
+          "item_id": 506,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 30
-        },
-        {
-            "type": "exp",
-            "amount": 290
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 506,
-                    "num": 1
-                },
-                {
-                    "item_id": 8543,
-                    "num": 1
-                }
-            ]
+          "item_id": 8543,
+          "num": 1
         }
-    ],
-    "enemy_groups": [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 40
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 94
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 1,
-                "group_id": 94
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x010600",
-                    "level": 4,
-                    "exp": 94,
-                    "is_boss": false
-                },
-                {
-                    "enemy_id": "0x010600",
-                    "level": 4,
-                    "exp": 94,
-                    "is_boss": false
-                },
-                {
-                    "enemy_id": "0x010600",
-                    "level": 4,
-                    "exp": 94,
-                    "is_boss": false
-                },
-                {
-                    "enemy_id": "0x010600",
-                    "level": 4,
-                    "exp": 94,
-                    "is_boss": false
-                }
-            ]
-        }
-    ],
-    "blocks": [
-        {
-            "type": "DiscoverEnemy",
-            "groups": [ 0 ]
+          "enemy_id": "0x010600",
+          "level": 4,
+          "exp": 94,
+          "is_boss": false
         },
         {
-            "type": "KillGroup",
-            "announce_type": "Accept",
-            "reset_group": false,
-            "groups": [ 0 ]
+          "enemy_id": "0x010600",
+          "level": 4,
+          "exp": 94,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010600",
+          "level": 4,
+          "exp": 94,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010600",
+          "level": 4,
+          "exp": 94,
+          "is_boss": false
         }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [
+        0
+      ]
+    }
+  ]
 }

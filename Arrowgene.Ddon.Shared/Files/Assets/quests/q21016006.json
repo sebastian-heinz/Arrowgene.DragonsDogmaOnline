@@ -1,82 +1,86 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "Time Restriction: Fine Weather Harvest",
-    "quest_id": 21016006,
-    "base_level": 75,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-	"area_id": "MorrowForest",	
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Time Restriction: Fine Weather Harvest",
+  "quest_id": 21016006,
+  "base_level": 75,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "MorrowForest",
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 11233
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1662
+    },
+    {
+      "type": "exp",
+      "amount": 4870
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 11233
+          "item_id": 15962,
+          "num": 3
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 1662
+          "item_id": 9364,
+          "num": 3
         },
         {
-            "type": "exp",
-            "amount": 4870
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 15962,
-                    "num": 3
-                },
-                {					
-                    "item_id": 9364,
-                    "num": 3
-                },
-                {				
-                    "item_id": 41,
-                    "num": 3					
-                }
-            ]
+          "item_id": 41,
+          "num": 3
         }
-    ],
-    "blocks": [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 500
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 340,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Arthfael",
+      "message_id": 10800
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 340,
+        "group_id": 1
+      },
+      "npc_id": "Arthfael",
+      "announce_type": "Accept",
+      "items": [
         {
-            "type": "NpcTalkAndOrder",	
-            "stage_id": {
-                "id": 340,
-                "group_id": 1,
-                "layer_no": 1
-            },				
-            "npc_id": "Arthfael",
-            "message_id": 10800
-        },
-        {
-            "type": "DeliverItems",
-            "stage_id": {
-                "id": 340,
-                "group_id": 1
-            },
-            "npc_id": "Arthfael",
-            "announce_type": "Accept",
-            "items": [
-                {
-                    "id": 15952,
-                    "amount": 5
-                }
-            ],
-            "message_id": 10737
-        },
-        {
-            "type": "TalkToNpc",
-            "stage_id": {
-                "id": 340,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Update",
-            "npc_id": "Arthfael",
-            "message_id": 11842			
+          "id": 15952,
+          "amount": 5
         }
-    ]
+      ],
+      "message_id": 10737
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 340,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Arthfael",
+      "message_id": 11842
+    }
+  ]
 }

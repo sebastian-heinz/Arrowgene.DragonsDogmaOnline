@@ -1,165 +1,176 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "Seeking Alchemical Extract",
-    "quest_id": 20995000,
-    "base_level": 60,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-    "area_id": "MergodaRuins",
-    "news_image": 235,
-    "quest_layout_set_info_flags": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Seeking Alchemical Extract",
+  "quest_id": 20995000,
+  "base_level": 60,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "MergodaRuins",
+  "news_image": 235,
+  "quest_layout_set_info_flags": [
+    {
+      "flag_no": 346,
+      "stage_no": 74,
+      "group_id": 8
+    },
+    {
+      "flag_no": 2213,
+      "stage_no": 237,
+      "group_id": 1
+    },
+    {
+      "flag_no": 886,
+      "stage_no": 84,
+      "group_id": 1
+    }
+  ],
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 6600
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 4620
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1180
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-          "flag_no": 346,
-          "stage_no": 74,
-          "group_id": 8
+          "item_id": 9452,
+          "num": 3
         },
         {
-          "flag_no": 2213,
-          "stage_no": 237,
-          "group_id": 1
+          "item_id": 9453,
+          "num": 1
         },
         {
-          "flag_no": 886,
-          "stage_no": 84,
-          "group_id": 1
+          "item_id": 7802,
+          "num": 1
         }
-      ],
-    "rewards": [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 810
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 74,
+        "group_id": 8
+      },
+      "placement_type": "manual",
+      "enemies": [
         {
-            "type": "exp",
-            "amount": 6600
+          "enemy_id": "0x015711",
+          "start_think_tbl_no": 2,
+          "level": 60,
+          "exp": 45000,
+          "named_enemy_params_id": 634,
+          "is_boss": true,
+          "index": 3
         },
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 4620
-        },
-        {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 1180
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 9452,
-                    "num": 3
-                },
-                {
-                    "item_id": 9453,
-                    "num": 1
-                },
-                {
-                    "item_id": 7802,
-                    "num": 1
-                }
-            ]
+          "enemy_id": "0x015710",
+          "start_think_tbl_no": 2,
+          "level": 60,
+          "exp": 45000,
+          "named_enemy_params_id": 633,
+          "is_boss": true,
+          "index": 2
         }
-    ],
-    "enemy_groups" : [
+      ]
+    },
+    {
+      "stage_id": {
+        "id": 84,
+        "group_id": 20
+      },
+      "placement_type": "manual",
+      "enemies": [
         {
-            "stage_id": {
-                "id": 74,
-                "group_id": 8
-            },
-            "placement_type": "manual",
-            "enemies": [
-                {
-                    "enemy_id": "0x015711",
-                    "start_think_tbl_no": 2,
-                    "level": 60,
-                    "exp": 45000,
-                    "named_enemy_params_id": 634,
-                    "is_boss": true,
-                    "index": 3
-                },
-                {
-                    "enemy_id": "0x015710",
-                    "start_think_tbl_no": 2,
-                    "level": 60,
-                    "exp": 45000,
-                    "named_enemy_params_id": 633,
-                    "is_boss": true,
-                    "index": 2
-                }
-            ]
-        },
-        {
-          "stage_id": {
-            "id": 84,
-            "group_id": 20
-          },
-          "placement_type": "manual",
-          "enemies": [
-            {
-                "enemy_id": "0x020500",
-                "start_think_tbl_no": 1,
-                "level": 60,
-                "exp": 45000,
-                "named_enemy_params_id": 632,
-                "is_boss": true,
-                "index": 0
-            }
-        ]
-      }
-    ],
-    "blocks": [
-        {
-            "type": "NpcTalkAndOrder",
-            "stage_id": {
-                "id": 237,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "npc_id": "Actaeon",
-            "message_id": 11372
-        },
-        {
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Accept",
-            "groups": [ 0 ]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "reset_group": false,
-            "groups": [ 0 ]
-        },
-        {
-            "type": "TalkToNpc",
-            "stage_id": {
-              "id": 237,
-              "group_id": 1,
-              "layer_no": 1
-             
-            },
-            "npc_id": "Actaeon",
-            "announce_type": "Update",
-            "message_id": 11842          
-            },
-            {
-                "type": "SeekOutEnemiesAtMarkedLocation",
-                "announce_type": "Update",
-                "groups": [ 1 ]
-            },
-            {
-                "type": "KillGroup",
-                "announce_type": "Update",
-                "reset_group": false,
-                "groups": [ 1 ]
-            },
-        {
-            "type": "TalkToNpc",
-            "stage_id": {
-                "id": 237,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Update",
-            "npc_id": "Actaeon",
-            "message_id": 11842
+          "enemy_id": "0x020500",
+          "start_think_tbl_no": 1,
+          "level": 60,
+          "exp": 45000,
+          "named_enemy_params_id": 632,
+          "is_boss": true,
+          "index": 0
         }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 237,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Actaeon",
+      "message_id": 11372
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 237,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Actaeon",
+      "announce_type": "Update",
+      "message_id": 11842
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Update",
+      "groups": [
+        1
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [
+        1
+      ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 237,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Actaeon",
+      "message_id": 11842
+    }
+  ]
 }

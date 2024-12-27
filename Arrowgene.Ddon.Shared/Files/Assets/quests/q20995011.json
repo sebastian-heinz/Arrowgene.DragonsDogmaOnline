@@ -1,117 +1,125 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "The Shadow That Roams the Dead City",
-    "quest_id": 20995011,
-    "base_level": 55,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-    "area_id": "MergodaRuins",
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Shadow That Roams the Dead City",
+  "quest_id": 20995011,
+  "base_level": 55,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "MergodaRuins",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 2540
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1810
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 290
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "exp",
-            "amount": 2540
+          "item_id": 7886,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 1810
+          "item_id": 7822,
+          "num": 2
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 290
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 7886,
-                    "num": 1
-                },
-                {
-                    "item_id": 7822,
-                    "num": 2
-                },
-                {
-                    "item_id": 7555,
-                    "num": 3
-                }
-            ]
+          "item_id": 7555,
+          "num": 3
         }
-    ],
-    "enemy_groups" : [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 690
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 84,
+        "group_id": 9
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 84,
-                "group_id": 9
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015102",
-                    "level": 55,
-                    "exp": 21000,
-                    "is_boss": true
-                },
-                {
-                    "enemy_id": "0x010606",
-                    "level": 55,
-                    "exp": 2100,
-                    "is_boss": false
-                },
-                {
-                    "enemy_id": "0x010606",
-                    "level": 55,
-                    "exp": 2100,
-                    "is_boss": false
-                },
-                {
-                    "enemy_id": "0x010606",
-                    "level": 55,
-                    "exp": 2100,
-                    "is_boss": false
-                },
-                {
-                    "enemy_id": "0x010606",
-                    "level": 55,
-                    "exp": 2100,
-                    "is_boss": false
-                }
-            ]
+          "enemy_id": "0x015102",
+          "level": 55,
+          "exp": 21000,
+          "is_boss": true
+        },
+        {
+          "enemy_id": "0x010606",
+          "level": 55,
+          "exp": 2100,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010606",
+          "level": 55,
+          "exp": 2100,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010606",
+          "level": 55,
+          "exp": 2100,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010606",
+          "level": 55,
+          "exp": 2100,
+          "is_boss": false
         }
-    ],
-    "blocks": [
-        {
-            "type": "NpcTalkAndOrder",
-            "stage_id": {
-                "id": 63,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "npc_id": "Theodor",
-            "message_id": 11372
-        },
-        {
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Accept",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "reset_group": false,
-            "groups": [0]
-        },
-        {
-            "type": "TalkToNpc",
-            "stage_id": {
-                "id": 63,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Update",
-            "npc_id": "Theodor",
-            "message_id": 11842
-        }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 63,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Theodor",
+      "message_id": 11372
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 63,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Theodor",
+      "message_id": 11842
+    }
+  ]
 }

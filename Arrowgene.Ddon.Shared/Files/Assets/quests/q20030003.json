@@ -42,22 +42,26 @@
           "num": 2
         }
       ]
-  },
-  {
+    },
+    {
       "type": "random",
       "loot_pool": [
-          {
-              "item_id": 8990,
-              "num": 1,
-              "chance": 0.6
-          },
-          {
-            "item_id": 9001,
-            "num": 1,
-            "chance": 0.6
+        {
+          "item_id": 8990,
+          "num": 1,
+          "chance": 0.6
+        },
+        {
+          "item_id": 9001,
+          "num": 1,
+          "chance": 0.6
         }
       ]
-  }
+    },
+    {
+      "type": "ap",
+      "amount": 390
+    }
   ],
   "enemy_groups": [
     {
@@ -67,7 +71,6 @@
       },
       "placement_type": "manual",
       "enemies": [
-        
         {
           "enemy_id": "0x015709",
           "start_think_tbl_no": 1,
@@ -94,13 +97,17 @@
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
       "announce_type": "Accept",
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Update",
       "reset_group": false,
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "TalkToNpc",

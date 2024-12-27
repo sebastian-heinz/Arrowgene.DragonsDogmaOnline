@@ -1,85 +1,89 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "Separation and Completion",
-    "quest_id": 20990001,
-    "base_level": 51,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-    "area_id": "MergodaRuins",
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Separation and Completion",
+  "quest_id": 20990001,
+  "base_level": 51,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "MergodaRuins",
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 800
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 180
+    },
+    {
+      "type": "exp",
+      "amount": 560
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 800
+          "item_id": 8027,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 180
+          "item_id": 7554,
+          "num": 3
         },
         {
-            "type": "exp",
-            "amount": 560
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 8027,
-                    "num": 1
-                },
-                {
-                    "item_id": 7554,
-                    "num": 3
-                },
-                {
-                    "item_id": 9363,
-                    "num": 3
-                }
-            ]
+          "item_id": 9363,
+          "num": 3
         }
-    ],
-    "blocks": [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 580
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 63
+      },
+      "npc_id": "Theodor",
+      "message_id": 10800
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 63,
+        "group_id": 1
+      },
+      "npc_id": "Theodor",
+      "announce_type": "Accept",
+      "items": [
         {
-            "type": "NpcTalkAndOrder",
-            "stage_id": {
-                "id": 63
-            },
-            "npc_id": "Theodor",
-            "message_id": 10800
-        },
-        {
-            "type": "DeliverItems",
-            "stage_id": {
-                "id": 63,
-                "group_id": 1
-            },
-            "npc_id": "Theodor",
-            "announce_type": "Accept",
-            "items": [
-                {
-                    "id": 7734,
-                    "amount": 8
-                }
-            ],
-            "message_id": 10737
-        },
-        {
-            "type": "DeliverItems",
-            "stage_id": {
-                "id": 63,
-                "group_id": 1
-            },
-            "npc_id": "Theodor",
-            "announce_type": "Update",
-            "items": [
-                {
-                    "id": 8026,
-                    "amount": 6
-                }
-            ],
-            "message_id": 10737
+          "id": 7734,
+          "amount": 8
         }
-    ]
+      ],
+      "message_id": 10737
+    },
+    {
+      "type": "DeliverItems",
+      "stage_id": {
+        "id": 63,
+        "group_id": 1
+      },
+      "npc_id": "Theodor",
+      "announce_type": "Update",
+      "items": [
+        {
+          "id": 8026,
+          "amount": 6
+        }
+      ],
+      "message_id": 10737
+    }
+  ]
 }

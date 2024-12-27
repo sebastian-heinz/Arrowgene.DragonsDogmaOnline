@@ -42,6 +42,10 @@
           "num": 3
         }
       ]
+    },
+    {
+      "type": "ap",
+      "amount": 60
     }
   ],
   "enemy_groups": [
@@ -96,15 +100,16 @@
           "exp": 160,
           "hm_present_no": 45
         },
-        {"comment": "Rogue Fighter",
+        {
+          "comment": "Rogue Fighter",
           "enemy_id": "0x011000",
           "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
           "level": 11,
           "exp": 160,
           "hm_present_no": 45
-        }        
-     ]
+        }
+      ]
     }
   ],
   "blocks": [
@@ -128,13 +133,17 @@
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Update",
       "reset_group": false,
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "NewTalkToNpc",

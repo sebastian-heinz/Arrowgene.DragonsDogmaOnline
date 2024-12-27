@@ -47,6 +47,10 @@
           "num": 1
         }
       ]
+    },
+    {
+      "type": "ap",
+      "amount": 310
     }
   ],
   "enemy_groups": [
@@ -60,7 +64,7 @@
         {
           "enemy_id": "0x015303",
           "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 53,
+          "named_enemy_params_id": 53,
           "level": 36,
           "exp": 6040,
           "is_boss": true,
@@ -72,13 +76,17 @@
   "blocks": [
     {
       "type": "DiscoverEnemy",
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Accept",
       "reset_group": false,
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     }
   ]
 }

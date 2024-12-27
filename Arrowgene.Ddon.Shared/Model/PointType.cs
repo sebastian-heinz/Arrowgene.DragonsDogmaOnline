@@ -4,6 +4,7 @@ namespace Arrowgene.Ddon.Shared.Model
     {
         ExperiencePoints = 1,
         JobPoints = 2,
-        PlayPoints = 3 // Reward for wild hunt quests
+        PlayPoints = 3, // Reward for wild hunt quests
+        AreaPoints = 4,
     }
 }

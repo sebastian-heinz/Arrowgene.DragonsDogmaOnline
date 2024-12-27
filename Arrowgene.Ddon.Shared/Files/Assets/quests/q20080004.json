@@ -1,138 +1,327 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "The Lovely Vintage",
-    "quest_id": 20080004,
-    "base_level": 56,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-  "area_id": "EasternZandora",		
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Lovely Vintage",
+  "quest_id": 20080004,
+  "base_level": 56,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "EasternZandora",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1840
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1540
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 240
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "exp",
-            "amount": 1840
+          "item_id": 8022,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 1540
+          "item_id": 7731,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 240
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 8022,
-                    "num": 1
-                },
-                {
-                    "item_id": 7731,
-                    "num": 1
-                },
-                {
-                    "item_id": 7554,
-                    "num": 2					
-                }
-            ]
+          "item_id": 7554,
+          "num": 2
         }
-    ],
-    "blocks": [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 690
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
         {
-            "type": "NewNpcTalkAndOrder",
-            "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 1072, "comment": "Spawns Hunter0 NPC"}
-            ],
-            "stage_id": {
-                "id": 1,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "npc_id": "Hunter0",
-            "message_id": 11372
-        },
-        {
-            "type": "CollectItem",
-            "announce_type": "Accept",
-            "stage_id": {
-                "id": 92,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 1774, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1766, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1770, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1775, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1771, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1772, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1776, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1767, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1773, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1777, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1768, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1769, "comment": "Spawns Glowing Item"}				
-            ]
-        },
-        {
-            "type": "CollectItem",
-            "announce_type": "Update",
-            "stage_id": {
-                "id": 92,
-                "group_id": 2,
-                "layer_no": 1
-            },
-            "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 1774, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1766, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1770, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1775, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1771, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1772, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1776, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1767, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1773, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1777, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1768, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1769, "comment": "Spawns Glowing Item"}	
-            ]
-        },
-        {
-            "type": "CollectItem",
-            "announce_type": "Update",
-            "stage_id": {
-                "id": 92,
-                "group_id": 3,
-                "layer_no": 1
-            },
-            "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 1774, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1766, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1770, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1775, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1771, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1772, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1776, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1767, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1773, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1777, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1768, "comment": "Spawns Glowing Item"},
-                {"type": "QstLayout", "action": "Set", "value": 1769, "comment": "Spawns Glowing Item"}				
-            ]
-        },
-        {			
-            "type": "NewTalkToNpc",
-            "stage_id": {
-                "id": 1,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Update",
-            "npc_id": "Hunter0",
-            "message_id": 11842
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1072,
+          "comment": "Spawns Hunter0 NPC"
         }
-    ]
+      ],
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Hunter0",
+      "message_id": 11372
+    },
+    {
+      "type": "CollectItem",
+      "announce_type": "Accept",
+      "stage_id": {
+        "id": 92,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1774,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1766,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1770,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1775,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1771,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1772,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1776,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1767,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1773,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1777,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1768,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1769,
+          "comment": "Spawns Glowing Item"
+        }
+      ]
+    },
+    {
+      "type": "CollectItem",
+      "announce_type": "Update",
+      "stage_id": {
+        "id": 92,
+        "group_id": 2,
+        "layer_no": 1
+      },
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1774,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1766,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1770,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1775,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1771,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1772,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1776,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1767,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1773,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1777,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1768,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1769,
+          "comment": "Spawns Glowing Item"
+        }
+      ]
+    },
+    {
+      "type": "CollectItem",
+      "announce_type": "Update",
+      "stage_id": {
+        "id": 92,
+        "group_id": 3,
+        "layer_no": 1
+      },
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1774,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1766,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1770,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1775,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1771,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1772,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1776,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1767,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1773,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1777,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1768,
+          "comment": "Spawns Glowing Item"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1769,
+          "comment": "Spawns Glowing Item"
+        }
+      ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Hunter0",
+      "message_id": 11842
+    }
+  ]
 }

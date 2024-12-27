@@ -1,236 +1,270 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "The Bridges of Our Livelihood",
-    "quest_id": 20050009,
-    "base_level": 14,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-    "area_id": "MysreeForest",
-    "news_image": 103,
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Bridges of Our Livelihood",
+  "quest_id": 20050009,
+  "base_level": 14,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "MysreeForest",
+  "news_image": 103,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 460
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 460
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 60
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "exp",
-            "amount": 460
+          "comment": "Leather Armor",
+          "item_id": 444,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 460
-        },
-        {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 60
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "comment": "Leather Armor",
-                    "item_id": 444,
-                    "num": 1
-                },
-                {
-                    "comment": "Superior Gala Extract",
-                    "item_id": 61,
-                    "num": 3
-                }
-            ]
+          "comment": "Superior Gala Extract",
+          "item_id": 61,
+          "num": 3
         }
-    ],
-    "enemy_groups": [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 60
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 51
+      },
+      "starting_index": 1,
+      "enemies": [
         {
-            "stage_id": {
-                "id": 1,
-                "group_id": 51
-            },
-            "starting_index": 1,
-            "enemies": [
-                {
-                    "comment": "Redcap",
-                    "enemy_id": "0x011110",
-                    "level": 14,
-                    "exp": 92
-                },
-                {
-                    "comment": "Redcap",
-                    "enemy_id": "0x011110",
-                    "level": 14,
-                    "exp": 92
-                },
-                {
-                    "comment": "Redcap",
-                    "enemy_id": "0x011110",
-                    "level": 14,
-                    "exp": 92
-                }
-            ]
+          "comment": "Redcap",
+          "enemy_id": "0x011110",
+          "level": 14,
+          "exp": 92
         },
         {
-            "stage_id": {
-                "id": 1,
-                "group_id": 55
-            },
-            "starting_index": 1,
-            "enemies": [
-                {
-                    "comment": "Redcap",
-                    "enemy_id": "0x011110",
-                    "level": 14,
-                    "exp": 92
-                },
-                {
-                    "comment": "Redcap",
-                    "enemy_id": "0x011110",
-                    "level": 14,
-                    "exp": 92
-                },
-                {
-                    "comment": "Redcap",
-                    "enemy_id": "0x011110",
-                    "level": 14,
-                    "exp": 92
-                }
-            ]
+          "comment": "Redcap",
+          "enemy_id": "0x011110",
+          "level": 14,
+          "exp": 92
         },
         {
-            "stage_id": {
-                "id": 1,
-                "group_id": 46
-            },
-            "starting_index": 1,
-            "enemies": [
-                {
-                    "comment": "Redcap",
-                    "enemy_id": "0x011110",
-                    "level": 14,
-                    "exp": 92
-                },
-                {
-                    "comment": "Redcap",
-                    "enemy_id": "0x011110",
-                    "level": 14,
-                    "exp": 92
-                },
-                {
-                    "comment": "Redcap",
-                    "enemy_id": "0x011110",
-                    "level": 14,
-                    "exp": 92
-                }
-            ]
+          "comment": "Redcap",
+          "enemy_id": "0x011110",
+          "level": 14,
+          "exp": 92
         }
-    ],
-    "processes": [
+      ]
+    },
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 55
+      },
+      "starting_index": 1,
+      "enemies": [
         {
-            "comment": "Process 0",
-            "blocks": [
-                {
-                    "type": "NewNpcTalkAndOrder",
-                    "flags": [
-                        {
-                            "type": "QstLayout",
-                            "action": "Set",
-                            "value": 1060,
-                            "comment": "Spawns NPC"
-                        }
-                    ],
-                    "stage_id": {
-                        "id": 1,
-                        "group_id": 1,
-                        "layer_no": 1
-                    },
-                    "npc_id": "LightlyEquippedFemaleSoldier",
-                    "message_id": 11372
-                },
-                {
-                    "type": "MyQstFlags",
-                    "announce_type": "Accept",
-                    "set_flags": [ 1 ],
-                    "check_flags": [ 2, 3, 4 ]
-                },
-                {
-                    "type": "NewTalkToNpc",
-                    "stage_id": {
-                        "id": 1,
-                        "group_id": 1,
-                        "layer_no": 1
-                    },
-                    "announce_type": "Update",
-                    "npc_id": "LightlyEquippedFemaleSoldier",
-                    "message_id": 11842
-                }
-            ]
+          "comment": "Redcap",
+          "enemy_id": "0x011110",
+          "level": 14,
+          "exp": 92
         },
         {
-            "comment": "Process1 (Redcap Group 1)",
-            "blocks": [
-                {
-                    "type": "MyQstFlags",
-                    "check_flags": [ 1 ]
-                },
-                {
-                    "type": "DiscoverEnemy",
-                    "groups": [ 0 ]
-                },
-                {
-                    "type": "KillGroup",
-                    "announce_type": "Update",
-                    "reset_group": false,
-                    "groups": [ 0 ]
-                },
-                {
-                    "type": "MyQstFlags",
-                    "set_flags": [ 2 ]
-                }
-            ]
+          "comment": "Redcap",
+          "enemy_id": "0x011110",
+          "level": 14,
+          "exp": 92
         },
         {
-            "comment": "Process2 (Redcap Group 2)",
-            "blocks": [
-                {
-                    "type": "MyQstFlags",
-                    "check_flags": [ 1 ]
-                },
-                {
-                    "type": "DiscoverEnemy",
-                    "groups": [ 1 ]
-                },
-                {
-                    "type": "KillGroup",
-                    "announce_type": "Update",
-                    "reset_group": false,
-                    "groups": [ 1 ]
-                },
-                {
-                    "type": "MyQstFlags",
-                    "set_flags": [ 3 ]
-                }
-            ]
-        },
-        {
-            "comment": "Process3 (Redcap Group 3)",
-            "blocks": [
-                {
-                    "type": "MyQstFlags",
-                    "check_flags": [ 1 ]
-                },
-                {
-                    "type": "DiscoverEnemy",
-                    "groups": [ 2 ]
-                },
-                {
-                    "type": "KillGroup",
-                    "announce_type": "Update",
-                    "reset_group": false,
-                    "groups": [ 2 ]
-                },
-                {
-                    "type": "MyQstFlags",
-                    "set_flags": [ 4 ]
-                }
-            ]
+          "comment": "Redcap",
+          "enemy_id": "0x011110",
+          "level": 14,
+          "exp": 92
         }
-    ]
+      ]
+    },
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 46
+      },
+      "starting_index": 1,
+      "enemies": [
+        {
+          "comment": "Redcap",
+          "enemy_id": "0x011110",
+          "level": 14,
+          "exp": 92
+        },
+        {
+          "comment": "Redcap",
+          "enemy_id": "0x011110",
+          "level": 14,
+          "exp": 92
+        },
+        {
+          "comment": "Redcap",
+          "enemy_id": "0x011110",
+          "level": 14,
+          "exp": 92
+        }
+      ]
+    }
+  ],
+  "processes": [
+    {
+      "comment": "Process 0",
+      "blocks": [
+        {
+          "type": "NewNpcTalkAndOrder",
+          "flags": [
+            {
+              "type": "QstLayout",
+              "action": "Set",
+              "value": 1060,
+              "comment": "Spawns NPC"
+            }
+          ],
+          "stage_id": {
+            "id": 1,
+            "group_id": 1,
+            "layer_no": 1
+          },
+          "npc_id": "LightlyEquippedFemaleSoldier",
+          "message_id": 11372
+        },
+        {
+          "type": "MyQstFlags",
+          "announce_type": "Accept",
+          "set_flags": [
+            1
+          ],
+          "check_flags": [
+            2,
+            3,
+            4
+          ]
+        },
+        {
+          "type": "NewTalkToNpc",
+          "stage_id": {
+            "id": 1,
+            "group_id": 1,
+            "layer_no": 1
+          },
+          "announce_type": "Update",
+          "npc_id": "LightlyEquippedFemaleSoldier",
+          "message_id": 11842
+        }
+      ]
+    },
+    {
+      "comment": "Process1 (Redcap Group 1)",
+      "blocks": [
+        {
+          "type": "MyQstFlags",
+          "check_flags": [
+            1
+          ]
+        },
+        {
+          "type": "DiscoverEnemy",
+          "groups": [
+            0
+          ]
+        },
+        {
+          "type": "KillGroup",
+          "announce_type": "Update",
+          "reset_group": false,
+          "groups": [
+            0
+          ]
+        },
+        {
+          "type": "MyQstFlags",
+          "set_flags": [
+            2
+          ]
+        }
+      ]
+    },
+    {
+      "comment": "Process2 (Redcap Group 2)",
+      "blocks": [
+        {
+          "type": "MyQstFlags",
+          "check_flags": [
+            1
+          ]
+        },
+        {
+          "type": "DiscoverEnemy",
+          "groups": [
+            1
+          ]
+        },
+        {
+          "type": "KillGroup",
+          "announce_type": "Update",
+          "reset_group": false,
+          "groups": [
+            1
+          ]
+        },
+        {
+          "type": "MyQstFlags",
+          "set_flags": [
+            3
+          ]
+        }
+      ]
+    },
+    {
+      "comment": "Process3 (Redcap Group 3)",
+      "blocks": [
+        {
+          "type": "MyQstFlags",
+          "check_flags": [
+            1
+          ]
+        },
+        {
+          "type": "DiscoverEnemy",
+          "groups": [
+            2
+          ]
+        },
+        {
+          "type": "KillGroup",
+          "announce_type": "Update",
+          "reset_group": false,
+          "groups": [
+            2
+          ]
+        },
+        {
+          "type": "MyQstFlags",
+          "set_flags": [
+            4
+          ]
+        }
+      ]
+    }
+  ]
 }

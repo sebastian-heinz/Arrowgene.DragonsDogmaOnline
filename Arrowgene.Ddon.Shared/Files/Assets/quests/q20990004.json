@@ -1,92 +1,100 @@
 {
-    "state_machine": "GenericStateMachine",
-    "type": "World",
-    "comment": "The Lost Golden Child",
-    "quest_id": 20990004,
-    "base_level": 53,
-    "minimum_item_rank": 0,
-    "discoverable": true,
-    "area_id": "MergodaRuins",
-    "rewards": [
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Lost Golden Child",
+  "quest_id": 20990004,
+  "base_level": 53,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "MergodaRuins",
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 2440
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1740
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 270
+    },
+    {
+      "type": "select",
+      "loot_pool": [
         {
-            "type": "exp",
-            "amount": 2440
+          "item_id": 8031,
+          "num": 1
         },
         {
-            "type": "wallet",
-            "wallet_type": "Gold",
-            "amount": 1740
+          "item_id": 9402,
+          "num": 3
         },
         {
-            "type": "wallet",
-            "wallet_type": "RiftPoints",
-            "amount": 270
-        },
-        {
-            "type": "select",
-            "loot_pool": [
-                {
-                    "item_id": 8031,
-                    "num": 1
-                },
-                {
-                    "item_id": 9402,
-                    "num": 3
-                },
-                {
-                    "item_id": 9363,
-                    "num": 3
-                }
-            ]
+          "item_id": 9363,
+          "num": 3
         }
-    ],
-    "enemy_groups" : [
+      ]
+    },
+    {
+      "type": "ap",
+      "amount": 580
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 84,
+        "group_id": 10
+      },
+      "enemies": [
         {
-            "stage_id": {
-                "id": 84,
-                "group_id": 10
-            },
-            "enemies": [
-                {
-                    "enemy_id": "0x015102",
-                    "level": 54,
-                    "exp": 18500,
-                    "is_boss": true
-                }
-            ]
+          "enemy_id": "0x015102",
+          "level": 54,
+          "exp": 18500,
+          "is_boss": true
         }
-    ],
-    "blocks": [
-        {
-            "type": "NpcTalkAndOrder",
-            "stage_id": {
-                "id": 237,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "npc_id": "Metrophanes",
-            "message_id": 11372
-        },
-        {
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Accept",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {
-            "type": "TalkToNpc",
-            "stage_id": {
-                "id": 237,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Update",
-            "npc_id": "Metrophanes",
-            "message_id": 11842
-        }
-    ]
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 237,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Metrophanes",
+      "message_id": 11372
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [
+        0
+      ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 237,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Metrophanes",
+      "message_id": 11842
+    }
+  ]
 }

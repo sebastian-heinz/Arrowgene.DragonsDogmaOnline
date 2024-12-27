@@ -39,6 +39,10 @@
           "num": 1
         }
       ]
+    },
+    {
+      "type": "ap",
+      "amount": 60
     }
   ],
   "enemy_groups": [
@@ -53,13 +57,12 @@
           "comment": "Vigilant Cyclops",
           "enemy_id": "0x015000",
           "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 53,
+          "named_enemy_params_id": 53,
           "level": 12,
           "exp": 816,
           "is_boss": true,
           "is_manual_set": false,
           "index": 0
-          
         }
       ]
     }
@@ -67,13 +70,17 @@
   "blocks": [
     {
       "type": "DiscoverEnemy",
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Accept",
       "reset_group": false,
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     }
   ]
 }

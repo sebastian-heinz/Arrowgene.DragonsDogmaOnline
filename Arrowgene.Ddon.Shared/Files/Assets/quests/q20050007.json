@@ -49,6 +49,10 @@
           "chance": 1.0
         }
       ]
+    },
+    {
+      "type": "ap",
+      "amount": 130
     }
   ],
   "enemy_groups": [
@@ -105,12 +109,16 @@
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
       "announce_type": "Accept",
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Update",
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "TalkToNpc",

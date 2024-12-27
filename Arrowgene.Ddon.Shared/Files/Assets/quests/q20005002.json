@@ -35,6 +35,10 @@
           "num": 2
         }
       ]
+    },
+    {
+      "type": "ap",
+      "amount": 60
     }
   ],
   "enemy_groups": [
@@ -44,7 +48,6 @@
         "group_id": 0
       },
       "enemies": [
-        
         {
           "enemy_id": "0x015801",
           "StartThinkTblNo": 1,
@@ -99,13 +102,17 @@
   "blocks": [
     {
       "type": "DiscoverEnemy",
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Accept",
       "reset_group": false,
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     }
   ]
 }

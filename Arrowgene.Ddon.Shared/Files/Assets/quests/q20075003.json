@@ -54,6 +54,10 @@
           "chance": 0.4
         }
       ]
+    },
+    {
+      "type": "ap",
+      "amount": 390
     }
   ],
   "enemy_groups": [
@@ -66,7 +70,7 @@
         {
           "enemy_id": "0x015810",
           "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 53,
+          "named_enemy_params_id": 53,
           "level": 43,
           "exp": 5264,
           "is_boss": false
@@ -74,7 +78,7 @@
         {
           "enemy_id": "0x015820",
           "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 54,
+          "named_enemy_params_id": 54,
           "level": 43,
           "exp": 5264,
           "is_boss": false
@@ -82,7 +86,7 @@
         {
           "enemy_id": "0x015811",
           "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 53,
+          "named_enemy_params_id": 53,
           "level": 43,
           "exp": 5264,
           "is_boss": false
@@ -90,7 +94,7 @@
         {
           "enemy_id": "0x015811",
           "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 53,
+          "named_enemy_params_id": 53,
           "level": 43,
           "exp": 5264,
           "is_boss": false
@@ -98,7 +102,7 @@
         {
           "enemy_id": "0x015811",
           "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 53,
+          "named_enemy_params_id": 53,
           "level": 43,
           "exp": 5264,
           "is_boss": false
@@ -106,7 +110,7 @@
         {
           "enemy_id": "0x015811",
           "start_think_tbl_no": 1,
-		      "named_enemy_params_id": 53,
+          "named_enemy_params_id": 53,
           "level": 43,
           "exp": 5264,
           "is_boss": false
@@ -117,13 +121,17 @@
   "blocks": [
     {
       "type": "DiscoverEnemy",
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Accept",
       "reset_group": false,
-      "groups": [ 0 ]
+      "groups": [
+        0
+      ]
     }
   ]
 }
