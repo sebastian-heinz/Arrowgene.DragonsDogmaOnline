@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public List<CDataSpotInfo> SpotInfoList { get; set; }
         public List<CDataAreaRankUnk0> Unk0 { get; set; }
-        public List<CDataAreaRankUnk1> Unk1 { get; set; }
+        public List<CDataAreaRankSeason3> Unk1 { get; set; }
         public List<CDataCommonU32> Unk2 { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CAreaGetSpotInfoListRes>
@@ -39,7 +39,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 ReadServerResponse(buffer, obj);
                 obj.SpotInfoList = ReadEntityList<CDataSpotInfo>(buffer);
                 obj.Unk0 = ReadEntityList<CDataAreaRankUnk0>(buffer);
-                obj.Unk1 = ReadEntityList<CDataAreaRankUnk1>(buffer);
+                obj.Unk1 = ReadEntityList<CDataAreaRankSeason3>(buffer);
                 obj.Unk2 = ReadEntityList<CDataCommonU32>(buffer);
                 return obj;
             }

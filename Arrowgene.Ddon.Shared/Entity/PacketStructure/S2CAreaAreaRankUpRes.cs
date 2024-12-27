@@ -1,5 +1,6 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using System.Collections.Generic;
 
@@ -15,7 +16,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             ReleaseWarpList = new();
         }
 
-        public uint AreaId { get; set; }
+        public QuestAreaId AreaId { get; set; }
         public uint AreaRank { get; set; }
         public uint AreaPoint { get; set; }
         public uint NextAreaPoint { get; set; }
@@ -27,7 +28,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, S2CAreaAreaRankUpRes obj)
             {
                 WriteServerResponse(buffer, obj);
-                WriteUInt32(buffer, obj.AreaId);
+                WriteUInt32(buffer, (uint)obj.AreaId);
                 WriteUInt32(buffer, obj.AreaRank);
                 WriteUInt32(buffer, obj.AreaPoint);
                 WriteUInt32(buffer, obj.NextAreaPoint);
@@ -39,7 +40,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 S2CAreaAreaRankUpRes obj = new S2CAreaAreaRankUpRes();
                 ReadServerResponse(buffer, obj);
-                obj.AreaId = ReadUInt32(buffer);
+                obj.AreaId = (QuestAreaId)ReadUInt32(buffer);
                 obj.AreaRank = ReadUInt32(buffer);
                 obj.AreaPoint = ReadUInt32(buffer);
                 obj.NextAreaPoint = ReadUInt32(buffer);

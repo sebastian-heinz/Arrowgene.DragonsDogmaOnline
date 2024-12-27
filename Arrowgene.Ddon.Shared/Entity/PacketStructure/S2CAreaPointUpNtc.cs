@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -7,7 +8,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.S2C_AREA_POINT_UP_NTC;
 
-        public uint AreaId { get; set; }
+        public QuestAreaId AreaId { get; set; }
         public uint AddPoint { get; set; }
         public uint AddPointByCharge { get; set; }
         public uint TotalPoint { get; set; }
@@ -18,7 +19,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
             public override void Write(IBuffer buffer, S2CAreaPointUpNtc obj)
             {
-                WriteUInt32(buffer, obj.AreaId);
+                WriteUInt32(buffer, (uint)obj.AreaId);
                 WriteUInt32(buffer, obj.AddPoint);
                 WriteUInt32(buffer, obj.AddPointByCharge);
                 WriteUInt32(buffer, obj.TotalPoint);
@@ -29,7 +30,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override S2CAreaPointUpNtc Read(IBuffer buffer)
             {
                 S2CAreaPointUpNtc obj = new S2CAreaPointUpNtc();
-                obj.AreaId = ReadUInt32(buffer);
+                obj.AreaId = (QuestAreaId)ReadUInt32(buffer);
                 obj.AddPoint = ReadUInt32(buffer);
                 obj.AddPointByCharge = ReadUInt32(buffer);
                 obj.TotalPoint = ReadUInt32(buffer);

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -16,7 +17,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             AreaRankUpQuestInfoList = new List<CDataAreaRankUpQuestInfo>();
         }
 
-        public uint AreaId { get; set; }
+        public QuestAreaId AreaId { get; set; }
         public uint Rank { get; set; }
         public uint Point { get; set; }
         public uint WeekPoint { get; set; }
@@ -33,7 +34,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, S2CAreaGetAreaMasterInfoRes obj)
             {
                 WriteServerResponse(buffer, obj);
-                WriteUInt32(buffer, obj.AreaId);
+                WriteUInt32(buffer, (uint)obj.AreaId);
                 WriteUInt32(buffer, obj.Rank);
                 WriteUInt32(buffer, obj.Point);
                 WriteUInt32(buffer, obj.WeekPoint);
@@ -50,7 +51,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 S2CAreaGetAreaMasterInfoRes obj = new S2CAreaGetAreaMasterInfoRes();
                 ReadServerResponse(buffer, obj);
-                obj.AreaId = ReadUInt32(buffer);
+                obj.AreaId = (QuestAreaId)ReadUInt32(buffer);
                 obj.Rank = ReadUInt32(buffer);
                 obj.Point = ReadUInt32(buffer);
                 obj.WeekPoint = ReadUInt32(buffer);
