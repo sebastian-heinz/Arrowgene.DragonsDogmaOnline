@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.MessageNo);
                 WriteMtString(buffer, obj.Message);
                 WriteUInt32(buffer, obj.Emotion);
-                WriteByte(buffer, obj.EmotoChat ? (byte)1 : (byte)0);
+                WriteBool(buffer, obj.EmotoChat);
             }
 
             public override CDataCharacterMessage Read(IBuffer buffer)
@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.MessageNo = ReadUInt32(buffer);
                 obj.Message = ReadMtString(buffer);
                 obj.Emotion = ReadUInt32(buffer);
-                obj.EmotoChat = ReadByte(buffer) == 1;
+                obj.EmotoChat = ReadBool(buffer);
                 return obj;
             }
         }
