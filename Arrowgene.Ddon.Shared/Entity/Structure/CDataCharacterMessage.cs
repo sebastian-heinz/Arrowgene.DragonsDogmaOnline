@@ -16,26 +16,26 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public string Message;
         public uint Emotion;
         public bool EmotoChat;
-    }
 
-    public class CDataCharacterMessageSerializer : EntitySerializer<CDataCharacterMessage>
-    {
-        public override void Write(IBuffer buffer, CDataCharacterMessage obj)
+        public class Serializer : EntitySerializer<CDataCharacterMessage>
         {
-            WriteUInt32(buffer, obj.MessageNo);
-            WriteMtString(buffer, obj.Message);
-            WriteUInt32(buffer, obj.Emotion);
-            WriteByte(buffer, obj.EmotoChat ? (byte)1 : (byte)0);
-        }
+            public override void Write(IBuffer buffer, CDataCharacterMessage obj)
+            {
+                WriteUInt32(buffer, obj.MessageNo);
+                WriteMtString(buffer, obj.Message);
+                WriteUInt32(buffer, obj.Emotion);
+                WriteBool(buffer, obj.EmotoChat);
+            }
 
-        public override CDataCharacterMessage Read(IBuffer buffer)
-        {
-            CDataCharacterMessage obj = new CDataCharacterMessage();
-            obj.MessageNo = ReadUInt32(buffer);
-            obj.Message = ReadMtString(buffer);
-            obj.Emotion = ReadUInt32(buffer);
-            obj.EmotoChat = ReadByte(buffer) == 1;
-            return obj;
+            public override CDataCharacterMessage Read(IBuffer buffer)
+            {
+                CDataCharacterMessage obj = new CDataCharacterMessage();
+                obj.MessageNo = ReadUInt32(buffer);
+                obj.Message = ReadMtString(buffer);
+                obj.Emotion = ReadUInt32(buffer);
+                obj.EmotoChat = ReadBool(buffer);
+                return obj;
+            }
         }
     }
 }

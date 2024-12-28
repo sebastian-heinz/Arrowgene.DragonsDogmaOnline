@@ -112,79 +112,80 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public bool HideEquipLanternPawn;
         public byte ArisenProfileShareRange;
         public OnlineStatus OnlineStatus;
-    }
-    public class CDataCharacterInfoSerializer : EntitySerializer<CDataCharacterInfo>
-    {
-        public override void Write(IBuffer buffer, CDataCharacterInfo obj)
-        {
-            WriteUInt32(buffer, obj.CharacterId);
-            WriteUInt32(buffer, obj.UserId);
-            WriteUInt32(buffer, obj.Version);
-            WriteMtString(buffer, obj.FirstName);
-            WriteMtString(buffer, obj.LastName);
-            WriteEntity(buffer, obj.EditInfo);
-            WriteEntity(buffer, obj.StatusInfo);
-            WriteByte(buffer, (byte) obj.Job);
-            WriteEntityList(buffer, obj.CharacterJobDataList);
-            WriteEntityList(buffer, obj.PlayPointList);
-            WriteEntityList(buffer, obj.CharacterEquipDataList);
-            WriteEntityList(buffer, obj.CharacterEquipViewDataList);
-            WriteEntityList(buffer, obj.CharacterEquipJobItemList);
-            WriteByte(buffer, obj.JewelrySlotNum);
-            WriteEntityList(buffer, obj.CharacterEquipItemInfoUnk2);
-            WriteEntityList(buffer, obj.CharacterItemSlotInfoList);
-            WriteEntityList(buffer, obj.WalletPointList);
-            WriteByte(buffer, obj.MyPawnSlotNum);
-            WriteByte(buffer, obj.RentalPawnSlotNum);
-            WriteEntityList(buffer, obj.OrbStatusList);
-            WriteEntityList(buffer, obj.MsgSetList);
-            WriteEntityList(buffer, obj.ShortCutList);
-            WriteEntityList(buffer, obj.CommunicationShortCutList);
-            WriteEntity(buffer, obj.MatchingProfile);
-            WriteEntity(buffer, obj.ArisenProfile);
-            WriteBool(buffer, obj.HideEquipHead);
-            WriteBool(buffer, obj.HideEquipLantern);
-            WriteBool(buffer, obj.HideEquipHeadPawn);
-            WriteBool(buffer, obj.HideEquipLanternPawn);
-            WriteByte(buffer, obj.ArisenProfileShareRange);
-            WriteByte(buffer, (byte) obj.OnlineStatus);
-        }
 
-        public override CDataCharacterInfo Read(IBuffer buffer)
+        public class Serializer : EntitySerializer<CDataCharacterInfo>
         {
-            CDataCharacterInfo obj = new CDataCharacterInfo();
-            obj.CharacterId = ReadUInt32(buffer);
-            obj.UserId = ReadUInt32(buffer);
-            obj.Version = ReadUInt32(buffer);
-            obj.FirstName = ReadMtString(buffer);
-            obj.LastName = ReadMtString(buffer);
-            obj.EditInfo = ReadEntity<CDataEditInfo>(buffer);
-            obj.StatusInfo = ReadEntity<CDataStatusInfo>(buffer);
-            obj.Job = (JobId) ReadByte(buffer);
-            obj.CharacterJobDataList = ReadEntityList<CDataCharacterJobData>(buffer);
-            obj.PlayPointList = ReadEntityList<CDataJobPlayPoint>(buffer);
-            obj.CharacterEquipDataList = ReadEntityList<CDataCharacterEquipData>(buffer);
-            obj.CharacterEquipViewDataList = ReadEntityList<CDataCharacterEquipData>(buffer);
-            obj.CharacterEquipJobItemList = ReadEntityList<CDataEquipJobItem>(buffer);
-            obj.JewelrySlotNum = ReadByte(buffer);
-            obj.CharacterEquipItemInfoUnk2 = ReadEntityList<CDataEquipItemInfoUnk2>(buffer);
-            obj.CharacterItemSlotInfoList = ReadEntityList<CDataCharacterItemSlotInfo>(buffer);
-            obj.WalletPointList = ReadEntityList<CDataWalletPoint>(buffer);
-            obj.MyPawnSlotNum = ReadByte(buffer);
-            obj.RentalPawnSlotNum = ReadByte(buffer);
-            obj.OrbStatusList = ReadEntityList<CDataOrbPageStatus>(buffer);
-            obj.MsgSetList = ReadEntityList<CDataCharacterMsgSet>(buffer);
-            obj.ShortCutList = ReadEntityList<CDataShortCut>(buffer);
-            obj.CommunicationShortCutList = ReadEntityList<CDataCommunicationShortCut>(buffer);
-            obj.MatchingProfile = ReadEntity<CDataMatchingProfile>(buffer);
-            obj.ArisenProfile = ReadEntity<CDataArisenProfile>(buffer);
-            obj.HideEquipHead = ReadBool(buffer);
-            obj.HideEquipLantern = ReadBool(buffer);
-            obj.HideEquipHeadPawn = ReadBool(buffer);
-            obj.HideEquipLanternPawn = ReadBool(buffer);
-            obj.ArisenProfileShareRange = ReadByte(buffer);
-            obj.OnlineStatus = (OnlineStatus) ReadByte(buffer);
-            return obj;
+            public override void Write(IBuffer buffer, CDataCharacterInfo obj)
+            {
+                WriteUInt32(buffer, obj.CharacterId);
+                WriteUInt32(buffer, obj.UserId);
+                WriteUInt32(buffer, obj.Version);
+                WriteMtString(buffer, obj.FirstName);
+                WriteMtString(buffer, obj.LastName);
+                WriteEntity(buffer, obj.EditInfo);
+                WriteEntity(buffer, obj.StatusInfo);
+                WriteByte(buffer, (byte)obj.Job);
+                WriteEntityList(buffer, obj.CharacterJobDataList);
+                WriteEntityList(buffer, obj.PlayPointList);
+                WriteEntityList(buffer, obj.CharacterEquipDataList);
+                WriteEntityList(buffer, obj.CharacterEquipViewDataList);
+                WriteEntityList(buffer, obj.CharacterEquipJobItemList);
+                WriteByte(buffer, obj.JewelrySlotNum);
+                WriteEntityList(buffer, obj.CharacterEquipItemInfoUnk2);
+                WriteEntityList(buffer, obj.CharacterItemSlotInfoList);
+                WriteEntityList(buffer, obj.WalletPointList);
+                WriteByte(buffer, obj.MyPawnSlotNum);
+                WriteByte(buffer, obj.RentalPawnSlotNum);
+                WriteEntityList(buffer, obj.OrbStatusList);
+                WriteEntityList(buffer, obj.MsgSetList);
+                WriteEntityList(buffer, obj.ShortCutList);
+                WriteEntityList(buffer, obj.CommunicationShortCutList);
+                WriteEntity(buffer, obj.MatchingProfile);
+                WriteEntity(buffer, obj.ArisenProfile);
+                WriteBool(buffer, obj.HideEquipHead);
+                WriteBool(buffer, obj.HideEquipLantern);
+                WriteBool(buffer, obj.HideEquipHeadPawn);
+                WriteBool(buffer, obj.HideEquipLanternPawn);
+                WriteByte(buffer, obj.ArisenProfileShareRange);
+                WriteByte(buffer, (byte)obj.OnlineStatus);
+            }
+
+            public override CDataCharacterInfo Read(IBuffer buffer)
+            {
+                CDataCharacterInfo obj = new CDataCharacterInfo();
+                obj.CharacterId = ReadUInt32(buffer);
+                obj.UserId = ReadUInt32(buffer);
+                obj.Version = ReadUInt32(buffer);
+                obj.FirstName = ReadMtString(buffer);
+                obj.LastName = ReadMtString(buffer);
+                obj.EditInfo = ReadEntity<CDataEditInfo>(buffer);
+                obj.StatusInfo = ReadEntity<CDataStatusInfo>(buffer);
+                obj.Job = (JobId)ReadByte(buffer);
+                obj.CharacterJobDataList = ReadEntityList<CDataCharacterJobData>(buffer);
+                obj.PlayPointList = ReadEntityList<CDataJobPlayPoint>(buffer);
+                obj.CharacterEquipDataList = ReadEntityList<CDataCharacterEquipData>(buffer);
+                obj.CharacterEquipViewDataList = ReadEntityList<CDataCharacterEquipData>(buffer);
+                obj.CharacterEquipJobItemList = ReadEntityList<CDataEquipJobItem>(buffer);
+                obj.JewelrySlotNum = ReadByte(buffer);
+                obj.CharacterEquipItemInfoUnk2 = ReadEntityList<CDataEquipItemInfoUnk2>(buffer);
+                obj.CharacterItemSlotInfoList = ReadEntityList<CDataCharacterItemSlotInfo>(buffer);
+                obj.WalletPointList = ReadEntityList<CDataWalletPoint>(buffer);
+                obj.MyPawnSlotNum = ReadByte(buffer);
+                obj.RentalPawnSlotNum = ReadByte(buffer);
+                obj.OrbStatusList = ReadEntityList<CDataOrbPageStatus>(buffer);
+                obj.MsgSetList = ReadEntityList<CDataCharacterMsgSet>(buffer);
+                obj.ShortCutList = ReadEntityList<CDataShortCut>(buffer);
+                obj.CommunicationShortCutList = ReadEntityList<CDataCommunicationShortCut>(buffer);
+                obj.MatchingProfile = ReadEntity<CDataMatchingProfile>(buffer);
+                obj.ArisenProfile = ReadEntity<CDataArisenProfile>(buffer);
+                obj.HideEquipHead = ReadBool(buffer);
+                obj.HideEquipLantern = ReadBool(buffer);
+                obj.HideEquipHeadPawn = ReadBool(buffer);
+                obj.HideEquipLanternPawn = ReadBool(buffer);
+                obj.ArisenProfileShareRange = ReadByte(buffer);
+                obj.OnlineStatus = (OnlineStatus)ReadByte(buffer);
+                return obj;
+            }
         }
     }
 }

@@ -12,22 +12,22 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 
         public uint Type;
         public string URL;
-    }
 
-    public class CDataURLInfoSerializer : EntitySerializer<CDataURLInfo>
-    {
-        public override void Write(IBuffer buffer, CDataURLInfo obj)
+        public class Serializer : EntitySerializer<CDataURLInfo>
         {
-            WriteUInt32(buffer, obj.Type);
-            WriteMtString(buffer, obj.URL);
-        }
+            public override void Write(IBuffer buffer, CDataURLInfo obj)
+            {
+                WriteUInt32(buffer, obj.Type);
+                WriteMtString(buffer, obj.URL);
+            }
 
-        public override CDataURLInfo Read(IBuffer buffer)
-        {
-            CDataURLInfo obj = new CDataURLInfo();
-            obj.Type = ReadUInt32(buffer);
-            obj.URL = ReadMtString(buffer);
-            return obj;
+            public override CDataURLInfo Read(IBuffer buffer)
+            {
+                CDataURLInfo obj = new CDataURLInfo();
+                obj.Type = ReadUInt32(buffer);
+                obj.URL = ReadMtString(buffer);
+                return obj;
+            }
         }
     }
 }

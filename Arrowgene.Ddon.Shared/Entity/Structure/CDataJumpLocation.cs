@@ -11,22 +11,22 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 
         public uint stageId;
         public uint startPos;
-    }
 
-    public class CDataJumpLocationSerializer : EntitySerializer<CDataJumpLocation>
-    {
-        public override void Write(IBuffer buffer, CDataJumpLocation obj)
+        public class Serializer : EntitySerializer<CDataJumpLocation>
         {
-            WriteUInt32(buffer, obj.stageId);
-            WriteUInt32(buffer, obj.startPos);
-        }
+            public override void Write(IBuffer buffer, CDataJumpLocation obj)
+            {
+                WriteUInt32(buffer, obj.stageId);
+                WriteUInt32(buffer, obj.startPos);
+            }
 
-        public override CDataJumpLocation Read(IBuffer buffer)
-        {
-            CDataJumpLocation obj = new CDataJumpLocation();
-            obj.stageId = ReadUInt32(buffer);
-            obj.startPos = ReadUInt32(buffer);
-            return obj;
+            public override CDataJumpLocation Read(IBuffer buffer)
+            {
+                CDataJumpLocation obj = new CDataJumpLocation();
+                obj.stageId = ReadUInt32(buffer);
+                obj.startPos = ReadUInt32(buffer);
+                return obj;
+            }
         }
     }
 }

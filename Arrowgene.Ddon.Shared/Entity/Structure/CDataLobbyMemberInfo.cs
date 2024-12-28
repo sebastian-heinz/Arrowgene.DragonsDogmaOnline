@@ -36,36 +36,34 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public byte Unk0; // Most likely Platform
         public byte Unk1; // Seems to always be 0 in the pcaps
         public OnlineStatus OnlineStatus; // Most likely OnlineStatus
-    }
 
-    public class CDataLobbyMemberInfoSerializer : EntitySerializer<CDataLobbyMemberInfo>
-    {
-        public override void Write(IBuffer buffer, CDataLobbyMemberInfo obj)
+        public class Serializer : EntitySerializer<CDataLobbyMemberInfo>
         {
-            WriteUInt32(buffer, obj.CharacterId);
-            WriteMtString(buffer, obj.FirstName);
-            WriteMtString(buffer, obj.LastName);
-            WriteMtString(buffer, obj.ClanName);
-            WriteUInt32(buffer, obj.PawnId);
-            WriteByte(buffer, obj.Unk0);
-            WriteByte(buffer, obj.Unk1);
-            WriteByte(buffer, (byte)obj.OnlineStatus);
-        }
+            public override void Write(IBuffer buffer, CDataLobbyMemberInfo obj)
+            {
+                WriteUInt32(buffer, obj.CharacterId);
+                WriteMtString(buffer, obj.FirstName);
+                WriteMtString(buffer, obj.LastName);
+                WriteMtString(buffer, obj.ClanName);
+                WriteUInt32(buffer, obj.PawnId);
+                WriteByte(buffer, obj.Unk0);
+                WriteByte(buffer, obj.Unk1);
+                WriteByte(buffer, (byte)obj.OnlineStatus);
+            }
 
-        public override CDataLobbyMemberInfo Read(IBuffer buffer)
-        {
-            CDataLobbyMemberInfo obj = new CDataLobbyMemberInfo();
-            obj.CharacterId = ReadUInt32(buffer);
-            obj.FirstName = ReadMtString(buffer);
-            obj.LastName = ReadMtString(buffer);
-            obj.ClanName = ReadMtString(buffer);
-            obj.PawnId = ReadUInt32(buffer);
-            obj.Unk0 = ReadByte(buffer);
-            obj.Unk1 = ReadByte(buffer);
-            obj.OnlineStatus = (OnlineStatus)ReadByte(buffer);
-            return obj;
+            public override CDataLobbyMemberInfo Read(IBuffer buffer)
+            {
+                CDataLobbyMemberInfo obj = new CDataLobbyMemberInfo();
+                obj.CharacterId = ReadUInt32(buffer);
+                obj.FirstName = ReadMtString(buffer);
+                obj.LastName = ReadMtString(buffer);
+                obj.ClanName = ReadMtString(buffer);
+                obj.PawnId = ReadUInt32(buffer);
+                obj.Unk0 = ReadByte(buffer);
+                obj.Unk1 = ReadByte(buffer);
+                obj.OnlineStatus = (OnlineStatus)ReadByte(buffer);
+                return obj;
+            }
         }
     }
-
-
 }
