@@ -322,7 +322,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataQuestOrderList.Serializer());
             Create(new CDataQuestOrderListUnk8.Serializer());
             Create(new CDataQuestProcessState.Serializer());
-            Create(new CDataQuestProcessState.Serializer());
+            Create(new CDataQuestProcessState.MtTypedArrayCDataQuestCommand.Serializer());
             Create(new CDataQuestProgressWork.Serializer());
             Create(new CDataQuestRecruitListItem.Serializer());
             Create(new CDataQuestSetInfo.Serializer());

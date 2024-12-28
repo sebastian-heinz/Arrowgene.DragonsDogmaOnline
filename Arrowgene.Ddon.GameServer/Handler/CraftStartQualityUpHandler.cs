@@ -7,6 +7,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Craft;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -32,7 +33,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             string RefineMaterialUID = request.RefineUID;
             ushort AddStatusID = request.AddStatusID;
             uint pawnExp = 0;
-            ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
             uint totalCost = Math.Min(100, (uint)itemRank) * 300;
             List<CDataItemUpdateResult> updateResults;
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
@@ -58,26 +58,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // Lead pawn is always owned by player.
             Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnID);
-            List<Pawn> pawns = new List<Pawn> { leadPawn };
-            pawns.AddRange(request.CraftSupportPawnIDList.Select(p => Server.CraftManager.FindPawn(client, p.PawnId)));
-            List<uint> qualityLevels = new List<uint>();
-            List<uint> costPerformanceLevels = new List<uint>();
 
-            foreach (Pawn pawn in pawns)
+            List<CraftPawn> craftPawns = new()
             {
-                if (pawn != null)
-                {
-                    costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
-                    qualityLevels.Add(CraftManager.GetPawnEquipmentQualityLevel(pawn));
-                }
-                else
-                {
-                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID, "Couldn't find the Pawn ID.");
-                }
+                new CraftPawn(leadPawn, CraftPosition.Leader)
+            };
+            craftPawns.AddRange(request.CraftSupportPawnIDList.Select(p => new CraftPawn(Server.CraftManager.FindPawn(client, p.PawnId), CraftPosition.Assistant)));
+            craftPawns.AddRange(request.CraftMasterLegendPawnIDList.Select(p => new CraftPawn(Server.AssetRepository.PawnCraftMasterLegendAsset.Single(m => m.PawnId == p.PawnId))));
 
-            }
-            double calculatedOdds = CraftManager.CalculateEquipmentQualityIncreaseRate(qualityLevels);
-
+            double calculatedOdds = CraftManager.CalculateEquipmentQualityIncreaseRate(craftPawns);
 
             uint plusValue = 0;
             bool isGreatSuccessEquipmentQuality = false;
@@ -155,9 +144,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,
-                                         Server.CraftManager.CalculateRecipeCost(totalCost, costPerformanceLevels))
+                                         Server.CraftManager.CalculateRecipeCost(totalCost, itemInfo, craftPawns))
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CRAFT_INTERNAL, "Insufficient gold.");
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
+
+            if (request.CraftMasterLegendPawnIDList.Count > 0)
+            {
+                uint totalGPcost = (uint)request.CraftMasterLegendPawnIDList.Sum(p => Server.AssetRepository.PawnCraftMasterLegendAsset.Single(m => m.PawnId == p.PawnId).RentalCost);
+                CDataUpdateWalletPoint updateGP = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.GoldenGemstones, totalGPcost)
+                    ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_GP_LACK_GP);
+                updateCharacterItemNtc.UpdateWalletList.Add(updateGP);
+            }
 
             var res = new S2CCraftStartQualityUpRes()
             {

@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Craft;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -79,24 +80,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
 
             Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnId);
-            List<Pawn> pawns = new List<Pawn> { leadPawn };
-            pawns.AddRange(request.CraftSupportPawnIDList.Select(p => Server.CraftManager.FindPawn(client, p.PawnId)));
-            List<uint> costPerformanceLevels = new List<uint>();
-            foreach (Pawn pawn in pawns)
+            List<CraftPawn> craftPawns = new()
             {
-                if (pawn != null)
-                {
-                    costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
-                }
-                else
-                {
-                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID, "Couldn't find the Pawn ID.");
-                }
-            }
-            
+                new CraftPawn(leadPawn, CraftPosition.Leader)
+            };
+            craftPawns.AddRange(request.CraftSupportPawnIDList.Select(p => new CraftPawn(Server.CraftManager.FindPawn(client, p.PawnId), CraftPosition.Assistant)));
+
+
             updateCharacterItemNtc.UpdateType = ItemNoticeType.StartAttachElement;
             CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,
-                            Server.CraftManager.CalculateRecipeCost(totalCost, costPerformanceLevels))
+                            Server.CraftManager.CalculateRecipeCost(totalCost, clientItemInfo, craftPawns))
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CRAFT_INTERNAL, "Insufficient gold.");
 
 
