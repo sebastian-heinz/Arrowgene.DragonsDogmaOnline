@@ -64,7 +64,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 new CraftPawn(leadPawn, CraftPosition.Leader)
             };
             craftPawns.AddRange(request.CraftSupportPawnIDList.Select(p => new CraftPawn(Server.CraftManager.FindPawn(client, p.PawnId), CraftPosition.Assistant)));
-            craftPawns.AddRange(request.CraftMasterLegendPawnIDList.Select(p => new CraftPawn(CraftManager.CraftMasterLegendPawnInfoList.Single(m => m.PawnId == p.PawnId))));
+            craftPawns.AddRange(request.CraftMasterLegendPawnIDList.Select(p => new CraftPawn(Server.AssetRepository.PawnCraftMasterLegendAsset.Single(m => m.PawnId == p.PawnId))));
 
             double calculatedOdds = CraftManager.CalculateEquipmentQualityIncreaseRate(craftPawns);
 
@@ -150,7 +150,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (request.CraftMasterLegendPawnIDList.Count > 0)
             {
-                uint totalGPcost = (uint)request.CraftMasterLegendPawnIDList.Sum(p => CraftManager.CraftMasterLegendPawnInfoList.Single(m => m.PawnId == p.PawnId).RentalCost);
+                uint totalGPcost = (uint)request.CraftMasterLegendPawnIDList.Sum(p => Server.AssetRepository.PawnCraftMasterLegendAsset.Single(m => m.PawnId == p.PawnId).RentalCost);
                 CDataUpdateWalletPoint updateGP = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.GoldenGemstones, totalGPcost)
                     ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_GP_LACK_GP);
                 updateCharacterItemNtc.UpdateWalletList.Add(updateGP);

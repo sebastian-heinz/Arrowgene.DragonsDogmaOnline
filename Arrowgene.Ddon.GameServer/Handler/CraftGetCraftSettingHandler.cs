@@ -190,7 +190,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ReasonableCraftLv = 5,
                 CraftItemLv = 15,
                 CreateCountMax = Server.GameLogicSettings.CraftConsumableProductionTimesMax,
-                CraftMasterLegendPawnInfoList = CraftManager.CraftMasterLegendPawnInfoList,
+                CraftMasterLegendPawnInfoList = Server.AssetRepository.PawnCraftMasterLegendAsset,
                 Unk1 = 49,
                 Unk2 = 30,
                 RefiningMaterialInfoList = RefiningMaterialInfoList
