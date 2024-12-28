@@ -1,5 +1,4 @@
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
@@ -11,16 +10,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(AreaGetAreaSupplyInfoHandler));
 
-        private static readonly byte[] PcapData = new byte[] { 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x03,0x00,0x00,0x00,0x01,0x00,0x00,0x00,0x01,0x00,0x00,0x2C,0xF6,0x02,0x01 };
-
         public AreaGetAreaSupplyInfoHandler(DdonGameServer server) : base(server)
         {
         }
 
         public override S2CAreaGetAreaSupplyInfoRes Handle(GameClient client, C2SAreaGetAreaSupplyInfoReq request)
         {
-            //var pcap = EntitySerializer.Get<S2CAreaGetAreaSupplyInfoRes>().Read(PcapData);
-
             AreaRank clientRank = client.Character.AreaRanks.Find(x => x.AreaId == request.AreaId)
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
             S2CAreaGetAreaSupplyInfoRes res = new();

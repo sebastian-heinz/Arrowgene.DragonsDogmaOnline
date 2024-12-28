@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using System;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -6,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public uint SpotId { get; set; }
         public bool DeadlineReached { get; set; }
-        public ulong Deadline { get; set; } // Seemingly a DateTime?
+        public DateTimeOffset Deadline { get; set; }
 
         public class Serializer : EntitySerializer<CDataAreaRankSeason3>
         {
@@ -14,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 WriteUInt32(buffer, obj.SpotId);
                 WriteBool(buffer, obj.DeadlineReached);
-                WriteUInt64(buffer, obj.Deadline);
+                WriteUInt64(buffer, (ulong)obj.Deadline.ToUnixTimeSeconds());
             }
 
             public override CDataAreaRankSeason3 Read(IBuffer buffer)
@@ -22,7 +23,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 CDataAreaRankSeason3 obj = new CDataAreaRankSeason3();
                 obj.SpotId = ReadUInt32(buffer);
                 obj.DeadlineReached = ReadBool(buffer);
-                obj.Deadline = ReadUInt64(buffer);
+                obj.Deadline = DateTimeOffset.FromUnixTimeSeconds((long)ReadUInt64(buffer));
                 return obj;
             }
         }

@@ -1,7 +1,6 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Logging;
-using System;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -10,15 +9,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(AreaGetAreaBaseInfoListHandler));
 
-
         public AreaGetAreaBaseInfoListHandler(DdonGameServer server) : base(server)
         {
         }
 
         public override S2CAreaGetAreaBaseInfoListRes Handle(GameClient client, C2SAreaGetAreaBaseInfoListReq request)
         {
-            // client.Send(InGameDump.Dump_58);
-
             // TODO: ClanAreaPoint
             S2CAreaGetAreaBaseInfoListRes res = new();
 
