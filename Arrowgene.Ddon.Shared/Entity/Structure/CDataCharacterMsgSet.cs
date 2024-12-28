@@ -15,24 +15,24 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint SetNo;
         public string MsgSetName;
         public List<CDataCharacterMessage> CharacterMessageList;
-    }
 
-    public class CDataCharacterMsgSetSerializer : EntitySerializer<CDataCharacterMsgSet>
-    {
-        public override void Write(IBuffer buffer, CDataCharacterMsgSet obj)
+        public class Serializer : EntitySerializer<CDataCharacterMsgSet>
         {
-            WriteUInt32(buffer, obj.SetNo);
-            WriteMtString(buffer, obj.MsgSetName);
-            WriteEntityList(buffer, obj.CharacterMessageList);
-        }
+            public override void Write(IBuffer buffer, CDataCharacterMsgSet obj)
+            {
+                WriteUInt32(buffer, obj.SetNo);
+                WriteMtString(buffer, obj.MsgSetName);
+                WriteEntityList(buffer, obj.CharacterMessageList);
+            }
 
-        public override CDataCharacterMsgSet Read(IBuffer buffer)
-        {
-            CDataCharacterMsgSet obj = new CDataCharacterMsgSet();
-            obj.SetNo = ReadUInt32(buffer);
-            obj.MsgSetName = ReadMtString(buffer);
-            obj.CharacterMessageList = ReadEntityList<CDataCharacterMessage>(buffer);
-            return obj;
+            public override CDataCharacterMsgSet Read(IBuffer buffer)
+            {
+                CDataCharacterMsgSet obj = new CDataCharacterMsgSet();
+                obj.SetNo = ReadUInt32(buffer);
+                obj.MsgSetName = ReadMtString(buffer);
+                obj.CharacterMessageList = ReadEntityList<CDataCharacterMessage>(buffer);
+                return obj;
+            }
         }
     }
 }
