@@ -354,7 +354,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataRewardBoxRecord.Serializer());
             Create(new CDataRewardItem.Serializer());
             Create(new CDataRewardItemDetail.Serializer());
-            //Create(new CDataRewardItemInfo.Serializer());
+            Create(new CDataRewardItemInfo.Serializer());
 
             Create(new CDataS2CCraftGetCraftSettingResUnk0Unk6.Serializer());
             Create(new CDataS2CCraftStartQualityUpResUnk0.Serializer());
@@ -373,7 +373,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataSeasonDungeonSection.Serializer());
             Create(new CDataSeasonDungeonUnk0.Serializer());
             Create(new CDataSeasonDungeonUnk2.Serializer());
-            //Create(new CDataSelectItemInfo.Serializer());
+            Create(new CDataSelectItemInfo.Serializer());
             Create(new CDataSetAcquirementParam.Serializer());
             Create(new CDataSetQuestBonusList.Serializer());
             Create(new CDataSetQuestDetail.Serializer());
@@ -392,9 +392,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataSoulOrdealUnk0.Serializer());
             Create(new CDataSoulOrdealUnk1.Serializer());
             Create(new CDataSpSkill.Serializer());
-            //Create(new CDataSpotEnemyInfo.Serializer());
-            //Create(new CDataSpotInfo.Serializer());
-            //Create(new CDataSpotItemInfo.Serializer());
+            Create(new CDataSpotEnemyInfo.Serializer());
+            Create(new CDataSpotInfo.Serializer());
+            Create(new CDataSpotItemInfo.Serializer());
             Create(new CDataStageAreaChangeResUnk0.Serializer());
             Create(new CDataStageAreaChangeResUnk1.Serializer());
             Create(new CDataStageAttribute.Serializer());
@@ -414,7 +414,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataStorageEmptySlotNum.Serializer());
             Create(new CDataStorageItemUIDList.Serializer());
             Create(new CDataSubstoryQuestOrderList.Serializer());
-            //Create(new CDataSupplyItem.Serializer());
+            Create(new CDataSupplyItem.Serializer());
 
             Create(new CDataTimeGainQuestList.Serializer());
             Create(new CDataTimeGainQuestRestrictions.Serializer());
@@ -465,17 +465,17 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new C2SActionSetPlayerActionHistoryReq.Serializer());
 
-            //Create(new C2SAreaAreaRankUpReq.Serializer());
-            //Create(new C2SAreaBuyAreaQuestHintReq.Serializer());
+            Create(new C2SAreaAreaRankUpReq.Serializer());
+            Create(new C2SAreaBuyAreaQuestHintReq.Serializer());
             Create(new C2SAreaGetAreaBaseInfoListReq.Serializer());
-            //Create(new C2SAreaGetAreaMasterInfoReq.Serializer());
-            //Create(new C2SAreaGetAreaQuestHintListReq.Serializer());
-            //Create(new C2SAreaGetAreaReleaseListReq.Serializer());
-            //Create(new C2SAreaGetAreaRewardInfoReq.Serializer());
-            //Create(new C2SAreaGetAreaSupplyInfoReq.Serializer());
-            //Create(new C2SAreaGetAreaSupplyReq.Serializer());
-            //Create(new C2SAreaGetLeaderAreaReleaseListReq.Serializer());
-            //Create(new C2SAreaGetSpotInfoListReq.Serializer());
+            Create(new C2SAreaGetAreaMasterInfoReq.Serializer());
+            Create(new C2SAreaGetAreaQuestHintListReq.Serializer());
+            Create(new C2SAreaGetAreaReleaseListReq.Serializer());
+            Create(new C2SAreaGetAreaRewardInfoReq.Serializer());
+            Create(new C2SAreaGetAreaSupplyInfoReq.Serializer());
+            Create(new C2SAreaGetAreaSupplyReq.Serializer());
+            Create(new C2SAreaGetLeaderAreaReleaseListReq.Serializer());
+            Create(new C2SAreaGetSpotInfoListReq.Serializer());
 
             Create(new C2SBattleContentCharacterInfoReq.Serializer());
             Create(new C2SBattleContentContentEntryReq.Serializer());

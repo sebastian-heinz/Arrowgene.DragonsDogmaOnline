@@ -29,21 +29,19 @@ namespace Arrowgene.Ddon.GameServer.Characters
             var areaSupplies = Server.AssetRepository.AreaRankSupplyAsset.Where(x => x.AreaId == areaId);
             if (!areaSupplies.Any())
             {
-                Logger.Error($"No valid asset for {areaId} found in AreaRankSupply asset.");
-                return new();
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_SUPPLY_NOT_AVAILABLE, $"No valid asset for {areaId} found in AreaRankSupply asset.");
             }
 
             var rankSupplies = areaSupplies.Where(x => x.MinRank <= rank).OrderBy(x => x.MinRank).LastOrDefault();
             if (rankSupplies is null)
             {
-                Logger.Error($"No valid asset for {areaId}, rank {rank} found in AreaRankSupply asset.");
-                return new();
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_SUPPLY_NOT_AVAILABLE, $"No valid asset for {areaId}, rank {rank} found in AreaRankSupply asset.");
             }
 
             var pointSupplies = rankSupplies.SupplyItemInfoList.Where(x => x.MinAreaPoint <= points).OrderBy(x => x.MinAreaPoint).LastOrDefault();
             if (pointSupplies is null)
             {
-                Logger.Error($"No valid asset for {areaId}, rank {rank}, {points} points found in AreaRankSupply asset.");
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_SUPPLY_NOT_AVAILABLE, $"No valid asset for {areaId}, rank {rank}, {points} points found in AreaRankSupply asset.");
             }
             return pointSupplies.SupplyItemList.Select((x, i) => new CDataRewardItemInfo()
             {

@@ -1,4 +1,3 @@
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -18,9 +17,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CAreaGetLeaderAreaReleaseListRes Handle(GameClient client, C2SAreaGetLeaderAreaReleaseListReq request)
         {
-            // client.Send(GameFull.Dump_117);
-            var pcap = new S2CAreaGetLeaderAreaReleaseListRes.Serializer().Read(GameFull.Dump_117.AsBuffer());
-
             var result = new S2CAreaGetLeaderAreaReleaseListRes();
             var clientRank = client.Character.AreaRanks;
             var completedQuests = client.Character.CompletedQuests;
