@@ -4,16 +4,19 @@ using Arrowgene.Ddon.Shared.Model;
 public class ResponseErrorException : System.Exception
 {
     public ErrorCode ErrorCode { get; }
+    public bool Critical { get; }
 
     public ResponseErrorException() { ErrorCode = ErrorCode.ERROR_CODE_FAIL; }
-    public ResponseErrorException(ErrorCode errorCode) { ErrorCode = errorCode;}
-    public ResponseErrorException(ErrorCode errorCode, string message) : base(message) { ErrorCode = errorCode; }
-    public ResponseErrorException(ErrorCode errorCode, string message, System.Exception inner) : base(message, inner) { ErrorCode = errorCode; }
+    public ResponseErrorException(ErrorCode errorCode, bool critical = false) { ErrorCode = errorCode; Critical = critical; }
+    public ResponseErrorException(ErrorCode errorCode, string message, bool critical = false) : base(message) { ErrorCode = errorCode; Critical = critical; }
+    public ResponseErrorException(ErrorCode errorCode, string message, System.Exception inner, bool critical = false) : base(message, inner) { ErrorCode = errorCode; Critical = critical; }
     protected ResponseErrorException(
         ErrorCode errorCode,
         System.Runtime.Serialization.SerializationInfo info,
-        System.Runtime.Serialization.StreamingContext context) : base(info, context)
+        System.Runtime.Serialization.StreamingContext context, 
+        bool critical = false) : base(info, context)
     {
         ErrorCode = errorCode;
+        Critical = critical;
     }
 }
