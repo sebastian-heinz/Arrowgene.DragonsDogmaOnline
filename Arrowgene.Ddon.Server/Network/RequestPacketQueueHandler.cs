@@ -44,6 +44,11 @@ namespace Arrowgene.Ddon.Server.Network
                 Logger.Error(client, stringBuilder.ToString());
 
                 client.Send(response);
+
+                if (ex.Critical)
+                {
+                    client.Close();
+                }
             }
             catch (Exception)
             {

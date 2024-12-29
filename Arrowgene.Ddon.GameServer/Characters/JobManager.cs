@@ -39,7 +39,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             if (!HasEmptySlotsForTemplateSwap(client, common, common.Job, jobId))
             {
-                throw new ResponseErrorException(ErrorCode.ERROR_CODE_JOBCHANGE_ITEM_CAPACITY_OVER);
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_JOBCHANGE_STORAGE_FULL);
             }
 
             JobId oldJobId = common.Job;
