@@ -31,31 +31,35 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Dictionary<uint, CDataDeliveredItem> deliveredItems = new Dictionary<uint, CDataDeliveredItem>();
             List<CDataItemUpdateResult> itemUpdateResults = new List<CDataItemUpdateResult>();
-            foreach (var item in request.ItemUIDList)
+            Server.Database.ExecuteInTransaction(connection =>
             {
-                uint itemId = Server.ItemManager.LookupItemByUID(Server, item.UId);
-                var searchResult = client.Character.Storage.FindItemByUIdInStorage(ItemManager.BothStorageTypes, item.UId);
-                var itemUpdate = Server.ItemManager.ConsumeItemByUId(Server, client.Character, searchResult.Item1, item.UId, item.Num) 
-                    ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_QUEST_DONT_HAVE_DELIVERY_ITEM);
-
-                itemUpdateResults.Add(itemUpdate);
-
-                if (!deliveredItems.ContainsKey(itemId))
+                foreach (var item in request.ItemUIDList)
                 {
-                    deliveredItems[itemId] = new CDataDeliveredItem()
-                    {
-                        ItemId = itemId,
-                        ItemNum = 0,
-                        NeedNum = 0
-                    };
-                }
-                deliveredItems[itemId].ItemNum += (ushort) item.Num;
-            }
+                    uint itemId = Server.ItemManager.LookupItemByUID(Server, item.UId);
+                    var searchResult = client.Character.Storage.FindItemByUIdInStorage(ItemManager.BothStorageTypes, item.UId);
+                    var itemUpdate = Server.ItemManager.ConsumeItemByUId(Server, client.Character, searchResult.Item1, item.UId, item.Num, connectionIn: connection)
+                        ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_QUEST_DONT_HAVE_DELIVERY_ITEM);
 
-            foreach (var deliveredItem in deliveredItems.Values)
-            {
-                deliveredItem.NeedNum = (ushort) questState.UpdateDeliveryRequest(deliveredItem.ItemId, deliveredItem.ItemNum);
-            }
+                    itemUpdateResults.Add(itemUpdate);
+
+                    if (!deliveredItems.ContainsKey(itemId))
+                    {
+                        deliveredItems[itemId] = new CDataDeliveredItem()
+                        {
+                            ItemId = itemId,
+                            ItemNum = 0,
+                            NeedNum = 0
+                        };
+                    }
+                    deliveredItems[itemId].ItemNum += (ushort)item.Num;
+                }
+
+                foreach (var deliveredItem in deliveredItems.Values)
+                {
+                    // Do this check in the transaction so the DB rolls back if something goes wrong.
+                    deliveredItem.NeedNum = (ushort)questState.UpdateDeliveryRequest(deliveredItem.ItemId, deliveredItem.ItemNum);
+                }
+            });
 
             client.Send(new S2CItemUpdateCharacterItemNtc()
             {

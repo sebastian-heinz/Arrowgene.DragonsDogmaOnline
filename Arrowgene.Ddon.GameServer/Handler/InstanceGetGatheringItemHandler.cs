@@ -5,13 +5,12 @@ using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class InstanceGetGatheringItemHandler : GameStructurePacketHandler<C2SInstanceGetGatheringItemReq>
+    public class InstanceGetGatheringItemHandler : GameRequestPacketQueueHandler<C2SInstanceGetGatheringItemReq, S2CInstanceGetGatheringItemRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceGetGatheringItemHandler));
 
@@ -19,18 +18,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SInstanceGetGatheringItemReq> req)
+        public override PacketQueue Handle(GameClient client, C2SInstanceGetGatheringItemReq request)
         {
+            PacketQueue packetQueue = new();
+
             S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc()
             {
-                UpdateType = req.Structure.EquipToCharacter == 0 ? ItemNoticeType.Gather : ItemNoticeType.GatherEquipItem
+                UpdateType = request.EquipToCharacter == 0 ? ItemNoticeType.Gather : ItemNoticeType.GatherEquipItem
             };
 
             Server.Database.ExecuteInTransaction(connection =>
             {
-                uint posId = req.Structure.PosId;
-                var stageId = req.Structure.LayoutId.AsStageId();
-                foreach (CDataGatheringItemGetRequest gatheringItemRequest in req.Structure.GatheringItemGetRequestList)
+                uint posId = request.PosId;
+                var stageId = request.LayoutId.AsStageId();
+                foreach (CDataGatheringItemGetRequest gatheringItemRequest in request.GatheringItemGetRequestList)
                 {
                     InstancedGatheringItem gatheredItem;
 
@@ -44,35 +45,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                     else
                     {
-                        gatheredItem = client.InstanceGatheringItemManager.GetAssets(req.Structure.LayoutId, (int)req.Structure.PosId)[(int)gatheringItemRequest.SlotNo];
+                        gatheredItem = client.InstanceGatheringItemManager.GetAssets(request.LayoutId, (int)request.PosId)[(int)gatheringItemRequest.SlotNo];
                     }
 
                     Server.ItemManager.GatherItem(Server, client.Character, ntc, gatheredItem, gatheringItemRequest.Num, connection);
                 }
-            });
 
-            client.Send(ntc);
-
-            S2CInstanceGetGatheringItemRes res = new S2CInstanceGetGatheringItemRes();
-            res.LayoutId = req.Structure.LayoutId;
-            res.PosId = req.Structure.PosId;
-            res.GatheringItemGetRequestList = req.Structure.GatheringItemGetRequestList;
-            client.Send(res);
-
-            if (req.Structure.EquipToCharacter == 1)
-            {
-                var itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, ntc.UpdateItemList[0].ItemList.ItemId);
-                var equipInfo = new CDataCharacterEquipInfo()
+                if (request.EquipToCharacter == 1)
                 {
-                    EquipItemUId = ntc.UpdateItemList[0].ItemList.ItemUId,
-                    EquipCategory = (byte)itemInfo.EquipSlot,
-                    EquipType = EquipType.Performance,
-                };
+                    var itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, ntc.UpdateItemList[0].ItemList.ItemId);
+                    var equipInfo = new CDataCharacterEquipInfo()
+                    {
+                        EquipItemUId = ntc.UpdateItemList[0].ItemList.ItemUId,
+                        EquipCategory = (byte)itemInfo.EquipSlot,
+                        EquipType = EquipType.Performance,
+                    };
 
-                PacketQueue queue = new();
-                Server.Database.ExecuteInTransaction(connection =>
-                {
-                    queue.AddRange(Server.EquipManager.HandleChangeEquipList(
+                    packetQueue.AddRange(Server.EquipManager.HandleChangeEquipList(
                         Server,
                         client,
                         client.Character,
@@ -80,9 +69,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         ItemNoticeType.GatherEquipItem,
                         new List<StorageType>() { StorageType.ItemBagEquipment },
                         connection));
-                });
-                queue.Send();
-            }
+                }
+            });
+
+            client.Enqueue(ntc, packetQueue);
+
+            S2CInstanceGetGatheringItemRes res = new S2CInstanceGetGatheringItemRes();
+            res.LayoutId = request.LayoutId;
+            res.PosId = request.PosId;
+            res.GatheringItemGetRequestList = request.GatheringItemGetRequestList;
+            client.Enqueue(res, packetQueue);
+
+            return packetQueue;
         }
     }
 }
