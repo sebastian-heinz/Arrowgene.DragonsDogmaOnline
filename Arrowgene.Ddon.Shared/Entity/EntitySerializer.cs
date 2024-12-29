@@ -207,6 +207,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataHasRegionBreakReward.Serializer());
             Create(new CDataHistoryElement.Serializer());
 
+            Create(new CDataInformationParagraph.Serializer());
             Create(new CDataItemEmbodyCostParam.Serializer());
             Create(new CDataItemEmbodyItem.Serializer());
             Create(new CDataItemEquipElement.Serializer());
@@ -1042,6 +1043,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CClanGetFurnitureRes.Serializer());
             Create(new S2CClanSetFurnitureRes.Serializer());
 
+            Create(new S2CConnection_10_Ntc.Serializer());
+            Create(new S2CConnectionCriticalErrorNtc.Serializer());
+            Create(new S2CConnectionErrorNtc.Serializer());
+            Create(new S2CConnectionInformationNtc.Serializer());
+            Create(new S2CConnectionKickNtc.Serializer());
             Create(new S2CConnectionLoginRes.Serializer());
             Create(new S2CConnectionLogoutRes.Serializer());
             Create(new S2CConnectionMoveInServerRes.Serializer());

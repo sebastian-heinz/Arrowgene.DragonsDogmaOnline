@@ -244,17 +244,17 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_CONNECTION_LOGOUT_RES = new PacketId(0, 2, 2, "S2C_CONNECTION_LOGOUT_RES", ServerType.Game, PacketSource.Server); // ログアウトに
         public static readonly PacketId C2S_CONNECTION_GET_LOGIN_ANNOUNCEMENT_REQ = new PacketId(0, 3, 1, "C2S_CONNECTION_GET_LOGIN_ANNOUNCEMENT_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CONNECTION_GET_LOGIN_ANNOUNCEMENT_RES = new PacketId(0, 3, 2, "S2C_CONNECTION_GET_LOGIN_ANNOUNCEMENT_RES", ServerType.Game, PacketSource.Server); // ログインお知らせメッセージの取得に
-        public static readonly PacketId S2C_CONNECTION_0_4_16_NTC = new PacketId(0, 4, 16, "S2C_CONNECTION_0_4_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CONNECTION_INFORMATION_NTC = new PacketId(0, 4, 16, "S2C_CONNECTION_INFORMATION_NTC", ServerType.Game, PacketSource.Server, "S2C_CONNECTION_0_4_16_NTC");
         public static readonly PacketId C2S_CONNECTION_MOVE_IN_SERVER_REQ = new PacketId(0, 5, 1, "C2S_CONNECTION_MOVE_IN_SERVER_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CONNECTION_MOVE_IN_SERVER_RES = new PacketId(0, 5, 2, "S2C_CONNECTION_MOVE_IN_SERVER_RES", ServerType.Game, PacketSource.Server); // サーバー移動（入る）に
         public static readonly PacketId C2S_CONNECTION_MOVE_OUT_SERVER_REQ = new PacketId(0, 6, 1, "C2S_CONNECTION_MOVE_OUT_SERVER_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CONNECTION_MOVE_OUT_SERVER_RES = new PacketId(0, 6, 2, "S2C_CONNECTION_MOVE_OUT_SERVER_RES", ServerType.Game, PacketSource.Server); // サーバー移動（出る）に
         public static readonly PacketId C2S_CONNECTION_RESERVE_SERVER_REQ = new PacketId(0, 7, 1, "C2S_CONNECTION_RESERVE_SERVER_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CONNECTION_RESERVE_SERVER_RES = new PacketId(0, 7, 2, "S2C_CONNECTION_RESERVE_SERVER_RES", ServerType.Game, PacketSource.Server); // 他サーバーのロビーの部屋予約に
-        public static readonly PacketId S2C_CONNECTION_0_9_16_NTC = new PacketId(0, 9, 16, "S2C_CONNECTION_0_9_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CONNECTION_CRITICAL_ERROR_NTC = new PacketId(0, 9, 16, "S2C_CONNECTION_CRITICAL_ERROR_NTC", ServerType.Game, PacketSource.Server, "S2C_CONNECTION_0_9_16_NTC");
         public static readonly PacketId S2C_CONNECTION_0_10_16_NTC = new PacketId(0, 10, 16, "S2C_CONNECTION_0_10_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_CONNECTION_0_11_16_NTC = new PacketId(0, 11, 16, "S2C_CONNECTION_0_11_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_CONNECTION_0_12_16_NTC = new PacketId(0, 12, 16, "S2C_CONNECTION_0_12_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_CONNECTION_KICK_NTC = new PacketId(0, 11, 16, "S2C_CONNECTION_KICK_NTC", ServerType.Game, PacketSource.Server, "S2C_CONNECTION_0_11_16_NTC");
+        public static readonly PacketId S2C_CONNECTION_ERROR_NTC = new PacketId(0, 12, 16, "S2C_CONNECTION_ERROR_NTC", ServerType.Game, PacketSource.Server, "S2C_CONNECTION_0_12_16_NTC");
 
 // Group: 1 - (SERVER)
         public static readonly PacketId C2S_SERVER_GET_SERVER_LIST_REQ = new PacketId(1, 0, 1, "C2S_SERVER_GET_SERVER_LIST_REQ", ServerType.Game, PacketSource.Client);
@@ -2176,17 +2176,17 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_CONNECTION_LOGOUT_RES);
             AddPacketIdEntry(packetIds, C2S_CONNECTION_GET_LOGIN_ANNOUNCEMENT_REQ);
             AddPacketIdEntry(packetIds, S2C_CONNECTION_GET_LOGIN_ANNOUNCEMENT_RES);
-            AddPacketIdEntry(packetIds, S2C_CONNECTION_0_4_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CONNECTION_INFORMATION_NTC);
             AddPacketIdEntry(packetIds, C2S_CONNECTION_MOVE_IN_SERVER_REQ);
             AddPacketIdEntry(packetIds, S2C_CONNECTION_MOVE_IN_SERVER_RES);
             AddPacketIdEntry(packetIds, C2S_CONNECTION_MOVE_OUT_SERVER_REQ);
             AddPacketIdEntry(packetIds, S2C_CONNECTION_MOVE_OUT_SERVER_RES);
             AddPacketIdEntry(packetIds, C2S_CONNECTION_RESERVE_SERVER_REQ);
             AddPacketIdEntry(packetIds, S2C_CONNECTION_RESERVE_SERVER_RES);
-            AddPacketIdEntry(packetIds, S2C_CONNECTION_0_9_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CONNECTION_CRITICAL_ERROR_NTC);
             AddPacketIdEntry(packetIds, S2C_CONNECTION_0_10_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_CONNECTION_0_11_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_CONNECTION_0_12_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_CONNECTION_KICK_NTC);
+            AddPacketIdEntry(packetIds, S2C_CONNECTION_ERROR_NTC);
 
 // Group: 1 - (SERVER)
             AddPacketIdEntry(packetIds, C2S_SERVER_GET_SERVER_LIST_REQ);

@@ -1,6 +1,9 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System;
+using System.Linq;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
@@ -12,14 +15,47 @@ namespace Arrowgene.Ddon.LoginServer.Handler
         {
         }
 
+        /// <summary>
+        /// Total allowable packet size, in bytes.
+        /// Break up the list into multiple packets if we exceed this value.
+        /// This is slightly smaller than ushort.MaxValue (the hard cap) to give some wiggle room.
+        /// </summary>
+        private static uint PACKET_SIZE_LIMIT = ushort.MaxValue - 1000;
+
         public override L2CGetErrorMessageListRes Handle(LoginClient client, C2LGetErrorMessageListReq packet)
         {
-            // TODO: Investigate if we can break up the error list to get around the packet length limit.
             L2CGetErrorMessageListNtc ntc = new L2CGetErrorMessageListNtc();
+            uint totalLength = 0;
 
-            ntc.ErrorMessages = Server.AssetRepository.ClientErrorCodes;
+            // TODO: Rework this asset.
+            //ntc.ErrorMessages = Server.AssetRepository.ClientErrorCodes;
 
-            client.Send(ntc);
+            foreach (ErrorCode foo in Enum.GetValues(typeof(ErrorCode)))
+            {
+                // An MtString of length N takes up N+2 bytes.
+                // Each CDataErrorMessage is thus at least N+2+2+4+4 bytes.
+                var message = foo.ToString();
+                totalLength += (uint)(message.Length + 12); 
+
+                ntc.ErrorMessages.Add(new()
+                {
+                    ErrorId = foo,
+                    MessageId = 1,
+                    Message = message
+                });
+
+                if (totalLength >= PACKET_SIZE_LIMIT)
+                {
+                    client.Send(ntc);
+                    ntc = new();
+                    totalLength = 0;
+                }
+            }
+
+            if (ntc.ErrorMessages.Any())
+            {
+                client.Send(ntc);
+            }
             L2CGetErrorMessageListRes res = new L2CGetErrorMessageListRes();
             return res;
         }
