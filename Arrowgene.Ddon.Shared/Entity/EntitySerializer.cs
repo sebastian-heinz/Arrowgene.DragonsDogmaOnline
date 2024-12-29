@@ -553,11 +553,13 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SClanGetFurnitureReq.Serializer());
             Create(new C2SClanSetFurnitureReq.Serializer());
 
+            Create(new C2SConnectionGetLoginAnnouncementReq.Serializer());
             Create(new C2SConnectionLoginReq.Serializer());
             Create(new C2SConnectionMoveInServerReq.Serializer());
             Create(new C2SConnectionMoveOutServerReq.Serializer());
             Create(new C2SConnectionPingReq.Serializer());
             Create(new C2SConnectionReserveServerReq.Serializer());
+
             Create(new C2SContextGetSetContextReq.Serializer());
             Create(new C2SContextMasterThrowReq.Serializer());
             Create(new C2SContextSetContextNtc.Serializer());
@@ -1046,6 +1048,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CConnection_10_Ntc.Serializer());
             Create(new S2CConnectionCriticalErrorNtc.Serializer());
             Create(new S2CConnectionErrorNtc.Serializer());
+            Create(new S2CConnectionGetLoginAnnouncementRes.Serializer());
             Create(new S2CConnectionInformationNtc.Serializer());
             Create(new S2CConnectionKickNtc.Serializer());
             Create(new S2CConnectionLoginRes.Serializer());
