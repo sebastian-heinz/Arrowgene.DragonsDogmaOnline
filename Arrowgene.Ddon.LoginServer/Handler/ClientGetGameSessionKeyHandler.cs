@@ -29,7 +29,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             if (!Database.SetToken(token))
             {
                 Logger.Error(client, "Failed to store GameToken");
-                res.Error = 1;
+                res.Error = (uint)ErrorCode.ERROR_CODE_AUTH_SESSION_KEY_GENERATE;
                 client.Send(res);
                 return;
             }

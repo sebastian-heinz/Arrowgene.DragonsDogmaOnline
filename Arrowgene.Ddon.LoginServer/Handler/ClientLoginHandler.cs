@@ -46,7 +46,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             if (!LockToken(oneTimeToken))
             {
                 Logger.Error(client, $"OneTimeToken {oneTimeToken} is in process.");
-                res.Error = 1;
+                res.Error = (uint)ErrorCode.ERROR_CODE_AUTH_ONETIME_TOKEN_FAIL;
                 client.Send(res);
                 return;
             }
@@ -59,7 +59,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     if (account == null)
                     {
                         Logger.Error(client, "Invalid OneTimeToken");
-                        res.Error = 1;
+                        res.Error = (uint)ErrorCode.ERROR_CODE_AUTH_ONETIME_TOKEN_FAIL;
                         client.Send(res);
                         return;
                     }
@@ -103,7 +103,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 if (loginTokenAge > TimeSpan.FromDays(7)) // TODO convert to setting
                 {
                     Logger.Error(client, $"OneTimeToken Created at: {account.LoginTokenCreated} expired.");
-                    res.Error = 1;
+                    res.Error = (uint)ErrorCode.ERROR_CODE_AUTH_ONETIME_TOKEN_FAIL;
                     client.Send(res);
                     return;
                 }
@@ -149,7 +149,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 if (!Database.InsertConnection(connection))
                 {
                     Logger.Error(client, $"Failed to register login connection");
-                    res.Error = 1;
+                    res.Error = (uint)ErrorCode.ERROR_CODE_AUTH_LOGIN_FAILED;
                     client.Send(res);
                     return;
                 }
