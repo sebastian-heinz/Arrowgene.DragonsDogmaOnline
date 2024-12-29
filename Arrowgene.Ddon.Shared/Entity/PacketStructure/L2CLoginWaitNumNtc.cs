@@ -1,4 +1,4 @@
-﻿using Arrowgene.Buffers;
+using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override L2CLoginWaitNumNtc Read(IBuffer buffer)
             {
                 L2CLoginWaitNumNtc obj = new L2CLoginWaitNumNtc();
-                obj.Unknown = buffer.ReadUInt32(Endianness.Big);
+                obj.Unknown = ReadUInt32(buffer);
                 return obj;
             }
         }

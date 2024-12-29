@@ -4,28 +4,28 @@ using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class L2CGetLoginSettingsRes : ServerResponse
+    public class L2CGetLoginSettingRes : ServerResponse
     {
-        public L2CGetLoginSettingsRes()
+        public L2CGetLoginSettingRes()
         {
             LoginSetting = new CDataLoginSetting();
         }
 
         public override PacketId Id => PacketId.L2C_GET_LOGIN_SETTING_RES;
 
-        public CDataLoginSetting LoginSetting;
+        public CDataLoginSetting LoginSetting { get; set; }
 
-        public class Serializer : PacketEntitySerializer<L2CGetLoginSettingsRes>
+        public class Serializer : PacketEntitySerializer<L2CGetLoginSettingRes>
         {
-            public override void Write(IBuffer buffer, L2CGetLoginSettingsRes obj)
+            public override void Write(IBuffer buffer, L2CGetLoginSettingRes obj)
             {
                 WriteServerResponse(buffer, obj);
                 WriteEntity(buffer, obj.LoginSetting);
             }
 
-            public override L2CGetLoginSettingsRes Read(IBuffer buffer)
+            public override L2CGetLoginSettingRes Read(IBuffer buffer)
             {
-                L2CGetLoginSettingsRes obj = new L2CGetLoginSettingsRes();
+                L2CGetLoginSettingRes obj = new L2CGetLoginSettingRes();
                 ReadServerResponse(buffer, obj);
                 obj.LoginSetting = ReadEntity<CDataLoginSetting>(buffer);
                 return obj;

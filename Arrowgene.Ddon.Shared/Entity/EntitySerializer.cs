@@ -429,10 +429,17 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CData_772E80.Serializer());
 
             // Packet structure serializers
+            Create(new C2LClientChallengeReq.Serializer());
             Create(new C2LCreateCharacterDataReq.Serializer());
             Create(new C2LDecideCharacterIdReq.Serializer());
+            Create(new C2LDeleteCharacterInfoReq.Serializer());
+            Create(new C2LGetCharacterListReq.Serializer());
             Create(new C2LGetErrorMessageListReq.Serializer());
+            Create(new C2LGetGameSessionKeyReq.Serializer());
+            Create(new C2LGetLoginSettingReq.Serializer());
+            Create(new C2LGpCourseGetInfoReq.Serializer());
             Create(new C2LLoginReq.Serializer());
+            Create(new C2LLogoutReq.Serializer());
             Create(new C2LPingReq.Serializer());
 
             Create(new C2SAchievementCompleteNtc.Serializer());
@@ -483,6 +490,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SBazaarReExhibitReq.Serializer());
             Create(new C2SBazaarReceiveProceedsReq.Serializer());
             Create(new C2SBinarySaveSetCharacterBinSaveDataReq.Serializer());
+
+            Create(new C2SCertClientChallengeReq.Serializer());
 
             Create(new C2SCharacterCharacterDeadNtc.Serializer());
             Create(new C2SCharacterCharacterDownCancelNtc.Serializer());
@@ -947,6 +956,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CBazaarReceiveProceedsRes.Serializer());
 
             Create(new S2CBinarySaveSetCharacterBinSaveDataRes.Serializer());
+
+            Create(new S2CCertClientChallengeRes.Serializer());
 
             Create(new S2CCharacterCharacterGoldenReviveRes.Serializer());
             Create(new S2CCharacterCharacterPenaltyReviveRes.Serializer());
@@ -1523,16 +1534,20 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2C_SEASON_62_28_16_NTC.Serializer());
             Create(new S2C_SEASON_62_39_16_NTC.Serializer());
 
+            Create(new L2CClientChallengeRes.Serializer());
             Create(new L2CCreateCharacterDataNtc.Serializer());
             Create(new L2CCreateCharacterDataRes.Serializer());
             Create(new L2CDecideCharacterIdRes.Serializer());
+            Create(new L2CDeleteCharacterInfoRes.Serializer());
+            Create(new L2CGetCharacterListRes.Serializer());
             Create(new L2CGetErrorMessageListNtc.Serializer());
             Create(new L2CGetErrorMessageListRes.Serializer());
             Create(new L2CGetGameSessionKeyRes.Serializer());
-            Create(new L2CGetLoginSettingsRes.Serializer());
+            Create(new L2CGetLoginSettingRes.Serializer());
             Create(new L2CGpCourseGetInfoRes.Serializer());
             Create(new L2CLoginRes.Serializer());
             Create(new L2CLoginWaitNumNtc.Serializer());
+            Create(new L2CLogoutRes.Serializer());
             Create(new L2CNextConnectionServerNtc.Serializer());
             Create(new L2CPingRes.Serializer());
 

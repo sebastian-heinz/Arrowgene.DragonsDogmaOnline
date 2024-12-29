@@ -15,9 +15,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public PacketId Id => PacketId.C2L_CREATE_CHARACTER_DATA_REQ;
 
-        public CDataCharacterInfo CharacterInfo;
-        public uint WaitNum;
-        public byte RotationServerId;
+        public CDataCharacterInfo CharacterInfo { get; set; }
+        public uint WaitNum { get; set; }
+        public byte RotationServerId { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2LCreateCharacterDataReq>
         {

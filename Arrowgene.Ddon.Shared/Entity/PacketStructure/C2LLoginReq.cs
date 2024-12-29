@@ -17,19 +17,14 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, C2LLoginReq obj)
             {
                 WriteMtString(buffer, obj.OneTimeToken);
-                buffer.WriteEnumByte(obj.PlatformType);
+                WriteByte(buffer, (byte)obj.PlatformType);
             }
 
             public override C2LLoginReq Read(IBuffer buffer)
             {
                 C2LLoginReq obj = new C2LLoginReq();
                 obj.OneTimeToken = ReadMtString(buffer);
-                if (!buffer.ReadEnumByte(out PlatformType platformType))
-                {
-                    platformType = PlatformType.None;
-                }
-
-                obj.PlatformType = platformType;
+                obj.PlatformType = (PlatformType)ReadByte(buffer);
                 return obj;
             }
         }

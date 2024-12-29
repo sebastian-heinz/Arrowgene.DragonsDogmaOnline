@@ -1,39 +1,26 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
-    public class GetCharacterListHandler : PacketHandler<LoginClient>
+    public class GetCharacterListHandler : LoginRequestPacketHandler<C2LGetCharacterListReq, L2CGetCharacterListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(GetCharacterListHandler));
-        private AssetRepository _AssetRepo;
 
         public GetCharacterListHandler(DdonLoginServer server) : base(server)
         {
-            _AssetRepo = server.AssetRepository;
         }
 
-        public override PacketId Id => PacketId.C2L_GET_CHARACTER_LIST_REQ;
-
-        public override void Handle(LoginClient client, IPacket packet)
+        public override L2CGetCharacterListRes Handle(LoginClient client, C2LGetCharacterListReq request)
         {
-            IBuffer buffer = new StreamBuffer();
-            buffer.WriteInt32(0, Endianness.Big); // error
-            buffer.WriteInt32(0, Endianness.Big); // result
+            L2CGetCharacterListRes res = new();
 
-            List<CDataCharacterListInfo> characterListResponse = new List<CDataCharacterListInfo>();
             List<Character> characters = Database.SelectCharactersByAccountId(client.Account.Id, GameMode.Normal);
             Logger.Info(client, $"Found: {characters.Count} Characters");
             foreach (Character c in characters)
@@ -50,7 +37,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 ulong now = (ulong)DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 
                 List<CDataGPCourseValid> ValidCourses = new List<CDataGPCourseValid>();
-                foreach (var ValidCourse in _AssetRepo.GPCourseInfoAsset.ValidCourses)
+                foreach (var ValidCourse in Server.AssetRepository.GPCourseInfoAsset.ValidCourses)
                 {
                     if (now > ValidCourse.Value.EndTime)
                     {
@@ -61,8 +48,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     {
                         Id = c.CharacterId,
                         CourseId = ValidCourse.Value.Id,
-                        NameA = _AssetRepo.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].Name, // Course Name
-                        NameB = _AssetRepo.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].IconPath, // Link to a icon
+                        NameA = Server.AssetRepository.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].Name, // Course Name
+                        NameB = Server.AssetRepository.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].IconPath, // Link to a icon
                     };
 
                     if ((now >= ValidCourse.Value.StartTime) && (now <= ValidCourse.Value.EndTime))
@@ -94,12 +81,10 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
                 cResponse.ClanName = c.ClanName.Name;
                 cResponse.ClanNameShort = c.ClanName.ShortName;
-                characterListResponse.Add(cResponse);
+                res.CharacterList.Add(cResponse);
             }
 
-            EntitySerializer.Get<CDataCharacterListInfo>().WriteList(buffer, characterListResponse);
-            Packet response = new Packet(PacketId.L2C_GET_CHARACTER_LIST_RES, buffer.GetAllBytes());
-            client.Send(response);
+            return res;
         }
     }
 }

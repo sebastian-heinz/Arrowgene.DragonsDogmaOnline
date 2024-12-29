@@ -1,12 +1,11 @@
-using Arrowgene.Buffers;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
-    public class DeleteCharacterHandler : PacketHandler<LoginClient>
+    public class DeleteCharacterHandler : LoginRequestPacketHandler<C2LDeleteCharacterInfoReq, L2CDeleteCharacterInfoRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DeleteCharacterHandler));
 
@@ -14,28 +13,18 @@ namespace Arrowgene.Ddon.LoginServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2L_DELETE_CHARACTER_INFO_REQ;
-
-        public override void Handle(LoginClient client, IPacket packet)
+        public override L2CDeleteCharacterInfoRes Handle(LoginClient client, C2LDeleteCharacterInfoReq request)
         {
-            IBuffer req = packet.AsBuffer();
-            uint characterId = req.ReadUInt32(Endianness.Big);
-
-            IBuffer res = new StreamBuffer();
-            if (!Database.DeleteCharacter(characterId))
+            if (!Database.DeleteCharacter(request.CharacterId))
             {
-                Logger.Error(client, $"Failed to delete character with ID: {characterId}");
-                res.WriteUInt32(1, Endianness.Big);
-                res.WriteUInt32(0, Endianness.Big);
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_CHARACTER_INTERNAL, $"Failed to delete character with ID: {request.CharacterId}");
             }
             else
             {
-                Logger.Info(client, $"Deleted character with ID: {characterId}");
-                res.WriteUInt32(0, Endianness.Big);
-                res.WriteUInt32(0, Endianness.Big);
+                Logger.Info(client, $"Deleted character with ID: {request.CharacterId}");
             }
 
-            client.Send(new Packet(PacketId.L2C_DELETE_CHARACTER_INFO_RES, res.GetAllBytes()));
+            return new();
         }
     }
 }
