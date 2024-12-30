@@ -61,18 +61,19 @@ namespace Arrowgene.Ddon.Rpc.Web.Route
 
             if (serverListSelected.Any())
             {
-                var connections = gameServer.Database.SelectConnections();
+                var serverInfos = gameServer.RpcManager.ServerListInfo();
                 foreach (var server in serverListSelected)
                 {
+                    var serverInfo = serverInfos.Find(x => x.Id == server.Id);
                     statusList.Add(new ServerStatus()
                     {
                         Id = server.Id,
                         Name = server.Name,
                         Brief = server.Brief,
-                        TrafficName = string.Empty,
-                        TrafficLevel = 0,
+                        TrafficName = serverInfo.TrafficName,
+                        TrafficLevel = serverInfo.TrafficLevel,
                         MaxLoginNum = server.MaxLoginNum,
-                        LoginNum = (uint)connections.Count(x => x.ServerId == server.Id && x.Type == ConnectionType.GameServer),
+                        LoginNum = serverInfo.LoginNum,
                         Addr = server.Addr,
                         Port = server.Port,
                         RpcPort = server.RpcPort,

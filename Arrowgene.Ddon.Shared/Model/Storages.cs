@@ -183,9 +183,10 @@ namespace Arrowgene.Ddon.Shared.Model
             // TODO: Limit itemCount to the item's max stack size in storageType
             // Right now this is being managed by ItemManager
             var tuple = Items
-                .Select((item, index) => new {item = item, slot = (ushort) (index+1)})
+                .Select((item, index) => new { item = item, slot = (ushort)(index + 1) })
                 .Where(tuple => tuple.item == null)
-                .First();
+                .FirstOrDefault()
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_STORAGE_OVERFLOW);
             SetItem(newItem, itemCount, tuple.slot);
             return tuple.slot;
         }

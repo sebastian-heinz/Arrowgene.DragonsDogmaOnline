@@ -71,7 +71,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 if (!DeliveryRecords.ContainsKey(itemId))
                 {
                     Logger.Error($"Missing delivery record {itemId} for quest {QuestId}");
-                    return uint.MaxValue;
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_QUEST_CANT_DERIVERY_ITEM);
                 }
 
                 var deliveryRecord = DeliveryRecords[itemId];
@@ -81,7 +81,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 if (deliveryRecord.AmountDelivered > deliveryRecord.AmountRequired)
                 {
                     Logger.Error($"Delivery overage {itemId} for quest {QuestId}");
-                    return uint.MaxValue;
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_QUEST_OVERRUN_DELIVER_ITEM);
                 }
 
                 return deliveryRecord.AmountRequired - deliveryRecord.AmountDelivered;

@@ -255,7 +255,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         memberClient = _gameServer.ClientLookup.GetClientByCharacterId(pawn.CharacterId);
                         memberCharacter = pawn;
 
-                        if (memberClient.Character.Stage.Id != stageId.Id || pawn.IsRented)
+                        if (memberClient is null || memberClient.Character.Stage.Id != stageId.Id || pawn.IsRented)
                         {
                             // Only nearby allies get XP
                             // and non-rented pawns

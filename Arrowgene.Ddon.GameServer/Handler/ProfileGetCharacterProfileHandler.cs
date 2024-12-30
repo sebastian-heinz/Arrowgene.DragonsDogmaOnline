@@ -17,8 +17,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CProfileGetCharacterProfileRes Handle(GameClient client, C2SProfileGetCharacterProfileReq request)
         {
-            GameClient targetClient = Server.ClientLookup.GetClientByCharacterId(request.CharacterId);
-            Character targetCharacter = targetClient is not null ? targetClient.Character : Server.Database.SelectCharacter(request.CharacterId)
+            Character targetCharacter = Server.ClientLookup.GetClientByCharacterId(request.CharacterId)?.Character
+                ?? Server.Database.SelectCharacter(request.CharacterId)
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CHARACTER_DATA_INVALID_CHARACTER_ID);
 
             S2CCharacterGetCharacterStatusNtc ntc = new S2CCharacterGetCharacterStatusNtc();
