@@ -97,11 +97,15 @@ The library `LibUtils` can be used in both the `Server` and `GameServer` project
 
 ### GameServer Libraries
 
-The library `LibDdon` is a library which can be included by scripts loaded in the GameServer` project.
+The library `LibDdon` is a library which can be included by scripts loaded in the `Arrowgene.Ddon.GameServer` project. You can locate it at `Arrowgene.Ddon.GameServer/Scripting/LibDdon.cs`.
 
 ### GameServer Script Libraries
 
 There are libraries written in C# scripts which can be included by other C# scripts. They are located in `<scriptroot>/libs`. Scripts loaded by the `GameServer` can include them be using the `#load` directive.
+
+#### DropRate.csx
+
+Contains constants related to common drop rate values to assign to item drops.
 
 #### SeasonalEvents.csx
 
