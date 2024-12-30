@@ -54,6 +54,7 @@ public class ScriptedQuest : IQuest
                 .AddAnnotation("Clan Base Christmas Tree")
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, 8229)
                 .AddAnnotation("Spawns Nicholas, Marco and Mia and decorations");
+        process0.AddProcessEndBlock(false);
         AddProcess(process0);
     }
 }

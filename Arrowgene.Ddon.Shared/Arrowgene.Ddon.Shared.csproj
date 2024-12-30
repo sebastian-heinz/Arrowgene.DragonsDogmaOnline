@@ -38,12 +38,4 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
-
-    <ItemGroup>
-      <ContentWithTargetPath Remove="Files\Assets\scripts\libs\DropRate.csx" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Remove="Files\Assets\scripts\libs\DropRate.csx" />
-    </ItemGroup>
 </Project>

@@ -81,7 +81,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             foreach (var process in quest.Processes)
             {
-                foreach (var block in process.Blocks)
+                foreach (var block in process.Blocks.Values)
                 {
                     switch (block.BlockType)
                     {
@@ -189,14 +189,16 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 return new List<CDataQuestProcessState>();
             }
 
-            var process = Processes[processState.ProcessNo];           
-            if ((processState.BlockNo) >= process.Blocks.Count)
+            var process = Processes[processState.ProcessNo];
+
+            ushort nextBlockNo = (ushort)(processState.BlockNo + 1);
+            if (!process.Blocks.ContainsKey(nextBlockNo))
             {
                 questProgressState = QuestProgressState.Unknown;
                 return new List<CDataQuestProcessState>();
             }
 
-            var questBlock = process.Blocks[processState.BlockNo];
+            var questBlock = process.Blocks[nextBlockNo];
             if (processState.ProcessNo == 0 && questBlock.SequenceNo == 1)
             {
                 questProgressState = QuestProgressState.Complete;

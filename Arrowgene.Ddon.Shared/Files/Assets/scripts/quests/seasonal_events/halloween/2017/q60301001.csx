@@ -57,6 +57,7 @@ public class ScriptedQuest : IQuest
                 .AddAnnotation("Spawns Angelo")
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, 6987)
                 .AddAnnotation("Spawns Normal Shelly");
+        process0.AddProcessEndBlock(false);
         AddProcess(process0);
     }
 }

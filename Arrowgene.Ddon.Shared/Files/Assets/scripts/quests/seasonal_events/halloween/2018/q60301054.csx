@@ -41,7 +41,12 @@ public class ScriptedQuest : IQuest
                 .AddAnnotation("Spawns decorations and warp")
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, 8228)
                 .AddAnnotation("Spawns Angelo and Shelly so they remain for the event");
-        process0.AddReturnCheckPointBlock(0, 2);
+        process0.AddReturnCheckPointBlock(0, 2)
+            .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, 8236)
+                .AddAnnotation("Spawns decorations and warp")
+            .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, 8228)
+                .AddAnnotation("Spawns Angelo and Shelly so they remain for the event");
+        process0.AddProcessEndBlock(false);
         AddProcess(process0);
     }
 }

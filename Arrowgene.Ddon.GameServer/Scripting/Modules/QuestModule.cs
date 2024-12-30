@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server.Scripting;
 using Arrowgene.Ddon.Shared;
@@ -13,7 +14,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         public override string ModuleRoot => "quests";
         public override string Filter => "*.csx";
         public override bool ScanSubdirectories => true;
-        public override bool EnableHotLoad => true;
+        public override bool EnableHotLoad => false;
         public Dictionary<QuestId, List<IQuest>> Quests { get; private set; }
         public Dictionary<uint, IQuest> QuestsByScheduleId { get; private set; }
 

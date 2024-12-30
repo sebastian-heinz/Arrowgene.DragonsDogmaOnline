@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.GameServer.Quests;
+using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Asset;
@@ -28,7 +29,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
          * A QuestId can return us a list of related QuestScheduleIds which all use the same QuestId.
          */
         private static Dictionary<uint, Quest> gQuests = new Dictionary<uint, Quest>();
-        private static readonly Dictionary<QuestId, List<Quest>> gVariantQuests = new();
+        private static readonly Dictionary<QuestId, HashSet<uint>> gVariantQuests = new();
 
         private static Dictionary<uint, HashSet<uint>> gTutorialQuests = new Dictionary<uint, HashSet<uint>>();
         private static Dictionary<QuestAreaId, HashSet<QuestId>> gWorldQuests = new Dictionary<QuestAreaId, HashSet<QuestId>>();
@@ -47,9 +48,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             if (!gVariantQuests.ContainsKey(quest.QuestId))
             {
-                gVariantQuests[quest.QuestId] = new List<Quest>();
+                gVariantQuests[quest.QuestId] = new HashSet<uint>();
             }
-            gVariantQuests[quest.QuestId].Add(quest);
+            gVariantQuests[quest.QuestId].Add(quest.QuestScheduleId);
 
             if (quest.QuestType == QuestType.Tutorial)
             {
@@ -161,19 +162,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return gQuests[questScheduleId];
         }
 
-        public static List<Quest> GetQuestsByQuestId(QuestId questId)
+        public static HashSet<uint> GetQuestsByQuestId(QuestId questId)
         {
             if (gVariantQuests.ContainsKey(questId))
             {
                 return gVariantQuests[questId];
             }
-            return new List<Quest>();
+            return new HashSet<uint>();
         }
 
         public static Quest RollQuestForQuestId(QuestId questId)
         {
             var quests = GetQuestsByQuestId(questId);
-            return quests[Random.Shared.Next(0, quests.Count)];
+            var questScheduleId = quests.ElementAt(Random.Shared.Next(0, quests.Count));
+            return gQuests[questScheduleId];
         }
 
         public static bool IsQuestEnabled(uint questScheduleId)

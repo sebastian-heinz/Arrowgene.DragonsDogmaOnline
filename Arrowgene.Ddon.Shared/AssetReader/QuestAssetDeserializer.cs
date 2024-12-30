@@ -403,7 +403,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                 if (!Enum.TryParse(jblock.GetProperty("type").GetString(), true, out QuestBlockType questBlockType))
                 {
-                    Logger.Error($"Unable to parse the quest block type @ index {blockIndex - 1}.");
+                    Logger.Error($"Unable to parse the quest block type of BlockNo={blockIndex}.");
                     return false;
                 }
 
@@ -422,7 +422,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 {
                     if (!Enum.TryParse(jUpdateAnnounce.GetString(), true, out QuestAnnounceType announceType))
                     {
-                        Logger.Error($"Unable to parse the quest announce type @ index {blockIndex - 1}.");
+                        Logger.Error($"Unable to parse the quest announce type of BlockNo={blockIndex}.");
                         return false;
                     }
                     questBlock.AnnounceType = announceType;
@@ -485,7 +485,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         var questFlag = ParseQuestFlag(jFlag);
                         if (questFlag == null)
                         {
-                            Logger.Error($"Unable to parse the quest flags @ index {blockIndex - 1}.");
+                            Logger.Error($"Unable to parse the quest flags of BlockNo={blockIndex}.");
                             return false;
                         }
                         questBlock.QuestFlags.Add(questFlag);
@@ -500,7 +500,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         var questFlag = ParseQuestFlag(jFlag);
                         if (questFlag == null)
                         {
-                            Logger.Error($"Unable to parse the checkpoint quest flags @ index {blockIndex - 1}.");
+                            Logger.Error($"Unable to parse the checkpoint quest flags of BlockNo={blockIndex}.");
                             return false;
                         }
                         questBlock.CheckpointQuestFlags.Add(questFlag);
@@ -530,7 +530,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         {
                             if (!Enum.TryParse(jblock.GetProperty("npc_id").GetString(), true, out NpcId npcId))
                             {
-                                Logger.Error($"Unable to parse the npc_id in block @ index {blockIndex - 1}.");
+                                Logger.Error($"Unable to parse the npc_id in block of BlockNo={blockIndex}.");
                                 return false;
                             }
                             questBlock.NpcOrderDetails.Add(new QuestNpcOrder()
@@ -579,7 +579,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         {
                             if (!Enum.TryParse(jblock.GetProperty("npc_id").GetString(), true, out NpcId npcId))
                             {
-                                Logger.Error($"Unable to parse the npc_id in block @ index {blockIndex - 1}.");
+                                Logger.Error($"Unable to parse the npc_id in block of BlockNo={blockIndex}.");
                                 return false;
                             }
 
@@ -601,7 +601,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         {
                             if (!Enum.TryParse(jblock.GetProperty("npc_id").GetString(), true, out NpcId npcId))
                             {
-                                Logger.Error($"Unable to parse the npc_id in block @ index {blockIndex - 1}.");
+                                Logger.Error($"Unable to parse the npc_id in block of BlockNo={blockIndex}.");
                                 return false;
                             }
 
@@ -629,7 +629,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         {
                             if (!Enum.TryParse(jblock.GetProperty("quest_type").GetString(), true, out QuestType questType))
                             {
-                                Logger.Error($"Unable to parse the quest type in block @ index {blockIndex - 1}.");
+                                Logger.Error($"Unable to parse the quest type in block of BlockNo={blockIndex}.");
                                 return false;
                             }
 
@@ -674,14 +674,14 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         {
                             if (!Enum.TryParse(jblock.GetProperty("quest_type").GetString(), true, out OmQuestType questType))
                             {
-                                Logger.Error($"Unable to parse the quest type in block @ index {blockIndex - 1}.");
+                                Logger.Error($"Unable to parse the quest type in block of BlockNo={blockIndex}.");
                                 return false;
                             }
                             questBlock.OmInteractEvent.QuestType = questType;
 
                             if (!Enum.TryParse(jblock.GetProperty("interact_type").GetString(), true, out OmInteractType interactType))
                             {
-                                Logger.Error($"Unable to parse the quest type in block @ index {blockIndex - 1}.");
+                                Logger.Error($"Unable to parse the quest type in block of BlockNo={blockIndex}.");
                                 return false;
                             }
                             questBlock.OmInteractEvent.InteractType = interactType;
@@ -703,7 +703,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     {
                             if (!Enum.TryParse(jblock.GetProperty("npc_id").GetString(), true, out NpcId npcId))
                             {
-                                Logger.Error($"Unable to parse the npc_id in block @ index {blockIndex - 1}.");
+                                Logger.Error($"Unable to parse the npc_id in block of BlockNo={blockIndex}.");
                                 return false;
                             }
 
@@ -738,7 +738,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             {
                                 if (!Enum.TryParse(jJumpType.GetString(), true, out QuestJumpType jumpType))
                                 {
-                                    Logger.Error($"Unable to parse the event jump type in block @ index {blockIndex - 1}.");
+                                    Logger.Error($"Unable to parse the event jump type in block of BlockNo={blockIndex}.");
                                     return false;
                                 }
                                 questBlock.QuestEvent.JumpType = jumpType;
@@ -798,17 +798,17 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         /* Filler block which might do some meta things like announce or set/check flags */
                         break;
                     default:
-                        Logger.Error($"Unsupported QuestBlockType {questBlockType} @ index {blockIndex - 1}.");
+                        Logger.Error($"Unsupported QuestBlockType {questBlockType} @ index {blockIndex}.");
                         return false;
                 }
 
                 if (!ParseRawBlock(jblock, questBlock))
                 {
-                    Logger.Error($"Unable to parse RawBlock commands in block @ index {blockIndex - 1}.");
+                    Logger.Error($"Unable to parse RawBlock commands in block @ index {blockIndex}.");
                     return false;
                 }
 
-                questProcess.Blocks.Add(questBlock);
+                questProcess.Blocks[blockIndex] = questBlock;
 
                 blockIndex += 1;
             }
@@ -816,26 +816,26 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             if (questProcess.ProcessNo == 0)
             {
                 // Add an implicit EndBlock
-                questProcess.Blocks.Add(new QuestBlock()
+                questProcess.Blocks[blockIndex] = new QuestBlock()
                 {
                     BlockType = QuestBlockType.End,
                     ProcessNo = questProcess.ProcessNo,
                     BlockNo = blockIndex,
                     SequenceNo = 1,
                     AnnounceType = QuestAnnounceType.None
-                });
+                };
             }
             else
             {
                 // Add a block which does nothing
-                questProcess.Blocks.Add(new QuestBlock()
+                questProcess.Blocks[blockIndex] = new QuestBlock()
                 {
                     ProcessNo = questProcess.ProcessNo,
                     BlockType = QuestBlockType.None,
                     BlockNo = blockIndex,
                     SequenceNo = 1,
                     AnnounceType = QuestAnnounceType.None
-                });
+                };
             }
 
             return true;
