@@ -15,7 +15,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CQuestGetAreaBonusListRes Handle(GameClient client, C2SQuestGetAreaBonusListReq request)
         {
             // TODO: Implement.
-            // client.Send(GameFull.Dump_284);
+            //var res = EntitySerializer.Get<S2CQuestGetAreaBonusListRes>().Read(GameFull.Dump_284.AsBuffer());
+
             return new();
         }
     }

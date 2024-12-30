@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             AreaBonusList = new();
         }
 
-        public List<CDataAreaRank> AreaBonusList { get; set; }
+        public List<CDataAreaBonus> AreaBonusList { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CQuestGetAreaBonusListRes>
         {
@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 S2CQuestGetAreaBonusListRes obj = new S2CQuestGetAreaBonusListRes();
                 ReadServerResponse(buffer, obj);
-                obj.AreaBonusList = ReadEntityList<CDataAreaRank>(buffer);
+                obj.AreaBonusList = ReadEntityList<CDataAreaBonus>(buffer);
                 return obj;
             }
         }

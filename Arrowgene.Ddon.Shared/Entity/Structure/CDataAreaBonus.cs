@@ -19,6 +19,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public ushort Unk3 { get; set; }
         public ushort Unk4 { get; set; }
 
+
         public class Serializer : EntitySerializer<CDataAreaBonus>
         {
             public override void Write(IBuffer buffer, CDataAreaBonus obj)
