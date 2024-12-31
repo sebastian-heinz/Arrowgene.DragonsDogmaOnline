@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Context;
 using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -57,6 +58,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Quest));
         private DdonGameServer Server { get; set; }
+        public QuestSource QuestSource { get; set; }
+        public IQuest BackingObject { get; protected set; }
         protected List<QuestProcess> Processes { get; set; }
         public readonly QuestId QuestId;
         public readonly bool IsDiscoverable;
@@ -153,6 +156,24 @@ namespace Arrowgene.Ddon.GameServer.Quests
             LightQuestDetail = new CDataLightQuestDetail();
         }
 
+        /// <summary>
+        /// Checks to see if the quest is active. This includes checking the enabled flag
+        /// and other special conditions like between a date range, time or other conditions.
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="client"></param>
+        /// <returns></returns>
+        public virtual bool IsActive(DdonGameServer server, GameClient client)
+        {
+            bool additionalReqs = true;
+            if (BackingObject != null)
+            {
+                additionalReqs = BackingObject.AcceptRequirementsMet(server, client);
+            }
+            
+            return Enabled && additionalReqs;
+        }
+
         private List<CDataQuestProcessState> GetProcessState(uint step, out uint announceNoCount)
         {
             Dictionary<QuestFlagType, Dictionary<int, QuestFlag>> questFlags = new Dictionary<QuestFlagType, Dictionary<int, QuestFlag>>();
@@ -179,7 +200,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             announceNoCount = 0;
             for (; i < Processes[0].Blocks.Count && stepsFound < step; i++)
             {
-                var block = Processes[0].Blocks[i];
+                var block = Processes[0].Blocks.Values.ToList()[i];
                 if (block.IsCheckpoint || block.AnnounceType == QuestAnnounceType.Accept)
                 {
                     stepsFound += 1;
@@ -227,19 +248,24 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 throw new QuestRestoreProgressFailedException(QuestId, step, stepsFound);
             }
 
-            var processStateBase = new CDataQuestProcessState(Processes[0].Blocks[i].QuestProcessState);
+            var processStateBase = new CDataQuestProcessState(Processes[0].Blocks.Values.ToList()[i].QuestProcessState);
             result.Add(processStateBase);
             if (workOverride != null)
             {
                 processStateBase.WorkList.Add(workOverride);
             }
 
-            for (int j = 1; j < Processes.Count; j++)
+            foreach (var process in Processes)
             {
-                var process = Processes[j];
-                if (process.Blocks.Count > 0)
+                if (process.ProcessNo == 0)
                 {
-                    result.Add(new CDataQuestProcessState(process.Blocks[0].QuestProcessState));
+                    continue;
+                }
+
+                // Blocks start from 1
+                if (process.Blocks.ContainsKey(1))
+                {
+                    result.Add(new CDataQuestProcessState(process.Blocks[1].QuestProcessState));
                 }
             }
 
@@ -739,13 +765,13 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 }
 
                 var process = Processes[processState.ProcessNo];
-                if (processState.BlockNo > process.Blocks.Count)
+                if (!process.Blocks.ContainsKey(processState.BlockNo))
                 {
                     // @note BlockNo counts from 1
                     continue;
                 }
 
-                foreach (var groupId in process.Blocks[processState.BlockNo - 1].EnemyGroupIds)
+                foreach (var groupId in process.Blocks[processState.BlockNo].EnemyGroupIds)
                 {
                     var enemyGroup = EnemyGroups[groupId];
                     partyQuestState.SetInstanceEnemies(this, enemyGroup.StageId, (ushort)enemyGroup.SubGroupId, enemyGroup.CreateNewInstance());

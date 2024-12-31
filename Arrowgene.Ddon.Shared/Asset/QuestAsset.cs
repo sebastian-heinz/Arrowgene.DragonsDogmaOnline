@@ -15,16 +15,16 @@ namespace Arrowgene.Ddon.Shared.Asset
         public List<QuestAssetData> Quests { get; set; }
     }
 
-    public class PointReward
+    public class QuestPointReward
     {
-        public ExpType ExpType { get; set; }
-        public uint ExpReward { get; set; }
+        public PointType PointType { get; set; }
+        public uint Amount { get; set; }
     }
 
     public class QuestAssetData
     {
         public List<QuestProcess> Processes { get; set; }
-        public QuestType Type { get; set; }
+        public QuestType QuestType { get; set; }
         public QuestId QuestId { get; set; }
         public QuestId NextQuestId { get; set; }
         public uint QuestScheduleId { get; set; }
@@ -36,12 +36,13 @@ namespace Arrowgene.Ddon.Shared.Asset
         public byte MinimumItemRank { get; set; }
         public bool Enabled { get; set; }
         public bool OverrideEnemySpawn { get; set; }
+        public QuestSource QuestSource { get; set; }
 
-        public List<PointReward> PointRewards { get; set; }
+        public List<QuestPointReward> PointRewards { get; set; }
 
         public bool Discoverable { get; set; }
         public List<QuestRewardItem> RewardItems;
-        public List<QuestRewardCurrency> RewardCurrency;
+        public List<QuestWalletReward> RewardCurrency;
         public List<QuestOrderCondition> OrderConditions;
         public bool ResetPlayerAfterQuest { get; set; }
         public List<QuestLayoutFlag> QuestLayoutFlags { get; set; }
@@ -54,9 +55,9 @@ namespace Arrowgene.Ddon.Shared.Asset
         public QuestAssetData()
         {
             Processes = new List<QuestProcess>();
-            PointRewards = new List<PointReward>();
+            PointRewards = new List<QuestPointReward>();
             RewardItems = new List<QuestRewardItem>();
-            RewardCurrency = new List<QuestRewardCurrency>();
+            RewardCurrency = new List<QuestWalletReward>();
             QuestLayoutFlags = new List<QuestLayoutFlag>();
             QuestLayoutSetInfoFlags = new List<QuestLayoutFlagSetInfo>();
             EnemyGroups = new Dictionary<uint, QuestEnemyGroup>();

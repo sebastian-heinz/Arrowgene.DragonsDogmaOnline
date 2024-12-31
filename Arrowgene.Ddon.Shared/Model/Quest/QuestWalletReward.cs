@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Shared.Model.Quest
 {
-    public class QuestRewardCurrency
+    public class QuestWalletReward
     {
         public WalletType WalletType { get; set; }
         public uint Amount { get; set; }

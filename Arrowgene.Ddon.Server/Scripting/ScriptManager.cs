@@ -1,14 +1,11 @@
 using Arrowgene.Ddon.GameServer.Scripting;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Logging;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Scripting;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using static Arrowgene.Ddon.Server.ServerScriptManager;
 
 namespace Arrowgene.Ddon.Shared.Scripting
 {
@@ -18,12 +15,18 @@ namespace Arrowgene.Ddon.Shared.Scripting
 
         protected Dictionary<string, ScriptModule> ScriptModules { get; private set; }
         public string ScriptsRoot { get; private set; }
+        public string LibsRoot { get; private set; } = string.Empty;
         public T GlobalVariables { get; protected set; }
 
-        public ScriptManager(string assetsPath)
+        public ScriptManager(string assetsPath, string libsPath)
         {
             ScriptModules = new Dictionary<string, ScriptModule>();
-            ScriptsRoot = $"{assetsPath}/scripts";
+            ScriptsRoot = $"{assetsPath}{Path.DirectorySeparatorChar}scripts";
+
+            if (libsPath != "")
+            {
+                LibsRoot = $"{ScriptsRoot}{Path.DirectorySeparatorChar}{libsPath}";
+            }
         }
 
         public abstract void Initialize();
@@ -43,13 +46,21 @@ namespace Arrowgene.Ddon.Shared.Scripting
                 Logger.Info(path);
 
                 var code = Util.ReadAllText(path);
+
+                var options = module.Options();
+                
+                if (LibsRoot != "")
+                {
+                    options = options.WithSourceResolver(new SourceFileResolver(new string[] { }, LibsRoot));
+                }
+                
                 var script = CSharpScript.Create(
                     code: code,
-                    options: module.Options(),
+                    options: options,
                     globalsType: typeof(T)
                 );
 
-                var result = await script.RunAsync(GlobalVariables);
+                var result = await script.RunAsync(globals: GlobalVariables);
                 if (!module.EvaluateResult(path, result))
                 {
                     Logger.Error($"Failed to evaluate the result of executing '{path}'");
@@ -66,7 +77,12 @@ namespace Arrowgene.Ddon.Shared.Scripting
         {
             foreach (var module in ScriptModules.Values)
             {
-                var path = $"{ScriptsRoot}/{module.ModuleRoot}";
+                var path = $"{ScriptsRoot}{Path.DirectorySeparatorChar}{module.ModuleRoot}";
+                if (!module.IsEnabled)
+                {
+                    Logger.Info($"THe module '{module.ModuleRoot}' is disabled. Skipping.");
+                    continue;
+                }
 
                 Logger.Info($"Compiling scripts for module '{module.ModuleRoot}'");
                 foreach (var file in Directory.GetFiles(path, "*.csx", SearchOption.AllDirectories))
@@ -81,12 +97,12 @@ namespace Arrowgene.Ddon.Shared.Scripting
         {
             foreach (var module in ScriptModules.Values)
             {
-                if (!module.EnableHotLoad)
+                if (!module.IsEnabled || !module.EnableHotLoad)
                 {
                     continue;
                 }
 
-                var watcher = new FileSystemWatcher($"{ScriptsRoot}/{module.ModuleRoot}");
+                var watcher = new FileSystemWatcher($"{ScriptsRoot}{Path.DirectorySeparatorChar}{module.ModuleRoot}");
                 watcher.Filter = module.Filter;
                 watcher.NotifyFilter = (NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.CreationTime);
                 watcher.IncludeSubdirectories = module.ScanSubdirectories;

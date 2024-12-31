@@ -54,12 +54,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var allQuestsInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All);
             foreach (var questProgress in allQuestsInProgress)
             {
-                if (!QuestManager.IsQuestEnabled(questProgress.QuestScheduleId))
+                var quest = QuestManager.GetQuestByScheduleId(questProgress.QuestScheduleId);
+                if (quest == null || !quest.IsActive(Server, client))
                 {
                     continue;
                 }
-
-                var quest = QuestManager.GetQuestByScheduleId(questProgress.QuestScheduleId);
 
                 switch (questProgress.QuestType)
                 {
@@ -81,14 +80,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (client.Party != null)
             {
                 var priorityQuests = Server.Database.GetPriorityQuestScheduleIds(client.Party.Leader.Client.Character.CommonId);
-                foreach (var questId in priorityQuests)
+                foreach (var questScheduleId in priorityQuests)
                 {
-                    if (!QuestManager.IsQuestEnabled(questId))
+                    var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
+                    if (quest == null || !quest.IsActive(Server, client))
                     {
                         continue;
                     }
-
-                    var quest = QuestManager.GetQuestByScheduleId(questId);
+                    
                     ntc.PriorityQuestList.Add(new CDataPriorityQuest()
                     {
                         QuestId = (uint)quest.QuestId,

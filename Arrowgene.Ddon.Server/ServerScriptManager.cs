@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.Server
 
         public GameServerSettingsModule GameServerSettings { get; private set; } = new GameServerSettingsModule();
 
-        public ServerScriptManager(string assetsPath) : base(assetsPath)
+        public ServerScriptManager(string assetsPath) : base(assetsPath, "")
         {
             Globals = new Globals();
 

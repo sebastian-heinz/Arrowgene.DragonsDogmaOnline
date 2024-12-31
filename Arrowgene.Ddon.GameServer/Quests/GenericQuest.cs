@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -14,9 +15,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(GenericQuest));
 
-        public static GenericQuest FromAsset(DdonGameServer server, QuestAssetData questAsset)
+        public static GenericQuest FromAsset(DdonGameServer server, QuestAssetData questAsset, IQuest backingObject = null)
         {
-            var quest = new GenericQuest(server, questAsset.QuestId, questAsset.QuestScheduleId, questAsset.Type, questAsset.Discoverable);
+            var quest = new GenericQuest(server, questAsset.QuestId, questAsset.QuestScheduleId, questAsset.QuestType, questAsset.Discoverable);
+
+            quest.QuestSource = questAsset.QuestSource;
+            quest.BackingObject = backingObject;
 
             quest.QuestAreaId = questAsset.QuestAreaId;
             quest.NewsImageId = questAsset.NewsImageId;
@@ -42,8 +46,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
             {
                 quest.ExpRewards.Add(new CDataQuestExp()
                 {
-                    Type = pointReward.ExpType,
-                    Reward = pointReward.ExpReward
+                    Type = pointReward.PointType,
+                    Reward = pointReward.Amount
                 });
             }
 
@@ -77,7 +81,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             foreach (var process in quest.Processes)
             {
-                foreach (var block in process.Blocks)
+                foreach (var block in process.Blocks.Values)
                 {
                     switch (block.BlockType)
                     {
@@ -185,14 +189,16 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 return new List<CDataQuestProcessState>();
             }
 
-            var process = Processes[processState.ProcessNo];           
-            if ((processState.BlockNo) >= process.Blocks.Count)
+            var process = Processes[processState.ProcessNo];
+
+            ushort nextBlockNo = (ushort)(processState.BlockNo + 1);
+            if (!process.Blocks.ContainsKey(nextBlockNo))
             {
                 questProgressState = QuestProgressState.Unknown;
                 return new List<CDataQuestProcessState>();
             }
 
-            var questBlock = process.Blocks[processState.BlockNo];
+            var questBlock = process.Blocks[nextBlockNo];
             if (processState.ProcessNo == 0 && questBlock.SequenceNo == 1)
             {
                 questProgressState = QuestProgressState.Complete;
@@ -576,6 +582,23 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         }
                     }
                     break;
+                case QuestBlockType.IsQuestClear:
+                    {
+                        switch (questBlock.QuestIsClearDetails.QuestType)
+                        {
+                            case QuestType.Main:
+                                checkCommands.Add(QuestManager.CheckCommand.IsMainQuestClear((int)questBlock.QuestIsClearDetails.QuestId));
+                                break;
+                            case QuestType.Light:
+                                // case QuestType.World:
+                                checkCommands.Add(QuestManager.CheckCommand.IsClearLightQuest((int)questBlock.QuestIsClearDetails.QuestId));
+                                break;
+                            case QuestType.Tutorial:
+                                checkCommands.Add(QuestManager.CheckCommand.IsTutorialQuestClear((int)questBlock.QuestIsClearDetails.QuestId));
+                                break;
+                        }
+                    }
+                    break;
                 case QuestBlockType.MyQstFlags:
                     {
                         foreach (var flag in questBlock.MyQstCheckFlags)
@@ -625,6 +648,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
                                                         questBlock.QuestEvent.StartPosNo));
                                 break;
                         }
+                    }
+                    break;
+                case QuestBlockType.StageJump:
+                    {
+                        checkCommands.Add(QuestManager.CheckCommand.StageNo(StageManager.ConvertIdToStageNo(questBlock.StageId)));
+                        resultCommands.Add(QuestManager.ResultCommand.StageJump(StageManager.ConvertIdToStageNo(questBlock.StageId), (int) questBlock.JumpPos));
                     }
                     break;
                 case QuestBlockType.KillTargetEnemies:

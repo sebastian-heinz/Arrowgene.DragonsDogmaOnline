@@ -32,7 +32,9 @@ namespace Arrowgene.Ddon.Server.Scripting.modules
             return ScriptOptions.Default
                 .AddReferences(MetadataReference.CreateFromFile(typeof(GameLogicSetting).Assembly.Location))
                 .AddReferences(MetadataReference.CreateFromFile(typeof(WalletType).Assembly.Location))
+                .AddReferences(MetadataReference.CreateFromFile(typeof(LibUtils).Assembly.Location))
                 .AddImports("System", "System.Collections", "System.Collections.Generic")
+                .AddImports("Arrowgene.Ddon.Server.Scripting")
                 .AddImports("Arrowgene.Ddon.Shared.Model")
                 .AddImports("Arrowgene.Ddon.Shared.Model.Quest");
         }

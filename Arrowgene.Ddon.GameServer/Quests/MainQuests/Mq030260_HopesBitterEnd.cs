@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
 
         new public List<CDataQuestExp> ExpRewards = new List<CDataQuestExp>()
         {
-            new CDataQuestExp() {Type = ExpType.ExperiencePoints, Reward = 900000}
+            new CDataQuestExp() {Type = PointType.ExperiencePoints, Reward = 900000}
         };
 
 #if false
