@@ -162,7 +162,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return gQuests[questScheduleId];
         }
 
-        public static HashSet<uint> GetQuestsByQuestId(QuestId questId)
+        public static HashSet<uint> GetQuestScheduleIdsForQuestId(QuestId questId)
         {
             if (gVariantQuests.ContainsKey(questId))
             {
@@ -173,7 +173,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public static Quest RollQuestForQuestId(QuestId questId)
         {
-            var quests = GetQuestsByQuestId(questId);
+            var quests = GetQuestScheduleIdsForQuestId(questId);
             var questScheduleId = quests.ElementAt(Random.Shared.Next(0, quests.Count));
             return gQuests[questScheduleId];
         }

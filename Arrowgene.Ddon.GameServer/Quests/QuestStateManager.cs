@@ -430,7 +430,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         {
             lock (ActiveQuests)
             {
-                var questVariants = QuestManager.GetQuestsByQuestId(questId);
+                var questVariants = QuestManager.GetQuestScheduleIdsForQuestId(questId);
                 foreach (var questScheduleId in questVariants)
                 {
                     if (ActiveQuests.ContainsKey(questScheduleId))
