@@ -1,6 +1,9 @@
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Arrowgene.Ddon.GameServer.Scripting
 {
@@ -40,6 +43,23 @@ namespace Arrowgene.Ddon.GameServer.Scripting
             }
 
             return enemy;
+        }
+
+        public static T GetSetting<T>(string scriptName, string key)
+        {
+            return Instance.Server.GameLogicSettings.Get<T>(scriptName, key);
+        }
+
+        private Dictionary<string, object> HandlerCache = new Dictionary<string, object>();
+
+        public static T GetHandler<T>()
+        {
+            string name = typeof(T).FullName;
+            if (!Instance.HandlerCache.ContainsKey(name))
+            {
+                Instance.HandlerCache[name] = Activator.CreateInstance(typeof(T), Instance.Server);
+            }
+            return (T) Instance.HandlerCache[name];
         }
     }
 }
