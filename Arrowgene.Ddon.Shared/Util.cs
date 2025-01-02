@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared
@@ -447,34 +448,67 @@ namespace Arrowgene.Ddon.Shared
             return path;
         }
 
+        private static bool IsFileLocked(FileInfo fileInfo)
+        {
+            FileStream stream = null;
+            try
+            {
+                stream = fileInfo.Open(FileMode.Open, FileAccess.ReadWrite, FileShare.None);
+            }
+            catch(IOException ex)
+            {
+                // The file is unavailable because it is:
+                // Still being processed or does not exist
+                return true;
+            }
+            finally
+            {
+                if (stream != null)
+                {
+                    stream.Close();
+                }
+            }
+            return false;
+        }
+
         /// <summary>
         /// Implements a safer way to read all lines in a file when there is contention on the file access.
         /// Note that, it is possible that sometimes when the file is read, due to file system quirkyness
-        /// it might read back a zero length string. Due to this behavior, there is a retry mechanism of
-        /// 4 attempts. If the file is truly empty, it will have a worse case scenario of reading the
-        /// empty file MAX_ATTEMPTS times.
+        /// it might read back a zero length string.
         /// </summary>
         /// <param name="path">Path to a text based file to read</param>
         /// <returns>Returns the contents of the file read as a string</returns>
         public static string ReadAllText(string path)
         {
-            uint attempts = 0;
-            const uint MAX_ATTEMPTS = 5;
-            
-            string content;
-            do
+            var attempts = 0;
+            const uint MaxAttempts = 30;
+            FileInfo fileInfo = new FileInfo(path);
+            while (IsFileLocked(fileInfo) && (attempts < MaxAttempts))
             {
-                List<string> lines = new List<string>();
-                using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                using (StreamReader reader = new StreamReader(stream))
+                Thread.Sleep(100);
+            }
+
+            if (IsFileLocked(fileInfo))
+            {
+                throw new Exception($"Failed to read file contents of '{path}'");
+            }
+
+            string content;
+            List<string> lines = new List<string>();
+            using (FileStream stream = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                while (!reader.EndOfStream)
                 {
-                    while (!reader.EndOfStream)
-                    {
-                        lines.Add(reader.ReadLine());
-                    }
-                    content = string.Join("\n", lines);
+                    lines.Add(reader.ReadLine());
                 }
-            } while (content == "" && attempts++ < MAX_ATTEMPTS);
+                content = string.Join("\n", lines);
+            }
+
+            if (content.Length == 0)
+            {
+                throw new Exception($"EMPTY FILE ON HOT RELOAD : {path}");
+            }
 
             return content;   
         }
