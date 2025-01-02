@@ -166,10 +166,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Server.Database.InsertPawnCraftProgress(craftProgress, connection);
 
                 // Subtract craft price
-                CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,
-                                Server.CraftManager.CalculateRecipeCost(recipe.Cost, itemInfo, craftPawns) * request.CreateCount, connection)
-                    ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CRAFT_INTERNAL, "Insufficient gold.");
-                updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
+                uint cost = Server.CraftManager.CalculateRecipeCost(recipe.Cost, itemInfo, craftPawns) * request.CreateCount;
+                CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, cost, connection)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CRAFT_INSUFFICIENT_GOLD, $"Insufficient gold. {cost} > {Server.WalletManager.GetWalletAmount(client.Character, WalletType.Gold)}"); updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
 
                 if (request.CraftMasterLegendPawnIDList.Count > 0)
                 {

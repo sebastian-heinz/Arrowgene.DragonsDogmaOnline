@@ -121,9 +121,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
             craftPawns.AddRange(request.CraftSupportPawnIDList.Select(p => new CraftPawn(Server.CraftManager.FindPawn(client, p.PawnId), CraftPosition.Assistant)));
 
-            CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,
-                            Server.CraftManager.CalculateRecipeCost(totalCost, clientItemInfo, craftPawns))
-                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CRAFT_INTERNAL, "Insufficient gold.");
+            uint cost = Server.CraftManager.CalculateRecipeCost(totalCost, clientItemInfo, craftPawns);
+            CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, cost)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CRAFT_INSUFFICIENT_GOLD, $"Insufficient gold. {cost} > {Server.WalletManager.GetWalletAmount(client.Character, WalletType.Gold)}"); updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
+
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
             client.Send(updateCharacterItemNtc);
 
