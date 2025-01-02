@@ -145,6 +145,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             foreach (var pawn in craftPawns)
             {
+                if (pawn.ProductionSpeed < difficultyModifier)
+                {
+                    continue;
+                }
                 int effSkill = Math.Max((int)(pawn.ProductionSpeed - difficultyModifier), 0);
                 PawnCraftSkillSpeedRate speedRateAsset = _server.AssetRepository.PawnCraftSkillSpeedRateAsset.ElementAtOrDefault(effSkill)
                     ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CRAFT_SKILL_LEVEL_OVER, $"No speed rate information found for level: {effSkill}");
