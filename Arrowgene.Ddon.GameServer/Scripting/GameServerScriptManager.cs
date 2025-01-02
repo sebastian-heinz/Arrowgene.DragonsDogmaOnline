@@ -21,6 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         public GameItemModule GameItemModule { get; private set; } = new GameItemModule();
         public MixinModule MixinModule { get; private set; } = new MixinModule();
         public QuestModule QuestModule { get; private set; } = new QuestModule();
+        public ChatCommandModule ChatCommandModule { get; private set; } = new ChatCommandModule();
 
         public GameServerScriptManager(DdonGameServer server) : base(server.AssetRepository.AssetsPath, "libs")
         {
@@ -31,9 +32,10 @@ namespace Arrowgene.Ddon.GameServer.Scripting
             LibDdon.SetServer(server);
 
             // Add modules to the list so the generic logic can iterate over all scripting modules
-            ScriptModules[NpcExtendedFacilityModule.ModuleRoot] = NpcExtendedFacilityModule;
+            ScriptModules[ChatCommandModule.ModuleRoot] = ChatCommandModule;
             ScriptModules[GameItemModule.ModuleRoot] = GameItemModule;
             ScriptModules[MixinModule.ModuleRoot] = MixinModule;
+            ScriptModules[NpcExtendedFacilityModule.ModuleRoot] = NpcExtendedFacilityModule;
             ScriptModules[QuestModule.ModuleRoot] = QuestModule;
         }
 

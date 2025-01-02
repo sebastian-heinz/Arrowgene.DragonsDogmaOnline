@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Arrowgene.Ddon.GameServer.Chat.Command.Commands;
+using Arrowgene.Ddon.GameServer.Scripting;
+using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Logging;
 
@@ -13,35 +14,13 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command
 
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ChatCommandHandler));
 
-        private readonly Dictionary<string, ChatCommand> _commands;
+        private DdonGameServer Server { get; set; }
+        private ChatCommandModule ChatCommandModule { get; set; }
 
         public ChatCommandHandler(DdonGameServer server)
         {
-            _commands = new Dictionary<string, ChatCommand>();
-            AddCommand(new HelpCommand(_commands));
-            AddCommand(new TestCommand());
-            AddCommand(new RepopCommand(server));
-            AddCommand(new InfoCommand());
-            AddCommand(new JobCommand(server));
-            AddCommand(new MotherlodeCommand(server));
-            AddCommand(new VersionCommand());
-            AddCommand(new PartyInviteCommand(server));
-            AddCommand(new ReleaseCommand(server));
-            AddCommand(new OmDataCommand(server));
-            AddCommand(new SetLevelCommand(server));
-            AddCommand(new GiveItemCommand(server));
-            AddCommand(new FinishQuestCommand(server));
-            AddCommand(new GivePawnCommand(server));
-            AddCommand(new SkipTutorialCommand(server));
-            AddCommand(new UpdateOmCommand(server));
-            AddCommand(new GivePowerfulItemsCommand(server));
-            AddCommand(new WarpCommand(server));
-            AddCommand(new TimeCommand(server));
-        }
-
-        public void AddCommand(ChatCommand command)
-        {
-            _commands.Add(command.KeyToLowerInvariant, command);
+            Server = server;
+            ChatCommandModule = server.ScriptManager.ChatCommandModule;
         }
 
         public void Handle(GameClient client, ChatMessage message, List<ChatResponse> responses)
@@ -75,18 +54,20 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command
             }
 
             string commandKey = command[0].ToLowerInvariant();
-            if (!_commands.ContainsKey(commandKey))
+            if (!Server.ScriptManager.ChatCommandModule.Commands.ContainsKey(commandKey))
             {
                 Logger.Error(client, $"Command '{commandKey}' does not exist");
                 responses.Add(ChatResponse.CommandError(client, $"Command does not exist: {commandKey}"));
                 return;
             }
 
-            ChatCommand chatCommand = _commands[commandKey];
-            if (client.Account.State < chatCommand.AccountState)
+            IChatCommand chatCommand = Server.ScriptManager.ChatCommandModule.Commands[commandKey];
+
+            var disableAccountCheckType = Server.GameLogicSettings.Get<bool>("ChatCommands", "DisableAccountTypeCheck");
+            if (!disableAccountCheckType && (client.Account.State < chatCommand.AccountState))
             {
                 Logger.Error(client,
-                    $"Not entitled to execute command '{chatCommand.Key}' (State < Required: {client.Account.State} < {chatCommand.AccountState})");
+                   $"Not entitled to execute command '{chatCommand.CommandName}' (State < Required: {client.Account.State} < {chatCommand.AccountState})");
                 responses.Add(ChatResponse.CommandError(client, $"Not authorized to execute this command"));
                 return;
             }
@@ -103,7 +84,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command
                 subCommand = new string[0];
             }
 
-            chatCommand.Execute(subCommand, client, message, responses);
+            chatCommand.Execute(Server, subCommand, client, message, responses);
         }
     }
 }
