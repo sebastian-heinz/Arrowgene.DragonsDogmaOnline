@@ -26,6 +26,7 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -72,6 +73,8 @@ namespace Arrowgene.Ddon.Cli
 
         private static void Main(string[] args)
         {
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+
             Console.WriteLine("Program started");
             Console.WriteLine($"Version: {Util.GetVersion("Cli")}");
             Program program = new Program();
