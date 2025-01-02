@@ -22,20 +22,14 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public class Serializer : PacketEntitySerializer<C2SCertClientChallengeReq>
         {
-
             public override void Write(IBuffer buffer, C2SCertClientChallengeReq obj)
             {
                 WriteByte(buffer, obj.CommonKeySrcSize);
                 WriteByteArray(buffer, obj.CommonKeyEnc);
-                WriteByteArray(buffer, new byte[3]); // Padding?
+                WriteByteArray(buffer, new byte[3]); // Padding
                 WriteByte(buffer, obj.PasswordSrcSize);
                 WriteByte(buffer, obj.PasswordEncSize);
                 WriteByteArray(buffer, obj.PasswordEnc);
-
-                if (obj.PasswordEnc.Length < 62)
-                {
-                    WriteByteArray(buffer, new byte[62 - obj.PasswordEnc.Length]);
-                }
             }
 
             public override C2SCertClientChallengeReq Read(IBuffer buffer)
