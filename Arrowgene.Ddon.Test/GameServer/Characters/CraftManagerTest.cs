@@ -48,6 +48,15 @@ public class CraftManagerTest
             {WalletType.SilverDragonMark, 150},
             {WalletType.RedDragonMark, 99999},
         });
+        _scriptableSettings.Set<uint>("Crafting", "EquipmentEnhancementMinimumTotal", 150);
+        _scriptableSettings.Set<double>("Crafting", "EquipmentEnhancementIncrementPerLevel", 1.0);
+        _scriptableSettings.Set<int>("Crafting", "GreatSuccessOddsDefault", 10);
+        _scriptableSettings.Set("Crafting", "CraftRankExpLimit", new List<uint>
+        {
+            0, 8, 120, 240, 400, 800, 1400, 2150, 3050, 4100, 5300, 6600, 8000, 9500, 11000, 13000, 15000, 17500, 20000, 23000, 27000, 29500, 32500, 36000, 39500, 43500, 47000,
+            51000, 55000, 60000, 63000, 67461, 72101, 76927, 81946, 87165, 92593, 98239, 104110, 110216, 116566, 123170, 130039, 137182, 144611, 152337, 160372, 168728, 177419,
+            186457, 195857, 205633, 215800, 226374, 237370, 248807, 260701, 273070, 285935, 299314, 313228, 327699, 342748, 358400, 374678, 391606, 409212, 427522, 446565, 466369
+        });
 
         var gameLogicSetting = new GameLogicSetting(_scriptableSettings);
         _mockServer = new DdonGameServer(settings, gameLogicSetting, new MockDatabase(), new AssetRepository("TestFiles"));
@@ -120,7 +129,7 @@ public class CraftManagerTest
             }
         };
 
-        uint rankUps = CraftManager.CalculatePawnRankUp(pawn);
+        uint rankUps = _craftManager.CalculatePawnRankUp(pawn);
 
         Assert.Equal(69u, rankUps);
     }
@@ -138,7 +147,7 @@ public class CraftManagerTest
             }
         };
 
-        bool result = CraftManager.CanPawnRankUp(leadPawn);
+        bool result = _craftManager.CanPawnRankUp(leadPawn);
 
         Assert.False(result);
     }
@@ -156,7 +165,7 @@ public class CraftManagerTest
             }
         };
 
-        bool result = CraftManager.CanPawnRankUp(leadPawn);
+        bool result = _craftManager.CanPawnRankUp(leadPawn);
 
         Assert.False(result);
     }
@@ -174,7 +183,7 @@ public class CraftManagerTest
             }
         };
 
-        bool result = CraftManager.CanPawnRankUp(leadPawn);
+        bool result = _craftManager.CanPawnRankUp(leadPawn);
 
         Assert.True(result);
     }
@@ -192,7 +201,7 @@ public class CraftManagerTest
             }
         };
 
-        bool result = CraftManager.CanPawnRankUp(leadPawn);
+        bool result = _craftManager.CanPawnRankUp(leadPawn);
 
         Assert.False(result);
     }

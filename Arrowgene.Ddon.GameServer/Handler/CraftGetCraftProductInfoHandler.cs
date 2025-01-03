@@ -33,24 +33,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // The lead pawn can only be a pawn owned by the player, no need to search in DB.
             Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnID);
-            if (CraftManager.IsCraftRankLimitPromotionRecipe(leadPawn, craftProgress.RecipeId))
+            if (Server.CraftManager.IsCraftRankLimitPromotionRecipe(leadPawn, craftProgress.RecipeId))
             {
-                CraftManager.PromotePawnRankLimit(leadPawn);
+                Server.CraftManager.PromotePawnRankLimit(leadPawn);
                 // Mandatory to send otherwise the UI gets stuck.
-                CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
+                Server.CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
                 // TODO: This is not accurate to the original game but currently there is no other way to gain crafting reset points.
                 Server.WalletManager.AddToWalletNtc(client, client.Character, WalletType.ResetCraftSkills, 1, 0, ItemNoticeType.ResetCraftpoint);
                 Server.Database.UpdatePawnBaseInfo(leadPawn);
             }
             else
             {
-                if (CraftManager.CanPawnExpUp(leadPawn))
+                if (Server.CraftManager.CanPawnExpUp(leadPawn))
                 {
                     double BonusExpMultiplier = Server.GpCourseManager.PawnCraftBonus();
-                    CraftManager.HandlePawnExpUpNtc(client, leadPawn, craftProgress.Exp, BonusExpMultiplier);
-                    if (CraftManager.CanPawnRankUp(leadPawn))
+                    Server.CraftManager.HandlePawnExpUpNtc(client, leadPawn, craftProgress.Exp, BonusExpMultiplier);
+                    if (Server.CraftManager.CanPawnRankUp(leadPawn))
                     {
-                        CraftManager.HandlePawnRankUpNtc(client, leadPawn);
+                        Server.CraftManager.HandlePawnRankUpNtc(client, leadPawn);
                     }
 
                     Server.Database.UpdatePawnBaseInfo(leadPawn);
@@ -58,7 +58,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 else
                 {
                     // Mandatory to send otherwise the UI gets stuck.
-                    CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
+                    Server.CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
                 }
             }
 

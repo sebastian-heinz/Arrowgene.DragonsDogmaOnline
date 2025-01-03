@@ -66,7 +66,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             craftPawns.AddRange(request.CraftSupportPawnIDList.Select(p => new CraftPawn(Server.CraftManager.FindPawn(client, p.PawnId), CraftPosition.Assistant)));
             craftPawns.AddRange(request.CraftMasterLegendPawnIDList.Select(p => new CraftPawn(Server.AssetRepository.PawnCraftMasterLegendAsset.Single(m => m.PawnId == p.PawnId))));
 
-            double calculatedOdds = CraftManager.CalculateEquipmentQualityIncreaseRate(craftPawns);
+            double calculatedOdds = Server.CraftManager.CalculateEquipmentQualityIncreaseRate(craftPawns);
 
             uint plusValue = 0;
             bool isGreatSuccessEquipmentQuality = false;
@@ -76,7 +76,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (!string.IsNullOrEmpty(RefineMaterialUID))
             {
                 Item refineMaterialItem = Server.Database.SelectStorageItemByUId(RefineMaterialUID);
-                CraftCalculationResult craftCalculationResult = CraftManager.CalculateEquipmentQuality(refineMaterialItem, (uint)calculatedOdds, itemRank);
+                CraftCalculationResult craftCalculationResult = Server.CraftManager.CalculateEquipmentQuality(refineMaterialItem, (uint)calculatedOdds, itemRank);
                 plusValue = craftCalculationResult.CalculatedValue;
                 isGreatSuccessEquipmentQuality = craftCalculationResult.IsGreatSuccess;
                 pawnExp = craftCalculationResult.Exp;
@@ -163,18 +163,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CurrentEquip = CurrentEquipInfo
             };
 
-            if (CraftManager.CanPawnExpUp(leadPawn))
+            if (Server.CraftManager.CanPawnExpUp(leadPawn))
             {
                 double BonusExpMultiplier = Server.GpCourseManager.PawnCraftBonus();
-                CraftManager.HandlePawnExpUpNtc(client, leadPawn, pawnExp, BonusExpMultiplier);
-                if (CraftManager.CanPawnRankUp(leadPawn))
+                Server.CraftManager.HandlePawnExpUpNtc(client, leadPawn, pawnExp, BonusExpMultiplier);
+                if (Server.CraftManager.CanPawnRankUp(leadPawn))
                 {
-                    CraftManager.HandlePawnRankUpNtc(client, leadPawn);
+                    Server.CraftManager.HandlePawnRankUpNtc(client, leadPawn);
                 }
             }
             else
             {
-                CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
+                Server.CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
             }
 
             Server.Database.UpdatePawnBaseInfo(leadPawn);

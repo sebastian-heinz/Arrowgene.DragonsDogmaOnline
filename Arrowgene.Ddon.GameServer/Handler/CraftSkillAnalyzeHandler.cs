@@ -132,7 +132,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataCraftSkillAnalyzeResult equipmentQualityAnalysisResult = new CDataCraftSkillAnalyzeResult
             {
                 SkillType = CraftSkillType.EquipmentQuality,
-                Rate = (byte)CraftManager.CalculateEquipmentQualityIncreaseRate(craftPawns)
+                Rate = (byte) Server.CraftManager.CalculateEquipmentQualityIncreaseRate(craftPawns)
             };
             return equipmentQualityAnalysisResult;
         }
@@ -147,8 +147,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataCraftSkillAnalyzeResult equipEnhancementAnalysisResult = new CDataCraftSkillAnalyzeResult
             {
                 SkillType = CraftSkillType.EquipmentEnhancement,
-                Value0 = (uint)CraftManager.GetEquipmentEnhancementPoints(craftPawns),
-                Value1 = (uint)CraftManager.GetEquipmentEnhancementPointsGreatSuccess(craftPawns)
+                Value0 = (uint)Server.CraftManager.GetEquipmentEnhancementPoints(craftPawns),
+                Value1 = (uint)Server.CraftManager.GetEquipmentEnhancementPointsGreatSuccess(craftPawns)
             };
             return equipEnhancementAnalysisResult;
         }
@@ -163,8 +163,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             CDataCraftSkillAnalyzeResult consumableQuantityAnalysisResult = new CDataCraftSkillAnalyzeResult
             {
                 SkillType = CraftSkillType.ConsumableQuantity,
-                Rate = (byte)CraftManager.GetAdditionalConsumableQuantityRate(craftPawns),
-                Value0 = (byte)CraftManager.GetAdditionalConsumableQuantityMaximum(craftPawns)
+                Rate = (byte)Server.CraftManager.GetAdditionalConsumableQuantityRate(craftPawns),
+                Value0 = (byte)Server.CraftManager.GetAdditionalConsumableQuantityMaximum(craftPawns)
             };
             return consumableQuantityAnalysisResult;
         }

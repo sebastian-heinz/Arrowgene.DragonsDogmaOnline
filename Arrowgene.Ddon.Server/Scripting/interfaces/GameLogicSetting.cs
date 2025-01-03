@@ -23,28 +23,6 @@ namespace Arrowgene.Ddon.Server.Scripting.interfaces
         }
 
         /// <summary>
-        /// Additional factor to change how long crafting a recipe will take to finish.
-        /// </summary>
-        public double AdditionalProductionSpeedFactor
-        { 
-            get
-            {
-                return GetSetting<double>("AdditionalProductionSpeedFactor");
-            }
-        }
-
-        /// <summary>
-        /// Additional factor to change how much a recipe will cost.
-        /// </summary>
-        public double AdditionalCostPerformanceFactor
-        { 
-            get
-            {
-                return GetSetting<double>("AdditionalCostPerformanceFactor");
-            }
-        }
-
-        /// <summary>
         /// Controls whether to pass lobby context packets on demand or only on entry to the server.
         /// True = Server entry only. Lower packet load, but also causes invisible people in lobbies.
         /// False = On-demand. May cause performance issues due to packet load.
@@ -54,18 +32,6 @@ namespace Arrowgene.Ddon.Server.Scripting.interfaces
             get
             {
                 return GetSetting<bool>("NaiveLobbyContextHandling");
-            }
-        }
-
-        /// <summary>
-        /// Determines the maximum amount of consumable items that can be crafted in one go with a pawn.
-        /// The default is a value of 10 which is equivalent to the original game's behavior.
-        /// </summary>
-        public byte CraftConsumableProductionTimesMax 
-        { 
-            get
-            {
-                return GetSetting<byte>("CraftConsumableProductionTimesMax");
             }
         }
 
