@@ -27,8 +27,8 @@ public class ScriptedQuest : IQuest
 
     protected override void InitializeRewards()
     {
-        AddFixedItemReward(21182, 100); // Ghost Marshmallow
-        AddFixedItemReward(19500, 1);  // Magical Night Jack-o'-Helm
+        AddFixedItemReward(ItemId.GhostMarshmallow, 100);
+        AddFixedItemReward(ItemId.MagicalNightJackOHelm, 1);
         AddPointReward(PointType.ExperiencePoints, 1031);
         AddWalletReward(WalletType.Gold, 1031);
         AddWalletReward(WalletType.RiftPoints, 1031);
@@ -36,41 +36,35 @@ public class ScriptedQuest : IQuest
 
     protected override void InitializeEnemyGroups()
     {
-        DropsTable slimeTable = new DropsTable();
-        slimeTable.Items.Add(new GatheringItem()
-        {
-            ItemId = 21182,
-            ItemNum = 1,
-            MaxItemNum = 1,
-            DropChance = DropRate.UNCOMMON,
-        });
+        DropsTable slimeTable = new DropsTable()
+            .AddDrop(ItemId.GhostMarshmallow, 1, 1, DropRate.UNCOMMON);
 
         AddEnemies(0, new StageId(126, 0, 0), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(0x010900, 3, 24, 0, false) // Slime
+            LibDdon.CreateEnemy(EnemyId.Slime, 3, 24, 0, false)
                 .SetDropsTable(slimeTable),
-            LibDdon.CreateEnemy(0x010900, 3, 24, 1, false) // Slime
+            LibDdon.CreateEnemy(EnemyId.Slime, 3, 24, 1, false)
                 .SetDropsTable(slimeTable),
-            LibDdon.CreateEnemy(0x010900, 3, 24, 2, false) // Slime
+            LibDdon.CreateEnemy(EnemyId.Slime, 3, 24, 2, false)
                 .SetDropsTable(slimeTable),
-            LibDdon.CreateEnemy(0x010900, 3, 24, 3, false) // Slime
+            LibDdon.CreateEnemy(EnemyId.Slime, 3, 24, 3, false)
                 .SetDropsTable(slimeTable),
-            LibDdon.CreateEnemy(0x010900, 3, 24, 4, false) // Slime
+            LibDdon.CreateEnemy(EnemyId.Slime, 3, 24, 4, false)
                 .SetDropsTable(slimeTable),
-            LibDdon.CreateEnemy(0x010900, 3, 24, 5, false) // Slime
+            LibDdon.CreateEnemy(EnemyId.Slime, 3, 24, 5, false)
                 .SetDropsTable(slimeTable),
-            LibDdon.CreateEnemy(0x010900, 3, 24, 6, false) // Slime
+            LibDdon.CreateEnemy(EnemyId.Slime, 3, 24, 6, false)
                 .SetDropsTable(slimeTable),
-            LibDdon.CreateEnemy(0x010900, 3, 24, 8, false) // Slime
+            LibDdon.CreateEnemy(EnemyId.Slime, 3, 24, 8, false)
                 .SetDropsTable(slimeTable),
         });
 
         AddEnemies(1, new StageId(126, 0, 0), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(0x015604, 10, 1500, 7, false) // Candy Loving Witch
+            LibDdon.CreateEnemy(EnemyId.Witch, 10, 1500, 7, false)
                 .SetIsBoss(true)
-                .SetNamedEnemyParams(LibDdon.GetNamedParam(2108))
-                .AddDrop(21182, 1, 10, DropRate.ALWAYS)
+                .SetNamedEnemyParams(LibDdon.GetNamedParam(2108)) // Candy Loving Witch
+                .AddDrop(ItemId.GhostMarshmallow, 1, 10, DropRate.ALWAYS)
         });
     }
 
@@ -81,7 +75,7 @@ public class ScriptedQuest : IQuest
         process0.AddNewTalkToNpcBlock(QuestAnnounceType.Accept, (QuestId)60301001, new StageId(2, 0, 1), NpcId.Shelly0, 27115);
         process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, (QuestId)60301001, new StageId(2, 0, 0), NpcId.Angelo0, 27116);
         process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, StageId.WhiteDragonTemple, NpcId.Gregory0, 27117);
-        process0.AddCheckBagEventBlock(QuestAnnounceType.CheckpointAndUpdate, 20435, 1)
+        process0.AddCheckBagEventBlock(QuestAnnounceType.CheckpointAndUpdate, ItemId.GhostLantern, 1)
             .AddQuestFlag(QuestFlagType.MyQst, QuestFlagAction.Set, 1)
                 .AddAnnotation("Progresses the process 1 state machine to spawn enemies in the withered well");
         process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, (QuestId)60301001, new StageId(2, 0, 0), NpcId.Angelo0, 27118)

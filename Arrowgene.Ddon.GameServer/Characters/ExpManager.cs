@@ -706,12 +706,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return 0;
             }
 
-            if (!characterCommon.Equipment.GetItems(EquipType.Performance).Exists(x => x?.ItemId == (uint) ItemId.RookiesRing))
+            if (!characterCommon.Equipment.GetItems(EquipType.Performance).Exists(x => x?.ItemId == (uint) ItemId.RookiesRingOfBlessing))
             {
                 return 0;
             }
 
-            var rookiesRingInterface = _Server.ScriptManager.GameItemModule.GetItemInterface(ItemId.RookiesRing);
+            var rookiesRingInterface = _Server.ScriptManager.GameItemModule.GetItemInterface(ItemId.RookiesRingOfBlessing);
             if (rookiesRingInterface == null)
             {
                 return baseExpAmount;

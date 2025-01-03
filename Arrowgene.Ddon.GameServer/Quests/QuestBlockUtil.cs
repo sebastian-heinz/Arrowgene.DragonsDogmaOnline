@@ -144,15 +144,15 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return block;
         }
 
-        public static QuestBlock AddCheckBagEventBlock(this QuestProcess process, QuestAnnounceType announceType, int itemId, int amount)
+        public static QuestBlock AddCheckBagEventBlock(this QuestProcess process, QuestAnnounceType announceType, ItemId itemId, int amount)
         {
             var block = CreateGenericBlock(0, 0, QuestBlockType.Raw, announceType)
-                .AddCheckCommand(QuestManager.CheckCommand.HaveItemAllBag(itemId, amount));
+                .AddCheckCommand(QuestManager.CheckCommand.HaveItemAllBag((int) itemId, amount));
             process.AddBlock(block);
             return block;
         }
 
-        public static QuestBlock AddDeliverItemsBlock(this QuestProcess process, QuestAnnounceType announceType, StageId stageId, NpcId npcId, uint itemId, uint amount, uint msgId)
+        public static QuestBlock AddDeliverItemsBlock(this QuestProcess process, QuestAnnounceType announceType, StageId stageId, NpcId npcId, ItemId itemId, uint amount, uint msgId)
         {
             var block = CreateGenericBlock(0, 0, QuestBlockType.DeliverItems, announceType)
                 .AddNpcOrderDetails(stageId, npcId, msgId, QuestId.None)
@@ -161,7 +161,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return block;
         }
 
-        public static QuestBlock AddNewDeliverItemsBlock(this QuestProcess process, QuestAnnounceType announceType, StageId stageId, NpcId npcId, uint itemId, uint amount, uint msgId)
+        public static QuestBlock AddNewDeliverItemsBlock(this QuestProcess process, QuestAnnounceType announceType, StageId stageId, NpcId npcId, ItemId itemId, uint amount, uint msgId)
         {
             var block = CreateGenericBlock(0, 0, QuestBlockType.NewDeliverItems, announceType)
                 .SetStageId(stageId)
@@ -169,11 +169,6 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
                 .AddDeliveryRequests(itemId, amount);
             process.AddBlock(block);
             return block;
-        }
-
-        public static QuestBlock AddNewDeliverItemsBlock(this QuestProcess process, QuestAnnounceType announceType, StageId stageId, NpcId npcId, ItemId itemId, uint amount, uint msgId)
-        {
-            return AddNewDeliverItemsBlock(process, announceType, stageId, npcId, (uint)itemId, amount, msgId);
         }
 
         public static QuestBlock AddIsQuestClearBlock(this QuestProcess process, QuestAnnounceType announceType, QuestType questType, QuestId questId)

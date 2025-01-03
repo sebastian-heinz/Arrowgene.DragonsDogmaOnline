@@ -1,9 +1,7 @@
-using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Arrowgene.Ddon.GameServer.Scripting
 {
@@ -45,6 +43,11 @@ namespace Arrowgene.Ddon.GameServer.Scripting
             return enemy;
         }
 
+        public static InstancedEnemy CreateEnemy(EnemyId enemyId, ushort lv, uint exp, byte index, bool assignDefaultDrops = true)
+        {
+            return CreateEnemy((uint)enemyId, lv, exp, index, assignDefaultDrops);
+        }
+
         public static T GetSetting<T>(string scriptName, string key)
         {
             return Instance.Server.GameLogicSettings.Get<T>(scriptName, key);
@@ -60,6 +63,11 @@ namespace Arrowgene.Ddon.GameServer.Scripting
                 Instance.HandlerCache[name] = Activator.CreateInstance(typeof(T), Instance.Server);
             }
             return (T) Instance.HandlerCache[name];
+        }
+
+        public static IDatabase Database()
+        {
+            return Instance.Server.Database;
         }
     }
 }

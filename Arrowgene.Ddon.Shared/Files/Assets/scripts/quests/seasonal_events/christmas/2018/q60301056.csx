@@ -24,8 +24,8 @@ public class ScriptedQuest : IQuest
 
     protected override void InitializeRewards()
     {
-        AddFixedItemReward(23548, 70); // Sparkling Snow Large Crystal
-        AddFixedItemReward(21718, 1);  // Christmas Puppet - Mandragora
+        AddFixedItemReward(ItemId.SparklingSnowLargeCrystal, 70);
+        AddFixedItemReward(ItemId.ChristmasPuppetMandragora, 1);
         AddPointReward(PointType.ExperiencePoints, 1225);
         AddWalletReward(WalletType.Gold, 1225);
         AddWalletReward(WalletType.RiftPoints, 1225);
@@ -35,15 +35,15 @@ public class ScriptedQuest : IQuest
     {
         AddEnemies(0, new StageId(1, 0, 71), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(0x010210, 10, 980, 7) // Green Guardian
+            LibDdon.CreateEnemy(EnemyId.GreenGuardian, 10, 980, 7)
                 .SetNamedEnemyParams(LibDdon.GetNamedParam(2657)),
-            LibDdon.CreateEnemy(0x010210, 10, 980, 8) // Green Guardian
+            LibDdon.CreateEnemy(EnemyId.GreenGuardian, 10, 980, 8)
                 .SetNamedEnemyParams(LibDdon.GetNamedParam(2657)),
-            LibDdon.CreateEnemy(0x010210, 10, 980, 9) // Green Guardian
+            LibDdon.CreateEnemy(EnemyId.GreenGuardian, 10, 980, 9)
                 .SetNamedEnemyParams(LibDdon.GetNamedParam(2657)),
-            LibDdon.CreateEnemy(0x015031, 10, 9800, 10) // "Angry Ent Chieftan"
+            LibDdon.CreateEnemy(EnemyId.Ent, 10, 9800, 10)
                 .SetIsBoss(true)
-                .SetNamedEnemyParams(LibDdon.GetNamedParam(2622)),
+                .SetNamedEnemyParams(LibDdon.GetNamedParam(2622)), // "Angry Ent Chieftan"
         });
     }
 

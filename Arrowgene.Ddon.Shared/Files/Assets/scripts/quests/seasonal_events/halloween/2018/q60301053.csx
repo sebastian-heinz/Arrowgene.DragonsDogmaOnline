@@ -26,8 +26,8 @@ public class ScriptedQuest : IQuest
 
     protected override void InitializeRewards()
     {
-        AddFixedItemReward(23545, 70); // Halloween Petit Muffin
-        AddFixedItemReward(21664, 1);  // Horror Night Plush
+        AddFixedItemReward(ItemId.HalloweenPetitMuffin, 70);
+        AddFixedItemReward(ItemId.HorrorNightPlush, 1);
         AddPointReward(PointType.ExperiencePoints, 1031);
         AddWalletReward(WalletType.Gold, 1031);
         AddWalletReward(WalletType.RiftPoints, 1031);
@@ -63,7 +63,7 @@ public class ScriptedQuest : IQuest
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, 8241)
                 .AddAnnotation("Spawns Ghost (3)");
         process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, new StageId(2, 0, 1), NpcId.Shelly1, 30837);
-        process0.AddNewDeliverItemsBlock(QuestAnnounceType.CheckpointAndUpdate, new StageId(2, 0, 3), NpcId.MysteriousGhost, 23545, 10, 30838);
+        process0.AddNewDeliverItemsBlock(QuestAnnounceType.CheckpointAndUpdate, new StageId(2, 0, 3), NpcId.MysteriousGhost, ItemId.HalloweenPetitMuffin, 10, 30838);
         process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, new StageId(2, 0, 1), NpcId.Shelly1, 30840);
         process0.AddProcessEndBlock(true);
         AddProcess(process0);

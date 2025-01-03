@@ -27,8 +27,8 @@ public class ScriptedQuest : IQuest
 
     protected override void InitializeRewards()
     {
-        AddFixedItemReward(23548, 50); // Sparkling Snow Large Crystal
-        AddFixedItemReward(23460, 1);  // Christmas Ornament Hat
+        AddFixedItemReward(ItemId.SparklingSnowLargeCrystal, 50);
+        AddFixedItemReward(ItemId.ChristmasOrnamentHat, 1);
         AddPointReward(PointType.ExperiencePoints, 1224);
         AddWalletReward(WalletType.Gold, 1224);
         AddWalletReward(WalletType.RiftPoints, 1224);
@@ -38,9 +38,9 @@ public class ScriptedQuest : IQuest
     {
         AddEnemies(0, new StageId(1, 0, 71), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(0x015031, 10, 9800, 10) // "Sapling (ent)"
+            LibDdon.CreateEnemy(EnemyId.Ent, 10, 9800, 10)
                 .SetIsBoss(true)
-                .SetNamedEnemyParams(LibDdon.GetNamedParam(2621))
+                .SetNamedEnemyParams(LibDdon.GetNamedParam(2621)) // "Sapling"
         });
     }
 
@@ -60,10 +60,10 @@ public class ScriptedQuest : IQuest
         process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, new StageId(2, 0, 1), NpcId.Nicholas, 30851)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Clear, 8249)
                 .AddAnnotation("Despawns item to collect");
-        process0.AddCheckBagEventBlock(QuestAnnounceType.CheckpointAndUpdate, 23548, 1)
+        process0.AddCheckBagEventBlock(QuestAnnounceType.CheckpointAndUpdate, ItemId.SparklingSnowLargeCrystal, 1)
                 .AddAnnotation("Check for snowflake (1)");
         process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, new StageId(2, 0, 1), NpcId.Nicholas, 30853);
-        process0.AddNewDeliverItemsBlock(QuestAnnounceType.CheckpointAndUpdate, new StageId(2, 0, 1), NpcId.Nicholas, 23548, 20, 30857)
+        process0.AddNewDeliverItemsBlock(QuestAnnounceType.CheckpointAndUpdate, new StageId(2, 0, 1), NpcId.Nicholas, ItemId.SparklingSnowLargeCrystal, 20, 30857)
             .AddAnnotation("Deliver 20 snowflakes");
         process0.AddProcessEndBlock(true);
         AddProcess(process0);

@@ -13,4 +13,16 @@ public class DropsTable
     public string Name { get; set; }
     public byte MdlType { get; set; }
     public List<GatheringItem> Items { get; set; }
+
+    public DropsTable AddDrop(ItemId itemId, uint minAmount, uint maxAmount, double dropChance)
+    {
+        Items.Add(new GatheringItem()
+        {
+            ItemId = (uint)itemId,
+            ItemNum = minAmount,
+            MaxItemNum = maxAmount,
+            DropChance = dropChance
+        });
+        return this;
+    }
 }

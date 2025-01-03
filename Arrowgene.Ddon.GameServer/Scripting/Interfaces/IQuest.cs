@@ -89,6 +89,11 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
             AddItemReward(reward);
         }
 
+        public void AddFixedItemReward(ItemId itemId, ushort amount)
+        {
+            AddFixedItemReward((uint)itemId, amount);
+        }
+
         public void AddPointReward(QuestPointReward reward)
         {
             if (reward != null)

@@ -10,7 +10,7 @@ public class GameItem : IGameItem
         public const uint Dynamic = 1;
     }
 
-    public override ItemId ItemId => ItemId.RookiesRing;
+    public override ItemId ItemId => ItemId.RookiesRingOfBlessing;
 
     public GameItem()
     {
