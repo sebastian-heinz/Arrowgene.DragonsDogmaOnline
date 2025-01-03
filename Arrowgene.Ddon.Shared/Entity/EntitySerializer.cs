@@ -1195,6 +1195,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CInstanceEnemySubGroupAppearNtc.Serializer());
             Create(new S2CInstanceExchangeOmInstantKeyValueNtc.Serializer());
             Create(new S2CInstanceExchangeOmInstantKeyValueRes.Serializer());
+            Create(new S2CInstanceGatheringEnemyAppearNtc.Serializer());
             Create(new S2CInstanceGetDropItemListRes.Serializer());
             Create(new S2CInstanceGetDropItemRes.Serializer());
             Create(new S2CInstanceGetEnemySetListRes.Serializer());

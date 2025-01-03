@@ -456,19 +456,14 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return this;
         }
 
-        public QuestBlock AddDeliveryRequests(uint itemId, uint amount)
+        public QuestBlock AddDeliveryRequests(ItemId itemId, uint amount)
         {
             DeliveryRequests.Add(new QuestItem()
             {
-                ItemId = itemId,
+                ItemId = (uint) itemId,
                 Amount = amount
             });
             return this;
-        }
-
-        public QuestBlock AddDeliveryRequests(ItemId itemId, uint amount)
-        {
-            return AddDeliveryRequests((uint)itemId, amount);
         }
 
         public QuestBlock AddHandPlayerItems(List<QuestItem> values)
@@ -483,19 +478,14 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return this;
         }
 
-        public QuestBlock AddHandPlayerItem(uint itemId, uint amount)
+        public QuestBlock AddHandPlayerItem(ItemId itemId, uint amount)
         {
             HandPlayerItems.Add(new QuestItem()
             {
-                ItemId = itemId,
+                ItemId = (uint) itemId,
                 Amount = amount
             });
             return this;
-        }
-
-        public QuestBlock AddHandPlayerItem(ItemId itemId, uint amount)
-        {
-            return AddHandPlayerItem((uint)itemId, amount);
         }
 
         public QuestBlock AddConsumePlayerItems(List<QuestItem> values)
@@ -560,11 +550,11 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return this;
         }
 
-        public QuestBlock SetTargetEnemy(uint enemyId, uint amount, uint level)
+        public QuestBlock SetTargetEnemy(EnemyId enemyId, uint amount, uint level)
         {
             return SetTargetEnemy(new QuestTargetEnemy()
             {
-                EnemyId = enemyId,
+                EnemyId = (uint) enemyId,
                 Amount = amount,
                 Level = level
             });

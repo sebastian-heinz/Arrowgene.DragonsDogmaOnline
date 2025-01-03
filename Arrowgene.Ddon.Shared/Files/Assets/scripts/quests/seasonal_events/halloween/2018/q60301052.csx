@@ -27,8 +27,8 @@ public class ScriptedQuest : IQuest
 
     protected override void InitializeRewards()
     {
-        AddFixedItemReward(23545, 50); // Halloween Petit Muffin
-        AddFixedItemReward(23397, 1);  // Mischievous Ghost Costume
+        AddFixedItemReward(ItemId.HalloweenPetitMuffin, 50);
+        AddFixedItemReward(ItemId.MischievousGhostCostume, 1);
         AddPointReward(PointType.ExperiencePoints, 1031);
         AddWalletReward(WalletType.Gold, 1031);
         AddWalletReward(WalletType.RiftPoints, 1031);
@@ -36,24 +36,18 @@ public class ScriptedQuest : IQuest
 
     protected override void InitializeEnemyGroups()
     {
-        DropsTable drops = new DropsTable();
-        drops.Items.Add(new GatheringItem()
-        {
-            ItemId = 23545,
-            ItemNum = 1,
-            MaxItemNum = 1,
-            DropChance = DropRate.ALWAYS,
-        });
+        DropsTable drops = new DropsTable()
+            .AddDrop(ItemId.HalloweenPetitMuffin, 1, 1, DropRate.ALWAYS);
 
         AddEnemies(0, new StageId(662, 0, 6), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(0x015622, 10, 136, 0) // "Grudge Ghost"
+            LibDdon.CreateEnemy(EnemyId.GrudgeGhost, 10, 136, 0)
                 .SetNamedEnemyParams(LibDdon.GetNamedParam(2620))
                 .SetDropsTable(drops),
-            LibDdon.CreateEnemy(0x015622, 10, 136, 1) // "Grudge Ghost"
+            LibDdon.CreateEnemy(EnemyId.GrudgeGhost, 10, 136, 1)
                 .SetNamedEnemyParams(LibDdon.GetNamedParam(2620))
                 .SetDropsTable(drops),
-            LibDdon.CreateEnemy(0x015622, 10, 136, 2) // "Grudge Ghost"
+            LibDdon.CreateEnemy(EnemyId.GrudgeGhost, 10, 136, 2)
                 .SetNamedEnemyParams(LibDdon.GetNamedParam(2620))
                 .SetDropsTable(drops),
         });
@@ -65,9 +59,9 @@ public class ScriptedQuest : IQuest
         process0.AddNewNpcTalkAndOrderBlock(new StageId(2, 1, 1), NpcId.Angelo0, 30811)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, 8230)
                 .AddAnnotation("Spawns Shelly and Angelo");
-        process0.AddCheckBagEventBlock(QuestAnnounceType.Accept, 23545, 1);
+        process0.AddCheckBagEventBlock(QuestAnnounceType.Accept, ItemId.HalloweenPetitMuffin, 1);
         process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, new StageId(2, 1, 1), NpcId.Angelo0, 30813);
-        process0.AddNewDeliverItemsBlock(QuestAnnounceType.CheckpointAndUpdate, new StageId(2, 1, 1), NpcId.Angelo0, 23545, 20, 30818);
+        process0.AddNewDeliverItemsBlock(QuestAnnounceType.CheckpointAndUpdate, new StageId(2, 1, 1), NpcId.Angelo0, ItemId.HalloweenPetitMuffin, 20, 30818);
         process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, StageId.WhiteDragonTemple, NpcId.Fabio0, 30821);
         process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, new StageId(2, 1, 1), NpcId.Angelo0, 30822);
         process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, new StageId(2, 1, 1), NpcId.Angelo0, 30823);

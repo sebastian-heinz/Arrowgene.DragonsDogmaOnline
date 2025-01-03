@@ -185,11 +185,11 @@ namespace Arrowgene.Ddon.Shared.Model
             return this;
         }
 
-        public InstancedEnemy AddDrop(uint itemId, uint minAmount, uint maxAmount, double chance, uint quality = 0, bool isHidden = false)
+        public InstancedEnemy AddDrop(ItemId itemId, uint minAmount, uint maxAmount, double chance, uint quality = 0, bool isHidden = false)
         {
             DropsTable.Items.Add(new GatheringItem()
             {
-                ItemId = itemId,
+                ItemId = (uint) itemId,
                 ItemNum = minAmount,
                 MaxItemNum = maxAmount,
                 DropChance = chance,
