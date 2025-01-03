@@ -5,6 +5,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class L2CLoginRes : ServerResponse
     {
+        public L2CLoginRes()
+        {
+            OneTimeToken = string.Empty;
+        }
+
         public string OneTimeToken { get; set; }
 
         public override PacketId Id => PacketId.L2C_LOGIN_RES;

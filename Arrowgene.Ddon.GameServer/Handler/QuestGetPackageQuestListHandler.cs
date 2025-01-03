@@ -1,32 +1,25 @@
-﻿using System.Reflection.Metadata;
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestGetPackageQuestListHandler : GameStructurePacketHandler<C2SQuestGetPackageQuestListReq>
+    public class QuestGetPackageQuestListHandler : GameRequestPacketHandler<C2SQuestGetPackageQuestListReq, S2CQuestGetPackageQuestListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetPackageQuestListHandler));
-
 
         public QuestGetPackageQuestListHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SQuestGetPackageQuestListReq> packet)
+        public override S2CQuestGetPackageQuestListRes Handle(GameClient client, C2SQuestGetPackageQuestListReq request)
         {
-            IBuffer buffer = new StreamBuffer();
-            buffer.WriteInt32(0);
-            buffer.WriteInt32(0);
-            buffer.WriteUInt32(packet.Structure.Unk0);
-            buffer.WriteUInt32(0);
-            client.Send(new Packet(PacketId.S2C_QUEST_GET_PACKAGE_QUEST_LIST_RES, buffer.GetAllBytes()));
-            //client.Send(GameFull.Dump_159);
+            //var res = EntitySerializer.Get<S2CQuestGetPackageQuestListRes>().Read(GameFull.Dump_159.AsBuffer());
+            
+            return new()
+            {
+                Unk0 = request.Unk0
+            };
         }
     }
 }

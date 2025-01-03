@@ -96,14 +96,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
         /// Items of approximately this rank and above apply penalties to the pawns craft skills during crafting.
         /// TODO: Expose to settings.
         /// </summary>
-        private const uint CraftItemLv = 15;
+        public const uint CraftItemLv = 15;
 
         /// <summary>
         /// Used as part of the craft skill calculations.
         /// Every ReasonableCraftLv/CraftItemLv item ranks, the penalty increases in magnitude.
         /// TODO: Expose to settings.
         /// </summary>
-        private const uint ReasonableCraftLv = 5;
+        public const uint ReasonableCraftLv = 5;
 
         private readonly DdonGameServer _server;
 
@@ -149,7 +149,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     continue;
                 }
-                int effSkill = Math.Max((int)(pawn.ProductionSpeed - difficultyModifier), 0);
+                int effSkill = (int)(pawn.ProductionSpeed - difficultyModifier);
                 PawnCraftSkillSpeedRate speedRateAsset = _server.AssetRepository.PawnCraftSkillSpeedRateAsset.ElementAtOrDefault(effSkill)
                     ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CRAFT_SKILL_LEVEL_OVER, $"No speed rate information found for level: {effSkill}");
                 float speedRate = pawn.PositionModifier == 1.0 ? speedRateAsset.SpeedRate1 : speedRateAsset.SpeedRate2;

@@ -3,12 +3,11 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CraftSkillUpHandler : GameStructurePacketHandler<C2SCraftSkillUpReq>
+    public class CraftSkillUpHandler : GameRequestPacketHandler<C2SCraftSkillUpReq, S2CCraftSkillUpRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftSkillUpHandler));
 
@@ -16,20 +15,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCraftSkillUpReq> packet)
+        public override S2CCraftSkillUpRes Handle(GameClient client, C2SCraftSkillUpReq request)
         {
             S2CCraftSkillUpRes craftSkillUpRes = new S2CCraftSkillUpRes
             {
-                PawnID = packet.Structure.PawnID,
-                SkillType = packet.Structure.SkillType,
-                SkillLevel = packet.Structure.SkillLevel
+                PawnID = request.PawnID,
+                SkillType = request.SkillType,
+                SkillLevel = request.SkillLevel
             };
 
-            Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == packet.Structure.PawnID);
+            Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == request.PawnID)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_NOT_FOUNDED);
 
-            CDataPawnCraftSkill pawnCraftSkill = pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == packet.Structure.SkillType);
+            CDataPawnCraftSkill pawnCraftSkill = pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == request.SkillType)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CRAFT_INVALID_CRAFT_SKILL_TYPE);
             uint previousCraftSkillLevel = pawnCraftSkill.Level;
-            pawnCraftSkill.Level = packet.Structure.SkillLevel;
+            pawnCraftSkill.Level = request.SkillLevel;
 
             craftSkillUpRes.UseCraftPoint = pawnCraftSkill.Level - previousCraftSkillLevel;
 
@@ -38,7 +39,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Server.Database.UpdatePawnBaseInfo(pawn);
 
-            client.Send(craftSkillUpRes);
+            return craftSkillUpRes;
         }
     }
 }

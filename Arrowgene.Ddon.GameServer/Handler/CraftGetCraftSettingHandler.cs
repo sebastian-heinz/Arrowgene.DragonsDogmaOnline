@@ -9,7 +9,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CraftGetCraftSettingHandler : GameStructurePacketHandler<C2SCraftGetCraftSettingReq>
+    public class CraftGetCraftSettingHandler : GameRequestPacketHandler<C2SCraftGetCraftSettingReq, S2CCraftGetCraftSettingRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftGetCraftSettingHandler));
 
@@ -180,15 +180,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCraftGetCraftSettingReq> packet)
+        public override S2CCraftGetCraftSettingRes Handle(GameClient client, C2SCraftGetCraftSettingReq request)
         {
             S2CCraftGetCraftSettingRes res = new S2CCraftGetCraftSettingRes
             {
                 ColorRegulateItemList = ColorRegulateItemList,
                 TimeSaveCostList = TimeSaveCostList,
-                // No idea what this is for - probably dead stuff from season 2
-                ReasonableCraftLv = 5,
-                CraftItemLv = 15,
+                ReasonableCraftLv = CraftManager.ReasonableCraftLv,
+                CraftItemLv = CraftManager.CraftItemLv,
                 CreateCountMax = Server.GameLogicSettings.CraftConsumableProductionTimesMax,
                 CraftMasterLegendPawnInfoList = Server.AssetRepository.PawnCraftMasterLegendAsset,
                 Unk1 = 49,
@@ -196,7 +195,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 RefiningMaterialInfoList = RefiningMaterialInfoList
             };
 
-            client.Send(res);
+            return res;
         }
     }
 }

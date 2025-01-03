@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Security.Cryptography;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Crypto;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 
 namespace Arrowgene.Ddon.Server.Network
 {
@@ -49,20 +50,39 @@ namespace Arrowgene.Ddon.Server.Network
             return certChallenge;
         }
 
-        public Response HandleClientCertChallenge(byte[] challengeResponse)
+        public Response HandleClientCertChallenge(C2SCertClientChallengeReq request)
         {
             Response response = new Response();
             response.Error = false;
             try
             {
-                IBuffer buffer = new StreamBuffer(challengeResponse);
-                buffer.SetPositionStart();
-                byte decryptedCamelliaKeyLength = buffer.ReadByte();
-                byte[] rsaEncryptedCamelliaKey = buffer.ReadBytes(256);
-                buffer.ReadBytes(3);
-                response.DecryptedBlowFishKeyLength = buffer.ReadByte();
-                response.EncryptedBlowFishKeyLength = buffer.ReadByte();
-                response.EncryptedBlowFishPassword = buffer.ReadBytesTerminated(0); //62 length
+                byte decryptedCamelliaKeyLength = request.CommonKeySrcSize;
+                byte[] rsaEncryptedCamelliaKey = request.CommonKeyEnc;
+                response.DecryptedBlowFishKeyLength = request.PasswordSrcSize;
+                response.EncryptedBlowFishKeyLength = request.PasswordEncSize;
+                response.EncryptedBlowFishPassword = request.PasswordEnc;
+                response.CamelliaKey = _rsa.Decrypt(rsaEncryptedCamelliaKey, RSAEncryptionPadding.Pkcs1);
+                response.BlowFishPassword = BlowFish.Decrypt_ECB(response.EncryptedBlowFishPassword);
+            }
+            catch (Exception)
+            {
+                response.Error = true;
+            }
+
+            return response;
+        }
+
+        public Response HandleClientCertChallenge(C2LClientChallengeReq request)
+        {
+            Response response = new Response();
+            response.Error = false;
+            try
+            {
+                byte decryptedCamelliaKeyLength = request.CommonKeySrcSize;
+                byte[] rsaEncryptedCamelliaKey = request.CommonKeyEnc;
+                response.DecryptedBlowFishKeyLength = request.PasswordSrcSize;
+                response.EncryptedBlowFishKeyLength = request.PasswordEncSize;
+                response.EncryptedBlowFishPassword = request.PasswordEnc;
                 response.CamelliaKey = _rsa.Decrypt(rsaEncryptedCamelliaKey, RSAEncryptionPadding.Pkcs1);
                 response.BlowFishPassword = BlowFish.Decrypt_ECB(response.EncryptedBlowFishPassword);
             }

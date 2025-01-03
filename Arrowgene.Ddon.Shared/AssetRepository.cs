@@ -1,16 +1,16 @@
+using Arrowgene.Ddon.Shared.Asset;
+using Arrowgene.Ddon.Shared.AssetReader;
+using Arrowgene.Ddon.Shared.Csv;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Json;
+using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
-using Arrowgene.Ddon.Shared.Csv;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Logging;
-using Arrowgene.Ddon.Shared.Json;
-using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Asset;
-using Arrowgene.Ddon.Shared.AssetReader;
 using System.Linq;
+using System.Threading;
 
 namespace Arrowgene.Ddon.Shared
 {
@@ -55,6 +55,7 @@ namespace Arrowgene.Ddon.Shared
         public const string BonusDungeonKey = "BonusDungeon.json";
         public const string ClanShopKey = "ClanShop.csv";
         public const string EpitaphRoadKey = "EpitaphRoad.json";
+        public const string LoadingInfoKey = "LoadingInfo.json";
 
         public const string QuestAssestKey = "quests";
         public const string EpitaphAssestKey = "epitaph";
@@ -113,6 +114,7 @@ namespace Arrowgene.Ddon.Shared
             PawnCraftSkillCostRateAsset = new();
             PawnCraftSkillSpeedRateAsset = new();
             PawnCraftMasterLegendAsset = new();
+            LoadingInfoAsset = new();
         }
 
         public List<CDataErrorMessage> ClientErrorCodes { get; private set; }
@@ -150,6 +152,7 @@ namespace Arrowgene.Ddon.Shared
         public Dictionary<uint, ClanShopAsset> ClanShopAsset { get; private set; }
         public EpitaphRoadAsset EpitaphRoadAssets { get; private set; }
         public EpitaphTrialAsset EpitaphTrialAssets { get; private set; }
+        public List<CDataLoadingInfoSchedule> LoadingInfoAsset { get; private set; }
 
         public void Initialize()
         {
@@ -186,6 +189,7 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => PawnCraftSkillCostRateAsset = value, PawnCraftSkillCostRateKey, new PawnCraftSkillCostRateCsv());
             RegisterAsset(value => PawnCraftSkillSpeedRateAsset = value, PawnCraftSkillSpeedRateKey, new PawnCraftSkillSpeedRateCsv());
             RegisterAsset(value => PawnCraftMasterLegendAsset = value, PawnCraftMasterLegendKey, new PawnCraftMasterLegendDeserializer());
+            RegisterAsset(value => LoadingInfoAsset = value, LoadingInfoKey, new LoadingInfoDeserializer());
 
             // This must be set before calling QuestAssertDeserializer and EpitaphTrialAssertDeserializer
             var commonEnemyDeserializer = new AssetCommonDeserializer(this.NamedParamAsset);

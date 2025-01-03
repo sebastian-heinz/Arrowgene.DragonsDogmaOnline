@@ -1,26 +1,20 @@
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Entity;
-using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
-    public class ClientLogoutHandler : PacketHandler<LoginClient>
+    public class ClientLogoutHandler : LoginRequestPacketHandler<C2LLogoutReq, L2CLogoutRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClientLogoutHandler));
-
 
         public ClientLogoutHandler(DdonLoginServer server) : base(server)
         {
         }
 
-        public override PacketId Id => PacketId.C2L_LOGOUT_REQ;
-
-        public override void Handle(LoginClient client, IPacket packet)
+        public override L2CLogoutRes Handle(LoginClient client, C2LLogoutReq request)
         {
-            ServerRes res = new ServerRes(PacketId.L2C_LOGOUT_RES);
-            client.Send(res);
+            return new();
         }
     }
 }

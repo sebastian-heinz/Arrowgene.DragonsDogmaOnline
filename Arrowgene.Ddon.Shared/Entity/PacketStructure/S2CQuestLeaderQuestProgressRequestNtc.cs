@@ -39,11 +39,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override S2CQuestLeaderQuestProgressRequestNtc Read(IBuffer buffer)
             {
                 S2CQuestLeaderQuestProgressRequestNtc obj = new S2CQuestLeaderQuestProgressRequestNtc();
-                obj.RequestCharacterId = buffer.ReadUInt32();
-                obj.QuestScheduleId = buffer.ReadUInt32();
-                obj.ProcessNo = buffer.ReadUInt16();
-                obj.SequenceNo = buffer.ReadUInt16();
-                obj.BlockNo = buffer.ReadUInt16();
+                obj.RequestCharacterId = ReadUInt32(buffer);
+                obj.QuestScheduleId = ReadUInt32(buffer);
+                obj.ProcessNo = ReadUInt16(buffer);
+                obj.SequenceNo = ReadUInt16(buffer);
+                obj.BlockNo = ReadUInt16(buffer);
                 return obj;
             }
         }

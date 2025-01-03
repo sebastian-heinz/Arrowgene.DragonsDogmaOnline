@@ -1,64 +1,52 @@
-using Arrowgene.Ddon.LoginServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System;
-using System.Linq;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
-    public class GpCourseGetInfoHandler : PacketHandler<LoginClient>
+    public class GpCourseGetInfoHandler : LoginRequestPacketHandler<C2LGpCourseGetInfoReq, L2CGpCourseGetInfoRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(GpCourseGetInfoHandler));
 
-        private AssetRepository _AssetRepo;
-
         public GpCourseGetInfoHandler(DdonLoginServer server) : base(server)
         {
-            _AssetRepo = server.AssetRepository;
         }
 
-        public override PacketId Id => PacketId.C2L_GP_COURSE_GET_INFO_REQ;
-
-        public override void Handle(LoginClient client, IPacket packet)
+        public override L2CGpCourseGetInfoRes Handle(LoginClient client, C2LGpCourseGetInfoReq request)
         {
-            L2CGpCourseGetInfoRes Response = new L2CGpCourseGetInfoRes();
+            L2CGpCourseGetInfoRes response = new();
 
-            foreach (var Course in _AssetRepo.GPCourseInfoAsset.Courses)
+            foreach (var course in Server.AssetRepository.GPCourseInfoAsset.Courses)
             {
                 CDataGPCourseInfo cDataGPCourseInfo = new CDataGPCourseInfo()
                 {
-                    CourseId = Course.Value.Id,
-                    CourseName = Course.Value.Name,
-                    DoubleCourseTarget = Course.Value.Target,
-                    PrioGroup = (byte)Course.Value.PriorityGroup,
-                    PrioSameTime = (byte)Course.Value.PrioritySameTime,
-                    AnnounceType = (byte)Course.Value.AnnounceType,
-                    EffectUIDs = Course.Value.Effects
+                    CourseId = course.Value.Id,
+                    CourseName = course.Value.Name,
+                    DoubleCourseTarget = course.Value.Target,
+                    PrioGroup = (byte)course.Value.PriorityGroup,
+                    PrioSameTime = (byte)course.Value.PrioritySameTime,
+                    AnnounceType = (byte)course.Value.AnnounceType,
+                    EffectUIDs = course.Value.Effects
                 };
 
-                Response.CourseInfo.Add(cDataGPCourseInfo);
+                response.CourseInfo.Add(cDataGPCourseInfo);
             }
 
-            foreach (var Effect in _AssetRepo.GPCourseInfoAsset.Effects)
+            foreach (var effect in Server.AssetRepository.GPCourseInfoAsset.Effects)
             {
                 CDataGPCourseEffectParam cDataGPCourseEffectParam = new CDataGPCourseEffectParam()
                 {
-                    EffectUID = Effect.Value.Uid,
-                    EffectID = Effect.Value.Id,
-                    Param0 = Effect.Value.Param0,
-                    Param1 = Effect.Value.Param1
+                    EffectUID = effect.Value.Uid,
+                    EffectID = effect.Value.Id,
+                    Param0 = effect.Value.Param0,
+                    Param1 = effect.Value.Param1
                 };
 
-                Response.Effects.Add(cDataGPCourseEffectParam);
+                response.Effects.Add(cDataGPCourseEffectParam);
             }
 
-            // client.Send(LoginDump.Dump_22);
-            client.Send(Response);
+            return response;
         }
     }
 }
