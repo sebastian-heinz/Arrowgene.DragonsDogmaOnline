@@ -31,12 +31,15 @@ namespace Arrowgene.Ddon.GameServer
             public bool Update(DateTime newTimestamp, List<RpcCharacterData> characterData)
             {
                 if (newTimestamp <= TimeStamp) return false;
-
-                TimeStamp = newTimestamp;
-                this.Clear();
-                foreach (var character in characterData)
+                lock (this)
                 {
-                    this[character.CharacterId] = character;
+                    TimeStamp = newTimestamp;
+                
+                    this.Clear();
+                    foreach (var character in characterData)
+                    {
+                        this[character.CharacterId] = character;
+                    }
                 }
                 return true;
             }
