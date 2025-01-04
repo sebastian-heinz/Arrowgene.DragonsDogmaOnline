@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 public class ChatCommand : IChatCommand
 {
     public override AccountStateType AccountState => AccountStateType.Admin;
@@ -6,35 +8,20 @@ public class ChatCommand : IChatCommand
 
     public override void Execute(DdonGameServer server, string[] command, GameClient client, ChatMessage message, List<ChatResponse> responses)
     {
-        SystemMailMessage mail = new SystemMailMessage()
+        var ntc = new S2CItemUpdateCharacterItemNtc()
         {
-            Title = $"GivePowerfulItems",
-            Body = $"",
-            CharacterId = client.Character.CharacterId,
-            SenderName = "/givepowerfulitems",
-            MessageState = MailState.Unopened
+            UpdateType = ItemNoticeType.StampBonus
         };
 
-        foreach (var item in Items)
+        server.Database.ExecuteInTransaction(connection =>
         {
-            ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, item);
-            mail.Attachments.Add(new SystemMailAttachment()
+            foreach (var item in Items)
             {
-                AttachmentType = SystemMailAttachmentType.Item,
-                Param1 = item,
-                Param2 = 1,
-                MessageId = (ulong)(mail.Attachments.Count + 1),
-                IsReceived = false,
-            });
-        }
+                ntc.UpdateItemList.AddRange(server.ItemManager.AddItem(server, client.Character, StorageType.ItemPost, item, 1, connectionIn: connection));
+            }
+        });
 
-        SystemMailService.DeliverSystemMailMessage(server.Database, mail);
-
-        S2CMailSystemMailSendNtc notice = new S2CMailSystemMailSendNtc()
-        {
-            MailInfo = mail.ToCDataMailInfo((byte)(MailItemState.Exist | MailItemState.Item))
-        };
-        client.Send(notice);
+        client.Send(ntc);
     }
 
     private static List<uint> Items = new List<uint>()

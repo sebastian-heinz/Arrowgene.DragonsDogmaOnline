@@ -27,8 +27,11 @@ public class ChatCommand : IChatCommand
             remainingSeconds -= weatherLoop.TimeSec;
         }
 
+        uint currentMoon = server.WeatherManager.GetMoonPhase();
+
         sb.Append($"Weather:{server.WeatherManager.GetWeather()} ({weatherIndex}) ");
-        sb.Append($"{remainingSeconds}/{server.WeatherManager.WeatherLoopList[weatherIndex].TimeSec} seconds");
+        sb.Append($"{remainingSeconds}/{server.WeatherManager.WeatherLoopList[weatherIndex].TimeSec} seconds; ");
+        sb.Append($"Moon: {currentMoon}/{WeatherManager.GameTimeMoonAges}");
 
         ChatResponse response = new ChatResponse();
         response.Message = sb.ToString();
