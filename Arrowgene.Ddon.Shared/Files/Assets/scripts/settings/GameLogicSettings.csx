@@ -102,6 +102,7 @@ uint PlayPointMax = 2000;
 
 // Global Point Modifiers
 double EnemyExpModifier = 1;
+double BBMEnemyExpModifier = 1;
 double QuestExpModifier = 1;
 double PpModifier = 1;
 double GoldModifier = 1;
