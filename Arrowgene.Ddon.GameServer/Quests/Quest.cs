@@ -122,7 +122,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 result.Add(new CDataQuestExp()
                 {
                     Type = pointReward.Type,
-                    Reward = Server.ExpManager.GetScaledPointAmount(RewardSource.Quest, pointReward.Type, pointReward.Reward)
+                    Reward = Server.ExpManager.GetScaledPointAmount(GameMode.Normal, RewardSource.Quest, pointReward.Type, pointReward.Reward)
                 });
             }
             return result;

@@ -314,13 +314,24 @@ namespace Arrowgene.Ddon.Server.Scripting.interfaces
         }
 
         /// <summary>
-        /// Global modifier for enemy exp calculations to scale up or down.
+        /// Global modifier for enemy exp calculations to scale up or down (does not apply to Bitterblack Maze).
         /// </summary>
         public double EnemyExpModifier
         {
             get
             {
                 return GetSetting<double>("EnemyExpModifier");
+            }
+        }
+
+        /// <summary>
+        /// Global modifier for BBM enemy exp calculations to scale up or down.
+        /// </summary>
+        public double BBMEnemyExpModifier
+        {
+            get
+            {
+                return GetSetting<double>("BBMEnemyExpModifier");
             }
         }
 
