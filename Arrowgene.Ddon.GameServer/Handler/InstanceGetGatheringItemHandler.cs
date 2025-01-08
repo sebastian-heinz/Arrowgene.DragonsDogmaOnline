@@ -50,27 +50,27 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     Server.ItemManager.GatherItem(Server, client.Character, ntc, gatheredItem, gatheringItemRequest.Num, connection);
                 }
-
-                if (request.EquipToCharacter == 1)
-                {
-                    var itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, ntc.UpdateItemList[0].ItemList.ItemId);
-                    var equipInfo = new CDataCharacterEquipInfo()
-                    {
-                        EquipItemUId = ntc.UpdateItemList[0].ItemList.ItemUId,
-                        EquipCategory = (byte)itemInfo.EquipSlot,
-                        EquipType = EquipType.Performance,
-                    };
-
-                    packetQueue.AddRange(Server.EquipManager.HandleChangeEquipList(
-                        Server,
-                        client,
-                        client.Character,
-                        new List<CDataCharacterEquipInfo>() { equipInfo },
-                        ItemNoticeType.GatherEquipItem,
-                        new List<StorageType>() { StorageType.ItemBagEquipment },
-                        connection));
-                }
             });
+
+            if (request.EquipToCharacter == 1)
+            {
+
+                var itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, ntc.UpdateItemList[0].ItemList.ItemId);
+                var equipInfo = new CDataCharacterEquipInfo()
+                {
+                    EquipItemUId = ntc.UpdateItemList[0].ItemList.ItemUId,
+                    EquipCategory = (byte)itemInfo.EquipSlot,
+                    EquipType = EquipType.Performance,
+                };
+
+                packetQueue.AddRange(Server.EquipManager.HandleChangeEquipList(
+                    Server,
+                    client,
+                    client.Character,
+                    new List<CDataCharacterEquipInfo>() { equipInfo },
+                    ItemNoticeType.GatherEquipItem,
+                    new List<StorageType>() { StorageType.ItemBagEquipment }));
+            }
 
             client.Enqueue(ntc, packetQueue);
 
