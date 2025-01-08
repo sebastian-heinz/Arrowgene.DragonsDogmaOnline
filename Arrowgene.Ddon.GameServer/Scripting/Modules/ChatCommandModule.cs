@@ -41,8 +41,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
                 .AddImports("Arrowgene.Ddon.Shared.Entity.Structure")
                 .AddImports("Arrowgene.Ddon.Shared.Model.Quest")
                 .AddImports("Arrowgene.Ddon.Database")
-                .AddImports("Arrowgene.Ddon.Database.Model")
-                .AddImports("Arrowgene.Ddon.GameServer.WeatherManager");
+                .AddImports("Arrowgene.Ddon.Database.Model");
                  
         }
 

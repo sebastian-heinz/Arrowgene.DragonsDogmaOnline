@@ -1,4 +1,5 @@
 using System.Text;
+using static Arrowgene.Ddon.GameServer.WeatherManager;
 
 public class ChatCommand : IChatCommand
 {
