@@ -4,6 +4,7 @@ public enum ErrorCode : uint
 {
     ERROR_CODE_SUCCESS = 0x0,
     ERROR_CODE_FAIL = 0x1, // TODO Custom Error Code, find real one
+    ERROR_CODE_NOT_IMPLEMENTED = 0x2,
     ERROR_CODE_DB_DUPLICATE_ENTRY = 0x3E8,
     ERROR_CODE_DB_DEAD_LOCK = 0x3E9,
     ERROR_CODE_DB_FAILURE = 0x3EA,
