@@ -42,6 +42,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
                 .AddImports("Arrowgene.Ddon.Shared.Model.Quest")
                 .AddImports("Arrowgene.Ddon.Database")
                 .AddImports("Arrowgene.Ddon.Database.Model");
+                 
         }
 
         public override bool EvaluateResult(string path, ScriptState<object> result)

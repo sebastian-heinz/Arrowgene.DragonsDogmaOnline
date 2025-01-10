@@ -13,7 +13,7 @@ public class ChatCommand : IChatCommand
         sb.Append($"LayerNo:{client.Character.Stage.LayerNo} ");
         sb.Append($"GroupId:{client.Character.Stage.GroupId} ");
         sb.Append($"StageNo:{client.Character.StageNo} ");
-        sb.Append($"Pos:[X:{client.Character.X} Y:{client.Character.Y} Z:{client.Character.Z}]");
+        sb.Append($"Pos:[X:{client.Character.X:F4} Y:{client.Character.Y:F4} Z:{client.Character.Z:F4}]");
 
         ChatResponse response = new ChatResponse();
         response.Message = sb.ToString();

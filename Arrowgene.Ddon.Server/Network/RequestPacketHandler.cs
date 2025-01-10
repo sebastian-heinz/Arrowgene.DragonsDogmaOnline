@@ -29,6 +29,22 @@ namespace Arrowgene.Ddon.Server.Network
             {
                 response = Handle(client, request.Structure);
             }
+            catch (SQLiteException ex)
+            {
+                if (ex.ErrorCode == (int)SQLiteErrorCode.Busy)
+                {
+                    response = new TResStruct();
+                    response.Error = (uint)ErrorCode.ERROR_CODE_DB_DEAD_LOCK;
+                }
+                else
+                {
+                    response = new TResStruct();
+                    response.Error = (uint)ErrorCode.ERROR_CODE_DB_FAILURE;
+                }
+                client.Send(response);
+                client.Close(); // Do not tolerate SqLiteExceptions because of desync issues.
+                throw;
+            }
             catch (ResponseErrorException ex)
             {
                 response = new TResStruct();
@@ -54,6 +70,7 @@ namespace Arrowgene.Ddon.Server.Network
             {
                 response = new TResStruct();
                 response.Error = (uint) ErrorCode.ERROR_CODE_FAIL;
+                client.Send(response);
                 throw;
             }    
             client.Send(response);

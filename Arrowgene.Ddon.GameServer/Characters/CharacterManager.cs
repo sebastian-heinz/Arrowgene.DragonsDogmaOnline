@@ -33,45 +33,51 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public Character SelectCharacter(GameClient client, uint characterId, DbConnection? connectionIn = null)
         {
-            Character character = SelectCharacter(characterId, connectionIn);
+            Character character = SelectCharacter(characterId, connectionIn:connectionIn);
             client.Character = character;
             client.UpdateIdentity();
 
             return character;
         }
 
-        public Character SelectCharacter(uint characterId, DbConnection? connectionIn = null)
+        public Character SelectCharacter(uint characterId, bool fetchPawns = true, DbConnection? connectionIn = null)
         {
-            Character character = _Server.Database.SelectCharacter(characterId, connectionIn);
-            if (character == null)
+            return _Server.Database.ExecuteQuerySafe(connectionIn, connectionIn =>
             {
-                return null;
-            }
+                Character character = _Server.Database.SelectCharacter(characterId, connectionIn);
+                if (character == null)
+                {
+                    return null;
+                }
 
-            character.Server = _Server.AssetRepository.ServerList.Where(server => server.Id == _Server.Id).Single().ToCDataGameServerListInfo();
-            character.Equipment = character.Storage.GetCharacterEquipment();
+                character.Server = _Server.AssetRepository.ServerList.Where(server => server.Id == _Server.Id).Single().ToCDataGameServerListInfo();
+                character.Equipment = character.Storage.GetCharacterEquipment();
 
-            character.ExtendedParams = _Server.Database.SelectOrbGainExtendParam(character.CommonId, connectionIn);
-            if (character.ExtendedParams == null)
-            {
-                // Old DB is in use and new table not populated with required data for character
-                Logger.Error($"Character: AccountId={character.AccountId}, CharacterId={character.CharacterId}, CommonId={character.CommonId} is missing table entry in 'ddon_orb_gain_extend_param'.");
-                return null;
-            }
+                character.ExtendedParams = _Server.Database.SelectOrbGainExtendParam(character.CommonId, connectionIn);
+                if (character.ExtendedParams == null)
+                {
+                    // Old DB is in use and new table not populated with required data for character
+                    Logger.Error($"Character: AccountId={character.AccountId}, CharacterId={character.CharacterId}, CommonId={character.CommonId} is missing table entry in 'ddon_orb_gain_extend_param'.");
+                    return null;
+                }
 
-            character.EpitaphRoadState.UnlockedContent = _Server.Database.GetEpitaphRoadUnlocks(character.CharacterId, connectionIn);
+                character.EpitaphRoadState.UnlockedContent = _Server.Database.GetEpitaphRoadUnlocks(character.CharacterId, connectionIn);
 
-            if (_Server.GameLogicSettings.EnableEpitaphWeeklyRewards)
-            {
-                character.EpitaphRoadState.WeeklyRewardsClaimed = _Server.Database.GetEpitaphClaimedWeeklyRewards(character.CharacterId, connectionIn);
-            }
-            
+                if (_Server.GameLogicSettings.EnableEpitaphWeeklyRewards)
+                {
+                    character.EpitaphRoadState.WeeklyRewardsClaimed = _Server.Database.GetEpitaphClaimedWeeklyRewards(character.CharacterId, connectionIn);
+                }
 
-            UpdateCharacterExtendedParams(character);
 
-            SelectPawns(character, connectionIn);
+                UpdateCharacterExtendedParams(character);
 
-            return character;
+                if (fetchPawns)
+                {
+                    SelectPawns(character, connectionIn);
+                }
+
+                return character;
+            });
         }
 
         private void SelectPawns(Character character, DbConnection? connectionIn = null)

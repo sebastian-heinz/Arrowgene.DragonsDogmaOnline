@@ -159,6 +159,19 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }
         }
 
+        // Wrestling with generics; the interface is not happy to expose a generic,
+        // but a bunch of DB functions break if you don't allow the generic.
+        // This is the compromise.
+        public void ExecuteQuerySafe(DbConnection? connectionIn, Action<DbConnection> work)
+        {
+            ExecuteQuerySafe(connectionIn, (Action<TCon>)work);
+        }
+
+        public T ExecuteQuerySafe<T>(DbConnection? connectionIn, Func<DbConnection, T> work)
+        {
+            return ExecuteQuerySafe(connectionIn, (Func<TCon, T>)work);
+        }
+
         public bool MigrateDatabase(DatabaseMigrator migrator, uint toVersion)
         {
             uint currentVersion = GetMeta().DatabaseVersion;

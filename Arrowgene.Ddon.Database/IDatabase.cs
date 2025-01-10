@@ -27,6 +27,8 @@ namespace Arrowgene.Ddon.Database
             Action<DbCommand> commandAction,
             Action<DbDataReader> readAction
         );
+        void ExecuteQuerySafe(DbConnection? connectionIn, Action<DbConnection> work);
+        T ExecuteQuerySafe<T>(DbConnection? connectionIn, Func<DbConnection, T> work);
 
         // Generic functions for getting/setting
         void AddParameter(DbCommand command, string name, object? value, DbType type);
@@ -120,7 +122,7 @@ namespace Arrowgene.Ddon.Database
         );
         bool DeletePawn(uint pawnId);
         bool UpdatePawnBaseInfo(Pawn pawn);
-        uint GetPawnOwnerCharacterId(uint pawnId);
+        uint GetPawnOwnerCharacterId(uint pawnId, DbConnection? connectionIn = null);
         bool ReplacePawnReaction(uint pawnId, CDataPawnReaction pawnReaction, DbConnection? connectionIn = null);
 
         // Pawn Training Status

@@ -306,31 +306,28 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return registeredPawns;
         }
 
-        public uint GetPawnOwnerCharacterId(uint pawnId)
-        {
-            using TCon connection = OpenNewConnection();
-            return GetPawnOwnerCharacterId(connection, pawnId);
-        }
-
-        public uint GetPawnOwnerCharacterId(TCon connection, uint pawnId)
+        public uint GetPawnOwnerCharacterId(uint pawnId, DbConnection? connectionIn = null)
         {
             uint ownerCharacterId = 0;
-            ExecuteReader(
-                connection,
-                SqlSelectPawnOwnerId,
-                command =>
-                {
-                    AddParameter(command, "@pawn_id", pawnId);
-                },
-                reader =>
-                {
-                    if (reader.Read())
+            ExecuteQuerySafe(connectionIn, connection =>
+            {
+                ExecuteReader(
+                    connection,
+                    SqlSelectPawnOwnerId,
+                    command =>
                     {
-                        ownerCharacterId = GetUInt32(reader, "character_id");
+                        AddParameter(command, "@pawn_id", pawnId);
+                    },
+                    reader =>
+                    {
+                        if (reader.Read())
+                        {
+                            ownerCharacterId = GetUInt32(reader, "character_id");
+                        }
                     }
-                }
-            );
-
+                );
+            });
+            
             return ownerCharacterId;
         }
 
