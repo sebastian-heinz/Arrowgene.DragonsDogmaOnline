@@ -185,6 +185,9 @@ namespace Arrowgene.Ddon.Test.Database
         public int ExecuteNonQuery(DbConnection conn, string command, Action<DbCommand> action) { return 1; }
         public void ExecuteReader(string command, Action<DbDataReader> action) {}
         public void ExecuteReader(DbConnection conn, string sql, Action<DbCommand> commandAction, Action<DbDataReader> readAction) {}
+        public void ExecuteQuerySafe(DbConnection? connectionIn, Action<DbConnection> work) {}
+        T IDatabase.ExecuteQuerySafe<T>(DbConnection? connectionIn, Func<DbConnection, T> work) { throw new NotImplementedException(); }
+
         public Account CreateAccount(string name, string mail, string hash) { return new Account(); }
         public bool CreateCharacter(Character character) { return true; }
         public bool CreateDatabase() { return true; }
@@ -394,7 +397,7 @@ namespace Arrowgene.Ddon.Test.Database
         public List<uint> SelectClanPawns(uint clanId, uint characterId = 0, uint limit = 100, DbConnection? connectionIn = null) { return new(); }
         public List<uint> SelectRandomPlayerPawns(uint limit = 100) { return new List<uint>(); }
         public List<uint> SelectRandomPlayerPawns(DbConnection connection, uint limit = 100) { return new List<uint>(); }
-        public uint GetPawnOwnerCharacterId(uint pawnId) { return 0; }
+        public uint GetPawnOwnerCharacterId(uint pawnId, DbConnection? connectionIn = null) { return 0; }
         public CDataCharacterSearchParam SelectCharacterNameById(uint characterId) { return new CDataCharacterSearchParam(); }
         public CDataCharacterSearchParam SelectCharacterNameById(DbConnection connection, uint characterId) { return new CDataCharacterSearchParam(); }
 
@@ -448,6 +451,8 @@ namespace Arrowgene.Ddon.Test.Database
         public List<CDataRegisterdPawnList> SelectRegisteredPawns(Character searchingCharacter, CDataPawnSearchParameter searchParams) { return new List<CDataRegisterdPawnList>(); }
         public List<CDataRegisterdPawnList> SelectRegisteredPawns(DbConnection conn, Character searchingCharacter, CDataPawnSearchParameter searchParams) { return new List<CDataRegisterdPawnList>(); }
         public void DeleteWeeklyEpitaphClaimedRewards(DbConnection? connectionIn = null) { }
+
+        
     }
 
     class MockMigrationStrategy : IMigrationStrategy
