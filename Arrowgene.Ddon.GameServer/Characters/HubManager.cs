@@ -14,15 +14,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public HubManager(DdonGameServer server)
         {
             Server = server;
-            HubMembers = new Dictionary<uint, HashSet<GameClient>>();
+            HubMembers = new Dictionary<uint, HashSet<uint>>();
             foreach (var stageId in StageManager.HubStageIds)
             {
-                HubMembers[stageId] = new HashSet<GameClient>();
+                HubMembers[stageId] = new HashSet<uint>();
             }
         }
 
         private readonly DdonGameServer Server;
-        private readonly Dictionary<uint, HashSet<GameClient>> HubMembers;
+        private readonly Dictionary<uint, HashSet<uint>> HubMembers;
 
         public HashSet<GameClient> GetClientsInHub(StageId stageId)
         {
@@ -37,11 +37,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
             else
             {
+                HashSet<GameClient> clients = new();
                 if (!HubMembers.ContainsKey(stageId))
                 {
-                    return new HashSet<GameClient>();
+                    return clients;
                 }
-                return HubMembers[stageId];
+                
+                foreach (GameClient client in Server.ClientLookup.GetAll())
+                {
+                    if (client.Character != null && HubMembers[stageId].Contains(client.Character.CharacterId))
+                    {
+                        clients.Add(client);
+                    }
+                }
+                return clients;
             }
         }
 
@@ -74,12 +83,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 lock (HubMembers[previousStageId])
                 {
-                    HubMembers[previousStageId].Remove(client);
+                    HubMembers[previousStageId].Remove(client.Character.CharacterId);
+                    var previousMembers = GetClientsInHub(previousStageId);
                     foreach (GameClient otherClient in Server.ClientLookup.GetAll().Where(x => x.Character != null))
                     {
-                        if (otherClient == client) continue;
+                        if (otherClient.Character.CharacterId == client.Character.CharacterId) continue;
 
-                        if (HubMembers[previousStageId].Contains(otherClient))
+                        if (previousMembers.Contains(otherClient))
                         {
                             // They saw us leave, and do not need to be updated, their clients discard the context automatically.
                             // But the next time they see us, they will need our context back.
@@ -99,9 +109,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 lock (HubMembers[targetStageId])
                 {
-                    foreach (GameClient otherClient in HubMembers[targetStageId].Where(x => x.Character != null))
+                    foreach (GameClient otherClient in GetClientsInHub(targetStageId))
                     {
-                        if (otherClient == client) continue;
+                        if (otherClient.Character.CharacterId == client.Character.CharacterId) continue;
 
                         uint otherId = otherClient.Character.CharacterId;
                         if (!otherClient.Character.LastSeenLobby.TryGetValue(id, out var lastStage) || lastStage != targetStageId)
@@ -118,7 +128,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         }
                         client.Character.LastSeenLobby[otherId] = targetStageId;
                     }
-                    HubMembers[targetStageId].Add(client);
+                    HubMembers[targetStageId].Add(client.Character.CharacterId);
                 }
             }
 
@@ -168,7 +178,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             foreach (var hub in HubMembers.Values)
             {
-                hub.Remove(client);
+                hub.Remove(client.Character.CharacterId);
             }
         }
 
