@@ -5,6 +5,7 @@ using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Collections.Generic;
 
@@ -52,9 +53,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             });
 
+            client.Enqueue(ntc, packetQueue);
+
+            S2CInstanceGetGatheringItemRes res = new S2CInstanceGetGatheringItemRes();
+            res.LayoutId = request.LayoutId;
+            res.PosId = request.PosId;
+            res.GatheringItemGetRequestList = request.GatheringItemGetRequestList;
+            client.Enqueue(res, packetQueue);
+
             if (request.EquipToCharacter == 1)
             {
-
                 var itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, ntc.UpdateItemList[0].ItemList.ItemId);
                 var equipInfo = new CDataCharacterEquipInfo()
                 {
@@ -63,22 +71,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     EquipType = EquipType.Performance,
                 };
 
-                packetQueue.AddRange(Server.EquipManager.HandleChangeEquipList(
-                    Server,
-                    client,
-                    client.Character,
-                    new List<CDataCharacterEquipInfo>() { equipInfo },
-                    ItemNoticeType.GatherEquipItem,
-                    new List<StorageType>() { StorageType.ItemBagEquipment }));
+                Server.Database.ExecuteInTransaction(connection =>
+                {
+                    packetQueue.AddRange(Server.EquipManager.HandleChangeEquipList(
+                        Server,
+                        client,
+                        client.Character,
+                        new List<CDataCharacterEquipInfo>() { equipInfo },
+                        ItemNoticeType.GatherEquipItem,
+                        new List<StorageType>() { StorageType.ItemBagEquipment },
+                        connection));
+                });
             }
-
-            client.Enqueue(ntc, packetQueue);
-
-            S2CInstanceGetGatheringItemRes res = new S2CInstanceGetGatheringItemRes();
-            res.LayoutId = request.LayoutId;
-            res.PosId = request.PosId;
-            res.GatheringItemGetRequestList = request.GatheringItemGetRequestList;
-            client.Enqueue(res, packetQueue);
 
             return packetQueue;
         }
