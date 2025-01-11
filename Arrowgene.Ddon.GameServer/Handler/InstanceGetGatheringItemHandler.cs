@@ -49,7 +49,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         gatheredItem = client.InstanceGatheringItemManager.GetAssets(request.LayoutId, (int)request.PosId)[(int)gatheringItemRequest.SlotNo];
                     }
 
-                    Server.ItemManager.GatherItem(Server, client.Character, ntc, gatheredItem, gatheringItemRequest.Num, connection);
+                    Server.ItemManager.GatherItem(client.Character, ntc, gatheredItem, gatheringItemRequest.Num, connection);
                 }
             });
 
