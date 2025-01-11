@@ -952,24 +952,26 @@ namespace Arrowgene.Ddon.GameServer.Characters
     }
 
     [Serializable]
-    internal class ItemDoesntExistException : Exception
+    internal class ItemDoesntExistException : ResponseErrorException
     {
         private string itemUID;
 
-        public ItemDoesntExistException(string itemUID) : base ($"An item with the UID {itemUID} is missing in the database")
+        public ItemDoesntExistException(string itemUID) 
+            : base (ErrorCode.ERROR_CODE_ITEM_NOT_FOUND, $"An item with the UID {itemUID} is missing in the database")
         {
             this.itemUID = itemUID;
         }
     }
 
     [Serializable]
-    internal class NotEnoughItemsException : Exception
+    internal class NotEnoughItemsException : ResponseErrorException
     {
         private string itemUId;
         private uint consumeNum;
         private int remainingItems;
 
-        public NotEnoughItemsException(string itemUId, uint consumeNum, int remainingItems) : base($"Required {consumeNum} items of UID {itemUId}, missing {remainingItems} items")
+        public NotEnoughItemsException(string itemUId, uint consumeNum, int remainingItems) 
+            : base(ErrorCode.ERROR_CODE_ITEM_NUM_SHORT, $"Required {consumeNum} items of UID {itemUId}, missing {remainingItems} items")
         {
             this.itemUId = itemUId;
             this.consumeNum = consumeNum;
