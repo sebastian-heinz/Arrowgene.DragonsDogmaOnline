@@ -26,13 +26,13 @@ namespace Arrowgene.Ddon.GameServer
 
             public RpcTrackingMap() : base() 
             { 
-                TimeStamp = DateTime.Now;
+                TimeStamp = DateTime.UtcNow;
             }
 
             public RpcTrackingMap(List<RpcCharacterData> characterData) 
                 : base(characterData.ToDictionary(key => key.CharacterId, val => val))
             {
-                TimeStamp = DateTime.Now;
+                TimeStamp = DateTime.UtcNow;
             }
 
             public RpcTrackingMap(List<RpcCharacterData> characterData, DateTime timeStamp)
