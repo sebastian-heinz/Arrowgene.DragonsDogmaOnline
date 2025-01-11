@@ -63,8 +63,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return (ushort) ((slotNo > SLOTS) ? (slotNo - SLOTS) : slotNo);
         }
 
-        public void EquipJobItem(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, List<CDataChangeEquipJobItem> changeEquipJobItems)
+        public PacketQueue EquipJobItem(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, List<CDataChangeEquipJobItem> changeEquipJobItems)
         {
+            PacketQueue packetQueue = new PacketQueue();
             foreach (CDataChangeEquipJobItem changeEquipJobItem in changeEquipJobItems)
             {
                 if (changeEquipJobItem.EquipJobItemUId.Length == 0)
@@ -87,36 +88,38 @@ namespace Arrowgene.Ddon.GameServer.Characters
             List<CDataEquipJobItem> equippedJobItems = characterToEquipTo.EquipmentTemplate.JobItemsAsCDataEquipJobItem(characterToEquipTo.Job);
             if (characterToEquipTo is Character character)
             {
-                client.Send(new S2CEquipChangeCharacterEquipJobItemRes()
+                client.Enqueue(new S2CEquipChangeCharacterEquipJobItemRes()
                 {
                     EquipJobItemList = equippedJobItems
-                });
+                }, packetQueue);
 
-                client.Party.SendToAll(new S2CEquipChangeCharacterEquipJobItemNtc()
+                client.Party.EnqueueToAll(new S2CEquipChangeCharacterEquipJobItemNtc()
                 {
                     CharacterId = character.CharacterId,
                     EquipJobItemList = equippedJobItems
-                });
+                }, packetQueue);
             }
             else if (characterToEquipTo is Pawn pawn)
             {
-                client.Send(new S2CEquipChangePawnEquipJobItemRes()
+                client.Enqueue(new S2CEquipChangePawnEquipJobItemRes()
                 {
                     PawnId = pawn.PawnId,
                     EquipJobItemList = equippedJobItems
-                });
+                }, packetQueue  );
 
-                client.Party.SendToAll(new S2CEquipChangePawnEquipJobItemNtc()
+                client.Party.EnqueueToAll(new S2CEquipChangePawnEquipJobItemNtc()
                 {
                     CharacterId = client.Character.CharacterId,
                     PawnId = pawn.PawnId,
                     EquipJobItemList = equippedJobItems
-                });
+                }, packetQueue);
             }
             else
             {
                 throw new Exception("Unknown character type");
             }
+
+            return packetQueue;
         }
 
         public PacketQueue HandleChangeEquipList(DdonGameServer server, GameClient client, CharacterCommon characterToEquipTo, List<CDataCharacterEquipInfo> changeCharacterEquipList, ItemNoticeType updateType, List<StorageType> storageTypes, DbConnection? connectionIn = null)

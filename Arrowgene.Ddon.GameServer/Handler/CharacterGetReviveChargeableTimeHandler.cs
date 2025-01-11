@@ -6,21 +6,19 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterGetReviveChargeableTimeHandler : GameStructurePacketHandler<C2SCharacterGetReviveChargeableTimeReq>
+    public class CharacterGetReviveChargeableTimeHandler : GameRequestPacketHandler<C2SCharacterGetReviveChargeableTimeReq, S2CCharacterGetReviveChargeableTimeRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterGetReviveChargeableTimeHandler));
         
-
-
         public CharacterGetReviveChargeableTimeHandler(DdonGameServer server) : base(server)
         {
         }
 
-       public override void Handle(GameClient client, StructurePacket<C2SCharacterGetReviveChargeableTimeReq> packet)
+        public override S2CCharacterGetReviveChargeableTimeRes Handle(GameClient client, C2SCharacterGetReviveChargeableTimeReq request)
         {
             S2CCharacterGetReviveChargeableTimeRes res = new S2CCharacterGetReviveChargeableTimeRes();
 
-           //  Refresh revival at 5:00AM JST.
+            //  Refresh revival at 5:00AM JST.
 
             if (Server.GpCourseManager.InfiniteReviveRefresh())
             {
@@ -43,7 +41,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 res.RemainTime = 0;
             }
 
-            client.Send(res);
+            return res;
         }
     }
 }

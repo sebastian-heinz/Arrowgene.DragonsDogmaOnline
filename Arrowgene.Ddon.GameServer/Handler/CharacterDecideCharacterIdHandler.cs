@@ -1,15 +1,15 @@
-using System;
-using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterDecideCharacterIdHandler : GameStructurePacketHandler<C2SCharacterDecideCharacterIdReq>
+    public class CharacterDecideCharacterIdHandler : GameRequestPacketQueueHandler<C2SCharacterDecideCharacterIdReq, S2CCharacterDecideCharacterIdRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterDecideCharacterIdHandler));
 
@@ -17,13 +17,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCharacterDecideCharacterIdReq> packet)
+        public override PacketQueue Handle(GameClient client, C2SCharacterDecideCharacterIdReq request)
         {
+            PacketQueue packetQueue = new PacketQueue();
             S2CCharacterDecideCharacterIdRes res = new S2CCharacterDecideCharacterIdRes();
             res.CharacterId = client.Character.CharacterId;
             res.CharacterInfo = new CDataCharacterInfo(client.Character);
             res.BinaryData = client.Character.BinaryData;
-            client.Send(res);
+            client.Enqueue(res, packetQueue);
 
             // Unlocks menu options such as inventory, warping, etc.
             // S2CCharacterContentsReleaseElementNtc contentsReleaseElementNotice = EntitySerializer.Get<S2CCharacterContentsReleaseElementNtc>().Read(GameFull.data_Dump_20);
@@ -31,20 +32,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 CharacterReleaseElements = gContentsReleaseIds
             };
-            client.Send(contentsReleaseElementNotice);
+            client.Enqueue(contentsReleaseElementNotice, packetQueue);
 
             ulong now = (ulong)DateTimeOffset.UtcNow.ToUnixTimeSeconds();
             foreach (var (id, course) in Server.AssetRepository.GPCourseInfoAsset.ValidCourses)
             {
                 if (now >= course.StartTime && now <= course.EndTime)
                 {
-                    client.Send(new S2CGPCourseStartNtc()
+                    client.Enqueue(new S2CGPCourseStartNtc()
                     {
                         CourseID = course.Id,
                         ExpiryTimestamp = course.EndTime
-                    });
+                    }, packetQueue);
                 }
             }
+
+            return packetQueue;
         }
 
         private static List<CDataCharacterReleaseElement> gContentsReleaseIds = new List<CDataCharacterReleaseElement>()

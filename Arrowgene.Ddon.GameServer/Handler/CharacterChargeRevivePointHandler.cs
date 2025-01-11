@@ -1,12 +1,11 @@
-using System;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterChargeRevivePointHandler : GameStructurePacketHandler<C2SCharacterChargeRevivePointReq>
+    public class CharacterChargeRevivePointHandler : GameRequestPacketHandler<C2SCharacterChargeRevivePointReq, S2CCharacterChargeRevivePointRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterChargeRevivePointHandler));
         
@@ -14,8 +13,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCharacterChargeRevivePointReq> packet)
+        public override S2CCharacterChargeRevivePointRes Handle(GameClient client, C2SCharacterChargeRevivePointReq request)
         {
+            // TODO: Expose to settings.
             client.Character.StatusInfo.RevivePoint = 3;
             Server.Database.UpdateStatusInfo(client.Character);
             DateTime utcNow = DateTime.UtcNow;
@@ -23,16 +23,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             DateTime jstNow = TimeZoneInfo.ConvertTimeFromUtc(utcNow, jstZone);
             Server.LastRevivalPowerRechargeTime[client.Character.CharacterId] = jstNow;
 
-            client.Send(new S2CCharacterChargeRevivePointRes() {
-                RevivePoint = client.Character.StatusInfo.RevivePoint
-            });
-
             S2CCharacterUpdateRevivePointNtc ntc = new S2CCharacterUpdateRevivePointNtc()
             {
                 CharacterId = client.Character.CharacterId,
                 RevivePoint = client.Character.StatusInfo.RevivePoint
             };
             client.Party.SendToAllExcept(ntc, client);
+
+            return new S2CCharacterChargeRevivePointRes()
+            {
+                RevivePoint = client.Character.StatusInfo.RevivePoint
+            };
         }
     }
 }
