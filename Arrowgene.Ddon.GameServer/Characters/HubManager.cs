@@ -196,6 +196,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             foreach (GameClient otherClient in Server.ClientLookup.GetAll())
             {
+                if (otherClient.Character is null)
+                {
+                    continue;
+                }
                 targetClients.Add(otherClient);
                 gatherClients.Add(otherClient);
             }
