@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
 {
-    internal class EpitaphRoadGatheringItemGenerator : IGatheringGenerator
+    public class EpitaphRoadGatheringItemGenerator : IGatheringGenerator
     {
         private readonly DdonGameServer Server;
 

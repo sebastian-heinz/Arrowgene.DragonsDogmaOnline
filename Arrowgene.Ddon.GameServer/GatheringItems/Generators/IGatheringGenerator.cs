@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
 {
-    internal interface IGatheringGenerator
+    public interface IGatheringGenerator
     {
         public List<InstancedGatheringItem> Generate(GameClient client, StageId stageId, uint index);
     }

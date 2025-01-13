@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
 {
-    internal class EnemyEpitaphRoadDropGenerator : IDropGenerator
+    public class EnemyEpitaphRoadDropGenerator : IDropGenerator
     {
         private readonly DdonGameServer Server;
 

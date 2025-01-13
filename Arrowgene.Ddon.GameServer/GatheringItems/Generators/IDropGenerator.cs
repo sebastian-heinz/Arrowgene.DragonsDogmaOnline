@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
 {
-    internal interface IDropGenerator
+    public interface IDropGenerator
     {
         public List<InstancedGatheringItem> Generate(GameClient client, InstancedEnemy enemyKilled);
     }

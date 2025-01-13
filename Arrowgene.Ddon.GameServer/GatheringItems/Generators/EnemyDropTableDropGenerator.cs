@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
 {
-    internal class EnemyDropTableDropGenerator : IDropGenerator
+    public class EnemyDropTableDropGenerator : IDropGenerator
     {
         public List<InstancedGatheringItem> Generate(GameClient client, InstancedEnemy enemyKilled)
         {

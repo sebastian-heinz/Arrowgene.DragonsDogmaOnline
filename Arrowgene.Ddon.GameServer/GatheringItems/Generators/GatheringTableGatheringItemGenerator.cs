@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
 {
-    internal class GatheringTableGatheringItemGenerator : IGatheringGenerator
+    public class GatheringTableGatheringItemGenerator : IGatheringGenerator
     {
         private readonly DdonGameServer Server;
 

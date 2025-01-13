@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
 {
-    internal class BitterblackGatheringItemGenerator : IGatheringGenerator
+    public class BitterblackGatheringItemGenerator : IGatheringGenerator
     {
         public BitterblackGatheringItemGenerator(DdonGameServer server)
         {
