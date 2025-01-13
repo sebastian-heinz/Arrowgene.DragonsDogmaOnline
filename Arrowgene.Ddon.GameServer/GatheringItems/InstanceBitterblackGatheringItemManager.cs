@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
             if (!HasBitterblackLootGenerated(stageId, posId))
             {
                 var items = BitterblackMazeManager.RollChestLoot(server, client.Character, stageId, posId);
-                client.InstanceBbmItemManager.AddBitterblackLootTable(stageId, posId, items);
+                client.InstanceBbmGatheringItemManager.AddBitterblackLootTable(stageId, posId, items);
             }
 
             return BitterBlackLootTables[(stageId, posId)];

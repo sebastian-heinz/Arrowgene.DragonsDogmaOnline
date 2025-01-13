@@ -38,7 +38,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     if (StageManager.IsBitterBlackMazeStageId(stageId))
                     {
-                        gatheredItem = client.InstanceBbmItemManager.FetchBitterblackItems(Server, client, stageId, posId)[(int)gatheringItemRequest.SlotNo];
+                        gatheredItem = client.InstanceBbmGatheringItemManager.FetchBitterblackItems(Server, client, stageId, posId)[(int)gatheringItemRequest.SlotNo];
                     }
                     else if (StageManager.IsEpitaphRoadStageId(stageId))
                     {

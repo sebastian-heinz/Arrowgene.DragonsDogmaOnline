@@ -84,6 +84,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                     client.Party.InstanceEnemyManager.SetInstanceEnemy(stageId, em.Index, em);
                 }
+                em.StageId = stageId;
 
                 response.EnemyList.Add(new CDataLayoutEnemyData()
                 {

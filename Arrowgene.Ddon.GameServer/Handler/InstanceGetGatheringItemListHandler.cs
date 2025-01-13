@@ -39,7 +39,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var stageId = req.Structure.LayoutId.AsStageId();
             if (StageManager.IsBitterBlackMazeStageId(stageId))
             {
-                gatheringItems.AddRange(client.InstanceBbmItemManager.FetchBitterblackItems(Server, client, stageId, posId));
+                gatheringItems.AddRange(client.InstanceBbmGatheringItemManager.FetchBitterblackItems(Server, client, stageId, posId));
             }
             else if (StageManager.IsEpitaphRoadStageId(stageId))
             {

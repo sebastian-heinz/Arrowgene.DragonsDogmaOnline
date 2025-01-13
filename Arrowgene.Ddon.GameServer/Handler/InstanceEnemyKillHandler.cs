@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.GatheringItems.Generators;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
@@ -137,38 +138,28 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     queuedPackets.Send();
                 }
 
-                var dropItemNtc = new S2CInstancePopDropItemNtc()
-                {
-                    LayoutId = packet.LayoutId,
-                    SetId = packet.SetId,
-                    MdlType = enemyKilled.DropsTable?.MdlType ?? 0,
-                    PosX = packet.DropPosX,
-                    PosY = packet.DropPosY,
-                    PosZ = packet.DropPosZ
-                };
                 foreach (var partyMemberClient in client.Party.Clients)
                 {
-                    // If the enemy is quest controlled, then either get from the quest loot drop, or the general one.
-                    List<InstancedGatheringItem> instancedGatheringItems = new List<InstancedGatheringItem>();
+                    var instancedGatheringItems = partyMemberClient.InstanceDropItemManager.Generate(enemyKilled);
 
-                    // Items from kill an enemy normally
-                    instancedGatheringItems.AddRange(IsQuestControlled ?
-                                partyMemberClient.InstanceQuestDropManager.GenerateEnemyLoot(quest, enemyKilled, packet.LayoutId, packet.SetId) :
-                                partyMemberClient.InstanceDropItemManager.GetAssets(layoutId, (int)packet.SetId));
+                    uint offsetSetId = partyMemberClient.InstanceDropItemManager.Assign(layoutId, packet.SetId, instancedGatheringItems.Values.SelectMany(x => x).ToList());
+                    var dropItemNtc = new S2CInstancePopDropItemNtc()
+                    {
+                        LayoutId = packet.LayoutId,
+                        SetId = offsetSetId,
+                        MdlType = enemyKilled.DropsTable?.MdlType ?? 0,
+                        PosX = packet.DropPosX,
+                        PosY = packet.DropPosY,
+                        PosZ = packet.DropPosZ
+                    };
 
-                    // Items for any server events which might be active
-                    instancedGatheringItems.AddRange(partyMemberClient.InstanceEventDropItemManager.GenerateEventItems(partyMemberClient, enemyKilled, packet.LayoutId, packet.SetId));
-
-                    // Items injected for epitaph bonuses and general kills
-                    var epitaphDrops = partyMemberClient.InstanceEpiDropItemManager.GenerateItems(partyMemberClient, enemyKilled, packet.LayoutId, packet.SetId);
-                    if (epitaphDrops.Count > 0)
+                    if (instancedGatheringItems[typeof(EnemyEpitaphRoadDropGenerator)].Any())
                     {
                         dropItemNtc.MdlType = 1; // Make the bag appear as golden
-                        instancedGatheringItems.AddRange(epitaphDrops);
                     }
 
                     // If the roll was unlucky, there is a chance that no bag will show.
-                    if (instancedGatheringItems.Any(x => x.ItemNum > 0))
+                    if (instancedGatheringItems.Any(x => x.Value.Any()))
                     {
                         partyMemberClient.Enqueue(dropItemNtc, queuedPackets);
                     }

@@ -1,31 +1,24 @@
 using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Utils;
-using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Asset;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Arrowgene.Ddon.GameServer.GatheringItems
+namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
 {
-    public class InstanceEventDropItemManager
+    internal class EnemyEventDropGenerator : IDropGenerator
     {
-        private DdonGameServer Server;
-        private Dictionary<(StageId, uint), List<InstancedGatheringItem>> EventLootTables;
-        private AssetRepository AssetRepository;
+        private readonly DdonGameServer Server;
 
-        public InstanceEventDropItemManager(DdonGameServer server)
+        public EnemyEventDropGenerator(DdonGameServer server)
         {
             Server = server;
-            EventLootTables = new Dictionary<(StageId, uint), List<InstancedGatheringItem>>();
-            AssetRepository = Server.AssetRepository;
         }
 
-        private bool DropEnabled(GameClient client, EventItem item, Enemy enemy, StageId stageId)
+        private bool DropEnabled(GameClient client, EventItem item, InstancedEnemy enemy)
         {
+            var stageId = enemy.StageId;
             if (item.QuestIds.Count > 0 && !item.QuestIds.Any(x => QuestManager.GetQuestByScheduleId(x).IsActive(Server, client)))
             {
                 return false;
@@ -92,7 +85,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
             return true;
         }
 
-        private bool EvaluateEmLvConstraint(EventItem item, Enemy enemy)
+        private bool EvaluateEmLvConstraint(EventItem item, InstancedEnemy enemy)
         {
             if (item.EmLvConstraint == EventItemConstraint.InRange)
             {
@@ -119,7 +112,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
             return false;
         }
 
-        private bool EvaluateEmClassConstraint(EventItem item, Enemy enemy)
+        private bool EvaluateEmClassConstraint(EventItem item, InstancedEnemy enemy)
         {
             if (item.EmClassConstraint == EventItemConstraint.None)
             {
@@ -138,59 +131,26 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
             return false;
         }
 
-        public List<InstancedGatheringItem> FetchEventItems(GameClient client, CDataStageLayoutId layoutId, uint posId)
+        public List<InstancedGatheringItem> Generate(GameClient client, InstancedEnemy enemyKilled)
         {
-            var stageId = layoutId.AsStageId();
-            if (!EventLootTables.ContainsKey((stageId, posId)))
+            List<InstancedGatheringItem> results = new List<InstancedGatheringItem>();
+            foreach (var item in Server.AssetRepository.EventDropsAsset.EventItems)
             {
-                return new List<InstancedGatheringItem>();
-            }
-
-            return EventLootTables[(stageId, posId)];
-        }
-
-        public List<InstancedGatheringItem> GenerateEventItems(GameClient client, Enemy enemy, CDataStageLayoutId layoutId, uint posId)
-        {
-            var stageId = layoutId.AsStageId();
-            if (!HasEventLootGenerated(stageId, posId))
-            {
-                List<InstancedGatheringItem> results = new List<InstancedGatheringItem>();
-                foreach (var item in AssetRepository.EventDropsAsset.EventItems)
+                if (!DropEnabled(client, item, enemyKilled))
                 {
-                    if (!DropEnabled(client, item, enemy, stageId))
-                    {
-                        continue;
-                    }
-
-                    if (item.Chance > Random.Shared.NextDouble())
-                    {
-                        results.Add(new InstancedGatheringItem()
-                        {
-                            ItemId = item.ItemId,
-                            ItemNum = (uint) Random.Shared.Next((int) item.MinAmount, (int)(item.MaxAmount + 1)),
-                        });
-                    }
+                    continue;
                 }
-                EventLootTables[(stageId, posId)] = results;
+
+                if (item.Chance > Random.Shared.NextDouble())
+                {
+                    results.Add(new InstancedGatheringItem()
+                    {
+                        ItemId = item.ItemId,
+                        ItemNum = (uint)Random.Shared.Next((int)item.MinAmount, (int)(item.MaxAmount + 1)),
+                    });
+                }
             }
-
-            return EventLootTables[(stageId, posId)];
-        }
-
-        private bool HasEventLootGenerated(StageId stageId, uint posId)
-        {
-            return EventLootTables.ContainsKey((stageId, posId));
-        }
-
-        public List<InstancedGatheringItem> AddEventItemTable(StageId stageId, uint posId, List<InstancedGatheringItem> loot)
-        {
-            EventLootTables[(stageId, posId)] = loot;
-            return loot;
-        }
-
-        public void Reset()
-        {
-            EventLootTables.Clear();
+            return results;
         }
     }
 }
