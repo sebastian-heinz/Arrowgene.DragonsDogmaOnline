@@ -27,7 +27,9 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
                 var enemy = Enemies[i];
                 results.Add(new InstancedEnemy(enemy)
                 {
-                    Index = (PlacementType == QuestEnemyPlacementType.Automatic) ? (byte)(i + StartingIndex) : enemy.Index
+                    Index = (PlacementType == QuestEnemyPlacementType.Automatic) ? (byte)(i + StartingIndex) : enemy.Index,
+                    IsQuestControlled = true,
+                    StageId = StageId
                 });
             }
             return results;

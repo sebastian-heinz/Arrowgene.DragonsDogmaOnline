@@ -144,6 +144,12 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
                 };
             }
 
+            foreach (var enemy in enemies)
+            {
+                enemy.StageId = stageId;
+                enemy.IsQuestControlled = true;
+            }
+
             EnemyGroups[groupId].Enemies.AddRange(enemies);
         }
 
