@@ -657,8 +657,6 @@ namespace Arrowgene.Ddon.GameServer.Party
             foreach (GameClient client in Clients)
             {
                 client.InstanceGatheringItemManager.Clear();
-                client.InstanceBbmGatheringItemManager.Reset();
-                client.InstanceEpiGatheringManager.Reset();
                 client.InstanceDropItemManager.Clear();
                 client.Character.ContextOwnership.Clear();
             }

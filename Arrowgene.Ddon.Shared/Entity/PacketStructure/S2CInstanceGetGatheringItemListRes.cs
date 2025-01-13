@@ -23,6 +23,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             LayoutId = new CDataStageLayoutId();
             Unk1 = new List<CDataGatheringItemListUnk1>();
             ItemList = new List<CDataGatheringItemElement>();
+            GatheringItemUId = string.Empty;
         }
 
         public class Serializer : PacketEntitySerializer<S2CInstanceGetGatheringItemListRes>
