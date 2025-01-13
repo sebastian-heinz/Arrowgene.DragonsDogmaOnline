@@ -4,7 +4,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    internal class ClanClanInviteAcceptHandler : GameRequestPacketHandler<C2SClanClanInviteAcceptReq, S2CClanClanInviteAcceptRes>
+    public class ClanClanInviteAcceptHandler : GameRequestPacketHandler<C2SClanClanInviteAcceptReq, S2CClanClanInviteAcceptRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClanClanInviteAcceptHandler));
 

@@ -3,7 +3,7 @@ using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Csv
 {
-    internal class ClanShopCsv : CsvReaderWriter<ClanShopAsset>
+    public class ClanShopCsv : CsvReaderWriter<ClanShopAsset>
     {
         protected override int NumExpectedItems => 9;
 

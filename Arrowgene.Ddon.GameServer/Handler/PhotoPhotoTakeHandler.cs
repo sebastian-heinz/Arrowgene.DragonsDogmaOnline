@@ -6,7 +6,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    internal class PhotoPhotoTakeHandler : GameStructurePacketHandler<C2SPhotoPhotoTakeNtc>
+    public class PhotoPhotoTakeHandler : GameStructurePacketHandler<C2SPhotoPhotoTakeNtc>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PhotoPhotoTakeHandler));
 

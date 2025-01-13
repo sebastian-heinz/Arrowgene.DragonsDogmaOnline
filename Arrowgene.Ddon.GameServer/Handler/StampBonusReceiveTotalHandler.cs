@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    internal class StampBonusReceiveTotalHandler : GameRequestPacketHandler<C2SStampBonusRecieveTotalReq, S2CStampBonusRecieveTotalRes>
+    public class StampBonusReceiveTotalHandler : GameRequestPacketHandler<C2SStampBonusRecieveTotalReq, S2CStampBonusRecieveTotalRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(StampBonusReceiveTotalHandler));
 

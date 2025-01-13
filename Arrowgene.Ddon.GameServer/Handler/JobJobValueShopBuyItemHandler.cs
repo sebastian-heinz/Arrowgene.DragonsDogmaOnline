@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    internal class JobJobValueShopBuyItemHandler : GameRequestPacketHandler<C2SJobJobValueShopBuyItemReq, S2CJobJobValueShopBuyItemRes>
+    public class JobJobValueShopBuyItemHandler : GameRequestPacketHandler<C2SJobJobValueShopBuyItemReq, S2CJobJobValueShopBuyItemRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(JobGetPlayPointListHandler));
 
