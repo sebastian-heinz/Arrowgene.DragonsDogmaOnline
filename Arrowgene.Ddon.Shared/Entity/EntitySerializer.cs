@@ -204,7 +204,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataGetDispelItem.Serializer());
             Create(new CDataGetRewardBoxItem.Serializer());
             Create(new CDataGoodsParam.Serializer());
-            Create(new CDataGoodsParamUnk7.Serializer());
+            Create(new CDataGoodsParamRequirement.Serializer());
 
             Create(new CDataHasRegionBreakReward.Serializer());
             Create(new CDataHistoryElement.Serializer());
