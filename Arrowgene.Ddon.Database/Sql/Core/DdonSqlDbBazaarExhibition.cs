@@ -155,18 +155,13 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             return entities;
         }
-        
-        
-        public List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdExcludingOwn(uint itemId, uint excludedCharacterId)
-        {
-            using TCon conn = OpenNewConnection();
-            return SelectActiveBazaarExhibitionsByItemIdExcludingOwn(conn, itemId, excludedCharacterId);
-        }
-        
-        public List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdExcludingOwn(TCon conn, uint itemId, uint excludedCharacterId)
+           
+        public List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdExcludingOwn(uint itemId, uint excludedCharacterId, DbConnection? connectionIn = null)
         {
             List<BazaarExhibition> entities = new List<BazaarExhibition>();
-            ExecuteReader(conn, SqlSelectActiveBazaarExhibitionsByItemIdExcludingOwn,
+            ExecuteQuerySafe(connectionIn, conn =>
+            {
+                ExecuteReader(conn, SqlSelectActiveBazaarExhibitionsByItemIdExcludingOwn,
                 command =>
                 {
                     AddParameter(command, "@item_id", itemId);
@@ -180,24 +175,22 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         entities.Add(e);
                     }
                 });
+            });
 
             return entities;
         }
 
-        public List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdsExcludingOwn(List<uint> itemIds, uint excludedCharacterId)
-        {
-            using TCon conn = OpenNewConnection();
-            return SelectActiveBazaarExhibitionsByItemIdsExcludingOwn(conn, itemIds, excludedCharacterId);
-        }
-
-        public List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdsExcludingOwn(TCon conn, List<uint> itemIds, uint excludedCharacterId)
+        public List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdsExcludingOwn(List<uint> itemIds, uint excludedCharacterId, DbConnection? connectionIn = null)
         {
             List<BazaarExhibition> entities = new List<BazaarExhibition>();
-            foreach (uint itemId in itemIds)
+            ExecuteQuerySafe(connectionIn, conn =>
             {
-                List<BazaarExhibition> exhibitionsForItemId = SelectActiveBazaarExhibitionsByItemIdExcludingOwn(conn, itemId, excludedCharacterId);
-                entities.AddRange(exhibitionsForItemId);
-            }
+                foreach (uint itemId in itemIds)
+                {
+                    List<BazaarExhibition> exhibitionsForItemId = SelectActiveBazaarExhibitionsByItemIdExcludingOwn(itemId, excludedCharacterId, conn);
+                    entities.AddRange(exhibitionsForItemId);
+                }
+            });
             return entities;
         }
 

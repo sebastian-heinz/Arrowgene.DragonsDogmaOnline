@@ -410,11 +410,13 @@ namespace Arrowgene.Ddon.Database
         List<BazaarExhibition> FetchCharacterBazaarExhibitions(uint characterId);
         List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdExcludingOwn(
             uint itemId,
-            uint excludedCharacterId
+            uint excludedCharacterId,
+            DbConnection? connectionIn = null
         );
         List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdsExcludingOwn(
             List<uint> itemIds,
-            uint excludedCharacterId
+            uint excludedCharacterId,
+            DbConnection? connectionIn = null
         );
 
         // Rewards
