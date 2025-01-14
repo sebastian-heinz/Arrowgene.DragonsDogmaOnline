@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.Shared
         public string AssetsPath { get; private set; }
 
         // Client data
-        public const string ClientErrorCodesKey = "ClientErrorCodes.csv";
+        public const string ClientErrorCodesKey = "ClientErrorCodes.json";
         public const string ItemListKey = "itemlist.csv";
 
         // Server data
@@ -80,7 +80,7 @@ namespace Arrowgene.Ddon.Shared
 
             _fileSystemWatchers = new Dictionary<string, FileSystemWatcher>();
 
-            ClientErrorCodes = new List<CDataErrorMessage>();
+            ClientErrorCodes = new Dictionary<ErrorCode, ClientErrorCode>();
             ClientItemInfos = new Dictionary<uint, ClientItemInfo>();
             NamedParamAsset = new Dictionary<uint, NamedParam>();
             EnemySpawnAsset = new EnemySpawnAsset();
@@ -117,7 +117,7 @@ namespace Arrowgene.Ddon.Shared
             LoadingInfoAsset = new();
         }
 
-        public List<CDataErrorMessage> ClientErrorCodes { get; private set; }
+        public Dictionary<ErrorCode, ClientErrorCode> ClientErrorCodes { get; private set; }
         public Dictionary<uint, ClientItemInfo> ClientItemInfos { get; private set; } // May be incorrect, or incomplete
         public Dictionary<uint, NamedParam> NamedParamAsset { get; private set; }
         public EnemySpawnAsset EnemySpawnAsset { get; private set; }
@@ -156,7 +156,7 @@ namespace Arrowgene.Ddon.Shared
 
         public void Initialize()
         {
-            RegisterAsset(value => ClientErrorCodes = value, ClientErrorCodesKey, new ClientErrorCodeCsv());
+            RegisterAsset(value => ClientErrorCodes = value, ClientErrorCodesKey, new ClientErrorCodeAssetDeserializer());
             RegisterAsset(value => ClientItemInfos = value.ToDictionary(key => key.ItemId, val => val), ItemListKey, new ClientItemInfoCsv());
             RegisterAsset(value => NamedParamAsset = value, NamedParamsKey, new NamedParamAssetDeserializer());
             RegisterAsset(value => EnemySpawnAsset = value, EnemySpawnsKey, new EnemySpawnAssetDeserializer(this.NamedParamAsset));

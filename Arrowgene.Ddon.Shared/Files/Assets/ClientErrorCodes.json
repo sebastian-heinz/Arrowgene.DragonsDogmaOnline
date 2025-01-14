@@ -1,0 +1,58 @@
+[
+    {
+        "code": "ERROR_CODE_FAIL",
+        "en": "An internal server error has occured."
+    },
+    {
+        "code": "ERROR_CODE_JOBCHANGE_STORAGE_FULL",
+        "en": "Make room in your normal storage chest before changing vocations. (JOBCHANGE_STORAGE_FULL)"
+    },
+    {
+        "code": "ERROR_CODE_PRICE_NO_MATCH",
+        "en": "An internal server error has occured. (PRICE_NO_MATCH)"
+    },
+    {
+        "code": "ERROR_CODE_CRAFT_INSUFFICIENT_GOLD",
+        "en": "You don't have enough gold to craft this item."
+    },
+    {
+        "code": "ERROR_CODE_SHOP_LACK_MONEY",
+        "en": "You don't have enough gold."
+    },
+    {
+        "code": "ERROR_CODE_ITEM_INVALID_ITEM_NUM",
+        "en": "An item-related desync has occurred. Please log out and back in. (ITEM_INVALID_ITEM_NUM)"
+    },
+    {
+        "code": "ERROR_CODE_GP_LACK_GP",
+        "en": "You don't have enough Golden Gemstones."
+    },
+    {
+        "code": "ERROR_CODE_ITEM_BAG_CAPACITY_OVER",
+        "en": "Make room in your item bag before trying again. (ITEM_BAG_CAPACITY_OVER)"
+    },
+    {
+        "code": "ERROR_CODE_ITEM_STORAGE_CAPACITY_OVER",
+        "en": "Make room in your normal storage chest before trying again. (ITEM_STORAGE_CAPACITY_OVER)"
+    },
+    {
+        "code": "ERROR_CODE_ITEM_STORAGE_OVERFLOW",
+        "en": "Make room in your normal storage chest before trying again. (ITEM_STORAGE_OVERFLOW)"
+    },
+    {
+        "code": "ERROR_CODE_MATCHING_PLAY_ENTRY_IS_NOT_READY",
+        "en": "The party leader must start this content first."
+    },
+    {
+        "code": "ERROR_CODE_CYCLE_CONTENTS_PLAY_START_INVALID_SITUATION_LEVEL ",
+        "en": "Not all party members have the same progress in this content."
+    },
+    {
+        "code": "ERROR_CODE_SKILL_NOT_YET_LEARN",
+        "en": "One or more augments on this preset have not been learned by this character."
+    },
+    {
+        "code": "ERROR_CODE_SKILL_COST_OVER",
+        "en": "This character does not have enough points to apply this preset."
+    }
+]

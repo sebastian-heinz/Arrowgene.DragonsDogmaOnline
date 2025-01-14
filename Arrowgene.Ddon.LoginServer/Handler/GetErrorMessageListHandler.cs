@@ -3,6 +3,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
@@ -27,19 +28,23 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             L2CGetErrorMessageListNtc ntc = new L2CGetErrorMessageListNtc();
             uint totalLength = 0;
 
-            // TODO: Rework this asset.
-            //ntc.ErrorMessages = Server.AssetRepository.ClientErrorCodes;
-
-            foreach (ErrorCode foo in Enum.GetValues(typeof(ErrorCode)))
+            foreach (ErrorCode code in Enum.GetValues(typeof(ErrorCode)))
             {
                 // An MtString of length N takes up N+2 bytes.
                 // Each CDataErrorMessage is thus at least N+2+2+4+4 bytes.
-                var message = foo.ToString();
+                var message = code.ToString();
+
+                if (Server.AssetRepository.ClientErrorCodes.TryGetValue(code, out var asset)
+                    && asset.Message.TryGetValue("en", out string assetMessage))
+                {
+                    message = assetMessage;
+                }
+
                 totalLength += (uint)(message.Length + 12); 
 
                 ntc.ErrorMessages.Add(new()
                 {
-                    ErrorId = foo,
+                    ErrorId = code,
                     MessageId = 1,
                     Message = message
                 });
