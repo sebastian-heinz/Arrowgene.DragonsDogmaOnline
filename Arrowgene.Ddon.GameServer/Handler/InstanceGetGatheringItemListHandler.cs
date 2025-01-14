@@ -2,6 +2,7 @@ using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
@@ -39,8 +40,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 PosId = request.PosId,
                 GatheringItemUId = request.GatheringItemUId,
                 IsGatheringItemBreak = isGatheringItemBreak,
-                Unk0 = false,
-                Unk1 = new List<CDataGatheringItemListUnk1>(),
                 ItemList = gatheringItems
                 .Select((asset, index) => new CDataGatheringItemElement()
                 {
@@ -52,6 +51,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 })
                 .ToList()
             };
+
             return res;
         }
     }

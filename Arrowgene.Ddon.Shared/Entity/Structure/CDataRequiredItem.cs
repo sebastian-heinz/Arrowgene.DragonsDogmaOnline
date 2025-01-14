@@ -2,22 +2,22 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public class CDataS2CEquipEnhancedGetPacksResUnk0Unk6
+    public class CDataRequiredItem
     {
         public uint ItemId { get; set; }
         public ushort Num { get; set; }
     
-        public class Serializer : EntitySerializer<CDataS2CEquipEnhancedGetPacksResUnk0Unk6>
+        public class Serializer : EntitySerializer<CDataRequiredItem>
         {
-            public override void Write(IBuffer buffer, CDataS2CEquipEnhancedGetPacksResUnk0Unk6 obj)
+            public override void Write(IBuffer buffer, CDataRequiredItem obj)
             {
                 WriteUInt32(buffer, obj.ItemId);
                 WriteUInt16(buffer, obj.Num);
             }
         
-            public override CDataS2CEquipEnhancedGetPacksResUnk0Unk6 Read(IBuffer buffer)
+            public override CDataRequiredItem Read(IBuffer buffer)
             {
-                CDataS2CEquipEnhancedGetPacksResUnk0Unk6 obj = new CDataS2CEquipEnhancedGetPacksResUnk0Unk6();
+                CDataRequiredItem obj = new CDataRequiredItem();
                 obj.ItemId = ReadUInt32(buffer);
                 obj.Num = ReadUInt16(buffer);
                 return obj;

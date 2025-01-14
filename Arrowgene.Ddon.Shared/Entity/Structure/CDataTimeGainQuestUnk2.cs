@@ -1,7 +1,5 @@
-using System;
-using System.Collections.Generic;
 using Arrowgene.Buffers;
-using Arrowgene.Ddon.Shared.Model;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -10,12 +8,12 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public CDataTimeGainQuestUnk2()
         {
             WalletPointList = new List<CDataWalletPoint>();
-            Unk0List = new List<CDataS2CEquipEnhancedGetPacksResUnk0Unk6>();
+            Unk0List = new List<CDataRequiredItem>();
         }
 
         public List<CDataWalletPoint> WalletPointList { get; set; }
 
-        public List<CDataS2CEquipEnhancedGetPacksResUnk0Unk6> Unk0List { get; set;}
+        public List<CDataRequiredItem> Unk0List { get; set;}
 
         public class Serializer : EntitySerializer<CDataTimeGainQuestUnk2>
         {
@@ -29,7 +27,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 CDataTimeGainQuestUnk2 obj = new CDataTimeGainQuestUnk2();
                 obj.WalletPointList = ReadEntityList<CDataWalletPoint>(buffer);
-                obj.Unk0List = ReadEntityList<CDataS2CEquipEnhancedGetPacksResUnk0Unk6>(buffer);
+                obj.Unk0List = ReadEntityList<CDataRequiredItem>(buffer);
                 return obj;
             }
         }

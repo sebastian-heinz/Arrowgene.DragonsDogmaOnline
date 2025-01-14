@@ -12,7 +12,12 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public CDataStageLayoutId LayoutId { get; set; }
         public uint PosId { get; set; }
         public byte EquipToCharacter { get; set; }
-        public uint Unk1 { get; set; }
+
+        /// <summary>
+        /// The ID of the restriction, if any, that was provided in S2CInstanceGetGatheringItemListRes.
+        /// Presumably so you can do the actual paying of the cost here.
+        /// </summary>
+        public uint RestrictionId { get; set; }
         public List<CDataGatheringItemGetRequest> GatheringItemGetRequestList { get; set; }
 
         public C2SInstanceGetGatheringItemReq()
@@ -28,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteEntity(buffer, obj.LayoutId);
                 WriteUInt32(buffer, obj.PosId);
                 WriteByte(buffer, obj.EquipToCharacter);
-                WriteUInt32(buffer, obj.Unk1);
+                WriteUInt32(buffer, obj.RestrictionId);
                 WriteEntityList<CDataGatheringItemGetRequest>(buffer, obj.GatheringItemGetRequestList);
             }
 
@@ -38,7 +43,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.LayoutId = ReadEntity<CDataStageLayoutId>(buffer);
                 obj.PosId = ReadUInt32(buffer);
                 obj.EquipToCharacter = ReadByte(buffer);
-                obj.Unk1 = ReadUInt32(buffer);
+                obj.RestrictionId = ReadUInt32(buffer);
                 obj.GatheringItemGetRequestList = ReadEntityList<CDataGatheringItemGetRequest>(buffer);
                 return obj;
             }

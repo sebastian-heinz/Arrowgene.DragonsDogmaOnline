@@ -15,13 +15,13 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public string GatheringItemUId { get; set; }
         public bool IsGatheringItemBreak { get; set; }
         public bool Unk0 { get; set; }
-        public List<CDataGatheringItemListUnk1> Unk1 { get; set; } // Currencies?
+        public List<CDataGatheringItemRestriction> RestrictionList { get; set; }
         public List<CDataGatheringItemElement> ItemList { get; set; } // Items
         
         public S2CInstanceGetGatheringItemListRes()
         {
             LayoutId = new CDataStageLayoutId();
-            Unk1 = new List<CDataGatheringItemListUnk1>();
+            RestrictionList = new List<CDataGatheringItemRestriction>();
             ItemList = new List<CDataGatheringItemElement>();
             GatheringItemUId = string.Empty;
         }
@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteMtString(buffer, obj.GatheringItemUId);
                 WriteBool(buffer, obj.IsGatheringItemBreak);
                 WriteBool(buffer, obj.Unk0);
-                WriteEntityList(buffer, obj.Unk1);
+                WriteEntityList(buffer, obj.RestrictionList);
                 WriteEntityList(buffer, obj.ItemList);
             }
 
@@ -50,7 +50,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.GatheringItemUId = ReadMtString(buffer);
                 obj.IsGatheringItemBreak = ReadBool(buffer);
                 obj.Unk0 = ReadBool(buffer);
-                obj.Unk1 = ReadEntityList<CDataGatheringItemListUnk1>(buffer);
+                obj.RestrictionList = ReadEntityList<CDataGatheringItemRestriction>(buffer);
                 obj.ItemList = ReadEntityList<CDataGatheringItemElement>(buffer);
                 return obj;
             }

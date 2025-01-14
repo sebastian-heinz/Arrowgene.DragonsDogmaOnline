@@ -41,7 +41,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_INSTANCE_AREA_INVALID_GATHERING_ITEM_POS_ID,
                         $"Invalid gathering item index at {stageId}.{posId}");
                     
-                    Server.ItemManager.GatherItem(Server, client.Character, ntc, gatheredItem, gatheringItemRequest.Num, connection);
+                    Server.ItemManager.GatherItem(client.Character, ntc, gatheredItem, gatheringItemRequest.Num, connection);
                 }
             });
 
