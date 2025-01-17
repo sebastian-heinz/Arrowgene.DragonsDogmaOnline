@@ -1,81 +1,73 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "A Place of Regrets",
-  "quest_id": 21000090,
-  "base_level": 65,
-  "minimum_item_rank": 0,
-  "discoverable": false,
-  "area_id": "MergodaRuins",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 2243
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 290
-    },
-    {
-      "type": "exp",
-      "amount": 10665
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "A Place of Regrets",
+    "quest_id": 21000090,
+    "base_level": 65,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+	"area_id": "MergodaRuins",
+    "rewards": [
         {
-          "item_id": 11803,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 2243
         },
         {
-          "item_id": 7555,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 290
         },
         {
-          "item_id": 9364,
-          "num": 3
-        }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 940
-    }
-  ],
-  "enemy_groups": [
-    {
-      "stage_id": {
-        "id": 424,
-        "group_id": 2
-      },
-      "enemies": [
+            "type": "exp",
+            "amount": 10665
+        },
         {
-          "comment": "Infected Gorecyclops",
-          "enemy_id": "0x015012",
-          "level": 65,
-          "exp": 45000,
-          "is_boss": true,
-          "infection_type": 2
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 11803,
+                    "num": 3
+                },
+                {
+                    "item_id": 7555,
+                    "num": 3
+                },
+                {
+                    "item_id": 9364,
+                    "num": 3
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "DiscoverEnemy",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Accept",
-      "reset_group": false,
-      "groups": [
-        0
-      ]
-    }
-  ]
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 424,
+                "group_id": 2
+            },
+            "enemies": [
+                {
+                    "comment": "Infected Gorecyclops",
+                    "enemy_id": "0x015012",
+                    "level": 65,
+                    "exp": 45000,
+                    "is_boss": true,
+                    "infection_type": 2
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "DiscoverEnemy",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Accept",
+            "reset_group": false,
+            "groups": [0]
+        }
+    ]
 }

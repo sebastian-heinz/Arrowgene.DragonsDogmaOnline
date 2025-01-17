@@ -1,98 +1,90 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "Assault of Demons",
-  "quest_id": 21016014,
-  "base_level": 75,
-  "minimum_item_rank": 0,
-  "discoverable": false,
-  "area_id": "MorrowForest",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 4493
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 665
-    },
-    {
-      "type": "exp",
-      "amount": 21915
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Assault of Demons",
+    "quest_id": 21016014,
+    "base_level": 75,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+	"area_id": "MorrowForest",	
+    "rewards": [
         {
-          "item_id": 15927,
-          "num": 1
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 4493
         },
         {
-          "item_id": 15963,
-          "num": 1
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 665
         },
         {
-          "item_id": 7555,
-          "num": 3
+            "type": "exp",
+            "amount": 21915
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 15927,
+                    "num": 1
+                },
+                {					
+                    "item_id": 15963,
+                    "num": 1
+                },
+                {				
+                    "item_id": 7555,
+                    "num": 3					
+                }
+            ]
         }
-      ]
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 378,
+                "group_id": 4
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015017",
+                    "level": 75,
+                    "exp": 92000,				
+                    "is_boss": true,
+					"infection_type": 2	
     },
     {
-      "type": "ap",
-      "amount": 500
-    }
-  ],
-  "enemy_groups": [
+                    "enemy_id": "0x011062",
+                    "level": 75,
+                    "exp": 3700,				
+                    "is_boss": false	
+    },
     {
-      "stage_id": {
-        "id": 378,
-        "group_id": 4
-      },
-      "enemies": [
-        {
-          "enemy_id": "0x015017",
-          "level": 75,
-          "exp": 92000,
-          "is_boss": true,
-          "infection_type": 2
-        },
-        {
-          "enemy_id": "0x011062",
-          "level": 75,
-          "exp": 3700,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x011062",
-          "level": 75,
-          "exp": 3700,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x011063",
-          "level": 75,
-          "exp": 3700,
-          "is_boss": false
+                    "enemy_id": "0x011062",
+                    "level": 75,
+                    "exp": 3700,				
+                    "is_boss": false		
+    },
+    {
+                    "enemy_id": "0x011063",
+                    "level": 75,
+                    "exp": 3700,				
+                    "is_boss": false					
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "DiscoverEnemy",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Accept",
-      "reset_group": true,
-      "groups": [
-        0
-      ]
-    }
-  ]
+    ],		
+    "blocks": [
+        {
+            "type": "DiscoverEnemy",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Accept",
+            "reset_group": true,
+            "groups": [0]
+        }
+    ]
 }

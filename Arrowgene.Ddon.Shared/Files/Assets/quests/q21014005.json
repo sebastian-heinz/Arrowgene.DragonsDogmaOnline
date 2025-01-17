@@ -1,86 +1,82 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "Time Restriction: Late Night Harvest",
-  "quest_id": 21014005,
-  "base_level": 70,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "ElanWaterGrove",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 5772
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 750
-    },
-    {
-      "type": "exp",
-      "amount": 3070
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Time Restriction: Late Night Harvest",
+    "quest_id": 21014005,
+    "base_level": 70,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+	"area_id": "ElanWaterGrove",	
+    "rewards": [
         {
-          "item_id": 15948,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 5772
         },
         {
-          "item_id": 9364,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 750
         },
         {
-          "item_id": 41,
-          "num": 3
-        }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 500
-    }
-  ],
-  "blocks": [
-    {
-      "type": "NpcTalkAndOrder",
-      "stage_id": {
-        "id": 339,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "npc_id": "Musel0",
-      "message_id": 10800
-    },
-    {
-      "type": "DeliverItems",
-      "stage_id": {
-        "id": 339,
-        "group_id": 1
-      },
-      "npc_id": "Musel0",
-      "announce_type": "Accept",
-      "items": [
+            "type": "exp",
+            "amount": 3070
+        },
         {
-          "id": 15947,
-          "amount": 5
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 15948,
+                    "num": 3
+                },
+                {					
+                    "item_id": 9364,
+                    "num": 3
+                },
+                {				
+                    "item_id": 41,
+                    "num": 3					
+                }
+            ]
         }
-      ],
-      "message_id": 10737
-    },
-    {
-      "type": "TalkToNpc",
-      "stage_id": {
-        "id": 339,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "announce_type": "Update",
-      "npc_id": "Musel0",
-      "message_id": 11842
-    }
-  ]
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",	
+            "stage_id": {
+                "id": 339,
+                "group_id": 1,
+                "layer_no": 1
+            },				
+            "npc_id": "Musel0",
+            "message_id": 10800
+        },
+        {
+            "type": "DeliverItems",
+            "stage_id": {
+                "id": 339,
+                "group_id": 1
+            },
+            "npc_id": "Musel0",
+            "announce_type": "Accept",
+            "items": [
+                {
+                    "id": 15947,
+                    "amount": 5
+                }
+            ],
+            "message_id": 10737
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 339,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Musel0",
+            "message_id": 11842			
+        }
+    ]
 }

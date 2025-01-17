@@ -43,10 +43,6 @@
           "num": 3
         }
       ]
-    },
-    {
-      "type": "ap",
-      "amount": 310
     }
   ],
   "enemy_groups": [
@@ -55,22 +51,24 @@
         "id": 1,
         "group_id": 255
       },
-      "placement_type": "manual",
+         "placement_type": "manual",
       "enemies": [
+        
         {
           "enemy_id": "0x015500",
           "start_think_tbl_no": 1,
-          "named_enemy_params_id": 56,
+		      "named_enemy_params_id": 56,
           "level": 36,
           "exp": 6040,
           "scale": 140,
           "is_boss": true,
           "index": 0
         },
+        
         {
           "enemy_id": "0x015500",
           "start_think_tbl_no": 2,
-          "named_enemy_params_id": 459,
+		      "named_enemy_params_id": 459,
           "level": 32,
           "exp": 5636,
           "scale": 90,
@@ -85,17 +83,13 @@
       "type": "DiscoverEnemy",
       "spawn_time_start": "(18 * 3600000) + (0 * 60000)",
       "spawn_time_end": "(6 * 3600000) + (59 * 60000)",
-      "groups": [
-        0
-      ]
+      "groups": [ 0 ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Accept",
       "reset_group": false,
-      "groups": [
-        0
-      ]
+      "groups": [ 0 ]
     }
   ]
 }

@@ -1,78 +1,74 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "A Thief's Whereabouts",
-  "quest_id": 21000006,
-  "base_level": 56,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "BloodbaneIsle",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 1847
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 230
-    },
-    {
-      "type": "exp",
-      "amount": 2914
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "A Thief's Whereabouts",
+    "quest_id": 21000006,
+    "base_level": 56,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+	"area_id": "BloodbaneIsle",	
+    "rewards": [
         {
-          "item_id": 7877,
-          "num": 2
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1847
         },
         {
-          "item_id": 7853,
-          "num": 5
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 230
         },
         {
-          "item_id": 41,
-          "num": 3
+            "type": "exp",
+            "amount": 2914
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 7877,
+                    "num": 2
+                },
+                {					
+                    "item_id": 7853,
+                    "num": 5
+                },
+                {				
+                    "item_id": 41,
+                    "num": 3					
+                }
+            ]
         }
-      ]
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 316,
+                "group_id": 10
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010160",
+                    "level": 57,
+                    "exp": 2000,
+                    "is_boss": false
     },
     {
-      "type": "ap",
-      "amount": 500
-    }
-  ],
-  "enemy_groups": [
+                    "enemy_id": "0x010161",
+                    "level": 57,
+                    "exp": 2000,
+                    "is_boss": false
+    },
     {
-      "stage_id": {
-        "id": 316,
-        "group_id": 10
-      },
-      "enemies": [
-        {
-          "enemy_id": "0x010160",
-          "level": 57,
-          "exp": 2000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010161",
-          "level": 57,
-          "exp": 2000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010162",
-          "level": 57,
-          "exp": 2000,
-          "is_boss": false
+                    "enemy_id": "0x010162",
+                    "level": 57,
+                    "exp": 2000,
+                    "is_boss": false					
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "blocks": [
+    ],		
+    "blocks": [
     {
       "type": "NpcTalkAndOrder",
       "stage_id": {
@@ -96,31 +92,27 @@
         }
       ],
       "message_id": 10737
-    },
-    {
-      "type": "SeekOutEnemiesAtMarkedLocation",
-      "announce_type": "Update",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "TalkToNpc",
-      "stage_id": {
-        "id": 317,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "announce_type": "Update",
-      "npc_id": "Rolf",
-      "message_id": 11842
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Update",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [0]
+        },
+        {		
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 317,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Rolf",
+            "message_id": 11842			
     }
   ]
 }

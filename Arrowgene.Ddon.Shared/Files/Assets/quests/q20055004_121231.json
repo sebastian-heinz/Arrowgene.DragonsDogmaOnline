@@ -1,99 +1,91 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "The Abductors' True Nature (Redcaps)",
-  "quest_id": 20055004,
-  "quest_schedule_id": 121231,
-  "base_level": 19,
-  "minimum_item_rank": 0,
-  "discoverable": false,
-  "area_id": "MysreeForest",
-  "news_image": 111,
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 520
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 100
-    },
-    {
-      "type": "exp",
-      "amount": 750
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Abductors' True Nature (Redcaps)",
+    "quest_id": 20055004,
+    "quest_schedule_id": 121231,
+    "base_level": 19,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "area_id": "MysreeForest",
+    "news_image": 111,
+    "rewards": [
         {
-          "item_id": 8173,
-          "num": 1
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 520
         },
         {
-          "item_id": 9376,
-          "num": 2
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 100
         },
         {
-          "item_id": 9368,
-          "num": 3
+            "type": "exp",
+            "amount": 750
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 8173,
+                    "num": 1
+                },
+                {
+                    "item_id": 9376,
+                    "num": 2
+                },
+                {
+                    "item_id": 9368,
+                    "num": 3
+                }
+            ]
         }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 90
-    }
-  ],
-  "enemy_groups": [
-    {
-      "stage_id": {
-        "id": 67,
-        "group_id": 4
-      },
-      "enemies": [
+    ],
+    "enemy_groups": [
         {
-          "enemy_id": "0x011110",
-          "level": 19,
-          "exp": 200,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x011110",
-          "level": 19,
-          "exp": 200,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x011110",
-          "level": 19,
-          "exp": 200,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x011110",
-          "level": 19,
-          "exp": 200,
-          "is_boss": false
+            "stage_id": {
+                "id": 67,
+                "group_id": 4
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x011110",
+                    "level": 19,
+                    "exp": 200,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x011110",
+                    "level": 19,
+                    "exp": 200,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x011110",
+                    "level": 19,
+                    "exp": 200,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x011110",
+                    "level": 19,
+                    "exp": 200,
+                    "is_boss": false
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "DiscoverEnemy",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Accept",
-      "reset_group": false,
-      "groups": [
-        0
-      ]
-    }
-  ]
+    ],
+    "blocks": [
+        {
+            "type": "DiscoverEnemy",
+            "groups": [ 0 ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Accept",
+            "reset_group": false,
+            "groups": [ 0 ]
+        }
+    ]
 }

@@ -1,115 +1,107 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "Door of Jewellery: Elegy of The Grotesque",
-  "quest_id": 21017007,
-  "base_level": 73,
-  "minimum_item_rank": 0,
-  "discoverable": false,
-  "area_id": "KingalCanyon",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 4408
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 555
-    },
-    {
-      "type": "exp",
-      "amount": 26200
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Door of Jewellery: Elegy of The Grotesque",
+    "quest_id": 21017007,
+    "base_level": 73,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+	"area_id": "KingalCanyon",	
+    "rewards": [
         {
-          "item_id": 13484,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 4408
         },
         {
-          "item_id": 11805,
-          "num": 1
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 555
         },
         {
-          "item_id": 13224,
-          "num": 1
+            "type": "exp",
+            "amount": 26200
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 13484,
+                    "num": 3
+                },
+                {					
+                    "item_id": 11805,
+                    "num": 1
+                },
+                {				
+                    "item_id": 13224,
+                    "num": 1					
+                }
+            ]
         }
-      ]
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 429,
+                "group_id": 5
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015210",
+                    "level": 73,
+                    "exp": 87000,				
+                    "is_boss": true
     },
     {
-      "type": "ap",
-      "amount": 500
-    }
-  ],
-  "enemy_groups": [
+                    "enemy_id": "0x015610",
+                    "level": 73,
+                    "exp": 87000,				
+                    "is_boss": true	
+    },
     {
-      "stage_id": {
-        "id": 429,
-        "group_id": 5
-      },
-      "enemies": [
-        {
-          "enemy_id": "0x015210",
-          "level": 73,
-          "exp": 87000,
-          "is_boss": true
-        },
-        {
-          "enemy_id": "0x015610",
-          "level": 73,
-          "exp": 87000,
-          "is_boss": true
-        },
-        {
-          "enemy_id": "0x010603",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010603",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010603",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010603",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010603",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
+                    "enemy_id": "0x010603",
+                    "level": 73,
+                    "exp": 3500,				
+                    "is_boss": false		
+    },
+    {
+                    "enemy_id": "0x010603",
+                    "level": 73,
+                    "exp": 3500,				
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010603",
+                    "level": 73,
+                    "exp": 3500,				
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010603",
+                    "level": 73,
+                    "exp": 3500,				
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010603",
+                    "level": 73,
+                    "exp": 3500,				
+                    "is_boss": false					
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "DiscoverEnemy",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Accept",
-      "reset_group": true,
-      "groups": [
-        0
-      ]
-    }
-  ]
+    ],		
+    "blocks": [
+        {
+            "type": "DiscoverEnemy",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Accept",
+            "reset_group": true,
+            "groups": [0]
+        }
+    ]
 }

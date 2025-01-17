@@ -1,113 +1,101 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "The Abandoned Giant Warrior",
-  "quest_id": 20995004,
-  "base_level": 53,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "MergodaRuins",
-  "rewards": [
-    {
-      "type": "exp",
-      "amount": 2440
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 1740
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 270
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Abandoned Giant Warrior",
+    "quest_id": 20995004,
+    "base_level": 53,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "MergodaRuins",
+    "rewards": [
         {
-          "item_id": 8029,
-          "num": 1
+            "type": "exp",
+            "amount": 2440
         },
         {
-          "item_id": 9401,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1740
         },
         {
-          "item_id": 7554,
-          "num": 3
-        }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 580
-    }
-  ],
-  "enemy_groups": [
-    {
-      "stage_id": {
-        "id": 76,
-        "group_id": 5
-      },
-      "placement_type": "manual",
-      "enemies": [
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 270
+        },
         {
-          "enemy_id": "0x015103",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
-          "level": 53,
-          "exp": 15632,
-          "is_boss": true,
-          "index": 4
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 8029,
+                    "num": 1
+                },
+                {
+                    "item_id": 9401,
+                    "num": 3
+                },
+                {
+                    "item_id": 7554,
+                    "num": 3
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "NewNpcTalkAndOrder",
-      "flags": [
+    ],
+    "enemy_groups" : [
         {
-          "type": "QstLayout",
-          "action": "Set",
-          "value": 1619,
-          "comment": "Spawns 亡都の錬金術師 NPC"
+            "stage_id": {
+                "id": 76,
+                "group_id": 5
+            },
+                "placement_type": "manual",
+            "enemies": [
+                
+                {
+                    "enemy_id": "0x015103",
+                    "start_think_tbl_no": 1,
+		            "named_enemy_params_id": 53,
+                    "level": 53,
+                    "exp": 15632,
+                    "is_boss": true,
+                    "index": 4
+                }
+            ]
         }
-      ],
-      "stage_id": {
-        "id": 76,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "npc_id": "4740",
-      "message_id": 11372
-    },
-    {
-      "type": "SeekOutEnemiesAtMarkedLocation",
-      "announce_type": "Accept",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "reset_group": false,
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "NewTalkToNpc",
-      "stage_id": {
-        "id": 76,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "announce_type": "Update",
-      "npc_id": "4740",
-      "message_id": 11842
-    }
-  ]
+    ],
+    "blocks": [
+        {
+            "type": "NewNpcTalkAndOrder",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 1619, "comment": "Spawns 亡都の錬金術師 NPC"}
+            ],
+            "stage_id": {
+                "id": 76,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "4740",
+            "message_id": 11372
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [0]
+        },
+        {
+            "type": "NewTalkToNpc",
+            "stage_id": {
+                "id": 76,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "4740",
+            "message_id": 11842
+        }
+    ]
 }

@@ -1,258 +1,242 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "The Store Girl's Trials",
-  "quest_id": 21015000,
-  "base_level": 73,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "FaranaPlains",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 4408
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 555
-    },
-    {
-      "type": "exp",
-      "amount": 13110
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Store Girl's Trials",
+    "quest_id": 21015000,
+    "base_level": 73,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+	"area_id": "FaranaPlains",	
+    "rewards": [
         {
-          "item_id": 15919,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 4408
         },
         {
-          "item_id": 7555,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 555
         },
         {
-          "item_id": 9364,
-          "num": 3
+            "type": "exp",
+            "amount": 13110
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 15919,
+                    "num": 3
+                },
+                {					
+                    "item_id": 7555,
+                    "num": 3
+                },
+                {				
+                    "item_id": 9364,
+                    "num": 3					
+                }
+            ]
         }
-      ]
+    ],
+  "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 371,
+                "group_id": 49
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010205",
+                    "level": 73,
+                    "exp": 4000,
+                    "is_boss": false
     },
     {
-      "type": "ap",
-      "amount": 500
-    }
-  ],
-  "enemy_groups": [
+                    "enemy_id": "0x010205",
+                    "level": 73,
+                    "exp": 4000,
+                    "is_boss": false
+    },
     {
-      "stage_id": {
-        "id": 371,
-        "group_id": 49
-      },
-      "enemies": [
-        {
-          "enemy_id": "0x010205",
-          "level": 73,
-          "exp": 4000,
-          "is_boss": false
+                    "enemy_id": "0x010205",
+                    "level": 73,
+                    "exp": 4000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010610",
+                    "level": 73,
+                    "exp": 4000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010610",
+                    "level": 73,
+                    "exp": 4000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010610",
+                    "level": 73,
+                    "exp": 4000,
+                    "is_boss": false					
+                }
+            ]
         },
         {
-          "enemy_id": "0x010205",
-          "level": 73,
-          "exp": 4000,
-          "is_boss": false
+            "stage_id": {
+                "id": 371,
+                "group_id": 27
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010205",
+                    "level": 73,
+                    "exp": 4000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010205",
+                    "level": 73,
+                    "exp": 4000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010460",
+                    "level": 73,
+                    "exp": 4000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010460",
+                    "level": 73,
+                    "exp": 4000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010460",
+                    "level": 73,
+                    "exp": 4000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010460",
+                    "level": 73,
+                    "exp": 4000,
+                    "is_boss": false					
+                }
+            ]
         },
         {
-          "enemy_id": "0x010205",
-          "level": 73,
-          "exp": 4000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010610",
-          "level": 73,
-          "exp": 4000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010610",
-          "level": 73,
-          "exp": 4000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010610",
-          "level": 73,
-          "exp": 4000,
-          "is_boss": false
+            "stage_id": {
+                "id": 420,
+                "group_id": 6
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010461",
+                    "level": 73,
+                    "exp": 4000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010610",
+                    "level": 73,
+                    "exp": 4000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010610",
+                    "level": 73,
+                    "exp": 4000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010610",
+                    "level": 73,
+                    "exp": 4000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010460",
+                    "level": 73,
+                    "exp": 4000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010460",
+                    "level": 73,
+                    "exp": 4000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010460",
+                    "level": 73,
+                    "exp": 4000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010460",
+                    "level": 73,
+                    "exp": 4000,
+                    "is_boss": false					
+                }
+            ]
         }
-      ]
+    ],		
+    "blocks": [	
+        {
+            "type": "NpcTalkAndOrder",	
+            "stage_id": {
+                "id": 341,
+                "group_id": 1,
+                "layer_no": 1
+            },				
+            "npc_id": "Evey",
+            "message_id": 10800
     },
     {
-      "stage_id": {
-        "id": 371,
-        "group_id": 27
-      },
-      "enemies": [
-        {
-          "enemy_id": "0x010205",
-          "level": 73,
-          "exp": 4000,
-          "is_boss": false
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "groups": [0]
         },
         {
-          "enemy_id": "0x010205",
-          "level": 73,
-          "exp": 4000,
-          "is_boss": false
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [0]
+        },
+        {			
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Update",
+            "groups": [1]			
         },
         {
-          "enemy_id": "0x010460",
-          "level": 73,
-          "exp": 4000,
-          "is_boss": false
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [1]
         },
-        {
-          "enemy_id": "0x010460",
-          "level": 73,
-          "exp": 4000,
-          "is_boss": false
+        {			
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Update",
+            "groups": [2]
         },
-        {
-          "enemy_id": "0x010460",
-          "level": 73,
-          "exp": 4000,
-          "is_boss": false
+        {				
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [2]			
         },
-        {
-          "enemy_id": "0x010460",
-          "level": 73,
-          "exp": 4000,
-          "is_boss": false
+        {		
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 341,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Evey",
+            "message_id": 11842			
         }
-      ]
-    },
-    {
-      "stage_id": {
-        "id": 420,
-        "group_id": 6
-      },
-      "enemies": [
-        {
-          "enemy_id": "0x010461",
-          "level": 73,
-          "exp": 4000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010610",
-          "level": 73,
-          "exp": 4000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010610",
-          "level": 73,
-          "exp": 4000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010610",
-          "level": 73,
-          "exp": 4000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010460",
-          "level": 73,
-          "exp": 4000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010460",
-          "level": 73,
-          "exp": 4000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010460",
-          "level": 73,
-          "exp": 4000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010460",
-          "level": 73,
-          "exp": 4000,
-          "is_boss": false
-        }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "NpcTalkAndOrder",
-      "stage_id": {
-        "id": 341,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "npc_id": "Evey",
-      "message_id": 10800
-    },
-    {
-      "type": "SeekOutEnemiesAtMarkedLocation",
-      "announce_type": "Accept",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "SeekOutEnemiesAtMarkedLocation",
-      "announce_type": "Update",
-      "groups": [
-        1
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "groups": [
-        1
-      ]
-    },
-    {
-      "type": "SeekOutEnemiesAtMarkedLocation",
-      "announce_type": "Update",
-      "groups": [
-        2
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "groups": [
-        2
-      ]
-    },
-    {
-      "type": "TalkToNpc",
-      "stage_id": {
-        "id": 341,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "announce_type": "Update",
-      "npc_id": "Evey",
-      "message_id": 11842
-    }
-  ]
+    ]
 }

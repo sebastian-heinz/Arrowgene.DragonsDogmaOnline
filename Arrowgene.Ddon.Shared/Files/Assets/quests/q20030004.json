@@ -42,34 +42,30 @@
           "num": 2
         }
       ]
-    },
-    {
+  },
+  {
       "type": "random",
       "loot_pool": [
-        {
-          "item_id": 8844,
-          "num": 1,
-          "chance": 0.5
-        }
+          {
+              "item_id": 8844,
+              "num": 1,
+              "chance": 0.5
+          }
       ]
-    },
-    {
-      "type": "ap",
-      "amount": 240
-    }
-  ],
+  }
+],
   "enemy_groups": [
     {
       "stage_id": {
         "id": 154,
         "group_id": 2
       },
-      "placement_type": "manual",
+        "placement_type": "manual",
       "enemies": [
         {
           "enemy_id": "0x015600",
           "start_think_tbl_no": 1,
-          "named_enemy_params_id": 54,
+		      "named_enemy_params_id": 54,
           "level": 30,
           "exp": 5446,
           "is_boss": true,
@@ -100,17 +96,13 @@
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
       "announce_type": "Accept",
-      "groups": [
-        0
-      ]
+      "groups": [ 0 ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Update",
       "reset_group": false,
-      "groups": [
-        0
-      ]
+      "groups": [ 0 ]
     },
     {
       "type": "CollectItem",

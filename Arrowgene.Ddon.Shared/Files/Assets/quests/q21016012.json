@@ -1,155 +1,142 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "Rampage of Old Soldiers",
-  "quest_id": 21016012,
-  "base_level": 73,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "MorrowForest",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 4408
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 555
-    },
-    {
-      "type": "exp",
-      "amount": 13110
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Rampage of Old Soldiers",
+    "quest_id": 21016012,
+    "base_level": 73,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+	"area_id": "MorrowForest",	
+    "rewards": [
         {
-          "item_id": 13483,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 4408
         },
         {
-          "item_id": 7555,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 555
         },
         {
-          "item_id": 9364,
-          "num": 3
+            "type": "exp",
+            "amount": 13110
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 13483,
+                    "num": 3
+                },
+                {					
+                    "item_id": 7555,
+                    "num": 3
+                },
+                {				
+                    "item_id": 9364,
+                    "num": 3					
+                }
+            ]
         }
-      ]
+    ],
+  "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 418,
+                "group_id": 2
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x011066",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false,
+					"hm_present_no": 100					
     },
     {
-      "type": "ap",
-      "amount": 500
-    }
-  ],
-  "enemy_groups": [
+                    "enemy_id": "0x011066",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false,
+					"hm_present_no": 100
+    },
     {
-      "stage_id": {
-        "id": 418,
-        "group_id": 2
-      },
-      "enemies": [
-        {
-          "enemy_id": "0x011066",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false,
-          "hm_present_no": 100
-        },
-        {
-          "enemy_id": "0x011066",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false,
-          "hm_present_no": 100
-        },
-        {
-          "enemy_id": "0x011066",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false,
-          "hm_present_no": 100
-        },
-        {
-          "enemy_id": "0x011067",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false,
-          "hm_present_no": 101
-        },
-        {
-          "enemy_id": "0x011067",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false,
-          "hm_present_no": 101
-        },
-        {
-          "enemy_id": "0x011067",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false,
-          "hm_present_no": 101
+                    "enemy_id": "0x011066",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false,
+					"hm_present_no": 100
+    },
+    {
+                    "enemy_id": "0x011067",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false,
+					"hm_present_no": 101
+    },
+    {
+                    "enemy_id": "0x011067",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false,
+					"hm_present_no": 101
+    },
+    {
+                    "enemy_id": "0x011067",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false,
+					"hm_present_no": 101					
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "NpcTalkAndOrder",
-      "stage_id": {
-        "id": 374,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "npc_id": "Zolta",
-      "message_id": 10800
-    },
-    {
-      "type": "TalkToNpc",
-      "flags": [
+    ],		
+    "blocks": [	
         {
-          "type": "QstLayout",
-          "action": "Set",
-          "value": 4344,
-          "comment": "Spawns Inataya NPC"
+            "type": "NpcTalkAndOrder",	
+            "stage_id": {
+                "id": 374,
+                "group_id": 1,
+                "layer_no": 1
+            },				
+            "npc_id": "Zolta",
+            "message_id": 10800
+    },
+    {		
+            "type": "TalkToNpc",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 4344, "comment": "Spawns Inataya NPC"}				
+            ],			
+            "stage_id": {
+                "id": 418,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Accept",
+            "npc_id": "Inataya",
+            "message_id": 11842
+        },
+        {				
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Update",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [0]					
+        },
+        {		
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 374,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Zolta",
+            "message_id": 11842			
         }
-      ],
-      "stage_id": {
-        "id": 418,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "announce_type": "Accept",
-      "npc_id": "Inataya",
-      "message_id": 11842
-    },
-    {
-      "type": "SeekOutEnemiesAtMarkedLocation",
-      "announce_type": "Update",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "TalkToNpc",
-      "stage_id": {
-        "id": 374,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "announce_type": "Update",
-      "npc_id": "Zolta",
-      "message_id": 11842
-    }
-  ]
+    ]
 }

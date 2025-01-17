@@ -1,127 +1,109 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "Water Grove Wayfarers",
-  "quest_id": 21014014,
-  "base_level": 73,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "ElanWaterGrove",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 4408
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 555
-    },
-    {
-      "type": "exp",
-      "amount": 19665
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Water Grove Wayfarers",
+    "quest_id": 21014014,
+    "base_level": 73,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "ElanWaterGrove",
+    "rewards": [
         {
-          "item_id": 15921,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 4408
         },
         {
-          "item_id": 15962,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 555
         },
         {
-          "item_id": 9364,
-          "num": 3
-        }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 500
-    }
-  ],
-  "enemy_groups": [
-    {
-      "stage_id": {
-        "id": 425,
-        "group_id": 7
-      },
-      "enemies": [
+            "type": "exp",
+            "amount": 19665
+        },
         {
-          "enemy_id": "0x015505",
-          "level": 73,
-          "exp": 87000,
-          "is_boss": true
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 15921,
+                    "num": 3
+                },
+                {
+                    "item_id": 15962,
+                    "num": 3
+                },
+                {
+                    "item_id": 9364,
+                    "num": 3
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "NewNpcTalkAndOrder",
-      "flags": [
+    ],
+    "enemy_groups" : [
         {
-          "type": "QstLayout",
-          "action": "Set",
-          "value": 4486,
-          "comment": "Spawns Nora NPC"
+            "stage_id": {
+                "id": 425,
+                "group_id": 7
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015505",
+                    "level": 73,
+                    "exp": 87000,
+                    "is_boss": true
+                }
+            ]
         }
-      ],
-      "stage_id": {
-        "id": 372,
-        "group_id": 0,
-        "layer_no": 0
-      },
-      "npc_id": "Nora",
-      "message_id": 10800
-    },
-    {
-      "type": "NewTalkToNpc",
-      "flags": [
+    ],
+    "blocks": [
         {
-          "type": "QstLayout",
-          "action": "Set",
-          "value": 4483,
-          "comment": "Spawns Ifa NPC"
+            "type": "NewNpcTalkAndOrder",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 4486, "comment": "Spawns Nora NPC"}
+            ],
+            "stage_id": {
+                "id": 372,
+                "group_id": 0,
+                "layer_no": 0
+            },
+            "npc_id": "Nora",
+            "message_id": 10800
+        },
+        {
+            "type": "NewTalkToNpc",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 4483, "comment": "Spawns Ifa NPC"}
+            ],
+            "stage_id": {
+                "id": 425,
+                "group_id": 0,
+                "layer_no": 0
+            },
+            "announce_type": "Accept",
+            "npc_id": "Ifa",
+            "message_id": 11842
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Update",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [0]
+        },
+        {
+            "type": "NewTalkToNpc",
+            "stage_id": {
+                "id": 372,
+                "group_id": 0,
+                "layer_no": 0
+            },
+            "announce_type": "Update",
+            "npc_id": "Nora",
+            "message_id": 11842
         }
-      ],
-      "stage_id": {
-        "id": 425,
-        "group_id": 0,
-        "layer_no": 0
-      },
-      "announce_type": "Accept",
-      "npc_id": "Ifa",
-      "message_id": 11842
-    },
-    {
-      "type": "SeekOutEnemiesAtMarkedLocation",
-      "announce_type": "Update",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "NewTalkToNpc",
-      "stage_id": {
-        "id": 372,
-        "group_id": 0,
-        "layer_no": 0
-      },
-      "announce_type": "Update",
-      "npc_id": "Nora",
-      "message_id": 11842
-    }
-  ]
+    ]
 }

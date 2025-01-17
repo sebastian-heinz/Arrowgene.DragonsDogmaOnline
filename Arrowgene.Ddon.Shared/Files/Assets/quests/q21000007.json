@@ -1,109 +1,96 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "Expected Results",
-  "quest_id": 21000007,
-  "base_level": 60,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "BloodbaneIsle",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 1980
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 250
-    },
-    {
-      "type": "exp",
-      "amount": 6809
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Expected Results",
+    "quest_id": 21000007,
+    "base_level": 60,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+	"area_id": "BloodbaneIsle",	
+    "rewards": [
         {
-          "item_id": 7885,
-          "num": 2
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1980
         },
         {
-          "item_id": 7967,
-          "num": 2
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 250
         },
         {
-          "item_id": 9364,
-          "num": 3
-        }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 500
-    }
-  ],
-  "enemy_groups": [
-    {
-      "stage_id": {
-        "id": 316,
-        "group_id": 3
-      },
-      "enemies": [
+            "type": "exp",
+            "amount": 6809
+        },
         {
-          "enemy_id": "0x015306",
-          "level": 60,
-          "exp": 40000,
-          "is_boss": true,
-          "infection_type": 2
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 7885,
+                    "num": 2
+                },
+                {					
+                    "item_id": 7967,
+                    "num": 2
+                },
+                {				
+                    "item_id": 9364,
+                    "num": 3					
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "blocks": [
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 316,
+                "group_id": 3
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015306",
+                    "level": 60,
+                    "exp": 40000,
+                    "is_boss": true,
+                    "infection_type": 2				
+                }
+            ]
+        }
+    ],		
+    "blocks": [
     {
       "type": "NpcTalkAndOrder",
-      "flags": [
-        {
-          "type": "QstLayout",
-          "action": "Set",
-          "value": 3757,
-          "comment": "Spawns Something??"
-        }
-      ],
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 3757, "comment": "Spawns Something??"}				
+            ],	  
       "stage_id": {
         "id": 317,
-        "group_id": 1,
-        "layer_no": 1
+		"group_id": 1,
+		"layer_no": 1		
       },
       "npc_id": "Clarissa",
       "message_id": 10800
     },
     {
-      "type": "SeekOutEnemiesAtMarkedLocation",
-      "announce_type": "Accept",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "TalkToNpc",
-      "stage_id": {
-        "id": 317,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "announce_type": "Update",
-      "npc_id": "Clarissa",
-      "message_id": 11842
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [0]
+        },
+        {		
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 317,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Clarissa",
+            "message_id": 11842	
     }
   ]
 }

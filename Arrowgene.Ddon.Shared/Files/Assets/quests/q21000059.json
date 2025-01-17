@@ -1,73 +1,69 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "Friends to the End",
-  "quest_id": 21000059,
-  "base_level": 65,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "BloodbaneIsle",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 5360
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 687
-    },
-    {
-      "type": "exp",
-      "amount": 3940
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Friends to the End",
+    "quest_id": 21000059,
+    "base_level": 65,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+	"area_id": "BloodbaneIsle",	
+    "rewards": [
         {
-          "item_id": 11789,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 5360
         },
         {
-          "item_id": 7555,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 687
         },
         {
-          "item_id": 41,
-          "num": 3
-        }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 500
-    }
-  ],
-  "blocks": [
-    {
-      "type": "NpcTalkAndOrder",
-      "stage_id": {
-        "id": 317
-      },
-      "npc_id": "Rolf",
-      "message_id": 10800
-    },
-    {
-      "type": "DeliverItems",
-      "stage_id": {
-        "id": 317,
-        "group_id": 1
-      },
-      "npc_id": "Rolf",
-      "announce_type": "Accept",
-      "items": [
+            "type": "exp",
+            "amount": 3940
+        },
         {
-          "id": 11793,
-          "amount": 6
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 11789,
+                    "num": 3
+                },
+                {					
+                    "item_id": 7555,
+                    "num": 3
+                },
+                {				
+                    "item_id": 41,
+                    "num": 3					
+                }
+            ]
         }
-      ],
-      "message_id": 10737
-    }
-  ]
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 317
+            },
+            "npc_id": "Rolf",
+            "message_id": 10800
+        },
+        {
+            "type": "DeliverItems",
+            "stage_id": {
+                "id": 317,
+                "group_id": 1
+            },
+            "npc_id": "Rolf",
+            "announce_type": "Accept",
+            "items": [
+                {
+                    "id": 11793,
+                    "amount": 6
+                }
+            ],
+            "message_id": 10737
+        }
+    ]
 }

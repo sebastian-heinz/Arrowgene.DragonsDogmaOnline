@@ -1,96 +1,92 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "A Sign of Nightmares",
-  "quest_id": 21000096,
-  "base_level": 68,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "BloodbaneIsle",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 2243
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 290
-    },
-    {
-      "type": "exp",
-      "amount": 10665
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "A Sign of Nightmares",
+    "quest_id": 21000096,
+    "base_level": 68,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+	"area_id": "BloodbaneIsle",	
+    "rewards": [
         {
-          "item_id": 9446,
-          "num": 1
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 2243
         },
         {
-          "item_id": 7555,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 290
         },
         {
-          "item_id": 41,
-          "num": 3
+            "type": "exp",
+            "amount": 10665
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 9446,
+                    "num": 1
+                },
+                {					
+                    "item_id": 7555,
+                    "num": 3
+                },
+                {				
+                    "item_id": 41,
+                    "num": 3					
+                }
+            ]
         }
-      ]
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 335,
+                "group_id": 5
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010461",
+                    "level": 68,
+                    "exp": 3000,
+                    "is_boss": false	
     },
     {
-      "type": "ap",
-      "amount": 500
-    }
-  ],
-  "enemy_groups": [
+                    "enemy_id": "0x010461",
+                    "level": 68,
+                    "exp": 3000,
+                    "is_boss": false
+    },
     {
-      "stage_id": {
-        "id": 335,
-        "group_id": 5
-      },
-      "enemies": [
-        {
-          "enemy_id": "0x010461",
-          "level": 68,
-          "exp": 3000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010461",
-          "level": 68,
-          "exp": 3000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010461",
-          "level": 68,
-          "exp": 3000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010461",
-          "level": 68,
-          "exp": 3000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010508",
-          "level": 68,
-          "exp": 3000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015100",
-          "level": 68,
-          "exp": 70000,
-          "is_boss": true
+                    "enemy_id": "0x010461",
+                    "level": 68,
+                    "exp": 3000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010461",
+                    "level": 68,
+                    "exp": 3000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010508",
+                    "level": 68,
+                    "exp": 3000,
+                    "is_boss": false					
+    },
+    {
+                    "enemy_id": "0x015100",
+                    "level": 68,
+                    "exp": 70000,
+                    "is_boss": true						
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "blocks": [
+    ],		
+    "blocks": [
     {
       "type": "NpcTalkAndOrder",
       "stage_id": {
@@ -98,31 +94,27 @@
       },
       "npc_id": "Clarissa",
       "message_id": 10800
-    },
-    {
-      "type": "SeekOutEnemiesAtMarkedLocation",
-      "announce_type": "Accept",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "TalkToNpc",
-      "stage_id": {
-        "id": 317,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "announce_type": "Update",
-      "npc_id": "Clarissa",
-      "message_id": 11842
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [0]
+        },
+        {		
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 317,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Clarissa",
+            "message_id": 11842			
     }
   ]
 }

@@ -1,115 +1,107 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "The Misguided Soldiers",
-  "quest_id": 20995010,
-  "base_level": 52,
-  "minimum_item_rank": 0,
-  "discoverable": false,
-  "area_id": "MergodaRuins",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 1430
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 250
-    },
-    {
-      "type": "exp",
-      "amount": 1880
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Misguided Soldiers",
+    "quest_id": 20995010,
+    "base_level": 52,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "area_id": "MergodaRuins",
+    "rewards": [
         {
-          "item_id": 8033,
-          "num": 1
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1430
         },
         {
-          "item_id": 9363,
-          "num": 2
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 250
         },
         {
-          "item_id": 41,
-          "num": 2
+            "type": "exp",
+            "amount": 1880
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 8033,
+                    "num": 1
+                },
+                {
+                    "item_id": 9363,
+                    "num": 2
+                },
+                {
+                    "item_id": 41,
+                    "num": 2
+                }
+            ]
         }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 580
-    }
-  ],
-  "enemy_groups": [
-    {
-      "stage_id": {
-        "id": 84,
-        "group_id": 11
-      },
-      "enemies": [
+    ],
+    "enemy_groups" : [
         {
-          "enemy_id": "0x010313",
-          "level": 52,
-          "named_enemy_params_id": 556,
-          "exp": 6146,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010311",
-          "named_enemy_params_id": 650,
-          "level": 52,
-          "exp": 5936,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010313",
-          "level": 52,
-          "named_enemy_params_id": 556,
-          "exp": 6146,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010311",
-          "named_enemy_params_id": 650,
-          "level": 52,
-          "exp": 5936,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010311",
-          "named_enemy_params_id": 650,
-          "level": 52,
-          "exp": 5936,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010311",
-          "named_enemy_params_id": 650,
-          "level": 52,
-          "exp": 5936,
-          "is_boss": false
+            "stage_id": {
+                "id": 84,
+                "group_id": 11
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010313",
+                    "level": 52,
+		    "named_enemy_params_id": 556,
+                    "exp": 6146,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x010311",
+		    "named_enemy_params_id": 650,
+                    "level": 52,
+                    "exp": 5936,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x010313",
+                    "level": 52,
+		    "named_enemy_params_id": 556,
+                    "exp": 6146,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x010311",
+		    "named_enemy_params_id": 650,
+                    "level": 52,
+                    "exp": 5936,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x010311",
+		    "named_enemy_params_id": 650,
+                    "level": 52,
+                    "exp": 5936,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x010311",
+		    "named_enemy_params_id": 650,
+                    "level": 52,
+                    "exp": 5936,
+                    "is_boss": false
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "DiscoverEnemy",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Accept",
-      "reset_group": false,
-      "groups": [
-        0
-      ]
-    }
-  ]
+    ],
+    "blocks": [
+        {
+            "type": "DiscoverEnemy",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Accept",
+            "reset_group": false,
+            "groups": [0]
+        }
+    ]
 }

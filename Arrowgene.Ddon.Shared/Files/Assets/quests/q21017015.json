@@ -1,136 +1,128 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "An Evil Gaze",
-  "quest_id": 21017015,
-  "base_level": 70,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "KingalCanyon",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 2309
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 300
-    },
-    {
-      "type": "exp",
-      "amount": 13814
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "An Evil Gaze",
+    "quest_id": 21017015,
+    "base_level": 70,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+	"area_id": "KingalCanyon",	
+    "rewards": [
         {
-          "item_id": 13483,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 2309
         },
         {
-          "item_id": 15973,
-          "num": 1
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 300
         },
         {
-          "item_id": 7555,
-          "num": 3
+            "type": "exp",
+            "amount": 13814
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 13483,
+                    "num": 3
+                },
+                {					
+                    "item_id": 15973,
+                    "num": 1
+                },
+                {				
+                    "item_id": 7555,
+                    "num": 3					
+                }
+            ]
         }
-      ]
+    ],
+  "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 368,
+                "group_id": 7
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015104",
+                    "level": 70,
+                    "exp": 85000,
+                    "is_boss": true
     },
     {
-      "type": "ap",
-      "amount": 500
-    }
-  ],
-  "enemy_groups": [
+                    "enemy_id": "0x015900",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+    },
     {
-      "stage_id": {
-        "id": 368,
-        "group_id": 7
-      },
-      "enemies": [
-        {
-          "enemy_id": "0x015104",
-          "level": 70,
-          "exp": 85000,
-          "is_boss": true
-        },
-        {
-          "enemy_id": "0x015900",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015900",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010206",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010206",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010206",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010206",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
+                    "enemy_id": "0x015900",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010206",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010206",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010206",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010206",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false					
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "NpcTalkAndOrder",
-      "stage_id": {
-        "id": 373,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "npc_id": "Oengus",
-      "message_id": 10800
-    },
-    {
-      "type": "SeekOutEnemiesAtMarkedLocation",
-      "announce_type": "Accept",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "TalkToNpc",
-      "stage_id": {
-        "id": 373,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "announce_type": "Update",
-      "npc_id": "Oengus",
-      "message_id": 11842
-    }
-  ]
+    ],	
+    "blocks": [	
+        {
+            "type": "NpcTalkAndOrder",	
+            "stage_id": {
+                "id": 373,
+                "group_id": 1,
+                "layer_no": 1
+            },				
+            "npc_id": "Oengus",
+            "message_id": 10800
+        },
+        {				
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [0]		
+        },
+        {				
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 373,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Oengus",
+            "message_id": 11842			
+        }
+    ]
 }

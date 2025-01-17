@@ -37,10 +37,6 @@
           "num": 3
         }
       ]
-    },
-    {
-      "type": "ap",
-      "amount": 60
     }
   ],
   "enemy_groups": [
@@ -54,7 +50,7 @@
         {
           "comment": "Redcap",
           "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
+		      "named_enemy_params_id": 53,
           "enemy_id": "0x011110",
           "level": 10,
           "exp": 70
@@ -74,7 +70,7 @@
         {
           "comment": "Redcap",
           "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
+		      "named_enemy_params_id": 53,
           "enemy_id": "0x011110",
           "level": 10,
           "exp": 70
@@ -82,7 +78,7 @@
         {
           "comment": "Redcap",
           "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
+		      "named_enemy_params_id": 53,
           "enemy_id": "0x011110",
           "level": 10,
           "exp": 70
@@ -100,7 +96,7 @@
           "comment": "Redcap",
           "enemy_id": "0x011112",
           "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
+		      "named_enemy_params_id": 53,
           "level": 10,
           "exp": 70
         },
@@ -108,7 +104,7 @@
           "comment": "Redcap",
           "enemy_id": "0x011112",
           "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
+		      "named_enemy_params_id": 53,
           "level": 10,
           "exp": 70
         },
@@ -122,7 +118,7 @@
           "comment": "Redcap",
           "enemy_id": "0x011112",
           "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
+		      "named_enemy_params_id": 53,
           "level": 10,
           "exp": 70
         },
@@ -136,7 +132,7 @@
           "comment": "Redcap",
           "enemy_id": "0x011112",
           "start_think_tbl_no": 1,
-          "named_enemy_params_id": 53,
+		      "named_enemy_params_id": 53,
           "level": 10,
           "exp": 70
         }
@@ -165,32 +161,24 @@
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
-      "groups": [
-        0
-      ]
+      "groups": [ 0 ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Update",
       "reset_group": false,
-      "groups": [
-        0
-      ]
+      "groups": [ 0 ]
     },
     {
       "type": "SeekOutEnemiesAtMarkedLocation",
       "announce_type": "Update",
-      "groups": [
-        1
-      ]
+      "groups": [ 1 ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Update",
       "reset_group": false,
-      "groups": [
-        1
-      ]
+      "groups": [ 1 ]
     },
     {
       "type": "NewTalkToNpc",

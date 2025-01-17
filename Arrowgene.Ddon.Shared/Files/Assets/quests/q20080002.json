@@ -1,128 +1,120 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "The Sole Sign",
-  "quest_id": 20080002,
-  "base_level": 50,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "EasternZandora",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 1370
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 280
-    },
-    {
-      "type": "exp",
-      "amount": 2140
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Sole Sign",
+    "quest_id": 20080002,
+    "base_level": 50,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+  "area_id": "EasternZandora",		
+    "rewards": [
         {
-          "item_id": 7800,
-          "num": 1
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1370
         },
         {
-          "item_id": 9402,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 280
         },
         {
-          "item_id": 7554,
-          "num": 3
+            "type": "exp",
+            "amount": 2140
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 7800,
+                    "num": 1
+                },
+                {
+                    "item_id": 9402,
+                    "num": 3
+                },
+                {
+                    "item_id": 7554,
+                    "num": 3
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "loot_pool": [
+                {
+                    "item_id": 34,
+                    "num": 9,
+                    "chance": 1.0
+                }
+            ]
         }
-      ]
-    },
-    {
-      "type": "random",
-      "loot_pool": [
+    ],
+    "enemy_groups" : [
         {
-          "item_id": 34,
-          "num": 9,
-          "chance": 1.0
+            "stage_id": {
+                "id": 94,
+                "group_id": 2
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015203",
+                    "level": 50,
+                    "exp": 15000,
+                    "is_boss": true
+        },
+        {
+                    "enemy_id": "0x010206",
+                    "level": 50,
+                    "exp": 1500,
+                    "is_boss": false
+        },
+        {					
+                    "enemy_id": "0x010206",
+                    "level": 50,
+                    "exp": 1500,
+                    "is_boss": false
+        },
+        {					
+                    "enemy_id": "0x010206",
+                    "level": 50,
+                    "exp": 1500,
+                    "is_boss": false					
+                }
+            ]
         }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 580
-    }
-  ],
-  "enemy_groups": [
-    {
-      "stage_id": {
-        "id": 94,
-        "group_id": 2
-      },
-      "enemies": [
+    ],
+    "blocks": [
         {
-          "enemy_id": "0x015203",
-          "level": 50,
-          "exp": 15000,
-          "is_boss": true
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 1,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "Dion",
+            "message_id": 11372
         },
         {
-          "enemy_id": "0x010206",
-          "level": 50,
-          "exp": 1500,
-          "is_boss": false
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "groups": [0]
         },
         {
-          "enemy_id": "0x010206",
-          "level": 50,
-          "exp": 1500,
-          "is_boss": false
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [0]
         },
         {
-          "enemy_id": "0x010206",
-          "level": 50,
-          "exp": 1500,
-          "is_boss": false
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 1,
+                "group_id": 1,
+                "layer_no": 1				
+            },
+            "announce_type": "Update",
+            "npc_id": "Dion",
+            "message_id": 11835
         }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "NpcTalkAndOrder",
-      "stage_id": {
-        "id": 1,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "npc_id": "Dion",
-      "message_id": 11372
-    },
-    {
-      "type": "SeekOutEnemiesAtMarkedLocation",
-      "announce_type": "Accept",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "TalkToNpc",
-      "stage_id": {
-        "id": 1,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "announce_type": "Update",
-      "npc_id": "Dion",
-      "message_id": 11835
-    }
-  ]
+    ]
 }

@@ -1,113 +1,105 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "The Obstructing Evil Statue",
-  "quest_id": 20085004,
-  "base_level": 47,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "EasternZandora",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 1550
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 240
-    },
-    {
-      "type": "exp",
-      "amount": 2170
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Obstructing Evil Statue",
+    "quest_id": 20085004,
+    "base_level": 47,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "EasternZandora",
+    "rewards": [
         {
-          "item_id": 7878,
-          "num": 1
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1550
         },
         {
-          "item_id": 9402,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 240
         },
         {
-          "item_id": 9363,
-          "num": 3
-        }
-      ]
-    },
-    {
-      "type": "random",
-      "loot_pool": [
+            "type": "exp",
+            "amount": 2170
+        },
         {
-          "item_id": 34,
-          "num": 9,
-          "chance": 1.0
-        }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 480
-    }
-  ],
-  "enemy_groups": [
-    {
-      "stage_id": {
-        "id": 1,
-        "group_id": 447
-      },
-      "enemies": [
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 7878,
+                    "num": 1
+                },
+                {
+                    "item_id": 9402,
+                    "num": 3
+                },
+                {
+                    "item_id": 9363,
+                    "num": 3
+                }
+            ]
+        },
         {
-          "enemy_id": "0x015100",
-          "start_think_tbl_no": 3,
-          "named_enemy_params_id": 53,
-          "level": 47,
-          "exp": 6824,
-          "is_boss": true
+            "type": "random",
+            "loot_pool": [
+                {
+                    "item_id": 34,
+                    "num": 9,
+                    "chance": 1.0
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "NpcTalkAndOrder",
-      "stage_id": {
-        "id": 1,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "npc_id": "Rick",
-      "message_id": 11372
-    },
-    {
-      "type": "SeekOutEnemiesAtMarkedLocation",
-      "announce_type": "Accept",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "reset_group": false,
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "TalkToNpc",
-      "stage_id": {
-        "id": 1,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "announce_type": "Update",
-      "npc_id": "Rick",
-      "message_id": 11835
-    }
-  ]
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 447
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015100",
+                    "start_think_tbl_no": 3,
+                    "named_enemy_params_id": 53,
+                    "level": 47,
+                    "exp": 6824,
+                    "is_boss": true
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 1,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "Rick",
+            "message_id": 11372
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [0]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 1,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Rick",
+            "message_id": 11835
+        }
+    ]
 }

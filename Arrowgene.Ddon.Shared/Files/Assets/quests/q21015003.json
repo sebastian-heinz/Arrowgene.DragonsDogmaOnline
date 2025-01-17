@@ -1,86 +1,82 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "To The Faraway Child",
-  "quest_id": 21015003,
-  "base_level": 73,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "FaranaPlains",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 11020
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 1387
-    },
-    {
-      "type": "exp",
-      "amount": 10925
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "To The Faraway Child",
+    "quest_id": 21015003,
+    "base_level": 73,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+	"area_id": "FaranaPlains",	
+    "rewards": [
         {
-          "item_id": 15923,
-          "num": 6
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 11020
         },
         {
-          "item_id": 7555,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 1387
         },
         {
-          "item_id": 9364,
-          "num": 3
-        }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 500
-    }
-  ],
-  "blocks": [
-    {
-      "type": "NpcTalkAndOrder",
-      "stage_id": {
-        "id": 341,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "npc_id": "Lewela",
-      "message_id": 10800
-    },
-    {
-      "type": "DeliverItems",
-      "stage_id": {
-        "id": 374,
-        "group_id": 1
-      },
-      "npc_id": "Reich",
-      "announce_type": "Accept",
-      "items": [
+            "type": "exp",
+            "amount": 10925
+        },
         {
-          "id": 15919,
-          "amount": 6
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 15923,
+                    "num": 6
+                },
+                {					
+                    "item_id": 7555,
+                    "num": 3
+                },
+                {				
+                    "item_id": 9364,
+                    "num": 3					
+                }
+            ]
         }
-      ],
-      "message_id": 10737
-    },
-    {
-      "type": "TalkToNpc",
-      "stage_id": {
-        "id": 374,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "announce_type": "Update",
-      "npc_id": "Reich",
-      "message_id": 11842
-    }
-  ]
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",	
+            "stage_id": {
+                "id": 341,
+                "group_id": 1,
+                "layer_no": 1
+            },				
+            "npc_id": "Lewela",
+            "message_id": 10800
+        },
+        {
+            "type": "DeliverItems",
+            "stage_id": {
+                "id": 374,
+                "group_id": 1
+            },
+            "npc_id": "Reich",
+            "announce_type": "Accept",
+            "items": [
+                {
+                    "id": 15919,
+                    "amount": 6
+                }
+            ],
+            "message_id": 10737
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 374,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Reich",
+            "message_id": 11842			
+        }
+    ]
 }
