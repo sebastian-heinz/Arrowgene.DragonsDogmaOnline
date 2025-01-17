@@ -68,11 +68,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             });
         }
 
-        public List<AreaRank> SelectAreaRank(uint characterId, DbConnection? connectionIn = null)
+        public Dictionary<QuestAreaId, AreaRank> SelectAreaRank(uint characterId, DbConnection? connectionIn = null)
         {
             return ExecuteQuerySafe(connectionIn, (connection) =>
             {
-                var list = new List<AreaRank>();
+                var list = new Dictionary<QuestAreaId, AreaRank>();
                 ExecuteReader(connection,
                     SqlSelectAreaRank,
                     command => { AddParameter(command, "@character_id", characterId); },
@@ -88,10 +88,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                 WeekPoint = GetUInt32(reader, "week_point"),
                                 LastWeekPoint = GetUInt32(reader, "last_week_point")
                             };
-                            list.Add(rank);
+                            list[rank.AreaId] = rank;
                         }
                     });
-                list.OrderBy(x => x.AreaId).ToList();
                 return list;
             });
         }

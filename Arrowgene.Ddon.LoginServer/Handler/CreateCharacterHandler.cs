@@ -579,7 +579,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                         AreaId = (QuestAreaId)i
                     };
                     Database.InsertAreaRank(character.CharacterId, rank, connection);
-                    character.AreaRanks.Add(rank);
+                    character.AreaRanks[rank.AreaId] = rank;
                 }
             });
             

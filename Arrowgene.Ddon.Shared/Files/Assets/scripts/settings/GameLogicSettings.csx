@@ -17,6 +17,8 @@ bool EnableVisualEquip = true;
 uint DefaultWarpFavorites = 3;
 uint LaternBurnTimeInSeconds = 1500;
 
+bool EnableAreaRankSpotLocks = false;
+
 // Crafting Settings
 double AdditionalProductionSpeedFactor = 1.0;
 double AdditionalCostPerformanceFactor = 1.0;

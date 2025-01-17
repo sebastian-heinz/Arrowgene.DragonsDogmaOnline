@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
 
             // Return a blank list for areas that you haven't seen the Area Master for.
-            if (client.Character.AreaRanks.Find(x => x.AreaId == request.DistributeId).Rank == 0)
+            if (!client.Character.AreaRanks.TryGetValue(request.DistributeId, out var rank) || rank.Rank == 0)
             {
                 return res;
             }

@@ -430,7 +430,7 @@ namespace Arrowgene.Ddon.Test.Database
         public void DeleteWeeklyEpitaphClaimedRewards(DbConnection? connectionIn = null) { }
         public bool InsertAreaRank(uint characterId, AreaRank areaRank, DbConnection? connectionIn = null) { return true; }
         public bool UpdateAreaRank(uint characterId, AreaRank areaRank, DbConnection? connectionIn = null) { return true; }
-        public List<AreaRank> SelectAreaRank(uint characterId, DbConnection? connectionIn = null) { return new(); }
+        public Dictionary<QuestAreaId, AreaRank> SelectAreaRank(uint characterId, DbConnection? connectionIn = null) { return new(); }
         public List<(uint CharacterId, AreaRank Rank)> SelectAllAreaRank(DbConnection? connectionIn = null) { return new(); }
         public bool ResetAreaRankPoint(DbConnection? connectionIn = null) { return true; }
         public bool InsertAreaRankSupply(uint characterId, QuestAreaId areaId, uint index, uint itemId, uint num, DbConnection? connectionIn = null) { return true; }

@@ -494,6 +494,17 @@ namespace Arrowgene.Ddon.Server.Scripting.interfaces
         }
 
         /// <summary>
+        /// Ties area rank progress to various paths to dungeons.
+        /// </summary>
+        public bool EnableAreaRankSpotLocks
+        {
+            get
+            {
+                return GetSetting<bool>("EnableAreaRankSpotLocks");
+            }
+        }
+
+        /// <summary>
         /// Various URLs used by the client.
         /// Shared with the login server.
         /// </summary>

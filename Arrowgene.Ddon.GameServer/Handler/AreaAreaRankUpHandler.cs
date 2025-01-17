@@ -3,6 +3,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -19,7 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CAreaAreaRankUpRes Handle(GameClient client, C2SAreaAreaRankUpReq request)
         {
             S2CAreaAreaRankUpRes res = new();
-            AreaRank clientRank = client.Character.AreaRanks.Find(x => x.AreaId == request.AreaId)
+            AreaRank clientRank = client.Character.AreaRanks.GetValueOrDefault(request.AreaId)
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
             lock (clientRank)
             {
@@ -31,11 +32,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.AreaRank = clientRank.Rank;
             res.AreaPoint = clientRank.Point;
             res.NextAreaPoint = Server.AreaRankManager.GetMaxPoints(request.AreaId, clientRank.Rank);
-            res.ReleaseList = Server.AssetRepository.AreaRankSpotInfoAsset
+
+            if (Server.GameLogicSettings.EnableAreaRankSpotLocks)
+            {
+                res.ReleaseList = Server.AssetRepository.AreaRankSpotInfoAsset
                 .Where(x => x.AreaId == request.AreaId && x.UnlockRank == clientRank.Rank)
                 .Select(x => new CDataCommonU32(x.SpotId))
                 .ToList();
-
+            }
+            
             Server.Database.ExecuteInTransaction(connection =>
             {
                 Server.Database.UpdateAreaRank(client.Character.CharacterId, clientRank, connection);
