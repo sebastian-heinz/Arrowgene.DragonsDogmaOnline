@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -18,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CAreaGetAreaMasterInfoRes Handle(GameClient client, C2SAreaGetAreaMasterInfoReq request)
         {
-            var clientRank = client.Character.AreaRanks.Find(x => x.AreaId == request.AreaId)
+            var clientRank = client.Character.AreaRanks.GetValueOrDefault(request.AreaId)
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
             var completedQuests = client.Character.CompletedQuests;
 
@@ -31,12 +32,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             result.LastWeekPoint = clientRank.LastWeekPoint;
             result.ToNextPoint = Server.AreaRankManager.GetMaxPoints(request.AreaId, clientRank.Rank);
 
-            result.ReleaseList = Server.AssetRepository.AreaRankSpotInfoAsset
-                .Where(x => 
-                    x.AreaId == request.AreaId
-                    && x.UnlockRank <= clientRank.Rank
-                    && (x.UnlockQuest == 0 || completedQuests.ContainsKey((QuestId)x.UnlockQuest))
-                )
+            result.ReleaseList = Server.AreaRankManager.GetAreaRankSpots(client, request.AreaId)
                 .Select(x => new CDataCommonU32(x.SpotId))
                 .ToList();
 

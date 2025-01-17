@@ -65,7 +65,7 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                         {
                             foreach (var character in gameServer.ClientLookup.GetAllCharacter())
                             {
-                                foreach (var rank in character.AreaRanks)
+                                foreach ((var area, var rank) in character.AreaRanks)
                                 {
                                     lock(rank)
                                     {

@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -24,7 +25,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var pcap = EntitySerializer.Get<S2CAreaGetSpotInfoListRes>().Read(PcapData);
             pcap.SpotInfoList = new();
 
-            var clientRank = client.Character.AreaRanks.Find(x => x.AreaId == request.AreaId)
+            var clientRank = client.Character.AreaRanks.GetValueOrDefault(request.AreaId)
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
             var completedQuests = client.Character.CompletedQuests;
 

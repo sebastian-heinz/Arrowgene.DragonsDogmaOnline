@@ -18,9 +18,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: ClanAreaPoint
             S2CAreaGetAreaBaseInfoListRes res = new();
 
-            foreach (var areaRank in client.Character.AreaRanks)
+            foreach ((var area, var rank)  in client.Character.AreaRanks)
             {
-                if (areaRank.Rank == 0 && (uint)areaRank.AreaId > 1)
+                if (rank.Rank == 0 && (uint)area > 1)
                 {
                     // Unranked areas are not displayed, except Hidell Plains.
                     continue;
@@ -28,13 +28,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 res.AreaBaseInfoList.Add(new()
                 {
-                    AreaID = areaRank.AreaId,
-                    Rank = areaRank.Rank,
-                    CurrentPoint = areaRank.Point,
-                    WeekPoint = areaRank.WeekPoint,
-                    NextPoint = Server.AreaRankManager.GetMaxPoints(areaRank.AreaId, areaRank.Rank),
-                    CanRankUp = Server.AreaRankManager.CanRankUp(client, areaRank.AreaId),
-                    CanReceiveSupply = client.Character.AreaSupply.ContainsKey(areaRank.AreaId) && client.Character.AreaSupply[areaRank.AreaId].Any()
+                    AreaID = rank.AreaId,
+                    Rank = rank.Rank,
+                    CurrentPoint = rank.Point,
+                    WeekPoint = rank.WeekPoint,
+                    NextPoint = Server.AreaRankManager.GetMaxPoints(rank.AreaId, rank.Rank),
+                    CanRankUp = Server.AreaRankManager.CanRankUp(client, rank.AreaId),
+                    CanReceiveSupply = client.Character.AreaSupply.ContainsKey(rank.AreaId) && client.Character.AreaSupply[area].Any()
                 });
 
             }

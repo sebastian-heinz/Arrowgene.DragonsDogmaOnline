@@ -604,7 +604,7 @@ namespace Arrowgene.Ddon.Database
         // Area Rank
         bool InsertAreaRank(uint characterId, AreaRank areaRank, DbConnection? connectionIn = null);
         bool UpdateAreaRank(uint characterId, AreaRank areaRank, DbConnection? connectionIn = null);
-        List<AreaRank> SelectAreaRank(uint characterId, DbConnection? connectionIn = null);
+        Dictionary<QuestAreaId, AreaRank> SelectAreaRank(uint characterId, DbConnection? connectionIn = null);
         List<(uint CharacterId, AreaRank Rank)> SelectAllAreaRank(DbConnection? connectionIn = null);
         bool ResetAreaRankPoint(DbConnection? connectionIn = null);
         bool InsertAreaRankSupply(uint characterId, QuestAreaId areaId, uint index, uint itemId, uint num, DbConnection? connectionIn = null);

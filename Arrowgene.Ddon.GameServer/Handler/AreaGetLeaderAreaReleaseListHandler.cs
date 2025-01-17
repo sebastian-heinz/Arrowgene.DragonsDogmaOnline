@@ -20,16 +20,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var result = new S2CAreaGetLeaderAreaReleaseListRes();
             var clientRank = client.Character.AreaRanks;
             var completedQuests = client.Character.CompletedQuests;
-            foreach ( var rank in clientRank)
+            foreach ( (var area, var rank) in clientRank)
             {
-                var releaseList = Server.AssetRepository.AreaRankSpotInfoAsset
-                .Where(x =>
-                    x.AreaId == rank.AreaId
-                    && x.UnlockRank <= rank.Rank
-                    && (x.UnlockQuest == 0 || completedQuests.ContainsKey((QuestId)x.UnlockQuest))
-                )
-                .Select(x => new CDataCommonU32(x.SpotId))
-                .ToList();
+                var releaseList = Server.AreaRankManager.GetAreaRankSpots(client, area)
+                    .Select(x => new CDataCommonU32(x.SpotId))
+                    .ToList();
 
                 result.ReleaseAreaInfoSetList.Add(new()
                 {

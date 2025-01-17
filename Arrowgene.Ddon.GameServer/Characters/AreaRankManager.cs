@@ -1,3 +1,5 @@
+using Arrowgene.Ddon.Database.Model;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -5,9 +7,12 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using static Arrowgene.Ddon.GameServer.Characters.BitterblackMazeManager;
+using System.Reflection.Emit;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -71,7 +76,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public bool CanRankUp(GameClient client, QuestAreaId areaId)
         {
-            AreaRank clientRank = client.Character.AreaRanks.Find(x => x.AreaId == areaId)
+            AreaRank clientRank = client.Character.AreaRanks.GetValueOrDefault(areaId)
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
             Dictionary<QuestId, CompletedQuest> completedQuests = client.Character.CompletedQuests;
             List<AreaRankRequirement> requirements = Server.AssetRepository.AreaRankRequirementAsset.Where(x => x.AreaId == areaId).ToList();
@@ -116,7 +121,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public PacketQueue AddAreaPoint(GameClient client, QuestAreaId areaId, uint point, DbConnection? connectionIn = null)
         {
             PacketQueue queue = new PacketQueue();
-            AreaRank clientRank = client.Character.AreaRanks.Find(x => x.AreaId == areaId)
+            AreaRank clientRank = client.Character.AreaRanks.GetValueOrDefault(areaId)
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
             if (clientRank is null || clientRank.Rank == 0) {
                 return queue;
@@ -152,6 +157,56 @@ namespace Arrowgene.Ddon.GameServer.Characters
             Server.Database.UpdateAreaRank(client.Character.CharacterId, clientRank, connectionIn);
 
             return queue;
+        }
+
+        public uint GetAreaPointReward(Quest quest)
+        {
+            uint amount;
+            uint areaId = (uint)quest.QuestAreaId;
+
+            if (areaId < 1 || areaId > 21)
+            {
+                return 0;
+            }
+            else if (areaId > 12)
+            {
+                amount = 500;
+            }
+            else
+            {
+                uint tier = quest.BaseLevel / 5;
+                amount = 5 * tier * tier + 5 * tier + 30;
+            }
+
+            if (QuestManager.IsBoardQuest(quest))
+            {
+                amount /= 2;
+            }
+
+            return amount;
+        }
+
+        public IEnumerable<AreaRankSpotInfo> GetAreaRankSpots(GameClient client, QuestAreaId areaId)
+        {
+            AreaRank clientRank = client.Character.AreaRanks.GetValueOrDefault(areaId)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
+            var completedQuests = client.Character.CompletedQuests;
+
+            if (Server.GameLogicSettings.EnableAreaRankSpotLocks)
+            {
+                return Server.AssetRepository.AreaRankSpotInfoAsset
+                .Where(x =>
+                    x.AreaId == areaId
+                    && x.UnlockRank <= clientRank.Rank
+                    && (x.UnlockQuest == 0 || completedQuests.ContainsKey((QuestId)x.UnlockQuest))
+                );
+            }
+            else
+            {
+                return Server.AssetRepository.AreaRankSpotInfoAsset
+                    .Where(x => x.AreaId == areaId);
+            }
+            
         }
     }
 }
