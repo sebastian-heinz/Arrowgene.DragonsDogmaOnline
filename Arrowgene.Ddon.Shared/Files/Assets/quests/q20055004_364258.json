@@ -1,81 +1,73 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "The Abductors' True Nature (Troll)",
-  "quest_id": 20055004,
-  "quest_schedule_id": 364258,
-  "base_level": 31,
-  "minimum_item_rank": 0,
-  "discoverable": false,
-  "area_id": "MysreeForest",
-  "news_image": 111,
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 1020
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 160
-    },
-    {
-      "type": "exp",
-      "amount": 1430
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Abductors' True Nature (Troll)",
+    "quest_id": 20055004,
+    "quest_schedule_id": 364258,
+    "base_level": 31,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "area_id": "MysreeForest",
+    "news_image": 111,
+    "rewards": [
         {
-          "item_id": 605,
-          "num": 1
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1020
         },
         {
-          "item_id": 9411,
-          "num": 2
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 160
         },
         {
-          "item_id": 52,
-          "num": 3
-        }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 240
-    }
-  ],
-  "enemy_groups": [
-    {
-      "stage_id": {
-        "id": 67,
-        "group_id": 4
-      },
-      "enemies": [
+            "type": "exp",
+            "amount": 1430
+        },
         {
-          "enemy_id": "0x015040",
-          "level": 31,
-          "exp": 5000,
-          "is_boss": true
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 605,
+                    "num": 1
+                },
+                {
+                    "item_id": 9411,
+                    "num": 2
+                },
+                {
+                    "item_id": 52,
+                    "num": 3
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "DiscoverEnemy",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Accept",
-      "reset_group": false,
-      "groups": [
-        0
-      ]
-    }
-  ]
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 67,
+                "group_id": 4
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015040",
+                    "level": 31,
+                    "exp": 5000,
+                    "is_boss": true
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "DiscoverEnemy",
+            "groups": [ 0 ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Accept",
+            "reset_group": false,
+            "groups": [ 0 ]
+        }
+    ]
 }

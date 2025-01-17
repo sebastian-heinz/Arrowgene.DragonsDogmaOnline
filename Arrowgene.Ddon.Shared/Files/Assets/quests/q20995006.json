@@ -1,84 +1,75 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "A Training Requirement",
-  "quest_id": 20995006,
-  "base_level": 50,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "MergodaRuins",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 900
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 200
-    },
-    {
-      "type": "exp",
-      "amount": 650
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "A Training Requirement",
+    "quest_id": 20995006,
+    "base_level": 50,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "MergodaRuins",
+    "rewards": [
         {
-          "item_id": 7833,
-          "num": 2
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 900
         },
         {
-          "item_id": 7554,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 200
         },
         {
-          "item_id": 41,
-          "num": 1
-        }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 580
-    }
-  ],
-  "blocks": [
-    {
-      "type": "NewNpcTalkAndOrder",
-      "flags": [
+            "type": "exp",
+            "amount": 650
+        },
         {
-          "type": "QstLayout",
-          "action": "Set",
-          "value": 1627,
-          "comment": "Spawns 禁域守の神官 NPC"
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 7833,
+                    "num": 2
+                },
+                {
+                    "item_id": 7554,
+                    "num": 3
+                },
+                {
+                    "item_id": 41,
+                    "num": 1
+                }
+            ]
         }
-      ],
-      "stage_id": {
-        "id": 76,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "npc_id": "4743",
-      "message_id": 11372
-    },
-    {
-      "type": "NewDeliverItems",
-      "stage_id": {
-        "id": 76,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "npc_id": "4743",
-      "announce_type": "Accept",
-      "items": [
+    ],
+    "blocks": [
         {
-          "id": 7850,
-          "amount": 9
+            "type": "NewNpcTalkAndOrder",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 1627, "comment": "Spawns 禁域守の神官 NPC"}
+            ],
+            "stage_id": {
+                "id": 76,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "4743",
+            "message_id": 11372
+        },
+        {
+            "type": "NewDeliverItems",
+            "stage_id": {
+                "id": 76,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "4743",
+            "announce_type": "Accept",
+            "items": [
+                {
+                    "id": 7850,
+                    "amount": 9
+                }
+            ],
+            "message_id": 10737
         }
-      ],
-      "message_id": 10737
-    }
-  ]
+    ]
 }

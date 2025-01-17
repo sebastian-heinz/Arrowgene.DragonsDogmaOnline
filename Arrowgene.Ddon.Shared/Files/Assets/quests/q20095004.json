@@ -1,118 +1,105 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "The Forgotten Guardian",
-  "quest_id": 20095004,
-  "base_level": 47,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "ZandoraWastelands",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 1550
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 240
-    },
-    {
-      "type": "exp",
-      "amount": 2170
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Forgotten Guardian",
+    "quest_id": 20095004,
+    "base_level": 47,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+  "area_id": "ZandoraWastelands",	
+    "rewards": [
         {
-          "item_id": 9059,
-          "num": 2
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1550
         },
         {
-          "item_id": 7925,
-          "num": 1
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 240
         },
         {
-          "item_id": 7554,
-          "num": 3
-        }
-      ]
-    },
-    {
-      "type": "random",
-      "loot_pool": [
+            "type": "exp",
+            "amount": 2170
+        },
         {
-          "item_id": 34,
-          "num": 9,
-          "chance": 1.0
-        }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 480
-    }
-  ],
-  "enemy_groups": [
-    {
-      "stage_id": {
-        "id": 164,
-        "group_id": 4
-      },
-      "enemies": [
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 9059,
+                    "num": 2
+                },
+                {
+                    "item_id": 7925,
+                    "num": 1
+                },
+                {
+                    "item_id": 7554,
+                    "num": 3					
+                }
+            ]
+        },
         {
-          "enemy_id": "0x015102",
-          "level": 48,
-          "exp": 13000,
-          "is_boss": true
+            "type": "random",
+            "loot_pool": [
+                {
+                    "item_id": 34,
+                    "num": 9,
+                    "chance": 1.0
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "NewNpcTalkAndOrder",
-      "flags": [
+    ],
+    "enemy_groups" : [
         {
-          "type": "QstLayout",
-          "action": "Set",
-          "value": 1617,
-          "comment": "Spawns Sorcerer0 NPC"
+            "stage_id": {
+                "id": 164,
+                "group_id": 4
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015102",
+                    "level": 48,
+                    "exp": 13000,
+                    "is_boss": true								
+                }
+            ]
         }
-      ],
-      "stage_id": {
-        "id": 1,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "npc_id": "Sorcerer0",
-      "message_id": 11372
-    },
-    {
-      "type": "SeekOutEnemiesAtMarkedLocation",
-      "announce_type": "Accept",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "NewTalkToNpc",
-      "stage_id": {
-        "id": 1,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "announce_type": "Update",
-      "npc_id": "Sorcerer0",
-      "message_id": 11835
-    }
-  ]
+    ],
+    "blocks": [
+        {
+            "type": "NewNpcTalkAndOrder",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 1617, "comment": "Spawns Sorcerer0 NPC"}
+            ],
+            "stage_id": {
+                "id": 1,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "Sorcerer0",
+            "message_id": 11372
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [0]
+        },
+        {
+            "type": "NewTalkToNpc",
+            "stage_id": {
+                "id": 1,
+                "group_id": 1,
+                "layer_no": 1				
+            },
+            "announce_type": "Update",
+            "npc_id": "Sorcerer0",
+            "message_id": 11835
+        }
+    ]
 }

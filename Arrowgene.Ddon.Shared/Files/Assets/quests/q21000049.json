@@ -1,104 +1,96 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "Door of Dragon Force: The Beast's Lair",
-  "quest_id": 21000049,
-  "base_level": 63,
-  "minimum_item_rank": 0,
-  "discoverable": false,
-  "area_id": "BloodbaneIsle",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 2078
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 265
-    },
-    {
-      "type": "exp",
-      "amount": 9302
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Door of Dragon Force: The Beast's Lair",
+    "quest_id": 21000049,
+    "base_level": 63,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+	"area_id": "BloodbaneIsle",	
+    "rewards": [
         {
-          "item_id": 8033,
-          "num": 1
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 2078
         },
         {
-          "item_id": 11775,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 265
         },
         {
-          "item_id": 41,
-          "num": 3
+            "type": "exp",
+            "amount": 9302
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 8033,
+                    "num": 1
+                },
+                {
+                    "item_id": 11775,
+                    "num": 3
+                },
+                {
+                    "item_id": 41,
+                    "num": 3
+                }
+            ]
         }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 500
-    }
-  ],
-  "enemy_groups": [
-    {
-      "stage_id": {
-        "id": 321,
-        "group_id": 12
-      },
-      "enemies": [
+    ],
+    "enemy_groups" : [
         {
-          "enemy_id": "0x015712",
-          "level": 63,
-          "exp": 45000,
-          "is_boss": true,
-          "infection_type": 2
+            "stage_id": {
+                "id": 321,
+                "group_id": 12
+            },			
+            "enemies": [
+                {
+                    "enemy_id": "0x015712",
+                    "level": 63,
+                    "exp": 45000,
+                    "is_boss": true,
+                    "infection_type": 2	
         },
         {
-          "enemy_id": "0x010612",
-          "level": 63,
-          "exp": 4000,
-          "is_boss": false
+                    "enemy_id": "0x010612",
+                    "level": 63,
+                    "exp": 4000,
+                    "is_boss": false
         },
         {
-          "enemy_id": "0x010612",
-          "level": 63,
-          "exp": 4000,
-          "is_boss": false
+                    "enemy_id": "0x010612",
+                    "level": 63,
+                    "exp": 4000,
+                    "is_boss": false
         },
         {
-          "enemy_id": "0x010612",
-          "level": 63,
-          "exp": 4000,
-          "is_boss": false
+                    "enemy_id": "0x010612",
+                    "level": 63,
+                    "exp": 4000,
+                    "is_boss": false
         },
         {
-          "enemy_id": "0x010612",
-          "level": 63,
-          "exp": 4000,
-          "is_boss": false
+                    "enemy_id": "0x010612",
+                    "level": 63,
+                    "exp": 4000,
+                    "is_boss": false					
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "DiscoverEnemy",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Accept",
-      "reset_group": false,
-      "groups": [
-        0
-      ]
-    }
-  ]
+    ],
+    "blocks": [
+        {
+            "type": "DiscoverEnemy",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Accept",
+            "reset_group": false,
+            "groups": [0]
+        }
+    ]
 }

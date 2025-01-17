@@ -7,7 +7,7 @@
   "minimum_item_rank": 0,
   "discoverable": true,
   "area_id": "HidellPlains",
-  "news_image": 8,
+  "news_image":  8,
   "rewards": [
     {
       "type": "exp",
@@ -42,10 +42,6 @@
           "num": 2
         }
       ]
-    },
-    {
-      "type": "ap",
-      "amount": 130
     }
   ],
   "enemy_groups": [
@@ -135,17 +131,13 @@
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
-      "groups": [
-        0
-      ]
+      "groups": [ 0 ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Update",
       "reset_group": false,
-      "groups": [
-        0
-      ]
+      "groups": [ 0 ]
     },
     {
       "type": "NewTalkToNpc",
@@ -160,3 +152,4 @@
     }
   ]
 }
+

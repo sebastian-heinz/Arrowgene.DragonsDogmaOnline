@@ -597,7 +597,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 client.Enqueue(updateCharacterItemNtc, packets);
             }
 
-            foreach (var point in quest.ScaledExpRewards())
+            var scaledRewards = quest.ScaledExpRewards();
+            foreach (var point in scaledRewards)
             {
                 uint amount = CalculateTotalPointAmount(server, client, point);
                 if (amount == 0)
@@ -643,7 +644,15 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         break;
                 }
             }
-            
+
+            // Fallback so that existing quests still get AP.
+            if (!scaledRewards.Where(x => x.Type == ExpType.AreaPoints).Any() && QuestManager.IsWorldQuest(quest) || QuestManager.IsBoardQuest(quest))
+            {
+                var amount = server.ExpManager.GetScaledPointAmount(RewardSource.Quest, ExpType.AreaPoints, server.AreaRankManager.GetAreaPointReward(quest));
+                var areaRankNtcs = server.AreaRankManager.AddAreaPoint(client, quest.QuestAreaId, amount, connectionIn);
+                packets.AddRange(areaRankNtcs);
+            }
+
             if (QuestManager.IsClanQuest(quest) && client.Character.ClanId != 0)
             {
                 var amount = quest.LightQuestDetail.GetCp;

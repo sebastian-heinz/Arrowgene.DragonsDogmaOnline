@@ -1,264 +1,248 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "Just Reparations",
-  "quest_id": 21017011,
-  "base_level": 73,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "KingalCanyon",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 4408
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 555
-    },
-    {
-      "type": "exp",
-      "amount": 13110
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Just Reparations",
+    "quest_id": 21017011,
+    "base_level": 73,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+	"area_id": "KingalCanyon",	
+    "rewards": [
         {
-          "item_id": 15973,
-          "num": 1
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 4408
         },
         {
-          "item_id": 15974,
-          "num": 1
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 555
         },
         {
-          "item_id": 7555,
-          "num": 3
+            "type": "exp",
+            "amount": 13110
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 15973,
+                    "num": 1
+                },
+                {					
+                    "item_id": 15974,
+                    "num": 1
+                },
+                {				
+                    "item_id": 7555,
+                    "num": 3					
+                }
+            ]
         }
-      ]
+    ],
+  "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 373,
+                "group_id": 12
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010607",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false
     },
     {
-      "type": "ap",
-      "amount": 500
-    }
-  ],
-  "enemy_groups": [
+                    "enemy_id": "0x010607",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false
+    },
     {
-      "stage_id": {
-        "id": 373,
-        "group_id": 12
-      },
-      "enemies": [
-        {
-          "enemy_id": "0x010607",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
+                    "enemy_id": "0x010607",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010607",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x015900",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x015900",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false					
+               }
+            ]
         },
         {
-          "enemy_id": "0x010607",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
+            "stage_id": {
+                "id": 373,
+                "group_id": 13
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010206",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010206",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010206",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010206",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x015920",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x015920",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false					
+                }
+            ]
         },
         {
-          "enemy_id": "0x010607",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010607",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015900",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015900",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
+            "stage_id": {
+                "id": 429,
+                "group_id": 4
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015920",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x015920",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x015900",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x015900",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x015900",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x015620",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x015620",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x015620",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x015620",
+                    "level": 73,
+                    "exp": 3500,
+                    "is_boss": false					
+                }
+            ]
         }
-      ]
-    },
-    {
-      "stage_id": {
-        "id": 373,
-        "group_id": 13
-      },
-      "enemies": [
+    ],	
+    "blocks": [	
         {
-          "enemy_id": "0x010206",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
+            "type": "NpcTalkAndOrder",	
+            "stage_id": {
+                "id": 373,
+                "group_id": 1,
+                "layer_no": 1
+            },				
+            "npc_id": "Boadicea",
+            "message_id": 10800
+        },
+        {				
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "groups": [0]
         },
         {
-          "enemy_id": "0x010206",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [0]		
+        },
+        {			
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Update",
+            "groups": [1]
         },
         {
-          "enemy_id": "0x010206",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [1]		
+        },
+        {				
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Update",
+            "groups": [2]
         },
         {
-          "enemy_id": "0x010206",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [2]		
         },
-        {
-          "enemy_id": "0x015920",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015920",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
+        {							
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 373,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Boadicea",
+            "message_id": 11842			
         }
-      ]
-    },
-    {
-      "stage_id": {
-        "id": 429,
-        "group_id": 4
-      },
-      "enemies": [
-        {
-          "enemy_id": "0x015920",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015920",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015900",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015900",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015900",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015620",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015620",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015620",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015620",
-          "level": 73,
-          "exp": 3500,
-          "is_boss": false
-        }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "NpcTalkAndOrder",
-      "stage_id": {
-        "id": 373,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "npc_id": "Boadicea",
-      "message_id": 10800
-    },
-    {
-      "type": "SeekOutEnemiesAtMarkedLocation",
-      "announce_type": "Accept",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "SeekOutEnemiesAtMarkedLocation",
-      "announce_type": "Update",
-      "groups": [
-        1
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "groups": [
-        1
-      ]
-    },
-    {
-      "type": "SeekOutEnemiesAtMarkedLocation",
-      "announce_type": "Update",
-      "groups": [
-        2
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "groups": [
-        2
-      ]
-    },
-    {
-      "type": "TalkToNpc",
-      "stage_id": {
-        "id": 373,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "announce_type": "Update",
-      "npc_id": "Boadicea",
-      "message_id": 11842
-    }
-  ]
+    ]
 }

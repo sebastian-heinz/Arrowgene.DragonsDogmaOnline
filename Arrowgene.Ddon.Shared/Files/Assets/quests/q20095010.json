@@ -1,136 +1,123 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "A Clash With the Orc Elite Corps",
-  "quest_id": 20095010,
-  "base_level": 48,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "ZandoraWastelands",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 1320
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 210
-    },
-    {
-      "type": "exp",
-      "amount": 1320
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "A Clash With the Orc Elite Corps",
+    "quest_id": 20095010,
+    "base_level": 48,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "ZandoraWastelands",
+    "rewards": [
         {
-          "item_id": 9324,
-          "num": 1
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1320
         },
         {
-          "item_id": 9327,
-          "num": 1
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 210
         },
         {
-          "item_id": 41,
-          "num": 1
+            "type": "exp",
+            "amount": 1320
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 9324,
+                    "num": 1
+                },
+                {
+                    "item_id": 9327,
+                    "num": 1
+                },
+                {
+                    "item_id": 41,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "loot_pool": [
+                {
+                    "item_id": 34,
+                    "num": 9,
+                    "chance": 1.0
+                }
+            ]
         }
-      ]
-    },
-    {
-      "type": "random",
-      "loot_pool": [
+    ],
+    "enemy_groups" : [
         {
-          "item_id": 34,
-          "num": 9,
-          "chance": 1.0
+            "stage_id": {
+                "id": 1,
+                "group_id": 407
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015802",
+                    "level": 48,
+                    "exp": 1400,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x015802",
+                    "level": 48,
+                    "exp": 1400,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x015810",
+                    "level": 48,
+                    "exp": 1400,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x015820",
+                    "level": 48,
+                    "exp": 1500,
+                    "is_boss": false
+                }
+            ]
         }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 480
-    }
-  ],
-  "enemy_groups": [
-    {
-      "stage_id": {
-        "id": 1,
-        "group_id": 407
-      },
-      "enemies": [
+    ],
+    "blocks": [
         {
-          "enemy_id": "0x015802",
-          "level": 48,
-          "exp": 1400,
-          "is_boss": false
+            "type": "NewNpcTalkAndOrder",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 1618, "comment": "Spawns ArisenCorpsRegimentalSoldier1 NPC"}
+            ],
+            "stage_id": {
+                "id": 1,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "ArisenCorpsRegimentalSoldier1",
+            "message_id": 11372
         },
         {
-          "enemy_id": "0x015802",
-          "level": 48,
-          "exp": 1400,
-          "is_boss": false
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "groups": [0]
         },
         {
-          "enemy_id": "0x015810",
-          "level": 48,
-          "exp": 1400,
-          "is_boss": false
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [0]
         },
         {
-          "enemy_id": "0x015820",
-          "level": 48,
-          "exp": 1500,
-          "is_boss": false
+            "type": "NewTalkToNpc",
+            "stage_id": {
+                "id": 1,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "ArisenCorpsRegimentalSoldier1",
+            "message_id": 11835
         }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "NewNpcTalkAndOrder",
-      "flags": [
-        {
-          "type": "QstLayout",
-          "action": "Set",
-          "value": 1618,
-          "comment": "Spawns ArisenCorpsRegimentalSoldier1 NPC"
-        }
-      ],
-      "stage_id": {
-        "id": 1,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "npc_id": "ArisenCorpsRegimentalSoldier1",
-      "message_id": 11372
-    },
-    {
-      "type": "SeekOutEnemiesAtMarkedLocation",
-      "announce_type": "Accept",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "NewTalkToNpc",
-      "stage_id": {
-        "id": 1,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "announce_type": "Update",
-      "npc_id": "ArisenCorpsRegimentalSoldier1",
-      "message_id": 11835
-    }
-  ]
+    ]
 }

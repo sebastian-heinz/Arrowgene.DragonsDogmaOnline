@@ -1,50 +1,46 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "A Yearning From A Distance",
-  "quest_id": 21000046,
-  "base_level": 63,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "BloodbaneIsle",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 5195
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 662
-    },
-    {
-      "type": "exp",
-      "amount": 3876
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "A Yearning From A Distance",
+    "quest_id": 21000046,
+    "base_level": 63,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+	"area_id": "BloodbaneIsle",	
+    "rewards": [
         {
-          "item_id": 7948,
-          "num": 2
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 5195
         },
         {
-          "item_id": 7848,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 662
         },
         {
-          "item_id": 41,
-          "num": 3
+            "type": "exp",
+            "amount": 3876
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 7948,
+                    "num": 2
+                },
+                {					
+                    "item_id": 7848,
+                    "num": 3
+                },
+                {				
+                    "item_id": 41,
+                    "num": 3					
+                }
+            ]
         }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 500
-    }
-  ],
-  "blocks": [
+    ],	
+    "blocks": [
     {
       "type": "NpcTalkAndOrder",
       "stage_id": {
@@ -67,7 +63,7 @@
           "amount": 6
         }
       ],
-      "message_id": 10737
+      "message_id": 10737		
     }
   ]
 }

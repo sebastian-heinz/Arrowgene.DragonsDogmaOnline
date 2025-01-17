@@ -52,21 +52,17 @@
           "num": 3
         }
       ]
-    },
-    {
+  },
+  {
       "type": "random",
       "loot_pool": [
-        {
-          "item_id": 61,
-          "num": 2,
-          "chance": 1.0
-        }
+          {
+              "item_id": 61,
+              "num": 2,
+              "chance": 1.0
+          }
       ]
-    },
-    {
-      "type": "ap",
-      "amount": 240
-    }
+  }
   ],
   "enemy_groups": [
     {
@@ -82,29 +78,25 @@
           "named_enemy_params_id": 54,
           "level": 30,
           "exp": 996
-        },
-        {
+        },{
           "comment": "Orc Soldier",
           "enemy_id": "0x015800",
           "named_enemy_params_id": 54,
           "level": 30,
           "exp": 996
-        },
-        {
+        },{
           "comment": "Orc Soldier",
           "enemy_id": "0x015800",
           "named_enemy_params_id": 54,
           "level": 30,
           "exp": 996
-        },
-        {
+        },{
           "comment": "Orc Soldier",
           "enemy_id": "0x015800",
           "named_enemy_params_id": 54,
           "level": 30,
           "exp": 996
-        },
-        {
+        },{
           "comment": "Orc Soldier",
           "enemy_id": "0x015800",
           "named_enemy_params_id": 54,
@@ -141,17 +133,13 @@
     {
       "type": "DiscoverEnemy",
       "announce_type": "Accept",
-      "groups": [
-        0
-      ]
+      "groups": [ 0 ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Update",
       "reset_group": false,
-      "groups": [
-        0
-      ]
+      "groups": [ 0 ]
     },
     {
       "type": "CollectItem",

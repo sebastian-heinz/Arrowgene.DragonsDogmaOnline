@@ -1,97 +1,89 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "Door of Treasures: The Green Over Rainbow",
-  "quest_id": 21014007,
-  "base_level": 70,
-  "minimum_item_rank": 0,
-  "discoverable": false,
-  "area_id": "ElanWaterGrove",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 13854
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 300
-    },
-    {
-      "type": "exp",
-      "amount": 7675
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Door of Treasures: The Green Over Rainbow",
+    "quest_id": 21014007,
+    "base_level": 70,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+	"area_id": "ElanWaterGrove",	
+    "rewards": [
         {
-          "item_id": 15969,
-          "num": 1
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 13854
         },
         {
-          "item_id": 15962,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 300
         },
         {
-          "item_id": 41,
-          "num": 3
+            "type": "exp",
+            "amount": 7675
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 15969,
+                    "num": 1
+                },
+                {					
+                    "item_id": 15962,
+                    "num": 3
+                },
+                {				
+                    "item_id": 41,
+                    "num": 3					
+                }
+            ]
         }
-      ]
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 415,
+                "group_id": 7
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015031",
+                    "level": 70,
+                    "exp": 85000,
+                    "is_boss": true
     },
     {
-      "type": "ap",
-      "amount": 500
-    }
-  ],
-  "enemy_groups": [
+                    "enemy_id": "0x015506",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+    },
     {
-      "stage_id": {
-        "id": 415,
-        "group_id": 7
-      },
-      "enemies": [
-        {
-          "enemy_id": "0x015031",
-          "level": 70,
-          "exp": 85000,
-          "is_boss": true
-        },
-        {
-          "enemy_id": "0x015506",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010611",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010611",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
+                    "enemy_id": "0x010611",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010611",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false							
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "DiscoverEnemy",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Accept",
-      "reset_group": true,
-      "groups": [
-        0
-      ]
-    }
-  ]
+    ],		
+    "blocks": [
+        {
+            "type": "DiscoverEnemy",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Accept",
+            "reset_group": true,
+            "groups": [0]
+        }
+    ]
 }

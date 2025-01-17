@@ -35,10 +35,6 @@
           "num": 3
         }
       ]
-    },
-    {
-      "type": "ap",
-      "amount": 40
     }
   ],
   "processes": [
@@ -65,16 +61,8 @@
         {
           "type": "MyQstFlags",
           "announce_type": "Accept",
-          "set_flags": [
-            6
-          ],
-          "check_flags": [
-            1,
-            2,
-            3,
-            4,
-            5
-          ]
+          "set_flags": [ 6 ],
+          "check_flags": [ 1, 2, 3, 4, 5 ]
         },
         {
           "type": "NewTalkToNpc",
@@ -93,9 +81,7 @@
       "blocks": [
         {
           "type": "MyQstFlags",
-          "check_flags": [
-            6
-          ]
+          "check_flags": [ 6 ]
         },
         {
           "type": "TalkToNpc",
@@ -108,9 +94,7 @@
         {
           "type": "MyQstFlags",
           "announce_type": "Update",
-          "set_flags": [
-            1
-          ]
+          "set_flags": [ 1 ]
         }
       ]
     },
@@ -119,9 +103,7 @@
       "blocks": [
         {
           "type": "MyQstFlags",
-          "check_flags": [
-            6
-          ]
+          "check_flags": [ 6 ]
         },
         {
           "type": "CollectItem",
@@ -148,9 +130,7 @@
               "value": 1125
             }
           ],
-          "set_flags": [
-            2
-          ]
+          "set_flags": [ 2 ]
         }
       ]
     },
@@ -159,9 +139,7 @@
       "blocks": [
         {
           "type": "MyQstFlags",
-          "check_flags": [
-            6
-          ]
+          "check_flags": [ 6 ]
         },
         {
           "type": "CollectItem",
@@ -181,9 +159,7 @@
         {
           "type": "MyQstFlags",
           "announce_type": "Update",
-          "set_flags": [
-            3
-          ],
+          "set_flags": [ 3 ],
           "flags": [
             {
               "type": "QstLayout",
@@ -199,9 +175,7 @@
       "blocks": [
         {
           "type": "MyQstFlags",
-          "check_flags": [
-            6
-          ]
+          "check_flags": [ 6 ]
         },
         {
           "type": "CollectItem",
@@ -221,9 +195,7 @@
         {
           "type": "MyQstFlags",
           "announce_type": "Update",
-          "set_flags": [
-            4
-          ],
+          "set_flags": [ 4 ],
           "flags": [
             {
               "type": "QstLayout",
@@ -239,9 +211,7 @@
       "blocks": [
         {
           "type": "MyQstFlags",
-          "check_flags": [
-            6
-          ]
+          "check_flags": [ 6 ]
         },
         {
           "type": "CollectItem",
@@ -261,9 +231,7 @@
         {
           "type": "MyQstFlags",
           "announce_type": "Update",
-          "set_flags": [
-            5
-          ],
+          "set_flags": [ 5 ],
           "flags": [
             {
               "type": "QstLayout",

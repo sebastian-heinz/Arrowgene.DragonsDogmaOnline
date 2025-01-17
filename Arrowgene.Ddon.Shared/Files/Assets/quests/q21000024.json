@@ -1,346 +1,294 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "High Difficulty: The Demon's Nest",
-  "quest_id": 21000024,
-  "base_level": 60,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "BloodbaneIsle",
-  "rewards": [
-    {
-      "type": "exp",
-      "amount": 9079
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 1980
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 250
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "High Difficulty: The Demon's Nest",
+    "quest_id": 21000024,
+    "base_level": 60,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+	"area_id": "BloodbaneIsle",	
+    "rewards": [
         {
-          "item_id": 11508,
-          "num": 2
+            "type": "exp",
+            "amount": 9079
         },
         {
-          "item_id": 7994,
-          "num": 7
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1980
         },
         {
-          "item_id": 9364,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 250
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 11508,
+                    "num": 2
+                },
+                {
+                    "item_id": 7994,
+                    "num": 7
+                },
+                {
+                    "item_id": 9364,
+                    "num": 3					
+                }
+            ]
         }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 500
-    }
-  ],
-  "enemy_groups": [
-    {
-      "stage_id": {
-        "id": 335,
-        "group_id": 4
-      },
-      "enemies": [
+    ],
+    "enemy_groups": [
         {
-          "enemy_id": "0x015500",
-          "level": 60,
-          "exp": 40000,
-          "is_boss": true
+            "stage_id": {
+                "id": 335,
+                "group_id": 4
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015500",
+                    "level": 60,
+                    "exp": 40000,
+					"is_boss": true
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 318,
+                "group_id": 1
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010400",
+                    "level": 60,
+                    "exp": 3000
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 318,
+                "group_id": 7
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010400",
+                    "level": 60,
+                    "exp": 3000
+                },
+                {
+                    "enemy_id": "0x010400",
+                    "level": 60,
+                    "exp": 3000
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 318,
+                "group_id": 2
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010160",
+                    "level": 60,
+                    "exp": 3000
+                },
+                {
+                    "enemy_id": "0x010160",
+                    "level": 60,
+                    "exp": 3000
+                },
+                {
+                    "enemy_id": "0x010307",
+                    "level": 60,
+                    "exp": 3000
+                },
+                {
+                    "enemy_id": "0x010307",
+                    "level": 60,
+                    "exp": 3000
+                },
+                {
+                    "enemy_id": "0x010600",
+                    "level": 60,
+                    "exp": 3000					
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 318,
+                "group_id": 6
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010400",
+                    "level": 60,
+                    "exp": 3000
+                },
+                {
+                    "enemy_id": "0x010400",
+                    "level": 60,
+                    "exp": 3000
+                },
+                {
+                    "enemy_id": "0x015012",
+                    "level": 60,
+                    "exp": 40000,
+					"is_boss": true,
+					"infected_type": 2
+                }
+            ]
         }
-      ]
-    },
-    {
-      "stage_id": {
-        "id": 318,
-        "group_id": 1
-      },
-      "enemies": [
+    ],
+    "processes": [
         {
-          "enemy_id": "0x010400",
-          "level": 60,
-          "exp": 3000
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 317
+                    },
+                    "npc_id": "549",
+                    "message_id": 11372
+                },
+                {
+                    "type": "MyQstFlags",
+                    "announce_type": "Accept",
+                    "set_flags": [1],
+                    "check_flags": [2, 3, 4, 5, 6]
+                },
+                {
+                    "type": "TalkToNpc",
+                    "stage_id": {
+                        "id": 317
+                    },
+                    "announce_type": "Update",
+                    "npc_id": "549",
+                    "message_id": 11842
+                }
+            ]
+        },
+        {
+            "comment": "Process1 (Demon Group 1)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+				},
+				{
+					"type": "SeekOutEnemiesAtMarkedLocation",
+					"announce_type": "Update",
+					"groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [0]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "set_flags": [2]
+                }
+            ]
+        },
+        {
+            "comment": "Process2 (Demons Group 2)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+                },
+                {
+                    "type": "DiscoverEnemy",					
+                    "groups": [1]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [1]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "set_flags": [3]
+                }
+            ]
+        },
+        {
+            "comment": "Process3 (Demons Group 3)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+                },
+                {
+                    "type": "DiscoverEnemy",					
+                    "groups": [2]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [2]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "set_flags": [4]
+                }
+            ]
+        },
+        {
+            "comment": "Process3 (Demons Group 4)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+                },
+                {
+                    "type": "DiscoverEnemy",				
+                    "groups": [3]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [3]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "set_flags": [5]
+                }
+            ]
+        },
+        {
+            "comment": "Process3 (Demons Group 5)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+                },
+                {
+                    "type": "DiscoverEnemy",					
+                    "groups": [4]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [4]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "set_flags": [6]						
+                }
+            ]
         }
-      ]
-    },
-    {
-      "stage_id": {
-        "id": 318,
-        "group_id": 7
-      },
-      "enemies": [
-        {
-          "enemy_id": "0x010400",
-          "level": 60,
-          "exp": 3000
-        },
-        {
-          "enemy_id": "0x010400",
-          "level": 60,
-          "exp": 3000
-        }
-      ]
-    },
-    {
-      "stage_id": {
-        "id": 318,
-        "group_id": 2
-      },
-      "enemies": [
-        {
-          "enemy_id": "0x010160",
-          "level": 60,
-          "exp": 3000
-        },
-        {
-          "enemy_id": "0x010160",
-          "level": 60,
-          "exp": 3000
-        },
-        {
-          "enemy_id": "0x010307",
-          "level": 60,
-          "exp": 3000
-        },
-        {
-          "enemy_id": "0x010307",
-          "level": 60,
-          "exp": 3000
-        },
-        {
-          "enemy_id": "0x010600",
-          "level": 60,
-          "exp": 3000
-        }
-      ]
-    },
-    {
-      "stage_id": {
-        "id": 318,
-        "group_id": 6
-      },
-      "enemies": [
-        {
-          "enemy_id": "0x010400",
-          "level": 60,
-          "exp": 3000
-        },
-        {
-          "enemy_id": "0x010400",
-          "level": 60,
-          "exp": 3000
-        },
-        {
-          "enemy_id": "0x015012",
-          "level": 60,
-          "exp": 40000,
-          "is_boss": true,
-          "infected_type": 2
-        }
-      ]
-    }
-  ],
-  "processes": [
-    {
-      "comment": "Process 0",
-      "blocks": [
-        {
-          "type": "NpcTalkAndOrder",
-          "stage_id": {
-            "id": 317
-          },
-          "npc_id": "549",
-          "message_id": 11372
-        },
-        {
-          "type": "MyQstFlags",
-          "announce_type": "Accept",
-          "set_flags": [
-            1
-          ],
-          "check_flags": [
-            2,
-            3,
-            4,
-            5,
-            6
-          ]
-        },
-        {
-          "type": "TalkToNpc",
-          "stage_id": {
-            "id": 317
-          },
-          "announce_type": "Update",
-          "npc_id": "549",
-          "message_id": 11842
-        }
-      ]
-    },
-    {
-      "comment": "Process1 (Demon Group 1)",
-      "blocks": [
-        {
-          "type": "MyQstFlags",
-          "check_flags": [
-            1
-          ]
-        },
-        {
-          "type": "SeekOutEnemiesAtMarkedLocation",
-          "announce_type": "Update",
-          "groups": [
-            0
-          ]
-        },
-        {
-          "type": "KillGroup",
-          "announce_type": "Update",
-          "reset_group": false,
-          "groups": [
-            0
-          ]
-        },
-        {
-          "type": "MyQstFlags",
-          "set_flags": [
-            2
-          ]
-        }
-      ]
-    },
-    {
-      "comment": "Process2 (Demons Group 2)",
-      "blocks": [
-        {
-          "type": "MyQstFlags",
-          "check_flags": [
-            1
-          ]
-        },
-        {
-          "type": "DiscoverEnemy",
-          "groups": [
-            1
-          ]
-        },
-        {
-          "type": "KillGroup",
-          "announce_type": "Update",
-          "reset_group": false,
-          "groups": [
-            1
-          ]
-        },
-        {
-          "type": "MyQstFlags",
-          "set_flags": [
-            3
-          ]
-        }
-      ]
-    },
-    {
-      "comment": "Process3 (Demons Group 3)",
-      "blocks": [
-        {
-          "type": "MyQstFlags",
-          "check_flags": [
-            1
-          ]
-        },
-        {
-          "type": "DiscoverEnemy",
-          "groups": [
-            2
-          ]
-        },
-        {
-          "type": "KillGroup",
-          "announce_type": "Update",
-          "reset_group": false,
-          "groups": [
-            2
-          ]
-        },
-        {
-          "type": "MyQstFlags",
-          "set_flags": [
-            4
-          ]
-        }
-      ]
-    },
-    {
-      "comment": "Process3 (Demons Group 4)",
-      "blocks": [
-        {
-          "type": "MyQstFlags",
-          "check_flags": [
-            1
-          ]
-        },
-        {
-          "type": "DiscoverEnemy",
-          "groups": [
-            3
-          ]
-        },
-        {
-          "type": "KillGroup",
-          "announce_type": "Update",
-          "reset_group": false,
-          "groups": [
-            3
-          ]
-        },
-        {
-          "type": "MyQstFlags",
-          "set_flags": [
-            5
-          ]
-        }
-      ]
-    },
-    {
-      "comment": "Process3 (Demons Group 5)",
-      "blocks": [
-        {
-          "type": "MyQstFlags",
-          "check_flags": [
-            1
-          ]
-        },
-        {
-          "type": "DiscoverEnemy",
-          "groups": [
-            4
-          ]
-        },
-        {
-          "type": "KillGroup",
-          "announce_type": "Update",
-          "reset_group": false,
-          "groups": [
-            4
-          ]
-        },
-        {
-          "type": "MyQstFlags",
-          "set_flags": [
-            6
-          ]
-        }
-      ]
-    }
-  ]
+    ]
 }

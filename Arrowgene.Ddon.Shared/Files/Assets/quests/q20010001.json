@@ -1,162 +1,152 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "Boats Buddy",
-  "quest_id": 20010001,
-  "base_level": 9,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "BreyaCoast",
-  "news_image": 22,
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 240
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 30
-    },
-    {
-      "type": "exp",
-      "amount": 390
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Boats Buddy",
+    "quest_id": 20010001,
+    "base_level": 9,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "BreyaCoast",
+    "news_image": 22,
+    "rewards": [
         {
-          "item_id": 502,
-          "num": 1
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 240
         },
         {
-          "item_id": 9370,
-          "num": 2
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 30
+        },
+        {
+            "type": "exp",
+            "amount": 390
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 502,
+                    "num": 1
+                },
+                {
+                    "item_id": 9370,
+                    "num": 2
+                }
+            ]
         }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 40
-    }
-  ],
-  "enemy_groups": [
-    {
-      "stage_id": {
-        "id": 1,
-        "group_id": 83
-      },
-      "placement_type": "Manual",
-      "enemies": [
+    ],
+    "enemy_groups": [
         {
-          "enemy_id": "0x010600",
-          "level": 9,
-          "exp": 94,
-          "is_boss": false,
-          "index": 4
+            "stage_id": {
+                "id": 1,
+                "group_id": 83
+            },
+            "placement_type": "Manual",
+            "enemies": [
+                {
+                    "enemy_id": "0x010600",
+                    "level": 9,
+                    "exp": 94,
+                    "is_boss": false,
+                    "index": 4
+                },
+                {
+                    "enemy_id": "0x010600",
+                    "level": 9,
+                    "exp": 94,
+                    "is_boss": false,
+                    "index": 5
+                },
+                {
+                    "enemy_id": "0x010600",
+                    "level": 9,
+                    "exp": 94,
+                    "is_boss": false,
+                    "index": 6
+                },
+                {
+                    "enemy_id": "0x010600",
+                    "level": 9,
+                    "exp": 94,
+                    "is_boss": false,
+                    "index": 7
+                }
+            ]
         },
         {
-          "enemy_id": "0x010600",
-          "level": 9,
-          "exp": 94,
-          "is_boss": false,
-          "index": 5
-        },
-        {
-          "enemy_id": "0x010600",
-          "level": 9,
-          "exp": 94,
-          "is_boss": false,
-          "index": 6
-        },
-        {
-          "enemy_id": "0x010600",
-          "level": 9,
-          "exp": 94,
-          "is_boss": false,
-          "index": 7
+            "stage_id": {
+                "id": 1,
+                "group_id": 83
+            },
+            "placement_type": "Manual",
+            "enemies": [
+                {
+                    "enemy_id": "0x010400",
+                    "level": 9,
+                    "exp": 94,
+                    "is_boss": false,
+                    "index": 8
+                },
+                {
+                    "enemy_id": "0x010400",
+                    "level": 9,
+                    "exp": 94,
+                    "is_boss": false,
+                    "index": 9
+                },
+                {
+                    "enemy_id": "0x010400",
+                    "level": 9,
+                    "exp": 94,
+                    "is_boss": false,
+                    "index": 10
+                },
+                {
+                    "enemy_id": "0x010401",
+                    "level": 9,
+                    "exp": 190,
+                    "is_boss": false,
+                    "index": 11
+                }
+            ]
         }
-      ]
-    },
-    {
-      "stage_id": {
-        "id": 1,
-        "group_id": 83
-      },
-      "placement_type": "Manual",
-      "enemies": [
+    ],
+    "blocks": [
         {
-          "enemy_id": "0x010400",
-          "level": 9,
-          "exp": 94,
-          "is_boss": false,
-          "index": 8
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 1,
+                "group_id": 0
+            },
+            "npc_id": "Walter",
+            "message_id": 10800
         },
         {
-          "enemy_id": "0x010400",
-          "level": 9,
-          "exp": 94,
-          "is_boss": false,
-          "index": 9
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [ 0 ]
         },
         {
-          "enemy_id": "0x010400",
-          "level": 9,
-          "exp": 94,
-          "is_boss": false,
-          "index": 10
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [ 0 ]
         },
         {
-          "enemy_id": "0x010401",
-          "level": 9,
-          "exp": 190,
-          "is_boss": false,
-          "index": 11
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [ 1 ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Walter",
+            "message_id": 10805
         }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "NpcTalkAndOrder",
-      "stage_id": {
-        "id": 1,
-        "group_id": 0
-      },
-      "npc_id": "Walter",
-      "message_id": 10800
-    },
-    {
-      "type": "DiscoverEnemy",
-      "announce_type": "Accept",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "reset_group": false,
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "groups": [
-        1
-      ]
-    },
-    {
-      "type": "TalkToNpc",
-      "stage_id": {
-        "id": 1
-      },
-      "announce_type": "Update",
-      "npc_id": "Walter",
-      "message_id": 10805
-    }
-  ]
+    ]
 }

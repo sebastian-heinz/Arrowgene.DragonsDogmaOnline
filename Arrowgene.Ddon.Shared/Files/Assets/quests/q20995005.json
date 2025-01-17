@@ -1,124 +1,112 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "An Altered Beast Attacks!",
-  "quest_id": 20995005,
-  "base_level": 55,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "MergodaRuins",
-  "rewards": [
-    {
-      "type": "exp",
-      "amount": 3630
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 1810
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 360
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "An Altered Beast Attacks!",
+    "quest_id": 20995005,
+    "base_level": 55,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "MergodaRuins",
+    "rewards": [
         {
-          "item_id": 7823,
-          "num": 1
+            "type": "exp",
+            "amount": 3630
         },
         {
-          "item_id": 8031,
-          "num": 2
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1810
         },
         {
-          "item_id": 9378,
-          "num": 2
-        }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 690
-    }
-  ],
-  "enemy_groups": [
-    {
-      "stage_id": {
-        "id": 76,
-        "group_id": 4,
-        "sub_group_id": 0,
-        "layer_no": 0
-      },
-      "placement_type": "manual",
-      "enemies": [
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 360
+        },
         {
-          "enemy_id": "0x015304",
-          "level": 55,
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 54,
-          "exp": 19700,
-          "is_boss": true,
-          "index": 15,
-          "drop_items": [
-            {
-              "item_id": 7823,
-              "item_min": 1,
-              "item_max": 3,
-              "quality": 1,
-              "drop_chance": 0.9
-            }
-          ]
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 7823,
+                    "num": 1
+                },
+                {
+                    "item_id": 8031,
+                    "num": 2
+                },
+                {
+                    "item_id": 9378,
+                    "num": 2
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "NewNpcTalkAndOrder",
-      "flags": [
+    ],
+    "enemy_groups" : [
         {
-          "type": "QstLayout",
-          "action": "Set",
-          "value": 1620,
-          "comment": "Spawns Eunike NPC"
+            "stage_id": {
+                "id": 76,
+                "group_id": 4,
+                "sub_group_id": 0,
+                "layer_no": 0
+                
+            },
+                "placement_type": "manual",
+            "enemies": [
+                {
+                    "enemy_id": "0x015304",
+                    "level": 55,
+                    "start_think_tbl_no": 1,
+		            "named_enemy_params_id": 54,
+                    "exp": 19700,
+                    "is_boss": true,
+                    "index": 15,
+                    "drop_items": [
+                        {
+                        "item_id": 7823,
+                        "item_min": 1,
+                        "item_max": 3,
+                        "quality": 1,
+                        "drop_chance": 0.9
+                      }
+                    ]
+                }
+            ]
         }
-      ],
-      "stage_id": {
-        "id": 76,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "npc_id": "Eunike",
-      "message_id": 11372
-    },
-    {
-      "type": "SeekOutEnemiesAtMarkedLocation",
-      "announce_type": "Accept",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "reset_group": false,
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "NewTalkToNpc",
-      "stage_id": {
-        "id": 76,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "announce_type": "Update",
-      "npc_id": "Eunike",
-      "message_id": 11842
-    }
-  ]
+    ],
+    "blocks": [
+        {
+            "type": "NewNpcTalkAndOrder",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 1620, "comment": "Spawns Eunike NPC"}
+            ],
+            "stage_id": {
+                "id": 76,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "Eunike",
+            "message_id": 11372
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [0]
+        },
+        {
+            "type": "NewTalkToNpc",
+            "stage_id": {
+                "id": 76,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Eunike",
+            "message_id": 11842
+        }
+    ]
 }

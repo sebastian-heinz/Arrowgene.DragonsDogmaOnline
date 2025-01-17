@@ -1,83 +1,75 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "A Strange Creature Dances In the Forest (Ape)",
-  "quest_id": 20055001,
-  "quest_schedule_id": 587654,
-  "base_level": 15,
-  "minimum_item_rank": 0,
-  "discoverable": false,
-  "area_id": "MysreeForest",
-  "news_image": 101,
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 490
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 70
-    },
-    {
-      "type": "exp",
-      "amount": 690
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "A Strange Creature Dances In the Forest (Ape)",
+    "quest_id": 20055001,
+    "quest_schedule_id": 587654,
+    "base_level": 15,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "area_id": "MysreeForest",
+    "news_image": 101,
+    "rewards": [
         {
-          "item_id": 448,
-          "num": 1
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 490
         },
         {
-          "item_id": 61,
-          "num": 2
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 70
         },
         {
-          "item_id": 9409,
-          "num": 1
-        }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 90
-    }
-  ],
-  "enemy_groups": [
-    {
-      "stage_id": {
-        "id": 1,
-        "group_id": 57
-      },
-      "enemies": [
+            "type": "exp",
+            "amount": 690
+        },
         {
-          "comment": "Young Dread Ape",
-          "enemy_id": "0x015502",
-          "named_enemy_params_id": 459,
-          "level": 15,
-          "exp": 2780,
-          "is_boss": true
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 448,
+                    "num": 1
+                },
+                {
+                    "item_id": 61,
+                    "num": 2
+                },
+                {
+                    "item_id": 9409,
+                    "num": 1
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "DiscoverEnemy",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Accept",
-      "reset_group": false,
-      "groups": [
-        0
-      ]
-    }
-  ]
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 57
+            },
+            "enemies": [
+                {
+                    "comment": "Young Dread Ape",
+                    "enemy_id": "0x015502",
+                    "named_enemy_params_id": 459,
+                    "level": 15,
+                    "exp": 2780,
+                    "is_boss": true
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "DiscoverEnemy",
+            "groups": [ 0 ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Accept",
+            "reset_group": false,
+            "groups": [ 0 ]
+        }
+    ]
 }

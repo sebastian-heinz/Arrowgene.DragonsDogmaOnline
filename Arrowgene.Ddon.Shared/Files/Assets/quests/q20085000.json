@@ -1,145 +1,137 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "The Lord of the Wastes",
-  "quest_id": 20085000,
-  "base_level": 52,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "EasternZandora",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 1430
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 250
-    },
-    {
-      "type": "exp",
-      "amount": 1880
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Lord of the Wastes",
+    "quest_id": 20085000,
+    "base_level": 52,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+  "area_id": "EasternZandora",		
+    "rewards": [
         {
-          "item_id": 7772,
-          "num": 1
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1430
         },
         {
-          "item_id": 7555,
-          "num": 2
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 250
         },
         {
-          "item_id": 9364,
-          "num": 2
+            "type": "exp",
+            "amount": 1880
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 7772,
+                    "num": 1
+                },
+                {
+                    "item_id": 7555,
+                    "num": 2
+                },
+                {
+                    "item_id": 9364,
+                    "num": 2
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "loot_pool": [
+                {
+                    "item_id": 34,
+                    "num": 9,
+                    "chance": 1.0
+                }
+            ]
         }
-      ]
-    },
-    {
-      "type": "random",
-      "loot_pool": [
+    ],
+    "enemy_groups" : [
         {
-          "item_id": 34,
-          "num": 9,
-          "chance": 1.0
+            "stage_id": {
+                "id": 149,
+                "group_id": 2
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010311",
+                    "start_think_tbl_no": 0,
+		            "named_enemy_params_id": 56,
+                    "level": 52,
+                    "exp": 6146,
+                    "is_boss": false
+        },
+        {
+                    "enemy_id": "0x010311",
+                    "start_think_tbl_no": 0,
+		            "named_enemy_params_id": 56,
+                    "level": 52,
+                    "exp": 6146,
+                    "is_boss": false
+        },
+        {					
+                    "enemy_id": "0x010313",
+                    "start_think_tbl_no": 1,
+		            "named_enemy_params_id": 56,
+                    "level": 52,
+                    "exp": 6146,
+                    "is_boss": false
+        },
+        {					
+                    "enemy_id": "0x010313",
+                    "start_think_tbl_no": 1,
+		            "named_enemy_params_id": 56,
+                    "level": 52,
+                    "exp": 6146,
+                    "is_boss": false					
+                },
+                {
+                    "enemy_id": "0x010311",
+                    "start_think_tbl_no": 0,
+		            "named_enemy_params_id": 56,
+                    "level": 52,
+                    "exp": 6146,
+                    "is_boss": false
         }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 580
-    }
-  ],
-  "enemy_groups": [
-    {
-      "stage_id": {
-        "id": 149,
-        "group_id": 2
-      },
-      "enemies": [
-        {
-          "enemy_id": "0x010311",
-          "start_think_tbl_no": 0,
-          "named_enemy_params_id": 56,
-          "level": 52,
-          "exp": 6146,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010311",
-          "start_think_tbl_no": 0,
-          "named_enemy_params_id": 56,
-          "level": 52,
-          "exp": 6146,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010313",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 56,
-          "level": 52,
-          "exp": 6146,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010313",
-          "start_think_tbl_no": 1,
-          "named_enemy_params_id": 56,
-          "level": 52,
-          "exp": 6146,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010311",
-          "start_think_tbl_no": 0,
-          "named_enemy_params_id": 56,
-          "level": 52,
-          "exp": 6146,
-          "is_boss": false
+            ]
         }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "NpcTalkAndOrder",
-      "stage_id": {
-        "id": 54,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "npc_id": "Casey",
-      "message_id": 11372
-    },
-    {
-      "type": "SeekOutEnemiesAtMarkedLocation",
-      "announce_type": "Accept",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "reset_group": false,
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "TalkToNpc",
-      "stage_id": {
-        "id": 54,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "announce_type": "Update",
-      "npc_id": "Casey",
-      "message_id": 11835
-    }
-  ]
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 54,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "Casey",
+            "message_id": 11372
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [0]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 54,
+                "group_id": 1,
+                "layer_no": 1				
+            },
+            "announce_type": "Update",
+            "npc_id": "Casey",
+            "message_id": 11835
+        }
+    ]
 }

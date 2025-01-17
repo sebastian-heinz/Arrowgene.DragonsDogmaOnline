@@ -1,246 +1,230 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "Source of Disturbance",
-  "quest_id": 21016000,
-  "base_level": 70,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "MorrowForest",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 2309
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 300
-    },
-    {
-      "type": "exp",
-      "amount": 9210
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Source of Disturbance",
+    "quest_id": 21016000,
+    "base_level": 70,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+	"area_id": "MorrowForest",	
+    "rewards": [
         {
-          "item_id": 7883,
-          "num": 1
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 2309
         },
         {
-          "item_id": 9364,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 300
         },
         {
-          "item_id": 41,
-          "num": 3
+            "type": "exp",
+            "amount": 9210
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 7883,
+                    "num": 1
+                },
+                {					
+                    "item_id": 9364,
+                    "num": 3
+                },
+                {				
+                    "item_id": 41,
+                    "num": 3					
+                }
+            ]
         }
-      ]
+    ],
+  "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 374,
+                "group_id": 5
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010160",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
     },
     {
-      "type": "ap",
-      "amount": 500
-    }
-  ],
-  "enemy_groups": [
+                    "enemy_id": "0x010160",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+    },
     {
-      "stage_id": {
-        "id": 374,
-        "group_id": 5
-      },
-      "enemies": [
-        {
-          "enemy_id": "0x010160",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
+                    "enemy_id": "0x010160",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010162",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010162",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false					
+                }
+            ]
         },
         {
-          "enemy_id": "0x010160",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
+            "stage_id": {
+                "id": 374,
+                "group_id": 6
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010601",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010601",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010209",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010209",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010209",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010209",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false					
+                }
+            ]
         },
         {
-          "enemy_id": "0x010160",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010162",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010162",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
+            "stage_id": {
+                "id": 374,
+                "group_id": 8
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x010601",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010601",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010161",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010161",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010161",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010209",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+    },
+    {
+                    "enemy_id": "0x010209",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false					
+                }
+            ]
         }
-      ]
-    },
-    {
-      "stage_id": {
-        "id": 374,
-        "group_id": 6
-      },
-      "enemies": [
+    ],	
+    "blocks": [	
         {
-          "enemy_id": "0x010601",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
+            "type": "NpcTalkAndOrder",	
+            "stage_id": {
+                "id": 340,
+                "group_id": 1,
+                "layer_no": 1
+            },				
+            "npc_id": "Suronya",
+            "message_id": 10800
+        },
+        {				
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "groups": [0]
         },
         {
-          "enemy_id": "0x010601",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [0]				
+        },
+        {				
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Update",
+            "groups": [1]
         },
         {
-          "enemy_id": "0x010209",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [1]				
+        },
+        {			
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Update",
+            "groups": [2]
         },
         {
-          "enemy_id": "0x010209",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "groups": [2]				
         },
-        {
-          "enemy_id": "0x010209",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010209",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
+        {				
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 340,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Suronya",
+            "message_id": 11842			
         }
-      ]
-    },
-    {
-      "stage_id": {
-        "id": 374,
-        "group_id": 8
-      },
-      "enemies": [
-        {
-          "enemy_id": "0x010601",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010601",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010161",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010161",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010161",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010209",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x010209",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
-        }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "NpcTalkAndOrder",
-      "stage_id": {
-        "id": 340,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "npc_id": "Suronya",
-      "message_id": 10800
-    },
-    {
-      "type": "SeekOutEnemiesAtMarkedLocation",
-      "announce_type": "Accept",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "SeekOutEnemiesAtMarkedLocation",
-      "announce_type": "Update",
-      "groups": [
-        1
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "groups": [
-        1
-      ]
-    },
-    {
-      "type": "SeekOutEnemiesAtMarkedLocation",
-      "announce_type": "Update",
-      "groups": [
-        2
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "groups": [
-        2
-      ]
-    },
-    {
-      "type": "TalkToNpc",
-      "stage_id": {
-        "id": 340,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "announce_type": "Update",
-      "npc_id": "Suronya",
-      "message_id": 11842
-    }
-  ]
+    ]
 }

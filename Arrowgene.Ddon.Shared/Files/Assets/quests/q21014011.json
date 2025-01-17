@@ -1,271 +1,237 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "The Warm Night Outlaw",
-  "quest_id": 21014011,
-  "base_level": 75,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "ElanWaterGrove",
-  "rewards": [
-    {
-      "type": "exp",
-      "amount": 21915
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 4493
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 665
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Warm Night Outlaw",
+    "quest_id": 21014011,
+    "base_level": 75,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+	"area_id": "ElanWaterGrove",	
+    "rewards": [
         {
-          "item_id": 15931,
-          "num": 3
+            "type": "exp",
+            "amount": 21915
         },
         {
-          "item_id": 15969,
-          "num": 1
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 4493
         },
         {
-          "item_id": 15962,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 665
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 15931,
+                    "num": 3
+                },
+                {
+                    "item_id": 15969,
+                    "num": 1
+                },
+                {
+                    "item_id": 15962,
+                    "num": 3					
+                }
+            ]
         }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 500
-    }
-  ],
-  "enemy_groups": [
-    {
-      "stage_id": {
-        "id": 372,
-        "group_id": 16
-      },
-      "enemies": [
+    ],
+    "enemy_groups": [
         {
-          "enemy_id": "0x015502",
-          "level": 75,
-          "exp": 86000,
-          "is_boss": true
+            "stage_id": {
+                "id": 372,
+                "group_id": 16
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015502",
+                    "level": 75,
+                    "exp": 86000,
+					"is_boss": true
+                },
+                {
+                    "enemy_id": "0x010611",
+                    "level": 75,
+                    "exp": 5000
+                },
+                {
+                    "enemy_id": "0x010611",
+                    "level": 75,
+                    "exp": 5000
+                },
+                {
+                    "enemy_id": "0x010611",
+                    "level": 75,
+                    "exp": 5000
+                },
+                {
+                    "enemy_id": "0x010611",
+                    "level": 75,
+                    "exp": 5000					
+                }
+            ]
         },
         {
-          "enemy_id": "0x010611",
-          "level": 75,
-          "exp": 5000
+            "stage_id": {
+                "id": 372,
+                "group_id": 32
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015040",
+                    "level": 75,
+                    "exp": 87000,
+					"is_boss": true
+                },
+                {
+                    "enemy_id": "0x010203",
+                    "level": 75,
+                    "exp": 5000
+                },
+                {
+                    "enemy_id": "0x010203",
+                    "level": 75,
+                    "exp": 5000
+                },
+                {
+                    "enemy_id": "0x010203",
+                    "level": 75,
+                    "exp": 5000
+                },
+                {
+                    "enemy_id": "0x010203",
+                    "level": 75,
+                    "exp": 5000					
+                }
+            ]
         },
         {
-          "enemy_id": "0x010611",
-          "level": 75,
-          "exp": 5000
-        },
-        {
-          "enemy_id": "0x010611",
-          "level": 75,
-          "exp": 5000
-        },
-        {
-          "enemy_id": "0x010611",
-          "level": 75,
-          "exp": 5000
+            "stage_id": {
+                "id": 416,
+                "group_id": 5
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015506",
+                    "level": 75,
+                    "exp": 87000,
+					"is_boss": true
+                },
+                {
+                    "enemy_id": "0x015507",
+                    "level": 75,
+                    "exp": 3000
+                },
+                {
+                    "enemy_id": "0x015507",
+                    "level": 75,
+                    "exp": 3000
+                }
+            ]
         }
-      ]
-    },
-    {
-      "stage_id": {
-        "id": 372,
-        "group_id": 32
-      },
-      "enemies": [
+    ],
+    "processes": [
         {
-          "enemy_id": "0x015040",
-          "level": 75,
-          "exp": 87000,
-          "is_boss": true
+            "comment": "Process 0",
+            "blocks": [
+                {
+                    "type": "NpcTalkAndOrder",
+                    "stage_id": {
+                        "id": 372
+                    },
+                    "npc_id": "Gobinet",
+                    "message_id": 11372
+                },
+                {
+                    "type": "MyQstFlags",
+                    "announce_type": "Accept",
+                    "set_flags": [1],
+                    "check_flags": [2, 3, 4]
+                },
+                {
+                    "type": "TalkToNpc",
+                    "stage_id": {
+                        "id": 372
+                    },
+                    "announce_type": "Update",
+                    "npc_id": "Gobinet",
+                    "message_id": 11842
+                }
+            ]
         },
         {
-          "enemy_id": "0x010203",
-          "level": 75,
-          "exp": 5000
+            "comment": "Process1 (Demon Group 1)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+				},
+				{
+					"type": "SeekOutEnemiesAtMarkedLocation",
+					"announce_type": "Update",
+					"groups": [0]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [0]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "set_flags": [2]
+                }
+            ]
         },
         {
-          "enemy_id": "0x010203",
-          "level": 75,
-          "exp": 5000
+            "comment": "Process2 (Demons Group 2)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "groups": [1]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [1]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "set_flags": [3]
+                }
+            ]
         },
         {
-          "enemy_id": "0x010203",
-          "level": 75,
-          "exp": 5000
-        },
-        {
-          "enemy_id": "0x010203",
-          "level": 75,
-          "exp": 5000
+            "comment": "Process3 (Demons Group 3)",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [1]
+                },
+                {
+                    "type": "DiscoverEnemy",
+                    "groups": [2]
+                },
+                {
+                    "type": "KillGroup",
+                    "announce_type": "Update",
+                    "reset_group": false,
+                    "groups": [2]
+                },
+                {
+                    "type": "MyQstFlags",
+                    "set_flags": [4]					
+                }
+            ]
         }
-      ]
-    },
-    {
-      "stage_id": {
-        "id": 416,
-        "group_id": 5
-      },
-      "enemies": [
-        {
-          "enemy_id": "0x015506",
-          "level": 75,
-          "exp": 87000,
-          "is_boss": true
-        },
-        {
-          "enemy_id": "0x015507",
-          "level": 75,
-          "exp": 3000
-        },
-        {
-          "enemy_id": "0x015507",
-          "level": 75,
-          "exp": 3000
-        }
-      ]
-    }
-  ],
-  "processes": [
-    {
-      "comment": "Process 0",
-      "blocks": [
-        {
-          "type": "NpcTalkAndOrder",
-          "stage_id": {
-            "id": 372
-          },
-          "npc_id": "Gobinet",
-          "message_id": 11372
-        },
-        {
-          "type": "MyQstFlags",
-          "announce_type": "Accept",
-          "set_flags": [
-            1
-          ],
-          "check_flags": [
-            2,
-            3,
-            4
-          ]
-        },
-        {
-          "type": "TalkToNpc",
-          "stage_id": {
-            "id": 372
-          },
-          "announce_type": "Update",
-          "npc_id": "Gobinet",
-          "message_id": 11842
-        }
-      ]
-    },
-    {
-      "comment": "Process1 (Demon Group 1)",
-      "blocks": [
-        {
-          "type": "MyQstFlags",
-          "check_flags": [
-            1
-          ]
-        },
-        {
-          "type": "SeekOutEnemiesAtMarkedLocation",
-          "announce_type": "Update",
-          "groups": [
-            0
-          ]
-        },
-        {
-          "type": "KillGroup",
-          "announce_type": "Update",
-          "reset_group": false,
-          "groups": [
-            0
-          ]
-        },
-        {
-          "type": "MyQstFlags",
-          "set_flags": [
-            2
-          ]
-        }
-      ]
-    },
-    {
-      "comment": "Process2 (Demons Group 2)",
-      "blocks": [
-        {
-          "type": "MyQstFlags",
-          "check_flags": [
-            1
-          ]
-        },
-        {
-          "type": "DiscoverEnemy",
-          "groups": [
-            1
-          ]
-        },
-        {
-          "type": "KillGroup",
-          "announce_type": "Update",
-          "reset_group": false,
-          "groups": [
-            1
-          ]
-        },
-        {
-          "type": "MyQstFlags",
-          "set_flags": [
-            3
-          ]
-        }
-      ]
-    },
-    {
-      "comment": "Process3 (Demons Group 3)",
-      "blocks": [
-        {
-          "type": "MyQstFlags",
-          "check_flags": [
-            1
-          ]
-        },
-        {
-          "type": "DiscoverEnemy",
-          "groups": [
-            2
-          ]
-        },
-        {
-          "type": "KillGroup",
-          "announce_type": "Update",
-          "reset_group": false,
-          "groups": [
-            2
-          ]
-        },
-        {
-          "type": "MyQstFlags",
-          "set_flags": [
-            4
-          ]
-        }
-      ]
-    }
-  ]
+    ]
 }

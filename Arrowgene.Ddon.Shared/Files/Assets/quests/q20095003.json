@@ -1,98 +1,90 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "The Sinister Beasts",
-  "quest_id": 20095003,
-  "base_level": 49,
-  "minimum_item_rank": 0,
-  "discoverable": false,
-  "area_id": "ZandoraWastelands",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 1050
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 210
-    },
-    {
-      "type": "exp",
-      "amount": 1320
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Sinister Beasts",
+    "quest_id": 20095003,
+    "base_level": 49,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+  "area_id": "ZandoraWastelands",	
+    "rewards": [
         {
-          "item_id": 7781,
-          "num": 2
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1050
         },
         {
-          "item_id": 9363,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 210
         },
         {
-          "item_id": 41,
-          "num": 1
+            "type": "exp",
+            "amount": 1320
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 7781,
+                    "num": 2
+                },
+                {
+                    "item_id": 9363,
+                    "num": 3
+                },
+                {
+                    "item_id": 41,
+                    "num": 1
+                }
+            ]
         }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 480
-    }
-  ],
-  "enemy_groups": [
-    {
-      "stage_id": {
-        "id": 164,
-        "group_id": 0
-      },
-      "starting_index": 6,
-      "enemies": [
+    ],
+    "enemy_groups" : [
         {
-          "enemy_id": "0x015200",
-          "level": 50,
-          "exp": 20000,
-          "is_boss": true
+            "stage_id": {
+                "id": 164,
+                "group_id": 0
+            },
+			"starting_index": 6,			
+            "enemies": [
+                {
+                    "enemy_id": "0x015200",
+                    "level": 50,
+                    "exp": 20000,
+                    "is_boss": true
         },
         {
-          "enemy_id": "0x011130",
-          "level": 48,
-          "exp": 1300,
-          "is_boss": false
+                    "enemy_id": "0x011130",
+                    "level": 48,
+                    "exp": 1300,
+                    "is_boss": false
         },
         {
-          "enemy_id": "0x011130",
-          "level": 48,
-          "exp": 1300,
-          "is_boss": false
+                    "enemy_id": "0x011130",
+                    "level": 48,
+                    "exp": 1300,
+                    "is_boss": false
         },
         {
-          "enemy_id": "0x011130",
-          "level": 48,
-          "exp": 1300,
-          "is_boss": false
+                    "enemy_id": "0x011130",
+                    "level": 48,
+                    "exp": 1300,
+                    "is_boss": false					
+                }
+            ]
         }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "DiscoverEnemy",
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Accept",
-      "reset_group": false,
-      "groups": [
-        0
-      ]
-    }
-  ]
+    ],
+    "blocks": [
+        {
+            "type": "DiscoverEnemy",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Accept",
+            "reset_group": false,
+            "groups": [0]
+        }
+    ]
 }

@@ -1,146 +1,128 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "The Troubled Fortification",
-  "quest_id": 21015013,
-  "base_level": 70,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "FaranaPlains",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 2309
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 300
-    },
-    {
-      "type": "exp",
-      "amount": 13814
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Troubled Fortification",
+    "quest_id": 21015013,
+    "base_level": 70,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "FaranaPlains",
+    "rewards": [
         {
-          "item_id": 15913,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 2309
         },
         {
-          "item_id": 7555,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 300
         },
         {
-          "item_id": 9364,
-          "num": 3
+            "type": "exp",
+            "amount": 13814
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 15913,
+                    "num": 3
+                },
+                {
+                    "item_id": 7555,
+                    "num": 3
+                },
+                {
+                    "item_id": 9364,
+                    "num": 3
+                }
+            ]
         }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 500
-    }
-  ],
-  "enemy_groups": [
-    {
-      "stage_id": {
-        "id": 366,
-        "group_id": 2
-      },
-      "enemies": [
+    ],
+    "enemy_groups" : [
         {
-          "enemy_id": "0x015600",
-          "level": 70,
-          "exp": 85000,
-          "is_boss": true
+            "stage_id": {
+                "id": 366,
+                "group_id": 2
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015600",
+                    "level": 70,
+                    "exp": 85000,
+                    "is_boss": true
+                },
+                {
+                    "enemy_id": "0x010610",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x010610",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x010610",
+                    "level": 70,
+                    "exp": 3000,
+                    "is_boss": false
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 341,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "Etna",
+            "message_id": 10800
         },
         {
-          "enemy_id": "0x010610",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
+            "type": "NewTalkToNpc",
+            "flags": [
+                {"type": "QstLayout", "action": "Set", "value": 4332, "comment": "Spawns Alan0 NPC"}
+            ],
+            "stage_id": {
+                "id": 366,
+                "group_id": 0,
+                "layer_no": 0
+            },
+            "announce_type": "Accept",
+            "npc_id": "Alan0",
+            "message_id": 11842
         },
         {
-          "enemy_id": "0x010610",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Update",
+            "flags": [
+                {"type": "MyQst", "action": "Set", "value": 2110, "comment": "Start NPC state machine"}
+            ],
+            "groups": [0]
         },
         {
-          "enemy_id": "0x010610",
-          "level": 70,
-          "exp": 3000,
-          "is_boss": false
-        }
-      ]
-    }
-  ],
-  "blocks": [
-    {
-      "type": "NpcTalkAndOrder",
-      "stage_id": {
-        "id": 341,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "npc_id": "Etna",
-      "message_id": 10800
-    },
-    {
-      "type": "NewTalkToNpc",
-      "flags": [
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [0]
+        },
         {
-          "type": "QstLayout",
-          "action": "Set",
-          "value": 4332,
-          "comment": "Spawns Alan0 NPC"
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 341,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Etna",
+            "message_id": 11842
         }
-      ],
-      "stage_id": {
-        "id": 366,
-        "group_id": 0,
-        "layer_no": 0
-      },
-      "announce_type": "Accept",
-      "npc_id": "Alan0",
-      "message_id": 11842
-    },
-    {
-      "type": "SeekOutEnemiesAtMarkedLocation",
-      "announce_type": "Update",
-      "flags": [
-        {
-          "type": "MyQst",
-          "action": "Set",
-          "value": 2110,
-          "comment": "Start NPC state machine"
-        }
-      ],
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "KillGroup",
-      "announce_type": "Update",
-      "reset_group": false,
-      "groups": [
-        0
-      ]
-    },
-    {
-      "type": "TalkToNpc",
-      "stage_id": {
-        "id": 341,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "announce_type": "Update",
-      "npc_id": "Etna",
-      "message_id": 11842
-    }
-  ]
+    ]
 }

@@ -42,10 +42,6 @@
           "num": 1
         }
       ]
-    },
-    {
-      "type": "ap",
-      "amount": 90
     }
   ],
   "enemy_groups": [
@@ -68,17 +64,13 @@
   "blocks": [
     {
       "type": "DiscoverEnemy",
-      "groups": [
-        0
-      ]
+      "groups": [ 0 ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Accept",
       "reset_group": false,
-      "groups": [
-        0
-      ]
+      "groups": [ 0 ]
     }
   ]
 }

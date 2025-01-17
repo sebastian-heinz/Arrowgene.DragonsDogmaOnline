@@ -1,86 +1,82 @@
 {
-  "state_machine": "GenericStateMachine",
-  "type": "World",
-  "comment": "Time Restriction: Fine Weather Treasure Hunt",
-  "quest_id": 21017006,
-  "base_level": 75,
-  "minimum_item_rank": 0,
-  "discoverable": true,
-  "area_id": "KingalCanyon",
-  "rewards": [
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 11223
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 1662
-    },
-    {
-      "type": "exp",
-      "amount": 4870
-    },
-    {
-      "type": "select",
-      "loot_pool": [
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Time Restriction: Fine Weather Treasure Hunt",
+    "quest_id": 21017006,
+    "base_level": 75,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+	"area_id": "KingalCanyon",	
+    "rewards": [
         {
-          "item_id": 15960,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 11223
         },
         {
-          "item_id": 7555,
-          "num": 3
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 1662
         },
         {
-          "item_id": 41,
-          "num": 3
-        }
-      ]
-    },
-    {
-      "type": "ap",
-      "amount": 500
-    }
-  ],
-  "blocks": [
-    {
-      "type": "NpcTalkAndOrder",
-      "stage_id": {
-        "id": 377,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "npc_id": "Ciaran",
-      "message_id": 10800
-    },
-    {
-      "type": "DeliverItems",
-      "stage_id": {
-        "id": 377,
-        "group_id": 1
-      },
-      "npc_id": "Ciaran",
-      "announce_type": "Accept",
-      "items": [
+            "type": "exp",
+            "amount": 4870
+        },
         {
-          "id": 15955,
-          "amount": 5
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 15960,
+                    "num": 3
+                },
+                {					
+                    "item_id": 7555,
+                    "num": 3
+                },
+                {				
+                    "item_id": 41,
+                    "num": 3					
+                }
+            ]
         }
-      ],
-      "message_id": 10737
-    },
-    {
-      "type": "TalkToNpc",
-      "stage_id": {
-        "id": 377,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "announce_type": "Update",
-      "npc_id": "Ciaran",
-      "message_id": 11842
-    }
-  ]
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",	
+            "stage_id": {
+                "id": 377,
+                "group_id": 1,
+                "layer_no": 1
+            },				
+            "npc_id": "Ciaran",
+            "message_id": 10800
+        },
+        {
+            "type": "DeliverItems",
+            "stage_id": {
+                "id": 377,
+                "group_id": 1
+            },
+            "npc_id": "Ciaran",
+            "announce_type": "Accept",
+            "items": [
+                {
+                    "id": 15955,
+                    "amount": 5
+                }
+            ],
+            "message_id": 10737
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 377,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Ciaran",
+            "message_id": 11842			
+        }
+    ]
 }
