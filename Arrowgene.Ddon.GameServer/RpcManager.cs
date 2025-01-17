@@ -8,6 +8,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Logging;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -21,30 +22,25 @@ namespace Arrowgene.Ddon.GameServer
     {
         private class RpcTrackingMap : Dictionary<uint, RpcCharacterData>
         {
-            public DateTime TimeStamp { get; set; }
+            public readonly DateTime TimeStamp;
 
             public RpcTrackingMap() : base() 
             { 
-                TimeStamp = DateTime.Now;
+                TimeStamp = DateTime.UtcNow;
             }
 
-            public bool Update(DateTime newTimestamp, List<RpcCharacterData> characterData)
+            public RpcTrackingMap(List<RpcCharacterData> characterData) 
+                : base(characterData.ToDictionary(key => key.CharacterId, val => val))
             {
-                if (newTimestamp <= TimeStamp) return false;
-                lock (this)
-                {
-                    TimeStamp = newTimestamp;
-                
-                    this.Clear();
-                    foreach (var character in characterData)
-                    {
-                        this[character.CharacterId] = character;
-                    }
-                }
-                return true;
+                TimeStamp = DateTime.UtcNow;
+            }
+
+            public RpcTrackingMap(List<RpcCharacterData> characterData, DateTime timeStamp)
+                : base(characterData.ToDictionary(key => key.CharacterId, val => val))
+            {
+                TimeStamp = timeStamp;
             }
         }
-
 
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(RpcManager));
 
@@ -58,7 +54,7 @@ namespace Arrowgene.Ddon.GameServer
         private readonly DdonGameServer Server;
         private readonly Dictionary<ushort, ServerInfo> ChannelInfo;
 
-        private readonly Dictionary<ushort, RpcTrackingMap> CharacterTrackingMap;
+        private readonly ConcurrentDictionary<ushort, RpcTrackingMap> CharacterTrackingMap;
 
         public RpcManager(DdonGameServer server)
         {
@@ -113,10 +109,7 @@ namespace Arrowgene.Ddon.GameServer
             }
             else
             {
-                lock (CharacterTrackingMap[channelId])
-                {
-                    info.LoginNum = (uint)CharacterTrackingMap[channelId].Count;
-                }
+                info.LoginNum = (uint)CharacterTrackingMap[channelId].Count;
             }
             
             info.TrafficName = GetTrafficName(info.LoginNum);
@@ -210,9 +203,9 @@ namespace Arrowgene.Ddon.GameServer
         #region Player Tracking
         public ushort FindPlayerByName(string firstName, string lastName)
         {
-            foreach ((ushort channelId, var channelMembers) in CharacterTrackingMap)
+            lock (CharacterTrackingMap)
             {
-                lock(channelMembers)
+                foreach ((ushort channelId, var channelMembers) in CharacterTrackingMap)
                 {
                     foreach (var player in channelMembers.Values)
                     {
@@ -228,9 +221,9 @@ namespace Arrowgene.Ddon.GameServer
 
         public ushort FindPlayerById(uint characterId)
         {
-            foreach ((ushort channelId, var channelMembers) in CharacterTrackingMap)
+            lock (CharacterTrackingMap)
             {
-                lock (channelMembers)
+                foreach ((ushort channelId, var channelMembers) in CharacterTrackingMap)
                 {
                     if (channelMembers.ContainsKey(characterId))
                     {
@@ -251,7 +244,7 @@ namespace Arrowgene.Ddon.GameServer
             }
             Logger.Info($"Announcing player list for channel {Server.Id} with {rpcCharacterDatas.Count} players over RPC.");
             AnnounceOthers("internal/command", RpcInternalCommand.NotifyPlayerList, rpcCharacterDatas);
-            CharacterTrackingMap[(ushort) Server.Id].Update(DateTime.Now, rpcCharacterDatas);
+            CharacterTrackingMap[(ushort) Server.Id] = new RpcTrackingMap(rpcCharacterDatas);
         }
 
         public void ReceivePlayerList(ushort channelId, DateTime timestamp, List<RpcCharacterData> characterDatas)
@@ -259,7 +252,11 @@ namespace Arrowgene.Ddon.GameServer
             Logger.Info($"Recieving player list from channel {channelId} with {characterDatas.Count} players.");
             if (CharacterTrackingMap.ContainsKey(channelId))
             {
-                if (!CharacterTrackingMap[channelId].Update(timestamp, characterDatas))
+                if (timestamp > CharacterTrackingMap[channelId].TimeStamp)
+                {
+                    CharacterTrackingMap[channelId] = new RpcTrackingMap(characterDatas, timestamp);
+                }
+                else
                 {
                     Logger.Error($"Out of date character list discarded for channel ID {channelId}");
                 }

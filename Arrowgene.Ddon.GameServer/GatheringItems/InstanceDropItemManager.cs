@@ -18,12 +18,9 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
             List<InstancedEnemy> enemiesInSet =  _client.Party.InstanceEnemyManager.GetAssets(stage);
             if(enemiesInSet != null && setId < enemiesInSet.Count)
             {
-                Enemy enemy = enemiesInSet[(int) setId];
+                Enemy enemy = enemiesInSet[setId];
 
-                if (enemy.DropsTable != null)
-                {
-                    return enemy.DropsTable.Items;
-                }
+                return enemy?.DropsTable?.Items ?? new();
             }
             return new List<GatheringItem>();
         }

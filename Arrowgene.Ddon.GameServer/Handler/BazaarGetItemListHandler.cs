@@ -1,10 +1,9 @@
-using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -18,23 +17,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CBazaarGetItemListRes Handle(GameClient client, C2SBazaarGetItemListReq request)
         {
-            // TODO: Optimize to run in one DB connection
             S2CBazaarGetItemListRes response = new S2CBazaarGetItemListRes();
-            foreach (CDataCommonU32 itemId in request.ItemIdList)
-            {
-                List<BazaarExhibition> exhibitionsForItemId = Server.BazaarManager.GetActiveExhibitionsForItemId(itemId.Value, client.Character);
-                if(exhibitionsForItemId.Count > 0)
+            Server.Database.ExecuteInTransaction(connection => {
+                foreach (CDataCommonU32 itemId in request.ItemIdList)
                 {
-                    CDataBazaarItemNumOfExhibitionInfo exhibitionInfo = new CDataBazaarItemNumOfExhibitionInfo();
-                    exhibitionInfo.ItemId = itemId.Value;
-                    foreach (BazaarExhibition exhibition in exhibitionsForItemId)
+                    List<BazaarExhibition> exhibitionsForItemId = Server.BazaarManager.GetActiveExhibitionsForItemId(itemId.Value, client.Character, connection);
+                    if (exhibitionsForItemId.Count > 0)
                     {
-                        exhibitionInfo.Num += exhibition.Info.ItemInfo.ItemBaseInfo.Num;
+                        CDataBazaarItemNumOfExhibitionInfo exhibitionInfo = new CDataBazaarItemNumOfExhibitionInfo();
+                        exhibitionInfo.ItemId = itemId.Value;
+                        foreach (BazaarExhibition exhibition in exhibitionsForItemId)
+                        {
+                            exhibitionInfo.Num += exhibition.Info.ItemInfo.ItemBaseInfo.Num;
+                        }
+                        response.ItemList.Add(exhibitionInfo);
                     }
-                    response.ItemList.Add(exhibitionInfo);
                 }
-            }
-            // TODO: response.Unk0
+            });
+
             return response;
         }
     }

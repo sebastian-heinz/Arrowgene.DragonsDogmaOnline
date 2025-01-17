@@ -51,7 +51,7 @@ namespace Arrowgene.Ddon.Server.Network
                 response.Error = (uint) ex.ErrorCode;
 
                 var stringBuilder = new StringBuilder();
-                stringBuilder.AppendLine($"{ex.ErrorCode} thrown when handling {typeof(TReqStruct).Name}");
+                stringBuilder.AppendLine($"{(ex.Critical ? "!!CRITICAL!! " : "")}{ex.ErrorCode} thrown when handling {typeof(TReqStruct).Name}");
                 if (ex.Message.Length > 0)
                 {
                     stringBuilder.AppendLine($"\tMessage: {ex.Message}");

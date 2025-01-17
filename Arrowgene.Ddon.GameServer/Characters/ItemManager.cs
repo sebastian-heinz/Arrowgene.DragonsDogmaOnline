@@ -182,21 +182,41 @@ namespace Arrowgene.Ddon.GameServer.Characters
         // old = 'プレイポイント'
         // new = 'Play Point'
 
-        public void GatherItem(DdonGameServer server, Character character, S2CItemUpdateCharacterItemNtc ntc, InstancedGatheringItem gatheringItem, uint pickedGatherItems, DbConnection? connectionIn = null)
+        public void GatherItem(Character character, S2CItemUpdateCharacterItemNtc ntc, InstancedGatheringItem gatheringItem, uint pickedGatherItems, DbConnection? connectionIn = null)
         {
-            if(ItemIdWalletTypeAndQuantity.ContainsKey(gatheringItem.ItemId)) {
+            if (ItemIdWalletTypeAndQuantity.ContainsKey(gatheringItem.ItemId)) 
+            {
                 var walletTypeAndQuantity = ItemIdWalletTypeAndQuantity[gatheringItem.ItemId];
                 uint totalQuantityToAdd = walletTypeAndQuantity.Quantity * gatheringItem.ItemNum;
 
                 ntc.UpdateWalletList.Add(
-                    server.WalletManager.AddToWallet(character, walletTypeAndQuantity.Type, totalQuantityToAdd, 0, connectionIn
+                    _Server.WalletManager.AddToWallet(character, walletTypeAndQuantity.Type, totalQuantityToAdd, 0, connectionIn
                 ));
 
+                if (pickedGatherItems > gatheringItem.ItemNum)
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_ITEM_NUM, 
+                        $"Overflow error, trying to remove {pickedGatherItems} from stack of ID {gatheringItem.ItemId} x{gatheringItem.ItemNum}",
+                        critical:true);
+                }
+
                 gatheringItem.ItemNum -= pickedGatherItems;
-            } else {
-                List<CDataItemUpdateResult> results = AddItem(server, character, true, gatheringItem.ItemId, pickedGatherItems, connectionIn:connectionIn);
+            } 
+            else 
+            {
+                List<CDataItemUpdateResult> results = AddItem(_Server, character, true, gatheringItem.ItemId, pickedGatherItems, connectionIn:connectionIn);
                 ntc.UpdateItemList.AddRange(results);
-                gatheringItem.ItemNum -= (uint) results.Select(result => result.UpdateItemNum).Sum();
+
+                uint totalRemoved = (uint)results.Select(result => result.UpdateItemNum).Sum();
+
+                if (totalRemoved > gatheringItem.ItemNum)
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_ITEM_NUM,
+                        $"Overflow error, trying to remove {totalRemoved} from stack of ID {gatheringItem.ItemId} x{gatheringItem.ItemNum}",
+                        critical: true);
+                }
+
+                gatheringItem.ItemNum -= totalRemoved;
             }
         }
 
@@ -952,24 +972,26 @@ namespace Arrowgene.Ddon.GameServer.Characters
     }
 
     [Serializable]
-    internal class ItemDoesntExistException : Exception
+    internal class ItemDoesntExistException : ResponseErrorException
     {
         private string itemUID;
 
-        public ItemDoesntExistException(string itemUID) : base ($"An item with the UID {itemUID} is missing in the database")
+        public ItemDoesntExistException(string itemUID) 
+            : base (ErrorCode.ERROR_CODE_ITEM_NOT_FOUND, $"An item with the UID {itemUID} is missing in the database")
         {
             this.itemUID = itemUID;
         }
     }
 
     [Serializable]
-    internal class NotEnoughItemsException : Exception
+    internal class NotEnoughItemsException : ResponseErrorException
     {
         private string itemUId;
         private uint consumeNum;
         private int remainingItems;
 
-        public NotEnoughItemsException(string itemUId, uint consumeNum, int remainingItems) : base($"Required {consumeNum} items of UID {itemUId}, missing {remainingItems} items")
+        public NotEnoughItemsException(string itemUId, uint consumeNum, int remainingItems) 
+            : base(ErrorCode.ERROR_CODE_ITEM_NUM_SHORT, $"Required {consumeNum} items of UID {itemUId}, missing {remainingItems} items")
         {
             this.itemUId = itemUId;
             this.consumeNum = consumeNum;

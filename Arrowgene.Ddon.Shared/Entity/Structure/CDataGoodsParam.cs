@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     public class CDataGoodsParam : ICloneable
     {
         public CDataGoodsParam() {
-            Unk7 = new List<CDataGoodsParamUnk7>();
+            Requirements = new();
         }
     
         // PS4 fields: Index, Price, Stock, MaxStock, RequireFavorite, ItemId (all uint)
@@ -17,10 +17,10 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint ItemId { get; set; }
         public uint Price { get; set; }
         public byte Stock { get; set; } // 255 for unlimited
-        public bool Unk4{ get; set; }
-        public ulong Unk5 { get; set; }
-        public ulong Unk6 { get; set; }
-        public List<CDataGoodsParamUnk7> Unk7 { get; set; } // Requirements?
+        public bool HideIfReqsUnmet { get; set; }
+        public DateTimeOffset SalesPeriodStart { get; set; }
+        public DateTimeOffset SalesPeriodEnd { get; set; }
+        public List<CDataGoodsParamRequirement> Requirements { get; set; } // Requirements?
 
         public object Clone()
         {
@@ -30,10 +30,10 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 ItemId = this.ItemId,
                 Price = this.Price,
                 Stock = this.Stock,
-                Unk4 = this.Unk4,
-                Unk5 = this.Unk5,
-                Unk6 = this.Unk6,
-                Unk7 = this.Unk7.Select(gpu7 => (CDataGoodsParamUnk7) gpu7.Clone()).ToList()
+                HideIfReqsUnmet = this.HideIfReqsUnmet,
+                SalesPeriodStart = this.SalesPeriodStart,
+                SalesPeriodEnd = this.SalesPeriodEnd,
+                Requirements = this.Requirements.Select(gpu7 => (CDataGoodsParamRequirement) gpu7.Clone()).ToList()
             };
         }
     
@@ -45,10 +45,10 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.ItemId);
                 WriteUInt32(buffer, obj.Price);
                 WriteByte(buffer, obj.Stock);
-                WriteBool(buffer, obj.Unk4);
-                WriteUInt64(buffer, obj.Unk5);
-                WriteUInt64(buffer, obj.Unk6);
-                WriteEntityList<CDataGoodsParamUnk7>(buffer, obj.Unk7);
+                WriteBool(buffer, obj.HideIfReqsUnmet);
+                WriteInt64(buffer, obj.SalesPeriodStart.ToUnixTimeSeconds());
+                WriteInt64(buffer, obj.SalesPeriodEnd.ToUnixTimeSeconds());
+                WriteEntityList<CDataGoodsParamRequirement>(buffer, obj.Requirements);
             }
         
             public override CDataGoodsParam Read(IBuffer buffer)
@@ -58,10 +58,10 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.ItemId = ReadUInt32(buffer);
                 obj.Price = ReadUInt32(buffer);
                 obj.Stock = ReadByte(buffer);
-                obj.Unk4 = ReadBool(buffer);
-                obj.Unk5 = ReadUInt64(buffer);
-                obj.Unk6 = ReadUInt64(buffer);
-                obj.Unk7 = ReadEntityList<CDataGoodsParamUnk7>(buffer);
+                obj.HideIfReqsUnmet = ReadBool(buffer);
+                obj.SalesPeriodStart = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
+                obj.SalesPeriodEnd = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
+                obj.Requirements = ReadEntityList<CDataGoodsParamRequirement>(buffer);
                 return obj;
             }
         }

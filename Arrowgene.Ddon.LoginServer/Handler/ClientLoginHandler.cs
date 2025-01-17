@@ -196,7 +196,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
             if (connection.Type == ConnectionType.LoginServer)
             {
-                // Can't talk to the login server, but there's usually not a stuck connection here.
+                Logger.Error($"Can't kick account {connection.AccountId}; stuck at login server.");
                 return;
             }
 
@@ -209,6 +209,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 Origin = (ushort)Server.Id,
                 Data = connection.AccountId
             };
+
+            Logger.Info($"Attempting to auto kick account {connection.AccountId} from server {connection.ServerId}");
 
             var json = JsonSerializer.Serialize(wrappedObject);
             _ = _httpClient.PostAsync(route, new StringContent(json));
