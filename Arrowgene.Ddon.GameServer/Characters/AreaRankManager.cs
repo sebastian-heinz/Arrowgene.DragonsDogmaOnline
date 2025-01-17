@@ -1,4 +1,3 @@
-using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -7,12 +6,9 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
-using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using static Arrowgene.Ddon.GameServer.Characters.BitterblackMazeManager;
-using System.Reflection.Emit;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -37,17 +33,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_SUPPLY_NOT_AVAILABLE, $"No valid asset for {areaId} found in AreaRankSupply asset.");
             }
 
-            var rankSupplies = areaSupplies.Where(x => x.MinRank <= rank).OrderBy(x => x.MinRank).LastOrDefault();
-            if (rankSupplies is null)
-            {
-                throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_SUPPLY_NOT_AVAILABLE, $"No valid asset for {areaId}, rank {rank} found in AreaRankSupply asset.");
-            }
+            var rankSupplies = areaSupplies.Where(x => x.MinRank <= rank).OrderBy(x => x.MinRank).LastOrDefault()
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_SUPPLY_NOT_AVAILABLE, $"No valid asset for {areaId}, rank {rank} found in AreaRankSupply asset.");
 
-            var pointSupplies = rankSupplies.SupplyItemInfoList.Where(x => x.MinAreaPoint <= points).OrderBy(x => x.MinAreaPoint).LastOrDefault();
-            if (pointSupplies is null)
-            {
-                throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_SUPPLY_NOT_AVAILABLE, $"No valid asset for {areaId}, rank {rank}, {points} points found in AreaRankSupply asset.");
-            }
+            var pointSupplies = rankSupplies.SupplyItemInfoList.Where(x => x.MinAreaPoint <= points).OrderBy(x => x.MinAreaPoint).LastOrDefault() 
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_SUPPLY_NOT_AVAILABLE, $"No valid asset for {areaId}, rank {rank}, {points} points found in AreaRankSupply asset.");
+            
             return pointSupplies.SupplyItemList.Select((x, i) => new CDataRewardItemInfo()
             {
                 Index = (uint)i,
@@ -159,16 +150,29 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return queue;
         }
 
+        public uint GetEffectiveRank(Character character, QuestAreaId areaId)
+        {
+            AreaRank rank = character.AreaRanks.GetValueOrDefault(areaId) 
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
+
+            uint effectiveRank = rank.Rank;
+            if (!Server.GameLogicSettings.EnableAreaRankSpotLocks)
+            {
+                effectiveRank = MaxRank(areaId);
+            }
+            return effectiveRank;
+        }
+
         public uint GetAreaPointReward(Quest quest)
         {
             uint amount;
-            uint areaId = (uint)quest.QuestAreaId;
+            QuestAreaId areaId = quest.QuestAreaId;
 
-            if (areaId < 1 || areaId > 21)
+            if (areaId < QuestAreaId.HidellPlains || areaId > QuestAreaId.UrtecaMountains)
             {
                 return 0;
             }
-            else if (areaId > 12)
+            else if (areaId >= QuestAreaId.BloodbaneIsle)
             {
                 amount = 500;
             }
@@ -184,29 +188,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return amount;
-        }
-
-        public IEnumerable<AreaRankSpotInfo> GetAreaRankSpots(GameClient client, QuestAreaId areaId)
-        {
-            AreaRank clientRank = client.Character.AreaRanks.GetValueOrDefault(areaId)
-                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
-            var completedQuests = client.Character.CompletedQuests;
-
-            if (Server.GameLogicSettings.EnableAreaRankSpotLocks)
-            {
-                return Server.AssetRepository.AreaRankSpotInfoAsset
-                .Where(x =>
-                    x.AreaId == areaId
-                    && x.UnlockRank <= clientRank.Rank
-                    && (x.UnlockQuest == 0 || completedQuests.ContainsKey((QuestId)x.UnlockQuest))
-                );
-            }
-            else
-            {
-                return Server.AssetRepository.AreaRankSpotInfoAsset
-                    .Where(x => x.AreaId == areaId);
-            }
-            
         }
     }
 }

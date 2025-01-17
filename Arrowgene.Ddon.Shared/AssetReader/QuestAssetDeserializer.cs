@@ -378,10 +378,10 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         });
                         break;
                     case "ap":
-                        assetData.PointRewards.Add(new PointReward()
+                        assetData.PointRewards.Add(new QuestPointReward()
                         {
-                            ExpType = ExpType.AreaPoints,
-                            ExpReward = reward.GetProperty("amount").GetUInt32()
+                            PointType = PointType.AreaPoints,
+                            Amount = reward.GetProperty("amount").GetUInt32()
                         });
                         assetData.LightQuestDetail.GetAp = reward.GetProperty("amount").GetUInt32();
                         break;

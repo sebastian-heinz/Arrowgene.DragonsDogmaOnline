@@ -915,7 +915,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 case PointType.PlayPoints:
                     modifier = _GameSettings.PpModifier;
                     break;
-                case ExpType.AreaPoints:
+                case PointType.AreaPoints:
                     modifier = _GameSettings.ApModifier;
                     break;
                 default:
