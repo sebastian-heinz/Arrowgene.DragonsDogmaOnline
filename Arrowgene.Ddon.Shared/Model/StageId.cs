@@ -52,7 +52,7 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public override string ToString()
         {
-            return $"StageId(Id={Id}, LayerNo={LayerNo}, GroupId={GroupId})";
+            return $"{Id}.{LayerNo}.{GroupId}";
         }
 
         public static readonly StageId Lestania          = new StageId(1, 0, 0);

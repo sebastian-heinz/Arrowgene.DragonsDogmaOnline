@@ -199,8 +199,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataGameTimeBaseInfo.Serializer());
             Create(new CDataGatheringItemElement.Serializer());
             Create(new CDataGatheringItemGetRequest.Serializer());
-            Create(new CDataGatheringItemListUnk1.Serializer());
-            Create(new CDataGatheringItemListUnk1Unk2.Serializer());
+            Create(new CDataGatheringItemRestriction.Serializer());
             Create(new CDataGetDispelItem.Serializer());
             Create(new CDataGetRewardBoxItem.Serializer());
             Create(new CDataGoodsParam.Serializer());
@@ -359,7 +358,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataS2CEquipEnhancedGetPacksResUnk0.Serializer());
             Create(new CDataS2CEquipEnhancedGetPacksResUnk0Unk10.Serializer());
             Create(new CDataS2CEquipEnhancedGetPacksResUnk0Unk10Unk1.Serializer());
-            Create(new CDataS2CEquipEnhancedGetPacksResUnk0Unk6.Serializer());
+            Create(new CDataRequiredItem.Serializer());
             Create(new CDataS2CEquipEnhancedGetPacksResUnk0Unk9.Serializer());
             Create(new CDataS2CQuestJoinLobbyQuestInfoNtcUnk0Unk1.Serializer());
             Create(new CDataScreenShotCategory.Serializer());

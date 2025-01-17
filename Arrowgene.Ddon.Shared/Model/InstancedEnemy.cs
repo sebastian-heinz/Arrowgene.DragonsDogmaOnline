@@ -20,12 +20,16 @@ namespace Arrowgene.Ddon.Shared.Model
             Index = enemy.Index;
             IsRequired = enemy.IsRequired;
             RepopWaitSecond = enemy.RepopWaitSecond;
+            StageId = enemy.StageId;
+            IsQuestControlled = enemy.IsQuestControlled;
         }
 
+        public StageId StageId { get; set; }
         public byte Index { get; set; }
         public bool IsRequired { get; set; }
         public bool IsKilled { get; set; }
         public uint RepopWaitSecond {  get; set; }
+        public bool IsQuestControlled { get; set; }
 
         public InstancedEnemy(uint enemyId, ushort lv, uint exp, byte index)
         {

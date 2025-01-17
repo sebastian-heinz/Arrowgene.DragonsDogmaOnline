@@ -8,6 +8,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -28,27 +29,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 UpdateType = request.EquipToCharacter == 0 ? ItemNoticeType.Gather : ItemNoticeType.GatherEquipItem
             };
 
+            uint posId = request.PosId;
+            var stageId = request.LayoutId.AsStageId();
+            var (_, itemList) = client.InstanceGatheringItemManager.FetchOrGenerate(stageId, posId);
+
             Server.Database.ExecuteInTransaction(connection =>
             {
-                uint posId = request.PosId;
-                var stageId = request.LayoutId.AsStageId();
                 foreach (CDataGatheringItemGetRequest gatheringItemRequest in request.GatheringItemGetRequestList)
                 {
-                    InstancedGatheringItem gatheredItem;
-
-                    if (StageManager.IsBitterBlackMazeStageId(stageId))
-                    {
-                        gatheredItem = client.InstanceBbmItemManager.FetchBitterblackItems(Server, client, stageId, posId)[(int)gatheringItemRequest.SlotNo];
-                    }
-                    else if (StageManager.IsEpitaphRoadStageId(stageId))
-                    {
-                        gatheredItem = client.InstanceEpiGatheringManager.FetchItems(client, stageId, posId)[(int)gatheringItemRequest.SlotNo];
-                    }
-                    else
-                    {
-                        gatheredItem = client.InstanceGatheringItemManager.GetAssets(request.LayoutId, (int)request.PosId)[(int)gatheringItemRequest.SlotNo];
-                    }
-
+                    InstancedGatheringItem gatheredItem = itemList.ElementAtOrDefault((int)gatheringItemRequest.SlotNo)
+                        ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_INSTANCE_AREA_INVALID_GATHERING_ITEM_POS_ID,
+                        $"Invalid gathering item index at {stageId}.{posId}");
+                    
                     Server.ItemManager.GatherItem(client.Character, ntc, gatheredItem, gatheringItemRequest.Num, connection);
                 }
             });

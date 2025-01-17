@@ -15,14 +15,9 @@ namespace Arrowgene.Ddon.GameServer
         public GameClient(ITcpSocket socket, PacketFactory packetFactory, DdonGameServer server) : base(socket, packetFactory)
         {
             UpdateIdentity();
-            InstanceGatheringItemManager = new InstanceGatheringItemManager(server.AssetRepository);
-            InstanceDropItemManager = new InstanceDropItemManager(this);
+            InstanceGatheringItemManager = new InstanceGatheringItemManager(this, server);
+            InstanceDropItemManager = new(this, server);
             InstanceShopManager = new InstanceShopManager(server.ShopManager);
-            InstanceBbmItemManager = new InstanceBitterblackGatheringItemManager();
-            InstanceQuestDropManager = new InstanceQuestDropManager();
-            InstanceEventDropItemManager = new InstanceEventDropItemManager(server);
-            InstanceEpiDropItemManager = new InstanceEpitaphRoadDropItemManager(server);
-            InstanceEpiGatheringManager = new InstanceEpitaphRoadGatheringManager(server);
             GameMode = GameMode.Normal;
         }
 
@@ -50,11 +45,6 @@ namespace Arrowgene.Ddon.GameServer
         public InstanceShopManager InstanceShopManager { get; }
         public InstanceGatheringItemManager InstanceGatheringItemManager { get; }
         public InstanceDropItemManager InstanceDropItemManager { get; }
-        public InstanceBitterblackGatheringItemManager InstanceBbmItemManager { get; }
-        public InstanceQuestDropManager InstanceQuestDropManager { get; }
-        public InstanceEventDropItemManager InstanceEventDropItemManager { get; }
-        public InstanceEpitaphRoadDropItemManager InstanceEpiDropItemManager { get; }
-        public InstanceEpitaphRoadGatheringManager InstanceEpiGatheringManager { get; }
 
         public GameMode GameMode { get; set; }
 

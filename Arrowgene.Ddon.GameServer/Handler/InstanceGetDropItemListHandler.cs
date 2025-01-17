@@ -1,14 +1,13 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class InstanceGetDropItemListHandler : GameStructurePacketHandler<C2SInstanceGetDropItemListReq>
+    public class InstanceGetDropItemListHandler : GameRequestPacketHandler<C2SInstanceGetDropItemListReq, S2CInstanceGetDropItemListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceGetDropItemListHandler));
 
@@ -16,29 +15,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SInstanceGetDropItemListReq> packet)
+        public override S2CInstanceGetDropItemListRes Handle(GameClient client, C2SInstanceGetDropItemListReq request)
         {
-            // This call is for when a bag is opened. Get the correct drops stored from the kill handler.
-            List<InstancedGatheringItem> items = new List<InstancedGatheringItem>();
+            var items = client.InstanceDropItemManager.Fetch(request.LayoutId, request.SetId);
 
-            if(client.InstanceQuestDropManager.IsQuestDrop(packet.Structure.LayoutId, packet.Structure.SetId))
+            return new S2CInstanceGetDropItemListRes()
             {
-                items.AddRange(client.InstanceQuestDropManager.FetchEnemyLoot());
-            } else
-            {
-                items.AddRange(client.InstanceDropItemManager.GetAssets(packet.Structure.LayoutId, (int)packet.Structure.SetId));
-            }
-
-            // Special Event Items
-            items.AddRange(client.InstanceEventDropItemManager.FetchEventItems(client, packet.Structure.LayoutId, packet.Structure.SetId));
-
-            // Add Epitaph Items
-            items.AddRange(client.InstanceEpiDropItemManager.FetchItems(client, packet.Structure.LayoutId, packet.Structure.SetId));
-
-            client.Send(new S2CInstanceGetDropItemListRes()
-            {
-                LayoutId = packet.Structure.LayoutId,
-                SetId = packet.Structure.SetId,
+                LayoutId = request.LayoutId,
+                SetId = request.SetId,
                 ItemList = items.Select((dropItem, index) => new CDataGatheringItemElement()
                 {
                     SlotNo = (uint) index,
@@ -46,7 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     ItemNum = dropItem.ItemNum
                     // TODO: Other properties
                 }).ToList()
-            });
+            };
         }
     }
 }
