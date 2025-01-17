@@ -462,9 +462,6 @@ namespace Arrowgene.Ddon.Test.Database
         public string GetString(DbDataReader reader, string column) { return ""; }
         public bool GetBoolean(DbDataReader reader, string column) { return false; }
         public byte[] GetBytes(DbDataReader reader, string column, int size) { return null; }
-        public List<CDataRegisterdPawnList> SelectRegisteredPawns(Character searchingCharacter, CDataPawnSearchParameter searchParams) { return new List<CDataRegisterdPawnList>(); }
-        public List<CDataRegisterdPawnList> SelectRegisteredPawns(DbConnection conn, Character searchingCharacter, CDataPawnSearchParameter searchParams) { return new List<CDataRegisterdPawnList>(); }
-        public void DeleteWeeklyEpitaphClaimedRewards(DbConnection? connectionIn = null) { }
     }
 
     class MockMigrationStrategy : IMigrationStrategy

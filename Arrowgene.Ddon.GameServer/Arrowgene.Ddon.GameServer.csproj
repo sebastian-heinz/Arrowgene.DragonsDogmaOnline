@@ -19,4 +19,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Arrowgene.Ddon.Server\Arrowgene.Ddon.Server.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Chat\Command\Commands\" />
+    </ItemGroup>
 </Project>

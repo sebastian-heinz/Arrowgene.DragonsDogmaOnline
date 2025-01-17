@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System.Linq;
 
@@ -18,9 +19,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: ClanAreaPoint
             S2CAreaGetAreaBaseInfoListRes res = new();
 
-            foreach ((var area, var rank)  in client.Character.AreaRanks)
+            foreach ((var area, var rank) in client.Character.AreaRanks)
             {
-                if (rank.Rank == 0 && (uint)area > 1)
+                // The client gets very angry if the unlocks are desynced from their actual ranks, so we have to spoof the rank here too.
+                uint effectiveRank = Server.AreaRankManager.GetEffectiveRank(client.Character, area);
+
+                if (effectiveRank == 0 && area > QuestAreaId.HidellPlains)
                 {
                     // Unranked areas are not displayed, except Hidell Plains.
                     continue;
@@ -29,7 +33,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 res.AreaBaseInfoList.Add(new()
                 {
                     AreaID = rank.AreaId,
-                    Rank = rank.Rank,
+                    Rank = effectiveRank,
                     CurrentPoint = rank.Point,
                     WeekPoint = rank.WeekPoint,
                     NextPoint = Server.AreaRankManager.GetMaxPoints(rank.AreaId, rank.Rank),

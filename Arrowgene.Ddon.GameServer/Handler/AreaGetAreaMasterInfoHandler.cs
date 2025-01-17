@@ -32,7 +32,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             result.LastWeekPoint = clientRank.LastWeekPoint;
             result.ToNextPoint = Server.AreaRankManager.GetMaxPoints(request.AreaId, clientRank.Rank);
 
-            result.ReleaseList = Server.AreaRankManager.GetAreaRankSpots(client, request.AreaId)
+            result.ReleaseList = Server.AssetRepository.AreaRankSpotInfoAsset
+                .Where(x =>
+                    x.AreaId == request.AreaId
+                    && x.UnlockRank <= clientRank.Rank
+                    && (x.UnlockQuest == 0 || completedQuests.ContainsKey((QuestId)x.UnlockQuest))
+                )
                 .Select(x => new CDataCommonU32(x.SpotId))
                 .ToList();
 
