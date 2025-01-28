@@ -5,13 +5,12 @@ using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model.Quest;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Data.Common;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestQuestProgressHandler : GameStructurePacketHandler<C2SQuestQuestProgressReq>
+    public class QuestQuestProgressHandler : GameRequestPacketQueueHandler<C2SQuestQuestProgressReq, S2CQuestQuestProgressRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestQuestProgressHandler));
 
@@ -19,19 +18,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SQuestQuestProgressReq> packet)
+        public override PacketQueue Handle(GameClient client, C2SQuestQuestProgressReq request)
         {
             PacketQueue packets = new();
 
             QuestProgressState questProgressState = QuestProgressState.InProgress;
             S2CQuestQuestProgressRes res = new S2CQuestQuestProgressRes();
-            res.QuestScheduleId = packet.Structure.QuestScheduleId;
+            res.QuestScheduleId = request.QuestScheduleId;
             res.QuestProgressResult = 0;
 
-            ushort processNo = packet.Structure.ProcessNo;
-            uint questScheduleId = packet.Structure.QuestScheduleId;
+            ushort processNo = request.ProcessNo;
+            uint questScheduleId = request.QuestScheduleId;
 
-            Logger.Debug($"QuestScheduleId={questScheduleId}, KeyId={packet.Structure.KeyId} ProgressCharacterId={packet.Structure.ProgressCharacterId}, ProcessNo={packet.Structure.ProcessNo}\n");
+            Logger.Debug($"QuestScheduleId={questScheduleId}, KeyId={request.KeyId} ProgressCharacterId={request.ProgressCharacterId}, ProcessNo={request.ProcessNo}\n");
 
             var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
 
@@ -125,9 +124,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            packets.Send();
+            client.Enqueue(res, packets);
 
-            client.Send(res);
+            return packets;
         }
 
         private PacketQueue CompleteQuest(Quest quest, GameClient client, QuestStateManager questState, DbConnection? connectionIn = null)

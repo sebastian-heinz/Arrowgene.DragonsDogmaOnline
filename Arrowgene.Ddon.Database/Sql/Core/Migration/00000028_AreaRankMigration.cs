@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Database.Sql.Core.Migration
 {
@@ -21,7 +16,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
 
         public bool Migrate(IDatabase db, DbConnection conn)
         {
-            string adaptedSchema = DdonDatabaseBuilder.GetAdaptedSchema(DatabaseSetting, "Script/migration_areakrank.sql");
+            string adaptedSchema = DdonDatabaseBuilder.GetAdaptedSchema(DatabaseSetting, "Script/migration_arearank.sql");
             db.Execute(conn, adaptedSchema);
             return true;
         }
