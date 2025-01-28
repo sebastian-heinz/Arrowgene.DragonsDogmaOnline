@@ -1,4 +1,3 @@
-using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
@@ -7,21 +6,19 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Shared.AssetReader
 {
-    public class AreaRankSupplyDeserializer : IAssetDeserializer<List<AreaRankSupply>>
+    public class AreaRankSupplyDeserializer : IAssetDeserializer<Dictionary<QuestAreaId, List<AreaRankSupply>>>
     {
         private static readonly ILogger Logger = LogProvider.Logger(typeof(AreaRankSupplyDeserializer));
 
-        public List<AreaRankSupply> ReadPath(string path)
+        public Dictionary<QuestAreaId, List<AreaRankSupply>> ReadPath(string path)
         {
             Logger.Info($"Reading {path}");
 
-            List<AreaRankSupply> asset = new();
+            Dictionary<QuestAreaId, List<AreaRankSupply>> asset = new();
 
             string json = File.ReadAllText(path);
             JsonDocument document = JsonDocument.Parse(json);
@@ -39,7 +36,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 var minRank = areaRankSupplyInfo.GetProperty("MinRank").GetUInt32();
                 var supplies = JsonSerializer.Deserialize<List<CDataBorderSupplyItem>>(areaRankSupplyInfo.GetProperty("SupplyItemInfoList"));
 
-                asset.Add(new AreaRankSupply()
+                if (!asset.ContainsKey(areaId))
+                {
+                    asset[areaId] = new();
+                }
+
+                asset[areaId].Add(new AreaRankSupply()
                 {
                     AreaId = areaId,
                     MinRank = minRank,

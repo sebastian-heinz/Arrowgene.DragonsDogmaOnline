@@ -1,27 +1,22 @@
-using Arrowgene.Ddon.Shared.Asset;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Shared.AssetReader
 {
-    public class AreaRankRequirementDeserializer : IAssetDeserializer<List<AreaRankRequirement>>
+    public class AreaRankRequirementDeserializer : IAssetDeserializer<Dictionary<QuestAreaId, List<AreaRankRequirement>>>
     {
         private static readonly ILogger Logger = LogProvider.Logger(typeof(AreaRankRequirementDeserializer));
 
-        public List<AreaRankRequirement> ReadPath(string path)
+        public Dictionary<QuestAreaId, List<AreaRankRequirement>> ReadPath(string path)
         {
             Logger.Info($"Reading {path}");
 
-            List<AreaRankRequirement> asset = new();
+            Dictionary<QuestAreaId, List<AreaRankRequirement>> asset = new();
 
             string json = File.ReadAllText(path);
             JsonDocument document = JsonDocument.Parse(json);
@@ -36,6 +31,8 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     continue;
                 };
 
+                asset.Add(areaId, new());
+
                 var reqElements = areaElement.GetProperty("RankRequirements").EnumerateArray();
                 foreach (var reqElement in reqElements)
                 {
@@ -44,7 +41,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     uint areaTrial = reqElement.TryGetProperty("AreaTrial", out JsonElement jAreaTrial) ? jAreaTrial.GetUInt32() : 0;
                     uint extQuest = reqElement.TryGetProperty("ExtQuest", out JsonElement jExtQuest) ? jExtQuest.GetUInt32() : 0;
 
-                    asset.Add(new AreaRankRequirement()
+                    asset[areaId].Add(new AreaRankRequirement()
                     {
                         AreaId = areaId,
                         Rank = rank,

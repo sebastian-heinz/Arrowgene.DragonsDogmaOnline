@@ -21,18 +21,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
             S2CAreaGetAreaSupplyInfoRes res = new();
 
-            var asset = Server.AssetRepository.AreaRankSupplyAsset
-                .Where(x =>
-                    x.AreaId == request.AreaId
-                    && x.MinRank <= clientRank.Rank
-                )
+            var asset = Server.AssetRepository.AreaRankSupplyAsset.GetValueOrDefault(request.AreaId)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
+
+            var supply = asset
+                .Where(x => x.MinRank <= clientRank.Rank)
                 .LastOrDefault()
                 ?.SupplyItemInfoList
                 ?? new();
 
             if (asset.Count > 0)
             {
-                res.SupplyGrade = (byte)asset.FindLastIndex(x => x.MinAreaPoint <= clientRank.LastWeekPoint);
+                res.SupplyGrade = (byte)supply.FindLastIndex(x => x.MinAreaPoint <= clientRank.LastWeekPoint);
             }
 
             if (client.Character.AreaSupply.ContainsKey(request.AreaId)) 
