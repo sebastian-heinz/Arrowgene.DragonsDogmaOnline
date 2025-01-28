@@ -133,6 +133,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             PacketQueue packets = new();
             packets.AddRange(questState.DistributeQuestRewards(quest.QuestScheduleId, connectionIn));
+            packets.AddRange(Server.AreaRankManager.NotifyAreaRankUpOnQuestComplete(client, quest));
             questState.CompleteQuestProgress(quest.QuestScheduleId, connectionIn);
 
             S2CQuestCompleteNtc completeNtc = new S2CQuestCompleteNtc()

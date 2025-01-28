@@ -208,5 +208,52 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             return areaId >= QuestAreaId.HidellPlains && areaId <= QuestAreaId.UrtecaMountains;
         }
+
+        public PacketQueue NotifyAreaRankUpOnQuestComplete(GameClient client, Quest quest)
+        {
+            PacketQueue queue = new();
+            S2CAreaRankUpReadyNtc ntc = new();
+
+            if (quest.QuestType == QuestType.Main)
+            {
+                foreach ((var area, var rank) in client.Character.AreaRanks)
+                {
+                    List<AreaRankRequirement> requirements = Server.AssetRepository.AreaRankRequirementAsset[area];
+
+                    if (rank.Rank >= requirements.Count())
+                    {
+                        continue;
+                    }
+
+                    var nextRank = requirements.Find(x => x.Rank == rank.Rank + 1);
+                    if (nextRank.ExternalQuest == (uint)quest.QuestId)
+                    {
+                        ntc.AreaRankList.Add(new() { AreaId = area, Rank = nextRank.Rank });
+                    }
+                }
+            }
+            else if (quest.QuestType == QuestType.Tutorial)
+            {
+                var area = quest.QuestAreaId;
+                var rank = client.Character.AreaRanks[area];
+                List<AreaRankRequirement> requirements = Server.AssetRepository.AreaRankRequirementAsset[area];
+
+                if (rank.Rank < requirements.Count)
+                {
+                    var nextRank = requirements.Find(x => x.Rank == rank.Rank + 1);
+                    if (nextRank.AreaTrial == (uint)quest.QuestId)
+                    {
+                        ntc.AreaRankList.Add(new() { AreaId = area, Rank = nextRank.Rank });
+                    }
+                }
+            }
+
+            if (ntc.AreaRankList.Any())
+            {
+                client.Enqueue(ntc, queue);
+            }
+
+            return queue;
+        }
     }
 }
