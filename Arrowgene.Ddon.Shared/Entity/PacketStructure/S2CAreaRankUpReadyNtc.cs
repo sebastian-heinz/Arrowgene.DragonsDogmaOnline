@@ -1,19 +1,19 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CAreaRankUpReadyNtc : IPacketStructure
-    {
+    { 
         public PacketId Id => PacketId.S2C_AREA_RANK_UP_READY_NTC;
 
         public List<CDataAreaRank> AreaRankList { get; set; }
+        public S2CAreaRankUpReadyNtc()
+        {
+            AreaRankList = new();
+        }
 
         public class Serializer : PacketEntitySerializer<S2CAreaRankUpReadyNtc>
         {
