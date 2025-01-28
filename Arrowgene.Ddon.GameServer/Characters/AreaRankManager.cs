@@ -30,10 +30,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 return new();
             }
-
             List<CDataRewardItemInfo> list = new();
 
-            var areaSupplies = Server.AssetRepository.AreaRankSupplyAsset.Where(x => x.AreaId == areaId);
+            var areaSupplies = Server.AssetRepository.AreaRankSupplyAsset.GetValueOrDefault(areaId)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
             if (!areaSupplies.Any())
             {
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_SUPPLY_NOT_AVAILABLE, $"No valid asset for {areaId} found in AreaRankSupply asset.");
@@ -55,12 +55,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public uint MaxRank(QuestAreaId areaId)
         {
-            return Server.AssetRepository.AreaRankRequirementAsset.Where(x => x.AreaId == areaId).Select(x => x.Rank).Max();
+            return (uint)Server.AssetRepository.AreaRankRequirementAsset[areaId].Count;
         }
 
         public uint GetMaxPoints(QuestAreaId areaId, uint rank)
         {
-            var requirements = Server.AssetRepository.AreaRankRequirementAsset.Where(x => x.AreaId == areaId).ToList();
+            var requirements = Server.AssetRepository.AreaRankRequirementAsset[areaId];
 
             if (rank >= requirements.Count())
             {
@@ -81,7 +81,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             AreaRank clientRank = client.Character.AreaRanks.GetValueOrDefault(areaId)
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
             Dictionary<QuestId, CompletedQuest> completedQuests = client.Character.CompletedQuests;
-            List<AreaRankRequirement> requirements = Server.AssetRepository.AreaRankRequirementAsset.Where(x => x.AreaId == areaId).ToList();
+            List<AreaRankRequirement> requirements = Server.AssetRepository.AreaRankRequirementAsset[areaId];
 
             if (clientRank.Rank >= requirements.Count())
             {
@@ -107,11 +107,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public List<CDataAreaRankUpQuestInfo> RankUpQuestInfo(QuestAreaId areaId)
         {
-            return Server.AssetRepository.AreaRankRequirementAsset
-                .Where(x =>
-                    x.AreaId == areaId
-                    && (x.AreaTrial > 0 || x.ExternalQuest > 0)
-                )
+            return Server.AssetRepository.AreaRankRequirementAsset[areaId]
+                .Where(x => x.AreaTrial > 0 || x.ExternalQuest > 0)
                 .Select(x => new CDataAreaRankUpQuestInfo()
                 {
                     Rank = x.Rank - 1,
@@ -135,7 +132,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return queue;
             }
 
-            List<AreaRankRequirement> requirements = Server.AssetRepository.AreaRankRequirementAsset.Where(x => x.AreaId == areaId).ToList();
+            List<AreaRankRequirement> requirements = Server.AssetRepository.AreaRankRequirementAsset[areaId];
             var nextRank = requirements.Find(x => x.Rank == clientRank.Rank + 1);
 
             uint bonusPoint = 0; // TODO: Settings multiplier.

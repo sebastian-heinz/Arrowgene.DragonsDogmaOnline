@@ -26,10 +26,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // so spoof the rank in AreaGetAreaBaseInfoListHandler too.
                 uint effectiveRank = Server.AreaRankManager.GetEffectiveRank(client.Character, area);
 
-                var releaseList = Server.AssetRepository.AreaRankSpotInfoAsset
+                var releaseList = Server.AssetRepository.AreaRankSpotInfoAsset[area]
                 .Where(x =>
-                    x.AreaId == area
-                    && x.UnlockRank <= effectiveRank
+                    x.UnlockRank <= effectiveRank
                     && (x.UnlockQuest == 0 || completedQuests.ContainsKey((QuestId)x.UnlockQuest))
                 )
                 .DistinctBy(x => x.SpotId)

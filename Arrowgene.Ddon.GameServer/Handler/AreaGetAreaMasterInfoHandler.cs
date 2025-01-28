@@ -32,10 +32,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             result.LastWeekPoint = clientRank.LastWeekPoint;
             result.ToNextPoint = Server.AreaRankManager.GetMaxPoints(request.AreaId, clientRank.Rank);
 
-            result.ReleaseList = Server.AssetRepository.AreaRankSpotInfoAsset
+            result.ReleaseList = Server.AssetRepository.AreaRankSpotInfoAsset[request.AreaId]
                 .Where(x =>
-                    x.AreaId == request.AreaId
-                    && x.UnlockRank <= clientRank.Rank
+                    x.UnlockRank <= clientRank.Rank
                     && (x.UnlockQuest == 0 || completedQuests.ContainsKey((QuestId)x.UnlockQuest))
                 )
                 .Select(x => new CDataCommonU32(x.SpotId))
@@ -44,10 +43,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             result.CanReceiveSupply = client.Character.AreaSupply.ContainsKey(request.AreaId) && client.Character.AreaSupply[request.AreaId].Any();
             result.CanRankUp = Server.AreaRankManager.CanRankUp(client, request.AreaId);
 
-            result.SupplyItemInfoList = Server.AssetRepository.AreaRankSupplyAsset
+            result.SupplyItemInfoList = Server.AssetRepository.AreaRankSupplyAsset[request.AreaId]
             .Where(x =>
-                x.AreaId == request.AreaId
-                && x.MinRank <= clientRank.Rank
+                x.MinRank <= clientRank.Rank
             )
             .LastOrDefault()
             ?.SupplyItemInfoList

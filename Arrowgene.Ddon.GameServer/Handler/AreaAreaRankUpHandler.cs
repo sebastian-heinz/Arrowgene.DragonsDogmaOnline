@@ -35,8 +35,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (Server.GameLogicSettings.EnableAreaRankSpotLocks)
             {
-                res.ReleaseList = Server.AssetRepository.AreaRankSpotInfoAsset
-                .Where(x => x.AreaId == request.AreaId && x.UnlockRank == clientRank.Rank)
+                res.ReleaseList = Server.AssetRepository.AreaRankSpotInfoAsset[request.AreaId]
+                .Where(x => x.UnlockRank == clientRank.Rank)
                 .Select(x => new CDataCommonU32(x.SpotId))
                 .ToList();
             }
