@@ -25,6 +25,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public List<CDataRewardItemInfo> GetSupplyRewardList(QuestAreaId areaId, uint rank, uint points)
         {
+
+            if (!IsValidAreaId(areaId))
+            {
+                return new();
+            }
+
             List<CDataRewardItemInfo> list = new();
 
             var areaSupplies = Server.AssetRepository.AreaRankSupplyAsset.Where(x => x.AreaId == areaId);
@@ -67,6 +73,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public bool CanRankUp(GameClient client, QuestAreaId areaId)
         {
+            if (!IsValidAreaId(areaId))
+            {
+                return false;
+            }
+
             AreaRank clientRank = client.Character.AreaRanks.GetValueOrDefault(areaId)
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
             Dictionary<QuestId, CompletedQuest> completedQuests = client.Character.CompletedQuests;
@@ -112,6 +123,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public PacketQueue AddAreaPoint(GameClient client, QuestAreaId areaId, uint point, DbConnection? connectionIn = null)
         {
             PacketQueue queue = new PacketQueue();
+
+            if (!IsValidAreaId(areaId))
+            {
+                return queue;
+            }
+
             AreaRank clientRank = client.Character.AreaRanks.GetValueOrDefault(areaId)
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
             if (clientRank is null || clientRank.Rank == 0) {
@@ -168,7 +185,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             uint amount;
             QuestAreaId areaId = quest.QuestAreaId;
 
-            if (areaId < QuestAreaId.HidellPlains || areaId > QuestAreaId.UrtecaMountains)
+            if (!IsValidAreaId(areaId))
             {
                 return 0;
             }
@@ -188,6 +205,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return amount;
+        }
+
+        public static bool IsValidAreaId(QuestAreaId areaId)
+        {
+            return areaId >= QuestAreaId.HidellPlains && areaId <= QuestAreaId.UrtecaMountains;
         }
     }
 }

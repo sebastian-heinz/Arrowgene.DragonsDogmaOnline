@@ -639,17 +639,19 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         client.Enqueue(ntc, packets);
                         break;
                     case PointType.AreaPoints:
-                        var areaRankNtcs = server.AreaRankManager.AddAreaPoint(client, quest.QuestAreaId, amount, connectionIn);
+                        var areaId = quest.QuestAreaId > 0 ? quest.QuestAreaId : (QuestAreaId)quest.LightQuestDetail.AreaId;
+                        var areaRankNtcs = server.AreaRankManager.AddAreaPoint(client, areaId, amount, connectionIn);
                         packets.AddRange(areaRankNtcs);
                         break;
                 }
             }
 
             // Fallback so that existing quests still get AP.
-            if (!scaledRewards.Where(x => x.Type == PointType.AreaPoints).Any() && QuestManager.IsWorldQuest(quest) || QuestManager.IsBoardQuest(quest))
+            if (!scaledRewards.Where(x => x.Type == PointType.AreaPoints).Any() && (QuestManager.IsWorldQuest(quest) || QuestManager.IsBoardQuest(quest)))
             {
+                var areaId = quest.QuestAreaId > 0 ? quest.QuestAreaId : (QuestAreaId)quest.LightQuestDetail.AreaId;
                 var amount = server.ExpManager.GetScaledPointAmount(GameMode.Normal, RewardSource.Quest, PointType.AreaPoints, server.AreaRankManager.GetAreaPointReward(quest));
-                var areaRankNtcs = server.AreaRankManager.AddAreaPoint(client, quest.QuestAreaId, amount, connectionIn);
+                var areaRankNtcs = server.AreaRankManager.AddAreaPoint(client, areaId, amount, connectionIn);
                 packets.AddRange(areaRankNtcs);
             }
 
