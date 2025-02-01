@@ -1,11 +1,12 @@
+using Arrowgene.Ddon.GameServer.Context;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Network;
 using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class InstanceTraningRoomSetEnemyHandler : GameStructurePacketHandler<C2SInstanceTraningRoomSetEnemyReq>
+    public class InstanceTraningRoomSetEnemyHandler : GameRequestPacketQueueHandler<C2SInstanceTraningRoomSetEnemyReq, S2CInstanceTraningRoomSetEnemyRes>
     {
         public InstanceTraningRoomSetEnemyHandler(DdonGameServer server) : base(server)
         {
@@ -13,26 +14,34 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         private static readonly CDataStageLayoutId TrainingRoomLayout = new CDataStageLayoutId(349, 0, 1);
         private static readonly int RepopDelay = 2000; // ms
-
-        public override void Handle(GameClient client, StructurePacket<C2SInstanceTraningRoomSetEnemyReq> packet)
+        public override PacketQueue Handle(GameClient client, C2SInstanceTraningRoomSetEnemyReq request)
         {
 
             // TODO: Enemies that share the same positionIndex sometimes spawn with the wrong HP.
             // To avoid this in the meantime, each enemy must have its own unique positionIndex.
             // But the training room layout only has 6 (0-5) indices, so you can only have six different spawns.
 
-            client.Send(new S2CInstanceTraningRoomSetEnemyRes());
+            PacketQueue queue = new();
 
-            client.Party.InstanceEnemyManager.ResetEnemyNode(TrainingRoomLayout.AsStageLayoutId());
-            client.Party.SendToAll(new S2CInstanceEnemyGroupResetNtc()
+            client.Enqueue(new S2CInstanceTraningRoomSetEnemyRes(), queue);
+
+            client.Party.InstanceEnemyManager.ResetEnemyNode(TrainingRoomLayout.AsStageId());
+
+            client.Party.EnqueueToAll(new S2CInstanceEnemyGroupResetNtc()
             {
                 LayoutId = TrainingRoomLayout
-            });
+            }, queue);
+            
+            for (ulong i = 0; i < 6; i++)
+            {
+                var uid = ContextManager.CreateEnemyUID(i, TrainingRoomLayout);
+                ContextManager.RemoveContext(client.Party, uid);
+            }
 
-            ushort level = (ushort)packet.Structure.Lv;
+            ushort level = (ushort)request.Lv;
 
             Task.Delay(RepopDelay).ContinueWith(_ => {
-                switch (packet.Structure.OptionId)
+                switch (request.OptionId)
                 {
                     case 1: // Two orc soldiers
                         client.Party.SendToAll(new S2CInstanceEnemyRepopNtc()
@@ -78,7 +87,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             LayoutId = TrainingRoomLayout,
                             EnemyData = new CDataLayoutEnemyData()
                             {
-                                PositionIndex = 2,
+                                PositionIndex = 0,
                                 EnemyInfo = new CDataStageLayoutEnemyPresetEnemyInfoClient()
                                 {
                                     EnemyId = 0x15000,
@@ -98,7 +107,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             LayoutId = TrainingRoomLayout,
                             EnemyData = new CDataLayoutEnemyData()
                             {
-                                PositionIndex = 3,
+                                PositionIndex = 0,
                                 EnemyInfo = new CDataStageLayoutEnemyPresetEnemyInfoClient()
                                 {
                                     EnemyId = 0x15500,
@@ -134,6 +143,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         break;
                 }
             });
+
+            return queue;
         }
     }
 }
