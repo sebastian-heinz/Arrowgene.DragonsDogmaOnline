@@ -16,24 +16,24 @@ public class GameItem : IGameItem
     {
     }
 
-    public override void OnUse(DdonGameServer server, GameClient client)
+    public override void OnUse(GameClient client)
     {
         // The rookies ring has no OnUse behavior
     }
 
-    private double CalculateConstantBonus(DdonGameServer server, CharacterCommon characterCommon)
+    private double CalculateConstantBonus(CharacterCommon characterCommon)
     {
-        if (characterCommon.ActiveCharacterJobData.Lv > server.GameLogicSettings.Get<uint>("RookiesRing", "RookiesRingMaxLevel"))
+        if (characterCommon.ActiveCharacterJobData.Lv > LibDdon.GetSetting<uint>("RookiesRing", "RookiesRingMaxLevel"))
         {
             return 0;
         }
 
-        return server.GameLogicSettings.Get<double>("RookiesRing", "RookiesRingBonus");
+        return LibDdon.GetSetting<double>("RookiesRing", "RookiesRingBonus");
     }
 
-    private double CalculateDynamicBonus(DdonGameServer server, CharacterCommon characterCommon)
+    private double CalculateDynamicBonus(CharacterCommon characterCommon)
     {
-        var dynamicBands = server.GameLogicSettings.Get<List<(uint MinLv, uint MaxLv, double ExpMultiplier)>>("RookiesRing", "DynamicExpBands");
+        var dynamicBands = LibDdon.GetSetting<List<(uint MinLv, uint MaxLv, double ExpMultiplier)>>("RookiesRing", "DynamicExpBands");
 
         var characterLv = characterCommon.ActiveCharacterJobData.Lv;
 
@@ -47,19 +47,19 @@ public class GameItem : IGameItem
         return 0;
     }
 
-    public override double GetBonusMultiplier(DdonGameServer server, CharacterCommon characterCommon)
+    public override double GetBonusMultiplier(CharacterCommon characterCommon)
     {
         double bonus = 0;
 
-        var mode = server.GameLogicSettings.Get<uint>("RookiesRing", "RookiesRingMode");
+        var mode = LibDdon.GetSetting<uint>("RookiesRing", "RookiesRingMode");
         switch (mode)
         {
         case RingMode.Dynamic:
-            bonus = CalculateDynamicBonus(server, characterCommon);
+            bonus = CalculateDynamicBonus(characterCommon);
             break;
         default:
             // Mode is either 0 or an invalid value, so treat it as zero
-            bonus = CalculateConstantBonus(server, characterCommon);
+            bonus = CalculateConstantBonus(characterCommon);
             break;
         }
 

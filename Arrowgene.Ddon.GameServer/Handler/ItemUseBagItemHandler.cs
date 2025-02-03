@@ -50,7 +50,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (_Server.ScriptManager.GameItemModule.HasItem(item.ItemId))
             {
-                _Server.ScriptManager.GameItemModule.GetItemInterface(item.ItemId)?.OnUse(_Server, client);
+                _Server.ScriptManager.GameItemModule.GetItemInterface(item.ItemId)?.OnUse(client);
             }
 
             if (_Server.EpitaphRoadManager.TrialInProgress(client.Party))
