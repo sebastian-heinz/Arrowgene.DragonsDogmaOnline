@@ -324,6 +324,13 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 resultCommands.Add(QuestManager.ResultCommand.BgmStop());
             }
 
+            if (questBlock.Announcements.Caution)
+            {
+                // This often occurs in conjunction with an Update or Accept announcement.
+                // The exact order varies from quest to quest in video evidence, but we always present it first for convenience.
+                resultCommands.Add(QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Caution));
+            }
+
             if (questBlock.SequenceNo != 1)
             {
                 switch (questBlock.AnnounceType)
