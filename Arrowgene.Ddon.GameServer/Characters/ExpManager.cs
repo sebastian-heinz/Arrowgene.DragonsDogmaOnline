@@ -1,5 +1,7 @@
 #nullable enable
 using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Scripting;
+using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Server.Scripting.interfaces;
@@ -11,6 +13,7 @@ using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.IO;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
@@ -456,7 +459,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return JobData;
         }
 
-        public PacketQueue AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, RewardSource rewardType, QuestType questType = QuestType.All, DbConnection? connectionIn = null)
+        public PacketQueue AddExp(GameClient client, CharacterCommon characterToAddExpTo, (uint BasePoints, uint BonusPoints) gainedExp, RewardSource rewardType, QuestType questType = QuestType.All, DbConnection? connectionIn = null)
         {
             PacketQueue packets = new();
 
@@ -470,17 +473,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 // ------
                 // EXP UP
 
-                uint extraBonusExp = CalculateExpBonus(characterToAddExpTo, gainedExp, rewardType, questType);
+                // uint extraBonusExp = CalculateExpBonus(characterToAddExpTo, gainedExp, rewardType, questType);
 
-                activeCharacterJobData.Exp += gainedExp;
-                activeCharacterJobData.Exp += extraBonusExp;
+                activeCharacterJobData.Exp += gainedExp.BasePoints;
+                activeCharacterJobData.Exp += gainedExp.BonusPoints;
 
                 if (characterToAddExpTo is Character)
                 {
                     S2CJobCharacterJobExpUpNtc expNtc = new S2CJobCharacterJobExpUpNtc();
                     expNtc.JobId = activeCharacterJobData.Job;
-                    expNtc.AddExp = gainedExp + extraBonusExp;
-                    expNtc.ExtraBonusExp = extraBonusExp;
+                    expNtc.AddExp = gainedExp.BasePoints + gainedExp.BonusPoints;
+                    expNtc.ExtraBonusExp = gainedExp.BonusPoints;
                     expNtc.TotalExp = activeCharacterJobData.Exp;
                     expNtc.Type = (byte) rewardType; // TODO: Figure out
                     client.Enqueue(expNtc, packets);
@@ -490,8 +493,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     S2CJobPawnJobExpUpNtc expNtc = new S2CJobPawnJobExpUpNtc();
                     expNtc.PawnId = ((Pawn)characterToAddExpTo).PawnId;
                     expNtc.JobId = activeCharacterJobData.Job;
-                    expNtc.AddExp = gainedExp + extraBonusExp;
-                    expNtc.ExtraBonusExp = extraBonusExp;
+                    expNtc.AddExp = gainedExp.BasePoints + gainedExp.BonusPoints;
+                    expNtc.ExtraBonusExp = gainedExp.BonusPoints;
                     expNtc.TotalExp = activeCharacterJobData.Exp;
                     expNtc.Type = (byte) rewardType; // TODO: Figure out
                     client.Enqueue(expNtc, packets);
@@ -502,19 +505,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 // LEVEL UP
                 uint currentLevel = activeCharacterJobData.Lv;
                 uint targetLevel = currentLevel;
-                uint addJobPoint = 0;
 
+                uint addJobPoint = 0;
                 while (targetLevel < lvCap && activeCharacterJobData.Exp >= ExpManager.TotalExpToLevelUpTo(targetLevel + 1, client.GameMode))
                 {
                     targetLevel++;
+                    var result = GetAdjustedPoints(client, RewardSource.None, characterToAddExpTo, null, PointType.JobPoints, LEVEL_UP_JOB_POINTS_EARNED[targetLevel], null);
 
-                    if (client.GameMode == GameMode.Normal)
-                    {
-                        addJobPoint += GetScaledPointAmount(client.GameMode, RewardSource.None, PointType.JobPoints, LEVEL_UP_JOB_POINTS_EARNED[targetLevel]);
-                    }
+                    addJobPoint += result.BasePoints;
                 }
 
-                if (currentLevel != targetLevel || addJobPoint != 0)
+                if (currentLevel != targetLevel || addJobPoint > 0)
                 {
                     activeCharacterJobData.Lv = targetLevel;
                     activeCharacterJobData.JobPoint += addJobPoint;
@@ -570,7 +571,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return packets;
         }
 
-        public void AddExpNtc(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, RewardSource rewardType, QuestType questType = QuestType.All, DbConnection? connectionIn = null)
+        public void AddExpNtc(GameClient client, CharacterCommon characterToAddExpTo, (uint BasePoints, uint BonusPoints) gainedExp, RewardSource rewardType, QuestType questType = QuestType.All, DbConnection? connectionIn = null)
         {
             AddExp(client, characterToAddExpTo, gainedExp, rewardType, questType, connectionIn).Send();
         }
@@ -699,337 +700,86 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return totalExp;
         }
 
-        private uint GetRookiesRingBonus(CharacterCommon characterCommon, uint baseExpAmount)
+        private double CalculateMultipliers(GameClient client, GameMode gameMode, RewardSource source, CharacterCommon characterCommon, PartyGroup party, PointType pointType, InstancedEnemy enemy,
+                                            PointModifierType modifierType, double baseMultiplier)
         {
-            if (!_Server.GameLogicSettings.Get<bool>("RookiesRing", "EnableRookiesRing"))
+            double additive = baseMultiplier;
+            double multiplicative = 1.0;
+
+            var pointModiferModule = _Server.ScriptManager.PointModifierModule;
+            foreach (var modifier in pointModiferModule.GetModifiersByType(modifierType))
             {
-                return 0;
-            }
-
-            if (!characterCommon.Equipment.GetItems(EquipType.Performance).Exists(x => x?.ItemId == (uint) ItemId.RookiesRingOfBlessing))
-            {
-                return 0;
-            }
-
-            var rookiesRingInterface = _Server.ScriptManager.GameItemModule.GetItemInterface(ItemId.RookiesRingOfBlessing);
-            if (rookiesRingInterface == null)
-            {
-                return baseExpAmount;
-            }
-
-            return (uint)(baseExpAmount * rookiesRingInterface.GetBonusMultiplier(_Server, characterCommon));
-        }
-
-        private uint GetCourseExpBonus(CharacterCommon characterCommon, uint baseExpAmount, RewardSource source, QuestType questType)
-        {
-            double multiplier = 0;
-            switch (source)
-            {
-                case RewardSource.Enemy:
-                    multiplier = _Server.GpCourseManager.EnemyExpBonus(characterCommon);
-                    break;
-                case RewardSource.Quest:
-                    multiplier = _Server.GpCourseManager.QuestExpBonus(questType);
-                    break;
-            }
-
-            return (uint) (baseExpAmount * multiplier);
-        }
-
-        public uint CalculateExpBonus(CharacterCommon characterCommon, uint baseExpAmount, RewardSource source, QuestType questType)
-        {
-            uint bonusAmount = 0;
-
-            bonusAmount += GetRookiesRingBonus(characterCommon, baseExpAmount);
-            bonusAmount += GetCourseExpBonus(characterCommon, baseExpAmount, source, questType);
-
-            return bonusAmount;
-        }
-
-        private uint PartyLevelRange(PartyGroup party)
-        {
-            var firstMember = party.Clients.First();
-            uint maxLevel = firstMember.Character.ActiveCharacterJobData.Lv;
-            uint minLevel = firstMember.Character.ActiveCharacterJobData.Lv;
-
-            foreach (var member in party.Members)
-            {
-                CharacterCommon characterCommon = null;
-                if (member is PlayerPartyMember)
+                if (!modifier.IsEnabled() || modifier.Source != source || modifier.PointType != pointType)
                 {
-                    var client = ((PlayerPartyMember)member).Client;
-                    characterCommon = client.Character;
-                }
-                else if (member is PawnPartyMember)
-                {
-                    characterCommon = ((PawnPartyMember)member).Pawn;
-                }
-                else
-                {
-                    // Is this possible?
                     continue;
                 }
 
-                maxLevel = Math.Max(maxLevel, characterCommon.ActiveCharacterJobData.Lv);
-                minLevel = Math.Min(minLevel, characterCommon.ActiveCharacterJobData.Lv);
-            }
-
-            return maxLevel - minLevel;
-        }
-
-        private uint PartyMemberMaxLevel(PartyGroup party)
-        {
-            uint maxLevel = party.Clients.First().Character.ActiveCharacterJobData.Lv;
-            foreach (var member in party.Members)
-            {
-                CharacterCommon characterCommon = null;
-                if (member is PlayerPartyMember)
+                if (characterCommon is Character && !modifier.PlayerTypes.HasFlag(PlayerType.Player))
                 {
-                    var client = ((PlayerPartyMember)member).Client;
-                    characterCommon = client.Character;
-                }
-                else if (member is PawnPartyMember)
-                {
-                    characterCommon = ((PawnPartyMember)member).Pawn;
-                }
-                else
-                {
-                    // Is this possible?
                     continue;
                 }
-
-                maxLevel = Math.Max(maxLevel, characterCommon.ActiveCharacterJobData.Lv);
-            }
-
-            return maxLevel;
-        }
-
-        private bool AllMembersOwnedBySameCharacter(PartyGroup party)
-        {
-            uint characterId = 0;
-            foreach (var member in party.Members)
-            {
-                uint id = 0;
-                if (member is PlayerPartyMember)
+                else if (characterCommon is Pawn)
                 {
-                    var client = ((PlayerPartyMember)member).Client;
-                    id = client.Character.CharacterId;
-                }
-                else if (member is PawnPartyMember)
-                {
-                    var pawn = ((PawnPartyMember)member).Pawn;
-                    if (pawn.IsRented)
+                    if (!modifier.PlayerTypes.HasFlag(PlayerType.MyPawn))
                     {
-                        return false;
+                        continue;
                     }
 
-                    id = pawn.CharacterId;
-                }
-
-                if (characterId == 0)
-                {
-                    characterId = id;
-                }
-
-                if (characterId != id)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
-
-        private double CalculatePartyRangeMultipler(GameMode gameMode, PartyGroup party)
-        {
-            if (!_GameSettings.EnableAdjustPartyEnemyExp || gameMode == GameMode.BitterblackMaze)
-            {
-                return 1.0;
-            }
-
-            if (_GameSettings.DisableExpCorrectionForMyPawn && AllMembersOwnedBySameCharacter(party))
-            {
-                return 1.0;
-            }
-
-            var range = PartyLevelRange(party);
-
-            double multiplier = 0;
-            foreach (var tier in _GameSettings.AdjustPartyEnemyExpTiers)
-            {
-                if (range >= tier.MinLv && range <= tier.MaxLv)
-                {
-                    multiplier = tier.ExpMultiplier;
-                    break;
-                }
-            }
-
-            return multiplier;
-        }
-
-        private double CalculateTargetLvMultiplier(GameMode gameMode, PartyGroup party, uint targetLv)
-        {
-            if (!_GameSettings.EnableAdjustTargetLvEnemyExp || gameMode == GameMode.BitterblackMaze)
-            {
-                return 1.0;
-            }
-
-            var maxLevelInParty = PartyMemberMaxLevel(party);
-            if (maxLevelInParty <= targetLv)
-            {
-                return 1.0;
-            }
-
-            var range = maxLevelInParty - targetLv;
-
-            double multiplier = 0;
-            foreach (var tier in _GameSettings.AdjustTargetLvEnemyExpTiers)
-            {
-                if (range >= tier.MinLv && range <= tier.MaxLv)
-                {
-                    multiplier = tier.ExpMultiplier;
-                    break;
-                }
-            }
-
-            return multiplier;
-        }
-
-        public uint GetScaledPointAmount(GameMode gameMode, RewardSource source, PointType type, uint amount)
-        {
-            double modifier = 1.0;
-            switch (type)
-            {
-                case PointType.ExperiencePoints:
-                    if(gameMode == GameMode.Normal) {
-                        modifier = (source == RewardSource.Enemy) ? _GameSettings.EnemyExpModifier : _GameSettings.QuestExpModifier;
-                    }
-                    //No quests in BBM, reward source should always be Enemy
-                    else if(gameMode == GameMode.BitterblackMaze) {
-                        modifier =  _GameSettings.BBMEnemyExpModifier;
-                    }
-                    break;
-                case PointType.JobPoints:
-                    modifier = _GameSettings.JpModifier;
-                    break;
-                case PointType.PlayPoints:
-                    modifier = _GameSettings.PpModifier;
-                    break;
-                default:
-                    modifier = 1.0;
-                    break;
-            }
-            return (uint)(amount * modifier);
-        }
-
-        public uint GetAdjustedExp(GameMode gameMode, RewardSource source, PartyGroup party, uint baseExpAmount, uint targetLv)
-        {
-            if (_Server.GpCourseManager.DisablePartyExpAdjustment())
-            {
-                return baseExpAmount;
-            }
-
-            double multiplier = 1.0;
-            if (source == RewardSource.Enemy)
-            {
-                var targetMultiplier = CalculateTargetLvMultiplier(gameMode, party, targetLv);
-                var partyRangeMultiplier = CalculatePartyRangeMultipler(gameMode, party);
-                multiplier = Math.Min(partyRangeMultiplier, targetMultiplier);
-            }
-            else if (source == RewardSource.Quest)
-            {
-                // Currently no adjustments
-            }
-
-            return (uint)(multiplier * baseExpAmount);
-        }
-
-        private uint GetMaxAllowedPartyRange()
-        {
-            if (_GameSettings.AdjustPartyEnemyExpTiers.Count == 0)
-            {
-                return 0;
-            }
-
-            uint min = _GameSettings.AdjustPartyEnemyExpTiers[0].MinLv;
-            uint max = _GameSettings.AdjustPartyEnemyExpTiers[0].MaxLv;
-
-            foreach (var tier in _GameSettings.AdjustPartyEnemyExpTiers)
-            {
-                min = Math.Min(min, tier.MinLv);
-                max = Math.Max(max, tier.MaxLv);
-            }
-
-            return max - min;
-        }
-
-        public bool RequiresPawnCatchup(GameMode gameMode, PartyGroup party, Pawn pawn)
-        {
-            if (!_GameSettings.EnablePawnCatchup || gameMode == GameMode.BitterblackMaze)
-            {
-                return false;
-            }
-
-            foreach (var client in party.Clients)
-            {
-                if (pawn.CharacterId == client.Character.CharacterId)
-                {
-                    if (pawn.ActiveCharacterJobData.Lv >= client.Character.ActiveCharacterJobData.Lv)
+                    if (((Pawn)characterCommon).CharacterId != client.Character.CharacterId)
                     {
-                        return false;
-                    }
-                    else if (client.Character.ActiveCharacterJobData.Lv - pawn.ActiveCharacterJobData.Lv > _GameSettings.PawnCatchupLvDiff)
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
+                        continue;
                     }
                 }
-            }
 
-            return false;
-        }
-
-        private double CalculatePawnCatchupTargetLvMultiplier(GameMode gameMode, Pawn pawn, uint targetLv)
-        {
-            if (!_GameSettings.EnableAdjustTargetLvEnemyExp || gameMode == GameMode.BitterblackMaze)
-            {
-                return 1.0;
-            }
-
-            if (pawn.ActiveCharacterJobData.Lv <= targetLv)
-            {
-                return 1.0;
-            }
-
-            var range = pawn.ActiveCharacterJobData.Lv - targetLv;
-
-            double multiplier = 0;
-            foreach (var tier in _GameSettings.AdjustTargetLvEnemyExpTiers)
-            {
-                if (range >= tier.MinLv && range <= tier.MaxLv)
+                double result = modifier.GetMultiplier(gameMode, characterCommon, party, enemy);
+                switch (modifier.ModifierAction)
                 {
-                    multiplier = tier.ExpMultiplier;
-                    break;
+                    case PointModifierAction.Additive:
+                        additive += result;
+                        break;
+                    case PointModifierAction.Multiplicative:
+                        multiplicative *= result;
+                        break;
                 }
             }
 
-            return multiplier;
+            return additive * multiplicative;
         }
 
-        public uint GetAdjustedPawnExp(GameMode gameMode, RewardSource source, PartyGroup party, Pawn pawn, uint baseExpAmount, uint targetLv)
+        public (uint BasePoints, uint BonusPoints) GetAdjustedPoints(GameClient client, RewardSource source, CharacterCommon characterCommon, PartyGroup party, PointType pointType, uint basePointAmount, InstancedEnemy enemy, QuestType questType = QuestType.All)
         {
-            if (!_GameSettings.EnablePawnCatchup || gameMode == GameMode.BitterblackMaze)
+            double basePointMultiplier = CalculateMultipliers(client, client.GameMode, source, characterCommon, party, pointType, enemy, PointModifierType.BaseModifier, 1.0);
+            if (basePointMultiplier <= 0.0)
             {
-                return baseExpAmount;
+                // If the base is 0, no bonus to calculate
+                return (0, 0);
             }
 
-            var targetMultiplier = CalculatePawnCatchupTargetLvMultiplier(gameMode, pawn, targetLv);
-            var multiplier = _GameSettings.PawnCatchupMultiplier * targetMultiplier;
+            double bonusPointMultiplier = CalculateMultipliers(client, client.GameMode, source, characterCommon, party, pointType, enemy, PointModifierType.BonusModifier, 0.0);
+            bonusPointMultiplier = Math.Clamp(bonusPointMultiplier, 0, double.MaxValue);
 
-            return (uint)(multiplier * baseExpAmount);
+            uint newBase = (uint)(basePointAmount * basePointMultiplier);
+            uint bonus = (uint)(newBase * bonusPointMultiplier);
+
+            return (newBase, bonus);
+        }
+
+        public (uint BasePoints, uint BonusPoints) GetAdjustedPointsForQuest(PointType pointType, uint basePointAmount, QuestType questType)
+        {
+            double basePointMultiplier = CalculateMultipliers(null, GameMode.Normal, RewardSource.Quest, null, null, pointType, null, PointModifierType.BaseModifier, 1.0);
+            if (basePointMultiplier <= 0.0)
+            {
+                // If the base is 0, no bonus to calculate
+                return (0, 0);
+            }
+
+            double bonusPointMultiplier = CalculateMultipliers(null, GameMode.Normal, RewardSource.Quest, null, null, pointType, null, PointModifierType.BonusModifier, 0.0);
+            bonusPointMultiplier = Math.Clamp(bonusPointMultiplier, 0, double.MaxValue);
+
+            uint newBase = (uint)(basePointAmount * basePointMultiplier);
+            uint bonus = (uint)(newBase * bonusPointMultiplier);
+
+            return (newBase, bonus);
         }
     }
 }

@@ -10,12 +10,12 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
         /**
          * @brief Called when an item is used by a player.
          */
-        public abstract void OnUse(DdonGameServer server, GameClient client);
+        public abstract void OnUse(GameClient client);
 
         /**
          * Called for items which have an impact to the player or pawn when they are
          * equipped when completing certain actions such as killing enemies or completing quests.
          */
-        public abstract double GetBonusMultiplier(DdonGameServer server, CharacterCommon characterCommon);
+        public abstract double GetBonusMultiplier(CharacterCommon characterCommon);
     }
 }
