@@ -893,6 +893,11 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             {
                 announcements.EndContentsPurpose = jEndContentsPurpose.GetInt32();
             }
+
+            if (jBlock.TryGetProperty("caution", out JsonElement jCaution))
+            {
+                announcements.Caution = jCaution.GetBoolean();
+        }
         }
 
         private QuestFlag ParseQuestFlag(JsonElement jFlag)
