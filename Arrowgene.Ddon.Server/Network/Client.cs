@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
@@ -78,6 +79,13 @@ namespace Arrowgene.Ddon.Server.Network
             Send(packet);
         }
 
+        public void Enqueue<TResStruct>(TResStruct res, PacketQueue queue)
+            where TResStruct : class, IPacketStructure, new()
+        {
+            StructurePacket<TResStruct> packet = new StructurePacket<TResStruct>(res);
+            queue.Enqueue((this, packet));
+        }
+
         public void Send(Packet packet)
         {
             if (!_challengeCompleted 
@@ -134,9 +142,23 @@ namespace Arrowgene.Ddon.Server.Network
             SendRaw(data);
         }
 
-        public Challenge.Response HandleChallenge(byte[] data)
+
+        public Challenge.Response HandleChallenge(C2SCertClientChallengeReq request)
         {
-            Challenge.Response challenge = _challenge.HandleClientCertChallenge(data);
+            Challenge.Response challenge = _challenge.HandleClientCertChallenge(request);
+            _challenge = null;
+            if (challenge.Error)
+            {
+                Logger.Error(this, "Failed CertChallenge");
+            }
+
+            _packetFactory.SetCamelliaKey(challenge.CamelliaKey);
+            return challenge;
+        }
+
+        public Challenge.Response HandleChallenge(C2LClientChallengeReq request)
+        {
+            Challenge.Response challenge = _challenge.HandleClientCertChallenge(request);
             _challenge = null;
             if (challenge.Error)
             {

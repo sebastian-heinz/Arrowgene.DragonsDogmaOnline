@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40200049,
+  "base_level": 73,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Rumors on the Wind",
+  "light_quest_details": {
+    "area_id": 14,
+    "board_type": 1,
+    "board_id": 18
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 55284
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 45631
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 2644
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "249",
+      "level": 73,
+      "amount": 2
+    }
+  ]
+}

@@ -44,9 +44,14 @@
       "type": "random",
       "loot_pool": [
         {
-          "item_id": 36,
-          "num": 9,
-          "chance": 1.0
+          "item_id": 7776,
+          "num": 1,
+          "chance": 0.6
+        },
+        {
+          "item_id": 52,
+          "num": 3,
+          "chance": 0.6
         }
       ]
     }
@@ -55,14 +60,18 @@
     {
       "stage_id": {
         "id": 1,
-        "group_id": 187
+        "group_id": 185
       },
+      "placement_type": "manual",
       "enemies": [
         {
           "enemy_id": "0x015300",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 53,
           "level": 26,
           "exp": 4200,
-          "is_boss": true
+          "is_boss": true,
+          "index": 0
         }
       ]
     }
@@ -86,6 +95,7 @@
     {
       "type": "KillGroup",
       "announce_type": "Update",
+      "reset_group": false,
       "groups": [ 0 ]
     },
     {

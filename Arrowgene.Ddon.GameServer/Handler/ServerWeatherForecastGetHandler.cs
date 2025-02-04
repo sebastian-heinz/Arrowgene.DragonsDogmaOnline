@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var res = new S2CServerWeatherForecastGetRes()
             {
                 IntervalGameHour = WeatherManager.ForecastIntervalGameHour,
-                GameDayToEarthMin = Server.Setting.GameLogicSetting.GameClockTimescale,
+                GameDayToEarthMin = Server.GameLogicSettings.GameClockTimescale,
                 ForecastList = Server.WeatherManager.GetForecast()
             };
 

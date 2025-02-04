@@ -61,6 +61,7 @@ namespace Arrowgene.Ddon.Shared.Model
         ReleaseTreeElement = 0x32,
         PawnExpeditionDrop = 0x33,
         StorePostItemBoxGacha = 0x34,
+        SoulOrdealReward = 0x38,
         GatherEquipItem = 0x4b,
         Debug = 0x64,
         DebugAdd = 0x64,

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CharacterEditGetShopPriceHandler : PacketHandler<GameClient>
+    public class CharacterEditGetShopPriceHandler : GameRequestPacketHandler<C2SCharacterEditGetShopPriceReq, S2CCharacterEditGetShopPriceRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CharacterEditGetShopPriceHandler));
 
@@ -24,9 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public static readonly uint REINCARNATION_GG_PRICE = 0;
         public static readonly uint UNK_TYPE_GG_PRICE = 0;
 
-        public override PacketId Id => PacketId.C2S_CHARACTER_EDIT_GET_SHOP_PRICE_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override S2CCharacterEditGetShopPriceRes Handle(GameClient client, C2SCharacterEditGetShopPriceReq request)
         {
             S2CCharacterEditGetShopPriceRes res = new S2CCharacterEditGetShopPriceRes();
             res.PriceInfo.Add(new CDataCharacterEditPriceInfo()
@@ -73,7 +71,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             });
 
-            client.Send(res);
+            return res;
         }
 
         public static void CheckPrice(byte updateType, WalletType priceType, uint value)

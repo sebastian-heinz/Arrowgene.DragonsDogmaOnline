@@ -1,29 +1,24 @@
-using System.Linq;
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class ItemSellItemHandler : GameStructurePacketHandler<C2SItemSellItemReq>
+    public class ItemSellItemHandler : GameRequestPacketQueueHandler<C2SItemSellItemReq, S2CItemSellItemRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ItemSellItemHandler));
         
-        private readonly ItemManager _itemManager;
-        private readonly WalletManager _walletManager;
-
         public ItemSellItemHandler(DdonGameServer server) : base(server)
         {
-            _itemManager = server.ItemManager;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SItemSellItemReq> req)
+        public override PacketQueue Handle(GameClient client, C2SItemSellItemReq request)
         {
-            client.Send(new S2CItemSellItemRes());
+            PacketQueue packetQueue = new PacketQueue();
+            client.Enqueue(new S2CItemSellItemRes(), packetQueue);
 
             uint totalAmountToAdd = 0;
 
@@ -34,20 +29,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Server.Database.ExecuteInTransaction(connection =>
             {
-                foreach (CDataStorageItemUIDList consumeItem in req.Structure.ConsumeItemList)
+                foreach (CDataStorageItemUIDList consumeItem in request.ConsumeItemList)
                 {
-                    var ntcData = _itemManager.ConsumeItemByUId(Server, client.Character, consumeItem.StorageType, consumeItem.ItemUId, consumeItem.Num, connection);
+                    var ntcData = Server.ItemManager.ConsumeItemByUId(Server, client.Character, consumeItem.StorageType, consumeItem.ItemUId, consumeItem.Num, connection);
                     ntc.UpdateItemList.Add(ntcData);
 
                     uint goldValue = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, ntcData.ItemList.ItemId).Price;
                     uint amountToAdd = goldValue * consumeItem.Num;
                     totalAmountToAdd += amountToAdd;
                 }
-                CDataUpdateWalletPoint walletUpdate = Server.WalletManager.AddToWallet(client.Character, WalletType.Gold, totalAmountToAdd, connection);
+                CDataUpdateWalletPoint walletUpdate = Server.WalletManager.AddToWallet(client.Character, WalletType.Gold, totalAmountToAdd, 0, connection);
                 ntc.UpdateWalletList.Add(walletUpdate);
             });
-            
-            client.Send(ntc);
+
+            client.Enqueue(ntc, packetQueue);
+
+            return packetQueue;
         }
     }
 }

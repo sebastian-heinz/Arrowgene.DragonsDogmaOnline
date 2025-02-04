@@ -1,0 +1,138 @@
+{
+    "comment": "Heroic Spirit Sleeping Path: Rathnite Foothills - Section 1: First Space Trial 1",
+    "stage_id": {
+        "id": 550,
+        "group_id": 33
+    },
+    "pos_id": 4,
+    "unlock_cost": [],
+    "unlocks": [],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
+                {"type": "CannotBeAffectedByAbnormalStatus", "priority": "Secondary", "Param1": 3},
+                {"type": "CompleteConditionsWithinTimeLimit", "priority": "Secondary", "Param1": 60}
+            ],
+            "cost": [],
+            "item_rewards": [
+                {"item_id": 18656, "amount": 10},
+                {"item_id": 18742, "amount": 10}
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 550,
+                        "group_id": 18
+                    },
+                    "enemies": [
+                        {
+                            "comment" : "Living Armor",
+                            "enemy_id": "0x010306",
+                            "level": 83,
+                            "exp": 84000,
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true
+                        },
+                        {
+                            "comment" : "Frost Corp Tortuerer",
+                            "enemy_id": "0x010512",
+                            "level": 83,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Frost Corp Tortuerer",
+                            "enemy_id": "0x010512",
+                            "level": 83,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Frost Skeleton",
+                            "enemy_id": "0x010315",
+                            "level": 83,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Frost Skeleton",
+                            "enemy_id": "0x010315",
+                            "level": 83,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "trial_name": "Trial of the Souls",
+            "constraints": [
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
+                {"type": "CannotDieMoreThanOnce", "priority": "Secondary"},
+                {"type": "CompleteConditionsWithinTimeLimit", "priority": "Secondary", "Param1": 180}
+            ],
+            "cost": [
+                {"item_id": 18656, "amount": 10}
+            ],
+            "item_rewards": [
+                {"item_id": 18742, "amount": 20},
+                {
+                    "type": "pool", "rolls": 1,
+                    "items": [
+                        {"type": "Random", "item_id": 9298, "amount": 3},
+                        {"type": "Random", "item_id": 14188, "amount": 3}
+                    ]
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 550,
+                        "group_id": 18
+                    },
+                    "enemies": [
+                        {
+                            "comment" : "Frost Machina",
+                            "enemy_id": "0x015851",
+                            "level": 83,
+                            "exp": 84000,
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true
+                        },
+                        {
+                            "comment" : "Frost Corp Punisher",
+                            "enemy_id": "0x010511",
+                            "level": 83,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Frost Corp Punisher",
+                            "enemy_id": "0x010511",
+                            "level": 83,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Frost Skeleton Brute",
+                            "enemy_id": "0x010321",
+                            "level": 83,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Frost Skeleton Brute",
+                            "enemy_id": "0x010321",
+                            "level": 83,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

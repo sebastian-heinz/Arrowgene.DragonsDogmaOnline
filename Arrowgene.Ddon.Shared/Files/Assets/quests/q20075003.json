@@ -39,6 +39,21 @@
           "num": 3
         }
       ]
+    },
+    {
+      "type": "random",
+      "loot_pool": [
+        {
+          "item_id": 7983,
+          "num": 3,
+          "chance": 0.6
+        },
+        {
+          "item_id": 9000,
+          "num": 1,
+          "chance": 0.4
+        }
+      ]
     }
   ],
   "enemy_groups": [
@@ -49,33 +64,51 @@
       },
       "enemies": [
         {
-          "enemy_id": "0x015800",
+          "enemy_id": "0x015810",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 53,
           "level": 43,
-          "exp": 900,
+          "exp": 5264,
           "is_boss": false
         },
         {
-          "enemy_id": "0x015800",
+          "enemy_id": "0x015820",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 54,
           "level": 43,
-          "exp": 900,
+          "exp": 5264,
           "is_boss": false
         },
         {
-          "enemy_id": "0x015800",
+          "enemy_id": "0x015811",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 53,
           "level": 43,
-          "exp": 900,
+          "exp": 5264,
           "is_boss": false
         },
         {
-          "enemy_id": "0x015800",
+          "enemy_id": "0x015811",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 53,
           "level": 43,
-          "exp": 900,
+          "exp": 5264,
           "is_boss": false
         },
         {
-          "enemy_id": "0x015800",
+          "enemy_id": "0x015811",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 53,
           "level": 43,
-          "exp": 900,
+          "exp": 5264,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015811",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 53,
+          "level": 43,
+          "exp": 5264,
           "is_boss": false
         }
       ]

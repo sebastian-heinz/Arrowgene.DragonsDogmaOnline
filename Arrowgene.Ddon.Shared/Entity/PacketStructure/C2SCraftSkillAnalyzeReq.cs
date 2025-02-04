@@ -1,9 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
@@ -17,12 +16,12 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
 
         public CraftType CraftType { get; set; }
-        public UInt32 RecipeId { get; set; }
-        public UInt32 ItemId { get; set; }
-        public UInt32 PawnId { get; set; }
+        public uint RecipeId { get; set; }
+        public uint ItemId { get; set; }
+        public uint PawnId { get; set; }
         /// This will never contain Master Craft / Legend Pawn IDs, even though they might have an effect on the analysis.
         public List<CDataCommonU32> AssistPawnIds { get; set; }
-        public UInt32 CreateCount { get; set; }
+        public uint CreateCount { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SCraftSkillAnalyzeReq>
         {

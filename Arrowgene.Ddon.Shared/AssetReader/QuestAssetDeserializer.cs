@@ -8,8 +8,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using static Arrowgene.Ddon.Shared.Csv.GmdCsv;
-
 
 namespace Arrowgene.Ddon.Shared.AssetReader
 {
@@ -17,13 +15,13 @@ namespace Arrowgene.Ddon.Shared.AssetReader
     {
         private static readonly ILogger Logger = LogProvider.Logger(typeof(QuestAssetDeserializer));
 
-        private Dictionary<uint, NamedParam> namedParams;
-        private QuestDropItemAsset questDrops;
+        private QuestDropItemAsset _QuestDrops;
+        private AssetCommonDeserializer _CommonEnemyDeserializer;
 
-        public QuestAssetDeserializer(Dictionary<uint, NamedParam> namedParams, QuestDropItemAsset questDrops)
+        public QuestAssetDeserializer(AssetCommonDeserializer commonEnemyDeserializer, QuestDropItemAsset questDrops)
         {
-            this.namedParams = namedParams;
-            this.questDrops = questDrops;
+            _QuestDrops = questDrops;
+            _CommonEnemyDeserializer = commonEnemyDeserializer;
         }
 
         public bool LoadQuestsFromDirectory(string path, QuestAsset questAssets)
@@ -40,7 +38,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             {
                 Logger.Info($"{file.FullName}");
 
-                string json = File.ReadAllText(file.FullName);
+                string json = Util.ReadAllText(file.FullName);
                 JsonDocument document = JsonDocument.Parse(json);
 
                 var jQuest = document.RootElement;
@@ -56,7 +54,11 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     continue;
                 }
 
-                QuestAssetData assetData = new QuestAssetData();
+                QuestAssetData assetData = new QuestAssetData()
+                {
+                    QuestSource = QuestSource.Json
+                };
+
                 if (!ParseQuest(assetData, jQuest))
                 {
                     Logger.Error($"Unable to parse '{file.FullName}'. Skipping.");
@@ -77,7 +79,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 return false;
             }
 
-            assetData.Type = questType;
+            assetData.QuestType = questType;
             assetData.QuestId = (QuestId)jQuest.GetProperty("quest_id").GetUInt32();
             assetData.BaseLevel = jQuest.GetProperty("base_level").GetUInt16();
             assetData.MinimumItemRank = jQuest.GetProperty("minimum_item_rank").GetByte();
@@ -93,7 +95,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             assetData.StageId = StageId.Invalid;
             if (questType == QuestType.Tutorial)
             {
-                assetData.StageId = ParseStageId(jQuest.GetProperty("stage_id"));
+                assetData.StageId = AssetCommonDeserializer.ParseStageId(jQuest.GetProperty("stage_id"));
             }
 
             assetData.NewsImageId = 0;
@@ -102,26 +104,22 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 assetData.NewsImageId = jNewsImage.GetUInt32();
             }
 
-            // For the purpose of setting up alternate quests.
-
-            if (jQuest.TryGetProperty("variant_id", out JsonElement AltQuestId))
-            {
-                assetData.VariantId = AltQuestId.GetUInt32();
-            } else
-            {
-                assetData.VariantId = 0;
-            }
-
             assetData.NextQuestId = 0;
             if (jQuest.TryGetProperty("next_quest", out JsonElement jNextQuest))
             {
                 assetData.NextQuestId = (QuestId)jNextQuest.GetUInt32();
             }
 
-            assetData.QuestScheduleId = assetData.QuestId;
+            assetData.QuestScheduleId = (uint) assetData.QuestId;
             if (jQuest.TryGetProperty("quest_schedule_id", out JsonElement jQuestScheduleId))
             {
-                assetData.QuestScheduleId = (QuestId)jQuestScheduleId.GetUInt32();
+                assetData.QuestScheduleId = jQuestScheduleId.GetUInt32();
+            }
+
+            assetData.OverrideEnemySpawn = (assetData.QuestType == QuestType.Main || assetData.QuestType == QuestType.ExtremeMission);
+            if (jQuest.TryGetProperty("override_enemy_spawn", out JsonElement jOverrideEnemySpawn))
+            {
+                assetData.OverrideEnemySpawn = jOverrideEnemySpawn.GetBoolean();
             }
 
             if (jQuest.TryGetProperty("quest_layout_set_info_flags", out JsonElement jLayoutSetInfoFlags))
@@ -157,10 +155,38 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 ParseMissionParams(assetData, jMissionParams);
             }
 
+            assetData.QuestOrderBackgroundImage = 0;
+            if (questType == QuestType.WildHunt)
+            {
+                if (!jQuest.TryGetProperty("order_background_id", out JsonElement jOrderBackgroundId))
+                {
+                    Logger.Error($"Unable to create the quest '{assetData.QuestId}'. Missing 'order_background_id'. Skipping.");
+                    return false;
+                }
+
+                assetData.QuestOrderBackgroundImage = jOrderBackgroundId.GetUInt32();
+                if (assetData.QuestOrderBackgroundImage == 0)
+                {
+                    Logger.Error($"The value of 'order_background_id' must be > 0, for the quest '{assetData.QuestId}'. Skipping.");
+                    return false;
+                }
+            }
+
             assetData.Enabled = true;
             if (jQuest.TryGetProperty("enabled", out JsonElement jQuestEnabled))
             {
                 assetData.Enabled = jQuestEnabled.GetBoolean();
+            }
+
+            if (questType == QuestType.Light)
+            {
+                if (!jQuest.TryGetProperty("light_quest_details", out JsonElement jLightQuestDetails))
+                {
+                    Logger.Error($"Unable to create the quest '{assetData.QuestId}'. Missing 'light_quest_details'. Skipping.");
+                    return false;
+                }
+
+                ParseLightQuestDetails(assetData, jLightQuestDetails);
             }
 
             ParseRewards(assetData, jQuest);
@@ -175,7 +201,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 return false;
             }
 
-            if (!ParseEnemyGroups(assetData, jQuest))
+            if (!_CommonEnemyDeserializer.ParseEnemyGroups(_QuestDrops, assetData.EnemyGroups, jQuest))
             {
                 Logger.Error($"Unable to create the quest '{assetData.QuestId}'. Skipping.");
                 return false;
@@ -330,24 +356,24 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         }
                         break;
                     case "exp":
-                        assetData.PointRewards.Add(new PointReward()
+                        assetData.PointRewards.Add(new QuestPointReward()
                         {
-                            ExpType = ExpType.ExperiencePoints,
-                            ExpReward = reward.GetProperty("amount").GetUInt32()
+                            PointType = PointType.ExperiencePoints,
+                            Amount = reward.GetProperty("amount").GetUInt32()
                         });
                         break;
                     case "pp":
-                        assetData.PointRewards.Add(new PointReward()
+                        assetData.PointRewards.Add(new QuestPointReward()
                         {
-                            ExpType = ExpType.PlayPoints,
-                            ExpReward = reward.GetProperty("amount").GetUInt32()
+                            PointType = PointType.PlayPoints,
+                            Amount = reward.GetProperty("amount").GetUInt32()
                         });
                         break;
                     case "jp":
-                        assetData.PointRewards.Add(new PointReward()
+                        assetData.PointRewards.Add(new QuestPointReward()
                         {
-                            ExpType = ExpType.JobPoints,
-                            ExpReward = reward.GetProperty("amount").GetUInt32()
+                            PointType = PointType.JobPoints,
+                            Amount = reward.GetProperty("amount").GetUInt32()
                         });
                         break;
                     case "wallet":
@@ -355,7 +381,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         {
                             continue;
                         }
-                        assetData.RewardCurrency.Add(new QuestRewardCurrency()
+                        assetData.RewardCurrency.Add(new QuestWalletReward()
                         {
                             WalletType = walletType,
                             Amount = reward.GetProperty("amount").GetUInt32()
@@ -377,7 +403,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                 if (!Enum.TryParse(jblock.GetProperty("type").GetString(), true, out QuestBlockType questBlockType))
                 {
-                    Logger.Error($"Unable to parse the quest block type @ index {blockIndex - 1}.");
+                    Logger.Error($"Unable to parse the quest block type of BlockNo={blockIndex}.");
                     return false;
                 }
 
@@ -396,7 +422,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 {
                     if (!Enum.TryParse(jUpdateAnnounce.GetString(), true, out QuestAnnounceType announceType))
                     {
-                        Logger.Error($"Unable to parse the quest announce type @ index {blockIndex - 1}.");
+                        Logger.Error($"Unable to parse the quest announce type of BlockNo={blockIndex}.");
                         return false;
                     }
                     questBlock.AnnounceType = announceType;
@@ -412,7 +438,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                 if (jblock.TryGetProperty("stage_id", out JsonElement jStageId))
                 {
-                    questBlock.StageId = ParseStageId(jStageId);
+                    questBlock.StageId = AssetCommonDeserializer.ParseStageId(jStageId);
                 }
 
                 questBlock.SubGroupId = 0;
@@ -459,7 +485,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         var questFlag = ParseQuestFlag(jFlag);
                         if (questFlag == null)
                         {
-                            Logger.Error($"Unable to parse the quest flags @ index {blockIndex - 1}.");
+                            Logger.Error($"Unable to parse the quest flags of BlockNo={blockIndex}.");
                             return false;
                         }
                         questBlock.QuestFlags.Add(questFlag);
@@ -474,7 +500,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         var questFlag = ParseQuestFlag(jFlag);
                         if (questFlag == null)
                         {
-                            Logger.Error($"Unable to parse the checkpoint quest flags @ index {blockIndex - 1}.");
+                            Logger.Error($"Unable to parse the checkpoint quest flags of BlockNo={blockIndex}.");
                             return false;
                         }
                         questBlock.CheckpointQuestFlags.Add(questFlag);
@@ -504,7 +530,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         {
                             if (!Enum.TryParse(jblock.GetProperty("npc_id").GetString(), true, out NpcId npcId))
                             {
-                                Logger.Error($"Unable to parse the npc_id in block @ index {blockIndex - 1}.");
+                                Logger.Error($"Unable to parse the npc_id in block of BlockNo={blockIndex}.");
                                 return false;
                             }
                             questBlock.NpcOrderDetails.Add(new QuestNpcOrder()
@@ -553,7 +579,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         {
                             if (!Enum.TryParse(jblock.GetProperty("npc_id").GetString(), true, out NpcId npcId))
                             {
-                                Logger.Error($"Unable to parse the npc_id in block @ index {blockIndex - 1}.");
+                                Logger.Error($"Unable to parse the npc_id in block of BlockNo={blockIndex}.");
                                 return false;
                             }
 
@@ -567,7 +593,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             {
                                 NpcId = npcId,
                                 MsgId = jblock.GetProperty("message_id").GetInt32(),
-                                StageId = ParseStageId(jblock.GetProperty("stage_id"))
+                                StageId = AssetCommonDeserializer.ParseStageId(jblock.GetProperty("stage_id"))
                             });
                         }
                         break;
@@ -575,7 +601,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         {
                             if (!Enum.TryParse(jblock.GetProperty("npc_id").GetString(), true, out NpcId npcId))
                             {
-                                Logger.Error($"Unable to parse the npc_id in block @ index {blockIndex - 1}.");
+                                Logger.Error($"Unable to parse the npc_id in block of BlockNo={blockIndex}.");
                                 return false;
                             }
 
@@ -589,20 +615,31 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             {
                                 NpcId = npcId,
                                 MsgId = jblock.GetProperty("message_id").GetInt32(),
-                                StageId = ParseStageId(jblock.GetProperty("stage_id"))
+                                StageId = AssetCommonDeserializer.ParseStageId(jblock.GetProperty("stage_id"))
                             });
+
+                            questBlock.NpcOrderDetails[0].QuestId = QuestId.None;
+                            if (jblock.TryGetProperty("quest_id", out JsonElement jOrderQuestId))
+                            {
+                                questBlock.NpcOrderDetails[0].QuestId = (QuestId)jOrderQuestId.GetUInt32();
+                            }
                         }
                         break;
                     case QuestBlockType.IsQuestOrdered:
                         {
                             if (!Enum.TryParse(jblock.GetProperty("quest_type").GetString(), true, out QuestType questType))
                             {
-                                Logger.Error($"Unable to parse the quest type in block @ index {blockIndex - 1}.");
+                                Logger.Error($"Unable to parse the quest type in block of BlockNo={blockIndex}.");
                                 return false;
                             }
 
                             questBlock.QuestOrderDetails.QuestType = questType;
-                            questBlock.QuestOrderDetails.QuestId = (QuestId)jblock.GetProperty("quest_id").GetUInt32();
+
+                            questBlock.QuestOrderDetails.QuestId = QuestId.None;
+                            if (jblock.TryGetProperty("quest_id", out JsonElement jOrderQuestId))
+                            {
+                                questBlock.QuestOrderDetails.QuestId = (QuestId)jOrderQuestId.GetUInt32();
+                            }
                         }
                         break;
                     case QuestBlockType.MyQstFlags:
@@ -637,14 +674,14 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         {
                             if (!Enum.TryParse(jblock.GetProperty("quest_type").GetString(), true, out OmQuestType questType))
                             {
-                                Logger.Error($"Unable to parse the quest type in block @ index {blockIndex - 1}.");
+                                Logger.Error($"Unable to parse the quest type in block of BlockNo={blockIndex}.");
                                 return false;
                             }
                             questBlock.OmInteractEvent.QuestType = questType;
 
                             if (!Enum.TryParse(jblock.GetProperty("interact_type").GetString(), true, out OmInteractType interactType))
                             {
-                                Logger.Error($"Unable to parse the quest type in block @ index {blockIndex - 1}.");
+                                Logger.Error($"Unable to parse the quest type in block of BlockNo={blockIndex}.");
                                 return false;
                             }
                             questBlock.OmInteractEvent.InteractType = interactType;
@@ -666,7 +703,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     {
                             if (!Enum.TryParse(jblock.GetProperty("npc_id").GetString(), true, out NpcId npcId))
                             {
-                                Logger.Error($"Unable to parse the npc_id in block @ index {blockIndex - 1}.");
+                                Logger.Error($"Unable to parse the npc_id in block of BlockNo={blockIndex}.");
                                 return false;
                             }
 
@@ -674,7 +711,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             {
                                 NpcId = npcId,
                                 MsgId = jblock.GetProperty("message_id").GetInt32(),
-                                StageId = ParseStageId(jblock.GetProperty("stage_id"))
+                                StageId = AssetCommonDeserializer.ParseStageId(jblock.GetProperty("stage_id"))
                             });
 
                             foreach (var item in jblock.GetProperty("items").EnumerateArray())
@@ -701,7 +738,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             {
                                 if (!Enum.TryParse(jJumpType.GetString(), true, out QuestJumpType jumpType))
                                 {
-                                    Logger.Error($"Unable to parse the event jump type in block @ index {blockIndex - 1}.");
+                                    Logger.Error($"Unable to parse the event jump type in block of BlockNo={blockIndex}.");
                                     return false;
                                 }
                                 questBlock.QuestEvent.JumpType = jumpType;
@@ -709,7 +746,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                             if (jblock.TryGetProperty("jump_stage_id", out JsonElement jStageJumpId))
                             {
-                                questBlock.QuestEvent.JumpStageId = ParseStageId(jStageJumpId);
+                                questBlock.QuestEvent.JumpStageId = AssetCommonDeserializer.ParseStageId(jStageJumpId);
                             }
 
                             if (jblock.TryGetProperty("start_pos_no", out JsonElement jStartPosNo))
@@ -720,7 +757,19 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         break;
                     case QuestBlockType.KillTargetEnemies:
                         {
-                            questBlock.TargetEnemy.EnemyId = Convert.ToUInt32(jblock.GetProperty("enemy_id").GetString(), 16);
+                            // The KillTargetEnemies/EmDieLight machinery expects to be given enemy name IDs, not raw enemy IDs.
+                            // Quest writers can provide either; if they give a hex number it will be converted to the proper enemy name ID automatically. 
+                            var enemyIdString = jblock.GetProperty("enemy_id").GetString();
+                            if (enemyIdString.Contains('x'))
+                            {
+                                var enemyId = Convert.ToUInt32(enemyIdString, 16);
+                                questBlock.TargetEnemy.EnemyId = Enemy.NameMap[enemyId];
+                            }
+                            else
+                            {
+                                questBlock.TargetEnemy.EnemyId = Convert.ToUInt32(enemyIdString);
+                            }
+
                             questBlock.TargetEnemy.Level = jblock.GetProperty("level").GetUInt32();
                             questBlock.TargetEnemy.Amount = jblock.GetProperty("amount").GetUInt32();
                         }
@@ -731,23 +780,35 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             questBlock.CheckpointDetails.BlockNo = jblock.GetProperty("block_no").GetUInt16();
                         }
                         break;
+                    case QuestBlockType.DeliverItemsLight:
+                        {
+                            foreach (var item in jblock.GetProperty("items").EnumerateArray())
+                            {
+                                questBlock.DeliveryRequests.Add(new QuestItem()
+                                {
+                                    ItemId = item.GetProperty("id").GetUInt32(),
+                                    Amount = item.GetProperty("amount").GetUInt32()
+                                });
+                            }
+                        }
+                        break;
                     case QuestBlockType.Raw:
                         break;
                     case QuestBlockType.DummyBlock:
                         /* Filler block which might do some meta things like announce or set/check flags */
                         break;
                     default:
-                        Logger.Error($"Unsupported QuestBlockType {questBlockType} @ index {blockIndex - 1}.");
+                        Logger.Error($"Unsupported QuestBlockType {questBlockType} @ index {blockIndex}.");
                         return false;
                 }
 
                 if (!ParseRawBlock(jblock, questBlock))
                 {
-                    Logger.Error($"Unable to parse RawBlock commands in block @ index {blockIndex - 1}.");
+                    Logger.Error($"Unable to parse RawBlock commands in block @ index {blockIndex}.");
                     return false;
                 }
 
-                questProcess.Blocks.Add(questBlock);
+                questProcess.Blocks[blockIndex] = questBlock;
 
                 blockIndex += 1;
             }
@@ -755,48 +816,29 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             if (questProcess.ProcessNo == 0)
             {
                 // Add an implicit EndBlock
-                questProcess.Blocks.Add(new QuestBlock()
+                questProcess.Blocks[blockIndex] = new QuestBlock()
                 {
                     BlockType = QuestBlockType.End,
                     ProcessNo = questProcess.ProcessNo,
                     BlockNo = blockIndex,
                     SequenceNo = 1,
                     AnnounceType = QuestAnnounceType.None
-                });
+                };
             }
             else
             {
                 // Add a block which does nothing
-                questProcess.Blocks.Add(new QuestBlock()
+                questProcess.Blocks[blockIndex] = new QuestBlock()
                 {
                     ProcessNo = questProcess.ProcessNo,
                     BlockType = QuestBlockType.None,
                     BlockNo = blockIndex,
                     SequenceNo = 1,
                     AnnounceType = QuestAnnounceType.None
-                });
+                };
             }
 
             return true;
-        }
-
-        private StageId ParseStageId(JsonElement jStageId)
-        {
-            uint id = jStageId.GetProperty("id").GetUInt32();
-
-            byte layerNo = 0;
-            if (jStageId.TryGetProperty("layer_no", out JsonElement jLayerNo))
-            {
-                layerNo = jLayerNo.GetByte();
-            }
-
-            uint groupId = 0;
-            if (jStageId.TryGetProperty("group_id", out JsonElement jGroupId))
-            {
-                groupId = jGroupId.GetUInt32();
-            }
-
-            return new StageId(id, layerNo, groupId);
         }
 
         private void ParseAnnoucementSubtypes(QuestBlock questBlock, JsonElement jBlock)
@@ -982,256 +1024,13 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     action.OmInstantValueAction = instantValueAction;
                     action.Key = jServerAction.GetProperty("key").GetUInt64();
                     action.Value = jServerAction.GetProperty("value").GetUInt32();
-                    action.StageId = ParseStageId(jServerAction.GetProperty("stage_id"));
+                    action.StageId = AssetCommonDeserializer.ParseStageId(jServerAction.GetProperty("stage_id"));
                 }
 
                 assetData.ServerActions.Add(action);
             }
 
             return true;
-        }
-
-        private bool ParseEnemyGroups(QuestAssetData assetData, JsonElement quest)
-        {
-            if (!quest.TryGetProperty("enemy_groups", out JsonElement jGroups))
-            {
-                // No Enemy groups to parse
-                return true;
-            }
-
-            uint groupId = 0;
-            foreach (var jGroup in jGroups.EnumerateArray())
-            {
-                QuestEnemyGroup enemyGroup = new QuestEnemyGroup();
-
-                if (!jGroup.TryGetProperty("stage_id", out JsonElement jStageId))
-                {
-                    Logger.Info("Required stage_id field for enemy group not found.");
-                    return false;
-                }
-
-                enemyGroup.StageId = ParseStageId(jStageId);
-
-                enemyGroup.SubGroupId = 0;
-                if (jGroup.TryGetProperty("subgroup_id", out JsonElement jSubGroupId))
-                {
-                    enemyGroup.SubGroupId = jSubGroupId.GetUInt32();
-                }
-
-                if (jGroup.TryGetProperty("starting_index", out JsonElement jStartingIndex))
-                {
-                    enemyGroup.StartingIndex = jStartingIndex.GetUInt32();
-                }
-
-                enemyGroup.PlacementType = QuestEnemyPlacementType.Automatic;
-                if (jGroup.TryGetProperty("placement_type", out JsonElement jPlacementType))
-                {
-                    if (!Enum.TryParse(jPlacementType.GetString(), true, out QuestEnemyPlacementType placementType))
-                    {
-                        Logger.Error($"Invalid Quest Enemy Placement Type");
-                        return false;
-                    }
-
-                    enemyGroup.PlacementType = placementType;
-                }
-
-                foreach (var enemy in jGroup.GetProperty("enemies").EnumerateArray())
-                {
-                    bool isBoss = false;
-                    if (enemy.TryGetProperty("is_boss", out JsonElement jIsBoss))
-                    {
-                        isBoss = jIsBoss.GetBoolean();
-                    }
-
-                    byte index = 0;
-                    if (enemyGroup.PlacementType == QuestEnemyPlacementType.Manual)
-                    {
-                        if (!enemy.TryGetProperty("index", out JsonElement jEnemyIndex))
-                        {
-                            Logger.Error($"Manual placed enemy group requires an index value. Unable to parse.");
-                            return false;
-                        }
-                        index = jEnemyIndex.GetByte();
-                    }
-
-                    bool isRequired = true;
-                    if (enemy.TryGetProperty("is_required", out JsonElement jIsRequired))
-                    {
-                        isRequired = jIsRequired.GetBoolean();
-                    }
-
-                    uint repopWaitSecond = 0;
-                    if (enemy.TryGetProperty("repop_wait_second", out JsonElement jRepopWaitSecond))
-                    {
-                        repopWaitSecond = jRepopWaitSecond.GetUInt32();
-                    }
-
-                    // Look for custom drops here
-                    bool customDropItems = false;
-
-                    // Setting default values in case a custom table is defined.
-                    DropsTable customTable = new()
-                    {
-                        Id = 0,
-                        MdlType = 0,
-                    };
-
-                    if (enemy.TryGetProperty("drop_items", out JsonElement itemsList))
-                    {
-                        customDropItems = true;
-                        var list = itemsList.EnumerateArray();
-
-                        foreach (var items in list)
-                        {
-                            GatheringItem dropItems = new()
-                            {
-                                ItemId = items.GetProperty("item_id").GetUInt32(),
-                                ItemNum = items.GetProperty("item_min").GetUInt32(),
-                                MaxItemNum = items.GetProperty("item_max").GetUInt32(),
-                                Quality = items.GetProperty("quality").GetUInt32(),
-                                IsHidden = false,
-                                DropChance = items.GetProperty("drop_chance").GetDouble()
-                            };
-
-                            customTable.Items.Add(dropItems);
-                        }
-
-                    }
-
-                    var questEnemy = new InstancedEnemy()
-                    {
-                        EnemyId = Convert.ToUInt32(enemy.GetProperty("enemy_id").GetString(), 16),
-                        Lv = enemy.GetProperty("level").GetUInt16(),
-                        Experience = enemy.GetProperty("exp").GetUInt32(),
-                        IsBossBGM = isBoss,
-                        IsBossGauge = isBoss,
-                        Scale = 100,
-                        EnemyTargetTypesId = (byte)(isRequired ? 4 : 1),
-                        Index = index,
-                        IsRequired = isRequired,
-                        RepopWaitSecond = repopWaitSecond,
-                    };
-
-                    ApplyOptionalEnemyKeys(enemy, questEnemy);
-
-                    // ApplyEnemyDropTable
-                    if (customDropItems)
-                    {
-                        questEnemy.DropsTable = customTable;
-                    }
-                    else
-                    {
-                        // Get default drops for this enemy id and level.
-                        DropsTable lootTable = questDrops.GetDropTable(questEnemy.EnemyId, questEnemy.Lv);
-
-                        questEnemy.DropsTable = lootTable;
-                    }
-
-                    enemyGroup.Enemies.Add(questEnemy);
-                }
-
-                assetData.EnemyGroups[groupId++] = enemyGroup;
-            }
-
-            return true;
-        }
-
-        private void ApplyOptionalEnemyKeys(JsonElement enemy, Enemy questEnemey)
-        {
-            if (enemy.TryGetProperty("named_enemy_params_id", out JsonElement jNamedEnemyParamsId))
-            {
-                questEnemey.NamedEnemyParams = this.namedParams.GetValueOrDefault(jNamedEnemyParamsId.GetUInt32(), NamedParam.DEFAULT_NAMED_PARAM);
-            }
-
-            if (enemy.TryGetProperty("raid_boss_id", out JsonElement jRaidBossId))
-            {
-                questEnemey.RaidBossId = jRaidBossId.GetUInt32();
-            }
-
-            if (enemy.TryGetProperty("scale", out JsonElement jScale))
-            {
-                questEnemey.Scale = jScale.GetUInt16();
-            }
-
-            if (enemy.TryGetProperty("hm_present_no", out JsonElement jHmPresetNo))
-            {
-                questEnemey.HmPresetNo = jHmPresetNo.GetUInt16();
-            }
-
-            if (enemy.TryGetProperty("start_think_tbl_no", out JsonElement jStartThinkTblNo))
-            {
-                questEnemey.StartThinkTblNo = jStartThinkTblNo.GetByte();
-            }
-
-            if (enemy.TryGetProperty("repop_num", out JsonElement jRepopNum))
-            {
-                questEnemey.RepopNum = jRepopNum.GetByte();
-            }
-
-            if (enemy.TryGetProperty("repop_count", out JsonElement jRepopCount))
-            {
-                questEnemey.RepopCount = jRepopCount.GetByte();
-            }
-
-            if (enemy.TryGetProperty("enemy_target_types_id", out JsonElement jEnemyTargetTypesId))
-            {
-                questEnemey.EnemyTargetTypesId = jEnemyTargetTypesId.GetByte();
-            }
-
-            if (enemy.TryGetProperty("montage_fix_no", out JsonElement jMontageFixNo))
-            {
-                questEnemey.MontageFixNo = jMontageFixNo.GetByte();
-            }
-
-            if (enemy.TryGetProperty("set_type", out JsonElement jSetType))
-            {
-                questEnemey.SetType = jSetType.GetByte();
-            }
-
-            if (enemy.TryGetProperty("infection_type", out JsonElement jInfectionType))
-            {
-                questEnemey.InfectionType = jInfectionType.GetByte();
-            }
-
-            if (enemy.TryGetProperty("is_boss_gauge", out JsonElement jIsBossGauge))
-            {
-                questEnemey.IsBossGauge = jIsBossGauge.GetBoolean();
-            }
-
-            if (enemy.TryGetProperty("is_boss_bgm", out JsonElement jIsBossBGM))
-            {
-                questEnemey.IsBossBGM = jIsBossBGM.GetBoolean();
-            }
-
-            if (enemy.TryGetProperty("is_manual_set", out JsonElement jIsManualSet))
-            {
-                questEnemey.IsManualSet = jIsManualSet.GetBoolean();
-            }
-
-            if (enemy.TryGetProperty("is_area_boss", out JsonElement jIsAreaBoss))
-            {
-                questEnemey.IsAreaBoss = jIsAreaBoss.GetBoolean();
-            }
-
-            if (enemy.TryGetProperty("blood_orbs", out JsonElement jBloodOrbs))
-            {
-                questEnemey.BloodOrbs = jBloodOrbs.GetUInt32();
-            }
-
-            if (enemy.TryGetProperty("high_orbs", out JsonElement jHighOrbs))
-            {
-                questEnemey.HighOrbs = jHighOrbs.GetUInt32();
-            }
-
-            if (enemy.TryGetProperty("spawn_time_start", out JsonElement jSpawnTimeStart))
-            {
-                questEnemey.SpawnTimeStart = jSpawnTimeStart.GetUInt32();
-            }
-
-            if (enemy.TryGetProperty("spawn_time_end", out JsonElement jSpawnTimeEnd))
-            {
-                questEnemey.SpawnTimeEnd = jSpawnTimeEnd.GetUInt32();
-            }
         }
 
         private bool ParseRawBlock(JsonElement jBlock, QuestBlock questBlock)
@@ -1313,11 +1112,6 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             return true;
         }
 
-        private bool ParseAltConditions(JsonElement jAltConditions, QuestBlock questBlock)
-        {
-            return true;
-        }
-
         private void ParseCommandParams(JsonElement jCommand, CDataQuestCommand command)
         {
             List<string> commandParams = new List<string>() { "Param1", "Param2", "Param3", "Param4" };
@@ -1345,6 +1139,44 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         break;
                 }
             }
+        }
+   
+        private bool ParseLightQuestDetails(QuestAssetData assetData, JsonElement jLightQuestDetails)
+        {
+            if (!jLightQuestDetails.TryGetProperty("board_type", out JsonElement jBoardType))
+            {
+                Logger.Error($"Missing required member 'board_type' from LightQuest config.");
+                return false;
+            }
+            assetData.LightQuestDetail.BoardType = jBoardType.GetUInt32();
+
+            if (!jLightQuestDetails.TryGetProperty("board_id", out JsonElement jBoardId))
+            {
+                Logger.Error($"Missing required member 'board_id' from LightQuest config.");
+                return false;
+            }
+            assetData.LightQuestDetail.BoardId = jBoardId.GetUInt32();
+
+            if (jLightQuestDetails.TryGetProperty("area_id", out JsonElement jAreaId))
+            {
+                assetData.LightQuestDetail.AreaId = jAreaId.GetUInt32();
+            }
+
+            if (jLightQuestDetails.TryGetProperty("order_limit", out JsonElement jOrderLimit))
+            {
+                assetData.LightQuestDetail.OrderLimit = jOrderLimit.GetUInt32();
+            }
+
+            if (jLightQuestDetails.TryGetProperty("get_cp", out JsonElement jGetCP))
+            {
+                assetData.LightQuestDetail.GetCp = jGetCP.GetUInt32();
+            }
+            if (jLightQuestDetails.TryGetProperty("get_ap", out JsonElement jGetAP))
+            {
+                assetData.LightQuestDetail.GetAp = jGetAP.GetUInt32();
+            }
+
+            return true;
         }
     }
 }

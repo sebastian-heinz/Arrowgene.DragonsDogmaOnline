@@ -3,7 +3,6 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using System.Collections.Generic;
-using System.Diagnostics.Contracts;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {

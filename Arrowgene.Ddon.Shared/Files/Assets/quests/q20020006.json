@@ -39,26 +39,56 @@
           "num": 2
         }
       ]
-    }
+  },
+  {
+      "type": "random",
+      "loot_pool": [
+          {
+              "item_id": 35,
+              "num": 2,
+              "chance": 1.0
+          }
+      ]
+  }
   ],
   "enemy_groups": [
     {
       "stage_id": {
         "id": 1,
-        "group_id": 259
+        "group_id": 263
       },
       "enemies": [
-        {
-          "enemy_id": "0x010205",
-          "level": 40,
-          "exp": 650,
+       {
+          "enemy_id": "0x015802",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
+          "level": 34,
+          "exp": 1264,
           "is_boss": false
         },
         {
-          "enemy_id": "0x015200",
-          "level": 41,
-          "exp": 11000,
-          "is_boss": true
+          "enemy_id": "0x015820",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 54,
+          "level": 35,
+          "exp": 1336,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010205",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
+          "level": 34,
+          "exp": 1264,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015802",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
+          "level": 34,
+          "exp": 1264,
+          "is_boss": false
         }
       ]
     },
@@ -68,22 +98,29 @@
         "group_id": 253
       },
       "enemies": [
+        
         {
-          "enemy_id": "0x010503",
-          "level": 41,
-          "exp": 750,
+          "enemy_id": "0x010309",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
+          "level": 35,
+          "exp": 1336,
           "is_boss": false
         },
         {
           "enemy_id": "0x010503",
-          "level": 41,
-          "exp": 750,
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
+          "level": 33,
+          "exp": 1194,
           "is_boss": false
         },
         {
           "enemy_id": "0x010503",
-          "level": 41,
-          "exp": 750,
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
+          "level": 33,
+          "exp": 1194,
           "is_boss": false
         }
       ]
@@ -91,31 +128,32 @@
     {
       "stage_id": {
         "id": 1,
-        "group_id": 240
+        "group_id": 261
       },
       "enemies": [
+       
+        {
+          "enemy_id": "0x015200",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 54,
+          "level": 35,
+          "exp": 5446,
+          "is_boss": true
+        },
         {
           "enemy_id": "0x010205",
-          "level": 40,
-          "exp": 650,
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
+          "level": 34,
+          "exp": 1264,
           "is_boss": false
         },
         {
-          "enemy_id": "0x015810",
-          "level": 41,
-          "exp": 750,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015810",
-          "level": 41,
-          "exp": 750,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015820",
-          "level": 41,
-          "exp": 850,
+          "enemy_id": "0x010205",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
+          "level": 34,
+          "exp": 1264,
           "is_boss": false
         }
       ]
@@ -155,7 +193,7 @@
       ]
     },
     {
-      "comment": "Process1 (Redcap Group 1)",
+      "comment": "Process1 (Group 1)",
       "blocks": [
         {
           "type": "MyQstFlags",
@@ -178,7 +216,7 @@
       ]
     },
     {
-      "comment": "Process2 (Redcap Group 2)",
+      "comment": "Process2 (Group 2)",
       "blocks": [
         {
           "type": "MyQstFlags",
@@ -201,7 +239,7 @@
       ]
     },
     {
-      "comment": "Process3 (Redcap Group 3)",
+      "comment": "Process3 (Group 3)",
       "blocks": [
         {
           "type": "MyQstFlags",

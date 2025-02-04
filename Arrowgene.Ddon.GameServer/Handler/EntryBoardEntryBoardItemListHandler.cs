@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var groups = Server.BoardManager.GetGroupsForBoardId(request.BoardId);
             foreach (var group in groups)
             {
-                if (group.ContentInProgress)
+                if (group.ContentStatus != ContentStatus.Recruiting)
                 {
                     // Skip groups that are currently playing
                     continue;

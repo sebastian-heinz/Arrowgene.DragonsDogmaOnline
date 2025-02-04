@@ -8,7 +8,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CraftResetCraftpointHandler : GameStructurePacketHandler<C2SCraftResetCraftpointReq>
+    public class CraftResetCraftpointHandler : GameRequestPacketHandler<C2SCraftResetCraftpointReq, S2CCraftResetCraftpointRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftResetCraftpointHandler));
 
@@ -16,14 +16,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCraftResetCraftpointReq> packet)
+        public override S2CCraftResetCraftpointRes Handle(GameClient client, C2SCraftResetCraftpointReq request)
         {
             S2CCraftResetCraftpointRes craftResetCraftpointRes = new S2CCraftResetCraftpointRes
             {
-                PawnID = packet.Structure.PawnID
+                PawnID = request.PawnID
             };
 
-            Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == packet.Structure.PawnID);
+            Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == request.PawnID)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_NOT_FOUNDED);
             pawn.CraftData.CraftPoint = pawn.CraftData.CraftRank - 1;
             foreach (CDataPawnCraftSkill skill in pawn.CraftData.PawnCraftSkillList)
             {
@@ -34,21 +35,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             craftResetCraftpointRes.CraftSkillList = pawn.CraftData.PawnCraftSkillList;
             Server.Database.UpdatePawnBaseInfo(pawn);
 
-            CDataWalletPoint resetCraftSkillWalletPoint = client.Character.WalletPointList.Find(l => l.Type == WalletType.ResetCraftSkills);
-            resetCraftSkillWalletPoint.Value--;
+            var updateWalletPoint = Server.WalletManager.RemoveFromWallet(
+                client.Character,
+                WalletType.ResetCraftSkills,
+                1
+            ) ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CRAFT_SKILL_RESET_ZERO_POINT);
+
             S2CItemUpdateCharacterItemNtc itemUpdateNtc = new S2CItemUpdateCharacterItemNtc();
             itemUpdateNtc.UpdateType = ItemNoticeType.ResetCraftpoint;
-            itemUpdateNtc.UpdateWalletList.Add(new CDataUpdateWalletPoint()
-            {
-                Type = WalletType.ResetCraftSkills,
-                Value = resetCraftSkillWalletPoint.Value,
-                AddPoint = -1,
-                ExtraBonusPoint = 0
-            });
-            Server.Database.UpdateWalletPoint(client.Character.CharacterId, resetCraftSkillWalletPoint);
-
+            itemUpdateNtc.UpdateWalletList.Add(updateWalletPoint);
             client.Send(itemUpdateNtc);
-            client.Send(craftResetCraftpointRes);
+            return craftResetCraftpointRes;
         }
     }
 }

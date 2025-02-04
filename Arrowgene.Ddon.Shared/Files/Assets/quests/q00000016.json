@@ -7,6 +7,9 @@
     "base_level": 43,
     "minimum_item_rank": 0,
     "discoverable": true,
+    "order_conditions": [
+        {"type": "MainQuestCompleted", "Param1": 15}
+    ],
     "rewards": [
         {
             "type": "exp",
@@ -123,8 +126,8 @@
                     "comment" : "Colossus",
                     "enemy_id": "0x015020",
                     "level": 43,
-                    "exp": 5264,
-                    "is_boss_bgm": true
+                    "exp": 52640,
+                    "is_boss": true
                 },
                 {
                     "comment" : "General Orc",

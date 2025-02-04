@@ -1,4 +1,4 @@
-﻿using Arrowgene.Buffers;
+using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -33,12 +33,12 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 C2LDecideCharacterIdReq obj = new C2LDecideCharacterIdReq();
 
-                obj.CharacterId = buffer.ReadUInt32(Endianness.Big);
-                obj.ClientVersion = buffer.ReadUInt32(Endianness.Big);
-                obj.Type = buffer.ReadByte();
-                obj.RotationServerId = buffer.ReadByte();
-                obj.WaitNum = buffer.ReadUInt32(Endianness.Big);
-                obj.Counter = buffer.ReadByte();
+                obj.CharacterId = ReadUInt32(buffer);
+                obj.ClientVersion = ReadUInt32(buffer);
+                obj.Type = ReadByte(buffer);
+                obj.RotationServerId = ReadByte(buffer);
+                obj.WaitNum = ReadUInt32(buffer);
+                obj.Counter = ReadByte(buffer);
                 return obj;
             }
         }

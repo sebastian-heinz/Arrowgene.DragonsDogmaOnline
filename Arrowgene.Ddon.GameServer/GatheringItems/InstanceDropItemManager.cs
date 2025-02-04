@@ -1,37 +1,98 @@
+using Arrowgene.Ddon.GameServer.GatheringItems.Generators;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.GatheringItems
 {
-    public class InstanceDropItemManager : InstanceItemManager
+    public class InstanceDropItemManager
     {
-        private readonly GameClient _client;
+        private readonly Dictionary<StageId, Dictionary<uint, List<InstancedGatheringItem>>> InstancedItems;
 
-        public InstanceDropItemManager(GameClient client)
-        {
-            this._client = client;
-        }
+        private static readonly uint COLLISION_OFFSET = 1000;
+        private readonly GameClient Client;
+        private readonly DdonGameServer Server;
+        private readonly List<IDropGenerator> Generators;
 
-        protected override List<GatheringItem> FetchAssetsFromRepository(StageId stage, int setId)
+        public InstanceDropItemManager(GameClient client, DdonGameServer server)
         {
-            List<InstancedEnemy> enemiesInSet =  _client.Party.InstanceEnemyManager.GetAssets(stage);
-            if(enemiesInSet != null && setId < enemiesInSet.Count)
+            Client = client;
+            Server = server;
+            InstancedItems = new();
+            Generators = new()
             {
-                Enemy enemy = enemiesInSet[(int) setId];
-
-                if (enemy.DropsTable != null)
-                {
-                    return enemy.DropsTable.Items;
-                }
-            }
-            return new List<GatheringItem>();
+                new EnemyDropTableDropGenerator(),
+                new EnemyEpitaphRoadDropGenerator(server),
+                new EnemyEventDropGenerator(server)
+            };
         }
 
-        protected override IEnumerable<List<GatheringItem>> FetchAssetsFromRepository(StageId stage)
+        public Dictionary<Type, List<InstancedGatheringItem>> Generate(InstancedEnemy enemy)
         {
-            List<InstancedEnemy> enemiesInSet = _client.Party.InstanceEnemyManager.GetAssets(stage);
-            return enemiesInSet.Select(x => x.DropsTable.Items);
+            return Generators.ToDictionary(key => key.GetType(), val => val.Generate(Client, enemy));
+        }
+
+        public uint Assign(StageId stageId, uint index, List<InstancedGatheringItem> items, bool force = false)
+        {
+            uint currentIndex = index;
+            if (InstancedItems.TryGetValue(stageId, out var stageItems))
+            {
+                while (stageItems.ContainsKey(currentIndex) && !force)
+                {
+                    currentIndex += COLLISION_OFFSET;
+                }
+                InstancedItems[stageId][currentIndex] = items;
+            }
+            else
+            {
+                InstancedItems[stageId] = new()
+                {
+                    { currentIndex, items }
+                };
+            }
+            return currentIndex;
+        }
+
+        public uint Assign(CDataStageLayoutId stageLayout, uint index, List<InstancedGatheringItem> items, bool force = false)
+        {
+            return Assign(StageId.FromStageLayoutId(stageLayout), index, items, force);
+        }
+
+        public List<InstancedGatheringItem> Fetch(StageId stageId, uint index)
+        {
+            if (InstancedItems.TryGetValue(stageId, out var stageItems) 
+                && stageItems.TryGetValue(index, out var returnItems))
+            {
+                return returnItems;
+            }
+            else
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_INSTANCE_AREA_DROP_MISSING, $"Missing drop information for {stageId}.{index}");
+            }
+        }
+
+        public List<InstancedGatheringItem> Fetch(CDataStageLayoutId stageLayout, uint index)
+        {
+            return Fetch(StageId.FromStageLayoutId(stageLayout), index);
+        }
+
+        public void Clear()
+        {
+            InstancedItems.Clear();
+        }
+
+        public string Report(StageId stageId, uint index)
+        {
+            var infoStrings = Fetch(stageId, index).Select(x => $"{ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, x.ItemId).Name} x{x.ItemNum}");
+            return string.Join("\n\t", infoStrings);
+        }
+
+        public string Report(Dictionary<Type, List<InstancedGatheringItem>> generateResult)
+        {
+            var infoStrings = generateResult.SelectMany(t => t.Value.Select(x => $"{ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, x.ItemId).Name}\tx{x.ItemNum}\t({t.Key.Name})"));
+            return string.Join("\n\t", infoStrings);
         }
     }
 }

@@ -31,12 +31,12 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataJobValueShopItem Read(IBuffer buffer)
             {
                 CDataJobValueShopItem obj = new CDataJobValueShopItem();
-                obj.LineupId = buffer.ReadUInt32();
-                obj.ItemId = buffer.ReadUInt32();
-                obj.Price = buffer.ReadUInt32();
-                obj.IsCountLimit = buffer.ReadBool();
-                obj.CanSelectStorage = buffer.ReadBool();
-                obj.UnableReason = buffer.ReadByte();
+                obj.LineupId = ReadUInt32(buffer);
+                obj.ItemId = ReadUInt32(buffer);
+                obj.Price = ReadUInt32(buffer);
+                obj.IsCountLimit = ReadBool(buffer);
+                obj.CanSelectStorage = ReadBool(buffer);
+                obj.UnableReason = ReadByte(buffer);
                 return obj;
             }
         }

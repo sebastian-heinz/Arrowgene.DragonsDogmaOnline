@@ -27,11 +27,11 @@
       "type": "select",
       "loot_pool": [
         {
-          "item_id": 9200,
+          "item_id": 7780,
           "num": 1
         },
         {
-          "item_id": 9388,
+          "item_id": 9200,
           "num": 1
         },
         {
@@ -45,14 +45,54 @@
     {
       "stage_id": {
         "id": 113,
-        "group_id": 3
+        "group_id": 2
       },
+      "placement_type": "manual",
       "enemies": [
         {
           "enemy_id": "0x015202",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 54,
           "level": 42,
-          "exp": 10500,
-          "is_boss": true
+          "exp": 6706,
+          "is_boss": true,
+          "index": 0
+        },
+        {
+          "enemy_id": "0x010600",
+          "start_think_tbl_no": 2,
+		      "named_enemy_params_id": 53,
+          "level": 41,
+          "exp": 4200,
+          "is_boss": false,
+          "index": 1
+        },
+        {
+          "enemy_id": "0x010600",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 53,
+          "level": 41,
+          "exp": 4200,
+          "is_boss": false,
+          "index": 3
+        },
+        {
+          "enemy_id": "0x010600",
+          "start_think_tbl_no": 2,
+		      "named_enemy_params_id": 53,
+          "level": 41,
+          "exp": 4200,
+          "is_boss": false,
+          "index": 7
+        },
+        {
+          "enemy_id": "0x010600",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 53,
+          "level": 41,
+          "exp": 4200,
+          "is_boss": false,
+          "index": 8
         }
       ]
     }

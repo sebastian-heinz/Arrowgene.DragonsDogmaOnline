@@ -17,26 +17,26 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public UInt32 EffectID { get; set; }
         public UInt32 Param0 { get; set; }
         public UInt32 Param1 { get; set; }
-    }
 
-    public class CDataGPCourseEffectParamSerializer : EntitySerializer<CDataGPCourseEffectParam>
-    {
-        public override void Write(IBuffer buffer, CDataGPCourseEffectParam obj)
+        public class Serializer : EntitySerializer<CDataGPCourseEffectParam>
         {
-            WriteUInt32(buffer, obj.EffectUID);
-            WriteUInt32(buffer, obj.EffectID);
-            WriteUInt32(buffer, obj.Param0);
-            WriteUInt32(buffer, obj.Param1);
-        }
+            public override void Write(IBuffer buffer, CDataGPCourseEffectParam obj)
+            {
+                WriteUInt32(buffer, obj.EffectUID);
+                WriteUInt32(buffer, obj.EffectID);
+                WriteUInt32(buffer, obj.Param0);
+                WriteUInt32(buffer, obj.Param1);
+            }
 
-        public override CDataGPCourseEffectParam Read(IBuffer buffer)
-        {
-            CDataGPCourseEffectParam obj = new CDataGPCourseEffectParam();
-            obj.EffectUID = ReadUInt32(buffer);
-            obj.EffectID = ReadUInt32(buffer);
-            obj.Param0 = ReadUInt32(buffer);
-            obj.Param1 = ReadUInt32(buffer);
-            return obj;
+            public override CDataGPCourseEffectParam Read(IBuffer buffer)
+            {
+                CDataGPCourseEffectParam obj = new CDataGPCourseEffectParam();
+                obj.EffectUID = ReadUInt32(buffer);
+                obj.EffectID = ReadUInt32(buffer);
+                obj.Param0 = ReadUInt32(buffer);
+                obj.Param1 = ReadUInt32(buffer);
+                return obj;
+            }
         }
     }
 }

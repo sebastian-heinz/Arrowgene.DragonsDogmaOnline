@@ -1,23 +1,25 @@
+using Arrowgene.Ddon.Shared.Asset;
+using Arrowgene.Ddon.Shared.AssetReader;
+using Arrowgene.Ddon.Shared.Csv;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Json;
+using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
-using Arrowgene.Ddon.Shared.Csv;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Logging;
-using Arrowgene.Ddon.Shared.Json;
-using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Asset;
-using Arrowgene.Ddon.Shared.AssetReader;
 using System.Linq;
+using System.Threading;
 
 namespace Arrowgene.Ddon.Shared
 {
     public class AssetRepository
     {
+        public string AssetsPath { get; private set; }
+
         // Client data
-        public const string ClientErrorCodesKey = "ClientErrorCodes.csv";
+        public const string ClientErrorCodesKey = "ClientErrorCodes.json";
         public const string ItemListKey = "itemlist.csv";
 
         // Server data
@@ -39,16 +41,24 @@ namespace Arrowgene.Ddon.Shared
         public const string GPCourseInfoKey = "GpCourseInfo.json";
         public const string SecretAbilityKey = "DefaultSecretAbilities.json";
         public const string CostExpScalingInfoKey = "CostExpScalingInfo.json";
-        public const string QuestAssestKey = "quests";
         public const string JobValueShopKey = "JobValueShop.csv";
         public const string StampBonusKey = "StampBonus.csv";
         public const string SpecialShopKey = "SpecialShops.json";
-        public const string PawnCostReductionKey = "PawnCostReduction.json"; 
+        public const string PawnCostReductionKey = "PawnCostReduction.json";
+        public const string PawnCraftSkillCostRateKey = "PawnCraftSkillCostRate.csv";
+        public const string PawnCraftSkillSpeedRateKey = "PawnCraftSkillSpeedRate.csv";
+        public const string PawnCraftMasterLegendKey = "CraftingLegendPawns.json";
         public const string BitterblackMazeKey = "BitterblackMaze.json";
         public const string QuestDropItemsKey = "QuestEnemyDrops.json";
         public const string RecruitmentBoardCategoryKey = "RecruitmentGroups.json";
         public const string EventDropsKey = "EventDrops.json";
         public const string BonusDungeonKey = "BonusDungeon.json";
+        public const string ClanShopKey = "ClanShop.csv";
+        public const string EpitaphRoadKey = "EpitaphRoad.json";
+        public const string LoadingInfoKey = "LoadingInfo.json";
+
+        public const string QuestAssestKey = "quests";
+        public const string EpitaphAssestKey = "epitaph";
 
         private static readonly ILogger Logger = LogProvider.Logger(typeof(AssetRepository));
 
@@ -66,14 +76,16 @@ namespace Arrowgene.Ddon.Shared
                 return;
             }
 
+            AssetsPath = folder;
+
             _fileSystemWatchers = new Dictionary<string, FileSystemWatcher>();
 
-            ClientErrorCodes = new List<CDataErrorMessage>();
+            ClientErrorCodes = new Dictionary<ErrorCode, ClientErrorCode>();
             ClientItemInfos = new Dictionary<uint, ClientItemInfo>();
             NamedParamAsset = new Dictionary<uint, NamedParam>();
             EnemySpawnAsset = new EnemySpawnAsset();
             GatheringItems = new Dictionary<(StageId, uint), List<GatheringItem>>();
-            ServerList = new List<CDataGameServerListInfo>();
+            ServerList = new List<ServerInfo>();
             MyPawnAsset = new List<MyPawnCsv>();
             MyRoomAsset = new List<MyRoomCsv>();
             ArisenAsset = new List<ArisenCsv>();
@@ -91,20 +103,26 @@ namespace Arrowgene.Ddon.Shared
             JobValueShopAsset = new List<(JobId, CDataJobValueShopItem)>();
             CostExpScalingAsset = new CostExpScalingAsset();
             SpecialShopAsset = new SpecialShopAsset();
-            PawnCostReductionAsset = new PawnCostReductionAsset();
             BitterblackMazeAsset = new BitterblackMazeAsset();
             QuestDropItemAsset = new QuestDropItemAsset();
             RecruitmentBoardCategoryAsset = new RecruitmentBoardCategoryAsset();
             EventDropsAsset = new EventDropsAsset();
             BonusDungeonAsset = new BonusDungeonAsset();
+            ClanShopAsset = new Dictionary<uint, ClanShopAsset>();
+            EpitaphRoadAssets = new EpitaphRoadAsset();
+            EpitaphTrialAssets = new EpitaphTrialAsset();
+            PawnCraftSkillCostRateAsset = new();
+            PawnCraftSkillSpeedRateAsset = new();
+            PawnCraftMasterLegendAsset = new();
+            LoadingInfoAsset = new();
         }
 
-        public List<CDataErrorMessage> ClientErrorCodes { get; private set; }
+        public Dictionary<ErrorCode, ClientErrorCode> ClientErrorCodes { get; private set; }
         public Dictionary<uint, ClientItemInfo> ClientItemInfos { get; private set; } // May be incorrect, or incomplete
         public Dictionary<uint, NamedParam> NamedParamAsset { get; private set; }
         public EnemySpawnAsset EnemySpawnAsset { get; private set; }
         public Dictionary<(StageId, uint), List<GatheringItem>> GatheringItems { get; private set; }
-        public List<CDataGameServerListInfo> ServerList { get; private set; }
+        public List<ServerInfo> ServerList { get; private set; }
         public List<MyPawnCsv> MyPawnAsset { get; private set; }
         public List<MyRoomCsv> MyRoomAsset { get; private set; }
         public List<ArisenCsv> ArisenAsset { get; private set; }
@@ -123,16 +141,22 @@ namespace Arrowgene.Ddon.Shared
         public List<(JobId, CDataJobValueShopItem)> JobValueShopAsset { get; private set; }
         public List<CDataStampBonusAsset> StampBonusAsset { get; private set; }
         public SpecialShopAsset SpecialShopAsset { get; private set; }
-        public PawnCostReductionAsset PawnCostReductionAsset { get; private set; }
+        public List<PawnCraftSkillCostRate> PawnCraftSkillCostRateAsset { get; private set; }
+        public List<PawnCraftSkillSpeedRate> PawnCraftSkillSpeedRateAsset { get; private set; }
+        public List<CDataRegisteredLegendPawnInfo> PawnCraftMasterLegendAsset { get; private set; }
         public BitterblackMazeAsset BitterblackMazeAsset { get; private set; }
         public QuestDropItemAsset QuestDropItemAsset { get; private set; }
         public RecruitmentBoardCategoryAsset RecruitmentBoardCategoryAsset { get; private set; }
         public EventDropsAsset EventDropsAsset { get; private set; }
         public BonusDungeonAsset BonusDungeonAsset { get; private set; }
+        public Dictionary<uint, ClanShopAsset> ClanShopAsset { get; private set; }
+        public EpitaphRoadAsset EpitaphRoadAssets { get; private set; }
+        public EpitaphTrialAsset EpitaphTrialAssets { get; private set; }
+        public List<CDataLoadingInfoSchedule> LoadingInfoAsset { get; private set; }
 
         public void Initialize()
         {
-            RegisterAsset(value => ClientErrorCodes = value, ClientErrorCodesKey, new ClientErrorCodeCsv());
+            RegisterAsset(value => ClientErrorCodes = value, ClientErrorCodesKey, new ClientErrorCodeAssetDeserializer());
             RegisterAsset(value => ClientItemInfos = value.ToDictionary(key => key.ItemId, val => val), ItemListKey, new ClientItemInfoCsv());
             RegisterAsset(value => NamedParamAsset = value, NamedParamsKey, new NamedParamAssetDeserializer());
             RegisterAsset(value => EnemySpawnAsset = value, EnemySpawnsKey, new EnemySpawnAssetDeserializer(this.NamedParamAsset));
@@ -155,15 +179,26 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => StampBonusAsset = value, StampBonusKey, new StampBonusCsv());
             RegisterAsset(value => CostExpScalingAsset = value, CostExpScalingInfoKey, new CostExpScalingAssetDeserializer());
             RegisterAsset(value => SpecialShopAsset = value, SpecialShopKey, new SpecialShopDeserializer());
-            RegisterAsset(value => PawnCostReductionAsset = value, PawnCostReductionKey, new PawnCostReductionAssetDeserializer());
             RegisterAsset(value => BitterblackMazeAsset = value, BitterblackMazeKey, new BitterblackMazeAssetDeserializer());
             RegisterAsset(value => QuestDropItemAsset = value, QuestDropItemsKey, new QuestDropAssetDeserializer());
             RegisterAsset(value => RecruitmentBoardCategoryAsset = value, RecruitmentBoardCategoryKey, new RecruitmentBoardCategoryDeserializer());
             RegisterAsset(value => EventDropsAsset = value, EventDropsKey, new EventDropAssetDeserializer());
             RegisterAsset(value => BonusDungeonAsset = value, BonusDungeonKey, new BonusDungeonAssetDeserializer());
+            RegisterAsset(value => ClanShopAsset = value.ToDictionary(key => key.LineupId, value => value), ClanShopKey, new ClanShopCsv());
+            RegisterAsset(value => EpitaphRoadAssets = value, EpitaphRoadKey, new EpitaphRoadAssertDeserializer());
+            RegisterAsset(value => PawnCraftSkillCostRateAsset = value, PawnCraftSkillCostRateKey, new PawnCraftSkillCostRateCsv());
+            RegisterAsset(value => PawnCraftSkillSpeedRateAsset = value, PawnCraftSkillSpeedRateKey, new PawnCraftSkillSpeedRateCsv());
+            RegisterAsset(value => PawnCraftMasterLegendAsset = value, PawnCraftMasterLegendKey, new PawnCraftMasterLegendDeserializer());
+            RegisterAsset(value => LoadingInfoAsset = value, LoadingInfoKey, new LoadingInfoDeserializer());
 
-            var questAssetDeserializer = new QuestAssetDeserializer(this.NamedParamAsset, QuestDropItemAsset);
+            // This must be set before calling QuestAssertDeserializer and EpitaphTrialAssertDeserializer
+            var commonEnemyDeserializer = new AssetCommonDeserializer(this.NamedParamAsset);
+
+            var questAssetDeserializer = new QuestAssetDeserializer(commonEnemyDeserializer, QuestDropItemAsset);
             questAssetDeserializer.LoadQuestsFromDirectory(Path.Combine(_directory.FullName, QuestAssestKey), QuestAssets);
+
+            var epitaphTrialDeserializer = new EpitaphTrialAssetDeserializer(commonEnemyDeserializer, QuestDropItemAsset);
+            epitaphTrialDeserializer.LoadTrialsFromDirectory(Path.Combine(_directory.FullName, EpitaphAssestKey), EpitaphTrialAssets);
         }
 
         private void RegisterAsset<T>(Action<T> onLoadAction, string key, IAssetDeserializer<T> readerWriter)

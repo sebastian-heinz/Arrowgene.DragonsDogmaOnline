@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40000187,
+  "base_level": 43,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "A Safe Zoma!",
+  "light_quest_details": {
+    "area_id": 11,
+    "board_type": 1,
+    "board_id": 8
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 6338
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 12225
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1329
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "202",
+      "level": 43,
+      "amount": 3
+    }
+  ]
+}

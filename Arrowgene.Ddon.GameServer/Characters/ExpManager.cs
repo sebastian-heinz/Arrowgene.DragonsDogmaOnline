@@ -1,19 +1,17 @@
 #nullable enable
-using System;
-using System.Collections.Generic;
-using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Server.Scripting.interfaces;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Server;
-using Arrowgene.Logging;
-using Arrowgene.Ddon.Server.Network;
-using System.Linq;
 using Arrowgene.Ddon.Shared.Model.Quest;
-using Arrowgene.Ddon.GameServer.Party;
-using System.IO;
-using System.Text;
-using System.Buffers.Text;
+using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -402,7 +400,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             this._Server = server;
             this._gameClientLookup = gameClientLookup;
-            this._GameSettings = server.Setting.GameLogicSetting;
+            this._GameSettings = server.GameLogicSettings;
         }
 
         private DdonGameServer _Server;
@@ -458,9 +456,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return JobData;
         }
 
-        public void AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, RewardSource rewardType, QuestType questType = QuestType.All)
+        public PacketQueue AddExp(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, RewardSource rewardType, QuestType questType = QuestType.All, DbConnection? connectionIn = null)
         {
-            var lvCap = (client.GameMode == GameMode.Normal) ? ExpManager.LV_CAP : BitterblackMazeManager.LevelCap(client.Character.BbmProgress);
+            PacketQueue packets = new();
+
+            var lvCap = (client.GameMode == GameMode.Normal) 
+                ? _Server.GameLogicSettings.JobLevelMax
+                : BitterblackMazeManager.LevelCap(client.Character.BbmProgress);
 
             CDataCharacterJobData? activeCharacterJobData = characterToAddExpTo.ActiveCharacterJobData;
             if (activeCharacterJobData != null && activeCharacterJobData.Lv < lvCap)
@@ -481,7 +483,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     expNtc.ExtraBonusExp = extraBonusExp;
                     expNtc.TotalExp = activeCharacterJobData.Exp;
                     expNtc.Type = (byte) rewardType; // TODO: Figure out
-                    client.Send(expNtc);
+                    client.Enqueue(expNtc, packets);
                 }
                 else if(characterToAddExpTo is Pawn)
                 {
@@ -492,7 +494,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     expNtc.ExtraBonusExp = extraBonusExp;
                     expNtc.TotalExp = activeCharacterJobData.Exp;
                     expNtc.Type = (byte) rewardType; // TODO: Figure out
-                    client.Send(expNtc);
+                    client.Enqueue(expNtc, packets);
                 }
 
 
@@ -508,7 +510,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                     if (client.GameMode == GameMode.Normal)
                     {
-                        addJobPoint += LEVEL_UP_JOB_POINTS_EARNED[targetLevel];
+                        addJobPoint += GetScaledPointAmount(client.GameMode, RewardSource.None, PointType.JobPoints, LEVEL_UP_JOB_POINTS_EARNED[targetLevel]);
                     }
                 }
 
@@ -528,7 +530,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         lvlNtc.AddJobPoint = addJobPoint;
                         lvlNtc.TotalJobPoint = activeCharacterJobData.JobPoint;
                         GameStructure.CDataCharacterLevelParam(lvlNtc.CharacterLevelParam, (Character) characterToAddExpTo);
-                        client.Send(lvlNtc);
+                        client.Enqueue(lvlNtc, packets);
 
                         // Inform other party members
                         S2CJobCharacterJobLevelUpMemberNtc lvlMemberNtc = new S2CJobCharacterJobLevelUpMemberNtc();
@@ -536,7 +538,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         lvlMemberNtc.Job = characterToAddExpTo.Job;
                         lvlMemberNtc.Level = activeCharacterJobData.Lv;
                         GameStructure.CDataCharacterLevelParam(lvlMemberNtc.CharacterLevelParam, (Character) characterToAddExpTo);
-                        client.Party.SendToAllExcept(lvlMemberNtc, client);
+                        client.Party.EnqueueToAllExcept(lvlMemberNtc, packets, client);
                     }
                     else if(characterToAddExpTo is Pawn)
                     {
@@ -548,7 +550,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         lvlNtc.AddJobPoint = addJobPoint;
                         lvlNtc.TotalJobPoint = activeCharacterJobData.JobPoint;
                         GameStructure.CDataCharacterLevelParam(lvlNtc.CharacterLevelParam, (Pawn) characterToAddExpTo);
-                        client.Send(lvlNtc);
+                        client.Enqueue(lvlNtc, packets);
 
                         // Inform other party members
                         S2CJobPawnJobLevelUpMemberNtc lvlMemberNtc = new S2CJobPawnJobLevelUpMemberNtc();
@@ -557,17 +559,25 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         lvlMemberNtc.Job = characterToAddExpTo.Job;
                         lvlMemberNtc.Level = activeCharacterJobData.Lv;
                         GameStructure.CDataCharacterLevelParam(lvlMemberNtc.CharacterLevelParam, (Pawn) characterToAddExpTo);
-                        client.Party.SendToAllExcept(lvlMemberNtc, client);
+                        client.Party.EnqueueToAllExcept(lvlMemberNtc, packets, client);
                     }
                 }
 
                 // PERSIST CHANGES IN DB
-                _Server.Database.UpdateCharacterJobData(characterToAddExpTo.CommonId, activeCharacterJobData);
+                _Server.Database.UpdateCharacterJobData(characterToAddExpTo.CommonId, activeCharacterJobData, connectionIn);
             }
+
+            return packets;
         }
 
-        public void AddJp(GameClient client, CharacterCommon characterToJpExpTo, uint gainedJp, RewardSource rewardType, QuestType questType = QuestType.All)
+        public void AddExpNtc(GameClient client, CharacterCommon characterToAddExpTo, uint gainedExp, RewardSource rewardType, QuestType questType = QuestType.All, DbConnection? connectionIn = null)
         {
+            AddExp(client, characterToAddExpTo, gainedExp, rewardType, questType, connectionIn).Send();
+        }
+
+        public PacketQueue AddJp(GameClient client, CharacterCommon characterToJpExpTo, uint gainedJp, RewardSource rewardType, QuestType questType = QuestType.All, DbConnection? connectionIn = null)
+        {
+            PacketQueue packets = new(); // Only ever has one packet, but has to exist because there are problems with returning interface types
             CDataCharacterJobData? activeCharacterJobData = characterToJpExpTo.ActiveCharacterJobData;
             activeCharacterJobData.JobPoint += gainedJp;
 
@@ -578,7 +588,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 jpNtc.AddJobPoint = gainedJp;
                 jpNtc.ExtraBonusJobPoint = 0;
                 jpNtc.TotalJobPoint = activeCharacterJobData.JobPoint;
-                client.Send(jpNtc);
+                client.Enqueue(jpNtc, packets);
             }
             else
             {
@@ -588,11 +598,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 jpNtc.AddJobPoint = gainedJp;
                 jpNtc.ExtraBonusJobPoint = 0;
                 jpNtc.TotalJobPoint = activeCharacterJobData.JobPoint;
-                client.Send(jpNtc);
+                client.Enqueue(jpNtc, packets);
             }
 
             // PERSIST CHANGES IN DB
-            _Server.Database.UpdateCharacterJobData(characterToJpExpTo.CommonId, activeCharacterJobData);
+            _Server.Database.UpdateCharacterJobData(characterToJpExpTo.CommonId, activeCharacterJobData, connectionIn);
+
+            return packets;
+        }
+
+        public void AddJpNtc(GameClient client, CharacterCommon characterToJpExpTo, uint gainedJp, RewardSource rewardType, QuestType questType = QuestType.All, DbConnection? connectionIn = null)
+        {
+            AddJp(client, characterToJpExpTo, gainedJp, rewardType, questType, connectionIn).Send();
         }
 
         public void ResetExpData(GameClient client, CharacterCommon characterCommon)
@@ -682,30 +699,25 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return totalExp;
         }
 
-        private double RookiesRingBonus()
-        {
-            return _GameSettings.RookiesRingBonus;
-        }
-
-        private uint RookiesRingMaxLevel()
-        {
-            return _GameSettings.RookiesRingMaxLevel;
-        }
-
         private uint GetRookiesRingBonus(CharacterCommon characterCommon, uint baseExpAmount)
         {
-            if (characterCommon.ActiveCharacterJobData.Lv > RookiesRingMaxLevel())
+            if (!_Server.GameLogicSettings.Get<bool>("RookiesRing", "EnableRookiesRing"))
             {
                 return 0;
             }
 
-            if (!characterCommon.Equipment.GetItems(EquipType.Performance).Exists(x => x?.ItemId == 11718))
+            if (!characterCommon.Equipment.GetItems(EquipType.Performance).Exists(x => x?.ItemId == (uint) ItemId.RookiesRingOfBlessing))
             {
                 return 0;
             }
 
-            double result = baseExpAmount * RookiesRingBonus();
-            return (uint)result;
+            var rookiesRingInterface = _Server.ScriptManager.GameItemModule.GetItemInterface(ItemId.RookiesRingOfBlessing);
+            if (rookiesRingInterface == null)
+            {
+                return baseExpAmount;
+            }
+
+            return (uint)(baseExpAmount * rookiesRingInterface.GetBonusMultiplier(_Server, characterCommon));
         }
 
         private uint GetCourseExpBonus(CharacterCommon characterCommon, uint baseExpAmount, RewardSource source, QuestType questType)
@@ -792,9 +804,50 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return maxLevel;
         }
 
+        private bool AllMembersOwnedBySameCharacter(PartyGroup party)
+        {
+            uint characterId = 0;
+            foreach (var member in party.Members)
+            {
+                uint id = 0;
+                if (member is PlayerPartyMember)
+                {
+                    var client = ((PlayerPartyMember)member).Client;
+                    id = client.Character.CharacterId;
+                }
+                else if (member is PawnPartyMember)
+                {
+                    var pawn = ((PawnPartyMember)member).Pawn;
+                    if (pawn.IsRented)
+                    {
+                        return false;
+                    }
+
+                    id = pawn.CharacterId;
+                }
+
+                if (characterId == 0)
+                {
+                    characterId = id;
+                }
+
+                if (characterId != id)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
         private double CalculatePartyRangeMultipler(GameMode gameMode, PartyGroup party)
         {
-            if (!_GameSettings.AdjustPartyEnemyExp || gameMode == GameMode.BitterblackMaze)
+            if (!_GameSettings.EnableAdjustPartyEnemyExp || gameMode == GameMode.BitterblackMaze)
+            {
+                return 1.0;
+            }
+
+            if (_GameSettings.DisableExpCorrectionForMyPawn && AllMembersOwnedBySameCharacter(party))
             {
                 return 1.0;
             }
@@ -816,7 +869,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private double CalculateTargetLvMultiplier(GameMode gameMode, PartyGroup party, uint targetLv)
         {
-            if (!_GameSettings.AdjustTargetLvEnemyExp || gameMode == GameMode.BitterblackMaze)
+            if (!_GameSettings.EnableAdjustTargetLvEnemyExp || gameMode == GameMode.BitterblackMaze)
             {
                 return 1.0;
             }
@@ -842,6 +895,33 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return multiplier;
         }
 
+        public uint GetScaledPointAmount(GameMode gameMode, RewardSource source, PointType type, uint amount)
+        {
+            double modifier = 1.0;
+            switch (type)
+            {
+                case PointType.ExperiencePoints:
+                    if(gameMode == GameMode.Normal) {
+                        modifier = (source == RewardSource.Enemy) ? _GameSettings.EnemyExpModifier : _GameSettings.QuestExpModifier;
+                    }
+                    //No quests in BBM, reward source should always be Enemy
+                    else if(gameMode == GameMode.BitterblackMaze) {
+                        modifier =  _GameSettings.BBMEnemyExpModifier;
+                    }
+                    break;
+                case PointType.JobPoints:
+                    modifier = _GameSettings.JpModifier;
+                    break;
+                case PointType.PlayPoints:
+                    modifier = _GameSettings.PpModifier;
+                    break;
+                default:
+                    modifier = 1.0;
+                    break;
+            }
+            return (uint)(amount * modifier);
+        }
+
         public uint GetAdjustedExp(GameMode gameMode, RewardSource source, PartyGroup party, uint baseExpAmount, uint targetLv)
         {
             if (_Server.GpCourseManager.DisablePartyExpAdjustment())
@@ -856,7 +936,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 var partyRangeMultiplier = CalculatePartyRangeMultipler(gameMode, party);
                 multiplier = Math.Min(partyRangeMultiplier, targetMultiplier);
             }
-            
+            else if (source == RewardSource.Quest)
+            {
+                // Currently no adjustments
+            }
+
             return (uint)(multiplier * baseExpAmount);
         }
 
@@ -910,7 +994,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private double CalculatePawnCatchupTargetLvMultiplier(GameMode gameMode, Pawn pawn, uint targetLv)
         {
-            if (!_GameSettings.AdjustTargetLvEnemyExp || gameMode == GameMode.BitterblackMaze)
+            if (!_GameSettings.EnableAdjustTargetLvEnemyExp || gameMode == GameMode.BitterblackMaze)
             {
                 return 1.0;
             }

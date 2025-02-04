@@ -9,7 +9,7 @@ root = true
 indent_style = space
 
 # Code files
-[*.{cs,sql}]
+[*.{cs,sql,json,csx}]
 indent_size = 4
 insert_final_newline = true
 charset = utf-8

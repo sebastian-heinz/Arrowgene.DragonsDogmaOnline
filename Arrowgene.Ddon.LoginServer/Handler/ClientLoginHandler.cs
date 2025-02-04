@@ -1,21 +1,29 @@
-using System;
-using System.Collections.Generic;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
+using System.Threading;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
-    public class ClientLoginHandler : LoginStructurePacketHandler<C2LLoginReq>
+    public class ClientLoginHandler : LoginRequestPacketHandler<C2LLoginReq, L2CLoginRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClientLoginHandler));
 
         private readonly LoginServerSetting _setting;
         private readonly object _tokensInFLightLock;
         private readonly HashSet<string> _tokensInFlight;
+
+        private readonly HttpClient _httpClient = new HttpClient();
+        private bool _httpReady = false;
 
         public ClientLoginHandler(DdonLoginServer server) : base(server)
         {
@@ -24,23 +32,20 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             _tokensInFlight = new HashSet<string>();
         }
 
-        public override void Handle(LoginClient client, StructurePacket<C2LLoginReq> packet)
+        public override L2CLoginRes Handle(LoginClient client, C2LLoginReq request)
         {
             DateTime now = DateTime.UtcNow;
             client.SetChallengeCompleted(true);
 
-            string oneTimeToken = packet.Structure.OneTimeToken;
-            Logger.Debug(client, $"Received LoginToken:{oneTimeToken} for platform:{packet.Structure.PlatformType}");
+            string oneTimeToken = request.OneTimeToken;
+            Logger.Debug(client, $"Received LoginToken:{oneTimeToken} for platform:{request.PlatformType}");
 
             L2CLoginRes res = new L2CLoginRes();
             res.OneTimeToken = oneTimeToken;
 
             if (!LockToken(oneTimeToken))
             {
-                Logger.Error(client, $"OneTimeToken {oneTimeToken} is in process.");
-                res.Error = 1;
-                client.Send(res);
-                return;
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_AUTH_ONETIME_TOKEN_FAIL, $"OneTimeToken {oneTimeToken} is in process.");
             }
 
             try
@@ -50,10 +55,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 {
                     if (account == null)
                     {
-                        Logger.Error(client, "Invalid OneTimeToken");
-                        res.Error = 1;
-                        client.Send(res);
-                        return;
+                        throw new ResponseErrorException(ErrorCode.ERROR_CODE_AUTH_ONETIME_TOKEN_FAIL, "Invalid OneTimeToken");
                     }
                 }
                 else
@@ -65,15 +67,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                         account = Database.SelectAccountByName(oneTimeToken);
                         if (account == null)
                         {
-                            account = Database.CreateAccount(oneTimeToken, oneTimeToken, oneTimeToken);
-                            if (account == null)
-                            {
-                                Logger.Error(client,
-                                    "Could not create account from OneTimeToken, choose another token");
-                                res.Error = 2;
-                                client.Send(res);
-                                return;
-                            }
+                            account = Database.CreateAccount(oneTimeToken, oneTimeToken, oneTimeToken)
+                                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AUTH_ACCOUNT_GENERATION_FAIL, "Could not create account from OneTimeToken, choose another token");
 
                             Logger.Info(client, "Created new account from OneTimeToken");
                         }
@@ -85,30 +80,39 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
                 if (!account.LoginTokenCreated.HasValue)
                 {
-                    Logger.Error(client, "No login token exists");
-                    res.Error = 2;
-                    client.Send(res);
-                    return;
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_AUTH_LOGIN_FAILED, "No login token exists");
                 }
 
                 TimeSpan loginTokenAge = account.LoginTokenCreated.Value - now;
                 if (loginTokenAge > TimeSpan.FromDays(7)) // TODO convert to setting
                 {
-                    Logger.Error(client, $"OneTimeToken Created at: {account.LoginTokenCreated} expired.");
-                    res.Error = 1;
-                    client.Send(res);
-                    return;
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_AUTH_ONETIME_TOKEN_FAIL, $"OneTimeToken Created at: {account.LoginTokenCreated} expired.");
                 }
 
                 List<Connection> connections = Database.SelectConnectionsByAccountId(account.Id);
-                if (connections.Count > 0)
+
+                if (_setting.KickOnMultipleLogin)
                 {
-                    Logger.Error(client, $"Already logged in");
-                    res.Error = (uint) ErrorCode.ERROR_CODE_AUTH_MULTIPLE_LOGIN;
-                    client.Send(res);
-                    return;
+                    for (uint tryCount = 0; tryCount < _setting.KickOnMultipleLoginTries; tryCount++)
+                    {
+                        if (connections.Any())
+                        {
+                            connections.ForEach(x => RequestKick(x));
+                            Thread.Sleep(_setting.KickOnMultipleLoginTimer);
+                            connections = Database.SelectConnectionsByAccountId(account.Id);
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
                 }
-                
+
+                if (connections.Any())
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_AUTH_MULTIPLE_LOGIN, $"Already logged in.");
+                }
+
                 // Order Important,
                 // account need to be only assigned after
                 // verification that no connection exists, and before
@@ -122,10 +126,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 connection.Created = now;
                 if (!Database.InsertConnection(connection))
                 {
-                    Logger.Error(client, $"Failed to register login connection");
-                    res.Error = 1;
-                    client.Send(res);
-                    return;
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_AUTH_LOGIN_FAILED, $"Failed to register login connection");
                 }
 
                 client.Account.LastAuthentication = now;
@@ -133,7 +134,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 Database.UpdateAccount(client.Account);
 
                 Logger.Info(client, "Logged In");
-                client.Send(res);
+                return res;
             }
             finally
             {
@@ -171,6 +172,48 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 _tokensInFlight.Add(token);
                 return true;
             }
+        }
+
+        private void RequestKick(Connection connection)
+        {
+            // Timing issues with loading files vs server process startup.
+            if (!_httpReady)
+            {
+                lock(_httpClient)
+                {
+                    ServerInfo serverInfo = Server.AssetRepository.ServerList.Find(x => x.LoginId == Server.Id);
+                    if (serverInfo is null)
+                    {
+                        Logger.Error($"Login server with ID {Server.Id} was not found in the ServerList asset.");
+                        return;
+                    }
+
+                    // The login server auths as though it was the game server.
+                    _httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Internal", $"{serverInfo.Id}:{serverInfo.RpcAuthToken}");
+                    _httpReady = true;
+                }
+            }
+
+            if (connection.Type == ConnectionType.LoginServer)
+            {
+                Logger.Error($"Can't kick account {connection.AccountId}; stuck at login server.");
+                return;
+            }
+
+            var channel = Server.AssetRepository.ServerList.Find(x => x.Id == connection.ServerId);
+            var route = $"http://{channel.Addr}:{channel.RpcPort}/rpc/internal/command";
+
+            var wrappedObject = new RpcWrappedObject()
+            {
+                Command = RpcInternalCommand.KickInternal,
+                Origin = (ushort)Server.Id,
+                Data = connection.AccountId
+            };
+
+            Logger.Info($"Attempting to auto kick account {connection.AccountId} from server {connection.ServerId}");
+
+            var json = JsonSerializer.Serialize(wrappedObject);
+            _ = _httpClient.PostAsync(route, new StringContent(json));
         }
     }
 }

@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.Shared.Model;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Asset
@@ -10,6 +11,7 @@ namespace Arrowgene.Ddon.Shared.Asset
             StageIds = new HashSet<uint>();
             EnemyIds = new HashSet<uint>();
             RequiredItemsEquipped = new HashSet<uint>();
+            ItemConstraint = EventItemConstraint.None;
         }
 
         public uint ItemId { get; set; }
@@ -21,7 +23,14 @@ namespace Arrowgene.Ddon.Shared.Asset
         public HashSet<uint> StageIds { get; set; }
         public HashSet<uint> EnemyIds { get; set; }
 
+        public EventItemConstraint EmClassConstraint; // Boss or Regular Enemy
+
+        public EventItemConstraint EmLvConstraint;
+        public (uint Lv, uint MinLv, uint MaxLv) EmLvConstraintParams { get; set; }
+
         public bool RequiresLanternLit { get; set; }
+
+        public EventItemConstraint ItemConstraint { get; set; }
         public HashSet<uint> RequiredItemsEquipped { get; set; }
     }
 

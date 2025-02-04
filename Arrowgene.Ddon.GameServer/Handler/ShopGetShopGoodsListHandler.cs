@@ -1,11 +1,10 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class ShopGetShopGoodsListHandler : GameStructurePacketHandler<C2SShopGetShopGoodsListReq>
+    public class ShopGetShopGoodsListHandler : GameRequestPacketHandler<C2SShopGetShopGoodsListReq, S2CShopGetShopGoodsListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ShopGetShopGoodsListHandler));
         
@@ -13,12 +12,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SShopGetShopGoodsListReq> packet)
+        public override S2CShopGetShopGoodsListRes Handle(GameClient client, C2SShopGetShopGoodsListReq request)
         {
-            client.Character.LastEnteredShopId = packet.Structure.ShopId;
+            client.Character.LastEnteredShopId = request.ShopId;
 
-            S2CShopGetShopGoodsListRes res = client.InstanceShopManager.GetAssets(packet.Structure.ShopId);
-            client.Send(res);
+            return client.InstanceShopManager.GetAssets(request.ShopId);
         }
+
     }
 }

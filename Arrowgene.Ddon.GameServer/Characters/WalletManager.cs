@@ -1,13 +1,14 @@
 #nullable enable
-using System.Data.Common;
-using System.Linq;
-using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -15,15 +16,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(WalletManager));
 
-        private IDatabase _Database;
+        private readonly DdonGameServer Server;
+        private readonly Dictionary<WalletType, uint> WalletLimits;
 
-        public WalletManager(IDatabase Database)
+        public WalletManager(DdonGameServer server)
         {
-            _Database = Database;
+            Server = server;
+            WalletLimits = server.GameLogicSettings.WalletLimits;
         }
-        public bool AddToWalletNtc(Client Client, Character Character, WalletType Type, uint Amount, ItemNoticeType updateType = ItemNoticeType.Default, DbConnection? connectionIn = null)
+        public bool AddToWalletNtc(Client Client, Character Character, WalletType Type, uint Amount,  uint BonusAmount = 0, ItemNoticeType updateType = ItemNoticeType.Default, DbConnection? connectionIn = null)
         {
-            CDataUpdateWalletPoint UpdateWalletPoint = AddToWallet(Character, Type, Amount, connectionIn);
+            CDataUpdateWalletPoint UpdateWalletPoint = AddToWallet(Character, Type, Amount, BonusAmount, connectionIn);
 
             S2CItemUpdateCharacterItemNtc UpdateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             UpdateCharacterItemNtc.UpdateType = updateType;
@@ -34,17 +37,21 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return true;
         }
 
-        public CDataUpdateWalletPoint AddToWallet(Character Character, WalletType Type, uint Amount, DbConnection? connectionIn = null)
+        public CDataUpdateWalletPoint AddToWallet(Character Character, WalletType Type, uint Amount, uint BonusAmount = 0, DbConnection? connectionIn = null)
         {
             CDataWalletPoint Wallet = Character.WalletPointList.Single(wp => wp.Type == Type);
 
-            Wallet.Value += Amount;
+            if (Wallet.Value < WalletLimits[Type])
+            {
+                Wallet.Value = Math.Min(Wallet.Value + Amount, WalletLimits[Type]);
+            }
 
-            _Database.UpdateWalletPoint(Character.CharacterId, Wallet, connectionIn);
+            Server.Database.UpdateWalletPoint(Character.CharacterId, Wallet, connectionIn);
 
             CDataUpdateWalletPoint UpdateWalletPoint = new CDataUpdateWalletPoint();
             UpdateWalletPoint.Type = Type;
             UpdateWalletPoint.AddPoint = (int) Amount;
+            UpdateWalletPoint.ExtraBonusPoint = BonusAmount;
             UpdateWalletPoint.Value = Wallet.Value;
             return UpdateWalletPoint;
         }
@@ -60,7 +67,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             Wallet.Value -= Amount;
 
-            _Database.UpdateWalletPoint(Character.CharacterId, Wallet, connectionIn);
+            Server.Database.UpdateWalletPoint(Character.CharacterId, Wallet, connectionIn);
 
             CDataUpdateWalletPoint UpdateWalletPoint = new CDataUpdateWalletPoint();
             UpdateWalletPoint.Type = Type;
@@ -92,6 +99,31 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             CDataWalletPoint Wallet = Character.WalletPointList.Where(wp => wp.Type == Type).Single();
             return Wallet.Value;
+        }
+
+        public uint GetScaledWalletAmount(WalletType type, uint amount)
+        {
+            double modifier = 1.0;
+            switch (type)
+            {
+                case WalletType.Gold:
+                    modifier = Server.GameLogicSettings.GoldModifier;
+                    break;
+                case WalletType.RiftPoints:
+                    modifier = Server.GameLogicSettings.RiftModifier;
+                    break;
+                case WalletType.BloodOrbs:
+                    modifier = Server.GameLogicSettings.BoModifier;
+                    break;
+                case WalletType.HighOrbs:
+                    modifier = Server.GameLogicSettings.HoModifier;
+                    break;
+                default:
+                    modifier = 1.0;
+                    break;
+            }
+
+            return (uint)(amount * modifier);
         }
     }
 }

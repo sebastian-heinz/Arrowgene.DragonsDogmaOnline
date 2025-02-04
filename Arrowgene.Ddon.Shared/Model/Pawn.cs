@@ -33,6 +33,7 @@ namespace Arrowgene.Ddon.Shared.Model
             };
             TrainingStatus = new Dictionary<JobId, byte[]>();
             IsRented = false;
+            PawnState = PawnState.Wait;
         }
         
         public Pawn(uint ownerCharacterId):this()
@@ -64,7 +65,8 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint AvailableTraining { get; set; } // Training lv?
         public bool IsOfficialPawn {  get; set; }
         public bool IsRented {  get; set; }
-
+        public PawnState PawnState { get; set; }
+        
         public CDataPawnInfo AsCDataPawnInfo()
         {
             return new CDataPawnInfo()
@@ -94,6 +96,7 @@ namespace Arrowgene.Ddon.Shared.Model
                         .Where(skill => skill != null)
                         .ToList(),
                 ExtendParam = ExtendedParams,
+                PawnReactionList = PawnReactionList,
                 // TODO: Add rest of fileds so full structure can be populated here
             };
         }

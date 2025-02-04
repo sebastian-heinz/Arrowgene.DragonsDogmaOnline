@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using Arrowgene.Ddon.Shared.Model;
@@ -24,12 +25,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlSelectActiveBazaarExhibitionsByItemIdExcludingOwn = $"SELECT \"bazaar_id\", {BuildQueryField(BazaarExhibitionFields)} FROM \"{BazaarExhibitionTableName}\" " +
                                                                $"WHERE \"item_id\" = @item_id " +
                                                                $"AND \"state\" = {(byte)BazaarExhibitionState.OnSale} " +
-                                                               $"AND \"expire\" > DATETIME(\"now\") " +
+                                                               $"AND \"expire\" > @now " +
                                                                $"AND \"character_id\" <> @excluded_character_id " +
                                                                $"ORDER BY price ASC;";
         
         private static readonly string SqlDeleteBazaarExhibitionByBazaarId = $"DELETE FROM \"{BazaarExhibitionTableName}\" WHERE \"bazaar_id\"=@bazaar_id;";
-        private static readonly string SqlDeleteBazaarExhibitionOutdated = $"DELETE FROM \"{BazaarExhibitionTableName}\" WHERE \"state\"={(byte)BazaarExhibitionState.Idle} AND \"expire\" < DATETIME(\"now\");";
+        private static readonly string SqlDeleteBazaarExhibitionOutdated = $"DELETE FROM \"{BazaarExhibitionTableName}\" WHERE \"state\"={(byte)BazaarExhibitionState.Idle} AND \"expire\" < @now;";
 
 
         private static readonly string SqlUpdateBazaarExhibitionByBazaarId = $"UPDATE \"{BazaarExhibitionTableName}\" SET {BuildQueryUpdate(BazaarExhibitionFields)} WHERE \"bazaar_id\"=@bazaar_id";
@@ -95,7 +96,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         
         public int DeleteBazaarExhibitionsOutdated(TCon conn)
         {
-            int rowsAffected = ExecuteNonQuery(conn, SqlDeleteBazaarExhibitionOutdated, command => {});
+            int rowsAffected = ExecuteNonQuery(conn, SqlDeleteBazaarExhibitionOutdated, command =>
+            {
+                AddParameter(command, "@now", DateTimeOffset.UtcNow.UtcDateTime);
+            });
             return rowsAffected;
         }
         
@@ -151,22 +155,18 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             return entities;
         }
-        
-        
-        public List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdExcludingOwn(uint itemId, uint excludedCharacterId)
-        {
-            using TCon conn = OpenNewConnection();
-            return SelectActiveBazaarExhibitionsByItemIdExcludingOwn(conn, itemId, excludedCharacterId);
-        }
-        
-        public List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdExcludingOwn(TCon conn, uint itemId, uint excludedCharacterId)
+           
+        public List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdExcludingOwn(uint itemId, uint excludedCharacterId, DbConnection? connectionIn = null)
         {
             List<BazaarExhibition> entities = new List<BazaarExhibition>();
-            ExecuteReader(conn, SqlSelectActiveBazaarExhibitionsByItemIdExcludingOwn,
+            ExecuteQuerySafe(connectionIn, conn =>
+            {
+                ExecuteReader(conn, SqlSelectActiveBazaarExhibitionsByItemIdExcludingOwn,
                 command =>
                 {
                     AddParameter(command, "@item_id", itemId);
                     AddParameter(command, "@excluded_character_id", excludedCharacterId);
+                    AddParameter(command, "@now", DateTimeOffset.UtcNow.UtcDateTime);
                 }, reader =>
                 {
                     while (reader.Read())
@@ -175,24 +175,22 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         entities.Add(e);
                     }
                 });
+            });
 
             return entities;
         }
 
-        public List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdsExcludingOwn(List<uint> itemIds, uint excludedCharacterId)
-        {
-            using TCon conn = OpenNewConnection();
-            return SelectActiveBazaarExhibitionsByItemIdsExcludingOwn(conn, itemIds, excludedCharacterId);
-        }
-
-        public List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdsExcludingOwn(TCon conn, List<uint> itemIds, uint excludedCharacterId)
+        public List<BazaarExhibition> SelectActiveBazaarExhibitionsByItemIdsExcludingOwn(List<uint> itemIds, uint excludedCharacterId, DbConnection? connectionIn = null)
         {
             List<BazaarExhibition> entities = new List<BazaarExhibition>();
-            foreach (uint itemId in itemIds)
+            ExecuteQuerySafe(connectionIn, conn =>
             {
-                List<BazaarExhibition> exhibitionsForItemId = SelectActiveBazaarExhibitionsByItemIdExcludingOwn(conn, itemId, excludedCharacterId);
-                entities.AddRange(exhibitionsForItemId);
-            }
+                foreach (uint itemId in itemIds)
+                {
+                    List<BazaarExhibition> exhibitionsForItemId = SelectActiveBazaarExhibitionsByItemIdExcludingOwn(itemId, excludedCharacterId, conn);
+                    entities.AddRange(exhibitionsForItemId);
+                }
+            });
             return entities;
         }
 

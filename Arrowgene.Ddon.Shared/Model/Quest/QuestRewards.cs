@@ -176,8 +176,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
     {
         public uint UniqRewardId { get; set; }
         public uint CharacterCommonId { get; set; }
-        public QuestId QuestId { get; set; }
-        public uint VariantId { get; set; }
+        public uint QuestScheduleId { get; set; }
         public int NumRandomRewards { get; set; }
         public List<int> RandomRewardIndices { get; set; }
 

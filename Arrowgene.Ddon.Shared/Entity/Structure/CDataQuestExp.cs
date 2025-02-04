@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure;
 public class CDataQuestExp
 {
     public byte Unk0 { get; set; }
-    public ExpType Type { get; set; }
+    public PointType Type { get; set; }
     public UInt32 Reward { get; set; }
 
     public class Serializer : EntitySerializer<CDataQuestExp>
@@ -23,7 +23,7 @@ public class CDataQuestExp
         {
             CDataQuestExp obj = new CDataQuestExp();
             obj.Unk0 = ReadByte(buffer);
-            obj.Type = (ExpType)ReadByte(buffer);
+            obj.Type = (PointType)ReadByte(buffer);
             obj.Reward = ReadUInt32(buffer);
             return obj;
         }

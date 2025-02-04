@@ -16,8 +16,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             return new S2CBazaarGetExhibitPossibleNumRes()
             {
-                Num = client.Character.MaxBazaarExhibits,
-                Add = 0 // TODO: Figure out
+                Num = client.Character.MaxBazaarExhibits + Server.GpCourseManager.BazaarExhibitExtend(),
+                Add = Server.GpCourseManager.BazaarExhibitExtend() // Not sure what the purpose of this value is
             };
         }
     }

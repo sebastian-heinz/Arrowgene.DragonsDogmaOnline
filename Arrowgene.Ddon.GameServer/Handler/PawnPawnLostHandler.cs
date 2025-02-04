@@ -18,13 +18,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPawnPawnLostReq> packet)
         {
-            // TODO: Lost pawns system
             Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
+            pawn.PawnState = PawnState.Lost;
+            Server.Database.UpdatePawnBaseInfo(pawn);
+
+            S2CPawnPawnLostNtc ntc = new S2CPawnPawnLostNtc()
+            {
+                PawnId = pawn.PawnId,
+                PawnName = pawn.Name,
+                IsLost = pawn.PawnState == PawnState.Lost
+            };
+            client.Party.SendToAll(ntc);
+
             client.Send(new S2CPawnPawnLostRes()
             {
                 PawnId = pawn.PawnId,
                 PawnName = pawn.Name,
-                IsLost = false
+                IsLost = pawn.PawnState == PawnState.Lost
             });
 
             int pawnIndex = client.Party.Members.FindIndex(x => x is PawnPartyMember xpawn && xpawn.PawnId == packet.Structure.PawnId);

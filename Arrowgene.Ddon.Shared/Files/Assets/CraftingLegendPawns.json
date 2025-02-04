@@ -1,0 +1,152 @@
+[
+  {
+    "PawnId": 308,
+    "PointType": 5,
+    "RentalCost": 1,
+    "Unk3": 10000004,
+    "Name": "Many",
+    "CraftRank": 100,
+    "PawnCraftSkillList": [
+      {
+        "Type": 1,
+        "Level": 0
+      },
+      {
+        "Type": 2,
+        "Level": 0
+      },
+      {
+        "Type": 3,
+        "Level": 0
+      },
+      {
+        "Type": 4,
+        "Level": 99
+      },
+      {
+        "Type": 5,
+        "Level": 0
+      },
+      {
+        "Type": 6,
+        "Level": 1
+      },
+      {
+        "Type": 7,
+        "Level": 0
+      },
+      {
+        "Type": 8,
+        "Level": 0
+      },
+      {
+        "Type": 9,
+        "Level": 0
+      },
+      {
+        "Type": 10,
+        "Level": 0
+      }
+    ]
+  },
+  {
+    "PawnId": 309,
+    "PointType": 5,
+    "RentalCost": 1,
+    "Unk3": 10000006,
+    "Name": "Qualio",
+    "CraftRank": 100,
+    "PawnCraftSkillList": [
+      {
+        "Type": 1,
+        "Level": 99
+      },
+      {
+        "Type": 2,
+        "Level": 0
+      },
+      {
+        "Type": 3,
+        "Level": 99
+      },
+      {
+        "Type": 4,
+        "Level": 0
+      },
+      {
+        "Type": 5,
+        "Level": 0
+      },
+      {
+        "Type": 6,
+        "Level": 0
+      },
+      {
+        "Type": 7,
+        "Level": 1
+      },
+      {
+        "Type": 8,
+        "Level": 0
+      },
+      {
+        "Type": 9,
+        "Level": 1
+      },
+      {
+        "Type": 10,
+        "Level": 0
+      }
+    ]
+  },
+  {
+    "PawnId": 310,
+    "PointType": 5,
+    "RentalCost": 1,
+    "Unk3": 10000002,
+    "Name": "Arms",
+    "CraftRank": 100,
+    "PawnCraftSkillList": [
+      {
+        "Type": 1,
+        "Level": 0
+      },
+      {
+        "Type": 2,
+        "Level": 99
+      },
+      {
+        "Type": 3,
+        "Level": 0
+      },
+      {
+        "Type": 4,
+        "Level": 0
+      },
+      {
+        "Type": 5,
+        "Level": 99
+      },
+      {
+        "Type": 6,
+        "Level": 0
+      },
+      {
+        "Type": 7,
+        "Level": 0
+      },
+      {
+        "Type": 8,
+        "Level": 1
+      },
+      {
+        "Type": 9,
+        "Level": 1
+      },
+      {
+        "Type": 10,
+        "Level": 0
+      }
+    ]
+  }
+]

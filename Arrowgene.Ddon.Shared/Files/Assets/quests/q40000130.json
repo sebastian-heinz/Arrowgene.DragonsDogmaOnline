@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40000130,
+  "base_level": 7,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Area Order: Mysree Demon Extermination",
+  "light_quest_details": {
+    "area_id": 3,
+    "board_type": 1,
+    "board_id": 4
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1380
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 627
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 341
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "70",
+      "level": 7,
+      "amount": 1
+    }
+  ]
+}

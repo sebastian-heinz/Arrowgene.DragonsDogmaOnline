@@ -1,0 +1,50 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40000095,
+  "base_level": 16,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Water of Paradise",
+  "light_quest_details": {
+    "area_id": 4,
+    "board_type": 1,
+    "board_id": 6
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 723
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 786
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 257
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "DeliverItemsLight",
+      "announce_type": "Accept",
+      "items": [
+        {
+          "id": 7839,
+          "amount": 3
+        }
+      ]
+    }
+  ]
+}

@@ -6,6 +6,7 @@
     "base_level": 12,
     "minimum_item_rank": 0,
     "discoverable": true,
+    "area_id": "HidellPlains",
     "rewards": [
         {
             "type": "exp",
@@ -50,7 +51,7 @@
                     "named_enemy_params_id": 53,
                     "level": 15,
                     "exp": 2760,
-                    "is_boss": true			
+                    "is_boss": true
                 }
             ]
         }
@@ -69,10 +70,10 @@
             "announce_type": "Accept",
             "groups": [0]
         },
-        {			
+        {
             "type": "KillGroup",
             "announce_type": "Update",
-			"reset_group": false,
+            "reset_group": false,
             "groups": [0]
         },
         {

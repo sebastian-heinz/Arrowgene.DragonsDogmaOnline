@@ -1,0 +1,14 @@
+[
+	{
+		"text" : "This server is made possible\nby the hardworking developers at\nWhite Dragon Temple.",
+		"image_id" : 6,
+		"priority" : 1
+	},
+	{
+		"text" : "This is dummy text, this loading screen won't be used because of the DateTime.",
+		"image_id" : 1105,
+		"priority" : 1,
+		"begin_date_time": "2019-10-03T02:00:00+00:00",
+		"end_date_time": "2019-10-03T06:59:59+00:00"
+	}
+]

@@ -22,7 +22,7 @@
     <ItemGroup>
         <PackageReference Include="Arrowgene.Logging" Version="1.2.1" />
         <PackageReference Include="System.Data.SQLite" Version="1.0.115.5" />
-        <PackageReference Include="Npgsql" Version="7.0.6" />
+        <PackageReference Include="Npgsql" Version="7.0.7" />
         <PackageReference Include="MySqlConnector" Version="2.2.7" />
     </ItemGroup>
 
@@ -36,5 +36,13 @@
     <ItemGroup>
         <ProjectReference Include="..\Arrowgene.Ddon.Shared\Arrowgene.Ddon.Shared.csproj" />
     </ItemGroup>
-
+    
+    <ItemGroup>
+      <None Update="Files\Database\Script\migration_epitaph_road.sql">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+      <None Update="Files\Database\Script\migration_scheduling.sql">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </None>
+    </ItemGroup>
 </Project>

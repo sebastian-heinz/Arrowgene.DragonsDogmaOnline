@@ -1,20 +1,15 @@
-using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System;
 using System.Collections.Generic;
-using Arrowgene.Ddon.GameServer.Party;
-using System.Diagnostics;
-using Arrowgene.Ddon.Shared.Model.Quest;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestDeliverItemHandler : GameStructurePacketHandler<C2SQuestDeliverItemReq>
+    public class QuestDeliverItemHandler : GameRequestPacketHandler<C2SQuestDeliverItemReq, S2CQuestDeliverItemRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestDeliverItemHandler));
 
@@ -22,47 +17,49 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SQuestDeliverItemReq> packet)
+        public override S2CQuestDeliverItemRes Handle(GameClient client, C2SQuestDeliverItemReq request)
         {
             S2CQuestDeliverItemRes res = new S2CQuestDeliverItemRes()
             {
-                QuestScheduleId = packet.Structure.QuestScheduleId,
-                ProcessNo = packet.Structure.ProcessNo,
+                QuestScheduleId = request.QuestScheduleId,
+                ProcessNo = request.ProcessNo,
             };
 
-            QuestId questId = (QuestId)packet.Structure.QuestScheduleId;
-            var questState = client.Party.QuestState.GetQuestState(questId);
+            var quest = QuestManager.GetQuestByScheduleId(request.QuestScheduleId);
+            var questStateManager = QuestManager.GetQuestStateManager(client, quest);
+            var questState = questStateManager.GetQuestState(request.QuestScheduleId);
 
             Dictionary<uint, CDataDeliveredItem> deliveredItems = new Dictionary<uint, CDataDeliveredItem>();
             List<CDataItemUpdateResult> itemUpdateResults = new List<CDataItemUpdateResult>();
-            foreach (var item in packet.Structure.ItemUIDList)
+            Server.Database.ExecuteInTransaction(connection =>
             {
-                uint itemId = Server.ItemManager.LookupItemByUID(Server, item.UId);
-                var itemUpdate = Server.ItemManager.ConsumeItemByUIdFromItemBag(Server, client.Character, item.UId, item.Num);
-                if (itemUpdate == null)
+                foreach (var item in request.ItemUIDList)
                 {
-                    res.Error = (uint)ErrorCode.ERROR_CODE_QUEST_DONT_HAVE_DELIVERY_ITEM;
-                    client.Send(res);
-                    return;
-                }
-                itemUpdateResults.Add(itemUpdate);
+                    uint itemId = Server.ItemManager.LookupItemByUID(Server, item.UId);
+                    var searchResult = client.Character.Storage.FindItemByUIdInStorage(ItemManager.BothStorageTypes, item.UId);
+                    var itemUpdate = Server.ItemManager.ConsumeItemByUId(Server, client.Character, searchResult.Item1, item.UId, item.Num, connectionIn: connection)
+                        ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_QUEST_DONT_HAVE_DELIVERY_ITEM);
 
-                if (!deliveredItems.ContainsKey(itemId))
-                {
-                    deliveredItems[itemId] = new CDataDeliveredItem()
+                    itemUpdateResults.Add(itemUpdate);
+
+                    if (!deliveredItems.ContainsKey(itemId))
                     {
-                        ItemId = itemId,
-                        ItemNum = 0,
-                        NeedNum = 0
-                    };
+                        deliveredItems[itemId] = new CDataDeliveredItem()
+                        {
+                            ItemId = itemId,
+                            ItemNum = 0,
+                            NeedNum = 0
+                        };
+                    }
+                    deliveredItems[itemId].ItemNum += (ushort)item.Num;
                 }
-                deliveredItems[itemId].ItemNum += (ushort) item.Num;
-            }
 
-            foreach (var deliveredItem in deliveredItems.Values)
-            {
-                deliveredItem.NeedNum = (ushort) questState.UpdateDeliveryRequest(deliveredItem.ItemId, deliveredItem.ItemNum);
-            }
+                foreach (var deliveredItem in deliveredItems.Values)
+                {
+                    // Do this check in the transaction so the DB rolls back if something goes wrong.
+                    deliveredItem.NeedNum = (ushort)questState.UpdateDeliveryRequest(deliveredItem.ItemId, deliveredItem.ItemNum);
+                }
+            });
 
             client.Send(new S2CItemUpdateCharacterItemNtc()
             {
@@ -75,15 +72,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 DeliveredItemRecord = new CDataDeliveredItemRecord()
                 {
                     CharacterId = client.Character.CharacterId,
-                    QuestScheduleId = packet.Structure.QuestScheduleId,
-                    ProcessNo = packet.Structure.ProcessNo,
+                    QuestScheduleId = request.QuestScheduleId,
+                    ProcessNo = request.ProcessNo,
                     DeliveredItemList = deliveredItems.Values.ToList()
                 }
             };
 
-            client.Party.SendToAll(ntc);
+            if (quest.IsPersonal)
+            {
+                client.Send(ntc);
+            }
+            else
+            {
+                client.Party.SendToAll(ntc);
+            }
 
-            client.Send(res);
+            return res;
         }
     }
 }

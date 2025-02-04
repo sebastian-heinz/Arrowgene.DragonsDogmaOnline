@@ -57464,6 +57464,49 @@
                       "IsSp": true
                   }
               ]
+          },
+          {
+              "RecipeID": 1997,
+              "ItemID": 588,
+              "Time": 4762,
+              "Num": 1,
+              "Cost": 12375,
+              "Exp": 657,
+              "NeedRank": 1,
+              "NpcAct": 1,
+              "IsHide": false,
+              "CraftMaterialList": [
+                  {
+                      "ItemId": 7914,
+                      "Num": 3,
+                      "SortNo": 1,
+                      "IsSp": true
+                  },
+                  {
+                      "ItemId": 7808,
+                      "Num": 3,
+                      "SortNo": 2,
+                      "IsSp": true
+                  },
+                  {
+                      "ItemId": 10991,
+                      "Num": 1,
+                      "SortNo": 3,
+                      "IsSp": true
+                  },
+                  {
+                      "ItemId": 9461,
+                      "Num": 3,
+                      "SortNo": 4,
+                      "IsSp": true
+                  },
+                  {
+                      "ItemId": 8030,
+                      "Num": 3,
+                      "SortNo": 5,
+                      "IsSp": true
+                  }
+              ]
           }
       ]
   },

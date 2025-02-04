@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 data.IsInRecreate = false;
 
                 // Label content is in progress so other can't join after group starts
-                data.ContentInProgress = true;
+                data.ContentStatus = ContentStatus.Started;
 
                 PartyGroup party = Server.PartyManager.NewParty(data.BoardId);
 

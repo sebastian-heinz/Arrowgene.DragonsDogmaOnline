@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
             LearnedNormalSkillsAsset asset = new LearnedNormalSkillsAsset();
 
-            string json = File.ReadAllText(path);
+            string json = Util.ReadAllText(path);
             JsonDocument document = JsonDocument.Parse(json);
 
             // List<uint> Keys = document.RootElement.EnumerateObject().ToList

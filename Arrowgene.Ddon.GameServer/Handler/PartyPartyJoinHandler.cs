@@ -1,17 +1,15 @@
 using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.GameServer.Party;
-using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PartyPartyJoinHandler : GameStructurePacketHandler<C2SPartyPartyJoinReq>
+    public class PartyPartyJoinHandler : GameRequestPacketHandler<C2SPartyPartyJoinReq, S2CPartyPartyJoinRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyPartyJoinHandler));
 
@@ -19,29 +17,25 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SPartyPartyJoinReq> packet)
+        public override S2CPartyPartyJoinRes Handle(GameClient client, C2SPartyPartyJoinReq request)
         {
             S2CPartyPartyJoinRes res = new S2CPartyPartyJoinRes();
 
-            PartyGroup party = Server.PartyManager.GetParty(packet.Structure.PartyId);
+            PartyGroup party = Server.PartyManager.GetParty(request.PartyId);
             if (party == null)
             {
-                Logger.Error(client, "failed to find party (Server.PartyManager.GetParty() == null)");
-                res.Error = (uint)ErrorCode.ERROR_CODE_FAIL;
-                client.Send(res);
-                return;
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_NOT_FOUNDED, "failed to find party (Server.PartyManager.GetParty() == null)");
             }
 
             ErrorRes<PlayerPartyMember> join = party.Join(client);
             if (join.HasError)
             {
                 Logger.Error(client, "failed to join party");
-                res.Error = (uint)join.ErrorCode;
-                client.Send(res);
-                return;
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_NOT_JOINED, "failed to join party");
             }
 
-            var partyLeader = party.Leader.Client.Character;
+            var partyLeader = party.Leader?.Client.Character
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_LEADER_ABSENCE);
 
             res.ContentNumber = party.ContentId;
             if (BoardManager.BoardIdIsExm(party.ContentId))
@@ -54,6 +48,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 if (partyLeader.CharacterId != client.Character.CharacterId)
                 {
                     Server.CharacterManager.UpdateOnlineStatus(client, client.Character, OnlineStatus.PtMember);
+                }
+            }
+
+            var progress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All);
+            foreach (var questProgress in progress)
+            {
+                var quest = QuestManager.GetQuestByScheduleId(questProgress.QuestScheduleId);
+                if (quest != null && quest.IsPersonal)
+                { 
+                    join.Value.QuestState.AddNewQuest(questProgress.QuestScheduleId, questProgress.Step);
                 }
             }
 
@@ -95,9 +99,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             res.PartyId = party.Id;
-            client.Send(res);
 
             Logger.Info(client, $"joined PartyId:{party.Id}");
+
+            return res;
         }
     }
 }

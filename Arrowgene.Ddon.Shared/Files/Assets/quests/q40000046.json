@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40000046,
+  "base_level": 8,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "The Cause of Illness",
+  "light_quest_details": {
+    "area_id": 1,
+    "board_type": 1,
+    "board_id": 3
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 579
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 281
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 149
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "54",
+      "level": 8,
+      "amount": 3
+    }
+  ]
+}

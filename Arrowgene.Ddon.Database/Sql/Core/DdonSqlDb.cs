@@ -131,6 +131,47 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             base.ExecuteReader((TCon) conn, sql, (command) => commandAction.Invoke((TCom) command), (reader) => readAction.Invoke((TReader) reader));
         }
 
+        public T ExecuteQuerySafe<T>(DbConnection? connectionIn, Func<TCon, T> work)
+        {
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
+            {
+                return work.Invoke(connection);
+            }
+            finally
+            {
+                if (!isTransaction) connection.Dispose();
+            }
+        }
+
+        public void ExecuteQuerySafe(DbConnection? connectionIn, Action<TCon> work)
+        {
+            bool isTransaction = connectionIn is not null;
+            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
+            try
+            {
+                work.Invoke(connection);
+            }
+            finally
+            {
+                if (!isTransaction) connection.Dispose();
+            }
+        }
+
+        // Wrestling with generics; the interface is not happy to expose a generic,
+        // but a bunch of DB functions break if you don't allow the generic.
+        // This is the compromise.
+        public void ExecuteQuerySafe(DbConnection? connectionIn, Action<DbConnection> work)
+        {
+            ExecuteQuerySafe(connectionIn, (Action<TCon>)work);
+        }
+
+        public T ExecuteQuerySafe<T>(DbConnection? connectionIn, Func<DbConnection, T> work)
+        {
+            return ExecuteQuerySafe(connectionIn, (Func<TCon, T>)work);
+        }
+
         public bool MigrateDatabase(DatabaseMigrator migrator, uint toVersion)
         {
             uint currentVersion = GetMeta().DatabaseVersion;
@@ -170,6 +211,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         }
 
         public void AddParameter(DbCommand command, string name, float value)
+        {
+            base.AddParameter((TCom)command, name, value);
+        }
+        
+        public void AddParameter(DbCommand command, string name, ulong value)
         {
             base.AddParameter((TCom)command, name, value);
         }

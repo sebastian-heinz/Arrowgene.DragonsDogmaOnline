@@ -13,22 +13,22 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 
         public JobId Job;
         public CDataPlayPointData PlayPoint;
-    }
 
-    public class CDataJobPlayPointSerializer : EntitySerializer<CDataJobPlayPoint>
-    {
-        public override void Write(IBuffer buffer, CDataJobPlayPoint obj)
+        public class Serializer : EntitySerializer<CDataJobPlayPoint>
         {
-            WriteByte(buffer, (byte) obj.Job);
-            WriteEntity(buffer, obj.PlayPoint);
-        }
+            public override void Write(IBuffer buffer, CDataJobPlayPoint obj)
+            {
+                WriteByte(buffer, (byte)obj.Job);
+                WriteEntity(buffer, obj.PlayPoint);
+            }
 
-        public override CDataJobPlayPoint Read(IBuffer buffer)
-        {
-            CDataJobPlayPoint obj = new CDataJobPlayPoint();
-            obj.Job = (JobId) ReadByte(buffer);
-            obj.PlayPoint = ReadEntity<CDataPlayPointData>(buffer);
-            return obj;
+            public override CDataJobPlayPoint Read(IBuffer buffer)
+            {
+                CDataJobPlayPoint obj = new CDataJobPlayPoint();
+                obj.Job = (JobId)ReadByte(buffer);
+                obj.PlayPoint = ReadEntity<CDataPlayPointData>(buffer);
+                return obj;
+            }
         }
     }
 }

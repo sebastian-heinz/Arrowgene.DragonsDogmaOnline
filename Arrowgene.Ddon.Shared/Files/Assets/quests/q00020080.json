@@ -8,7 +8,8 @@
     "minimum_item_rank": 0,
     "discoverable": true,
     "order_conditions": [
-        {"type": "MinimumLevel", "Param1": 64}
+        {"type": "MinimumLevel", "Param1": 64},
+        {"type": "MainQuestCompleted", "Param1": 20070}
     ],
     "rewards": [
         {
@@ -143,6 +144,7 @@
                 {
                     "type": "TalkToNpc",
                     "announce_type": "Update",
+                    "checkpoint": true,
                     "stage_id": {
                         "id": 3
                     },

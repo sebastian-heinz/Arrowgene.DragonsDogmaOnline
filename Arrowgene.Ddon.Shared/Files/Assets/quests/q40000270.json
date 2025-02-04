@@ -1,0 +1,47 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40000270,
+  "base_level": 50,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Area Order: Deenan Demon Extermination",
+  "light_quest_details": {
+    "area_id": 7,
+    "board_type": 1,
+    "board_id": 14
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 13604
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 31874
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 2899
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "78",
+      "level": 50,
+      "amount": 1
+    }
+  ]
+}

@@ -1,0 +1,135 @@
+{
+    "comment": "Heroic Spirit Sleeping Path: Rathnite Foothills - Section 3: 2nd Space Trial 1",
+    "stage_id": {
+        "id": 551,
+        "group_id": 87
+    },
+    "pos_id": 4,
+    "unlock_cost": [],
+    "unlocks": [],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
+                {"type": "CannotBeAffectedByAbnormalStatus", "priority": "Secondary", "Param1": 3},
+                {"type": "CannotDieMoreThanOnce", "priority": "Secondary"}
+            ],
+            "cost": [],
+            "item_rewards": [
+                {"item_id": 18656, "amount": 80},
+                {"item_id": 18742, "amount": 10}
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 73
+                    },
+                    "enemies": [
+                        {
+                            "comment" : "Golem",
+                            "enemy_id": "0x015100",
+                            "level": 84,
+                            "exp": 84000,
+                            "pp": 2,
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true
+                        },
+                        {
+                            "comment" : "Mudman",
+                            "enemy_id": "0x010509",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Mudman",
+                            "enemy_id": "0x010509",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Mudman",
+                            "enemy_id": "0x010509",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Mudman",
+                            "enemy_id": "0x010509",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        }
+                   ]
+                }
+            ]
+        },
+        {
+            "trial_name": "Trial of the Souls",
+            "constraints": [
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
+                {"type": "CannotBeAffectedByAbnormalStatus", "priority": "Secondary", "Param1": 3},
+                {"type": "ItemNoteUsedMoreThanOnce", "priority": "Secondary"}
+
+            ],
+            "cost": [
+                {"item_id": 18656, "amount": 30}
+            ],
+            "item_rewards": [
+                {"item_id": 18742, "amount": 20},
+                {
+                    "type": "pool", "rolls": 1,
+                    "items": [
+                        {"type": "Random", "item_id": 9213, "amount": 3},
+                        {"type": "Random", "item_id": 9214, "amount": 3},
+                        {"type": "Random", "item_id": 11727, "amount": 3},
+                        {"type": "Random", "item_id": 13664, "amount": 3}
+                    ]
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 551,
+                        "group_id": 73
+                    },
+                    "enemies": [
+                        {
+                            "comment" : "Geo Golem",
+                            "enemy_id": "0x015104",
+                            "level": 84,
+                            "exp": 84000,
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true
+                        },
+                        {
+                            "comment" : "Sludgeman",
+                            "enemy_id": "0x010510",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Sludgeman",
+                            "enemy_id": "0x010510",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment" : "Sludgeman",
+                            "enemy_id": "0x010510",
+                            "level": 84,
+                            "exp": 8400,
+                            "named_enemy_params_id": 2286
+                        }
+                   ]
+                }
+            ]
+        }
+    ]
+}

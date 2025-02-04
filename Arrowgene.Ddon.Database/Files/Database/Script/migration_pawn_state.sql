@@ -1,0 +1,2 @@
+ALTER TABLE "ddon_pawn"
+    ADD COLUMN "pawn_state" SMALLINT NOT NULL DEFAULT 0;

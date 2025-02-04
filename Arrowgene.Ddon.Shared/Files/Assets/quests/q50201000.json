@@ -24,6 +24,10 @@
                 {
                     "item_id": 11780,
                     "num": 3
+                },
+                {
+                    "item_id": 7795,
+                    "num": 500
                 }
             ]
         },
@@ -50,7 +54,6 @@
                     "level": 65,
                     "exp": 0,
                     "is_boss": true,
-                    "blood_orbs": 500,
                     "named_enemy_params_id": 1674
                 }
             ]

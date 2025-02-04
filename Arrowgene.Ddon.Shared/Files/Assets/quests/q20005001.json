@@ -18,7 +18,6 @@
       "flag_no": 2213,
       "stage_no": 100,
       "group_id": 28
-
     },
     {
       "flag_no": 886,
@@ -84,20 +83,26 @@
       "enemies": [
         {
           "enemy_id": "0x011110",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
           "level": 8,
-          "exp": 50,
+          "exp": 94,
           "is_boss": false
         },
         {
           "enemy_id": "0x011110",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
           "level": 8,
-          "exp": 50,
+          "exp": 94,
           "is_boss": false
         },
         {
-          "enemy_id": "0x011111",
+          "enemy_id": "0x011110",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
           "level": 8,
-          "exp": 50,
+          "exp": 94,
           "is_boss": false
         }
       ]
@@ -111,20 +116,26 @@
       "enemies": [
         {
           "enemy_id": "0x011110",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
           "level": 8,
-          "exp": 50,
+          "exp": 94,
           "is_boss": false
         },
         {
           "enemy_id": "0x011110",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
           "level": 8,
-          "exp": 50,
+          "exp": 94,
           "is_boss": false
         },
         {
-          "enemy_id": "0x011111",
+          "enemy_id": "0x011110",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
           "level": 8,
-          "exp": 50,
+          "exp": 94,
           "is_boss": false
         }
       ]
@@ -134,29 +145,46 @@
         "id": 1,
         "group_id": 6
       },
+      "starting_index": 6,
       "enemies": [
         {
           "enemy_id": "0x011110",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
           "level": 8,
-          "exp": 50,
+          "exp": 94,
           "is_boss": false
         },
         {
           "enemy_id": "0x011110",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
           "level": 8,
-          "exp": 50,
+          "exp": 94,
           "is_boss": false
         },
         {
-          "enemy_id": "0x011111",
+          "enemy_id": "0x011110",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
           "level": 8,
-          "exp": 50,
+          "exp": 94,
           "is_boss": false
         },
         {
-          "enemy_id": "0x011111",
+          "enemy_id": "0x011110",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
           "level": 8,
-          "exp": 50,
+          "exp": 94,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x011110",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
+          "level": 8,
+          "exp": 94,
           "is_boss": false
         }
       ]
@@ -174,13 +202,25 @@
       "groups": [ 0 ]
     },
     {
-      "type": "KillGroup",
+      "type": "DiscoverEnemy",
       "announce_type": "Update",
       "groups": [ 1 ]
     },
     {
       "type": "KillGroup",
       "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 1 ]
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Update",
+      "groups": [ 2 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
       "groups": [ 2 ]
     }
   ]

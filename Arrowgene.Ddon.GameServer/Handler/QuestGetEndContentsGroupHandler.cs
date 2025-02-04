@@ -45,9 +45,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 GroupId = request.GroupId
             };
 
-            var quests = QuestManager.GetQuestsByType(QuestType.ExtremeMission).Where(x => x.Value.MissionParams.Group == request.GroupId).Select(x => x.Value).OrderBy(x => x.QuestId);
+            var quests = QuestManager.GetQuestsByType(QuestType.ExtremeMission)
+                .Select(x => QuestManager.GetQuestByScheduleId(x))
+                .Where(x => x.MissionParams.Group == request.GroupId)
+                .OrderBy(x => x.QuestScheduleId);
             foreach (var quest in quests)
             {
+                if (quest.MissionParams.Group != request.GroupId)
+                {
+                    continue;
+                }
+
                 var entry = quest.ToCDataTimeGainQuestList(0);
                 results.TimeGainQuestList.Add(entry);
             }

@@ -39,7 +39,27 @@
           "num": 1
         }
       ]
-    }
+  },
+  {
+      "type": "random",
+      "loot_pool": [
+          {
+              "item_id": 9429,
+              "num": 2,
+              "chance": 0.7
+          },
+          {
+            "item_id": 9196,
+            "num": 1,
+            "chance": 0.7
+        },
+        {
+          "item_id": 7888,
+          "num": 1,
+          "chance": 0.7
+      }
+      ]
+  }
   ],
   "enemy_groups": [
     {
@@ -47,12 +67,16 @@
         "id": 1,
         "group_id": 495
       },
+      "placement_type": "manual",
       "enemies": [
         {
           "enemy_id": "0x015707",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 53,
           "level": 36,
-          "exp": 6400,
-          "is_boss": true
+          "exp": 6040,
+          "is_boss": true,
+          "index": 2
         }
       ]
     }

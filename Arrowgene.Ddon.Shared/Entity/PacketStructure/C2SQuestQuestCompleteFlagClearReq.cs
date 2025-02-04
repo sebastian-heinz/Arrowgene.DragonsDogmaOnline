@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override C2SQuestQuestCompleteFlagClearReq Read(IBuffer buffer)
             {
                 C2SQuestQuestCompleteFlagClearReq obj = new C2SQuestQuestCompleteFlagClearReq();
-                obj.QuestScheduleId = buffer.ReadUInt32();
+                obj.QuestScheduleId = ReadUInt32(buffer);
                 return obj;
             }
         }

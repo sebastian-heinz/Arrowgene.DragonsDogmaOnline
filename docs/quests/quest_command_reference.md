@@ -82,11 +82,11 @@ DeliverItem(int itemId, int itemNum, NpcId npcId = NpcId.None, int msgNo = 0);
 ```
 /**
  * @brief
- * @param enemyId
+ * @param enemyGroupId
  * @param enemyLv
  * @param enemyNum
  */
-EmDieLight(int enemyId, int enemyLv, int enemyNum, int param04 = 0);
+EmDieLight(int enemyGroupId, int enemyLv, int enemyNum, int param04 = 0);
 ```
 
 ### QstFlagOn

@@ -80,6 +80,7 @@ CREATE TABLE IF NOT EXISTS "ddon_pawn"
     "name"                        TEXT                              NOT NULL,
     "hm_type"                     SMALLINT                          NOT NULL,
     "pawn_type"                   SMALLINT                          NOT NULL,
+    "pawn_state"                  SMALLINT                          NOT NULL,
     "training_points"             INTEGER                           NOT NULL,
     "available_training"          INTEGER                           NOT NULL,
     "craft_rank"                  INTEGER                           NOT NULL,
@@ -295,7 +296,7 @@ CREATE TABLE IF NOT EXISTS "ddon_storage_item"
     "slot_no"      SMALLINT               NOT NULL,
     "item_id"      INTEGER                NOT NULL,
     "item_num"     INTEGER                NOT NULL,
-    "unk3"         SMALLINT               NOT NULL,
+    "safety"       SMALLINT               NOT NULL,
     "color"        SMALLINT               NOT NULL,
     "plus_value"   SMALLINT               NOT NULL,
     "equip_points" INTEGER                NOT NULL,
@@ -536,13 +537,12 @@ CREATE TABLE IF NOT EXISTS "ddon_reward_box"
 (
     "uniq_reward_id"       INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     "character_common_id"  INTEGER                           NOT NULL,
-    "quest_id"             INTEGER                           NOT NULL,
+    "quest_schedule_id"    INTEGER                           NOT NULL,
     "num_random_rewards"   INTEGER                           NOT NULL,
     "random_reward0_index" INTEGER                           NOT NULL,
     "random_reward1_index" INTEGER                           NOT NULL,
     "random_reward2_index" INTEGER                           NOT NULL,
     "random_reward3_index" INTEGER                           NOT NULL,
-    "variant_quest_id"     INTEGER                           NOT NULL DEFAULT 0,
     CONSTRAINT "fk_ddon_reward_box_character_common_id" FOREIGN KEY ("character_common_id") REFERENCES "ddon_character_common" ("character_common_id") ON DELETE CASCADE
 );
 
@@ -550,9 +550,8 @@ CREATE TABLE IF NOT EXISTS "ddon_quest_progress"
 (
     "character_common_id" INTEGER NOT NULL,
     "quest_type"          INTEGER NOT NULL,
-    "quest_id"            INTEGER NOT NULL,
+    "quest_schedule_id"   INTEGER NOT NULL,
     "step"                INTEGER NOT NULL,
-    "variant_quest_id"          INTEGER NOT NULL,  
     CONSTRAINT "fk_ddon_quest_progress_character_common_id" FOREIGN KEY ("character_common_id") REFERENCES "ddon_character_common" ("character_common_id") ON DELETE CASCADE
 );
 
@@ -568,7 +567,7 @@ CREATE TABLE IF NOT EXISTS "ddon_completed_quests"
 CREATE TABLE IF NOT EXISTS "ddon_priority_quests"
 (
     "character_common_id" INTEGER NOT NULL,
-    "quest_id"            INTEGER NOT NULL,
+    "quest_schedule_id"   INTEGER NOT NULL,
     CONSTRAINT "fk_ddon_priority_quests_character_common_id" FOREIGN KEY ("character_common_id") REFERENCES "ddon_character_common" ("character_common_id") ON DELETE CASCADE
 );
 
@@ -589,7 +588,7 @@ CREATE TABLE IF NOT EXISTS "ddon_system_mail_attachment"
     "attachment_id"   INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
     "message_id"      INTEGER                           NOT NULL,
     "attachment_type" INTEGER                           NOT NULL,
-    "is_received"     INTEGER                           NOT NULL DEFAULT 0,
+    "is_received"     BOOLEAN                           NOT NULL DEFAULT FALSE,
     "param0"          VARCHAR(256)                      NOT NULL DEFAULT '',
     "param1"          INTEGER                           NOT NULL DEFAULT 0,
     "param2"          INTEGER                           NOT NULL DEFAULT 0,
@@ -716,7 +715,7 @@ CREATE TABLE IF NOT EXISTS "ddon_bbm_content_treasure"
 
 CREATE TABLE IF NOT EXISTS "ddon_clan_param"
 (
-    "clan_id"               INTEGER PRIMARY KEY NOT NULL,
+    "clan_id"               INTEGER PRIMARY KEY AUTOINCREMENT,
     "clan_level"            INTEGER             NOT NULL,
     "member_num"            INTEGER             NOT NULL,
     "master_id"             INTEGER             NOT NULL,
@@ -752,3 +751,42 @@ CREATE TABLE IF NOT EXISTS "ddon_clan_membership"
     CONSTRAINT "fk_ddon_clan_membership_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE,
     CONSTRAINT "fk_ddon_clan_membership_clan_id" FOREIGN KEY ("clan_id") REFERENCES "ddon_clan_param" ("clan_id") ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS "ddon_clan_shop_purchases"
+(
+    "clan_id"               INTEGER     NOT NULL,
+    "lineup_id"             INTEGER     NOT NULL,
+    CONSTRAINT "pk_ddon_clan_shop_purchases" PRIMARY KEY ("clan_id", "lineup_id"),
+    CONSTRAINT "fl_ddon_clan_shop_purchases_clan_id" FOREIGN KEY ("clan_id") REFERENCES "ddon_clan_param" ("clan_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_clan_base_customization"
+(
+    "clan_id"               INTEGER     NOT NULL,
+    "type"                  INTEGER     NOT NULL,
+    "furniture_id"          INTEGER     NOT NULL,
+    CONSTRAINT "pk_ddon_clan_base_customization" PRIMARY KEY ("clan_id", "type"),
+    CONSTRAINT "fl_ddon_clan_base_customization_clan_id" FOREIGN KEY ("clan_id") REFERENCES "ddon_clan_param" ("clan_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_epitaph_road_unlocks" (
+	"character_id"	INTEGER NOT NULL,
+	"epitaph_id"	INTEGER NOT NULL,
+    CONSTRAINT "pk_ddon_epitaph_road_unlocks" PRIMARY KEY ("character_id", "epitaph_id"),
+	CONSTRAINT "fk_ddon_epitaph_road_unlocks_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character"("character_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS ddon_epitaph_claimed_weekly_rewards (
+	"character_id"	INTEGER NOT NULL,
+	"epitaph_id"	INTEGER NOT NULL,
+    CONSTRAINT "pk_ddon_epitaph_claimed_weekly_rewards" PRIMARY KEY ("character_id", "epitaph_id"),
+	CONSTRAINT "fk_ddon_epitaph_claimed_weekly_rewards_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character"("character_id") ON DELETE CASCADE
+);
+
+
+CREATE TABLE IF NOT EXISTS ddon_schedule_next (
+	"type"	INTEGER NOT NULL,
+	"timestamp"	BIGINT NOT NULL,
+	PRIMARY KEY("type")
+);
+INSERT INTO ddon_schedule_next(type, timestamp) VALUES (19, 0);

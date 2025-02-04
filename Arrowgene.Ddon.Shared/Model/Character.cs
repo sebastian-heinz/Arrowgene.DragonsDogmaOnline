@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Shared.Model.BattleContent;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Model.Clan;
+using Arrowgene.Ddon.Shared.Model.EpitaphRoad;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
@@ -38,6 +39,7 @@ namespace Arrowgene.Ddon.Shared.Model
             BbmProgress = new BitterblackMazeProgress();
             CompletedQuests = new Dictionary<QuestId, CompletedQuest>();
             ClanName = new ClanName();
+            EpitaphRoadState = new EpitaphRoadState();
         }
 
         public int AccountId { get; set; }
@@ -118,6 +120,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint ClanId { get; set; }
         public ClanName ClanName { get; set; }
         public bool IsLanternLit { get; set; }
+        public EpitaphRoadState EpitaphRoadState { get; set; }
 
         // TODO: Move to a more sensible place
         public uint LastEnteredShopId { get; set; }

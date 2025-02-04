@@ -20,11 +20,15 @@
     "rewards": [
         {
             "type": "fixed",
-            "comment": "Green Dye",
+            "comment": "Green Dye, Blood Orb",
             "loot_pool": [
                 {
                     "item_id": 8136,
                     "num": 1
+                },
+                {
+                    "item_id": 7795,
+                    "num": 200
                 }
             ]
         },
@@ -159,7 +163,6 @@
                     "enemy_id": "0x080200",
                     "level": 45,
                     "exp": 0,
-                    "blood_orbs": 200,
                     "is_boss": true
                 }
             ]

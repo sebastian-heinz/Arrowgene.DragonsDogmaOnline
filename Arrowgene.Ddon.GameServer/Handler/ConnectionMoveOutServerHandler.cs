@@ -1,4 +1,4 @@
-﻿using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (!Database.SetToken(token))
             {
                 Logger.Error(client, "Failed to store SessionKey");
-                res.Error = 1;
+                res.Error = (uint)ErrorCode.ERROR_CODE_AUTH_SESSION_KEY_GENERATE;
                 client.Send(res);
                 return;
             }

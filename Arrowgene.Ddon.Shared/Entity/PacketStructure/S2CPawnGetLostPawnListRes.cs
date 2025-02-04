@@ -11,24 +11,24 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public S2CPawnGetLostPawnListRes()
         {
-            LostPawnList = new List<CDataLostPawn>();
+            LostPawnList = new List<CDataLostPawnList>();
         }
 
-        public List<CDataLostPawn> LostPawnList { get; set; }
+        public List<CDataLostPawnList> LostPawnList { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CPawnGetLostPawnListRes>
         {
             public override void Write(IBuffer buffer, S2CPawnGetLostPawnListRes obj)
             {
                 WriteServerResponse(buffer, obj);
-                WriteEntityList<CDataLostPawn>(buffer, obj.LostPawnList); 
+                WriteEntityList<CDataLostPawnList>(buffer, obj.LostPawnList); 
             }
 
             public override S2CPawnGetLostPawnListRes Read(IBuffer buffer)
             {
                 S2CPawnGetLostPawnListRes obj = new S2CPawnGetLostPawnListRes();
                 ReadServerResponse(buffer, obj);
-                obj.LostPawnList = ReadEntityList<CDataLostPawn>(buffer);
+                obj.LostPawnList = ReadEntityList<CDataLostPawnList>(buffer);
                 return obj;
             }
         }

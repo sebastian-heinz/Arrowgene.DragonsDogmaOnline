@@ -1,36 +1,24 @@
-using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Dump;
-using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestGetCycleContentsStateListHandler : PacketHandler<GameClient>
+    public class QuestGetCycleContentsStateListHandler : GameRequestPacketHandler<C2SQuestGetCycleContentsStateListReq, S2CQuestGetCycleContentsStateListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetCycleContentsStateListHandler));
-
 
         public QuestGetCycleContentsStateListHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override PacketId Id => PacketId.C2S_QUEST_GET_CYCLE_CONTENTS_STATE_LIST_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override S2CQuestGetCycleContentsStateListRes Handle(GameClient client, C2SQuestGetCycleContentsStateListReq request)
         {
 #if false
             /*
@@ -47,34 +35,59 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ntc.WorldManageQuestOrderList = pcap.WorldManageQuestOrderList; // Recover paths + change vocation
 
             ntc.QuestDefine = pcap.QuestDefine; // Recover quest log data to be able to accept quests
+            ntc.QuestDefine.OrderMaxNum = Server.GameLogicSettings.QuestOrderMax;
+            ntc.QuestDefine.RewardBoxMaxNum = Server.GameLogicSettings.RewardBoxMax;
 
             // pcap.MainQuestIdList; (this will add back all missing functionality which depends on complete MSQ)
             var completedMsq = client.Character.CompletedQuests.Values.Where(x => x.QuestType == QuestType.Main);
             foreach (var msq in completedMsq)
             {
-                ntc.MainQuestIdList.Add(new CDataQuestId() { QuestId = (uint) msq.QuestId });
+                ntc.MainQuestIdList.Add(new CDataQuestId() { QuestId = (uint)msq.QuestId });
             }
 
             var completedTutorials = client.Character.CompletedQuests.Values.Where(x => x.QuestType == QuestType.Tutorial);
             foreach (var tut in completedTutorials)
             {
-                ntc.TutorialQuestIdList.Add(new CDataQuestId() { QuestId = (uint) tut.QuestId});
+                ntc.TutorialQuestIdList.Add(new CDataQuestId() { QuestId = (uint)tut.QuestId });
             }
 
-            var tutorialQuestInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.Tutorial);
-            foreach (var questProgress in tutorialQuestInProgress)
+            var allQuestsInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All);
+            foreach (var questProgress in allQuestsInProgress)
             {
-                var quest = QuestManager.GetQuest(questProgress.QuestId);
-                var tutorialQuest = quest.ToCDataTutorialQuestOrderList(questProgress.Step);
-                ntc.TutorialQuestOrderList.Add(tutorialQuest);
+                var quest = QuestManager.GetQuestByScheduleId(questProgress.QuestScheduleId);
+                if (quest == null || !quest.IsActive(Server, client))
+                {
+                    continue;
+                }
+
+                switch (questProgress.QuestType)
+                {
+                    case QuestType.Tutorial:
+                        var tutorialQuest = quest.ToCDataTutorialQuestOrderList(questProgress.Step);
+                        ntc.TutorialQuestOrderList.Add(tutorialQuest);
+                        break;
+                    case QuestType.WildHunt:
+                        var mobHuntQuest = quest.ToCDataMobHuntQuestOrderList(questProgress.Step);
+                        ntc.MobHuntQuestOrderList.Add(mobHuntQuest);
+                        break;
+                    case QuestType.Light:
+                        var lightQuest = quest.ToCDataLightQuestOrderList(questProgress.Step);
+                        ntc.LightQuestOrderList.Add(lightQuest);
+                        break;
+                }
             }
 
             if (client.Party != null)
             {
-                var priorityQuests = Server.Database.GetPriorityQuests(client.Party.Leader.Client.Character.CommonId);
-                foreach (var questId in priorityQuests)
+                var priorityQuests = Server.Database.GetPriorityQuestScheduleIds(client.Party.Leader.Client.Character.CommonId);
+                foreach (var questScheduleId in priorityQuests)
                 {
-                    var quest = client.Party.QuestState.GetQuest(questId);
+                    var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
+                    if (quest == null || !quest.IsActive(Server, client))
+                    {
+                        continue;
+                    }
+                    
                     ntc.PriorityQuestList.Add(new CDataPriorityQuest()
                     {
                         QuestId = (uint)quest.QuestId,
@@ -85,11 +98,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             client.Send(ntc);
 #endif
-            IBuffer buffer = new StreamBuffer();
-            buffer.WriteInt32(0, Endianness.Big);
-            buffer.WriteInt32(0, Endianness.Big);
-            buffer.WriteUInt32(0, Endianness.Big);
-            client.Send(new Packet(PacketId.S2C_QUEST_GET_CYCLE_CONTENTS_STATE_LIST_RES, buffer.GetAllBytes()));
+            return new();
 
             // client.Send(InGameDump.Dump_24);
         }

@@ -12,16 +12,16 @@
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 270
+      "amount": 300
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 30
+      "amount": 50
     },
     {
       "type": "exp",
-      "amount": 390
+      "amount": 540
     },
     {
       "type": "select",
@@ -44,46 +44,53 @@
         "group_id": 0
       },
       "enemies": [
+        
         {
-          "enemy_id": "0x015800",
+          "enemy_id": "0x015801",
+          "StartThinkTblNo": 1,
+          "named_enemy_params_id": 53,
           "level": 11,
-          "exp": 132,
+          "exp": 160,
           "is_boss": false
         },
         {
           "enemy_id": "0x015800",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
           "level": 11,
-          "exp": 132,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015800",
-          "level": 11,
-          "exp": 132,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015800",
-          "level": 11,
-          "exp": 132,
-          "is_boss": false
-        },
-        {
-          "enemy_id": "0x015800",
-          "level": 11,
-          "exp": 132,
+          "exp": 160,
           "is_boss": false
         },
         {
           "enemy_id": "0x015801",
+          "StartThinkTblNo": 1,
+          "named_enemy_params_id": 53,
           "level": 11,
-          "exp": 132,
+          "exp": 160,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015800",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
+          "level": 11,
+          "exp": 160,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015800",
+          "StartThinkTblNo": 1,
+          "named_enemy_params_id": 53,
+          "level": 11,
+          "exp": 160,
           "is_boss": false
         },
         {
           "enemy_id": "0x015801",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
           "level": 11,
-          "exp": 132,
+          "exp": 160,
           "is_boss": false
         }
       ]

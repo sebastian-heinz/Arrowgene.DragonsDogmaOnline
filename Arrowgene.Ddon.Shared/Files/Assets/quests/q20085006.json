@@ -6,7 +6,8 @@
     "base_level": 55,
     "minimum_item_rank": 0,
     "discoverable": true,
-  "area_id": "EasternZandora",		
+    "area_id": "EasternZandora",
+    "news_image": 544,		
     "rewards": [
         {
             "type": "wallet",
@@ -43,8 +44,8 @@
             "type": "random",
             "loot_pool": [
                 {
-                    "item_id": 34,
-                    "num": 9,
+                    "item_id": 35,
+                    "num": 3,
                     "chance": 1.0
                 }
             ]
@@ -54,14 +55,19 @@
         {
             "stage_id": {
                 "id": 1,
-                "group_id": 450
+                "group_id": 474
             },
+            "placement_type": "manual",
             "enemies": [
                 {
-                    "enemy_id": "0x015709",
+                    "comment": "Behemoth",
+                    "enemy_id": "0x070930",
+                    "start_think_tbl_no": 1,
+		            "named_enemy_params_id": 53,
                     "level": 55,
-                    "exp": 25000,
-                    "is_boss": true					
+                    "exp": 19700,
+                    "is_boss": true	,
+                    "index": 4				
                 }
             ]
         }
@@ -85,6 +91,7 @@
         {
             "type": "KillGroup",
             "announce_type": "Update",
+            "reset_group": false,
             "groups": [0]
         },
         {

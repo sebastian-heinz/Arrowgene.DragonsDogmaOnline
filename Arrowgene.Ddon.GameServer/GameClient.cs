@@ -1,9 +1,9 @@
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.GatheringItems;
 using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.GameServer.Shop;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Networking.Tcp;
 using System;
@@ -12,15 +12,12 @@ namespace Arrowgene.Ddon.GameServer
 {
     public class GameClient : Client
     {
-        public GameClient(ITcpSocket socket, PacketFactory packetFactory, ShopManager shopManager, AssetRepository assetRepository) : base(socket, packetFactory)
+        public GameClient(ITcpSocket socket, PacketFactory packetFactory, DdonGameServer server) : base(socket, packetFactory)
         {
             UpdateIdentity();
-            InstanceGatheringItemManager = new InstanceGatheringItemManager(assetRepository);
-            InstanceDropItemManager = new InstanceDropItemManager(this);
-            InstanceShopManager = new InstanceShopManager(shopManager);
-            InstanceBbmItemManager = new InstanceBitterblackGatheringItemManager();
-            InstanceQuestDropManager = new InstanceQuestDropManager();
-            InstanceEventDropItemManager = new InstanceEventDropItemManager(assetRepository);
+            InstanceGatheringItemManager = new InstanceGatheringItemManager(this, server);
+            InstanceDropItemManager = new(this, server);
+            InstanceShopManager = new InstanceShopManager(server.ShopManager);
             GameMode = GameMode.Normal;
         }
 
@@ -43,16 +40,24 @@ namespace Arrowgene.Ddon.GameServer
         public Account Account { get; set; }
 
         public Character Character { get; set; }
-        
+
         public PartyGroup Party { get; set; }
         public InstanceShopManager InstanceShopManager { get; }
         public InstanceGatheringItemManager InstanceGatheringItemManager { get; }
         public InstanceDropItemManager InstanceDropItemManager { get; }
-        public InstanceBitterblackGatheringItemManager InstanceBbmItemManager { get; }
-        public InstanceQuestDropManager InstanceQuestDropManager { get; }
-        public InstanceEventDropItemManager InstanceEventDropItemManager { get; }
 
         public GameMode GameMode { get; set; }
+
+        public QuestStateManager QuestState { get
+            {
+                return ((PlayerPartyMember)Party?.GetPartyMemberByCharacter(Character))?.QuestState;
+            } 
+        }
+
+        public bool IsPartyLeader()
+        {
+            return Party.Leader.Client == this;
+        }
 
         // TODO: Place somewhere else more sensible
         public uint LastWarpPointId { get; set; }

@@ -29,11 +29,11 @@
         {
           "comment": "Ruby",
           "item_id": 7900,
-          "num": 2
+          "num": 3
         },
         {
-          "comment": "Blue Flower",
-          "item_id": 7979,
+          "comment": "Blue wiskey",
+          "item_id": 9417,
           "num": 2
         },
         {
@@ -53,38 +53,52 @@
       "enemies": [
         {
           "enemy_id": "0x015002",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 54,
           "level": 38,
-          "exp": 8500,
+          "exp": 6254,
           "is_boss": true
         },
         {
-          "enemy_id": "0x010503",
-          "level": 37,
-          "exp": 750,
+          "enemy_id": "0x010301",
+          "start_think_tbl_no": 1,
+          "level": 38,
+          "exp": 1564,
           "is_boss": false
         },
         {
-          "enemy_id": "0x010503",
-          "level": 37,
-          "exp": 750,
+          "enemy_id": "0x010301",
+          "start_think_tbl_no": 1,
+          "level": 38,
+          "exp": 1564,
           "is_boss": false
         },
         {
-          "enemy_id": "0x010503",
-          "level": 37,
-          "exp": 750,
+          "enemy_id": "0x010301",
+          "start_think_tbl_no": 1,
+          "level": 38,
+          "exp": 1564,
           "is_boss": false
         },
         {
           "enemy_id": "0x010502",
-          "level": 37,
-          "exp": 750,
+          "start_think_tbl_no": 1,
+             "level": 38,
+          "exp": 1564,
           "is_boss": false
         },
         {
           "enemy_id": "0x010502",
-          "level": 37,
-          "exp": 750,
+          "start_think_tbl_no": 2,
+               "level": 38,
+          "exp": 1564,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010502",
+          "start_think_tbl_no": 2,
+           "level": 38,
+          "exp": 1564,
           "is_boss": false
         }
       ]
@@ -117,6 +131,7 @@
     {
       "type": "KillGroup",
       "announce_type": "Update",
+      "reset_group": false,
       "groups": [ 0 ]
     },
     {

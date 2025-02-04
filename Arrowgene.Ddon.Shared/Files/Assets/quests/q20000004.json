@@ -49,6 +49,7 @@
         {
           "comment": "Undead (Male)",
           "enemy_id": "0x010500",
+          "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
           "level": 13,
           "exp": 214
@@ -56,6 +57,23 @@
         {
           "comment": "Undead (Male)",
           "enemy_id": "0x010500",
+          "start_think_tbl_no": 2,
+          "named_enemy_params_id": 53,
+          "level": 13,
+          "exp": 214
+        },
+        {
+          "comment": "Undead (Male)",
+          "enemy_id": "0x010501",
+          "start_think_tbl_no": 2,
+          "named_enemy_params_id": 53,
+          "level": 13,
+          "exp": 214
+        },
+        {
+          "comment": "Undead (Male)",
+          "enemy_id": "0x010501",
+          "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
           "level": 13,
           "exp": 214
@@ -63,6 +81,7 @@
         {
           "comment": "Undead (Male)",
           "enemy_id": "0x010500",
+          "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
           "level": 13,
           "exp": 214
@@ -70,6 +89,15 @@
         {
           "comment": "Undead (Male)",
           "enemy_id": "0x010500",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
+          "level": 13,
+          "exp": 214
+        },
+        {
+          "comment": "Undead (Male)",
+          "enemy_id": "0x010501",
+          "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
           "level": 13,
           "exp": 214
@@ -77,27 +105,7 @@
         {
           "comment": "Undead (Male)",
           "enemy_id": "0x010500",
-          "named_enemy_params_id": 53,
-          "level": 13,
-          "exp": 214
-        },
-        {
-          "comment": "Undead (Male)",
-          "enemy_id": "0x010500",
-          "named_enemy_params_id": 53,
-          "level": 13,
-          "exp": 214
-        },
-        {
-          "comment": "Undead (Male)",
-          "enemy_id": "0x010500",
-          "named_enemy_params_id": 53,
-          "level": 13,
-          "exp": 214
-        },
-        {
-          "comment": "Undead (Male)",
-          "enemy_id": "0x010500",
+          "start_think_tbl_no": 1,
           "named_enemy_params_id": 53,
           "level": 13,
           "exp": 214

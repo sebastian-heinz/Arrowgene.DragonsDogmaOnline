@@ -24,42 +24,42 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public byte PrioSameTime;
         public byte AnnounceType;
         public List<UInt32> EffectUIDs;
-    }
 
-    public class CDataGPCourseInfoSerializer : EntitySerializer<CDataGPCourseInfo>
-    {
-        public override void Write(IBuffer buffer, CDataGPCourseInfo obj)
+        public class Serializer : EntitySerializer<CDataGPCourseInfo>
         {
-            WriteUInt32(buffer, obj.CourseId);
-            WriteMtString(buffer,obj.CourseName);
-            WriteByte(buffer, Convert.ToByte(obj.DoubleCourseTarget));
-            WriteByte(buffer, obj.PrioGroup);
-            WriteByte(buffer, obj.PrioSameTime);
-            WriteByte(buffer, obj.AnnounceType);
-            WriteMtArray<UInt32>(buffer, obj.EffectUIDs, WriteEffectUID);
-        }
+            public override void Write(IBuffer buffer, CDataGPCourseInfo obj)
+            {
+                WriteUInt32(buffer, obj.CourseId);
+                WriteMtString(buffer, obj.CourseName);
+                WriteByte(buffer, Convert.ToByte(obj.DoubleCourseTarget));
+                WriteByte(buffer, obj.PrioGroup);
+                WriteByte(buffer, obj.PrioSameTime);
+                WriteByte(buffer, obj.AnnounceType);
+                WriteMtArray<UInt32>(buffer, obj.EffectUIDs, WriteEffectUID);
+            }
 
-        public override CDataGPCourseInfo Read(IBuffer buffer)
-        {
-            CDataGPCourseInfo obj = new CDataGPCourseInfo();
-            obj.CourseId = ReadUInt32(buffer);
-            obj.CourseName = ReadMtString(buffer);
-            obj.DoubleCourseTarget = Convert.ToBoolean(ReadByte(buffer));
-            obj.PrioGroup = ReadByte(buffer);
-            obj.PrioSameTime = ReadByte(buffer);
-            obj.AnnounceType = ReadByte(buffer);
-            obj.EffectUIDs = ReadMtArray<UInt32>(buffer, ReadEffectUID);
+            public override CDataGPCourseInfo Read(IBuffer buffer)
+            {
+                CDataGPCourseInfo obj = new CDataGPCourseInfo();
+                obj.CourseId = ReadUInt32(buffer);
+                obj.CourseName = ReadMtString(buffer);
+                obj.DoubleCourseTarget = Convert.ToBoolean(ReadByte(buffer));
+                obj.PrioGroup = ReadByte(buffer);
+                obj.PrioSameTime = ReadByte(buffer);
+                obj.AnnounceType = ReadByte(buffer);
+                obj.EffectUIDs = ReadMtArray<UInt32>(buffer, ReadEffectUID);
 
-            return obj;
-        }
-        private UInt32 ReadEffectUID(IBuffer buffer)
-        {
-            return ReadUInt32(buffer);
-        }
+                return obj;
+            }
+            private UInt32 ReadEffectUID(IBuffer buffer)
+            {
+                return ReadUInt32(buffer);
+            }
 
-        private void WriteEffectUID(IBuffer buffer, UInt32 Value)
-        {
-            WriteUInt32(buffer, Value);
+            private void WriteEffectUID(IBuffer buffer, UInt32 Value)
+            {
+                WriteUInt32(buffer, Value);
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System.Linq;
@@ -20,13 +21,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             var results = new S2CQuestGetEndContentsRecruitListRes();
 
-            foreach (var (questId, quest) in QuestManager.GetQuestsByType(QuestType.ExtremeMission))
+            foreach (var questScheduleId in QuestManager.GetQuestsByType(QuestType.ExtremeMission))
             {
+                var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
                 results.Unk1List.Add(new CDataQuestRecruitListItem()
                 {
-                    QuestScheduleId = (uint) quest.QuestScheduleId,
+                    QuestScheduleId = quest.QuestScheduleId,
                     QuestId = (uint) quest.QuestId,
-                    GroupsRecruiting = (uint) Server.BoardManager.GetGroupsForBoardId(BoardManager.QuestIdToExmBoardId(quest.QuestId)).Where(x => !x.ContentInProgress).ToList().Count
+                    GroupsRecruiting = (uint) Server.BoardManager.GetGroupsForBoardId(BoardManager.QuestScheduleIdToExmBoardId(quest.QuestScheduleId)).Where(x => x.ContentStatus == ContentStatus.Recruiting).ToList().Count
                 });
             }
 

@@ -137,11 +137,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                     var item = new Item();
                                     item.UId = GetString(reader2, "item_uid");
                                     item.ItemId = GetUInt32(reader2, "item_id");
-                                    item.Unk3 = GetByte(reader2, "unk3");
+                                    item.SafetySetting = GetByte(reader2, "safety");
                                     item.Color = GetByte(reader2, "color");
                                     item.PlusValue = GetByte(reader2, "plus_value");
                                     item.EquipPoints = GetUInt32(reader2, "equip_points");
-                                    ExecuteReader(connection, SqlSelectAllCrestData,
+                                    using TCon connection2 = OpenNewConnection();
+                                    ExecuteReader(connection2, SqlSelectAllCrestData,
                                         command3 => {
                                             AddParameter(command3, "character_common_id", common.CommonId);
                                             AddParameter(command3, "item_uid", item.UId);
@@ -151,7 +152,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                             var result = ReadCrestData(reader4);
                                             item.EquipElementParamList.Add(result.ToCDataEquipElementParam());
                                         }
-                                    });
+                                        });
 
                                     common.EquipmentTemplate.SetEquipItem(item, job, equipType, equipSlot);
                                 }
@@ -180,7 +181,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                     var item = new Item();
                                     item.UId = GetString(reader2, "item_uid");
                                     item.ItemId = GetUInt32(reader2, "item_id");
-                                    item.Unk3 = GetByte(reader2, "unk3");
+                                    item.SafetySetting = GetByte(reader2, "safety");
                                     item.Color = GetByte(reader2, "color");
                                     item.PlusValue = GetByte(reader2, "plus_value");
                                     item.EquipPoints = GetUInt32(reader2, "equip_points");

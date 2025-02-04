@@ -21,7 +21,10 @@ namespace Arrowgene.Ddon.Rpc
         public RpcCommandResult Execute(IRpcCommand command)
         {
             RpcCommandResult result = command.Execute(_gameServer);
-            Logger.Info(result.ToString());
+            if (result.Message.Length > 0)
+            {
+                Logger.Info(result.ToString());
+            }
             return result;
         }
     }

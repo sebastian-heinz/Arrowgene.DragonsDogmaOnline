@@ -36,7 +36,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
             EnemySpawnAsset asset = new EnemySpawnAsset();
 
-            string json = File.ReadAllText(path);
+            string json = Util.ReadAllText(path);
             JsonDocument document = JsonDocument.Parse(json);
 
             JsonElement schemasElement = document.RootElement.GetProperty("schemas");

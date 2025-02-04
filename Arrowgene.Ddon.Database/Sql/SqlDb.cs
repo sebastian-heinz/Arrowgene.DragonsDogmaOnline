@@ -60,12 +60,10 @@ namespace Arrowgene.Ddon.Database.Sql
                 transaction.Commit();
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 transaction.Rollback();
-                connection.Close();
-                Exception(ex);
-                return false;
+                throw;
             }
             finally
             {
@@ -277,6 +275,11 @@ namespace Arrowgene.Ddon.Database.Sql
         public void AddParameter(TCom command, string name, float value)
         {
             AddParameter(command, name, value, DbType.Double);
+        }
+        
+        public void AddParameter(TCom command, string name, ulong value)
+        {
+            AddParameter(command, name, (long)value, DbType.Int64);
         }
 
         public void AddParameter(TCom command, string name, byte value)

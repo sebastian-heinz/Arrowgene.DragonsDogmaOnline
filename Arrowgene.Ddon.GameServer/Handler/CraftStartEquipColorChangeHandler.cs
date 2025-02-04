@@ -7,6 +7,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Craft;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -109,29 +110,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     CurrentEquipInfo = CurrentEquipInfo
                 };
 
-            var craftInfo = Server.AssetRepository.CostExpScalingAsset.CostExpScalingInfo[clientItemInfo.Rank];
+            var craftInfo = Server.AssetRepository.CostExpScalingAsset.GetScalingInfo(clientItemInfo.Rank);
             uint totalCost = craftInfo.Cost;
             uint pawnExp = craftInfo.Exp;
 
             Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnID);
-            List<Pawn> pawns = new List<Pawn> { leadPawn };
-            pawns.AddRange(request.CraftSupportPawnIDList.Select(p => Server.CraftManager.FindPawn(client, p.PawnId)));
-            List<uint> costPerformanceLevels = new List<uint>();
-
-            foreach (Pawn pawn in pawns)
+            List<CraftPawn> craftPawns = new()
             {
-                if (pawn != null)
-                {
-                    costPerformanceLevels.Add(CraftManager.GetPawnCostPerformanceLevel(pawn));
-                }
-                else
-                {
-                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID, "Couldn't find the Pawn ID.");
-                }
-            }
+                new CraftPawn(leadPawn, CraftPosition.Leader)
+            };
+            craftPawns.AddRange(request.CraftSupportPawnIDList.Select(p => new CraftPawn(Server.CraftManager.FindPawn(client, p.PawnId), CraftPosition.Assistant)));
 
-            CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold,
-                            Server.CraftManager.CalculateRecipeCost(totalCost, costPerformanceLevels));
+            uint cost = Server.CraftManager.CalculateRecipeCost(totalCost, clientItemInfo, craftPawns);
+            CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, cost)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CRAFT_INSUFFICIENT_GOLD, $"Insufficient gold. {cost} > {Server.WalletManager.GetWalletAmount(client.Character, WalletType.Gold)}"); updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
+
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
             client.Send(updateCharacterItemNtc);
 

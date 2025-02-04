@@ -1,0 +1,48 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 30200005,
+  "base_level": 50,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Favor for an Official",
+  "light_quest_details": {
+    "board_type": 2,
+    "board_id": 24,
+    "get_cp": 18,
+    "order_limit": 7
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 7588
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 17778
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1617
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "KillTargetEnemies",
+      "announce_type": "Accept",
+      "enemy_id": "11",
+      "level": 50,
+      "amount": 1
+    }
+  ]
+}

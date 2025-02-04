@@ -1,13 +1,10 @@
-using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.GameServer.Utils;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
@@ -35,7 +32,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             public HashSet<uint> Members {  get; set; }
             public Dictionary<uint, bool> MemberReadyState {  get; set; }
             public bool IsInRecreate {  get; set; }
-            public bool ContentInProgress {  get; set; }
+            public ContentStatus ContentStatus {  get; set; }
             public uint RecruitmentTimerId {  get; set; }
             public uint ReadyUpTimerId {  get; set; }
 
@@ -45,6 +42,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 Password = string.Empty;
                 Members = new HashSet<uint>();
                 MemberReadyState = new Dictionary<uint, bool>();
+
+                ContentStatus = ContentStatus.Recruiting;
             }
 
             public void ResetReadyState()
@@ -168,7 +167,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 var data = GetGroupData(entryItemId);
                 data.ResetReadyState();
                 data.IsInRecreate = true;
-                data.ContentInProgress = false;
+                data.ContentStatus = ContentStatus.Recruiting;
 
                 return data;
             }
@@ -538,14 +537,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static readonly ulong BOARD_CATEGORY_RECRUITMENT = 0x9_00000000;
         private static readonly ulong BOARD_CATEGORY_EXM         = 0x4_00000000;
 
-        public static ulong QuestIdToExmBoardId(uint questId)
+        public static ulong QuestScheduleIdToExmBoardId(uint questScheduleId)
         {
-            return (ulong)(questId | BOARD_CATEGORY_EXM);
-        }
-
-        public static ulong QuestIdToExmBoardId(QuestId questId)
-        {
-            return QuestIdToExmBoardId((uint) questId);
+            return (ulong)(questScheduleId | BOARD_CATEGORY_EXM);
         }
 
         public static bool BoardIdIsExm(ulong boardId)

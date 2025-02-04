@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.IO;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -28,8 +29,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // This handler should return personal quests which have not been started
             // yet when the player enters the StageNo
-            foreach (var quest in QuestManager.GetTutorialQuestsByStageNo(request.StageNo))
+            foreach (var questScheduleId in QuestManager.GetTutorialQuestsByStageNo(request.StageNo))
             {
+                var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
+                if (quest == null || !quest.IsActive(Server, client))
+                {
+                    continue;
+                }
+
                 uint stageNo = (uint) StageManager.ConvertIdToStageNo(quest.StageId);
                 if (stageNo != request.StageNo)
                 {
@@ -41,7 +48,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     continue;
                 }
 
-                var questState = client.Party.QuestState.GetQuestState(quest);
+                var questStateManager = QuestManager.GetQuestStateManager(client, quest);
+                var questState = questStateManager.GetQuestState(questScheduleId);
                 if (questState == null || questState.Step == 0)
                 {
                     var tutorialQuest = quest.ToCDataTutorialQuestList(0);
@@ -50,7 +58,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (questState == null)
                 {
-                    client.Party.QuestState.AddNewQuest(quest, 0);
+                    questStateManager.AddNewQuest(quest, 0);
                 }
             }
 

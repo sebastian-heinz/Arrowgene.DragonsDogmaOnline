@@ -1,6 +1,5 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Handler;
-using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -24,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Mq030260_HopesBitterEnd));
 
-        public Mq030260_HopesBitterEnd() : base(QuestId.HopesBitterEnd, QuestId.HopesBitterEnd, QuestType.Main)
+        public Mq030260_HopesBitterEnd() : base(null, QuestId.HopesBitterEnd, (uint) QuestId.HopesBitterEnd, QuestType.Main)
         {
         }
 
@@ -45,7 +44,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
 
         new public List<CDataQuestExp> ExpRewards = new List<CDataQuestExp>()
         {
-            new CDataQuestExp() {Type = ExpType.ExperiencePoints, Reward = 900000}
+            new CDataQuestExp() {Type = PointType.ExperiencePoints, Reward = 900000}
         };
 
 #if false

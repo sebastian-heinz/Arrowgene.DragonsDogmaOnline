@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
             BonusDungeonAsset asset = new BonusDungeonAsset();
 
-            string json = File.ReadAllText(path);
+            string json = Util.ReadAllText(path);
             JsonDocument document = JsonDocument.Parse(json);
 
             foreach (var jCategory in document.RootElement.EnumerateArray())
@@ -45,7 +45,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                     foreach (var jItem in jDungeon.GetProperty("entry_fee").EnumerateArray())
                     {
-                        dungeonInfo.EntryCostList.Add(new CDataStageTicketDungeonItem()
+                        dungeonInfo.EntryCostList.Add(new CDataStageDungeonItem()
                         {
                             ItemId = jItem.GetProperty("item_id").GetUInt32(),
                             Num = jItem.GetProperty("amount").GetUInt16()

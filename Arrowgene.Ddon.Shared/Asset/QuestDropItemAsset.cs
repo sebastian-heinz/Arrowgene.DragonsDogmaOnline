@@ -75,7 +75,7 @@ namespace Arrowgene.Ddon.Shared.Asset
             }
 
             // Nothing found if we are down here
-            return null;
+            return new();
         }
     }
 }

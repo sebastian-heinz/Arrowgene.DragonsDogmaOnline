@@ -20,15 +20,16 @@
  * along with Arrowgene.Ddon.Cli. If not, see <https://www.gnu.org/licenses/>.
  */
 
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Threading;
 using Arrowgene.Ddon.Cli.Command;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
+using System.Text;
+using System.Threading;
 
 namespace Arrowgene.Ddon.Cli
 {
@@ -62,6 +63,7 @@ namespace Arrowgene.Ddon.Cli
 
             PacketId.S2C_CONTEXT_MASTER_CHANGE_NTC,
             PacketId.C2S_CONTEXT_GET_SET_CONTEXT_REQ,
+            PacketId.S2C_CONTEXT_GET_SET_CONTEXT_RES,
             PacketId.C2S_CONTEXT_SET_CONTEXT_NTC,
             PacketId.S2C_CONTEXT_SET_CONTEXT_NTC,
             PacketId.S2C_CONTEXT_SET_CONTEXT_BASE_NTC,
@@ -71,6 +73,8 @@ namespace Arrowgene.Ddon.Cli
 
         private static void Main(string[] args)
         {
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+
             Console.WriteLine("Program started");
             Console.WriteLine($"Version: {Util.GetVersion("Cli")}");
             Program program = new Program();

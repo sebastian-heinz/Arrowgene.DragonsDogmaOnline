@@ -1,15 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Threading;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer;
 using Arrowgene.Ddon.LoginServer;
 using Arrowgene.Ddon.Rpc.Web;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.WebServer;
 using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Threading;
 
 namespace Arrowgene.Ddon.Cli.Command
 {
@@ -20,6 +20,7 @@ namespace Arrowgene.Ddon.Cli.Command
         private readonly Setting _setting;
         private DdonLoginServer _loginServer;
         private DdonGameServer _gameServer;
+        private ServerScriptManager _serverScriptManager;
         private DdonWebServer _webServer;
         private RpcWebServer _rpcWebServer;
         private IDatabase _database;
@@ -110,9 +111,15 @@ namespace Arrowgene.Ddon.Cli.Command
                 _assetRepository.Initialize();
             }
 
+            if (_serverScriptManager == null)
+            {
+                _serverScriptManager = new ServerScriptManager(_setting.AssetPath);
+                _serverScriptManager.Initialize();
+            }
+
             if (_loginServer == null)
             {
-                _loginServer = new DdonLoginServer(_setting.LoginServerSetting, _database, _assetRepository);
+                _loginServer = new DdonLoginServer(_setting.LoginServerSetting, _serverScriptManager.GameServerSettings.GameLogicSetting, _database, _assetRepository);
             }
 
             if (_webServer == null)
@@ -122,7 +129,7 @@ namespace Arrowgene.Ddon.Cli.Command
 
             if (_gameServer == null)
             {
-                _gameServer = new DdonGameServer(_setting.GameServerSetting, _database, _assetRepository);
+                _gameServer = new DdonGameServer(_setting.GameServerSetting, _serverScriptManager.GameServerSettings.GameLogicSetting, _database, _assetRepository);
             }
 
             if (_rpcWebServer == null)

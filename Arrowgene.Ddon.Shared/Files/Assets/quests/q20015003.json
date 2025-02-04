@@ -42,6 +42,26 @@
           "num": 3
         }
       ]
+    },
+    {
+      "type": "random",
+      "loot_pool": [
+        {
+          "item_id": 8693,
+          "num": 1,
+          "chance": 0.4
+        },
+        {
+          "item_id": 8693,
+          "num": 1,
+          "chance": 0.4
+        },
+        {
+          "item_id": 8955,
+          "num": 1,
+          "chance": 0.4
+        }
+      ]
     }
   ],
   "enemy_groups": [
@@ -50,14 +70,17 @@
         "id": 1,
         "group_id": 105
       },
+      "placement_type": "manual",
       "enemies": [
         {
           "comment": "Young Chimera",
           "enemy_id": "0x015200",
+          "start_think_tbl_no": 1,
           "named_enemy_params_id": 459,
           "level": 19,
-          "exp": 1053,
-          "is_boss": true
+          "exp": 1264,
+          "is_boss": true,
+          "index": 3
         }
       ]
     }

@@ -6,7 +6,7 @@
     "base_level": 47,
     "minimum_item_rank": 0,
     "discoverable": true,
-  "area_id": "EasternZandora",	
+    "area_id": "EasternZandora",
     "rewards": [
         {
             "type": "wallet",
@@ -35,7 +35,7 @@
                 },
                 {
                     "item_id": 9363,
-                    "num": 3					
+                    "num": 3
                 }
             ]
         },
@@ -58,10 +58,12 @@
             },
             "enemies": [
                 {
-                    "enemy_id": "0x015103",
-                    "level": 48,
-                    "exp": 13000,
-                    "is_boss": true			
+                    "enemy_id": "0x015100",
+                    "start_think_tbl_no": 3,
+                    "named_enemy_params_id": 53,
+                    "level": 47,
+                    "exp": 6824,
+                    "is_boss": true
                 }
             ]
         }
@@ -85,6 +87,7 @@
         {
             "type": "KillGroup",
             "announce_type": "Update",
+            "reset_group": false,
             "groups": [0]
         },
         {
@@ -92,7 +95,7 @@
             "stage_id": {
                 "id": 1,
                 "group_id": 1,
-                "layer_no": 1				
+                "layer_no": 1
             },
             "announce_type": "Update",
             "npc_id": "Rick",

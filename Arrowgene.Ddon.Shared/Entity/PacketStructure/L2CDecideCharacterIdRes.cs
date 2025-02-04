@@ -1,4 +1,4 @@
-﻿using Arrowgene.Buffers;
+using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -24,8 +24,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 L2CDecideCharacterIdRes obj = new L2CDecideCharacterIdRes();
                 ReadServerResponse(buffer, obj);
-                obj.CharacterId = buffer.ReadUInt32(Endianness.Big);
-                obj.WaitNum = buffer.ReadUInt32(Endianness.Big);
+                obj.CharacterId = ReadUInt32(buffer);
+                obj.WaitNum = ReadUInt32(buffer);
                 return obj;
             }
         }

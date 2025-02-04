@@ -23,7 +23,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CPawnCreatePawnRes Handle(GameClient client, C2SPawnCreatePawnReq request)
         {
             // I hate hardcoding this but people legitimately keep finding ways to break this. 
-            if (request.SlotNo > 3)
+
+            if (request.SlotNo == 1 && client.Character.Pawns.Count > 1)
+            {
+                // Need to return a successful response, otherwise the player will
+                // be stuck here on the quest (it kicks them back to pawn creation).
+                // This should only be possible for legacy characters or people
+                // using the /givepawn command before reaching this quest.
+                return new S2CPawnCreatePawnRes();
+            }
+            else if (request.SlotNo > 3)
             {
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_CREATE_NUM_OVER);
             }
@@ -208,101 +217,101 @@ namespace Arrowgene.Ddon.GameServer.Handler
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.Primary,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0,
                                     PlusValue = 0
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.Secondary,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.Head,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0,
                                     PlusValue = 0
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.Body,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0,
                                     PlusValue = 0,
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.BodyClothing,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.Arm,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0,
                                     PlusValue = 0
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.Leg,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0,
                                     PlusValue = 0
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.LegWear,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.OverWear,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.JewelrySlot1,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0,
                                     PlusValue = 0,
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.JewelrySlot2,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0,
                                     PlusValue = 0,
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.JewelrySlot3,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0,
                                     PlusValue = 0,
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.JewelrySlot4,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0,
                                     PlusValue = 0,
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.JewelrySlot5,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                     Color = 0,
                                     PlusValue = 0,
                                 },
                                 new Item
                                 {
                                     ItemId = pawnGearPreset.Lantern,
-                                    Unk3 = 0,
+                                    SafetySetting = 0,
                                 }
                             }.Select(item => (item == null || item.ItemId == 0) ? null : item).ToList()
                         },
@@ -453,6 +462,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             pawn.LearnedAbilities = pawn.EquippedAbilitiesDictionary.SelectMany(jobAndAugs => jobAndAugs.Value).Where(aug => aug != null).ToList();
             pawn.TrainingPoints = int.MaxValue;
             pawn.AvailableTraining = uint.MaxValue;
+            pawn.PawnReactionList = Enumerable.Range(1, 11).Select(x => new CDataPawnReaction() { ReactionType = (byte)x, MotionNo = 1 }).ToList();
 
             // Add current job's equipment to the equipment storage
             // EquipmentTemplate.TOTAL_EQUIP_SLOTS * 2

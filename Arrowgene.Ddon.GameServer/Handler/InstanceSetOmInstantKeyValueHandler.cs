@@ -18,6 +18,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceSetOmInstantKeyValueReq> req)
         {
+            Logger.Debug($"OM: Key={req.Structure.Key}, Value={req.Structure.Value}");
+
             OmManager.SetOmData(client.Party.InstanceOmData, client.Character.Stage.Id, req.Structure.Key, req.Structure.Value);
 
             S2CInstanceSetOmInstantKeyValueNtc ntc = new S2CInstanceSetOmInstantKeyValueNtc();
@@ -33,9 +35,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Send(res);
 
             // Check for OM callbacks in the quest
-            foreach (var questId in client.Party.QuestState.GetActiveQuestIds())
+            foreach (var questScheduleId in client.Party.QuestState.GetActiveQuestScheduleIds())
             {
-                var quest = QuestManager.GetQuest(questId);
+                var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
                 if (quest != null)
                 {
                     quest.HandleOmInstantValue(client, req.Structure.Key, req.Structure.Value);

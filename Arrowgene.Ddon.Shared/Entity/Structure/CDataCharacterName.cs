@@ -1,4 +1,4 @@
-﻿using Arrowgene.Buffers;
+using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure;
 
@@ -6,8 +6,8 @@ public class CDataCharacterName
 {
     public CDataCharacterName()
     {
-        FirstName = "";
-        LastName = "";
+        FirstName = string.Empty;
+        LastName = string.Empty;
     }
     
     public string FirstName { get; set; }

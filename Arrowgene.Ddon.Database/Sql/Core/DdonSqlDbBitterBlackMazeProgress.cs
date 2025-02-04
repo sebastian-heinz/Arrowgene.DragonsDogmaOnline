@@ -43,29 +43,26 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 AddParameter(command, "last_ticket_time", lastTicketTime);
             }) == 1;
         }
-        public bool UpdateBBMProgress(uint characterId, BitterblackMazeProgress progress)
+        public bool UpdateBBMProgress(uint characterId, BitterblackMazeProgress progress, DbConnection? connectionIn = null)
         {
-            return UpdateBBMProgress(characterId, progress.StartTime, progress.ContentId, progress.ContentMode, progress.Tier, progress.KilledDeath, progress.LastTicketTime);
+            return UpdateBBMProgress(characterId, progress.StartTime, progress.ContentId, progress.ContentMode, progress.Tier, progress.KilledDeath, progress.LastTicketTime, connectionIn);
         }
 
-        public bool UpdateBBMProgress(uint characterId, ulong startTime, uint contentId, BattleContentMode contentMode, uint tier, bool killedDeath, ulong lastTicketTime)
+        public bool UpdateBBMProgress(uint characterId, ulong startTime, uint contentId, BattleContentMode contentMode, uint tier, bool killedDeath, ulong lastTicketTime, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return UpdateBBMProgress(connection, characterId, startTime, contentId, contentMode, tier, killedDeath, lastTicketTime);
-        }
-
-        public bool UpdateBBMProgress(TCon connection, uint characterId, ulong startTime, uint contentId, BattleContentMode contentMode, uint tier, bool killedDeath, ulong lastTicketTime)
-        {
-            return ExecuteNonQuery(connection, SqlUpdateBBMProgress, command =>
+            return ExecuteQuerySafe(connectionIn, (connection) =>
             {
-                AddParameter(command, "character_id", characterId);
-                AddParameter(command, "start_time", startTime);
-                AddParameter(command, "content_id", contentId);
-                AddParameter(command, "content_mode", (uint) contentMode);
-                AddParameter(command, "tier", tier);
-                AddParameter(command, "killed_death", killedDeath);
-                AddParameter(command, "last_ticket_time", lastTicketTime);
-            }) == 1; ;
+                return ExecuteNonQuery(connection, SqlUpdateBBMProgress, command =>
+                {
+                    AddParameter(command, "character_id", characterId);
+                    AddParameter(command, "start_time", startTime);
+                    AddParameter(command, "content_id", contentId);
+                    AddParameter(command, "content_mode", (uint)contentMode);
+                    AddParameter(command, "tier", tier);
+                    AddParameter(command, "killed_death", killedDeath);
+                    AddParameter(command, "last_ticket_time", lastTicketTime);
+                }) == 1;
+            });
         }
 
         public bool RemoveBBMProgress(uint characterId)

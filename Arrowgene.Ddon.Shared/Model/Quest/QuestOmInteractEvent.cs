@@ -40,8 +40,5 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public QuestId QuestId { get; set; } // Some OM interactions require a quest ID to source marker information from.
         public OmQuestType QuestType { get; set; }
         public OmInteractType InteractType { get; set; }
-        public OmInstantValueAction InstantAction {  get; set; }
-        public ulong Key { get; set; }
-        public uint Value {  get; set; }
     }
 }

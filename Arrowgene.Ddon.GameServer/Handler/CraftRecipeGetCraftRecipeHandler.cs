@@ -1,14 +1,13 @@
-using System.Collections.Generic;
-using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CraftRecipeGetCraftRecipeHandler : GameStructurePacketHandler<C2SCraftRecipeGetCraftRecipeReq>
+    public class CraftRecipeGetCraftRecipeHandler : GameRequestPacketHandler<C2SCraftRecipeGetCraftRecipeReq, S2CCraftRecipeGetCraftRecipeRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftRecipeGetCraftRecipeHandler));
 
@@ -16,10 +15,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCraftRecipeGetCraftRecipeReq> packet)
+        public override S2CCraftRecipeGetCraftRecipeRes Handle(GameClient client, C2SCraftRecipeGetCraftRecipeReq request)
         {
             List<CDataMDataCraftRecipe> allRecipesInCategory = Server.AssetRepository.CraftingRecipesAsset
-                .Where(recipes => recipes.Category == packet.Structure.Category)
+                .Where(recipes => recipes.Category == request.Category)
                 .Select(recipes => recipes.RecipeList)
                 .SingleOrDefault(new List<CDataMDataCraftRecipe>());
 
@@ -33,16 +32,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            client.Send(new S2CCraftRecipeGetCraftRecipeRes
+            return new S2CCraftRecipeGetCraftRecipeRes
             {
-                Category = packet.Structure.Category,
+                Category = request.Category,
                 RecipeList = allRecipesInCategory
                     .SkipWhile(recipe => recipe.IsHide)
-                    .Skip((int)packet.Structure.Offset)
-                    .Take(packet.Structure.Num)
+                    .Skip((int)request.Offset)
+                    .Take(request.Num)
                     .ToList(),
-                IsEnd = (packet.Structure.Offset + packet.Structure.Num) >= allRecipesInCategory.Count
-            });
+                IsEnd = (request.Offset + request.Num) >= allRecipesInCategory.Count
+            };
         }
     }
 }

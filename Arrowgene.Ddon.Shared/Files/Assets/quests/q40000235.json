@@ -1,0 +1,50 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "Light",
+  "quest_id": 40000235,
+  "base_level": 31,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "comment": "Low on Supplies",
+  "light_quest_details": {
+    "area_id": 3,
+    "board_type": 1,
+    "board_id": 13
+  },
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 1182
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 3815
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 608
+    }
+  ],
+  "blocks": [
+    {
+      "type": "Raw",
+      "check_commands": [
+        {
+          "type": "EmDieLight"
+        }
+      ]
+    },
+    {
+      "type": "DeliverItemsLight",
+      "announce_type": "Accept",
+      "items": [
+        {
+          "id": 7995,
+          "amount": 3
+        }
+      ]
+    }
+  ]
+}

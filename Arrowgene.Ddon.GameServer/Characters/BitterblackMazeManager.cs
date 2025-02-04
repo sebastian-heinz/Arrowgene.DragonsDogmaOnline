@@ -6,20 +6,11 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Appraisal;
 using Arrowgene.Ddon.Shared.Model.BattleContent;
-using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection.Metadata;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using YamlDotNet.Core;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -57,14 +48,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return levelCap;
         }
 
-        public static CDataBattleContentStatus GetUpdatedContentStatus(DdonGameServer server, Character character)
+        public static CDataBattleContentStatus GetUpdatedContentStatus(DdonGameServer server, Character character, DbConnection? connectionIn = null)
         {
             var progress = character.BbmProgress;
 
-            var rewards = server.Database.SelectBBMRewards(character.CharacterId);
+            var rewards = server.Database.SelectBBMRewards(character.CharacterId, connectionIn);
 
             var availableRewards = new List<CDataBattleContentAvailableRewards>();
-            var trackedRewards = server.Database.SelectBBMContentTreasure(character.CharacterId);
+            var trackedRewards = server.Database.SelectBBMContentTreasure(character.CharacterId, connectionIn);
             foreach (var stage in server.AssetRepository.BitterblackMazeAsset.Stages)
             {
                 var matches = trackedRewards.Select(x => x.ContentId == stage.Value.ContentId).ToList();
@@ -104,13 +95,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return contentStatus;
         }
 
-        public static void HandleTierClear(DdonGameServer server, GameClient client, Character character, StageId stageId)
+        public static PacketQueue HandleTierClear(DdonGameServer server, GameClient client, Character character, StageId stageId, DbConnection? connectionIn = null)
         {
+            PacketQueue packets = new();
+            
             var progress = character.BbmProgress;
 
-            var match = server.AssetRepository.BitterblackMazeAsset.Stages.Select(x => x.Value).Where(x => x.ContentId == progress.ContentId).FirstOrDefault();
+            var match = server.AssetRepository.BitterblackMazeAsset.Stages.Select(x => x.Value).Where(x => x.ContentId == progress.ContentId).FirstOrDefault()
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_FAIL); // TODO: Better error code.
 
-            var stageProgression = server.AssetRepository.BitterblackMazeAsset.StageProgressionList.Where(x => x.Id == match.ContentId).FirstOrDefault();
+            var stageProgression = server.AssetRepository.BitterblackMazeAsset.StageProgressionList.Where(x => x.Id == match.ContentId).FirstOrDefault()
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_FAIL); // TODO: Better error code.
+
             if (stageProgression.ConnectionList.Count > 0)
             {
                 var clearNtc = new S2CBattleContentClearTierNtc()
@@ -118,7 +114,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     Unk0 = progress.ContentId,
                     TierName = match.ContentName
                 };
-                client.Send(clearNtc);
+                client.Enqueue(clearNtc, packets);
 
                 progress.ContentId = stageProgression.ConnectionList[0].Value;
                 progress.Tier += 1;
@@ -132,26 +128,28 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     ContentName = (match.ContentMode == BattleContentMode.Rotunda) ? "Bitterblack Maze Rotunda" : "Bitterblack Maze Abyss",
                     ClearTime = (ulong) (DateTimeOffset.UtcNow.ToUnixTimeSeconds() - (long) progress.StartTime)
                 };
-                client.Send(clearNtc);
+                client.Enqueue(clearNtc, packets);
 
                 progress.ContentId = 0;
                 progress.Tier = 0;
             }
-            server.Database.UpdateBBMProgress(character.CharacterId, progress);
+            server.Database.UpdateBBMProgress(character.CharacterId, progress, connectionIn);
 
-            var rewards = server.Database.SelectBBMRewards(character.CharacterId);
+            var rewards = server.Database.SelectBBMRewards(character.CharacterId, connectionIn);
             // TODO: handle BattleContentRewardBonus.Up (some sort of reward bonus)
             // TODO: Is there a reason we wouldn't get a reward here?
             var marks = GetMarksForStage(server.AssetRepository.BitterblackMazeAsset, stageId);
             rewards.GoldMarks += marks.Gold;
             rewards.SilverMarks += marks.Silver;
             rewards.RedMarks += marks.Red;
-            server.Database.UpdateBBMRewards(character.CharacterId, rewards);
+            server.Database.UpdateBBMRewards(character.CharacterId, rewards, connectionIn);
 
             // Update the situation information
             S2CBattleContentProgressNtc progressNtc = new S2CBattleContentProgressNtc();
-            progressNtc.BattleContentStatusList.Add(BitterblackMazeManager.GetUpdatedContentStatus(server, character));
-            client.Send(progressNtc);
+            progressNtc.BattleContentStatusList.Add(BitterblackMazeManager.GetUpdatedContentStatus(server, character, connectionIn));
+            client.Enqueue(progressNtc, packets);
+
+            return packets;
         }
 
         public static bool IsMazeReward(uint itemId)

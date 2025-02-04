@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -8,7 +9,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CraftGetCraftSettingHandler : GameStructurePacketHandler<C2SCraftGetCraftSettingReq>
+    public class CraftGetCraftSettingHandler : GameRequestPacketHandler<C2SCraftGetCraftSettingReq, S2CCraftGetCraftSettingRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftGetCraftSettingHandler));
 
@@ -24,199 +25,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Type = WalletType.GoldenGemstones,
                 Price = 1,
                 Sec = 0
-            }
-        };
-
-        /// <summary>
-        /// TODO: Extract to asset
-        /// </summary>
-        private static readonly List<CDataRegisteredLegendPawnInfo> CraftMasterLegendPawnInfoList = new List<CDataRegisteredLegendPawnInfo>
-        {
-            new CDataRegisteredLegendPawnInfo
-            {
-                PawnId = 308,
-                PointType = WalletType.GoldenGemstones,
-                RentalCost = 1,
-                Unk3 = 10000004,
-                Name = "Many",
-                CraftRank = 100,
-                PawnCraftSkillList = new List<CDataPawnCraftSkill>
-                {
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.ProductionSpeed,
-                        Level = 0
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.EquipmentEnhancement,
-                        Level = 0
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.EquipmentQuality,
-                        Level = 0
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.ConsumableQuantity,
-                        Level = 99
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.CostPerformance,
-                        Level = 0
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.ConsumableProductionIsAlwaysGreatSuccess,
-                        Level = 1
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.CreatingHighQualityEquipmentIsAlwaysGreatSuccess,
-                        Level = 0
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.CostPerformanceEffectUpFactor1,
-                        Level = 0
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.CostPerformanceEffectUpFactor2,
-                        Level = 0
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.UnknownEffect10,
-                        Level = 0
-                    }
-                }
-            },
-            new CDataRegisteredLegendPawnInfo
-            {
-                PawnId = 309,
-                PointType = WalletType.GoldenGemstones,
-                RentalCost = 1,
-                Unk3 = 10000006,
-                Name = "Qualio",
-                CraftRank = 100,
-                PawnCraftSkillList = new List<CDataPawnCraftSkill>
-                {
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.ProductionSpeed,
-                        Level = 99
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.EquipmentEnhancement,
-                        Level = 0
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.EquipmentQuality,
-                        Level = 99
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.ConsumableQuantity,
-                        Level = 0
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.CostPerformance,
-                        Level = 0
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.ConsumableProductionIsAlwaysGreatSuccess,
-                        Level = 0
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.CreatingHighQualityEquipmentIsAlwaysGreatSuccess,
-                        Level = 1
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.CostPerformanceEffectUpFactor1,
-                        Level = 0
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.CostPerformanceEffectUpFactor2,
-                        Level = 1
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.UnknownEffect10,
-                        Level = 0
-                    }
-                }
-            },
-            new CDataRegisteredLegendPawnInfo
-            {
-                PawnId = 310,
-                PointType = WalletType.GoldenGemstones,
-                RentalCost = 1,
-                Unk3 = 10000002,
-                Name = "Arms",
-                CraftRank = 100,
-                PawnCraftSkillList = new List<CDataPawnCraftSkill>
-                {
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.ProductionSpeed,
-                        Level = 0
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.EquipmentEnhancement,
-                        Level = 99
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.EquipmentQuality,
-                        Level = 0
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.ConsumableQuantity,
-                        Level = 0
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.CostPerformance,
-                        Level = 99
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.ConsumableProductionIsAlwaysGreatSuccess,
-                        Level = 0
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.CreatingHighQualityEquipmentIsAlwaysGreatSuccess,
-                        Level = 0
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.CostPerformanceEffectUpFactor1,
-                        Level = 1
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.CostPerformanceEffectUpFactor2,
-                        Level = 1
-                    },
-                    new CDataPawnCraftSkill
-                    {
-                        Type = CraftSkillType.UnknownEffect10,
-                        Level = 0
-                    }
-                }
             }
         };
 
@@ -372,23 +180,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SCraftGetCraftSettingReq> packet)
+        public override S2CCraftGetCraftSettingRes Handle(GameClient client, C2SCraftGetCraftSettingReq request)
         {
             S2CCraftGetCraftSettingRes res = new S2CCraftGetCraftSettingRes
             {
                 ColorRegulateItemList = ColorRegulateItemList,
                 TimeSaveCostList = TimeSaveCostList,
-                // No idea what this is for - probably dead stuff from season 2
-                ReasonableCraftLv = 5,
-                CraftItemLv = 15,
-                CreateCountMax = Server.Setting.GameLogicSetting.CraftConsumableProductionTimesMax,
-                CraftMasterLegendPawnInfoList = CraftMasterLegendPawnInfoList,
+                ReasonableCraftLv = CraftManager.ReasonableCraftLv,
+                CraftItemLv = CraftManager.CraftItemLv,
+                CreateCountMax = Server.GameLogicSettings.CraftConsumableProductionTimesMax,
+                CraftMasterLegendPawnInfoList = Server.AssetRepository.PawnCraftMasterLegendAsset,
                 Unk1 = 49,
                 Unk2 = 30,
                 RefiningMaterialInfoList = RefiningMaterialInfoList
             };
 
-            client.Send(res);
+            return res;
         }
     }
 }

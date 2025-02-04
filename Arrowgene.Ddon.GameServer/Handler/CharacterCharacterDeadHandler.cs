@@ -11,7 +11,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SCharacterCharacterDeadNtc> packet)
         {
-            //Unsure what CAPCOM wanted with this packet.
+            // Unsure what CAPCOM wanted with this packet.
+            if (Server.EpitaphRoadManager.TrialInProgress(client.Party))
+            {
+                Server.EpitaphRoadManager.EvaluateDeath(client.Party);
+            }
         }
     }
 }

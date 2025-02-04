@@ -31,6 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     SlotNo = index++,
                     Name = pawn.Name,
                     Sex = pawn.EditInfo.Sex,
+                    PawnState = pawn.PawnState,
                     PawnListData = new CDataPawnListData()
                     {
                         Job = pawn.Job,
@@ -38,8 +39,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         CraftRank = pawn.CraftData.CraftRank,
                         PawnCraftSkillList = pawn.CraftData.PawnCraftSkillList
                         // TODO: CommentSize, LatestReturnDate
-                    }
-                    // TODO: PawnState, ShareRange, Unk0, Unk1, Unk2
+                    },
+                    // TODO: ShareRange, Unk0, Unk1, Unk2
                 };
                 pawnList.Add(pawnListData);
             }

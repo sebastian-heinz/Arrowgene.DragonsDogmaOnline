@@ -17,8 +17,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             CharacterEditGetShopPriceHandler.CheckPrice(packet.UpdateType, packet.EditPrice.PointType, packet.EditPrice.Value);
 
-            Server.WalletManager.RemoveFromWalletNtc(client, client.Character,
-                packet.EditPrice.PointType, packet.EditPrice.Value);
+            var walletUpdate = Server.WalletManager.RemoveFromWalletNtc(client, client.Character, packet.EditPrice.PointType, packet.EditPrice.Value);
+            if (!walletUpdate)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_GP_LACK_GP);
+            }
 
             Pawn pawn = client.Character.PawnBySlotNo(packet.SlotNo);
             pawn.EditInfo = packet.EditInfo;

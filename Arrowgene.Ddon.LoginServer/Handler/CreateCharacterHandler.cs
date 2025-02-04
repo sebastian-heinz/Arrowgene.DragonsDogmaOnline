@@ -15,7 +15,7 @@ using System.Linq;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
-    public class CreateCharacterHandler : StructurePacketHandler<LoginClient, C2LCreateCharacterDataReq>
+    public class CreateCharacterHandler : LoginStructurePacketHandler<C2LCreateCharacterDataReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CreateCharacterHandler));
 
@@ -60,7 +60,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                             return new Item()
                                             {
                                                 ItemId = info.ItemId,
-                                                Unk3 = info.Unk0,
+                                                SafetySetting = info.Unk0,
                                                 Color = info.Color,
                                                 PlusValue = info.PlusValue,
                                                 EquipElementParamList = info.EquipElementParamList,
@@ -82,7 +82,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                             return new Item()
                                             {
                                                 ItemId = info.ItemId,
-                                                Unk3 = info.Unk0,
+                                                SafetySetting = info.Unk0,
                                                 Color = info.Color,
                                                 PlusValue = info.PlusValue,
                                                 EquipElementParamList = info.EquipElementParamList,
@@ -190,87 +190,87 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                         new List<Item>() {
                             new Item {
                                 ItemId = arisenPreset.PrimaryWeapon,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                                 Color = arisenPreset.PrimaryWeaponColour,
                                 PlusValue = 0,
                             },
                             new Item {
                                 ItemId = arisenPreset.SecondaryWeapon,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                                 Color = arisenPreset.SecondaryWeaponColour
                             },
                             new Item {
                                 ItemId = arisenPreset.Head,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                                 Color = arisenPreset.HeadColour,
                                 PlusValue = 0,
                             },
                             new Item {
                                 ItemId = arisenPreset.Body,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                                 Color = arisenPreset.BodyColour,
                                 PlusValue = 0,
                             },
                             new Item {
                                 ItemId = arisenPreset.Clothing,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                                 Color = arisenPreset.ClothingColour
                             },
                             new Item {
                                 ItemId = arisenPreset.Arm,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                                 Color = arisenPreset.ArmColour,
                                 PlusValue = 0,
                             },
                             new Item {
                                 ItemId = arisenPreset.Leg,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                                 Color = arisenPreset.LegColour,
                                 PlusValue = 0,
                             },
                             new Item {
                                 ItemId = arisenPreset.Legwear,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                                 Color = arisenPreset.LegwearColour
                             },
                             new Item {
                                 ItemId = arisenPreset.Overwear,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                                 Color = arisenPreset.OverwearColour
                             },
                             new Item {
                                 ItemId = arisenPreset.Jewelry1,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                                 Color = 0,
                                 PlusValue = 0,
                             },
                             new Item {
                                 ItemId = arisenPreset.Jewelry2,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                                 Color = 0,
                                 PlusValue = 0,
                             },
                             new Item {
                                 ItemId = arisenPreset.Jewelry3,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                                 Color = 0,
                                 PlusValue = 0,
                             },
                             new Item {
                                 ItemId = arisenPreset.Jewelry4,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                                 Color = 0,
                                 PlusValue = 0,
                             },
                             new Item {
                                 ItemId = arisenPreset.Jewelry5,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                                 Color = 0,
                                 PlusValue = 0,
                             },
                             new Item {
                                 ItemId = arisenPreset.Lantern,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                             }
                         }.Select(item => (item == null || item.ItemId == 0) ? null : item).ToList()
                     },
@@ -279,47 +279,47 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                         new List<Item>() {
                             new Item {
                                 ItemId = arisenPreset.VPrimaryWeapon,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                                 Color = arisenPreset.VPrimaryWeaponColour
                             },
                             new Item {
                                 ItemId = arisenPreset.VSecondaryWeapon,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                                 Color = arisenPreset.VSecondaryWeaponColour
                             },
                             new Item {
                                 ItemId = arisenPreset.VHead,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                                 Color = arisenPreset.VHeadColour
                             },
                             new Item {
                                 ItemId = arisenPreset.VBody,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                                 Color = arisenPreset.VBodyColour
                             },
                             new Item {
                                 ItemId = arisenPreset.VClothing,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                                 Color = arisenPreset.VClothingColour
                             },
                             new Item {
                                 ItemId = arisenPreset.VArm,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                                 Color = arisenPreset.VArmColour
                             },
                             new Item {
                                 ItemId = arisenPreset.VLeg,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                                 Color = arisenPreset.VLegColour
                             },
                             new Item {
                                 ItemId = arisenPreset.VLegwear,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                                 Color = arisenPreset.VLegwearColour
                             },
                             new Item {
                                 ItemId = arisenPreset.VOverwear,
-                                Unk3 = 0,
+                                SafetySetting = 0,
                                 Color = arisenPreset.VOverwearColour,
                             }
                         }.Select(item => (item == null || item.ItemId == 0) ? null : item).ToList()
@@ -509,19 +509,15 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     Value = 0
                 }
             };
-            // Value taken from pcaps
-            // TODO: Not hardcode it
-            character.FavWarpSlotNum = 10;
-
-            // TODO: Figure out a proper default value and not hardcode it
-            character.MaxBazaarExhibits = 5;
+            character.FavWarpSlotNum = Server.GameSetting.DefaultWarpFavorites;
+            character.MaxBazaarExhibits = Server.GameSetting.DefaultMaxBazaarExhibits;
 
             // Add starting storage items
             foreach (var tuple in Server.AssetRepository.StorageItemAsset)
             {
                 if(tuple.Item3.ItemId != 0)
                 {
-                    character.Storage.GetStorage(tuple.Item1).AddItem(tuple.Item3, tuple.Item2);
+                    character.Storage.GetStorage(tuple.Item1).AddItem(new Item(tuple.Item3), tuple.Item2);
                 }
             }
 
@@ -579,8 +575,17 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 Database.InsertSecretAbilityUnlock(character.CommonId, ability);
             }
 
+            // Unlock WDT as the primary warp.
+            var wdtWarpPoint = new ReleasedWarpPoint()
+            {
+                WarpPointId = 1,
+                FavoriteSlotNo = 1
+            };
+            Database.InsertIfNotExistsReleasedWarpPoint(character.CharacterId, wdtWarpPoint);
+
             // Insert the first main quest to start the chain
-            if (!Database.InsertQuestProgress(character.CommonId, QuestId.ResolutionsAndOmens, QuestType.Main, 0))
+            // note: We cast the QuestId to a ScheduleId because main quests have the same QuestId and QuestScheduleId
+            if (!Database.InsertQuestProgress(character.CommonId, (uint) QuestId.ResolutionsAndOmens, QuestType.Main, 0))
             {
                 Logger.Error("Failed to seed first MSQ for player");
             }

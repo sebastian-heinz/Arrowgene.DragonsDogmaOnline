@@ -55,9 +55,10 @@
         {
           "comment": "Armored Cyclops (Club)",
           "enemy_id": "0x015003",
+          "start_think_tbl_no": 1,
           "named_enemy_params_id": 54,
-          "level": 40,
-          "exp": 37420,
+          "level": 42,
+          "exp": 6706,
           "is_boss": true
         }
       ]

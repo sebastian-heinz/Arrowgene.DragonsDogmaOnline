@@ -14,6 +14,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public C2SCraftGetCraftProductRes()
         {
+            CraftProduct = new();
             UpdateItemList = new List<CDataItemUpdateResult>();
         }
 

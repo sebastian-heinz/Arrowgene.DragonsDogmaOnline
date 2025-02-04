@@ -11,7 +11,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SInstanceCharacterStartBadStatusNtc> packet)
         {
-            //Unsure what CAPCOM wanted with this packet.
+            if (Server.EpitaphRoadManager.TrialInProgress(client.Party))
+            {
+                Server.EpitaphRoadManager.EvaluatePlayerAbnormalStatus(client.Party, packet.Structure.StatusId);
+            }
         }
     }
 }

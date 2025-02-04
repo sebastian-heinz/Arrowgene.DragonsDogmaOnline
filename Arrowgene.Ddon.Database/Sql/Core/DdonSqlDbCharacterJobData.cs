@@ -39,22 +39,16 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData, DbConnection? connectionIn = null)
         {
-            bool isTransaction = connectionIn is not null;
-            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
-            try
+            return ExecuteQuerySafe<bool>(connectionIn, (connection) =>
             {
                 Logger.Debug("Inserting character job data.");
                 if (!InsertIfNotExistsCharacterJobData(connection, commonId, replacedCharacterJobData))
                 {
                     Logger.Debug("Character job data already exists, replacing.");
-                    return UpdateCharacterJobData(connection, commonId, replacedCharacterJobData);
+                    return UpdateCharacterJobData(commonId, replacedCharacterJobData, connection);
                 }
                 return true;
-            }
-            finally
-            {
-                if (!isTransaction) connection.Dispose();
-            }
+            });
         }
 
         public bool InsertCharacterJobData(uint commonId, CDataCharacterJobData updatedCharacterJobData)
@@ -79,15 +73,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return ExecuteNonQuery(connection, SqlInsertIfNotExistsCharacterJobData, command => { AddParameter(command, commonId, updatedCharacterJobData); }) == 1;
         }
 
-        public bool UpdateCharacterJobData(uint commonId, CDataCharacterJobData updatedCharacterJobData)
+        public bool UpdateCharacterJobData(uint commonId, CDataCharacterJobData updatedCharacterJobData, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return UpdateCharacterJobData(connection, commonId, updatedCharacterJobData);
-        }
-
-        public bool UpdateCharacterJobData(TCon connection, uint commonId, CDataCharacterJobData updatedCharacterJobData)
-        {
-            return ExecuteNonQuery(connection, SqlUpdateCharacterJobData, command => { AddParameter(command, commonId, updatedCharacterJobData); }) == 1;
+            return ExecuteQuerySafe<bool>(connectionIn, (connection) =>
+            {
+                return ExecuteNonQuery(connection, SqlUpdateCharacterJobData, command => { AddParameter(command, commonId, updatedCharacterJobData); }) == 1;
+            });
         }
 
         private CDataCharacterJobData ReadCharacterJobData(DbDataReader reader)

@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
             CostExpScalingAsset asset = new CostExpScalingAsset();
 
-            string json = File.ReadAllText(path);
+            string json = Util.ReadAllText(path);
             JsonDocument document = JsonDocument.Parse(json);
 
             var costExpInfoElements = document.RootElement.EnumerateArray().ToList();

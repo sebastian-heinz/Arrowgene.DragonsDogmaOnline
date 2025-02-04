@@ -15,6 +15,8 @@ namespace Arrowgene.Ddon.GameServer
         public static readonly long OriginalRealTimeSec = 0x55DDD470; // Taken from the pcaps. A few days before DDOn release
         public static readonly long OriginalGameTimeSec = 0x22C2ED000; // Taken from the pcaps.
         public static readonly uint GameTimeDayHour = 24;
+        public static readonly uint GameTimeMoonAges = 30;
+        public static readonly uint MoonAgeLoopSec = 1209600; // Taken from the pcaps; 14 real life days per lunar cycle.
 
         /// <summary>
         /// Number of game hours between forecast times. 
@@ -32,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer
         public WeatherManager(DdonGameServer server)
         {
             _Server = server;
-            GameClockTimescale = server.Setting.GameLogicSetting.GameClockTimescale;
+            GameClockTimescale = server.GameLogicSettings.GameClockTimescale;
             GenerateWeatherSequence();
         }
 
@@ -54,6 +56,23 @@ namespace Arrowgene.Ddon.GameServer
                 remainingSeconds -= weatherLoop.TimeSec;
             }
             return Weather.Fine;
+        }
+
+        public uint GetMoonPhase()
+        {
+            return GetMoonPhase(DateTimeOffset.UtcNow);
+        }
+
+        public uint GetMoonPhase(DateTimeOffset time)
+        {
+            ulong secondsPerLestanianDay = _Server.GameLogicSettings.GameClockTimescale * 60;
+            ulong secondsPerMoonAge = MoonAgeLoopSec / GameTimeMoonAges;
+            ulong secondsElapsed = (ulong)(time.ToUnixTimeSeconds() - OriginalRealTimeSec);
+
+            // This is how the android app calculates this. Is this exploiting some integer math trickery?
+            ulong offsetMoonTime = (secondsElapsed + secondsPerLestanianDay / 2) / secondsPerLestanianDay * secondsPerLestanianDay; 
+
+            return (uint)(offsetMoonTime / secondsPerMoonAge) % GameTimeMoonAges;
         }
 
         public List<CDataWeatherForecast> GetForecast()
@@ -121,8 +140,8 @@ namespace Arrowgene.Ddon.GameServer
         {
             List<CDataWeatherLoop> weatherLoop = new List<CDataWeatherLoop>();
 
-            uint seqLength = _Server.Setting.GameLogicSetting.WeatherSequenceLength;
-            List<(uint MeanLength, uint Weight)> seqStats = _Server.Setting.GameLogicSetting.WeatherStatistics;
+            uint seqLength = _Server.GameLogicSettings.WeatherSequenceLength;
+            List<(uint MeanLength, uint Weight)> seqStats = _Server.GameLogicSettings.WeatherStatistics;
 
             if (!seqStats.Where(x => x.Weight > 0).Any())
             {

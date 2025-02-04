@@ -37,6 +37,14 @@
         {
           "item_id": 9402,
           "num": 3
+        },
+        {
+          "item_id": 968,
+          "num": 1
+        },
+        {
+          "item_id": 9402,
+          "num": 1
         }
       ]
     }
@@ -45,14 +53,18 @@
     {
       "stage_id": {
         "id": 1,
-        "group_id": 241
+        "group_id": 242
       },
+      "placement_type": "manual",
       "enemies": [
         {
-          "enemy_id": "0x015300",
+          "enemy_id": "0x015303",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 53,
           "level": 36,
-          "exp": 7500,
-          "is_boss": true
+          "exp": 6040,
+          "is_boss": true,
+          "index": 6
         }
       ]
     }

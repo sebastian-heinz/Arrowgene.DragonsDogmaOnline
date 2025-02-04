@@ -62,34 +62,35 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            var slotCount = coalescedRewards
-                .Where(x => !Server.ItemManager.IsItemWalletPoint(x.Value.ItemId) && x.Value.Num > 0)
-                .ToList()
-                .Count;
+            var distinctRewards = packet.GetRewardBoxItemList.Select(x => x.UID).Distinct().ToList();
 
+            var slotCount = coalescedRewards.Sum(x => distinctRewards.Contains(x.Key) ? Server.ItemManager.PredictAddItemSlots(client.Character, StorageType.StorageBoxNormal, x.Value.ItemId, x.Value.Num) : 0);
             if (slotCount > client.Character.Storage.GetStorage(StorageType.StorageBoxNormal).EmptySlots())
             {
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_STORAGE_OVERFLOW);
             }
 
-            foreach (var rewardUID in packet.GetRewardBoxItemList.Select(x => x.UID).Distinct().ToList())
+            Server.Database.ExecuteInTransaction(connection =>
             {
-                var reward = coalescedRewards[rewardUID];
-                if (Server.ItemManager.IsItemWalletPoint(reward.ItemId))
+                foreach (var rewardUID in distinctRewards)
                 {
-                    (WalletType walletType, uint amount) = Server.ItemManager.ItemToWalletPoint(reward.ItemId);
-                    var result = Server.WalletManager.AddToWallet(client.Character, walletType, amount * reward.Num);
-                    updateCharacterItemNtc.UpdateWalletList.Add(result);
+                    var reward = coalescedRewards[rewardUID];
+                    if (Server.ItemManager.IsItemWalletPoint(reward.ItemId))
+                    {
+                        (WalletType walletType, uint amount) = Server.ItemManager.ItemToWalletPoint(reward.ItemId);
+                        var result = Server.WalletManager.AddToWallet(client.Character, walletType, amount * reward.Num, connectionIn: connection);
+                        updateCharacterItemNtc.UpdateWalletList.Add(result);
+                    }
+                    else if (reward.Num > 0)
+                    {
+                        var result = Server.ItemManager.AddItem(Server, client.Character, false, reward.ItemId, reward.Num, connectionIn: connection);
+                        updateCharacterItemNtc.UpdateItemList.AddRange(result);
+                    }
                 }
-                else if (reward.Num > 0)
-                {
-                    var result = Server.ItemManager.AddItem(Server, client.Character, false, reward.ItemId, reward.Num);
-                    updateCharacterItemNtc.UpdateItemList.AddRange(result);
-                }
-            }
-            client.Send(updateCharacterItemNtc);
+                Server.RewardManager.DeleteQuestBoxReward(client, questBoxReward.UniqRewardId, connectionIn: connection);
+            });
 
-            Server.RewardManager.DeleteQuestBoxReward(client, questBoxReward.UniqRewardId);
+            client.Send(updateCharacterItemNtc);
 
             return new S2CQuestGetRewardBoxItemRes();
         }

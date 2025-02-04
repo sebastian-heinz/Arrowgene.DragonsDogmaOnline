@@ -50,8 +50,10 @@
       "enemies": [
         {
           "enemy_id": "0x015302",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 459,
           "level": 14,
-          "exp": 2780,
+          "exp": 934,
           "is_boss": true
         }
       ]

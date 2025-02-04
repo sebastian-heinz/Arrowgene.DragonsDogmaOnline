@@ -1,5 +1,4 @@
 using Arrowgene.Buffers;
-using System;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -9,8 +8,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
         }
 
-        public UInt32 ScheduleId { get; set; }
-        public UInt32 ClearNum { get; set; }
+        public uint ScheduleId { get; set; }
+        public uint ClearNum { get; set; }
 
         public class Serializer : EntitySerializer<CDataLightQuestClearList>
         {

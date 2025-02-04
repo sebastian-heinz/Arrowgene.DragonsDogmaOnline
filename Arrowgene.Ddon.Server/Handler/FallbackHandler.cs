@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Server.Handler
             {
                 PacketId responsePacketId = PacketId.GetPacketId(Server.Type, request.Id.GroupId, request.Id.HandlerId, 2);
                 IBuffer responseBuffer = new StreamBuffer();
-                responseBuffer.WriteUInt32((uint) ErrorCode.ERROR_CODE_FAIL, Endianness.Big);
+                responseBuffer.WriteUInt32((uint) ErrorCode.ERROR_CODE_NOT_IMPLEMENTED, Endianness.Big);
                 Packet response = new Packet(responsePacketId, responseBuffer.GetAllBytes());
                 client.Send(response);
             }

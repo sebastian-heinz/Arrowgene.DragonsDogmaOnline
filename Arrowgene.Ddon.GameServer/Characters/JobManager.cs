@@ -2,8 +2,8 @@
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -11,7 +11,6 @@ using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Data.Entity;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
@@ -31,19 +30,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
             _Server = server;
         }
 
-        public (IPacketStructure jobRes, IPacketStructure? itemNtc, IPacketStructure? jobNtc) SetJob(GameClient client, CharacterCommon common, JobId jobId, DbConnection? connectionIn = null)
+        public PacketQueue SetJob(GameClient client, CharacterCommon common, JobId jobId, DbConnection? connectionIn = null)
         {
             // TODO: Reject job change if there's no primary and secondary weapon for the new job in storage
             // (or give a lvl 1 weapon for free?)
 
+            PacketQueue queue = new();
+
             if (!HasEmptySlotsForTemplateSwap(client, common, common.Job, jobId))
             {
-                return (new S2CJobChangeJobRes()
-                {
-                    Error = (uint)ErrorCode.ERROR_CODE_JOBCHANGE_ITEM_CAPACITY_OVER
-                }, 
-                null,
-                null);
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_JOBCHANGE_STORAGE_FULL);
             }
 
             JobId oldJobId = common.Job;
@@ -52,7 +48,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, oldJobId, jobId, EquipType.Performance, connectionIn));
             updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, oldJobId, jobId, EquipType.Visual, connectionIn));
-            client.Send(updateCharacterItemNtc);
 
             CDataCharacterJobData? activeCharacterJobData = common.ActiveCharacterJobData;
 
@@ -102,6 +97,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 changeJobNotice.LearnNormalSkillParamList = normalSkills;
                 changeJobNotice.EquipJobItemList = jobItems;
                 // TODO: Unk0
+                
 
                 updateCharacterItemNtc.UpdateType = ItemNoticeType.ChangeJob;
 
@@ -118,8 +114,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     .FirstOrDefault(new CDataPlayPointData());
                 changeJobResponse.Unk0.Unk0 = (byte)jobId;
                 changeJobResponse.Unk0.Unk1 = character.Storage.GetAllStoragesAsCDataCharacterItemSlotInfoList();
+                
+                client.Enqueue(changeJobResponse, queue);
+                client.Enqueue(updateCharacterItemNtc, queue);
+                foreach (GameClient otherClient in _Server.ClientLookup.GetAll())
+                {
+                    otherClient.Enqueue(changeJobNotice, queue);
+                }
 
-                return (changeJobResponse, updateCharacterItemNtc, changeJobNotice);
+                return queue;
             }
             else if (common is Pawn)
             {
@@ -151,7 +154,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 changeJobResponse.TrainingStatus = pawn.TrainingStatus.GetValueOrDefault(pawn.Job, new byte[64]);
                 changeJobResponse.SpSkillList = pawn.SpSkills.GetValueOrDefault(pawn.Job, new List<CDataSpSkill>());
 
-                return (changeJobResponse, updateCharacterItemNtc, changeJobNotice);
+                client.Enqueue(changeJobResponse, queue);
+                client.Enqueue(updateCharacterItemNtc, queue);
+                foreach (GameClient otherClient in _Server.ClientLookup.GetAll())
+                {
+                    otherClient.Enqueue(changeJobNotice, queue);
+                }
+
+                return queue;
             }
             else
             {
@@ -191,7 +201,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         }
                         else
                         {
-                            throw ex;
+                            throw;
                         }
                     }
                 }
@@ -222,7 +232,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                                     }
                                     else
                                     {
-                                        throw ex;
+                                        throw;
                                     }
                                 }
                                 break;
@@ -249,7 +259,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             }
                             else
                             {
-                                throw ex;
+                                throw;
                             }
                         }
                     }
@@ -275,7 +285,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             }
                             else
                             {
-                                throw ex;
+                                throw;
                             }
                         }
                     }

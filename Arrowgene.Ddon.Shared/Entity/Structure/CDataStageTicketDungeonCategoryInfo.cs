@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             DungeonName = string.Empty;
             Unk1Str = string.Empty;
-            EntryFeeList = new List<CDataStageTicketDungeonItem>();
+            EntryFeeList = new List<CDataStageDungeonItem>();
         }
 
         public uint DungeonId { get; set; }
@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint Unk3 { get; set; }
         public bool Unk4 { get; set; }
 
-        public List<CDataStageTicketDungeonItem> EntryFeeList { get; set; } // Is this a reward list instead?
+        public List<CDataStageDungeonItem> EntryFeeList { get; set; } // Is this a reward list instead?
 
         public class Serializer : EntitySerializer<CDataStageTicketDungeonCategoryInfo>
         {
@@ -47,7 +47,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.Unk2 = ReadUInt32(buffer);
                 obj.Unk3 = ReadUInt32(buffer);
                 obj.Unk4 = ReadBool(buffer);
-                obj.EntryFeeList = ReadEntityList<CDataStageTicketDungeonItem>(buffer);
+                obj.EntryFeeList = ReadEntityList<CDataStageDungeonItem>(buffer);
                 return obj;
             }
         }
