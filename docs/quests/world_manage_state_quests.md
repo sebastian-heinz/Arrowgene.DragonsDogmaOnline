@@ -107,6 +107,10 @@ World Manage Quests are special quests that control the world state. By this we 
 
 ### q70030001 (Season 3.0)
 
+| Type              | StageNo | Value  | Comment
+|:-----------------:|:-------:|:------:|:-----------------------------------------------------------|
+| WorldManageLayout | st0130  | 3283   | Enables NPCs and Shops in rathnite foothills Orc encampmet
+
 ### q70031001 (Season 3.1)
 
 ### q70032001 (Season 3.2)

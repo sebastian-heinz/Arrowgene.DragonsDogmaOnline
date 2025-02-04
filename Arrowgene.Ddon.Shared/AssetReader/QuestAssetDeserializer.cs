@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
+using YamlDotNet.Core.Tokens;
 
 namespace Arrowgene.Ddon.Shared.AssetReader
 {
@@ -425,16 +426,17 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         Logger.Error($"Unable to parse the quest announce type of BlockNo={blockIndex}.");
                         return false;
                     }
-                    questBlock.AnnounceType = announceType;
+
+                    // Handles special pseudo announce types
+                    QuestBlock.EvaluateAnnounceType(questBlock, announceType);
                 }
 
-                ParseAnnoucementSubtypes(questBlock, jblock);
-
-                questBlock.IsCheckpoint = false;
                 if (jblock.TryGetProperty("checkpoint", out JsonElement jCheckpoint))
                 {
                     questBlock.IsCheckpoint = jCheckpoint.GetBoolean();
                 }
+
+                ParseAnnoucementSubtypes(questBlock, jblock);
 
                 if (jblock.TryGetProperty("stage_id", out JsonElement jStageId))
                 {
@@ -623,6 +625,21 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             {
                                 questBlock.NpcOrderDetails[0].QuestId = (QuestId)jOrderQuestId.GetUInt32();
                             }
+                        }
+                        break;
+                    case QuestBlockType.TouchNpc:
+                        {
+                            if (!Enum.TryParse(jblock.GetProperty("npc_id").GetString(), true, out NpcId npcId))
+                            {
+                                Logger.Error($"Unable to parse the npc_id in block @ index {blockIndex - 1}.");
+                                return false;
+                            }
+
+                            questBlock.NpcOrderDetails.Add(new QuestNpcOrder()
+                            {
+                                NpcId = npcId,
+                                StageId = AssetCommonDeserializer.ParseStageId(jblock.GetProperty("stage_id"))
+                            });
                         }
                         break;
                     case QuestBlockType.IsQuestOrdered:

@@ -146,7 +146,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return this;
         }
 
-        public QuestBlock SetAnnounceType(QuestAnnounceType value)
+        public static void EvaluateAnnounceType(QuestBlock questBlock, QuestAnnounceType value)
         {
             var isCheckPoint = (value == QuestAnnounceType.Checkpoint) ||
                                (value == QuestAnnounceType.CheckpointAndUpdate);
@@ -161,9 +161,13 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
                     break;
             }
 
-            IsCheckpoint = isCheckPoint;
-            AnnounceType = value;
+            questBlock.IsCheckpoint = isCheckPoint;
+            questBlock.AnnounceType = value;
+        }
 
+        public QuestBlock SetAnnounceType(QuestAnnounceType value)
+        {
+            EvaluateAnnounceType(this, value);
             return this;
         }
 
