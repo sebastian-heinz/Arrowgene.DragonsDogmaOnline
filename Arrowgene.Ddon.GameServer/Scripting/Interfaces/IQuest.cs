@@ -77,7 +77,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
             }
         }
 
-        public void AddFixedItemReward(uint itemId, ushort amount)
+        public void AddFixedItemReward(ItemId itemId, ushort amount)
         {
             var reward = new QuestFixedRewardItem();
             reward.LootPool.Add(new FixedLootPoolItem()
@@ -89,9 +89,9 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
             AddItemReward(reward);
         }
 
-        public void AddFixedItemReward(ItemId itemId, ushort amount)
+        public void AddFixedItemReward(uint itemId, ushort amount)
         {
-            AddFixedItemReward((uint)itemId, amount);
+            AddFixedItemReward((ItemId) itemId, amount);
         }
 
         public void AddPointReward(QuestPointReward reward)

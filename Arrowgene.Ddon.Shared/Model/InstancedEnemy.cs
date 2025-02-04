@@ -193,7 +193,7 @@ namespace Arrowgene.Ddon.Shared.Model
         {
             DropsTable.Items.Add(new GatheringItem()
             {
-                ItemId = (uint) itemId,
+                ItemId = itemId,
                 ItemNum = minAmount,
                 MaxItemNum = maxAmount,
                 DropChance = chance,

@@ -18,7 +18,7 @@ public class DropsTable
     {
         Items.Add(new GatheringItem()
         {
-            ItemId = (uint)itemId,
+            ItemId = itemId,
             ItemNum = minAmount,
             MaxItemNum = maxAmount,
             DropChance = dropChance

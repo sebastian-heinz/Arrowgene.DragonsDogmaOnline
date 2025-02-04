@@ -60,7 +60,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
                     {
                         results.Add(new InstancedGatheringItem()
                         {
-                            ItemId = itemId,
+                            ItemId = (ItemId) itemId,
                             ItemNum = amount
                         });
                     }

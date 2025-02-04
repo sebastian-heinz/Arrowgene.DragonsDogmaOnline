@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
+using System.Reflection.Metadata.Ecma335;
 using System.Text.Json;
 
 namespace Arrowgene.Ddon.Shared.AssetReader
@@ -117,7 +118,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         {
                             GatheringItem dropItems = new()
                             {
-                                ItemId = items.GetProperty("item_id").GetUInt32(),
+                                ItemId = AssetCommonDeserializer.ParseItemId(items.GetProperty("item_id")),
                                 ItemNum = items.GetProperty("item_min").GetUInt32(),
                                 MaxItemNum = items.GetProperty("item_max").GetUInt32(),
                                 Quality = items.GetProperty("quality").GetUInt32(),
@@ -284,6 +285,25 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             }
 
             return new StageId(id, layerNo, groupId);
+        }
+
+        public static ItemId ParseItemId(JsonElement jItemId)
+        {
+            ItemId result = ItemId.HealingPotion;
+
+            if (jItemId.ValueKind == JsonValueKind.Number)
+            {
+                result = (ItemId) jItemId.GetUInt32();
+            }
+            else if (jItemId.ValueKind == JsonValueKind.String)
+            {
+                if (!Enum.TryParse(jItemId.GetString(), true, out result))
+                {
+                    throw new Exception("Failed to parse item reward. Skipping.");
+                }
+            }
+
+            return result;
         }
     }
 }

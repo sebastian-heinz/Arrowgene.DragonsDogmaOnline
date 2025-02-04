@@ -8,12 +8,12 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
     public abstract class LootPoolItem
     {
         public ushort Num { get; set; }
-        public uint ItemId { get; set; }
+        public ItemId ItemId { get; set; }
 
         public virtual string GetUID()
         {
             IncrementalHash hash = IncrementalHash.CreateHash(HashAlgorithmName.MD5);
-            hash.AppendData(BitConverter.GetBytes(ItemId));
+            hash.AppendData(BitConverter.GetBytes((uint) ItemId));
             hash.AppendData(BitConverter.GetBytes(Num));
             return BitConverter.ToString(hash.GetHashAndReset()).Replace("-", string.Empty).Substring(0, 8);
         }
@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public override string GetUID()
         {
             IncrementalHash hash = IncrementalHash.CreateHash(HashAlgorithmName.MD5);
-            hash.AppendData(BitConverter.GetBytes(ItemId));
+            hash.AppendData(BitConverter.GetBytes((uint) ItemId));
             hash.AppendData(BitConverter.GetBytes(Num));
             return BitConverter.ToString(hash.GetHashAndReset()).Replace("-", string.Empty).Substring(0, 8);
         }

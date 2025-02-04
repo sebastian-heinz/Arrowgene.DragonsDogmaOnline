@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                 List<GatheringItem> itemsInSpot = dict.GetValueOrDefault((row.StageId, row.SubGroupId)) ?? new List<GatheringItem>();
                 itemsInSpot.Add(new GatheringItem()
                 {
-                    ItemId = row.ItemId,
+                    ItemId = (ItemId) row.ItemId,
                     ItemNum = row.ItemNum,
                     MaxItemNum = row.MaxItemNum,
                     Quality = row.Quality,
