@@ -23,7 +23,7 @@ public class InstancedGatheringItem
         }
     }
 
-    public uint ItemId { get; set; }
+    public ItemId ItemId { get; set; }
     public uint ItemNum { get; set; }
     public uint Quality { get; set; }
     public bool IsHidden { get; set; }

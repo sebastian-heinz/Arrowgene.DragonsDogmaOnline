@@ -50,100 +50,120 @@ namespace Arrowgene.Ddon.GameServer.Characters
         };
         public static readonly List<StorageType> BbmEmbodyStorages = new List<StorageType> { StorageType.StorageBoxNormal, StorageType.ItemBagConsumable, StorageType.ItemBagMaterial, StorageType.ItemBagEquipment, StorageType.ItemBagJob };
 
-        private static readonly Dictionary<uint, (WalletType Type, uint Quantity)> ItemIdWalletTypeAndQuantity = new Dictionary<uint, (WalletType Type, uint Amount)>() {
-            {7789, (WalletType.Gold, 1)},
-            {7790, (WalletType.Gold, 10)},
-            {7791, (WalletType.Gold, 100)},
-            {7792, (WalletType.RiftPoints,1)},
-            {7793, (WalletType.RiftPoints,10)},
-            {7794, (WalletType.RiftPoints,100)},
-            {7795, (WalletType.BloodOrbs,1)}, // Doesn't show up
-            {7796, (WalletType.BloodOrbs,10)}, // Doesn't show up
-            {7797, (WalletType.BloodOrbs,100)}, // Doesn't show up
-            {18742, (WalletType.HighOrbs,1)},
-            {18743, (WalletType.HighOrbs,10)},
-            {18744, (WalletType.HighOrbs,100)},
-            {18828,(WalletType.Gold,7500)},
-            {18829,(WalletType.RiftPoints,1250)},
-            {18830,(WalletType.BloodOrbs,750)},
-            {19508,(WalletType.Gold,1000)},
-            {19509,(WalletType.Gold,10000)},
-            {19510,(WalletType.RiftPoints,1000)},
-            {19511,(WalletType.BloodOrbs,1000)},
+        private static readonly Dictionary<ItemId, (WalletType Type, uint Quantity)> ItemIdWalletTypeAndQuantity = new Dictionary<ItemId, (WalletType Type, uint Amount)>() {
+            {ItemId.CoinPouch1G, (WalletType.Gold, 1)},
+            {ItemId.CoinPouch10G, (WalletType.Gold, 10)},
+            {ItemId.CoinPouch100G, (WalletType.Gold, 100)},
+            {ItemId.RiftCrystal1Rp, (WalletType.RiftPoints, 1)},
+            {ItemId.RiftCrystal10Rp, (WalletType.RiftPoints, 10)},
+            {ItemId.RiftCrystal100Rp, (WalletType.RiftPoints, 100)},
+            {ItemId.BloodOrb1Bo, (WalletType.BloodOrbs,1)}, // Doesn't show up in loot pool
+            {ItemId.BloodOrb10Bo, (WalletType.BloodOrbs, 10)}, // Doesn't show up in loot pool
+            {ItemId.BloodOrb100Bo, (WalletType.BloodOrbs, 100)}, // Doesn't show up in loot pool
+            {ItemId.HighOrb1Ho, (WalletType.HighOrbs, 1)},
+            {ItemId.HighOrb10Ho, (WalletType.HighOrbs, 10)},
+            {ItemId.HighOrb100Ho, (WalletType.HighOrbs, 100)},
+            {ItemId.CoinPouch7500G, (WalletType.Gold, 7500)},
+            {ItemId.RiftCrystal1250Rp, (WalletType.RiftPoints, 1250)},
+            {ItemId.BloodOrb750Bo, (WalletType.BloodOrbs, 750)},
+            {ItemId.CoinPouch1000G, (WalletType.Gold, 1000)},
+            {ItemId.CoinPouch10000G, (WalletType.Gold, 10000)},
+            {ItemId.RiftCrystal1000Rp, (WalletType.RiftPoints, 1000)},
+            {ItemId.BloodOrb1000Bo, (WalletType.BloodOrbs, 1000)},
             // TODO: Requires special item notice type 47, could be offered in adventure pass shop
-            {11262,(WalletType.ResetCraftSkills,1)}
+            {ItemId.CurrencyForResettingCraftP, (WalletType.ResetCraftSkills, 1)}
             // TODO: Find all items that add wallet points
         };
 
-        private static readonly Dictionary<uint, uint> AbilityItems = new Dictionary<uint, uint>()
+        private static readonly Dictionary<ItemId, uint> AbilityItems = new Dictionary<ItemId, uint>()
         {
-            {16100, 448}, // 習得の書【友癒】,Book of Acquisition (Companion Healing),
-            {16101, 449}, // 習得の書【重歩 軽】,Book of Acquisition (Heavy Steps: Light),
-            {16102, 450},// 習得の書【穿歩 軽】,Book of Acquisition (Deft Footing: Light),
-            {16103, 451}, // 習得の書【延泉 軽】,Book of Acquisition (Extended Springs: Light),
-            {16104, 452}, // 習得の書【探採 軽】,Book of Acquisition (Gathering: Light),
-            {16105, 453}, // 習得の書【薬効 軽】,Book of Acquisition (Efficacy: Light),
-            {16106, 454}, // 習得の書【効延 軽】,Book of Acquisition (Effect Extension: Light),
-            {16107, 455}, // 習得の書【巧掘 軽】,Book of Acquisition (Expert Excavator: Light),
-            {16108, 456}, // 習得の書【流断 軽】,Book of Acquisition (Flow: Light),
-            {16109, 457}, // 習得の書【宝眼 軽】,Book of Acquisition (Treasure Eye: Light),
-            {16110, 458}, // 習得の書【根性 軽】,Book of Acquisition (Willpower: Light),
-            {16111, 459}, // 習得の書【安着 軽】,Book of Acquisition (Safe Landing: Light),
-            {19199, 248}, // 習得の書【抗毒】,Book of Acquisition (Resist Poison),
-            {19200, 249}, // 習得の書【抗遅】,Book of Acquisition (Anti-slow),
-            {19201, 250}, // 習得の書【抗眠】,Book of Acquisition (Anti-sleep),
-            {19202, 251}, // 習得の書【抗絶】,Book of Acquisition (Anti-stun),
-            {19203, 252}, // 習得の書【抗水】,Book of Acquisition (Anti-drench),
-            {19204, 253}, // 習得の書【抗油】,Book of Acquisition (Anti-oil),
-            {19205, 254}, // 習得の書【抗封】,Book of Acquisition (Anti-seal),
-            {19206, 255}, // 習得の書【抗軟】,Book of Acquisition (Anti-subdue),
-            {19207, 256}, // 習得の書【抗石】,Book of Acquisition (Anti-petrify),
-            {19208, 257}, // 習得の書【抗金】,Book of Acquisition (Anti-goldify),
-            {19209, 258}, // 習得の書【親炎】,Book of Acquisition (Close to Fire),
-            {19210, 259}, // 習得の書【親氷】,Book of Acquisition (Close to Ice),
-            {19211, 260}, // 習得の書【親雷】,Book of Acquisition (Close to Thunder),
-            {19212, 261}, // 習得の書【親聖】,Book of Acquisition (Close to Holy),
-            {19213, 262}, // 習得の書【親闇】,Book of Acquisition (Close to Dark),
-            {19214, 263}, // 習得の書【制毒】,Book of Acquisition (Control Poison),
-            {19215, 264}, // 習得の書【制遅】,Book of Acquisition (Control Slow),
-            {19216, 265}, // 習得の書【制眠】,Book of Acquisition (Control Sleep),
-            {19217, 266}, // 習得の書【制絶】,Book of Acquisition (Control Stun),
-            {19218, 267}, // 習得の書【速乾】,Book of Acquisition (Quick Drying),
-            {19219, 268}, // 習得の書【速清】,Book of Acquisition (Quick Clean),
-            {19220, 269}, // 習得の書【縮封】,Book of Acquisition (Quick Seal),
-            {19221, 270}, // 習得の書【縮軟】,Book of Acquisition (Reduce Subdue),
-            {19222, 273}, // 習得の書【縮焼】,Book of Acquisition (Reduce Tar),
-            {19223, 274}, // 習得の書【縮凍】,Book of Acquisition (Reduce Freeze),
-            {19224, 275}, // 習得の書【縮霧】,Book of Acquisition (Reduce Blind),
-            {19225, 276}, // 習得の書【縮炎】,Book of Acquisition (Reduce Fire),
-            {19226, 277}, // 習得の書【縮氷】,Book of Acquisition (Reduce Ice),
-            {19227, 278}, // 習得の書【縮雷】,Book of Acquisition (Reduce Thunder),
-            {19228, 279}, // 習得の書【縮聖】,Book of Acquisition (Reduce Holy),
-            {19229, 280}, // 習得の書【縮闇】,Book of Acquisition (Reduce Dark),
-            {19230, 281}, // 習得の書【縮攻】,Book of Acquisition (Reduce Physical Attack Down),
-            {19231, 282}, // 習得の書【縮防】,Book of Acquisition (Reduce Defense Down),
-            {19232, 283}, // 習得の書【縮念】,Book of Acquisition (Reduce Magick Attack Down),
-            {19233, 284}, // 習得の書【縮衰】,Book of Acquisition (Reduce Magick Defense Down),
-            {19234, 271}, // 習得の書【縮石】,Book of Acquisition (Reduce Petrify),
-            {19235, 272}, // 習得の書【縮金】,Book of Acquisition (Reduce Goldify),
+            {ItemId.BookOfAcquisitionCompanionHealing, 448},
+            {ItemId.BookOfAcquisitionHeavyStepsLight, 449},
+            {ItemId.BookOfAcquisitionDeftFootingLight, 450},
+            {ItemId.BookOfAcquisitionExtendedSpringsLight, 451},
+            {ItemId.BookOfAcquisitionGatheringLight, 452},
+            {ItemId.BookOfAcquisitionEfficacyLight, 453},
+            {ItemId.BookOfAcquisitionEffectExtensionLight, 454},
+            {ItemId.BookOfAcquisitionExpertExcavatorLight, 455},
+            {ItemId.BookOfAcquisitionFlowLight, 456},
+            {ItemId.BookOfAcquisitionTreasureEyeLight, 457},
+            {ItemId.BookOfAcquisitionWillpowerLight, 458},
+            {ItemId.BookOfAcquisitionSafeLandingLight, 459},
+            {ItemId.BookOfAcquisitionResistPoison, 248},
+            {ItemId.BookOfAcquisitionAntiSlow, 249},
+            {ItemId.BookOfAcquisitionAntiSleep, 250},
+            {ItemId.BookOfAcquisitionAntiStun, 251},
+            {ItemId.BookOfAcquisitionAntiDrench, 252},
+            {ItemId.BookOfAcquisitionAntiOil, 253},
+            {ItemId.BookOfAcquisitionAntiSeal, 254},
+            {ItemId.BookOfAcquisitionAntiSubdue, 255},
+            {ItemId.BookOfAcquisitionAntiPetrify, 256},
+            {ItemId.BookOfAcquisitionAntiGoldify, 257},
+            {ItemId.BookOfAcquisitionCloseToFire, 258},
+            {ItemId.BookOfAcquisitionCloseToIce, 259},
+            {ItemId.BookOfAcquisitionCloseToThunder, 260},
+            {ItemId.BookOfAcquisitionCloseToHoly, 261},
+            {ItemId.BookOfAcquisitionCloseToDark, 262},
+            {ItemId.BookOfAcquisitionControlPoison, 263},
+            {ItemId.BookOfAcquisitionControlSlow, 264},
+            {ItemId.BookOfAcquisitionControlSleep, 265},
+            {ItemId.BookOfAcquisitionControlStun, 266},
+            {ItemId.BookOfAcquisitionQuickDrying, 267},
+            {ItemId.BookOfAcquisitionQuickClean, 268},
+            {ItemId.BookOfAcquisitionQuickSeal, 269},
+            {ItemId.BookOfAcquisitionReduceSubdue, 270},
+            {ItemId.BookOfAcquisitionReduceTar, 273},
+            {ItemId.BookOfAcquisitionReduceFreeze, 274},
+            {ItemId.BookOfAcquisitionReduceBlind, 275},
+            {ItemId.BookOfAcquisitionReduceFire, 276},
+            {ItemId.BookOfAcquisitionReduceIce, 277},
+            {ItemId.BookOfAcquisitionReduceThunder, 278},
+            {ItemId.BookOfAcquisitionReduceHoly, 279},
+            {ItemId.BookOfAcquisitionReduceDark, 280},
+            {ItemId.BookOfAcquisitionReducePhysicalAttackDown, 281},
+            {ItemId.BookOfAcquisitionReduceDefenseDown, 282},
+            {ItemId.BookOfAcquisitionReduceMagickAttackDown, 283},
+            {ItemId.BookOfAcquisitionReduceMagickDefenseDown, 284},
+            {ItemId.BookOfAcquisitionReducePetrify, 271},
+            {ItemId.BookOfAcquisitionReduceGoldify, 272},
         };
 
-        public bool IsSecretAbilityItem(uint itemId)
+        public bool IsSecretAbilityItem(ItemId itemId)
         {
             return AbilityItems.ContainsKey(itemId);
         }
 
-        public uint GetAbilityId(uint itemId)
+        public bool IsSecretAbilityItem(uint itemId)
+        {
+            return IsSecretAbilityItem((ItemId)itemId);
+        }
+
+        public uint GetAbilityId(ItemId itemId)
         {
             return AbilityItems[itemId];
         }
 
-        public bool IsItemWalletPoint(uint itemId)
+        public uint GetAbilityId(uint itemId)
+        {
+            return GetAbilityId((ItemId)itemId);
+        }
+
+        public bool IsItemWalletPoint(ItemId itemId)
         {
             return ItemIdWalletTypeAndQuantity.ContainsKey(itemId);
         }
 
+        public bool IsItemWalletPoint(uint itemId)
+        {
+            return IsItemWalletPoint((ItemId)itemId);
+        }
+
         public (WalletType walletType, uint itemId) ItemToWalletPoint(uint itemId)
+        {
+            return ItemToWalletPoint((ItemId) itemId);
+        }
+
+        public (WalletType walletType, uint itemId) ItemToWalletPoint(ItemId itemId)
         {
             if (!IsItemWalletPoint(itemId))
             {
@@ -184,9 +204,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public void GatherItem(Character character, S2CItemUpdateCharacterItemNtc ntc, InstancedGatheringItem gatheringItem, uint pickedGatherItems, DbConnection? connectionIn = null)
         {
-            if (ItemIdWalletTypeAndQuantity.ContainsKey(gatheringItem.ItemId)) 
+            if (ItemIdWalletTypeAndQuantity.ContainsKey((ItemId) gatheringItem.ItemId)) 
             {
-                var walletTypeAndQuantity = ItemIdWalletTypeAndQuantity[gatheringItem.ItemId];
+                var walletTypeAndQuantity = ItemIdWalletTypeAndQuantity[(ItemId) gatheringItem.ItemId];
                 uint totalQuantityToAdd = walletTypeAndQuantity.Quantity * gatheringItem.ItemNum;
 
                 ntc.UpdateWalletList.Add(
@@ -204,7 +224,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             } 
             else 
             {
-                List<CDataItemUpdateResult> results = AddItem(_Server, character, true, gatheringItem.ItemId, pickedGatherItems, connectionIn:connectionIn);
+                List<CDataItemUpdateResult> results = AddItem(_Server, character, true, (uint) gatheringItem.ItemId, pickedGatherItems, connectionIn:connectionIn);
                 ntc.UpdateItemList.AddRange(results);
 
                 uint totalRemoved = (uint)results.Select(result => result.UpdateItemNum).Sum();

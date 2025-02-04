@@ -1235,7 +1235,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     results.Add(new InstancedGatheringItem()
                     {
-                        ItemId = rolledItem.ItemId,
+                        ItemId = (ItemId) rolledItem.ItemId,
                         ItemNum = rolledItem.ItemNum,
                         IsHidden = rolledItem.IsHidden,
                         Quality = rolledItem.Quality,
@@ -1313,7 +1313,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // TODO: Make this configurable
                     results.Add(new InstancedGatheringItem()
                     {
-                        ItemId = (gatheringPoint == null) ? 9393 : dungeonInfo.SoulItemId,
+                        ItemId = (gatheringPoint == null) ? ItemId.WaterFlask : (ItemId) dungeonInfo.SoulItemId,
                         ItemNum = (uint) Random.Shared.Next(1, 4)
                     });
                 }

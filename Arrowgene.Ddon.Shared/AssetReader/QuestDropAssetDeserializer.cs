@@ -65,7 +65,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                     GatheringItem gatheringItem = new()
                     {
-                        ItemId = row[(int)QuestEnemyDropHeaders.ItemId].GetUInt32(),
+                        ItemId = (ItemId) row[(int)QuestEnemyDropHeaders.ItemId].GetUInt32(),
                         ItemNum = row[(int)QuestEnemyDropHeaders.ItemNum].GetUInt32(),
                         MaxItemNum = row[(int)QuestEnemyDropHeaders.MaxItemNum].GetUInt32(),
                         Quality = row[(int)QuestEnemyDropHeaders.Quality].GetUInt32(),

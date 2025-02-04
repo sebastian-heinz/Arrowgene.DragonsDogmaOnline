@@ -306,7 +306,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     results.Add(new InstancedGatheringItem()
                     {
-                        ItemId = rareItem,
+                        ItemId = (ItemId) rareItem,
                         ItemNum = 1,
                         Quality = 1,
                     });
@@ -335,7 +335,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     }
                     results.Add(new InstancedGatheringItem()
                     {
-                        ItemId = itemId,
+                        ItemId = (ItemId) itemId,
                         ItemNum = 1,
                         Quality = quality
                     });
@@ -361,7 +361,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     {
                         results.Add(new InstancedGatheringItem()
                         {
-                            ItemId = itemId,
+                            ItemId = (ItemId)itemId,
                             ItemNum = 1,
                         });
                     }
@@ -375,7 +375,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 uint itemId = BitterblackMazeManager.SelectGear(server, items, chestType, stageId);
                 results.Add(new InstancedGatheringItem()
                 {
-                    ItemId = itemId,
+                    ItemId = (ItemId) itemId,
                     ItemNum = 1,
                 });
             }
@@ -396,7 +396,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         // Stick consumable in the front of the list
                         results.Insert(0, new InstancedGatheringItem()
                         {
-                            ItemId = item.Item1,
+                            ItemId = (ItemId) item.Item1,
                             ItemNum = numItems
                         });
                     }
@@ -410,7 +410,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 uint numItems = (uint)Random.Shared.Next((int)(item.Amount + 1));
                 results.Add(new InstancedGatheringItem()
                 {
-                    ItemId = item.ItemId,
+                    ItemId = (ItemId) item.ItemId,
                     ItemNum = numItems > 0 ? numItems : 1
                 });
             }

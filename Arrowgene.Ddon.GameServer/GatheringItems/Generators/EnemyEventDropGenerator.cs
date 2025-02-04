@@ -145,7 +145,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
                 {
                     results.Add(new InstancedGatheringItem()
                     {
-                        ItemId = item.ItemId,
+                        ItemId = (ItemId) item.ItemId,
                         ItemNum = (uint)Random.Shared.Next((int)item.MinAmount, (int)(item.MaxAmount + 1)),
                     });
                 }

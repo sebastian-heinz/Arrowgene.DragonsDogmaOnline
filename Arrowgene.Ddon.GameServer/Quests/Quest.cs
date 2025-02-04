@@ -532,7 +532,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             result.Restrictions.Unk5List.Add(new CDataCommonU8() { Value = 2 });
 #endif
 
-            HashSet<uint> items = new HashSet<uint>();
+            var items = new HashSet<ItemId>();
             List<QuestRewardItem> rewards = this.ItemRewards.Concat(this.SelectableRewards).ToList();
             // Rewards for EXM seem to show up independently
             foreach (var rewardData in rewards)
@@ -602,7 +602,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 EndDistributionDate = uint.MaxValue, // ulong.MaxValue causes some math on the client to overflow and report it as ending soon, so we use uint here.
                 ContentJoinItemRank = (ushort)(OrderConditions.Find(x => x.Type == QuestOrderConditionType.ItemRank)?.Param01 ?? 0),
                 RandomRewardNum = RandomRewardNum(),
-                SelectRewardItemIdList = GetQuestSelectableRewards().Select(x => new CDataCommonU32(x.ItemId)).ToList(),
+                SelectRewardItemIdList = GetQuestSelectableRewards().Select(x => new CDataCommonU32((uint) x.ItemId)).ToList(),
                 //DiscoverRewardWalletPoint = WalletRewards, // These are not the same as the regular rewards?
                 //DiscoverRewardExp = ExpRewards, // These are not the same as the regular rewards?
                 QuestLayoutFlagSetInfoList = QuestLayoutFlagSetInfo.Select(x => x.AsCDataQuestLayoutFlagSetInfo()).ToList(),

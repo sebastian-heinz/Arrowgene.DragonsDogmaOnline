@@ -58,7 +58,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 {
                     List<JsonElement> row = dropsTableItemsRow.EnumerateArray().ToList();
                     GatheringItem gatheringItem = new GatheringItem();
-                    gatheringItem.ItemId = row[dropsTableSchemaIndexes["ItemId"]].GetUInt32();
+                    gatheringItem.ItemId = (ItemId) row[dropsTableSchemaIndexes["ItemId"]].GetUInt32();
                     gatheringItem.ItemNum = row[dropsTableSchemaIndexes["ItemNum"]].GetUInt32();
                     gatheringItem.MaxItemNum = row[dropsTableSchemaIndexes["MaxItemNum"]].GetUInt32();
                     gatheringItem.Quality = row[dropsTableSchemaIndexes["Quality"]].GetUInt32();

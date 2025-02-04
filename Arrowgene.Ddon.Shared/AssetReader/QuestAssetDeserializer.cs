@@ -316,7 +316,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             {
                                 rewardItem.LootPool.Add(new RandomLootPoolItem()
                                 {
-                                    ItemId = item.GetProperty("item_id").GetUInt32(),
+                                    ItemId = AssetCommonDeserializer.ParseItemId(item.GetProperty("item_id")),
                                     Num = item.GetProperty("num").GetUInt16(),
                                     Chance = item.GetProperty("chance").GetDouble()
                                 });
@@ -329,7 +329,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             {
                                 rewardItem.LootPool.Add(new SelectLootPoolItem()
                                 {
-                                    ItemId = item.GetProperty("item_id").GetUInt32(),
+                                    ItemId = AssetCommonDeserializer.ParseItemId(item.GetProperty("item_id")),
                                     Num = item.GetProperty("num").GetUInt16(),
                                 });
                             }
@@ -341,7 +341,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             {
                                 rewardItem.LootPool.Add(new FixedLootPoolItem()
                                 {
-                                    ItemId = item.GetProperty("item_id").GetUInt32(),
+                                    ItemId = AssetCommonDeserializer.ParseItemId(item.GetProperty("item_id")),
                                     Num = item.GetProperty("num").GetUInt16(),
                                 });
                             };
