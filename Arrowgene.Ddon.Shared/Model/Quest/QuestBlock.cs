@@ -207,7 +207,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return this;
         }
 
-        public QuestBlock AddMyQuestSetFlag(uint value)
+        public QuestBlock AddMyQstSetFlag(uint value)
         {
             MyQstSetFlags.Add(value);
             return this;

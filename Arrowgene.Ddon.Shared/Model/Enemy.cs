@@ -66,6 +66,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public long SpawnTimeStart { get; set;}
         public long SpawnTimeEnd { get; set; }
         public uint Experience { get; set; }
+        public uint RaidPoints { get; set; }
         public DropsTable DropsTable { get; set; }
         public bool NotifyStrongEnemy { get; set; }
         public uint PPDrop { get; set; }

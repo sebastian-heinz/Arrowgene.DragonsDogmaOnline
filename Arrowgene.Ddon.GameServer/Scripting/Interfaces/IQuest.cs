@@ -20,6 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
             WalletRewards = new List<QuestWalletReward>();
             PointRewards = new List<QuestPointReward>();
             EnemyGroups = new Dictionary<uint, QuestEnemyGroup>();
+            MissionParams = new QuestMissionParams();
 
             if (OverrideEnemySpawn == null)
             {
@@ -50,19 +51,33 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
         private List<QuestWalletReward> WalletRewards { get; set; }
         private List<QuestPointReward> PointRewards { get; set; }
         private Dictionary<uint, QuestEnemyGroup> EnemyGroups { get; set; }
+        protected QuestMissionParams MissionParams { get; set; }
 
         public void Initialize(string path)
         {
             Path = path;
 
+            InitializeState();
             InitializeRewards();
             InitializeEnemyGroups();
             InitializeBlocks();
         }
 
-        protected abstract void InitializeRewards();
-        protected abstract void InitializeEnemyGroups();
-        protected abstract void InitializeBlocks();
+        protected virtual void InitializeState()
+        {
+        }
+
+        protected virtual void InitializeRewards()
+        {
+        }
+
+        protected virtual void InitializeEnemyGroups()
+        {
+        }
+
+        protected virtual void InitializeBlocks()
+        {
+        }
 
         public virtual bool AcceptRequirementsMet(DdonGameServer server, GameClient client)
         {
@@ -77,13 +92,13 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
             }
         }
 
-        public void AddFixedItemReward(ItemId itemId, ushort amount)
+        public void AddFixedItemReward(ItemId itemId, ushort amount, bool isHidden = false)
         {
-            var reward = new QuestFixedRewardItem();
+            var reward = new QuestFixedRewardItem(isHidden);
             reward.LootPool.Add(new FixedLootPoolItem()
             {
                 ItemId = itemId,
-                Num = amount
+                Num = amount,
             });
 
             AddItemReward(reward);
@@ -92,6 +107,48 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
         public void AddFixedItemReward(uint itemId, ushort amount)
         {
             AddFixedItemReward((ItemId) itemId, amount);
+        }
+
+        public void AddRandomChanceItemReward(List<(ItemId ItemId, ushort Amount, double Chance)> items, bool isHidden = false)
+        {
+            var reward = new QuestRandomChanceRewardItem(isHidden);
+            foreach (var item in items)
+            {
+                reward.LootPool.Add(new ChanceLootPoolItem()
+                {
+                    ItemId = item.ItemId,
+                    Num = item.Amount,
+                    Chance = item.Chance
+                });
+            }
+            AddItemReward(reward);
+        }
+
+        public void AddRandomFixedItemReward(List<(ItemId ItemId, ushort Amount)> items, bool isHidden = false)
+        {
+            var reward = new QuestRandomFixedRewardItem(isHidden);
+            foreach (var item in items)
+            {
+                reward.LootPool.Add(new FixedLootPoolItem
+                {
+                    ItemId = item.ItemId,
+                    Num = item.Amount,
+                });
+            }
+            AddItemReward(reward);
+        }
+
+        public void AddSelectItemReward(List<(ItemId ItemId, ushort Amount)> items, bool isHidden = false)
+        {
+            var reward = new QuestSelectRewardItem(isHidden);
+            foreach (var item in items)
+            {
+                reward.LootPool.Add(new SelectLootPoolItem
+                {
+                    ItemId = item.ItemId,
+                    Num = item.Amount,
+                });
+            }
         }
 
         public void AddPointReward(QuestPointReward reward)
@@ -153,13 +210,19 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
             EnemyGroups[groupId].Enemies.AddRange(enemies);
         }
 
-        public void AddProcess(QuestProcess process)
+        public QuestProcess AddProcess(QuestProcess process)
         {
             if (Processes.ContainsKey(process.ProcessNo))
             {
                 throw new Exception($"The process {process.ProcessNo} is defined multiple times in '{Path}'");
             }
             Processes[process.ProcessNo] = process;
+            return process;
+        }
+
+        public QuestProcess AddNewProcess(ushort processNo)
+        {
+            return AddProcess(new QuestProcess(processNo));
         }
 
         private void ValidateQuestParams()
@@ -207,8 +270,10 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
                 RewardCurrency = WalletRewards,
                 StageId = StageId,
                 ResetPlayerAfterQuest = ResetPlayerAfterQuest,
+                MissionParams = MissionParams,
             };
 
+            // TODO: Generate a ScriptedQuest instead which is more customizable
             return GenericQuest.FromAsset(server, assetData, this);
         }
     }

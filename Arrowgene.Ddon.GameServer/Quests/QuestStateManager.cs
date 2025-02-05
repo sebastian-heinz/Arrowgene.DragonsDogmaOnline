@@ -270,7 +270,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
         }
 
-        public bool HasEnemiesInCurrentStageGroup(Quest quest, StageId stageId, uint subGroupId)
+        public bool HasEnemiesForCurrentQuestStepInStageGroup(Quest quest, StageId stageId, uint subGroupId)
         {
             lock (ActiveQuests)
             {

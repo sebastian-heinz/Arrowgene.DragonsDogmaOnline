@@ -1,4 +1,6 @@
 using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Shared.Model;
 using System;
 using System.Collections.Generic;
@@ -19,6 +21,12 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         {
             // TODO: How to block this after being set one time without breaking tests
             Instance.Server = server;
+        }
+
+        // TODO: Remove this function once Server singleton is created
+        public static void LoadQuest(IQuest scriptedQuest)
+        {
+            QuestManager.LoadScriptedQuest(Instance.Server, scriptedQuest);
         }
 
         public static NamedParam GetNamedParam(uint paramId)
@@ -68,6 +76,14 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         public static IDatabase Database()
         {
             return Instance.Server.Database;
+        }
+    }
+
+    public static class InstancedEnemyUtils
+    {
+        public static InstancedEnemy SetNamedEnemyParams(this InstancedEnemy enemy, uint namedParamId)
+        {
+            return enemy.SetNamedEnemyParams(LibDdon.GetNamedParam(namedParamId));
         }
     }
 }

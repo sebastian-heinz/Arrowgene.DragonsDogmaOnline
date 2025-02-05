@@ -71,10 +71,21 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        public static void LoadScriptedQuest(DdonGameServer server, IQuest questScript)
+        {
+            gQuests[questScript.QuestScheduleId] = questScript.GenerateQuest(server);
+            var quest = gQuests[questScript.QuestScheduleId];
+            if (quest.Enabled)
+            {
+                AddQuestToCategory(quest);
+            }
+        }
+
         public static void LoadQuests(DdonGameServer server)
         {
             var assetRepository = server.AssetRepository;
 
+#if false
             // Iterate over quests generated from script
             foreach (var questScript in server.ScriptManager.QuestModule.QuestsByScheduleId.Values)
             {
@@ -86,6 +97,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     AddQuestToCategory(quest);
                 }
             }
+#endif
 
             // Iterate over quests generated from json
             foreach (var questAsset in assetRepository.QuestAssets.Quests)

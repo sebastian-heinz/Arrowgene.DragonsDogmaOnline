@@ -1,6 +1,5 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Context;
-using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -537,6 +536,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
             // Rewards for EXM seem to show up independently
             foreach (var rewardData in rewards)
             {
+                if (rewardData.IsHidden)
+                {
+                    continue;
+                }
+
                 foreach (var reward in rewardData.LootPool)
                 {
                     if (rewardData.RewardType == QuestRewardType.Fixed || rewardData.RewardType == QuestRewardType.Select)
@@ -749,7 +753,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
         }
 
-        public bool HasEnemiesInInCurrentStage(StageId stageId)
+        public bool HasEnemiesInCurrentStageGroup(StageId stageId)
         {
             return UniqueEnemyGroups.Contains(stageId);
         }
@@ -867,7 +871,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 results.AddRange(reward.AsCDataRewardBoxItems());
             }
 
-            List<QuestRandomRewardItem> randomRewards = new List<QuestRandomRewardItem>();
+            var randomRewards = new List<QuestRandomRewardItem>();
             foreach (var reward in quest.ItemRewards)
             {
                 if (reward.RewardType != QuestRewardType.Random)
