@@ -3,7 +3,7 @@
   "type": "World",
   "comment": "A Dubious Remedy",
   "quest_id": 20070001,
-  "base_level": 44,
+  "base_level": 45,
   "minimum_item_rank": 0,
   "discoverable": true,
   "area_id": "NorthernBetlandPlains",
@@ -11,32 +11,42 @@
   "rewards": [
     {
       "type": "exp",
-      "amount": 1180
+      "amount": 1480
     },
     {
       "type": "wallet",
       "wallet_type": "Gold",
-      "amount": 1410
+      "amount": 1480
     },
     {
       "type": "wallet",
       "wallet_type": "RiftPoints",
-      "amount": 180
+      "amount": 190
     },
     {
       "type": "select",
       "loot_pool": [
         {
-          "item_id": 7958,
+          "item_id": 7751,
           "num": 1
         },
         {
-          "item_id": 9390,
+          "item_id": 7958,
           "num": 1
         },
         {
           "item_id": 9398,
           "num": 3
+        }
+      ]
+    },
+    {
+      "type": "random",
+      "loot_pool": [
+        {
+          "item_id": 7859,
+          "num": 2,
+          "chance": 0.7
         }
       ]
     }
@@ -47,25 +57,47 @@
         "id": 173,
         "group_id": 1
       },
+      "placement_type": "manual",
       "enemies": [
         {
-          "enemy_id": "0x015500",
-          "level": 45,
-          "exp": 13000,
-          "is_boss": true
+          "enemy_id": "0x015503",
+          "named_enemy_params_id": 54,
+          "level": 44,
+          "exp": 6364,
+          "is_boss": true,
+          "index": 8
         },
         {
-          "enemy_id": "0x015500",
-          "level": 45,
-          "exp": 13000,
-          "is_boss": true
+          "enemy_id": "0x015503",
+          "named_enemy_params_id": 54,
+          "level": 44,
+          "exp": 6364,
+          "is_boss": true,
+          "index": 0
         },
         {
-          "enemy_id": "0x010515",
-          "level": 45,
-          "exp": 1550,
-          "is_boss": false
-
+          "enemy_id": "0x010511",
+          "named_enemy_params_id": 53,
+          "level": 44,
+          "exp": 5354,
+          "is_boss": false,
+          "index": 5
+        },
+        {
+          "enemy_id": "0x010511",
+          "named_enemy_params_id": 53,
+          "level": 44,
+          "exp": 5354,
+          "is_boss": false,
+          "index": 6
+        },
+        {
+          "enemy_id": "0x010511",
+          "named_enemy_params_id": 53,
+          "level": 44,
+          "exp": 5354,
+          "is_boss": false,
+          "index": 4
         }
       ]
     }

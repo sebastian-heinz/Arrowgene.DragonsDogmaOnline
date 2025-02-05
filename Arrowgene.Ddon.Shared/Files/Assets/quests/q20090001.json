@@ -6,7 +6,8 @@
     "base_level": 53,
     "minimum_item_rank": 0,
     "discoverable": true,
-  "area_id": "ZandoraWastelands",	
+    "area_id": "ZandoraWastelands",	
+    "news_image": 181,	
     "rewards": [
         {
             "type": "exp",
@@ -38,20 +39,34 @@
                     "num": 1					
                 }
             ]
-        }
-    ],
+          },
+                {
+                    "type": "random",
+                    "loot_pool": [
+                      {
+                        "item_id": 7554,
+                        "num": 1,
+                        "chance": 0.6
+                      }
+                    ]
+                  }
+                ],
     "enemy_groups" : [
         {
             "stage_id": {
                 "id": 157,
                 "group_id": 7
             },
+            "placement_type": "manual",
             "enemies": [
                 {
-                    "enemy_id": "0x015500",
+                    "enemy_id": "0x015503",
+                    "start_think_tbl_no": 1,
+                    "named_enemy_params_id": 248,
                     "level": 53,
-                    "exp": 23000,
-                    "is_boss": true					
+                    "exp": 15632,
+                    "is_boss": true,
+                    "index": 2					
                 }
             ]
         }
@@ -78,6 +93,7 @@
         {
             "type": "KillGroup",
             "announce_type": "Update",
+            "reset_group": false,
             "groups": [0]
         },
         {		

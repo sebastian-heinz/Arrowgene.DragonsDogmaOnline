@@ -6,7 +6,8 @@
     "base_level": 57,
     "minimum_item_rank": 0,
     "discoverable": false,
-  "area_id": "EasternZandora",		
+    "area_id": "EasternZandora",
+    "news_image": 168,		
     "rewards": [
         {
             "type": "wallet",
@@ -49,8 +50,9 @@
             "enemies": [
                 {
                     "enemy_id": "0x015850",
+                    "named_enemy_params_id": 54,
                     "level": 58,
-                    "exp": 22000,
+                    "exp": 26700,
                     "is_boss": true				
                 }
             ]
