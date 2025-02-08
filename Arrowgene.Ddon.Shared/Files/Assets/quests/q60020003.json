@@ -1,0 +1,180 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Breya Coast Trial: Troubled Shores 2 (Breya Coast AR5)",
+    "quest_id": 60020003,
+    "next_quest": 0,
+    "base_level": 14,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": { "id": 26 },
+    "area_id": "BreyaCoast",
+    "order_conditions": [
+        {
+            "comment": "Troubled Shores 1",
+            "type": "ClearPersonalQuest",
+            "Param1": 60020001
+        },
+        {
+            "type": "AreaRank",
+            "Param1": 2,
+            "Param2": 4
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 1600
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1500
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 250
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 10133,
+                    "num": 2
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 33,
+                "group_id": 1
+            },
+            "placement_type": "Manual",
+            "enemies": [
+                {
+                    "comment": "Breya Treasure Bandit (Fighter)",
+                    "enemy_id": "0x011000",
+                    "level": 14,
+                    "exp": 244,
+                    "named_enemy_params_id": 314,
+                    "hm_present_no": 45,
+                    "index": 8
+                },
+                {
+                    "comment": "Breya Treasure Bandit (Seeker)",
+                    "enemy_id": "0x011001",
+                    "level": 14,
+                    "exp": 244,
+                    "named_enemy_params_id": 314,
+                    "hm_present_no": 46,
+                    "index": 9
+                },
+                {
+                    "comment": "Breya Treasure Bandit (Fighter)",
+                    "enemy_id": "0x011000",
+                    "level": 14,
+                    "exp": 244,
+                    "named_enemy_params_id": 314,
+                    "hm_present_no": 45,
+                    "index": 0
+                },
+                {
+                    "comment": "Breya Treasure Bandit (Seeker)",
+                    "enemy_id": "0x011001",
+                    "level": 14,
+                    "exp": 244,
+                    "named_enemy_params_id": 314,
+                    "hm_present_no": 46,
+                    "index": 1
+                },
+                {
+                    "comment": "Breya Treasure Banding (Fighter)",
+                    "enemy_id": "0x011000",
+                    "level": 14,
+                    "exp": 244,
+                    "named_enemy_params_id": 314,
+                    "hm_present_no": 45,
+                    "index": 2
+                },
+                {
+                    "comment": "Breya Treasure Bandit (Seeker)",
+                    "enemy_id": "0x011001",
+                    "level": 14,
+                    "exp": 244,
+                    "named_enemy_params_id": 314,
+                    "hm_present_no": 46,
+                    "index": 3
+                },
+                {
+                    "comment": "Breya Treasure Banding (Fighter)",
+                    "enemy_id": "0x011000",
+                    "level": 14,
+                    "exp": 244,
+                    "named_enemy_params_id": 314,
+                    "hm_present_no": 45,
+                    "index": 4
+                },
+                {
+                    "comment": "Breya Treasure Bandit (Defender)",
+                    "enemy_id": "0x011004",
+                    "level": 14,
+                    "exp": 244,
+                    "named_enemy_params_id": 314,
+                    "hm_present_no": 49,
+                    "index": 5
+                },
+                {
+                    "comment": "Breya Treasure Bandit (Mage)",
+                    "enemy_id": "0x011005",
+                    "level": 11,
+                    "exp": 244,
+                    "named_enemy_params_id": 314,
+                    "hm_present_no": 50,
+                    "index": 6
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 26
+            },
+            "npc_id": "ONeill",
+            "message_id": 14502
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [ 0 ],
+            "result_commands": [
+                {
+                    "comment": "ONeill idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1205,
+                    "Param2": 14501
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 26
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "ONeill",
+            "message_id": 14503
+        }
+    ]
+}

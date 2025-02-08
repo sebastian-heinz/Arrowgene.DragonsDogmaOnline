@@ -1,0 +1,119 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Breya Coast Trial: A Great White Thunder (Breya Coast AR15)",
+    "quest_id": 60202001,
+    "next_quest": 0,
+    "base_level": 60,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": { "id": 26 },
+    "area_id": "BreyaCoast",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 2,
+            "Param2": 14
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 1891
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 990
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 125
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 333,
+                "group_id": 7
+            },
+            "placement_type": "Manual",
+            "enemies": [
+                {
+                    "comment": "Ruins Lindwurm",
+                    "enemy_id": "0x0015707",
+                    "level": 60,
+                    "exp": 152540,
+                    "named_enemy_params_id": 905,
+                    "is_boss": true,
+                    "index": 0
+                },
+                {
+                    "enemy_id": "0x0010460",
+                    "level": 60,
+                    "exp": 15254,
+                    "index": 10
+                },
+                {
+                    "enemy_id": "0x0010460",
+                    "level": 60,
+                    "exp": 15254,
+                    "index": 11
+                },
+                {
+                    "enemy_id": "0x0010460",
+                    "level": 60,
+                    "exp": 15254,
+                    "index": 12
+                },
+                {
+                    "enemy_id": "0x0010460",
+                    "level": 60,
+                    "exp": 15254,
+                    "index": 13
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 26
+            },
+            "npc_id": "ONeill",
+            "message_id": 17650
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [ 0 ],
+            "result_commands": [
+                {
+                    "comment": "ONeill idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1205,
+                    "Param2": 17651
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 26
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "ONeill",
+            "message_id": 17652
+        }
+    ]
+}

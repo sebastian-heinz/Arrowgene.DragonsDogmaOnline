@@ -1,0 +1,113 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Hidell Plains Trial: A Gush of Misfortune (AR13)",
+    "quest_id": 60201000,
+    "next_quest": 0,
+    "base_level": 57,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": { "id": 25 },
+    "area_id": "HidellPlains",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 1,
+            "Param2": 12
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 3600
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 900
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 120
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 32
+            },
+            "starting_index": 5,
+            "enemies": [
+                {
+                    "comment": "Wandering Alchemized Skeleton",
+                    "enemy_id": "0x010312",
+                    "level": 57,
+                    "exp": 6706,
+                    "named_enemy_params_id": 891
+                },
+                {
+                    "comment": "Wandering Alchemized Skeleton",
+                    "enemy_id": "0x010312",
+                    "level": 57,
+                    "exp": 6706,
+                    "named_enemy_params_id": 891
+                },
+                {
+                    "comment": "Wandering Alchemized Skeleton",
+                    "enemy_id": "0x010312",
+                    "level": 57,
+                    "exp": 6706,
+                    "named_enemy_params_id": 891
+                },
+                {
+                    "comment": "Wandering Alchemized Skeleton",
+                    "enemy_id": "0x010312",
+                    "level": 57,
+                    "exp": 6706,
+                    "named_enemy_params_id": 891
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 25
+            },
+            "npc_id": "Alfred",
+            "message_id": 17581
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [ 0 ],
+            "result_commands": [
+                {
+                    "type": "QstTalkChg",
+                    "Param1": 1313,
+                    "Param2": 17583
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "caution": true,
+            "reset_group": false,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 25
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Alfred",
+            "message_id": 17584
+        }
+    ]
+}

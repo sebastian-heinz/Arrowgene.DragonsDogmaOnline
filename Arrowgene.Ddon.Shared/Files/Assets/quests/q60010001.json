@@ -1,0 +1,142 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Hidell Plains Trial: What Lurks in the Catacombs (AR5)",
+    "quest_id": 60010001,
+    "next_quest": 0,
+    "base_level": 13,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": { "id": 25 },
+    "area_id": "HidellPlains",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 1,
+            "Param2": 4
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 1500
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1300
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 220
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 10133,
+                    "num": 3
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 85,
+                "group_id": 10
+            },
+            "enemies": [
+                {
+                    "comment": "Defiled Earth Figure",
+                    "enemy_id": "0x010509",
+                    "level": 12,
+                    "exp": 372,
+                    "named_enemy_params_id": 308
+                },
+                {
+                    "comment": "Defiled Earth Figure",
+                    "enemy_id": "0x010509",
+                    "level": 12,
+                    "exp": 372,
+                    "named_enemy_params_id": 308
+                },
+                {
+                    "comment": "Defiled Earth Figure",
+                    "enemy_id": "0x010509",
+                    "level": 12,
+                    "exp": 372,
+                    "named_enemy_params_id": 308
+                },
+                {
+                    "comment": "Defiled Earth Figure",
+                    "enemy_id": "0x010509",
+                    "level": 12,
+                    "exp": 372,
+                    "named_enemy_params_id": 308
+                },
+                {
+                    "comment": "Defiled Follower",
+                    "enemy_id": "0x010308",
+                    "level": 13,
+                    "exp": 428,
+                    "named_enemy_params_id": 309
+                },
+                {
+                    "comment": "Defiled Follower",
+                    "enemy_id": "0x010308",
+                    "level": 13,
+                    "exp": 428,
+                    "named_enemy_params_id": 309
+                },
+                {
+                    "comment": "Defiled Assistant Priest",
+                    "enemy_id": "0x010308",
+                    "level": 15,
+                    "exp": 828,
+                    "named_enemy_params_id": 307
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 25
+            },
+            "npc_id": "Alfred",
+            "message_id": 14396
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [ 0 ],
+            "result_commands": [
+                {
+                    "type": "QstTalkChg",
+                    "Param1": 1313,
+                    "Param2": 14399
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 25
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Alfred",
+            "message_id": 14398
+        }
+    ]
+}

@@ -1,0 +1,120 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Hidell Plains Trial: The Ark's Guardian (AR15)",
+    "quest_id": 60201001,
+    "next_quest": 0,
+    "base_level": 57,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": { "id": 25 },
+    "area_id": "HidellPlains",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 1,
+            "Param2": 14
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 3600
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 900
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 120
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 406,
+                "group_id": 10
+            },
+            "enemies": [
+                {
+                    "comment": "Assault-Type Goliath #1056",
+                    "enemy_id": "0x015102",
+                    "level": 57,
+                    "exp": 67060,
+                    "named_enemy_params_id": 904,
+                    "is_boss": true
+                },
+                {
+                    "comment": "Alchemized Harpy",
+                    "enemy_id": "0x010606",
+                    "level": 57,
+                    "exp": 6706,
+                    "is_required": false
+                },
+                {
+                    "comment": "Alchemized Harpy",
+                    "enemy_id": "0x010606",
+                    "level": 57,
+                    "exp": 6706,
+                    "is_required": false
+                },
+                {
+                    "comment": "Alchemized Harpy",
+                    "enemy_id": "0x010606",
+                    "level": 57,
+                    "exp": 6706,
+                    "is_required": false
+                },
+                {
+                    "comment": "Alchemized Harpy",
+                    "enemy_id": "0x010606",
+                    "level": 57,
+                    "exp": 6706,
+                    "is_required": false
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 25
+            },
+            "npc_id": "Alfred",
+            "message_id": 17605
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [ 0 ],
+            "result_commands": [
+                {
+                    "type": "QstTalkChg",
+                    "Param1": 1313,
+                    "Param2": 17599
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [ 0 ],
+            "caution": true
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 25
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Alfred",
+            "message_id": 17601
+        }
+    ]
+}
