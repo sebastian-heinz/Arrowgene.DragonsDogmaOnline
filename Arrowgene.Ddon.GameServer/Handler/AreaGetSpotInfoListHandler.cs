@@ -2,9 +2,9 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -28,15 +28,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
             var completedQuests = client.Character.CompletedQuests;
 
-            foreach (var spot in Server.AssetRepository.AreaRankSpotInfoAsset[request.AreaId])
+            foreach (var spot in Server.AssetRepository.AreaRankSpotInfoAsset[request.AreaId].Where(x => !x.ReleaseOnly))
             {
                 pcap.SpotInfoList.Add(new()
                 {
                     SpotId = spot.SpotId,
                     TextIndex = spot.TextIndex,
                     StageId = 2, // TODO: Figure out if the client actually cares
-                    IsRelease = clientRank.Rank >= spot.UnlockRank
-                     && (spot.UnlockQuest == 0 || completedQuests.ContainsKey((QuestId)spot.UnlockQuest))
+                    IsRelease = Server.AreaRankManager.CheckSpot(client, spot)
                 });
             }
 

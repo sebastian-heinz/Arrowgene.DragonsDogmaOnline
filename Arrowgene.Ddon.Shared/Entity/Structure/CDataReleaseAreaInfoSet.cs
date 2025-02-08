@@ -8,6 +8,7 @@ public class CDataReleaseAreaInfoSet
 {
     public CDataReleaseAreaInfoSet()
     {
+        ReleaseList = new();
     }
 
     public QuestAreaId AreaId {  get; set; }
