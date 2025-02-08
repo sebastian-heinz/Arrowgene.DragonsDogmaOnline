@@ -255,5 +255,34 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             return queue;
         }
+
+        public bool CheckSpot(GameClient client, AreaRankSpotInfo spot)
+        {
+            AreaRank rank = client.Character.AreaRanks.GetValueOrDefault(spot.AreaId)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
+
+            if (!Server.GameLogicSettings.EnableAreaRankSpotLocks)
+            {
+                return true;
+            }
+
+            if (spot.AlwaysRelease)
+            {
+                return true;
+            }
+
+            if (rank.Rank < spot.UnlockRank)
+            {
+                return false;
+            }
+
+            var completedQuests = client.Character.CompletedQuests;
+            if (spot.UnlockQuest != 0 && !completedQuests.ContainsKey((QuestId)spot.UnlockQuest))
+            {
+                return false;
+            }
+
+            return true;
+        }
     }
 }

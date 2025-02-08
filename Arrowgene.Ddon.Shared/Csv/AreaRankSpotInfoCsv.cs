@@ -5,7 +5,7 @@ namespace Arrowgene.Ddon.Shared.Csv
 {
     public class AreaRankSpotInfoCsv : CsvReaderWriter<AreaRankSpotInfo>
     {
-        protected override int NumExpectedItems => 5;
+        protected override int NumExpectedItems => 7;
 
         protected override AreaRankSpotInfo CreateInstance(string[] properties)
         {
@@ -15,13 +15,18 @@ namespace Arrowgene.Ddon.Shared.Csv
             if (!uint.TryParse(properties[3], out uint unlockRank)) return null;
             if (!uint.TryParse(properties[4], out uint unlockQuest)) return null;
 
+            if (!uint.TryParse(properties[5], out uint releaseOnly)) return null;
+            if (!uint.TryParse(properties[6], out uint alwaysRelease)) return null;
+
             var obj = new AreaRankSpotInfo()
             {
                 AreaId = (QuestAreaId)areaId,
                 TextIndex = textIndex,
                 SpotId = spotId,
                 UnlockRank = unlockRank,
-                UnlockQuest = unlockQuest
+                UnlockQuest = unlockQuest,
+                ReleaseOnly = releaseOnly > 0,
+                AlwaysRelease = alwaysRelease > 0
             };
 
             return obj;

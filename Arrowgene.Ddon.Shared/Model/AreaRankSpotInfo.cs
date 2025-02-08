@@ -10,5 +10,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint SpotId { get; set; }
         public uint UnlockRank { get; set; }
         public uint UnlockQuest { get; set; }
+        public bool ReleaseOnly { get; set; }
+        public bool AlwaysRelease { get; set; }
     }
 }

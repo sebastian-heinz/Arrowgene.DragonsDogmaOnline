@@ -21,10 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             foreach ((var area, var rank) in client.Character.AreaRanks)
             {
-                // The client gets very angry if the unlocks are desynced from their actual ranks, so we have to spoof the rank here too.
-                uint effectiveRank = Server.AreaRankManager.GetEffectiveRank(client.Character, area);
-
-                if (effectiveRank == 0 && area > QuestAreaId.HidellPlains)
+                if (rank.Rank == 0 && area > QuestAreaId.HidellPlains)
                 {
                     // Unranked areas are not displayed, except Hidell Plains.
                     continue;
@@ -33,7 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 res.AreaBaseInfoList.Add(new()
                 {
                     AreaID = rank.AreaId,
-                    Rank = effectiveRank,
+                    Rank = rank.Rank,
                     CurrentPoint = rank.Point,
                     WeekPoint = rank.WeekPoint,
                     NextPoint = Server.AreaRankManager.GetMaxPoints(rank.AreaId, rank.Rank),
