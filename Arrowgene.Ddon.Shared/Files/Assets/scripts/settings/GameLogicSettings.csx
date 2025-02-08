@@ -95,7 +95,7 @@ ulong BazaarCooldownTimeSeconds = (ulong) TimeSpan.FromDays(1).TotalSeconds;
 uint ClanMemberMax = 100;
 
 // Epitaph Settings
-bool EnableEpitaphWeeklyRewards = false;
+bool EnableEpitaphWeeklyRewards = true;
 
 // Point Settings
 uint PlayPointMax = 2000;
