@@ -1,0 +1,177 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Breya Coast Request: Troubled Shores 1 (Breya Coast Prelude)",
+    "quest_id": 60020001,
+    "next_quest": 0,
+    "base_level": 10,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": { "id": 2 },
+    "area_id": "HidellPlains",
+    "order_conditions": [
+        {
+            "comment": "A Servant's Pledge",
+            "type": "MainQuestCompleted",
+            "Param1": 26
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 700
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 200
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 10133,
+                    "num": 2
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 82
+            },
+            "starting_index": 17,
+            "enemies": [
+                {
+                    "comment": "Hidden Beach Rogue (Fighter)",
+                    "enemy_id": "0x011000",
+                    "level": 11,
+                    "exp": 160,
+                    "named_enemy_params_id": 195,
+                    "hm_present_no": 45
+                },
+                {
+                    "comment": "Hidden Beach Rogue (Seeker)",
+                    "enemy_id": "0x011001",
+                    "level": 11,
+                    "exp": 160,
+                    "named_enemy_params_id": 195,
+                    "hm_present_no": 46
+                },
+                {
+                    "comment": "Hidden Beach Rogue (Hunter)",
+                    "enemy_id": "0x011002",
+                    "level": 11,
+                    "exp": 160,
+                    "named_enemy_params_id": 195,
+                    "hm_present_no": 47
+                },
+                {
+                    "comment": "Hidden Beach Rogue (Mage)",
+                    "enemy_id": "0x011005",
+                    "level": 11,
+                    "exp": 160,
+                    "named_enemy_params_id": 195,
+                    "hm_present_no": 50
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 2
+            },
+            "npc_id": "Seneka0",
+            "message_id": 14484
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 26
+            },
+            "announce_type": "Accept",
+            "npc_id": "ONeill",
+            "message_id": 14487,
+            "result_commands": [
+                {
+                    "comment": "Seneka idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1013,
+                    "Param2": 14490
+                }
+            ]
+        },
+        {
+            "type": "Raw",
+            "announce_type": "Update",
+            "checkpoint": true,
+            "check_commands": [
+                {
+                    "comment": "Breya Coast Rank 2",
+                    "type": "CheckAreaRank",
+                    "Param1": 2,
+                    "Param2": 2
+                }
+            ],
+            "result_commands": [
+                {
+                    "comment": "Seneka idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1013,
+                    "Param2": 14490
+                },
+                {
+                    "comment": "ONeill idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1205,
+                    "Param2": 14491
+                }
+            ]
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Update",
+            "checkpoint": true,
+            "groups": [ 0 ],
+            "result_commands": [
+                {
+                    "comment": "Seneka idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1013,
+                    "Param2": 14490
+                },
+                {
+                    "comment": "ONeill idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1205,
+                    "Param2": 14491
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 26
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "ONeill",
+            "message_id": 14488
+        }
+    ]
+}

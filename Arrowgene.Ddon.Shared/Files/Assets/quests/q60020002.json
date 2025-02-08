@@ -1,0 +1,93 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Breya Coast Trial: Seeking Treasure (Breya Coast AR10)",
+    "quest_id": 60020002,
+    "next_quest": 0,
+    "base_level": 35,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": { "id": 26 },
+    "area_id": "BreyaCoast",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 2,
+            "Param2": 9
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 4300
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 3800
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 400
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 98,
+                "group_id": 4
+            },
+            "enemies": [
+                {
+                    "comment": "Sea Dragon the Treasure Guardian",
+                    "enemy_id": "0x015707",
+                    "level": 33,
+                    "exp": 11940,
+                    "is_boss": true,
+                    "named_enemy_params_id": 316
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 26
+            },
+            "npc_id": "ONeill",
+            "message_id": 14418
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [ 0 ],
+            "result_commands": [
+                {
+                    "comment": "ONeill idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1205,
+                    "Param2": 14420
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 26
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "ONeill",
+            "message_id": 14419
+        }
+    ]
+}
