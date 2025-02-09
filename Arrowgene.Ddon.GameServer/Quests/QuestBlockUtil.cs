@@ -134,6 +134,14 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return block;
         }
 
+        public static QuestBlock AddIsGatherPartyInStageBlock(this QuestProcess process, QuestAnnounceType announceType, StageId stageId)
+        {
+            var block = CreateGenericBlock(0, 0, QuestBlockType.IsGatherPartyInStage, announceType)
+                .SetStageId(stageId);
+            process.AddBlock(block);
+            return block;
+        }
+
         public static QuestBlock AddOmInteractEventBlock(this QuestProcess process, QuestAnnounceType announceType, StageId stageId, OmQuestType questType, OmInteractType interactType, QuestId questId = QuestId.None, bool showMarker = true)
         {
             var block = CreateGenericBlock(0, 0, QuestBlockType.OmInteractEvent, announceType)
@@ -207,6 +215,30 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             var block = CreateGenericBlock(0, 0, QuestBlockType.StageJump, announceType)
                 .SetStageId(stageId)
                 .SetJumpPos(jumpPos);
+            process.AddBlock(block);
+            return block;
+        }
+
+        public static QuestBlock AddMyQstFlagsBlock(this QuestProcess process, QuestAnnounceType announceType, List<uint> checkFlags, List<uint> setFlags)
+        {
+            var block = CreateGenericBlock(0, 0, QuestBlockType.MyQstFlags, announceType)
+                .AddMyQstSetFlags(setFlags)
+                .AddMyQstCheckFlags(checkFlags);
+            process.AddBlock(block);
+            return block;
+        }
+
+        public static QuestBlock AddMyQstFlagsBlock(this QuestProcess process, QuestAnnounceType announceType)
+        {
+            var block = CreateGenericBlock(0, 0, QuestBlockType.MyQstFlags, announceType);
+            process.AddBlock(block);
+            return block;
+        }
+
+        public static QuestBlock AddExtendTimeBlock(this QuestProcess process, QuestAnnounceType announceType, uint amount)
+        {
+            var block = CreateGenericBlock(0, 0, QuestBlockType.ExtendTime, announceType)
+                .SetTimeAmount(amount);
             process.AddBlock(block);
             return block;
         }

@@ -220,5 +220,11 @@ namespace Arrowgene.Ddon.Shared.Model
             Subgroup = subgroup;
             return this;
         }
+
+        public InstancedEnemy SetRaidPoints(uint points)
+        {
+            RaidPoints = points;
+            return this;
+        }
     }
 }

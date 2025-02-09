@@ -311,10 +311,10 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             // Keep track of random rewards for the quest
                             randomRewards += 1;
 
-                            rewardItem = new QuestRandomRewardItem();
+                            rewardItem = new QuestRandomChanceRewardItem();
                             foreach (var item in reward.GetProperty("loot_pool").EnumerateArray())
                             {
-                                rewardItem.LootPool.Add(new RandomLootPoolItem()
+                                rewardItem.LootPool.Add(new ChanceLootPoolItem()
                                 {
                                     ItemId = AssetCommonDeserializer.ParseItemId(item.GetProperty("item_id")),
                                     Num = item.GetProperty("num").GetUInt16(),

@@ -347,7 +347,7 @@ namespace Arrowgene.Ddon.Shared.Model
         OrcSoldier2 = 0x085001,
         OrcSoldier3 = 0x085002,
         OrcSoldier4 = 0x085003,
-        OrcTrooper5 = 0x015812,
+        OrcTrooper  = 0x015812,
         Ox = 0x018300,
         PawnDefender = 0x011054,
         PawnElementArcher = 0x011057,

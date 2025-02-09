@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             byte subGroupId = request.SubGroupId;
             client.Character.Stage = stageId;
 
-            Logger.Info($"GroupId={request.LayoutId.GroupId}, SubGroupId={request.SubGroupId}, LayerNo={request.LayoutId.LayerNo}");
+            Logger.Info($"StageId={stageId}, SubGroupId={request.SubGroupId}");
 
             Quest quest = null;
             bool IsQuestControlled = false;
@@ -33,12 +33,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 quest = QuestManager.GetQuestByScheduleId(questScheduleId);
 
                 var questStateManager = QuestManager.GetQuestStateManager(client, quest);
-                if (quest.OverrideEnemySpawn && quest.HasEnemiesInInCurrentStage(stageId))
+                if (quest.OverrideEnemySpawn && quest.HasEnemiesInCurrentStageGroup(stageId))
                 {
                     IsQuestControlled = true;
                     break;
                 }
-                else if (!quest.OverrideEnemySpawn && questStateManager.HasEnemiesInCurrentStageGroup(quest, stageId, subGroupId))
+                else if (!quest.OverrideEnemySpawn && questStateManager.HasEnemiesForCurrentQuestStepInStageGroup(quest, stageId, subGroupId))
                 {
                     IsQuestControlled = true;
                     break;

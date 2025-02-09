@@ -27,26 +27,20 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
     {
     }
 
-    public class RandomLootPoolItem : LootPoolItem
+    public class ChanceLootPoolItem : LootPoolItem
     {
         public double Chance { get; set; }
-
-        public override string GetUID()
-        {
-            IncrementalHash hash = IncrementalHash.CreateHash(HashAlgorithmName.MD5);
-            hash.AppendData(BitConverter.GetBytes((uint) ItemId));
-            hash.AppendData(BitConverter.GetBytes(Num));
-            return BitConverter.ToString(hash.GetHashAndReset()).Replace("-", string.Empty).Substring(0, 8);
-        }
     }
 
     public abstract class QuestRewardItem
     {
         public QuestRewardType RewardType { get; protected set; }
+        public bool IsHidden { get; protected set; }
 
-        public QuestRewardItem(QuestRewardType rewardType)
+        public QuestRewardItem(QuestRewardType rewardType, bool isHidden)
         {
             RewardType = rewardType;
+            IsHidden = isHidden;
             LootPool = new List<LootPoolItem>();
         }
 
@@ -87,21 +81,20 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 
     public class QuestFixedRewardItem : QuestRewardItem
     {
-        public QuestFixedRewardItem() : base(QuestRewardType.Fixed)
+        public QuestFixedRewardItem(bool isHidden = false) : base(QuestRewardType.Fixed, isHidden)
         {
-
         }
     }
 
-    public class QuestRandomRewardItem : QuestRewardItem
+    public abstract class QuestRandomRewardItem : QuestRewardItem
     {
-        public int ItemIndex { get; private set; }
+        public int ItemIndex { get; protected set; }
 
-        public QuestRandomRewardItem() : base(QuestRewardType.Random)
+        public QuestRandomRewardItem(bool isHidden) : base(QuestRewardType.Random, isHidden)
         {
         }
 
-        public QuestRandomRewardItem(int itemIndex) : base(QuestRewardType.Random)
+        public QuestRandomRewardItem(int itemIndex, bool isHidden) : base(QuestRewardType.Random, isHidden)
         {
             ItemIndex = itemIndex;
         }
@@ -116,7 +109,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 
         public CDataRewardBoxItem AsCDataRewardBoxItem()
         {
-            
+
             var item = LootPool[ItemIndex];
             return new CDataRewardBoxItem()
             {
@@ -139,7 +132,37 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             };
         }
 
-        public int Roll()
+        public abstract int Roll();
+    }
+
+    public class QuestRandomFixedRewardItem : QuestRandomRewardItem
+    {
+        public QuestRandomFixedRewardItem(bool isHidden = false) : base(isHidden)
+        {
+        }
+
+        public QuestRandomFixedRewardItem(int itemIndex, bool isHidden = false) : base(itemIndex, isHidden)
+        {
+        }
+
+        public override int Roll()
+        {
+            ItemIndex = Random.Shared.Next(0, LootPool.Count);
+            return ItemIndex;
+        }
+    }
+
+    public class QuestRandomChanceRewardItem : QuestRandomRewardItem
+    {
+        public QuestRandomChanceRewardItem(bool isHidden = false) : base(isHidden)
+        {
+        }
+
+        public QuestRandomChanceRewardItem(int itemIndex, bool isHidden = false) : base(itemIndex, isHidden)
+        {
+        }
+
+        public override int Roll()
         {
             ItemIndex = RollInternal();
             return ItemIndex;
@@ -153,7 +176,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             double sum = 0.0;
             for (int i = 0; i < LootPool.Count; i++)
             {
-                RandomLootPoolItem item = (RandomLootPoolItem)LootPool[i];
+                ChanceLootPoolItem item = (ChanceLootPoolItem)LootPool[i];
                 sum += item.Chance;
                 if (target <= sum)
                 {
@@ -167,7 +190,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 
     public class QuestSelectRewardItem : QuestRewardItem
     {
-        public QuestSelectRewardItem() : base(QuestRewardType.Select)
+        public QuestSelectRewardItem(bool isHidden = false) : base(QuestRewardType.Select, isHidden)
         {
         }
     }

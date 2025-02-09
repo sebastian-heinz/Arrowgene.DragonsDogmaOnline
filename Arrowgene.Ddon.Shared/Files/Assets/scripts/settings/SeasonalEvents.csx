@@ -1,5 +1,5 @@
 /**
- * Settings file for server Events.
+ * Settings file for Seasonal Events.
  * This file supports hotloading.
  *
  * @note The way seasonal events are implemented by Capcom,
