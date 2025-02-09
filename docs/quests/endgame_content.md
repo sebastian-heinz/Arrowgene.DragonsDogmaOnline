@@ -67,7 +67,7 @@
 | 50300003 | The Lost Order, 失われた秩序 | Alan | 55 | [h1g](https://h1g.jp/dd-on/?%E5%A4%B1%E3%82%8F%E3%82%8C%E3%81%9F%E7%A7%A9%E5%BA%8F) | ✓
 | 50300005 | The Crucible of Demons, 魔物のるつぼ | Alan | 60 | [h1g](https://h1g.jp/dd-on/?%E9%AD%94%E7%89%A9%E3%81%AE%E3%82%8B%E3%81%A4%E3%81%BC)
 | 50300006 | The Dazzling Gold, 眩き黄金 | Alan | 60 | [h1g](https://h1g.jp/dd-on/?%E7%9C%A9%E3%81%8D%E9%BB%84%E9%87%91) | ✓
-| 50300004 | Battle for Gritten Fort: Recapture Battle, グリッテン砦攻防戦　戦況：奪回戦 | Alan | 60 | [h1g](https://h1g.jp/dd-on/?%E3%82%B0%E3%83%AA%E3%83%83%E3%83%86%E3%83%B3%E7%A0%A6%E6%94%BB%E9%98%B2%E6%88%A6%20%E6%88%A6%E6%B3%81%EF%BC%9A%E5%A5%AA%E5%9B%9E%E6%88%A6)
+| 50300004 | Battle for Gritten Fort: Recapture Battle, グリッテン砦攻防戦　戦況：奪回戦 | Alan | 60 and 90 | [h1g](https://h1g.jp/dd-on/?%E3%82%B0%E3%83%AA%E3%83%83%E3%83%86%E3%83%B3%E7%A0%A6%E6%94%BB%E9%98%B2%E6%88%A6%20%E6%88%A6%E6%B3%81%EF%BC%9A%E5%A5%AA%E5%9B%9E%E6%88%A6)  | ✓
 | 50300007 | The Demon of Darkness Awakens, 目覚めし闇の魔物 | Alan | 65 | [h1g](https://h1g.jp/dd-on/?%E7%9B%AE%E8%A6%9A%E3%82%81%E3%81%97%E9%97%87%E3%81%AE%E9%AD%94%E7%89%A9)
 | 50300008 | Bloodbane Isle's Feast of Madness, 魔赤島の狂宴 | Alan | 70 | [h1g](https://h1g.jp/dd-on/?%E9%AD%94%E8%B5%A4%E5%B3%B6%E3%81%AE%E7%8B%82%E5%AE%B4)
 | 50300009 | The Deathly Battle of the Ancient Temple, 古代神殿の死闘 | Alan | 75 | [h1g](https://h1g.jp/dd-on/?%E5%8F%A4%E4%BB%A3%E7%A5%9E%E6%AE%BF%E3%81%AE%E6%AD%BB%E9%97%98)
