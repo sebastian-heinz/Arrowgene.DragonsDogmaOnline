@@ -1,0 +1,144 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Mysree Forest Trial: An Ancient Emissary (Mysree Forest AR5)",
+    "quest_id": 60030001,
+    "next_quest": 0,
+    "base_level": 18,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": { "id": 24 },
+    "area_id": "MysreeForest",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 3,
+            "Param2": 4
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 2000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1850
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 300
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 10133,
+                    "num": 3
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 79,
+                "group_id": 1
+            },
+            "enemies": [
+                {
+                    "comment": "Forest Goblin Fighter Ancient",
+                    "enemy_id": "0x011101",
+                    "level": 17,
+                    "exp": 346,
+                    "named_enemy_params_id": 213
+                },
+                {
+                    "comment": "Forest Goblin Fighter Ancient",
+                    "enemy_id": "0x011101",
+                    "level": 17,
+                    "exp": 346,
+                    "named_enemy_params_id": 213
+                },
+                {
+                    "comment": "Forest Goblin Fighter Ancient",
+                    "enemy_id": "0x011101",
+                    "level": 17,
+                    "exp": 346,
+                    "named_enemy_params_id": 213
+                },
+                {
+                    "comment": "Sling Forest Goblin Ancient",
+                    "enemy_id": "0x011102",
+                    "level": 17,
+                    "exp": 346,
+                    "named_enemy_params_id": 213
+                },
+                {
+                    "comment": "Sling Forest Goblin Ancient",
+                    "enemy_id": "0x011102",
+                    "level": 17,
+                    "exp": 346,
+                    "named_enemy_params_id": 213
+                },
+                {
+                    "comment": "Sling Forest Goblin Ancient",
+                    "enemy_id": "0x011102",
+                    "level": 17,
+                    "exp": 346,
+                    "named_enemy_params_id": 213
+                },
+                {
+                    "comment": "Old Grown Ent",
+                    "enemy_id": "0x015031",
+                    "level": 19,
+                    "exp": 4240,
+                    "is_boss": true,
+                    "named_enemy_params_id": 212
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 24
+            },
+            "npc_id": "Patricia",
+            "message_id": 14422
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [ 0 ],
+            "result_commands": [
+                {
+                    "comment": "Patricia idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1412,
+                    "Param2": 14424
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 24
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Patricia",
+            "message_id": 14423
+        }
+    ]
+}
