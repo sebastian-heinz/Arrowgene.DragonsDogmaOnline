@@ -660,7 +660,7 @@ public class ScriptedQuest : IQuest
             13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23
         };
 
-        foreach (var groupId in requiredGroups)
+        foreach (var groupId in optionalGroups)
         {
             var process = AddNewProcess(i++);
             process.AddMyQstFlagsBlock(QuestAnnounceType.None)
