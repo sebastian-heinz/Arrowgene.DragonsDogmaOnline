@@ -266,11 +266,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return true;
             }
 
-            if (spot.AlwaysRelease)
-            {
-                return true;
-            }
-
             if (rank.Rank < spot.UnlockRank)
             {
                 return false;
