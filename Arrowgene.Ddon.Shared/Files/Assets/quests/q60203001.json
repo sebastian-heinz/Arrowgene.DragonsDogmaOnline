@@ -1,0 +1,128 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Mysree Forest Trial: The Malice of the Accursed (Mysree Forest AR15)",
+    "quest_id": 60203001,
+    "next_quest": 0,
+    "base_level": 70,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": { "id": 24 },
+    "area_id": "MysreeForest",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 3,
+            "Param2": 14
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 15350
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 4618
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 600
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 430,
+                "group_id": 12
+            },
+            "enemies": [
+                {
+                    "comment": "Tomb Death Knight",
+                    "enemy_id": "0x010310",
+                    "level": 70,
+                    "exp": 34700,
+                    "named_enemy_params_id": 917
+                },
+                {
+                    "comment": "Gravekeep's Beast (Shadow Chimera)'",
+                    "enemy_id": "0x015203",
+                    "level": 70,
+                    "exp": 347000,
+                    "is_boss": true,
+                    "named_enemy_params_id": 906
+                },
+                {
+                    "comment": "Tomb Eliminator",
+                    "enemy_id": "0x010508",
+                    "level": 70,
+                    "exp": 34700,
+                    "named_enemy_params_id": 917
+                },
+                {
+                    "comment": "Tomb Eliminator",
+                    "enemy_id": "0x010508",
+                    "level": 70,
+                    "exp": 34700,
+                    "named_enemy_params_id": 917
+                },
+                {
+                    "comment": "Tomb Eliminator",
+                    "enemy_id": "0x010508",
+                    "level": 70,
+                    "exp": 34700,
+                    "named_enemy_params_id": 917
+                },
+                {
+                    "comment": "Tomb Eliminator",
+                    "enemy_id": "0x010508",
+                    "level": 70,
+                    "exp": 34700,
+                    "named_enemy_params_id": 917
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 24
+            },
+            "npc_id": "Patricia",
+            "message_id": 17673
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [ 0 ],
+            "result_commands": [
+                {
+                    "comment": "Patricia idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1412,
+                    "Param2": 17674
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 24
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Patricia",
+            "message_id": 17675
+        }
+    ]
+}
