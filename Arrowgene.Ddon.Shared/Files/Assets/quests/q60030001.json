@@ -47,54 +47,55 @@
                 "id": 79,
                 "group_id": 1
             },
+            "comment": "This is probably not the exact correct placement, and it overlaps awkwardly with a Sphinx as part of q20055005.",
             "enemies": [
                 {
                     "comment": "Forest Goblin Fighter Ancient",
                     "enemy_id": "0x011101",
                     "level": 17,
-                    "exp": 346,
+                    "exp": 64,
                     "named_enemy_params_id": 213
                 },
                 {
                     "comment": "Forest Goblin Fighter Ancient",
                     "enemy_id": "0x011101",
                     "level": 17,
-                    "exp": 346,
+                    "exp": 64,
                     "named_enemy_params_id": 213
                 },
                 {
                     "comment": "Forest Goblin Fighter Ancient",
                     "enemy_id": "0x011101",
                     "level": 17,
-                    "exp": 346,
+                    "exp": 64,
                     "named_enemy_params_id": 213
                 },
                 {
                     "comment": "Sling Forest Goblin Ancient",
                     "enemy_id": "0x011102",
                     "level": 17,
-                    "exp": 346,
+                    "exp": 64,
                     "named_enemy_params_id": 213
                 },
                 {
                     "comment": "Sling Forest Goblin Ancient",
                     "enemy_id": "0x011102",
                     "level": 17,
-                    "exp": 346,
+                    "exp": 64,
                     "named_enemy_params_id": 213
                 },
                 {
                     "comment": "Sling Forest Goblin Ancient",
                     "enemy_id": "0x011102",
                     "level": 17,
-                    "exp": 346,
+                    "exp": 64,
                     "named_enemy_params_id": 213
                 },
                 {
                     "comment": "Old Grown Ent",
                     "enemy_id": "0x015031",
                     "level": 19,
-                    "exp": 4240,
+                    "exp": 2236,
                     "is_boss": true,
                     "named_enemy_params_id": 212
                 }

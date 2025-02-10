@@ -58,7 +58,7 @@
                     "comment": "Breya Treasure Bandit (Fighter)",
                     "enemy_id": "0x011000",
                     "level": 14,
-                    "exp": 244,
+                    "exp": 73,
                     "named_enemy_params_id": 314,
                     "hm_present_no": 45,
                     "index": 8
@@ -67,7 +67,7 @@
                     "comment": "Breya Treasure Bandit (Seeker)",
                     "enemy_id": "0x011001",
                     "level": 14,
-                    "exp": 244,
+                    "exp": 73,
                     "named_enemy_params_id": 314,
                     "hm_present_no": 46,
                     "index": 9
@@ -76,7 +76,7 @@
                     "comment": "Breya Treasure Bandit (Fighter)",
                     "enemy_id": "0x011000",
                     "level": 14,
-                    "exp": 244,
+                    "exp": 73,
                     "named_enemy_params_id": 314,
                     "hm_present_no": 45,
                     "index": 0
@@ -85,7 +85,7 @@
                     "comment": "Breya Treasure Bandit (Seeker)",
                     "enemy_id": "0x011001",
                     "level": 14,
-                    "exp": 244,
+                    "exp": 73,
                     "named_enemy_params_id": 314,
                     "hm_present_no": 46,
                     "index": 1
@@ -94,7 +94,7 @@
                     "comment": "Breya Treasure Banding (Fighter)",
                     "enemy_id": "0x011000",
                     "level": 14,
-                    "exp": 244,
+                    "exp": 73,
                     "named_enemy_params_id": 314,
                     "hm_present_no": 45,
                     "index": 2
@@ -103,7 +103,7 @@
                     "comment": "Breya Treasure Bandit (Seeker)",
                     "enemy_id": "0x011001",
                     "level": 14,
-                    "exp": 244,
+                    "exp": 73,
                     "named_enemy_params_id": 314,
                     "hm_present_no": 46,
                     "index": 3
@@ -112,7 +112,7 @@
                     "comment": "Breya Treasure Banding (Fighter)",
                     "enemy_id": "0x011000",
                     "level": 14,
-                    "exp": 244,
+                    "exp": 73,
                     "named_enemy_params_id": 314,
                     "hm_present_no": 45,
                     "index": 4
@@ -121,7 +121,7 @@
                     "comment": "Breya Treasure Bandit (Defender)",
                     "enemy_id": "0x011004",
                     "level": 14,
-                    "exp": 244,
+                    "exp": 73,
                     "named_enemy_params_id": 314,
                     "hm_present_no": 49,
                     "index": 5
@@ -129,8 +129,8 @@
                 {
                     "comment": "Breya Treasure Bandit (Mage)",
                     "enemy_id": "0x011005",
-                    "level": 11,
-                    "exp": 244,
+                    "level": 14,
+                    "exp": 73,
                     "named_enemy_params_id": 314,
                     "hm_present_no": 50,
                     "index": 6

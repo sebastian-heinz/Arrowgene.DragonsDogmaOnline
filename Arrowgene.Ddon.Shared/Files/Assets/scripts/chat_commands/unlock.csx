@@ -5,17 +5,10 @@ public class ChatCommand : IChatCommand
 {
     public override AccountStateType AccountState => AccountStateType.Admin;
     public override string CommandName => "unlock";
-    public override string HelpText => "usage: `/unlock groupId [areaBoss?]` - Send a defeat announcement for a group.";
+    public override string HelpText => "usage: `/unlock [groupId?] [areaBoss?]` - Send a defeat announcement for a group.";
 
     public override void Execute(DdonGameServer server, string[] command, GameClient client, ChatMessage message, List<ChatResponse> responses)
     {
-        if (command.Length == 0)
-        {
-            // check expected length before accessing
-            responses.Add(ChatResponse.CommandError(client, "No arguments provided."));
-            return;
-        }
-
         uint parsedId = client.Character.Stage.GroupId;
         if (command.Length >= 1)
         {

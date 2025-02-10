@@ -43,7 +43,7 @@
                     "comment": "Magic Lion Singa",
                     "enemy_id": "0x015200",
                     "level": 32,
-                    "exp": 11260,
+                    "exp": 2652,
                     "is_boss": true,
                     "named_enemy_params_id": 321
                 },
@@ -51,28 +51,28 @@
                     "comment": "Pit Harpy",
                     "enemy_id": "0x010600",
                     "level": 30,
-                    "exp": 996,
+                    "exp": 78,
                     "named_enemy_params_id": 322
                 },
                 {
                     "comment": "Pit Harpy",
                     "enemy_id": "0x010600",
                     "level": 30,
-                    "exp": 996,
+                    "exp": 78,
                     "named_enemy_params_id": 322
                 },
                 {
                     "comment": "Pit Harpy",
                     "enemy_id": "0x010600",
                     "level": 30,
-                    "exp": 996,
+                    "exp": 78,
                     "named_enemy_params_id": 322
                 },
                 {
                     "comment": "Pit Harpy",
                     "enemy_id": "0x010600",
                     "level": 30,
-                    "exp": 996,
+                    "exp": 78,
                     "named_enemy_params_id": 322
                 }
             ]

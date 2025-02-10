@@ -43,14 +43,14 @@
                     "comment": "Tomb Death Knight",
                     "enemy_id": "0x010310",
                     "level": 70,
-                    "exp": 34700,
+                    "exp": 1535,
                     "named_enemy_params_id": 917
                 },
                 {
                     "comment": "Gravekeep's Beast (Shadow Chimera)'",
                     "enemy_id": "0x015203",
                     "level": 70,
-                    "exp": 347000,
+                    "exp": 38375,
                     "is_boss": true,
                     "named_enemy_params_id": 906
                 },
@@ -58,28 +58,28 @@
                     "comment": "Tomb Eliminator",
                     "enemy_id": "0x010508",
                     "level": 70,
-                    "exp": 34700,
+                    "exp": 1535,
                     "named_enemy_params_id": 917
                 },
                 {
                     "comment": "Tomb Eliminator",
                     "enemy_id": "0x010508",
                     "level": 70,
-                    "exp": 34700,
+                    "exp": 1535,
                     "named_enemy_params_id": 917
                 },
                 {
                     "comment": "Tomb Eliminator",
                     "enemy_id": "0x010508",
                     "level": 70,
-                    "exp": 34700,
+                    "exp": 1535,
                     "named_enemy_params_id": 917
                 },
                 {
                     "comment": "Tomb Eliminator",
                     "enemy_id": "0x010508",
                     "level": 70,
-                    "exp": 34700,
+                    "exp": 1535,
                     "named_enemy_params_id": 917
                 }
             ]
@@ -111,7 +111,6 @@
             "type": "KillGroup",
             "announce_type": "Update",
             "reset_group": false,
-            "caution": true,
             "groups": [ 0 ]
         },
         {

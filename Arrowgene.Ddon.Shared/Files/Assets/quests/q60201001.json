@@ -43,7 +43,7 @@
                     "comment": "Assault-Type Goliath #1056",
                     "enemy_id": "0x015102",
                     "level": 57,
-                    "exp": 67060,
+                    "exp": 7626,
                     "named_enemy_params_id": 904,
                     "is_boss": true
                 },
@@ -51,28 +51,28 @@
                     "comment": "Alchemized Harpy",
                     "enemy_id": "0x010606",
                     "level": 57,
-                    "exp": 6706,
+                    "exp": 321,
                     "is_required": false
                 },
                 {
                     "comment": "Alchemized Harpy",
                     "enemy_id": "0x010606",
                     "level": 57,
-                    "exp": 6706,
+                    "exp": 321,
                     "is_required": false
                 },
                 {
                     "comment": "Alchemized Harpy",
                     "enemy_id": "0x010606",
                     "level": 57,
-                    "exp": 6706,
+                    "exp": 321,
                     "is_required": false
                 },
                 {
                     "comment": "Alchemized Harpy",
                     "enemy_id": "0x010606",
                     "level": 57,
-                    "exp": 6706,
+                    "exp": 321,
                     "is_required": false
                 }
             ]

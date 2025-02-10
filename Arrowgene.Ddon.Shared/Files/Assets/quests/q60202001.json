@@ -44,7 +44,7 @@
                     "comment": "Ruins Lindwurm",
                     "enemy_id": "0x0015707",
                     "level": 60,
-                    "exp": 152540,
+                    "exp": 9010,
                     "named_enemy_params_id": 905,
                     "is_boss": true,
                     "index": 0
@@ -52,25 +52,25 @@
                 {
                     "enemy_id": "0x0010460",
                     "level": 60,
-                    "exp": 15254,
+                    "exp": 756,
                     "index": 10
                 },
                 {
                     "enemy_id": "0x0010460",
                     "level": 60,
-                    "exp": 15254,
+                    "exp": 756,
                     "index": 11
                 },
                 {
                     "enemy_id": "0x0010460",
                     "level": 60,
-                    "exp": 15254,
+                    "exp": 756,
                     "index": 12
                 },
                 {
                     "enemy_id": "0x0010460",
                     "level": 60,
-                    "exp": 15254,
+                    "exp": 756,
                     "index": 13
                 }
             ]
