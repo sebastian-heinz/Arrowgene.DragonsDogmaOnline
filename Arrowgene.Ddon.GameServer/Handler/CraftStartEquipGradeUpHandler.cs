@@ -89,7 +89,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             craftPawns.AddRange(request.CraftSupportPawnIDList.Select(p => new CraftPawn(Server.CraftManager.FindPawn(client, p.PawnId), CraftPosition.Assistant)));
             craftPawns.AddRange(request.CraftMasterLegendPawnIDList.Select(p => new CraftPawn(Server.AssetRepository.PawnCraftMasterLegendAsset.Single(m => m.PawnId == p.PawnId))));
 
-            double calculatedOdds = CraftManager.CalculateEquipmentQualityIncreaseRate(craftPawns);
+            double calculatedOdds = Server.CraftManager.CalculateEquipmentQualityIncreaseRate(craftPawns);
             CraftCalculationResult enhnacementResult = _craftManager.CalculateEquipmentEnhancement(craftPawns, (uint)calculatedOdds);
             bool isGreatSuccess = enhnacementResult.IsGreatSuccess;
             uint addEquipPoint = enhnacementResult.CalculatedValue;
@@ -203,18 +203,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 res = CreateEquipPointResponse(equipItemUID, addEquipPoint, currentTotalEquipPoint, goldRequired, isGreatSuccess, CurrentEquipInfo, canContinue, dummydata);
             }
 
-            if (CraftManager.CanPawnExpUp(leadPawn))
+            if (Server.CraftManager.CanPawnExpUp(leadPawn))
             {
                 double BonusExpMultiplier = Server.GpCourseManager.PawnCraftBonus();
-                CraftManager.HandlePawnExpUpNtc(client, leadPawn, pawnExp, BonusExpMultiplier);
-                if (CraftManager.CanPawnRankUp(leadPawn))
+                Server.CraftManager.HandlePawnExpUpNtc(client, leadPawn, pawnExp, BonusExpMultiplier);
+                if (Server.CraftManager.CanPawnRankUp(leadPawn))
                 {
-                    CraftManager.HandlePawnRankUpNtc(client, leadPawn);
+                    Server.CraftManager.HandlePawnRankUpNtc(client, leadPawn);
                 }
             }
             else
             {
-                CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
+                Server.CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
             }
 
             Server.Database.UpdatePawnBaseInfo(leadPawn);

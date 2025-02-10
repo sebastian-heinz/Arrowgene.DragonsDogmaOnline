@@ -93,14 +93,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                 }
 
-                double calculatedOdds = CraftManager.CalculateEquipmentQualityIncreaseRate(craftPawns);
+                double calculatedOdds = Server.CraftManager.CalculateEquipmentQualityIncreaseRate(craftPawns);
                 uint plusValue = 0;
                 bool isGreatSuccessEquipmentQuality = false;
                 bool canPlusValue = !itemInfo.SubCategory.HasValue || !NoQualitySubCategories.Contains(itemInfo.SubCategory.Value);
                 if (canPlusValue && !string.IsNullOrEmpty(request.RefineMaterialUID))
                 {
                     Item refineMaterialItem = Server.Database.SelectStorageItemByUId(request.RefineMaterialUID);
-                    CraftCalculationResult craftCalculationResult = CraftManager.CalculateEquipmentQuality(refineMaterialItem, (uint)calculatedOdds);
+                    CraftCalculationResult craftCalculationResult = Server.CraftManager.CalculateEquipmentQuality(refineMaterialItem, (uint)calculatedOdds);
                     plusValue = craftCalculationResult.CalculatedValue;
                     isGreatSuccessEquipmentQuality = craftCalculationResult.IsGreatSuccess;
 
@@ -120,7 +120,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 bool isGreatSuccessConsumableQuantity = false;
                 if (itemInfo.StorageType == StorageType.ItemBagConsumable)
                 {
-                    CraftCalculationResult craftCalculationResult = CraftManager.CalculateConsumableQuantity(craftPawns, (uint)calculatedOdds);
+                    CraftCalculationResult craftCalculationResult = Server.CraftManager.CalculateConsumableQuantity(craftPawns, (uint)calculatedOdds);
                     consumableAdditionalQuantity = request.CreateCount * craftCalculationResult.CalculatedValue;
                     isGreatSuccessConsumableQuantity = craftCalculationResult.IsGreatSuccess;
                 }
@@ -147,7 +147,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // TODO: check if course bonus provides exp bonus for crafting & calculate bonus EXP
                 // TODO: Decide whether bonus exp should be calculated when craft is started vs. received
                 bool expBonus = false;
-                if (CraftManager.CanPawnExpUp(leadPawn))
+                if (Server.CraftManager.CanPawnExpUp(leadPawn))
                 {
                     craftProgress.Exp = recipe.Exp * request.CreateCount;
                     craftProgress.ExpBonus = expBonus;

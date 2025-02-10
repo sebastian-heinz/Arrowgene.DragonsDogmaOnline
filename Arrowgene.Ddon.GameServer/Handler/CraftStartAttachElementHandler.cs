@@ -95,20 +95,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
             updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
             updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 1, 1));
             client.Send(updateCharacterItemNtc);
-
             
-            if (CraftManager.CanPawnExpUp(leadPawn))
+            if (Server.CraftManager.CanPawnExpUp(leadPawn))
             {
                 double BonusExpMultiplier = Server.GpCourseManager.PawnCraftBonus();
-                CraftManager.HandlePawnExpUpNtc(client, leadPawn, pawnExp, BonusExpMultiplier);
-                if (CraftManager.CanPawnRankUp(leadPawn))
+                Server.CraftManager.HandlePawnExpUpNtc(client, leadPawn, pawnExp, BonusExpMultiplier);
+                if (Server.CraftManager.CanPawnRankUp(leadPawn))
                 {
-                    CraftManager.HandlePawnRankUpNtc(client, leadPawn);
+                    Server.CraftManager.HandlePawnRankUpNtc(client, leadPawn);
                 }
             }
             else
             {
-                CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
+                Server.CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
             }
 
             Server.Database.UpdatePawnBaseInfo(leadPawn);
