@@ -77,6 +77,33 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         {
             return Instance.Server.Database;
         }
+
+        public static IGameItem GetGameItem(ItemId itemId)
+        {
+            return Instance.Server.ScriptManager.GameItemModule.GetItemInterface(itemId);
+        }
+
+        public static bool CharacterHasEquipped(CharacterCommon characterCommon, EquipType equipType, ItemId itemId)
+        {
+            return characterCommon.Equipment.GetItems(equipType).Exists(x => x?.ItemId == (uint)itemId);
+        }
+
+        public static bool CharacterHasEquipped(CharacterCommon characterCommon, List<EquipType> equipTypes, ItemId itemId)
+        {
+            foreach (var equipType in equipTypes)
+            {
+                if (CharacterHasEquipped(characterCommon, equipType, itemId))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static GpCourseManager GetCourseManager()
+        {
+            return Instance.Server.GpCourseManager;
+        }
     }
 
     public static class InstancedEnemyUtils
