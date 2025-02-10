@@ -52,49 +52,49 @@
                     "comment": "Defiled Earth Figure",
                     "enemy_id": "0x010509",
                     "level": 12,
-                    "exp": 372,
+                    "exp": 73,
                     "named_enemy_params_id": 308
                 },
                 {
                     "comment": "Defiled Earth Figure",
                     "enemy_id": "0x010509",
                     "level": 12,
-                    "exp": 372,
+                    "exp": 73,
                     "named_enemy_params_id": 308
                 },
                 {
                     "comment": "Defiled Earth Figure",
                     "enemy_id": "0x010509",
                     "level": 12,
-                    "exp": 372,
+                    "exp": 73,
                     "named_enemy_params_id": 308
                 },
                 {
                     "comment": "Defiled Earth Figure",
                     "enemy_id": "0x010509",
                     "level": 12,
-                    "exp": 372,
+                    "exp": 73,
                     "named_enemy_params_id": 308
                 },
                 {
                     "comment": "Defiled Follower",
                     "enemy_id": "0x010308",
                     "level": 13,
-                    "exp": 428,
+                    "exp": 73,
                     "named_enemy_params_id": 309
                 },
                 {
                     "comment": "Defiled Follower",
                     "enemy_id": "0x010308",
                     "level": 13,
-                    "exp": 428,
+                    "exp": 73,
                     "named_enemy_params_id": 309
                 },
                 {
                     "comment": "Defiled Assistant Priest",
                     "enemy_id": "0x010308",
                     "level": 15,
-                    "exp": 828,
+                    "exp": 244,
                     "named_enemy_params_id": 307
                 }
             ]

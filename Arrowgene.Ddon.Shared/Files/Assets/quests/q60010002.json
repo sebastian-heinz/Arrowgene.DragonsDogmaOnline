@@ -43,7 +43,7 @@
                     "comment": "Menvili the Undead Priest",
                     "enemy_id": "0x015600",
                     "level": 30,
-                    "exp": 9960,
+                    "exp": 1657,
                     "is_boss": true,
                     "named_enemy_params_id": 310
                 },
@@ -51,21 +51,21 @@
                     "comment": "Plague Apostle (Knight)",
                     "enemy_id": "0x010301",
                     "level": 30,
-                    "exp": 996,
+                    "exp": 109,
                     "named_enemy_params_id": 311
                 },
                 {
                     "comment": "Plague Apostle (Knight)",
                     "enemy_id": "0x010301",
                     "level": 30,
-                    "exp": 996,
+                    "exp": 109,
                     "named_enemy_params_id": 311
                 },
                 {
                     "comment": "Plague Apostle (Knight)",
                     "enemy_id": "0x010301",
                     "level": 30,
-                    "exp": 996,
+                    "exp": 109,
                     "named_enemy_params_id": 311
 
                 },
@@ -73,7 +73,7 @@
                     "comment": "Plague Apostle (Mage)",
                     "enemy_id": "0x010308",
                     "level": 30,
-                    "exp": 996,
+                    "exp": 109,
                     "named_enemy_params_id": 311
 
                 },
@@ -81,7 +81,7 @@
                     "comment": "Plague Apostle (Mage)",
                     "enemy_id": "0x010308",
                     "level": 30,
-                    "exp": 996,
+                    "exp": 109,
                     "named_enemy_params_id": 311
 
                 },
@@ -89,7 +89,7 @@
                     "comment": "Plague Apostle (Knight, Pop)",
                     "enemy_id": "0x010301",
                     "level": 30,
-                    "exp": 996,
+                    "exp": 109,
                     "named_enemy_params_id": 311,
                     "is_manual_set": true,
                     "start_think_tbl_no": 8,
@@ -99,7 +99,7 @@
                     "comment": "Plague Apostle (Mage, Pop)",
                     "enemy_id": "0x010308",
                     "level": 30,
-                    "exp": 996,
+                    "exp": 109,
                     "named_enemy_params_id": 311,
                     "is_manual_set": true,
                     "start_think_tbl_no": 8,
@@ -109,7 +109,7 @@
                     "comment": "Plague Apostle (Mage, Pop)",
                     "enemy_id": "0x010308",
                     "level": 30,
-                    "exp": 996,
+                    "exp": 109,
                     "named_enemy_params_id": 311,
                     "is_manual_set": true,
                     "start_think_tbl_no": 8,
@@ -119,7 +119,7 @@
                     "comment": "Plague Apostle (Knight, Pop)",
                     "enemy_id": "0x010301",
                     "level": 30,
-                    "exp": 996,
+                    "exp": 109,
                     "named_enemy_params_id": 311,
                     "is_manual_set": true,
                     "start_think_tbl_no": 8,

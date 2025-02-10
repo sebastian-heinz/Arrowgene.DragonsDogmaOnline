@@ -44,28 +44,28 @@
                     "comment": "Spark Blue",
                     "enemy_id": "0x0010461",
                     "level": 60,
-                    "exp": 15254,
+                    "exp": 288,
                     "named_enemy_params_id": 892
                 },
                 {
                     "enemy_id": "0x0010460",
                     "level": 60,
-                    "exp": 15254
+                    "exp": 288
                 },
                 {
                     "enemy_id": "0x0010460",
                     "level": 60,
-                    "exp": 15254
+                    "exp": 288
                 },
                 {
                     "enemy_id": "0x0010460",
                     "level": 60,
-                    "exp": 15254
+                    "exp": 288
                 },
                 {
                     "enemy_id": "0x0010460",
                     "level": 60,
-                    "exp": 15254
+                    "exp": 288
                 }
             ]
         }

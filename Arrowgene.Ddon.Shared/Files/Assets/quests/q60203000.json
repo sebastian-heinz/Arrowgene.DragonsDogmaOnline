@@ -44,7 +44,7 @@
                     "comment": "Maritia the Kidnapper (Nightmare)",
                     "enemy_id": "0x015305",
                     "level": 70,
-                    "exp": 347000,
+                    "exp": 10108,
                     "is_boss": true,
                     "named_enemy_params_id": 893
                 }
@@ -77,7 +77,6 @@
             "type": "KillGroup",
             "announce_type": "Update",
             "reset_group": false,
-            "caution": true,
             "groups": [ 0 ]
         },
         {
