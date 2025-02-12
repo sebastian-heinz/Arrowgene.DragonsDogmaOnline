@@ -1,0 +1,93 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Dowe Valley Trial: Echoes (Dowe Valley AR5)",
+    "quest_id": 60050001,
+    "next_quest": 0,
+    "base_level": 33,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": { "id": 48 },
+    "area_id": "DoweValley",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 5,
+            "Param2": 4
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 4120
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1450
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 370
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 99,
+                "group_id": 8
+            },
+            "enemies": [
+                {
+                    "comment": "Snoring Colossus",
+                    "enemy_id": "0x015020",
+                    "level": 33,
+                    "exp": 3132,
+                    "is_boss": true,
+                    "named_enemy_params_id": 341
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 48
+            },
+            "npc_id": "Hayden",
+            "message_id": 14435
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [ 0 ],
+            "result_commands": [
+                {
+                    "comment": "Hayden idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1508,
+                    "Param2": 14437
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 48
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Hayden",
+            "message_id": 14436
+        }
+    ]
+}

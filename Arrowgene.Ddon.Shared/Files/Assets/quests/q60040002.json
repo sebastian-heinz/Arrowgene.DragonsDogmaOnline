@@ -1,0 +1,118 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Volden Mines Trial: Summit-Concealing Wings (Volden Mines AR10)",
+    "quest_id": 60040002,
+    "next_quest": 0,
+    "base_level": 40,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": { "id": 80 },
+    "area_id": "VoldenMines",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 4,
+            "Param2": 9
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 4800
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 5000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 450
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 192
+            },
+            "starting_index": 8,
+            "enemies": [
+                {
+                    "comment": "Harpy Grave Robber",
+                    "enemy_id": "0x010600",
+                    "level": 38,
+                    "exp": 72,
+                    "is_boss": true,
+                    "named_enemy_params_id": 217
+                },
+                {
+                    "comment": "Harpy Grave Robber",
+                    "enemy_id": "0x010600",
+                    "level": 38,
+                    "exp": 72,
+                    "is_boss": true,
+                    "named_enemy_params_id": 217
+                },
+                {
+                    "comment": "Harpy Grave Robber",
+                    "enemy_id": "0x010600",
+                    "level": 38,
+                    "exp": 72,
+                    "is_boss": true,
+                    "named_enemy_params_id": 217
+                },
+                {
+                    "comment": "Treasure Seeking Griffon",
+                    "enemy_id": "0x015300",
+                    "level": 40,
+                    "exp": 4500,
+                    "is_boss": true,
+                    "named_enemy_params_id": 216
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 80
+            },
+            "npc_id": "Roy",
+            "message_id": 14432
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [ 0 ],
+            "result_commands": [
+                {
+                    "comment": "Roy idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1604,
+                    "Param2": 14434
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 80
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Roy",
+            "message_id": 14433
+        }
+    ]
+}
