@@ -1,0 +1,114 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Dowe Valley Trial: The Cries from the Bottom of the Well (Dowe Valley AR15)",
+    "quest_id": 60205001,
+    "next_quest": 0,
+    "base_level": 68,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": { "id": 48 },
+    "area_id": "DoweValley",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 5,
+            "Param2": 14
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 11850
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 4486
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 580
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 364,
+                "group_id": 4
+            },
+            "starting_index": 9,
+            "enemies": [
+                {
+                    "comment": "Deep Well Mistress (Medusa)",
+                    "enemy_id": "0x015610",
+                    "level": 68,
+                    "exp": 29625,
+                    "is_boss": true,
+                    "named_enemy_params_id": 910
+                },
+                {
+                    "enemy_id": "0x010603",
+                    "level": 68,
+                    "exp": 1185
+                },
+                {
+                    "enemy_id": "0x010603",
+                    "level": 68,
+                    "exp": 1185
+                },
+                {
+                    "enemy_id": "0x010603",
+                    "level": 68,
+                    "exp": 1185
+                },
+                {
+                    "enemy_id": "0x010603",
+                    "level": 68,
+                    "exp": 1185
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 48
+            },
+            "npc_id": "Hayden",
+            "message_id": 17867
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [ 0 ],
+            "result_commands": [
+                {
+                    "comment": "Hayden idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1508,
+                    "Param2": 17868
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 48
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Hayden",
+            "message_id": 17869
+        }
+    ]
+}

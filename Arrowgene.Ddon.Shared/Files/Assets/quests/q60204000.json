@@ -1,0 +1,100 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Volden Mines Trial: A Forlorn Complaint (Volden Mines AR13)",
+    "quest_id": 60204000,
+    "next_quest": 0,
+    "base_level": 63,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": { "id": 80 },
+    "area_id": "VoldenMines",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 4,
+            "Param2": 12
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 1938
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1039
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 132
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 72,
+                "group_id": 23
+            },
+            "starting_index": 1,
+            "enemies": [
+                {
+                    "comment": "Skeleton Knight of the Tunnel (Skull Lord)",
+                    "enemy_id": "0x010313",
+                    "level": 63,
+                    "exp": 1408,
+                    "named_enemy_params_id": 894
+                },
+                {
+                    "comment": "Skeleton Knight of the Tunnel (Skull Lord)",
+                    "enemy_id": "0x010313",
+                    "level": 63,
+                    "exp": 1408,
+                    "named_enemy_params_id": 894
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 80
+            },
+            "npc_id": "Roy",
+            "message_id": 17687
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [ 0 ],
+            "result_commands": [
+                {
+                    "comment": "Roy idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1604,
+                    "Param2": 17685
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 80
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Roy",
+            "message_id": 17686
+        }
+    ]
+}
