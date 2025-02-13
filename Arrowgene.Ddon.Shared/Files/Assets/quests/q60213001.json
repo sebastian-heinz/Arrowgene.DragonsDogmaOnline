@@ -1,0 +1,99 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Bloodbane Isle Trial: A Frenzied Abomination (Bloodbane Isle AR10)",
+    "quest_id": 60213001,
+    "next_quest": 0,
+    "base_level": 65,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {
+        "id": 317
+    },
+    "area_id": "BloodbaneIsle",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 13,
+            "Param2": 9
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 1954
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1072
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 137
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 335,
+                "group_id": 11
+            },
+            "enemies": [
+                {
+                    "comment": "Infected Gorecyclops (Severe)",
+                    "enemy_id": "0x015012",
+                    "level": 68,
+                    "exp": 22218,
+                    "is_boss": true,
+                    "infection_type": 2
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 317
+            },
+            "npc_id": "Bertrand",
+            "message_id": 17967
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [
+                0
+            ],
+            "result_commands": [
+                {
+                    "comment": "Bertrand idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 549,
+                    "Param2": 17968
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [
+                0
+            ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 317
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Bertrand",
+            "message_id": 17969
+        }
+    ]
+}

@@ -1,0 +1,99 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Eastern Zandora Trial: The Scorching Menace (Eastern Zandora AR5)",
+    "quest_id": 60110001,
+    "next_quest": 0,
+    "base_level": 47,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {
+        "id": 61
+    },
+    "area_id": "EasternZandora",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 11,
+            "Param2": 4
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 5900
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 6500
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 570
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 461
+            },
+            "enemies": [
+                {
+                    "comment": "Torrid Geo Golem",
+                    "enemy_id": "0x015104",
+                    "level": 47,
+                    "exp": 4608,
+                    "is_boss": true,
+                    "named_enemy_params_id": 271
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 61
+            },
+            "npc_id": "Nadia",
+            "message_id": 14472
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [
+                0
+            ],
+            "result_commands": [
+                {
+                    "comment": "Nadia idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1811,
+                    "Param2": 14474
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [
+                0
+            ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 61
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Nadia",
+            "message_id": 14473
+        }
+    ]
+}

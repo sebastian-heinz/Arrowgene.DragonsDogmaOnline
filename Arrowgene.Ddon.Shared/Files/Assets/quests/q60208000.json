@@ -1,0 +1,120 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Betland Plains Trial: The Crafty Stone Ones (Betland Plains AR13)",
+    "quest_id": 60208000,
+    "next_quest": 0,
+    "base_level": 63,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {
+        "id": 66
+    },
+    "area_id": "BetlandPlains",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 8,
+            "Param2": 12
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 1938
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1039
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 132
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 262
+            },
+            "starting_index": 4,
+            "enemies": [
+                {
+                    "comment": "Disturbed Gargoyle",
+                    "enemy_id": "0x010603",
+                    "level": 63,
+                    "exp": 457,
+                    "named_enemy_params_id": 896
+                },
+                {
+                    "comment": "Disturbed Gargoyle",
+                    "enemy_id": "0x010603",
+                    "level": 63,
+                    "exp": 457,
+                    "named_enemy_params_id": 896
+                },
+                {
+                    "comment": "Disturbed Gargoyle",
+                    "enemy_id": "0x010603",
+                    "level": 63,
+                    "exp": 457,
+                    "named_enemy_params_id": 896
+                },
+                {
+                    "comment": "Disturbed Gargoyle",
+                    "enemy_id": "0x010603",
+                    "level": 63,
+                    "exp": 457,
+                    "named_enemy_params_id": 896
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 66
+            },
+            "npc_id": "Scherzo",
+            "message_id": 17737
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [
+                0
+            ],
+            "result_commands": [
+                {
+                    "comment": "Scherzo idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1905,
+                    "Param2": 17738
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [
+                0
+            ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 66
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Scherzo",
+            "message_id": 17739
+        }
+    ]
+}

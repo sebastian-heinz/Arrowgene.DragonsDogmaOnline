@@ -1,0 +1,120 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Northern Betland Plains Trial: The Crypt's Shadow (Northern Betland Plains AR5)",
+    "quest_id": 60090001,
+    "next_quest": 0,
+    "base_level": 45,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {
+        "id": 53
+    },
+    "area_id": "NorthernBetlandPlains",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 9,
+            "Param2": 4
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 5500
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 5600
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 540
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 173,
+                "group_id": 2
+            },
+            "enemies": [
+                {
+                    "comment": "Drawan Immortal (Sword Undead)",
+                    "enemy_id": "0x010503",
+                    "level": 45,
+                    "exp": 165,
+                    "named_enemy_params_id": 360
+                },
+                {
+                    "comment": "Ossuary Ghoul (Ghoul)",
+                    "enemy_id": "0x015503",
+                    "level": 45,
+                    "exp": 3700,
+                    "is_boss": true,
+                    "named_enemy_params_id": 359
+                },
+                {
+                    "comment": "Drawan Immortal (Sword Undead)",
+                    "enemy_id": "0x010503",
+                    "level": 45,
+                    "exp": 165,
+                    "named_enemy_params_id": 360
+                },
+                {
+                    "comment": "Drawan Immortal (Stout Undead)",
+                    "enemy_id": "0x010502",
+                    "level": 45,
+                    "exp": 185,
+                    "named_enemy_params_id": 360
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 53
+            },
+            "npc_id": "Sunny",
+            "message_id": 14459
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [
+                0
+            ],
+            "result_commands": [
+                {
+                    "comment": "Sunny idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1701,
+                    "Param2": 14461
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [
+                0
+            ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 53
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Sunny",
+            "message_id": 14460
+        }
+    ]
+}
