@@ -1,0 +1,130 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Mergoda Ruins Trial: The Frost Spirit Champion (Mergoda Ruins AR15)",
+    "quest_id": 60212001,
+    "next_quest": 0,
+    "base_level": 68,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {
+        "id": 237
+    },
+    "area_id": "MergodaRuins",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 12,
+            "Param2": 14
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 2962
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1121
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 145
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 424,
+                "group_id": 5
+            },
+            "starting_index": 8,
+            "enemies": [
+                {
+                    "comment": "Infected Hobgoblin",
+                    "enemy_id": "0x010160",
+                    "level": 68,
+                    "exp": 1185
+                },
+                {
+                    "comment": "Infected Hobgoblin",
+                    "enemy_id": "0x010160",
+                    "level": 68,
+                    "exp": 1185
+                },
+                {
+                    "comment": "Infected Hobgoblin",
+                    "enemy_id": "0x010160",
+                    "level": 68,
+                    "exp": 1185
+                },
+                {
+                    "comment": "Infected Hobgoblin",
+                    "enemy_id": "0x010160",
+                    "level": 68,
+                    "exp": 1185
+                },
+                {
+                    "comment": "Infected Hobgoblin",
+                    "enemy_id": "0x010160",
+                    "level": 68,
+                    "exp": 1185
+                },
+                {
+                    "comment": "Awakening Ice Knight (Frost Machina)",
+                    "enemy_id": "0x015851",
+                    "level": 68,
+                    "exp": 29625,
+                    "is_boss": true,
+                    "named_enemy_params_id": 903
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 237
+            },
+            "npc_id": "Beatrix",
+            "message_id": 17781
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [
+                0
+            ],
+            "result_commands": [
+                {
+                    "comment": "Beatrix idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 2301,
+                    "Param2": 17782
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [
+                0
+            ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 237
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Beatrix",
+            "message_id": 17783
+        }
+    ]
+}

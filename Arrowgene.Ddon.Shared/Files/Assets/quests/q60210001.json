@@ -1,0 +1,99 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Zandora Wastelands Trial: 赤き十字架の礎 (Zandora Wastelands AR15)",
+    "quest_id": 60210001,
+    "next_quest": 0,
+    "base_level": 70,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {
+        "id": 139
+    },
+    "area_id": "ZandoraWastelands",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 10,
+            "Param2": 14
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 15350
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 4618
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 600
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 423,
+                "group_id": 5
+            },
+            "enemies": [
+                {
+                    "comment": "Beast Devourer Gigant Machina",
+                    "enemy_id": "0x015850",
+                    "level": 68,
+                    "exp": 38375,
+                    "is_boss": true,
+                    "named_enemy_params_id": 914
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 139
+            },
+            "npc_id": "Dian",
+            "message_id": 17753
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [
+                0
+            ],
+            "result_commands": [
+                {
+                    "comment": "Dian idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 4507,
+                    "Param2": 17754
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [
+                0
+            ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 139
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Dian",
+            "message_id": 17755
+        }
+    ]
+}

@@ -1,0 +1,99 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Bloodbane Isle Trial: A Strange Land's Temple (Bloodbane Isle AR5)",
+    "quest_id": 60213000,
+    "next_quest": 0,
+    "base_level": 63,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {
+        "id": 317
+    },
+    "area_id": "BloodbaneIsle",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 13,
+            "Param2": 4
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 1938
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1039
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 132
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 331,
+                "group_id": 7
+            },
+            "enemies": [
+                {
+                    "comment": "Corrupted and Berserk Eagle (Infected Griffon)",
+                    "enemy_id": "0x015306",
+                    "level": 68,
+                    "exp": 22218,
+                    "is_boss": true,
+                    "named_enemy_params_id": 902
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 317
+            },
+            "npc_id": "Bertrand",
+            "message_id": 17958
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [
+                0
+            ],
+            "result_commands": [
+                {
+                    "comment": "Bertrand idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 549,
+                    "Param2": 17962
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [
+                0
+            ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 317
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Bertrand",
+            "message_id": 17963
+        }
+    ]
+}

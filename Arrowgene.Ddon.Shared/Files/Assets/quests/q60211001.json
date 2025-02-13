@@ -1,0 +1,137 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Eastern Zandora Trial: The Restless Ancestors (Eastern Zandora AR15)",
+    "quest_id": 60211001,
+    "next_quest": 0,
+    "base_level": 65,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {
+        "id": 61
+    },
+    "area_id": "EasternZandora",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 11,
+            "Param2": 14
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 1970
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1072
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 137
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 432,
+                "group_id": 9
+            },
+            "starting_index": 5,
+            "comment": "In the video there seems to be more than this, but its hard to count and they may be spawning in?",
+            "enemies": [
+                {
+                    "comment": "Restless Death Knight",
+                    "enemy_id": "0x010310",
+                    "level": 65,
+                    "exp": 19702,
+                    "is_boss": true,
+                    "named_enemy_params_id": 911
+                },
+                {
+                    "comment": "Ghost",
+                    "enemy_id": "0x015620",
+                    "level": 65,
+                    "exp": 788
+                },
+                {
+                    "comment": "Ghost",
+                    "enemy_id": "0x015620",
+                    "level": 65,
+                    "exp": 788
+                },
+                {
+                    "comment": "Grimwarg",
+                    "enemy_id": "0x010205",
+                    "level": 65,
+                    "exp": 788
+                },
+                {
+                    "comment": "Grimwarg",
+                    "enemy_id": "0x010205",
+                    "level": 65,
+                    "exp": 788
+                },
+                {
+                    "comment": "Grimwarg",
+                    "enemy_id": "0x010205",
+                    "level": 65,
+                    "exp": 788
+                },
+                {
+                    "comment": "Grimwarg",
+                    "enemy_id": "0x010205",
+                    "level": 65,
+                    "exp": 788
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 61
+            },
+            "npc_id": "Nadia",
+            "message_id": 17762
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [
+                0
+            ],
+            "result_commands": [
+                {
+                    "comment": "Nadia idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1811,
+                    "Param2": 17763
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [
+                0
+            ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 61
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Nadia",
+            "message_id": 17764
+        }
+    ]
+}
