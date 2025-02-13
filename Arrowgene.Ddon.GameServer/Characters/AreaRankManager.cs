@@ -266,6 +266,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return true;
             }
 
+            // Temporarily while S2 trials in development.
+            if (spot.AreaId >= QuestAreaId.ElanWaterGrove)
+            {
+                return true;
+            }
+
             if (rank.Rank < spot.UnlockRank)
             {
                 return false;
