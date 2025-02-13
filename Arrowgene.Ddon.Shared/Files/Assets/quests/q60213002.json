@@ -1,0 +1,120 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Bloodbane Isle Trial: The Worn Twin Tusks (Bloodbane Isle AR15)",
+    "quest_id": 60213002,
+    "next_quest": 0,
+    "base_level": 68,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {
+        "id": 317
+    },
+    "area_id": "BloodbaneIsle",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 13,
+            "Param2": 14
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 2962
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1121
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 145
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 322,
+                "group_id": 6
+            },
+            "starting_index": 17,
+            "enemies": [
+                {
+                    "comment": "Infected Behemoth (Mild)",
+                    "enemy_id": "0x015712",
+                    "level": 68,
+                    "exp": 29625,
+                    "is_boss": true,
+                    "infection_type": 1
+                },
+                {
+                    "enemy_id": "0x010160",
+                    "level": 68,
+                    "exp": 1185
+                },
+                {
+                    "enemy_id": "0x010160",
+                    "level": 68,
+                    "exp": 1185
+                },
+                {
+                    "enemy_id": "0x010160",
+                    "level": 68,
+                    "exp": 1185
+                },
+                {
+                    "enemy_id": "0x010160",
+                    "level": 68,
+                    "exp": 1185
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 317
+            },
+            "npc_id": "Bertrand",
+            "message_id": 18065
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [
+                0
+            ],
+            "result_commands": [
+                {
+                    "comment": "Bertrand idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 549,
+                    "Param2": 18068
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [
+                0
+            ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 317
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Bertrand",
+            "message_id": 18067
+        }
+    ]
+}

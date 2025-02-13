@@ -5,8 +5,11 @@ namespace Arrowgene.Ddon.Shared.Model.Rpc
         //CommandRoute
         NotifyPlayerList, // List<RpcCharacterData>
         NotifyClanQuestCompletion, //RpcQuestCompletionData
-        EpitaphRoadWeeklyReset, // null
         KickInternal, // int
+
+        EpitaphRoadWeeklyReset, // null
+        AreaRankResetStart, //null
+        AreaRankResetEnd, //null
 
         //InternalChatRoute
         SendTellMessage, // RpcChatData

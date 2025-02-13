@@ -1,0 +1,93 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Dowe Valley Trial: Fear's Songstress (Dowe Valley AR10)",
+    "quest_id": 60050002,
+    "next_quest": 0,
+    "base_level": 40,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": { "id": 48 },
+    "area_id": "DoweValley",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 5,
+            "Param2": 9
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 4850
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 5300
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 460
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 208
+            },
+            "enemies": [
+                {
+                    "comment": "Demon Songstress Lorelei",
+                    "enemy_id": "0x015302",
+                    "level": 40,
+                    "exp": 3910,
+                    "is_boss": true,
+                    "named_enemy_params_id": 221
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 48
+            },
+            "npc_id": "Hayden",
+            "message_id": 14438
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [ 0 ],
+            "result_commands": [
+                {
+                    "comment": "Hayden idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1508,
+                    "Param2": 14440
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 48
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Hayden",
+            "message_id": 14439
+        }
+    ]
+}

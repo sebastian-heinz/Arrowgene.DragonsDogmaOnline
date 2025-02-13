@@ -1,0 +1,126 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Mergoda Ruins Trial: The Fall of Salon (Mergoda Ruins AR13)",
+    "quest_id": 60212000,
+    "next_quest": 0,
+    "base_level": 68,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {
+        "id": 237
+    },
+    "area_id": "MergodaRuins",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 12,
+            "Param2": 12
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 2962
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1121
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 145
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 59,
+                "group_id": 100
+            },
+            "enemies": [
+                {
+                    "comment": "Remnant",
+                    "enemy_id": "0x011026",
+                    "level": 68,
+                    "exp": 330,
+                    "named_enemy_params_id": 890,
+                    "hm_present_no": 65
+
+                },
+                {
+                    "comment": "Remnant",
+                    "enemy_id": "0x011026",
+                    "level": 68,
+                    "exp": 330,
+                    "named_enemy_params_id": 890,
+                    "hm_present_no": 65
+
+                },
+                {
+                    "comment": "Remnant",
+                    "enemy_id": "0x011027",
+                    "level": 68,
+                    "exp": 330,
+                    "named_enemy_params_id": 890,
+                    "hm_present_no": 66
+
+                },
+                {
+                    "comment": "Remnant",
+                    "enemy_id": "0x011023",
+                    "level": 68,
+                    "exp": 330,
+                    "named_enemy_params_id": 890,
+                    "hm_present_no": 62
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 237
+            },
+            "npc_id": "Beatrix",
+            "message_id": 17773
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [
+                0
+            ],
+            "result_commands": [
+                {
+                    "comment": "Beatrix idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 2301,
+                    "Param2": 17771
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [
+                0
+            ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 237
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Beatrix",
+            "message_id": 17772
+        }
+    ]
+}

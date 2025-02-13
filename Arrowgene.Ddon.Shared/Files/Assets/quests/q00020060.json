@@ -9,7 +9,8 @@
     "discoverable": true,
     "order_conditions": [
         {"type": "MinimumLevel", "Param1": 57},
-        {"type": "MainQuestCompleted", "Param1": 20050}
+        {"type": "MainQuestCompleted", "Param1": 20050},
+        {"type": "AreaRank","Param1": 9,"Param2": 6}
     ],
     "rewards": [
         {

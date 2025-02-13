@@ -1,13 +1,12 @@
-using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestGetCycleContentsNewsListHandler : PacketHandler<GameClient>
+    public class QuestGetCycleContentsNewsListHandler : GameRequestPacketHandler<C2SQuestGetCycleContentsNewsListReq, S2CQuestGetCycleContentsNewsListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetCycleContentsNewsListHandler));
 
@@ -16,11 +15,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_QUEST_GET_CYCLE_CONTENTS_NEWS_LIST_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override S2CQuestGetCycleContentsNewsListRes Handle(GameClient client, C2SQuestGetCycleContentsNewsListReq request)
         {
-            client.Send(GameFull.Dump_708);
+            var pcap = EntitySerializer.Get<S2CQuestGetCycleContentsNewsListRes>().Read(GameFull.Dump_708.AsBuffer());
+            return pcap;
         }
     }
 }

@@ -12,22 +12,25 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         /// Which board the quest corresponds to.
         /// </summary>
         public uint BoardId { get; set; }
+
         /// <summary>
         /// Value of the quest reward reputation.
         /// </summary>
         public uint GetAp { get; set; } 
 
         /// <summary>
-        /// Checked against ClearNum to see if you're eligible for clan point rewards.
+        /// 
         /// </summary>
         public uint GetCp { get; set; }
-        public uint OrderLimit { get; set; }
+
         /// <summary>
-        /// 1 = Hunt, 2 = Gathering
+        /// Checked against ClearNum to see if you're eligible for clan point rewards.
         /// </summary>
+        public uint OrderLimit { get; set; }
         public uint ClearNum { get; set; }
+
         /// <summary>
-        /// TODO: Investigate.
+        /// 1 = Normal, 2 = Clan
         /// </summary>
         public uint BoardType { get; set; }
 

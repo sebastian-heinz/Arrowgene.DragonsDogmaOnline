@@ -597,7 +597,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 client.Enqueue(updateCharacterItemNtc, packets);
             }
 
-            foreach (var point in quest.ScaledExpRewards())
+            var scaledRewards = quest.ScaledExpRewards();
+            foreach (var point in scaledRewards)
             {
                 uint amount = CalculateTotalPointAmount(server, client, point);
                 if (amount == 0)
@@ -637,9 +638,23 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         var ntc = server.PPManager.AddPlayPoint(client, amount, type: 1, connectionIn: connectionIn);
                         client.Enqueue(ntc, packets);
                         break;
+                    case PointType.AreaPoints:
+                        var areaId = quest.QuestAreaId > 0 ? quest.QuestAreaId : (QuestAreaId)quest.LightQuestDetail.AreaId;
+                        var areaRankNtcs = server.AreaRankManager.AddAreaPoint(client, areaId, amount, connectionIn);
+                        packets.AddRange(areaRankNtcs);
+                        break;
                 }
             }
-            
+
+            // Fallback so that existing quests still get AP.
+            if (!scaledRewards.Where(x => x.Type == PointType.AreaPoints).Any() && (QuestManager.IsWorldQuest(quest) || QuestManager.IsBoardQuest(quest)))
+            {
+                var areaId = quest.QuestAreaId > 0 ? quest.QuestAreaId : (QuestAreaId)quest.LightQuestDetail.AreaId;
+                var amount = server.ExpManager.GetScaledPointAmount(GameMode.Normal, RewardSource.Quest, PointType.AreaPoints, server.AreaRankManager.GetAreaPointReward(quest));
+                var areaRankNtcs = server.AreaRankManager.AddAreaPoint(client, areaId, amount, connectionIn);
+                packets.AddRange(areaRankNtcs);
+            }
+
             if (QuestManager.IsClanQuest(quest) && client.Character.ClanId != 0)
             {
                 var amount = quest.LightQuestDetail.GetCp;
@@ -652,7 +667,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 var completeNtcs = server.ClanManager.CompleteClanQuest(quest, client);
                 packets.AddRange(completeNtcs);
             }
-            
+       
             return packets;
         }
 

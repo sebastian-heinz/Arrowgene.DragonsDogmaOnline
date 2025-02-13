@@ -776,17 +776,39 @@ CREATE TABLE IF NOT EXISTS "ddon_epitaph_road_unlocks" (
 	CONSTRAINT "fk_ddon_epitaph_road_unlocks_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character"("character_id") ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS ddon_epitaph_claimed_weekly_rewards (
+CREATE TABLE IF NOT EXISTS "ddon_epitaph_claimed_weekly_rewards" (
 	"character_id"	INTEGER NOT NULL,
 	"epitaph_id"	INTEGER NOT NULL,
     CONSTRAINT "pk_ddon_epitaph_claimed_weekly_rewards" PRIMARY KEY ("character_id", "epitaph_id"),
 	CONSTRAINT "fk_ddon_epitaph_claimed_weekly_rewards_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character"("character_id") ON DELETE CASCADE
 );
 
-
-CREATE TABLE IF NOT EXISTS ddon_schedule_next (
+CREATE TABLE IF NOT EXISTS "ddon_schedule_next" (
 	"type"	INTEGER NOT NULL,
 	"timestamp"	BIGINT NOT NULL,
 	PRIMARY KEY("type")
 );
 INSERT INTO ddon_schedule_next(type, timestamp) VALUES (19, 0);
+
+CREATE TABLE IF NOT EXISTS "ddon_area_rank" (
+    "character_id"      INTEGER NOT NULL,
+    "area_id"           INTEGER NOT NULL,
+    "rank"              INTEGER NOT NULL,
+    "point"             INTEGER NOT NULL,
+    "week_point"        INTEGER NOT NULL,
+    "last_week_point"   INTEGER NOT NULL,
+    CONSTRAINT "pk_ddon_area_rank" PRIMARY KEY ("character_id", "area_id"),
+	CONSTRAINT "fk_ddon_area_rank_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character"("character_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_area_rank_supply" (
+    "character_id"      INTEGER NOT NULL,
+    "area_id"           INTEGER NOT NULL,
+    "index"             INTEGER NOT NULL,
+    "item_id"           INTEGER NOT NULL,
+    "num"               INTEGER NOT NULL,
+    CONSTRAINT "pk_ddon_area_rank_supply" PRIMARY KEY ("character_id", "area_id", "index"),
+	CONSTRAINT "fk_ddon_area_rank_supply_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character"("character_id") ON DELETE CASCADE
+);
+
+INSERT INTO "ddon_schedule_next" ("type", "timestamp") VALUES (4, 0);

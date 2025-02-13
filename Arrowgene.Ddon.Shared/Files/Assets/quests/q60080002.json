@@ -1,0 +1,133 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Betland Plains Trial: Pursuing the Orc Company (Betland Plains AR10)",
+    "quest_id": 60080002,
+    "next_quest": 0,
+    "base_level": 45,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {
+        "id": 66
+    },
+    "area_id": "BetlandPlains",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 8,
+            "Param2": 9
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 5300
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 5500
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 525
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 150,
+                "group_id": 9
+            },
+            "enemies": [
+                {
+                    "comment": "Gesomu the War Demon (General Orc)",
+                    "enemy_id": "0x015830",
+                    "level": 45,
+                    "exp": 1165,
+                    "named_enemy_params_id": 347
+                },
+                {
+                    "comment": "War Demon's Lieutenant'",
+                    "enemy_id": "0x015820",
+                    "level": 45,
+                    "exp": 277,
+                    "named_enemy_params_id": 348
+                },
+                {
+                    "comment": "Troop of Shadows",
+                    "enemy_id": "0x015801",
+                    "level": 45,
+                    "exp": 277,
+                    "named_enemy_params_id": 353
+                },
+                {
+                    "comment": "Troop of Shadows",
+                    "enemy_id": "0x015810",
+                    "level": 45,
+                    "exp": 277,
+                    "named_enemy_params_id": 353
+                },
+                {
+                    "comment": "Troop of Shadows",
+                    "enemy_id": "0x015811",
+                    "level": 45,
+                    "exp": 277,
+                    "named_enemy_params_id": 353
+                },
+                {
+                    "comment": "Troop of Shadows",
+                    "enemy_id": "0x015812",
+                    "level": 45,
+                    "exp": 277,
+                    "named_enemy_params_id": 353
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 66
+            },
+            "npc_id": "Scherzo",
+            "message_id": 14456
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [
+                0
+            ],
+            "result_commands": [
+                {
+                    "comment": "Scherzo idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1905,
+                    "Param2": 14458
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [
+                0
+            ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 66
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Scherzo",
+            "message_id": 14457
+        }
+    ]
+}

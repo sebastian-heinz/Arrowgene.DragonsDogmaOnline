@@ -1,0 +1,114 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Mysree Grove Trial: The Unwanted Guest (Mysree Grove AR5)",
+    "quest_id": 60060001,
+    "next_quest": 0,
+    "base_level": 40,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": { "id": 137 },
+    "area_id": "MysreeGrove",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 6,
+            "Param2": 4
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 4750
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 4900
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 420
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 112,
+                "group_id": 8
+            },
+            "enemies": [
+                {
+                    "comment": "Blue Leaf Griffin",
+                    "enemy_id": "0x015300",
+                    "level": 40,
+                    "exp": 4500,
+                    "is_boss": true,
+                    "named_enemy_params_id": 349
+                },
+                {
+                    "comment": "Blue Leaf Harpy",
+                    "enemy_id": "0x010600",
+                    "level": 38,
+                    "exp": 110,
+                    "named_enemy_params_id": 350
+                },
+                {
+                    "comment": "Blue Leaf Harpy",
+                    "enemy_id": "0x010600",
+                    "level": 38,
+                    "exp": 110,
+                    "named_enemy_params_id": 350
+                },
+                {
+                    "comment": "Blue Leaf Harpy",
+                    "enemy_id": "0x010600",
+                    "level": 38,
+                    "exp": 110,
+                    "named_enemy_params_id": 350
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 137
+            },
+            "npc_id": "Christine",
+            "message_id": 14441
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [ 0 ],
+            "result_commands": [
+                {
+                    "comment": "Christine idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 4506,
+                    "Param2": 14443
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 137
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Christine",
+            "message_id": 14442
+        }
+    ]
+}

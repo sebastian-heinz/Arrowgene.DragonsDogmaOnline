@@ -40,11 +40,11 @@ namespace Arrowgene.Ddon.GameServer.Context
             }
         }
 
-        public static void RemoveContext(PartyGroup partyGroup, ulong uniqueId)
+        public static bool RemoveContext(PartyGroup partyGroup, ulong uniqueId)
         {
             lock (partyGroup.Contexts)
             {
-                partyGroup.Contexts.Remove(uniqueId);
+                return partyGroup.Contexts.Remove(uniqueId);
             }
         }
 

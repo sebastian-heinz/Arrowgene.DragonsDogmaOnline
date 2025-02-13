@@ -1,0 +1,94 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Deenan Woods Trial: A Roar of Absolute Zero (Deenan Woods AR15)",
+    "quest_id": 60207001,
+    "next_quest": 0,
+    "base_level": 68,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": { "id": 105 },
+    "area_id": "DeenanWoods",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 7,
+            "Param2": 14
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 11850
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 4486
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 580
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 428,
+                "group_id": 13
+            },
+            "starting_index": 13,
+            "enemies": [
+                {
+                    "comment": "Terrace Guardian (Wyrm)",
+                    "enemy_id": "0x015701",
+                    "level": 68,
+                    "exp": 22218,
+                    "is_boss": true,
+                    "named_enemy_params_id": 911
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 105
+            },
+            "npc_id": "Rondejeel0",
+            "message_id": 17731
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [ 0 ],
+            "result_commands": [
+                {
+                    "comment": "Rondejeel0 idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 4508,
+                    "Param2": 17732
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 105
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Rondejeel0",
+            "message_id": 17733
+        }
+    ]
+}

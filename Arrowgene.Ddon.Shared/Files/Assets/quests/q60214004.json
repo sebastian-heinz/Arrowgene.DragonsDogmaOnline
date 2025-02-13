@@ -1,0 +1,109 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Elan Water Forest Trial: Raging Blue Trees (AR15)",
+    "quest_id": 60214004,
+    "next_quest": 0,
+    "base_level": 80,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {"id": 339},
+    "order_conditions": [],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 42000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 10277
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 1880
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 15937,
+                    "num": 1
+                }
+            ]
+        }
+    ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 372,
+                "group_id": 55
+            },
+            "enemies": [
+                {
+                    "comment": "Phindymian Ent",
+                    "enemy_id": "0x015032",
+                    "level": 80,
+                    "exp": 840000,
+                    "is_boss": true,
+                    "named_enemy_params_id": 1272
+                }
+            ]
+        },
+        {
+            "stage_id": {
+                "id": 372,
+                "group_id": 15
+            },
+            "enemies": []
+        }
+    ],
+    "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {"type": "CheckAreaRank", "Param1": 14, "Param2": 14}
+            ]
+        },
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 339
+            },
+            "npc_id": "Musel0",
+            "message_id": 19345
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 339
+            },
+            "announce_type": "Accept",
+            "npc_id": "Dirith1",
+            "message_id": 19347
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "checkpoint": true,
+            "announce_type": "Update",
+            "groups": [ 0 ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 339
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Musel0",
+            "message_id": 19349
+        }
+    ]
+}
