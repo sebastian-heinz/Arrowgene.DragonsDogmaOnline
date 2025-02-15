@@ -6,13 +6,30 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataRankingBoard
     {
+        /// <summary>
+        /// Passed back to the server in C2SRankingRankListReq and C2SRankingRankListByCharacterIdReq. 
+        /// </summary>
         public uint BoardId { get; set; }
+        /// <summary>
+        /// The name of this quest is used as the display name of the board.
+        /// </summary>
         public uint QuestId { get; set; }
         public RankingBoardState State { get; set; }
+
+        /// <summary>
+        /// Not used?
+        /// </summary>
         public uint RegisteredNum { get; set; }
+
+        /// <summary>
+        /// The client expects a uint here, but there are only actual two values for the string, so we just expose a bool instead.
+        /// </summary>
         public bool IsWarMission { get; set; }
         public DateTimeOffset Begin { get; set; }
         public DateTimeOffset End { get; set; }
+        /// <summary>
+        /// Not used?
+        /// </summary>
         public DateTimeOffset Expire { get; set; }
         public DateTimeOffset Tallied { get; set; }
 
@@ -24,7 +41,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.QuestId);
                 WriteByte(buffer, (byte)obj.State);
                 WriteUInt32(buffer, obj.RegisteredNum);
-                WriteUInt32(buffer, obj.IsWarMission ? 2u : 1u);
+                WriteUInt32(buffer, obj.IsWarMission ? 2u : 1u); 
 
                 WriteUInt64(buffer, (ulong)obj.Begin.ToUnixTimeSeconds());
                 WriteUInt64(buffer, (ulong)obj.End.ToUnixTimeSeconds());

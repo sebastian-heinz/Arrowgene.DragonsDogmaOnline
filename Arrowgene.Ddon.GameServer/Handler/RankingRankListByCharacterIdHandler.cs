@@ -16,6 +16,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CRankingRankListByCharacterIdRes res = new();
 
+            // If request.CharacterIdList is always just the player character, then we can optimize this into an alternative SQL query,
+            // but I leave it here as post-processing for safety.
             var rankResults = Server.Database.SelectRankingData(request.BoardId);
             foreach(var characterId in request.CharacterIdList)
             {

@@ -1,8 +1,6 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
-using System;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -16,16 +14,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CRankingRankListRes Handle(GameClient client, C2SRankingRankListReq request)
         {
-            S2CRankingRankListRes res = new()
+            return new()
             {
                 Rank = request.Rank,
+                RankingData = Server.Database.SelectRankingData(request.BoardId, limit: request.Num)
             };
-
-            var rankResults = Server.Database.SelectRankingData(request.BoardId, limit: request.Num);
-
-            res.RankingData = rankResults;
-
-            return res;
         }
     }
 }

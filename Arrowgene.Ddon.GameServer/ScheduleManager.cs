@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer
             Tasks = new List<SchedulerTask>()
             {
                 new EpitaphSchedulerTask(DayOfWeek.Monday, 5, 0),
-                new AreaPointResetTask(DayOfWeek.Monday, 5, 0)
+                new AreaPointResetTask(DayOfWeek.Monday, 5, 0),
                 new RankingBoardResetTask(DayOfWeek.Monday, 5, 0)
             };
         }

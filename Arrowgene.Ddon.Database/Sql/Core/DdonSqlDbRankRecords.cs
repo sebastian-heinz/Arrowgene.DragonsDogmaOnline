@@ -26,19 +26,29 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlSelectUsedQuests = $"SELECT DISTINCT \"quest_id\" FROM \"{RankRecordTableName}\"";
 
         private static readonly string SqlSelectRankRecords =
-            @"SELECT 
-                rr.*,
-                ch.first_name,
-                ch.last_name,
-                cp.name AS clan_name
-            FROM ddon_rank_record rr
-            INNER JOIN ddon_character ch 
-                ON rr.character_id = ch.character_id
-            LEFT JOIN ddon_clan_membership cm 
-                ON cm.character_id = rr.character_id
-            LEFT JOIN ddon_clan_param cp 
-                ON cp.clan_id = cm.clan_id
-            WHERE rr.quest_id = @quest_id AND rr.character_id = @character_id";
+            @"WITH BestRank AS (
+	            SELECT 
+		            rr.*,
+		            ROW_NUMBER() OVER (PARTITION BY character_id ORDER BY score DESC) AS rn
+	            FROM ddon_rank_record rr
+	            WHERE quest_id = @quest_id
+            ), RankedRank AS (
+	            SELECT 
+		            br.*,
+		            RANK() OVER (ORDER BY score DESC) sparse_rank
+	            FROM BestRank br
+	            WHERE br.rn = 1
+            )
+            SELECT 
+	            rar.*,
+	            ch.first_name,
+	            ch.last_name,
+	            cp.name AS clan_name
+            FROM RankedRank rar
+            INNER JOIN ddon_character ch ON rar.character_id = ch.character_id
+            LEFT JOIN ddon_clan_membership cm ON cm.character_id = rar.character_id
+            LEFT JOIN ddon_clan_param cp ON cp.clan_id = cm.clan_id
+            WHERE rar.character_id = @character_id;";
 
         private static readonly string SqlSelectTopRankRecords =
             @"WITH BestRank AS (
@@ -52,14 +62,12 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 br.*,
                 ch.first_name,
                 ch.last_name,
-                cp.name AS clan_name
+                cp.name AS clan_name,
+                RANK() OVER (ORDER BY score) sparse_rank
             FROM BestRank br
-            INNER JOIN ddon_character ch 
-                ON br.character_id = ch.character_id
-            LEFT JOIN ddon_clan_membership cm 
-                ON cm.character_id = br.character_id
-            LEFT JOIN ddon_clan_param cp 
-                ON cp.clan_id = cm.clan_id
+            INNER JOIN ddon_character ch ON br.character_id = ch.character_id
+            LEFT JOIN ddon_clan_membership cm ON cm.character_id = br.character_id
+            LEFT JOIN ddon_clan_param cp ON cp.clan_id = cm.clan_id
             WHERE br.rn = 1
             LIMIT @limit;";
 
@@ -121,6 +129,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                             CDataRankingData rankingData = new();
                             rankingData.Serial = GetUInt32(reader, "record_id");
                             rankingData.Score = GetUInt32(reader, "score");
+                            rankingData.Rank = GetUInt32(reader, "sparse_rank");
                             rankingData.CommunityCharacterBaseInfo.CharacterId = GetUInt32(reader, "character_id");
                             rankingData.CommunityCharacterBaseInfo.CharacterName.FirstName = GetString(reader, "first_name");
                             rankingData.CommunityCharacterBaseInfo.CharacterName.LastName = GetString(reader, "last_name");
@@ -132,12 +141,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
                 return list;
             });
-
-            //list = list.OrderByDescending(x => x.Score).ToList();
-            for (int i = 0; i < list.Count; i++)
-            {
-                list[i].Rank = (uint)i + 1;
-            }
 
             return list;
         }
@@ -160,6 +163,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                             CDataRankingData rankingData = new();
                             rankingData.Serial = GetUInt32(reader, "record_id");
                             rankingData.Score = GetUInt32(reader, "score");
+                            rankingData.Rank = GetUInt32(reader, "sparse_rank");
                             rankingData.CommunityCharacterBaseInfo.CharacterId = GetUInt32(reader, "character_id");
                             rankingData.CommunityCharacterBaseInfo.CharacterName.FirstName = GetString(reader, "first_name");
                             rankingData.CommunityCharacterBaseInfo.CharacterName.LastName = GetString(reader, "last_name");
@@ -171,11 +175,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
                 return list;
             });
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                list[i].Rank = (uint)i + 1;
-            }
 
             return list;
         }
