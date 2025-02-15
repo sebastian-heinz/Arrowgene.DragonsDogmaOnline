@@ -8,15 +8,15 @@ using System.Linq;
 public class InstanceEnemyManager : InstanceAssetManager<Enemy, InstancedEnemy>
 {
     private readonly DdonGameServer _Server;
-    private Dictionary<StageId, ushort> _CurrentSubgroup { get; set; }
+    private Dictionary<StageLayoutId, ushort> _CurrentSubgroup { get; set; }
 
-    private Dictionary<StageId, Dictionary<int, InstancedEnemy>> _EnemyData;
+    private Dictionary<StageLayoutId, Dictionary<int, InstancedEnemy>> _EnemyData;
 
     public InstanceEnemyManager(DdonGameServer server) : base()
     {
         _Server = server;
-        _CurrentSubgroup  = new Dictionary<StageId, ushort>();
-        _EnemyData = new Dictionary<StageId, Dictionary<int, InstancedEnemy>>();
+        _CurrentSubgroup  = new Dictionary<StageLayoutId, ushort>();
+        _EnemyData = new Dictionary<StageLayoutId, Dictionary<int, InstancedEnemy>>();
     }
 
     protected override InstancedEnemy InstanceAssets(Enemy original)
@@ -38,7 +38,7 @@ public class InstanceEnemyManager : InstanceAssetManager<Enemy, InstancedEnemy>
         return null;
     }
 
-    protected override Enemy FetchAssetsFromRepository(StageId stage, int setId)
+    protected override Enemy FetchAssetsFromRepository(StageLayoutId stage, int setId)
     {
         var enemiesInStage = _Server.AssetRepository.EnemySpawnAsset.Enemies.GetValueOrDefault(stage) ?? new List<Enemy>();
         if (enemiesInStage.Count > setId)
@@ -51,7 +51,7 @@ public class InstanceEnemyManager : InstanceAssetManager<Enemy, InstancedEnemy>
         }
     }
 
-    protected override IEnumerable<Enemy> FetchAssetsFromRepository(StageId stage)
+    protected override IEnumerable<Enemy> FetchAssetsFromRepository(StageLayoutId stage)
     {
         return _Server.AssetRepository.EnemySpawnAsset.Enemies.GetValueOrDefault(stage) ?? new List<Enemy>();
     }
@@ -86,7 +86,7 @@ public class InstanceEnemyManager : InstanceAssetManager<Enemy, InstancedEnemy>
         return filteredEnemyList;
     }
 
-    public void SetInstanceEnemy(StageId stageId, byte index, InstancedEnemy enemy)
+    public void SetInstanceEnemy(StageLayoutId stageId, byte index, InstancedEnemy enemy)
     {
         lock (_EnemyData)
         {
@@ -102,7 +102,7 @@ public class InstanceEnemyManager : InstanceAssetManager<Enemy, InstancedEnemy>
         }
     }
 
-    public InstancedEnemy GetInstanceEnemy(StageId stageId, byte index)
+    public InstancedEnemy GetInstanceEnemy(StageLayoutId stageId, byte index)
     {
         lock (_EnemyData)
         {
@@ -119,7 +119,7 @@ public class InstanceEnemyManager : InstanceAssetManager<Enemy, InstancedEnemy>
         }
     }
 
-    public List<InstancedEnemy> GetInstancedEnemies(StageId stageId)
+    public List<InstancedEnemy> GetInstancedEnemies(StageLayoutId stageId)
     {
         lock (_EnemyData)
         {
@@ -131,7 +131,7 @@ public class InstanceEnemyManager : InstanceAssetManager<Enemy, InstancedEnemy>
         }
     }
 
-    public bool HasInstanceEnemy(StageId stageId, byte index)
+    public bool HasInstanceEnemy(StageLayoutId stageId, byte index)
     {
         lock (_EnemyData)
         {
@@ -143,7 +143,7 @@ public class InstanceEnemyManager : InstanceAssetManager<Enemy, InstancedEnemy>
         }
     }
 
-    public void ResetEnemyNode(StageId stageId)
+    public void ResetEnemyNode(StageLayoutId stageId)
     {
         lock (_EnemyData)
         {
@@ -163,7 +163,7 @@ public class InstanceEnemyManager : InstanceAssetManager<Enemy, InstancedEnemy>
         }
     }
 
-    public ushort GetSubgroup(StageId stageId)
+    public ushort GetSubgroup(StageLayoutId stageId)
     {
         return _CurrentSubgroup.GetValueOrDefault(stageId);
     }

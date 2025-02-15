@@ -10,12 +10,12 @@
 
 public class ScriptedQuest : IQuest
 {
-    public override QuestType QuestType     => QuestType.Tutorial;
-    public override QuestId QuestId         => (QuestId) 60301057;
+    public override QuestType QuestType => QuestType.Tutorial;
+    public override QuestId QuestId => (QuestId)60301057;
     public override ushort RecommendedLevel => 0;
-    public override byte MinimumItemRank    => 0;
-    public override bool IsDiscoverable     => false;
-    public override StageId StageId         => StageId.WhiteDragonTemple;
+    public override byte MinimumItemRank => 0;
+    public override bool IsDiscoverable => false;
+    public override StageInfo StageInfo => Stage.TheWhiteDragonTemple0;
 
     public override bool AcceptRequirementsMet(DdonGameServer server, GameClient client)
     {

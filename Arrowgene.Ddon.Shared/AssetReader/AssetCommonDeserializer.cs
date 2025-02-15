@@ -42,7 +42,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     return false;
                 }
 
-                enemyGroup.StageId = ParseStageId(jStageId);
+                enemyGroup.StageLayoutId = ParseStageId(jStageId);
 
                 enemyGroup.SubGroupId = 0;
                 if (jGroup.TryGetProperty("subgroup_id", out JsonElement jSubGroupId))
@@ -268,7 +268,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             }
         }
 
-        public static StageId ParseStageId(JsonElement jStageId)
+        public static StageLayoutId ParseStageId(JsonElement jStageId)
         {
             uint id = jStageId.GetProperty("id").GetUInt32();
 
@@ -284,7 +284,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 groupId = jGroupId.GetUInt32();
             }
 
-            return new StageId(id, layerNo, groupId);
+            return new StageLayoutId(id, layerNo, groupId);
         }
 
         public static ItemId ParseItemId(JsonElement jItemId)

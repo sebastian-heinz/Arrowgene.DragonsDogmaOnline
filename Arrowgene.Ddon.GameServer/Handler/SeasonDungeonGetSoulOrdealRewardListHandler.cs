@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             // var result = new S2CSeasonDungeonGetSoulOrdealRewardListRes.Serializer().Read(pcap_data);
 
-            var rewards = Server.EpitaphRoadManager.GetRewards(client, request.LayoutId.AsStageId(), request.PosId);
+            var rewards = Server.EpitaphRoadManager.GetRewards(client, request.LayoutId.AsStageLayoutId(), request.PosId);
             return new S2CSeasonDungeonGetSoulOrdealRewardListRes()
             {
                 BuffRewards = rewards.BuffRewards,

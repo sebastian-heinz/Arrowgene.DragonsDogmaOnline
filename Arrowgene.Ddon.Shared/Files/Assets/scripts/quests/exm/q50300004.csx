@@ -23,6 +23,8 @@
  *   /group destroy 71.0.1
  */
 
+#load "ExtremeMissionUtils.csx"
+
 public class ScriptedQuest : IQuest
 {
     public override QuestType QuestType => QuestType.ExtremeMission;
@@ -44,7 +46,7 @@ public class ScriptedQuest : IQuest
 
     protected override void InitializeState()
     {
-        MissionParams.Group = 9;
+        MissionParams.Group = ExtremeMissionUtils.Group.Alan;
         MissionParams.MinimumMembers = 1;
         MissionParams.MaximumMembers = 8;
         MissionParams.IsSolo = false;
@@ -151,7 +153,7 @@ public class ScriptedQuest : IQuest
         ushort BossLevel = (ushort)(RecommendedLevel + 3);
 
         // 1: Goal (1F)
-        AddEnemies(1, new StageId(71, 0, 25), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(1, new StageLayoutId(71, 0, 25), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.Cyclops0, EnemyLevel, 0, 0)
                 .SetIsBoss(true)
@@ -182,7 +184,7 @@ public class ScriptedQuest : IQuest
         });
 
         // 2: Target (1F northeast passage)
-        AddEnemies(2, new StageId(71, 0, 26), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(2, new StageLayoutId(71, 0, 26), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.SlingRedcap, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.Elite)
@@ -205,7 +207,7 @@ public class ScriptedQuest : IQuest
         });
 
         // 3: Target (1F Northeast)
-        AddEnemies(3, new StageId(71, 0, 27), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(3, new StageLayoutId(71, 0, 27), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.Sludgeman, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.Elite)
@@ -226,7 +228,7 @@ public class ScriptedQuest : IQuest
         });
 
         // 4: Target (1F East)
-        AddEnemies(4, new StageId(71, 0, 2), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(4, new StageLayoutId(71, 0, 2), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.CaptainOrc0, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.CommandingOfficer)
@@ -241,7 +243,7 @@ public class ScriptedQuest : IQuest
         });
 
         // 5: Target (1F, just before the east stairs)
-        AddEnemies(5, new StageId(71, 0, 7), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(5, new StageLayoutId(71, 0, 7), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.HobgoblinFighter, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.Elite)
@@ -267,7 +269,7 @@ public class ScriptedQuest : IQuest
         // - Shadow Goblin Fighter
         // - Shadow Sling Goblin
         // - Shadow Harpies
-        AddEnemies(6, new StageId(71, 0, 21), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(6, new StageLayoutId(71, 0, 21), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.EmpressGhost, EnemyLevel, 0, 0)
                 .SetIsBoss(true)
@@ -294,7 +296,7 @@ public class ScriptedQuest : IQuest
         });
 
         // 7: Target (1F South)
-        AddEnemies(7, new StageId(71, 0, 0), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(7, new StageLayoutId(71, 0, 0), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.DreadApe, EnemyLevel, 0, 0)
                 .SetIsBoss(true)
@@ -311,7 +313,7 @@ public class ScriptedQuest : IQuest
         });
 
         // 8: Target (1F Southwest)
-        AddEnemies(8, new StageId(71, 0, 22), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(8, new StageLayoutId(71, 0, 22), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.GiantSulfurSaurian, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.Elite)
@@ -328,7 +330,7 @@ public class ScriptedQuest : IQuest
         });
 
         // 9: Target (1F West)
-        AddEnemies(9, new StageId(71, 0, 4), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(9, new StageLayoutId(71, 0, 4), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.ShadowChimera, EnemyLevel, 0, 0)
                 .SetIsBoss(true)
@@ -345,7 +347,7 @@ public class ScriptedQuest : IQuest
         });
 
         // 10: Target (1F Northwest Passage)
-        AddEnemies(10, new StageId(71, 0, 9), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(10, new StageLayoutId(71, 0, 9), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.Hobgoblin, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.Elite)
@@ -368,7 +370,7 @@ public class ScriptedQuest : IQuest
         });
 
         // 11: Target (2F East-West Passage)
-        AddEnemies(11, new StageId(71, 0, 14), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(11, new StageLayoutId(71, 0, 14), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.Wolf, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.Elite)
@@ -382,7 +384,7 @@ public class ScriptedQuest : IQuest
         });
 
         // 12: Target (2F South)
-        AddEnemies(12, new StageId(71, 0, 28), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(12, new StageLayoutId(71, 0, 28), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.Ogre, EnemyLevel, 0, 0)
                 .SetIsBoss(true)
@@ -399,7 +401,7 @@ public class ScriptedQuest : IQuest
         });
 
         // 13: Assault (2F South)
-        AddEnemies(13, new StageId(71, 0, 5), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(13, new StageLayoutId(71, 0, 5), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.Ent, EnemyLevel, 0, 0)
                 .SetIsBoss(true)
@@ -415,7 +417,7 @@ public class ScriptedQuest : IQuest
         });
 
         // 14: Assault (2F East-West Passage)
-        AddEnemies(14, new StageId(71, 0, 29), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(14, new StageLayoutId(71, 0, 29), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.BruteApe, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.Elite)
@@ -441,7 +443,7 @@ public class ScriptedQuest : IQuest
         });
 
         // 15: Assault (1F Northeast Passage)
-        AddEnemies(15, new StageId(71, 0, 8), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(15, new StageLayoutId(71, 0, 8), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.SwordUndead, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.Elite)
@@ -467,7 +469,7 @@ public class ScriptedQuest : IQuest
         });
 
         // 16: Assault (1F Northeast)
-        AddEnemies(16, new StageId(71, 0, 13), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(16, new StageLayoutId(71, 0, 13), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.GeneralOrc, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.CommandingOfficer)
@@ -478,7 +480,7 @@ public class ScriptedQuest : IQuest
         });
 
         // 17: Assault (1F East)
-        AddEnemies(17, new StageId(71, 0, 2), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(17, new StageLayoutId(71, 0, 2), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.LivingArmor, EnemyLevel, 0, 3)
                 .SetNamedEnemyParams(NamedParamId.Elite)
@@ -492,7 +494,7 @@ public class ScriptedQuest : IQuest
         });
 
         // 18: Assault (1F, just before the east stairs)
-        AddEnemies(18, new StageId(71, 0, 23), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(18, new StageLayoutId(71, 0, 23), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.RockSaurianSpinel, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.Elite)
@@ -509,7 +511,7 @@ public class ScriptedQuest : IQuest
         });
 
         // 19: Assault (1F center)
-        AddEnemies(19, new StageId(71, 0, 6), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(19, new StageLayoutId(71, 0, 6), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.GeneralOrc, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.CommandingOfficer)
@@ -523,7 +525,7 @@ public class ScriptedQuest : IQuest
         });
 
         // 20: Assault (1F South)
-        AddEnemies(20, new StageId(71, 0, 0), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(20, new StageLayoutId(71, 0, 0), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.GeneralOrc, EnemyLevel, 0, 7)
                 .SetNamedEnemyParams(NamedParamId.CommandingOfficer)
@@ -543,7 +545,7 @@ public class ScriptedQuest : IQuest
         });
 
         // 21: Assault (1F Southwest Passage)
-        AddEnemies(21, new StageId(71, 0, 10), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(21, new StageLayoutId(71, 0, 10), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.OrcAimer, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.Elite)
@@ -560,7 +562,7 @@ public class ScriptedQuest : IQuest
         });
 
         // 22: Assault (1F West)
-        AddEnemies(22, new StageId(71, 0, 30), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(22, new StageLayoutId(71, 0, 30), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.Colossus0, EnemyLevel, 0, 0)
                 .SetIsBoss(true)
@@ -581,7 +583,7 @@ public class ScriptedQuest : IQuest
         });
 
         // 23: Assault (1F Northwest Passage)
-        AddEnemies(23, new StageId(71, 0, 24), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(23, new StageLayoutId(71, 0, 24), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.FrostCorpsePunisher, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.Elite)
@@ -598,7 +600,7 @@ public class ScriptedQuest : IQuest
         });
 
         // 24: Target (1F North)
-        AddEnemies(24, new StageId(71, 0, 1), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(24, new StageLayoutId(71, 0, 1), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.Zuhl0, EnemyLevel, 0, 0)
                 .SetIsBoss(true)
@@ -623,7 +625,7 @@ public class ScriptedQuest : IQuest
     protected override void InitializeBlocks()
     {
         var process0 = AddNewProcess(0);
-        process0.AddIsGatherPartyInStageBlock(QuestAnnounceType.None, new StageId(71, 0, 0))
+        process0.AddIsGatherPartyInStageBlock(QuestAnnounceType.None, new StageLayoutId(71, 0, 0))
             .AddCheckCommand(QuestCheckCommand.EventEnd, 405, 0);
         process0.AddDestroyGroupBlock(QuestAnnounceType.Start, 1);
         process0.AddMyQstFlagsBlock(QuestAnnounceType.Update)

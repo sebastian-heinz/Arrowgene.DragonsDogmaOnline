@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
 {
     public class InstanceDropItemManager
     {
-        private readonly Dictionary<StageId, Dictionary<uint, List<InstancedGatheringItem>>> InstancedItems;
+        private readonly Dictionary<StageLayoutId, Dictionary<uint, List<InstancedGatheringItem>>> InstancedItems;
 
         private static readonly uint COLLISION_OFFSET = 1000;
         private readonly GameClient Client;
@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
             return Generators.ToDictionary(key => key.GetType(), val => val.Generate(Client, enemy));
         }
 
-        public uint Assign(StageId stageId, uint index, List<InstancedGatheringItem> items, bool force = false)
+        public uint Assign(StageLayoutId stageId, uint index, List<InstancedGatheringItem> items, bool force = false)
         {
             uint currentIndex = index;
             if (InstancedItems.TryGetValue(stageId, out var stageItems))
@@ -57,10 +57,10 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
 
         public uint Assign(CDataStageLayoutId stageLayout, uint index, List<InstancedGatheringItem> items, bool force = false)
         {
-            return Assign(StageId.FromStageLayoutId(stageLayout), index, items, force);
+            return Assign(stageLayout.AsStageLayoutId(), index, items, force);
         }
 
-        public List<InstancedGatheringItem> Fetch(StageId stageId, uint index)
+        public List<InstancedGatheringItem> Fetch(StageLayoutId stageId, uint index)
         {
             if (InstancedItems.TryGetValue(stageId, out var stageItems) 
                 && stageItems.TryGetValue(index, out var returnItems))
@@ -75,7 +75,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
 
         public List<InstancedGatheringItem> Fetch(CDataStageLayoutId stageLayout, uint index)
         {
-            return Fetch(StageId.FromStageLayoutId(stageLayout), index);
+            return Fetch(stageLayout.AsStageLayoutId(), index);
         }
 
         public void Clear()
@@ -83,7 +83,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
             InstancedItems.Clear();
         }
 
-        public string Report(StageId stageId, uint index)
+        public string Report(StageLayoutId stageId, uint index)
         {
             var infoStrings = Fetch(stageId, index).Select(x => $"{ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, (uint) x.ItemId).Name} x{x.ItemNum}");
             return string.Join("\n\t", infoStrings);

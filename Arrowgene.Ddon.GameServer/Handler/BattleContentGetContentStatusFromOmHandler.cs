@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CBattleContentGetContentStatusFromOmRes Handle(GameClient client, C2SBattleContentGetContentStatusFromOmReq request)
         {
             var progress = client.Character.BbmProgress;
-            var stageId = request.StageLayoutId.AsStageId();
+            var stageId = request.StageLayoutId.AsStageLayoutId();
             var mazeAssets = Server.AssetRepository.BitterblackMazeAsset;
 
             if (!StageManager.IsBitterBlackMazeStageId(stageId))

@@ -93,10 +93,10 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 assetData.QuestAreaId = areaId;
             }
 
-            assetData.StageId = StageId.Invalid;
+            assetData.StageLayoutId = StageLayoutId.Invalid;
             if (questType == QuestType.Tutorial)
             {
-                assetData.StageId = AssetCommonDeserializer.ParseStageId(jQuest.GetProperty("stage_id"));
+                assetData.StageLayoutId = AssetCommonDeserializer.ParseStageId(jQuest.GetProperty("stage_id"));
             }
 
             assetData.NewsImageId = 0;

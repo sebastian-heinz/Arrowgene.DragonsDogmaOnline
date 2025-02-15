@@ -152,7 +152,7 @@ namespace Arrowgene.Ddon.Shared.Asset
         public EpitaphTrialOption()
         {
             EnemyGroups = new Dictionary<uint, QuestEnemyGroup>();
-            EnemyGroupsByStageId = new Dictionary<(StageId StageId, byte SubGroupId), QuestEnemyGroup>();
+            EnemyGroupsByStageId = new Dictionary<(StageLayoutId StageId, byte SubGroupId), QuestEnemyGroup>();
             EntryCost = new List<CDataSoulOrdealItem>();
             Objectives = new Dictionary<SoulOrdealObjective, EpitaphObjective>();
             ItemRewards = new List<EpitaphItemReward>();
@@ -162,10 +162,10 @@ namespace Arrowgene.Ddon.Shared.Asset
 
         public string TrialName { get; set; }
         public Dictionary<uint, QuestEnemyGroup> EnemyGroups { get; set; }
-        public Dictionary<(StageId StageId, byte SubGroupId), QuestEnemyGroup> EnemyGroupsByStageId { get; set; }
+        public Dictionary<(StageLayoutId StageId, byte SubGroupId), QuestEnemyGroup> EnemyGroupsByStageId { get; set; }
         public List<CDataSoulOrdealItem> EntryCost { get; set; }
         public Dictionary<SoulOrdealObjective, EpitaphObjective> Objectives {get; set;}
-        public StageId StageId { get; set; }
+        public StageLayoutId StageId { get; set; }
         public uint PosId { get; set; }
         public List<EpitaphItemReward> ItemRewards { get; set; }
         public EpitaphTrial Parent { get; set; }
@@ -197,14 +197,14 @@ namespace Arrowgene.Ddon.Shared.Asset
         {
             Options = new List<EpitaphTrialOption>();
             UnlockCost = new List<CDataSoulOrdealItem>();
-            Unlocks = new List<(StageId StageId, uint SubGroupId)>();
+            Unlocks = new List<(StageLayoutId StageId, uint SubGroupId)>();
         }
 
-        public StageId OmLayoutId { get; set; }
+        public StageLayoutId OmLayoutId { get; set; }
         public uint PosId { get; set; }
         public List<EpitaphTrialOption> Options { get; set; }
         public List<CDataSoulOrdealItem> UnlockCost { get; set; }
-        public List<(StageId StageId, uint PosId)> Unlocks { get; set; }
+        public List<(StageLayoutId StageId, uint PosId)> Unlocks { get; set; }
 
         public List<CDataSoulOrdealElementParam> SoulOrdealOptions()
         {
@@ -223,10 +223,10 @@ namespace Arrowgene.Ddon.Shared.Asset
     {
         public EpitaphTrialAsset()
         {
-            Trials = new Dictionary<StageId, List<EpitaphTrial>>();
+            Trials = new Dictionary<StageLayoutId, List<EpitaphTrial>>();
             EpitahObjects = new Dictionary<uint, EpitaphObject>();
         }
-        public Dictionary<StageId, List<EpitaphTrial>> Trials { get; set; }
+        public Dictionary<StageLayoutId, List<EpitaphTrial>> Trials { get; set; }
         public Dictionary<uint, EpitaphObject> EpitahObjects { get; set; }
     }
 }

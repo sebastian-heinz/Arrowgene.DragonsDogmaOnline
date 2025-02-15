@@ -26,12 +26,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
     public class QuestLocation
     {
-        public StageId StageId { get; set; }
+        public StageLayoutId StageId { get; set; }
         public ushort SubGroupId { get; set; }
 
         public uint QuestLayoutFlag {  get; set; }
 
-        public bool ContainsStageId(StageId stageId, ushort subGroupId)
+        public bool ContainsStageId(StageLayoutId stageId, ushort subGroupId)
         {
             return (stageId.Id == StageId.Id) && (stageId.GroupId == StageId.GroupId) && (stageId.LayerNo == StageId.LayerNo) && (subGroupId == SubGroupId);
         }
@@ -66,7 +66,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public readonly uint QuestScheduleId;
         public QuestAreaId QuestAreaId { get; set; }
         public uint QuestOrderBackgroundImage { get; protected set; }
-        public StageId StageId {  get; set; }
+        public StageLayoutId StageId {  get; set; }
         public uint NewsImageId { get; set; }
         public uint BaseLevel { get; set; }
         public ushort MinimumItemRank { get; set; }
@@ -88,7 +88,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public QuestMissionParams MissionParams { get; protected set; }
         public CDataLightQuestDetail LightQuestDetail { get; protected set; }
         public Dictionary<uint, QuestEnemyGroup> EnemyGroups { get; set; }
-        public HashSet<StageId> UniqueEnemyGroups { get; protected set; }
+        public HashSet<StageLayoutId> UniqueEnemyGroups { get; protected set; }
         public List<QuestServerAction> ServerActions { get; protected set; }
         public bool Enabled { get; protected set; }
         public bool OverrideEnemySpawn { get; protected set; }
@@ -148,7 +148,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             QuestLayoutFlagSetInfo = new List<QuestLayoutFlagSetInfo>();
             QuestLayoutFlags = new List<QuestLayoutFlag>();
             EnemyGroups = new Dictionary<uint, QuestEnemyGroup>();
-            UniqueEnemyGroups = new HashSet<StageId>();
+            UniqueEnemyGroups = new HashSet<StageLayoutId>();
             MissionParams = new QuestMissionParams();
             ServerActions = new List<QuestServerAction>();
             Processes = new List<QuestProcess>();
@@ -672,7 +672,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         public abstract List<CDataQuestProcessState> StateMachineExecute(DdonGameServer server, GameClient client, QuestProcessState processState, out QuestProgressState questProgressState);
 
-        public virtual void SendProgressWorkNotices(GameClient client, StageId stageId, uint subGroupId)
+        public virtual void SendProgressWorkNotices(GameClient client, StageLayoutId stageId, uint subGroupId)
         {
             client.Party.SendToAll(new S2CQuestQuestProgressWorkSaveNtc());
         }
@@ -686,45 +686,45 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 // Cleanup old contexts if we are replacing monsters with new ones
                 foreach (var enemy in enemyGroup.Enemies)
                 {
-                    var uid = ContextManager.CreateEnemyUID(enemy.Index, enemyGroup.StageId.ToStageLayoutId());
+                    var uid = ContextManager.CreateEnemyUID(enemy.Index, enemyGroup.StageLayoutId.ToCDataStageLayoutId());
                     ContextManager.RemoveContext(client.Party, uid);
                 }
 
                 S2CInstanceEnemyGroupResetNtc resetNtc = new S2CInstanceEnemyGroupResetNtc()
                 {
-                    LayoutId = enemyGroup.StageId.ToStageLayoutId()
+                    LayoutId = enemyGroup.StageLayoutId.ToCDataStageLayoutId()
                 };
 
-                client.Party.InstanceEnemyManager.ResetEnemyNode(enemyGroup.StageId);
+                client.Party.InstanceEnemyManager.ResetEnemyNode(enemyGroup.StageLayoutId);
                 client.Party.SendToAll(resetNtc);
             }
         }
 
-        public virtual void ResetEnemiesForStage(GameClient client, StageId stageId)
+        public virtual void ResetEnemiesForStage(GameClient client, StageLayoutId stageId)
         {
             foreach (var (groupId, group) in EnemyGroups)
             {
-                if (group.StageId.Id == stageId.Id)
+                if (group.StageLayoutId.Id == stageId.Id)
                 {
                     // Cleanup old contexts if we are replacing monsters with new ones
                     foreach (var enemy in group.Enemies)
                     {
-                        var uid = ContextManager.CreateEnemyUID(enemy.Index, group.StageId.ToStageLayoutId());
+                        var uid = ContextManager.CreateEnemyUID(enemy.Index, group.StageLayoutId.ToCDataStageLayoutId());
                         ContextManager.RemoveContext(client.Party, uid);
                     }
 
                     S2CInstanceEnemyGroupResetNtc resetNtc = new S2CInstanceEnemyGroupResetNtc()
                     {
-                        LayoutId = group.StageId.ToStageLayoutId()
+                        LayoutId = group.StageLayoutId.ToCDataStageLayoutId()
                     };
 
-                    client.Party.InstanceEnemyManager.ResetEnemyNode(group.StageId);
+                    client.Party.InstanceEnemyManager.ResetEnemyNode(group.StageLayoutId);
                     client.Party.SendToAll(resetNtc);
                 }
             }
         }
 
-        public virtual void HandleAreaChange(GameClient client, StageId stageId)
+        public virtual void HandleAreaChange(GameClient client, StageLayoutId stageId)
         {
             ResetEnemiesForStage(client, stageId);
 
@@ -746,14 +746,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
                 S2CInstanceEnemyGroupDestroyNtc destroyNtc = new S2CInstanceEnemyGroupDestroyNtc()
                 {
-                    LayoutId = enemyGroup.StageId.ToStageLayoutId()
+                    LayoutId = enemyGroup.StageLayoutId.ToCDataStageLayoutId()
                 };
 
                 client.Party.SendToAll(destroyNtc);
             }
         }
 
-        public bool HasEnemiesInCurrentStageGroup(StageId stageId)
+        public bool HasEnemiesInCurrentStageGroup(StageLayoutId stageId)
         {
             return UniqueEnemyGroups.Contains(stageId);
         }
@@ -778,7 +778,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 foreach (var groupId in process.Blocks[processState.BlockNo].EnemyGroupIds)
                 {
                     var enemyGroup = EnemyGroups[groupId];
-                    partyQuestState.SetInstanceEnemies(this, enemyGroup.StageId, (ushort)enemyGroup.SubGroupId, enemyGroup.CreateNewInstance());
+                    partyQuestState.SetInstanceEnemies(this, enemyGroup.StageLayoutId, (ushort)enemyGroup.SubGroupId, enemyGroup.CreateNewInstance());
                 }
             }
         }

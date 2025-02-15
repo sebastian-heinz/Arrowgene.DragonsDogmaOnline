@@ -17,7 +17,7 @@ public class ScriptedQuest : IQuest
     public override ushort RecommendedLevel => 10;
     public override byte MinimumItemRank => 0;
     public override bool IsDiscoverable => true;
-    public override StageId StageId => StageId.WhiteDragonTemple;
+    public override StageInfo StageInfo => Stage.TheWhiteDragonTemple0;
 
     public override bool AcceptRequirementsMet(DdonGameServer server, GameClient client)
     {
@@ -42,29 +42,29 @@ public class ScriptedQuest : IQuest
         var process0 = new QuestProcess(0);
         process0.AddIsQuestClearBlock(QuestAnnounceType.None, QuestType.Tutorial, (QuestId)60301052)
             .AddAnnotation("Wait for part (1) to be completed");
-        process0.AddNewNpcTalkAndOrderBlock(new StageId(2, 0, 1), NpcId.Shelly1, 30829)
+        process0.AddNewNpcTalkAndOrderBlock(Stage.TheWhiteDragonTemple0, 1, 0, NpcId.Shelly1, 30829)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, 8238)
                 .AddAnnotation("Spawns Shelly and Angelo");
-        process0.AddTalkToNpcBlock(QuestAnnounceType.Accept, StageId.AudienceChamber, NpcId.Joseph, 30831);
-        process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, StageId.WhiteDragonTemple, NpcId.Milburn, 30832);
-        process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, StageId.WhiteDragonTemple, NpcId.Charleston, 30833);
-        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, new StageId(2, 0, 1), NpcId.Shelly1, 30834);
-        process0.AddPartyGatherBlock(QuestAnnounceType.CheckpointAndUpdate, StageId.WhiteDragonTemple, 3644, 12495, 17320)
+        process0.AddTalkToNpcBlock(QuestAnnounceType.Accept, Stage.AudienceChamber, NpcId.Joseph, 30831);
+        process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.TheWhiteDragonTemple0, NpcId.Milburn, 30832);
+        process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.TheWhiteDragonTemple0, NpcId.Charleston, 30833);
+        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.TheWhiteDragonTemple0, 1, 0, NpcId.Shelly1, 30834);
+        process0.AddPartyGatherBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.TheWhiteDragonTemple0, 3644, 12495, 17320)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, 8239)
                 .AddAnnotation("Spawns Ghost (1)");
-        process0.AddPartyGatherBlock(QuestAnnounceType.CheckpointAndUpdate, StageId.WhiteDragonTemple, -5768, 11065, 21829)
+        process0.AddPartyGatherBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.TheWhiteDragonTemple0, -5768, 11065, 21829)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Clear, 8239)
                 .AddAnnotation("Despawns Ghost (1)")
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, 8240)
                 .AddAnnotation("Spawns Ghost (2)");
-        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, new StageId(2, 0, 3), NpcId.MysteriousGhost, 30836)
+        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.TheWhiteDragonTemple0, 3, 0, NpcId.MysteriousGhost, 30836)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Clear, 8240)
                 .AddAnnotation("Despawns Ghost (2)")
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, 8241)
                 .AddAnnotation("Spawns Ghost (3)");
-        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, new StageId(2, 0, 1), NpcId.Shelly1, 30837);
-        process0.AddNewDeliverItemsBlock(QuestAnnounceType.CheckpointAndUpdate, new StageId(2, 0, 3), NpcId.MysteriousGhost, ItemId.HalloweenPetitMuffin, 10, 30838);
-        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, new StageId(2, 0, 1), NpcId.Shelly1, 30840);
+        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.TheWhiteDragonTemple0, 1, 0, NpcId.Shelly1, 30837);
+        process0.AddNewDeliverItemsBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.TheWhiteDragonTemple0, 3, 0, NpcId.MysteriousGhost, ItemId.HalloweenPetitMuffin, 10, 30838);
+        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.TheWhiteDragonTemple0, 1, 0, NpcId.Shelly1, 30840);
         process0.AddProcessEndBlock(true);
         AddProcess(process0);
     }

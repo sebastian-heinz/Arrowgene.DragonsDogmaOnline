@@ -25,28 +25,28 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
     {
         public InstanceAssetManager()
         {
-            this._instancedAssetsDictionary = new Dictionary<StageId, Dictionary<int, TAssetItem>>();
+            this._instancedAssetsDictionary = new Dictionary<StageLayoutId, Dictionary<int, TAssetItem>>();
         }
 
-        private readonly Dictionary<StageId, Dictionary<int, TAssetItem>> _instancedAssetsDictionary;
+        private readonly Dictionary<StageLayoutId, Dictionary<int, TAssetItem>> _instancedAssetsDictionary;
 
         public bool HasAssetsInstanced(CDataStageLayoutId stageLayoutId, int subId)
         {
-            var stageId = StageId.FromStageLayoutId(stageLayoutId);
+            var stageId = stageLayoutId.AsStageLayoutId();
             return HasAssetsInstanced(stageId, subId);
         }
 
-        public bool HasAssetsInstanced(StageId stageId, int subId)
+        public bool HasAssetsInstanced(StageLayoutId stageId, int subId)
         {
             return _instancedAssetsDictionary.ContainsKey(stageId) && _instancedAssetsDictionary[stageId].ContainsKey(subId);
         }
 
         public List<TAssetItem> GetAssets(CDataStageLayoutId stageLayoutId)
         {
-            return GetAssets(StageId.FromStageLayoutId(stageLayoutId));
+            return GetAssets(stageLayoutId.AsStageLayoutId());
         }
 
-        public List<TAssetItem> GetAssets(StageId stageId)
+        public List<TAssetItem> GetAssets(StageLayoutId stageId)
         {
             if (!_instancedAssetsDictionary.ContainsKey(stageId))
             {
@@ -70,10 +70,10 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
 
         public TAssetItem GetAssets(CDataStageLayoutId stageLayoutId, int subId)
         {
-            return GetAssets(StageId.FromStageLayoutId(stageLayoutId), subId);
+            return GetAssets(stageLayoutId.AsStageLayoutId(), subId);
         }
 
-        public TAssetItem GetAssets(StageId stageId, int subId)
+        public TAssetItem GetAssets(StageLayoutId stageId, int subId)
         {
             if(!HasAssetsInstanced(stageId, subId))
             {
@@ -95,9 +95,9 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
             _instancedAssetsDictionary.Clear();
         }
 
-        protected abstract TItem FetchAssetsFromRepository(StageId stage, int subId);
+        protected abstract TItem FetchAssetsFromRepository(StageLayoutId stage, int subId);
 
-        protected abstract IEnumerable<TItem> FetchAssetsFromRepository(StageId stage);
+        protected abstract IEnumerable<TItem> FetchAssetsFromRepository(StageLayoutId stage);
 
         protected abstract TAssetItem InstanceAssets(TItem original);
 

@@ -18,9 +18,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             var result = new S2CSeasonDungeonGetSoulOrdealListfromOmRes();
 
-            Logger.Debug($"EpitaphOM: {request.StageLayoutId.AsStageId()}, PosId={request.PosId}");
+            Logger.Debug($"EpitaphOM: {request.StageLayoutId.AsStageLayoutId()}, PosId={request.PosId}");
 
-            var stageId = request.StageLayoutId.AsStageId();
+            var stageId = request.StageLayoutId.AsStageLayoutId();
             if (Server.EpitaphRoadManager.TrialHasRewards(client, stageId, request.PosId))
             {
                 result.Type = SoulOrdealOrderState.GetRewards;

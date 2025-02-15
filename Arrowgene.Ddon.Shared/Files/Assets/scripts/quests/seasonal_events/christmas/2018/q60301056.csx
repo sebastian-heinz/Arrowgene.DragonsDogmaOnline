@@ -10,12 +10,12 @@
 
 public class ScriptedQuest : IQuest
 {
-    public override QuestType QuestType     => QuestType.Tutorial;
-    public override QuestId QuestId         => (QuestId)60301056;
+    public override QuestType QuestType => QuestType.Tutorial;
+    public override QuestId QuestId => (QuestId)60301056;
     public override ushort RecommendedLevel => 10;
-    public override byte MinimumItemRank    => 0;
-    public override bool IsDiscoverable     => true;
-    public override StageId StageId         => StageId.WhiteDragonTemple;
+    public override byte MinimumItemRank => 0;
+    public override bool IsDiscoverable => true;
+    public override StageInfo StageInfo => Stage.TheWhiteDragonTemple0;
 
     public override bool AcceptRequirementsMet(DdonGameServer server, GameClient client)
     {
@@ -33,7 +33,7 @@ public class ScriptedQuest : IQuest
 
     protected override void InitializeEnemyGroups()
     {
-        AddEnemies(0, new StageId(1, 0, 71), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(0, Stage.Lestania, 71, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.GreenGuardian, 10, 980, 7)
                 .SetNamedEnemyParams(LibDdon.GetNamedParam(2657)),
@@ -51,17 +51,17 @@ public class ScriptedQuest : IQuest
     {
         var process0 = new QuestProcess(0);
         process0.AddIsQuestClearBlock(QuestAnnounceType.None, QuestType.Tutorial, (QuestId)60301055);
-        process0.AddNewNpcTalkAndOrderBlock(new StageId(2, 2, 1), NpcId.Mia, 30858)
+        process0.AddNewNpcTalkAndOrderBlock(Stage.TheWhiteDragonTemple0, 1, 2, NpcId.Mia, 30858)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, 8246)
                 .AddAnnotation("Spawns Event NPCs");
-        process0.AddTalkToNpcBlock(QuestAnnounceType.Accept, StageId.WhiteDragonTemple, NpcId.Cornelia0, 30860);
-        process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, StageId.PawnCathedral, NpcId.Alvar, 30862);
+        process0.AddTalkToNpcBlock(QuestAnnounceType.Accept, Stage.TheWhiteDragonTemple0, NpcId.Cornelia0, 30860);
+        process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.PawnCathedral, NpcId.Alvar, 30862);
         process0.AddDiscoverGroupBlock(QuestAnnounceType.CheckpointAndUpdate, 0, true);
         process0.AddDestroyGroupBlock(QuestAnnounceType.Update, 0, false);
-        process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, StageId.PawnCathedral, NpcId.Alvar, 30864);
-        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, new StageId(2, 2, 1), NpcId.Mia, 30866);
-        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, new StageId(2, 1, 1), NpcId.Marco, 30867);
-        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, new StageId(2, 0, 1), NpcId.Nicholas, 30868);
+        process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.PawnCathedral, NpcId.Alvar, 30864);
+        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.TheWhiteDragonTemple0, 1, 2, NpcId.Mia, 30866);
+        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.TheWhiteDragonTemple0, 1, 1, NpcId.Marco, 30867);
+        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.TheWhiteDragonTemple0, 1, 0, NpcId.Nicholas, 30868);
         process0.AddProcessEndBlock(true);
         AddProcess(process0);
     }

@@ -31,7 +31,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public ushort BlockNo { get; set; }
         public QuestAnnounceType AnnounceType { get; set; }
         public Announcements Announcements { get; set; }
-        public StageId StageId { get; set; }
+        public StageLayoutId StageId { get; set; }
         public ushort SubGroupId { get; set; }
         public uint SetNo { get; set; }
         public uint QuestLayoutFlag { get; set; } // For groups
@@ -177,7 +177,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return this;
         }
 
-        public QuestBlock SetStageId(StageId value)
+        public QuestBlock SetStageId(StageLayoutId value)
         {
             StageId = value;
             return this;
@@ -308,7 +308,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return this;
         }
 
-        public QuestBlock SetQuestEvent(StageId stageId, uint eventId, uint startPos, QuestJumpType jumpType = QuestJumpType.After)
+        public QuestBlock SetQuestEvent(StageLayoutId stageId, uint eventId, uint startPos, QuestJumpType jumpType = QuestJumpType.After)
         {
             QuestEvent = new QuestEvent()
             {
@@ -510,7 +510,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return this;
         }
 
-        public QuestBlock AddNpcOrderDetails(StageId stageId, NpcId npcId, uint msgId, QuestId questId = QuestId.None)
+        public QuestBlock AddNpcOrderDetails(StageLayoutId stageId, NpcId npcId, uint msgId, QuestId questId = QuestId.None)
         {
             NpcOrderDetails.Add(new QuestNpcOrder()
             {
@@ -522,7 +522,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return this;
         }
 
-        public QuestBlock AddNpcOrderDetails(StageId stageId, NpcId npcId, uint msgId, uint questId = 0)
+        public QuestBlock AddNpcOrderDetails(StageLayoutId stageId, NpcId npcId, uint msgId, uint questId = 0)
         {
             return AddNpcOrderDetails(stageId, npcId, msgId, (QuestId)questId);
         }

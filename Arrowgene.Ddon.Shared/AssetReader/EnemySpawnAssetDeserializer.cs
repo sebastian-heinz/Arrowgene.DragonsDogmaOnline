@@ -84,7 +84,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             foreach (JsonElement enemyRow in enemiesElement.EnumerateArray())
             {
                 List<JsonElement> row = enemyRow.EnumerateArray().ToList();
-                StageId layoutId = new StageId(
+                StageLayoutId layoutId = new StageLayoutId(
                     row[enemySchemaIndexes["StageId"]].GetUInt32(),
                     row[enemySchemaIndexes["LayerNo"]].GetByte(),
                     row[enemySchemaIndexes["GroupId"]].GetUInt32()

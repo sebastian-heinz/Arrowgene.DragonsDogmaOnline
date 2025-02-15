@@ -15,7 +15,7 @@ public class ScriptedQuest : IQuest
     public override ushort RecommendedLevel => 0;
     public override byte MinimumItemRank => 0;
     public override bool IsDiscoverable => false;
-    public override StageId StageId => StageId.WhiteDragonTemple;
+    public override StageInfo StageInfo => Stage.TheWhiteDragonTemple0;
 
     public override bool AcceptRequirementsMet(DdonGameServer server, GameClient client)
     {

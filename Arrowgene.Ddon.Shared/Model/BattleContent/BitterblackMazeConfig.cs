@@ -11,7 +11,7 @@ namespace Arrowgene.Ddon.Shared.Model.BattleContent
         public BitterblackMazeConfig()
         {
             Destinations = new List<uint>();
-            StageId = StageId.Invalid;
+            StageId = StageLayoutId.Invalid;
             ContentName = "";
             ContentMode = BattleContentMode.Rotunda;
         }
@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.Shared.Model.BattleContent
         public string ContentName { get; set; }
         public uint Tier { get; set; }
         public List<uint> Destinations { get; set; }
-        public StageId StageId { get; set; }
+        public StageLayoutId StageId { get; set; }
         public BattleContentMode ContentMode {  get; set; }
     }
 }

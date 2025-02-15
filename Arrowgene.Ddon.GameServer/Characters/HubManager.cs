@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private readonly DdonGameServer Server;
         private readonly Dictionary<uint, HashSet<uint>> HubMembers;
 
-        public HashSet<GameClient> GetClientsInHub(StageId stageId)
+        public HashSet<GameClient> GetClientsInHub(StageLayoutId stageId)
         {
             return GetClientsInHub(stageId.Id);
         }

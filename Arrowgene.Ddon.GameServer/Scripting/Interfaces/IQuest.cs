@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Model;
@@ -37,8 +38,8 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
         public virtual QuestAreaId QuestAreaId { get; } = QuestAreaId.None;
         public QuestSource QuestSource { get; } = QuestSource.Script;
         public virtual bool Enabled { get; } = true;
-        public virtual uint QuestOrderBackgroundImage { get; } 
-        public virtual StageId StageId { get; } = StageId.Invalid;
+        public virtual uint QuestOrderBackgroundImage { get; }
+        public virtual StageInfo StageInfo { get; } = Stage.Invalid;
         public virtual uint NewsImageId { get; } = 0;
         public abstract ushort RecommendedLevel { get; }
         public abstract byte MinimumItemRank { get; }
@@ -188,26 +189,37 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
             AddWalletReward(reward);
         }
 
-        public void AddEnemies(uint groupId, StageId stageId, byte subGroupId, QuestEnemyPlacementType placementType, List<InstancedEnemy> enemies)
+        public void AddEnemies(uint id, StageLayoutId stageLayoutId, byte subGroupId, QuestEnemyPlacementType placementType, List<InstancedEnemy> enemies, QuestTargetType targetType = QuestTargetType.EnemyForOrder)
         {
-            if (!EnemyGroups.ContainsKey(groupId))
+            if (!EnemyGroups.ContainsKey(id))
             {
-                EnemyGroups[groupId] = new QuestEnemyGroup()
+                EnemyGroups[id] = new QuestEnemyGroup()
                 {
-                    StageId = stageId,
+                    StageLayoutId = stageLayoutId,
                     SubGroupId = subGroupId,
-                    GroupId = groupId,
-                    PlacementType = placementType
+                    GroupId = id,
+                    PlacementType = placementType,
+                    TargetType = targetType
                 };
             }
 
             foreach (var enemy in enemies)
             {
-                enemy.StageId = stageId;
+                enemy.StageId = stageLayoutId;
                 enemy.IsQuestControlled = true;
             }
 
-            EnemyGroups[groupId].Enemies.AddRange(enemies);
+            EnemyGroups[id].Enemies.AddRange(enemies);
+        }
+
+        public void AddEnemies(uint id, StageInfo stage, uint groupId, byte subGroupId, QuestEnemyPlacementType placementType, List<InstancedEnemy> enemies, QuestTargetType targetType = QuestTargetType.EnemyForOrder)
+        {
+            AddEnemies(id, stage.AsStageLayoutId(groupId), subGroupId, placementType, enemies, targetType);
+        }
+
+        public void AddEnemies(uint id, StageInfo stage, uint groupId, QuestEnemyPlacementType placementType, List<InstancedEnemy> enemies, QuestTargetType targetType = QuestTargetType.EnemyForOrder)
+        {
+            AddEnemies(id, stage.AsStageLayoutId(groupId), 0, placementType, enemies, targetType);
         }
 
         public QuestProcess AddProcess(QuestProcess process)
@@ -229,7 +241,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
         {
             if (QuestType == QuestType.Tutorial)
             {
-                if (StageId.Equals(StageId.Invalid))
+                if (StageInfo == Stage.Invalid)
                 {
                     throw new Exception($"The tutorial quest '{Path}' requires a valid StageId to be assigned.");
                 }
@@ -268,7 +280,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
                 Processes = Processes.Values.ToList(),
                 RewardItems = RewardItems,
                 RewardCurrency = WalletRewards,
-                StageId = StageId,
+                StageLayoutId = StageInfo.AsStageLayoutId(0, 0),
                 ResetPlayerAfterQuest = ResetPlayerAfterQuest,
                 MissionParams = MissionParams,
             };

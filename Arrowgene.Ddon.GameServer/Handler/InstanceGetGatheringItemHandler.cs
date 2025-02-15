@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
 
             uint posId = request.PosId;
-            var stageId = request.LayoutId.AsStageId();
+            var stageId = request.LayoutId.AsStageLayoutId();
             var (_, itemList) = client.InstanceGatheringItemManager.FetchOrGenerate(stageId, posId);
 
             Server.Database.ExecuteInTransaction(connection =>
