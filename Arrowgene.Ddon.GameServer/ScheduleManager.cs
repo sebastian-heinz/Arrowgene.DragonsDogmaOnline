@@ -26,7 +26,8 @@ namespace Arrowgene.Ddon.GameServer
             // TODO: Load from server config
             Tasks = new List<SchedulerTask>()
             {
-                new EpitaphSchedulerTask(DayOfWeek.Monday, 5, 0)
+                new EpitaphSchedulerTask(DayOfWeek.Monday, 5, 0),
+                new RankingBoardResetTask(DayOfWeek.Monday, 5, 0)
             };
         }
 

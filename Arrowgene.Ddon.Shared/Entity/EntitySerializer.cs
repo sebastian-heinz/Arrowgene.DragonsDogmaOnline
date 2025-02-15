@@ -339,6 +339,8 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new CDataRaidBossEnemyParam.Serializer());
             Create(new CDataRaidBossPlayStartData.Serializer());
+            Create(new CDataRankingBoard.Serializer());
+            Create(new CDataRankingData.Serializer());
             Create(new CDataRefiningMaterialInfo.Serializer());
             Create(new CDataRegisterdPawnList.Serializer());
             Create(new CDataRegisteredLegendPawnInfo.Serializer());
@@ -823,6 +825,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SQuestSendLeaderQuestOrderConditionInfoReq.Serializer());
             Create(new C2SQuestSendLeaderWaitOrderQuestListReq.Serializer());
             Create(new C2SQuestSetPriorityQuestReq.Serializer());
+
+            Create(new C2SRankingBoardListReq.Serializer());
+            Create(new C2SRankingRankListReq.Serializer());
+            Create(new C2SRankingRankListByCharacterIdReq.Serializer());
 
             Create(new C2SSeasonDungeonDeliverItemForExReq.Serializer());
             Create(new C2SSeasonDungeonExecuteSoulOrdealReq.Serializer());
@@ -1440,6 +1446,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CQuestSetPriorityQuestNtc.Serializer());
             Create(new S2CQuestSetPriorityQuestRes.Serializer());
             Create(new S2CQuestTimeGainQuestPlayStartNtc.Serializer());
+
+            Create(new S2CRankingBoardListRes.Serializer());
+            Create(new S2CRankingRankListRes.Serializer());
+            Create(new S2CRankingRankListByCharacterIdRes.Serializer());
 
             Create(new S2CSeasonDungeonAreaBuffEffectNtc.Serializer());
             Create(new S2CSeasonDungeonDeliverItemForExRes.Serializer());

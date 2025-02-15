@@ -426,6 +426,12 @@ namespace Arrowgene.Ddon.Test.Database
         public Dictionary<TaskType, SchedulerTaskEntry> SelectAllTaskEntries() { return new(); }
         public bool UpdateScheduleInfo(TaskType type, long timestamp) { return true; }
 
+        public bool InsertRankRecord(uint characterId, uint questId, long score, DbConnection? connectionIn = null) { return true; }
+        public List<uint> SelectUsedRankingBoardQuests(DbConnection? connectionIn = null) { return new(); }
+        public List<CDataRankingData> SelectRankingDataByCharacterId(uint characterId, uint questId, uint limit = 1000, DbConnection? connectionIn = null) { return new(); }
+        public List<CDataRankingData> SelectRankingData(uint questId, uint limit = 1000, DbConnection? connectionIn = null) { return new(); }
+        public bool DeleteAllRankRecords(DbConnection? connectionIn = null) { return true; }
+
         public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
         public void AddParameter(DbCommand command, string name, string value) { }
         public void AddParameter(DbCommand command, string name, Int32 value) { }

@@ -576,6 +576,10 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestGetEndContentsRecruitListHandler(this));
             AddHandler(new QuestGetQuestScheduleInfoHandler(this));
 
+            AddHandler(new RankingBoardListHandler(this));
+            AddHandler(new RankingRankListHandler(this));
+            AddHandler(new RankingRankListByCharacterIdHandler(this));
+
 			AddHandler(new EntryBoardEntryBoardListHandler(this));
 			AddHandler(new EntryBoardEntryBoardItemCreateHandler(this));
 			AddHandler(new EntryBoardEntryBoardItemForceStartHandler(this));
