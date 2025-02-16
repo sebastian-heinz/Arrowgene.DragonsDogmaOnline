@@ -129,6 +129,16 @@
                 "max_lv": 10
             }
         }
+    },
+    {
+        "item_id": 17106,
+        "comment": "Handpicked Cacao (Valentines Day 2017)",
+        "min_num": 1,
+        "max_num": 1,
+        "drop_chance": 0.30,
+        "quest_ids": [60200026],
+        "stage_ids": [],
+        "enemy_ids": []
     }
 ]
 

@@ -6,6 +6,15 @@ namespace Arrowgene.Ddon.Server.Scripting
     {
         public static DateTime EventTime(int month, int day)
         {
+            if (month == 2 && day == 29)
+            {
+                if (!DateTime.IsLeapYear(DateTime.Today.Year))
+                {
+                    // Move the date back by 1 since this year is not a leap year
+                    day = 28;
+                }
+            }
+
             return new DateTime(DateTime.Now.Year, month, day);
         }
 

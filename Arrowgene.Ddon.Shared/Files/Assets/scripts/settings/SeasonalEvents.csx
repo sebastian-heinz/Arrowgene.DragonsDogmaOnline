@@ -10,7 +10,7 @@
  */
 
 /**
- * @brief Enables if the Halloween seasonal event is enabled or not.
+ * @brief Used to determine if the Halloween seasonal event is enabled or not.
  */
 bool EnableHalloweenEvent = true;
 
@@ -36,7 +36,7 @@ var HalloweenValidPeriod = LibUtils.EventTimespan("10/1", "10/31");
 uint HalloweenEventYear = 2018;
 
 /**
- * @brief Enables if the Christmas Seasonal event is enabled or not.
+ * @brief Used to determine if the Christmas Seasonal event is enabled or not.
  */
 bool EnableChristmasEvent = true;
 
@@ -67,3 +67,28 @@ var ChristmasValidPeriod = LibUtils.EventTimespan("12/1", "12/31");
  *     Merry Christmas with Smiles (2)
  */
 uint ChristmasEventYear = 2018;
+
+/**
+ * @brief Used to determine if the Valentines Seasonal event is enabled or not.
+ */
+bool EnableValentinesEvent = true;
+
+/**
+ * @brief The daterange that the Valentines event should be available
+ * if EnableValentinesEvent is set to true. The format is in MM/DD.
+ */
+var ValentinesValidPeriod = LibUtils.EventTimespan("2/14", "2/29");
+
+/**
+ * This option configures which version will be used when
+ * the setting EnableValentinesEvent is set to true.
+ *
+ * 2017
+ *     Shape of Love for Someone (1)
+ *     Shape of Love for Someone (2)
+ *     
+ * 2018 (Not implemented)
+ *     All Your Feelings in One Glance (1)
+ *     All Your Feelings in One Glance (2)
+ */
+uint ValentinesEventYear = 2017;

@@ -289,6 +289,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         private static CDataQuestProcessState BlockAsCDataQuestProcessState(GenericQuest quest, QuestBlock questBlock)
         {
+            // QuestManager.CheckCommand.Craft()
+            // QuestManager.CheckCommand.MakeCraft()
+            // QuestManager.CheckCommand.OpenCraftExam()
+            // QuestManager.CheckCommand.LevelUpCraft()
+
             CDataQuestProcessState result = new CDataQuestProcessState()
             {
                 ProcessNo = questBlock.ProcessNo,
@@ -720,6 +725,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             /* Add in any additional result commands */
             resultCommands.AddRange(questBlock.ResultCommands);
+
+            /* Add in any additional work commands */
+            workCommands.AddRange(questBlock.WorkCommands);
 
             result.ResultCommandList = resultCommands;
             result.WorkList = workCommands;

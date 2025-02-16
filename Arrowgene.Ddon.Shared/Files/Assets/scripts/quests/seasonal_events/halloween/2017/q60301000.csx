@@ -71,7 +71,7 @@ public class ScriptedQuest : IQuest
     protected override void InitializeBlocks()
     {
         var process0 = new QuestProcess(0);
-        process0.AddQuestNpcTalkAndOrderBlock((QuestId)60301001, Stage.TheWhiteDragonTemple0, NpcId.Angelo0, 27113);
+        process0.AddQuestNpcTalkAndOrderBlock((QuestId)60301001, Stage.TheWhiteDragonTemple0, 0, 0, NpcId.Angelo0, 27113);
         process0.AddNewTalkToNpcBlock(QuestAnnounceType.Accept, (QuestId)60301001, Stage.TheWhiteDragonTemple0, 1, 0, NpcId.Shelly0, 27115);
         process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, (QuestId)60301001, Stage.TheWhiteDragonTemple0, 0, 0, NpcId.Angelo0, 27116);
         process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.TheWhiteDragonTemple0, NpcId.Gregory0, 27117);
