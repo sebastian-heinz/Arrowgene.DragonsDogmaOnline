@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Shared.Asset;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
@@ -22,6 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
             PointRewards = new List<QuestPointReward>();
             EnemyGroups = new Dictionary<uint, QuestEnemyGroup>();
             MissionParams = new QuestMissionParams();
+            QuestLayoutSetInfoFlags = new List<QuestLayoutFlagSetInfo>();
 
             if (OverrideEnemySpawn == null)
             {
@@ -52,6 +54,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
         private List<QuestWalletReward> WalletRewards { get; set; }
         private List<QuestPointReward> PointRewards { get; set; }
         private Dictionary<uint, QuestEnemyGroup> EnemyGroups { get; set; }
+        private List<QuestLayoutFlagSetInfo> QuestLayoutSetInfoFlags { get; set; }
         protected QuestMissionParams MissionParams { get; set; }
 
         public void Initialize(string path)
@@ -189,6 +192,22 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
             AddWalletReward(reward);
         }
 
+        public void AddQuestLayoutSetInfoFlag(uint flagNo, StageInfo stageInfo, uint enemyGroupId)
+        {
+            var enemyGroup = GetEnemyGroup(enemyGroupId);
+            QuestLayoutSetInfoFlags.Add(new QuestLayoutFlagSetInfo()
+            {
+                FlagNo = flagNo,
+                StageNo = stageInfo.StageNo,
+                GroupId = enemyGroup.StageLayoutId.GroupId
+            });
+        }
+
+        protected QuestEnemyGroup GetEnemyGroup(uint enemyGroupId)
+        {
+            return EnemyGroups[enemyGroupId];
+        }
+
         public void AddEnemies(uint id, StageLayoutId stageLayoutId, byte subGroupId, QuestEnemyPlacementType placementType, List<InstancedEnemy> enemies, QuestTargetType targetType = QuestTargetType.EnemyForOrder)
         {
             if (!EnemyGroups.ContainsKey(id))
@@ -283,6 +302,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
                 StageLayoutId = StageInfo.AsStageLayoutId(0, 0),
                 ResetPlayerAfterQuest = ResetPlayerAfterQuest,
                 MissionParams = MissionParams,
+                QuestLayoutSetInfoFlags = QuestLayoutSetInfoFlags,
             };
 
             // TODO: Generate a ScriptedQuest instead which is more customizable

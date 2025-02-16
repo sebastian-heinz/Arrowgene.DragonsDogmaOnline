@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Arrowgene.Ddon.Shared.Model
 {
     public class InstancedEnemy : Enemy
@@ -41,6 +43,11 @@ namespace Arrowgene.Ddon.Shared.Model
             EnemyTargetTypesId = 4;
             Scale = 100;
             IsRequired = true;
+        }
+
+        public virtual InstancedEnemy CreateNewInstance()
+        {
+            return new InstancedEnemy(this);
         }
 
         public InstancedEnemy SetEnemyId(uint enemyId)

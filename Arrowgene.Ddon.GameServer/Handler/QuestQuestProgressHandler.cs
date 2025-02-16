@@ -1,5 +1,4 @@
 using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -101,7 +100,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 if (res.QuestProcessState.Count > 0)
                 {
                     Logger.Info("==========================================================================================");
-                    Logger.Info($"{quest.QuestId} ({quest.QuestScheduleId}): ProcessNo={res.QuestProcessState[0].ProcessNo}, SequenceNo={res.QuestProcessState[0].SequenceNo}, BlockNo={res.QuestProcessState[0].BlockNo},");
+                    Logger.Info($"{quest.QuestId} ({quest.QuestScheduleId}): QuestBlock={res.QuestProcessState[0].ProcessNo}.{res.QuestProcessState[0].SequenceNo}.{res.QuestProcessState[0].BlockNo}");
                     Logger.Info("==========================================================================================");
                 }
 

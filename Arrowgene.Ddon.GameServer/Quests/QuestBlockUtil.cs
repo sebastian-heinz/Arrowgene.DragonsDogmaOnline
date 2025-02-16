@@ -137,6 +137,23 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return AddDestroyGroupBlock(process, announceType, new List<uint>() { groupId }, resetGroup, showMarker);
         }
 
+        public static QuestBlock AddDestroyGroupBlock(this QuestProcess process, QuestAnnounceType announceType, uint groupFlag, uint groupId, bool resetGroup = true, bool showMarker = true)
+        {
+            var block = CreateGenericBlock(0, 0, QuestBlockType.Raw, announceType)
+                .SetResetGroup(resetGroup);
+
+            if (showMarker)
+            {
+                block.AddCheckCommand(QuestManager.CheckCommand.IsKilledTargetEnemySetGroup((int)groupFlag));
+            }
+            else
+            {
+                block.AddCheckCommand(QuestManager.CheckCommand.IsKilledTargetEmSetGrpNoMarker((int)groupFlag));
+            }
+                
+            return block;
+        }
+
         public static QuestBlock AddSpawnGroupsBlock(this QuestProcess process, QuestAnnounceType announceType, List<uint> groupIds, bool resetGroup = true)
         {
             var block = CreateGenericBlock(0, 0, QuestBlockType.SpawnGroup, announceType)
@@ -366,6 +383,23 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         {
             questBlock.ResultCommands.Add(QuestManager.ResultCommand.AddEndContentsPurpose(announceNo, (int) announceType));
             return questBlock;
+        }
+
+        public static QuestBlock AddUpdateAnnounceDirect(this QuestBlock questBlock, int announceNo, QuestAnnounceType announceType)
+        {
+            questBlock.ResultCommands.Add(QuestManager.ResultCommand.UpdateAnnounceDirect(announceNo, (int) announceType));
+            return questBlock;
+        }
+
+        public static QuestBlock AddSetAnnounce(this QuestBlock questBlock, QuestAnnounceType announceType)
+        {
+            questBlock.ResultCommands.Add(QuestManager.ResultCommand.SetAnnounce(announceType));
+            return questBlock;
+        }
+
+        public static QuestBlock AddEndContentsPurpose(this QuestBlock questBlock, int announceNo)
+        {
+            return AddEndContentsPurpose(questBlock, announceNo, QuestEndContentsAnnounceType.Purpose);
         }
 
         public static QuestBlock AddWorkCommand(this QuestBlock questBlock, QuestNotifyCommand notifyCommand, int work01 = 0, int work02 = 0, int work03 = 0, int work04 = 0)

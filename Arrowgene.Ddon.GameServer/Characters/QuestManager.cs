@@ -217,6 +217,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     }
                 };
             }
+
+            public static CDataQuestLayoutFlagSetInfo Create(uint layoutFlag, StageInfo stageInfo, uint groupId)
+            {
+                return Create(layoutFlag, stageInfo.StageNo, groupId);
+            }
         }
 
         public class AcceptConditions

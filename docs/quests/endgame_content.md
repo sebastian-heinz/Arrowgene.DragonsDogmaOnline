@@ -38,21 +38,21 @@
 
 | Quest Id | Quest Name | Starting NPC | Recommended Level | Period | References | Implemented  |
 |:---------|:----------:|:------------:|:-----------------:|:------:|:----------:|:------------:|
-| 50101021 | Ghosts 'n Goblins Collaboration: Special Mission, 魔界村コラボ 特別ミッション | Issac | 60 | 9/1/2017 - 9/28/2017 | [h1g](https://h1g.jp/dd-on/?%E9%AD%94%E7%95%8C%E6%9D%91%E3%82%B3%E3%83%A9%E3%83%9C%20%E7%89%B9%E5%88%A5%E3%83%9F%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3)
-| 50105000 | Lestania War Chronicles, レスタニア追懐戦記 || 60 | | [h1g](https://h1g.jp/dd-on/?%E3%83%AC%E3%82%B9%E3%82%BF%E3%83%8B%E3%82%A2%E8%BF%BD%E6%87%90%E6%88%A6%E8%A8%98)
-| 50201001 | Agent of Corruption: Restricted Stage, 歪みの執行人・限界域 | Issac | 65 || [h1g](https://h1g.jp/dd-on/?%E6%AD%AA%E3%81%BF%E3%81%AE%E5%9F%B7%E8%A1%8C%E4%BA%BA%E3%83%BB%E9%99%90%E7%95%8C%E5%9F%9F)
-| 50209000 | 1st Anniversary: White Dragon Cup, 【１周年記念】 白竜杯 | Seneca | 65 (IR20) || [h1g](https://h1g.jp/dd-on/?%E3%80%901%E5%91%A8%E5%B9%B4%E8%A8%98%E5%BF%B5%E3%80%91%E7%99%BD%E7%AB%9C%E6%9D%AF)
-| 50202002 | Battle Competition: Dragon Battle, 戦技闘会・竜伐戦 | Seneca | 70 || [h1g](https://h1g.jp/dd-on/?%E6%88%A6%E6%8A%80%E9%97%98%E4%BC%9A%E3%83%BB%E7%AB%9C%E4%BC%90%E6%88%A6)
-| 50202001 | Phantasmic Great Dragon: Restricted Stage, 淀みし大竜力・限界域 | Issac | 70 || [h1g](https://h1g.jp/dd-on/?%E6%B7%80%E3%81%BF%E3%81%97%E5%A4%A7%E7%AB%9C%E5%8A%9B%20%E9%99%90%E7%95%8C%E5%9F%9F)
-| 50203001 | Earth's Fury: Restricted Stage, 大地の怒り・限界域 | Issac | 75 || [h1g](https://h1g.jp/dd-on/?%E5%A4%A7%E5%9C%B0%E3%81%AE%E6%80%92%E3%82%8A%E3%83%BB%E9%99%90%E7%95%8C%E5%9F%9F)
-| 50206000 | Phindym War Chronicles, フィンダム追懐戦記 | Issac | 80 || [h1g](https://h1g.jp/dd-on/?%E3%83%95%E3%82%A3%E3%83%B3%E3%83%80%E3%83%A0%E8%BF%BD%E6%87%90%E6%88%A6%E8%A8%98) | ✓
-| 50204001 | Onset of Darkness: Restricted Stage, 降臨せし闇・限界域 | Issac | 80 || [h1g](https://h1g.jp/dd-on/?%E9%99%8D%E8%87%A8%E3%81%9B%E3%81%97%E9%97%87%E3%83%BB%E9%99%90%E7%95%8C%E5%9F%9F) | ✓
-| 50204000 | Recurrence of Darkness, 闇の再動 | Issac | 80 || [h1g](https://h1g.jp/dd-on/?%E9%97%87%E3%81%AE%E5%86%8D%E5%8B%95)
-| 50301000 | Enfilade of Despair and Tragedy: Restricted Stage, 絶望と惨劇の砲声 限界域 | Endale | IR 90 || [h1g](https://h1g.jp/dd-on/?%E7%B5%B6%E6%9C%9B%E3%81%A8%E6%83%A8%E5%8A%87%E3%81%AE%E7%A0%B2%E5%A3%B0%20%E9%99%90%E7%95%8C%E5%9F%9F)
-| 50302000 | The Inviting Eye: Restricted Stage, 誘う眼　限界域 | Area Master | IR 100 || [h1g](https://h1g.jp/dd-on/?%E8%AA%98%E3%81%86%E7%9C%BC%20%E9%99%90%E7%95%8C%E5%9F%9F)
-| 50303000 | Flames of Darkness: Restricted Stage, 暗晦の炎　限界域 | Doris | IR 110 | New Years? | [h1g](https://h1g.jp/dd-on/?%E6%9A%97%E6%99%A6%E3%81%AE%E7%82%8E%20%E9%99%90%E7%95%8C%E5%9F%9F) | ✓
+| 50101021 | Ghosts 'n Goblins Collaboration: Special Mission, 魔界村コラボ 特別ミッション | Issac | 60 | 2017.09.01 - 2017.10.05 | [h1g](https://h1g.jp/dd-on/?%E9%AD%94%E7%95%8C%E6%9D%91%E3%82%B3%E3%83%A9%E3%83%9C%20%E7%89%B9%E5%88%A5%E3%83%9F%E3%83%83%E3%82%B7%E3%83%A7%E3%83%B3)
+| 50105000 | Lestania War Chronicles, レスタニア追懐戦記 || 60 | 2016.06.09 - 2016.06.30 | [h1g](https://h1g.jp/dd-on/?%E3%83%AC%E3%82%B9%E3%82%BF%E3%83%8B%E3%82%A2%E8%BF%BD%E6%87%90%E6%88%A6%E8%A8%98)
+| 50201001 | Agent of Corruption: Restricted Stage, 歪みの執行人・限界域 | Issac | 65 |2016.09.08 - 2016.09.21| [h1g](https://h1g.jp/dd-on/?%E6%AD%AA%E3%81%BF%E3%81%AE%E5%9F%B7%E8%A1%8C%E4%BA%BA%E3%83%BB%E9%99%90%E7%95%8C%E5%9F%9F)
+| 50209000 | 1st Anniversary: White Dragon Cup, 【１周年記念】 白竜杯 | Seneca | 65 (IR20) | 2016.08.04 - 2016.08.18 | [h1g](https://h1g.jp/dd-on/?%E3%80%901%E5%91%A8%E5%B9%B4%E8%A8%98%E5%BF%B5%E3%80%91%E7%99%BD%E7%AB%9C%E6%9D%AF)
+| 50202002 | Battle Competition: Dragon Battle, 戦技闘会・竜伐戦 | Seneca | 70 | 2016.11.17 - 2016.12.01 | [h1g](https://h1g.jp/dd-on/?%E6%88%A6%E6%8A%80%E9%97%98%E4%BC%9A%E3%83%BB%E7%AB%9C%E4%BC%90%E6%88%A6)
+| 50202001 | Phantasmic Great Dragon: Restricted Stage, 淀みし大竜力・限界域 | Issac | 70 | 2016.11.24 - 2016.12.15 | [h1g](https://h1g.jp/dd-on/?%E6%B7%80%E3%81%BF%E3%81%97%E5%A4%A7%E7%AB%9C%E5%8A%9B%20%E9%99%90%E7%95%8C%E5%9F%9F)
+| 50203001 | Earth's Fury: Restricted Stage, 大地の怒り・限界域 | Issac | 75 | 2017.02.23 - 2017.03.16 | [h1g](https://h1g.jp/dd-on/?%E5%A4%A7%E5%9C%B0%E3%81%AE%E6%80%92%E3%82%8A%E3%83%BB%E9%99%90%E7%95%8C%E5%9F%9F)
+| 50206000 | Phindym War Chronicles, フィンダム追懐戦記 | Issac | 80 | 2017.07.20 - 2017.08.17 | [h1g](https://h1g.jp/dd-on/?%E3%83%95%E3%82%A3%E3%83%B3%E3%83%80%E3%83%A0%E8%BF%BD%E6%87%90%E6%88%A6%E8%A8%98) | ✓
+| 50204001 | Onset of Darkness: Restricted Stage, 降臨せし闇・限界域 | Issac | 80 | 2017.06.15 - 2017.08.17 | [h1g](https://h1g.jp/dd-on/?%E9%99%8D%E8%87%A8%E3%81%9B%E3%81%97%E9%97%87%E3%83%BB%E9%99%90%E7%95%8C%E5%9F%9F) | ✓
+| 50204000 | Recurrence of Darkness, 闇の再動 | Issac | 80 | 2017.06.15 - 2017.08.17 | [h1g](https://h1g.jp/dd-on/?%E9%97%87%E3%81%AE%E5%86%8D%E5%8B%95)
+| 50301000 | Enfilade of Despair and Tragedy: Restricted Stage, 絶望と惨劇の砲声 限界域 | Endale | Lv85 (IR90) | 2017.11.30 - 2017.12.14 | [h1g](https://h1g.jp/dd-on/?%E7%B5%B6%E6%9C%9B%E3%81%A8%E6%83%A8%E5%8A%87%E3%81%AE%E7%A0%B2%E5%A3%B0%20%E9%99%90%E7%95%8C%E5%9F%9F)
+| 50302000 | The Inviting Eye: Restricted Stage, 誘う眼　限界域 | Area Master | Lv90 (IR100) | 2018.03.29 - 2018.04.12 | [h1g](https://h1g.jp/dd-on/?%E8%AA%98%E3%81%86%E7%9C%BC%20%E9%99%90%E7%95%8C%E5%9F%9F)
+| 50303000 | Flames of Darkness: Restricted Stage, 暗晦の炎　限界域 | Doris | Lv95 (IR110) | 2018.08.02 - 2018.08.16 | [h1g](https://h1g.jp/dd-on/?%E6%9A%97%E6%99%A6%E3%81%AE%E7%82%8E%20%E9%99%90%E7%95%8C%E5%9F%9F) | ✓
 | 50209001 | 2nd Anniversary: White Dragon Cup, 【２周年記念】白竜杯 | Seneca | ??? ||
-| 50309000 | 3rd Anniversary: White Dragon Cup, 【３周年記念】白竜杯 | Issac || 8/30 - 9/6 | [youtube](https://youtu.be/0f8KOG6HsZs)
+| 50309000 | 3rd Anniversary: White Dragon Cup, 【３周年記念】白竜杯 | Issac | Lv95 | 2018.08.30 - 2018.09.06 | [youtube](https://youtu.be/0f8KOG6HsZs)
 | 50309001 | 3rd Anniversary: Breakneck Speed, 【３周年記念】速移の極み |||
 
 ### 8 Player
