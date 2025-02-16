@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CInstanceEnemyKillRes Handle(GameClient client, C2SInstanceEnemyKillReq packet)
         {
             CDataStageLayoutId layoutId = packet.LayoutId;
-            StageId stageId = StageId.FromStageLayoutId(layoutId);
+            StageLayoutId stageId = layoutId.AsStageLayoutId();
 
             PacketQueue queuedPackets = new();
 

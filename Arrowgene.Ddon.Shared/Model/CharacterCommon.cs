@@ -54,7 +54,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public CDataOrbGainExtendParam ExtendedParams { get; set; }
 
         /// TODO combine into a location class ?
-        public StageId Stage { get; set; }
+        public StageLayoutId Stage { get; set; }
 
         public uint StageNo { get; set; }
         public double X { get; set; }

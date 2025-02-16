@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SSeasonDungeonGetStatueStateNtc> packet)
         {
-            StageId stageId = packet.Structure.LayoutId.AsStageId();
+            StageLayoutId stageId = packet.Structure.LayoutId.AsStageLayoutId();
             if (_Server.EpitaphRoadManager.IsStatueUnlocked(client, stageId, packet.Structure.PosId))
             {
                 client.Send(new S2CSeasonDungeonSetOmStateNtc()

@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CInstanceGetEnemySetListRes Handle(GameClient client, C2SInstanceGetEnemySetListReq request)
         {
-            StageId stageId = StageId.FromStageLayoutId(request.LayoutId);
+            StageLayoutId stageId = request.LayoutId.AsStageLayoutId();
             byte subGroupId = request.SubGroupId;
             client.Character.Stage = stageId;
 
@@ -47,7 +47,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CInstanceGetEnemySetListRes response = new S2CInstanceGetEnemySetListRes()
             {
-                LayoutId = stageId.ToStageLayoutId(),
+                LayoutId = stageId.ToCDataStageLayoutId(),
                 SubGroupId = subGroupId,
                 RandomSeed = CryptoRandom.Instance.GetRandomUInt32(),
             };
@@ -108,7 +108,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 S2CInstanceEnemySubGroupAppearNtc subgroupNtc = new S2CInstanceEnemySubGroupAppearNtc()
                 {
                     SubGroupId = subGroupId,
-                    LayoutId = stageId.ToStageLayoutId(),
+                    LayoutId = stageId.ToCDataStageLayoutId(),
                 };
 
                 client.Party.SendToAll(subgroupNtc);

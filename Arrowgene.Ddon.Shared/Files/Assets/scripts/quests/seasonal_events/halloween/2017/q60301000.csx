@@ -18,7 +18,7 @@ public class ScriptedQuest : IQuest
     public override ushort RecommendedLevel => 10;
     public override byte MinimumItemRank => 0;
     public override bool IsDiscoverable => true;
-    public override StageId StageId => StageId.WhiteDragonTemple;
+    public override StageInfo StageInfo => Stage.TheWhiteDragonTemple0;
 
     public override bool AcceptRequirementsMet(DdonGameServer server, GameClient client)
     {
@@ -39,7 +39,7 @@ public class ScriptedQuest : IQuest
         DropsTable slimeTable = new DropsTable()
             .AddDrop(ItemId.GhostMarshmallow, 1, 1, DropRate.UNCOMMON);
 
-        AddEnemies(0, new StageId(126, 0, 0), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(0, Stage.TelsWitheredWell, 0, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.Slime, 3, 24, 0, false)
                 .SetDropsTable(slimeTable),
@@ -59,7 +59,7 @@ public class ScriptedQuest : IQuest
                 .SetDropsTable(slimeTable),
         });
 
-        AddEnemies(1, new StageId(126, 0, 0), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
+        AddEnemies(1, Stage.TelsWitheredWell, 0, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
             LibDdon.CreateEnemy(EnemyId.Witch, 10, 1500, 7, false)
                 .SetIsBoss(true)
@@ -71,27 +71,27 @@ public class ScriptedQuest : IQuest
     protected override void InitializeBlocks()
     {
         var process0 = new QuestProcess(0);
-        process0.AddQuestNpcTalkAndOrderBlock((QuestId)60301001, new StageId(2, 0, 0), NpcId.Angelo0, 27113);
-        process0.AddNewTalkToNpcBlock(QuestAnnounceType.Accept, (QuestId)60301001, new StageId(2, 0, 1), NpcId.Shelly0, 27115);
-        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, (QuestId)60301001, new StageId(2, 0, 0), NpcId.Angelo0, 27116);
-        process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, StageId.WhiteDragonTemple, NpcId.Gregory0, 27117);
+        process0.AddQuestNpcTalkAndOrderBlock((QuestId)60301001, Stage.TheWhiteDragonTemple0, NpcId.Angelo0, 27113);
+        process0.AddNewTalkToNpcBlock(QuestAnnounceType.Accept, (QuestId)60301001, Stage.TheWhiteDragonTemple0, 1, 0, NpcId.Shelly0, 27115);
+        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, (QuestId)60301001, Stage.TheWhiteDragonTemple0, 0, 0, NpcId.Angelo0, 27116);
+        process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.TheWhiteDragonTemple0, NpcId.Gregory0, 27117);
         process0.AddCheckBagEventBlock(QuestAnnounceType.CheckpointAndUpdate, ItemId.GhostLantern, 1)
             .AddQuestFlag(QuestFlagType.MyQst, QuestFlagAction.Set, 1)
                 .AddAnnotation("Progresses the process 1 state machine to spawn enemies in the withered well");
-        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, (QuestId)60301001, new StageId(2, 0, 0), NpcId.Angelo0, 27118)
+        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, (QuestId)60301001, Stage.TheWhiteDragonTemple0, 0, 0, NpcId.Angelo0, 27118)
             .AddQuestFlag(QuestFlagType.MyQst, QuestFlagAction.Set, 2)
                 .AddAnnotation("Stop spawning slimes in process 1");
-        process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, StageId.Lestania, NpcId.Norman, 27142);
-        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, new StageId(126, 0, 0), NpcId.Shelly0, 27121)
+        process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.Lestania, NpcId.Norman, 27142);
+        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.TelsWitheredWell, 0, 0, NpcId.Shelly0, 27121)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, 6989)
                 .AddAnnotation("Spawns fake Shelly");
         process0.AddDestroyGroupBlock(QuestAnnounceType.Update, 1, true)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Clear, 6989)
                 .AddAnnotation("Despawns fake shelly");
-        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, new StageId(126, 0, 1), NpcId.Shelly0, 27124)
+        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.TelsWitheredWell, 1, 0, NpcId.Shelly0, 27124)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, 6990)
                 .AddAnnotation("Spawns Real Shelly");
-        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, (QuestId)60301001, new StageId(2, 0, 0), NpcId.Angelo0, 27128);
+        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, (QuestId)60301001, Stage.TheWhiteDragonTemple0, 0, 0, NpcId.Angelo0, 27128);
         process0.AddProcessEndBlock(true);
         AddProcess(process0);
 

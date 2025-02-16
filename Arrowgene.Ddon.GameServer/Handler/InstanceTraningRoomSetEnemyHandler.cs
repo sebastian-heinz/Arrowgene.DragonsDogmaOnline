@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             client.Send(new S2CInstanceTraningRoomSetEnemyRes());
 
-            client.Party.InstanceEnemyManager.ResetEnemyNode(TrainingRoomLayout.AsStageId());
+            client.Party.InstanceEnemyManager.ResetEnemyNode(TrainingRoomLayout.AsStageLayoutId());
             client.Party.SendToAll(new S2CInstanceEnemyGroupResetNtc()
             {
                 LayoutId = TrainingRoomLayout

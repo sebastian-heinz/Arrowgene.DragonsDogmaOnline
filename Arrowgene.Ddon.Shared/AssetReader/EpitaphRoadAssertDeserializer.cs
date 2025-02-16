@@ -67,7 +67,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                     var stageId = jBarrier.GetProperty("stage_id").GetUInt32();
                     var groupId = jBarrier.GetProperty("group_id").GetUInt32();
-                    var location = new StageId(stageId, 0, groupId);
+                    var location = new StageLayoutId(stageId, 0, groupId);
                     var posId = jBarrier.GetProperty("pos_id").GetUInt32();
 
                     barrier.StageId = location;
@@ -100,7 +100,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 {
                     var statue = new EpitaphStatue()
                     {
-                        StageId = new StageId(jStatue.GetProperty("stage_id").GetUInt32(), 0, jStatue.GetProperty("group_id").GetUInt32()),
+                        StageId = new StageLayoutId(jStatue.GetProperty("stage_id").GetUInt32(), 0, jStatue.GetProperty("group_id").GetUInt32()),
                         PosId = jStatue.GetProperty("pos_id").GetUInt32()
                     };
                     statue.EpitaphId = EpitaphId.GenerateStatueId(statue.StageId, statue.PosId, 0);

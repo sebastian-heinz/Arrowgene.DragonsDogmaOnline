@@ -52,14 +52,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public uint Step { get; set; }
 
         public Dictionary<ushort, QuestProcessState> ProcessState { get; set; }
-        public Dictionary<StageId, Dictionary<uint, List<InstancedEnemy>>> QuestEnemies { get; set; }
+        public Dictionary<StageLayoutId, Dictionary<uint, List<InstancedEnemy>>> QuestEnemies { get; set; }
         public Dictionary<uint, QuestDeliveryRecord> DeliveryRecords { get; set; }
         public Dictionary<uint, QuestEnemyHuntRecord> HuntRecords { get; set; }
 
         public QuestState()
         {
             ProcessState = new Dictionary<ushort, QuestProcessState>();
-            QuestEnemies = new Dictionary<StageId, Dictionary<uint, List<InstancedEnemy>>>();
+            QuestEnemies = new Dictionary<StageLayoutId, Dictionary<uint, List<InstancedEnemy>>>();
             DeliveryRecords = new Dictionary<uint, QuestDeliveryRecord>();
             HuntRecords = new Dictionary<uint, QuestEnemyHuntRecord>();
         }
@@ -163,14 +163,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestStateManager));
 
         protected Dictionary<uint, QuestState> ActiveQuests { get; set; }
-        private Dictionary<StageId, HashSet<uint>> QuestLookupTable { get; set; }
+        private Dictionary<StageLayoutId, HashSet<uint>> QuestLookupTable { get; set; }
         private List<QuestId> CompletedWorldQuests { get; set; }
         private Dictionary<QuestAreaId, HashSet<uint>> RolledInstanceWorldQuests { get; set; }
 
         public QuestStateManager()
         {
             ActiveQuests = new Dictionary<uint, QuestState>();
-            QuestLookupTable = new Dictionary<StageId, HashSet<uint>>();
+            QuestLookupTable = new Dictionary<StageLayoutId, HashSet<uint>>();
             CompletedWorldQuests = new List<QuestId>();
             RolledInstanceWorldQuests = new Dictionary<QuestAreaId, HashSet<uint>>();
 
@@ -261,7 +261,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             AddNewQuest(quest, step);
         }
 
-        public bool HasEnemiesInCurrentStageGroup(Quest quest, StageId stageId)
+        public bool HasEnemiesInCurrentStageGroup(Quest quest, StageLayoutId stageId)
         {
             lock (ActiveQuests)
             {
@@ -270,7 +270,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
         }
 
-        public bool HasEnemiesForCurrentQuestStepInStageGroup(Quest quest, StageId stageId, uint subGroupId)
+        public bool HasEnemiesForCurrentQuestStepInStageGroup(Quest quest, StageLayoutId stageId, uint subGroupId)
         {
             lock (ActiveQuests)
             {
@@ -289,7 +289,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
         }
 
-        public void SetInstanceEnemies(Quest quest, StageId stageId, ushort subGroupId, List<InstancedEnemy> enemies)
+        public void SetInstanceEnemies(Quest quest, StageLayoutId stageId, ushort subGroupId, List<InstancedEnemy> enemies)
         {
             lock (ActiveQuests)
             {
@@ -303,7 +303,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
         }
 
-        public List<InstancedEnemy> GetInstancedEnemies(Quest quest, StageId stageId, ushort subGroupId)
+        public List<InstancedEnemy> GetInstancedEnemies(Quest quest, StageLayoutId stageId, ushort subGroupId)
         {
             lock (ActiveQuests)
             {
@@ -327,7 +327,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
         }
 
-        public InstancedEnemy GetInstancedEnemy(Quest quest, StageId stageId, ushort subGroupId, uint index)
+        public InstancedEnemy GetInstancedEnemy(Quest quest, StageLayoutId stageId, ushort subGroupId, uint index)
         {
             lock (ActiveQuests)
             {
@@ -458,7 +458,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
         }
 
-        public HashSet<uint> StageQuests(StageId stageId)
+        public HashSet<uint> StageQuests(StageLayoutId stageId)
         {
             lock (ActiveQuests)
             {

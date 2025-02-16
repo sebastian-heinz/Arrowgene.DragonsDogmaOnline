@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Model
 {
     public interface IStageLocationAsset<Y>
     {
-        public StageId StageId { get; set; }
+        public StageLayoutId StageId { get; set; }
         public Y SubGroupId { get; set; }
     }
 }

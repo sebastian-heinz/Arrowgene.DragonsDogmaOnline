@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.Shared.Asset
     {
         public BitterblackMazeAsset()
         {
-            Stages = new Dictionary<StageId, BitterblackMazeConfig>();
+            Stages = new Dictionary<StageLayoutId, BitterblackMazeConfig>();
             StarterEquipment = new Dictionary<JobId, Dictionary<EquipType, List<Item>>>();
             StarterJobEquipment = new Dictionary<JobId, List<Item>>();
             RareItemAppraisalList = new List<CDataCommonU32>();
@@ -38,7 +38,7 @@ namespace Arrowgene.Ddon.Shared.Asset
             public (uint Gold, uint Silver, uint Red) Marks { get; set; }
         }
 
-        public Dictionary<StageId, BitterblackMazeConfig> Stages { get; set; }
+        public Dictionary<StageLayoutId, BitterblackMazeConfig> Stages { get; set; }
         public Dictionary<uint, LootRange> LootRanges { get; set; }
         public Dictionary<JobId, Dictionary<EquipType, List<Item>>> StarterEquipment {  get; set; }
         public Dictionary<JobId, List<Item>> StarterJobEquipment { get; set; }

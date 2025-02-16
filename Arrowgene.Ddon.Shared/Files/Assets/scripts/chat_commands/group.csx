@@ -6,19 +6,19 @@ public class ChatCommand : IChatCommand
     public override string CommandName => "group";
     public override string HelpText => "usage: `/group <reset|destroy> StageId.LayerNo.GroupId [SubgroupId]` - Performs operations on an enemy group";
 
-    private List<Quest> FindQuestScheduleIdForStageId(GameClient client, StageId stageId, byte subGroupId)
+    private List<Quest> FindQuestScheduleIdForStageLayoutId(GameClient client, StageLayoutId stageLayoutId, byte subGroupId)
     {
         var results = new List<Quest>();
-        foreach (var questScheduleId in QuestManager.CollectQuestScheduleIds(client, stageId))
+        foreach (var questScheduleId in QuestManager.CollectQuestScheduleIds(client, stageLayoutId))
         {
             var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
 
             var questStateManager = QuestManager.GetQuestStateManager(client, quest);
-            if (quest.OverrideEnemySpawn && quest.HasEnemiesInCurrentStageGroup(stageId))
+            if (quest.OverrideEnemySpawn && quest.HasEnemiesInCurrentStageGroup(stageLayoutId))
             {
                 results.Add(quest);
             }
-            else if (!quest.OverrideEnemySpawn && questStateManager.HasEnemiesForCurrentQuestStepInStageGroup(quest, stageId, subGroupId))
+            else if (!quest.OverrideEnemySpawn && questStateManager.HasEnemiesForCurrentQuestStepInStageGroup(quest, stageLayoutId, subGroupId))
             {
                 results.Add(quest);
             }
@@ -28,14 +28,14 @@ public class ChatCommand : IChatCommand
 
     private void ResetGroup(GameClient client, CDataStageLayoutId layoutId, byte subGroupId)
     {
-        foreach (var enemy in client.Party.InstanceEnemyManager.GetInstancedEnemies(layoutId.AsStageId()))
+        foreach (var enemy in client.Party.InstanceEnemyManager.GetInstancedEnemies(layoutId.AsStageLayoutId()))
         {
             var uid = ContextManager.CreateEnemyUID(enemy.Index, layoutId);
             ContextManager.RemoveContext(client.Party, uid);
         }
-        client.Party.InstanceEnemyManager.ResetEnemyNode(layoutId.AsStageId());
+        client.Party.InstanceEnemyManager.ResetEnemyNode(layoutId.AsStageLayoutId());
 
-        var quests = FindQuestScheduleIdForStageId(client, layoutId.AsStageId(), subGroupId);
+        var quests = FindQuestScheduleIdForStageLayoutId(client, layoutId.AsStageLayoutId(), subGroupId);
         foreach (var quest in quests)
         {
             quest.PopulateStartingEnemyData(QuestManager.GetQuestStateManager(client, quest));

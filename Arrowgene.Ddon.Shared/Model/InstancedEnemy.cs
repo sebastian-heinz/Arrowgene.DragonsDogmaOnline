@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Shared.Model
             IsQuestControlled = enemy.IsQuestControlled;
         }
 
-        public StageId StageId { get; set; }
+        public StageLayoutId StageId { get; set; }
         public byte Index { get; set; }
         public bool IsRequired { get; set; }
         public bool IsKilled { get; set; }
@@ -65,6 +65,12 @@ namespace Arrowgene.Ddon.Shared.Model
         public InstancedEnemy SetEnemyTargetTypesId(byte targetTypeId)
         {
             EnemyTargetTypesId = targetTypeId;
+            return this;
+        }
+
+        public InstancedEnemy SetEnemyTargetTypesId(TargetTypesId targetTypeId)
+        {
+            EnemyTargetTypesId = (byte) targetTypeId;
             return this;
         }
 

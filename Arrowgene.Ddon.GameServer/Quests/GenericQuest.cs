@@ -7,6 +7,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Quests
@@ -34,7 +35,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             quest.EnemyGroups = questAsset.EnemyGroups;
             quest.ResetPlayerAfterQuest = questAsset.ResetPlayerAfterQuest;
             quest.OrderConditions = questAsset.OrderConditions;
-            quest.StageId = questAsset.StageId;
+            quest.StageId = questAsset.StageLayoutId;
             quest.MissionParams = questAsset.MissionParams;
             quest.ServerActions = questAsset.ServerActions;
             quest.QuestOrderBackgroundImage = questAsset.QuestOrderBackgroundImage;
@@ -76,7 +77,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             foreach (var (_, enemyGroup) in questAsset.EnemyGroups)
             {
-                quest.UniqueEnemyGroups.Add(enemyGroup.StageId);
+                quest.UniqueEnemyGroups.Add(enemyGroup.StageLayoutId);
             }
 
             foreach (var process in quest.Processes)
@@ -91,7 +92,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                                 foreach (var groupId in block.EnemyGroupIds)
                                 {
                                     var enemyGroup = quest.EnemyGroups[groupId];
-                                    quest.Locations.Add(new QuestLocation() { StageId = enemyGroup.StageId, SubGroupId = (ushort) enemyGroup.SubGroupId });
+                                    quest.Locations.Add(new QuestLocation() { StageId = enemyGroup.StageLayoutId, SubGroupId = (ushort) enemyGroup.SubGroupId });
                                 }
                             }
                             break;
@@ -141,7 +142,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             QuestLayoutFlagSetInfo = new List<QuestLayoutFlagSetInfo>();
         }
 
-        public override void SendProgressWorkNotices(GameClient client, StageId stageId, uint subGroupId)
+        public override void SendProgressWorkNotices(GameClient client, StageLayoutId stageId, uint subGroupId)
         {
             QuestLocation questLocation = null;
             foreach (var location in Locations)
@@ -221,7 +222,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 foreach (var enemyGroupId in questBlock.EnemyGroupIds)
                 {
                     var enemyGroup = EnemyGroups[enemyGroupId];
-                    questStateManager.SetInstanceEnemies(this, enemyGroup.StageId, (ushort)enemyGroup.SubGroupId, enemyGroup.CreateNewInstance());
+                    questStateManager.SetInstanceEnemies(this, enemyGroup.StageLayoutId, (ushort)enemyGroup.SubGroupId, enemyGroup.CreateNewInstance());
                 }
             }
             else
@@ -229,11 +230,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 foreach (var enemyGroupId in questBlock.EnemyGroupIds)
                 {
                     var enemies = EnemyGroups[enemyGroupId];
-                    questStateManager.SetInstanceEnemies(this, enemies.StageId, (ushort)enemies.SubGroupId, new List<InstancedEnemy>());
+                    questStateManager.SetInstanceEnemies(this, enemies.StageLayoutId, (ushort)enemies.SubGroupId, new List<InstancedEnemy>());
                 }
             }
 
-            if (questBlock.BlockType == QuestBlockType.ExtendTime && BoardManager.BoardIdIsExm(client.Party.ContentId))
+            // questBlock.BlockType == QuestBlockType.ExtendTime && 
+            if (BoardManager.BoardIdIsExm(client.Party.ContentId) && questBlock.TimeAmount > 0)
             {
                 var newEndTime = server.PartyQuestContentManager.ExtendTimer(client.Party.Id, questBlock.TimeAmount);
                 client.Party.SendToAll(new S2CQuestPlayAddTimerNtc() { PlayEndDateTime = newEndTime });
@@ -398,7 +400,15 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         foreach (var groupId in questBlock.EnemyGroupIds)
                         {
                             var enemyGroup = quest.EnemyGroups[groupId];
-                            checkCommands.Add(QuestManager.CheckCommand.IsEnemyFoundForOrder(StageManager.ConvertIdToStageNo(enemyGroup.StageId), (int)enemyGroup.StageId.GroupId, -1));
+
+                            if (enemyGroup.TargetType == QuestTargetType.ExmSub)
+                            {
+                                checkCommands.Add(QuestManager.CheckCommand.IsEnemyFoundGmSub(StageManager.ConvertIdToStageNo(enemyGroup.StageLayoutId), (int)enemyGroup.StageLayoutId.GroupId, -1));
+                            }
+                            else
+                            {
+                                checkCommands.Add(QuestManager.CheckCommand.IsEnemyFoundForOrder(StageManager.ConvertIdToStageNo(enemyGroup.StageLayoutId), (int)enemyGroup.StageLayoutId.GroupId, -1));
+                            }
                         }
                     }
                     break;
@@ -417,7 +427,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         foreach (var groupId in questBlock.EnemyGroupIds)
                         {
                             var enemyGroup = quest.EnemyGroups[groupId];
-                            checkCommands.Add(QuestManager.CheckCommand.DieEnemy(StageManager.ConvertIdToStageNo(enemyGroup.StageId), (int)enemyGroup.StageId.GroupId, -1));
+                            checkCommands.Add(QuestManager.CheckCommand.DieEnemy(StageManager.ConvertIdToStageNo(enemyGroup.StageLayoutId), (int)enemyGroup.StageLayoutId.GroupId, -1));
                         }
                     }
                     break;
@@ -428,7 +438,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             var enemyGroup = quest.EnemyGroups[groupId];
                             foreach (var enemy in enemyGroup.CreateNewInstance())
                             {
-                                checkCommands.Add(QuestManager.CheckCommand.EmHpLess(StageManager.ConvertIdToStageNo(enemyGroup.StageId), (int)enemyGroup.StageId.GroupId, enemy.Index, questBlock.EnemyHpPrecent));
+                                checkCommands.Add(QuestManager.CheckCommand.EmHpLess(StageManager.ConvertIdToStageNo(enemyGroup.StageLayoutId), (int)enemyGroup.StageLayoutId.GroupId, enemy.Index, questBlock.EnemyHpPrecent));
                             }
                         }
                     }

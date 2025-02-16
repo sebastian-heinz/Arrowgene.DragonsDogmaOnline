@@ -32,7 +32,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             ContextManager.DelegateAllMasters(client);
 
             client.Character.StageNo = res.StageNo;
-            client.Character.Stage = new StageId(packet.StageId, 0, 0);
+            client.Character.Stage = new StageLayoutId(packet.StageId, 0, 0);
 
             // For shared spaces, deal with all the context updating required for characters to be visible.
             // Must be done after Character.StageNo is set because of how the context is structured.

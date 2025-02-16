@@ -15,9 +15,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2S_SEASON_DUNGEON_62_12_16_NTC> packet)
         {
-            Logger.Debug($"{packet.Structure.LayoutId.AsStageId()}, SubGroupId={packet.Structure.PosId}");
+            Logger.Debug($"{packet.Structure.LayoutId.AsStageLayoutId()}, SubGroupId={packet.Structure.PosId}");
 
-            var stageId = packet.Structure.LayoutId.AsStageId();
+            var stageId = packet.Structure.LayoutId.AsStageLayoutId();
 
             var state = Server.EpitaphRoadManager.GetEpitaphState(client, stageId, packet.Structure.PosId);
 

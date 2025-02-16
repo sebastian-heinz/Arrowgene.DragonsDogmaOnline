@@ -11,18 +11,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
     {
         private readonly static List<CDataStageInfo> StageList = EntitySerializer.Get<S2CStageGetStageListRes>().Read(GameDump.data_Dump_19).StageList;
 
-        public static StageNo ConvertIdToStageNo(uint stageId)
+        public static uint ConvertIdToStageNo(uint stageId)
         {
             foreach (CDataStageInfo stageInfo in StageList)
             {
                 if (stageInfo.Id == stageId)
-                    return (StageNo)stageInfo.StageNo;
+                    return stageInfo.StageNo;
             }
 
             return 0;
         }
 
-        public static StageNo ConvertIdToStageNo(StageId stageId)
+        public static uint ConvertIdToStageNo(StageLayoutId stageId)
         {
             return StageManager.ConvertIdToStageNo(stageId.Id);
         }
@@ -81,7 +81,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return SafeStageIds.Contains(stageId);
         }
 
-        public static bool IsSafeArea(StageId stageId)
+        public static bool IsSafeArea(StageLayoutId stageId)
         {
             return StageManager.IsSafeArea(stageId.Id);
         }
@@ -104,7 +104,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return HubStageIds.Contains(stageId);
         }
 
-        public static bool IsHubArea(StageId stageId)
+        public static bool IsHubArea(StageLayoutId stageId)
         {
             return StageManager.IsHubArea(stageId.Id);
         }
@@ -160,7 +160,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return BitterBlackStageIds.Contains(stageId);
         }
 
-        public static bool IsBitterBlackMazeStageId(StageId stageId)
+        public static bool IsBitterBlackMazeStageId(StageLayoutId stageId)
         {
             return StageManager.IsBitterBlackMazeStageId(stageId.Id);
         }
@@ -177,7 +177,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return BitterBlackNormalBossStageIds.Contains(stageId);
         }
 
-        public static bool IsBitterBlackMazeBossStageId(StageId stageId)
+        public static bool IsBitterBlackMazeBossStageId(StageLayoutId stageId)
         {
             return StageManager.IsBitterBlackMazeBossStageId(stageId.Id);
         }
@@ -195,7 +195,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return BitterBlackAbyssBossStageIds.Contains(stageId);
         }
 
-        public static bool IsBitterBlackMazeAbyssBossStageId(StageId stageId)
+        public static bool IsBitterBlackMazeAbyssBossStageId(StageLayoutId stageId)
         {
             return StageManager.IsBitterBlackMazeAbyssBossStageId(stageId.Id);
         }
@@ -234,7 +234,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return EpitaphRoadStageIds.Contains(stageId);
         }
 
-        public static bool IsEpitaphRoadStageId(StageId stageId)
+        public static bool IsEpitaphRoadStageId(StageLayoutId stageId)
         {
             return StageManager.IsEpitaphRoadStageId(stageId.Id);
         }
@@ -258,7 +258,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return LegacyEpitaphRoadStageIds.Contains(stageId);
         }
 
-        public static bool IsLegacyEpitaphRoadStageId(StageId stageId)
+        public static bool IsLegacyEpitaphRoadStageId(StageLayoutId stageId)
         {
             return StageManager.IsLegacyEpitaphRoadStageId(stageId.Id);
         }
@@ -275,7 +275,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return EpitaphHubArea.Contains(stageId);
         }
 
-        public static bool IsEpitaphHubArea(StageId stageId)
+        public static bool IsEpitaphHubArea(StageLayoutId stageId)
         {
             return StageManager.IsEpitaphHubArea(stageId.Id);
         }
@@ -291,7 +291,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return LegacyEpitaphHubArea.Contains(stageId);
         }
 
-        public static bool IsLegacyEpitaphHubArea(StageId stageId)
+        public static bool IsLegacyEpitaphHubArea(StageLayoutId stageId)
         {
             return StageManager.IsLegacyEpitaphHubArea(stageId.Id);
         }

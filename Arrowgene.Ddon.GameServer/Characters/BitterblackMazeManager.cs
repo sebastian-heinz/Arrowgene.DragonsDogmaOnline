@@ -95,7 +95,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return contentStatus;
         }
 
-        public static PacketQueue HandleTierClear(DdonGameServer server, GameClient client, Character character, StageId stageId, DbConnection? connectionIn = null)
+        public static PacketQueue HandleTierClear(DdonGameServer server, GameClient client, Character character, StageLayoutId stageId, DbConnection? connectionIn = null)
         {
             PacketQueue packets = new();
             
@@ -195,102 +195,102 @@ namespace Arrowgene.Ddon.GameServer.Characters
             Earring, // Sealed chests from tier boss
         }
 
-        private static readonly Dictionary<(StageId, uint), ChestType> gSealedChestDrops = new Dictionary<(StageId, uint), ChestType>()
+        private static readonly Dictionary<(StageLayoutId, uint), ChestType> gSealedChestDrops = new Dictionary<(StageLayoutId, uint), ChestType>()
         {
             // Rotunda Sealed Chests
-            [(new StageId(610, 0, 30), 0)] = ChestType.Orange,
-            [(new StageId(610, 0, 30), 1)] = ChestType.Orange,
-            [(new StageId(610, 0, 30), 2)] = ChestType.Orange,
-            [(new StageId(610, 0, 30), 3)] = ChestType.Orange,
-            [(new StageId(611, 0, 30), 0)] = ChestType.Orange,
-            [(new StageId(611, 0, 30), 1)] = ChestType.Orange,
-            [(new StageId(611, 0, 30), 2)] = ChestType.Orange,
-            [(new StageId(612, 0, 30), 0)] = ChestType.Orange,
-            [(new StageId(612, 0, 30), 1)] = ChestType.Orange,
-            [(new StageId(612, 0, 30), 2)] = ChestType.Orange,
-            [(new StageId(614, 0, 30), 0)] = ChestType.Orange,
-            [(new StageId(614, 0, 30), 1)] = ChestType.Orange,
-            [(new StageId(615, 0, 29), 0)] = ChestType.Orange,
-            [(new StageId(615, 0, 29), 1)] = ChestType.Orange,
-            [(new StageId(615, 0, 29), 2)] = ChestType.Orange,
-            [(new StageId(616, 0, 30), 0)] = ChestType.Orange,
-            [(new StageId(616, 0, 30), 1)] = ChestType.Orange,
-            [(new StageId(616, 0, 30), 2)] = ChestType.Orange,
-            [(new StageId(617, 0, 30), 0)] = ChestType.Orange,
-            [(new StageId(617, 0, 30), 1)] = ChestType.Orange,
-            [(new StageId(617, 0, 30), 2)] = ChestType.Orange,
-            [(new StageId(617, 0, 30), 3)] = ChestType.Orange,
-            [(new StageId(617, 0, 30), 4)] = ChestType.Orange,
-            [(new StageId(617, 0, 30), 5)] = ChestType.Orange,
-            [(new StageId(618, 0, 30), 0)] = ChestType.Orange,
-            [(new StageId(618, 0, 30), 1)] = ChestType.Orange,
-            [(new StageId(618, 0, 30), 2)] = ChestType.Orange,
-            [(new StageId(618, 0, 30), 3)] = ChestType.Orange,
-            [(new StageId(618, 0, 30), 4)] = ChestType.Orange,
-            [(new StageId(619, 0, 30), 0)] = ChestType.Orange,
-            [(new StageId(619, 0, 30), 1)] = ChestType.Orange,
-            [(new StageId(619, 0, 30), 2)] = ChestType.Orange,
-            [(new StageId(619, 0, 30), 3)] = ChestType.Orange,
-            [(new StageId(620, 0, 30), 0)] = ChestType.Orange,
-            [(new StageId(620, 0, 30), 1)] = ChestType.Orange,
-            [(new StageId(620, 0, 30), 2)] = ChestType.Orange,
-            [(new StageId(620, 0, 30), 3)] = ChestType.Orange,
-            [(new StageId(620, 0, 30), 4)] = ChestType.Orange,
-            [(new StageId(620, 0, 30), 5)] = ChestType.Orange,
-            [(new StageId(621, 0, 30), 0)] = ChestType.Orange,
-            [(new StageId(621, 0, 30), 1)] = ChestType.Orange,
-            [(new StageId(621, 0, 30), 2)] = ChestType.Orange,
-            [(new StageId(621, 0, 30), 3)] = ChestType.Orange,
-            [(new StageId(621, 0, 30), 4)] = ChestType.Orange,
-            [(new StageId(622, 0, 30), 0)] = ChestType.Orange,
-            [(new StageId(622, 0, 30), 1)] = ChestType.Orange,
-            [(new StageId(622, 0, 30), 2)] = ChestType.Orange,
-            [(new StageId(622, 0, 30), 3)] = ChestType.Orange,
+            [(new StageLayoutId(610, 0, 30), 0)] = ChestType.Orange,
+            [(new StageLayoutId(610, 0, 30), 1)] = ChestType.Orange,
+            [(new StageLayoutId(610, 0, 30), 2)] = ChestType.Orange,
+            [(new StageLayoutId(610, 0, 30), 3)] = ChestType.Orange,
+            [(new StageLayoutId(611, 0, 30), 0)] = ChestType.Orange,
+            [(new StageLayoutId(611, 0, 30), 1)] = ChestType.Orange,
+            [(new StageLayoutId(611, 0, 30), 2)] = ChestType.Orange,
+            [(new StageLayoutId(612, 0, 30), 0)] = ChestType.Orange,
+            [(new StageLayoutId(612, 0, 30), 1)] = ChestType.Orange,
+            [(new StageLayoutId(612, 0, 30), 2)] = ChestType.Orange,
+            [(new StageLayoutId(614, 0, 30), 0)] = ChestType.Orange,
+            [(new StageLayoutId(614, 0, 30), 1)] = ChestType.Orange,
+            [(new StageLayoutId(615, 0, 29), 0)] = ChestType.Orange,
+            [(new StageLayoutId(615, 0, 29), 1)] = ChestType.Orange,
+            [(new StageLayoutId(615, 0, 29), 2)] = ChestType.Orange,
+            [(new StageLayoutId(616, 0, 30), 0)] = ChestType.Orange,
+            [(new StageLayoutId(616, 0, 30), 1)] = ChestType.Orange,
+            [(new StageLayoutId(616, 0, 30), 2)] = ChestType.Orange,
+            [(new StageLayoutId(617, 0, 30), 0)] = ChestType.Orange,
+            [(new StageLayoutId(617, 0, 30), 1)] = ChestType.Orange,
+            [(new StageLayoutId(617, 0, 30), 2)] = ChestType.Orange,
+            [(new StageLayoutId(617, 0, 30), 3)] = ChestType.Orange,
+            [(new StageLayoutId(617, 0, 30), 4)] = ChestType.Orange,
+            [(new StageLayoutId(617, 0, 30), 5)] = ChestType.Orange,
+            [(new StageLayoutId(618, 0, 30), 0)] = ChestType.Orange,
+            [(new StageLayoutId(618, 0, 30), 1)] = ChestType.Orange,
+            [(new StageLayoutId(618, 0, 30), 2)] = ChestType.Orange,
+            [(new StageLayoutId(618, 0, 30), 3)] = ChestType.Orange,
+            [(new StageLayoutId(618, 0, 30), 4)] = ChestType.Orange,
+            [(new StageLayoutId(619, 0, 30), 0)] = ChestType.Orange,
+            [(new StageLayoutId(619, 0, 30), 1)] = ChestType.Orange,
+            [(new StageLayoutId(619, 0, 30), 2)] = ChestType.Orange,
+            [(new StageLayoutId(619, 0, 30), 3)] = ChestType.Orange,
+            [(new StageLayoutId(620, 0, 30), 0)] = ChestType.Orange,
+            [(new StageLayoutId(620, 0, 30), 1)] = ChestType.Orange,
+            [(new StageLayoutId(620, 0, 30), 2)] = ChestType.Orange,
+            [(new StageLayoutId(620, 0, 30), 3)] = ChestType.Orange,
+            [(new StageLayoutId(620, 0, 30), 4)] = ChestType.Orange,
+            [(new StageLayoutId(620, 0, 30), 5)] = ChestType.Orange,
+            [(new StageLayoutId(621, 0, 30), 0)] = ChestType.Orange,
+            [(new StageLayoutId(621, 0, 30), 1)] = ChestType.Orange,
+            [(new StageLayoutId(621, 0, 30), 2)] = ChestType.Orange,
+            [(new StageLayoutId(621, 0, 30), 3)] = ChestType.Orange,
+            [(new StageLayoutId(621, 0, 30), 4)] = ChestType.Orange,
+            [(new StageLayoutId(622, 0, 30), 0)] = ChestType.Orange,
+            [(new StageLayoutId(622, 0, 30), 1)] = ChestType.Orange,
+            [(new StageLayoutId(622, 0, 30), 2)] = ChestType.Orange,
+            [(new StageLayoutId(622, 0, 30), 3)] = ChestType.Orange,
             // Rotunda Bosses
-            [(new StageId(603, 0, 30), 0)] = ChestType.Bracelet,
-            [(new StageId(603, 0, 30), 1)] = ChestType.Orange,
-            [(new StageId(603, 0, 30), 2)] = ChestType.Purple,
-            [(new StageId(604, 0, 30), 0)] = ChestType.Bracelet,
-            [(new StageId(604, 0, 30), 1)] = ChestType.Purple,
-            [(new StageId(605, 0, 30), 0)] = ChestType.Bracelet,
+            [(new StageLayoutId(603, 0, 30), 0)] = ChestType.Bracelet,
+            [(new StageLayoutId(603, 0, 30), 1)] = ChestType.Orange,
+            [(new StageLayoutId(603, 0, 30), 2)] = ChestType.Purple,
+            [(new StageLayoutId(604, 0, 30), 0)] = ChestType.Bracelet,
+            [(new StageLayoutId(604, 0, 30), 1)] = ChestType.Purple,
+            [(new StageLayoutId(605, 0, 30), 0)] = ChestType.Bracelet,
             // Abyss Sealed Chests
-            [(new StageId(686, 0, 199), 0)] = ChestType.Orange,
-            [(new StageId(687, 0, 201), 0)] = ChestType.Orange,
-            [(new StageId(687, 0, 201), 1)] = ChestType.Orange,
-            [(new StageId(688, 0, 205), 0)] = ChestType.Orange,
-            [(new StageId(689, 0, 199), 0)] = ChestType.Orange,
-            [(new StageId(690, 0, 201), 0)] = ChestType.Orange,
-            [(new StageId(691, 0, 211), 0)] = ChestType.Orange,
-            [(new StageId(692, 0, 201), 0)] = ChestType.Orange,
-            [(new StageId(692, 0, 201), 1)] = ChestType.Orange,
-            [(new StageId(693, 0, 200), 0)] = ChestType.Orange,
-            [(new StageId(693, 0, 200), 1)] = ChestType.Orange,
-            [(new StageId(694, 0, 210), 0)] = ChestType.Orange,
-            [(new StageId(694, 0, 210), 1)] = ChestType.Orange,
-            [(new StageId(695, 0, 203), 0)] = ChestType.Orange,
-            [(new StageId(695, 0, 203), 1)] = ChestType.Orange,
-            [(new StageId(696, 0, 201), 0)] = ChestType.Orange,
-            [(new StageId(696, 0, 201), 1)] = ChestType.Orange,
-            [(new StageId(697, 0, 203), 0)] = ChestType.Orange,
-            [(new StageId(697, 0, 203), 1)] = ChestType.Orange,
-            [(new StageId(715, 0, 203), 0)] = ChestType.Orange,
-            [(new StageId(715, 0, 203), 1)] = ChestType.Orange,
-            [(new StageId(716, 0, 201), 0)] = ChestType.Orange,
-            [(new StageId(716, 0, 201), 1)] = ChestType.Orange,
-            [(new StageId(717, 0, 203), 0)] = ChestType.Orange,
-            [(new StageId(717, 0, 203), 1)] = ChestType.Orange,
+            [(new StageLayoutId(686, 0, 199), 0)] = ChestType.Orange,
+            [(new StageLayoutId(687, 0, 201), 0)] = ChestType.Orange,
+            [(new StageLayoutId(687, 0, 201), 1)] = ChestType.Orange,
+            [(new StageLayoutId(688, 0, 205), 0)] = ChestType.Orange,
+            [(new StageLayoutId(689, 0, 199), 0)] = ChestType.Orange,
+            [(new StageLayoutId(690, 0, 201), 0)] = ChestType.Orange,
+            [(new StageLayoutId(691, 0, 211), 0)] = ChestType.Orange,
+            [(new StageLayoutId(692, 0, 201), 0)] = ChestType.Orange,
+            [(new StageLayoutId(692, 0, 201), 1)] = ChestType.Orange,
+            [(new StageLayoutId(693, 0, 200), 0)] = ChestType.Orange,
+            [(new StageLayoutId(693, 0, 200), 1)] = ChestType.Orange,
+            [(new StageLayoutId(694, 0, 210), 0)] = ChestType.Orange,
+            [(new StageLayoutId(694, 0, 210), 1)] = ChestType.Orange,
+            [(new StageLayoutId(695, 0, 203), 0)] = ChestType.Orange,
+            [(new StageLayoutId(695, 0, 203), 1)] = ChestType.Orange,
+            [(new StageLayoutId(696, 0, 201), 0)] = ChestType.Orange,
+            [(new StageLayoutId(696, 0, 201), 1)] = ChestType.Orange,
+            [(new StageLayoutId(697, 0, 203), 0)] = ChestType.Orange,
+            [(new StageLayoutId(697, 0, 203), 1)] = ChestType.Orange,
+            [(new StageLayoutId(715, 0, 203), 0)] = ChestType.Orange,
+            [(new StageLayoutId(715, 0, 203), 1)] = ChestType.Orange,
+            [(new StageLayoutId(716, 0, 201), 0)] = ChestType.Orange,
+            [(new StageLayoutId(716, 0, 201), 1)] = ChestType.Orange,
+            [(new StageLayoutId(717, 0, 203), 0)] = ChestType.Orange,
+            [(new StageLayoutId(717, 0, 203), 1)] = ChestType.Orange,
             // Abyss Bosses
-            [(new StageId(682, 0, 199), 0)] = ChestType.Orange,
-            [(new StageId(682, 0, 201), 0)] = ChestType.Earring,
-            [(new StageId(682, 0, 201), 1)] = ChestType.Purple,
-            [(new StageId(683, 0, 201), 0)] = ChestType.Earring,
-            [(new StageId(683, 0, 201), 1)] = ChestType.Purple,
-            [(new StageId(684, 0, 201), 0)] = ChestType.Earring,
-            [(new StageId(684, 0, 201), 1)] = ChestType.Purple,
-            [(new StageId(685, 0, 200), 0)] = ChestType.Earring,
+            [(new StageLayoutId(682, 0, 199), 0)] = ChestType.Orange,
+            [(new StageLayoutId(682, 0, 201), 0)] = ChestType.Earring,
+            [(new StageLayoutId(682, 0, 201), 1)] = ChestType.Purple,
+            [(new StageLayoutId(683, 0, 201), 0)] = ChestType.Earring,
+            [(new StageLayoutId(683, 0, 201), 1)] = ChestType.Purple,
+            [(new StageLayoutId(684, 0, 201), 0)] = ChestType.Earring,
+            [(new StageLayoutId(684, 0, 201), 1)] = ChestType.Purple,
+            [(new StageLayoutId(685, 0, 200), 0)] = ChestType.Earring,
         };
 
-        public static List<InstancedGatheringItem> RollChestLoot(DdonGameServer server, Character character, StageId stageId, uint pos)
+        public static List<InstancedGatheringItem> RollChestLoot(DdonGameServer server, Character character, StageLayoutId stageId, uint pos)
         {
             JobId jobId = character.ActiveCharacterJobData.Job;
             var results = new List<InstancedGatheringItem>();
@@ -457,7 +457,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return weapons;
         }
 
-        private static (uint Min, uint Max) DetermineItemTier(DdonGameServer server, ChestType chestType, StageId stageId)
+        private static (uint Min, uint Max) DetermineItemTier(DdonGameServer server, ChestType chestType, StageLayoutId stageId)
         {
             var lootRange = server.AssetRepository.BitterblackMazeAsset.LootRanges[stageId.Id];
             switch (chestType)
@@ -472,22 +472,22 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        private static double DetermineRareChance(BitterblackMazeAsset assets, StageId stageId)
+        private static double DetermineRareChance(BitterblackMazeAsset assets, StageLayoutId stageId)
         {
             return assets.LootRanges[stageId.Id].RareChance;
         }
 
-        private static double DetermineJewelryChance(BitterblackMazeAsset assets, StageId stageId)
+        private static double DetermineJewelryChance(BitterblackMazeAsset assets, StageLayoutId stageId)
         {
             return assets.LootRanges[stageId.Id].JewelryChance;
         }
 
-        private static (uint Gold, uint Silver, uint Red) GetMarksForStage(BitterblackMazeAsset assets, StageId stageId)
+        private static (uint Gold, uint Silver, uint Red) GetMarksForStage(BitterblackMazeAsset assets, StageLayoutId stageId)
         {
             return assets.LootRanges[stageId.Id].Marks;
         }
 
-        private static uint SelectGear(DdonGameServer server, List<uint> items, ChestType chestType, StageId stageId)
+        private static uint SelectGear(DdonGameServer server, List<uint> items, ChestType chestType, StageLayoutId stageId)
         {
             if (items.Count == 0)
             {
@@ -517,7 +517,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return itemId;
         }
 
-        private static uint RollRareArmor(BitterblackMazeAsset assets, StageId stageId)
+        private static uint RollRareArmor(BitterblackMazeAsset assets, StageLayoutId stageId)
         {
             uint itemId = 0;
             var dropTable = StageManager.IsBitterBlackMazeBossStageId(stageId) ? assets.RotundaRare : assets.AbyssRare;

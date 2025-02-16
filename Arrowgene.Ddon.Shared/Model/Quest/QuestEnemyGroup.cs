@@ -6,16 +6,18 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
     {
         public uint GroupId { get; set; }
         public byte SubGroupId { get; set; }
-        public StageId StageId { get; set; }
+        public StageLayoutId StageLayoutId { get; set; }
         public uint StartingIndex { get; set; }
         public List<InstancedEnemy> Enemies { get; set; }
         public QuestEnemyPlacementType PlacementType { get; set; }
+        public QuestTargetType TargetType { get; set; }
 
         public QuestEnemyGroup()
         {
             Enemies = new List<InstancedEnemy>();
-            StageId = StageId.Invalid;
+            StageLayoutId = StageLayoutId.Invalid;
             PlacementType = QuestEnemyPlacementType.Automatic;
+            TargetType = QuestTargetType.EnemyForOrder;
         }
 
         public List<InstancedEnemy> CreateNewInstance()
@@ -29,7 +31,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
                 {
                     Index = (PlacementType == QuestEnemyPlacementType.Automatic) ? (byte)(i + StartingIndex) : enemy.Index,
                     IsQuestControlled = true,
-                    StageId = StageId
+                    StageId = StageLayoutId
                 });
             }
             return results;
