@@ -23,7 +23,7 @@
  *   /group destroy 71.0.1
  */
 
-#load "ExtremeMissionUtils.csx"
+// #import "ExtremeMissionUtils.csx"
 
 public class ScriptedQuest : IQuest
 {
@@ -46,7 +46,7 @@ public class ScriptedQuest : IQuest
 
     protected override void InitializeState()
     {
-        MissionParams.Group = ExtremeMissionUtils.Group.Alan;
+        MissionParams.Group = 9; //  ExtremeMissionUtils.Group.Alan;
         MissionParams.MinimumMembers = 1;
         MissionParams.MaximumMembers = 8;
         MissionParams.IsSolo = false;

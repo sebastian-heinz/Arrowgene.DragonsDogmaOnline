@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Model.Quest
@@ -46,9 +47,9 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return block;
         }
 
-        public static QuestBlock AddQuestNpcTalkAndOrderBlock(this QuestProcess process, QuestId questId, StageInfo stageInfo, NpcId npcId, uint msgId)
+        public static QuestBlock AddQuestNpcTalkAndOrderBlock(this QuestProcess process, QuestId questId, StageInfo stageInfo, uint groupId, byte setId, NpcId npcId, uint msgId)
         {
-            return AddQuestNpcTalkAndOrderBlock(process, questId, stageInfo.AsStageLayoutId(0, 0), npcId, msgId);
+            return AddQuestNpcTalkAndOrderBlock(process, questId, stageInfo.AsStageLayoutId(setId, groupId), npcId, msgId);
         }
 
         public static QuestBlock AddIsStageNoBlock(this QuestProcess process, QuestAnnounceType announceType, StageLayoutId stageId)
@@ -230,6 +231,14 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return AddNewDeliverItemsBlock(process, announceType, stageInfo.AsStageLayoutId(setId, groupId), npcId, itemId, amount, msgId);
         }
 
+        public static QuestBlock AddCheckSayBlock(this QuestProcess process, QuestAnnounceType announceType)
+        {
+            var block = CreateGenericBlock(0, 0, QuestBlockType.Raw, announceType)
+                .AddCheckCommand(QuestManager.CheckCommand.SayMessage());
+            process.AddBlock(block);
+            return block;
+        }
+
         public static QuestBlock AddIsQuestClearBlock(this QuestProcess process, QuestAnnounceType announceType, QuestType questType, QuestId questId)
         {
             var block = CreateGenericBlock(0, 0, QuestBlockType.IsQuestClear, announceType)
@@ -356,6 +365,25 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public static QuestBlock AddEndContentsPurpose(this QuestBlock questBlock, int announceNo, QuestEndContentsAnnounceType announceType)
         {
             questBlock.ResultCommands.Add(QuestManager.ResultCommand.AddEndContentsPurpose(announceNo, (int) announceType));
+            return questBlock;
+        }
+
+        public static QuestBlock AddWorkCommand(this QuestBlock questBlock, QuestNotifyCommand notifyCommand, int work01 = 0, int work02 = 0, int work03 = 0, int work04 = 0)
+        {
+            questBlock.WorkCommands.Add(new CDataQuestProgressWork()
+            {
+                CommandNo = (uint)notifyCommand,
+                Work01 = work01,
+                Work02 = work02,
+                Work03 = work03,
+                Work04 = work04,
+            });
+            return questBlock;
+        }
+
+        public static QuestBlock SetNpcMsg(this QuestBlock questBlock, NpcId npcId, int msgNo)
+        {
+            questBlock.ResultCommands.Add(QuestManager.ResultCommand.QstTalkChg(npcId, msgNo));
             return questBlock;
         }
         #endregion

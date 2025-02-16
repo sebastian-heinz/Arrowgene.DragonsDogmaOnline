@@ -73,6 +73,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         // Used for raw blocks
         public List<List<CDataQuestCommand>> CheckCommands { get; set; }
         public List<CDataQuestCommand> ResultCommands { get; set; }
+        public List<CDataQuestProgressWork> WorkCommands { get; set; }
 
         public QuestBlock(ushort blockNo = 0, ushort seqNo = 0)
         {
@@ -94,6 +95,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 
             CheckCommands = new List<List<CDataQuestCommand>>();
             ResultCommands = new List<CDataQuestCommand>();
+            WorkCommands = new List<CDataQuestProgressWork>();
             QuestOrderDetails = new QuestOrder();
             EnemyGroupIds = new List<uint>();
 
