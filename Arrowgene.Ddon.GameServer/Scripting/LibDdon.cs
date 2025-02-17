@@ -59,7 +59,6 @@ namespace Arrowgene.Ddon.GameServer.Scripting
                     dropTables.Add(enemyId, LibDdon.GetDropsTable((uint)enemyId, lv));
                 }
             }
-
             return new InstancedRandomEnemy(enemyIds, dropTables, lv, exp, index);
         }
 

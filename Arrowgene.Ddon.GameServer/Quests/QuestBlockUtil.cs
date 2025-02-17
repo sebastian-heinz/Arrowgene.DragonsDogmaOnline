@@ -1,5 +1,8 @@
+using Arrowgene.Ddon.GameServer;
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using System;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Model.Quest
@@ -418,6 +421,12 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public static QuestBlock SetNpcMsg(this QuestBlock questBlock, NpcId npcId, int msgNo)
         {
             questBlock.ResultCommands.Add(QuestManager.ResultCommand.QstTalkChg(npcId, msgNo));
+            return questBlock;
+        }
+
+        public static QuestBlock AddCallback(this QuestBlock questBlock, Action<GameClient> callback)
+        {
+            questBlock.Callbacks.Add(new Action<Object>(o => callback((GameClient)o)));
             return questBlock;
         }
         #endregion

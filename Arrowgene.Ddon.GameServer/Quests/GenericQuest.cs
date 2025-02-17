@@ -281,6 +281,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 questBlock = process.Blocks[questBlock.CheckpointDetails.BlockNo];
             }
 
+            foreach (var callback in questBlock.Callbacks)
+            {
+                callback(client);
+            }
+
             return new List<CDataQuestProcessState>()
             {
                 questBlock.QuestProcessState
@@ -289,11 +294,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         private static CDataQuestProcessState BlockAsCDataQuestProcessState(GenericQuest quest, QuestBlock questBlock)
         {
-            // QuestManager.CheckCommand.Craft()
-            // QuestManager.CheckCommand.MakeCraft()
-            // QuestManager.CheckCommand.OpenCraftExam()
-            // QuestManager.CheckCommand.LevelUpCraft()
-
             CDataQuestProcessState result = new CDataQuestProcessState()
             {
                 ProcessNo = questBlock.ProcessNo,

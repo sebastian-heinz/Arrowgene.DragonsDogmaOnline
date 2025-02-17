@@ -343,7 +343,7 @@ public class ScriptedQuest : IQuest
             .AddMyQstSetFlag(MyQuestFlag.SpawnStartingGroups)
             .AddMyQstCheckFlag(MyQuestFlag.DetectAnyDragonKinDeath);
         process0.AddMyQstFlagsBlock(QuestAnnounceType.ExUpdate)
-            .AddMyQstCheckFlags(new List<uint>() { MyQuestFlag.RubyEyeDead, MyQuestFlag.EmeraldEyeDead, MyQuestFlag.LapisEyeDead })
+            .AddMyQstCheckFlags(new() { MyQuestFlag.RubyEyeDead, MyQuestFlag.EmeraldEyeDead, MyQuestFlag.LapisEyeDead })
             .AddEndContentsPurpose(Purpose.FindAndDefeatEyes);
         process0.AddDiscoverGroupBlock(QuestAnnounceType.None, EnemyGroupId.HermitsHollow + 3)
             .AddGeneralAnnounce(QuestGeneralAnnounceType.CommonMsg, GeneralAnnouncements.AllGemsCollected);
