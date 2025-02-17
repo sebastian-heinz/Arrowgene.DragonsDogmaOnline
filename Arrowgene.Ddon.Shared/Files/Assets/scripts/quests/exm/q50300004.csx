@@ -23,7 +23,7 @@
  *   /group destroy 71.0.1
  */
 
-#import "ExtremeMissionUtils.csx"
+#load "ExtremeMissionUtils.csx"
 
 using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 
