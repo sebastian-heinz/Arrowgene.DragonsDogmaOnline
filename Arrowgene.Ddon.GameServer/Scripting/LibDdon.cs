@@ -39,21 +39,28 @@ namespace Arrowgene.Ddon.GameServer.Scripting
             return Instance.Server.AssetRepository.QuestDropItemAsset.GetDropTable(enemyId, lv);
         }
 
-        public static InstancedEnemy CreateEnemy(uint enemyId, ushort lv, uint exp, byte index, bool assignDefaultDrops = true)
+        public static InstancedEnemy CreateEnemy(EnemyId enemyId, ushort lv, uint exp, byte index, bool assignDefaultDrops = true)
         {
-            var enemy = new InstancedEnemy(enemyId, lv, exp, index);
-
+            var enemy = new InstancedEnemy((uint) enemyId, lv, exp, index);
             if (assignDefaultDrops)
             {
-                enemy.DropsTable = LibDdon.GetDropsTable(enemyId, lv);
+                enemy.DropsTable = LibDdon.GetDropsTable((uint)enemyId, lv);
             }
-
             return enemy;
         }
 
-        public static InstancedEnemy CreateEnemy(EnemyId enemyId, ushort lv, uint exp, byte index, bool assignDefaultDrops = true)
+        public static InstancedEnemy CreateRandomEnemy(ushort lv, uint exp, byte index, List<EnemyId> enemyIds, bool assignDefaultDrops = true)
         {
-            return CreateEnemy((uint)enemyId, lv, exp, index, assignDefaultDrops);
+            var dropTables = new Dictionary<EnemyId, DropsTable>();
+            if (assignDefaultDrops)
+            {
+                foreach (var enemyId in enemyIds)
+                {
+                    dropTables.Add(enemyId, LibDdon.GetDropsTable((uint)enemyId, lv));
+                }
+            }
+
+            return new InstancedRandomEnemy(enemyIds, dropTables, lv, exp, index);
         }
 
         public static T GetSetting<T>(string scriptName, string key)

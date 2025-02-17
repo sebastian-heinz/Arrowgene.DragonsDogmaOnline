@@ -23,7 +23,9 @@
  *   /group destroy 71.0.1
  */
 
-// #import "ExtremeMissionUtils.csx"
+#import "ExtremeMissionUtils.csx"
+
+using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 
 public class ScriptedQuest : IQuest
 {
@@ -46,7 +48,7 @@ public class ScriptedQuest : IQuest
 
     protected override void InitializeState()
     {
-        MissionParams.Group = 9; //  ExtremeMissionUtils.Group.Alan;
+        MissionParams.Group = ExtremeMissionUtils.Group.Alan;
         MissionParams.MinimumMembers = 1;
         MissionParams.MaximumMembers = 8;
         MissionParams.IsSolo = false;
@@ -414,7 +416,7 @@ public class ScriptedQuest : IQuest
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(1000),
-        });
+        }, QuestTargetType.ExmSub);
 
         // 14: Assault (2F East-West Passage)
         AddEnemies(14, new StageLayoutId(71, 0, 29), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
@@ -440,7 +442,7 @@ public class ScriptedQuest : IQuest
             LibDdon.CreateEnemy(EnemyId.OrcAimer, EnemyLevel, 0, 6)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-        });
+        }, QuestTargetType.ExmSub);
 
         // 15: Assault (1F Northeast Passage)
         AddEnemies(15, new StageLayoutId(71, 0, 8), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
@@ -466,7 +468,7 @@ public class ScriptedQuest : IQuest
             // LibDdon.CreateEnemy(EnemyId.SkeletonSorcerer0, EnemyLevel, 0, 6)
             //    .SetNamedEnemyParams(NamedParamId.Elite)
             //    .SetRaidPoints(50),
-        });
+        }, QuestTargetType.ExmSub);
 
         // 16: Assault (1F Northeast)
         AddEnemies(16, new StageLayoutId(71, 0, 13), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
@@ -477,7 +479,7 @@ public class ScriptedQuest : IQuest
             LibDdon.CreateEnemy(EnemyId.SkullLord, EnemyLevel, 0, 1)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(200),
-        });
+        }, QuestTargetType.ExmSub);
 
         // 17: Assault (1F East)
         AddEnemies(17, new StageLayoutId(71, 0, 2), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
@@ -491,7 +493,7 @@ public class ScriptedQuest : IQuest
             LibDdon.CreateEnemy(EnemyId.GeneralOrc, EnemyLevel, 0, 5)
                 .SetNamedEnemyParams(NamedParamId.CommandingOfficer)
                 .SetRaidPoints(100),
-        });
+        }, QuestTargetType.ExmSub);
 
         // 18: Assault (1F, just before the east stairs)
         AddEnemies(18, new StageLayoutId(71, 0, 23), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
@@ -508,7 +510,7 @@ public class ScriptedQuest : IQuest
             LibDdon.CreateEnemy(EnemyId.StoutUndead, EnemyLevel, 0, 3)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-        });
+        }, QuestTargetType.ExmSub);
 
         // 19: Assault (1F center)
         AddEnemies(19, new StageLayoutId(71, 0, 6), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
@@ -522,7 +524,7 @@ public class ScriptedQuest : IQuest
             LibDdon.CreateEnemy(EnemyId.SkullLord, EnemyLevel, 0, 2)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(200),
-        });
+        }, QuestTargetType.ExmSub);
 
         // 20: Assault (1F South)
         AddEnemies(20, new StageLayoutId(71, 0, 0), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
@@ -542,7 +544,7 @@ public class ScriptedQuest : IQuest
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(1000),
-        });
+        }, QuestTargetType.ExmSub);
 
         // 21: Assault (1F Southwest Passage)
         AddEnemies(21, new StageLayoutId(71, 0, 10), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
@@ -559,7 +561,7 @@ public class ScriptedQuest : IQuest
             LibDdon.CreateEnemy(EnemyId.BruteApe, EnemyLevel, 0, 3)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-        });
+        }, QuestTargetType.ExmSub);
 
         // 22: Assault (1F West)
         AddEnemies(22, new StageLayoutId(71, 0, 30), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
@@ -580,7 +582,7 @@ public class ScriptedQuest : IQuest
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(1000),
-        });
+        }, QuestTargetType.ExmSub);
 
         // 23: Assault (1F Northwest Passage)
         AddEnemies(23, new StageLayoutId(71, 0, 24), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
@@ -597,7 +599,7 @@ public class ScriptedQuest : IQuest
             LibDdon.CreateEnemy(EnemyId.SkeletonMage0, EnemyLevel, 0, 3)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-        });
+        }, QuestTargetType.ExmSub);
 
         // 24: Target (1F North)
         AddEnemies(24, new StageLayoutId(71, 0, 1), 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
@@ -667,7 +669,8 @@ public class ScriptedQuest : IQuest
             var process = AddNewProcess(i++);
             process.AddMyQstFlagsBlock(QuestAnnounceType.None)
                 .AddMyQstCheckFlag(25);
-            process.AddDestroyGroupBlock(QuestAnnounceType.None, groupId);
+            process.AddDiscoverGroupBlock(QuestAnnounceType.None, groupId);
+            process.AddDestroyGroupBlock(QuestAnnounceType.None, groupId, false);
             process.AddMyQstFlagsBlock(QuestAnnounceType.None)
                 .AddMyQstSetFlag(groupId);
             process.AddExtendTimeBlock(QuestAnnounceType.None, 180);
