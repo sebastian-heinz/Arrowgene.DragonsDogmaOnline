@@ -73,6 +73,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         break;
                     case QuestType.Light:
                         var lightQuest = quest.ToCDataLightQuestOrderList(questProgress.Step);
+                        if (lightQuest.Detail.BoardType == 1 && lightQuest.Detail.GetAp == 0)
+                        {
+                            lightQuest.Detail.GetAp = Server.AreaRankManager.GetAreaPointReward(quest);
+                        }
                         ntc.LightQuestOrderList.Add(lightQuest);
                         break;
                 }
