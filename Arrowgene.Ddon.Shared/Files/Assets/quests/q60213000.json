@@ -44,7 +44,7 @@
                 {
                     "comment": "Corrupted and Berserk Eagle (Infected Griffon)",
                     "enemy_id": "0x015306",
-                    "level": 68,
+                    "level": 63,
                     "exp": 22218,
                     "is_boss": true,
                     "named_enemy_params_id": 902

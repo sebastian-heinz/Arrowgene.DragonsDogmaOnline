@@ -44,7 +44,7 @@
                 {
                     "comment": "Infected Gorecyclops (Severe)",
                     "enemy_id": "0x015012",
-                    "level": 68,
+                    "level": 65,
                     "exp": 22218,
                     "is_boss": true,
                     "infection_type": 2

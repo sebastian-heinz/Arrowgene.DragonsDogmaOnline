@@ -44,15 +44,15 @@
                 {
                     "comment": "Hollow Knight (Ghost Mail)",
                     "enemy_id": "0x010311",
-                    "level": 68,
-                    "exp": 22218,
+                    "level": 65,
+                    "exp": 720,
                     "named_enemy_params_id": 900
                 },
                 {
                     "comment": "Hollow Knight (Ghost Mail)",
                     "enemy_id": "0x010311",
-                    "level": 68,
-                    "exp": 22218,
+                    "level": 65,
+                    "exp": 720,
                     "named_enemy_params_id": 900
                 }
             ]

@@ -44,7 +44,7 @@
                 {
                     "comment": "Beast Devourer Gigant Machina",
                     "enemy_id": "0x015850",
-                    "level": 68,
+                    "level": 70,
                     "exp": 38375,
                     "is_boss": true,
                     "named_enemy_params_id": 914
