@@ -17,6 +17,7 @@ using YamlDotNet.Core.Tokens;
 using YamlDotNet.Core;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -128,6 +129,31 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {ItemId.BookOfAcquisitionReduceGoldify, 272},
         };
 
+        // Each item is worth 10 AP.
+        private static readonly Dictionary<ItemId, QuestAreaId> AreaPointItems = new()
+        {
+            {ItemId.ApHidellPlains, QuestAreaId.HidellPlains},
+            {ItemId.ApBreyaCoast, QuestAreaId.BreyaCoast},
+            {ItemId.ApMysreeForest, QuestAreaId.MysreeForest},
+            {ItemId.ApVoldenMines, QuestAreaId.VoldenMines},
+            {ItemId.ApDoweValley, QuestAreaId.DoweValley},
+            {ItemId.ApMysreeGrove, QuestAreaId.MysreeGrove},
+            {ItemId.ApDeenanWoods, QuestAreaId.DeenanWoods},
+            {ItemId.ApBetlandPlains, QuestAreaId.BetlandPlains},
+            {ItemId.ApNorthernBetlandPlains, QuestAreaId.NorthernBetlandPlains},
+            {ItemId.ApZandoraWastelands, QuestAreaId.ZandoraWastelands},
+            {ItemId.ApEasternZandora, QuestAreaId.EasternZandora},
+            {ItemId.ApMergodaRuins, QuestAreaId.MergodaRuins},
+            {ItemId.ApBloodbaneIsle, QuestAreaId.BloodbaneIsle},
+            {ItemId.ApElanWaterGrove, QuestAreaId.ElanWaterGrove},
+            {ItemId.ApFaranaPlains, QuestAreaId.FaranaPlains},
+            {ItemId.ApMorrowForest, QuestAreaId.MorrowForest},
+            {ItemId.ApKingalCanyon, QuestAreaId.KingalCanyon},
+            {ItemId.ApRathniteFoothills, QuestAreaId.RathniteFoothills},
+            {ItemId.ApFeryanaWilderness, QuestAreaId.FeryanaWilderness},
+            {ItemId.ApMegadosysPlateau, QuestAreaId.MegadosysPlateau},
+        };
+
         public bool IsSecretAbilityItem(ItemId itemId)
         {
             return AbilityItems.ContainsKey(itemId);
@@ -202,15 +228,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
         // old = 'プレイポイント'
         // new = 'Play Point'
 
-        public void GatherItem(Character character, S2CItemUpdateCharacterItemNtc ntc, InstancedGatheringItem gatheringItem, uint pickedGatherItems, DbConnection? connectionIn = null)
+        public PacketQueue GatherItem(GameClient client, S2CItemUpdateCharacterItemNtc ntc, InstancedGatheringItem gatheringItem, uint pickedGatherItems, DbConnection? connectionIn = null)
         {
+            PacketQueue queue = new PacketQueue();
             if (ItemIdWalletTypeAndQuantity.ContainsKey((ItemId) gatheringItem.ItemId)) 
             {
                 var walletTypeAndQuantity = ItemIdWalletTypeAndQuantity[(ItemId) gatheringItem.ItemId];
                 uint totalQuantityToAdd = walletTypeAndQuantity.Quantity * gatheringItem.ItemNum;
 
                 ntc.UpdateWalletList.Add(
-                    _Server.WalletManager.AddToWallet(character, walletTypeAndQuantity.Type, totalQuantityToAdd, 0, connectionIn
+                    _Server.WalletManager.AddToWallet(client.Character, walletTypeAndQuantity.Type, totalQuantityToAdd, 0, connectionIn
                 ));
 
                 if (pickedGatherItems > gatheringItem.ItemNum)
@@ -220,11 +247,24 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         critical:true);
                 }
 
+                gatheringItem.ItemNum -= pickedGatherItems;     
+            }
+            else if (AreaPointItems.TryGetValue(gatheringItem.ItemId, out var pointArea))
+            {
+                if (pickedGatherItems > gatheringItem.ItemNum)
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_ITEM_NUM,
+                        $"Overflow error, trying to remove {pickedGatherItems} from stack of ID {gatheringItem.ItemId} x{gatheringItem.ItemNum}",
+                        critical: true);
+                }
+
                 gatheringItem.ItemNum -= pickedGatherItems;
-            } 
+
+                return _Server.AreaRankManager.AddAreaPoint(client, pointArea, 10 * pickedGatherItems, connectionIn);
+            }
             else 
             {
-                List<CDataItemUpdateResult> results = AddItem(_Server, character, true, (uint) gatheringItem.ItemId, pickedGatherItems, connectionIn:connectionIn);
+                List<CDataItemUpdateResult> results = AddItem(_Server, client.Character, true, (uint) gatheringItem.ItemId, pickedGatherItems, connectionIn:connectionIn);
                 ntc.UpdateItemList.AddRange(results);
 
                 uint totalRemoved = (uint)results.Select(result => result.UpdateItemNum).Sum();
@@ -238,6 +278,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 gatheringItem.ItemNum -= totalRemoved;
             }
+            return queue;
         }
 
         public List<CDataItemUpdateResult> ConsumeItemByUIdFromMultipleStorages(DdonServer<GameClient> server, Character character, List<StorageType> fromStorageTypes, string itemUId, uint consumeNum, DbConnection? connectionIn = null)

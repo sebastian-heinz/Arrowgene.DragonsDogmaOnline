@@ -1,14 +1,17 @@
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class AreaAreaRankUpHandler : GameRequestPacketHandler<C2SAreaAreaRankUpReq, S2CAreaAreaRankUpRes>
+    public class AreaAreaRankUpHandler : GameRequestPacketQueueHandler<C2SAreaAreaRankUpReq, S2CAreaAreaRankUpRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(AreaAreaRankUpHandler));
 
@@ -17,15 +20,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override S2CAreaAreaRankUpRes Handle(GameClient client, C2SAreaAreaRankUpReq request)
+        public override PacketQueue Handle(GameClient client, C2SAreaAreaRankUpReq request)
         {
+
+            PacketQueue packetQueue = new PacketQueue();
             S2CAreaAreaRankUpRes res = new();
             AreaRank clientRank = client.Character.AreaRanks.GetValueOrDefault(request.AreaId)
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
+
+            uint requiredPoint = Server.AreaRankManager.GetMaxPoints(request.AreaId, clientRank.Rank);
+            if (clientRank.Point < requiredPoint)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_POINT_LACK);
+            }
+
             lock (clientRank)
             {
                 clientRank.Rank += 1;
-                clientRank.Point = 0;
+                clientRank.Point -= requiredPoint;
             }
 
             res.AreaId = request.AreaId;
@@ -66,7 +78,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             });
 
-            return res;
+            client.Enqueue(res, packetQueue);
+
+            // Allow for further levelups.
+            if (Server.AreaRankManager.CanRankUp(client, request.AreaId))
+            {
+                client.Enqueue(new S2CAreaRankUpReadyNtc()
+                {
+                    AreaRankList = new() { new() { AreaId = request.AreaId, Rank = clientRank.Rank + 1 } }
+                }, packetQueue);
+            }
+
+            return packetQueue;
         }
     }
 }
