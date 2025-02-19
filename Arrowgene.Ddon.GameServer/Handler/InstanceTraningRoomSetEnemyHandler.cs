@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             client.Enqueue(new S2CInstanceTraningRoomSetEnemyRes(), queue);
 
-            client.Party.InstanceEnemyManager.ResetEnemyNode(TrainingRoomLayout.AsStageId());
+            client.Party.InstanceEnemyManager.ResetEnemyNode(TrainingRoomLayout.AsStageLayoutId());
 
             client.Party.EnqueueToAll(new S2CInstanceEnemyGroupResetNtc()
             {

@@ -38,8 +38,9 @@
         {
             "stage_id": {
                 "id": 335,
-                "group_id": 11
+                "group_id": 1
             },
+            "starting_index": 11,
             "enemies": [
                 {
                     "comment": "Infected Gorecyclops (Severe)",
