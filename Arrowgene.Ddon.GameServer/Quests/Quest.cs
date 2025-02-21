@@ -118,10 +118,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
             var result = new List<CDataQuestExp>();
             foreach (var pointReward in ExpRewards)
             {
+                var amount = Server.ExpManager.GetAdjustedPointsForQuest(pointReward.Type, pointReward.Reward, this.QuestType);
                 result.Add(new CDataQuestExp()
                 {
                     Type = pointReward.Type,
-                    Reward = Server.ExpManager.GetScaledPointAmount(GameMode.Normal, RewardSource.Quest, pointReward.Type, pointReward.Reward)
+                    Reward = amount.BasePoints
                 });
             }
             return result;

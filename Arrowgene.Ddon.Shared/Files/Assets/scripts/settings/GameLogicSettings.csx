@@ -22,54 +22,6 @@ double AdditionalProductionSpeedFactor = 1.0;
 double AdditionalCostPerformanceFactor = 1.0;
 byte CraftConsumableProductionTimesMax = 10;
 
-// EXP Penalty Settings
-
-/**
- * @brief Handles EXP penalties for the party based on the
- * difference between the lowest leveled member and highest
- * leveled member of the party. If the range is larger than
- * the last entry in AdjustPartyEnemyExpTiers, a 0% exp rate
- * is automatically applied.
- *
- * Can be turned on/off by configuring AdjustPartyEnemyExp.
- */
-bool EnableAdjustPartyEnemyExp = true;
-var AdjustPartyEnemyExpTiers = new List<(uint MinLv, uint MaxLv, double ExpMultiplier)>()
-{
-    // MinLv and MaxLv define the relative level difference between the levels of the lowest and
-    // highest members in the party.
-    // The ExpMultiplier value can be a value between [0.0, 1.0] (1.0 = 100%, 0.0 = 0%)
-    //
-    // MinLv, MaxLv, ExpMultiplier
-    (      0,     2,           1.0),
-    (      3,     4,           0.9),
-    (      5,     6,           0.8),
-    (      7,     8,           0.6),
-    (      9,    10,           0.5),
-};
-
-/**
- * @brief Handles EXP penalties based on the highest leveled member
- * in the party and the level of the target enemy. If the range is
- * larger than the last entry in AdjustTargetLvEnemyExpTiers, a 0%
- * exp rate is automatically applied.
- *
- * Can be turned on/off by configuring AdjustTargetLvEnemyExp.
- */
-bool EnableAdjustTargetLvEnemyExp = false;
-var AdjustTargetLvEnemyExpTiers = new List<(uint MinLv, uint MaxLv, double ExpMultiplier)>()
-{
-    // MinLv and MaxLv define the relative level difference between the target and highest member in the party.
-    // The ExpMultiplier value can be a value between [0.0, 1.0] (1.0 = 100%, 0.0 = 0%)
-    //
-    // MinLv, MaxLv, ExpMultiplier
-    (      0,     2,           1.0),
-    (      3,     4,           0.9),
-    (      5,     6,           0.8),
-    (      7,     8,           0.6),
-    (      9,    10,           0.5),
-};
-
 // Weather Settings
 uint WeatherSequenceLength = 20;
 var WeatherStatistics = new List<(uint MeanLength, uint Weight)>()
@@ -81,10 +33,6 @@ var WeatherStatistics = new List<(uint MeanLength, uint Weight)>()
 
 // Pawn Settings
 bool EnableMainPartyPawnsQuestRewards = false;
-bool DisableExpCorrectionForMyPawn = true;
-bool EnablePawnCatchup = true;
-double PawnCatchupMultiplier = 1.5;
-uint PawnCatchupLvDiff = 5;
 
 // Bazaar Settings
 uint DefaultMaxBazaarExhibits = 5;

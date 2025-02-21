@@ -22,6 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         public MixinModule MixinModule { get; private set; } = new MixinModule();
         public QuestModule QuestModule { get; private set; } = new QuestModule();
         public ChatCommandModule ChatCommandModule { get; private set; } = new ChatCommandModule();
+        public PointModifierModule PointModifierModule { get; private set; } = new PointModifierModule();
 
         public GameServerScriptManager(DdonGameServer server) : base(server.AssetRepository.AssetsPath, "libs")
         {
@@ -37,6 +38,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
             ScriptModules[MixinModule.ModuleRoot] = MixinModule;
             ScriptModules[NpcExtendedFacilityModule.ModuleRoot] = NpcExtendedFacilityModule;
             ScriptModules[QuestModule.ModuleRoot] = QuestModule;
+            ScriptModules[PointModifierModule.ModuleRoot] = PointModifierModule;
         }
 
         public override void Initialize()

@@ -8,7 +8,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
-using YamlDotNet.Core.Tokens;
 
 namespace Arrowgene.Ddon.Shared.AssetReader
 {

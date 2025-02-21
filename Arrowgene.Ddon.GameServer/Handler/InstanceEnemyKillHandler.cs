@@ -168,25 +168,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // TODO: This will be revisited so we can properly handle EXP assigned by tool and
                 // TODO: EXP determined by the mixin. For now, the default behavior of the mixin
                 // TODO: is the same as the original server behavior.
-                var expCurveMixin = Server.ScriptManager.MixinModule.Get<IExpMixin>("exp");
-
-                uint baseEnemyExp = expCurveMixin.GetExpValue(enemyKilled);
-                baseEnemyExp = _gameServer.ExpManager.GetScaledPointAmount(client.GameMode, RewardSource.Enemy, PointType.ExperiencePoints, baseEnemyExp);
-                
-                uint calcExp = _gameServer.ExpManager.GetAdjustedExp(client.GameMode, RewardSource.Enemy, client.Party, baseEnemyExp, enemyKilled.Lv);
-                uint calcPP = _gameServer.ExpManager.GetScaledPointAmount(client.GameMode, RewardSource.Enemy, PointType.PlayPoints, enemyKilled.GetDroppedPlayPoints());
+                var enemyExpMixin = Server.ScriptManager.MixinModule.Get<IExpMixin>("enemy_exp");
 
                 foreach (PartyMember member in client.Party.Members)
                 {
                     if (member.JoinState != JoinState.On) continue; // Only fully joined members get rewards.
 
-                    uint gainedExp = calcExp;
-                    uint gainedPP = calcPP;
-
                     GameClient memberClient;
                     CharacterCommon memberCharacter;
                     if (member is PlayerPartyMember playerMember)
                     {
+                        var gainedExp = _gameServer.ExpManager.GetAdjustedPoints(client, RewardSource.Enemy, client.Character, client.Party, PointType.ExperiencePoints, enemyExpMixin.GetExpValue(enemyKilled), enemyKilled);
+                        var gainedPP = _gameServer.ExpManager.GetAdjustedPoints(client, RewardSource.Enemy, client.Character, client.Party, PointType.PlayPoints, enemyKilled.GetDroppedPlayPoints(), enemyKilled);
+
                         memberClient = playerMember.Client;
                         memberCharacter = memberClient.Character;
 
@@ -194,11 +188,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                         if (memberClient.Character.ActiveCharacterPlayPointData.PlayPoint.ExpMode == ExpMode.Experience && !IsQuestControlled && !isEpitaphEnemy)
                         {
-                            gainedPP = 0;
+                            gainedPP = (0, 0);
                         }
                         else if (!IsQuestControlled && !isEpitaphEnemy)
                         {
-                            gainedExp = 0;
+                            gainedExp = (0, 0);
                         }
 
                         var huntPackets = playerMember.QuestState.HandleEnemyHuntRequests(enemyKilled, connectionIn);
@@ -228,13 +222,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             memberClient.Enqueue(updateCharacterItemNtc, queuedPackets);
                         }
 
-                        if (gainedPP > 0)
+                        if ((gainedPP.BasePoints + gainedPP.BonusPoints) > 0)
                         {
                             var ntc = _gameServer.PPManager.AddPlayPoint(memberClient, gainedPP, type: 1, connectionIn:connectionIn);
                             memberClient.Enqueue(ntc, queuedPackets);
                         }
 
-                        if (gainedExp > 0)
+                        if ((gainedExp.BasePoints + gainedExp.BonusPoints) > 0)
                         {
                             var ntcs = _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp, RewardSource.Enemy, connectionIn: connectionIn); 
                             queuedPackets.AddRange(ntcs);
@@ -253,13 +247,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             continue;
                         }
 
-                        uint pawnExp = gainedExp;
-                        if (_gameServer.ExpManager.RequiresPawnCatchup(client.GameMode, client.Party, pawn))
-                        {
-                            pawnExp = _gameServer.ExpManager.GetAdjustedPawnExp(client.GameMode, RewardSource.Enemy, client.Party, pawn, enemyKilled.GetDroppedExperience(), enemyKilled.Lv);
-                        }
-
-                        if (pawnExp > 0)
+                        var pawnExp = _gameServer.ExpManager.GetAdjustedPoints(client, RewardSource.Enemy, pawn, client.Party, PointType.ExperiencePoints, enemyExpMixin.GetExpValue(enemyKilled), enemyKilled);
+                        if ((pawnExp.BasePoints + pawnExp.BonusPoints) > 0)
                         {
                             var ntcs = _gameServer.ExpManager.AddExp(memberClient, memberCharacter, pawnExp, RewardSource.Enemy, connectionIn: connectionIn);
                             queuedPackets.AddRange(ntcs);

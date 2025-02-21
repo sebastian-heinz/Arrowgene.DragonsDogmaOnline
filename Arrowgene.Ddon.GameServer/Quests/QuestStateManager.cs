@@ -1,4 +1,3 @@
-using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
@@ -11,7 +10,6 @@ using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Drawing;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Quests
@@ -559,13 +557,13 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public abstract PacketQueue DistributeQuestRewards(uint questScheduleId, DbConnection? connectionIn = null);
         public abstract PacketQueue UpdatePriorityQuestList(GameClient requestingClient, DbConnection? connectionIn = null);
 
-        private uint CalculateTotalPointAmount(DdonGameServer server, GameClient client, CDataQuestExp point)
+        private (uint BasePoints, uint BonusPoints) CalculateTotalPointAmount(DdonGameServer server, GameClient client, CDataQuestExp point, QuestType questType)
         {
-            uint amount = point.Reward;
+            (uint BasePoints, uint BonusPoints) amount = (point.Reward, 0);
             switch (point.Type)
             {
                 case PointType.ExperiencePoints:
-                    amount = server.ExpManager.GetAdjustedExp(client.GameMode, RewardSource.Quest, null, point.Reward, 0);
+                    amount = server.ExpManager.GetAdjustedPoints(client, RewardSource.Quest, client.Character, null, PointType.ExperiencePoints, point.Reward, null, questType);
                     break;
                 default:
                     break;
@@ -599,8 +597,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             foreach (var point in quest.ScaledExpRewards())
             {
-                uint amount = CalculateTotalPointAmount(server, client, point);
-                if (amount == 0)
+                var amount = CalculateTotalPointAmount(server, client, point, quest.QuestType);
+                if (amount.BasePoints == 0)
                 {
                     continue;
                 }
@@ -621,14 +619,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         }
                         break;
                     case PointType.JobPoints:
-                        packets.AddRange(server.ExpManager.AddJp(client, client.Character, amount, RewardSource.Quest, quest.QuestType, connectionIn));
+                        packets.AddRange(server.ExpManager.AddJp(client, client.Character, amount.BasePoints, RewardSource.Quest, quest.QuestType, connectionIn));
                         if (server.GameLogicSettings.EnableMainPartyPawnsQuestRewards)
                         {
                             foreach (PartyMember member in client.Party.Members)
                             {
                                 if (member is PawnPartyMember pawnMember && client.Character.Pawns.Contains(pawnMember.Pawn))
                                 {
-                                    packets.AddRange(server.ExpManager.AddJp(client, pawnMember.Pawn, amount, RewardSource.Quest, quest.QuestType, connectionIn));
+                                    packets.AddRange(server.ExpManager.AddJp(client, pawnMember.Pawn, amount.BasePoints, RewardSource.Quest, quest.QuestType, connectionIn));
                                 }
                             }
                         }

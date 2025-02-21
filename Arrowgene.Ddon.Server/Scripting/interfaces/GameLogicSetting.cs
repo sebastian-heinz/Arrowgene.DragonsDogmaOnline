@@ -70,54 +70,6 @@ namespace Arrowgene.Ddon.Server.Scripting.interfaces
         }
 
         /// <summary>
-        /// Configures if party exp is adjusted based on level differences of members.
-        /// </summary>
-        public bool EnableAdjustPartyEnemyExp
-        {
-            get
-            {
-                return GetSetting<bool>("EnableAdjustPartyEnemyExp");
-            }
-        }
-
-        /// <summary>
-        /// List of the inclusive ranges of (MinLv, Maxlv, ExpMultiplier). ExpMultiplier is a value
-        /// from (0.0 - 1.0) which is multipled into the base exp amount to determine the adjusted exp.
-        /// The minlv and maxlv determine the relative level range that this multiplier should be applied to.
-        /// </summary>
-        public List<(uint MinLv, uint MaxLv, double ExpMultiplier)> AdjustPartyEnemyExpTiers
-        {
-            get
-            {
-                return GetSetting<List<(uint MinLv, uint MaxLv, double ExpMultiplier)>>("AdjustPartyEnemyExpTiers");
-            }
-        }
-
-        /// <summary>
-        /// Configures if exp is adjusted based on level differences of members vs target level.
-        /// </summary>
-        public bool EnableAdjustTargetLvEnemyExp
-        {
-            get
-            {
-                return GetSetting<bool>("EnableAdjustTargetLvEnemyExp");
-            }
-        }
-
-        /// <summary>
-        /// List of the inclusive ranges of (MinLv, Maxlv, ExpMultiplier). ExpMultiplier is a value from
-        /// (0.0 - 1.0) which is multipled into the base exp amount to determine the adjusted exp.
-        /// The minlv and maxlv determine the relative level range that this multiplier should be applied to.
-        /// </summary>
-        public List<(uint MinLv, uint MaxLv, double ExpMultiplier)> AdjustTargetLvEnemyExpTiers
-        {
-            get
-            {
-                return GetSetting<List<(uint MinLv, uint MaxLv, double ExpMultiplier)>>("AdjustTargetLvEnemyExpTiers");
-            }
-        }
-
-        /// <summary>
         /// The number of real world minutes that make up an in-game day.
         /// </summary>
         public uint GameClockTimescale
@@ -310,50 +262,6 @@ namespace Arrowgene.Ddon.Server.Scripting.interfaces
             get
             {
                 return GetSetting<bool>("DisableExpCorrectionForMyPawn");
-            }
-        }
-
-        /// <summary>
-        /// Global modifier for enemy exp calculations to scale up or down (does not apply to Bitterblack Maze).
-        /// </summary>
-        public double EnemyExpModifier
-        {
-            get
-            {
-                return GetSetting<double>("EnemyExpModifier");
-            }
-        }
-
-        /// <summary>
-        /// Global modifier for BBM enemy exp calculations to scale up or down.
-        /// </summary>
-        public double BBMEnemyExpModifier
-        {
-            get
-            {
-                return GetSetting<double>("BBMEnemyExpModifier");
-            }
-        }
-
-        /// <summary>
-        /// Global modifier for quest exp calculations to scale up or down.
-        /// </summary>
-        public double QuestExpModifier
-        {
-            get
-            {
-                return GetSetting<double>("QuestExpModifier");
-            }
-        }
-
-        /// <summary>
-        /// Global modifier for pp calculations to scale up or down.
-        /// </summary>
-        public double PpModifier
-        {
-            get
-            {
-                return GetSetting<double>("PpModifier");
             }
         }
 

@@ -26,13 +26,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private readonly DdonGameServer _Server;
 
-        public void AddPlayPointNtc(GameClient client, uint gainedPoints, JobId? job = null, byte type = 1, DbConnection? connectionIn = null)
+        public void AddPlayPointNtc(GameClient client, (uint BasePoints, uint BonusPoints) gainedPoints, JobId? job = null, byte type = 1, DbConnection? connectionIn = null)
         {
             var ntc = AddPlayPoint(client, gainedPoints, job, type, connectionIn);
             client.Send(ntc);
         }
 
-        public S2CJobUpdatePlayPointNtc AddPlayPoint(GameClient client, uint gainedPoints, JobId? job = null, byte type = 1, DbConnection? connectionIn = null)
+        public S2CJobUpdatePlayPointNtc AddPlayPoint(GameClient client, (uint BasePoints, uint BonusPoints) gainedPoints, JobId? job = null, byte type = 1, DbConnection? connectionIn = null)
         {
             CDataJobPlayPoint? targetPlayPoint;
             if (job is null)
@@ -46,17 +46,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_JOB_VALUE_SHOP_INVALID_JOB);
             }
 
-            uint extraBonusPoints = (uint)(_Server.GpCourseManager.EnemyPlayPointBonus() * gainedPoints);
             if (targetPlayPoint != null && targetPlayPoint.PlayPoint.PlayPoint < PP_MAX)
             {
-                uint clampedNew = Math.Min(targetPlayPoint.PlayPoint.PlayPoint + gainedPoints + extraBonusPoints, PP_MAX);
+                uint clampedNew = Math.Min(targetPlayPoint.PlayPoint.PlayPoint + gainedPoints.BasePoints + gainedPoints.BonusPoints, PP_MAX);
                 targetPlayPoint.PlayPoint.PlayPoint = clampedNew;
 
                 S2CJobUpdatePlayPointNtc ppNtc = new S2CJobUpdatePlayPointNtc()
                 {
                     JobId = targetPlayPoint.Job,
-                    UpdatePoint = gainedPoints + extraBonusPoints,
-                    ExtraBonusPoint = extraBonusPoints,
+                    UpdatePoint = gainedPoints.BasePoints + gainedPoints.BonusPoints,
+                    ExtraBonusPoint = gainedPoints.BonusPoints,
                     TotalPoint = targetPlayPoint.PlayPoint.PlayPoint,
                     Type = type //Type == 1 (default) is "loud" and will show the UpdatePoint amount to the user, as both a chat log and floating text.
                 };
