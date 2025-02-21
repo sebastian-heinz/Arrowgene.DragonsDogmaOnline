@@ -32,7 +32,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (asset.Count > 0)
             {
-                res.SupplyGrade = (byte)supply.FindLastIndex(x => x.MinAreaPoint <= clientRank.LastWeekPoint);
+                int index = supply.FindLastIndex(x => x.MinAreaPoint <= clientRank.LastWeekPoint);
+                res.SupplyGrade = (byte)(index > 0 ? index : 0);
             }
 
             if (client.Character.AreaSupply.ContainsKey(request.AreaId)) 

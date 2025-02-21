@@ -235,7 +235,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
             else if (quest.QuestType == QuestType.Tutorial)
             {
                 var area = quest.QuestAreaId;
-                var rank = client.Character.AreaRanks[area];
+                if (!client.Character.AreaRanks.TryGetValue(area, out var rank))
+                {
+                    return queue;
+                }
                 List<AreaRankRequirement> requirements = Server.AssetRepository.AreaRankRequirementAsset[area];
 
                 if (rank.Rank < requirements.Count)
