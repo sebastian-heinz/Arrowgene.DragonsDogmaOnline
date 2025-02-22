@@ -16,6 +16,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public CDataEditInfo EditInfo { get; set; }
         public byte Job { get; set; }
         public List<CDataCharacterEquipData> CharacterEquipData { get; set; }
+        public List<CDataCharacterEquipData> CharacterEquipViewData { get; set; }
 
         public class Serializer : EntitySerializer<CDataNoraPawnInfo>
         {
@@ -23,9 +24,10 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 WriteUInt32(buffer, obj.Version);
                 WriteMtString(buffer, obj.Name);
-                WriteEntity<CDataEditInfo>(buffer, obj.EditInfo);
+                WriteEntity(buffer, obj.EditInfo);
                 WriteByte(buffer, obj.Job);
-                WriteEntityList<CDataCharacterEquipData>(buffer, obj.CharacterEquipData);
+                WriteEntityList(buffer, obj.CharacterEquipData);
+                WriteEntityList(buffer, obj.CharacterEquipViewData);
             }
 
             public override CDataNoraPawnInfo Read(IBuffer buffer)
@@ -36,6 +38,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.EditInfo = ReadEntity<CDataEditInfo>(buffer);
                 obj.Job = ReadByte(buffer);
                 obj.CharacterEquipData = ReadEntityList<CDataCharacterEquipData>(buffer);
+                obj.CharacterEquipViewData = ReadEntityList<CDataCharacterEquipData>(buffer);
                 return obj;
             }
         }
