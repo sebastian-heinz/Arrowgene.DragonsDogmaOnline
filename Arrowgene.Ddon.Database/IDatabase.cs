@@ -612,5 +612,12 @@ namespace Arrowgene.Ddon.Database
         Dictionary<QuestAreaId, List<CDataRewardItemInfo>> SelectAreaRankSupply(uint characterId, DbConnection? connectionIn = null);
         List<CDataRewardItemInfo> SelectAreaRankSupply(uint characterId, QuestAreaId areaId, DbConnection? connectionIn = null);
         bool DeleteAreaRankSupply(DbConnection? connectionIn = null);
+
+        // Rank Boards
+        bool InsertRankRecord(uint characterId, uint questId, long score, DbConnection? connectionIn = null);
+        List<uint> SelectUsedRankingBoardQuests(DbConnection? connectionIn = null);
+        List<CDataRankingData> SelectRankingDataByCharacterId(uint characterId, uint questId, uint limit = 1000, DbConnection? connectionIn = null);
+        List<CDataRankingData> SelectRankingData(uint questId, uint limit = 1000, DbConnection? connectionIn = null);
+        bool DeleteAllRankRecords(DbConnection? connectionIn = null);
     }
 }

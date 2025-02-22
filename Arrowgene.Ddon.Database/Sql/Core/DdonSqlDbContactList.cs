@@ -1,9 +1,7 @@
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Security.Claims;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.Clan;
+using System.Collections.Generic;
+using System.Data.Common;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -34,45 +32,32 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         
         private static readonly string SqlUpdateContactByCharIds = $"UPDATE \"{ContactListTableName}\" SET \"status\"=@status, \"type\"=@type, \"requester_favorite\"=@requester_favorite, \"requested_favorite\"=@requested_favorite WHERE \"requester_character_id\"=@requester_character_id and \"requested_character_id\"=@requested_character_id;";
 
-        private static readonly string SqlSelectFullContactsByCharacterId = @"SELECT
-                                                                                cl.*,
-                                                                                c.first_name,
-                                                                                c.last_name,
-                                                                                j.job,
-                                                                                j.lv,
-                                                                                mp.comment,
-                                                                                CASE
-                                                                                    WHEN cl.requester_character_id = @character_id THEN
-                                                                                        (SELECT cp.name FROM ddon_clan_param cp
-                                                                                         INNER JOIN ddon_clan_membership cm ON cm.clan_id = cp.clan_id
-                                                                                         WHERE cm.character_id = cl.requested_character_id)
-                                                                                    ELSE
-                                                                                        (SELECT cp.name FROM ddon_clan_param cp
-                                                                                         INNER JOIN ddon_clan_membership cm ON cm.clan_id = cp.clan_id
-                                                                                         WHERE cm.character_id = cl.requester_character_id)
-                                                                                END AS clan_name,
-	                                                                            CASE
-                                                                                    WHEN cl.requester_character_id = @character_id THEN
-                                                                                        cl.requested_character_id
-                                                                                    ELSE
-                                                                                        cl.requester_character_id
-                                                                                END AS other_id
-                                                                            FROM
-                                                                                ddon_contact_list cl
-                                                                            INNER JOIN ddon_character c ON c.character_id = 
-                                                                                CASE
-                                                                                    WHEN cl.requester_character_id = @character_id THEN cl.requested_character_id
-                                                                                    ELSE cl.requester_character_id
-                                                                                END
-                                                                            INNER JOIN ddon_character_common cc ON cc.character_common_id = c.character_common_id
-                                                                            INNER JOIN ddon_character_job_data j ON j.character_common_id = cc.character_common_id AND j.job = cc.job
-                                                                            INNER JOIN ddon_character_matching_profile mp ON mp.character_id = 
-                                                                                CASE
-                                                                                    WHEN cl.requester_character_id = @character_id THEN cl.requested_character_id
-                                                                                    ELSE cl.requester_character_id
-                                                                                END
-                                                                            WHERE
-                                                                                cl.requested_character_id = @character_id OR cl.requester_character_id = @character_id;";
+        private static readonly string SqlSelectFullContactsByCharacterId = @"
+            WITH ContactInfo AS (
+                SELECT 
+                    cl.*,
+                    CASE 
+                        WHEN cl.requester_character_id = @character_id THEN cl.requested_character_id 
+                        ELSE cl.requester_character_id 
+                    END AS other_id
+                FROM ddon_contact_list cl
+            )
+            SELECT 
+                ci.*,
+	            c.first_name, 
+	            c.last_name, 
+	            j.job, 
+	            j.lv, 
+	            mp.comment,
+                cp.name AS clan_name
+            FROM ContactInfo ci
+            INNER JOIN ddon_character c ON c.character_id = other_id
+            INNER JOIN ddon_character_common cc ON cc.character_common_id = c.character_common_id
+            INNER JOIN ddon_character_job_data j ON j.character_common_id = cc.character_common_id AND j.job = cc.job
+            INNER JOIN ddon_character_matching_profile mp ON mp.character_id = other_id
+            LEFT JOIN ddon_clan_membership cm ON cm.character_id = ci.other_id
+            LEFT JOIN ddon_clan_param cp ON cp.clan_id = cm.clan_id
+            WHERE ci.requested_character_id = @character_id OR ci.requester_character_id = @character_id;";
 
         public int InsertContact(uint requestingCharacterId, uint requestedCharacterId, ContactListStatus status, ContactListType type, bool requesterFavorite, bool requestedFavorite)
         {

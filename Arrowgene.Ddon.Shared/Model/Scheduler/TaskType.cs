@@ -29,6 +29,7 @@ namespace Arrowgene.Ddon.Shared.Model.Scheduler
         AwardBitterblackMazeResetTickets = 20,
         TimeLockedDungeons = 21,
         // Others not from above webpage
-        SeasonalEventSchedule = 22
+        SeasonalEventSchedule = 22,
+        RankingBoardReset = 23
     }
 }
