@@ -1,0 +1,100 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Zandora Wastelands Trial: A Jet-Black Whirlwind (Zandora Wastelands AR13)",
+    "quest_id": 60210000,
+    "next_quest": 0,
+    "base_level": 70,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {
+        "id": 139
+    },
+    "area_id": "ZandoraWastelands",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 10,
+            "Param2": 12
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 3337
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1154
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 150
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 361
+            },
+            "starting_index": 6,
+            "enemies": [
+                {
+                    "comment": "Black Sea Eagle of the Ruined Site (Black Griffin)",
+                    "enemy_id": "0x015303",
+                    "level": 70,
+                    "exp": 6840,
+                    "is_boss": true,
+                    "named_enemy_params_id": 901
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 139
+            },
+            "npc_id": "Dian",
+            "message_id": 17750
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [
+                0
+            ],
+            "result_commands": [
+                {
+                    "comment": "Dian idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 4507,
+                    "Param2": 17751
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [
+                0
+            ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 139
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Dian",
+            "message_id": 17752
+        }
+    ]
+}

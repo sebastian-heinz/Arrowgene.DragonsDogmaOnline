@@ -1118,8 +1118,8 @@ namespace Arrowgene.Ddon.Shared.Network
 // Group: 23 - (AREA)
         public static readonly PacketId C2S_AREA_GET_AREA_MASTER_INFO_REQ = new PacketId(23, 0, 1, "C2S_AREA_GET_AREA_MASTER_INFO_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_AREA_GET_AREA_MASTER_INFO_RES = new PacketId(23, 0, 2, "S2C_AREA_GET_AREA_MASTER_INFO_RES", ServerType.Game, PacketSource.Server); // エリア情報取得に
-        public static readonly PacketId C2S_AREA_23_1_1_REQ = new PacketId(23, 1, 1, "C2S_AREA_23_1_1_REQ", ServerType.Game, PacketSource.Client);
-        public static readonly PacketId S2C_AREA_23_1_2_RES = new PacketId(23, 1, 2, "S2C_AREA_23_1_2_RES", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId C2S_AREA_GET_AREA_REWARD_INFO_REQ = new PacketId(23, 1, 1, "C2S_AREA_GET_AREA_REWARD_INFO_REQ", ServerType.Game, PacketSource.Client, "C2S_AREA_23_1_1_REQ"); // Seemingly dummied out at some point.
+        public static readonly PacketId S2C_AREA_GET_AREA_REWARD_INFO_RES = new PacketId(23, 1, 2, "S2C_AREA_GET_AREA_REWARD_INFO_RES", ServerType.Game, PacketSource.Server, "S2C_AREA_23_1_2_RES"); // Seemingly dummied out at some point.
         public static readonly PacketId C2S_AREA_AREA_RANK_UP_REQ = new PacketId(23, 2, 1, "C2S_AREA_AREA_RANK_UP_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_AREA_AREA_RANK_UP_RES = new PacketId(23, 2, 2, "S2C_AREA_AREA_RANK_UP_RES", ServerType.Game, PacketSource.Server); // エリアランクアップに
         public static readonly PacketId C2S_AREA_GET_AREA_SUPPLY_INFO_REQ = new PacketId(23, 3, 1, "C2S_AREA_GET_AREA_SUPPLY_INFO_REQ", ServerType.Game, PacketSource.Client);
@@ -1140,8 +1140,8 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_AREA_GET_SPOT_INFO_LIST_RES = new PacketId(23, 11, 2, "S2C_AREA_GET_SPOT_INFO_LIST_RES", ServerType.Game, PacketSource.Server); // スポット情報リスト取得に
         public static readonly PacketId C2S_AREA_GET_AREA_BASE_INFO_LIST_REQ = new PacketId(23, 12, 1, "C2S_AREA_GET_AREA_BASE_INFO_LIST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_AREA_GET_AREA_BASE_INFO_LIST_RES = new PacketId(23, 12, 2, "S2C_AREA_GET_AREA_BASE_INFO_LIST_RES", ServerType.Game, PacketSource.Server); // エリアポイントリスト取得に
-        public static readonly PacketId S2C_AREA_23_13_16_NTC = new PacketId(23, 13, 16, "S2C_AREA_23_13_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_AREA_23_14_16_NTC = new PacketId(23, 14, 16, "S2C_AREA_23_14_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_AREA_POINT_UP_NTC = new PacketId(23, 13, 16, "S2C_AREA_POINT_UP_NTC", ServerType.Game, PacketSource.Server, "S2C_AREA_23_13_16_NTC");
+        public static readonly PacketId S2C_AREA_RANK_UP_READY_NTC = new PacketId(23, 14, 16, "S2C_AREA_RANK_UP_READY_NTC", ServerType.Game, PacketSource.Server, "S2C_AREA_23_14_16_NTC");
         public static readonly PacketId C2S_AREA_23_15_1_REQ = new PacketId(23, 15, 1, "C2S_AREA_23_15_1_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_AREA_23_15_2_RES = new PacketId(23, 15, 2, "S2C_AREA_23_15_2_RES", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_AREA_23_16_16_NTC = new PacketId(23, 16, 16, "S2C_AREA_23_16_16_NTC", ServerType.Game, PacketSource.Server);
@@ -3049,8 +3049,8 @@ namespace Arrowgene.Ddon.Shared.Network
 // Group: 23 - (AREA)
             AddPacketIdEntry(packetIds, C2S_AREA_GET_AREA_MASTER_INFO_REQ);
             AddPacketIdEntry(packetIds, S2C_AREA_GET_AREA_MASTER_INFO_RES);
-            AddPacketIdEntry(packetIds, C2S_AREA_23_1_1_REQ);
-            AddPacketIdEntry(packetIds, S2C_AREA_23_1_2_RES);
+            AddPacketIdEntry(packetIds, C2S_AREA_GET_AREA_REWARD_INFO_REQ);
+            AddPacketIdEntry(packetIds, S2C_AREA_GET_AREA_REWARD_INFO_RES);
             AddPacketIdEntry(packetIds, C2S_AREA_AREA_RANK_UP_REQ);
             AddPacketIdEntry(packetIds, S2C_AREA_AREA_RANK_UP_RES);
             AddPacketIdEntry(packetIds, C2S_AREA_GET_AREA_SUPPLY_INFO_REQ);
@@ -3071,8 +3071,8 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_AREA_GET_SPOT_INFO_LIST_RES);
             AddPacketIdEntry(packetIds, C2S_AREA_GET_AREA_BASE_INFO_LIST_REQ);
             AddPacketIdEntry(packetIds, S2C_AREA_GET_AREA_BASE_INFO_LIST_RES);
-            AddPacketIdEntry(packetIds, S2C_AREA_23_13_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_AREA_23_14_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_AREA_POINT_UP_NTC);
+            AddPacketIdEntry(packetIds, S2C_AREA_RANK_UP_READY_NTC);
             AddPacketIdEntry(packetIds, C2S_AREA_23_15_1_REQ);
             AddPacketIdEntry(packetIds, S2C_AREA_23_15_2_RES);
             AddPacketIdEntry(packetIds, S2C_AREA_23_16_16_NTC);

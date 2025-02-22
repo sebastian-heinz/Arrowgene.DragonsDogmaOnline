@@ -17,6 +17,8 @@ bool EnableVisualEquip = true;
 uint DefaultWarpFavorites = 3;
 uint LaternBurnTimeInSeconds = 1500;
 
+bool EnableAreaRankSpotLocks = false;
+
 // Crafting Settings
 double AdditionalProductionSpeedFactor = 1.0;
 double AdditionalCostPerformanceFactor = 1.0;
@@ -58,6 +60,7 @@ double RiftModifier = 1;
 double BoModifier = 1;
 double HoModifier = 1;
 double JpModifier = 1;
+double ApModifier = 1;
 
 // Wallet Settings
 var WalletLimits = new Dictionary<WalletType, uint>()

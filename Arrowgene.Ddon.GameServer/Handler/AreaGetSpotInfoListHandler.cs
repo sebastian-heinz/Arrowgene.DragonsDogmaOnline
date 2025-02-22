@@ -1,11 +1,14 @@
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class AreaGetSpotInfoListHandler : PacketHandler<GameClient>
+    public class AreaGetSpotInfoListHandler : GameRequestPacketHandler<C2SAreaGetSpotInfoListReq, S2CAreaGetSpotInfoListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(AreaGetSpotInfoListHandler));
 
@@ -15,12 +18,28 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketId Id => PacketId.C2S_AREA_GET_SPOT_INFO_LIST_REQ;
-
-        public override void Handle(GameClient client, IPacket request)
+        public override S2CAreaGetSpotInfoListRes Handle(GameClient client, C2SAreaGetSpotInfoListReq request)
         {
-            Packet response = new Packet(PacketId.S2C_AREA_GET_SPOT_INFO_LIST_RES, PcapData);
-            client.Send(response);
+            // TODO: This still uses the List<CDataAreaRankSeason3> Unk1 from the Pcap, the client complains if its not present.
+            var pcap = EntitySerializer.Get<S2CAreaGetSpotInfoListRes>().Read(PcapData);
+            pcap.SpotInfoList = new();
+
+            var clientRank = client.Character.AreaRanks.GetValueOrDefault(request.AreaId)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
+            var completedQuests = client.Character.CompletedQuests;
+
+            foreach (var spot in Server.AssetRepository.AreaRankSpotInfoAsset[request.AreaId].Where(x => !x.ReleaseOnly))
+            {
+                pcap.SpotInfoList.Add(new()
+                {
+                    SpotId = spot.SpotId,
+                    TextIndex = spot.TextIndex,
+                    StageId = 2, // TODO: Figure out if the client actually cares
+                    IsRelease = Server.AreaRankManager.CheckSpot(client, spot)
+                });
+            }
+
+            return pcap;
         }
     }
 }

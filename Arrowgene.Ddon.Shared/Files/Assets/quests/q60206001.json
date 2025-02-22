@@ -1,0 +1,93 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Mysree Grove Trial: The End of Oblivion (Mysree Grove AR15)",
+    "quest_id": 60206001,
+    "next_quest": 0,
+    "base_level": 63,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": { "id": 137 },
+    "area_id": "MysreeGrove",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 6,
+            "Param2": 14
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 1938
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1039
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 132
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 427,
+                "group_id": 15
+            },
+            "enemies": [
+                {
+                    "comment": "Oblivion Mist Drake",
+                    "enemy_id": "0x015710",
+                    "level": 63,
+                    "exp": 19380,
+                    "is_boss": true,
+                    "named_enemy_params_id": 908
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 137
+            },
+            "npc_id": "Christine",
+            "message_id": 17715
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [ 0 ],
+            "result_commands": [
+                {
+                    "comment": "Christine idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 4506,
+                    "Param2": 17716
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 137
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Christine",
+            "message_id": 17717
+        }
+    ]
+}

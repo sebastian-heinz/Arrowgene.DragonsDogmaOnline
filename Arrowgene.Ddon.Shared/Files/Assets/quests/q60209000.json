@@ -1,0 +1,118 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Northern Betland Plains Trial: The Turmoil in the Fort (Northern Betland Plains AR13)",
+    "quest_id": 60209000,
+    "next_quest": 0,
+    "base_level": 65,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {
+        "id": 53
+    },
+    "area_id": "NorthernBetlandPlains",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 9,
+            "Param2": 12
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 1970
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1072
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 137
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 68,
+                "group_id": 3
+            },
+            "starting_index": 6,
+            "enemies": [
+                {
+                    "comment": "Infection Resisting War Demon (Infected Orc Soldier)",
+                    "enemy_id": "0x015813",
+                    "level": 65,
+                    "exp": 486,
+                    "infection_type": 2,
+                    "named_enemy_params_id": 899
+                },
+                {
+                    "comment": "Orc Banger",
+                    "enemy_id": "0x015812",
+                    "level": 65,
+                    "exp": 307
+                },
+                {
+                    "comment": "Orc Banger",
+                    "enemy_id": "0x015812",
+                    "level": 65,
+                    "exp": 307
+                },
+                {
+                    "comment": "Orc Banger",
+                    "enemy_id": "0x015812",
+                    "level": 65,
+                    "exp": 307
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 53
+            },
+            "npc_id": "Sunny",
+            "message_id": 17744
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [
+                0
+            ],
+            "result_commands": [
+                {
+                    "comment": "Sunny idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1701,
+                    "Param2": 17745
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [
+                0
+            ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 53
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Sunny",
+            "message_id": 17746
+        }
+    ]
+}

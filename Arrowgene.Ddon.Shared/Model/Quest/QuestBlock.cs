@@ -10,6 +10,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public int StageStart {  get; set; }
         public int StageClear { get; set; }
         public int EndContentsPurpose {  get; set; }
+        public bool Caution { get; set; }
     }
 
     public class QuestReturnCheckpoint

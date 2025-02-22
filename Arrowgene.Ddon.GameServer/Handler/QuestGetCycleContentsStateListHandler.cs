@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System.Collections.Generic;
@@ -73,6 +74,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         break;
                     case QuestType.Light:
                         var lightQuest = quest.ToCDataLightQuestOrderList(questProgress.Step);
+                        if (lightQuest.Detail.BoardType == 1 && lightQuest.Detail.GetAp == 0)
+                        {
+                            lightQuest.Detail.GetAp = Server.ExpManager.GetAdjustedPointsForQuest(PointType.AreaPoints, Server.AreaRankManager.GetAreaPointReward(quest), QuestType.Board).BasePoints;
+                        }
                         ntc.LightQuestOrderList.Add(lightQuest);
                         break;
                 }

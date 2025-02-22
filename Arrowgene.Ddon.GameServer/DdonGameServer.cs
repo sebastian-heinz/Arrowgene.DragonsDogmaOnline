@@ -84,6 +84,7 @@ namespace Arrowgene.Ddon.GameServer
             RpcManager = new RpcManager(this);
             EpitaphRoadManager = new EpitaphRoadManager(this);
             ScheduleManager = new ScheduleManager(this);
+            AreaRankManager = new AreaRankManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
@@ -123,6 +124,7 @@ namespace Arrowgene.Ddon.GameServer
         public RpcManager RpcManager { get; }
         public EpitaphRoadManager EpitaphRoadManager { get; }
         private ScheduleManager ScheduleManager { get; }
+        public AreaRankManager AreaRankManager { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
 
@@ -219,6 +221,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new AreaGetAreaSupplyInfoHandler(this));
             AddHandler(new AreaGetLeaderAreaReleaseListHandler(this));
             AddHandler(new AreaGetSpotInfoListHandler(this));
+            AddHandler(new AreaAreaRankUpHandler(this));
+            AddHandler(new AreaGetAreaSupplyHandler(this));
 
             AddHandler(new BattleContentInfoListHandler(this));
             AddHandler(new BattleContentGetContentStatusFromOmHandler(this));

@@ -20,6 +20,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             CDataStageLayoutId layout = packet.Structure.LayoutId;
 
+            client.Character.Stage = layout.AsStageLayoutId();
+
             ContextManager.HandleEntry(client, layout);
         }
     }

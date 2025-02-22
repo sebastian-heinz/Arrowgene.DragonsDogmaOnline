@@ -1,32 +1,22 @@
-﻿using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class AreaGetAreaQuestHintListHandler : PacketHandler<GameClient>
+    public class AreaGetAreaQuestHintListHandler : GameRequestPacketHandler<C2SAreaGetAreaQuestHintListReq, S2CAreaGetAreaQuestHintListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(AreaGetAreaQuestHintListHandler));
-
 
         public AreaGetAreaQuestHintListHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override PacketId Id => PacketId.C2S_AREA_GET_AREA_QUEST_HINT_LIST_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        // The list in the response is cross-referenced by the client against some list of discovered quests that doesn't seem to populate properly.
+        // If you log in with the quest, it'll show up here, but not if you found it this session???
+        public override S2CAreaGetAreaQuestHintListRes Handle(GameClient client, C2SAreaGetAreaQuestHintListReq request)
         {
-            IBuffer buffer = new StreamBuffer();
-            buffer.WriteUInt32(0);
-            buffer.WriteUInt32(0);
-            buffer.WriteUInt32(0);
-            Packet p = new Packet(PacketId.S2C_AREA_GET_AREA_QUEST_HINT_LIST_RES, buffer.GetAllBytes());
-            client.Send(p);
-          //  client.Send(GameFull.Dump_148);
+            return new();
         }
     }
 }

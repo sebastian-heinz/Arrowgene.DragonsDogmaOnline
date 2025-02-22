@@ -565,6 +565,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 case PointType.ExperiencePoints:
                     amount = server.ExpManager.GetAdjustedPoints(client, RewardSource.Quest, client.Character, null, PointType.ExperiencePoints, point.Reward, null, questType);
                     break;
+                case PointType.AreaPoints:
+                    amount = server.ExpManager.GetAdjustedPointsForQuest(PointType.AreaPoints, point.Reward, questType);
+                    break;
                 default:
                     break;
             }
@@ -595,7 +598,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 client.Enqueue(updateCharacterItemNtc, packets);
             }
 
-            foreach (var point in quest.ScaledExpRewards())
+            var scaledRewards = quest.ScaledExpRewards();
+            foreach (var point in scaledRewards)
             {
                 var amount = CalculateTotalPointAmount(server, client, point, quest.QuestType);
                 if (amount.BasePoints == 0)
@@ -635,9 +639,23 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         var ntc = server.PPManager.AddPlayPoint(client, amount, type: 1, connectionIn: connectionIn);
                         client.Enqueue(ntc, packets);
                         break;
+                    case PointType.AreaPoints:
+                        var areaId = quest.QuestAreaId > 0 ? quest.QuestAreaId : (QuestAreaId)quest.LightQuestDetail.AreaId;
+                        var areaRankNtcs = server.AreaRankManager.AddAreaPoint(client, areaId, amount, connectionIn);
+                        packets.AddRange(areaRankNtcs);
+                        break;
                 }
             }
-            
+
+            // Fallback so that existing quests still get AP.
+            if (!scaledRewards.Where(x => x.Type == PointType.AreaPoints).Any() && (QuestManager.IsWorldQuest(quest) || QuestManager.IsBoardQuest(quest)))
+            {
+                var areaId = quest.QuestAreaId > 0 ? quest.QuestAreaId : (QuestAreaId)quest.LightQuestDetail.AreaId;
+                var amount = server.ExpManager.GetAdjustedPointsForQuest(PointType.AreaPoints, server.AreaRankManager.GetAreaPointReward(quest), quest.QuestType);
+                var areaRankNtcs = server.AreaRankManager.AddAreaPoint(client, areaId, amount, connectionIn);
+                packets.AddRange(areaRankNtcs);
+            }
+
             if (QuestManager.IsClanQuest(quest) && client.Character.ClanId != 0)
             {
                 var amount = quest.LightQuestDetail.GetCp;
@@ -650,7 +668,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 var completeNtcs = server.ClanManager.CompleteClanQuest(quest, client);
                 packets.AddRange(completeNtcs);
             }
-            
+       
             return packets;
         }
 

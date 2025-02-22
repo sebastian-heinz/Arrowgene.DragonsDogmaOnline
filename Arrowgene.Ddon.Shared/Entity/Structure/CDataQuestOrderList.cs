@@ -41,14 +41,14 @@ public class CDataQuestOrderList
     public List<CDataRewardItem> FixedRewardSelectItem { get; set; }
     public List<CDataCharacterReleaseElement> ContentsReleaseList { get; set; }
     public CDataQuestLog QuestLog { get; set; }
-    public List<CDataQuestFlag> QuestFlagList;
-    public List<CDataQuestLayoutFlag> QuestLayoutFlagList;
-    public List<CDataQuestProcessState> QuestProcessStateList;
+    public List<CDataQuestFlag> QuestFlagList { get; set; }
+    public List<CDataQuestLayoutFlag> QuestLayoutFlagList { get; set; }
+    public List<CDataQuestProcessState> QuestProcessStateList { get; set; }
     public List<CDataQuestOrderConditionParam> QuestOrderConditionParam { get; set; }
-    public List<CDataQuestEnemyInfo> QuestEnemyInfoList;
-    public List<CDataQuestLayoutFlagSetInfo> QuestLayoutFlagSetInfoList;
+    public List<CDataQuestEnemyInfo> QuestEnemyInfoList { get; set; }
+    public List<CDataQuestLayoutFlagSetInfo> QuestLayoutFlagSetInfoList { get; set; }
     public List<CDataQuestOrderListUnk8> Unk8 { get; set; }
-    public List<CDataDeliveryItem> DeliveryItemList;
+    public List<CDataDeliveryItem> DeliveryItemList { get; set; }
     public bool IsClientOrder { get; set; }
     public bool IsEnable { get; set; }
     public bool CanProgress { get; set; }

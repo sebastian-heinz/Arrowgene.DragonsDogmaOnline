@@ -1,0 +1,93 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Deenan Woods Trial: Heretic Green (Deenan Woods AR13)",
+    "quest_id": 60207000,
+    "next_quest": 0,
+    "base_level": 68,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": { "id": 105 },
+    "area_id": "DeenanWoods",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 7,
+            "Param2": 12
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 2962
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1121
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 145
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 335
+            },
+            "enemies": [
+                {
+                    "comment": "Heretic Ent",
+                    "enemy_id": "0x015031",
+                    "level": 68,
+                    "exp": 4352,
+                    "is_boss": true,
+                    "named_enemy_params_id": 898
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 105
+            },
+            "npc_id": "Rondejeel0",
+            "message_id": 17721
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [ 0 ],
+            "result_commands": [
+                {
+                    "comment": "Rondejeel0 idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 4508,
+                    "Param2": 17723
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 105
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Rondejeel0",
+            "message_id": 17724
+        }
+    ]
+}

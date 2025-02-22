@@ -1,0 +1,100 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Betland Plains Trial: Requiem for the Fallen Lady (Betland Plains AR15)",
+    "quest_id": 60208001,
+    "next_quest": 0,
+    "base_level": 63,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {
+        "id": 66
+    },
+    "area_id": "BetlandPlains",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 8,
+            "Param2": 14
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 1938
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1039
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 132
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 431,
+                "group_id": 7
+            },
+            "starting_index": 7,
+            "enemies": [
+                {
+                    "comment": "Malice Pricess Wilhelmina (Empress Ghost)",
+                    "enemy_id": "0x015605",
+                    "level": 63,
+                    "exp": 19380,
+                    "is_boss": true,
+                    "named_enemy_params_id": 909
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 66
+            },
+            "npc_id": "Scherzo",
+            "message_id": 17740
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [
+                0
+            ],
+            "result_commands": [
+                {
+                    "comment": "Scherzo idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1905,
+                    "Param2": 17742
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [
+                0
+            ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 66
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Scherzo",
+            "message_id": 17743
+        }
+    ]
+}
