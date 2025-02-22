@@ -5,6 +5,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Scripting;
 using System.IO;
+using System.Text;
 
 namespace Arrowgene.Ddon.Server.Scripting.modules
 {

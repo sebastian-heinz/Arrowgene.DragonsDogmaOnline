@@ -3,9 +3,12 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Logging;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Scripting;
+using Microsoft.CodeAnalysis.Emit;
+using Microsoft.CodeAnalysis.Scripting;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace Arrowgene.Ddon.Shared.Scripting
 {
@@ -39,6 +42,39 @@ namespace Arrowgene.Ddon.Shared.Scripting
             SetupFileWatchers();
         }
 
+        /// <summary>
+        /// To debug scripts which include other scripts, we need emit
+        /// the compiled script as a dll so the debugger can find the 
+        /// symbols and source files.
+        /// </summary>
+        /// <param name="script">The compiled script object</param>
+        /// <param name="path">Path to the main script being executed</param>
+        private void EmitScriptsAsDllForDebug(Script script, string path)
+        {
+            if (!Directory.Exists("script_dlls"))
+            {
+                Directory.CreateDirectory("script_dlls");
+            }
+
+            var compilation = script.GetCompilation();
+            var outputPath = $"script_dlls/{Path.GetFileNameWithoutExtension(path)}.dll";
+            var emitOptions = new EmitOptions()
+                .WithDebugInformationFormat(DebugInformationFormat.Pdb)
+                .WithPdbFilePath(outputPath);
+
+            using (var stream = new FileStream(outputPath, FileMode.Create))
+            {
+                var compilationResult = compilation.Emit(stream, options: emitOptions);
+                if (!compilationResult.Success)
+                {
+                    foreach (var diagnostic in compilationResult.Diagnostics)
+                    {
+                        Console.WriteLine(diagnostic);
+                    }
+                }
+            }
+        }
+
         protected async void CompileScript(ScriptModule module, string path)
         {
             try
@@ -47,11 +83,19 @@ namespace Arrowgene.Ddon.Shared.Scripting
 
                 var code = Util.ReadAllText(path);
 
-                var options = module.Options();
-                
+                var options = module.Options()
+#if DEBUG
+                    .WithFilePath(path)
+                    .WithEmitDebugInformation(true)
+#endif
+                    .WithFileEncoding(Encoding.UTF8);
+
                 if (LibsRoot != "")
                 {
-                    options = options.WithSourceResolver(new SourceFileResolver(new string[] { }, LibsRoot));
+                    options = options.WithSourceResolver(new SourceFileResolver(
+                        searchPaths: new [] { Path.GetDirectoryName(path), LibsRoot},
+                        baseDirectory: Path.GetDirectoryName(path)
+                    ));
                 }
                 
                 var script = CSharpScript.Create(
@@ -59,6 +103,10 @@ namespace Arrowgene.Ddon.Shared.Scripting
                     options: options,
                     globalsType: typeof(T)
                 );
+
+#if DEBUG
+                EmitScriptsAsDllForDebug(script, path);
+#endif
 
                 var result = await script.RunAsync(globals: GlobalVariables);
                 if (!module.EvaluateResult(path, result))

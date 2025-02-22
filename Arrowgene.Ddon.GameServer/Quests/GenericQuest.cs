@@ -42,6 +42,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             quest.LightQuestDetail = questAsset.LightQuestDetail;
             quest.Enabled = questAsset.Enabled;
             quest.OverrideEnemySpawn = questAsset.OverrideEnemySpawn;
+            quest.EnableCancel = questAsset.EnableCancel;
 
             foreach (var pointReward in questAsset.PointRewards)
             {

@@ -92,6 +92,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public List<QuestServerAction> ServerActions { get; protected set; }
         public bool Enabled { get; protected set; }
         public bool OverrideEnemySpawn { get; protected set; }
+        public bool EnableCancel { get; protected set; }
+        public ulong DistributionStart { get; protected set; }
+        public ulong DistributionEnd { get; protected set; }
 
         public bool IsPersonal { get
             {
@@ -327,7 +330,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     Lv = enemy.Lv,
                     IsPartyRecommend = enemy.IsBossGauge
                 }))
-                .ToList()
+                .ToList(),
+                DistributionStartDate = DistributionStart,
+                DistributionEndDate = DistributionEnd,
             };
 
             quest.QuestProcessStateList = GetProcessState(step, out uint announceNoCount);
@@ -374,7 +379,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     Lv = enemy.Lv,
                     IsPartyRecommend = enemy.IsBossGauge
                 }))
-                .ToList()
+                .ToList(),
+                // Unsure if these next set of fields are correct
+                Unk5 = DistributionStart,
+                Unk6 = DistributionEnd,
+                Unk6A = 0, // Order Date?
             };
 
             quest.QuestProcessStateList = GetProcessState(step, out uint announceNoCount);
@@ -397,12 +406,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return quest;
         }
 
-        public virtual CDataTutorialQuestOrderList ToCDataTutorialQuestOrderList(uint step, bool enableCancel = false)
+        public virtual CDataTutorialQuestOrderList ToCDataTutorialQuestOrderList(uint step)
         {
             return new CDataTutorialQuestOrderList()
             {
                 Param = ToCDataQuestOrderList(step),
-                EnableCancel = enableCancel
+                EnableCancel = EnableCancel
             };
         }
 
@@ -425,12 +434,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
             };
         }
 
-        public virtual CDataTutorialQuestList ToCDataTutorialQuestList(uint step, bool enableCancel = false)
+        public virtual CDataTutorialQuestList ToCDataTutorialQuestList(uint step)
         {
             return new CDataTutorialQuestList()
             {
                 Param = ToCDataQuestList(step),
-                EnableCancel = enableCancel
+                EnableCancel = EnableCancel,
             };
         }
 
