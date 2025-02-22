@@ -119,7 +119,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .ToList();
         }
 
-        public PacketQueue AddAreaPoint(GameClient client, QuestAreaId areaId, uint point, DbConnection? connectionIn = null)
+        public PacketQueue AddAreaPoint(GameClient client, QuestAreaId areaId, (uint BasePoints, uint BonusPoints) points, DbConnection? connectionIn = null)
         {
             PacketQueue queue = new PacketQueue();
 
@@ -137,17 +137,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
             List<AreaRankRequirement> requirements = Server.AssetRepository.AreaRankRequirementAsset[areaId];
             var nextRank = requirements.Find(x => x.Rank == clientRank.Rank + 1);
 
-            uint bonusPoint = 0; // TODO: Settings multiplier.
-
-            clientRank.Point += point;
-            clientRank.WeekPoint += point;
+            clientRank.Point += points.BasePoints + points.BonusPoints;
+            clientRank.WeekPoint += points.BasePoints + points.BonusPoints;
             bool canRankUp = clientRank.Rank < MaxRank(areaId) && nextRank.MinPoint > 0 && clientRank.Point >= nextRank.MinPoint;
 
             client.Enqueue(new S2CAreaPointUpNtc()
             {
                 AreaId = areaId,
-                AddPoint = point, // + bonusPoint???
-                AddPointByCharge = bonusPoint,
+                AddPoint = points.BasePoints,
+                AddPointByCharge = points.BonusPoints,
                 TotalPoint = clientRank.Point,
                 WeekPoint = clientRank.WeekPoint,
                 CanRankUp = canRankUp,

@@ -65,7 +65,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 switch (questProgress.QuestType)
                 {
                     case QuestType.Tutorial:
-                        var tutorialQuest = quest.ToCDataTutorialQuestOrderList(questProgress.Step, true);
+                        var tutorialQuest = quest.ToCDataTutorialQuestOrderList(questProgress.Step);
                         ntc.TutorialQuestOrderList.Add(tutorialQuest);
                         break;
                     case QuestType.WildHunt:

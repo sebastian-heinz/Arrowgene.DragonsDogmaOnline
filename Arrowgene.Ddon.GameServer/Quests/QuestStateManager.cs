@@ -651,7 +651,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             if (!scaledRewards.Where(x => x.Type == PointType.AreaPoints).Any() && (QuestManager.IsWorldQuest(quest) || QuestManager.IsBoardQuest(quest)))
             {
                 var areaId = quest.QuestAreaId > 0 ? quest.QuestAreaId : (QuestAreaId)quest.LightQuestDetail.AreaId;
-                var amount = server.ExpManager.GetScaledPointAmount(GameMode.Normal, RewardSource.Quest, PointType.AreaPoints, server.AreaRankManager.GetAreaPointReward(quest));
+                var amount = server.ExpManager.GetAdjustedPointsForQuest(PointType.AreaPoints, server.AreaRankManager.GetAreaPointReward(quest), quest.QuestType);
                 var areaRankNtcs = server.AreaRankManager.AddAreaPoint(client, areaId, amount, connectionIn);
                 packets.AddRange(areaRankNtcs);
             }
