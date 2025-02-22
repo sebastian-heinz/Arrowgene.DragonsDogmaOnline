@@ -36,6 +36,7 @@ namespace Arrowgene.Ddon.Shared.Asset
         public byte MinimumItemRank { get; set; }
         public bool Enabled { get; set; }
         public bool OverrideEnemySpawn { get; set; }
+        public bool EnableCancel { get; set; }
         public QuestSource QuestSource { get; set; }
 
         public List<QuestPointReward> PointRewards { get; set; }

@@ -32,8 +32,7 @@ namespace Arrowgene.Ddon.Server.Scripting
         public static bool WithinTimespan(DateTime startDate, DateTime endDate)
         {
             var now = DateTime.Now;
-            return (now.Month >= startDate.Month && now.Month <= endDate.Month) &&
-                   (now.Day >= startDate.Day && now.Day <= endDate.Day);
+            return (now >= startDate && now <= endDate);
         }
 
         public static bool WithinTimespan((DateTime StartDate, DateTime EndDate) timespan)

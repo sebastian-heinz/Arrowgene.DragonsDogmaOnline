@@ -27,6 +27,11 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
             {
                 OverrideEnemySpawn = (QuestType == QuestType.Main);
             }
+
+            if (EnableCancel == null)
+            {
+                EnableCancel = (QuestType != QuestType.Tutorial && QuestType != QuestType.Main);
+            }
         }
 
         public string Path { get; set; }
@@ -45,6 +50,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
         public abstract byte MinimumItemRank { get; }
         public abstract bool IsDiscoverable { get; }
         public virtual bool? OverrideEnemySpawn { get; } = null;
+        public virtual bool? EnableCancel { get; } = null;
         public virtual bool ResetPlayerAfterQuest { get; } = false;
 
         private Dictionary<ushort, QuestProcess> Processes { get; set; }
@@ -287,6 +293,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
                 MinimumItemRank = MinimumItemRank,
                 NextQuestId = NextQuestId,
                 OverrideEnemySpawn = OverrideEnemySpawn.Value,
+                EnableCancel = EnableCancel.Value,
                 QuestAreaId = QuestAreaId,
                 QuestId = QuestId,
                 QuestOrderBackgroundImage = QuestOrderBackgroundImage,
