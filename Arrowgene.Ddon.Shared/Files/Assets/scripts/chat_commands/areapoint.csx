@@ -40,7 +40,7 @@ public class ChatCommand : IChatCommand
             }
         }
 
-        server.AreaRankManager.AddAreaPoint(client, areaId, amount).Send();
+        server.AreaRankManager.AddAreaPoint(client, areaId, (amount, 0)).Send();
     }
 }
 

@@ -565,6 +565,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 case PointType.ExperiencePoints:
                     amount = server.ExpManager.GetAdjustedPoints(client, RewardSource.Quest, client.Character, null, PointType.ExperiencePoints, point.Reward, null, questType);
                     break;
+                case PointType.AreaPoints:
+                    amount = server.ExpManager.GetAdjustedPointsForQuest(PointType.AreaPoints, point.Reward, questType);
+                    break;
                 default:
                     break;
             }

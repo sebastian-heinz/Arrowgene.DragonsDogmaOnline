@@ -53,7 +53,7 @@ public class ChatCommand : IChatCommand
         }
         var questResultCommands = new List<CDataQuestCommand>()
         {
-            QuestManager.ResultCommand.StageJump((StageNo) stageNo, startingLocation)
+            QuestManager.ResultCommand.StageJump((uint) stageNo, startingLocation)
         };
 
         //Send fake progress update to trigger the warp command.

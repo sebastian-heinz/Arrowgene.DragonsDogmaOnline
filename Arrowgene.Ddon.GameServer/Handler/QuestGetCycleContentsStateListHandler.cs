@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System.Collections.Generic;
@@ -64,7 +65,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 switch (questProgress.QuestType)
                 {
                     case QuestType.Tutorial:
-                        var tutorialQuest = quest.ToCDataTutorialQuestOrderList(questProgress.Step);
+                        var tutorialQuest = quest.ToCDataTutorialQuestOrderList(questProgress.Step, true);
                         ntc.TutorialQuestOrderList.Add(tutorialQuest);
                         break;
                     case QuestType.WildHunt:
@@ -75,7 +76,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         var lightQuest = quest.ToCDataLightQuestOrderList(questProgress.Step);
                         if (lightQuest.Detail.BoardType == 1 && lightQuest.Detail.GetAp == 0)
                         {
-                            lightQuest.Detail.GetAp = Server.AreaRankManager.GetAreaPointReward(quest);
+                            lightQuest.Detail.GetAp = Server.ExpManager.GetAdjustedPointsForQuest(PointType.AreaPoints, Server.AreaRankManager.GetAreaPointReward(quest), QuestType.Board).BasePoints;
                         }
                         ntc.LightQuestOrderList.Add(lightQuest);
                         break;

@@ -260,7 +260,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 gatheringItem.ItemNum -= pickedGatherItems;
 
-                return _Server.AreaRankManager.AddAreaPoint(client, pointArea, 10 * pickedGatherItems, connectionIn);
+                return _Server.AreaRankManager.AddAreaPoint(client, pointArea, (10 * pickedGatherItems, 0), connectionIn);
             }
             else 
             {

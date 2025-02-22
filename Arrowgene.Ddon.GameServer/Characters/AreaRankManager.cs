@@ -44,12 +44,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             var pointSupplies = rankSupplies.SupplyItemInfoList.Where(x => x.MinAreaPoint <= points).OrderBy(x => x.MinAreaPoint).LastOrDefault() 
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_SUPPLY_NOT_AVAILABLE, $"No valid asset for {areaId}, rank {rank}, {points} points found in AreaRankSupply asset.");
-            
+
+            var rewardMult = Server.GpCourseManager.AreaMasterSupply() ? 2 : 1;
+
             return pointSupplies.SupplyItemList.Select((x, i) => new CDataRewardItemInfo()
             {
                 Index = (uint)i,
                 ItemId = x.ItemId,
-                Num = (byte)x.ItemNum
+                Num = (byte)(x.ItemNum * rewardMult),
             }).ToList();
         }
 
@@ -181,6 +183,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             uint amount;
             QuestAreaId areaId = quest.QuestAreaId;
+            if (QuestManager.IsBoardQuest(quest))
+            {
+                areaId = (QuestAreaId)quest.LightQuestDetail.AreaId;
+            }
 
             if (!IsValidAreaId(areaId))
             {
