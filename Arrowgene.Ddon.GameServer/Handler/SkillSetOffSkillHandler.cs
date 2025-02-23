@@ -1,13 +1,11 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class SkillSetOffSkillHandler : StructurePacketHandler<GameClient, C2SSkillSetOffSkillReq>
+    public class SkillSetOffSkillHandler : GameRequestPacketHandler<C2SSkillSetOffSkillReq, S2CSkillSetOffSkillRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillSetOffSkillHandler));
 
@@ -18,14 +16,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             jobManager = server.JobManager;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SSkillSetOffSkillReq> packet)
+        public override S2CSkillSetOffSkillRes Handle(GameClient client, C2SSkillSetOffSkillReq request)
         {
-            jobManager.RemoveSkill(Server.Database, client.Character, packet.Structure.Job, packet.Structure.SlotNo);
+            jobManager.RemoveSkill(Server.Database, client.Character, request.Job, request.SlotNo);
 
-            client.Send(new S2CSkillSetOffSkillRes() {
-                Job = packet.Structure.Job,
-                SlotNo = packet.Structure.SlotNo
-            });
+            return new S2CSkillSetOffSkillRes() {
+                Job = request.Job,
+                SlotNo = request.SlotNo
+            };
         }
     }
 }

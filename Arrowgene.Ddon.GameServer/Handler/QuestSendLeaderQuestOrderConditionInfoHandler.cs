@@ -1,11 +1,10 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestSendLeaderQuestOrderConditionInfoHandler : GameStructurePacketHandler<C2SQuestSendLeaderQuestOrderConditionInfoReq>
+    public class QuestSendLeaderQuestOrderConditionInfoHandler : GameRequestPacketHandler<C2SQuestSendLeaderQuestOrderConditionInfoReq, S2CQuestSendLeaderQuestOrderConditionInfoRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestSendLeaderQuestOrderConditionInfoHandler));
 
@@ -13,18 +12,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SQuestSendLeaderQuestOrderConditionInfoReq> packet)
+        public override S2CQuestSendLeaderQuestOrderConditionInfoRes Handle(GameClient client, C2SQuestSendLeaderQuestOrderConditionInfoReq request)
         {
-            if(packet.Structure.OrderConditionInfoList.Count > 0)
+            if (request.OrderConditionInfoList.Count > 0)
             {
                 S2CQuestSendLeaderQuestOrderConditionInfoNtc ntc = new S2CQuestSendLeaderQuestOrderConditionInfoNtc() {
-                    OrderConditionInfoList = packet.Structure.OrderConditionInfoList
+                    OrderConditionInfoList = request.OrderConditionInfoList
                 };
 
                 client.Party.SendToAllExcept(ntc, client);
             }
             
-            client.Send(new S2CQuestSendLeaderQuestOrderConditionInfoRes());
+            return new();
         }
     }
 }

@@ -6,7 +6,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class WarpReleaseWarpPointHandler : StructurePacketHandler<GameClient, C2SWarpReleaseWarpPointReq>
+    public class WarpReleaseWarpPointHandler : GameRequestPacketHandler<C2SWarpReleaseWarpPointReq, S2CWarpReleaseWarpPointRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(WarpReleaseWarpPointHandler));
 
@@ -14,24 +14,27 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SWarpReleaseWarpPointReq> packet)
+        public override S2CWarpReleaseWarpPointRes Handle(GameClient client, C2SWarpReleaseWarpPointReq request)
         {
             ReleasedWarpPoint rwp = new ReleasedWarpPoint()
             {
-                WarpPointId = packet.Structure.WarpPointId,
+                WarpPointId = request.WarpPointId,
                 // WDT must ALWAYS be the first favorite, otherwise the client doesn't behave properly
-                FavoriteSlotNo = packet.Structure.WarpPointId == 1 ? 1u : 0u
+                FavoriteSlotNo = request.WarpPointId == 1 ? 1u : 0u
             };
+
+            // TODO: Check against MSQ progress to block S2/S3 warps.
+
             bool inserted = Server.Database.InsertIfNotExistsReleasedWarpPoint(client.Character.CharacterId, rwp);
-            if(inserted)
+            if (inserted)
             {
                 client.Character.ReleasedWarpPoints.Add(rwp);
             }
 
-            client.Send(new S2CWarpReleaseWarpPointRes
+            return new S2CWarpReleaseWarpPointRes
             {
-                WarpPointId = packet.Structure.WarpPointId
-            });
+                WarpPointId = request.WarpPointId
+            };
         }
     }
 }

@@ -1,32 +1,24 @@
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System.Dynamic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class ProfileGetMyCharacterProfileHandler : StructurePacketHandler<GameClient, C2SProfileGetMyCharacterProfileReq>
+    public class ProfileGetMyCharacterProfileHandler : GameRequestPacketHandler<C2SProfileGetMyCharacterProfileReq, S2CProfileGetMyCharacterProfileRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ProfileGetMyCharacterProfileHandler));
 
-        private OrbUnlockManager _OrbUnlockManager;
-        private CharacterManager _CharacterManager;
-
         public ProfileGetMyCharacterProfileHandler(DdonGameServer server) : base(server)
         {
-            _OrbUnlockManager = server.OrbUnlockManager;
-            _CharacterManager = server.CharacterManager;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SProfileGetMyCharacterProfileReq> packet)
+        public override S2CProfileGetMyCharacterProfileRes Handle(GameClient client, C2SProfileGetMyCharacterProfileReq request)
         {
-            S2CProfileGetMyCharacterProfileRes Result = new S2CProfileGetMyCharacterProfileRes();
-            Result.OrbStatusList = _OrbUnlockManager.GetOrbPageStatus(client.Character);
-            Result.AbilityCostMax = _CharacterManager.GetMaxAugmentAllocation(client.Character);
-            client.Send(Result);
+            return new S2CProfileGetMyCharacterProfileRes
+            {
+                OrbStatusList = Server.OrbUnlockManager.GetOrbPageStatus(client.Character),
+                AbilityCostMax = Server.CharacterManager.GetMaxAugmentAllocation(client.Character)
+            };
         }
     }
 }

@@ -1,16 +1,14 @@
-using System.Collections.Generic;
-using System.Linq;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PawnGetMyPawnListHandler : StructurePacketHandler<GameClient, C2SPawnGetMyPawnListReq>
+    public class PawnGetMyPawnListHandler : GameRequestPacketHandler<C2SPawnGetMyPawnListReq, S2CPawnGetMypawnListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnGetMyPawnListHandler));
 
@@ -18,7 +16,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SPawnGetMyPawnListReq> packet)
+        public override S2CPawnGetMypawnListRes Handle(GameClient client, C2SPawnGetMyPawnListReq request)
         {
             List<CDataPawnList> pawnList = new List<CDataPawnList>();
 
@@ -57,7 +55,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.PawnList = pawnList;
             res.PartnerInfo = partnerInfo;
 
-            client.Send(res);
+            return res;
         }
     }
 }

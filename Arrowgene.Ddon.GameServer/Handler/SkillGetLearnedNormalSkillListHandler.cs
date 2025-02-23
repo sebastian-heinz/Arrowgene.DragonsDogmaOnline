@@ -1,14 +1,10 @@
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class SkillGetLearnedNormalSkillListHandler : GameStructurePacketHandler<C2SSkillGetLearnedNormalSkillListReq>
+    public class SkillGetLearnedNormalSkillListHandler : GameRequestPacketHandler<C2SSkillGetLearnedNormalSkillListReq, S2CSkillGetLearnedNormalSkillListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillGetLearnedNormalSkillListHandler));
 
@@ -17,15 +13,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         }
 
         // Learned Core Skills
-        public override void Handle(GameClient client, StructurePacket<C2SSkillGetLearnedNormalSkillListReq> packet)
+        public override S2CSkillGetLearnedNormalSkillListRes Handle(GameClient client, C2SSkillGetLearnedNormalSkillListReq request)
         {
-            var Result = new S2CSkillGetLearnedNormalSkillListRes()
+            return new S2CSkillGetLearnedNormalSkillListRes()
             {
                 NormalSkillParamList = client.Character.LearnedNormalSkills
             };
-
-            client.Send(Result);
         }
-
     }
 }

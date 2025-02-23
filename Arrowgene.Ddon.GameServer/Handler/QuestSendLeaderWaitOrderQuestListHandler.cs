@@ -7,7 +7,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestSendLeaderWaitOrderQuestListHandler : GameStructurePacketHandler<C2SQuestSendLeaderWaitOrderQuestListReq>
+    public class QuestSendLeaderWaitOrderQuestListHandler : GameRequestPacketHandler<C2SQuestSendLeaderWaitOrderQuestListReq, S2CQuestSendLeaderWaitOrderQuestListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestSendLeaderWaitOrderQuestListHandler));
 
@@ -15,12 +15,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SQuestSendLeaderWaitOrderQuestListReq> packet)
+        public override S2CQuestSendLeaderWaitOrderQuestListRes Handle(GameClient client, C2SQuestSendLeaderWaitOrderQuestListReq request)
         {
-            if(packet.Structure.QuestScheduleIdList.Count > 0)
+            if (request.QuestScheduleIdList.Count > 0)
             {
                 S2CQuestSendLeaderWaitOrderQuestListNtc ntc = new S2CQuestSendLeaderWaitOrderQuestListNtc() {
-                    QuestScheduleIdList = packet.Structure.QuestScheduleIdList
+                    QuestScheduleIdList = request.QuestScheduleIdList
                 };
 
                 foreach(GameClient member in client.Party.Clients)
@@ -31,8 +31,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                 }
             }
-            
-            client.Send(new S2CQuestSendLeaderWaitOrderQuestListRes());
+
+            return new();
         }
     }
 }

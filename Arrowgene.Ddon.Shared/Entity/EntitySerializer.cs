@@ -245,6 +245,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataLobbyMemberInfo.Serializer());
             Create(new CDataLoginSetting.Serializer());
             Create(new CDataLostPawnList.Serializer());
+            Create(new CDataLotQuestList.Serializer());
             Create(new CDataLotQuestOrderList.Serializer());
 
             Create(new CDataMDataCraftGradeupRecipe.Serializer());

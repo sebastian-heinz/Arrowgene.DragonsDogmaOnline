@@ -1,13 +1,12 @@
-using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class SkillSetPawnSkillHandler : GameStructurePacketHandler<C2SSkillSetPawnSkillReq>
+    public class SkillSetPawnSkillHandler : GameRequestPacketHandler<C2SSkillSetPawnSkillReq, S2CSkillSetPawnSkillRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillSetPawnSkillHandler));
         
@@ -18,17 +17,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             gameServer = server;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SSkillSetPawnSkillReq> packet)
+        public override S2CSkillSetPawnSkillRes Handle(GameClient client, C2SSkillSetPawnSkillReq request)
         {
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
-            CustomSkill skillSlot = gameServer.JobManager.SetSkill(Server.Database, client, pawn, packet.Structure.Job, packet.Structure.SlotNo, packet.Structure.SkillId, packet.Structure.SkillLv);
-            client.Send(new S2CSkillSetPawnSkillRes() {
+            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
+            CustomSkill skillSlot = gameServer.JobManager.SetSkill(Server.Database, client, pawn, request.Job, request.SlotNo, request.SkillId, request.SkillLv);
+            return new S2CSkillSetPawnSkillRes() {
                 PawnId = pawn.PawnId,
                 Job = skillSlot.Job,
-                SlotNo = packet.Structure.SlotNo,
+                SlotNo = request.SlotNo,
                 SkillId = skillSlot.SkillId,
                 SkillLv = skillSlot.SkillLv
-            });
+            };
         }
     }
 }

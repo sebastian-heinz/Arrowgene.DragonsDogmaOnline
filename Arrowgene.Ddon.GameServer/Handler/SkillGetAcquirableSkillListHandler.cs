@@ -1,16 +1,14 @@
-using System.Collections.Generic;
-using System.Linq;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class SkillGetAcquirableSkillListHandler : StructurePacketHandler<GameClient, C2SSkillGetAcquirableSkillListReq>
+    public class SkillGetAcquirableSkillListHandler : GameRequestPacketHandler<C2SSkillGetAcquirableSkillListReq, S2CSkillGetAcquirableSkillListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillGetCurrentSetSkillListHandler));
 
@@ -11198,12 +11196,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SSkillGetAcquirableSkillListReq> packet)
+        public override S2CSkillGetAcquirableSkillListRes Handle(GameClient client, C2SSkillGetAcquirableSkillListReq request)
         {
-            client.Send(new S2CSkillGetAcquirableSkillListRes(){
-                SkillParamList = AllSkills
-                    .Where(x => x.Job == packet.Structure.Job).ToList()
-            });
+            return new S2CSkillGetAcquirableSkillListRes()
+            {
+                SkillParamList = AllSkills.Where(x => x.Job == request.Job).ToList()
+            };
         }
     }
 }

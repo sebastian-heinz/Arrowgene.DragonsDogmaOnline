@@ -1,14 +1,13 @@
-using System.Collections.Generic;
-using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PawnTrainingGetTrainingStatusHandler : GameStructurePacketHandler<C2SPawnTrainingGetTrainingStatusReq>
+    public class PawnTrainingGetTrainingStatusHandler : GameRequestPacketHandler<C2SPawnTrainingGetTrainingStatusReq, S2CPawnTrainingGetTrainingStatusRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnTrainingGetTrainingStatusHandler));
         
@@ -16,15 +15,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SPawnTrainingGetTrainingStatusReq> packet)
+        public override S2CPawnTrainingGetTrainingStatusRes Handle(GameClient client, C2SPawnTrainingGetTrainingStatusReq request)
         {
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
-            S2CPawnTrainingGetTrainingStatusRes res = new S2CPawnTrainingGetTrainingStatusRes();
-            res.TrainingStatus = pawn.TrainingStatus.GetValueOrDefault(packet.Structure.Job, new byte[64]);
-            res.TrainingPoints = pawn.TrainingPoints;
-            res.AvailableTraining = pawn.AvailableTraining;
+            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
+            S2CPawnTrainingGetTrainingStatusRes res = new S2CPawnTrainingGetTrainingStatusRes()
+            {
+                TrainingPoints = pawn.TrainingPoints,
+                TrainingStatus = pawn.TrainingStatus.GetValueOrDefault(request.Job, new byte[64]),
+                AvailableTraining = pawn.AvailableTraining
+            };
 
-            client.Send(res);
+            return res;
         }
     }
 }

@@ -1,12 +1,10 @@
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
-using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PawnGetPawnHistoryListHandler : StructurePacketHandler<GameClient, C2SPawnGetPawnHistoryListReq>
+    public class PawnGetPawnHistoryListHandler : GameRequestPacketHandler<C2SPawnGetPawnHistoryListReq, S2CPawnGetPawnHistoryListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnGetPawnHistoryListHandler));
 
@@ -14,10 +12,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SPawnGetPawnHistoryListReq> req)
+        public override S2CPawnGetPawnHistoryListRes Handle(GameClient client, C2SPawnGetPawnHistoryListReq request)
         {
-            S2CPawnGetPawnHistoryListRes res = new S2CPawnGetPawnHistoryListRes();
-            client.Send(res);
+            // TODO: Implement.
+            return new();
         }
     }
 }

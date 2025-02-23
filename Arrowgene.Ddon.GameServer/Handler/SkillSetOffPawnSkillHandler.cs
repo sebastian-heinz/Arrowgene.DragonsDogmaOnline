@@ -1,16 +1,13 @@
-using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class SkillSetOffPawnSkillHandler : GameStructurePacketHandler<C2SSkillSetOffPawnSkillReq>
+    public class SkillSetOffPawnSkillHandler : GameRequestPacketHandler<C2SSkillSetOffPawnSkillReq, S2CSkillSetOffPawnSkillRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillSetOffPawnSkillHandler));
         
@@ -21,16 +18,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             jobManager = server.JobManager;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SSkillSetOffPawnSkillReq> packet)
+        public override S2CSkillSetOffPawnSkillRes Handle(GameClient client, C2SSkillSetOffPawnSkillReq request)
         {
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
-            jobManager.RemoveSkill(Server.Database, pawn, packet.Structure.Job, packet.Structure.SlotNo);
+            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
+            jobManager.RemoveSkill(Server.Database, pawn, request.Job, request.SlotNo);
 
-            client.Send(new S2CSkillSetOffPawnSkillRes() {
-                PawnId = packet.Structure.PawnId,
-                Job = packet.Structure.Job,
-                SlotNo = packet.Structure.SlotNo
-            });
+            return new S2CSkillSetOffPawnSkillRes() {
+                PawnId = request.PawnId,
+                Job = request.Job,
+                SlotNo = request.SlotNo
+            };
         }
     }
 }

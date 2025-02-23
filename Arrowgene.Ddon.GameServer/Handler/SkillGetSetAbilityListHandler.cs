@@ -1,13 +1,11 @@
-using System.Linq;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class SkillGetSetAbilityListHandler : StructurePacketHandler<GameClient, C2SSkillGetSetAbilityListReq>
+    public class SkillGetSetAbilityListHandler : GameRequestPacketHandler<C2SSkillGetSetAbilityListReq, S2CSkillGetSetAbilityListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillGetSetAbilityListHandler));
 
@@ -15,14 +13,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SSkillGetSetAbilityListReq> packet)
+        public override S2CSkillGetSetAbilityListRes Handle(GameClient client, C2SSkillGetSetAbilityListReq request)
         {
-            client.Send(new S2CSkillGetSetAbilityListRes() {
+            return new S2CSkillGetSetAbilityListRes() {
                 SetAcquierementParam = client.Character.EquippedAbilitiesDictionary[client.Character.Job]
                     .Select((x, index) => x?.AsCDataSetAcquirementParam((byte)(index+1)))
                     .Where(x => x != null)
                     .ToList()
-            });
+            };
         }
     }
 }
