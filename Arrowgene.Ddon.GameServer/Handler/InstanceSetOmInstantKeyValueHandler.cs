@@ -8,7 +8,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class InstanceSetOmInstantKeyValueHandler : StructurePacketHandler<GameClient, C2SInstanceSetOmInstantKeyValueReq>
+    public class InstanceSetOmInstantKeyValueHandler : GameStructurePacketHandler<C2SInstanceSetOmInstantKeyValueReq>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceSetOmInstantKeyValueHandler));
 

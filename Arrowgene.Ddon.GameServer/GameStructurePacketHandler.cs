@@ -1,4 +1,4 @@
-﻿using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity;
 
 namespace Arrowgene.Ddon.GameServer

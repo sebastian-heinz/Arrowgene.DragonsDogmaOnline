@@ -9,7 +9,7 @@ using System;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class ContextGetSetContextHandler : StructurePacketHandler<GameClient, C2SContextGetSetContextReq>
+    public class ContextGetSetContextHandler : GameRequestPacketQueueHandler<C2SContextGetSetContextReq, S2CContextGetSetContextRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ContextGetSetContextHandler));
 
@@ -18,10 +18,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SContextGetSetContextReq> packet)
+        public override PacketQueue Handle(GameClient client, C2SContextGetSetContextReq request)
         {
+            PacketQueue queue = new();
+
             S2CContextGetSetContextRes res = new S2CContextGetSetContextRes();
-            client.Send(res);
+            client.Enqueue(res, queue);
 
             // Game alternates between 
             // S2CContextSetContextNtc and S2CContextSetContextBaseNtc
@@ -35,8 +37,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Sending S2CInstanceAreaResetNtc resets it (Like its done in StageAreaChangeHandler)
             // Send to all or just the host?
 
-            CDataContextSetBase baseContext = packet.Structure.Base;
-            Tuple<CDataContextSetBase,CDataContextSetAdditional> context = ContextManager.GetContext(client.Party, baseContext.UniqueId);
+            CDataContextSetBase baseContext = request.Base;
+            Tuple<CDataContextSetBase, CDataContextSetAdditional> context = ContextManager.GetContext(client.Party, baseContext.UniqueId);
 
             int clientIndex = Math.Max(client.Party.ClientIndex(client), 0);
             baseContext.MasterIndex = clientIndex; //Likely hacky.
@@ -48,7 +50,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Base = baseContext
                 };
 
-                client.Party.SendToAll(response);
+                client.Party.EnqueueToAll(response, queue);
             }
             else
             {
@@ -58,12 +60,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Additional = context.Item2
                 };
 
-                client.Party.SendToAll(response);
+                client.Party.EnqueueToAll(response, queue);
             }
 
             Logger.Debug($"ContextGetSetContextHandler: ContextId: {baseContext.ContextId}, UniqueId: 0x{baseContext.UniqueId:x16}");
 
             ContextManager.AssignMaster(client, baseContext.UniqueId, clientIndex);
+
+            return queue;
         }
     }
 }
