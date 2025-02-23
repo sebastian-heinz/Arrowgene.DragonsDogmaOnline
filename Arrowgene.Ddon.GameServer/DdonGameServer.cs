@@ -175,11 +175,7 @@ namespace Arrowgene.Ddon.GameServer
                 Database.DeleteConnection(Id, client.Account.Id);
             }
 
-            PartyGroup party = client.Party;
-            if (party != null)
-            {
-                party.Leave(client);
-            }
+            client.Party?.Leave(client);
 
             EventHandler<ClientConnectionChangeArgs> connectionChangeEvent = ClientConnectionChangeEvent;
             if (connectionChangeEvent != null)

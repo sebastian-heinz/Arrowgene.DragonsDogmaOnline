@@ -63,23 +63,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     var characterId = members[i];
                     var memberClient = Server.ClientLookup.GetClientByCharacterId(characterId);
-
-                    var invitedMember = party.Invite(memberClient, hostClient);
-                    if (invitedMember.HasError)
+                    try
                     {
-                        Logger.Error($"(EntryBoard) Failed to invite CharacterId={memberClient.Character.CharacterId} to PartyId={party.Id}");
-                        continue;
-                    }
+                        var invitedMember = party.Invite(memberClient, hostClient);
+                        var partyMember = party.Accept(memberClient);
 
-                    var partyMember = party.Accept(memberClient);
-                    if (partyMember.HasError)
+                        inviteAcceptNtc.MemberIndex = i;
+                        memberClient.Enqueue(inviteAcceptNtc, packetQueue);
+                    }
+                    catch (ResponseErrorException ex)
                     {
-                        Logger.Error($"(EntryBoard) CharacterId={memberClient.Character.CharacterId} failed to accept invite for PartyId={party.Id}");
-                        continue;
+                        // This is an internal party error, try and continue gracefully.
+                        if (ErrorCode.ERROR_CODE_PARTY_INTERNAL_ERROR <= ex.ErrorCode && ex.ErrorCode <= ErrorCode.ERROR_CODE_PARTY_IS_NOT_PAWN_OWNER)
+                        {
+                            Logger.Error($"(EntryBoard) Failure to handle CharacterId={memberClient?.Character?.CharacterId ?? uint.MaxValue}, PartyId={party.Id}: {ex.Message}");
+                            continue;
+                        }
+                        throw;
                     }
-
-                    inviteAcceptNtc.MemberIndex = i;
-                    memberClient.Enqueue(inviteAcceptNtc, packetQueue);
                 }
             }
 

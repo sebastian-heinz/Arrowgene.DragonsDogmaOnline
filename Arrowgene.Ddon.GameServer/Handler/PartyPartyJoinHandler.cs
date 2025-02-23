@@ -1,7 +1,6 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
@@ -21,19 +20,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CPartyPartyJoinRes res = new S2CPartyPartyJoinRes();
 
-            PartyGroup party = Server.PartyManager.GetParty(request.PartyId);
-            if (party == null)
-            {
-                throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_NOT_FOUNDED, "failed to find party (Server.PartyManager.GetParty() == null)");
-            }
+            PartyGroup party = Server.PartyManager.GetParty(request.PartyId) 
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_NOT_FOUNDED, 
+                "failed to find party (Server.PartyManager.GetParty() == null)");
 
-            ErrorRes<PlayerPartyMember> join = party.Join(client);
-            if (join.HasError)
-            {
-                Logger.Error(client, "failed to join party");
-                throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_NOT_JOINED, "failed to join party");
-            }
-
+            PlayerPartyMember join = party.Join(client);
+            
             var partyLeader = party.Leader?.Client.Character
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_LEADER_ABSENCE);
 
@@ -57,7 +49,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var quest = QuestManager.GetQuestByScheduleId(questProgress.QuestScheduleId);
                 if (quest != null && quest.IsPersonal)
                 { 
-                    join.Value.QuestState.AddNewQuest(questProgress.QuestScheduleId, questProgress.Step);
+                    join.QuestState.AddNewQuest(questProgress.QuestScheduleId, questProgress.Step);
                 }
             }
 
@@ -71,7 +63,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             party.SendToAll(ntc);
 
-            S2CContextGetPartyPlayerContextNtc newMemberContext = join.Value.GetS2CContextGetParty_ContextNtcEx();
+            S2CContextGetPartyPlayerContextNtc newMemberContext = join.GetS2CContextGetParty_ContextNtcEx();
             if (partyLeader.CommonId != client.Character.CommonId)
             {
                 // Update player position when joining from a different stage
@@ -85,7 +77,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // Send existing party player context NTCs to the new member
                 foreach (PartyMember member in party.Members)
                 {
-                    if (member.MemberIndex == join.Value.MemberIndex)
+                    if (member.MemberIndex == join.MemberIndex)
                     {
                         // Skip ourselves
                         continue;

@@ -2,18 +2,14 @@ using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PartyPartyCreateHandler : GameStructurePacketHandler<C2SPartyPartyCreateReq>
+    public class PartyPartyCreateHandler : GameRequestPacketHandler<C2SPartyPartyCreateReq, S2CPartyPartyCreateRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyPartyCreateHandler));
 
@@ -21,37 +17,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SPartyPartyCreateReq> packet)
+        public override S2CPartyPartyCreateRes Handle(GameClient client, C2SPartyPartyCreateReq request)
         {
             S2CPartyPartyCreateRes res = new S2CPartyPartyCreateRes();
 
-            PartyGroup party = Server.PartyManager.NewParty();
-            if (party == null)
-            {
-                Logger.Error(client, "can not create party (Server.PartyManager.NewParty() == null)");
-                res.Error = (uint)ErrorCode.ERROR_CODE_FAIL;
-                client.Send(res);
-                return;
-            }
+            PartyGroup party = Server.PartyManager.NewParty()
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_CREATE_ERROR, "can not create party (Server.PartyManager.NewParty() == null)");
 
-            ErrorRes<PlayerPartyMember> host = party.AddHost(client);
-            if (host.HasError)
-            {
-                Logger.Error(client, "failed to create and join new party");
-                res.Error = (uint)host.ErrorCode;
-                client.Send(res);
-                return;
-            }
+            party.AddHost(client);
 
-            ErrorRes<PlayerPartyMember> join = party.Join(client);
-            if (join.HasError)
-            {
-                Logger.Error(client, "Failed to join new party");
-                res.Error = (uint)join.ErrorCode;
-                client.Send(res);
-                return;
-            }
-
+            PlayerPartyMember join = party.Join(client);
+            
             var progress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All);
             foreach (var questProgress in progress)
             {
@@ -71,13 +47,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CPartyPartyJoinNtc ntc = new S2CPartyPartyJoinNtc();
             ntc.HostCharacterId = client.Character.CharacterId;
             ntc.LeaderCharacterId = client.Character.CharacterId;
-            ntc.PartyMembers.Add(join.Value.GetCDataPartyMember());
+            ntc.PartyMembers.Add(join.GetCDataPartyMember());
             client.Send(ntc);
 
             res.PartyId = party.Id;
-            client.Send(res);
 
             Logger.Info(client, $"created party with PartyId:{party.Id}");
+
+            return res;
         }
     }
 }
