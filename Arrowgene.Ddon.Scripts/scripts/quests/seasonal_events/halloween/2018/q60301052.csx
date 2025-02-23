@@ -25,9 +25,9 @@ public class ScriptedQuest : IQuest
         public const uint SweetTooth = 2620; // Sweet Tooth
     }
 
-    public override bool AcceptRequirementsMet(DdonGameServer server, GameClient client)
+    public override bool AcceptRequirementsMet(GameClient client)
     {
-        return SeasonalEvents.CheckConfigSettings(server, "EnableHalloweenEvent", "HalloweenEventYear", 2018, "HalloweenValidPeriod");
+        return SeasonalEvents.CheckConfigSettings("EnableHalloweenEvent", "HalloweenEventYear", 2018, "HalloweenValidPeriod");
     }
 
     protected override void InitializeRewards()

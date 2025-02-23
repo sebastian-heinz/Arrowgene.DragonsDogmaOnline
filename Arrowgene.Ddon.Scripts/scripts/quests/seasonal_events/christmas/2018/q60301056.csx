@@ -23,9 +23,9 @@ public class ScriptedQuest : IQuest
         public const uint FleetFooted = 2657; // Fleet-footed <named>
     }
 
-    public override bool AcceptRequirementsMet(DdonGameServer server, GameClient client)
+    public override bool AcceptRequirementsMet(GameClient client)
     {
-        return SeasonalEvents.CheckConfigSettings(server, "EnableChristmasEvent", "ChristmasEventYear", 2018, "ChristmasValidPeriod");
+        return SeasonalEvents.CheckConfigSettings("EnableChristmasEvent", "ChristmasEventYear", 2018, "ChristmasValidPeriod");
     }
 
     protected override void InitializeRewards()

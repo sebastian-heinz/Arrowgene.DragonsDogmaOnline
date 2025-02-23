@@ -91,7 +91,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
         {
         }
 
-        public virtual bool AcceptRequirementsMet(DdonGameServer server, GameClient client)
+        public virtual bool AcceptRequirementsMet(GameClient client)
         {
             return Enabled;
         }

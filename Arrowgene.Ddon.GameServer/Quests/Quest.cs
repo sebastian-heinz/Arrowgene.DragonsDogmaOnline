@@ -164,15 +164,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
         /// Checks to see if the quest is active. This includes checking the enabled flag
         /// and other special conditions like between a date range, time or other conditions.
         /// </summary>
-        /// <param name="server"></param>
         /// <param name="client"></param>
         /// <returns></returns>
-        public virtual bool IsActive(DdonGameServer server, GameClient client)
+        public virtual bool IsActive(GameClient client)
         {
             bool additionalReqs = true;
             if (BackingObject != null)
             {
-                additionalReqs = BackingObject.AcceptRequirementsMet(server, client);
+                additionalReqs = BackingObject.AcceptRequirementsMet(client);
             }
             
             return Enabled && additionalReqs;

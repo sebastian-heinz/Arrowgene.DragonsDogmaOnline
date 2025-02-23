@@ -25,9 +25,9 @@ public class ScriptedQuest : IQuest
         public const uint CandyLovingWitch = 2108; // Candy Loving Witch
     }
 
-    public override bool AcceptRequirementsMet(DdonGameServer server, GameClient client)
+    public override bool AcceptRequirementsMet(GameClient client)
     {
-        return SeasonalEvents.CheckConfigSettings(server, "EnableHalloweenEvent", "HalloweenEventYear", 2017, "HalloweenValidPeriod");
+        return SeasonalEvents.CheckConfigSettings("EnableHalloweenEvent", "HalloweenEventYear", 2017, "HalloweenValidPeriod");
     }
 
     protected override void InitializeRewards()

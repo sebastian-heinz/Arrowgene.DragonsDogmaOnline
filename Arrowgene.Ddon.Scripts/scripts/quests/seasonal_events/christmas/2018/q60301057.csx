@@ -17,9 +17,9 @@ public class ScriptedQuest : IQuest
     public override bool IsDiscoverable => false;
     public override StageInfo StageInfo => Stage.TheWhiteDragonTemple0;
 
-    public override bool AcceptRequirementsMet(DdonGameServer server, GameClient client)
+    public override bool AcceptRequirementsMet(GameClient client)
     {
-        return SeasonalEvents.CheckConfigSettings(server, "EnableChristmasEvent", "ChristmasEventYear", 2018, "ChristmasValidPeriod");
+        return SeasonalEvents.CheckConfigSettings("EnableChristmasEvent", "ChristmasEventYear", 2018, "ChristmasValidPeriod");
     }
 
     protected override void InitializeRewards()

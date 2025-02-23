@@ -20,9 +20,9 @@ public class ScriptedQuest : IQuest
     public override bool IsDiscoverable => true;
     public override StageInfo StageInfo => Stage.TheWhiteDragonTemple0;
 
-    public override bool AcceptRequirementsMet(DdonGameServer server, GameClient client)
+    public override bool AcceptRequirementsMet(GameClient client)
     {
-        return SeasonalEvents.CheckConfigSettings(server, "EnableValentinesEvent", "ValentinesEventYear", 2017, "ValentinesValidPeriod");
+        return SeasonalEvents.CheckConfigSettings("EnableValentinesEvent", "ValentinesEventYear", 2017, "ValentinesValidPeriod");
     }
 
     protected override void InitializeRewards()
