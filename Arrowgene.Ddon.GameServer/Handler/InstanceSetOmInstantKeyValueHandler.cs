@@ -1,14 +1,12 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Instance;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class InstanceSetOmInstantKeyValueHandler : GameStructurePacketHandler<C2SInstanceSetOmInstantKeyValueReq>
+    public class InstanceSetOmInstantKeyValueHandler : GameRequestPacketHandler<C2SInstanceSetOmInstantKeyValueReq, S2CInstanceSetOmInstantKeyValueRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceSetOmInstantKeyValueHandler));
 
@@ -16,23 +14,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SInstanceSetOmInstantKeyValueReq> req)
+        public override S2CInstanceSetOmInstantKeyValueRes Handle(GameClient client, C2SInstanceSetOmInstantKeyValueReq request)
         {
-            Logger.Debug($"OM: Key={req.Structure.Key}, Value={req.Structure.Value}");
+            Logger.Debug($"OM: Key={request.Key}, Value={request.Value}");
 
-            OmManager.SetOmData(client.Party.InstanceOmData, client.Character.Stage.Id, req.Structure.Key, req.Structure.Value);
+            OmManager.SetOmData(client.Party.InstanceOmData, client.Character.Stage.Id, request.Key, request.Value);
 
             S2CInstanceSetOmInstantKeyValueNtc ntc = new S2CInstanceSetOmInstantKeyValueNtc();
             ntc.StageId = client.Character.Stage.Id;
-            ntc.Key = req.Structure.Key;
-            ntc.Value = req.Structure.Value;
+            ntc.Key = request.Key;
+            ntc.Value = request.Value;
             client.Party.SendToAll(ntc);
 
             S2CInstanceSetOmInstantKeyValueRes res = new S2CInstanceSetOmInstantKeyValueRes();
             res.StageId = client.Character.Stage.Id;
-            res.Key = req.Structure.Key;
-            res.Value = req.Structure.Value;
-            client.Send(res);
+            res.Key = request.Key;
+            res.Value = request.Value;
 
             // Check for OM callbacks in the quest
             foreach (var questScheduleId in client.Party.QuestState.GetActiveQuestScheduleIds())
@@ -40,9 +37,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
                 if (quest != null)
                 {
-                    quest.HandleOmInstantValue(client, req.Structure.Key, req.Structure.Value);
+                    quest.HandleOmInstantValue(client, request.Key, request.Value);
                 }
             }
+
+            return res;
         }
     }
 }

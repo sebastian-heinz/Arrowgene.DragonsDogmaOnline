@@ -1294,8 +1294,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2COrbDevoteGetOrbGainExtendParamRes.Serializer());
             Create(new S2COrbDevoteGetPawnReleaseOrbElementListRes.Serializer());
             Create(new S2COrbDevoteGetReleaseOrbElementListRes.Serializer());
-            Create(new S2COrbDevoteReleaseHandlerRes.Serializer());
-            Create(new S2COrbDevoteReleasePawnOrbELementRes.Serializer());
+            Create(new S2COrbDevoteReleaseOrbElementRes.Serializer());
+            Create(new S2COrbDevoteReleasePawnOrbElementRes.Serializer());
 
             Create(new S2CPartnerPawnPawnLikabilityRewardListGetRes.Serializer());
 

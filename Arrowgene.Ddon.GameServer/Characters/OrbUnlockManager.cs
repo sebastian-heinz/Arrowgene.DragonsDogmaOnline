@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using static Arrowgene.Ddon.Server.Network.Challenge;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -203,7 +205,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             if (!gPlayerDragonForceUpgrades.ContainsKey(elementId))
             {
                 Logger.Error("Illegal request to unlock 'Dragon Force Augmentation Upgrade' -- Upgrade Doesn't Exist");
-                S2COrbDevoteReleaseHandlerRes Error = new S2COrbDevoteReleaseHandlerRes()
+                S2COrbDevoteReleaseOrbElementRes Error = new S2COrbDevoteReleaseOrbElementRes()
                 {
                     Error = 0x1baddeed
                 };
@@ -219,7 +221,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             if (!gPawnDragonForceUpgrades.ContainsKey(elementId))
             {
                 Logger.Error("Illegal request to unlock 'Dragon Force Augmentation Upgrade' -- Upgrade Doesn't Exist");
-                S2COrbDevoteReleasePawnOrbELementRes Error = new S2COrbDevoteReleasePawnOrbELementRes()
+                S2COrbDevoteReleasePawnOrbElementRes Error = new S2COrbDevoteReleasePawnOrbElementRes()
                 {
                     Error = 0x1baddeed
                 };
@@ -231,8 +233,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
         }
 
 
-        public void UnlockDragonForceAugmentationUpgrade(GameClient client, CharacterCommon character, uint elementId)
+        public PacketQueue UnlockDragonForceAugmentationUpgrade(GameClient client, CharacterCommon character, uint elementId)
         {
+            PacketQueue queue = new();
+
             DragonForceUpgrade upgrade = null;
 
             if (character is Character)
@@ -246,25 +250,23 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             if (upgrade == null)
             {
-                // Player/Pawn handler handles error request back so just return
-                return;
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_ORB_DEVOTE_INVALID_ELEMENT_ID);
             }
 
             // Check for Valid Conditions before continuing
-            bool CheckPassed = true;
             if (upgrade.IsRestrictedByTotalLevels())
             {
                 uint TotalLevels = TotalLevelsGained(character);
                 if (TotalLevels < upgrade.LvlUpCost)
                 {
-                    CheckPassed = false;
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ORB_DEVOTE_NOT_COMPLETE_TRUNK);
                 }
             }
             else if (upgrade.IsRestrictedByOrbCost())
             {
                 if (_WalletManager.GetWalletAmount(client.Character, WalletType.BloodOrbs) < upgrade.LvlUpCost)
                 {
-                    CheckPassed = false;
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ORB_DEVOTE_ORB_LACK);
                 }
             }
             else if (upgrade.IsRestrictedByFullPageUnlock())
@@ -275,18 +277,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
             else
             {
-                CheckPassed = false;
-            }
-
-            if (!CheckPassed)
-            {
-                Logger.Error("Illegal request to unlock 'Dragon Force Augmentation Upgrade' -- Constraint checks failed");
-                S2COrbDevoteReleaseHandlerRes Error = new S2COrbDevoteReleaseHandlerRes()
-                {
-                    Error = 0x1baddeed
-                };
-                client.Send(Error);
-                return;
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_ORB_DEVOTE_INTERNAL_ERROR);
             }
 
             if (upgrade.IsRestrictedByOrbCost())
@@ -301,18 +292,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             if (character is Character)
             {
-                S2COrbDevoteReleaseHandlerRes Response = new S2COrbDevoteReleaseHandlerRes()
+                S2COrbDevoteReleaseOrbElementRes response = new S2COrbDevoteReleaseOrbElementRes()
                 {
                     GainParamType = upgrade.GainType,
                     RestOrb = _WalletManager.GetWalletAmount(client.Character, WalletType.BloodOrbs),
                     GainParamValue = upgrade.Amount
                 };
 
-                client.Send(Response);
+                client.Enqueue(response, queue);
             }
             else
             {
-                S2COrbDevoteReleasePawnOrbELementRes Response = new S2COrbDevoteReleasePawnOrbELementRes()
+                S2COrbDevoteReleasePawnOrbElementRes response = new S2COrbDevoteReleasePawnOrbElementRes()
                 {
                     PawnId = ((Pawn)character).PawnId,
                     GainParamType = upgrade.GainType,
@@ -320,8 +311,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     GainParamValue = upgrade.Amount
                 };
 
-                client.Send(Response);
+                client.Enqueue(response, queue);
             }
+
+            return queue;
         }
 
         private uint TotalLevelsGained(CharacterCommon Character)

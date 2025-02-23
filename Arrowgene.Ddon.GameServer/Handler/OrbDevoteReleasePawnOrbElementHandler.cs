@@ -1,32 +1,25 @@
-using Arrowgene.Ddon.Database;
-using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class OrbDevoteReleasePawnOrbElementHandler : StructurePacketHandler<GameClient, C2SOrbDevoteReleasePawnOrbElementReq>
+    public class OrbDevoteReleasePawnOrbElementHandler : GameRequestPacketQueueHandler<C2SOrbDevoteReleasePawnOrbElementReq, S2COrbDevoteReleasePawnOrbElementRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(OrbDevoteReleasePawnOrbElementHandler));
 
-        private OrbUnlockManager _OrbUnlockManager;
-
         public OrbDevoteReleasePawnOrbElementHandler(DdonGameServer server) : base(server)
         {
-            _OrbUnlockManager = server.OrbUnlockManager;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SOrbDevoteReleasePawnOrbElementReq> req)
+        public override PacketQueue Handle(GameClient client, C2SOrbDevoteReleasePawnOrbElementReq request)
         {
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == req.Structure.PawnId).Single();
+            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
 
-            _OrbUnlockManager.UnlockDragonForceAugmentationUpgrade(client, pawn, req.Structure.ElementId);
+            return Server.OrbUnlockManager.UnlockDragonForceAugmentationUpgrade(client, pawn, request.ElementId);
         }
     }
 }
