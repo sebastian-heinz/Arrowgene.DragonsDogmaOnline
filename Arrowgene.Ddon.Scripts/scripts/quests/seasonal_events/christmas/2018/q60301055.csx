@@ -34,13 +34,18 @@ public class ScriptedQuest : IQuest
         AddWalletReward(WalletType.RiftPoints, 1224);
     }
 
+    private static class NamedParamId
+    {
+        public const uint Sapling = 2611; // Sapling
+    }
+
     protected override void InitializeEnemyGroups()
     {
         AddEnemies(0, Stage.Lestania, 71, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.Ent, 10, 9800, 10)
+            LibDdon.Enemy.Create(EnemyId.Ent, 10, 9800, 10)
                 .SetIsBoss(true)
-                .SetNamedEnemyParams(LibDdon.GetNamedParam(2621)) // "Sapling"
+                .SetNamedEnemyParams(NamedParamId.Sapling)
         });
     }
 

@@ -23,17 +23,17 @@ public class GameItem : IGameItem
 
     private double CalculateConstantBonus(CharacterCommon characterCommon)
     {
-        if (characterCommon.ActiveCharacterJobData.Lv > LibDdon.GetSetting<uint>("RookiesRing", "RookiesRingMaxLevel"))
+        if (characterCommon.ActiveCharacterJobData.Lv > LibDdon.Settings.Get<uint>("RookiesRing", "RookiesRingMaxLevel"))
         {
             return 0;
         }
 
-        return LibDdon.GetSetting<double>("RookiesRing", "RookiesRingBonus");
+        return LibDdon.Settings.Get<double>("RookiesRing", "RookiesRingBonus");
     }
 
     private double CalculateDynamicBonus(CharacterCommon characterCommon)
     {
-        var dynamicBands = LibDdon.GetSetting<List<(uint MinLv, uint MaxLv, double ExpMultiplier)>>("RookiesRing", "DynamicExpBands");
+        var dynamicBands = LibDdon.Settings.Get<List<(uint MinLv, uint MaxLv, double ExpMultiplier)>>("RookiesRing", "DynamicExpBands");
 
         var characterLv = characterCommon.ActiveCharacterJobData.Lv;
 
@@ -51,16 +51,16 @@ public class GameItem : IGameItem
     {
         double bonus = 0;
 
-        var mode = LibDdon.GetSetting<uint>("RookiesRing", "RookiesRingMode");
+        var mode = LibDdon.Settings.Get<uint>("RookiesRing", "RookiesRingMode");
         switch (mode)
         {
-        case RingMode.Dynamic:
-            bonus = CalculateDynamicBonus(characterCommon);
-            break;
-        default:
-            // Mode is either 0 or an invalid value, so treat it as zero
-            bonus = CalculateConstantBonus(characterCommon);
-            break;
+            case RingMode.Dynamic:
+                bonus = CalculateDynamicBonus(characterCommon);
+                break;
+            default:
+                // Mode is either 0 or an invalid value, so treat it as zero
+                bonus = CalculateConstantBonus(characterCommon);
+                break;
         }
 
         return bonus;

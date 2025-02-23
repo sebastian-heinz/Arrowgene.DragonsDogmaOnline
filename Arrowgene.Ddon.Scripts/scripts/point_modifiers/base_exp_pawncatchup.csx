@@ -20,7 +20,7 @@ public class PointModifier : IPointModifier
             return 1.0;
         }
 
-        Pawn pawn = (Pawn) characterCommon;
+        Pawn pawn = (Pawn)characterCommon;
 
         var client = PartyUtils.GetPawnOwner(pawn, party);
         if (client == null)

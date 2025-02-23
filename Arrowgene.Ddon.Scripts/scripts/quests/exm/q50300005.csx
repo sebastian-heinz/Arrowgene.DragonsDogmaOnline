@@ -136,7 +136,7 @@ public class ScriptedQuest : IQuest
 
     private InstancedEnemy CreateRandomFlyingEnemy(ushort lv, byte index)
     {
-        return LibDdon.CreateRandomEnemy(lv, 0, index, new() {
+        return LibDdon.Enemy.CreateRandom(lv, 0, index, new() {
             EnemyId.Harpy,
             EnemyId.SnowHarpy
         }).SetIsRequired(false).SetEnemyTargetTypesId(TargetTypesId.Normal);
@@ -144,7 +144,7 @@ public class ScriptedQuest : IQuest
 
     private InstancedEnemy CreateRandomGroundEnemy(ushort lv, byte index)
     {
-        return LibDdon.CreateRandomEnemy(lv, 0, index, new() {
+        return LibDdon.Enemy.CreateRandom(lv, 0, index, new() {
             EnemyId.Wolf,
             EnemyId.Grimwarg,
             EnemyId.StoutUndead,
@@ -156,7 +156,7 @@ public class ScriptedQuest : IQuest
 
     private InstancedEnemy CreateRandomDragonKin(ushort lv, byte index)
     {
-        return LibDdon.CreateRandomEnemy(lv, 0, index, new() {
+        return LibDdon.Enemy.CreateRandom(lv, 0, index, new() {
             EnemyId.Behemoth0,
             EnemyId.Lindwurm0,
             EnemyId.Angules0,
@@ -192,7 +192,7 @@ public class ScriptedQuest : IQuest
         level = SelectRandomLevel();
         AddEnemies(waterfallIndex, Stage.DragonsNest, GroupId.WaterfallGreatCavern, 0, QuestEnemyPlacementType.Manual, new()
         {
-            LibDdon.CreateEnemy(EnemyId.EmeraldEye, level, 0, 6)
+            LibDdon.Enemy.Create(EnemyId.EmeraldEye, level, 0, 6)
         }, QuestTargetType.ExmSub);
         #endregion
 
@@ -216,12 +216,12 @@ public class ScriptedQuest : IQuest
         level = SelectRandomLevel();
         AddEnemies(hermitsHollowIndex++, Stage.DragonsNest, GroupId.HermitsHollow, 0, QuestEnemyPlacementType.Manual, new()
         {
-            LibDdon.CreateEnemy(EnemyId.EmeraldEye, level, 0, 7)
+            LibDdon.Enemy.Create(EnemyId.EmeraldEye, level, 0, 7)
         }, QuestTargetType.ExmSub);
 
         AddEnemies(hermitsHollowIndex, Stage.DragonsNest, GroupId.HermitsHollow, 0, QuestEnemyPlacementType.Manual, new()
         {
-            LibDdon.CreateEnemy(EnemyId.ElderDragon0, 60, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.ElderDragon0, 60, 0, 1)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.Blaze),
         });
@@ -247,19 +247,19 @@ public class ScriptedQuest : IQuest
         level = SelectRandomLevel();
         AddEnemies(wavingCaveIndex, Stage.DragonsNest, GroupId.GateOfTheWavingCave, 0, QuestEnemyPlacementType.Manual, new()
         {
-            LibDdon.CreateEnemy(EnemyId.EmeraldEye, level, 0, 7)
+            LibDdon.Enemy.Create(EnemyId.EmeraldEye, level, 0, 7)
         }, QuestTargetType.ExmSub);
         #endregion
 
         #region "Time Bonus Enemies"
         AddEnemies(EnemyGroupId.TimeBonus, Stage.DragonsNest, 9, 0, QuestEnemyPlacementType.Manual, new()
         {
-            LibDdon.CreateEnemy(EnemyId.Golem, 55, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.Golem, 55, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.TimeBonusEnemy),
-            LibDdon.CreateEnemy(EnemyId.RockSaurian, 56, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.RockSaurian, 56, 0, 1)
                 .SetIsRequired(false)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
-            LibDdon.CreateEnemy(EnemyId.RockSaurian, 56, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.RockSaurian, 56, 0, 2)
                 .SetIsRequired(false)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
         }, QuestTargetType.ExmSub);
@@ -269,70 +269,69 @@ public class ScriptedQuest : IQuest
 
         AddEnemies(EnemyGroupId.DungeonTrash + 0, Stage.DragonsNest, 4, 0, QuestEnemyPlacementType.Manual, new()
         {
-            LibDdon.CreateEnemy(EnemyId.GiantSaurian, RecommendedLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.GiantSaurian, RecommendedLevel, 0, 0)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
-            LibDdon.CreateEnemy(EnemyId.RockSaurian, RecommendedLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.RockSaurian, RecommendedLevel, 0, 1)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
-            LibDdon.CreateEnemy(EnemyId.RockSaurian, RecommendedLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.RockSaurian, RecommendedLevel, 0, 2)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
-            LibDdon.CreateEnemy(EnemyId.RockSaurian, RecommendedLevel, 0, 3)
+            LibDdon.Enemy.Create(EnemyId.RockSaurian, RecommendedLevel, 0, 3)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
-            LibDdon.CreateEnemy(EnemyId.RockSaurian, RecommendedLevel, 0, 4)
+            LibDdon.Enemy.Create(EnemyId.RockSaurian, RecommendedLevel, 0, 4)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
         });
 
         AddEnemies(EnemyGroupId.DungeonTrash + 1, Stage.DragonsNest, 6, 0, QuestEnemyPlacementType.Manual, new()
         {
-            LibDdon.CreateEnemy(EnemyId.Wolf, RecommendedLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.Wolf, RecommendedLevel, 0, 0)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
-            LibDdon.CreateEnemy(EnemyId.SwordUndead, RecommendedLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.SwordUndead, RecommendedLevel, 0, 1)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
-            LibDdon.CreateEnemy(EnemyId.StoutUndead, RecommendedLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.StoutUndead, RecommendedLevel, 0, 2)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
-            LibDdon.CreateEnemy(EnemyId.StoutUndead, RecommendedLevel, 0, 3)
+            LibDdon.Enemy.Create(EnemyId.StoutUndead, RecommendedLevel, 0, 3)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
-            LibDdon.CreateEnemy(EnemyId.SwordUndead, RecommendedLevel, 0, 4)
+            LibDdon.Enemy.Create(EnemyId.SwordUndead, RecommendedLevel, 0, 4)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
-            LibDdon.CreateEnemy(EnemyId.Wolf, RecommendedLevel, 0, 5)
+            LibDdon.Enemy.Create(EnemyId.Wolf, RecommendedLevel, 0, 5)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
         });
 
         AddEnemies(EnemyGroupId.DungeonTrash + 2, Stage.DragonsNest, 7, 0, QuestEnemyPlacementType.Manual, new()
         {
-            LibDdon.CreateEnemy(EnemyId.RockSaurian, RecommendedLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.RockSaurian, RecommendedLevel, 0, 0)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
-            LibDdon.CreateEnemy(EnemyId.RockSaurian, RecommendedLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.RockSaurian, RecommendedLevel, 0, 1)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
         });
 
         AddEnemies(EnemyGroupId.DungeonTrash + 3, Stage.DragonsNest, 8, 0, QuestEnemyPlacementType.Manual, new()
         {
-            LibDdon.CreateEnemy(EnemyId.SkeletonKnight, RecommendedLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.SkeletonKnight, RecommendedLevel, 0, 0)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
-            LibDdon.CreateEnemy(EnemyId.SkeletonKnight, RecommendedLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.SkeletonKnight, RecommendedLevel, 0, 1)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
-            LibDdon.CreateEnemy(EnemyId.SkeletonKnight, RecommendedLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.SkeletonKnight, RecommendedLevel, 0, 2)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
-            LibDdon.CreateEnemy(EnemyId.SkeletonMage0, RecommendedLevel, 0, 3)
+            LibDdon.Enemy.Create(EnemyId.SkeletonMage0, RecommendedLevel, 0, 3)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
         });
 
         AddEnemies(EnemyGroupId.DungeonTrash + 4, Stage.DragonsNest, 10, 0, QuestEnemyPlacementType.Manual, new()
         {
-            LibDdon.CreateEnemy(EnemyId.SkeletonMage0, RecommendedLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.SkeletonMage0, RecommendedLevel, 0, 0)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
-            LibDdon.CreateEnemy(EnemyId.SkeletonKnight, RecommendedLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.SkeletonKnight, RecommendedLevel, 0, 1)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
-            LibDdon.CreateEnemy(EnemyId.SkeletonKnight, RecommendedLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.SkeletonKnight, RecommendedLevel, 0, 2)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
-            LibDdon.CreateEnemy(EnemyId.SkeletonKnight, RecommendedLevel, 0, 3)
+            LibDdon.Enemy.Create(EnemyId.SkeletonKnight, RecommendedLevel, 0, 3)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
-            LibDdon.CreateEnemy(EnemyId.SkeletonMage0, RecommendedLevel, 0, 4)
+            LibDdon.Enemy.Create(EnemyId.SkeletonMage0, RecommendedLevel, 0, 4)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
         });
 
         #endregion
-
     }
 
     protected override void InitializeBlocks()

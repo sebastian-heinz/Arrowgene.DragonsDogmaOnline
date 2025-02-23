@@ -13,12 +13,12 @@ public class PointModifier : IPointModifier
             return 0.0;
         }
 
-        if (!LibDdon.CharacterHasEquipped(characterCommon, EquipType.Performance, ItemId.RookiesRingOfBlessing))
+        if (!LibDdon.Character.HasEquipped(characterCommon, EquipType.Performance, ItemId.RookiesRingOfBlessing))
         {
             return 0.0;
         }
 
-        var rookiesRing = LibDdon.GetGameItem(ItemId.RookiesRingOfBlessing);
+        var rookiesRing = LibDdon.Item.GetItemInterface(ItemId.RookiesRingOfBlessing);
         if (rookiesRing == null)
         {
             return 0.0;

@@ -17,6 +17,12 @@ public class ScriptedQuest : IQuest
     public override bool IsDiscoverable => true;
     public override StageInfo StageInfo => Stage.TheWhiteDragonTemple0;
 
+    private static class NamedParamId
+    {
+        public const uint AngryEntChieftan = 2622; // Angry Ent Chieftan
+        public const uint FleetFooted = 2657; // Fleet-footed <named>
+    }
+
     public override bool AcceptRequirementsMet(DdonGameServer server, GameClient client)
     {
         return SeasonalEvents.CheckConfigSettings(server, "EnableChristmasEvent", "ChristmasEventYear", 2018, "ChristmasValidPeriod");
@@ -35,15 +41,15 @@ public class ScriptedQuest : IQuest
     {
         AddEnemies(0, Stage.Lestania, 71, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.GreenGuardian, 10, 980, 7)
-                .SetNamedEnemyParams(LibDdon.GetNamedParam(2657)),
-            LibDdon.CreateEnemy(EnemyId.GreenGuardian, 10, 980, 8)
-                .SetNamedEnemyParams(LibDdon.GetNamedParam(2657)),
-            LibDdon.CreateEnemy(EnemyId.GreenGuardian, 10, 980, 9)
-                .SetNamedEnemyParams(LibDdon.GetNamedParam(2657)),
-            LibDdon.CreateEnemy(EnemyId.Ent, 10, 9800, 10)
+            LibDdon.Enemy.Create(EnemyId.GreenGuardian, 10, 980, 7)
+                .SetNamedEnemyParams(NamedParamId.FleetFooted),
+            LibDdon.Enemy.Create(EnemyId.GreenGuardian, 10, 980, 8)
+                .SetNamedEnemyParams(NamedParamId.FleetFooted),
+            LibDdon.Enemy.Create(EnemyId.GreenGuardian, 10, 980, 9)
+                .SetNamedEnemyParams(NamedParamId.FleetFooted),
+            LibDdon.Enemy.Create(EnemyId.Ent, 10, 9800, 10)
                 .SetIsBoss(true)
-                .SetNamedEnemyParams(LibDdon.GetNamedParam(2622)), // "Angry Ent Chieftan"
+                .SetNamedEnemyParams(NamedParamId.AngryEntChieftan),
         });
     }
 

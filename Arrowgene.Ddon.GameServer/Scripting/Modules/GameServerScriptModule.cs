@@ -29,6 +29,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
                 .AddImports("Arrowgene.Ddon.GameServer.Characters")
                 .AddImports("Arrowgene.Ddon.GameServer.Chat")
                 .AddImports("Arrowgene.Ddon.GameServer.Context")
+                .AddImports("Arrowgene.Ddon.GameServer.Enemies")
                 .AddImports("Arrowgene.Ddon.GameServer.Party")
                 .AddImports("Arrowgene.Ddon.GameServer.Quests")
                 .AddImports("Arrowgene.Ddon.GameServer.Quests.Extensions")

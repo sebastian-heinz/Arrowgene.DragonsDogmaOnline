@@ -230,7 +230,7 @@ public class ScriptedQuest : IQuest
 
     private InstancedEnemy CreateRandomPixieEnemy(ushort lv, byte index)
     {
-        return LibDdon.CreateRandomEnemy(lv, 0, index, new() {
+        return LibDdon.Enemy.CreateRandom(lv, 0, index, new() {
             EnemyId.Pixie,
             EnemyId.PixieBiff,
             EnemyId.PixieDin,
@@ -249,16 +249,16 @@ public class ScriptedQuest : IQuest
         // Time Enemies
         AddEnemies(EnemyGroupId.TimeBonusGroup + 0, Stage.BranchofRemembrance, 1, QuestEnemyPlacementType.Manual, new()
         {
-            LibDdon.CreateEnemy(EnemyId.Siren, 80, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.Siren, 80, 0, 0)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal)
                 .SetNamedEnemyParams(NamedParamId.TimeBonusGroup0),
-            LibDdon.CreateEnemy(EnemyId.DarkSkeleton, 80, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.DarkSkeleton, 80, 0, 1)
                 .SetStartThinkTblNo(2)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal)
                 .SetNamedEnemyParams(NamedParamId.TimeBonusGroup0),
-            LibDdon.CreateEnemy(EnemyId.Siren, 80, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.Siren, 80, 0, 0)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
-            LibDdon.CreateEnemy(EnemyId.Siren, 80, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.Siren, 80, 0, 0)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal)
                 .SetNamedEnemyParams(NamedParamId.TimeBonusGroup0),
         });
@@ -269,7 +269,7 @@ public class ScriptedQuest : IQuest
 
         AddEnemies(EnemyGroupId.Phantom + 0, Stage.BranchofRemembrance, 6, QuestEnemyPlacementType.Manual, new()
         {
-            LibDdon.CreateEnemy(EnemyId.BlackKnightPhantomClear, 80, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.BlackKnightPhantomClear, 80, 0, 1)
                 .SetIsBoss(true)
                 .SetStartThinkTblNo(2)
                 .SetDropsTable(phantomTable)
@@ -278,7 +278,7 @@ public class ScriptedQuest : IQuest
 
         AddEnemies(EnemyGroupId.Phantom + 1, Stage.BranchofRemembrance, 5, QuestEnemyPlacementType.Manual, new()
         {
-            LibDdon.CreateEnemy(EnemyId.BlackKnightPhantomClear, 80, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.BlackKnightPhantomClear, 80, 0, 1)
                 .SetIsBoss(true)
                 .SetStartThinkTblNo(2)
                 .SetDropsTable(phantomTable)
@@ -287,7 +287,7 @@ public class ScriptedQuest : IQuest
 
         AddEnemies(EnemyGroupId.Phantom + 2, Stage.BranchofNostalgia, 2, QuestEnemyPlacementType.Manual, new()
         {
-            LibDdon.CreateEnemy(EnemyId.BlackKnightPhantomClear, 80, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.BlackKnightPhantomClear, 80, 0, 1)
                 .SetIsBoss(true)
                 .SetStartThinkTblNo(2)
                 .SetDropsTable(phantomTable)
@@ -297,27 +297,27 @@ public class ScriptedQuest : IQuest
         // Dungeon Trash
         AddEnemies(EnemyGroupId.DungeonTrash + 0, Stage.BranchofRemembrance, 8, QuestEnemyPlacementType.Manual, new()
         {
-            LibDdon.CreateEnemy(EnemyId.FlameSkeletonBrute, 80, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.FlameSkeletonBrute, 80, 0, 2)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
-            LibDdon.CreateEnemy(EnemyId.FlameSkeletonBrute, 80, 0, 3)
+            LibDdon.Enemy.Create(EnemyId.FlameSkeletonBrute, 80, 0, 3)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
         });
 
         AddEnemies(EnemyGroupId.DungeonTrash + 1, Stage.BranchofRemembrance, 9, QuestEnemyPlacementType.Manual, new()
         {
-            LibDdon.CreateEnemy(EnemyId.SkeletonBrute, 80, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.SkeletonBrute, 80, 0, 0)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
-            LibDdon.CreateEnemy(EnemyId.Eliminator, 80, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.Eliminator, 80, 0, 1)
                 .SetIsBoss(true)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
         });
 
         AddEnemies(EnemyGroupId.DungeonTrash + 2, Stage.BranchofNostalgia, 3, QuestEnemyPlacementType.Manual, new()
         {
-            LibDdon.CreateEnemy(EnemyId.Eliminator, 80, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.Eliminator, 80, 0, 0)
                 .SetIsBoss(true)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
-            LibDdon.CreateEnemy(EnemyId.Eliminator, 80, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.Eliminator, 80, 0, 1)
                 .SetIsBoss(true)
                 .SetEnemyTargetTypesId(TargetTypesId.Normal),
         });
@@ -422,7 +422,7 @@ public class ScriptedQuest : IQuest
 
         if (timeAmount > 0)
         {
-            LibDdon.Quest().ApplyTimeExtension(param.Client, timeAmount);
+            LibDdon.Quest.ApplyTimeExtension(param.Client, timeAmount);
             param.ResultCommands.AddResultCmdGeneralAnnounce(QuestGeneralAnnounceType.CommonMsg, GeneralAnnouncements.ExUpdateTimeIncrease);
         }
     }

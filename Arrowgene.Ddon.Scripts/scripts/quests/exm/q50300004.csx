@@ -161,30 +161,30 @@ public class ScriptedQuest : IQuest
         // 1: Goal (1F)
         AddEnemies(1, Stage.GrittenFort1, 25, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.Cyclops0, EnemyLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.Cyclops0, EnemyLevel, 0, 0)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(850),
-            LibDdon.CreateEnemy(EnemyId.ArmoredCyclopsClub, EnemyLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.ArmoredCyclopsClub, EnemyLevel, 0, 1)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(850),
-            LibDdon.CreateEnemy(EnemyId.OrcBattler, EnemyLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.OrcBattler, EnemyLevel, 0, 2)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.OrcBringer, EnemyLevel, 0, 3)
+            LibDdon.Enemy.Create(EnemyId.OrcBringer, EnemyLevel, 0, 3)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.OrcTrooper, EnemyLevel, 0, 4)
+            LibDdon.Enemy.Create(EnemyId.OrcTrooper, EnemyLevel, 0, 4)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.OrcSoldier0, EnemyLevel, 0, 5)
+            LibDdon.Enemy.Create(EnemyId.OrcSoldier0, EnemyLevel, 0, 5)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.OrcBanger, EnemyLevel, 0, 6)
+            LibDdon.Enemy.Create(EnemyId.OrcBanger, EnemyLevel, 0, 6)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.OrcAimer, EnemyLevel, 0, 7)
+            LibDdon.Enemy.Create(EnemyId.OrcAimer, EnemyLevel, 0, 7)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
         });
@@ -192,22 +192,22 @@ public class ScriptedQuest : IQuest
         // 2: Target (1F northeast passage)
         AddEnemies(2, Stage.GrittenFort1, 26, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.SlingRedcap, EnemyLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.SlingRedcap, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.RedcapFighter, EnemyLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.RedcapFighter, EnemyLevel, 0, 1)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.ForestGoblin, EnemyLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.ForestGoblin, EnemyLevel, 0, 2)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.Redcap, EnemyLevel, 0, 3)
+            LibDdon.Enemy.Create(EnemyId.Redcap, EnemyLevel, 0, 3)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.ForestGoblinFighter, EnemyLevel, 0, 4)
+            LibDdon.Enemy.Create(EnemyId.ForestGoblinFighter, EnemyLevel, 0, 4)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
-            // LibDdon.CreateEnemy(EnemyId.SlingForestGoblin, EnemyLevel, 0, 5)
+            // LibDdon.Enemy.Create(EnemyId.SlingForestGoblin, EnemyLevel, 0, 5)
             //    .SetNamedEnemyParams(NamedParamId.Elite)
             //    .SetRaidPoints(100),
         });
@@ -215,20 +215,20 @@ public class ScriptedQuest : IQuest
         // 3: Target (1F Northeast)
         AddEnemies(3, Stage.GrittenFort1, 27, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.Sludgeman, EnemyLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.Sludgeman, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.Sludgeman, EnemyLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.Sludgeman, EnemyLevel, 0, 1)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.Sludgeman, EnemyLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.Sludgeman, EnemyLevel, 0, 2)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.Wight0, EnemyLevel, 0, 3)
+            LibDdon.Enemy.Create(EnemyId.Wight0, EnemyLevel, 0, 3)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(800),
-            LibDdon.CreateEnemy(EnemyId.CaptainOrc0, EnemyLevel, 0, 4)
+            LibDdon.Enemy.Create(EnemyId.CaptainOrc0, EnemyLevel, 0, 4)
                 .SetNamedEnemyParams(NamedParamId.CommandingOfficer)
                 .SetRaidPoints(300),
         });
@@ -236,14 +236,14 @@ public class ScriptedQuest : IQuest
         // 4: Target (1F East)
         AddEnemies(4, Stage.GrittenFort1, 2, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.CaptainOrc0, EnemyLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.CaptainOrc0, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.CommandingOfficer)
                 .SetRaidPoints(300),
-            LibDdon.CreateEnemy(EnemyId.Witch, EnemyLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.Witch, EnemyLevel, 0, 1)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(800),
-            LibDdon.CreateEnemy(EnemyId.Mudman, EnemyLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.Mudman, EnemyLevel, 0, 2)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
         });
@@ -251,19 +251,19 @@ public class ScriptedQuest : IQuest
         // 5: Target (1F, just before the east stairs)
         AddEnemies(5, Stage.GrittenFort1, 7, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.HobgoblinFighter, EnemyLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.HobgoblinFighter, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.GoblinFighter0, EnemyLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.GoblinFighter0, EnemyLevel, 0, 1)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.ShieldGoblin, EnemyLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.ShieldGoblin, EnemyLevel, 0, 2)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.Harpy, EnemyLevel, 0, 3)
+            LibDdon.Enemy.Create(EnemyId.Harpy, EnemyLevel, 0, 3)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.SnowHarpy, EnemyLevel, 0, 4)
+            LibDdon.Enemy.Create(EnemyId.SnowHarpy, EnemyLevel, 0, 4)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
         });
@@ -277,26 +277,26 @@ public class ScriptedQuest : IQuest
         // - Shadow Harpies
         AddEnemies(6, Stage.GrittenFort1, 21, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.EmpressGhost, EnemyLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.EmpressGhost, EnemyLevel, 0, 0)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.CursedEmpress)
                 .SetRaidPoints(850),
-            LibDdon.CreateEnemy(EnemyId.ShadowWolf, EnemyLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.ShadowWolf, EnemyLevel, 0, 1)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.ShadowGoblin, EnemyLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.ShadowGoblin, EnemyLevel, 0, 2)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.ShadowGoblinFighter, EnemyLevel, 0, 3)
+            LibDdon.Enemy.Create(EnemyId.ShadowGoblinFighter, EnemyLevel, 0, 3)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.ShadowSlingGoblin, EnemyLevel, 0, 4)
+            LibDdon.Enemy.Create(EnemyId.ShadowSlingGoblin, EnemyLevel, 0, 4)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.ShadowHarpy, EnemyLevel, 0, 5)
+            LibDdon.Enemy.Create(EnemyId.ShadowHarpy, EnemyLevel, 0, 5)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.ShadowGoblinLeader, EnemyLevel, 0, 6)
+            LibDdon.Enemy.Create(EnemyId.ShadowGoblinLeader, EnemyLevel, 0, 6)
                 .SetNamedEnemyParams(NamedParamId.CommandingOfficer)
                 .SetRaidPoints(300),
         });
@@ -304,15 +304,15 @@ public class ScriptedQuest : IQuest
         // 7: Target (1F South)
         AddEnemies(7, Stage.GrittenFort1, 0, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.DreadApe, EnemyLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.DreadApe, EnemyLevel, 0, 0)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(1750),
-            LibDdon.CreateEnemy(EnemyId.Ghoul0, EnemyLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.Ghoul0, EnemyLevel, 0, 1)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(1750),
-            LibDdon.CreateEnemy(EnemyId.Nightmare, EnemyLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.Nightmare, EnemyLevel, 0, 2)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(1750),
@@ -321,16 +321,16 @@ public class ScriptedQuest : IQuest
         // 8: Target (1F Southwest)
         AddEnemies(8, Stage.GrittenFort1, 22, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.GiantSulfurSaurian, EnemyLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.GiantSulfurSaurian, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(300),
-            LibDdon.CreateEnemy(EnemyId.GiantSaurian, EnemyLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.GiantSaurian, EnemyLevel, 0, 1)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(300),
-            LibDdon.CreateEnemy(EnemyId.SulfurSaurian, EnemyLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.SulfurSaurian, EnemyLevel, 0, 2)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.Saurian, EnemyLevel, 0, 3)
+            LibDdon.Enemy.Create(EnemyId.Saurian, EnemyLevel, 0, 3)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
         });
@@ -338,15 +338,15 @@ public class ScriptedQuest : IQuest
         // 9: Target (1F West)
         AddEnemies(9, Stage.GrittenFort1, 4, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.ShadowChimera, EnemyLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.ShadowChimera, EnemyLevel, 0, 0)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(1750),
-            LibDdon.CreateEnemy(EnemyId.Chimera0, EnemyLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.Chimera0, EnemyLevel, 0, 1)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(1750),
-            LibDdon.CreateEnemy(EnemyId.Golem, EnemyLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.Golem, EnemyLevel, 0, 2)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(1750),
@@ -355,22 +355,22 @@ public class ScriptedQuest : IQuest
         // 10: Target (1F Northwest Passage)
         AddEnemies(10, Stage.GrittenFort1, 9, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.Hobgoblin, EnemyLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.Hobgoblin, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.Goblin, EnemyLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.Goblin, EnemyLevel, 0, 1)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.GoblinLeader, EnemyLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.GoblinLeader, EnemyLevel, 0, 2)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(300),
-            LibDdon.CreateEnemy(EnemyId.HobgoblinLeader, EnemyLevel, 0, 3)
+            LibDdon.Enemy.Create(EnemyId.HobgoblinLeader, EnemyLevel, 0, 3)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(300),
-            LibDdon.CreateEnemy(EnemyId.SlingGoblinRock, EnemyLevel, 0, 4)
+            LibDdon.Enemy.Create(EnemyId.SlingGoblinRock, EnemyLevel, 0, 4)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.SlingHobgoblinOilFlask, EnemyLevel, 0, 5)
+            LibDdon.Enemy.Create(EnemyId.SlingHobgoblinOilFlask, EnemyLevel, 0, 5)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
         });
@@ -378,13 +378,13 @@ public class ScriptedQuest : IQuest
         // 11: Target (2F East-West Passage)
         AddEnemies(11, Stage.GrittenFort1, 14, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.Wolf, EnemyLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.Wolf, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.Grimwarg, EnemyLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.Grimwarg, EnemyLevel, 0, 1)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.Direwolf, EnemyLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.Direwolf, EnemyLevel, 0, 2)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(100),
         });
@@ -392,15 +392,15 @@ public class ScriptedQuest : IQuest
         // 12: Target (2F South)
         AddEnemies(12, Stage.GrittenFort1, 28, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.Ogre, EnemyLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.Ogre, EnemyLevel, 0, 0)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(1750),
-            LibDdon.CreateEnemy(EnemyId.SilverRoar, EnemyLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.SilverRoar, EnemyLevel, 0, 1)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(1750),
-            LibDdon.CreateEnemy(EnemyId.GeoGolem, EnemyLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.GeoGolem, EnemyLevel, 0, 2)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(1750),
@@ -409,14 +409,14 @@ public class ScriptedQuest : IQuest
         // 13: Assault (2F South)
         AddEnemies(13, Stage.GrittenFort1, 5, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.Ent, EnemyLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.Ent, EnemyLevel, 0, 0)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(1000),
-            LibDdon.CreateEnemy(EnemyId.GeneralOrc, EnemyLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.GeneralOrc, EnemyLevel, 0, 1)
                 .SetNamedEnemyParams(NamedParamId.CommandingOfficer)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.WhiteChimera0, EnemyLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.WhiteChimera0, EnemyLevel, 0, 2)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(1000),
@@ -425,25 +425,25 @@ public class ScriptedQuest : IQuest
         // 14: Assault (2F East-West Passage)
         AddEnemies(14, Stage.GrittenFort1, 29, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.BruteApe, EnemyLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.BruteApe, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.OrcBattler, EnemyLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.OrcBattler, EnemyLevel, 0, 1)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.OrcBringer, EnemyLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.OrcBringer, EnemyLevel, 0, 2)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.OrcTrooper, EnemyLevel, 0, 3)
+            LibDdon.Enemy.Create(EnemyId.OrcTrooper, EnemyLevel, 0, 3)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.OrcSoldier0, EnemyLevel, 0, 4)
+            LibDdon.Enemy.Create(EnemyId.OrcSoldier0, EnemyLevel, 0, 4)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.OrcBanger, EnemyLevel, 0, 5)
+            LibDdon.Enemy.Create(EnemyId.OrcBanger, EnemyLevel, 0, 5)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.OrcAimer, EnemyLevel, 0, 6)
+            LibDdon.Enemy.Create(EnemyId.OrcAimer, EnemyLevel, 0, 6)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
         }, QuestTargetType.ExmSub);
@@ -451,25 +451,25 @@ public class ScriptedQuest : IQuest
         // 15: Assault (1F Northeast Passage)
         AddEnemies(15, Stage.GrittenFort1, 8, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.SwordUndead, EnemyLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.SwordUndead, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.SkeletonWarrior, EnemyLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.SkeletonWarrior, EnemyLevel, 0, 1)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.WarriorUndead, EnemyLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.WarriorUndead, EnemyLevel, 0, 2)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.UndeadMale, EnemyLevel, 0, 3)
+            LibDdon.Enemy.Create(EnemyId.UndeadMale, EnemyLevel, 0, 3)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.Skeleton, EnemyLevel, 0, 4)
+            LibDdon.Enemy.Create(EnemyId.Skeleton, EnemyLevel, 0, 4)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.SkeletonKnight, EnemyLevel, 0, 5)
+            LibDdon.Enemy.Create(EnemyId.SkeletonKnight, EnemyLevel, 0, 5)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            // LibDdon.CreateEnemy(EnemyId.SkeletonSorcerer0, EnemyLevel, 0, 6)
+            // LibDdon.Enemy.Create(EnemyId.SkeletonSorcerer0, EnemyLevel, 0, 6)
             //    .SetNamedEnemyParams(NamedParamId.Elite)
             //    .SetRaidPoints(50),
         }, QuestTargetType.ExmSub);
@@ -477,10 +477,10 @@ public class ScriptedQuest : IQuest
         // 16: Assault (1F Northeast)
         AddEnemies(16, Stage.GrittenFort1, 13, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.GeneralOrc, EnemyLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.GeneralOrc, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.CommandingOfficer)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.SkullLord, EnemyLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.SkullLord, EnemyLevel, 0, 1)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(200),
         }, QuestTargetType.ExmSub);
@@ -488,13 +488,13 @@ public class ScriptedQuest : IQuest
         // 17: Assault (1F East)
         AddEnemies(17, Stage.GrittenFort1, 2, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.LivingArmor, EnemyLevel, 0, 3)
+            LibDdon.Enemy.Create(EnemyId.LivingArmor, EnemyLevel, 0, 3)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(200),
-            LibDdon.CreateEnemy(EnemyId.SkullLord, EnemyLevel, 0, 4)
+            LibDdon.Enemy.Create(EnemyId.SkullLord, EnemyLevel, 0, 4)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(200),
-            LibDdon.CreateEnemy(EnemyId.GeneralOrc, EnemyLevel, 0, 5)
+            LibDdon.Enemy.Create(EnemyId.GeneralOrc, EnemyLevel, 0, 5)
                 .SetNamedEnemyParams(NamedParamId.CommandingOfficer)
                 .SetRaidPoints(100),
         }, QuestTargetType.ExmSub);
@@ -502,16 +502,16 @@ public class ScriptedQuest : IQuest
         // 18: Assault (1F, just before the east stairs)
         AddEnemies(18, Stage.GrittenFort1, 23, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.RockSaurianSpinel, EnemyLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.RockSaurianSpinel, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.RockSaurian, EnemyLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.RockSaurian, EnemyLevel, 0, 1)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.GoblinBomber, EnemyLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.GoblinBomber, EnemyLevel, 0, 2)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.StoutUndead, EnemyLevel, 0, 3)
+            LibDdon.Enemy.Create(EnemyId.StoutUndead, EnemyLevel, 0, 3)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
         }, QuestTargetType.ExmSub);
@@ -519,13 +519,13 @@ public class ScriptedQuest : IQuest
         // 19: Assault (1F center)
         AddEnemies(19, Stage.GrittenFort1, 6, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.GeneralOrc, EnemyLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.GeneralOrc, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.CommandingOfficer)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.GhostMail, EnemyLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.GhostMail, EnemyLevel, 0, 1)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(200),
-            LibDdon.CreateEnemy(EnemyId.SkullLord, EnemyLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.SkullLord, EnemyLevel, 0, 2)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(200),
         }, QuestTargetType.ExmSub);
@@ -533,18 +533,18 @@ public class ScriptedQuest : IQuest
         // 20: Assault (1F South)
         AddEnemies(20, Stage.GrittenFort1, 0, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.GeneralOrc, EnemyLevel, 0, 7)
+            LibDdon.Enemy.Create(EnemyId.GeneralOrc, EnemyLevel, 0, 7)
                 .SetNamedEnemyParams(NamedParamId.CommandingOfficer)
                 .SetRaidPoints(100),
-            LibDdon.CreateEnemy(EnemyId.Troll, EnemyLevel, 0, 8)
+            LibDdon.Enemy.Create(EnemyId.Troll, EnemyLevel, 0, 8)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(1000),
-            LibDdon.CreateEnemy(EnemyId.Griffin0, EnemyLevel, 0, 9)
+            LibDdon.Enemy.Create(EnemyId.Griffin0, EnemyLevel, 0, 9)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(1000),
-            LibDdon.CreateEnemy(EnemyId.Sphinx0, EnemyLevel, 0, 10)
+            LibDdon.Enemy.Create(EnemyId.Sphinx0, EnemyLevel, 0, 10)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(1000),
@@ -553,16 +553,16 @@ public class ScriptedQuest : IQuest
         // 21: Assault (1F Southwest Passage)
         AddEnemies(21, Stage.GrittenFort1, 10, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.OrcAimer, EnemyLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.OrcAimer, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.OrcTrooper, EnemyLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.OrcTrooper, EnemyLevel, 0, 1)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.OrcBringer, EnemyLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.OrcBringer, EnemyLevel, 0, 2)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.BruteApe, EnemyLevel, 0, 3)
+            LibDdon.Enemy.Create(EnemyId.BruteApe, EnemyLevel, 0, 3)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
         }, QuestTargetType.ExmSub);
@@ -570,19 +570,19 @@ public class ScriptedQuest : IQuest
         // 22: Assault (1F West)
         AddEnemies(22, Stage.GrittenFort1, 30, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.Colossus0, EnemyLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.Colossus0, EnemyLevel, 0, 0)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(1000),
-            LibDdon.CreateEnemy(EnemyId.MoleTroll0, EnemyLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.MoleTroll0, EnemyLevel, 0, 1)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(1000),
-            LibDdon.CreateEnemy(EnemyId.BlackGriffin0, EnemyLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.BlackGriffin0, EnemyLevel, 0, 2)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(1000),
-            LibDdon.CreateEnemy(EnemyId.Cockatrice, EnemyLevel, 0, 3)
+            LibDdon.Enemy.Create(EnemyId.Cockatrice, EnemyLevel, 0, 3)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.AssaultSoldier)
                 .SetRaidPoints(1000),
@@ -591,16 +591,16 @@ public class ScriptedQuest : IQuest
         // 23: Assault (1F Northwest Passage)
         AddEnemies(23, Stage.GrittenFort1, 24, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.FrostCorpsePunisher, EnemyLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.FrostCorpsePunisher, EnemyLevel, 0, 0)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.FrostCorpseTorturer, EnemyLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.FrostCorpseTorturer, EnemyLevel, 0, 1)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.BlueNewt, EnemyLevel, 0, 2)
+            LibDdon.Enemy.Create(EnemyId.BlueNewt, EnemyLevel, 0, 2)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
-            LibDdon.CreateEnemy(EnemyId.SkeletonMage0, EnemyLevel, 0, 3)
+            LibDdon.Enemy.Create(EnemyId.SkeletonMage0, EnemyLevel, 0, 3)
                 .SetNamedEnemyParams(NamedParamId.Elite)
                 .SetRaidPoints(50),
         }, QuestTargetType.ExmSub);
@@ -608,11 +608,11 @@ public class ScriptedQuest : IQuest
         // 24: Target (1F North)
         AddEnemies(24, Stage.GrittenFort1, 1, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.Zuhl0, EnemyLevel, 0, 0)
+            LibDdon.Enemy.Create(EnemyId.Zuhl0, EnemyLevel, 0, 0)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.Invader)
                 .SetRaidPoints(7500),
-            LibDdon.CreateEnemy(EnemyId.Mogok, BossLevel, 0, 1)
+            LibDdon.Enemy.Create(EnemyId.Mogok, BossLevel, 0, 1)
                 .SetIsBoss(true)
                 .SetNamedEnemyParams(NamedParamId.SupremeCommander)
                 .SetRaidPoints(7500),

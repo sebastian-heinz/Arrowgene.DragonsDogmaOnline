@@ -177,11 +177,17 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
                 };
             }
 
-            foreach (var enemy in enemies)
+            for (int i = 0; i < enemies.Count; i++)
             {
+                var enemy = enemies[i];
                 enemy.StageLayoutId = stageInfo.AsStageLayoutId(groupId);
                 enemy.QuestEnemyGroupId = enemyGroupId;
                 enemy.QuestScheduleId = QuestScheduleId;
+
+                if (placementType == QuestEnemyPlacementType.Automatic)
+                {
+                    enemy.Index = (byte) i;
+                }
             }
 
             QuestLayoutSetInfoSetList.Add(new QuestLayoutFlagSetInfo()

@@ -20,6 +20,11 @@ public class ScriptedQuest : IQuest
     public override bool IsDiscoverable => true;
     public override StageInfo StageInfo => Stage.TheWhiteDragonTemple0;
 
+    private static class NamedParamId
+    {
+        public const uint SweetTooth = 2620; // Sweet Tooth
+    }
+
     public override bool AcceptRequirementsMet(DdonGameServer server, GameClient client)
     {
         return SeasonalEvents.CheckConfigSettings(server, "EnableHalloweenEvent", "HalloweenEventYear", 2018, "HalloweenValidPeriod");
@@ -41,14 +46,14 @@ public class ScriptedQuest : IQuest
 
         AddEnemies(0, Stage.HidellCatacombs1, 6, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.GrudgeGhost, 10, 136, 0)
-                .SetNamedEnemyParams(LibDdon.GetNamedParam(2620))
+            LibDdon.Enemy.Create(EnemyId.GrudgeGhost, 10, 136, 0)
+                .SetNamedEnemyParams(NamedParamId.SweetTooth)
                 .SetDropsTable(drops),
-            LibDdon.CreateEnemy(EnemyId.GrudgeGhost, 10, 136, 1)
-                .SetNamedEnemyParams(LibDdon.GetNamedParam(2620))
+            LibDdon.Enemy.Create(EnemyId.GrudgeGhost, 10, 136, 1)
+                .SetNamedEnemyParams(NamedParamId.SweetTooth)
                 .SetDropsTable(drops),
-            LibDdon.CreateEnemy(EnemyId.GrudgeGhost, 10, 136, 2)
-                .SetNamedEnemyParams(LibDdon.GetNamedParam(2620))
+            LibDdon.Enemy.Create(EnemyId.GrudgeGhost, 10, 136, 2)
+                .SetNamedEnemyParams(NamedParamId.SweetTooth)
                 .SetDropsTable(drops),
         });
     }

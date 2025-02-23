@@ -53,6 +53,7 @@ global using Arrowgene.Ddon.GameServer;
 global using Arrowgene.Ddon.GameServer.Characters;
 global using Arrowgene.Ddon.GameServer.Chat;
 global using Arrowgene.Ddon.GameServer.Context;
+global using Arrowgene.Ddon.GameServer.Enemies;
 global using Arrowgene.Ddon.GameServer.Party;
 global using Arrowgene.Ddon.GameServer.Quests;
 global using Arrowgene.Ddon.GameServer.Quests.Extensions;

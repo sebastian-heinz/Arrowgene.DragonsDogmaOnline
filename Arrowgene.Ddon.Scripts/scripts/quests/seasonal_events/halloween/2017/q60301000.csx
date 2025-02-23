@@ -20,6 +20,11 @@ public class ScriptedQuest : IQuest
     public override bool IsDiscoverable => true;
     public override StageInfo StageInfo => Stage.TheWhiteDragonTemple0;
 
+    private static class NamedParamId
+    {
+        public const uint CandyLovingWitch = 2108; // Candy Loving Witch
+    }
+
     public override bool AcceptRequirementsMet(DdonGameServer server, GameClient client)
     {
         return SeasonalEvents.CheckConfigSettings(server, "EnableHalloweenEvent", "HalloweenEventYear", 2017, "HalloweenValidPeriod");
@@ -41,29 +46,29 @@ public class ScriptedQuest : IQuest
 
         AddEnemies(0, Stage.TelsWitheredWell, 0, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.Slime, 3, 24, 0, false)
+            LibDdon.Enemy.Create(EnemyId.Slime, 3, 24, 0, false)
                 .SetDropsTable(slimeTable),
-            LibDdon.CreateEnemy(EnemyId.Slime, 3, 24, 1, false)
+            LibDdon.Enemy.Create(EnemyId.Slime, 3, 24, 1, false)
                 .SetDropsTable(slimeTable),
-            LibDdon.CreateEnemy(EnemyId.Slime, 3, 24, 2, false)
+            LibDdon.Enemy.Create(EnemyId.Slime, 3, 24, 2, false)
                 .SetDropsTable(slimeTable),
-            LibDdon.CreateEnemy(EnemyId.Slime, 3, 24, 3, false)
+            LibDdon.Enemy.Create(EnemyId.Slime, 3, 24, 3, false)
                 .SetDropsTable(slimeTable),
-            LibDdon.CreateEnemy(EnemyId.Slime, 3, 24, 4, false)
+            LibDdon.Enemy.Create(EnemyId.Slime, 3, 24, 4, false)
                 .SetDropsTable(slimeTable),
-            LibDdon.CreateEnemy(EnemyId.Slime, 3, 24, 5, false)
+            LibDdon.Enemy.Create(EnemyId.Slime, 3, 24, 5, false)
                 .SetDropsTable(slimeTable),
-            LibDdon.CreateEnemy(EnemyId.Slime, 3, 24, 6, false)
+            LibDdon.Enemy.Create(EnemyId.Slime, 3, 24, 6, false)
                 .SetDropsTable(slimeTable),
-            LibDdon.CreateEnemy(EnemyId.Slime, 3, 24, 8, false)
+            LibDdon.Enemy.Create(EnemyId.Slime, 3, 24, 8, false)
                 .SetDropsTable(slimeTable),
         });
 
         AddEnemies(1, Stage.TelsWitheredWell, 0, 0, QuestEnemyPlacementType.Manual, new List<InstancedEnemy>()
         {
-            LibDdon.CreateEnemy(EnemyId.Witch, 10, 1500, 7, false)
+            LibDdon.Enemy.Create(EnemyId.Witch, 10, 1500, 7, false)
                 .SetIsBoss(true)
-                .SetNamedEnemyParams(LibDdon.GetNamedParam(2108)) // Candy Loving Witch
+                .SetNamedEnemyParams(NamedParamId.CandyLovingWitch)
                 .AddDrop(ItemId.GhostMarshmallow, 1, 10, DropRate.ALWAYS)
         });
     }
