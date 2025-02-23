@@ -422,6 +422,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataTimeGainQuestUnk2.Serializer());
             Create(new CDataTimeLimitedQuestOrderList.Serializer());
             Create(new CDataTraningRoomEnemyHeader.Serializer());
+            Create(new CDataTreasurePoint.Serializer());
+            Create(new CDataTreasurePointCategory.Serializer());
             Create(new CDataTutorialQuestList.Serializer());
             Create(new CDataTutorialQuestOrderList.Serializer());
 
