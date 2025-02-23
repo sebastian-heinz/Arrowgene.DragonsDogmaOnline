@@ -231,6 +231,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataJumpLocation.Serializer());
 
             Create(new CDataLayoutEnemyData.Serializer());
+            Create(new CDataLayoutItemData.Serializer());
             Create(new CDataLearnNormalSkillParam.Serializer());
             Create(new CDataLearnedSetAcquirementParam.Serializer());
             Create(new CDataLevelBonus.Serializer());
