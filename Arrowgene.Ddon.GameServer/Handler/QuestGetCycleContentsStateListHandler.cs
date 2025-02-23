@@ -76,7 +76,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         var lightQuest = quest.ToCDataLightQuestOrderList(questProgress.Step);
                         if (lightQuest.Detail.BoardType == 1 && lightQuest.Detail.GetAp == 0)
                         {
-                            lightQuest.Detail.GetAp = Server.ExpManager.GetAdjustedPointsForQuest(PointType.AreaPoints, Server.AreaRankManager.GetAreaPointReward(quest), QuestType.Board).BasePoints;
+                            lightQuest.Detail.GetAp = Server.AreaRankManager.GetAreaPointReward(quest);
                         }
                         ntc.LightQuestOrderList.Add(lightQuest);
                         break;

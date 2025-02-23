@@ -23,9 +23,14 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public List<InstancedEnemy> CreateNewInstance()
         {
             List<InstancedEnemy> results = new List<InstancedEnemy>();
-            foreach (var enemy in Enemies)
+            for (var i = 0; i < Enemies.Count; i++)
             {
-                results.Add(enemy.CreateNewInstance());
+                var enemy = Enemies[i];
+                var instancedEnemy = enemy.CreateNewInstance();
+                instancedEnemy.Index = (PlacementType == QuestEnemyPlacementType.Automatic) ? (byte)(i + StartingIndex) : enemy.Index;
+                instancedEnemy.IsQuestControlled = true;
+                instancedEnemy.StageId = StageLayoutId;
+                results.Add(instancedEnemy);
             }
             return results;
         }

@@ -701,7 +701,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         }
 
         private double CalculateMultipliers(GameClient client, GameMode gameMode, RewardSource source, CharacterCommon characterCommon, PartyGroup party, PointType pointType, InstancedEnemy enemy,
-                                            PointModifierType modifierType, double baseMultiplier)
+                                            PointModifierType modifierType, double baseMultiplier, QuestType questType)
         {
             double additive = baseMultiplier;
             double multiplicative = 1.0;
@@ -709,7 +709,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             var pointModiferModule = _Server.ScriptManager.PointModifierModule;
             foreach (var modifier in pointModiferModule.GetModifiersByType(modifierType))
             {
-                if (!modifier.IsEnabled() || modifier.Source != source || modifier.PointType != pointType)
+                if (!modifier.IsEnabled() || !modifier.Source.HasFlag(source) || modifier.PointType != pointType)
                 {
                     continue;
                 }
@@ -731,7 +731,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     }
                 }
 
-                double result = modifier.GetMultiplier(gameMode, characterCommon, party, enemy);
+                double result = modifier.GetMultiplier(gameMode, characterCommon, party, enemy, questType);
                 switch (modifier.ModifierAction)
                 {
                     case PointModifierAction.Additive:
@@ -748,14 +748,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public (uint BasePoints, uint BonusPoints) GetAdjustedPoints(GameClient client, RewardSource source, CharacterCommon characterCommon, PartyGroup party, PointType pointType, uint basePointAmount, InstancedEnemy enemy, QuestType questType = QuestType.All)
         {
-            double basePointMultiplier = CalculateMultipliers(client, client.GameMode, source, characterCommon, party, pointType, enemy, PointModifierType.BaseModifier, 1.0);
+            double basePointMultiplier = CalculateMultipliers(client, client.GameMode, source, characterCommon, party, pointType, enemy, PointModifierType.BaseModifier, 1.0, questType);
             if (basePointMultiplier <= 0.0)
             {
                 // If the base is 0, no bonus to calculate
                 return (0, 0);
             }
 
-            double bonusPointMultiplier = CalculateMultipliers(client, client.GameMode, source, characterCommon, party, pointType, enemy, PointModifierType.BonusModifier, 0.0);
+            double bonusPointMultiplier = CalculateMultipliers(client, client.GameMode, source, characterCommon, party, pointType, enemy, PointModifierType.BonusModifier, 0.0, questType);
             bonusPointMultiplier = Math.Clamp(bonusPointMultiplier, 0, double.MaxValue);
 
             uint newBase = (uint)(basePointAmount * basePointMultiplier);
@@ -766,14 +766,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public (uint BasePoints, uint BonusPoints) GetAdjustedPointsForQuest(PointType pointType, uint basePointAmount, QuestType questType)
         {
-            double basePointMultiplier = CalculateMultipliers(null, GameMode.Normal, RewardSource.Quest, null, null, pointType, null, PointModifierType.BaseModifier, 1.0);
+            double basePointMultiplier = CalculateMultipliers(null, GameMode.Normal, RewardSource.Quest, null, null, pointType, null, PointModifierType.BaseModifier, 1.0, questType);
             if (basePointMultiplier <= 0.0)
             {
                 // If the base is 0, no bonus to calculate
                 return (0, 0);
             }
 
-            double bonusPointMultiplier = CalculateMultipliers(null, GameMode.Normal, RewardSource.Quest, null, null, pointType, null, PointModifierType.BonusModifier, 0.0);
+            double bonusPointMultiplier = CalculateMultipliers(null, GameMode.Normal, RewardSource.Quest, null, null, pointType, null, PointModifierType.BonusModifier, 0.0, questType);
             bonusPointMultiplier = Math.Clamp(bonusPointMultiplier, 0, double.MaxValue);
 
             uint newBase = (uint)(basePointAmount * basePointMultiplier);

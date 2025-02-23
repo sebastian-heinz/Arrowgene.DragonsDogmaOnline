@@ -37,12 +37,12 @@ public class PointModifier : IPointModifier
         }
 
         var lvDiff = playerLevel - pawnLevel;
-        if (LibDdon.GetSetting<uint>("PointModifiers", "PawnCatchupLvDiff") < lvDiff)
+        if (LibDdon.GetSetting<uint>("PointModifiers", "PawnCatchupLvDiff") > lvDiff)
         {
             return 1.0;
         }
 
-        return LibDdon.GetSetting<uint>("PointModifiers", "PawnCatchupMultiplier");
+        return LibDdon.GetSetting<double>("PointModifiers", "PawnCatchupMultiplier");
     }
 }
 
