@@ -28,10 +28,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 S2CSkillGetAcquirableAbilityListRes obj = new S2CSkillGetAcquirableAbilityListRes();
                 ReadServerResponse(buffer, obj);
-                if (obj.Error == 0)
-                {
-                    obj.AbilityParamList = ReadEntityList<CDataAbilityParam>(buffer);
-                }
+                obj.AbilityParamList = ReadEntityList<CDataAbilityParam>(buffer);
                 return obj;
             }
         }

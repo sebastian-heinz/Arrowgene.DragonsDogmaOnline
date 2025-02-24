@@ -10,7 +10,6 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public CDataFriendInfo FriendInfo { get; set; } = new();
 
-
         public class Serializer : PacketEntitySerializer<S2CFriendApproveFriendRes>
         {
             public override void Write(IBuffer buffer, S2CFriendApproveFriendRes obj)

@@ -204,13 +204,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             if (!gPlayerDragonForceUpgrades.ContainsKey(elementId))
             {
-                Logger.Error("Illegal request to unlock 'Dragon Force Augmentation Upgrade' -- Upgrade Doesn't Exist");
-                S2COrbDevoteReleaseOrbElementRes Error = new S2COrbDevoteReleaseOrbElementRes()
-                {
-                    Error = 0x1baddeed
-                };
-                client.Send(Error);
-                return null;
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_ORB_DEVOTE_INVALID_ELEMENT_ID, "Illegal request to unlock 'Dragon Force Augmentation Upgrade' -- Upgrade Doesn't Exist");
             }
 
             return gPlayerDragonForceUpgrades[elementId];
@@ -220,13 +214,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             if (!gPawnDragonForceUpgrades.ContainsKey(elementId))
             {
-                Logger.Error("Illegal request to unlock 'Dragon Force Augmentation Upgrade' -- Upgrade Doesn't Exist");
-                S2COrbDevoteReleasePawnOrbElementRes Error = new S2COrbDevoteReleasePawnOrbElementRes()
-                {
-                    Error = 0x1baddeed
-                };
-                client.Send(Error);
-                return null;
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_ORB_DEVOTE_INVALID_ELEMENT_ID, "Illegal request to unlock 'Dragon Force Augmentation Upgrade' -- Upgrade Doesn't Exist");
             }
 
             return gPawnDragonForceUpgrades[elementId];

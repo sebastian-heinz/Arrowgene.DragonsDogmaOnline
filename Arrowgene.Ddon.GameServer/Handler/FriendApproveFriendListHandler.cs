@@ -39,9 +39,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var result = new S2CFriendApproveFriendRes()
             {
                 FriendInfo = ContactListManager.CharacterToFriend(requestingChar, relationship.Id, relationship.IsFavoriteForCharacter(client.Character.CharacterId)),
-                Result = 0,
-                Error = 0,
-                    
             };
             
             // TODO: Notify across servers with an announce.

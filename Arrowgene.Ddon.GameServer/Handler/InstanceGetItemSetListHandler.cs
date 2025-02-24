@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // If you don't send the corresponding position, that gathering point doesn't appear.
             // Figuring out what spots are valid is somewhat tricky (spread across multiple subsystems)
             // so just return all possible spots and call it good. This is what we were doing with the old handler.
-            for (byte i = byte.MinValue; i <= byte.MaxValue; i++)
+            for (byte i = byte.MinValue; i < byte.MaxValue; i++)
             {
                 res.SetList.Add(new()
                 {

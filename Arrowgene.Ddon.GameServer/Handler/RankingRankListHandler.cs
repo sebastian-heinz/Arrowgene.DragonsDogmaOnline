@@ -4,7 +4,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    internal class RankingRankListHandler : GameRequestPacketHandler<C2SRankingRankListReq, S2CRankingRankListRes>
+    public class RankingRankListHandler : GameRequestPacketHandler<C2SRankingRankListReq, S2CRankingRankListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(RankingRankListHandler));
 

@@ -51,6 +51,10 @@ namespace Arrowgene.Ddon.Server.Network
                 client.Close(); // Do not tolerate SqLiteExceptions because of desync issues.
                 throw;
             }
+            catch (NotImplementedException ex)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_NOT_IMPLEMENTED, ex.Message, ex);
+            }
             catch (ResponseErrorException ex)
             {
                 response = new TResStruct();

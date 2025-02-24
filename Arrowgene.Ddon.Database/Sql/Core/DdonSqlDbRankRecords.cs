@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         };
 
         private static readonly string SqlInsertRankRecord = $"INSERT INTO \"{RankRecordTableName}\" ({BuildQueryField(RankRecordFields)}) VALUES ({BuildQueryInsert(RankRecordFields)});";
-        private static readonly string SqlDeleteAllRankRecords = $"TRUNCATE TABLE {RankRecordTableName}";
+        private static readonly string SqlDeleteAllRankRecords = $"DELETE FROM {RankRecordTableName};";
 
         private static readonly string SqlSelectUsedQuests = $"SELECT DISTINCT \"quest_id\" FROM \"{RankRecordTableName}\"";
 

@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 WriteUInt32(buffer, obj.SpotId);
                 WriteBool(buffer, obj.DeadlineReached);
-                WriteUInt64(buffer, (ulong)obj.Deadline.ToUnixTimeSeconds());
+                WriteInt64(buffer, obj.Deadline.ToUnixTimeSeconds());
             }
 
             public override CDataAreaRankSeason3 Read(IBuffer buffer)
@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 CDataAreaRankSeason3 obj = new CDataAreaRankSeason3();
                 obj.SpotId = ReadUInt32(buffer);
                 obj.DeadlineReached = ReadBool(buffer);
-                obj.Deadline = DateTimeOffset.FromUnixTimeSeconds((long)ReadUInt64(buffer));
+                obj.Deadline = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
                 return obj;
             }
         }
