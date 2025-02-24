@@ -311,7 +311,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                 PlayerPartyMember partyMember = GetPlayerPartyMember(client);
                 if (partyMember == null)
                 {
-                    Logger.Error(client, $"[PartyId:{Id}][Leave(GameClient)] has no slot");
+                    Logger.Info(client, $"[PartyId:{Id}][Leave(GameClient)] has no slot");
                     return;
                 }
 

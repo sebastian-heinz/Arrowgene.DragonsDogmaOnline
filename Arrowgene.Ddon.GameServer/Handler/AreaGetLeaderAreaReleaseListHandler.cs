@@ -23,15 +23,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CAreaGetLeaderAreaReleaseListRes Handle(GameClient client, C2SAreaGetLeaderAreaReleaseListReq request)
         {
-            //var pcap = EntitySerializer.Get<S2CAreaGetLeaderAreaReleaseListRes>().Read(GameFull.data_Dump_117);
-
             var result = new S2CAreaGetLeaderAreaReleaseListRes();
             var clientRank = client.Character.AreaRanks;
             var completedQuests = client.Character.CompletedQuests;
             foreach ((var area, var rank) in clientRank)
             {
-                // The client gets very angry if the unlocks are desynced from their actual ranks,
-                // so spoof the rank in AreaGetAreaBaseInfoListHandler too.
                 var releaseList = Server.AssetRepository.AreaRankSpotInfoAsset[area]
                 .Where(spot => spot.UnlockRank > 0 || spot.UnlockQuest > 0)
                 .Where(spot => Server.AreaRankManager.CheckSpot(client, spot))

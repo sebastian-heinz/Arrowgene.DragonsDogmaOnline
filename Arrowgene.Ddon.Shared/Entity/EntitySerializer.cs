@@ -1783,8 +1783,14 @@ namespace Arrowgene.Ddon.Shared.Entity
                     IBuffer buffer = Util.Buffer.Provide();
                     object obj = Activator.CreateInstance(serializer.Key);
                     serializer.Value.WriteObj(buffer, obj);
+                    int endPosition = buffer.Position;
+
                     buffer.SetPositionStart();
                     serializer.Value.ReadObj(buffer);
+                    if (buffer.Position != endPosition)
+                    {
+                        //throw new DataMisalignedException($"Serializer reading fewer bytes than are written. {buffer.Position} < {endPosition}");
+                    }
                 }
                 catch (Exception ex)
                 {

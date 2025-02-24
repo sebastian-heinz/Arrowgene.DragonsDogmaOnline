@@ -1,4 +1,4 @@
-﻿{
+{
     "comment": [
         "You can find official course effects described at https://web.archive.org/web/20170711054053/https://members.dd-on.jp/shop/payment/stone/top",
         "",
@@ -9,7 +9,7 @@
     ],
     "valid_courses": [
         {
-            "course_id": 15,
+            "course_id": 17,
             "start_time": 1440993600,
             "end_time": 4103413199,
             "comment": "Course 17 valid until the year 2100"
