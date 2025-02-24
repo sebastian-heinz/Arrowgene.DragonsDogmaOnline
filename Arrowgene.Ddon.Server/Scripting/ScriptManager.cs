@@ -57,7 +57,7 @@ namespace Arrowgene.Ddon.Shared.Scripting
             }
 
             var compilation = script.GetCompilation();
-            var outputPath = $"script_dlls/{Path.GetFileNameWithoutExtension(path)}.dll";
+            var outputPath = $"script_dlls{Path.DirectorySeparatorChar}{Path.GetFileNameWithoutExtension(path)}.dll";
             var emitOptions = new EmitOptions()
                 .WithDebugInformationFormat(DebugInformationFormat.Pdb)
                 .WithPdbFilePath(outputPath);
@@ -121,6 +121,12 @@ namespace Arrowgene.Ddon.Shared.Scripting
             }
         }
 
+        private string GetCustomPath(string path, string moduleRoot)
+        {
+            return path.Replace($"{ScriptsRoot}{Path.DirectorySeparatorChar}{moduleRoot}",
+                                $"{ScriptsRoot}{Path.DirectorySeparatorChar}custom{Path.DirectorySeparatorChar}{moduleRoot}");
+        }
+
         protected void CompileScripts()
         {
             foreach (var module in ScriptModules.Values)
@@ -128,15 +134,23 @@ namespace Arrowgene.Ddon.Shared.Scripting
                 var path = $"{ScriptsRoot}{Path.DirectorySeparatorChar}{module.ModuleRoot}";
                 if (!module.IsEnabled)
                 {
-                    Logger.Info($"THe module '{module.ModuleRoot}' is disabled. Skipping.");
+                    Logger.Info($"The module '{module.ModuleRoot}' is disabled. Skipping.");
                     continue;
                 }
 
                 Logger.Info($"Compiling scripts for module '{module.ModuleRoot}'");
-                foreach (var file in Directory.GetFiles(path, "*.csx", SearchOption.AllDirectories))
+                foreach (var filePath in Directory.GetFiles(path, "*.csx", SearchOption.AllDirectories))
                 {
-                    module.Scripts.Add(file);
-                    CompileScript(module, file);
+                    var fileToCompile = filePath;
+
+                    var overlayFilePath = GetCustomPath(filePath, module.ModuleRoot);
+                    if (File.Exists(overlayFilePath))
+                    {
+                        fileToCompile = overlayFilePath;
+                    }
+
+                    module.Scripts.Add(fileToCompile);
+                    CompileScript(module, fileToCompile);
                 }
             }
         }
@@ -150,16 +164,31 @@ namespace Arrowgene.Ddon.Shared.Scripting
                     continue;
                 }
 
-                var watcher = new FileSystemWatcher($"{ScriptsRoot}{Path.DirectorySeparatorChar}{module.ModuleRoot}");
-                watcher.Filter = module.Filter;
-                watcher.NotifyFilter = (NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.CreationTime);
-                watcher.IncludeSubdirectories = module.ScanSubdirectories;
+                var modulePaths = new List<string>()
+                {
+                    $"{ScriptsRoot}{Path.DirectorySeparatorChar}{module.ModuleRoot}",
+                    $"{ScriptsRoot}{Path.DirectorySeparatorChar}custom{Path.DirectorySeparatorChar}{module.ModuleRoot}",
+                };
 
-                watcher.Changed += OnChanged;
-                watcher.Created += OnCreate;
-                watcher.Error += OnError;
+                foreach (var path in modulePaths)
+                {
+                    if (!Directory.Exists(path))
+                    {
+                        Logger.Error($"Can't add a watcher for {path}");
+                        continue;
+                    }
 
-                module.Watcher = watcher;
+                    var watcher = new FileSystemWatcher(path);
+                    watcher.Filter = module.Filter;
+                    watcher.NotifyFilter = (NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.CreationTime);
+                    watcher.IncludeSubdirectories = module.ScanSubdirectories;
+
+                    watcher.Changed += OnChanged;
+                    watcher.Created += OnCreate;
+                    watcher.Error += OnError;
+
+                    module.Watchers.Add(watcher);
+                }
             }
 
             // Enable all the watchers
@@ -167,7 +196,10 @@ namespace Arrowgene.Ddon.Shared.Scripting
             {
                 if (module.EnableHotLoad)
                 {
-                    module.Watcher.EnableRaisingEvents = true;
+                    foreach (var watcher in module.Watchers)
+                    {
+                        watcher.EnableRaisingEvents = true;
+                    }
                 }
             }
         }
@@ -177,8 +209,6 @@ namespace Arrowgene.Ddon.Shared.Scripting
             {
                 return;
             }
-
-            Logger.Info($"Reloading {e.FullPath}");
 
             ScriptModule module = null;
             foreach (var m in ScriptModules.Values)
@@ -196,14 +226,21 @@ namespace Arrowgene.Ddon.Shared.Scripting
                 return;
             }
 
+            Logger.Info($"Reloading {e.FullPath}");
             try
             {
-                module.Watcher.EnableRaisingEvents = false;
+                foreach (var watcher in module.Watchers)
+                {
+                    watcher.EnableRaisingEvents = false;
+                }
                 CompileScript(module, e.FullPath);
             }
             finally
             {
-                module.Watcher.EnableRaisingEvents = true;
+                foreach (var watcher in module.Watchers)
+                {
+                    watcher.EnableRaisingEvents = true;
+                }
             }
         }
 
@@ -222,12 +259,18 @@ namespace Arrowgene.Ddon.Shared.Scripting
             Logger.Info($"Compiling script for module '{module.ModuleRoot}'");
             try
             {
-                module.Watcher.EnableRaisingEvents = false;
+                foreach (var watcher in module.Watchers)
+                {
+                    watcher.EnableRaisingEvents = false;
+                }
                 CompileScript(module, e.FullPath);
             }
             finally
             {
-                module.Watcher.EnableRaisingEvents = true;
+                foreach (var watcher in module.Watchers)
+                {
+                    watcher.EnableRaisingEvents = true;
+                }
             }
         }
 
