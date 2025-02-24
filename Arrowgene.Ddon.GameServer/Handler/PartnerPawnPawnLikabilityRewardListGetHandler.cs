@@ -1,14 +1,10 @@
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
-using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PartnerPawnPawnLikabilityRewardListGetHandler : StructurePacketHandler<GameClient, C2SPartnerPawnPawnLikabilityRewardListGetReq>
+    public class PartnerPawnPawnLikabilityRewardListGetHandler : GameRequestPacketHandler<C2SPartnerPawnPawnLikabilityRewardListGetReq, S2CPartnerPawnPawnLikabilityRewardListGetRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartnerPawnPawnLikabilityRewardListGetHandler));
 
@@ -16,10 +12,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SPartnerPawnPawnLikabilityRewardListGetReq> req)
+        public override S2CPartnerPawnPawnLikabilityRewardListGetRes Handle(GameClient client, C2SPartnerPawnPawnLikabilityRewardListGetReq request)
         {
-            S2CPartnerPawnPawnLikabilityRewardListGetRes res = new S2CPartnerPawnPawnLikabilityRewardListGetRes();
-            client.Send(res);
+            return new S2CPartnerPawnPawnLikabilityRewardListGetRes();
         }
     }
 }
