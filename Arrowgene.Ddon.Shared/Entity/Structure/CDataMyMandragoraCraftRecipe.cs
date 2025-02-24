@@ -17,14 +17,14 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         /// <summary>
         /// TODO: ?
         /// </summary>
-        public List<CDataMyMandragoraCraftRecipeUnk4> Unk4 { get; set; }
+        public List<CDataMyMandragoraCraftRecipeUnk4> Unk4 { get; set; } = new();
 
         /// <summary>
         /// TODO: IsHide?
         /// </summary>
         public bool Unk5 { get; set; }
 
-        public List<CDataMDataCraftMaterial> CraftMaterialList { get; set; }
+        public List<CDataMDataCraftMaterial> CraftMaterialList { get; set; } = new();
 
         public class Serializer : EntitySerializer<CDataMyMandragoraCraftRecipe>
         {

@@ -9,8 +9,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public override PacketId Id => PacketId.S2C_MY_ROOM_FURNITURE_LIST_GET_RES;
 
-        public List<CDataFurnitureLayout> FurnitureList { get; set; }
-        public CDataMyRoomOption MyRoomOption { get; set; }
+        public List<CDataFurnitureLayout> FurnitureList { get; set; } = new();
+        public CDataMyRoomOption MyRoomOption { get; set; } = new();
 
         public S2CMyRoomFurnitureListGetRes()
         {

@@ -6,7 +6,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     public class CDataMyMandragoraSpeciesCategory
     {
         public MandragoraSpeciesCategory SpeciesCategory { get; set; }
-        public string CategoryName { get; set; }
+        public string CategoryName { get; set; } = string.Empty;
         /// <summary>
         /// The UI will show the category as ??? if num is 0, in the original server though those categories were not shown at all.
         /// </summary>

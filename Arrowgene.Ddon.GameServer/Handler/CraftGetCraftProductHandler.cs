@@ -8,7 +8,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CraftGetCraftProductHandler : GameRequestPacketHandler<C2SCraftGetCraftProductReq, C2SCraftGetCraftProductRes>
+    public class CraftGetCraftProductHandler : GameRequestPacketHandler<C2SCraftGetCraftProductReq, S2CCraftGetCraftProductRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftGetCraftProductHandler));
 
@@ -16,11 +16,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override C2SCraftGetCraftProductRes Handle(GameClient client, C2SCraftGetCraftProductReq request)
+        public override S2CCraftGetCraftProductRes Handle(GameClient client, C2SCraftGetCraftProductReq request)
         {
             CraftProgress craftProgress = Server.Database.SelectPawnCraftProgress(client.Character.CharacterId, request.CraftMainPawnID);
 
-            C2SCraftGetCraftProductRes craftGetCraftProductRes = new C2SCraftGetCraftProductRes();
+            S2CCraftGetCraftProductRes craftGetCraftProductRes = new S2CCraftGetCraftProductRes();
 
             craftGetCraftProductRes.CraftProduct = new CDataCraftProduct()
             {

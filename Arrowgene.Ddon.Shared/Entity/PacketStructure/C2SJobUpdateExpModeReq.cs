@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.C2S_JOB_UPDATE_EXP_MODE_REQ;
 
-        public List<CDataJobExpMode> UpdateExpModeList { get; set; }
+        public List<CDataJobExpMode> UpdateExpModeList { get; set; } = new();
 
         public class Serializer : PacketEntitySerializer<C2SJobUpdateExpModeReq>
         {

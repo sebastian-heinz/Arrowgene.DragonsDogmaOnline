@@ -6,7 +6,7 @@ public class CDataAchievementFurnitureReward
 {
     public uint RewardId { get; set; }
     public uint SortId { get; set; }
-    public CDataAchievementIdentifier AchieveIdentifier { get; set; }
+    public CDataAchievementIdentifier AchieveIdentifier { get; set; } = new();
     public uint FurnitureItemId { get; set; }
     public bool IsReceived { get; set; }
 

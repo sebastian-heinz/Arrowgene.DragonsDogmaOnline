@@ -6,7 +6,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     public class CDataMyMandragoraRarityLevel
     {
         public MandragoraRarity RarityId { get; set; }
-        public string Rarity { get; set; }
+        public string Rarity { get; set; } = string.Empty;
 
         public class Serializer : EntitySerializer<CDataMyMandragoraRarityLevel>
         {

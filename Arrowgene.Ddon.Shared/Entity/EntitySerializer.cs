@@ -605,9 +605,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SCraftCancelCraftRes.Serializer());
             Create(new C2SCraftGetCraftIRCollectionValueListReq.Serializer());
             Create(new C2SCraftGetCraftProductInfoReq.Serializer());
-            Create(new C2SCraftGetCraftProductInfoRes.Serializer());
             Create(new C2SCraftGetCraftProductReq.Serializer());
-            Create(new C2SCraftGetCraftProductRes.Serializer());
             Create(new C2SCraftGetCraftProgressListReq.Serializer());
             Create(new C2SCraftGetCraftSettingReq.Serializer());
             Create(new C2SCraftRecipeGetCraftGradeupRecipeReq.Serializer());
@@ -673,6 +671,7 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new C2SInnGetPenaltyHealStayPriceReq.Serializer());
             Create(new C2SInnGetStayPriceReq.Serializer());
+            Create(new C2SInnHpRecoveryCompleteNtc.Serializer());
             Create(new C2SInnStayInnReq.Serializer());
             Create(new C2SInnStayPenaltyHealInnReq.Serializer());
 
@@ -896,6 +895,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SSkillGetAbilityCostReq.Serializer());
             Create(new C2SSkillGetAcquirableAbilityListReq.Serializer());
             Create(new C2SSkillGetAcquirableSkillListReq.Serializer());
+            Create(new C2SSkillGetCurrentSetSkillListReq.Serializer());
             Create(new C2SSkillGetLearnedAbilityListReq.Serializer());
             Create(new C2SSkillGetLearnedNormalSkillListReq.Serializer());
             Create(new C2SSkillGetLearnedSkillListReq.Serializer());
@@ -1128,6 +1128,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCraftCraftRankUpNtc.Serializer());
             Create(new S2CCraftFinishCraftNtc.Serializer());
             Create(new S2CCraftGetCraftIRCollectionValueListRes.Serializer());
+            Create(new S2CCraftGetCraftProductInfoRes.Serializer());
+            Create(new S2CCraftGetCraftProductRes.Serializer());
             Create(new S2CCraftGetCraftProgressListRes.Serializer());
             Create(new S2CCraftGetCraftSettingRes.Serializer());
             Create(new S2CCraftRecipeGetCraftGradeupRecipeRes.Serializer());
@@ -1634,6 +1636,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new L2CPingRes.Serializer());
 
             Create(new ServerRes.Serializer());
+
+#if DEBUG
+            TestSerializers();
+#endif
         }
 
         private static void Create<T>(PacketEntitySerializer<T> serializer) where T : class, IPacketStructure, new()
@@ -1744,6 +1750,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             return null;
         }
 
+        public static bool Contains(Type type)
+        {
+            return Serializers.ContainsKey(type);
+        }
+
         /// <summary>
         /// Creates a StructuredPacket from a Packet
         /// </summary>
@@ -1763,9 +1774,29 @@ namespace Arrowgene.Ddon.Shared.Entity
             return null;
         }
 
-        public abstract void WriteObj(IBuffer buffer, object obj);
+        private static void TestSerializers()
+        {
+            foreach (var serializer in Serializers)
+            {
+                try
+                {
+                    IBuffer buffer = Util.Buffer.Provide();
+                    object obj = Activator.CreateInstance(serializer.Key);
+                    serializer.Value.WriteObj(buffer, obj);
+                    buffer.SetPositionStart();
+                    serializer.Value.ReadObj(buffer);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Error($"Serializer test failed for {serializer.Key}: \n{ex.Message}\n{ex.StackTrace}.\n\n");
+                }
+            }
+        }
+
+        public abstract bool WriteObj(IBuffer buffer, object obj);
         public abstract object ReadObj(IBuffer buffer);
         protected abstract Type GetEntityType();
+
     }
 
     /// <summary>
@@ -1785,12 +1816,14 @@ namespace Arrowgene.Ddon.Shared.Entity
     /// </summary>
     public abstract class EntitySerializer<T> : EntitySerializer where T : class, new()
     {
-        public override void WriteObj(IBuffer buffer, object obj)
+        public override bool WriteObj(IBuffer buffer, object obj)
         {
             if (obj is T t)
             {
                 Write(buffer, t);
+                return true;
             }
+            return false;
         }
 
         public override object ReadObj(IBuffer buffer)

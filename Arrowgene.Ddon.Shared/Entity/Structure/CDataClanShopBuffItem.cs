@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint RequireClanPoint {  get; set; }
         public byte RequireLevel { get; set; }
         public uint IconID { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public List<CDataClanShopBuffInfo> BuffInfo { get; set; }
         public List<CDataCommonU32> RequireLineupId { get; set; }
 

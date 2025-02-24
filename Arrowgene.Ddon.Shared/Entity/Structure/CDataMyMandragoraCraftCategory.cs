@@ -5,7 +5,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     public class CDataMyMandragoraCraftCategory
     {
         public byte CategoryId { get; set; }
-        public string CategoryName { get; set; }
+        public string CategoryName { get; set; } = string.Empty;
 
         public class Serializer : EntitySerializer<CDataMyMandragoraCraftCategory>
         {

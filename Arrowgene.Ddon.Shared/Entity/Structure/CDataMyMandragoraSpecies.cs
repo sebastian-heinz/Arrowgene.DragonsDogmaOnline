@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         /// <summary>
         /// This could be any character on the server that managed to figure out the correct recipe
         /// </summary>
-        public string FirstDiscovery { get; set; }
+        public string FirstDiscovery { get; set; } = string.Empty;
 
         public long DiscoveredDate { get; set; }
 

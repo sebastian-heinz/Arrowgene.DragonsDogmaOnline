@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     public class CDataBattleContentStage
     {
         public uint Id { get; set; }
-        public string StageName { get; set; }
+        public string StageName { get; set; } = string.Empty;
         public BattleContentMode Mode { get; set; }
 
         public class Serializer : EntitySerializer<CDataBattleContentStage>

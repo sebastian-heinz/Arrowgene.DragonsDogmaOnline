@@ -18,6 +18,12 @@ namespace Arrowgene.Ddon.Server.Network
 
         protected RequestPacketHandler(DdonServer<TClient> server) : base(server)
         {
+#if DEBUG
+            if (!EntitySerializer.Contains(typeof(TResStruct)))
+            {
+                Logger.Error($"RequestPacketHandler missing serializer for {typeof(TResStruct).Name}");
+            }
+#endif
         }
 
         public abstract TResStruct Handle(TClient client, TReqStruct request);

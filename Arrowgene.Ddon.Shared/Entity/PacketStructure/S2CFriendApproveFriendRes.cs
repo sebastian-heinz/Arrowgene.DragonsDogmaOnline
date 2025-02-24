@@ -7,8 +7,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     public class S2CFriendApproveFriendRes : ServerResponse
     {
         public override PacketId Id => PacketId.S2C_FRIEND_APPROVE_FRIEND_RES;
-        
-        public CDataFriendInfo FriendInfo { get; set; }
+
+        public CDataFriendInfo FriendInfo { get; set; } = new();
 
 
         public class Serializer : PacketEntitySerializer<S2CFriendApproveFriendRes>

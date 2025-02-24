@@ -11,8 +11,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public uint PawnId { get; set; }
         public JobId JobId { get; set; }
-        public CDataSpSkill FromStockSpSkill { get; set; }
-        public CDataSpSkill ToActiveSpSkill { get; set; }
+        public CDataSpSkill FromStockSpSkill { get; set; } = new();
+        public CDataSpSkill ToActiveSpSkill { get; set; } = new();
 
         public class Serializer : PacketEntitySerializer<C2SPawnSpSkillSetActiveSkillReq>
         {

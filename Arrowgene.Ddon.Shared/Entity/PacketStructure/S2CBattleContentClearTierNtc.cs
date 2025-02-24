@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
 
         public uint Unk0 { get; set; }
-        public string TierName { get; set; } // Prints when the clear message is sent after killing the area boss.
+        public string TierName { get; set; } = string.Empty; // Prints when the clear message is sent after killing the area boss.
 
         public class Serializer : PacketEntitySerializer<S2CBattleContentClearTierNtc>
         {

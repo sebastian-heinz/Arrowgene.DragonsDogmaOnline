@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public PacketId Id => PacketId.S2C_PARTY_RECV_BINARY_MSG_ALL_NTC;
 
         public uint CharacterId { get; set; }
-        public byte[] Data { get; set; }
+        public byte[] Data { get; set; } = System.Array.Empty<byte>();
         public OnlineStatus OnlineStatus { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CPartyRecvBinaryMsgAllNtc>

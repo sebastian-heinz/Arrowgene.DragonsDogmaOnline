@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         /// <summary>
         /// ItemUID, taken from the lefthand side of the menu where you choose fertilizer items
         /// </summary>
-        public string ItemUID { get; set; }
+        public string ItemUID { get; set; } = string.Empty;
         /// <summary>
         /// Always 1
         /// </summary>

@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.C2S_ITEM_SORT_SET_ITEM_SORTDATA_BIN_REQ;
 
-        public CDataItemSort SortData { get; set; }
+        public CDataItemSort SortData { get; set; } = new();
 
         public class Serializer : PacketEntitySerializer<C2SItemSortSetItemSortDataBinReq>
         {

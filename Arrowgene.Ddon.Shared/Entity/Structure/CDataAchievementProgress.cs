@@ -4,7 +4,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure;
 
 public class CDataAchievementProgress
 {
-    public CDataAchievementIdentifier AchieveIdentifier { get; set; }
+    public CDataAchievementIdentifier AchieveIdentifier { get; set; } = new();
     /// <summary>
     /// Current number of times the objective has been completed, used by client to calculate bar lengths and show completion rate.
     /// </summary>

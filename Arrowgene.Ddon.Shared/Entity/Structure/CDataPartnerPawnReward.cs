@@ -6,7 +6,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
 
         public byte Type { get; set; }
-        public CDataPartnerPawnRewardParam Value { get; set; }
+        public CDataPartnerPawnRewardParam Value { get; set; } = new();
 
         public class Serializer : EntitySerializer<CDataPartnerPawnReward>
         {

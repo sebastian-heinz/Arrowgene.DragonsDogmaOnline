@@ -20,15 +20,14 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         /// <summary>
         /// List of items used to "fertilize" or raise the mandragora.
         /// </summary>
-        public List<CDataMyMandragoraBeginCraftFertilizerItem> CraftFertilizerItemList { get; set; }
+        public List<CDataMyMandragoraBeginCraftFertilizerItem> CraftFertilizerItemList { get; set; } = new();
         /// <summary>
         /// Actual craft recipe ingredient items.
         /// </summary>
-        public List<CDataCraftMaterial> CraftMaterialList { get; set; }
+        public List<CDataCraftMaterial> CraftMaterialList { get; set; } = new();
 
         public C2SMandragoraBeginCraftReq()
         {
-            CraftMaterialList = new List<CDataCraftMaterial>();
         }
 
         public class Serializer : PacketEntitySerializer<C2SMandragoraBeginCraftReq>

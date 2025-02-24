@@ -13,7 +13,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public PacketId Id => PacketId.C2S_ITEM_MOVE_ITEM_REQ;
 
         public byte SourceGameStorageType { get; set; }
-        public List<CDataMoveItemUIDFromTo> ItemUIDList { get; set; }
+        public List<CDataMoveItemUIDFromTo> ItemUIDList { get; set; } = new();
         
         public class Serializer : PacketEntitySerializer<C2SItemMoveItemReq>
         {

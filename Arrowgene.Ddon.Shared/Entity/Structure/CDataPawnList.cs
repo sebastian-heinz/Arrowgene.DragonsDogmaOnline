@@ -5,18 +5,13 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataPawnList
     {
-        public CDataPawnList()
-        {
-            PawnListData = new CDataPawnListData();
-        }
-
         public int PawnId { get; set; }
         public uint SlotNo { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public byte Sex { get; set; }
         public PawnState PawnState { get; set; }
         public byte ShareRange { get; set; }
-        public CDataPawnListData PawnListData { get; set; }
+        public CDataPawnListData PawnListData { get; set; } = new();
         public uint Unk0 { get; set; }
         public uint TrainingExp { get; set; }
         public uint Unk2 { get; set; } // CDataPawnTrainingPreparationInfoToAdvice.Unk0

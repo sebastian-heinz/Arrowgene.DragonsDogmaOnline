@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.C2S_CONNECTION_LOGIN_REQ;
 
-        public string SessionKey { get; set; }
+        public string SessionKey { get; set; } = string.Empty;
         
         public PlatformType PlatformType { get; set; }
 

@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public override PacketId Id => PacketId.S2C_PARTNER_PAWN_PAWN_LIKABILITY_RELEASED_REWARD_LIST_GET_RES;
 
-        public List<CDataPartnerPawnReward> ReleasedRewardList { get; set; }
+        public List<CDataPartnerPawnReward> ReleasedRewardList { get; set; } = new();
 
         public S2CPartnerPawnPawnLikabilityReleasedRewardListGetRes()
         {

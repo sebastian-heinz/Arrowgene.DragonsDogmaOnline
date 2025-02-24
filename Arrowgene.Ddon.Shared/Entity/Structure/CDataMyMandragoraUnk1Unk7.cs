@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public uint Unk0 { get; set; }
         public uint Unk1 { get; set; }
-        public List<CDataMyMandragoraUnk1Unk7Unk2> Unk2 { get; set; }
+        public List<CDataMyMandragoraUnk1Unk7Unk2> Unk2 { get; set; } = new();
         public long Unk3 { get; set; }
 
         public class Serializer : EntitySerializer<CDataMyMandragoraUnk1Unk7>

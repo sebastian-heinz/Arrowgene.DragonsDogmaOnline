@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public PacketId Id => PacketId.S2C_FRIEND_APPROVE_FRIEND_NTC;
 
         public bool IsApproved { get; set; }
-        public CDataFriendInfo FriendInfo { get; set; }
+        public CDataFriendInfo FriendInfo { get; set; } = new();
 
 
         public class Serializer : PacketEntitySerializer<S2CFriendApproveFriendNtc>

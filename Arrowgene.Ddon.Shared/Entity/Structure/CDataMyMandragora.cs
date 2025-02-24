@@ -14,11 +14,11 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         /// </summary>
         public MandragoraSpeciesCategory SpeciesCategory { get; set; }
         public uint MandragoraId { get; set; }
-        public string MandragoraName { get; set; }
+        public string MandragoraName { get; set; } = string.Empty;
         public uint Unk4 { get; set; }
         public long Unk5 { get; set; }
         public uint Unk6 { get; set; }
-        public CDataMyMandragoraUnk1Unk7 Unk7 { get; set; }
+        public CDataMyMandragoraUnk1Unk7 Unk7 { get; set; } = new();
 
         public class Serializer : EntitySerializer<CDataMyMandragora>
         {

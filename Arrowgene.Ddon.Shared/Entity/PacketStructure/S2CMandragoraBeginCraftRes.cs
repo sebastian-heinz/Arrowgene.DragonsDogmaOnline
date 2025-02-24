@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public override PacketId Id => PacketId.S2C_MANDRAGORA_BEGIN_CRAFT_RES;
 
-        public CDataMyMandragoraBeginCraftResUnk0 Unk0 { get; set; }
+        public CDataMyMandragoraBeginCraftResUnk0 Unk0 { get; set; } = new();
 
         public S2CMandragoraBeginCraftRes()
         {

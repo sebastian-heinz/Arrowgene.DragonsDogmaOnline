@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public override PacketId Id => PacketId.S2C_PARTNER_PAWN_PARTNER_PAWN_SET_RES;
 
-        public CDataPartnerPawnData PartnerInfo { get; set; }
+        public CDataPartnerPawnData PartnerInfo { get; set; } = new();
 
         public S2CPartnerPawnSetRes()
         {

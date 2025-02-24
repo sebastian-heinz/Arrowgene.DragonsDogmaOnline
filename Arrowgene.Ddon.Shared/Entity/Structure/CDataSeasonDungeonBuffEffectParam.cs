@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         }
 
         public uint Level { get; set; }
-        public CDataSeasonDungeonUnk2 Unk1 { get; set; }
+        public CDataSeasonDungeonUnk2 Unk1 { get; set; } = new();
 
         public class Serializer : EntitySerializer<CDataSeasonDungeonBuffEffectParam>
         {

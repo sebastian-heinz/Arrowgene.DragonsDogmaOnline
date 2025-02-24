@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
         }
 
-        public CDataStageLayoutId LayoutId { get; set; }
+        public CDataStageLayoutId LayoutId { get; set; } = new();
 
         public class Serializer : PacketEntitySerializer<C2SInstanceGetItemSetListReq>
         {

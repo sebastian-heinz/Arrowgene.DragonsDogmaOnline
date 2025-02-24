@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.C2S_PARTNER_PAWN_PAWN_LIKABILITY_REWARD_GET_REQ;
 
-        public List<CDataPartnerPawnReward> RewardUidList { get; set; }
+        public List<CDataPartnerPawnReward> RewardUidList { get; set; } = new();
         /// <summary>
         /// TODO: What is this for? Probably populated by the client.
         /// </summary>
