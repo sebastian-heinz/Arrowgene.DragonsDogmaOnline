@@ -22,6 +22,11 @@ namespace Arrowgene.Ddon.Server.Scripting.interfaces
             return SettingsData.Get<T>(scriptName, key);
         }
 
+        public void Set<T>(string scriptName, string key, T value)
+        {
+            SettingsData.Set<T>(scriptName, key, value);
+        }
+
         /// <summary>
         /// Additional factor to change how long crafting a recipe will take to finish.
         /// </summary>

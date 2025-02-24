@@ -1,6 +1,7 @@
 ## User-specific VS project launch settings
 Arrowgene.Ddon.Cli/Properties/launchSettings.json
 Arrowgene.Ddon.Shared/Files/Assets/scripts/custom/*
+Arrowgene.Ddon.Shared/Files/Assets/scripts/addendums/*
 
 ## Folders specific
 /publish/

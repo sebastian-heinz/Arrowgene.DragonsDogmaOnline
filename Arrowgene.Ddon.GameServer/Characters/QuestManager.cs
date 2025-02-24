@@ -158,6 +158,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return gQuests[questScheduleId];
         }
 
+        public static Quest GetQuestByQuestId(QuestId questId)
+        {
+            var questScheduleIds = GetQuestScheduleIdsForQuestId(questId);
+            if (questScheduleIds.Count > 1)
+            {
+                throw new Exception($"The quest {questId} has multiple implementations. Use GetQuestScheduleIdsForQuestId instead.");
+            }
+
+            return questScheduleIds.Count > 0 ? QuestManager.GetQuestByScheduleId(questScheduleIds.ToList()[0]) : null;
+        }
+
         public static HashSet<uint> GetQuestScheduleIdsForQuestId(QuestId questId)
         {
             if (gVariantQuests.ContainsKey(questId))

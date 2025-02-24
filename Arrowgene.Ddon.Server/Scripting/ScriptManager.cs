@@ -174,7 +174,6 @@ namespace Arrowgene.Ddon.Shared.Scripting
                 {
                     if (!Directory.Exists(path))
                     {
-                        Logger.Error($"Can't add a watcher for {path}");
                         continue;
                     }
 
@@ -203,23 +202,29 @@ namespace Arrowgene.Ddon.Shared.Scripting
                 }
             }
         }
-        protected void OnChanged(object sender, FileSystemEventArgs e)
+
+        protected ScriptModule GetModuleFromFilePath(string path)
+        {
+            ScriptModule module = null;
+            foreach (var m in ScriptModules.Values)
+            {
+                if (m.Scripts.Contains(path))
+                {
+                    module = m;
+                    break;
+                }
+            }
+            return module;
+        }
+
+        protected virtual void OnChanged(object sender, FileSystemEventArgs e)
         {
             if (e.ChangeType != WatcherChangeTypes.Changed)
             {
                 return;
             }
 
-            ScriptModule module = null;
-            foreach (var m in ScriptModules.Values)
-            {
-                if (m.Scripts.Contains(e.FullPath))
-                {
-                    module = m;
-                    break;
-                }
-            }
-
+            var module = GetModuleFromFilePath(e.FullPath);
             if (module == null)
             {
                 // No module associated with this script file

@@ -2,6 +2,7 @@ using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Context;
 using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -77,8 +78,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public QuestRewardParams RewardParams { get; protected set; }
         protected List<CDataWalletPoint> WalletRewards { get; set; }
         protected List<CDataQuestExp> ExpRewards { get; set; }
-        public List<QuestRewardItem> ItemRewards { get; protected set; }
-        public List<QuestRewardItem> SelectableRewards { get; protected set; }
+        protected List<QuestRewardItem> ItemRewards { get; set; }
+        protected List<QuestRewardItem> SelectableRewards { get; set; }
         public List<CDataCharacterReleaseElement> ContentsReleaseRewards { get; protected set; }
         public List<QuestLocation> Locations { get; protected set; }
         public List<QuestDeliveryItem> DeliveryItems { get; protected set; }
@@ -515,6 +516,59 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 Contents = contents,
                 Detail = LightQuestDetail
             };
+        }
+
+        public void ClearAllRewards()
+        {
+            ItemRewards.Clear();
+            ExpRewards.Clear();
+            SelectableRewards.Clear();
+            WalletRewards.Clear();
+        }
+
+        public void AddPointReward(QuestPointReward reward)
+        {
+            ExpRewards.Add(reward.AsCDataQuestExp());
+        }
+
+        public void AddPointReward(PointType pointType, uint amount)
+        {
+            AddPointReward(QuestPointReward.Create(pointType, amount));
+        }
+
+        public void AddWalletReward(QuestWalletReward reward)
+        {
+            WalletRewards.Add(reward.AsCDataWalletPoint());
+        }
+
+        public void AddWalletReward(WalletType WalletType, uint amount)
+        {
+            AddWalletReward(QuestWalletReward.Create(WalletType, amount));
+        }
+
+        public void AddItemReward(QuestRewardItem reward)
+        {
+            switch (reward.RewardType)
+            {
+                case QuestRewardType.Fixed:
+                case QuestRewardType.Undiscovery:
+                case QuestRewardType.Random:
+                case QuestRewardType.Repeat:
+                case QuestRewardType.Switch:
+                case QuestRewardType.Border:
+                case QuestRewardType.Ranking:
+                case QuestRewardType.Charge:
+                case QuestRewardType.RegionBreak:
+                case QuestRewardType.FixedFirst:
+                case QuestRewardType.FixedSecond:
+                case QuestRewardType.FixedMemberFirst:
+                case QuestRewardType.ProgressBonus:
+                    ItemRewards.Add(reward);
+                    break;
+                case QuestRewardType.Select:
+                    SelectableRewards.Add(reward);
+                    break;
+            }
         }
 
         public virtual CDataTimeGainQuestList ToCDataTimeGainQuestList(uint step)
