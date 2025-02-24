@@ -67,7 +67,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             new CDataCharacterReleaseElement(ContentsRelease.DressEquipment),
             new CDataCharacterReleaseElement(ContentsRelease.FeryanaWildernessWorldQuests),
             new CDataCharacterReleaseElement(ContentsRelease.LestaniaNews),
-            // new CDataCharacterReleaseElement(ContentsRelease.MandragoraBreeding),
+            new CDataCharacterReleaseElement(ContentsRelease.MandragoraBreeding),
             new CDataCharacterReleaseElement(ContentsRelease.JobTrainingLog),
             new CDataCharacterReleaseElement(ContentsRelease.YourRoomsTerrace),
             new CDataCharacterReleaseElement(ContentsRelease.DragonForceAugmentation),

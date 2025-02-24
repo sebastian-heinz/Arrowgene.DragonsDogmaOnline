@@ -11,6 +11,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public S2CPartnerPawnPawnLikabilityRewardListGetRes()
         {
+            RewardList = new List<CDataPartnerPawnReward>();
         }
 
         public List<CDataPartnerPawnReward> RewardList { get; set; } = new();

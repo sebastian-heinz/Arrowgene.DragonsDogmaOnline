@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Arrowgene.Ddon.Shared.Entity
 {
@@ -265,6 +265,25 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataMatchingProfile.Serializer());
             Create(new CDataMobHuntQuestDetail.Serializer());
             Create(new CDataMobHuntQuestOrderList.Serializer());
+            
+            Create(new CDataMyMandragoraFurnitureItem.Serializer());
+            Create(new CDataMyMandragoraBeginCraftFertilizerItem.Serializer());
+            Create(new CDataMyMandragoraBeginCraftResUnk0.Serializer());
+            Create(new CDataMyMandragoraBeginCraftResUnk0Unk7.Serializer());
+            Create(new CDataMyMandragoraBeginCraftResUnk0Unk7Unk2.Serializer());
+            Create(new CDataMyMandragora.Serializer());
+            Create(new CDataMyMandragoraUnk1Unk7.Serializer());
+            Create(new CDataMyMandragoraUnk1Unk7Unk2.Serializer());
+            Create(new CDataMyMandragoraCraftCategory.Serializer());
+            Create(new CDataMyMandragoraUnk3.Serializer());
+            Create(new CDataMyMandragoraFertilizerItem.Serializer());
+            Create(new CDataMyMandragoraSpeciesCategory.Serializer());
+            Create(new CDataMyMandragoraSpecies.Serializer());
+            Create(new CDataMyMandragoraRarityLevel.Serializer());
+            Create(new CDataMyMandragoraCraftRecipe.Serializer());
+            Create(new CDataMyMandragoraCraftRecipeUnk4.Serializer());
+            Create(new CDataMyRoomOption.Serializer());
+            
             Create(new CDataMoonSchedule.Serializer());
             Create(new CDataMoveItemUIDFromTo.Serializer());
 
@@ -282,7 +301,9 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new CDataPackageQuestDetail.Serializer());
             Create(new CDataPackageQuestList.Serializer());
-            Create(new CDataPartnerPawnInfo.Serializer());
+            Create(new CDataPartnerPawnData.Serializer());
+            Create(new CDataPartnerPawnReward.Serializer());
+            Create(new CDataPartnerPawnRewardParam.Serializer());
             Create(new CDataPartyContextPawn.Serializer());
             Create(new CDataPartyListInfo.Serializer());
             Create(new CDataPartyMember.Serializer());
@@ -306,6 +327,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataPawnSearchParameter.Serializer());
             Create(new CDataPawnTotalScore.Serializer());
             Create(new CDataPawnTrainingPreparationInfoToAdvice.Serializer());
+            Create(new CDataPawnTrainingProfile.Serializer());
             Create(new CDataPlayPointData.Serializer());
             Create(new CDataPresetAbilityParam.Serializer());
             Create(new CDataPriorityQuest.Serializer());
@@ -440,8 +462,6 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataWeatherSchedule.Serializer());
             Create(new CDataWorldManageQuestList.Serializer());
             Create(new CDataWorldManageQuestOrderList.Serializer());
-
-            Create(new CData_772E80.Serializer());
 
             // Packet structure serializers
             Create(new C2LClientChallengeReq.Serializer());
@@ -722,6 +742,10 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new C2SMandragoraGetMyMandragoraReq.Serializer());
 
+            Create(new C2SMandragoraGetSpeciesCategoryListReq.Serializer());
+            Create(new C2SMandragoraGetSpeciesListReq.Serializer());
+            Create(new C2SMandragoraGetCraftRecipeListReq.Serializer());
+            Create(new C2SMandragoraBeginCraftReq.Serializer());
             Create(new C2SMyRoomFurnitureListGetReq.Serializer());
             Create(new C2SMyRoomMyRoomBgmUpdateReq.Serializer());
             Create(new C2SMyRoomUpdatePlanetariumReq.Serializer());
@@ -731,8 +755,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SOrbDevoteGetPawnReleaseOrbElementListReq.Serializer());
             Create(new C2SOrbDevoteReleaseOrbElementReq.Serializer());
             Create(new C2SOrbDevoteReleasePawnOrbElementReq.Serializer());
-
+            Create(new C2SPartnerPawnPawnLikabilityReleasedRewardListGetReq.Serializer());
+            Create(new C2SPartnerPawnPawnLikabilityRewardGetReq.Serializer());
             Create(new C2SPartnerPawnPawnLikabilityRewardListGetReq.Serializer());
+            Create(new C2SPartnerPawnSetReq.Serializer());
             Create(new C2SPartyPartyBreakupReq.Serializer());
             Create(new C2SPartyPartyChangeLeaderReq.Serializer());
             Create(new C2SPartyPartyCreateReq.Serializer());
@@ -1285,6 +1311,10 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new S2CMandragoraGetMyMandragoraRes.Serializer());
 
+            Create(new S2CMandragoraGetSpeciesCategoryListRes.Serializer());
+            Create(new S2CMandragoraGetSpeciesListRes.Serializer());
+            Create(new S2CMandragoraGetCraftRecipeListRes.Serializer());
+            Create(new S2CMandragoraBeginCraftRes.Serializer());
             Create(new S2CMyRoomFurnitureListGetRes.Serializer());
             Create(new S2CMyRoomMyRoomBgmUpdateRes.Serializer());
             Create(new S2CMyRoomUpdatePlanetariumRes.Serializer());
@@ -1298,7 +1328,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2COrbDevoteReleaseOrbElementRes.Serializer());
             Create(new S2COrbDevoteReleasePawnOrbElementRes.Serializer());
 
+            Create(new S2CPartnerPawnPawnLikabilityReleasedRewardListGetRes.Serializer());
             Create(new S2CPartnerPawnPawnLikabilityRewardListGetRes.Serializer());
+            Create(new S2CPartnerPawnPawnLikabilityRewardGetRes.Serializer());
+            Create(new S2CPartnerPawnSetRes.Serializer());
 
             Create(new S2CPartyPartyBreakupNtc.Serializer());
             Create(new S2CPartyPartyBreakupRes.Serializer());

@@ -11,36 +11,36 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClanGetFurnitureHandler));
 
-        private static Dictionary<ClanBaseCustomizationType, uint> MandatoryTypes = new()
+        private static Dictionary<byte, uint> MandatoryTypes = new()
         {
-            { ClanBaseCustomizationType.PlazaObject, 18484 },
-            { ClanBaseCustomizationType.Statue, 18505 },
-            { ClanBaseCustomizationType.DiningTable, 18638 },
-            { ClanBaseCustomizationType.LargeCarpet, 18639 },
-            { ClanBaseCustomizationType.HallDecoration, 21131 }
+            { 50, 18484 },
+            { 52, 18505 },
+            { 57, 18638 },
+            { 58, 18639 },
+            { 60, 21131 }
         };
-        private static Dictionary<uint, ClanBaseCustomizationType> ItemIdToLayoutId = new()
+        private static Dictionary<uint, byte> ItemIdToLayoutId = new()
         {
-            {18484, ClanBaseCustomizationType.PlazaObject},
-            {18505, ClanBaseCustomizationType.Statue},
-            {18638, ClanBaseCustomizationType.DiningTable},
-            {18639, ClanBaseCustomizationType.LargeCarpet},
-            {21129, ClanBaseCustomizationType.PlazaObject},
-            {21130, ClanBaseCustomizationType.LargeCarpet},
-            {21131, ClanBaseCustomizationType.HallDecoration},
-            {21132, ClanBaseCustomizationType.HallDecoration},
-            {21133, ClanBaseCustomizationType.LoungeBoard},
-            {21713, ClanBaseCustomizationType.PlazaObject},
-            {21714, ClanBaseCustomizationType.DiningTable},
-            {21715, ClanBaseCustomizationType.LargeCarpet},
-            {21776, ClanBaseCustomizationType.HallDecoration},
-            {23124, ClanBaseCustomizationType.HallDecoration},
-            {23125, ClanBaseCustomizationType.LargeCarpet},
-            {23126, ClanBaseCustomizationType.DiningTable},
-            {23127, ClanBaseCustomizationType.LoungeBoard},
-            {23128, ClanBaseCustomizationType.PlazaObject},
-            {23129, ClanBaseCustomizationType.DiningTable},
-            {23130, ClanBaseCustomizationType.PlazaObject}
+            {18484, 50},
+            {18505, 52},
+            {18638, 57},
+            {18639, 58},
+            {21129, 50},
+            {21130, 58},
+            {21131, 60},
+            {21132, 60},
+            {21133, 59},
+            {21713, 50},
+            {21714, 57},
+            {21715, 58},
+            {21776, 60},
+            {23124, 60},
+            {23125, 58},
+            {23126, 57},
+            {23127, 59},
+            {23128, 50},
+            {23129, 57},
+            {23130, 50}
         };
         private static Dictionary<uint, uint> LineupIdToFurnitureId = new()
         {
@@ -71,12 +71,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var pcap = new S2CClanGetFurnitureRes.Serializer().Read(FurnitureData);
 
             List<uint> baseFuncs = new();
-            Dictionary<ClanBaseCustomizationType, uint> customDict = new();
+            Dictionary<byte, uint> customDict = new();
             Server.Database.ExecuteInTransaction(connection =>
             {
                 baseFuncs = Server.Database.SelectClanShopPurchases(client.Character.ClanId, connection);
                 customDict = Server.Database.SelectClanBaseCustomizations(client.Character.ClanId, connection)
-                    .Where(x => x.Type != ClanBaseCustomizationType.Concierge)
+                    .Where(x => x.Type != 1)
                     .ToDictionary(key => key.Type, value => value.Id);
             });
 
@@ -86,7 +86,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     ItemID = furnitureId,
                     OmID = 0,
-                    LayoutId = 0
+                    LayoutID = 0
                 });
             }
 
@@ -99,7 +99,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         ItemID = furnitureId,
                         OmID = 0,
-                        LayoutId = 0
+                        LayoutID = 0
                     });
                 }
             }
@@ -115,12 +115,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var match = res.FurnitureLayouts.Find(x => x.ItemID == furnitureId);
                 if (match != null)
                 {
-                    match.LayoutId = type;
+                    match.LayoutID = type;
                 }
                 else
                 {
                     var backupMatch = res.FurnitureLayouts.Find(x => x.ItemID == defaultId);
-                    backupMatch.LayoutId = type;
+                    backupMatch.LayoutID = type;
                 }
             }
 

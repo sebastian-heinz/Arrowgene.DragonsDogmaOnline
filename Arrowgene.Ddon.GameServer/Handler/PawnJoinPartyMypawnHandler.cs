@@ -19,6 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Pawn pawn = client.Character.Pawns[request.PawnNumber-1];
             PawnPartyMember partyMember = client.Party.Join(pawn);
 
+            pawn.PawnState = PawnState.Party;
             client.Party.SendToAll(new S2CPawnJoinPartyPawnNtc() { PartyMember = partyMember.GetCDataPartyMember() });
             client.Party.SendToAll(partyMember.GetS2CContextGetParty_ContextNtc());
 

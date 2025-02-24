@@ -12,11 +12,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public S2CPawnGetMypawnListRes()
         {
             PawnList = new List<CDataPawnList>();
-            PartnerInfo = new CDataPartnerPawnInfo();
+            PartnerInfo = new CDataPartnerPawnData();
         }
 
         public List<CDataPawnList> PawnList { get; set; }
-        public CDataPartnerPawnInfo PartnerInfo { get; set; }
+        public CDataPartnerPawnData PartnerInfo { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CPawnGetMypawnListRes>
         {
@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 WriteServerResponse(buffer, obj);
                 WriteEntityList<CDataPawnList>(buffer, obj.PawnList);
-                WriteEntity<CDataPartnerPawnInfo>(buffer, obj.PartnerInfo);
+                WriteEntity<CDataPartnerPawnData>(buffer, obj.PartnerInfo);
             }
 
             public override S2CPawnGetMypawnListRes Read(IBuffer buffer)
@@ -32,7 +32,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 S2CPawnGetMypawnListRes obj = new S2CPawnGetMypawnListRes();
                 ReadServerResponse(buffer, obj);
                 obj.PawnList = ReadEntityList<CDataPawnList>(buffer);
-                obj.PartnerInfo = ReadEntity<CDataPartnerPawnInfo>(buffer);
+                obj.PartnerInfo = ReadEntity<CDataPartnerPawnData>(buffer);
                 return obj;
             }
         }

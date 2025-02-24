@@ -6,24 +6,21 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
 
         public byte Type { get; set; }
-        public uint ParamTypeId { get; set; }
-        public uint UID { get; set; }
+        public CDataPartnerPawnRewardParam Value { get; set; }
 
         public class Serializer : EntitySerializer<CDataPartnerPawnReward>
         {
             public override void Write(IBuffer buffer, CDataPartnerPawnReward obj)
             {
                 WriteByte(buffer, obj.Type);
-                WriteUInt32(buffer, obj.ParamTypeId);
-                WriteUInt32(buffer, obj.UID);
+                WriteEntity<CDataPartnerPawnRewardParam>(buffer, obj.Value);
             }
 
             public override CDataPartnerPawnReward Read(IBuffer buffer)
             {
                 CDataPartnerPawnReward obj = new CDataPartnerPawnReward();
                 obj.Type = ReadByte(buffer);
-                obj.ParamTypeId = ReadUInt32(buffer);
-                obj.UID = ReadUInt32(buffer);
+                obj.Value = ReadEntity<CDataPartnerPawnRewardParam>(buffer);
                 return obj;
             }
         }

@@ -421,10 +421,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             });
         }
 
-        public List<(ClanBaseCustomizationType Type, uint Id)> SelectClanBaseCustomizations(uint clanId, DbConnection? connectionIn = null)
+        public List<(byte Type, uint Id)> SelectClanBaseCustomizations(uint clanId, DbConnection? connectionIn = null)
         {
             return ExecuteQuerySafe(connectionIn, connection => {
-                var list = new List<(ClanBaseCustomizationType Type, uint Id)>();
+                var list = new List<(byte Type, uint Id)>();
                 ExecuteReader(connection,
                     SqlSelectClanBaseCustomizations,
                     command => { AddParameter(command, "@clan_id", clanId); },
@@ -433,7 +433,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         while (reader.Read())
                         {
                             var cust = (
-                                (ClanBaseCustomizationType)GetByte(reader, "type"),
+                                GetByte(reader, "type"),
                                 GetUInt32(reader, "furniture_id")
                             );
                             list.Add(cust);
