@@ -22,10 +22,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             
             PartyGroup party = client.Party
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_NOT_INVITED, "failed to find party");
-            
+
             //Server.PartyManager.GetPartyInvitation()
 
-            S2CPartyPartyInviteCancelNtc ntc = new S2CPartyPartyInviteCancelNtc();
+            S2CPartyPartyInviteCancelNtc ntc = new S2CPartyPartyInviteCancelNtc()
+            {
+                ErrorCode = ErrorCode.ERROR_CODE_PARTY_INVITE_CANCEL_REASON_CANCEL
+            };
             party.SendToAll(ntc);
 
             //party.CancelInvite();
