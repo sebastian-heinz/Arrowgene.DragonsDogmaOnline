@@ -1,10 +1,7 @@
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
-using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +22,11 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         {
             // TODO: How to block this after being set one time without breaking tests
             Instance.Server = server;
+        }
+
+        public static T GetSetting<T>(string scriptName, string key)
+        {
+            return Instance.Server.GameSettings.Get<T>(scriptName, key);
         }
 
         // TODO: Remove this function once Server singleton is created
@@ -64,16 +66,6 @@ namespace Arrowgene.Ddon.GameServer.Scripting
                 }
             }
             return new InstancedRandomEnemy(enemyIds, dropTables, lv, exp, index);
-        }
-
-        public static T GetSetting<T>(string scriptName, string key)
-        {
-            return Instance.Server.GameLogicSettings.Get<T>(scriptName, key);
-        }
-
-        public static void SetSetting<T>(string scriptName, string key, T value)
-        {
-            Instance.Server.GameLogicSettings.Set(scriptName, key, value);
         }
 
         private Dictionary<string, object> HandlerCache = new Dictionary<string, object>();

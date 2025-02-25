@@ -20,11 +20,13 @@ namespace Arrowgene.Ddon.Shared.Scripting
         public string ScriptsRoot { get; private set; }
         public string LibsRoot { get; private set; } = string.Empty;
         public T GlobalVariables { get; protected set; }
+        public List<string> PathsToIgnore { get; protected set; }
 
         public ScriptManager(string assetsPath, string libsPath)
         {
             ScriptModules = new Dictionary<string, ScriptModule>();
-            ScriptsRoot = $"{assetsPath}{Path.DirectorySeparatorChar}scripts";
+            ScriptsRoot = Path.Combine(assetsPath, "scripts");
+            PathsToIgnore = new List<string>();
 
             if (libsPath != "")
             {
@@ -127,21 +129,52 @@ namespace Arrowgene.Ddon.Shared.Scripting
                                 $"{ScriptsRoot}{Path.DirectorySeparatorChar}custom{Path.DirectorySeparatorChar}{moduleRoot}");
         }
 
+        /// <summary>
+        /// Returns if pathA contain pathB.
+        /// </summary>
+        /// <param name="pathA">The path to find pathB in.</param>
+        /// <param name="pathB">The path to find pathA in.</param>
+        /// <returns>Returns true if pathB is in pathA, otherwise false.</returns>
+        private bool PathContains(string pathA, string pathB)
+        {
+            string normalizedA = Path.GetFullPath(pathA).TrimEnd(Path.DirectorySeparatorChar);
+            string normalizedB = Path.GetFullPath(pathB).TrimEnd(Path.DirectorySeparatorChar);
+            return normalizedA.Contains(normalizedB);
+        }
+
+        private bool ShouldIgnoreFile(string path)
+        {
+            foreach (var pathToIgnore in PathsToIgnore)
+            {
+                if (PathContains(path, pathToIgnore))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         protected void CompileScripts()
         {
             foreach (var module in ScriptModules.Values)
             {
-                var path = $"{ScriptsRoot}{Path.DirectorySeparatorChar}{module.ModuleRoot}";
+                var path = Path.Combine(ScriptsRoot, module.ModuleRoot);
                 if (!module.IsEnabled)
                 {
                     Logger.Info($"The module '{module.ModuleRoot}' is disabled. Skipping.");
                     continue;
                 }
 
+                module.Initialize();
+
                 Logger.Info($"Compiling scripts for module '{module.ModuleRoot}'");
                 foreach (var filePath in Directory.GetFiles(path, "*.csx", SearchOption.AllDirectories))
                 {
                     var fileToCompile = filePath;
+                    if (ShouldIgnoreFile(fileToCompile))
+                    {
+                        continue;
+                    }
 
                     var overlayFilePath = GetCustomPath(filePath, module.ModuleRoot);
                     if (File.Exists(overlayFilePath))
@@ -224,6 +257,11 @@ namespace Arrowgene.Ddon.Shared.Scripting
                 return;
             }
 
+            if (ShouldIgnoreFile(e.FullPath))
+            {
+                return;
+            }
+
             var module = GetModuleFromFilePath(e.FullPath);
             if (module == null)
             {
@@ -251,6 +289,11 @@ namespace Arrowgene.Ddon.Shared.Scripting
 
         private void OnCreate(object sender, FileSystemEventArgs e)
         {
+            if (ShouldIgnoreFile(e.FullPath))
+            {
+                return;
+            }
+
             var module = ScriptUtils.FindModule(e.FullPath, ScriptModules);
             if (module == null)
             {

@@ -5,17 +5,17 @@ public class SeasonalEvents
 {
     public static bool CheckConfigSettings(DdonGameServer server, string enableKey, string yearKey, uint year, string periodKey)
     {
-        if (!server.GameLogicSettings.Get<bool>("SeasonalEvents", enableKey))
+        if (!server.GameSettings.Get<bool>("SeasonalEventSettings", enableKey))
         {
             return false;
         }
 
-        if (server.GameLogicSettings.Get<uint>("SeasonalEvents", yearKey) != year)
+        if (server.GameSettings.Get<uint>("SeasonalEventSettings", yearKey) != year)
         {
             return false;
         }
 
-        var timespan = server.GameLogicSettings.Get<(DateTime, DateTime)>("SeasonalEvents", periodKey);
+        var timespan = server.GameSettings.Get<(DateTime, DateTime)>("SeasonalEventSettings", periodKey);
         return LibUtils.WithinTimespan(timespan);
     }
 }

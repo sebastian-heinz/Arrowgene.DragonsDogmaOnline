@@ -10,7 +10,7 @@ public class PointModifier : IPointModifier
 
     public override bool IsEnabled()
     {
-        return LibDdon.GetSetting<bool>("PointModifiers", "EnableAdjustPartyEnemyExp");
+        return LibDdon.GetSetting<bool>("PointModifierSettings", "EnableAdjustPartyEnemyExp");
     }
 
     public override double GetMultiplier(GameMode gameMode, CharacterCommon characterCommon, PartyGroup party, InstancedEnemy enemy, QuestType questType)
@@ -20,7 +20,7 @@ public class PointModifier : IPointModifier
             return 1.0;
         }
 
-        if (LibDdon.GetSetting<bool>("PointModifiers", "DisableExpCorrectionForMyPawn") && PartyUtils.AllMembersOwnedByPartyLeader(party))
+        if (LibDdon.GetSetting<bool>("PointModifierSettings", "DisableExpCorrectionForMyPawn") && PartyUtils.AllMembersOwnedByPartyLeader(party))
         {
             return 1.0;
         }
@@ -28,7 +28,7 @@ public class PointModifier : IPointModifier
         var range = PartyUtils.LevelRange(party);
 
         double multiplier = 0;
-        foreach (var tier in LibDdon.GetSetting<List<(uint MinLv, uint MaxLv, double ExpMultiplier)>>("PointModifiers", "AdjustPartyEnemyExpTiers"))
+        foreach (var tier in LibDdon.GetSetting<List<(uint MinLv, uint MaxLv, double ExpMultiplier)>>("PointModifierSettings", "AdjustPartyEnemyExpTiers"))
         {
             if (range >= tier.MinLv && range <= tier.MaxLv)
             {

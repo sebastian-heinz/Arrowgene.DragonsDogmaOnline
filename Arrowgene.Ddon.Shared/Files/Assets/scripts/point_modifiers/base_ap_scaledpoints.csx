@@ -8,7 +8,7 @@ public class PointModifier : IPointModifier
 
     public override double GetMultiplier(GameMode gameMode, CharacterCommon characterCommon, PartyGroup party, InstancedEnemy enemy, QuestType questType)
     {
-        return LibDdon.GetSetting<double>("GameLogicSettings", "ApModifier");
+        return LibDdon.GetSetting<double>("GameServerSettings", "ApModifier");
     }
 }
 

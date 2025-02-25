@@ -12,10 +12,10 @@ public class PointModifier : IPointModifier
         switch (gameMode)
         {
             case GameMode.Normal:
-                multiplier = LibDdon.GetSetting<double>("GameLogicSettings", "EnemyExpModifier");
+                multiplier = LibDdon.GetSetting<double>("GameServerSettings", "EnemyExpModifier");
                 break;
             case GameMode.BitterblackMaze:
-                multiplier = LibDdon.GetSetting<double>("GameLogicSettings", "BBMEnemyExpModifier");
+                multiplier = LibDdon.GetSetting<double>("GameServerSettings", "BBMEnemyExpModifier");
                 break;
             default:
                 break;

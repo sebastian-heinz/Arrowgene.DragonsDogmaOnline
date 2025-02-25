@@ -31,7 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public HashSet<GameClient> GetClientsInHub(uint stageId)
         {
-            if (Server.GameLogicSettings.NaiveLobbyContextHandling)
+            if (Server.GameSettings.GameServerSettings.NaiveLobbyContextHandling)
             {
                 return Server.ClientLookup.GetAll().Distinct().ToHashSet();
             }
@@ -63,7 +63,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public void UpdateLobbyContextOnStageChange(GameClient client, uint previousStageId, uint targetStageId)
         {
             // Fallback to naive method.
-            if (Server.GameLogicSettings.NaiveLobbyContextHandling)
+            if (Server.GameSettings.GameServerSettings.NaiveLobbyContextHandling)
             {
                 NaiveLobbyHandling(client, previousStageId);
                 return;

@@ -170,7 +170,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
 
             uint effectiveRank = rank.Rank;
-            if (!Server.GameLogicSettings.EnableAreaRankSpotLocks)
+            if (!Server.GameSettings.GameServerSettings.EnableAreaRankSpotLocks)
             {
                 effectiveRank = MaxRank(areaId);
             }
@@ -268,7 +268,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             AreaRank rank = client.Character.AreaRanks.GetValueOrDefault(spot.AreaId)
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
 
-            if (!Server.GameLogicSettings.EnableAreaRankSpotLocks)
+            if (!Server.GameSettings.GameServerSettings.EnableAreaRankSpotLocks)
             {
                 return true;
             }

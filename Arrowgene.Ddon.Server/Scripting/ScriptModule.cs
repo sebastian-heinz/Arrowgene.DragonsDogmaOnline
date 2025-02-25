@@ -34,6 +34,13 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         }
 
         /// <summary>
+        /// Code that a module can execute before EvaluateResult is called for each script.
+        /// </summary>
+        public virtual void Initialize()
+        {
+        }
+
+        /// <summary>
         /// Options passed into the compilation unit.
         /// </summary>
         /// <returns></returns>
