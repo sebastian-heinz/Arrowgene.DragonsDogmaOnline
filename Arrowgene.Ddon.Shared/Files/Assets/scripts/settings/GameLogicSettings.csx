@@ -15,7 +15,8 @@ uint FriendListMax = 200;
 uint JobLevelMax = 120;
 bool EnableVisualEquip = true;
 uint DefaultWarpFavorites = 3;
-uint LaternBurnTimeInSeconds = 1500;
+uint LanternBurnTimeInSeconds = 1500;
+uint NormalPartySize = 4;
 
 bool EnableAreaRankSpotLocks = false;
 

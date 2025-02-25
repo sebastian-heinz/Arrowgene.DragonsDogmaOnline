@@ -103,9 +103,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (item.ItemId == 55)
             {
                 // client.Send(SelectedDump.lantern2_27_16);
-                // TODO: Start a timer to estinguish after LaternBurnTimeInSeconds expires
+                // TODO: Start a timer to estinguish after LanternBurnTimeInSeconds expires
                 client.Character.IsLanternLit = true;
-                client.Enqueue(new S2CCharacterStartLanternNtc() { RemainTime = _Server.GameLogicSettings.LaternBurnTimeInSeconds }, queue);
+                client.Enqueue(new S2CCharacterStartLanternNtc() { RemainTime = _Server.GameLogicSettings.LanternBurnTimeInSeconds }, queue);
                 // client.Party.SendToAllExcept(new S2CCharacterStartLanternOtherNtc() { CharacterId = client.Character.CharacterId }, client);
             }
 

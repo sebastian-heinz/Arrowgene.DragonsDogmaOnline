@@ -40,7 +40,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public PartyGroup(uint id, PartyManager partyManager, ulong contentId)
         {
-            MaxSlots = MaxPartyMember;
+            MaxSlots = contentId != 0 ? MaxPartyMember : partyManager.Server.GameLogicSettings.NormalPartySize;
             _lock = new object();
             _slots = new PartyMember[MaxSlots];
             _partyManager = partyManager;
@@ -190,15 +190,13 @@ namespace Arrowgene.Ddon.GameServer.Party
 
             lock (_lock)
             {
-                PartyInvitation invitation = _partyManager.RemovePartyInvitation(client);
-                if (invitation == null)
-                {
+                PartyInvitation invitation = _partyManager.GetPartyInvitation(client) ?? 
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_INVITE_FAIL_REASON_INVITE_MISSING,
                         $"[PartyId:{Id}][Accept] not invited");
-                }
 
                 if (invitation.Party != this)
                 {
+                    _partyManager.RemovePartyInvitation(client);
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_INVITE_FAIL_REASON_WRONG_PARTY, 
                         $"[PartyId:{Id}][Accept] not invited to this party");
                 }
@@ -206,6 +204,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                 TimeSpan invitationAge = DateTime.UtcNow - invitation.Date;
                 if (invitationAge > TimeSpan.FromSeconds(PartyManager.InvitationTimeoutSec))
                 {
+                    _partyManager.RemovePartyInvitation(client);
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_INVITE_FAIL_REASON_TIMEOUT, 
                         $"[PartyId:{Id}][Accept] invitation expired");
                 }
@@ -213,9 +212,22 @@ namespace Arrowgene.Ddon.GameServer.Party
                 PlayerPartyMember partyMember = GetPlayerPartyMember(client);
                 if (partyMember == null)
                 {
+                    _partyManager.RemovePartyInvitation(client);
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_INVITE_FAIL_REASON_LOBBY_NUM_OVER,
                         $"[PartyId:{Id}][Accept] has no slot");
                 }
+
+                int additionalSlotsRequired = client.Party.Members.Where(x => x is PawnPartyMember pawn
+                    && pawn.Pawn.PawnType == PawnType.Main
+                    && pawn.Pawn.CharacterId == client.Character.CharacterId).Count();
+                if (ContentId > 0 && additionalSlotsRequired > CountEmptySlots())
+                {
+                    // Failure due to not enough room in the party. Don't remove so the timer can handle naturally.
+                    // Enforce this check only for "normal" parties because Entry Boards manage it automatically?
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_JOIN_NUM_OVER);
+                }
+
+                Logger.Info($"{client.Character.FirstName} accepting party invite; needs {additionalSlotsRequired} extra slots.");
 
                 Logger.Info(client, $"[PartyId:{Id}][Accept] accepted invite");
                 return partyMember;
@@ -726,6 +738,19 @@ namespace Arrowgene.Ddon.GameServer.Party
             {
                 return _slots[index];
             }
+        }
+
+        private uint CountEmptySlots()
+        {
+            uint emptySlots = 0;
+            for (int i = 0; i < MaxSlots; i++)
+            {
+                if (_slots[i] == null)
+                {
+                    emptySlots++;
+                }
+            }
+            return emptySlots;
         }
 
         private PlayerPartyMember CreatePartyMember(GameClient client)

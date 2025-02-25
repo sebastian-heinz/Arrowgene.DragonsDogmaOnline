@@ -141,11 +141,19 @@ namespace Arrowgene.Ddon.Server.Scripting.interfaces
         /// <summary>
         /// Configures the default time in seconds a latern is active after igniting it.
         /// </summary>
-        public uint LaternBurnTimeInSeconds
+        public uint LanternBurnTimeInSeconds
         {
             get
             {
-                return GetSetting<uint>("LaternBurnTimeInSeconds");
+                return GetSetting<uint>("LanternBurnTimeInSeconds");
+            }
+        }
+
+        public uint NormalPartySize
+        {
+            get
+            {
+                return GetSetting<uint>("NormalPartySize");
             }
         }
 
