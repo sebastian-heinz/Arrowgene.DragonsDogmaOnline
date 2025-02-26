@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             var rewards = quest.GenerateBoxRewards();
 
             var currentRewards = GetQuestBoxRewards(client, connectionIn);
-            if (currentRewards.Count >= _Server.GameLogicSettings.RewardBoxMax)
+            if (currentRewards.Count >= _Server.GameSettings.GameServerSettings.RewardBoxMax)
             {
                 return false;
             }

@@ -24,6 +24,11 @@ namespace Arrowgene.Ddon.GameServer.Scripting
             Instance.Server = server;
         }
 
+        public static T GetSetting<T>(string scriptName, string key)
+        {
+            return Instance.Server.GameSettings.Get<T>(scriptName, key);
+        }
+
         // TODO: Remove this function once Server singleton is created
         public static void LoadQuest(IQuest scriptedQuest)
         {
@@ -61,11 +66,6 @@ namespace Arrowgene.Ddon.GameServer.Scripting
                 }
             }
             return new InstancedRandomEnemy(enemyIds, dropTables, lv, exp, index);
-        }
-
-        public static T GetSetting<T>(string scriptName, string key)
-        {
-            return Instance.Server.GameLogicSettings.Get<T>(scriptName, key);
         }
 
         private Dictionary<string, object> HandlerCache = new Dictionary<string, object>();

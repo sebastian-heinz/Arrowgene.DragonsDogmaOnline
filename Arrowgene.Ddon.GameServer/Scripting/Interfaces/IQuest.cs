@@ -102,14 +102,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
 
         public void AddFixedItemReward(ItemId itemId, ushort amount, bool isHidden = false)
         {
-            var reward = new QuestFixedRewardItem(isHidden);
-            reward.LootPool.Add(new FixedLootPoolItem()
-            {
-                ItemId = itemId,
-                Num = amount,
-            });
-
-            AddItemReward(reward);
+            AddItemReward(QuestFixedRewardItem.Create(itemId, amount, isHidden));
         }
 
         public void AddFixedItemReward(uint itemId, ushort amount)
@@ -119,81 +112,27 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
 
         public void AddRandomChanceItemReward(List<(ItemId ItemId, ushort Amount, double Chance)> items, bool isHidden = false)
         {
-            var reward = new QuestRandomChanceRewardItem(isHidden);
-            foreach (var item in items)
-            {
-                reward.LootPool.Add(new ChanceLootPoolItem()
-                {
-                    ItemId = item.ItemId,
-                    Num = item.Amount,
-                    Chance = item.Chance
-                });
-            }
-            AddItemReward(reward);
+            AddItemReward(QuestRandomChanceRewardItem.Create(items, isHidden));
         }
 
         public void AddRandomFixedItemReward(List<(ItemId ItemId, ushort Amount)> items, bool isHidden = false)
         {
-            var reward = new QuestRandomFixedRewardItem(isHidden);
-            foreach (var item in items)
-            {
-                reward.LootPool.Add(new FixedLootPoolItem
-                {
-                    ItemId = item.ItemId,
-                    Num = item.Amount,
-                });
-            }
-            AddItemReward(reward);
+            AddItemReward(QuestRandomFixedRewardItem.Create(items, isHidden));
         }
 
         public void AddSelectItemReward(List<(ItemId ItemId, ushort Amount)> items, bool isHidden = false)
         {
-            var reward = new QuestSelectRewardItem(isHidden);
-            foreach (var item in items)
-            {
-                reward.LootPool.Add(new SelectLootPoolItem
-                {
-                    ItemId = item.ItemId,
-                    Num = item.Amount,
-                });
-            }
-        }
-
-        public void AddPointReward(QuestPointReward reward)
-        {
-            if (reward != null)
-            {
-                PointRewards.Add(reward);
-            }
+            AddItemReward(QuestSelectRewardItem.Create(items, isHidden));
         }
 
         public void AddPointReward(PointType pointType, uint amount)
         {
-            var reward = new QuestPointReward()
-            {
-                PointType = pointType,
-                Amount = amount
-            };
-
-            AddPointReward(reward);
-        }
-
-        public void AddWalletReward(QuestWalletReward reward)
-        {
-            if (reward != null)
-            {
-                WalletRewards.Add(reward);
-            }
+            PointRewards.Add(QuestPointReward.Create(pointType, amount));
         }
 
         public void AddWalletReward(WalletType walletType, uint amount)
         {
-            var reward = new QuestWalletReward()
-            {
-                WalletType = walletType,
-                Amount = amount
-            };
-            AddWalletReward(reward);
+            WalletRewards.Add(QuestWalletReward.Create(walletType, amount));
         }
 
         public void AddQuestLayoutSetInfoFlag(uint flagNo, StageInfo stageInfo, uint enemyGroupId)

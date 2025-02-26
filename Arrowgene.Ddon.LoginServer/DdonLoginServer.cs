@@ -26,7 +26,6 @@ using Arrowgene.Ddon.LoginServer.Handler;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Handler;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Server.Scripting.interfaces;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
@@ -38,7 +37,7 @@ namespace Arrowgene.Ddon.LoginServer
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonLoginServer));
 
-        public DdonLoginServer(LoginServerSetting setting, GameLogicSetting gameSetting, IDatabase database, AssetRepository assetRepository)
+        public DdonLoginServer(LoginServerSetting setting, GameSettings gameSetting, IDatabase database, AssetRepository assetRepository)
             : base(ServerType.Login, setting.ServerSetting, database, assetRepository)
         {
             Setting = new LoginServerSetting(setting);
@@ -48,7 +47,7 @@ namespace Arrowgene.Ddon.LoginServer
         }
 
         public LoginServerSetting Setting { get; }
-        public GameLogicSetting GameSetting { get; }
+        public GameSettings GameSetting { get; }
 
         public override LoginClientLookup ClientLookup { get; }
 

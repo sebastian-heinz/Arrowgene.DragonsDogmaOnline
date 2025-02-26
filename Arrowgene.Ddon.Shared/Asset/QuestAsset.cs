@@ -19,6 +19,24 @@ namespace Arrowgene.Ddon.Shared.Asset
     {
         public PointType PointType { get; set; }
         public uint Amount { get; set; }
+
+        public static QuestPointReward Create(PointType type, uint amount)
+        {
+            return new QuestPointReward()
+            {
+                PointType = type,
+                Amount = amount
+            };
+        }
+
+        public CDataQuestExp AsCDataQuestExp()
+        {
+            return new CDataQuestExp()
+            {
+                Type = PointType,
+                Reward = Amount,
+            };
+        }
     }
 
     public class QuestAssetData

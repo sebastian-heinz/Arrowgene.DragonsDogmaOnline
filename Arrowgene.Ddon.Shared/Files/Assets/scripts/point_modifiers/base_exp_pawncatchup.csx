@@ -10,7 +10,7 @@ public class PointModifier : IPointModifier
 
     public override bool IsEnabled()
     {
-        return LibDdon.GetSetting<bool>("PointModifiers", "EnablePawnCatchup");
+        return LibDdon.GetSetting<bool>("PointModifierSettings", "EnablePawnCatchup");
     }
 
     public override double GetMultiplier(GameMode gameMode, CharacterCommon characterCommon, PartyGroup party, InstancedEnemy enemy, QuestType questType)
@@ -37,12 +37,12 @@ public class PointModifier : IPointModifier
         }
 
         var lvDiff = playerLevel - pawnLevel;
-        if (LibDdon.GetSetting<uint>("PointModifiers", "PawnCatchupLvDiff") > lvDiff)
+        if (LibDdon.GetSetting<uint>("PointModifierSettings", "PawnCatchupLvDiff") > lvDiff)
         {
             return 1.0;
         }
 
-        return LibDdon.GetSetting<double>("PointModifiers", "PawnCatchupMultiplier");
+        return LibDdon.GetSetting<double>("PointModifierSettings", "PawnCatchupMultiplier");
     }
 }
 

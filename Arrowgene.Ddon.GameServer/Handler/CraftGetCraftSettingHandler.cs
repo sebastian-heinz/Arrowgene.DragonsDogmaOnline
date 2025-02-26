@@ -188,7 +188,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 TimeSaveCostList = TimeSaveCostList,
                 ReasonableCraftLv = CraftManager.ReasonableCraftLv,
                 CraftItemLv = CraftManager.CraftItemLv,
-                CreateCountMax = Server.GameLogicSettings.CraftConsumableProductionTimesMax,
+                CreateCountMax = Server.GameSettings.GameServerSettings.CraftConsumableProductionTimesMax,
                 CraftMasterLegendPawnInfoList = Server.AssetRepository.PawnCraftMasterLegendAsset,
                 Unk1 = 49,
                 Unk2 = 30,

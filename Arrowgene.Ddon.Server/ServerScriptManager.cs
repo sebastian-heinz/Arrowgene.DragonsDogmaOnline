@@ -1,4 +1,3 @@
-using Arrowgene.Ddon.Server.Scripting.interfaces;
 using Arrowgene.Ddon.Server.Scripting.modules;
 using Arrowgene.Ddon.Shared.Scripting;
 using Arrowgene.Logging;
@@ -18,18 +17,19 @@ namespace Arrowgene.Ddon.Server
 
         private Globals Globals { get; set; }
 
-        public GameServerSettingsModule GameServerSettings { get; private set; } = new GameServerSettingsModule();
+        public GameServerSettingsModule GameServerSettingsModule { get; private set; } = new GameServerSettingsModule();
 
         public ServerScriptManager(string assetsPath) : base(assetsPath, "")
         {
             Globals = new Globals();
 
             // Add modules to the list so the generic logic can iterate over all scripting modules
-            ScriptModules[GameServerSettings.ModuleRoot] = GameServerSettings;
+            ScriptModules[GameServerSettingsModule.ModuleRoot] = GameServerSettingsModule;
         }
 
         public override void Initialize()
         {
+            PathsToIgnore.Add(GameServerSettingsModule.TemplatesDirectory);
             base.Initialize(Globals);
         }
     }

@@ -8,12 +8,15 @@
         <Version>$(Version)</Version>
         <Copyright>Copyright © 2019-2022 DDON Team</Copyright>
         <LangVersion>10</LangVersion>
+        <GenerateDocumentationFile>True</GenerateDocumentationFile>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
       <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+      <NoWarn>1701;1702;CS1591</NoWarn>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
       <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
+      <NoWarn>1701;1702;CS1591</NoWarn>
     </PropertyGroup>
     <Import Project="./../SetSourceRevision.targets" />
     <ItemGroup>
@@ -26,7 +29,7 @@
         <ProjectReference Include="..\Arrowgene.Ddon.Shared\Arrowgene.Ddon.Shared.csproj" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="Settings\" />
+      <Folder Include="Scripting\interfaces\" />
     </ItemGroup>
 
 </Project>

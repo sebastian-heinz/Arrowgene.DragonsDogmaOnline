@@ -4,7 +4,6 @@ using Arrowgene.Ddon.GameServer.Scripting;
 using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Server.Scripting.interfaces;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -403,12 +402,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             this._Server = server;
             this._gameClientLookup = gameClientLookup;
-            this._GameSettings = server.GameLogicSettings;
+            this._GameSettings = server.GameSettings;
         }
 
         private DdonGameServer _Server;
         protected readonly GameClientLookup _gameClientLookup;
-        private GameLogicSetting _GameSettings;
+        private GameSettings _GameSettings;
 
         private bool CalculateAndAssignStats(CharacterCommon Character)
         {
@@ -464,7 +463,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             PacketQueue packets = new();
 
             var lvCap = (client.GameMode == GameMode.Normal) 
-                ? _Server.GameLogicSettings.JobLevelMax
+                ? _Server.GameSettings.GameServerSettings.JobLevelMax
                 : BitterblackMazeManager.LevelCap(client.Character.BbmProgress);
 
             CDataCharacterJobData? activeCharacterJobData = characterToAddExpTo.ActiveCharacterJobData;

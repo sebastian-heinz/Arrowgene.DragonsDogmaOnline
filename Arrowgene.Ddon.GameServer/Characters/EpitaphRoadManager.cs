@@ -1290,7 +1290,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 results.AddRange(RollWeeklyChestReward(dungeonInfo, reward));
 
-                if (_Server.GameLogicSettings.EnableEpitaphWeeklyRewards)
+                if (_Server.GameSettings.GameServerSettings.EnableEpitaphWeeklyRewards)
                 {
                     character.EpitaphRoadState.WeeklyRewardsClaimed.Add(reward.EpitaphId);
                     _Server.Database.InsertEpitaphWeeklyReward(character.CharacterId, reward.EpitaphId);

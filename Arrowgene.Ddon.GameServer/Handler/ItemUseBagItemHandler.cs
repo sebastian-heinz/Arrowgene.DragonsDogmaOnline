@@ -98,7 +98,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // client.Send(SelectedDump.lantern2_27_16);
                 // TODO: Start a timer to estinguish after LaternBurnTimeInSeconds expires
                 client.Character.IsLanternLit = true;
-                client.Send(new S2CCharacterStartLanternNtc() { RemainTime = _Server.GameLogicSettings.LaternBurnTimeInSeconds});
+                client.Send(new S2CCharacterStartLanternNtc() { RemainTime = _Server.GameSettings.GameServerSettings.LanternBurnTimeInSeconds });
                 // client.Party.SendToAllExcept(new S2CCharacterStartLanternOtherNtc() { CharacterId = client.Character.CharacterId }, client);
             }
         }
