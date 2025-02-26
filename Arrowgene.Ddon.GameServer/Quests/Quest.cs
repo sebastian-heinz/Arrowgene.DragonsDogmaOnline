@@ -164,18 +164,25 @@ namespace Arrowgene.Ddon.GameServer.Quests
         /// Checks to see if the quest is active. This includes checking the enabled flag
         /// and other special conditions like between a date range, time or other conditions.
         /// </summary>
-        /// <param name="server"></param>
         /// <param name="client"></param>
         /// <returns></returns>
-        public virtual bool IsActive(DdonGameServer server, GameClient client)
+        public virtual bool IsActive(GameClient client)
         {
             bool additionalReqs = true;
             if (BackingObject != null)
             {
-                additionalReqs = BackingObject.AcceptRequirementsMet(server, client);
+                additionalReqs = BackingObject.AcceptRequirementsMet(client);
             }
             
             return Enabled && additionalReqs;
+        }
+
+        public virtual void InitializeInstanceState(QuestState questState)
+        {
+            if (BackingObject != null)
+            {
+                BackingObject.InitializeInstanceState(questState);
+            }
         }
 
         private List<CDataQuestProcessState> GetProcessState(uint step, out uint announceNoCount)
@@ -842,7 +849,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 foreach (var groupId in process.Blocks[processState.BlockNo].EnemyGroupIds)
                 {
                     var enemyGroup = EnemyGroups[groupId];
-                    partyQuestState.SetInstanceEnemies(this, enemyGroup.StageLayoutId, (ushort)enemyGroup.SubGroupId, enemyGroup.CreateNewInstance());
+                    partyQuestState.SetInstanceEnemies(this, enemyGroup.StageLayoutId, (ushort)enemyGroup.SubGroupId, enemyGroup.CreateNewInstance(processState.ProcessNo, processState.BlockNo));
                 }
             }
         }
@@ -862,9 +869,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             {
                                 LayoutId = new CDataStageLayoutId()
                                 {
-                                    StageId = action.StageId.Id,
-                                    GroupId = action.StageId.GroupId,
-                                    LayerNo = action.StageId.LayerNo
+                                    StageId = action.StageLayoutId.Id,
+                                    GroupId = action.StageLayoutId.GroupId,
+                                    LayerNo = action.StageLayoutId.LayerNo
                                 }
                             });
                             break;
@@ -1034,8 +1041,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
                                 break;
                             case QuestFlagAction.CheckOn:
                             case QuestFlagAction.CheckOff:
-                                /* Invalid for Layout flags */
-                                return;
+                            case QuestFlagAction.CheckSetFromFsm:
+                                throw new Exception($"QstLayout flags don't support the action '{questFlag.Action}'");
                         }
                         break;
                     case QuestFlagType.WorldManageLayout:
@@ -1049,8 +1056,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
                                 break;
                             case QuestFlagAction.CheckOn:
                             case QuestFlagAction.CheckOff:
-                                /* Invalid for Layout flags */
-                                return;
+                            case QuestFlagAction.CheckSetFromFsm:
+                                throw new Exception($"WorldManageLayout flags don't support the action '{questFlag.Action}'");
                         }
                         break;
                     case QuestFlagType.MyQst:
@@ -1088,6 +1095,38 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             case QuestFlagAction.CheckOff:
                                 checkFlags.Add(QuestManager.CheckCommand.WorldManageQuestFlagOn(questFlag.Value, questFlag.QuestId));
                                 break;
+                            case QuestFlagAction.CheckSetFromFsm:
+                                throw new Exception($"WorldManageQuest flags don't support the action '{questFlag.Action}'");
+                        }
+                        break;
+                    case QuestFlagType.Lot:
+                        switch (questFlag.Action)
+                        {
+                            case QuestFlagAction.Set:
+                                resultFlags.Add(QuestManager.ResultCommand.LotOn(questFlag.stageInfo.StageNo, questFlag.Value));
+                                break;
+                            case QuestFlagAction.Clear:
+                                resultFlags.Add(QuestManager.ResultCommand.LotOff(questFlag.stageInfo.StageNo, questFlag.Value));
+                                break;
+                            case QuestFlagAction.CheckOn:
+                            case QuestFlagAction.CheckOff:
+                            case QuestFlagAction.CheckSetFromFsm:
+                                throw new Exception($"Lot flags don't support the action '{questFlag.Action}'");
+                        }
+                        break;
+                    case QuestFlagType.Sce:
+                        switch (questFlag.Action)
+                        {
+                            case QuestFlagAction.CheckOn:
+                                checkFlags.Add(QuestManager.CheckCommand.SceFlagOn(questFlag.Value));
+                                break;
+                            case QuestFlagAction.CheckOff:
+                                checkFlags.Add(QuestManager.CheckCommand.SceFlagOff(questFlag.Value));
+                                break;
+                            case QuestFlagAction.Set:
+                            case QuestFlagAction.Clear:
+                            case QuestFlagAction.CheckSetFromFsm:
+                                throw new Exception($"Sce flags don't support the action '{questFlag.Action}'");
                         }
                         break;
                 }

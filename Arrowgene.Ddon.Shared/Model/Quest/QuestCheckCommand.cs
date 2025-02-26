@@ -218,5 +218,11 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         IsLinkageEnemyFlag = 208, // (cQuestProcess* this, s32 stageNo, s32 groupNo, s32 setNo, s32 flagNo))
         IsLinkageEnemyFlagOff = 209, // (cQuestProcess* this, s32 stageNo, s32 groupNo, s32 setNo, s32 flagNo))
         IsReleaseSecretRoom = 210, // (cQuestProcess* this, s32 param01, s32 param02, s32 param03, s32 param04))
+
+        // Commands found by scraping
+        // Not sure exactly what they do, or how many params
+        MarkerWithRadius0 = 230, // Param01=StageNo, Param02=int (looks like SCE no but different)
+        MarkerWithRadius1 = 231, // Param01=StageNo, Param02=int (looks like SCE no but different)
+        MarkerWithRadius2 = 248, // Param01=StageNo, Param02=int (looks like SCE no but different)
     }
 }

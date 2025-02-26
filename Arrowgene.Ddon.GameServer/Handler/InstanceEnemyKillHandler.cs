@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         private readonly HashSet<uint> _ignoreKillsInStageIds = new HashSet<uint>()
         {
-            349, //White Dragon Temple, Training Room
+            Stage.TrainingRoom.StageId,
         };
 
         public InstanceEnemyKillHandler(DdonGameServer server) : base(server)
@@ -46,27 +46,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return new();
             }
 
-            Quest quest = null;
-            bool IsQuestControlled = false;
-            foreach (var questScheduleId in QuestManager.CollectQuestScheduleIds(client, stageId))
-            {
-                quest = client.Party.QuestState.GetQuest(questScheduleId);
-                if (quest != null)
-                {
-                    var questStateManager = QuestManager.GetQuestStateManager(client, quest);
-                    if (questStateManager.HasEnemiesInCurrentStageGroup(quest, stageId))
-                    {
-                        IsQuestControlled = true;
-                        break;
-                    }
-                }
-            }
-
             InstancedEnemy enemyKilled = client.Party.InstanceEnemyManager.GetInstanceEnemy(stageId, (byte)packet.SetId);
             if (enemyKilled is null)
             {
                 Logger.Error(client, $"Enemy killed data missing; {layoutId}.{packet.SetId}");
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_INSTANCE_AREA_ENEMY_UNIT_DATA_NONE);
+            }
+
+            Quest quest = null;
+            bool isQuestControlled = false;
+            if (enemyKilled.QuestScheduleId != 0)
+            {
+                quest = QuestManager.GetQuestByScheduleId(enemyKilled.QuestScheduleId);
+                isQuestControlled = (quest != null);
             }
 
             if (enemyKilled.RepopCount > 0 && enemyKilled.RepopNum < enemyKilled.RepopCount)
@@ -115,6 +107,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         }
                     }
 
+                    if (isQuestControlled)
+                    {
+                        var ntcs = QuestManager.GetQuestStateManager(client, quest).HandleDestroyGroupWorkNotice(client.Party, quest, stageId, enemyKilled, connectionIn);
+                        queuedPackets.AddRange(ntcs);
+                    }
+                    
                     // This is used for quests and things like key door monsters
                     S2CInstanceEnemyGroupDestroyNtc groupDestroyedNtc = new S2CInstanceEnemyGroupDestroyNtc()
                     {
@@ -186,11 +184,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                         if (memberCharacter.Stage.Id != stageId.Id) continue; // Only nearby allies get XP.
 
-                        if (memberClient.Character.ActiveCharacterPlayPointData.PlayPoint.ExpMode == ExpMode.Experience && !IsQuestControlled && !isEpitaphEnemy)
+                        if (memberClient.Character.ActiveCharacterPlayPointData.PlayPoint.ExpMode == ExpMode.Experience && !isQuestControlled && !isEpitaphEnemy)
                         {
                             gainedPP = (0, 0);
                         }
-                        else if (!IsQuestControlled && !isEpitaphEnemy)
+                        else if (!isQuestControlled && !isEpitaphEnemy)
                         {
                             gainedExp = (0, 0);
                         }

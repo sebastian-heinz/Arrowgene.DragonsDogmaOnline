@@ -23,6 +23,7 @@
         <ProjectReference Include="..\Arrowgene.Ddon.Rpc.Web\Arrowgene.Ddon.Rpc.Web.csproj" />
         <ProjectReference Include="..\Arrowgene.Ddon.Server\Arrowgene.Ddon.Server.csproj" />
         <ProjectReference Include="..\Arrowgene.Ddon.WebServer\Arrowgene.Ddon.WebServer.csproj" />
+        <ProjectReference Include="..\Arrowgene.Ddon.Scripts\Arrowgene.Ddon.Scripts.csproj" />
     </ItemGroup>
     <ItemGroup>
       <PackageReference Include="Arrowgene.Logging" Version="1.2.1" />

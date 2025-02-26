@@ -18,8 +18,8 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
 
         private bool DropEnabled(GameClient client, EventItem item, InstancedEnemy enemy)
         {
-            var stageId = enemy.StageId;
-            if (item.QuestIds.Count > 0 && !item.QuestIds.Any(x => QuestManager.GetQuestByScheduleId(x).IsActive(Server, client)))
+            var stageId = enemy.StageLayoutId;
+            if (item.QuestIds.Count > 0 && !item.QuestIds.Any(x => QuestManager.GetQuestByScheduleId(x).IsActive(client)))
             {
                 return false;
             }

@@ -53,13 +53,14 @@ namespace Arrowgene.Ddon.Shared.Scripting
         /// <param name="path">Path to the main script being executed</param>
         private void EmitScriptsAsDllForDebug(Script script, string path)
         {
-            if (!Directory.Exists("script_dlls"))
+            if (!Directory.Exists("script_assemblies"))
             {
-                Directory.CreateDirectory("script_dlls");
+                Directory.CreateDirectory("script_assemblies");
             }
 
             var compilation = script.GetCompilation();
-            var outputPath = $"script_dlls{Path.DirectorySeparatorChar}{Path.GetFileNameWithoutExtension(path)}.dll";
+
+            var outputPath = Path.Combine("script_assemblies", $"{Path.GetFileNameWithoutExtension(path)}.dll");
             var emitOptions = new EmitOptions()
                 .WithDebugInformationFormat(DebugInformationFormat.Pdb)
                 .WithPdbFilePath(outputPath);

@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         public PointModifierModule PointModifierModule { get; private set; } = new PointModifierModule();
         public AddendumModule AddendumModule { get; private set; } = new AddendumModule();
 
-        public GameServerScriptManager(DdonGameServer server) : base(server.AssetRepository.AssetsPath, "libs")
+        public GameServerScriptManager(DdonGameServer server) : base(server.AssetRepository.AssetsPath, ".")
         {
             Server = server;
             Globals = new GlobalVariables();

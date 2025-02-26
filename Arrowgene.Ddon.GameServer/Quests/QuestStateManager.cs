@@ -53,6 +53,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public Dictionary<StageLayoutId, Dictionary<uint, List<InstancedEnemy>>> QuestEnemies { get; set; }
         public Dictionary<uint, QuestDeliveryRecord> DeliveryRecords { get; set; }
         public Dictionary<uint, QuestEnemyHuntRecord> HuntRecords { get; set; }
+        public QuestInstanceVars InstanceVars { get; set; }
 
         public QuestState()
         {
@@ -60,6 +61,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             QuestEnemies = new Dictionary<StageLayoutId, Dictionary<uint, List<InstancedEnemy>>>();
             DeliveryRecords = new Dictionary<uint, QuestDeliveryRecord>();
             HuntRecords = new Dictionary<uint, QuestEnemyHuntRecord>();
+            InstanceVars = new QuestInstanceVars();
         }
 
         public uint UpdateDeliveryRequest(uint itemId, uint amount)
@@ -239,6 +241,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 {
                     ActiveQuests[quest.QuestScheduleId].AddDeliveryRequest(request.ItemId, request.Amount);
                 }
+
                 foreach (var request in quest.EnemyHunts)
                 {
                     uint storedHunts = (quest.SaveWorkAsStep && step >= 1) ? (step - 1) : 0;
@@ -250,6 +253,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
                 // Initialize enemy data are the current point
                 quest.PopulateStartingEnemyData(this);
+
+                // Allow scripted quests to initialize additional custom state information
+                quest.InitializeInstanceState(ActiveQuests[quest.QuestScheduleId]);
             }
         }
 
@@ -683,6 +689,27 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 }
                 CompletedWorldQuests.Clear();
             }
+        }
+
+        public PacketQueue HandleDestroyGroupWorkNotice(PartyGroup party, Quest quest, StageLayoutId stageLayoutId, InstancedEnemy enemy, DbConnection? connectionIn = null)
+        {
+            PacketQueue packets = new();
+
+            var ntc = new S2CQuestQuestProgressWorkSaveNtc()
+            {
+                QuestScheduleId = quest.QuestScheduleId,
+                ProcessNo = enemy.QuestProcessInfo.ProcessNo,
+                SequenceNo = enemy.QuestProcessInfo.SequenceNo,
+                BlockNo = enemy.QuestProcessInfo.BlockNo,
+                WorkList = new List<CDataQuestProgressWork>
+                {
+                    QuestManager.NotifyCommand.KilledTargetEnemySetGroup((int) enemy.QuestEnemyGroupId, StageManager.ConvertIdToStageNo(stageLayoutId), (int) stageLayoutId.GroupId),
+                    QuestManager.NotifyCommand.KilledTargetEmSetGrpNoMarker((int) enemy.QuestEnemyGroupId, StageManager.ConvertIdToStageNo(stageLayoutId), (int) stageLayoutId.GroupId),
+                }
+            };
+            party.EnqueueToAll(ntc, packets);
+
+            return packets;
         }
     }
 

@@ -15,21 +15,21 @@ namespace Arrowgene.Ddon.Server.Settings
  */
 ";
 
-        public static async void Generate(string outputPath, Type type)
+        public static void Generate(string outputPath, Type type)
         {
             string xmlDocPath = GetXmlDocumentationPath(type.Assembly);
             XmlDocument xmlDoc = LoadXmlDocumentation(xmlDocPath);
 
             using (StreamWriter writer = new StreamWriter(outputPath, false))
             {
-                await writer.WriteLineAsync(FileHeader);
+                writer.WriteLine(FileHeader);
 
                 if (xmlDoc != null)
                 {
                     foreach (PropertyInfo prop in type.GetProperties())
                     {
                         PrintPropertySummary(writer, xmlDoc, prop, $"P:{type.FullName}.{prop.Name}");
-                        await writer.WriteLineAsync("");
+                        writer.WriteLine("");
                     }
                 }
                 else
@@ -43,8 +43,8 @@ namespace Arrowgene.Ddon.Server.Settings
                         }
 
                         var typeName = GetFriendlyTypeName(((PropertyInfo)memberInfo).PropertyType);
-                        await writer.WriteLineAsync($"// {typeName} {memberInfo.Name};");
-                        await writer.WriteLineAsync("");
+                        writer.WriteLine($"// {typeName} {memberInfo.Name};");
+                        writer.WriteLine("");
                     }
                 }
             }
@@ -107,7 +107,7 @@ namespace Arrowgene.Ddon.Server.Settings
             }
         }
 
-        private static async void PrintPropertySummary(StreamWriter writer, XmlDocument xmlDoc, PropertyInfo prop, string memberName)
+        private static void PrintPropertySummary(StreamWriter writer, XmlDocument xmlDoc, PropertyInfo prop, string memberName)
         {
             XmlNode node = xmlDoc.SelectSingleNode($"//member[@name='{memberName}']");
             if (node != null)
@@ -116,7 +116,7 @@ namespace Arrowgene.Ddon.Server.Settings
                 if (summary != null)
                 {
                     string reconstructedSummary = ReconstructSummary(summary);
-                    await writer.WriteLineAsync(reconstructedSummary);
+                    writer.WriteLine(reconstructedSummary);
                 }
 
                 var defaultAttr = prop.GetCustomAttribute<DefaultValueAttribute>(false);
@@ -134,11 +134,11 @@ namespace Arrowgene.Ddon.Server.Settings
                         defaultValue = defaultValue.ToLower();
                     }
 
-                    await writer.WriteLineAsync($"{typeName} {prop.Name} = {defaultValue};");
+                    writer.WriteLine($"{typeName} {prop.Name} = {defaultValue};");
                 }
                 else
                 {
-                    await writer.WriteLineAsync($"/// {typeName} {prop.Name} = ;");
+                    writer.WriteLine($"/// {typeName} {prop.Name} = ;");
                 }
             }
         }

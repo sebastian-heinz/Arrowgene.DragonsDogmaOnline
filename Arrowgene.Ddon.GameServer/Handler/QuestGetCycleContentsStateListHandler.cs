@@ -57,7 +57,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (var questProgress in allQuestsInProgress)
             {
                 var quest = QuestManager.GetQuestByScheduleId(questProgress.QuestScheduleId);
-                if (quest == null || !quest.IsActive(Server, client))
+                if (quest == null || !quest.IsActive(client))
                 {
                     continue;
                 }
@@ -89,7 +89,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 foreach (var questScheduleId in priorityQuests)
                 {
                     var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
-                    if (quest == null || !quest.IsActive(Server, client))
+                    if (quest == null || !quest.IsActive(client))
                     {
                         continue;
                     }
