@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
@@ -20,15 +21,15 @@ namespace Arrowgene.Ddon.Shared.Model
 
     public static class JobIdExtensions
     {
-        public static readonly List<JobId> GreenJobs = new()
+        public static readonly ReadOnlyCollection<JobId> GreenJobs = new List<JobId>()
         {
             JobId.Priest,
             JobId.ElementArcher,
             JobId.Seeker,
             JobId.SpiritLancer,
-        };
+        }.AsReadOnly();
 
-        public static readonly List<JobId> RedJobs = new()
+        public static readonly ReadOnlyCollection<JobId> RedJobs = new List<JobId>()
         {
             JobId.Fighter,
             JobId.Hunter,
@@ -36,13 +37,13 @@ namespace Arrowgene.Ddon.Shared.Model
             JobId.Sorcerer,
             JobId.Warrior,
             JobId.HighScepter
-        };
+        }.AsReadOnly();
 
-        public static readonly List<JobId> BlueJobs = new()
+        public static readonly ReadOnlyCollection<JobId> BlueJobs = new List<JobId>()
         {
             JobId.ShieldSage,
             JobId.Alchemist
-        };
+        }.AsReadOnly();
 
         public static bool IsGreenJob(this JobId jobId)
         {

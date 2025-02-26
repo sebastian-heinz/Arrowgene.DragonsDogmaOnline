@@ -11,6 +11,7 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Party
@@ -850,7 +851,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             return false;
         }
 
-        private bool ContainsJobInList(PartyMember member, List<JobId> jobList)
+        private bool ContainsJobInList(PartyMember member, ReadOnlyCollection<JobId> jobList)
         {
             if (member is PlayerPartyMember playerPartyMember)
             {
