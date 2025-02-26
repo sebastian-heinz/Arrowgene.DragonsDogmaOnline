@@ -1,4 +1,4 @@
-#load "PartyUtils.csx"
+#load "libs/PartyUtils.csx"
 
 public class PointModifier : IPointModifier
 {

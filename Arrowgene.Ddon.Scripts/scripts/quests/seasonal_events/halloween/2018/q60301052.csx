@@ -1,6 +1,6 @@
 /**
  * @brief Emergency! Not Enough Candy! (1) (Halloween Seasonal Event 2018)
- * @settings scripts/settings/SeasonalEvents.csx
+ * @settings scripts/settings/SeasonalEventSettings.csx
  *   - EnableHalloweenEvent : bool
  *   - HalloweenValidPeriod : (DateTime, DateTime)
  *   - HalloweenEventYear : uint
@@ -8,8 +8,7 @@
  *   /giveitem 23545 20
  */
 
-#load "SeasonalEvents.csx"
-#load "DropRate.csx"
+#load "libs.csx"
 
 public class ScriptedQuest : IQuest
 {

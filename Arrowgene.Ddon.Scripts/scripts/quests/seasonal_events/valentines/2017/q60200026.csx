@@ -1,12 +1,12 @@
 /**
  * @brief Valentines Day Season (Spawns NPCs for 2017 holiday event)
- * @settings scripts/settings/SeasonalEvents.csx
+ * @settings scripts/settings/SeasonalEventSettings.csx
  *   - EnableValentinesEvent : bool
  *   - ValentinesValidPeriod : (DateTime, DateTime)
  *   - ValentinesEventYear : uint
  */
 
-#load "SeasonalEvents.csx"
+#load "libs.csx"
 
 public class ScriptedQuest : IQuest
 {

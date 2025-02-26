@@ -1,4 +1,4 @@
-#load "ScriptUtils.csx"
+#load "libs/ScriptUtils.csx"
 
 public class ChatCommand : IChatCommand
 {

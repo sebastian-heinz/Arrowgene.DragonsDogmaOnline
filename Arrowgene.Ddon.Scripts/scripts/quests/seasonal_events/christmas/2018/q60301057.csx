@@ -1,12 +1,12 @@
 /**
  * @brief For Christmas event NPC set (2018).
- * @settings scripts/settings/SeasonalEvents.csx
+ * @settings scripts/settings/SeasonalEventSettings.csx
  *   - EnableChristmasEvent : bool
  *   - ChristmasValidPeriod : (DateTime, DateTime)
  *   - ChristmasEventYear : uint
  */
 
-#load "SeasonalEvents.csx"
+#load "libs.csx"
 
 public class ScriptedQuest : IQuest
 {

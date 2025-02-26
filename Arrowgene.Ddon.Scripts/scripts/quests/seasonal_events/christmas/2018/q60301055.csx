@@ -1,6 +1,6 @@
 /**
  * @brief Merry Christmas with Smiles I (2018)
- * @settings scripts/settings/SeasonalEvents.csx
+ * @settings scripts/settings/SeasonalEventSettings.csx
  *   - EnableChristmasEvent : bool
  *   - ChristmasValidPeriod : (DateTime, DateTime)
  *   - ChristmasEventYear : uint
@@ -9,7 +9,7 @@
  *       20 "Sparkling Snow Large Crystals"
  */
 
-#load "SeasonalEvents.csx"
+#load "libs.csx"
 
 public class ScriptedQuest : IQuest
 {

@@ -6,7 +6,7 @@ public class ChatCommand : IChatCommand
 
     public override void Execute(DdonGameServer server, string[] command, GameClient client, ChatMessage message, List<ChatResponse> responses)
     {
-        var disableAccountCheckType = server.GameSettings.Get<bool>("ChatCommands", "DisableAccountTypeCheck");
+        var disableAccountCheckType = LibDdon.GetSetting<bool>("ChatCommandSettings", "DisableAccountTypeCheck");
 
         server.ScriptManager.ChatCommandModule.Commands.Values
             .Where(x => (client.Account.State >= x.AccountState) || disableAccountCheckType)

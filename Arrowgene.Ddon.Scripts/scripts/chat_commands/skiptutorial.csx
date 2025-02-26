@@ -8,7 +8,7 @@ public class ChatCommand : IChatCommand
 
     public override void Execute(DdonGameServer server, string[] command, GameClient client, ChatMessage message, List<ChatResponse> responses)
     {
-        var handler = LibDdon.Handler.Get<ChatCommandHandler>();
+        var handler = LibDdon.GetHandler<ChatCommandHandler>();
         handler.Handle(client, new() { Message = "/finishquest 1" }, responses);
         handler.Handle(client, new() { Message = "/finishquest 2" }, responses);
         handler.Handle(client, new() { Message = "/finishquest 3" }, responses);

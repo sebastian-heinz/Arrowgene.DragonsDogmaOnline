@@ -23,9 +23,7 @@
  *   /group destroy 71.0.1
  */
 
-#load "C:\Users\Paul\Documents\Git\Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Cli\bin\Debug\net6.0\Files\Assets\scripts\intelisense.csx"
-
-#load "ExtremeMissionUtils.csx"
+#load "libs.csx"
 
 using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 

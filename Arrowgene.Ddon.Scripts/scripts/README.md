@@ -22,62 +22,29 @@ In your `settings`, add the following configs
 "dotnet.server.useOmnisharp": false
 ```
 
-To get code completions in the file, make a temporary file, something like `intelisense.csx`. When developing, you can add the absolute path to this file at the top. This file contains `#r` directives which import assemblies required for the code server. It also will include `#load` directives which provide the absolute path to scripting library files. This line should be removed before checking into the repository.
+To get code completions in the file, you need to update the `libs.csx` file in your output directory. Uncomment the two `#r` directives at the top of the file and update the path for your local build.
 
 ```csharp
-/**
- * @brief Helper file which should not be checked in as dependent on system paths
- */
-
-#r "C:\path\to\Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Cli\bin\Debug\net6.0\Arrowgene.Ddon.Shared.dll"
-#r "C:\path\to\Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Cli\bin\Debug\net6.0\Arrowgene.Ddon.GameServer.dll"
-
-// Point these to the ones in the output directory if you are using hot reload
-// Otherwise point these into the Arrowgene.Ddon.Scripts in the source
-// When using hotload we need to make sure that this file loads the same file as the server will, otherwise we will get symbol conflicts
-// because both .csx files will define the same symbols.
-#load "C:\path\to\Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Cli\bin\Debug\net6.0\Files\Assets\scripts\libs\DropRate.csx"
-#load "C:\path\to\Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Cli\bin\Debug\net6.0\Files\Assets\scripts\libs\ExtremeMissionUtils.csx"
-#load "C:\path\to\Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Cli\bin\Debug\net6.0\Files\Assets\scripts\libs\ScriptUtils.csx"
-#load "C:\path\to\Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Cli\bin\Debug\net6.0\Files\Assets\scripts\libs\SeasonalEvents.csx"
-
-// Using statements added by server so scripts don't need to add them
-global using System;
-global using System.Collections;
-global using System.Collections.Generic;
-global using System.Linq;
-global using System.Runtime.CompilerServices;
-global using Arrowgene.Ddon.Database;
-global using Arrowgene.Ddon.Database.Model;
-global using Arrowgene.Ddon.GameServer;
-global using Arrowgene.Ddon.GameServer.Characters;
-global using Arrowgene.Ddon.GameServer.Chat;
-global using Arrowgene.Ddon.GameServer.Context;
-global using Arrowgene.Ddon.GameServer.Enemies;
-global using Arrowgene.Ddon.GameServer.Party;
-global using Arrowgene.Ddon.GameServer.Quests;
-global using Arrowgene.Ddon.GameServer.Quests.Extensions;
-global using Arrowgene.Ddon.GameServer.Scripting;
-global using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
-global using Arrowgene.Ddon.Server.Scripting;
-global using Arrowgene.Ddon.Shared;
-global using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-global using Arrowgene.Ddon.Shared.Entity.Structure;
-global using Arrowgene.Ddon.Shared.Model;
-global using Arrowgene.Ddon.Shared.Model.Quest;
+// [!NOTE]
+// To get syntax completion in vscode, uncomment the #r lines below and
+// update "path\to" to be the path to the builds output directory.
+//
+#r "path\to\Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Cli\bin\Debug\net6.0\Arrowgene.Ddon.Shared.dll"
+#r "path\to\Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Cli\bin\Debug\net6.0\Arrowgene.Ddon.GameServer.dll"
 ```
 
-Then, in your script file, use the `#load` directive to include it in the current script.
+When implementing a script, if it doesn't exist, add a `#load` directive for the file `libs.csx` at the top.
+
+To enable auto completion, the path required for vscode unfortunately requires the absolute path so the editor can locate the file.
+> [!WARNING]
+> Don't commit the file with the absolute path. The server code is able to resolve `#load "libs.csx"` correctly.
 
 ```csharp
 /**
  * @brief Recurrence of Darkness
  */
 
-#load "C:\path\to\intelisense.csx"
-
-#load "DropRate.csx"
-#load "ExtremeMissionUtils.csx"
+#load "path\to\Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Cli\bin\Debug\net6.0\Files\Assets\scripts\libs.csx"
 
 public class ScriptedQuest : IQuest
 {

@@ -5,17 +5,17 @@ public class SeasonalEvents
 {
     public static bool CheckConfigSettings(string enableKey, string yearKey, uint year, string periodKey)
     {
-        if (!LibDdon.GetSetting<bool>("SeasonalEvents", enableKey))
+        if (!LibDdon.GetSetting<bool>("SeasonalEventSettings", enableKey))
         {
             return false;
         }
 
-        if (LibDdon.GetSetting<uint>("SeasonalEvents", yearKey) != year)
+        if (LibDdon.GetSetting<uint>("SeasonalEventSettings", yearKey) != year)
         {
             return false;
         }
 
-        var timespan = LibDdon.GetSetting<(DateTime, DateTime)>("SeasonalEvents", periodKey);
+        var timespan = LibDdon.GetSetting<(DateTime, DateTime)>("SeasonalEventSettings", periodKey);
         return LibUtils.WithinTimespan(timespan);
     }
 }

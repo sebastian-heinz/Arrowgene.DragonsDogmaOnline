@@ -13,7 +13,6 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         private static readonly LibDdon Instance = new LibDdon();
 
         private static DdonGameServer Server { get; set; } = null;
-        public static HandlerUtils Handler { get; private set; } = new HandlerUtils();
         public static ItemUtils Item { get; private set; } = new ItemUtils();
         public static QuestUtils Quest { get; private set; } = new QuestUtils();
         public static EnemyUtils Enemy { get; private set; } = new EnemyUtils();
@@ -30,6 +29,17 @@ namespace Arrowgene.Ddon.GameServer.Scripting
             return Server.GameSettings.Get<T>(scriptName, key);
         }
 
+        private static Dictionary<string, object> HandlerCache = new Dictionary<string, object>();
+        public static T GetHandler<T>()
+        {
+            string name = typeof(T).FullName;
+            if (!HandlerCache.ContainsKey(name))
+            {
+                HandlerCache[name] = Activator.CreateInstance(typeof(T), Server);
+            }
+            return (T)HandlerCache[name];
+        }
+
         // TODO: Remove this function once Server singleton is created
         public static void LoadQuest(IQuest scriptedQuest)
         {
@@ -39,21 +49,6 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         public static GpCourseManager GetCourseManager()
         {
             return Server.GpCourseManager;
-        }
-
-        public class HandlerUtils
-        {
-            private Dictionary<string, object> HandlerCache = new Dictionary<string, object>();
-
-            public T Get<T>()
-            {
-                string name = typeof(T).FullName;
-                if (!HandlerCache.ContainsKey(name))
-                {
-                    HandlerCache[name] = Activator.CreateInstance(typeof(T), Server);
-                }
-                return (T)HandlerCache[name];
-            }
         }
 
         public class QuestUtils

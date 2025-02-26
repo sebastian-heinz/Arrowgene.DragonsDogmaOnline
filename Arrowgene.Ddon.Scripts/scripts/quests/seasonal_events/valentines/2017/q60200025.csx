@@ -1,6 +1,6 @@
 /**
  * @brief Shape of Love for Someone (2) (2017)
- * @settings scripts/settings/SeasonalEvents.csx
+ * @settings scripts/settings/SeasonalEventSettings.csx
  *   - EnableValentinesEvent : bool
  *   - ValentinesValidPeriod : (DateTime, DateTime)
  *   - ValentinesEventYear : uint
@@ -16,7 +16,7 @@
  *     - ガルドリン (Gurdolin)
  */
 
-#load "SeasonalEvents.csx"
+#load "libs.csx"
 
 public class ScriptedQuest : IQuest
 {

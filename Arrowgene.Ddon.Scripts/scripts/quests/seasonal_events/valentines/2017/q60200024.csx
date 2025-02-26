@@ -1,6 +1,6 @@
 /**
  * @brief Shape of Love for Someone (1) (2017)
- * @settings scripts/settings/SeasonalEvents.csx
+ * @settings scripts/settings/SeasonalEventSettings.csx
  *   - EnableValentinesEvent : bool
  *   - ValentinesValidPeriod : (DateTime, DateTime)
  *   - ValentinesEventYear : uint
@@ -9,7 +9,7 @@
  *     - Gives 1 "Handpicked Caocao" to the player
  */
 
-#load "SeasonalEvents.csx"
+#load "libs.csx"
 
 public class ScriptedQuest : IQuest
 {

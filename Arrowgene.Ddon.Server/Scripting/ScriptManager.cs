@@ -60,7 +60,7 @@ namespace Arrowgene.Ddon.Shared.Scripting
 
             var compilation = script.GetCompilation();
 
-            var outputPath = $"script_dlls{Path.DirectorySeparatorChar}{Path.GetFileNameWithoutExtension(path)}.dll";
+            var outputPath = Path.Combine("script_assemblies", $"{Path.GetFileNameWithoutExtension(path)}.dll");
             var emitOptions = new EmitOptions()
                 .WithDebugInformationFormat(DebugInformationFormat.Pdb)
                 .WithPdbFilePath(outputPath);

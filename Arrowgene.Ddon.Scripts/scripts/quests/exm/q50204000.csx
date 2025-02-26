@@ -2,10 +2,7 @@
  * @brief Recurrence of Darkness
  */
 
-#load "C:\Users\Paul\Documents\Git\Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Cli\bin\Debug\net6.0\Files\Assets\scripts\intelisense.csx"
-
-#load "DropRate.csx"
-#load "ExtremeMissionUtils.csx"
+#load "libs.csx"
 
 public class ScriptedQuest : IQuest
 {

@@ -1,12 +1,12 @@
 /**
  * @brief Halloween Season (Spawns NPCs for 2017 holiday event)
- * @settings scripts/settings/SeasonalEvents.csx
+ * @settings scripts/settings/SeasonalEventSettings.csx
  *   - EnableHalloweenEvent : bool
  *   - HalloweenValidPeriod : (DateTime, DateTime)
  *   - HalloweenEventYear : uint
  */
 
-#load "SeasonalEvents.csx"
+#load "libs.csx"
 
 public class ScriptedQuest : IQuest
 {

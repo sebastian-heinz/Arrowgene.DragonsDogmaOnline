@@ -1,6 +1,6 @@
 /**
  * @brief The Darkness of Halloween (Halloween Seasonal Event 2017)
- * @settings scripts/settings/SeasonalEvents.csx
+ * @settings scripts/settings/SeasonalEventSettings.csx
  *   - EnableHalloweenEvent : bool
  *   - HalloweenValidPeriod : (DateTime, DateTime)
  *   - HalloweenEventYear : uint
@@ -8,8 +8,7 @@
  *   /giveitem 21182 5
  */
 
-#load "SeasonalEvents.csx"
-#load "DropRate.csx"
+#load "libs.csx"
 
 public class ScriptedQuest : IQuest
 {
