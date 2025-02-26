@@ -5,6 +5,8 @@
  * other scripts.
  */
 
+#load "libs.csx"
+
 // Data-points
 //  LV, EXP,        EnemyType, IsBoss, Player Level, Nameplate
 //   1,   6,           Rabbit,  False
@@ -46,10 +48,96 @@
 
 public class Mixin : IExpMixin
 {
-    public override uint GetExpValue(InstancedEnemy enemy)
+    public override uint GetExpValue(CharacterCommon characterCommon, InstancedEnemy enemy)
     {
-        // TODO: Implement algorithm to calculate exp amount
-        return enemy.GetDroppedExperience();
+        uint result = 0;
+        switch (enemy.ExpScheme)
+        {
+            case EnemyExpScheme.Automatic:
+                result = GetAutomaticExpCalculation(characterCommon, enemy);
+                break;
+            case EnemyExpScheme.Exm:
+                // Enemies in an EXM should reward 0 EXP
+                result = 0;
+                break;
+            default:
+                result = enemy.GetDroppedExperience();
+                break;
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Basic exp algorithm based on player level, enemy level, if the enemy is a boss and if the enemy is from a quest or not.
+    /// </summary>
+    /// <param name="characterCommon"></param>
+    /// <param name="enemy"></param>
+    /// <returns></returns>
+    private uint GetAutomaticExpCalculation(CharacterCommon characterCommon, InstancedEnemy enemy)
+    {
+        int enemyLevel = enemy.Lv;
+        int playerLevel = (int) characterCommon.ActiveCharacterJobData.Lv;
+
+        int levelDiff = enemyLevel - playerLevel;
+
+        int baseXP;
+        if (enemyLevel <= 30) {
+            baseXP = enemyLevel * 15 + 15;
+        } else if (enemyLevel <= 50) {
+            baseXP = enemyLevel * 30 + 300;
+        } else if (enemyLevel <= 80) {
+            baseXP = enemyLevel * 50 + 1000;
+        } else if (enemyLevel <= 100) {
+            baseXP = enemyLevel * 80 + 2000;
+        } else {
+            baseXP = enemyLevel * 100 + 4000;
+        }
+
+        double xp;
+        if (levelDiff > 0)
+        {
+            xp = baseXP * (1.0f + levelDiff * 0.02f);
+        }
+        else if (levelDiff < -5)
+        {
+            xp = baseXP * 0.5f;
+        }
+        else
+        {
+            xp = baseXP * (1.0f + levelDiff * 0.0075f);
+        }
+
+        if (enemy.IsBossGauge)
+        {
+            xp *= 8.0f;
+        }
+
+        double questModifier = 1.0;
+        if (enemy.QuestScheduleId != 0)
+        {
+            var quest = QuestManager.GetQuestByScheduleId(enemy.QuestScheduleId);
+            if (quest != null)
+            {
+                questModifier = (quest.QuestType == QuestType.Main) ? 1.5 : 1.25;
+            }
+        }
+        xp *= questModifier;
+
+        // Some enemy nameplates have an EXP modifier
+        xp *= (enemy.NamedEnemyParams.Experience / 100);
+
+        // Put a cap on maximum amount of exp can be gained per kill
+        // to slow down power leveling of early level players
+        if (playerLevel <= 10)
+        {
+            xp = Math.Min(xp, (playerLevel * 250) + 1000);
+        }
+        else if (playerLevel < 60)
+        {
+            xp = Math.Min(xp, (playerLevel * 500) + 5000);
+        }
+        return (uint) Math.Max(xp, 0);
     }
 }
 

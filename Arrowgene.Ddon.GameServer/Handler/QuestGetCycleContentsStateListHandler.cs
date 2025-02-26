@@ -4,10 +4,8 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -52,6 +50,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 ntc.TutorialQuestIdList.Add(new CDataQuestId() { QuestId = (uint)tut.QuestId });
             }
+
+            // Add special quest to handle caution message
+            var customWorldManageQuest = QuestManager.GetQuestByScheduleId(79000001);
+            ntc.WorldManageQuestOrderList.Add(customWorldManageQuest.ToCDataWorldManageQuestOrderList(0));
 
             var allQuestsInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All);
             foreach (var questProgress in allQuestsInProgress)

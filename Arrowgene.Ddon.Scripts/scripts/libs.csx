@@ -1,22 +1,11 @@
 /**
- * @brief Helper file which should not be checked in as dependent on system paths
+ * @brief File which contains all the common script libraries.
  * 
- * @note This file was added with the command:
- *     git update-index --assume-unchanged Arrowgene.Ddon.Scripts/scripts/libs.csx
- * This was done to prevent a developer for accidentally making a commit where
- * the #r paths are uncommented and contain the users local directory structure.
- * 
- * If you need any permanent changes to this file, execute the command:
- *     git update-index --no-assume-unchanged Arrowgene.Ddon.Scripts/scripts/libs.csx
- *
- * Make your changes and commit them. After, execute the following command
- * to prevent changes being made to the file again.
- *     git update-index --assume-unchanged Arrowgene.Ddon.Scripts/scripts/libs.csx
+ * @note Only make local edits in the file which is copied to the build output directory.
  */
 
-
 // [!NOTE]
-// To get syntax completion in vscode, uncomment the #r lines below and
+// To get syntax completion in visual studio and vscode, uncomment the #r lines below and
 // update "path\to" to be the path to the builds output directory.
 //
 // #r "path\to\Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Cli\bin\Debug\net6.0\Arrowgene.Ddon.Shared.dll"
@@ -35,6 +24,7 @@
 global using System;
 global using System.Collections;
 global using System.Collections.Generic;
+global using System.Collections.ObjectModel;
 global using System.Linq;
 global using System.Runtime.CompilerServices;
 global using Arrowgene.Ddon.Database;

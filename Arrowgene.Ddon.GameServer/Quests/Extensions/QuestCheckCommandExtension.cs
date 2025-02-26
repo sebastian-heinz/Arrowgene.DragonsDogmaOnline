@@ -241,5 +241,35 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             checkCommands.Add(QuestManager.CheckCommand.IsNotEndTimer(timerNo));
             return checkCommands;
         }
+
+        public static List<CDataQuestCommand> AddCheckCmdCheckAreaRank(this List<CDataQuestCommand> checkCommands, QuestAreaId areaId, uint areaRank)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.CheckAreaRank((int)areaId, (int)areaRank));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdWorldQuestClearNum(this List<CDataQuestCommand> checkCommands, QuestAreaId areaId, uint amount)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.SetQuestClearNum((int)amount, (int)areaId));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdIsResetInstanceArea(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsResetInstanceArea());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdStageNo(this List<CDataQuestCommand> checkCommands, StageInfo stageInfo)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.StageNo(stageInfo.StageNo));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdStageNoNotEq(this List<CDataQuestCommand> checkCommands, StageInfo stageInfo)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.StageNoNotEq(stageInfo.StageNo));
+            return checkCommands;
+        }
     }
 }

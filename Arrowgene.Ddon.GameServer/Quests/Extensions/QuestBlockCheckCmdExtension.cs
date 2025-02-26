@@ -248,5 +248,40 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             questBlock.CheckCommands[commandListIndex].AddCheckCmdIsNotEndTimer(timerNo);
             return questBlock;
         }
+
+        public static QuestBlock AddCheckCmdCheckAreaRank(this QuestBlock questBlock, QuestAreaId areaId, uint areaRank, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdCheckAreaRank(areaId, areaRank);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdWorldQuestClearNum(this QuestBlock questBlock, QuestAreaId areaId, uint amount, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdWorldQuestClearNum(areaId, amount);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdIsResetInstanceArea(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsResetInstanceArea();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdStageNo(this QuestBlock questBlock, StageInfo stageInfo, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdStageNo(stageInfo);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdStageNoNotEq(this QuestBlock questBlock, StageInfo stageInfo, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdStageNoNotEq(stageInfo);
+            return questBlock;
+        }
     }
 }

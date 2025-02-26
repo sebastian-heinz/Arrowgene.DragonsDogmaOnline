@@ -4,7 +4,7 @@ public class ChatCommand : IChatCommand
 {
     public override AccountStateType AccountState => AccountStateType.Admin;
     public override string CommandName => "group";
-    public override string HelpText => "usage: `/group <reset|destroy> StageId.LayerNo.GroupId [SubgroupId]` - Performs operations on an enemy group";
+    public override string HelpText => "usage: `/group <reset|destroy|annihilate|appear> StageId.LayerNo.GroupId [SubgroupId]` - Performs operations on an enemy group";
 
     private List<Quest> FindQuestScheduleIdForStageLayoutId(GameClient client, StageLayoutId stageLayoutId, byte subGroupId)
     {
@@ -63,6 +63,8 @@ public class ChatCommand : IChatCommand
                 subGroupId = byte.Parse(command[2]);
             }
 
+            Console.WriteLine($"{layoutId}.{subGroupId}");
+
             switch (action)
             {
                 case "reset":
@@ -71,6 +73,12 @@ public class ChatCommand : IChatCommand
                 case "destroy":
                     client.Send(new S2CInstanceEnemyGroupDestroyNtc() { LayoutId = layoutId });
                     ResetGroup(client, layoutId, subGroupId);
+                    break;
+                case "annihilate":
+                    client.Send(new S2CInstanceEnemyStageBossAnnihilateNtc() { LayoutId = layoutId });
+                    break;
+                case "appear":
+                    client.Send(new S2CInstanceEnemySubGroupAppearNtc() { LayoutId = layoutId, SubGroupId = subGroupId });
                     break;
                 default:
                     responses.Add(ChatResponse.CommandError(client, $"Unknown action '{action}'."));

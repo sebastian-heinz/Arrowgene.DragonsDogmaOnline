@@ -12,6 +12,7 @@ namespace Arrowgene.Ddon.Shared.Model
             IsKilled = false;
             IsRequired = true;
             RepopWaitSecond = 60;
+            ExpScheme = EnemyExpScheme.Tool;
             QuestProcessInfo = new EnemyQuestProcessInfo();
         }
 
@@ -25,6 +26,8 @@ namespace Arrowgene.Ddon.Shared.Model
             QuestScheduleId = enemy.QuestScheduleId;
             QuestProcessInfo = enemy.QuestProcessInfo;
             QuestEnemyGroupId = enemy.QuestEnemyGroupId;
+            RequiredAreaRank = enemy.RequiredAreaRank;
+            ExpScheme = enemy.ExpScheme;
         }
 
         public StageLayoutId StageLayoutId { get; set; }
@@ -37,16 +40,20 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint QuestEnemyGroupId { get; set; }
         public EnemyQuestProcessInfo QuestProcessInfo { get; set; }
 
-        public InstancedEnemy(uint enemyId, ushort lv, uint exp, byte index)
+        public uint RequiredAreaRank { get; set; }
+        public EnemyExpScheme ExpScheme { get; set; }
+
+        public InstancedEnemy(EnemyId enemyId, ushort lv, uint exp, byte index)
         {
-            Id = enemyId;
-            EnemyId = enemyId;
+            Id = (uint) enemyId;
+            EnemyId = (uint) enemyId;
             Lv = lv;
             Experience = exp;
             Index = index;
             EnemyTargetTypesId = 4;
             Scale = 100;
             IsRequired = true;
+            HmPresetNo = (ushort)enemyId.GetHmPresetId();
             QuestProcessInfo = new EnemyQuestProcessInfo();
         }
 
@@ -136,6 +143,12 @@ namespace Arrowgene.Ddon.Shared.Model
             return this;
         }
 
+        public InstancedEnemy SetHmPresetNo(HmPresetId hmPresetId)
+        {
+            HmPresetNo = (ushort) hmPresetId;
+            return this;
+        }
+
         public InstancedEnemy SetStartThinkTblNo(byte startThinkTblNo)
         {
             StartThinkTblNo = startThinkTblNo;
@@ -208,29 +221,21 @@ namespace Arrowgene.Ddon.Shared.Model
             return this;
         }
 
+        public InstancedEnemy SetSpawnTime(long spawnTimeStart, long spawnTimeEnd)
+        {
+            SpawnTimeStart = spawnTimeStart;
+            SpawnTimeEnd = spawnTimeEnd;
+            return this;
+        }
+
+        public InstancedEnemy SetSpawnTime((long Start, long End) time)
+        {
+            return SetSpawnTime(time.Start, time.End);
+        }
+
         public InstancedEnemy SetDropsTable(DropsTable dropsTable)
         {
             DropsTable = dropsTable;
-            return this;
-        }
-
-        public InstancedEnemy AddDrop(ItemId itemId, uint minAmount, uint maxAmount, double chance, uint quality = 0, bool isHidden = false)
-        {
-            DropsTable.Items.Add(new GatheringItem()
-            {
-                ItemId = itemId,
-                ItemNum = minAmount,
-                MaxItemNum = maxAmount,
-                DropChance = chance,
-                IsHidden = isHidden,
-                Quality = quality
-            });
-            return this;
-        }
-
-        public InstancedEnemy SetNotifyStrongEnemy(bool notifyStrongEnemy)
-        {
-            NotifyStrongEnemy = notifyStrongEnemy;
             return this;
         }
 
@@ -269,6 +274,25 @@ namespace Arrowgene.Ddon.Shared.Model
         public InstancedEnemy SetQuestProcessInfo(EnemyQuestProcessInfo info)
         {
             QuestProcessInfo = info;
+            return this;
+        }
+
+        public InstancedEnemy SetRequiredAreaRank(uint requiredAreaRank)
+        {
+            RequiredAreaRank = requiredAreaRank;
+            return this;
+        }
+
+        public InstancedEnemy SetExpScheme(EnemyExpScheme scheme)
+        {
+            ExpScheme = scheme;
+            return this;
+        }
+
+        public InstancedEnemy AddDrop(ItemId itemId, uint minAmount, uint maxAmount, double chance, uint quality = 0, bool isHidden = false)
+        {
+            var table = DropsTable.Clone().AddDrop(itemId, minAmount, maxAmount, chance, quality, isHidden);
+            SetDropsTable(table);
             return this;
         }
     }

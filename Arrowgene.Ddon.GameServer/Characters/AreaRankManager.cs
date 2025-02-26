@@ -177,6 +177,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return effectiveRank;
         }
 
+        public uint GetEffectiveRank(Character character, StageInfo stageInfo)
+        {
+            if (stageInfo.AreaId == QuestAreaId.None)
+            {
+                return 0;
+            }
+            return GetEffectiveRank(character, stageInfo.AreaId);
+        }
+
         public uint GetAreaPointReward(Quest quest)
         {
             uint amount;

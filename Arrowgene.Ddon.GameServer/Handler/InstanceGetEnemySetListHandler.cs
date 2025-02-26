@@ -1,20 +1,26 @@
-using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Quests;
+using Arrowgene.Ddon.GameServer.Enemies.Generators;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Crypto;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
     public class InstanceGetEnemySetListHandler : GameRequestPacketHandler<C2SInstanceGetEnemySetListReq, S2CInstanceGetEnemySetListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceGetEnemySetListHandler));
+
+        // Order in list indicates priority where first item has highest priority and last item has least.
+        private readonly List<IEnemySetGenerator> EnemySetGenerators = new List<IEnemySetGenerator>()
+        {
+            new QuestEnemySetGenerator(),
+            new EpitaphRoadEnemySetGenerator(),
+            new CautionSpotEnemyGenerator(),
+            new WorldEnemySetGenerator(),
+        };
 
         public InstanceGetEnemySetListHandler(DdonGameServer server) : base(server)
         {
@@ -28,73 +34,43 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Logger.Info($"StageId={stageLayoutId}, SubGroupId={request.SubGroupId}");
 
-            Quest quest = FindQuestBasedOnPriority(client, stageLayoutId, subGroupId);
-            bool isQuestControlled = (quest != null);
-
             S2CInstanceGetEnemySetListRes response = new S2CInstanceGetEnemySetListRes()
             {
                 LayoutId = stageLayoutId.ToCDataStageLayoutId(),
                 SubGroupId = subGroupId,
                 RandomSeed = CryptoRandom.Instance.GetRandomUInt32(),
+                QuestId = QuestId.None,
             };
 
-            List<InstancedEnemy> instancedEnemyList;
-
-            bool notifyStrongEnemy = false;
-            if (isQuestControlled && quest != null)
+            var instancedEnemyList = new List<InstancedEnemy>();
+            foreach (var generator in EnemySetGenerators)
             {
-                response.QuestId = (uint) quest.QuestId;
-
-                var questStateManager = QuestManager.GetQuestStateManager(client, quest);
-                instancedEnemyList = questStateManager.GetInstancedEnemies(quest, stageLayoutId, subGroupId);
-            }
-            else if (Server.EpitaphRoadManager.TrialHasEnemies(client.Party, stageLayoutId, subGroupId))
-            {
-                instancedEnemyList = Server.EpitaphRoadManager.GetInstancedEnemies(client.Party, stageLayoutId, subGroupId);
-            }
-            else if (!client.Party.ExmInProgress)
-            {
-                instancedEnemyList = client.Party.InstanceEnemyManager.GetAssets(stageLayoutId).Where(x => x.Subgroup == subGroupId).Select(x => new InstancedEnemy(x)).ToList();
-            }
-            else
-            {
-                // This can happen in EXM where we don't want to return any
-                // monsters which might exist outside the quest spawns.
-                // Example, EXM which takes place in BBI, this is the normal
-                // BBI map, not a special one allocated for the EXM.
-                instancedEnemyList = new();
-            }
-
-            foreach (var enemy in instancedEnemyList)
-            {
-                var em = client.Party.InstanceEnemyManager.GetInstanceEnemy(stageLayoutId, enemy.Index);
-                if (em == null)
+                if (generator.GetEnemySet(Server, client, stageLayoutId, subGroupId, /* out */ instancedEnemyList, out QuestId questId))
                 {
-                    em = enemy;
-                    // TODO: Add for HOBO dungeon
-                    if (StageManager.IsEpitaphRoadStageId(stageLayoutId))
-                    {
-                        enemy.BloodOrbs = Server.EpitaphRoadManager.CalculateBloodOrbBonus(client.Party, em);
-                    }
-                    client.Party.InstanceEnemyManager.SetInstanceEnemy(stageLayoutId, em.Index, em);
+                    response.QuestId = questId;
+                    break;
                 }
-                em.StageLayoutId = stageLayoutId;
+            }
+
+            for (var i = 0; i < instancedEnemyList.Count; i++)
+            {
+                var enemy = client.Party.InstanceEnemyManager.GetInstanceEnemy(stageLayoutId, instancedEnemyList[i].Index);
+                if (enemy == null)
+                {
+                    enemy = instancedEnemyList[i];
+                    foreach (var generator in Server.ScriptManager.InstanceEnemyPropertyGeneratorModule.GetGenerators())
+                    {
+                        generator.ApplyChanges(client, stageLayoutId, subGroupId, enemy);
+                    }
+                    client.Party.InstanceEnemyManager.SetInstanceEnemy(stageLayoutId, enemy.Index, enemy);
+                }
+                enemy.StageLayoutId = stageLayoutId;
 
                 response.EnemyList.Add(new CDataLayoutEnemyData()
                 {
-                    PositionIndex = em.Index,
-                    EnemyInfo = em.asCDataStageLayoutEnemyPresetEnemyInfoClient()
+                    PositionIndex = enemy.Index,
+                    EnemyInfo = enemy.AsCDataStageLayoutEnemyPresetEnemyInfoClient()
                 });
-
-                if (em.NotifyStrongEnemy)
-                {
-                    notifyStrongEnemy = true;
-                }
-            }
-
-            if (notifyStrongEnemy)
-            {
-                // TODO: Send NTC which creates popup
             }
 
             if (subGroupId > 0 && response.EnemyList.Count > 0)
@@ -109,54 +85,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             return response;
-        }
-
-        private Quest FindQuestBasedOnPriority(GameClient client, StageLayoutId stageLayoutId, uint subgroupId)
-        {
-
-            var quests = new List<Quest>();
-            foreach (var questScheduleId in QuestManager.CollectQuestScheduleIds(client, stageLayoutId))
-            {
-                var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
-                var questStateManager = QuestManager.GetQuestStateManager(client, quest);
-                if (quest.OverrideEnemySpawn && quest.HasEnemiesInCurrentStageGroup(stageLayoutId))
-                {
-                    quests.Add(quest);
-                }
-                else if (!quest.OverrideEnemySpawn && questStateManager.HasEnemiesForCurrentQuestStepInStageGroup(quest, stageLayoutId, subgroupId))
-                {
-                    quests.Add(quest);
-                }
-            }
-
-            // There may be multiple quests conflicting for a StageId.LayerNo.GroupNo.
-            // Certain quests should have a higher priority than other quests
-            // and this list describes the ranking of the different quest types.
-            var questPriorityList = new List<QuestType>()
-            {
-                QuestType.Main,
-                QuestType.Tutorial,
-                QuestType.WildHunt,
-                QuestType.World,
-            };
-
-            Quest priorityQuest = null;
-            foreach (var questType in questPriorityList)
-            {
-                var matches = quests.Where(x => x.QuestType == questType).ToList();
-                if (matches.Count > 0)
-                {
-                    priorityQuest = matches[0];
-                    break;
-                }
-            }
-
-            if (priorityQuest == null && quests.Count > 0)
-            {
-                priorityQuest = quests[0];
-            }
-
-            return priorityQuest;
         }
     }
 }
