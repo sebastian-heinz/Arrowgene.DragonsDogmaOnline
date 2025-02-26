@@ -11,6 +11,7 @@ public class ScriptedQuest : IQuest
     public override ushort RecommendedLevel => 80;
     public override byte MinimumItemRank => 72;
     public override bool IsDiscoverable => false;
+    public override bool Enabled => false; // TODO: Remove this when quest is completed
 
     private static class MyQuestFlag
     {
