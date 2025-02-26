@@ -18,7 +18,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CPawnGetMypawnListRes Handle(GameClient client, C2SPawnGetMyPawnListReq request)
         {
-            List<CDataPawnList> pawnList = new List<CDataPawnList>();
+
+            S2CPawnGetMypawnListRes res = new S2CPawnGetMypawnListRes();
 
             uint index = 1;
             foreach (Pawn pawn in client.Character.Pawns)
@@ -40,20 +41,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     },
                     // TODO: ShareRange, Unk0, Unk1, Unk2
                 };
-                pawnList.Add(pawnListData);
+                res.PawnList.Add(pawnListData);
             }
 
             // TODO: PartnerInfo
-            CDataPartnerPawnData partnerInfo = new CDataPartnerPawnData()
+            res.PartnerInfo = new CDataPartnerPawnData()
             {
                 PawnId = client.Character.Pawns.FirstOrDefault()?.PawnId ?? 0,
                 Likability = 1,
                 Personality = 1
             };
-
-            S2CPawnGetMypawnListRes res = new S2CPawnGetMypawnListRes();
-            res.PawnList = pawnList;
-            res.PartnerInfo = partnerInfo;
 
             return res;
         }

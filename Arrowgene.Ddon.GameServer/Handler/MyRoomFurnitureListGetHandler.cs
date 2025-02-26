@@ -85,12 +85,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 OmID = 502953,
                 LayoutID = 0
             },
-            new CDataFurnitureLayout
-            {
-                ItemID = 16128, // Servant's Bathing Clothes (Type 1)
-                OmID = 999999,
-                LayoutID = 31
-            },
+            //new CDataFurnitureLayout
+            //{
+            //    ItemID = 16128, // Servant's Bathing Clothes (Type 1)
+            //    OmID = 999999,
+            //    LayoutID = 31
+            //},
             new CDataFurnitureLayout
             {
                 ItemID = 21470, // Sheet Music - Protection of the Five Dragons
@@ -103,12 +103,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 OmID = 999998,
                 LayoutID = 61
             },
-            new CDataFurnitureLayout
-            {
-                ItemID = 16132, // Servant's Sleepwear (Type 2)
-                OmID = 999999,
-                LayoutID = 32
-            },
+            //new CDataFurnitureLayout
+            //{
+            //    ItemID = 16132, // Servant's Sleepwear (Type 2)
+            //    OmID = 999999,
+            //    LayoutID = 32
+            //},
             new CDataFurnitureLayout
             {
                 ItemID = 16167, // Room Light - Chandelier
@@ -223,24 +223,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 OmID = 525220,
                 LayoutID = 46
             },
-            new CDataFurnitureLayout
-            {
-                ItemID = 17370, // Mandragora Potted Plant 1 (Normal)
-                OmID = 525000,
-                LayoutID = 47
-            },
-            new CDataFurnitureLayout
-            {
-                ItemID = 17371, // Mandragora Potted Plant 2 (Passport)
-                OmID = 525001,
-                LayoutID = 48
-            },
-            new CDataFurnitureLayout
-            {
-                ItemID = 17372, // Mandragora Potted Plant 3 (Passport)
-                OmID = 525002,
-                LayoutID = 49
-            },
+            //new CDataFurnitureLayout
+            //{
+            //    ItemID = 17370, // Mandragora Potted Plant 1 (Normal)
+            //    OmID = 525000,
+            //    LayoutID = 47
+            //},
+            //new CDataFurnitureLayout
+            //{
+            //    ItemID = 17371, // Mandragora Potted Plant 2 (Passport)
+            //    OmID = 525001,
+            //    LayoutID = 48
+            //},
+            //new CDataFurnitureLayout
+            //{
+            //    ItemID = 17372, // Mandragora Potted Plant 3 (Passport)
+            //    OmID = 525002,
+            //    LayoutID = 49
+            //},
             new CDataFurnitureLayout
             {
                 ItemID = 19642, // Heart's Living Room Carpet - Valentine
@@ -371,18 +371,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 LayoutID = 28
             },
             
-            new CDataFurnitureLayout
-            {
-                ItemID = 16122, // Arisen's Loungewear (Type 1)
-                OmID = 999999,
-                LayoutID = 29
-            },
-            new CDataFurnitureLayout
-            {
-                ItemID = 16125, // Servant's Loungewear (Type 1)
-                OmID = 999999,
-                LayoutID = 30
-            },
+            //new CDataFurnitureLayout
+            //{
+            //    ItemID = 16122, // Arisen's Loungewear (Type 1)
+            //    OmID = 999999,
+            //    LayoutID = 29
+            //},
+            //new CDataFurnitureLayout
+            //{
+            //    ItemID = 16125, // Servant's Loungewear (Type 1)
+            //    OmID = 999999,
+            //    LayoutID = 30
+            //},
             new CDataFurnitureLayout
             {
                 ItemID = 13240, // Lestanian Puppet - Tower
