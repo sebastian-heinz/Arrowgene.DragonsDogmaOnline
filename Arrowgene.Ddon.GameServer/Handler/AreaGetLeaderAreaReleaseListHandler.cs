@@ -26,15 +26,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
             //var pcap = EntitySerializer.Get<S2CAreaGetLeaderAreaReleaseListRes>().Read(GameFull.data_Dump_117);
 
             var result = new S2CAreaGetLeaderAreaReleaseListRes();
-            var clientRank = client.Character.AreaRanks;
-            var completedQuests = client.Character.CompletedQuests;
-            foreach ((var area, var rank) in clientRank)
+            var leader = client.Party.Leader;
+
+            if (client.Party.Leader is null)
+            {
+                // No unlocks without a leader to pull AR from.
+                return result;
+            }
+
+            var leaderRank = leader.Client.Character.AreaRanks;
+            var completedQuests = leader.Client.Character.CompletedQuests;
+            foreach ((var area, var rank) in leaderRank)
             {
                 // The client gets very angry if the unlocks are desynced from their actual ranks,
                 // so spoof the rank in AreaGetAreaBaseInfoListHandler too.
                 var releaseList = Server.AssetRepository.AreaRankSpotInfoAsset[area]
                 .Where(spot => spot.UnlockRank > 0 || spot.UnlockQuest > 0)
-                .Where(spot => Server.AreaRankManager.CheckSpot(client, spot))
+                .Where(spot => Server.AreaRankManager.CheckSpot(leader.Client, spot))
                 .Select(spot => new CDataCommonU32(spot.SpotId))
                 .ToList();
 
