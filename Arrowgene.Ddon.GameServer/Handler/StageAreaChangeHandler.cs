@@ -21,11 +21,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             PacketQueue queue = new();
             S2CStageAreaChangeRes res = new S2CStageAreaChangeRes();
-            res.StageNo = (uint) StageManager.ConvertIdToStageNo(packet.StageId);
-            res.IsBase = false; // This is set true for audience chamber and WDT for example
+            res.StageNo = StageManager.ConvertIdToStageNo(packet.StageId);
+            res.IsBase = StageManager.IsSafeArea(packet.StageId); // This is set true for audience chamber and WDT for example
 
             // Order is notices sent manually, then the response, then other queued notices for Epitaph Road stuff.
-            client.Enqueue(res, queue); 
 
             uint previousStageId = client.Character.Stage.Id;
 
@@ -43,9 +42,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 pawn.StageNo = res.StageNo;
             }
 
-            if (StageManager.IsSafeArea(client.Character.Stage))
+            if (res.IsBase)
             {
-                res.IsBase = true;
                 client.Character.LastSafeStageId = packet.StageId;
 
                 bool shouldReset = true;
@@ -74,6 +72,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     client.Party.SendToAll(new S2CInstanceAreaResetNtc());
                 }
             }
+
+            client.Enqueue(res, queue);
 
             if (client.Party.ExmInProgress && BoardManager.BoardIdIsExm(client.Party.ContentId))
             {
