@@ -1,12 +1,13 @@
 using System.Collections.Generic;
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataMyMandragoraCraftRecipe
     {
         public uint RecipeId { get; set; }
-        public uint ItemId { get; set; }
+        public ItemId ItemId { get; set; }
         public uint Time { get; set; }
 
         /// <summary>
@@ -31,7 +32,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override void Write(IBuffer buffer, CDataMyMandragoraCraftRecipe obj)
             {
                 WriteUInt32(buffer, obj.RecipeId);
-                WriteUInt32(buffer, obj.ItemId);
+                WriteUInt32(buffer, (uint)obj.ItemId);
                 WriteUInt32(buffer, obj.Time);
                 WriteUInt32(buffer, obj.Unk3);
                 WriteEntityList<CDataMyMandragoraCraftRecipeUnk4>(buffer, obj.Unk4);
@@ -43,7 +44,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 CDataMyMandragoraCraftRecipe obj = new CDataMyMandragoraCraftRecipe();
                 obj.RecipeId = ReadUInt32(buffer);
-                obj.ItemId = ReadUInt32(buffer);
+                obj.ItemId = (ItemId)ReadUInt32(buffer);
                 obj.Time = ReadUInt32(buffer);
                 obj.Unk3 = ReadUInt32(buffer);
                 obj.Unk4 = ReadEntityList<CDataMyMandragoraCraftRecipeUnk4>(buffer);

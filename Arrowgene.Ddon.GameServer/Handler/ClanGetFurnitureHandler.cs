@@ -11,54 +11,65 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClanGetFurnitureHandler));
 
-        private static Dictionary<byte, uint> MandatoryTypes = new()
+        /// <summary>
+        /// Required default furniture.
+        /// </summary>
+        private static readonly Dictionary<byte, ItemId> MandatoryTypes = new()
         {
-            { 50, 18484 },
-            { 52, 18505 },
-            { 57, 18638 },
-            { 58, 18639 },
-            { 60, 21131 }
+            { ClanFurnitureType.PlazaObject, ItemId.Fountain },
+            { ClanFurnitureType.Statue, ItemId.WhiteDragonStatue0 },
+            { ClanFurnitureType.DiningTable, ItemId.DiningTable1 },
+            { ClanFurnitureType.LargeCarpet, ItemId.LargeCarpet },
+            { ClanFurnitureType.HallDecoration, ItemId.HallDecoration }
         };
-        private static Dictionary<uint, byte> ItemIdToLayoutId = new()
+
+        /// <summary>
+        /// Maps an item to the internal ID of the furniture. 
+        /// </summary>
+        private static readonly Dictionary<ItemId, byte> ItemIdToLayoutId = new()
         {
-            {18484, 50},
-            {18505, 52},
-            {18638, 57},
-            {18639, 58},
-            {21129, 50},
-            {21130, 58},
-            {21131, 60},
-            {21132, 60},
-            {21133, 59},
-            {21713, 50},
-            {21714, 57},
-            {21715, 58},
-            {21776, 60},
-            {23124, 60},
-            {23125, 58},
-            {23126, 57},
-            {23127, 59},
-            {23128, 50},
-            {23129, 57},
-            {23130, 50}
+            {ItemId.Fountain, ClanFurnitureType.PlazaObject},
+            {ItemId.WhiteDragonStatue0, ClanFurnitureType.Statue},
+            {ItemId.DiningTable1, ClanFurnitureType.DiningTable},
+            {ItemId.LargeCarpet, ClanFurnitureType.LargeCarpet},
+            {ItemId.ChristmasTree1, ClanFurnitureType.PlazaObject},
+            {ItemId.LargeCarpetChristmas, ClanFurnitureType.LargeCarpet},
+            {ItemId.HallDecoration, ClanFurnitureType.HallDecoration},
+            {ItemId.HallDecorationChristmas, ClanFurnitureType.HallDecoration},
+            {ItemId.LittleFrost1, ClanFurnitureType.LoungeBoard},
+            {ItemId.ThirdAnniversaryPuppet1, ClanFurnitureType.PlazaObject},
+            {ItemId.ThirdAnniversaryMenu, ClanFurnitureType.DiningTable},
+            {ItemId.LargeCarpetThirdAnniversary, ClanFurnitureType.LargeCarpet},
+            {ItemId.HallDecorationThirdAnniversary, ClanFurnitureType.HallDecoration},
+            {ItemId.ClanHallHalloweenDecoration, ClanFurnitureType.HallDecoration},
+            {ItemId.ClanHallHalloweenLargeCarpet, ClanFurnitureType.LargeCarpet},
+            {ItemId.ClanHallHalloweenCuisine, ClanFurnitureType.DiningTable},
+            {ItemId.ClanHallHalloweenPlush, ClanFurnitureType.LoungeBoard},
+            {ItemId.ClanHallHalloweenTree, ClanFurnitureType.PlazaObject},
+            {ItemId.ClanHallChristmasCuisine, ClanFurnitureType.DiningTable},
+            {ItemId.ClanHallWhiteTree, ClanFurnitureType.PlazaObject}
         };
-        private static Dictionary<uint, uint> LineupIdToFurnitureId = new()
+
+        /// <summary>
+        /// Maps purchased clan upgrade LineupId to the item ID.
+        /// </summary>
+        private static readonly Dictionary<uint, ItemId> LineupIdToFurnitureId = new()
         {
-            {53, 21129},
-            {54, 21130},
-            {55, 21132},
-            {56, 21133},
-            {57, 21713},
-            {58, 21714},
-            {59, 21715},
-            {60, 21776},
-            {64, 23124},
-            {63, 23125},
-            {62, 23126},
-            {61, 23127},
-            {65, 23128},
-            {66, 23129},
-            {67, 23130}
+            {53, ItemId.ChristmasTree1},
+            {54, ItemId.LargeCarpetChristmas},
+            {55, ItemId.HallDecorationChristmas},
+            {56, ItemId.LittleFrost1},
+            {57, ItemId.ThirdAnniversaryPuppet1},
+            {58, ItemId.ThirdAnniversaryMenu},
+            {59, ItemId.LargeCarpetThirdAnniversary},
+            {60, ItemId.HallDecorationThirdAnniversary},
+            {64, ItemId.ClanHallHalloweenDecoration},
+            {63, ItemId.ClanHallHalloweenLargeCarpet},
+            {62, ItemId.ClanHallHalloweenCuisine},
+            {61, ItemId.ClanHallHalloweenPlush},
+            {65, ItemId.ClanHallHalloweenTree},
+            {66, ItemId.ClanHallChristmasCuisine},
+            {67, ItemId.ClanHallWhiteTree}
         };
         
         public ClanGetFurnitureHandler(DdonGameServer server) : base(server)
@@ -106,10 +117,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             foreach ((var type, var defaultId) in MandatoryTypes)
             {
-                uint furnitureId = defaultId;
+                var furnitureId = defaultId;
                 if (customDict.ContainsKey(type))
                 {
-                    furnitureId = customDict[type];
+                    furnitureId = (ItemId)customDict[type];
                 }
 
                 var match = res.FurnitureLayouts.Find(x => x.ItemID == furnitureId);

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -27,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 new CDataMyMandragoraCraftRecipe
                 {
                     RecipeId = 123,
-                    ItemId = 17923, // Bonus Dungeon Ticket XP
+                    ItemId = ItemId.BonusDungeonTicketXp,
                     Time = 64800,
                     Unk3 = 3000,
                     Unk4 = new List<CDataMyMandragoraCraftRecipeUnk4>
@@ -43,14 +44,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         new CDataMDataCraftMaterial
                         {
-                            ItemId = 17881,
+                            ItemId = ItemId.BonePearl,
                             Num = 2,
                             SortNo = 1,
                             IsSp = false
                         },
                         new CDataMDataCraftMaterial
                         {
-                            ItemId = 7896,
+                            ItemId = ItemId.Garnet,
                             Num = 5,
                             SortNo = 2,
                             IsSp = false
@@ -60,7 +61,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 new CDataMyMandragoraCraftRecipe
                 {
                     RecipeId = 456,
-                    ItemId = 17924, // Bonus Dungeon Ticket RIM
+                    ItemId = ItemId.BonusDungeonTicketR, // Bonus Dungeon Ticket RIM
                     Time = 64800,
                     Unk3 = 3000,
                     Unk4 = new List<CDataMyMandragoraCraftRecipeUnk4>
@@ -76,21 +77,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         new CDataMDataCraftMaterial
                         {
-                            ItemId = 17881,
+                            ItemId = ItemId.BonePearl,
                             Num = 1,
                             SortNo = 1,
                             IsSp = false
                         },
                         new CDataMDataCraftMaterial
                         {
-                            ItemId = 14190,
+                            ItemId = ItemId.KeyOfGemstones,
                             Num = 1,
                             SortNo = 2,
                             IsSp = false
                         },
                         new CDataMDataCraftMaterial
                         {
-                            ItemId = 7896,
+                            ItemId = ItemId.Garnet,
                             Num = 3,
                             SortNo = 3,
                             IsSp = false
@@ -100,7 +101,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 new CDataMyMandragoraCraftRecipe
                 {
                     RecipeId = 789,
-                    ItemId = 18663, // Mandragora Leaf
+                    ItemId = ItemId.MandragoraLeaf, // Mandragora Leaf
                     Time = 64800,
                     Unk3 = 3000,
                     Unk4 = new List<CDataMyMandragoraCraftRecipeUnk4>
@@ -116,21 +117,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         new CDataMDataCraftMaterial
                         {
-                            ItemId = 7824,
+                            ItemId = ItemId.ClearWater,
                             Num = 1,
                             SortNo = 1,
                             IsSp = false
                         },
                         new CDataMDataCraftMaterial
                         {
-                            ItemId = 17886,
+                            ItemId = ItemId.PlanktonLiquid,
                             Num = 1,
                             SortNo = 2,
                             IsSp = false
                         },
                         new CDataMDataCraftMaterial
                         {
-                            ItemId = 17884,
+                            ItemId = ItemId.AshenGrass,
                             Num = 2,
                             SortNo = 3,
                             IsSp = false
@@ -140,7 +141,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 new CDataMyMandragoraCraftRecipe
                 {
                     RecipeId = 101112,
-                    ItemId = 18664, // Mandragora Twig
+                    ItemId = ItemId.MandragoraTwig, // Mandragora Twig
                     Time = 64800,
                     Unk3 = 3000,
                     Unk4 = new List<CDataMyMandragoraCraftRecipeUnk4>
@@ -156,21 +157,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         new CDataMDataCraftMaterial
                         {
-                            ItemId = 7824,
+                            ItemId = ItemId.ClearWater,
                             Num = 1,
                             SortNo = 1,
                             IsSp = false
                         },
                         new CDataMDataCraftMaterial
                         {
-                            ItemId = 17886,
+                            ItemId = ItemId.PlanktonLiquid,
                             Num = 1,
                             SortNo = 2,
                             IsSp = false
                         },
                         new CDataMDataCraftMaterial
                         {
-                            ItemId = 18507,
+                            ItemId = ItemId.RathniteLocalHardwood,
                             Num = 2,
                             SortNo = 3,
                             IsSp = false

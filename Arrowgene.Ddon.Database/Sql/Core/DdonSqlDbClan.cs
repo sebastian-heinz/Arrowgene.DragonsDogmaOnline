@@ -444,7 +444,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             });
         }
 
-        public bool InsertOrUpdateClanBaseCustomization(uint clanId, ClanBaseCustomizationType type, uint furnitureId, DbConnection? connectionIn = null)
+        public bool InsertOrUpdateClanBaseCustomization(uint clanId, byte type, uint furnitureId, DbConnection? connectionIn = null)
         {
             return ExecuteQuerySafe(connectionIn, connection =>
             {
@@ -454,7 +454,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     command =>
                     {
                         AddParameter(command, "clan_id", clanId);
-                        AddParameter(command, "type", (byte)type);
+                        AddParameter(command, "type", type);
                         AddParameter(command, "furniture_id", furnitureId);
                     }
                     ) == 1;
@@ -467,7 +467,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     command =>
                     {
                         AddParameter(command, "clan_id", clanId);
-                        AddParameter(command, "type", (byte)type);
+                        AddParameter(command, "type", type);
                         AddParameter(command, "furniture_id", furnitureId);
                     }
                     ) == 1;
@@ -477,7 +477,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             });
         }
 
-        public bool DeleteClanBaseCustomization(uint clanId, ClanBaseCustomizationType type, DbConnection? connectionIn = null)
+        public bool DeleteClanBaseCustomization(uint clanId, byte type, DbConnection? connectionIn = null)
         {
             return ExecuteQuerySafe(connectionIn, connection =>
             {
@@ -487,7 +487,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     command =>
                     {
                         AddParameter(command, "clan_id", clanId);
-                        AddParameter(command, "type", (byte)type);
+                        AddParameter(command, "type", type);
                     }
                     ) == 1;
             });

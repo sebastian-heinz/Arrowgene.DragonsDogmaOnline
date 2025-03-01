@@ -24,17 +24,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 new()
                 {
                     MandragoraId = 1,
-                    FurnitureItemId = 17370
+                    FurnitureItemId = ItemId.MandragoraPottedPlant1Normal
                 },
                 new()
                 {
                     MandragoraId = 2,
-                    FurnitureItemId = 17371
+                    FurnitureItemId = ItemId.MandragoraPottedPlant2Passport
                 },
                 new()
                 {
                     MandragoraId = 3,
-                    FurnitureItemId = 17372
+                    FurnitureItemId = ItemId.MandragoraPottedPlant3Passport
                 }
             };
 

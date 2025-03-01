@@ -1,10 +1,11 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataFurnitureLayout
     {
-        public uint ItemID { get; set; }
+        public ItemId ItemID { get; set; }
         public uint OmID { get; set; }
         public byte LayoutID { get; set; }
 
@@ -12,7 +13,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             public override void Write(IBuffer buffer, CDataFurnitureLayout obj)
             {
-                WriteUInt32(buffer, obj.ItemID);
+                WriteUInt32(buffer, (uint)obj.ItemID);
                 WriteUInt32(buffer, obj.OmID);
                 WriteByte(buffer, obj.LayoutID);
             }
@@ -20,7 +21,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataFurnitureLayout Read(IBuffer buffer)
             {
                 CDataFurnitureLayout obj = new CDataFurnitureLayout();
-                obj.ItemID = ReadUInt32(buffer);
+                obj.ItemID = (ItemId)ReadUInt32(buffer);
                 obj.OmID = ReadUInt32(buffer);
                 obj.LayoutID = ReadByte(buffer);
                 return obj;

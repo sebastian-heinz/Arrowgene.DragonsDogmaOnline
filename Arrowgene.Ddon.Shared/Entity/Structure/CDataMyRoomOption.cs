@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -13,11 +14,11 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         /// <summary>
         /// The acive music sheet furniture item ID which has layout ID 61
         /// </summary>
-        public uint BgmAcquirementNo { get; set; }
+        public ItemId BgmAcquirementNo { get; set; }
         /// <summary>
         /// The active light vision / planetarium furniture item ID which has layout ID 63
         /// </summary>
-        public uint ActivePlanetariumNo { get; set; }
+        public ItemId ActivePlanetariumNo { get; set; }
 
 
         public class Serializer : EntitySerializer<CDataMyRoomOption>
@@ -25,16 +26,16 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override void Write(IBuffer buffer, CDataMyRoomOption obj)
             {
                 WriteEntityList<CDataCommonU32>(buffer, obj.BgmAcquirementNoList);
-                WriteUInt32(buffer, obj.BgmAcquirementNo);
-                WriteUInt32(buffer, obj.ActivePlanetariumNo);
+                WriteUInt32(buffer, (uint)obj.BgmAcquirementNo);
+                WriteUInt32(buffer, (uint)obj.ActivePlanetariumNo);
             }
 
             public override CDataMyRoomOption Read(IBuffer buffer)
             {
                 CDataMyRoomOption obj = new CDataMyRoomOption();
                 obj.BgmAcquirementNoList = ReadEntityList<CDataCommonU32>(buffer);
-                obj.BgmAcquirementNo = ReadUInt32(buffer);
-                obj.ActivePlanetariumNo = ReadUInt32(buffer);
+                obj.BgmAcquirementNo = (ItemId)ReadUInt32(buffer);
+                obj.ActivePlanetariumNo = (ItemId)ReadUInt32(buffer);
                 return obj;
             }
         }

@@ -415,8 +415,8 @@ namespace Arrowgene.Ddon.Test.Database
         public List<uint> SelectClanShopPurchases(uint clanId, DbConnection? connectionIn = null) { return new(); }
         public bool InsertClanShopPurchase(uint clanId, uint lineupId, DbConnection? connectionIn = null) { return true; }
         public List<(byte Type, uint Id)> SelectClanBaseCustomizations(uint clanId, DbConnection? connectionIn = null) { return new(); }
-        public bool InsertOrUpdateClanBaseCustomization(uint clanId, ClanBaseCustomizationType type, uint furnitureId, DbConnection? connectionIn = null) { return true; }
-        public bool DeleteClanBaseCustomization(uint clanId, ClanBaseCustomizationType type, DbConnection? connectionIn = null) { return true; }
+        public bool InsertOrUpdateClanBaseCustomization(uint clanId, byte type, uint furnitureId, DbConnection? connectionIn = null) { return true; }
+        public bool DeleteClanBaseCustomization(uint clanId, byte type, DbConnection? connectionIn = null) { return true; }
 
         public bool InsertEpitaphRoadUnlock(uint characterId, uint epitaphId, DbConnection? connectionIn = null) { return true; }
         public HashSet<uint> GetEpitaphRoadUnlocks(uint characterId, DbConnection? connectionIn = null) { return new(); }
