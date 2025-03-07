@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -15,6 +16,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CBoxGachaDrawInfoRes Handle(GameClient client, C2SBoxGachaDrawInfoReq request)
         {
+            throw new ResponseErrorException(ErrorCode.ERROR_CODE_NOT_IMPLEMENTED);
+
             S2CBoxGachaDrawInfoRes res = new S2CBoxGachaDrawInfoRes();
 
             // Reflects received results to user in the appropriate tab

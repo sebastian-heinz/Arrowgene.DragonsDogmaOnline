@@ -1,6 +1,7 @@
 #nullable enable
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System.Linq;
 
@@ -16,12 +17,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CGachaListRes Handle(GameClient client, C2SGachaListReq request)
         {
+            throw new ResponseErrorException(ErrorCode.ERROR_CODE_NOT_IMPLEMENTED);
+
             S2CGachaListRes res = new S2CGachaListRes()
             {
                 GachaList = Server.AssetRepository.GachaAsset.GachaInfoList.Values.ToList()
             };
 
+            string urlBase = Server.GameSettings.GameServerSettings.UrlDomain;
+            foreach (var gacha in res.GachaList)
+            {
+                gacha.ListAddr = $"{urlBase}{gacha.ListAddr}";
+                gacha.ImageAddr = $"{urlBase}{gacha.ImageAddr}";
+            }
+
 #if false
+            string urlBase = Server.GameSettings.GameServerSettings.UrlDomain;
+
             res.GachaList.Add(new CDataGachaInfo
             {
                 Id = 266,
@@ -34,8 +46,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 WeightDispType = 2,
                 WeightDispTitle = "Percentage Provided",
                 WeightDispText = "Class S 100.0%\r\n*Probability of provision is rounded to one decimal place.",
-                ListAddr = "http://localhost:52099/shop/img/payment/icon_lot72.jpg",
-                ImageAddr = "http://localhost:52099/shop/img/payment/image_lot67_01_campaign2.jpg",
+                ListAddr = $"{urlBase}/shop/img/payment/icon_lot72.jpg",
+                ImageAddr = $"{urlBase}/shop/img/payment/image_lot67_01_campaign2.jpg",
                 DrawGroups = new List<CDataGachaDrawGroupInfo>
                 {
                     new CDataGachaDrawGroupInfo

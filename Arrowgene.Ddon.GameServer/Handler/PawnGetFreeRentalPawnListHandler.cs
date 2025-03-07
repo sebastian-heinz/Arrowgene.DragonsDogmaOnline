@@ -1,8 +1,9 @@
-using System;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -16,7 +17,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CPawnGetFreeRentalPawnListRes Handle(GameClient client, C2SPawnGetFreeRentalPawnListReq request)
         {
+            throw new ResponseErrorException(ErrorCode.ERROR_CODE_NOT_IMPLEMENTED);
+
             S2CPawnGetFreeRentalPawnListRes res = new S2CPawnGetFreeRentalPawnListRes();
+            string urlBase = Server.GameSettings.GameServerSettings.UrlDomain;
 
             // TODO: track free rental pawns courses in DB
             res.FreeRentalPawnList.Add(
@@ -24,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     PawnId = 1,
                     Name = "FreeRentalPawn1 (active)",
-                    ImageAddr = "http://localhost:52099/shop/img/payment/icon_pawn1.png",
+                    ImageAddr = $"{urlBase}/shop/img/payment/icon_pawn1.png",
                     LineupId = 1,
                     ExpireDateTime = (ulong)DateTimeOffset.UtcNow.AddMonths(12).ToUnixTimeSeconds()
                 });
@@ -33,7 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     PawnId = 2,
                     Name = "FreeRentalPawn2 (expired)",
-                    ImageAddr = "http://localhost:52099/shop/img/payment/icon_pawn1.png",
+                    ImageAddr = $"{urlBase}/shop/img/payment/icon_pawn1.png",
                     LineupId = 2,
                     ExpireDateTime = (ulong)DateTimeOffset.UtcNow.ToUnixTimeSeconds() - 1000
                 });

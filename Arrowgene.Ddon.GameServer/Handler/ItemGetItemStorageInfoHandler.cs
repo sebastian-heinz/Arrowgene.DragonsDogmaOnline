@@ -19,15 +19,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CItemGetItemStorageInfoRes res = new S2CItemGetItemStorageInfoRes();
 
-            //TODO: fetch from actual item post?
+            var itemPost = client.Character.Storage.GetStorage(StorageType.ItemPost);
             res.GameItemStorageInfoList.Add(new CDataGameItemStorageInfo
             {
                 GameItemStorage = new CDataGameItemStorage
                 {
                     StorageType = StorageType.ItemPost
                 },
-                UsedSlotNum = 189,
-                MaxSlotNum = 400
+                UsedSlotNum = itemPost.EmptySlots(),
+                MaxSlotNum = itemPost.MaxSlots()
             });
 
             return res;

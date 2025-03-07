@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
+using System;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -19,6 +16,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CGachaBuyRes Handle(GameClient client, C2SGachaBuyReq request)
         {
+            throw new ResponseErrorException(ErrorCode.ERROR_CODE_NOT_IMPLEMENTED);
+
             S2CGachaBuyRes res = new S2CGachaBuyRes()
             {
                 GachaId = request.GachaId,
@@ -28,7 +27,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (!gachaAsset.GachaInfoList.ContainsKey(request.GachaId))
             {
-                return res;
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_GACHA_NOT_FOUND);
             }
 
             var lootBox = gachaAsset.GachaInfoList[request.GachaId];
@@ -48,8 +47,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             
             if (Server.WalletManager.RemoveFromWalletNtc(client, client.Character, walletType, request.Price))
             {
-                // Failed to deduct the cost
-                return res;
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_GACHA_PRICE_NO_MATCH);
             }
 
             foreach (var drawGroup in lootBox.DrawGroups)

@@ -11,8 +11,8 @@
             "weight_display_type": 2,
             "weight_display_title": "Percentage Provided",
             "weight_display_text": "Class S 100.0%\r\n*Probability of provision is rounded to one decimal place.",
-            "list_address": "http://localhost:52099/shop/img/payment/icon_lot.png",
-            "image_address": "http://localhost:52099/shop/img/payment/image_lot1225_campaign.jpg",
+            "list_address": "/shop/img/payment/icon_lot.png",
+            "image_address": "shop/img/payment/image_lot1225_campaign.jpg",
             "draw_groups": [
                 {
                     "group_id": 351,

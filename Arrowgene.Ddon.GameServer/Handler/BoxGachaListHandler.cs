@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -17,7 +18,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CBoxGachaListRes Handle(GameClient client, C2SBoxGachaListReq request)
         {
+            throw new ResponseErrorException(ErrorCode.ERROR_CODE_NOT_IMPLEMENTED);
+
             S2CBoxGachaListRes res = new S2CBoxGachaListRes();
+
+            string urlBase = Server.GameSettings.GameServerSettings.UrlDomain;
 
             res.BoxGachaList.Add(new CDataBoxGachaInfo
             {
@@ -31,8 +36,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     "The \"Consumables Box Lot\" is a lottery that can be drawn by spending Silver Tickets.\r\n\r\nYou can get consumables such as \"White Dragon Seal Elixir, Top\" and \"Talisman of the Twin Gods\". \r\n\r\nYou can reset the contents of the box to its initial state with the <COL ffff00>About Box Treasure Slot</COL> reset button, so please use it when you have obtained all the items you are looking for.",
                 WeightDispType = 1,
                 FreeSpaceText = "",
-                ListAddr = "http://localhost:52099/sp_ingame/campaign/bnr/lotto/lot_icon_170316_03.jpg",
-                ImageAddr = "http://localhost:52099/sp_ingame/campaign/bnr/lotto/lot_icon_170316_03.jpg",
+                ListAddr = $"{urlBase}/sp_ingame/campaign/bnr/lotto/lot_icon_170316_03.jpg",
+                ImageAddr = $"{urlBase}/sp_ingame/campaign/bnr/lotto/lot_icon_170316_03.jpg",
                 SettlementList = new List<CDataBoxGachaSettlementInfo>
                 {
                     new()

@@ -123,7 +123,7 @@ namespace Arrowgene.Ddon.Shared
             AreaRankSpotInfoAsset = new();
             AreaRankSupplyAsset = new();
             AreaRankRequirementAsset = new();
-            GachaAsset = new GachaAsset();
+            GachaAsset = new();
         }
 
         public Dictionary<ErrorCode, ClientErrorCode> ClientErrorCodes { get; private set; }

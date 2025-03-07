@@ -1,10 +1,9 @@
-using System.Collections.Generic;
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -18,6 +17,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CBoxGachaBuyRes Handle(GameClient client, C2SBoxGachaBuyReq request)
         {
+            throw new ResponseErrorException(ErrorCode.ERROR_CODE_NOT_IMPLEMENTED);
+
             S2CBoxGachaBuyRes res = new S2CBoxGachaBuyRes();
 
             // TODO: based on gacha ID & draw ID figure out which items were bought

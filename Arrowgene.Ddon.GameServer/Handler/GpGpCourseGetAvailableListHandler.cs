@@ -23,6 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CGpGpCourseGetAvailableListRes res = new S2CGpGpCourseGetAvailableListRes();
 
+            string urlBase = Server.GameSettings.GameServerSettings.UrlDomain;
             DateTimeOffset offset = DateTimeOffset.UtcNow;
             res.Items = new List<CDataGPCourseAvailable>
             {
@@ -33,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     UseLimitTime = offset.AddMonths(12),
                     CourseID = 1,
                     LineupID = 1,
-                    ImageAddr = "http://localhost:52099/shop/img/payment/icon_course1.png",
+                    ImageAddr = $"{urlBase}/shop/img/payment/icon_course1.png",
                 }
             };
 

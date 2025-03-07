@@ -18,6 +18,7 @@ public class GpCourseGetValidListHandler : GameRequestPacketHandler<C2SGpCourseG
     public override S2CGpCourseGetValidListRes Handle(GameClient client, C2SGpCourseGetValidListReq request)
     {
         var res = new S2CGpCourseGetValidListRes();
+        string urlBase = Server.GameSettings.GameServerSettings.UrlDomain;
 
         // TODO: track active courses in DB
         var offset = DateTimeOffset.UtcNow;
@@ -26,7 +27,7 @@ public class GpCourseGetValidListHandler : GameRequestPacketHandler<C2SGpCourseG
             Id = 1,
             CourseId = 1,
             Name = "Adventure Passport (active)",
-            ImageAddr = "http://localhost:52099/shop/img/payment/icon_course1.png",
+            ImageAddr = $"{urlBase}/shop/img/payment/icon_course1.png",
             StartTime = (ulong)offset.ToUnixTimeSeconds(),
             EndTime = (ulong)offset.AddMonths(12).ToUnixTimeSeconds()
         });
