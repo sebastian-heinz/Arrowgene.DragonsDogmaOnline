@@ -22,7 +22,7 @@ public class MonsterSpotInfo : IMonsterSpotInfo
         {
             // TODO: Named enemy should drop crests but no information about what crests should drop
             LibDdon.Enemy.CreateAuto(EnemyId.MerganMage, 55, 0)
-                .SetNamedEnemyParams(NamedParamId.SergiusTheApothecary)
+                .SetNamedEnemyParams(NamedParamId.SergiusTheApothecary),
             LibDdon.Enemy.CreateAuto(EnemyId.MerganWarrior, 53, 1)
                 .SetNamedEnemyParams(NamedParamId.ImmortalDrugTestSubject),
             LibDdon.Enemy.CreateAuto(EnemyId.MerganDefender, 53, 1)
