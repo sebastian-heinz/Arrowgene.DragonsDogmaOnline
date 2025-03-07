@@ -1,9 +1,9 @@
-﻿using System;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -25,10 +25,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Type = ConnectionType.GameServer,
                 Created = DateTime.UtcNow
             };
+
+            if (!Server.RpcManager.DoesGameServerExist(request.GameServerUniqueID))
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_NET_NOT_CONNECT_GAME_SERVER,
+                    $"The requested server {request.GameServerUniqueID} does not exist.");
+            }
+
             if(!Server.Database.InsertConnection(reservedConnection))
             {
-                Logger.Error($"Failed to reserve connection on server {request.GameServerUniqueID} for account {client.Account.Id}");
-                throw new ResponseErrorException(ErrorCode.ERROR_CODE_NET_NOT_CONNECT_GAME_SERVER);
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_NET_NOT_CONNECT_GAME_SERVER, 
+                    $"Failed to reserve connection on server {request.GameServerUniqueID} for account {client.Account.Id}");
             }
 
             return new S2CConnectionReserveServerRes()
