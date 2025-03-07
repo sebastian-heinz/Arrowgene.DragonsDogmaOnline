@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public override PacketId Id => PacketId.S2C_EVENT_CODE_EVENT_CODE_INPUT_RES;
 
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         public S2CEventCodeInputRes()
         {

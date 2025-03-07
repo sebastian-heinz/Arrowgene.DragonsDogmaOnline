@@ -8,19 +8,19 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
         }
 
-        public uint ID;
-        public uint CourseID;
-        public string Name;
-        public string ImageAddr;
-        public ulong StartTime;
-        public ulong EndTime;
-        
+        public uint Id { get; set; }
+        public uint CourseId { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string ImageAddr { get; set; } = string.Empty;
+        public ulong StartTime { get; set; }
+        public ulong EndTime { get; set; }
+
         public class Serializer : EntitySerializer<CDataGPCourseValid>
         {
             public override void Write(IBuffer buffer, CDataGPCourseValid obj)
             {
-                WriteUInt32(buffer, obj.ID);
-                WriteUInt32(buffer, obj.CourseID);
+                WriteUInt32(buffer, obj.Id);
+                WriteUInt32(buffer, obj.CourseId);
                 WriteMtString(buffer, obj.Name);
                 WriteMtString(buffer, obj.ImageAddr);
                 WriteUInt64(buffer, obj.StartTime);
@@ -30,8 +30,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataGPCourseValid Read(IBuffer buffer)
             {
                 CDataGPCourseValid obj = new CDataGPCourseValid();
-                obj.ID = ReadUInt32(buffer);
-                obj.CourseID = ReadUInt32(buffer);
+                obj.Id = ReadUInt32(buffer);
+                obj.CourseId = ReadUInt32(buffer);
                 obj.Name = ReadMtString(buffer);
                 obj.ImageAddr = ReadMtString(buffer);
                 obj.StartTime = ReadUInt64(buffer);

@@ -23,8 +23,8 @@ public class GpCourseGetValidListHandler : GameRequestPacketHandler<C2SGpCourseG
         var offset = DateTimeOffset.UtcNow;
         res.Items.Add(new CDataGPCourseValid
         {
-            ID = 1,
-            CourseID = 1,
+            Id = 1,
+            CourseId = 1,
             Name = "Adventure Passport (active)",
             ImageAddr = "http://localhost:52099/shop/img/payment/icon_course1.png",
             StartTime = (ulong)offset.ToUnixTimeSeconds(),

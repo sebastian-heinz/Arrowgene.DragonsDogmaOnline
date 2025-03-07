@@ -8,14 +8,14 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint Id { get; set; }
         public long Begin { get; set; }
         public long End { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string Detail { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string Detail { get; set; } = string.Empty;
         public byte WeightDispType { get; set; }
-        public string WeightDispTitle { get; set; }
-        public string WeightDispText { get; set; }
-        public string ListAddr { get; set; }
-        public string ImageAddr { get; set; }
+        public string WeightDispTitle { get; set; } = string.Empty;
+        public string WeightDispText { get; set; } = string.Empty;
+        public string ListAddr { get; set; } = string.Empty;
+        public string ImageAddr { get; set; } = string.Empty;
         public List<CDataGachaDrawGroupInfo> DrawGroups { get; set; }
 
         public CDataGachaInfo()

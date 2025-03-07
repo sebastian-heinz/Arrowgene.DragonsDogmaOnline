@@ -4,13 +4,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataGameItemStorageInfo
     {
-        public CDataGameItemStorage GameItemStorage { get; set; }
+        public CDataGameItemStorage GameItemStorage { get; set; } = new();
         public ushort UsedSlotNum { get; set; }
         public ushort MaxSlotNum { get; set; }
-
-        public CDataGameItemStorageInfo()
-        {
-        }
 
         public class Serializer : EntitySerializer<CDataGameItemStorageInfo>
         {

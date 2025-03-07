@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     public class CDataGPShopDisplayType
     {
         public uint ID { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public uint InGameUrlID { get; set; }
     
         public class Serializer : EntitySerializer<CDataGPShopDisplayType>

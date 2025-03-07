@@ -20,13 +20,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             uint amount = Server.WalletManager.GetWalletAmount(client.Character, WalletType.GoldenGemstones);
             DateTimeOffset offset = DateTimeOffset.UtcNow;
 
-            client.Send(new S2CGpGetGpRes
+            return new S2CGpGetGpRes
             {
                 GP = amount,
                 UseLimit = offset.AddMonths(12),
-                RealTime = offset,
-                Milliseconds = (ushort)offset.Millisecond
-            });
+                RealTime = offset
+            };
         }
     }
 }

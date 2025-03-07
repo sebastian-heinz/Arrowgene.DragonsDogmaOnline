@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.C2S_EVENT_CODE_EVENT_CODE_INPUT_REQ;
 
-        public string Code { get; set; }
+        public string Code { get; set; } = string.Empty;
 
         public C2SEventCodeInputReq()
         {

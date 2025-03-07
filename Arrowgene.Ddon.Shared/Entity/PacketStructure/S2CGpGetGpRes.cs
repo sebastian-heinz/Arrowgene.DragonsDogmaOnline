@@ -15,7 +15,6 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public uint GP { get; set; }
         public DateTimeOffset UseLimit { get; set; }
         public DateTimeOffset RealTime { get; set; }
-        public ushort Milliseconds { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CGpGetGpRes>
         {
@@ -24,7 +23,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteServerResponse(buffer, obj);
                 WriteUInt32(buffer, obj.GP);
                 WriteInt64(buffer, obj.UseLimit.ToUnixTimeSeconds());
-                WriteUInt64(buffer, (ulong)obj.RealTime.ToUnixTimeSeconds());
+                WriteInt64(buffer, obj.RealTime.ToUnixTimeSeconds());
                 WriteUInt16(buffer, (ushort)obj.RealTime.Millisecond);
             }
 
@@ -34,9 +33,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 ReadServerResponse(buffer, obj);
                 obj.GP = ReadUInt32(buffer);
                 obj.UseLimit = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
-                ulong unixTimeSeconds = ReadUInt64(buffer);
-                obj.Milliseconds = ReadUInt16(buffer);
-                obj.RealTime = DateTimeOffset.FromUnixTimeSeconds((long)unixTimeSeconds).AddMilliseconds(obj.Milliseconds);
+                long unixTimeSeconds = ReadInt64(buffer);
+                var milliseconds = ReadUInt16(buffer);
+                obj.RealTime = DateTimeOffset.FromUnixTimeSeconds(unixTimeSeconds).AddMilliseconds(milliseconds);
                 return obj;
             }
         }

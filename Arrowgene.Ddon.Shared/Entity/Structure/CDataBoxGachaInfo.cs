@@ -9,13 +9,13 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public long Begin { get; set; }
         public long End { get; set; }
         public bool Unk1 { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string Detail { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string Detail { get; set; } = string.Empty;
         public byte WeightDispType { get; set; }
-        public string FreeSpaceText { get; set; }
-        public string ListAddr { get; set; }
-        public string ImageAddr { get; set; }
+        public string FreeSpaceText { get; set; } = string.Empty;
+        public string ListAddr { get; set; } = string.Empty;
+        public string ImageAddr { get; set; } = string.Empty;
         public List<CDataBoxGachaSettlementInfo> SettlementList { get; set; }
         public List<CDataBoxGachaItemInfo> BoxGachaSets { get; set; }
 

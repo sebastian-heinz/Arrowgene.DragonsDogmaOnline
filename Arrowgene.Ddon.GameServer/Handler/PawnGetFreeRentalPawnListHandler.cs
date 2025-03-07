@@ -6,17 +6,17 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class GetFreeRentalPawnListHandler : GameRequestPacketHandler<C2SGetFreeRentalPawnListReq, S2CGetFreeRentalPawnListRes>
+    public class PawnGetFreeRentalPawnListHandler : GameRequestPacketHandler<C2SPawnGetFreeRentalPawnListReq, S2CPawnGetFreeRentalPawnListRes>
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(GetFreeRentalPawnListHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnGetFreeRentalPawnListHandler));
 
-        public GetFreeRentalPawnListHandler(DdonGameServer server) : base(server)
+        public PawnGetFreeRentalPawnListHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override S2CGetFreeRentalPawnListRes Handle(GameClient client, C2SGetFreeRentalPawnListReq request)
+        public override S2CPawnGetFreeRentalPawnListRes Handle(GameClient client, C2SPawnGetFreeRentalPawnListReq request)
         {
-            S2CGetFreeRentalPawnListRes res = new S2CGetFreeRentalPawnListRes();
+            S2CPawnGetFreeRentalPawnListRes res = new S2CPawnGetFreeRentalPawnListRes();
 
             // TODO: track free rental pawns courses in DB
             res.FreeRentalPawnList.Add(

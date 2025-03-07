@@ -5,7 +5,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     public class CDataGPShopBuyHistoryElement
     {
         public uint ID { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public uint Price { get; set; }
         public ulong AcquisitionTime { get; set; }
 

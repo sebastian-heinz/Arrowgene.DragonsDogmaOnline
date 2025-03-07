@@ -184,7 +184,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             _CourseIsActive[id] = true;
                             ApplyCourseEffects(id);
 
-                            var ntc = new S2CGPCourseStartNtc()
+                            var ntc = new S2CGpCourseStartNtc()
                             {
                                 CourseID = id,
                                 ExpiryTimestamp = course.EndTime,

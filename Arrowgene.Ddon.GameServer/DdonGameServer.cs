@@ -514,6 +514,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PartySendBinaryMsgAllHandler(this));
             AddHandler(new PartySendBinaryMsgHandler(this));
 
+            AddHandler(new PawnGetFreeRentalPawnListHandler(this));
             AddHandler(new PawnGetLostPawnListHandler(this));
             AddHandler(new PawnGetMypawnDataHandler(this));
             AddHandler(new PawnGetMyPawnListHandler(this));
@@ -550,7 +551,6 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PawnExpeditionGetSallyInfoHandler(this));
 
             AddHandler(new PhotoPhotoTakeHandler(this));
-            AddHandler(new GetFreeRentalPawnListHandler(this));
 
             AddHandler(new ProfileGetCharacterProfileHandler(this));
             AddHandler(new ProfileGetMyCharacterProfileHandler(this));

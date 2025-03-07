@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 WriteServerResponse(buffer, obj);
 
-                WriteEntity(buffer, obj.Items);
+                WriteEntityList(buffer, obj.Items);
             }
 
             public override S2CGpShopDisplayGetTypeRes Read(IBuffer buffer)

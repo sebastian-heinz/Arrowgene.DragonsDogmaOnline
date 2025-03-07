@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public override PacketId Id => PacketId.S2C_GP_COG_GET_ID_RES;
 
-        public string CogId { get; set; }
+        public string CogId { get; set; } = string.Empty;
 
         public S2CGpCogGetIdRes()
         {
