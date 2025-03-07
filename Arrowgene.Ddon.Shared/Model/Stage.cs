@@ -299,7 +299,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public static readonly StageInfo LeKarvasPatiro = new StageInfo(106, 521, QuestAreaId.DeenanWoods, "LeKarvasPatiro");
         public static readonly StageInfo LeKarvasSalto = new StageInfo(108, 523, QuestAreaId.DeenanWoods, "LeKarvasSalto");
         public static readonly StageInfo LeosHideout = new StageInfo(342, 940, QuestAreaId.DoweValley, "LeosHideout");
-        public static readonly StageInfo Lestania = new StageInfo(1, 100, QuestAreaId.HidellPlains, "Lestania");
+        public static readonly StageInfo Lestania = new StageInfo(1, 100, QuestAreaId.None, "Lestania"); // Lestania comprises many area Id's
         public static readonly StageInfo LighthouseKeepersHouse = new StageInfo(47, 365, QuestAreaId.BreyaCoast, "LighthouseKeepersHouse");
         public static readonly StageInfo LighthouseOldWell = new StageInfo(133, 548, QuestAreaId.BreyaCoast, "LighthouseOldWell");
         public static readonly StageInfo LighthouseUndergroundStores = new StageInfo(32, 345, QuestAreaId.EasternZandora, "LighthouseUndergroundStores");

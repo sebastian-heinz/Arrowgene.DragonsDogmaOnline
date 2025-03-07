@@ -84,6 +84,7 @@ namespace Arrowgene.Ddon.GameServer
             EpitaphRoadManager = new EpitaphRoadManager(this);
             ScheduleManager = new ScheduleManager(this);
             AreaRankManager = new AreaRankManager(this);
+            GameTimeManager = new GameTimeManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
@@ -124,6 +125,7 @@ namespace Arrowgene.Ddon.GameServer
         public EpitaphRoadManager EpitaphRoadManager { get; }
         private ScheduleManager ScheduleManager { get; }
         public AreaRankManager AreaRankManager { get; }
+        public GameTimeManager GameTimeManager { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
 

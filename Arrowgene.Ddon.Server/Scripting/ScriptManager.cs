@@ -34,6 +34,11 @@ namespace Arrowgene.Ddon.Shared.Scripting
             }
         }
 
+        public void AddModule(ScriptModule module)
+        {
+            ScriptModules[module.ModuleRoot] = module;
+        }
+
         public abstract void Initialize();
 
         protected void Initialize(T globalVariables)

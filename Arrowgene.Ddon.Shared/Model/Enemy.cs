@@ -37,7 +37,6 @@ namespace Arrowgene.Ddon.Shared.Model
             SpawnTimeEnd = enemy.SpawnTimeEnd;
             Experience = enemy.Experience;
             DropsTable = enemy.DropsTable;
-            NotifyStrongEnemy = enemy.NotifyStrongEnemy;
             Subgroup = enemy.Subgroup;
             PPDrop = enemy.PPDrop;
         }
@@ -68,7 +67,6 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint Experience { get; set; }
         public uint RaidPoints { get; set; }
         public DropsTable DropsTable { get; set; }
-        public bool NotifyStrongEnemy { get; set; }
         public uint PPDrop { get; set; }
         public uint UINameId { get 
             {
@@ -79,7 +77,7 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public uint GetDroppedExperience()
         {
-            return Experience * (NamedEnemyParams.Experience/100);
+            return Experience * (NamedEnemyParams.Experience / 100);
         }
 
         public uint GetDroppedPlayPoints()
@@ -87,7 +85,7 @@ namespace Arrowgene.Ddon.Shared.Model
             return PPDrop;
         }
 
-        public CDataStageLayoutEnemyPresetEnemyInfoClient asCDataStageLayoutEnemyPresetEnemyInfoClient()
+        public CDataStageLayoutEnemyPresetEnemyInfoClient AsCDataStageLayoutEnemyPresetEnemyInfoClient()
         {
             return new CDataStageLayoutEnemyPresetEnemyInfoClient()
             {

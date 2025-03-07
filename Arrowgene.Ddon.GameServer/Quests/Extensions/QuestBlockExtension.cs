@@ -1,12 +1,9 @@
-#define FLAG_BASED_ENEMIES
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using static Arrowgene.Ddon.GameServer.Characters.QuestManager;
 
 namespace Arrowgene.Ddon.GameServer.Quests.Extensions
 {

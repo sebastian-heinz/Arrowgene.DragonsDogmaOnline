@@ -2,6 +2,7 @@ namespace Arrowgene.Ddon.Shared.Model
 {
     public enum HmPresetId : uint
     {
+        None = 0,
         BandedDefender = 56,
         BandedFighter = 52,
         BandedHealer = 55,

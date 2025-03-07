@@ -72,7 +72,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     EnemyData = new CDataLayoutEnemyData()
                     {
                         PositionIndex = (byte)packet.SetId,
-                        EnemyInfo = enemyKilled.asCDataStageLayoutEnemyPresetEnemyInfoClient()
+                        EnemyInfo = enemyKilled.AsCDataStageLayoutEnemyPresetEnemyInfoClient()
                     }
                 };
                 client.Party.EnqueueToAll(repopNtc, queuedPackets);
@@ -176,7 +176,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     CharacterCommon memberCharacter;
                     if (member is PlayerPartyMember playerMember)
                     {
-                        var gainedExp = _gameServer.ExpManager.GetAdjustedPoints(client, RewardSource.Enemy, client.Character, client.Party, PointType.ExperiencePoints, enemyExpMixin.GetExpValue(enemyKilled), enemyKilled);
+                        var gainedExp = _gameServer.ExpManager.GetAdjustedPoints(client, RewardSource.Enemy, client.Character, client.Party, PointType.ExperiencePoints, enemyExpMixin.GetExpValue(playerMember.Client.Character, enemyKilled), enemyKilled);
                         var gainedPP = _gameServer.ExpManager.GetAdjustedPoints(client, RewardSource.Enemy, client.Character, client.Party, PointType.PlayPoints, enemyKilled.GetDroppedPlayPoints(), enemyKilled);
 
                         memberClient = playerMember.Client;
@@ -245,7 +245,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             continue;
                         }
 
-                        var pawnExp = _gameServer.ExpManager.GetAdjustedPoints(client, RewardSource.Enemy, pawn, client.Party, PointType.ExperiencePoints, enemyExpMixin.GetExpValue(enemyKilled), enemyKilled);
+                        var pawnExp = _gameServer.ExpManager.GetAdjustedPoints(client, RewardSource.Enemy, pawn, client.Party, PointType.ExperiencePoints, enemyExpMixin.GetExpValue(memberCharacter, enemyKilled), enemyKilled);
                         if ((pawnExp.BasePoints + pawnExp.BonusPoints) > 0)
                         {
                             var ntcs = _gameServer.ExpManager.AddExp(memberClient, memberCharacter, pawnExp, RewardSource.Enemy, connectionIn: connectionIn);

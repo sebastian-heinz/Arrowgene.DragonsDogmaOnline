@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -63,6 +64,11 @@ namespace Arrowgene.Ddon.Shared
             return Bitfield.Get(msb, lsb, data);
         }
 
+        public T Get<T>(ulong data) where T : struct
+        {
+            return NumericUtils.DowncastWithTruncation<T>(Bitfield.Get(msb, lsb, data));
+        }
+
         public ulong Set(ulong data, ulong value)
         {
             return Bitfield.Set(msb, lsb, data, value);
@@ -71,6 +77,11 @@ namespace Arrowgene.Ddon.Shared
         public ulong Value(ulong value)
         {
             return Bitfield.Value(msb, lsb, value);
+        }
+
+        public T Value<T>(ulong value) where T : struct
+        {
+            return NumericUtils.DowncastWithTruncation<T>(Bitfield.Value(msb, lsb, value));
         }
 
         public ulong Width()

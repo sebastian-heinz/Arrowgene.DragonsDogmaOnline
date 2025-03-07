@@ -25,6 +25,8 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         public ChatCommandModule ChatCommandModule { get; private set; } = new ChatCommandModule();
         public PointModifierModule PointModifierModule { get; private set; } = new PointModifierModule();
         public AddendumModule AddendumModule { get; private set; } = new AddendumModule();
+        public MonsterCautionSpotModule MonsterCautionSpotModule { get; private set; } = new MonsterCautionSpotModule();
+        public InstanceEnemyPropertyGeneratorModule InstanceEnemyPropertyGeneratorModule { get; private set; } = new InstanceEnemyPropertyGeneratorModule();
 
         public GameServerScriptManager(DdonGameServer server) : base(server.AssetRepository.AssetsPath, ".")
         {
@@ -35,15 +37,20 @@ namespace Arrowgene.Ddon.GameServer.Scripting
             LibDdon.SetServer(server);
 
             // Add modules to the list so the generic logic can iterate over all scripting modules
-            ScriptModules[ChatCommandModule.ModuleRoot] = ChatCommandModule;
-            ScriptModules[GameItemModule.ModuleRoot] = GameItemModule;
-            ScriptModules[MixinModule.ModuleRoot] = MixinModule;
-            ScriptModules[NpcExtendedFacilityModule.ModuleRoot] = NpcExtendedFacilityModule;
-            ScriptModules[QuestModule.ModuleRoot] = QuestModule;
-            ScriptModules[PointModifierModule.ModuleRoot] = PointModifierModule;
+            AddModule(ChatCommandModule);
+            AddModule(GameItemModule);
+            AddModule(MixinModule);
+            AddModule(NpcExtendedFacilityModule);
+            AddModule(PointModifierModule);
+            AddModule(InstanceEnemyPropertyGeneratorModule);
+
+            // World Manage Quests have some dependency on Caution Spots, so load caution spots first
+            // to prevent unecssary quest relod on server load
+            AddModule(MonsterCautionSpotModule);
+            AddModule(QuestModule);
 
             // This module should run last since it applies fine grained modifications to other modules
-            ScriptModules[AddendumModule.ModuleRoot] = AddendumModule;
+            AddModule(AddendumModule);
         }
 
         public override void Initialize()

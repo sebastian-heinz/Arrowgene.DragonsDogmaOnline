@@ -525,6 +525,18 @@ namespace Arrowgene.Ddon.GameServer.Quests
             };
         }
 
+        public virtual CDataWorldManageQuestOrderList ToCDataWorldManageQuestOrderList(uint step)
+        {
+            var result = new CDataWorldManageQuestOrderList()
+            {
+                IsTutorialGuide = false, // TODO: Extract from configuration data
+                Param = ToCDataQuestOrderList(step)
+            };
+            result.Param.CanProgress = false;
+
+            return result;
+        }
+
         public void ClearAllRewards()
         {
             ItemRewards.Clear();

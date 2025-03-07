@@ -111,6 +111,13 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataCommonU32.Serializer());
             Create(new CDataCommonU64.Serializer());
             Create(new CDataCommonU8.Serializer());
+            Create(new CDataCommonPair<byte>.Serializer());
+            Create(new CDataCommonPair<ushort>.Serializer());
+            Create(new CDataCommonPair<uint>.Serializer());
+            Create(new CDataCommonPair<ulong>.Serializer());
+            Create(new CDataCommonPair<short>.Serializer());
+            Create(new CDataCommonPair<int>.Serializer());
+            Create(new CDataCommonPair<long>.Serializer());
             Create(new CDataCommunicationShortCut.Serializer());
             Create(new CDataCommunityCharacterBaseInfo.Serializer());
             Create(new CDataContentsPlayEnd.Serializer());
@@ -1191,7 +1198,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CInnStayInnRes.Serializer());
             Create(new S2CInnStayPenaltyHealInnRes.Serializer());
 
+            Create(new S2C_INSTANCE_13_36_16_NTC.Serializer());
             Create(new S2CInstanceAreaResetNtc.Serializer());
+            Create(new S2CInstanceEnemyStageBossAnnihilateNtc.Serializer());
             Create(new S2CInstanceEnemyDieNtc.Serializer());
             Create(new S2CInstanceEnemyGroupDestroyNtc.Serializer());
             Create(new S2CInstanceEnemyGroupResetNtc.Serializer());
@@ -1373,6 +1382,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CProfileGetCharacterProfileRes.Serializer());
             Create(new S2CProfileGetMyCharacterProfileRes.Serializer());
 
+            Create(new S2CQuestSubstoryStartAnnounceNtc.Serializer());
             Create(new S2CQuestGetAdventureGuideQuestListRes.Serializer());
             Create(new S2CQuestCancelPriorityQuestRes.Serializer());
             Create(new S2CQuestCompleteNtc.Serializer());
@@ -2040,6 +2050,76 @@ namespace Arrowgene.Ddon.Shared.Entity
             IBuffer buffer = new StreamBuffer(data);
             buffer.SetPositionStart();
             return Read(buffer);
+        }
+
+        protected void WriteT<T>(IBuffer buffer, T value)
+        {
+            if (value is byte bvalue)
+            {
+                WriteByte(buffer, bvalue);
+            }
+            else if (value is ushort u16value)
+            {
+                WriteUInt16(buffer, u16value);
+            }
+            else if (value is uint u32value)
+            {
+                WriteUInt32(buffer, u32value);
+            }
+            else if (value is ulong u64value)
+            {
+                WriteUInt64(buffer, u64value);
+            }
+            else if (value is short i16value)
+            {
+                WriteInt16(buffer, i16value);
+            }
+            else if (value is int i32value)
+            {
+                WriteInt32(buffer, i32value);
+            }
+            else if (value is long i64value)
+            {
+                WriteInt64(buffer, i64value);
+            }
+            else
+            {
+                throw new Exception($"Unsupported type {typeof(T)}");
+            }
+        }
+
+        protected T ReadT<T>(IBuffer buffer)
+        {
+            if (typeof(T) == typeof(byte))
+            {
+                return (T)(object)ReadByte(buffer);
+            }
+            else if (typeof(T) == typeof(ushort))
+            {
+                return (T)(object)ReadUInt16(buffer);
+            }
+            else if (typeof(T) == typeof(uint))
+            {
+                return (T)(object)ReadUInt32(buffer);
+            }
+            else if (typeof(T) == typeof(ulong))
+            {
+                return (T)(object)ReadUInt64(buffer);
+            }
+            else if (typeof(T) == typeof(short))
+            {
+                return (T)(object)ReadInt16(buffer);
+            }
+            else if (typeof(T) == typeof(int))
+            {
+                return (T)(object)ReadInt32(buffer);
+            }
+            else if (typeof(T) == typeof(long))
+            {
+                return (T)(object)ReadInt64(buffer);
+            }
+
+            throw new Exception($"Unsupported type {typeof(T)}");
         }
     }
 }

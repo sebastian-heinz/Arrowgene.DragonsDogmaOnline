@@ -46,7 +46,7 @@ public class ChatCommand : IChatCommand
             S2CInstanceEnemyRepopNtc ntc = new S2CInstanceEnemyRepopNtc();
             ntc.LayoutId = enemyGroup;
             ntc.EnemyData.PositionIndex = positionIndex;
-            ntc.EnemyData.EnemyInfo = enemySpawns[positionIndex].asCDataStageLayoutEnemyPresetEnemyInfoClient();
+            ntc.EnemyData.EnemyInfo = enemySpawns[positionIndex].AsCDataStageLayoutEnemyPresetEnemyInfoClient();
             ntc.WaitSecond = waitSeconds;
             client.Party.SendToAll(ntc);
 
