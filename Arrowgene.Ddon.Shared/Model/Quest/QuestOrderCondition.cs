@@ -72,12 +72,13 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             };
         }
 
-        public static QuestOrderCondition HasAreaRank(int areaRank)
+        public static QuestOrderCondition HasAreaRank(QuestAreaId areaId, int areaRank)
         {
             return new QuestOrderCondition()
             {
                 Type = QuestOrderConditionType.AreaRank,
-                Param01 = areaRank
+                Param01 = (int) areaId,
+                Param02 = areaRank
             };
         }
 

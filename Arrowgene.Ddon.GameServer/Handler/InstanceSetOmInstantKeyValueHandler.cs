@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CInstanceSetOmInstantKeyValueRes Handle(GameClient client, C2SInstanceSetOmInstantKeyValueReq request)
         {
-            Logger.Debug($"OM: Key={request.Key}, Value={request.Value}");
+            Logger.Debug($"OM: Key=0x{request.Key:x16}, Value=0x{request.Value:x8}");
 
             OmManager.SetOmData(client.Party.InstanceOmData, client.Character.Stage.Id, request.Key, request.Value);
 

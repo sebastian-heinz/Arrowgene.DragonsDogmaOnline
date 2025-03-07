@@ -723,7 +723,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_QUEST_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_RES = new PacketId(11, 66, 2, "S2C_QUEST_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_RES", ServerType.Game, PacketSource.Server); // 循環コンテンツ報酬リスト数の取得に
         public static readonly PacketId C2S_QUEST_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_ITEM_REQ = new PacketId(11, 67, 1, "C2S_QUEST_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_ITEM_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_ITEM_RES = new PacketId(11, 67, 2, "S2C_QUEST_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_ITEM_RES", ServerType.Game, PacketSource.Server); // 循環コンテンツ報酬アイテムの受け取りに
-        public static readonly PacketId S2C_QUEST_11_68_16_NTC = new PacketId(11, 68, 16, "S2C_QUEST_11_68_16_NTC", ServerType.Game, PacketSource.Server); // Special Quest Board Reloaded
+        public static readonly PacketId S2CQuestBoardReloadNtc = new PacketId(11, 68, 16, "S2C_QUEST_11_68_16_NTC", ServerType.Game, PacketSource.Server); // Special Quest Board Reloaded
         public static readonly PacketId C2S_QUEST_DELIVER_ITEM_REQ = new PacketId(11, 69, 1, "C2S_QUEST_DELIVER_ITEM_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_DELIVER_ITEM_RES = new PacketId(11, 69, 2, "S2C_QUEST_DELIVER_ITEM_RES", ServerType.Game, PacketSource.Server); // 納品に
         public static readonly PacketId S2C_QUEST_DELIVER_ITEM_NTC = new PacketId(11, 69, 16, "S2C_QUEST_DELIVER_ITEM_NTC", ServerType.Game, PacketSource.Server, "S2C_QUEST_11_69_16_NTC");
@@ -755,7 +755,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_QUEST_11_84_16_NTC = new PacketId(11, 84, 16, "S2C_QUEST_11_84_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_QUEST_11_85_16_NTC = new PacketId(11, 85, 16, "S2C_QUEST_11_85_16_NTC", ServerType.Game, PacketSource.Server); // S2C_QUEST_ENABLE_NOTICE?
         public static readonly PacketId S2C_QUEST_11_86_16_NTC = new PacketId(11, 86, 16, "S2C_QUEST_11_86_16_NTC", ServerType.Game, PacketSource.Server); // S2C_CYCLE_CONTENTS_ENABLE_NOTICE?
-        public static readonly PacketId S2C_QUEST_11_87_16_NTC = new PacketId(11, 87, 16, "S2C_QUEST_11_87_16_NTC", ServerType.Game, PacketSource.Server); // S2C_QUEST_MASTER_DATA_RELOAD_NOTICE
+        public static readonly PacketId S2C_QUEST_MASTER_DATA_RELOAD_NTC = new PacketId(11, 87, 16, "S2C_QUEST_MASTER_DATA_RELOAD_NTC", ServerType.Game, PacketSource.Server, "S2C_QUEST_11_87_16_NTC"); // S2C_QUEST_MASTER_DATA_RELOAD_NOTICE
         public static readonly PacketId S2C_QUEST_11_88_16_NTC = new PacketId(11, 88, 16, "S2C_QUEST_11_88_16_NTC", ServerType.Game, PacketSource.Server);
         public static readonly PacketId S2C_QUEST_JOIN_LOBBY_QUEST_INFO_NTC = new PacketId(11, 89, 16, "S2C_QUEST_JOIN_LOBBY_QUEST_INFO_NTC", ServerType.Game, PacketSource.Server, "S2C_QUEST_11_89_16_NTC");
         public static readonly PacketId S2C_QUEST_PROGRESS_WORK_SAVE_NTC = new PacketId(11, 90, 16, "S2C_QUEST_PROGRESS_WORK_SAVE_NTC", ServerType.Game, PacketSource.Server, "S2C_QUEST_11_90_16_NTC");
@@ -797,11 +797,11 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_QUEST_GET_ADVENTURE_GUIDE_QUEST_NTC_RES = new PacketId(11, 123, 2, "S2C_QUEST_GET_ADVENTURE_GUIDE_QUEST_NTC_RES", ServerType.Game, PacketSource.Server); // 冒険ガイドクエスト通知の取得に
         public static readonly PacketId C2S_QUEST_SET_NAVIGATION_QUEST_REQ = new PacketId(11, 124, 1, "C2S_QUEST_SET_NAVIGATION_QUEST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_SET_NAVIGATION_QUEST_RES = new PacketId(11, 124, 2, "S2C_QUEST_SET_NAVIGATION_QUEST_RES", ServerType.Game, PacketSource.Server); // ナビゲーションクエストセットに
-        public static readonly PacketId S2C_QUEST_11_124_16_NTC = new PacketId(11, 124, 16, "S2C_QUEST_11_124_16_NTC", ServerType.Game, PacketSource.Server); // <syslog_quest_progress_failed> (Looks like S2CQuestJoinLobbyQuestInfoNtc)
+        public static readonly PacketId S2C_QUEST_SET_NAVIGATION_QUEST_NTC = new PacketId(11, 124, 16, "S2C_QUEST_SET_NAVIGATION_QUEST_NTC", ServerType.Game, PacketSource.Server, "S2C_QUEST_11_124_16_NTC"); // <syslog_quest_progress_failed> (Looks like S2CQuestJoinLobbyQuestInfoNtc)
         public static readonly PacketId C2S_QUEST_CANCEL_NAVIGATION_QUEST_REQ = new PacketId(11, 125, 1, "C2S_QUEST_CANCEL_NAVIGATION_QUEST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_CANCEL_NAVIGATION_QUEST_RES = new PacketId(11, 125, 2, "S2C_QUEST_CANCEL_NAVIGATION_QUEST_RES", ServerType.Game, PacketSource.Server); // ナビゲーションクエストのキャンセルに
         public static readonly PacketId S2C_QUEST_11_125_16_NTC = new PacketId(11, 125, 16, "S2C_QUEST_11_125_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_QUEST_11_126_16_NTC = new PacketId(11, 126, 16, "S2C_QUEST_11_126_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_QUEST_11_126_16_NTC = new PacketId(11, 126, 16, "S2C_QUEST_11_126_16_NTC", ServerType.Game, PacketSource.Server); // Return 1
         public static readonly PacketId C2S_QUEST_GET_END_CONTENTS_RECRUIT_LIST_REQ = new PacketId(11, 127, 1, "C2S_QUEST_GET_END_CONTENTS_RECRUIT_LIST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_QUEST_GET_END_CONTENTS_RECRUIT_LIST_RES = new PacketId(11, 127, 2, "S2C_QUEST_GET_END_CONTENTS_RECRUIT_LIST_RES", ServerType.Game, PacketSource.Server); // エンドコンテンツ募集リストの取得に
 
@@ -2654,7 +2654,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_QUEST_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_RES);
             AddPacketIdEntry(packetIds, C2S_QUEST_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_ITEM_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_ITEM_RES);
-            AddPacketIdEntry(packetIds, S2C_QUEST_11_68_16_NTC);
+            AddPacketIdEntry(packetIds, S2CQuestBoardReloadNtc);
             AddPacketIdEntry(packetIds, C2S_QUEST_DELIVER_ITEM_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_DELIVER_ITEM_RES);
             AddPacketIdEntry(packetIds, S2C_QUEST_DELIVER_ITEM_NTC);
@@ -2686,7 +2686,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_QUEST_11_84_16_NTC);
             AddPacketIdEntry(packetIds, S2C_QUEST_11_85_16_NTC);
             AddPacketIdEntry(packetIds, S2C_QUEST_11_86_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_QUEST_11_87_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_QUEST_MASTER_DATA_RELOAD_NTC);
             AddPacketIdEntry(packetIds, S2C_QUEST_11_88_16_NTC);
             AddPacketIdEntry(packetIds, S2C_QUEST_JOIN_LOBBY_QUEST_INFO_NTC);
             AddPacketIdEntry(packetIds, S2C_QUEST_PROGRESS_WORK_SAVE_NTC);
@@ -2728,7 +2728,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_QUEST_GET_ADVENTURE_GUIDE_QUEST_NTC_RES);
             AddPacketIdEntry(packetIds, C2S_QUEST_SET_NAVIGATION_QUEST_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_SET_NAVIGATION_QUEST_RES);
-            AddPacketIdEntry(packetIds, S2C_QUEST_11_124_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_QUEST_SET_NAVIGATION_QUEST_NTC);
             AddPacketIdEntry(packetIds, C2S_QUEST_CANCEL_NAVIGATION_QUEST_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_CANCEL_NAVIGATION_QUEST_RES);
             AddPacketIdEntry(packetIds, S2C_QUEST_11_125_16_NTC);

@@ -32,6 +32,8 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         ExtendTime,
         DeliverItemsLight,
         ReturnCheckpoint,
+        SceHitIn,
+        SceHitOut,
         Raw,
         DummyBlock,
         DummyBlockNoProgress,

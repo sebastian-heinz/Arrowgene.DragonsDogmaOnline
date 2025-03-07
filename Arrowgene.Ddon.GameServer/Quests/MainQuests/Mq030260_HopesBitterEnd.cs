@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -253,7 +254,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
             return quest;
         }
 
-        public override List<CDataQuestProcessState> StateMachineExecute(DdonGameServer server, GameClient client, QuestProcessState processState, out QuestProgressState questProgressState)
+        public override List<CDataQuestProcessState> StateMachineExecute(DdonGameServer server, GameClient client, QuestProcessState processState, PacketQueue packets, out QuestProgressState questProgressState)
         {
             List<CDataQuestProcessState> result = new List<CDataQuestProcessState>();
 

@@ -48,8 +48,18 @@
 
 public class Mixin : IExpMixin
 {
+    private HashSet<uint> AutomaticExpQuestExceptions = new HashSet<uint>()
+    {
+        (uint) QuestId.ResolutionsAndOmens
+    };
+
     public override uint GetExpValue(CharacterCommon characterCommon, InstancedEnemy enemy)
     {
+        if (AutomaticExpQuestExceptions.Contains(enemy.QuestScheduleId))
+        {
+            return 0;
+        }
+
         uint result = 0;
         switch (enemy.ExpScheme)
         {

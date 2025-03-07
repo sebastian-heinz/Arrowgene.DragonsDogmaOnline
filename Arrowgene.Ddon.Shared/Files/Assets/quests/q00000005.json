@@ -62,23 +62,43 @@
             },
             "enemies": [
                 {
+                    "comment": "Large Deformed Skeleton",
                     "enemy_id": "0x010312",
                     "level": 16,
                     "exp": 276,
                     "named_enemy_params_id": 139,
-                    "is_boss": true
+                    "scale": 115,
+                    "is_boss_gauge": true
                 },
                 {
+                    "comment": "Large Deformed Skeleton",
                     "enemy_id": "0x010312",
+                    "level": 16,
+                    "exp": 276,
+                    "named_enemy_params_id": 139,
+                    "scale": 115,
+                    "is_boss_gauge": true
+                },
+                {
+                    "comment": "Refined Skeleton",
+                    "enemy_id": "0x010300",
                     "level": 15,
                     "exp": 276,
-                    "named_enemy_params_id": 167
+                    "named_enemy_params_id": 140
                 },
                 {
+                    "comment": "Refined Skeleton",
+                    "enemy_id": "0x010300",
+                    "level": 15,
+                    "exp": 276,
+                    "named_enemy_params_id": 140
+                },
+                {
+                    "comment": "Refined Skeleton Mage",
                     "enemy_id": "0x010308",
                     "level": 15,
-                    "exp": 276,
-                    "named_enemy_params_id": 167
+                    "exp": 804,
+                    "named_enemy_params_id": 140
                 }
             ]
         }

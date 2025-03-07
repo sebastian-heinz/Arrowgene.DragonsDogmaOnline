@@ -5,9 +5,29 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
 {
     public static class QuestBlockResultCmdExtension
     {
-        public static QuestBlock AddResultCmdReleaseAnnounce(this QuestBlock questBlock, int releaseId)
+        /// <summary>
+        /// Generates a release command and handle setting any complicated flags associated with the release.
+        /// </summary>
+        /// <param name="questBlock"></param>
+        /// <param name="releaseId">The id of the release message to pop up on the screen</param>
+        /// <param name="tutorialId">Optional parameter which is the id of the tutorial guide that should pop up when this release is unlocked</param>
+        /// <param name="questFlagInfo">Optional parameter which tracks the required WorldManageQuest/Layout flag that needs to be set</param>
+        /// <returns></returns>
+        public static QuestBlock AddResultCmdReleaseAnnounce(this QuestBlock questBlock, ContentsRelease releaseId, TutorialId tutorialId = TutorialId.None, QuestFlagInfo flagInfo = null)
         {
-            questBlock.ResultCommands.AddResultCmdReleaseAnnounce(releaseId);
+            questBlock.ContentsReleased.Add(new QuestUnlock()
+            {
+                ReleaseId = releaseId,
+                TutorialId = tutorialId,
+                FlagInfo = flagInfo
+            });
+
+            if (flagInfo != null)
+            {
+                questBlock.WorldManageUnlocks.Add(flagInfo);
+                questBlock.AddQuestFlag(QuestFlagAction.Set, flagInfo);
+            }
+
             return questBlock;
         }
 
@@ -88,6 +108,18 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
+        public static QuestBlock AddResultCmdWorldManageQuestFlagOn(this QuestBlock questBlock, uint flagNo, QuestId questId)
+        {
+            questBlock.ResultCommands.AddResultCmdWorldManageQuestFlagOn(flagNo, questId);
+            return questBlock;
+        }
+
+        public static QuestBlock AddResultCmdWorldManageQuestFlagOff(this QuestBlock questBlock, uint flagNo, QuestId questId)
+        {
+            questBlock.ResultCommands.AddResultCmdWorldManageQuestFlagOff(flagNo, questId);
+            return questBlock;
+        }
+
         public static QuestBlock AddResultCmdLotOn(this QuestBlock questBlock, StageInfo stageInfo, int lotNo)
         {
             questBlock.ResultCommands.AddResultCmdLotOn(stageInfo, lotNo);
@@ -100,7 +132,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdTutorialDialog(this QuestBlock questBlock, int guideNo)
+        public static QuestBlock AddResultCmdTutorialDialog(this QuestBlock questBlock, TutorialId guideNo)
         {
             questBlock.ResultCommands.AddResultCmdTutorialDialog(guideNo);
             return questBlock;
@@ -199,6 +231,66 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
         public static QuestBlock AddResultCmdStartTimer(this QuestBlock questBlock, int timerNo, int waitTimeInSec)
         {
             questBlock.ResultCommands.AddResultCmdStartTimer(timerNo, waitTimeInSec);
+            return questBlock;
+        }
+
+        public static QuestBlock AddResultCmdHandItem(this QuestBlock questBlock, ItemId itemId, uint amount)
+        {
+            questBlock.HandPlayerItems.Add(new QuestItem()
+            {
+                ItemId = (uint) itemId,
+                Amount = amount
+            });
+
+            questBlock.ResultCommands.AddResultCmdHandItem(itemId, amount);
+            return questBlock;
+        }
+
+        public static QuestBlock PlayCameraEvent(this QuestBlock questBlock, StageInfo stageInfo, int eventNo)
+        {
+            questBlock.ResultCommands.PlayCameraEvent(stageInfo, eventNo);
+            return questBlock;
+        }
+
+        public static QuestBlock AddResultCmdQstTalkChg(this QuestBlock questBlock, NpcId npcId, int msgNo)
+        {
+            questBlock.ResultCommands.AddResultCmdQstTalkChg(npcId, msgNo);
+            return questBlock;
+        }
+
+        public static QuestBlock AddResultCmdQstTalkDel(this QuestBlock questBlock, NpcId npcId)
+        {
+            questBlock.ResultCommands.AddResultCmdQstTalkDel(npcId);
+            return questBlock;
+        }
+
+        public static QuestBlock AddResultCmdEventExec(this QuestBlock questBlock, StageInfo stageInfo, uint eventNo, StageInfo destStageInfo, uint jumpPos)
+        {
+            questBlock.ResultCommands.AddResultCmdEventExec(stageInfo, eventNo, destStageInfo, jumpPos);
+            return questBlock;
+        }
+
+        public static QuestBlock AddResultCmdExeEventAfterStageJump(this QuestBlock questBlock, StageInfo stageInfo, uint eventNo, uint startPos)
+        {
+            questBlock.ResultCommands.AddResultCmdExeEventAfterStageJump(stageInfo, eventNo, startPos);
+            return questBlock;
+        }
+
+        public static QuestBlock AddResultCmdExeEventAfterStageJumpContinue(this QuestBlock questBlock, StageInfo stageInfo, uint eventNo, uint startPos)
+        {
+            questBlock.ResultCommands.AddResultCmdExeEventAfterStageJumpContinue(stageInfo, eventNo, startPos);
+            return questBlock;
+        }
+
+        public static QuestBlock AddResultCmdStageJump(this QuestBlock questBlock, StageInfo stageInfo, uint startPos)
+        {
+            questBlock.ResultCommands.AddResultCmdStageJump(stageInfo, startPos);
+            return questBlock;
+        }
+
+        public static QuestBlock AddResultCmdAreaJumpFadeContinue(this QuestBlock questBlock)
+        {
+            questBlock.ResultCommands.AddResultCmdAreaJumpFadeContinue();
             return questBlock;
         }
     }

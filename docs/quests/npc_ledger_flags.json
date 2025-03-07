@@ -1,0 +1,2798 @@
+{
+    "1": {
+        "npc_name": "The White Dragon",
+        "npc_id": 1,
+        "functions": [
+            {
+                "name": "Dragon Force Augmentation",
+                "flag": 658
+            },
+            {
+                "name": "Myrmidon's Pledge",
+                "flag": 787
+            },
+            {
+                "name": "Skill Augmentation",
+                "flag": 0
+            },
+            {
+                "name": "Special Skill Augmentation",
+                "flag": 3301
+            }
+        ]
+    },
+    "4": {
+        "npc_name": "Joseph",
+        "npc_id": 4,
+        "functions": [
+            {
+                "name": "Review Reports",
+                "flag": 0
+            }
+        ]
+    },
+    "10": {
+        "npc_name": "Theodor",
+        "npc_id": 10,
+        "functions": [
+            {
+                "name": "Job Training",
+                "flag": 0
+            }
+        ]
+    },
+    "11": {
+        "npc_name": "Vanessa",
+        "npc_id": 11,
+        "functions": [
+            {
+                "name": "Job Training",
+                "flag": 0
+            }
+        ]
+    },
+    "12": {
+        "npc_name": "Fabio",
+        "npc_id": 12,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            },
+            {
+                "name": "High Orb Exchange",
+                "flag": 0
+            }
+        ]
+    },
+    "503": {
+        "npc_name": "Travers",
+        "npc_id": 503,
+        "functions": [
+            {
+                "name": "Grand Mission",
+                "flag": 657
+            }
+        ]
+    },
+    "509": {
+        "npc_name": "Peddler",
+        "npc_id": 509,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "910": {
+        "npc_name": "Jonas",
+        "npc_id": 910,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1000": {
+        "npc_name": "Emilia",
+        "npc_id": 1000,
+        "functions": [
+            {
+                "name": "Party Creation",
+                "flag": 659
+            }
+        ]
+    },
+    "1001": {
+        "npc_name": "Colette",
+        "npc_id": 1001,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1002": {
+        "npc_name": "Ferguson",
+        "npc_id": 1002,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1004": {
+        "npc_name": "Morris",
+        "npc_id": 1004,
+        "functions": [
+            {
+                "name": "Beauty Shop",
+                "flag": 0
+            },
+            {
+                "name": "Reincarnation",
+                "flag": 0
+            }
+        ]
+    },
+    "1005": {
+        "npc_name": "Kittredge",
+        "npc_id": 1005,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1006": {
+        "npc_name": "Vicelot",
+        "npc_id": 1006,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1007": {
+        "npc_name": "Owen",
+        "npc_id": 1007,
+        "functions": [
+            {
+                "name": "Bazaar",
+                "flag": 0
+            }
+        ]
+    },
+    "1008": {
+        "npc_name": "Mel",
+        "npc_id": 1008,
+        "functions": [
+            {
+                "name": "Bazaar",
+                "flag": 0
+            }
+        ]
+    },
+    "1009": {
+        "npc_name": "Joanna",
+        "npc_id": 1009,
+        "functions": [
+            {
+                "name": "Bazaar",
+                "flag": 0
+            }
+        ]
+    },
+    "1010": {
+        "npc_name": "Tonio",
+        "npc_id": 1010,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1011": {
+        "npc_name": "Kibiza",
+        "npc_id": 1011,
+        "functions": [
+            {
+                "name": "Clan Management",
+                "flag": 661
+            }
+        ]
+    },
+    "1012": {
+        "npc_name": "Nancy",
+        "npc_id": 1012,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1013": {
+        "npc_name": "Seneka",
+        "npc_id": 1013,
+        "functions": [
+            {
+                "name": "Lestania News",
+                "flag": 772
+            },
+            {
+                "name": "Extreme Missions",
+                "flag": 761
+            }
+        ]
+    },
+    "1016": {
+        "npc_name": "Duke",
+        "npc_id": 1016,
+        "functions": [
+            {
+                "name": "Grand Mission",
+                "flag": 0
+            }
+        ]
+    },
+    "1017": {
+        "npc_name": "Logan",
+        "npc_id": 1017,
+        "functions": [
+            {
+                "name": "Grand Mission",
+                "flag": 657
+            },
+            {
+                "name": "Receive Reward",
+                "flag": 0
+            }
+        ]
+    },
+    "1020": {
+        "npc_name": "Hancock",
+        "npc_id": 1020,
+        "functions": [
+            {
+                "name": "Grand Mission",
+                "flag": 657
+            },
+            {
+                "name": "Receive Reward",
+                "flag": 0
+            }
+        ]
+    },
+    "1024": {
+        "npc_name": "Barton",
+        "npc_id": 1024,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "1025": {
+        "npc_name": "Cornelia",
+        "npc_id": 1025,
+        "functions": [
+            {
+                "name": "Grand Mission",
+                "flag": 657
+            },
+            {
+                "name": "Receive Reward",
+                "flag": 0
+            }
+        ]
+    },
+    "1026": {
+        "npc_name": "Sonia",
+        "npc_id": 1026,
+        "functions": [
+            {
+                "name": "Craft",
+                "flag": 662
+            }
+        ]
+    },
+    "1027": {
+        "npc_name": "Alan",
+        "npc_id": 1027,
+        "functions": [
+            {
+                "name": "Extreme Missions",
+                "flag": 0
+            }
+        ]
+    },
+    "1028": {
+        "npc_name": "Archibald",
+        "npc_id": 1028,
+        "functions": [
+            {
+                "name": "Vocation / Arts Support",
+                "flag": 663
+            }
+        ]
+    },
+    "1029": {
+        "npc_name": "Renton",
+        "npc_id": 1029,
+        "functions": [
+            {
+                "name": "Vocation Emblem",
+                "flag": 2946
+            },
+            {
+                "name": "Play Point Shop",
+                "flag": 2477
+            }
+        ]
+    },
+    "1030": {
+        "npc_name": "Cameron",
+        "npc_id": 1030,
+        "functions": [
+            {
+                "name": "Treasure Lot",
+                "flag": 0
+            },
+            {
+                "name": "Large Delivery Event",
+                "flag": 0
+            }
+        ]
+    },
+    "1032": {
+        "npc_name": "Gilliam",
+        "npc_id": 1032,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1033": {
+        "npc_name": "McCormick",
+        "npc_id": 1033,
+        "functions": [
+            {
+                "name": "Bazaar",
+                "flag": 0
+            }
+        ]
+    },
+    "1039": {
+        "npc_name": "Moana",
+        "npc_id": 1039,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1200": {
+        "npc_name": "Walter",
+        "npc_id": 1200,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1201": {
+        "npc_name": "Rosa",
+        "npc_id": 1201,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1202": {
+        "npc_name": "Harold",
+        "npc_id": 1202,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "1204": {
+        "npc_name": "Mystera",
+        "npc_id": 1204,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1205": {
+        "npc_name": "O'Neill",
+        "npc_id": 1205,
+        "functions": [
+            {
+                "name": "Area Information",
+                "flag": 660
+            },
+            {
+                "name": "Medal Exchange",
+                "flag": 0
+            }
+        ]
+    },
+    "1212": {
+        "npc_name": "Chloe",
+        "npc_id": 1212,
+        "functions": [
+            {
+                "name": "Party Creation",
+                "flag": 659
+            }
+        ]
+    },
+    "1300": {
+        "npc_name": "Loura",
+        "npc_id": 1300,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1302": {
+        "npc_name": "Federico",
+        "npc_id": 1302,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "1303": {
+        "npc_name": "Eterna",
+        "npc_id": 1303,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1308": {
+        "npc_name": "Nikki",
+        "npc_id": 1308,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1310": {
+        "npc_name": "Nathaniel",
+        "npc_id": 1310,
+        "functions": [
+            {
+                "name": "Party Creation",
+                "flag": 659
+            }
+        ]
+    },
+    "1400": {
+        "npc_name": "Miranda",
+        "npc_id": 1400,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1401": {
+        "npc_name": "Yanks",
+        "npc_id": 1401,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1402": {
+        "npc_name": "Barclay",
+        "npc_id": 1402,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "1411": {
+        "npc_name": "Alma",
+        "npc_id": 1411,
+        "functions": [
+            {
+                "name": "Party Creation",
+                "flag": 659
+            }
+        ]
+    },
+    "1500": {
+        "npc_name": "Gray",
+        "npc_id": 1500,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "1501": {
+        "npc_name": "Flavell",
+        "npc_id": 1501,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1506": {
+        "npc_name": "Toby",
+        "npc_id": 1506,
+        "functions": [
+            {
+                "name": "Party Creation",
+                "flag": 659
+            }
+        ]
+    },
+    "1600": {
+        "npc_name": "Dorothea",
+        "npc_id": 1600,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1601": {
+        "npc_name": "Raul",
+        "npc_id": 1601,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1602": {
+        "npc_name": "Chunk",
+        "npc_id": 1602,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1603": {
+        "npc_name": "Livian",
+        "npc_id": 1603,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "1604": {
+        "npc_name": "Roy",
+        "npc_id": 1604,
+        "functions": [
+            {
+                "name": "Area Information",
+                "flag": 660
+            },
+            {
+                "name": "Medal Exchange",
+                "flag": 0
+            }
+        ]
+    },
+    "1607": {
+        "npc_name": "Eugene",
+        "npc_id": 1607,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1610": {
+        "npc_name": "Serea",
+        "npc_id": 1610,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1615": {
+        "npc_name": "Giselle",
+        "npc_id": 1615,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1616": {
+        "npc_name": "Shalom",
+        "npc_id": 1616,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1620": {
+        "npc_name": "Neia",
+        "npc_id": 1620,
+        "functions": [
+            {
+                "name": "Party Creation",
+                "flag": 659
+            }
+        ]
+    },
+    "1700": {
+        "npc_name": "Emporio",
+        "npc_id": 1700,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "1701": {
+        "npc_name": "Sunny",
+        "npc_id": 1701,
+        "functions": [
+            {
+                "name": "Area Information",
+                "flag": 660
+            },
+            {
+                "name": "Medal Exchange",
+                "flag": 0
+            }
+        ]
+    },
+    "1702": {
+        "npc_name": "Brandon",
+        "npc_id": 1702,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1706": {
+        "npc_name": "Rocher",
+        "npc_id": 1706,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1708": {
+        "npc_name": "Augusto",
+        "npc_id": 1708,
+        "functions": [
+            {
+                "name": "Party Creation",
+                "flag": 659
+            }
+        ]
+    },
+    "1800": {
+        "npc_name": "Oswald",
+        "npc_id": 1800,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1801": {
+        "npc_name": "Casey",
+        "npc_id": 1801,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1803": {
+        "npc_name": "Poe",
+        "npc_id": 1803,
+        "functions": [
+            {
+                "name": "Arts Support",
+                "flag": 663
+            },
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "1807": {
+        "npc_name": "Rick",
+        "npc_id": 1807,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1809": {
+        "npc_name": "Oliver",
+        "npc_id": 1809,
+        "functions": [
+            {
+                "name": "Job Training",
+                "flag": 0
+            }
+        ]
+    },
+    "1810": {
+        "npc_name": "Sheryn",
+        "npc_id": 1810,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1811": {
+        "npc_name": "Nadia",
+        "npc_id": 1811,
+        "functions": [
+            {
+                "name": "Area Information",
+                "flag": 660
+            },
+            {
+                "name": "Medal Exchange",
+                "flag": 0
+            }
+        ]
+    },
+    "1813": {
+        "npc_name": "Majori",
+        "npc_id": 1813,
+        "functions": [
+            {
+                "name": "Party Creation",
+                "flag": 659
+            }
+        ]
+    },
+    "1900": {
+        "npc_name": "Cyrus",
+        "npc_id": 1900,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1901": {
+        "npc_name": "Talcott",
+        "npc_id": 1901,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "1905": {
+        "npc_name": "Scherzo",
+        "npc_id": 1905,
+        "functions": [
+            {
+                "name": "Area Information",
+                "flag": 660
+            },
+            {
+                "name": "Medal Exchange",
+                "flag": 0
+            }
+        ]
+    },
+    "2000": {
+        "npc_name": "Gilstan",
+        "npc_id": 2000,
+        "functions": [
+            {
+                "name": "Orb Exchange: Rare Items / Materials",
+                "flag": 658
+            }
+        ]
+    },
+    "2001": {
+        "npc_name": "Ugau",
+        "npc_id": 2001,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "2100": {
+        "npc_name": "Nicola",
+        "npc_id": 2100,
+        "functions": [
+            {
+                "name": "Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "2101": {
+        "npc_name": "Deredo",
+        "npc_id": 2101,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "2102": {
+        "npc_name": "Alvar",
+        "npc_id": 2102,
+        "functions": [
+            {
+                "name": "Orb Exchange: Crests",
+                "flag": 658
+            }
+        ]
+    },
+    "2107": {
+        "npc_name": "Camus",
+        "npc_id": 2107,
+        "functions": [
+            {
+                "name": "Job Training",
+                "flag": 0
+            }
+        ]
+    },
+    "2108": {
+        "npc_name": "Julienne",
+        "npc_id": 2108,
+        "functions": [
+            {
+                "name": "Party Creation",
+                "flag": 659
+            }
+        ]
+    },
+    "2300": {
+        "npc_name": "Actaeon",
+        "npc_id": 2300,
+        "functions": [
+            {
+                "name": "Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "2301": {
+        "npc_name": "Beatrix",
+        "npc_id": 2301,
+        "functions": [
+            {
+                "name": "Area Information",
+                "flag": 660
+            },
+            {
+                "name": "Medal Exchange",
+                "flag": 0
+            }
+        ]
+    },
+    "2303": {
+        "npc_name": "Ariadne",
+        "npc_id": 2303,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "2304": {
+        "npc_name": "Metrophanes",
+        "npc_id": 2304,
+        "functions": [
+            {
+                "name": "Party Creation",
+                "flag": 659
+            }
+        ]
+    },
+    "4500": {
+        "npc_name": "Rudolfo",
+        "npc_id": 4500,
+        "functions": [
+            {
+                "name": "Job Training",
+                "flag": 0
+            }
+        ]
+    },
+    "4501": {
+        "npc_name": "Emerada",
+        "npc_id": 4501,
+        "functions": [
+            {
+                "name": "Job Training",
+                "flag": 0
+            }
+        ]
+    },
+    "4502": {
+        "npc_name": "Ringdeel",
+        "npc_id": 4502,
+        "functions": [
+            {
+                "name": "Job Training",
+                "flag": 0
+            },
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "4503": {
+        "npc_name": "Ivan",
+        "npc_id": 4503,
+        "functions": [
+            {
+                "name": "Job Training",
+                "flag": 0
+            },
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "4505": {
+        "npc_name": "Chester",
+        "npc_id": 4505,
+        "functions": [
+            {
+                "name": "Job Training",
+                "flag": 0
+            }
+        ]
+    },
+    "4506": {
+        "npc_name": "Christine",
+        "npc_id": 4506,
+        "functions": [
+            {
+                "name": "Area Information",
+                "flag": 660
+            },
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            },
+            {
+                "name": "Medal Exchange",
+                "flag": 0
+            }
+        ]
+    },
+    "4507": {
+        "npc_name": "Dian",
+        "npc_id": 4507,
+        "functions": [
+            {
+                "name": "Area Information",
+                "flag": 660
+            },
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            },
+            {
+                "name": "Medal Exchange",
+                "flag": 0
+            }
+        ]
+    },
+    "1313": {
+        "npc_name": "Alfred",
+        "npc_id": 1313,
+        "functions": [
+            {
+                "name": "Area Information",
+                "flag": 0
+            },
+            {
+                "name": "Medal Exchange",
+                "flag": 0
+            }
+        ]
+    },
+    "1412": {
+        "npc_name": "Patricia",
+        "npc_id": 1412,
+        "functions": [
+            {
+                "name": "Area Information",
+                "flag": 660
+            },
+            {
+                "name": "Medal Exchange",
+                "flag": 0
+            }
+        ]
+    },
+    "1508": {
+        "npc_name": "Hayden",
+        "npc_id": 1508,
+        "functions": [
+            {
+                "name": "Area Information",
+                "flag": 660
+            },
+            {
+                "name": "Medal Exchange",
+                "flag": 0
+            }
+        ]
+    },
+    "4508": {
+        "npc_name": "Rondejeel",
+        "npc_id": 4508,
+        "functions": [
+            {
+                "name": "Area Information",
+                "flag": 660
+            },
+            {
+                "name": "Shop",
+                "flag": 0
+            },
+            {
+                "name": "Medal Exchange",
+                "flag": 0
+            }
+        ]
+    },
+    "1041": {
+        "npc_name": "Ellen",
+        "npc_id": 1041,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "4702": {
+        "npc_name": "Ophelia",
+        "npc_id": 4702,
+        "functions": [
+            {
+                "name": "Recovering Revivals",
+                "flag": 0
+            },
+            {
+                "name": "Login Stamp",
+                "flag": 0
+            },
+            {
+                "name": "Adventure Pass Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "4706": {
+        "npc_name": "Gregory",
+        "npc_id": 4706,
+        "functions": [
+            {
+                "name": "Appraisal Exchange",
+                "flag": 0
+            }
+        ]
+    },
+    "4705": {
+        "npc_name": "Carl",
+        "npc_id": 4705,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "4709": {
+        "npc_name": "Sally",
+        "npc_id": 4709,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "4726": {
+        "npc_name": "Julia",
+        "npc_id": 4726,
+        "functions": [
+            {
+                "name": "Achievements",
+                "flag": 1491
+            }
+        ]
+    },
+    "4728": {
+        "npc_name": "Charles",
+        "npc_id": 4728,
+        "functions": [
+            {
+                "name": "Warfare Practice",
+                "flag": 0
+            }
+        ]
+    },
+    "1621": {
+        "npc_name": "Lucy",
+        "npc_id": 1621,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1622": {
+        "npc_name": "Isap",
+        "npc_id": 1622,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "9011": {
+        "npc_name": "Second Pawn",
+        "npc_id": 9011,
+        "functions": [
+            {
+                "name": "Receiving Contract Rewards",
+                "flag": 765
+            }
+        ]
+    },
+    "548": {
+        "npc_name": "Lyka",
+        "npc_id": 548,
+        "functions": [
+            {
+                "name": "Rare Item Appraisal",
+                "flag": 0
+            }
+        ]
+    },
+    "549": {
+        "npc_name": "Bertrand",
+        "npc_id": 549,
+        "functions": [
+            {
+                "name": "Area Information",
+                "flag": 1479
+            },
+            {
+                "name": "Medal Exchange",
+                "flag": 0
+            }
+        ]
+    },
+    "550": {
+        "npc_name": "Isaac",
+        "npc_id": 550,
+        "functions": [
+            {
+                "name": "Extreme Missions",
+                "flag": 1524
+            },
+            {
+                "name": "Adventure Guide",
+                "flag": 0
+            },
+            {
+                "name": "Appraisal Exchange",
+                "flag": 5403
+            }
+        ]
+    },
+    "559": {
+        "npc_name": "Dirith",
+        "npc_id": 559,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            },
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "1043": {
+        "npc_name": "Sebastian",
+        "npc_id": 1043,
+        "functions": [
+            {
+                "name": "Clan Hall Management",
+                "flag": 0
+            }
+        ]
+    },
+    "1044": {
+        "npc_name": "Mary",
+        "npc_id": 1044,
+        "functions": [
+            {
+                "name": "Clan Hall Management",
+                "flag": 0
+            }
+        ]
+    },
+    "1045": {
+        "npc_name": "Paris Hart",
+        "npc_id": 1045,
+        "functions": [
+            {
+                "name": "Clan Dungeons",
+                "flag": 0
+            }
+        ]
+    },
+    "1046": {
+        "npc_name": "Lluvia",
+        "npc_id": 1046,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Vocation / Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "2400": {
+        "npc_name": "Clarissa",
+        "npc_id": 2400,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "2401": {
+        "npc_name": "Gunther",
+        "npc_id": 2401,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "2402": {
+        "npc_name": "Rolf",
+        "npc_id": 2402,
+        "functions": [
+            {
+                "name": "Party Creation",
+                "flag": 0
+            }
+        ]
+    },
+    "2501": {
+        "npc_name": "Razanailt",
+        "npc_id": 2501,
+        "functions": [
+            {
+                "name": "Area Information",
+                "flag": 1711
+            },
+            {
+                "name": "Medal Exchange",
+                "flag": 0
+            }
+        ]
+    },
+    "2502": {
+        "npc_name": "Audran",
+        "npc_id": 2502,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Vocation / Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "2503": {
+        "npc_name": "Evey",
+        "npc_id": 2503,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "2504": {
+        "npc_name": "Flannan",
+        "npc_id": 2504,
+        "functions": [
+            {
+                "name": "Orb Exchange: Crests",
+                "flag": 0
+            }
+        ]
+    },
+    "2505": {
+        "npc_name": "Lewela",
+        "npc_id": 2505,
+        "functions": [
+            {
+                "name": "Party Creation",
+                "flag": 0
+            }
+        ]
+    },
+    "2600": {
+        "npc_name": "Arthfael",
+        "npc_id": 2600,
+        "functions": [
+            {
+                "name": "Area Information",
+                "flag": 1710
+            },
+            {
+                "name": "Medal Exchange",
+                "flag": 0
+            }
+        ]
+    },
+    "2601": {
+        "npc_name": "Dingus",
+        "npc_id": 2601,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "2602": {
+        "npc_name": "Milan",
+        "npc_id": 2602,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "2603": {
+        "npc_name": "Suronya",
+        "npc_id": 2603,
+        "functions": [
+            {
+                "name": "Party Creation",
+                "flag": 0
+            }
+        ]
+    },
+    "2700": {
+        "npc_name": "Ciar\u00e1n",
+        "npc_id": 2700,
+        "functions": [
+            {
+                "name": "Area Information",
+                "flag": 1712
+            },
+            {
+                "name": "Medal Exchange",
+                "flag": 0
+            }
+        ]
+    },
+    "2701": {
+        "npc_name": "Maeve",
+        "npc_id": 2701,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "2702": {
+        "npc_name": "Conan",
+        "npc_id": 2702,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "2703": {
+        "npc_name": "Shena",
+        "npc_id": 2703,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "2704": {
+        "npc_name": "Nave",
+        "npc_id": 2704,
+        "functions": [
+            {
+                "name": "Party Creation",
+                "flag": 0
+            }
+        ]
+    },
+    "2620": {
+        "npc_name": "Doherty",
+        "npc_id": 2620,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "2621": {
+        "npc_name": "Maia",
+        "npc_id": 2621,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "2622": {
+        "npc_name": "Terg",
+        "npc_id": 2622,
+        "functions": [
+            {
+                "name": "Party Creation",
+                "flag": 0
+            }
+        ]
+    },
+    "2550": {
+        "npc_name": "Gas",
+        "npc_id": 2550,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "2552": {
+        "npc_name": "Vora",
+        "npc_id": 2552,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "2750": {
+        "npc_name": "Gwenhwyfar",
+        "npc_id": 2750,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "2751": {
+        "npc_name": "Gilroy",
+        "npc_id": 2751,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "2752": {
+        "npc_name": "Oona",
+        "npc_id": 2752,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "2755": {
+        "npc_name": "Daren",
+        "npc_id": 2755,
+        "functions": [
+            {
+                "name": "Party Creation",
+                "flag": 0
+            }
+        ]
+    },
+    "4509": {
+        "npc_name": "Musel",
+        "npc_id": 4509,
+        "functions": [
+            {
+                "name": "Area Information",
+                "flag": 1709
+            },
+            {
+                "name": "Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Medal Exchange",
+                "flag": 0
+            }
+        ]
+    },
+    "4510": {
+        "npc_name": "Adair Donnchadh",
+        "npc_id": 4510,
+        "functions": [
+            {
+                "name": "Job Training",
+                "flag": 0
+            }
+        ]
+    },
+    "4757": {
+        "npc_name": "Diadora",
+        "npc_id": 4757,
+        "functions": [
+            {
+                "name": "Recovering Revivals",
+                "flag": 0
+            }
+        ]
+    },
+    "7150": {
+        "npc_name": "Home Pawn 2",
+        "npc_id": 7150,
+        "functions": [
+            {
+                "name": "Pawn Expeditions",
+                "flag": 0
+            },
+            {
+                "name": "Confirm Expedition Results",
+                "flag": 0
+            }
+        ]
+    },
+    "2512": {
+        "npc_name": "Riagan",
+        "npc_id": 2512,
+        "functions": [
+            {
+                "name": "Grand Mission",
+                "flag": 0
+            }
+        ]
+    },
+    "2513": {
+        "npc_name": "Deleen",
+        "npc_id": 2513,
+        "functions": [
+            {
+                "name": "Grand Mission",
+                "flag": 0
+            },
+            {
+                "name": "Receive Reward",
+                "flag": 0
+            }
+        ]
+    },
+    "4512": {
+        "npc_name": "Bacias",
+        "npc_id": 4512,
+        "functions": [
+            {
+                "name": "Area Information",
+                "flag": 4940
+            },
+            {
+                "name": "Emblem Medal Exchange",
+                "flag": 0
+            }
+        ]
+    },
+    "2800": {
+        "npc_name": "Endale",
+        "npc_id": 2800,
+        "functions": [
+            {
+                "name": "Extreme Missions",
+                "flag": 2922
+            },
+            {
+                "name": "Area Information",
+                "flag": 3240
+            },
+            {
+                "name": "Emblem Medal Exchange",
+                "flag": 0
+            },
+            {
+                "name": "Achievements: Royal Family Restoration",
+                "flag": 3774
+            }
+        ]
+    },
+    "2801": {
+        "npc_name": "Bruno",
+        "npc_id": 2801,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            },
+            {
+                "name": "Arts Support",
+                "flag": 0
+            }
+        ]
+    },
+    "2802": {
+        "npc_name": "Andrea",
+        "npc_id": 2802,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "2850": {
+        "npc_name": "Felix",
+        "npc_id": 2850,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Vocation / Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "2851": {
+        "npc_name": "Emil",
+        "npc_id": 2851,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "2852": {
+        "npc_name": "Iruva",
+        "npc_id": 2852,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "2853": {
+        "npc_name": "Aslan",
+        "npc_id": 2853,
+        "functions": [
+            {
+                "name": "Party Creation",
+                "flag": 0
+            }
+        ]
+    },
+    "2901": {
+        "npc_name": "Laura",
+        "npc_id": 2901,
+        "functions": [
+            {
+                "name": "Arts Support",
+                "flag": 0
+            }
+        ]
+    },
+    "2902": {
+        "npc_name": "Ingrid",
+        "npc_id": 2902,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "2903": {
+        "npc_name": "Elsen",
+        "npc_id": 2903,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "2904": {
+        "npc_name": "Ozgur",
+        "npc_id": 2904,
+        "functions": [
+            {
+                "name": "Party Creation",
+                "flag": 0
+            }
+        ]
+    },
+    "2905": {
+        "npc_name": "Miriam",
+        "npc_id": 2905,
+        "functions": [
+            {
+                "name": "Orb Exchange: Crests",
+                "flag": 0
+            }
+        ]
+    },
+    "2953": {
+        "npc_name": "Joaquim",
+        "npc_id": 2953,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            },
+            {
+                "name": "Arts Support",
+                "flag": 0
+            }
+        ]
+    },
+    "2954": {
+        "npc_name": "Gerald",
+        "npc_id": 2954,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "3050": {
+        "npc_name": "Nayajiku",
+        "npc_id": 3050,
+        "functions": [
+            {
+                "name": "Extreme Missions",
+                "flag": 2923
+            },
+            {
+                "name": "Area Information",
+                "flag": 3241
+            },
+            {
+                "name": "Emblem Medal Exchange",
+                "flag": 0
+            },
+            {
+                "name": "Achievements: Royal Family Restoration",
+                "flag": 4263
+            }
+        ]
+    },
+    "3053": {
+        "npc_name": "Shekel",
+        "npc_id": 3053,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            },
+            {
+                "name": "Arts Support",
+                "flag": 0
+            }
+        ]
+    },
+    "3054": {
+        "npc_name": "Khalil",
+        "npc_id": 3054,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "3055": {
+        "npc_name": "Artin",
+        "npc_id": 3055,
+        "functions": [
+            {
+                "name": "Party Creation",
+                "flag": 0
+            }
+        ]
+    },
+    "3100": {
+        "npc_name": "Mertem",
+        "npc_id": 3100,
+        "functions": [
+            {
+                "name": "Arts Support",
+                "flag": 0
+            }
+        ]
+    },
+    "3101": {
+        "npc_name": "Thea",
+        "npc_id": 3101,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "3102": {
+        "npc_name": "Marcus",
+        "npc_id": 3102,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "3103": {
+        "npc_name": "Isetto",
+        "npc_id": 3103,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "3105": {
+        "npc_name": "Byram",
+        "npc_id": 3105,
+        "functions": [
+            {
+                "name": "Party Creation",
+                "flag": 0
+            }
+        ]
+    },
+    "3200": {
+        "npc_name": "Doris",
+        "npc_id": 3200,
+        "functions": [
+            {
+                "name": "Extreme Missions",
+                "flag": 4410
+            },
+            {
+                "name": "Area Information",
+                "flag": 4408
+            },
+            {
+                "name": "Emblem Medal Exchange",
+                "flag": 0
+            },
+            {
+                "name": "Achievements: Royal Family Restoration",
+                "flag": 4407
+            }
+        ]
+    },
+    "3201": {
+        "npc_name": "Lucas",
+        "npc_id": 3201,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            },
+            {
+                "name": "Arts Support",
+                "flag": 0
+            }
+        ]
+    },
+    "3202": {
+        "npc_name": "Yumit",
+        "npc_id": 3202,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "3250": {
+        "npc_name": "Axel",
+        "npc_id": 3250,
+        "functions": [
+            {
+                "name": "Vocation / Arts Support",
+                "flag": 0
+            }
+        ]
+    },
+    "3251": {
+        "npc_name": "Ginette",
+        "npc_id": 3251,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "3252": {
+        "npc_name": "Shem",
+        "npc_id": 3252,
+        "functions": [
+            {
+                "name": "Party Creation",
+                "flag": 0
+            }
+        ]
+    },
+    "3253": {
+        "npc_name": "Jemir",
+        "npc_id": 3253,
+        "functions": [
+            {
+                "name": "Bazaar",
+                "flag": 0
+            }
+        ]
+    },
+    "3254": {
+        "npc_name": "Evren",
+        "npc_id": 3254,
+        "functions": [
+            {
+                "name": "Craft",
+                "flag": 0
+            }
+        ]
+    },
+    "3264": {
+        "npc_name": "Karen",
+        "npc_id": 3264,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "4513": {
+        "npc_name": "Kirsty",
+        "npc_id": 4513,
+        "functions": [
+            {
+                "name": "Job Training",
+                "flag": 0
+            }
+        ]
+    },
+    "4767": {
+        "npc_name": "Walt",
+        "npc_id": 4767,
+        "functions": [
+            {
+                "name": "War Missions",
+                "flag": 0
+            },
+            {
+                "name": "Dominion Point Shop",
+                "flag": 0
+            },
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "4768": {
+        "npc_name": "Paula",
+        "npc_id": 4768,
+        "functions": [
+            {
+                "name": "Arts Support",
+                "flag": 0
+            }
+        ]
+    },
+    "4769": {
+        "npc_name": "Ashton",
+        "npc_id": 4769,
+        "functions": [
+            {
+                "name": "War Missions",
+                "flag": 0
+            },
+            {
+                "name": "Dominion Point Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "4774": {
+        "npc_name": "Eden",
+        "npc_id": 4774,
+        "functions": [
+            {
+                "name": "Arts Support",
+                "flag": 0
+            }
+        ]
+    },
+    "4775": {
+        "npc_name": "Erudoan",
+        "npc_id": 4775,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "4776": {
+        "npc_name": "Meryem",
+        "npc_id": 4776,
+        "functions": [
+            {
+                "name": "Bazaar",
+                "flag": 0
+            }
+        ]
+    },
+    "4777": {
+        "npc_name": "Burj",
+        "npc_id": 4777,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "581": {
+        "npc_name": "Peco",
+        "npc_id": 581,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "2883": {
+        "npc_name": "Lucinda",
+        "npc_id": 2883,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "2892": {
+        "npc_name": "Sean",
+        "npc_id": 2892,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "673": {
+        "npc_name": "Flower-chan",
+        "npc_id": 673,
+        "functions": [
+            {
+                "name": "Clan Hall Management",
+                "flag": 0
+            }
+        ]
+    },
+    "1047": {
+        "npc_name": "Craig",
+        "npc_id": 1047,
+        "functions": [
+            {
+                "name": "Custom-made Arms",
+                "flag": 3592
+            },
+            {
+                "name": "Equipment Disassembly",
+                "flag": 3592
+            },
+            {
+                "name": "Synthesis of Dragon Abilities",
+                "flag": 5274
+            },
+            {
+                "name": "Dragon Armor Appraisal",
+                "flag": 5380
+            }
+        ]
+    },
+    "674": {
+        "npc_name": "Chief Mandragora",
+        "npc_id": 674,
+        "functions": [
+            {
+                "name": "Clan Hall Management",
+                "flag": 0
+            }
+        ]
+    },
+    "4966": {
+        "npc_name": "Cameron",
+        "npc_id": 4966,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "4979": {
+        "npc_name": "Gregory",
+        "npc_id": 4979,
+        "functions": [
+            {
+                "name": "Appraisal Exchange",
+                "flag": 0
+            }
+        ]
+    },
+    "1048": {
+        "npc_name": "Lisa",
+        "npc_id": 1048,
+        "functions": [
+            {
+                "name": "Wild Hunt",
+                "flag": 0
+            },
+            {
+                "name": "Outing Support Service",
+                "flag": 0
+            },
+            {
+                "name": "Reward Missions",
+                "flag": 0
+            },
+            {
+                "name": "Reward Medal Exchange",
+                "flag": 0
+            }
+        ]
+    },
+    "3300": {
+        "npc_name": "Randolf",
+        "npc_id": 3300,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "3301": {
+        "npc_name": "Zef",
+        "npc_id": 3301,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "3302": {
+        "npc_name": "Balsh",
+        "npc_id": 3302,
+        "functions": [
+            {
+                "name": "Party Creation",
+                "flag": 0
+            }
+        ]
+    },
+    "3350": {
+        "npc_name": "Cory",
+        "npc_id": 3350,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "3351": {
+        "npc_name": "Sema",
+        "npc_id": 3351,
+        "functions": [
+            {
+                "name": "Party Creation",
+                "flag": 0
+            }
+        ]
+    },
+    "3352": {
+        "npc_name": "Youssef",
+        "npc_id": 3352,
+        "functions": [
+            {
+                "name": "Inn",
+                "flag": 0
+            },
+            {
+                "name": "Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Treat Weakness",
+                "flag": 0
+            }
+        ]
+    },
+    "3270": {
+        "npc_name": "Serine",
+        "npc_id": 3270,
+        "functions": [
+            {
+                "name": "Beauty Shop",
+                "flag": 0
+            },
+            {
+                "name": "Reincarnation",
+                "flag": 0
+            }
+        ]
+    },
+    "3271": {
+        "npc_name": "Timel",
+        "npc_id": 3271,
+        "functions": [
+            {
+                "name": "Appraisal Exchange",
+                "flag": 0
+            }
+        ]
+    },
+    "3272": {
+        "npc_name": "Scylla",
+        "npc_id": 3272,
+        "functions": [
+            {
+                "name": "Recovering Revivals",
+                "flag": 0
+            },
+            {
+                "name": "Login Stamp",
+                "flag": 0
+            },
+            {
+                "name": "Adventure Pass Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "3273": {
+        "npc_name": "Ilmaz",
+        "npc_id": 3273,
+        "functions": [
+            {
+                "name": "Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "704": {
+        "npc_name": "Abbas",
+        "npc_id": 704,
+        "functions": [
+            {
+                "name": "War Missions",
+                "flag": 0
+            },
+            {
+                "name": "Dominion Point Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "705": {
+        "npc_name": "Zachary",
+        "npc_id": 705,
+        "functions": [
+            {
+                "name": "War Missions",
+                "flag": 0
+            },
+            {
+                "name": "Dominion Point Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "3274": {
+        "npc_name": "Suleiman",
+        "npc_id": 3274,
+        "functions": [
+            {
+                "name": "Custom-made Arms",
+                "flag": 0
+            },
+            {
+                "name": "Equipment Disassembly",
+                "flag": 0
+            },
+            {
+                "name": "Dragon Armor Appraisal",
+                "flag": 5380
+            },
+            {
+                "name": "Synthesis of Dragon Abilities",
+                "flag": 5274
+            }
+        ]
+    },
+    "708": {
+        "npc_name": "Jared",
+        "npc_id": 708,
+        "functions": [
+            {
+                "name": "Arts Support",
+                "flag": 0
+            }
+        ]
+    },
+    "710": {
+        "npc_name": "Raymond",
+        "npc_id": 710,
+        "functions": [
+            {
+                "name": "War Missions",
+                "flag": 0
+            },
+            {
+                "name": "Dominion Point Shop",
+                "flag": 0
+            }
+        ]
+    },
+    "715": {
+        "npc_name": "Lyka",
+        "npc_id": 715,
+        "functions": [
+            {
+                "name": "Vocation / Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Bitterblack Equipment Effect Seal",
+                "flag": 0
+            },
+            {
+                "name": "Bitterblack Shop",
+                "flag": 0
+            },
+            {
+                "name": "Rare Item Appraisal",
+                "flag": 0
+            },
+            {
+                "name": "Bitterblack Item Takeaway",
+                "flag": 0
+            },
+            {
+                "name": "Report Search Results",
+                "flag": 0
+            },
+            {
+                "name": "Recovering Revivals",
+                "flag": 0
+            },
+            {
+                "name": "Reset Progress",
+                "flag": 0
+            }
+        ]
+    },
+    "716": {
+        "npc_name": "Lyka",
+        "npc_id": 716,
+        "functions": [
+            {
+                "name": "Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Bitterblack Equipment Effect Seal",
+                "flag": 0
+            },
+            {
+                "name": "Bitterblack Shop",
+                "flag": 0
+            },
+            {
+                "name": "Rare Item Appraisal",
+                "flag": 0
+            }
+        ]
+    },
+    "717": {
+        "npc_name": "Lucien",
+        "npc_id": 717,
+        "functions": [
+            {
+                "name": "Vocation / Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Bitterblack Equipment Effect Seal",
+                "flag": 0
+            },
+            {
+                "name": "Bitterblack Shop",
+                "flag": 0
+            },
+            {
+                "name": "Rare Item Appraisal",
+                "flag": 0
+            },
+            {
+                "name": "Bitterblack Item Takeaway",
+                "flag": 0
+            },
+            {
+                "name": "Report Search Results",
+                "flag": 0
+            },
+            {
+                "name": "Recovering Revivals",
+                "flag": 0
+            },
+            {
+                "name": "Reset Progress",
+                "flag": 0
+            }
+        ]
+    },
+    "718": {
+        "npc_name": "Travers",
+        "npc_id": 718,
+        "functions": [
+            {
+                "name": "Extreme Missions",
+                "flag": 0
+            }
+        ]
+    },
+    "719": {
+        "npc_name": "Lucien",
+        "npc_id": 719,
+        "functions": [
+            {
+                "name": "Arts Support",
+                "flag": 0
+            },
+            {
+                "name": "Bitterblack Equipment Effect Seal",
+                "flag": 0
+            },
+            {
+                "name": "Bitterblack Shop",
+                "flag": 0
+            },
+            {
+                "name": "Rare Item Appraisal",
+                "flag": 0
+            }
+        ]
+    }
+}

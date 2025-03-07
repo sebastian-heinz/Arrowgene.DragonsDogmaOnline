@@ -11,6 +11,7 @@
         "id": 139
     },
     "area_id": "ZandoraWastelands",
+    "adventure_guide_category": "AreaTrialOrMission",
     "order_conditions": [
         {
             "type": "AreaRank",

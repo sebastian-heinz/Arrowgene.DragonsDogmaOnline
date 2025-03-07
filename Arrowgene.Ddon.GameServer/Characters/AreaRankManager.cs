@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.GameServer.Quests;
+using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -6,6 +7,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -69,7 +71,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return 0;
             }
             
-            var nextRank = requirements.Find(x => x.Rank == rank+1);
+            var nextRank = requirements.Find(x => x.Rank == rank + 1);
             return nextRank.MinPoint;
         }
 
@@ -192,7 +194,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return GetEffectiveRank(character, stageInfo.AreaId);
         }
 
-        public uint GetAreaPointReward(Quest quest)
+        public static uint GetAreaPointReward(Quest quest)
         {
             uint amount;
             QuestAreaId areaId = quest.QuestAreaId;
@@ -301,6 +303,28 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             var completedQuests = client.Character.CompletedQuests;
             if (spot.UnlockQuest != 0 && !completedQuests.ContainsKey((QuestId)spot.UnlockQuest))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        public bool PlayerCanParticipateInTrial(GameClient client, Quest quest)
+        {
+            if (quest.AdventureGuideCategory != QuestAdventureGuideCategory.AreaTrialOrMission)
+            {
+                return false;
+            }
+
+            var plAreaRank = GetEffectiveRank(client.Character, quest.QuestAreaId);
+            if (plAreaRank == 0)
+            {
+                return false;
+            }
+
+            var areaTrialRanks = QuestManager.GetAreaTrialRankings(quest.QuestAreaId);
+            if (!areaTrialRanks.ContainsKey(quest.QuestScheduleId) || areaTrialRanks[quest.QuestScheduleId] > plAreaRank)
             {
                 return false;
             }

@@ -63,7 +63,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             client.Send(new S2CItemUpdateCharacterItemNtc()
             {
-                UpdateType = (ushort) ItemNoticeType.Default,
+                UpdateType = ItemNoticeType.QuestDelivery,
                 UpdateItemList = itemUpdateResults
             });
 

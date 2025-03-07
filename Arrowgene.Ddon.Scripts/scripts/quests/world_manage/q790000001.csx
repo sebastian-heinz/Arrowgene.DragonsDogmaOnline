@@ -34,7 +34,7 @@ public class ScriptedQuest : IQuest
             process.AddRawBlock(QuestAnnounceType.None)
                 .AddCheckCmdIsEnemyFound(stageInfo, groupId, -1, false)
                 .AddCheckCmdCheckAreaRank(spot.AreaId, spot.RequiredAreaRank)
-                .AddCheckCmdStageNo(stageInfo);
+                .AddCheckCmdIsStageNo(stageInfo, false);
             process.AddRawBlock(QuestAnnounceType.Caution)
                 .AddCheckCmdIsResetInstanceArea();
             process.AddReturnCheckPointBlock(process.ProcessNo, 1);

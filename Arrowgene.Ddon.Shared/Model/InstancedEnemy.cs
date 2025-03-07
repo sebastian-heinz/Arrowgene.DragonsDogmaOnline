@@ -197,15 +197,17 @@ namespace Arrowgene.Ddon.Shared.Model
             return this;
         }
 
-        public InstancedEnemy SetBloodOrbs(uint bloodOrbs)
+        public InstancedEnemy SetBloodOrbs(uint bloodOrbs, bool isBoEnemy = false)
         {
             BloodOrbs = bloodOrbs;
+            IsBloodOrbEnemy = isBoEnemy;
             return this;
         }
 
-        public InstancedEnemy SetHighOrbs(uint highOrbs)
+        public InstancedEnemy SetHighOrbs(uint highOrbs, bool isHoEnemy = false)
         {
             HighOrbs = highOrbs;
+            IsHighOrbEnemy = isHoEnemy;
             return this;
         }
 

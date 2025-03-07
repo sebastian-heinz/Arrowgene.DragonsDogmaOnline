@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Shared.Asset;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
@@ -24,6 +25,9 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
             QuestLayoutSetInfoSetList = new List<QuestLayoutFlagSetInfo>();
             OrderConditions = new List<QuestOrderCondition>();
             ServerActions = new List<QuestServerAction>();
+            ContentsReleased = new HashSet<QuestUnlock>();
+            WorldManageUnlocks = new Dictionary<QuestId, List<QuestFlagInfo>>();
+            QuestProgressWork = new List<QuestProgressWork>();
 
             if (OverrideEnemySpawn == null)
             {
@@ -34,6 +38,14 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
             {
                 EnableCancel = (QuestType != QuestType.Tutorial && QuestType != QuestType.Main);
             }
+
+            if (QuestType == QuestType.WildHunt && QuestOrderBackgroundImage == 0)
+            {
+                throw new Exception("Quests of the type 'Wild Hunt' require a background image defined");
+            }
+
+            AdventureGuideCategory ??= QuestUtils.DetermineQuestAdventureCategory(QuestId, QuestType);
+            IsImportant ??= QuestUtils.DetermineIfQuestIsImportant(AdventureGuideCategory.Value);
         }
 
         public string Path { get; set; }
@@ -45,7 +57,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
         public virtual QuestAreaId QuestAreaId { get; } = QuestAreaId.None;
         public QuestSource QuestSource { get; } = QuestSource.Script;
         public virtual bool Enabled { get; } = true;
-        public virtual uint QuestOrderBackgroundImage { get; }
+        public virtual uint QuestOrderBackgroundImage { get; } = 0;
         public virtual StageInfo StageInfo { get; } = Stage.Invalid;
         public virtual uint NewsImageId { get; } = 0;
         public abstract ushort RecommendedLevel { get; }
@@ -54,6 +66,9 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
         public virtual bool? OverrideEnemySpawn { get; } = null;
         public virtual bool? EnableCancel { get; } = null;
         public virtual bool ResetPlayerAfterQuest { get; } = false;
+
+        public virtual bool? IsImportant { get; } = null;
+        public virtual QuestAdventureGuideCategory? AdventureGuideCategory { get; } = null;
 
         private Dictionary<ushort, QuestProcess> Processes { get; set; }
         private List<QuestRewardItem> RewardItems { get; set; }
@@ -64,6 +79,9 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
         protected QuestMissionParams MissionParams { get; set; }
         protected List<QuestOrderCondition> OrderConditions { get; set; }
         protected List<QuestServerAction> ServerActions { get; set; }
+        public HashSet<QuestUnlock> ContentsReleased { get; set; }
+        public Dictionary<QuestId, List<QuestFlagInfo>> WorldManageUnlocks { get; set; }
+        public List<QuestProgressWork> QuestProgressWork { get; set; }
 
         public void Initialize(string path)
         {
@@ -217,6 +235,28 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
             });
         }
 
+        public void AddContentsRelease(ContentsRelease contentsReleaseId)
+        {
+            ContentsReleased.Add(new QuestUnlock()
+            {
+                ReleaseId = contentsReleaseId
+            });
+        }
+
+        public void AddWorldManageUnlock(QuestFlagInfo questFlagInfo)
+        {
+            if (!WorldManageUnlocks.ContainsKey(questFlagInfo.QuestId))
+            {
+                WorldManageUnlocks[questFlagInfo.QuestId] = new List<QuestFlagInfo>();
+            }
+            WorldManageUnlocks[questFlagInfo.QuestId].Add(questFlagInfo);
+        }
+
+        public void AddQuestProgressWork(QuestProgressWork questWork)
+        {
+            QuestProgressWork.Add(questWork);
+        }
+
         private QuestProcess AddProcess(QuestProcess process)
         {
             if (Processes.ContainsKey(process.ProcessNo))
@@ -272,6 +312,8 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
                 QuestAreaId = QuestAreaId,
                 QuestId = QuestId,
                 QuestOrderBackgroundImage = QuestOrderBackgroundImage,
+                IsImportant = IsImportant.Value,
+                AdventureGuideCategory = AdventureGuideCategory.Value,
                 QuestSource = QuestSource,
                 QuestScheduleId = QuestScheduleId,
                 QuestType = QuestType,
@@ -284,7 +326,10 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
                 MissionParams = MissionParams,
                 QuestLayoutSetInfoFlags = QuestLayoutSetInfoSetList,
                 OrderConditions = OrderConditions,
-                ServerActions = ServerActions
+                ServerActions = ServerActions,
+                ContentsReleased = ContentsReleased,
+                WorldManageUnlocks = WorldManageUnlocks,
+                QuestProgressWork = QuestProgressWork,
             };
 
             // TODO: Generate a ScriptedQuest instead which is more customizable

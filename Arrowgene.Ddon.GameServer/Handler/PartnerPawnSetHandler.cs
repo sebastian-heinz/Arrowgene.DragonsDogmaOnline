@@ -40,6 +40,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 res.PartnerInfo = record.ToCDataPartnerPawnData(pawn);
             });
 
+            // TODO: Store partner pawn
+
             return res;
         }
     }

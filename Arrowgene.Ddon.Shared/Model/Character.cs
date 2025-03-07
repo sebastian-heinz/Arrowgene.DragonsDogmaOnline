@@ -42,8 +42,9 @@ namespace Arrowgene.Ddon.Shared.Model
             EpitaphRoadState = new EpitaphRoadState();
             AreaRanks = new();
             AreaSupply = new();
-
             PartnerTimerLockObj = new();
+            ContentsReleased = new HashSet<ContentsRelease>();
+            WorldManageUnlocks = new Dictionary<QuestId, List<QuestFlagInfo>>();
         }
 
         public int AccountId { get; set; }
@@ -133,6 +134,9 @@ namespace Arrowgene.Ddon.Shared.Model
         public Dictionary<QuestAreaId, AreaRank> AreaRanks { get; set; }
         public Dictionary<QuestAreaId, List<CDataRewardItemInfo>> AreaSupply { get; set; }
 
+        public HashSet<ContentsRelease> ContentsReleased { get; set; }
+        public Dictionary<QuestId, List<QuestFlagInfo>> WorldManageUnlocks { get; set; }
+
         // TODO: Move to a more sensible place
         public uint LastEnteredShopId { get; set; }
 
@@ -213,6 +217,52 @@ namespace Arrowgene.Ddon.Shared.Model
                 },
                 ClanName = ClanName.ShortName
             };
+        }
+
+        public List<CDataCharacterReleaseElement> GetReleasedContent()
+        {
+            return ContentsReleased.Select(x => x.ToCDataCharacterReleaseElement()).ToList();
+        }
+
+        public bool HasContentReleased(ContentsRelease releaseId)
+        {
+            return ContentsReleased.Contains(releaseId);
+        }
+
+        public List<CDataQuestFlag> GetWorldManageQuestUnlocks(QuestId questId)
+        {
+            if (!WorldManageUnlocks.ContainsKey(questId))
+            {
+                return new();
+            }
+
+            return WorldManageUnlocks[questId]
+                .Where(x => x.FlagType == QuestFlagType.WorldManageQuest)
+                .Select(x => new CDataQuestFlag() { FlagId = x.Value })
+                .ToList();
+        }
+
+        public List<CDataQuestLayoutFlag> GetWorldManageLayoutUnlocks(QuestId questId)
+        {
+            if (!WorldManageUnlocks.ContainsKey(questId))
+            {
+                return new();
+            }
+
+            return WorldManageUnlocks[questId]
+                .Where(x => x.FlagType == QuestFlagType.WorldManageLayout)
+                .Select(x => new CDataQuestLayoutFlag() { FlagId = x.Value })
+                .ToList();
+        }
+
+        public bool HasQuestCompleted(QuestId questId)
+        {
+            return CompletedQuests.ContainsKey(questId);
+        }
+
+        public bool HasJobOfLevel(JobId jobId, uint level)
+        {
+            return CharacterJobDataList.Any(x => x.Job == jobId && x.Lv >= level);
         }
     }
 }

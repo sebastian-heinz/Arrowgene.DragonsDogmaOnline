@@ -9,6 +9,7 @@
     "discoverable": false,
     "stage_id": { "id": 26 },
     "area_id": "BreyaCoast",
+    "adventure_guide_category": "AreaTrialOrMission",
     "order_conditions": [
         {
             "type": "AreaRank",

@@ -1,16 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Arrowgene.Ddon.Shared.Model
 {
     public enum ContentsRelease : uint
     {
         None = 0,
         PartyPlayers = 1, // Party Play (With Other Players)
-        PawnandPartyPlay = 2, // Pawn and Party Play
+        PawnAndPartyPlay = 2, // Pawn and Party Play
         WorldQuests = 3, // World Quests
         GrandMissions = 4, // Grand Missions
         ExtremeMissions = 5, // Extreme Missions

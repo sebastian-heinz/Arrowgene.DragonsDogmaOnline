@@ -67,7 +67,6 @@
                     "enemy_id": "0x010200",
                     "level": 18,
                     "named_enemy_params_id": 142,
-                    "index": 3,
                     "exp": 64,
                     "index": 4
                 },
@@ -75,7 +74,6 @@
                     "enemy_id": "0x010200",
                     "level": 18,
                     "named_enemy_params_id": 142,
-                    "index": 3,
                     "exp": 64,
                     "index": 10
                 },
@@ -83,7 +81,6 @@
                     "enemy_id": "0x010200",
                     "level": 18,
                     "named_enemy_params_id": 142,
-                    "index": 3,
                     "exp": 64,
                     "index": 11
                 },
@@ -91,7 +88,6 @@
                     "enemy_id": "0x010200",
                     "level": 18,
                     "named_enemy_params_id": 142,
-                    "index": 3,
                     "exp": 64,
                     "index": 12
                 }

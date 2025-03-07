@@ -61,7 +61,9 @@ namespace Arrowgene.Ddon.Shared.Model
         public bool IsManualSet { get; set; }
         public bool IsAreaBoss { get; set; }
         public uint BloodOrbs { get; set; }
+        public bool IsBloodOrbEnemy { get; set; }
         public uint HighOrbs { get; set; }
+        public bool IsHighOrbEnemy { get; set; }
         public long SpawnTimeStart { get; set;}
         public long SpawnTimeEnd { get; set; }
         public uint Experience { get; set; }
@@ -106,8 +108,8 @@ namespace Arrowgene.Ddon.Shared.Model
                 IsBossBGM = IsBossBGM,
                 IsManualSet = IsManualSet,
                 IsAreaBoss = IsAreaBoss,
-                IsBloodEnemy = BloodOrbs > 0,
-                IsHighOrbEnemy = HighOrbs > 0,
+                IsBloodEnemy = IsBloodOrbEnemy,
+                IsHighOrbEnemy = IsHighOrbEnemy,
             };
         }
 

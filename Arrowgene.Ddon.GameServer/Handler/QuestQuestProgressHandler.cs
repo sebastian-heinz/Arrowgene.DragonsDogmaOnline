@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Quests;
+using Arrowgene.Ddon.GameServer.Quests.Work;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -52,8 +53,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 QuestStateManager questStateManager = QuestManager.GetQuestStateManager(client, quest);
 
                 var processState = questStateManager.GetProcessState(questScheduleId, processNo);
-                res.QuestProcessState = quest.StateMachineExecute(Server, client, processState, out questProgressState);
+                res.QuestProcessState = quest.StateMachineExecute(Server, client, processState, packets, out questProgressState);
                 questStateManager.UpdateProcessState(questScheduleId, res.QuestProcessState);
+
+                if (questProgressState == QuestProgressState.Accepted)
+                {
+                    questStateManager.GetQuestState(questScheduleId).State = questProgressState;
+                }
 
                 Server.Database.ExecuteInTransaction(connection =>
                 {
@@ -95,13 +101,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         res.QuestProgressResult = 3; // ProcessEnd
                         var ntcs = CompleteQuest(quest, client, questStateManager, connection);
                         packets.AddRange(ntcs);
+
+                        // Add Deferred work
+                        packets.AddRange(HandleDefferredWork(client, quest));
                     }
                 });
 
                 if (res.QuestProcessState.Count > 0)
                 {
                     Logger.Info("==========================================================================================");
-                    Logger.Info($"{quest.QuestId} ({quest.QuestScheduleId}): QuestBlock={res.QuestProcessState[0].ProcessNo}.{res.QuestProcessState[0].SequenceNo}.{res.QuestProcessState[0].BlockNo}");
+                    Logger.Info($"{quest.QuestId} ({quest.QuestScheduleId}): QuestBlock={res.QuestProcessState[0]}");
                     Logger.Info("==========================================================================================");
                 }
 
@@ -127,6 +136,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             client.Enqueue(res, packets);
+
+            return packets;
+        }
+
+        private PacketQueue HandleDefferredWork(GameClient client, Quest quest)
+        {
+            PacketQueue packets = new();
+
+            if (quest.QuestType == QuestType.World)
+            {
+                var workItems = QuestManager.CollectWorkItems(client, QuestProgressWorkType.WorldQuestCleared)
+                    .Cast<WorldQuestClearedProgressWork>()
+                    .Where(x => x.QuestIsMatch(quest))
+                    .Select(x => x.GetWork())
+                    .ToList();
+                foreach (var workItem in workItems)
+                {
+                    client.Party.EnqueueToAll(workItem, packets);
+                }
+            }
 
             return packets;
         }

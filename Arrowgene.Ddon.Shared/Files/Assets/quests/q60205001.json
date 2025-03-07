@@ -9,6 +9,7 @@
     "discoverable": false,
     "stage_id": { "id": 48 },
     "area_id": "DoweValley",
+    "adventure_guide_category": "AreaTrialOrMission",
     "order_conditions": [
         {
             "type": "AreaRank",
