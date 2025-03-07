@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
 
         public uint Unk0 { get; set; }
-        public string ContentName { get; set; }
+        public string ContentName { get; set; } = string.Empty;
         public uint Unk2 { get; set; }
         public bool Unk3 {  get; set; }
         public ulong ClearTime { get; set; }

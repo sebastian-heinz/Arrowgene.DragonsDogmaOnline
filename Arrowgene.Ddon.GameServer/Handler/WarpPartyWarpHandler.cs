@@ -1,12 +1,11 @@
-using System;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class WarpPartyWarpHandler : GameStructurePacketHandler<C2SWarpPartyWarpReq>
+    public class WarpPartyWarpHandler : GameRequestPacketHandler<C2SWarpPartyWarpReq, S2CWarpPartyWarpRes>
     {
         public static readonly uint PARTY_WARP_SECONDS = 60;
 
@@ -16,7 +15,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SWarpPartyWarpReq> packet)
+        public override S2CWarpPartyWarpRes Handle(GameClient client, C2SWarpPartyWarpReq request)
         {
             S2CWarpPartyWarpRes res = new S2CWarpPartyWarpRes();
 
@@ -28,7 +27,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 res.Result = 1; // I guess
             }
 
-            client.Send(res);
+            return res;
         }
     }
 }

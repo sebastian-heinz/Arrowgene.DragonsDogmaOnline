@@ -7,7 +7,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class EquipUpdateHidePawnHeadArmorHandler : StructurePacketHandler<GameClient, C2SEquipUpdateHidePawnHeadArmorReq>
+    public class EquipUpdateHidePawnHeadArmorHandler : GameRequestPacketQueueHandler<C2SEquipUpdateHidePawnHeadArmorReq, S2CEquipUpdateHidePawnHeadArmorRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(EquipUpdateHidePawnHeadArmorHandler));
 
@@ -15,21 +15,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SEquipUpdateHidePawnHeadArmorReq> packet)
+
+        public override PacketQueue Handle(GameClient client, C2SEquipUpdateHidePawnHeadArmorReq request)
         {
-            client.Character.HideEquipHeadPawn = packet.Structure.Hide;
+            PacketQueue queue = new();
+
+            client.Character.HideEquipHeadPawn = request.Hide;
             Database.UpdateCharacterBaseInfo(client.Character);
 
             foreach (Pawn pawn in client.Character.Pawns)
             {
-                pawn.HideEquipHead = packet.Structure.Hide;
+                pawn.HideEquipHead = request.Hide;
                 Database.UpdateCharacterCommonBaseInfo(pawn);
             }
 
-            client.Send(new S2CEquipUpdateHidePawnHeadArmorRes()
+            client.Enqueue(new S2CEquipUpdateHidePawnHeadArmorRes()
             {
-                Hide = packet.Structure.Hide
-            });
+                Hide = request.Hide
+            }, queue);
 
             S2CEquipUpdateEquipHideNtc ntc = new S2CEquipUpdateEquipHideNtc()
             {
@@ -39,10 +42,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 HidePawnHead = client.Character.HideEquipHeadPawn,
                 HidePawnLantern = client.Character.HideEquipLanternPawn
             };
-            foreach(Client otherClient in Server.ClientLookup.GetAll())
+            foreach (Client otherClient in Server.ClientLookup.GetAll())
             {
-                otherClient.Send(ntc);
+                otherClient.Enqueue(ntc, queue);
             }
+
+            return queue;
         }
     }
 }

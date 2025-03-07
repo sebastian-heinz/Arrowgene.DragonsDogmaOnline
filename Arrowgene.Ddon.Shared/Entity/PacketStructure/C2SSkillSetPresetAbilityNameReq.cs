@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public PacketId Id => PacketId.C2S_SKILL_SET_PRESET_ABILITY_NAME_REQ;
 
         public byte PresetNo { get; set; }
-        public string PresetName { get; set; }
+        public string PresetName { get; set; } = string.Empty;
 
         public class Serializer : PacketEntitySerializer<C2SSkillSetPresetAbilityNameReq>
         {

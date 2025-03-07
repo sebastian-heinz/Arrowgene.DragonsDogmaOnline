@@ -23,6 +23,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CStageAreaChangeRes res = new S2CStageAreaChangeRes();
             res.StageNo = StageManager.ConvertIdToStageNo(packet.StageId);
             res.IsBase = StageManager.IsSafeArea(packet.StageId); // This is set true for audience chamber and WDT for example
+            
+            if (res.StageNo == Stage.ArisensRoom.StageNo)
+            {
+                // Re-enables Arisen's Room dialogue for pawns.
+                // These StageFeatures control chatter and other pawn behaviors.
+                res.StageFeatureList.Add(new(9001));
+            }
 
             // Order is notices sent manually, then the response, then other queued notices for Epitaph Road stuff.
 

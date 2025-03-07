@@ -1,11 +1,10 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestQuestCompleteFlagClearHandler : GameStructurePacketHandler<C2SQuestQuestCompleteFlagClearReq>
+    public class QuestQuestCompleteFlagClearHandler : GameRequestPacketHandler<C2SQuestQuestCompleteFlagClearReq, S2CQuestQuestCompleteFlagClearRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestQuestCompleteFlagClearHandler));
 
@@ -13,14 +12,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SQuestQuestCompleteFlagClearReq> packet)
+        public override S2CQuestQuestCompleteFlagClearRes Handle(GameClient client, C2SQuestQuestCompleteFlagClearReq request)
         {
-            var res = new S2CQuestQuestCompleteFlagClearRes()
+            return new S2CQuestQuestCompleteFlagClearRes()
             {
-                QuestScheduleId = packet.Structure.QuestScheduleId
+                QuestScheduleId = request.QuestScheduleId
             };
-
-            client.Send(res);
         }
     }
 }

@@ -11,7 +11,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PawnSpSkillGetStockSkillHandler : GameStructurePacketHandler<C2SPawnSpSkillGetStockSkillReq>
+    public class PawnSpSkillGetStockSkillHandler : GameRequestPacketHandler<C2SPawnSpSkillGetStockSkillReq, S2CPawnSpSkillGetStockSkillRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnSpSkillGetStockSkillHandler));
         
@@ -21,14 +21,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public PawnSpSkillGetStockSkillHandler(DdonGameServer server) : base(server)
         {
         }
-
-        public override void Handle(GameClient client, StructurePacket<C2SPawnSpSkillGetStockSkillReq> packet)
+        
+        public override S2CPawnSpSkillGetStockSkillRes Handle(GameClient client, C2SPawnSpSkillGetStockSkillReq request)
         {
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
-            S2CPawnSpSkillGetStockSkillRes res = new S2CPawnSpSkillGetStockSkillRes();
-            res.SpSkillList = AllSpSkills;
-            res.StockSlots = 10; // Value taken from the tutorial picture
-            client.Send(res);
+            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
+            S2CPawnSpSkillGetStockSkillRes res = new S2CPawnSpSkillGetStockSkillRes
+            {
+                SpSkillList = AllSpSkills,
+                StockSlots = 10 // Value taken from the tutorial picture
+            };
+            return res;
         }
     }
 }

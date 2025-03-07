@@ -1,12 +1,11 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class InnGetPenaltyHealStayPrice : GameStructurePacketHandler<C2SInnGetPenaltyHealStayPriceReq>
+    public class InnGetPenaltyHealStayPrice : GameRequestPacketHandler<C2SInnGetPenaltyHealStayPriceReq, S2CInnGetPenaltyHealStayPriceRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InnGetPenaltyHealStayPrice));
 
@@ -17,13 +16,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SInnGetPenaltyHealStayPriceReq> packet)
+        public override S2CInnGetPenaltyHealStayPriceRes Handle(GameClient client, C2SInnGetPenaltyHealStayPriceReq request)
         {
-            client.Send(new S2CInnGetPenaltyHealStayPriceRes()
+            return new S2CInnGetPenaltyHealStayPriceRes()
             {
                 PointType = InnGetPenaltyHealStayPrice.PointType,
                 Point = InnGetPenaltyHealStayPrice.Point
-            });
+            };
         }
     }
 }

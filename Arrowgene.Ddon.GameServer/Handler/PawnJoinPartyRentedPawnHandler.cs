@@ -19,10 +19,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Pawn pawn = client.Character.RentedPawnBySlotNo(request.SlotNo);
             PawnPartyMember partyMember = client.Party.Join(pawn);
-            if (partyMember == null)
-            {
-                throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_INTERNAL_ERROR);
-            }
 
             // Rented pawn need to have character ID of the player using them
             // Otherwise they spawn in WDT and stand still

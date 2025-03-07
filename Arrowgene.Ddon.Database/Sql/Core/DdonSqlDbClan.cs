@@ -421,10 +421,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             });
         }
 
-        public List<(ClanBaseCustomizationType Type, uint Id)> SelectClanBaseCustomizations(uint clanId, DbConnection? connectionIn = null)
+        public List<(byte Type, uint Id)> SelectClanBaseCustomizations(uint clanId, DbConnection? connectionIn = null)
         {
             return ExecuteQuerySafe(connectionIn, connection => {
-                var list = new List<(ClanBaseCustomizationType Type, uint Id)>();
+                var list = new List<(byte Type, uint Id)>();
                 ExecuteReader(connection,
                     SqlSelectClanBaseCustomizations,
                     command => { AddParameter(command, "@clan_id", clanId); },
@@ -433,7 +433,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         while (reader.Read())
                         {
                             var cust = (
-                                (ClanBaseCustomizationType)GetByte(reader, "type"),
+                                GetByte(reader, "type"),
                                 GetUInt32(reader, "furniture_id")
                             );
                             list.Add(cust);
@@ -444,7 +444,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             });
         }
 
-        public bool InsertOrUpdateClanBaseCustomization(uint clanId, ClanBaseCustomizationType type, uint furnitureId, DbConnection? connectionIn = null)
+        public bool InsertOrUpdateClanBaseCustomization(uint clanId, byte type, uint furnitureId, DbConnection? connectionIn = null)
         {
             return ExecuteQuerySafe(connectionIn, connection =>
             {
@@ -454,7 +454,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     command =>
                     {
                         AddParameter(command, "clan_id", clanId);
-                        AddParameter(command, "type", (byte)type);
+                        AddParameter(command, "type", type);
                         AddParameter(command, "furniture_id", furnitureId);
                     }
                     ) == 1;
@@ -467,7 +467,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     command =>
                     {
                         AddParameter(command, "clan_id", clanId);
-                        AddParameter(command, "type", (byte)type);
+                        AddParameter(command, "type", type);
                         AddParameter(command, "furniture_id", furnitureId);
                     }
                     ) == 1;
@@ -477,7 +477,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             });
         }
 
-        public bool DeleteClanBaseCustomization(uint clanId, ClanBaseCustomizationType type, DbConnection? connectionIn = null)
+        public bool DeleteClanBaseCustomization(uint clanId, byte type, DbConnection? connectionIn = null)
         {
             return ExecuteQuerySafe(connectionIn, connection =>
             {
@@ -487,7 +487,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     command =>
                     {
                         AddParameter(command, "clan_id", clanId);
-                        AddParameter(command, "type", (byte)type);
+                        AddParameter(command, "type", type);
                     }
                     ) == 1;
             });

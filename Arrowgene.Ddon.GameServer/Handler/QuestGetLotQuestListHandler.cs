@@ -1,14 +1,10 @@
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
-using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class QuestGetLotQuestListHandler : StructurePacketHandler<GameClient, C2SQuestGetLotQuestListReq>
+    public class QuestGetLotQuestListHandler : GameRequestPacketHandler<C2SQuestGetLotQuestListReq, S2CQuestGetLotQuestListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetLotQuestListHandler));
 
@@ -16,10 +12,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SQuestGetLotQuestListReq> req)
+        public override S2CQuestGetLotQuestListRes Handle(GameClient client, C2SQuestGetLotQuestListReq request)
         {
-            S2CQuestGetLotQuestListRes res = new S2CQuestGetLotQuestListRes();
-            client.Send(res);
+            return new()
+            {
+                LotQuestType = request.LotQuestType
+            };
         }
     }
 }

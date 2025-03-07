@@ -11,15 +11,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
             CourseInfo = new List<CDataGPCourseInfo>();
             Effects = new List<CDataGPCourseEffectParam>();
-            Unk0 = new byte[]
-            {
-                0x00, 0x00, 0x01, 0x01, 0x00, 0x01, 0x30, 0xB0, 0x00, 0x49, 0xE3, 0x83, 0x9F
-            };
         }
 
         public List<CDataGPCourseInfo> CourseInfo { get; set; }
         public List<CDataGPCourseEffectParam> Effects { get; set; }
-        public byte[] Unk0 { get; set; }
+        public uint Version { get; set; }
 
         public override PacketId Id => PacketId.L2C_GP_COURSE_GET_INFO_RES;
 
@@ -31,7 +27,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteServerResponse(buffer, obj);
                 WriteEntityList<CDataGPCourseInfo>(buffer, obj.CourseInfo);
                 WriteEntityList<CDataGPCourseEffectParam>(buffer, obj.Effects);
-                WriteByteArray(buffer, obj.Unk0);
+                WriteUInt32(buffer, obj.Version);
             }
 
             public override L2CGpCourseGetInfoRes Read(IBuffer buffer)
@@ -41,7 +37,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 ReadServerResponse(buffer, obj);
                 obj.CourseInfo = ReadEntityList<CDataGPCourseInfo>(buffer);
                 obj.Effects = ReadEntityList<CDataGPCourseEffectParam>(buffer);
-                obj.Unk0 = ReadByteArray(buffer, obj.Unk0.Length);
+                obj.Version = ReadUInt32(buffer);
 
                 return obj;
             }

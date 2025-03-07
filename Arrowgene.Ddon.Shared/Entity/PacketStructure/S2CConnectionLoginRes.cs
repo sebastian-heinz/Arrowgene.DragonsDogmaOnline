@@ -1,4 +1,4 @@
-﻿using Arrowgene.Buffers;
+using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public override PacketId Id => PacketId.S2C_CONNECTION_LOGIN_RES;
 
-        public string OneTimeToken { get; set; }
+        public string OneTimeToken { get; set; } = string.Empty;
         public bool IsCogLogin { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CConnectionLoginRes>

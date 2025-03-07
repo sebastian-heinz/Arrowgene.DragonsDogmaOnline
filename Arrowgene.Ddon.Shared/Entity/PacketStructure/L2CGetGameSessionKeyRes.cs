@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public override PacketId Id => PacketId.L2C_GET_GAME_SESSION_KEY_RES;
 
-        public string SessionKey { get; set; }
+        public string SessionKey { get; set; } = string.Empty;
         public uint Unknown { get; set; }
 
         public class Serializer : PacketEntitySerializer<L2CGetGameSessionKeyRes>

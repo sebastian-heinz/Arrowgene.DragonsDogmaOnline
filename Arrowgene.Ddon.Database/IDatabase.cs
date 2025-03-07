@@ -585,9 +585,9 @@ namespace Arrowgene.Ddon.Database
         bool UpdateClanMember(CDataClanMemberInfo memberInfo, uint clanId, DbConnection? connectionIn = null);
         List<uint> SelectClanShopPurchases(uint clanId, DbConnection? connectionIn = null);
         bool InsertClanShopPurchase(uint clanId, uint lineupId, DbConnection? connectionIn = null);
-        List<(ClanBaseCustomizationType Type, uint Id)> SelectClanBaseCustomizations(uint clanId, DbConnection? connectionIn = null);
-        bool InsertOrUpdateClanBaseCustomization(uint clanId, ClanBaseCustomizationType type, uint furnitureId, DbConnection? connectionIn = null);
-        bool DeleteClanBaseCustomization(uint clanId, ClanBaseCustomizationType type, DbConnection? connectionIn = null);
+        List<(byte Type, uint Id)> SelectClanBaseCustomizations(uint clanId, DbConnection? connectionIn = null);
+        bool InsertOrUpdateClanBaseCustomization(uint clanId, byte type, uint furnitureId, DbConnection? connectionIn = null);
+        bool DeleteClanBaseCustomization(uint clanId, byte type, DbConnection? connectionIn = null);
 
         // Epitaph Road
         bool InsertEpitaphRoadUnlock(uint characterId, uint epitaphId, DbConnection? connectionIn = null);

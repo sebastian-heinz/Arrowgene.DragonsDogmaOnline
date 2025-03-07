@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteServerResponse(buffer, obj);
                 WriteUInt32(buffer, obj.GP);
                 WriteInt64(buffer, obj.UseLimit);
-                WriteUInt64(buffer, (ulong) obj.RealTime.ToUnixTimeSeconds());
+                WriteInt64(buffer, obj.RealTime.ToUnixTimeSeconds());
                 WriteUInt16(buffer, (ushort) obj.RealTime.Millisecond);
             }
 
@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 ReadServerResponse(buffer, obj);
                 obj.GP = ReadUInt32(buffer);
                 obj.UseLimit = ReadInt64(buffer);
-                ulong unixTimeSeconds = ReadUInt64(buffer);
+                long unixTimeSeconds = ReadInt64(buffer);
                 ushort unixTimeMilliseconds = ReadUInt16(buffer);
                 obj.RealTime = DateTimeOffset.FromUnixTimeSeconds((long) unixTimeSeconds).AddMilliseconds(unixTimeMilliseconds);
                 return obj;

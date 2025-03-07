@@ -1,12 +1,11 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PawnSpSkillDeleteStockSkillHandler : GameStructurePacketHandler<C2SPawnSpSkillDeleteStockSkillReq>
+    public class PawnSpSkillDeleteStockSkillHandler : GameRequestPacketHandler<C2SPawnSpSkillDeleteStockSkillReq, S2CPawnSpSkillDeleteStockSkillRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnSpSkillDeleteStockSkillHandler));
         
@@ -14,13 +13,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SPawnSpSkillDeleteStockSkillReq> packet)
+        public override S2CPawnSpSkillDeleteStockSkillRes Handle(GameClient client, C2SPawnSpSkillDeleteStockSkillReq request)
         {
             // TODO: Implement
-            client.Send(new S2CPawnSpSkillDeleteStockSkillRes()
-            {
-                Error = (uint) ErrorCode.ERROR_CODE_FAIL
-            });
+            throw new ResponseErrorException(ErrorCode.ERROR_CODE_NOT_IMPLEMENTED);
         }
     }
 }

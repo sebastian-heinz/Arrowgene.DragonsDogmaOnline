@@ -1,17 +1,15 @@
-using System.Collections.Generic;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Network;
-using Arrowgene.Logging;
-using System.Linq;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class SkillChangeExSkillHandler : StructurePacketHandler<GameClient, C2SSkillChangeExSkillReq>
+    public class SkillChangeExSkillHandler : GameRequestPacketHandler<C2SSkillChangeExSkillReq, S2CSkillChangeExSkillRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillChangeExSkillHandler));
 
@@ -22,27 +20,27 @@ namespace Arrowgene.Ddon.GameServer.Handler
             jobManager = server.JobManager;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SSkillChangeExSkillReq> packet)
-        {            
+        public override S2CSkillChangeExSkillRes Handle(GameClient client, C2SSkillChangeExSkillReq request)
+        {
             CharacterCommon character;
-            if(packet.Structure.PawnId == 0)
+            if(request.PawnId == 0)
             {
                 character = client.Character;
             }
             else
             {
-                character = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
+                character = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
             }
 
-            IEnumerable<byte> skillSlots = jobManager.ChangeExSkill(Server.Database, client, character, packet.Structure.Job, packet.Structure.SkillId);
+            IEnumerable<byte> skillSlots = jobManager.ChangeExSkill(Server.Database, client, character, request.Job, request.SkillId);
 
-            client.Send(new S2CSkillChangeExSkillRes() {
-                Job = packet.Structure.Job,
-                SkillId = packet.Structure.SkillId,
+            return new S2CSkillChangeExSkillRes() {
+                Job = request.Job,
+                SkillId = request.SkillId,
                 SkillLv = 1, // Must be 1 otherwise they do 0 damage
-                PawnId = packet.Structure.PawnId,
+                PawnId = request.PawnId,
                 SlotsToUpdate = skillSlots.Select(slotNo => new CDataCommonU8(slotNo)).ToList()
-            });
+            };
         }
     }
 }

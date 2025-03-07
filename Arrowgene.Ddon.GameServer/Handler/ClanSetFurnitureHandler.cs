@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     if (update.LayoutId == 0)
                     {
                         // Only one slot makes this possible, so we can just hardcode it.
-                        Server.Database.DeleteClanBaseCustomization(client.Character.ClanId, ClanBaseCustomizationType.LoungeBoard, connection);
+                        Server.Database.DeleteClanBaseCustomization(client.Character.ClanId, ClanFurnitureType.LoungeBoard, connection);
                     }
                     else
                     {

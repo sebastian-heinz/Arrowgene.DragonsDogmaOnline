@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteByte(buffer, obj.Type);
                 WriteUInt32(buffer, obj.Rank);
                 WriteUInt32(buffer, obj.Score);
-                WriteUInt64(buffer, (ulong)obj.UpdateDate.ToUnixTimeSeconds());
+                WriteInt64(buffer, obj.UpdateDate.ToUnixTimeSeconds());
             }
 
             public override CDataCycleContentsRank Read(IBuffer buffer)
@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.Type = ReadByte(buffer);
                 obj.Rank = ReadUInt32(buffer);
                 obj.Score = ReadUInt32(buffer);
-                obj.UpdateDate = DateTimeOffset.FromUnixTimeSeconds((long)ReadUInt64(buffer));
+                obj.UpdateDate = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
                 return obj;
             }
         }

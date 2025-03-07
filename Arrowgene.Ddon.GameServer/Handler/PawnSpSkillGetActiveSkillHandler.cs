@@ -1,15 +1,14 @@
-using System.Collections.Generic;
-using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PawnSpSkillGetActiveSkillHandler : GameStructurePacketHandler<C2SPawnSpSkillGetActiveSkillReq>
+    public class PawnSpSkillGetActiveSkillHandler : GameRequestPacketHandler<C2SPawnSpSkillGetActiveSkillReq, S2CPawnSpSkillGetActiveSkillRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnSpSkillGetActiveSkillHandler));
         
@@ -17,13 +16,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SPawnSpSkillGetActiveSkillReq> packet)
+        public override S2CPawnSpSkillGetActiveSkillRes Handle(GameClient client, C2SPawnSpSkillGetActiveSkillReq request)
         {
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
-            S2CPawnSpSkillGetActiveSkillRes res = new S2CPawnSpSkillGetActiveSkillRes();
-            res.SpSkillList = pawn.SpSkills.GetValueOrDefault(packet.Structure.JobId, new List<CDataSpSkill>());
-            res.ActiveSpSkillSlots = 3; // Value taken from the tutorial picture
-            client.Send(res);
+            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
+            S2CPawnSpSkillGetActiveSkillRes res = new S2CPawnSpSkillGetActiveSkillRes
+            {
+                SpSkillList = pawn.SpSkills.GetValueOrDefault(request.JobId, new List<CDataSpSkill>()),
+                ActiveSpSkillSlots = 3 // Value taken from the tutorial picture
+            };
+            return res;
         }
     }
 }

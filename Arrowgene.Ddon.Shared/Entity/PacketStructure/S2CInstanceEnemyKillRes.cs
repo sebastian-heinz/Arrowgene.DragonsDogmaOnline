@@ -33,7 +33,6 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 ReadServerResponse(buffer, obj);
                 obj.EnemyId = ReadUInt32(buffer);
                 obj.KillNum = ReadUInt32(buffer);
-
                 return obj;
             }
         }

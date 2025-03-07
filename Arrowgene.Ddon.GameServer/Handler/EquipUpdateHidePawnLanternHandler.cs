@@ -2,12 +2,11 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class EquipUpdateHidePawnLanternHandler : StructurePacketHandler<GameClient, C2SEquipUpdateHidePawnLanternReq>
+    public class EquipUpdateHidePawnLanternHandler : GameRequestPacketQueueHandler<C2SEquipUpdateHidePawnLanternReq, S2CEquipUpdateHidePawnLanternRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(EquipUpdateHidePawnLanternHandler));
 
@@ -15,21 +14,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SEquipUpdateHidePawnLanternReq> packet)
+        public override PacketQueue Handle(GameClient client, C2SEquipUpdateHidePawnLanternReq request)
         {
-            client.Character.HideEquipLanternPawn= packet.Structure.Hide;
+            PacketQueue queue = new();
+
+            client.Character.HideEquipLanternPawn = request.Hide;
             Database.UpdateCharacterBaseInfo(client.Character);
 
             foreach (Pawn pawn in client.Character.Pawns)
             {
-                pawn.HideEquipLantern = packet.Structure.Hide;
+                pawn.HideEquipLantern = request.Hide;
                 Database.UpdateCharacterCommonBaseInfo(pawn);
             }
 
-            client.Send(new S2CEquipUpdateHidePawnLanternRes()
+            client.Enqueue(new S2CEquipUpdateHidePawnLanternRes()
             {
-                Hide = packet.Structure.Hide
-            });
+                Hide = request.Hide
+            }, queue);
 
             S2CEquipUpdateEquipHideNtc ntc = new S2CEquipUpdateEquipHideNtc()
             {
@@ -39,10 +40,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 HidePawnHead = client.Character.HideEquipHeadPawn,
                 HidePawnLantern = client.Character.HideEquipLanternPawn
             };
-            foreach(Client otherClient in Server.ClientLookup.GetAll())
+            foreach (Client otherClient in Server.ClientLookup.GetAll())
             {
-                otherClient.Send(ntc);
+                otherClient.Enqueue(ntc, queue);
             }
+
+            return queue;
         }
     }
 }

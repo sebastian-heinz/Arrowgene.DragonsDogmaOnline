@@ -13,7 +13,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
 
         public byte UpdateType { get; set; }
-        public CDataEditInfo EditInfo { get; set; }
+        public CDataEditInfo EditInfo { get; set; } = new();
 
         public class Serializer : PacketEntitySerializer<C2SCharacterCreateModeCharacterEditParamReq>
         {

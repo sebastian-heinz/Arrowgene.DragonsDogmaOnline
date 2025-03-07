@@ -7,7 +7,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class SkillGetPawnLearnedSkillListHandler : GameStructurePacketHandler<C2SSkillGetPawnLearnedSkillListReq>
+    public class SkillGetPawnLearnedSkillListHandler : GameRequestPacketHandler<C2SSkillGetPawnLearnedSkillListReq, S2CSkillGetPawnLearnedSkillListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillGetPawnLearnedSkillListHandler));
         
@@ -15,14 +15,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SSkillGetPawnLearnedSkillListReq> packet)
+        public override S2CSkillGetPawnLearnedSkillListRes Handle(GameClient client, C2SSkillGetPawnLearnedSkillListReq request)
         {
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
-            client.Send(new S2CSkillGetPawnLearnedSkillListRes()
+            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
+            return new S2CSkillGetPawnLearnedSkillListRes()
             {
                 PawnId = pawn.PawnId,
                 LearnedAcquierementParamList = pawn.LearnedCustomSkills.Select(x => x.AsCDataLearnedSetAcquirementParam()).ToList()
-            });
+            };
         }
     }
 }

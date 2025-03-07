@@ -11,9 +11,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public DateTimeOffset End { get; set; }
         public byte Category { get; set; }
         public uint CategoryType { get; set; }
-        public List<CDataRewardItem> RewardItemList { get; set; }
-        public List<CDataCycleContentsNewsDetail> DetailList { get; set; }
-        public List<CDataCycleContentsRank> CycleContentsRankList { get; set; }
+        public List<CDataRewardItem> RewardItemList { get; set; } = new();
+        public List<CDataCycleContentsNewsDetail> DetailList { get; set; } = new();
+        public List<CDataCycleContentsRank> CycleContentsRankList { get; set; } = new();
         public uint TotalPoint { get; set; }
         public uint PlayNum { get; set; }
         public bool IsCreateRanking { get; set; }
@@ -23,8 +23,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override void Write(IBuffer buffer, CDataCycleContentsNews obj)
             {
                 WriteUInt32(buffer, obj.CycleContentsScheduleId);
-                WriteUInt64(buffer, (ulong)obj.Begin.ToUnixTimeSeconds());
-                WriteUInt64(buffer, (ulong)obj.End.ToUnixTimeSeconds());
+                WriteInt64(buffer, obj.Begin.ToUnixTimeSeconds());
+                WriteInt64(buffer, obj.End.ToUnixTimeSeconds());
                 WriteByte(buffer, obj.Category);
                 WriteUInt32(buffer, obj.CategoryType);
                 WriteEntityList(buffer, obj.RewardItemList);
@@ -39,8 +39,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 CDataCycleContentsNews obj = new CDataCycleContentsNews();
                 obj.CycleContentsScheduleId = ReadUInt32(buffer);
-                obj.Begin = DateTimeOffset.FromUnixTimeSeconds((long)ReadUInt64(buffer));
-                obj.End = DateTimeOffset.FromUnixTimeSeconds((long)ReadUInt64(buffer));
+                obj.Begin = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
+                obj.End = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
                 obj.Category = ReadByte(buffer);
                 obj.CategoryType = ReadUInt32(buffer);
                 obj.RewardItemList = ReadEntityList<CDataRewardItem>(buffer);

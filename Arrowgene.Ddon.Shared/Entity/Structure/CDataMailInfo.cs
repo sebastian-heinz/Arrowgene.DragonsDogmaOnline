@@ -14,8 +14,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public MailState State { get; set; }
         public byte ItemState { get; set; }
         public CDataCommunityCharacterBaseInfo BaseInfo { get; set; }
-        public string SenderName { get; set; }
-        public string MailText { get; set; }
+        public string SenderName { get; set; } = string.Empty;
+        public string MailText { get; set; } = string.Empty;
         public ulong SenderDate { get; set; }
 
         public class Serializer : EntitySerializer<CDataMailInfo>

@@ -5,6 +5,7 @@ namespace Arrowgene.Ddon.Shared.Model.Craft
     public class CraftPawn
     {
 
+        public Pawn Pawn { get; set; }
         public uint ProductionSpeed {  get; set; }
         public uint EquipmentEnhancement { get; set; }
         public uint EquipmentQuality { get; set; }
@@ -41,6 +42,7 @@ namespace Arrowgene.Ddon.Shared.Model.Craft
 
         public CraftPawn(Pawn pawn, CraftPosition position)
         {
+            Pawn = pawn;
             ProductionSpeed = pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == CraftSkillType.ProductionSpeed).Level;
             EquipmentEnhancement = pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == CraftSkillType.EquipmentEnhancement).Level;
             EquipmentQuality = pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == CraftSkillType.EquipmentQuality).Level;

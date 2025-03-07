@@ -23,13 +23,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             List<uint> pawnIds = new();
             List<uint> baseFuncs = new();
-            List<(ClanBaseCustomizationType Type, uint Id)> customizations = new();
+            List<(byte Type, uint Id)> customizations = new();
             Server.Database.ExecuteInTransaction(connection =>
             {
                 pawnIds = Server.Database.SelectClanPawns(client.Character.ClanId, client.Character.CharacterId, uint.MaxValue, connection);
                 baseFuncs = Server.Database.SelectClanShopPurchases(client.Character.ClanId, connection);
                 customizations = Server.Database.SelectClanBaseCustomizations(client.Character.ClanId, connection)
-                    .Where(x => x.Type == ClanBaseCustomizationType.Concierge)
+                    .Where(x => x.Type == 1)
                     .ToList();
             });
 

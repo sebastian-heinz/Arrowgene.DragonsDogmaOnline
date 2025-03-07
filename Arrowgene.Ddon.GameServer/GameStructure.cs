@@ -158,7 +158,7 @@ public static class GameStructure
         cDataPawnInfo.ShareRange = 1;
         cDataPawnInfo.Likability = 2;
         cDataPawnInfo.TrainingStatus = pawn.TrainingStatus.GetValueOrDefault(pawn.Job, new byte[64]);
-        cDataPawnInfo.Unk1 = new CData_772E80() {Unk0 = 0x7530, Unk1 = 0x3, Unk2 = 0x3, Unk3 = 0x1, Unk4 = 0x3};
+        cDataPawnInfo.PawnTrainingProfile = new CDataPawnTrainingProfile() {TrainingExp = 30000, DialogCount = 3, DialogCountMax = 3, AttackFrequencyAndDistance = 1, TrainingLv = 3};
         cDataPawnInfo.SpSkillList = pawn.SpSkills.GetValueOrDefault(pawn.Job, new List<CDataSpSkill>());
     }
 

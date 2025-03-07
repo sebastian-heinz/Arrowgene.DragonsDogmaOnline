@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint RentalCost { get; set; }
         /// TODO: Maybe course ID?
         public uint Unk3 { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public uint CraftRank { get; set; }
         public List<CDataPawnCraftSkill> PawnCraftSkillList { get; set; }
     

@@ -359,6 +359,24 @@ namespace Arrowgene.Ddon.Server.Settings
         private const uint _DefaultWarpFavorites = 5;
 
         /// <summary>
+        /// Controls the party size for regular adventuring content. 
+        /// Used to control main pawns auto-joining parties alongside their owners.
+        /// </summary>
+        [DefaultValue(_NormalPartySize)]
+        public uint NormalPartySize
+        {
+            set
+            {
+                SetSetting("NormalPartySize", value);
+            }
+            get
+            {
+                return TryGetSetting("NormalPartySize", _NormalPartySize);
+            }
+        }
+        private const uint _NormalPartySize = 4;
+
+        /// <summary>
         /// Global modifier for enemy exp calculations to scale up or down.
         /// </summary>
         [DefaultValue(_EnemyExpModifier)]

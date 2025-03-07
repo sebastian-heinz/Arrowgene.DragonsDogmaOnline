@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint ClanMemberMax { get; set; }
         public uint ClanLeaveIntervalTime { get; set; } // In seconds
         public byte CharacterNumMax { get; set; }
-        public List<CDataCharacterItemSlotInfo> GlobalItemSlotNumMaxList { get; set; }
+        public List<CDataCharacterItemSlotInfo> GlobalItemSlotNumMaxList { get; set; } = new();
         public uint PawnCreateItemID { get; set; }
         public byte PawnCreateItemNum { get; set; }
         public bool EnableVisualEquip { get; set; }
@@ -31,29 +31,29 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint CharacterReviveGP { get; set; }
         public uint PawnReviveGP { get; set; }
         public uint LostPawnReviveGP { get; set; }
-        public List<CDataURLInfo> UrlInfoList { get; set; }
-        public List<CDataPartyMemberMaxNum> PartyMemberMaxNumList { get; set; }
+        public List<CDataURLInfo> UrlInfoList { get; set; } = new();
+        public List<CDataPartyMemberMaxNum> PartyMemberMaxNumList { get; set; } = new();
         public uint GroupChatMemberMax { get; set; }
         public uint EventCodeInputLockFailNum { get; set; }
         public uint EventCodeLockTime { get; set; }
         public uint PawnPresentItemID { get; set; }
         public byte PawnPresentItemNum { get; set; }
-        public List<CDataJewelryEquipLimit> JewelryEquipLimitList { get; set; }
+        public List<CDataJewelryEquipLimit> JewelryEquipLimitList { get; set; } = new();
         public uint JobPointMax { get; set; }
         public uint PlayPointMax { get; set; }
         public uint PlayPointLevelMin { get; set; }
         public uint BazaarSearchTime { get; set; }
         public uint BazaarSearchCautionTime { get; set; }
         public uint BazaarSearchCautionCount { get; set; }
-        public List<CDataCommonU32> ClanBaseStageList { get; set; }
+        public List<CDataCommonU32> ClanBaseStageList { get; set; } = new();
         public uint MailCacheExpireTime { get; set; }
         public bool Unk0 { get; set; } // Default false
         public uint Unk1 { get; set; } // Default 0
         public uint Unk2 { get; set; } // Default 10000
         public uint Unk3 { get; set; } // Default 80
-        public List<CDataWalletLimit> WalletLimits { get; set; }
+        public List<CDataWalletLimit> WalletLimits { get; set; } = new();
         public ushort Unk5 { get; set; } // Default 150
-        public List<CDataExpSetting> ExpRequiredPerLevel { get; set; }
+        public List<CDataExpSetting> ExpRequiredPerLevel { get; set; } = new();
 
         public class Serializer : EntitySerializer<CDataGameSetting>
         {

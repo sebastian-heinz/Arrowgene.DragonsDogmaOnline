@@ -13,7 +13,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
         }
 
-        public CDataEntryItem EntryItemData;
+        public CDataEntryItem EntryItemData { get; set; } = new();
 
         public class Serializer : PacketEntitySerializer<S2CEntryBoardEntryBoardItemInfoChangeRes>
         {

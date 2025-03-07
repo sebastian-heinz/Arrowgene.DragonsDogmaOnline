@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.S2C_INSTANCE_ENEMY_DIE_NTC;
 
-        public CDataStageLayoutId LayoutId { get; set; }
+        public CDataStageLayoutId LayoutId { get; set; } = new();
         public uint SetId { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CInstanceEnemyDieNtc>

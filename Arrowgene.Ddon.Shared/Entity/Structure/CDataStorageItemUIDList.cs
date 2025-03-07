@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             
         }
     
-        public string ItemUId { get; set; }
+        public string ItemUId { get; set; } = string.Empty;
         public uint Num { get; set; }
         public StorageType StorageType { get; set; }
         public ushort SlotNo { get; set; }

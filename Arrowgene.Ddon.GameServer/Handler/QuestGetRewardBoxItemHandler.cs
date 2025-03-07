@@ -34,8 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var rewardIndex = packet.ListNo;
             if (rewardIndex == 0 || rewardIndex > questBoxRewards.Count)
             {
-                Logger.Error($"Illegal reward request sent to server.");
-                return new S2CQuestGetRewardBoxItemRes() { Error = 1};
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_QUEST_NOT_EXIST_REWARD_BOX_LIST_NO, $"Illegal reward request sent to server.");
             }
 
             // Make zero based index

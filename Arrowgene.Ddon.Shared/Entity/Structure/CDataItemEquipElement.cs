@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             EquipElementList = new List<CDataItemEquipElementParam>();
         }
     
-        public string ItemUID { get; set; }
+        public string ItemUID { get; set; } = string.Empty;
         public List<CDataItemEquipElementParam> EquipElementList { get; set; }
     
         public class Serializer : EntitySerializer<CDataItemEquipElement>

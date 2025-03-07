@@ -1,25 +1,21 @@
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class SkillLearnSkillHandler : GameStructurePacketHandler<C2SSkillLearnSkillReq>
+    public class SkillLearnSkillHandler : GameRequestPacketQueueHandler<C2SSkillLearnSkillReq, S2CSkillLearnSkillRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillLearnSkillHandler));
         
-        private readonly JobManager jobManager;
-
         public SkillLearnSkillHandler(DdonGameServer server) : base(server)
         {
-            this.jobManager = server.JobManager;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SSkillLearnSkillReq> packet)
+        public override PacketQueue Handle(GameClient client, C2SSkillLearnSkillReq request)
         {
-            this.jobManager.UnlockSkill(Server.Database, client, client.Character, packet.Structure.Job, packet.Structure.SkillId, packet.Structure.SkillLv);
+            return Server.JobManager.UnlockSkill(Server.Database, client, client.Character, request.Job, request.SkillId, request.SkillLv);
         }
     }
 }

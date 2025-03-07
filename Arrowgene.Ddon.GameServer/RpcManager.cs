@@ -126,6 +126,12 @@ namespace Arrowgene.Ddon.GameServer
             }
             return $"{TRAFFIC_LABELS[index]} ({count})";
         }
+
+        public bool DoesGameServerExist(ushort channelId)
+        {
+            return ChannelInfo.ContainsKey(channelId);
+        }
+
         #endregion
 
         #region RPC Machinery

@@ -5,18 +5,12 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataNoraPawnInfo
     {
-        public CDataNoraPawnInfo() {
-            Name = string.Empty;
-            EditInfo = new();
-            CharacterEquipData = new();
-        }
-
         public uint Version { get; set; }
-        public string Name { get; set; }
-        public CDataEditInfo EditInfo { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public CDataEditInfo EditInfo { get; set; } = new();
         public byte Job { get; set; }
-        public List<CDataCharacterEquipData> CharacterEquipData { get; set; }
-        public List<CDataCharacterEquipData> CharacterEquipViewData { get; set; }
+        public List<CDataCharacterEquipData> CharacterEquipData { get; set; } = new();
+        public List<CDataCharacterEquipData> CharacterEquipViewData { get; set; } = new();
 
         public class Serializer : EntitySerializer<CDataNoraPawnInfo>
         {

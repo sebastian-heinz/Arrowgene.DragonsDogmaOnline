@@ -2,13 +2,12 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class JobUpdateExpModeHandler : GameStructurePacketHandler<C2SJobUpdateExpModeReq>
+    public class JobUpdateExpModeHandler : GameRequestPacketHandler<C2SJobUpdateExpModeReq, S2CJobUpdateExpModeRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(JobUpdateExpModeHandler));
 
@@ -16,10 +15,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SJobUpdateExpModeReq> packet)
+        public override S2CJobUpdateExpModeRes Handle(GameClient client, C2SJobUpdateExpModeReq request)
         {
             //Handle case where the character is somehow missing a PlayPoint structure.
-            var missingList = packet.Structure.UpdateExpModeList.Where(x => !client.Character.PlayPointList.Any(y => y.Job == x.Job)).ToList();
+            var missingList = request.UpdateExpModeList.Where(x => !client.Character.PlayPointList.Any(y => y.Job == x.Job)).ToList();
             foreach (var missing in missingList)
             {
                 client.Character.PlayPointList.Add(new CDataJobPlayPoint()
@@ -32,10 +31,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                 });
             }
-            
+
             var res = new S2CJobUpdateExpModeRes()
             {
-                PlayPointList = client.Character.PlayPointList.Where(x => packet.Structure.UpdateExpModeList.Any(y => y.Job == x.Job)).ToList()
+                PlayPointList = client.Character.PlayPointList.Where(x => request.UpdateExpModeList.Any(y => y.Job == x.Job)).ToList()
             };
             res.PlayPointList.ForEach(x => x.PlayPoint.ExpMode = 3 - x.PlayPoint.ExpMode); //Flip 1 <-> 2
 
@@ -44,7 +43,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Database.ReplaceCharacterPlayPointData(client.Character.CharacterId, playpoint);
             }
 
-            client.Send(res);
+            return res;
         }
     }
 }

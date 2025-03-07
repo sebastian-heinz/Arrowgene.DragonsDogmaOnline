@@ -1,18 +1,14 @@
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PartyPartyInviteCharacterHandler : GameStructurePacketHandler<C2SPartyPartyInviteCharacterReq>
+    public class PartyPartyInviteCharacterHandler : GameRequestPacketHandler<C2SPartyPartyInviteCharacterReq, S2CPartyPartyInviteCharacterRes>
     {
-        private static readonly ServerLogger Logger =
-            LogProvider.Logger<ServerLogger>(typeof(PartyPartyInviteCharacterHandler));
-
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyPartyInviteCharacterHandler));
 
         public PartyPartyInviteCharacterHandler(DdonGameServer server) : base(server)
         {
@@ -35,44 +31,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
         //              S2CContextGetLobbyPlayerContextNtc to the new party member, it should maybe also be sent to all members
         //              More stuff to determine
         // TODO: Figure out just how much packets/data within those packets we can do without while keeping everything functioning.
-        public override void Handle(GameClient client, StructurePacket<C2SPartyPartyInviteCharacterReq> packet)
+        public override S2CPartyPartyInviteCharacterRes Handle(GameClient client, C2SPartyPartyInviteCharacterReq request)
         {
             S2CPartyPartyInviteCharacterRes res = new S2CPartyPartyInviteCharacterRes();
 
-            GameClient invitedClient = Server.ClientLookup.GetClientByCharacterId(packet.Structure.CharacterId);
-            if (invitedClient == null)
-            {
-                Logger.Error(client, $"not found CharacterId:{packet.Structure.CharacterId} for party invitation");
-                res.Error = (uint)ErrorCode.ERROR_CODE_FAIL;
-                client.Send(res);
-                return;
-            }
-
+            GameClient invitedClient = Server.ClientLookup.GetClientByCharacterId(request.CharacterId)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_INVITE_FAIL_REASON_MEMBER_NOT_FOUND,
+                $"not found CharacterId:{request.CharacterId} for party invitation");
+            
             if (invitedClient == client)
             {
-                Logger.Error(client, $"can not invite (invitedClient == client)");
-                res.Error = (uint)ErrorCode.ERROR_CODE_FAIL;
-                client.Send(res);
-                return;
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_INTERNAL_ERROR, $"can not invite (invitedClient == client)");
             }
 
-            PartyGroup party = client.Party;
-            if (party == null)
-            {
-                Logger.Error(client, "can not invite (client.Party == null)");
-                res.Error = (uint)ErrorCode.ERROR_CODE_FAIL;
-                client.Send(res);
-                return;
-            }
+            PartyGroup party = client.Party
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_NOT_FOUNDED, "can not invite (client.Party == null)");
 
-            ErrorRes<PlayerPartyMember> invitedMember = party.Invite(invitedClient, client);
-            if (invitedMember.HasError)
-            {
-                Logger.Error(client, $"could not invite {invitedClient.Identity}");
-                res.Error = (uint)invitedMember.ErrorCode;
-                client.Send(res);
-                return;
-            }
+
+            PlayerPartyMember invitedMember = party.Invite(invitedClient, client);
 
             S2CPartyPartyInviteNtc ntc = new S2CPartyPartyInviteNtc();
             ntc.TimeoutSec = PartyManager.InvitationTimeoutSec;
@@ -85,14 +61,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             invitedClient.Send(ntc);
 
-
             res.TimeoutSec = PartyManager.InvitationTimeoutSec;
             res.Info.PartyId = party.Id;
             res.Info.ServerId = (uint) Server.Id;
-            res.Info.MemberList.Add(invitedMember.Value.GetCDataPartyMember());
-            client.Send(res);
+            res.Info.MemberList.Add(invitedMember.GetCDataPartyMember());
 
             Logger.Info(client, $"Invited Client:{invitedClient.Identity} to PartyId:{party.Id}");
+
+            return res;
         }
     }
 }

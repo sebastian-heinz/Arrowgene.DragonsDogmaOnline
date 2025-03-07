@@ -176,11 +176,7 @@ namespace Arrowgene.Ddon.GameServer
                 Database.DeleteConnection(Id, client.Account.Id);
             }
 
-            PartyGroup party = client.Party;
-            if (party != null)
-            {
-                party.Leave(client);
-            }
+            client.Party?.Leave(client);
 
             EventHandler<ClientConnectionChangeArgs> connectionChangeEvent = ClientConnectionChangeEvent;
             if (connectionChangeEvent != null)
@@ -462,6 +458,10 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new MailSystemMailDeleteHandler(this));
 
             AddHandler(new MandragoraGetMyMandragoraHandler(this));
+            AddHandler(new MandragoraGetSpeciesCategoryListHandler(this));
+            AddHandler(new MandragoraGetSpeciesListHandler(this));
+            AddHandler(new MandragoraGetCraftRecipeListHandler(this));
+            AddHandler(new MandragoraBeginCraftHandler(this));
 
             AddHandler(new MyRoomFurnitureListGetHandler(this));
             AddHandler(new MyRoomMyRoomBgmUpdateHandler(this));
@@ -475,9 +475,11 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new OrbDevoteGetPawnReleaseOrbElementListHandler(this));
             AddHandler(new OrbDevoteReleasePawnOrbElementHandler(this));
 
+            AddHandler(new PartnerPawnSetHandler(this));
             AddHandler(new PartnerPawnPawnLikabilityReleasedRewardListGetHandler(this));
             AddHandler(new PartnerPawnPawnLikabilityRewardListGetHandler(this));
-
+            AddHandler(new PartnerPawnPawnLikabilityRewardGetHandler(this));
+            
             AddHandler(new PartyMemberSetValueHandler(this));
             AddHandler(new PartyPartyBreakupHandler(this));
             AddHandler(new PartyPartyChangeLeaderHandler(this));

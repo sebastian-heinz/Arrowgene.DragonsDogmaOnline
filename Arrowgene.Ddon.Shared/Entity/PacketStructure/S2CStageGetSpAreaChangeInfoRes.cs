@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteUInt32(buffer, obj.StageId);
                 WriteUInt32(buffer, obj.StartPos);
                 WriteBool(buffer, obj.Unk4);
-                WriteEntity(buffer, obj.EntryCostList);
+                WriteEntityList(buffer, obj.EntryCostList);
             }
 
             public override S2CStageGetSpAreaChangeInfoRes Read(IBuffer buffer)

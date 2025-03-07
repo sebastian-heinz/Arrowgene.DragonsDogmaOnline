@@ -1,17 +1,14 @@
-using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class SkillGetAcquirableAbilityListHandler : StructurePacketHandler<GameClient, C2SSkillGetAcquirableAbilityListReq>
+    public class SkillGetAcquirableAbilityListHandler : GameRequestPacketHandler<C2SSkillGetAcquirableAbilityListReq, S2CSkillGetAcquirableAbilityListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillGetAcquirableAbilityListHandler));
 
@@ -21713,31 +21710,28 @@ namespace Arrowgene.Ddon.GameServer.Handler
             return abilities.Where(x => x.AbilityNo == abilityId).FirstOrDefault();
         }
 
-        private IDatabase _Database;
 
         public SkillGetAcquirableAbilityListHandler(DdonGameServer server) : base(server)
         {
-            _Database = server.Database;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SSkillGetAcquirableAbilityListReq> packet)
+        public override S2CSkillGetAcquirableAbilityListRes Handle(GameClient client, C2SSkillGetAcquirableAbilityListReq request)
         {
-            S2CSkillGetAcquirableAbilityListRes Response = new S2CSkillGetAcquirableAbilityListRes();
-            if (packet.Structure.Job != 0)
+            S2CSkillGetAcquirableAbilityListRes response = new S2CSkillGetAcquirableAbilityListRes();
+            if (request.Job != 0)
             {
-                Response.AbilityParamList = AllAbilities
-                    .Where(x => x.Job == packet.Structure.Job).ToList();
+                response.AbilityParamList = AllAbilities.Where(x => x.Job == request.Job).ToList();
             }
-            else if (packet.Structure.CharacterId == 0)
+            else if (request.CharacterId == 0)
             {
                 // Player characters come in as CharacterId == 0.
                 // Pawns seem to not need the information from this query. The UI still is populated by the skills
                 // acquired by the player character (is this intended?).
-                List<SecretAbility> UnlockedAbilities = _Database.SelectAllUnlockedSecretAbilities(client.Character.CommonId);
-                Response.AbilityParamList = AllSecretAbilities.Where(x => UnlockedAbilities.Contains((SecretAbility)x.AbilityNo)).ToList();
+                List<SecretAbility> UnlockedAbilities = Server.Database.SelectAllUnlockedSecretAbilities(client.Character.CommonId);
+                response.AbilityParamList = AllSecretAbilities.Where(x => UnlockedAbilities.Contains((SecretAbility)x.AbilityNo)).ToList();
             }
 
-            client.Send(Response);
+            return response;
         }
     }
 }

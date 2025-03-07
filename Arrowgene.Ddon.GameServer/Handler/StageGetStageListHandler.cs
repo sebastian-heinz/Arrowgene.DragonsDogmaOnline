@@ -1,13 +1,10 @@
-﻿using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class StageGetStageListHandler : StructurePacketHandler<GameClient, C2SStageGetStageListReq>
+    public class StageGetStageListHandler : GameRequestPacketHandler<C2SStageGetStageListReq, S2CStageGetStageListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(StageGetStageListHandler));
 
@@ -15,12 +12,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SStageGetStageListReq> packet)
+        public override S2CStageGetStageListRes Handle(GameClient client, C2SStageGetStageListReq request)
         {
-            S2CStageGetStageListRes obj = new S2CStageGetStageListRes();
-            obj.StageList = (Server as DdonGameServer).StageList;
-
-            client.Send(obj);
+            return new S2CStageGetStageListRes()
+            {
+                StageList = Server.StageList
+            };
         }
     }
 }

@@ -1,15 +1,11 @@
-using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
-using Arrowgene.Logging;
-using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Instance;
-using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class InstanceExchangeOmInstantKeyValueHandler : StructurePacketHandler<GameClient, C2SInstanceExchangeOmInstantKeyValueReq>
+    public class InstanceExchangeOmInstantKeyValueHandler : GameRequestPacketHandler<C2SInstanceExchangeOmInstantKeyValueReq, S2CInstanceExchangeOmInstantKeyValueRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceExchangeOmInstantKeyValueHandler));
 
@@ -17,25 +13,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SInstanceExchangeOmInstantKeyValueReq> req)
+        public override S2CInstanceExchangeOmInstantKeyValueRes Handle(GameClient client, C2SInstanceExchangeOmInstantKeyValueReq request)
         {
-            uint oldValue = OmManager.ExchangeOmData(client.Party.InstanceOmData, client.Character.Stage.Id, req.Structure.Key, req.Structure.Value);
+            uint oldValue = OmManager.ExchangeOmData(client.Party.InstanceOmData, client.Character.Stage.Id, request.Key, request.Value);
 
-            Logger.Debug($"OM: Key={req.Structure.Key}, Value={req.Structure.Value}, OldValue={oldValue}");
+            Logger.Debug($"OM: Key={request.Key}, Value={request.Value}, OldValue={oldValue}");
 
             S2CInstanceExchangeOmInstantKeyValueNtc ntc = new S2CInstanceExchangeOmInstantKeyValueNtc();
             ntc.StageId = client.Character.Stage.Id;
-            ntc.Key = req.Structure.Key;
-            ntc.Value = req.Structure.Value;
+            ntc.Key = request.Key;
+            ntc.Value = request.Value;
             ntc.OldValue = oldValue;
             client.Send(ntc);
 
             S2CInstanceExchangeOmInstantKeyValueRes res = new S2CInstanceExchangeOmInstantKeyValueRes();
             res.StageId = client.Character.Stage.Id;
-            res.Key = req.Structure.Key;
-            res.Value = req.Structure.Value;
+            res.Key = request.Key;
+            res.Value = request.Value;
             res.OldValue = oldValue;
-            client.Send(res);
+
+            return res;
         }
     }
 }

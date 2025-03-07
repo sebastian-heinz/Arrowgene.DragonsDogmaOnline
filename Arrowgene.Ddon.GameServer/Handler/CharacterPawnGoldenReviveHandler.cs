@@ -16,7 +16,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CCharacterPawnGoldenReviveRes Handle(GameClient client, C2SCharacterPawnGoldenReviveReq req)
         {
-            S2CCharacterPawnGoldenReviveRes res = new S2CCharacterPawnGoldenReviveRes(req);
+            S2CCharacterPawnGoldenReviveRes res = new()
+            {
+                PawnId = req.PawnId,
+            };
 
             bool walletUpdate = Server.WalletManager.RemoveFromWalletNtc(client, client.Character, WalletType.GoldenGemstones, 1); // TODO: Get price from settings.
             if (!walletUpdate)

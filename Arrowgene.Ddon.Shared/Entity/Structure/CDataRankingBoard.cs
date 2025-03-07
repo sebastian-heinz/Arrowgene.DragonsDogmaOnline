@@ -43,10 +43,10 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.RegisteredNum);
                 WriteUInt32(buffer, obj.IsWarMission ? 2u : 1u); 
 
-                WriteUInt64(buffer, (ulong)obj.Begin.ToUnixTimeSeconds());
-                WriteUInt64(buffer, (ulong)obj.End.ToUnixTimeSeconds());
-                WriteUInt64(buffer, (ulong)obj.Expire.ToUnixTimeSeconds());
-                WriteUInt64(buffer, (ulong)obj.Tallied.ToUnixTimeSeconds());
+                WriteInt64(buffer, obj.Begin.ToUnixTimeSeconds());
+                WriteInt64(buffer, obj.End.ToUnixTimeSeconds());
+                WriteInt64(buffer, obj.Expire.ToUnixTimeSeconds());
+                WriteInt64(buffer, obj.Tallied.ToUnixTimeSeconds());
             }
 
             public override CDataRankingBoard Read(IBuffer buffer)
@@ -58,10 +58,10 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.RegisteredNum = ReadUInt32(buffer);
                 obj.IsWarMission = ReadUInt32(buffer) >= 2;
 
-                obj.Begin = DateTimeOffset.FromUnixTimeSeconds((long)ReadUInt64(buffer));
-                obj.End = DateTimeOffset.FromUnixTimeSeconds((long)ReadUInt64(buffer));
-                obj.Expire = DateTimeOffset.FromUnixTimeSeconds((long)ReadUInt64(buffer));
-                obj.Tallied = DateTimeOffset.FromUnixTimeSeconds((long)ReadUInt64(buffer));
+                obj.Begin = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
+                obj.End = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
+                obj.Expire = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
+                obj.Tallied = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
                 return obj;
             }
         }

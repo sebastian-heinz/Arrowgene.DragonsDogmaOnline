@@ -18,6 +18,12 @@ namespace Arrowgene.Ddon.Server.Network
 
         protected RequestPacketHandler(DdonServer<TClient> server) : base(server)
         {
+#if DEBUG
+            if (!EntitySerializer.Contains(typeof(TResStruct)))
+            {
+                Logger.Error($"RequestPacketHandler missing serializer for {typeof(TResStruct).Name}");
+            }
+#endif
         }
 
         public abstract TResStruct Handle(TClient client, TReqStruct request);
@@ -44,6 +50,10 @@ namespace Arrowgene.Ddon.Server.Network
                 client.Send(response);
                 client.Close(); // Do not tolerate SqLiteExceptions because of desync issues.
                 throw;
+            }
+            catch (NotImplementedException ex)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_NOT_IMPLEMENTED, ex.Message, ex);
             }
             catch (ResponseErrorException ex)
             {

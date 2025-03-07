@@ -1,4 +1,4 @@
-﻿using Arrowgene.Buffers;
+using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 
@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public PacketId Id => PacketId.L2C_NEXT_CONNECT_SERVER_NTC;
 
         public uint Error { get; set; }
-        public CDataGameServerListInfo ServerList { get; set; }
+        public CDataGameServerListInfo ServerList { get; set; } = new();
 
         public byte Counter { get; set; }
 

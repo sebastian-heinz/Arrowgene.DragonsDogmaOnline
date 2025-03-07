@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
@@ -8,7 +9,7 @@ using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class EntryBoardEntryBoardItemReadyHandler : GameStructurePacketHandler<C2SEntryBoardEntryBoardItemReadyReq>
+    public class EntryBoardEntryBoardItemReadyHandler : GameRequestPacketQueueHandler<C2SEntryBoardEntryBoardItemReadyReq, S2CEntryBoardEntryBoardItemReadyRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(EntryBoardEntryBoardItemReadyHandler));
 
@@ -16,8 +17,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SEntryBoardEntryBoardItemReadyReq> request)
+        public override PacketQueue Handle(GameClient client, C2SEntryBoardEntryBoardItemReadyReq request)
         {
+            PacketQueue packetQueue = new PacketQueue();
+
             var data = Server.BoardManager.GetGroupDataForCharacter(client.Character);
 
             Server.BoardManager.SetGroupMemberReadyState(client.Character, true);
@@ -27,9 +30,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 NowMember = Server.BoardManager.NumGroupMembersReady(data.EntryItem.Id),
                 MaxMember = (uint) data.Members.Count,
             };
-            client.Send(ntc);
+            client.Enqueue(ntc, packetQueue);
 
-            client.Send(new S2CEntryBoardEntryBoardItemReadyRes());
+            client.Enqueue(new S2CEntryBoardEntryBoardItemReadyRes(), packetQueue);
 
             if (Server.BoardManager.AllGroupMembersReady(data.EntryItem.Id))
             {
@@ -53,32 +56,35 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 inviteAcceptNtc.PositionId = 0;
                 inviteAcceptNtc.MemberIndex = 0;
 
-                hostClient.Send(inviteAcceptNtc);
+                hostClient.Enqueue(inviteAcceptNtc, packetQueue);
 
                 var members = data.Members.ToList();
                 for (byte i = 1; i < data.Members.Count; i++)
                 {
                     var characterId = members[i];
                     var memberClient = Server.ClientLookup.GetClientByCharacterId(characterId);
-
-                    var invitedMember = party.Invite(memberClient, hostClient);
-                    if (invitedMember.HasError)
+                    try
                     {
-                        Logger.Error($"(EntryBoard) Failed to invite CharacterId={memberClient.Character.CharacterId} to PartyId={party.Id}");
-                        continue;
-                    }
+                        var invitedMember = party.Invite(memberClient, hostClient);
+                        var partyMember = party.Accept(memberClient);
 
-                    var partyMember = party.Accept(memberClient);
-                    if (partyMember.HasError)
+                        inviteAcceptNtc.MemberIndex = i;
+                        memberClient.Enqueue(inviteAcceptNtc, packetQueue);
+                    }
+                    catch (ResponseErrorException ex)
                     {
-                        Logger.Error($"(EntryBoard) CharacterId={memberClient.Character.CharacterId} failed to accept invite for PartyId={party.Id}");
-                        continue;
+                        // This is an internal party error, try and continue gracefully.
+                        if (ErrorCode.ERROR_CODE_PARTY_INTERNAL_ERROR <= ex.ErrorCode && ex.ErrorCode <= ErrorCode.ERROR_CODE_PARTY_IS_NOT_PAWN_OWNER)
+                        {
+                            Logger.Error($"(EntryBoard) Failure to handle CharacterId={memberClient?.Character?.CharacterId ?? uint.MaxValue}, PartyId={party.Id}: {ex.Message}");
+                            continue;
+                        }
+                        throw;
                     }
-
-                    inviteAcceptNtc.MemberIndex = i;
-                    memberClient.Send(inviteAcceptNtc);
                 }
             }
+
+            return packetQueue;
         }
     }
 }
