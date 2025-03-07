@@ -1,12 +1,14 @@
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
@@ -156,6 +158,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return gQuests[questScheduleId];
+        }
+
+        public static Quest GetQuestByQuestId(QuestId questId)
+        {
+            var questScheduleIds = GetQuestScheduleIdsForQuestId(questId);
+            if (questScheduleIds.Count > 1)
+            {
+                throw new Exception($"The quest {questId} has multiple implementations. Use GetQuestScheduleIdsForQuestId instead.");
+            }
+
+            return questScheduleIds.Count > 0 ? QuestManager.GetQuestByScheduleId(questScheduleIds.ToList()[0]) : null;
         }
 
         public static HashSet<uint> GetQuestScheduleIdsForQuestId(QuestId questId)
@@ -314,7 +327,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             public static List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand> AppendCheckCommands(List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand> obj, List<CDataQuestCommand> commands)
             {
-                obj[0].ResultCommandList.Concat(commands);
+                obj[0].ResultCommandList.AddRange(commands);
                 return obj;
             }
 

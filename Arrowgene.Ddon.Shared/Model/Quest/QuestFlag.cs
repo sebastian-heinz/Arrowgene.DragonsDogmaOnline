@@ -7,6 +7,8 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         MyQst,
         WorldManageLayout,
         WorldManageQuest,
+        Lot,
+        Sce,
     }
 
     public enum QuestFlagAction
@@ -25,5 +27,6 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public QuestFlagAction Action { get; set; }
         public int Value { get; set; }
         public int QuestId { get; set; }
+        public StageInfo stageInfo { get; set; }
     }
 }

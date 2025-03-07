@@ -163,7 +163,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 modifiedTime = 30;
             }
-            modifiedTime = (int)(modifiedTime * _server.GameLogicSettings.AdditionalProductionSpeedFactor);
+            modifiedTime = (int)(modifiedTime * _server.GameSettings.GameServerSettings.AdditionalProductionSpeedFactor);
             return (uint)modifiedTime;
         }
 

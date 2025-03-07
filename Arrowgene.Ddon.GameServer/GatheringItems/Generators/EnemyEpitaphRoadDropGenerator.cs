@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
 
         public List<InstancedGatheringItem> Generate(GameClient client, InstancedEnemy enemyKilled)
         {
-            var stageId = enemyKilled.StageId;
+            var stageId = enemyKilled.StageLayoutId;
             if (!StageManager.IsEpitaphRoadStageId(stageId))
             {
                 return new();

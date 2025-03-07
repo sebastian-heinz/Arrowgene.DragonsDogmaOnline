@@ -1,4 +1,4 @@
-using Arrowgene.Ddon.Server.Scripting.interfaces;
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Scripting.utils;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -49,7 +49,7 @@ public class CraftManagerTest
             {WalletType.RedDragonMark, 99999},
         });
 
-        var gameLogicSetting = new GameLogicSetting(_scriptableSettings);
+        var gameLogicSetting = new GameSettings(_scriptableSettings);
         _mockServer = new DdonGameServer(settings, gameLogicSetting, new MockDatabase(), new AssetRepository("TestFiles"));
         _craftManager = new CraftManager(_mockServer);
     }

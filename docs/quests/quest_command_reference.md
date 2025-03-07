@@ -349,6 +349,7 @@ HaveMoney(int gold, int type, int param03 = 0, int param04 = 0);
 ```
 /**
  * @brief
+ * @note might be required when a quest asks you to go complete one world quest to progress?
  * @param clearNum
  * @param areaId
  */
@@ -2788,6 +2789,7 @@ SetDeliverInfoQuest(StageNo stageNo, int groupNo, int setNo, int groupSerial);
  * @brief
  * @param type
  * @param bgmId
+ * @note some bgmIds can be found in the file sound/sound_game_common/sound/stream/bgm/bgm_battle/sound_boss_bgm.sbb.json BgmNo with type=1
  */
 BgmRequestFix(int type, int bgmId, int param03 = 0, int param04 = 0);
 ```

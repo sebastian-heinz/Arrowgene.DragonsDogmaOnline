@@ -21,7 +21,9 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
             PointRewards = new List<QuestPointReward>();
             EnemyGroups = new Dictionary<uint, QuestEnemyGroup>();
             MissionParams = new QuestMissionParams();
-            QuestLayoutSetInfoFlags = new List<QuestLayoutFlagSetInfo>();
+            QuestLayoutSetInfoSetList = new List<QuestLayoutFlagSetInfo>();
+            OrderConditions = new List<QuestOrderCondition>();
+            ServerActions = new List<QuestServerAction>();
 
             if (OverrideEnemySpawn == null)
             {
@@ -58,8 +60,10 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
         private List<QuestWalletReward> WalletRewards { get; set; }
         private List<QuestPointReward> PointRewards { get; set; }
         private Dictionary<uint, QuestEnemyGroup> EnemyGroups { get; set; }
-        private List<QuestLayoutFlagSetInfo> QuestLayoutSetInfoFlags { get; set; }
+        private List<QuestLayoutFlagSetInfo> QuestLayoutSetInfoSetList { get; set; }
         protected QuestMissionParams MissionParams { get; set; }
+        protected List<QuestOrderCondition> OrderConditions { get; set; }
+        protected List<QuestServerAction> ServerActions { get; set; }
 
         public void Initialize(string path)
         {
@@ -87,9 +91,13 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
         {
         }
 
-        public virtual bool AcceptRequirementsMet(DdonGameServer server, GameClient client)
+        public virtual bool AcceptRequirementsMet(GameClient client)
         {
             return Enabled;
+        }
+
+        public virtual void InitializeInstanceState(QuestState questState)
+        {
         }
 
         public void AddItemReward(QuestRewardItem reward)
@@ -102,14 +110,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
 
         public void AddFixedItemReward(ItemId itemId, ushort amount, bool isHidden = false)
         {
-            var reward = new QuestFixedRewardItem(isHidden);
-            reward.LootPool.Add(new FixedLootPoolItem()
-            {
-                ItemId = itemId,
-                Num = amount,
-            });
-
-            AddItemReward(reward);
+            AddItemReward(QuestFixedRewardItem.Create(itemId, amount, isHidden));
         }
 
         public void AddFixedItemReward(uint itemId, ushort amount)
@@ -119,92 +120,42 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
 
         public void AddRandomChanceItemReward(List<(ItemId ItemId, ushort Amount, double Chance)> items, bool isHidden = false)
         {
-            var reward = new QuestRandomChanceRewardItem(isHidden);
-            foreach (var item in items)
-            {
-                reward.LootPool.Add(new ChanceLootPoolItem()
-                {
-                    ItemId = item.ItemId,
-                    Num = item.Amount,
-                    Chance = item.Chance
-                });
-            }
-            AddItemReward(reward);
+            AddItemReward(QuestRandomChanceRewardItem.Create(items, isHidden));
         }
 
         public void AddRandomFixedItemReward(List<(ItemId ItemId, ushort Amount)> items, bool isHidden = false)
         {
-            var reward = new QuestRandomFixedRewardItem(isHidden);
-            foreach (var item in items)
-            {
-                reward.LootPool.Add(new FixedLootPoolItem
-                {
-                    ItemId = item.ItemId,
-                    Num = item.Amount,
-                });
-            }
-            AddItemReward(reward);
+            AddItemReward(QuestRandomFixedRewardItem.Create(items, isHidden));
         }
 
         public void AddSelectItemReward(List<(ItemId ItemId, ushort Amount)> items, bool isHidden = false)
         {
-            var reward = new QuestSelectRewardItem(isHidden);
-            foreach (var item in items)
-            {
-                reward.LootPool.Add(new SelectLootPoolItem
-                {
-                    ItemId = item.ItemId,
-                    Num = item.Amount,
-                });
-            }
-        }
-
-        public void AddPointReward(QuestPointReward reward)
-        {
-            if (reward != null)
-            {
-                PointRewards.Add(reward);
-            }
+            AddItemReward(QuestSelectRewardItem.Create(items, isHidden));
         }
 
         public void AddPointReward(PointType pointType, uint amount)
         {
-            var reward = new QuestPointReward()
-            {
-                PointType = pointType,
-                Amount = amount
-            };
-
-            AddPointReward(reward);
-        }
-
-        public void AddWalletReward(QuestWalletReward reward)
-        {
-            if (reward != null)
-            {
-                WalletRewards.Add(reward);
-            }
+            PointRewards.Add(QuestPointReward.Create(pointType, amount));
         }
 
         public void AddWalletReward(WalletType walletType, uint amount)
         {
-            var reward = new QuestWalletReward()
-            {
-                WalletType = walletType,
-                Amount = amount
-            };
-            AddWalletReward(reward);
+            WalletRewards.Add(QuestWalletReward.Create(walletType, amount));
         }
 
-        public void AddQuestLayoutSetInfoFlag(uint flagNo, StageInfo stageInfo, uint enemyGroupId)
+        public void AddQuestOrderCondition(QuestOrderConditionType type, int param01 = 0, int param02 = 0)
         {
-            var enemyGroup = GetEnemyGroup(enemyGroupId);
-            QuestLayoutSetInfoFlags.Add(new QuestLayoutFlagSetInfo()
+            AddQuestOrderCondition(new QuestOrderCondition()
             {
-                FlagNo = flagNo,
-                StageNo = stageInfo.StageNo,
-                GroupId = enemyGroup.StageLayoutId.GroupId
+                Type = type,
+                Param01 = param01,
+                Param02 = param02,
             });
+        }
+
+        public void AddQuestOrderCondition(QuestOrderCondition orderCondition)
+        {
+            OrderConditions.Add(orderCondition);
         }
 
         protected QuestEnemyGroup GetEnemyGroup(uint enemyGroupId)
@@ -212,40 +163,61 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
             return EnemyGroups[enemyGroupId];
         }
 
-        public void AddEnemies(uint id, StageLayoutId stageLayoutId, byte subGroupId, QuestEnemyPlacementType placementType, List<InstancedEnemy> enemies, QuestTargetType targetType = QuestTargetType.EnemyForOrder)
+        public void AddEnemies(uint enemyGroupId, StageInfo stageInfo, uint groupId, byte subGroupId, QuestEnemyPlacementType placementType, List<InstancedEnemy> enemies, QuestTargetType targetType = QuestTargetType.EnemyForOrder)
         {
-            if (!EnemyGroups.ContainsKey(id))
+            if (!EnemyGroups.ContainsKey(enemyGroupId))
             {
-                EnemyGroups[id] = new QuestEnemyGroup()
+                EnemyGroups[enemyGroupId] = new QuestEnemyGroup()
                 {
-                    StageLayoutId = stageLayoutId,
+                    StageLayoutId = stageInfo.AsStageLayoutId(groupId),
                     SubGroupId = subGroupId,
-                    GroupId = id,
+                    GroupId = enemyGroupId,
                     PlacementType = placementType,
                     TargetType = targetType
                 };
             }
 
-            foreach (var enemy in enemies)
+            for (int i = 0; i < enemies.Count; i++)
             {
-                enemy.StageId = stageLayoutId;
-                enemy.IsQuestControlled = true;
+                var enemy = enemies[i];
+                enemy.StageLayoutId = stageInfo.AsStageLayoutId(groupId);
+                enemy.QuestEnemyGroupId = enemyGroupId;
+                enemy.QuestScheduleId = QuestScheduleId;
+
+                if (placementType == QuestEnemyPlacementType.Automatic)
+                {
+                    enemy.Index = (byte) i;
+                }
             }
 
-            EnemyGroups[id].Enemies.AddRange(enemies);
+            QuestLayoutSetInfoSetList.Add(new QuestLayoutFlagSetInfo()
+            {
+                FlagNo = enemyGroupId,
+                GroupId = groupId,
+                StageNo = stageInfo.StageNo,
+            });
+
+            EnemyGroups[enemyGroupId].Enemies.AddRange(enemies);
         }
 
-        public void AddEnemies(uint id, StageInfo stage, uint groupId, byte subGroupId, QuestEnemyPlacementType placementType, List<InstancedEnemy> enemies, QuestTargetType targetType = QuestTargetType.EnemyForOrder)
+        public void AddEnemies(uint id, StageInfo stageInfo, uint groupId, QuestEnemyPlacementType placementType, List<InstancedEnemy> enemies)
         {
-            AddEnemies(id, stage.AsStageLayoutId(groupId), subGroupId, placementType, enemies, targetType);
+            AddEnemies(id, stageInfo, groupId, 0, placementType, enemies);
         }
 
-        public void AddEnemies(uint id, StageInfo stage, uint groupId, QuestEnemyPlacementType placementType, List<InstancedEnemy> enemies, QuestTargetType targetType = QuestTargetType.EnemyForOrder)
+        public void AddServerAction(QuestSeverActionType actionType, OmInstantValueAction action, ulong key, uint value, StageInfo stageInfo, uint groupId)
         {
-            AddEnemies(id, stage.AsStageLayoutId(groupId), 0, placementType, enemies, targetType);
+            ServerActions.Add(new QuestServerAction()
+            {
+                ActionType = actionType,
+                OmInstantValueAction = action,
+                Key = key,
+                Value = value,
+                StageLayoutId = stageInfo.AsStageLayoutId(0, groupId)
+            });
         }
 
-        public QuestProcess AddProcess(QuestProcess process)
+        private QuestProcess AddProcess(QuestProcess process)
         {
             if (Processes.ContainsKey(process.ProcessNo))
             {
@@ -257,7 +229,10 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
 
         public QuestProcess AddNewProcess(ushort processNo)
         {
-            return AddProcess(new QuestProcess(processNo));
+            return AddProcess(new QuestProcess(processNo, QuestScheduleId)
+            {
+                EnemyGroups = EnemyGroups
+            });
         }
 
         private void ValidateQuestParams()
@@ -307,7 +282,9 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
                 StageLayoutId = StageInfo.AsStageLayoutId(0, 0),
                 ResetPlayerAfterQuest = ResetPlayerAfterQuest,
                 MissionParams = MissionParams,
-                QuestLayoutSetInfoFlags = QuestLayoutSetInfoFlags,
+                QuestLayoutSetInfoFlags = QuestLayoutSetInfoSetList,
+                OrderConditions = OrderConditions,
+                ServerActions = ServerActions
             };
 
             // TODO: Generate a ScriptedQuest instead which is more customizable

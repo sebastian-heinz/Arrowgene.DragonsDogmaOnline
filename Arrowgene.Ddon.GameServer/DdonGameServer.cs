@@ -34,7 +34,6 @@ using Arrowgene.Ddon.GameServer.Shop;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Handler;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Server.Scripting.interfaces;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -51,11 +50,11 @@ namespace Arrowgene.Ddon.GameServer
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonGameServer));
 
-        public DdonGameServer(GameServerSetting setting, GameLogicSetting gameLogicSettings, IDatabase database, AssetRepository assetRepository)
+        public DdonGameServer(GameServerSetting setting, GameSettings gameSettings, IDatabase database, AssetRepository assetRepository)
             : base(ServerType.Game, setting.ServerSetting, database, assetRepository)
         {
             ServerSetting = new GameServerSetting(setting);
-            GameLogicSettings = gameLogicSettings;
+            GameSettings = gameSettings;
             ScriptManager = new GameServerScriptManager(this);
             ClientLookup = new GameClientLookup();
             ChatLogHandler = new ChatLogHandler();
@@ -85,6 +84,7 @@ namespace Arrowgene.Ddon.GameServer
             EpitaphRoadManager = new EpitaphRoadManager(this);
             ScheduleManager = new ScheduleManager(this);
             AreaRankManager = new AreaRankManager(this);
+            GameTimeManager = new GameTimeManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
@@ -96,7 +96,7 @@ namespace Arrowgene.Ddon.GameServer
 
         public event EventHandler<ClientConnectionChangeArgs> ClientConnectionChangeEvent;
         public GameServerSetting ServerSetting { get; }
-        public GameLogicSetting GameLogicSettings { get; }
+        public GameSettings GameSettings { get; }
         public GameServerScriptManager ScriptManager { get; }
         public ChatManager ChatManager { get; }
         public ItemManager ItemManager { get; }
@@ -125,6 +125,7 @@ namespace Arrowgene.Ddon.GameServer
         public EpitaphRoadManager EpitaphRoadManager { get; }
         private ScheduleManager ScheduleManager { get; }
         public AreaRankManager AreaRankManager { get; }
+        public GameTimeManager GameTimeManager { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
 

@@ -20,12 +20,15 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             TargetType = QuestTargetType.EnemyForOrder;
         }
 
-        public List<InstancedEnemy> CreateNewInstance()
+        public List<InstancedEnemy> CreateNewInstance(ushort processNo = 0, ushort blockNo = 0)
         {
             List<InstancedEnemy> results = new List<InstancedEnemy>();
             foreach (var enemy in Enemies)
             {
-                results.Add(enemy.CreateNewInstance());
+                var newEnemy = enemy.CreateNewInstance();
+                newEnemy.QuestProcessInfo.ProcessNo = processNo;
+                newEnemy.QuestProcessInfo.BlockNo = blockNo;
+                results.Add(newEnemy);
             }
             return results;
         }

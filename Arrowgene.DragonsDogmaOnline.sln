@@ -25,6 +25,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arrowgene.Ddon.Rpc.Web", "A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Arrowgene.Ddon.Client", "Arrowgene.Ddon.Client\Arrowgene.Ddon.Client.csproj", "{DAC06C22-BD06-4592-A60A-3990B85EF7A8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Arrowgene.Ddon.Scripts", "Arrowgene.Ddon.Scripts\Arrowgene.Ddon.Scripts.csproj", "{6B1A1279-B893-41BE-9D80-D4039A5251DA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{DAC06C22-BD06-4592-A60A-3990B85EF7A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DAC06C22-BD06-4592-A60A-3990B85EF7A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DAC06C22-BD06-4592-A60A-3990B85EF7A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B1A1279-B893-41BE-9D80-D4039A5251DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B1A1279-B893-41BE-9D80-D4039A5251DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B1A1279-B893-41BE-9D80-D4039A5251DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B1A1279-B893-41BE-9D80-D4039A5251DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

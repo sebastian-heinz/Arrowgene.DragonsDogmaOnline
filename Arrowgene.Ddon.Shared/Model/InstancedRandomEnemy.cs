@@ -28,6 +28,7 @@ namespace Arrowgene.Ddon.Shared.Model
             EnemyTargetTypesId = 4;
             Scale = 100;
             IsRequired = true;
+            HmPresetNo = (ushort) ((EnemyId)EnemyId).GetHmPresetId();
         }
 
         public override InstancedEnemy CreateNewInstance()
@@ -37,6 +38,7 @@ namespace Arrowgene.Ddon.Shared.Model
             var enemy = base.CreateNewInstance();
             enemy.Id = (uint)enemyId;
             enemy.EnemyId = (uint)enemyId;
+            enemy.HmPresetNo = (ushort)enemyId.GetHmPresetId();
 
             enemy.DropsTable = DropTables[enemyId];
 

@@ -48,6 +48,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var quests = QuestManager.GetQuestsByType(QuestType.ExtremeMission)
                 .Select(x => QuestManager.GetQuestByScheduleId(x))
                 .Where(x => x.MissionParams.Group == request.GroupId)
+                .Where(x => x.IsActive(client))
                 .OrderBy(x => x.QuestScheduleId);
             foreach (var quest in quests)
             {

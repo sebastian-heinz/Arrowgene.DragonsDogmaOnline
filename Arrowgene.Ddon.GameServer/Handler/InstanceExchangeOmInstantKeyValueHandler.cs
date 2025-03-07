@@ -17,6 +17,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             uint oldValue = OmManager.ExchangeOmData(client.Party.InstanceOmData, client.Character.Stage.Id, request.Key, request.Value);
 
+            Logger.Debug($"OM: Key={request.Key}, Value={request.Value}, OldValue={oldValue}");
+
             S2CInstanceExchangeOmInstantKeyValueNtc ntc = new S2CInstanceExchangeOmInstantKeyValueNtc();
             ntc.StageId = client.Character.Stage.Id;
             ntc.Key = request.Key;

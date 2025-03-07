@@ -24,13 +24,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CAreaGetLeaderAreaReleaseListRes Handle(GameClient client, C2SAreaGetLeaderAreaReleaseListReq request)
         {
             var result = new S2CAreaGetLeaderAreaReleaseListRes();
-            var clientRank = client.Character.AreaRanks;
-            var completedQuests = client.Character.CompletedQuests;
-            foreach ((var area, var rank) in clientRank)
+            var leader = client.Party.Leader;
+
+            if (client.Party.Leader is null)
+            {
+                // No unlocks without a leader to pull AR from.
+                return result;
+            }
+
+            var leaderRank = leader.Client.Character.AreaRanks;
+            var completedQuests = leader.Client.Character.CompletedQuests;
+            foreach ((var area, var rank) in leaderRank)
             {
                 var releaseList = Server.AssetRepository.AreaRankSpotInfoAsset[area]
                 .Where(spot => spot.UnlockRank > 0 || spot.UnlockQuest > 0)
-                .Where(spot => Server.AreaRankManager.CheckSpot(client, spot))
+                .Where(spot => Server.AreaRankManager.CheckSpot(leader.Client, spot))
                 .Select(spot => new CDataCommonU32(spot.SpotId))
                 .ToList();
 

@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         private readonly HashSet<uint> _ignoreKillsInStageIds = new HashSet<uint>()
         {
-            349, //White Dragon Temple, Training Room
+            Stage.TrainingRoom.StageId,
         };
 
         public InstanceEnemyKillHandler(DdonGameServer server) : base(server)
@@ -46,27 +46,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return new();
             }
 
-            Quest quest = null;
-            bool IsQuestControlled = false;
-            foreach (var questScheduleId in QuestManager.CollectQuestScheduleIds(client, stageId))
-            {
-                quest = client.Party.QuestState.GetQuest(questScheduleId);
-                if (quest != null)
-                {
-                    var questStateManager = QuestManager.GetQuestStateManager(client, quest);
-                    if (questStateManager.HasEnemiesInCurrentStageGroup(quest, stageId))
-                    {
-                        IsQuestControlled = true;
-                        break;
-                    }
-                }
-            }
-
             InstancedEnemy enemyKilled = client.Party.InstanceEnemyManager.GetInstanceEnemy(stageId, (byte)packet.SetId);
             if (enemyKilled is null)
             {
                 Logger.Error(client, $"Enemy killed data missing; {layoutId}.{packet.SetId}");
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_INSTANCE_AREA_ENEMY_UNIT_DATA_NONE);
+            }
+
+            Quest quest = null;
+            bool isQuestControlled = false;
+            if (enemyKilled.QuestScheduleId != 0)
+            {
+                quest = QuestManager.GetQuestByScheduleId(enemyKilled.QuestScheduleId);
+                isQuestControlled = (quest != null);
             }
 
             if (enemyKilled.RepopCount > 0 && enemyKilled.RepopNum < enemyKilled.RepopCount)
@@ -80,7 +72,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     EnemyData = new CDataLayoutEnemyData()
                     {
                         PositionIndex = (byte)packet.SetId,
-                        EnemyInfo = enemyKilled.asCDataStageLayoutEnemyPresetEnemyInfoClient()
+                        EnemyInfo = enemyKilled.AsCDataStageLayoutEnemyPresetEnemyInfoClient()
                     }
                 };
                 client.Party.EnqueueToAll(repopNtc, queuedPackets);
@@ -115,6 +107,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         }
                     }
 
+                    if (isQuestControlled)
+                    {
+                        var ntcs = QuestManager.GetQuestStateManager(client, quest).HandleDestroyGroupWorkNotice(client.Party, quest, stageId, enemyKilled, connectionIn);
+                        queuedPackets.AddRange(ntcs);
+                    }
+                    
                     // This is used for quests and things like key door monsters
                     S2CInstanceEnemyGroupDestroyNtc groupDestroyedNtc = new S2CInstanceEnemyGroupDestroyNtc()
                     {
@@ -178,7 +176,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     CharacterCommon memberCharacter;
                     if (member is PlayerPartyMember playerMember)
                     {
-                        var gainedExp = _gameServer.ExpManager.GetAdjustedPoints(client, RewardSource.Enemy, client.Character, client.Party, PointType.ExperiencePoints, enemyExpMixin.GetExpValue(enemyKilled), enemyKilled);
+                        var gainedExp = _gameServer.ExpManager.GetAdjustedPoints(client, RewardSource.Enemy, client.Character, client.Party, PointType.ExperiencePoints, enemyExpMixin.GetExpValue(playerMember.Client.Character, enemyKilled), enemyKilled);
                         var gainedPP = _gameServer.ExpManager.GetAdjustedPoints(client, RewardSource.Enemy, client.Character, client.Party, PointType.PlayPoints, enemyKilled.GetDroppedPlayPoints(), enemyKilled);
 
                         memberClient = playerMember.Client;
@@ -186,11 +184,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                         if (memberCharacter.Stage.Id != stageId.Id) continue; // Only nearby allies get XP.
 
-                        if (memberClient.Character.ActiveCharacterPlayPointData.PlayPoint.ExpMode == ExpMode.Experience && !IsQuestControlled && !isEpitaphEnemy)
+                        if (memberClient.Character.ActiveCharacterPlayPointData.PlayPoint.ExpMode == ExpMode.Experience && !isQuestControlled && !isEpitaphEnemy)
                         {
                             gainedPP = (0, 0);
                         }
-                        else if (!IsQuestControlled && !isEpitaphEnemy)
+                        else if (!isQuestControlled && !isEpitaphEnemy)
                         {
                             gainedExp = (0, 0);
                         }
@@ -203,7 +201,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         if (enemyKilled.BloodOrbs > 0)
                         {
                             // Drop BO
-                            uint gainedBo = (uint) (enemyKilled.BloodOrbs * _gameServer.GameLogicSettings.BoModifier);
+                            uint gainedBo = (uint) (enemyKilled.BloodOrbs * _gameServer.GameSettings.GameServerSettings.BoModifier);
                             uint bonusBo = (uint) (gainedBo * _gameServer.GpCourseManager.EnemyBloodOrbBonus());
                             CDataUpdateWalletPoint boUpdateWalletPoint = _gameServer.WalletManager.AddToWallet(memberClient.Character, WalletType.BloodOrbs, gainedBo + bonusBo, bonusBo, connectionIn: connectionIn);
                             updateCharacterItemNtc.UpdateWalletList.Add(boUpdateWalletPoint);
@@ -212,7 +210,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         if (enemyKilled.HighOrbs > 0)
                         {
                             // Drop HO
-                            uint gainedHo = (uint)(enemyKilled.HighOrbs * _gameServer.GameLogicSettings.HoModifier);
+                            uint gainedHo = (uint)(enemyKilled.HighOrbs * _gameServer.GameSettings.GameServerSettings.HoModifier);
                             CDataUpdateWalletPoint hoUpdateWalletPoint = _gameServer.WalletManager.AddToWallet(memberClient.Character, WalletType.HighOrbs, gainedHo, connectionIn: connectionIn);
                             updateCharacterItemNtc.UpdateWalletList.Add(hoUpdateWalletPoint);
                         }
@@ -247,7 +245,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             continue;
                         }
 
-                        var pawnExp = _gameServer.ExpManager.GetAdjustedPoints(client, RewardSource.Enemy, pawn, client.Party, PointType.ExperiencePoints, enemyExpMixin.GetExpValue(enemyKilled), enemyKilled);
+                        var pawnExp = _gameServer.ExpManager.GetAdjustedPoints(client, RewardSource.Enemy, pawn, client.Party, PointType.ExperiencePoints, enemyExpMixin.GetExpValue(memberCharacter, enemyKilled), enemyKilled);
                         if ((pawnExp.BasePoints + pawnExp.BonusPoints) > 0)
                         {
                             var ntcs = _gameServer.ExpManager.AddExp(memberClient, memberCharacter, pawnExp, RewardSource.Enemy, connectionIn: connectionIn);

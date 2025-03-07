@@ -7,7 +7,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Quests
@@ -85,17 +85,17 @@ namespace Arrowgene.Ddon.GameServer.Quests
             {
                 foreach (var block in process.Blocks.Values)
                 {
+                    foreach (var groupId in block.EnemyGroupIds)
+                    {
+                        var enemyGroup = quest.EnemyGroups[groupId];
+                        quest.Locations.Add(new QuestLocation() { StageId = enemyGroup.StageLayoutId, SubGroupId = (ushort)enemyGroup.SubGroupId });
+                    }
+
                     switch (block.BlockType)
                     {
                         case QuestBlockType.KillGroup:
                         case QuestBlockType.SpawnGroup:
-                            {
-                                foreach (var groupId in block.EnemyGroupIds)
-                                {
-                                    var enemyGroup = quest.EnemyGroups[groupId];
-                                    quest.Locations.Add(new QuestLocation() { StageId = enemyGroup.StageLayoutId, SubGroupId = (ushort) enemyGroup.SubGroupId });
-                                }
-                            }
+                            /* Always populate enemies if there is a list of them */
                             break;
                         case QuestBlockType.DeliverItems:
                         case QuestBlockType.NewDeliverItems:
@@ -223,7 +223,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 foreach (var enemyGroupId in questBlock.EnemyGroupIds)
                 {
                     var enemyGroup = EnemyGroups[enemyGroupId];
-                    questStateManager.SetInstanceEnemies(this, enemyGroup.StageLayoutId, (ushort)enemyGroup.SubGroupId, enemyGroup.CreateNewInstance());
+                    questStateManager.SetInstanceEnemies(this, enemyGroup.StageLayoutId, (ushort)enemyGroup.SubGroupId, enemyGroup.CreateNewInstance(processState.ProcessNo, processState.BlockNo));
                 }
             }
             else
@@ -235,7 +235,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 }
             }
 
-            // questBlock.BlockType == QuestBlockType.ExtendTime && 
             if (BoardManager.BoardIdIsExm(client.Party.ContentId) && questBlock.TimeAmount > 0)
             {
                 var newEndTime = server.PartyQuestContentManager.ExtendTimer(client.Party.Id, questBlock.TimeAmount);
@@ -282,14 +281,39 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 questBlock = process.Blocks[questBlock.CheckpointDetails.BlockNo];
             }
 
+            var questState = questStateManager.GetQuestState(this);
+
+            var cbParam = new QuestCallbackParam(client, questState);
             foreach (var callback in questBlock.Callbacks)
             {
-                callback(client);
+                ((Action<QuestCallbackParam>)callback)(cbParam);
+            }
+
+            // Add any newly created process state added by the quest callback
+            CDataQuestProcessState questProcessState;
+            if (cbParam.ResultCommands.Count > 0 || cbParam.CheckCommands.Count > 0)
+            {
+                // Make a deep copy and then append dynamically generated commands
+                questProcessState = new CDataQuestProcessState(questBlock.QuestProcessState);
+
+                if (cbParam.ResultCommands.Count > 0)
+                {
+                    questProcessState.ResultCommandList.AddRange(cbParam.ResultCommands);
+                }
+                
+                if (cbParam.CheckCommands.Count > 0)
+                {
+                    questProcessState.CheckCommandList = QuestManager.CheckCommand.AppendCheckCommands(questProcessState.CheckCommandList, cbParam.CheckCommands);
+                }
+            }
+            else
+            {
+                questProcessState = questBlock.QuestProcessState;
             }
 
             return new List<CDataQuestProcessState>()
             {
-                questBlock.QuestProcessState
+                questProcessState
             };
         }
 
@@ -331,7 +355,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 resultCommands.Add(QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Caution));
             }
 
-            if (questBlock.SequenceNo != 1)
+            if (questBlock.BlockType != QuestBlockType.End)
             {
                 switch (questBlock.AnnounceType)
                 {
@@ -413,15 +437,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         foreach (var groupId in questBlock.EnemyGroupIds)
                         {
                             var enemyGroup = quest.EnemyGroups[groupId];
-
-                            if (enemyGroup.TargetType == QuestTargetType.ExmSub)
-                            {
-                                checkCommands.Add(QuestManager.CheckCommand.IsEnemyFoundGmSub(StageManager.ConvertIdToStageNo(enemyGroup.StageLayoutId), (int)enemyGroup.StageLayoutId.GroupId, -1));
-                            }
-                            else
-                            {
-                                checkCommands.Add(QuestManager.CheckCommand.IsEnemyFoundForOrder(StageManager.ConvertIdToStageNo(enemyGroup.StageLayoutId), (int)enemyGroup.StageLayoutId.GroupId, -1));
-                            }
+                            checkCommands.Add(questBlock.ShowMarker ?
+                                QuestManager.CheckCommand.IsEnemyFoundForOrder(StageManager.ConvertIdToStageNo(enemyGroup.StageLayoutId), (int)enemyGroup.StageLayoutId.GroupId, -1) :
+                                QuestManager.CheckCommand.IsEnemyFoundWithoutMarker(StageManager.ConvertIdToStageNo(enemyGroup.StageLayoutId), (int)enemyGroup.StageLayoutId.GroupId, -1));
                         }
                     }
                     break;
@@ -449,7 +467,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         foreach (var groupId in questBlock.EnemyGroupIds)
                         {
                             var enemyGroup = quest.EnemyGroups[groupId];
-                            foreach (var enemy in enemyGroup.CreateNewInstance())
+                            foreach (var enemy in enemyGroup.Enemies)
                             {
                                 checkCommands.Add(QuestManager.CheckCommand.EmHpLess(StageManager.ConvertIdToStageNo(enemyGroup.StageLayoutId), (int)enemyGroup.StageLayoutId.GroupId, enemy.Index, questBlock.EnemyHpPrecent));
                             }

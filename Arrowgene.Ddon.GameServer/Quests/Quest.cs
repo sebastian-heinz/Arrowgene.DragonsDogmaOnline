@@ -2,6 +2,7 @@ using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Context;
 using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -77,8 +78,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public QuestRewardParams RewardParams { get; protected set; }
         protected List<CDataWalletPoint> WalletRewards { get; set; }
         protected List<CDataQuestExp> ExpRewards { get; set; }
-        public List<QuestRewardItem> ItemRewards { get; protected set; }
-        public List<QuestRewardItem> SelectableRewards { get; protected set; }
+        protected List<QuestRewardItem> ItemRewards { get; set; }
+        protected List<QuestRewardItem> SelectableRewards { get; set; }
         public List<CDataCharacterReleaseElement> ContentsReleaseRewards { get; protected set; }
         public List<QuestLocation> Locations { get; protected set; }
         public List<QuestDeliveryItem> DeliveryItems { get; protected set; }
@@ -163,18 +164,25 @@ namespace Arrowgene.Ddon.GameServer.Quests
         /// Checks to see if the quest is active. This includes checking the enabled flag
         /// and other special conditions like between a date range, time or other conditions.
         /// </summary>
-        /// <param name="server"></param>
         /// <param name="client"></param>
         /// <returns></returns>
-        public virtual bool IsActive(DdonGameServer server, GameClient client)
+        public virtual bool IsActive(GameClient client)
         {
             bool additionalReqs = true;
             if (BackingObject != null)
             {
-                additionalReqs = BackingObject.AcceptRequirementsMet(server, client);
+                additionalReqs = BackingObject.AcceptRequirementsMet(client);
             }
             
             return Enabled && additionalReqs;
+        }
+
+        public virtual void InitializeInstanceState(QuestState questState)
+        {
+            if (BackingObject != null)
+            {
+                BackingObject.InitializeInstanceState(questState);
+            }
         }
 
         private List<CDataQuestProcessState> GetProcessState(uint step, out uint announceNoCount)
@@ -517,6 +525,71 @@ namespace Arrowgene.Ddon.GameServer.Quests
             };
         }
 
+        public virtual CDataWorldManageQuestOrderList ToCDataWorldManageQuestOrderList(uint step)
+        {
+            var result = new CDataWorldManageQuestOrderList()
+            {
+                IsTutorialGuide = false, // TODO: Extract from configuration data
+                Param = ToCDataQuestOrderList(step)
+            };
+            result.Param.CanProgress = false;
+
+            return result;
+        }
+
+        public void ClearAllRewards()
+        {
+            ItemRewards.Clear();
+            ExpRewards.Clear();
+            SelectableRewards.Clear();
+            WalletRewards.Clear();
+        }
+
+        public void AddPointReward(QuestPointReward reward)
+        {
+            ExpRewards.Add(reward.AsCDataQuestExp());
+        }
+
+        public void AddPointReward(PointType pointType, uint amount)
+        {
+            AddPointReward(QuestPointReward.Create(pointType, amount));
+        }
+
+        public void AddWalletReward(QuestWalletReward reward)
+        {
+            WalletRewards.Add(reward.AsCDataWalletPoint());
+        }
+
+        public void AddWalletReward(WalletType WalletType, uint amount)
+        {
+            AddWalletReward(QuestWalletReward.Create(WalletType, amount));
+        }
+
+        public void AddItemReward(QuestRewardItem reward)
+        {
+            switch (reward.RewardType)
+            {
+                case QuestRewardType.Fixed:
+                case QuestRewardType.Undiscovery:
+                case QuestRewardType.Random:
+                case QuestRewardType.Repeat:
+                case QuestRewardType.Switch:
+                case QuestRewardType.Border:
+                case QuestRewardType.Ranking:
+                case QuestRewardType.Charge:
+                case QuestRewardType.RegionBreak:
+                case QuestRewardType.FixedFirst:
+                case QuestRewardType.FixedSecond:
+                case QuestRewardType.FixedMemberFirst:
+                case QuestRewardType.ProgressBonus:
+                    ItemRewards.Add(reward);
+                    break;
+                case QuestRewardType.Select:
+                    SelectableRewards.Add(reward);
+                    break;
+            }
+        }
+
         public virtual CDataTimeGainQuestList ToCDataTimeGainQuestList(uint step)
         {
             var result = new CDataTimeGainQuestList()
@@ -788,7 +861,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 foreach (var groupId in process.Blocks[processState.BlockNo].EnemyGroupIds)
                 {
                     var enemyGroup = EnemyGroups[groupId];
-                    partyQuestState.SetInstanceEnemies(this, enemyGroup.StageLayoutId, (ushort)enemyGroup.SubGroupId, enemyGroup.CreateNewInstance());
+                    partyQuestState.SetInstanceEnemies(this, enemyGroup.StageLayoutId, (ushort)enemyGroup.SubGroupId, enemyGroup.CreateNewInstance(processState.ProcessNo, processState.BlockNo));
                 }
             }
         }
@@ -808,9 +881,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             {
                                 LayoutId = new CDataStageLayoutId()
                                 {
-                                    StageId = action.StageId.Id,
-                                    GroupId = action.StageId.GroupId,
-                                    LayerNo = action.StageId.LayerNo
+                                    StageId = action.StageLayoutId.Id,
+                                    GroupId = action.StageLayoutId.GroupId,
+                                    LayerNo = action.StageLayoutId.LayerNo
                                 }
                             });
                             break;
@@ -980,8 +1053,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
                                 break;
                             case QuestFlagAction.CheckOn:
                             case QuestFlagAction.CheckOff:
-                                /* Invalid for Layout flags */
-                                return;
+                            case QuestFlagAction.CheckSetFromFsm:
+                                throw new Exception($"QstLayout flags don't support the action '{questFlag.Action}'");
                         }
                         break;
                     case QuestFlagType.WorldManageLayout:
@@ -995,8 +1068,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
                                 break;
                             case QuestFlagAction.CheckOn:
                             case QuestFlagAction.CheckOff:
-                                /* Invalid for Layout flags */
-                                return;
+                            case QuestFlagAction.CheckSetFromFsm:
+                                throw new Exception($"WorldManageLayout flags don't support the action '{questFlag.Action}'");
                         }
                         break;
                     case QuestFlagType.MyQst:
@@ -1034,6 +1107,38 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             case QuestFlagAction.CheckOff:
                                 checkFlags.Add(QuestManager.CheckCommand.WorldManageQuestFlagOn(questFlag.Value, questFlag.QuestId));
                                 break;
+                            case QuestFlagAction.CheckSetFromFsm:
+                                throw new Exception($"WorldManageQuest flags don't support the action '{questFlag.Action}'");
+                        }
+                        break;
+                    case QuestFlagType.Lot:
+                        switch (questFlag.Action)
+                        {
+                            case QuestFlagAction.Set:
+                                resultFlags.Add(QuestManager.ResultCommand.LotOn(questFlag.stageInfo.StageNo, questFlag.Value));
+                                break;
+                            case QuestFlagAction.Clear:
+                                resultFlags.Add(QuestManager.ResultCommand.LotOff(questFlag.stageInfo.StageNo, questFlag.Value));
+                                break;
+                            case QuestFlagAction.CheckOn:
+                            case QuestFlagAction.CheckOff:
+                            case QuestFlagAction.CheckSetFromFsm:
+                                throw new Exception($"Lot flags don't support the action '{questFlag.Action}'");
+                        }
+                        break;
+                    case QuestFlagType.Sce:
+                        switch (questFlag.Action)
+                        {
+                            case QuestFlagAction.CheckOn:
+                                checkFlags.Add(QuestManager.CheckCommand.SceFlagOn(questFlag.Value));
+                                break;
+                            case QuestFlagAction.CheckOff:
+                                checkFlags.Add(QuestManager.CheckCommand.SceFlagOff(questFlag.Value));
+                                break;
+                            case QuestFlagAction.Set:
+                            case QuestFlagAction.Clear:
+                            case QuestFlagAction.CheckSetFromFsm:
+                                throw new Exception($"Sce flags don't support the action '{questFlag.Action}'");
                         }
                         break;
                 }

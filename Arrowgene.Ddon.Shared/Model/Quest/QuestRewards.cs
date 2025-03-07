@@ -21,15 +21,41 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 
     public class FixedLootPoolItem : LootPoolItem
     {
+        public static FixedLootPoolItem Create(ItemId itemId, ushort num)
+        {
+            return new FixedLootPoolItem()
+            {
+                ItemId = itemId,
+                Num = num,
+            };
+        }
     }
 
     public class SelectLootPoolItem : LootPoolItem
     {
+        public static SelectLootPoolItem Create(ItemId itemId, ushort num)
+        {
+            return new SelectLootPoolItem()
+            {
+                ItemId = itemId,
+                Num = num,
+            };
+        }
     }
 
     public class ChanceLootPoolItem : LootPoolItem
     {
         public double Chance { get; set; }
+
+        public static ChanceLootPoolItem Create(ItemId itemId, ushort num, double chance)
+        {
+            return new ChanceLootPoolItem()
+            {
+                ItemId = itemId,
+                Num = num,
+                Chance = chance,
+            };
+        }
     }
 
     public abstract class QuestRewardItem
@@ -83,6 +109,17 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
     {
         public QuestFixedRewardItem(bool isHidden = false) : base(QuestRewardType.Fixed, isHidden)
         {
+        }
+
+        public static QuestFixedRewardItem Create(ItemId itemId, ushort num, bool isHidden = false)
+        {
+            return new QuestFixedRewardItem(isHidden)
+            {
+                LootPool = new List<LootPoolItem>()
+                {
+                    FixedLootPoolItem.Create(itemId, num)
+                }
+            };
         }
     }
 
@@ -145,6 +182,16 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         {
         }
 
+        public static QuestRandomFixedRewardItem Create(List<(ItemId ItemId, ushort Num)> items, bool isHidden = false)
+        {
+            var reward = new QuestRandomFixedRewardItem(isHidden);
+            foreach (var item in items)
+            {
+                reward.LootPool.Add(FixedLootPoolItem.Create(item.ItemId, item.Num));
+            }
+            return reward;
+        }
+
         public override int Roll()
         {
             ItemIndex = Random.Shared.Next(0, LootPool.Count);
@@ -160,6 +207,16 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 
         public QuestRandomChanceRewardItem(int itemIndex, bool isHidden = false) : base(itemIndex, isHidden)
         {
+        }
+
+        public static QuestRandomChanceRewardItem Create(List<(ItemId ItemId, ushort Num, double Chance)> items, bool isHidden = false)
+        {
+            var reward = new QuestRandomChanceRewardItem(isHidden);
+            foreach (var item in items)
+            {
+                reward.LootPool.Add(ChanceLootPoolItem.Create(item.ItemId, item.Num, item.Chance));
+            }
+            return reward;
         }
 
         public override int Roll()
@@ -192,6 +249,16 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
     {
         public QuestSelectRewardItem(bool isHidden = false) : base(QuestRewardType.Select, isHidden)
         {
+        }
+
+        public static QuestSelectRewardItem Create(List<(ItemId ItemId, ushort Num)> items, bool isHidden = false)
+        {
+            var reward = new QuestSelectRewardItem(isHidden);
+            foreach (var item in items)
+            {
+                reward.LootPool.Add(SelectLootPoolItem.Create(item.ItemId, item.Num));
+            }
+            return reward;
         }
     }
 

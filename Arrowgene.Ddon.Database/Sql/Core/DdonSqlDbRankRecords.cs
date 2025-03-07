@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private static readonly string SqlInsertRankRecord = $"INSERT INTO \"{RankRecordTableName}\" ({BuildQueryField(RankRecordFields)}) VALUES ({BuildQueryInsert(RankRecordFields)});";
         private static readonly string SqlDeleteAllRankRecords = $"DELETE FROM {RankRecordTableName};";
 
-        private static readonly string SqlSelectUsedQuests = $"SELECT DISTINCT \"quest_id\" FROM \"{RankRecordTableName}\"";
+        private static readonly string SqlSelectUsedQuests = $"SELECT DISTINCT \"quest_id\" FROM \"{RankRecordTableName}\";";
 
         private static readonly string SqlSelectRankRecords =
             @"WITH BestRank AS (
@@ -63,7 +63,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 ch.first_name,
                 ch.last_name,
                 cp.name AS clan_name,
-                RANK() OVER (ORDER BY score) sparse_rank
+                RANK() OVER (ORDER BY score DESC) sparse_rank
             FROM BestRank br
             INNER JOIN ddon_character ch ON br.character_id = ch.character_id
             LEFT JOIN ddon_clan_membership cm ON cm.character_id = br.character_id

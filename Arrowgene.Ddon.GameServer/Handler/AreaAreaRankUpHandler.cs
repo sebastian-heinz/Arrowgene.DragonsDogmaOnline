@@ -45,7 +45,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             res.AreaPoint = clientRank.Point;
             res.NextAreaPoint = Server.AreaRankManager.GetMaxPoints(request.AreaId, clientRank.Rank);
 
-            if (Server.GameLogicSettings.EnableAreaRankSpotLocks)
+            if (Server.GameSettings.GameServerSettings.EnableAreaRankSpotLocks)
             {
                 res.ReleaseList = Server.AssetRepository.AreaRankSpotInfoAsset[request.AreaId]
                 .Where(x => x.UnlockRank == clientRank.Rank)

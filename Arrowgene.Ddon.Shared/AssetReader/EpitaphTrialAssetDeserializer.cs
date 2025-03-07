@@ -120,7 +120,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     trialOption.EntryCost.Add(item);
                 }
 
-                if (!_CommonEnemyDeserializer.ParseEnemyGroups(_QuestDrops, trialOption.EnemyGroups, jOption))
+                if (!_CommonEnemyDeserializer.ParseEnemyGroups(0, _QuestDrops, trialOption.EnemyGroups, jOption))
                 {
                     Logger.Error($"Unable to parse enemies for epitah trial {trialOption.TrialName}:{trialOption.EpitaphId}. Skipping.");
                     return false;

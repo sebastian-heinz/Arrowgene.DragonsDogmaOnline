@@ -10,6 +10,7 @@ using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Party
@@ -40,7 +41,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public PartyGroup(uint id, PartyManager partyManager, ulong contentId)
         {
-            MaxSlots = contentId != 0 ? MaxPartyMember : partyManager.Server.GameLogicSettings.NormalPartySize;
+            MaxSlots = contentId != 0 ? MaxPartyMember : partyManager.Server.GameSettings.GameServerSettings.NormalPartySize;
             _lock = new object();
             _slots = new PartyMember[MaxSlots];
             _partyManager = partyManager;
@@ -808,6 +809,62 @@ namespace Arrowgene.Ddon.GameServer.Party
                 else if (member is PawnPartyMember pawnMember)
                 {
                     if (pawnMember.Pawn == character) return true;
+                }
+            }
+            return false;
+        }
+
+        private bool ContainsJobInList(PartyMember member, ReadOnlyCollection<JobId> jobList)
+        {
+            if (member is PlayerPartyMember playerPartyMember)
+            {
+                if (jobList.Contains(playerPartyMember.Client.Character.Job))
+                {
+                    return true;
+                }
+            }
+            else if (member is PawnPartyMember pawnPartyMember)
+            {
+                if (jobList.Contains(pawnPartyMember.Pawn.Job))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool ContainsGreenJob()
+        {
+            foreach (var member in Members)
+            {
+                if (ContainsJobInList(member, JobIdExtensions.GreenJobs))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool ContainsRedJob()
+        {
+            foreach (var member in Members)
+            {
+                if (ContainsJobInList(member, JobIdExtensions.RedJobs))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool ContainsBlueJob()
+        {
+            foreach (var member in Members)
+            {
+                if (ContainsJobInList(member, JobIdExtensions.BlueJobs))
+                {
+                    return true;
                 }
             }
             return false;

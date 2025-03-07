@@ -1,18 +1,22 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Arrowgene.Ddon.Shared.Model.Quest
 {
     public class QuestProcess
     {
-        public ushort ProcessNo { get; set; }
+        public ushort ProcessNo { get; private set; }
+        public uint QuestScheduleId { get; private set; }
+
+        public Dictionary<uint, QuestEnemyGroup> EnemyGroups { get; set; }
         public Dictionary<uint, QuestBlock> Blocks { get; set; }
 
-        public QuestProcess(ushort processNo = 0)
+        public QuestProcess(ushort processNo, uint questScheduleId)
         {
             ProcessNo = processNo;
             Blocks = new Dictionary<uint, QuestBlock>();
+            QuestScheduleId = questScheduleId;
+            EnemyGroups = new Dictionary<uint, QuestEnemyGroup>();
         }
 
         public QuestProcess AddBlock(QuestBlock block)

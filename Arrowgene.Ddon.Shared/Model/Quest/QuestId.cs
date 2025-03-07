@@ -124,5 +124,8 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 
         // Personal Quests
         CraftedTokenOfTheHeart = 60000016,
+
+        // Custom World Manage Quest Ids
+        WorldManageMonsterCaution = 79000001,
     }
 }

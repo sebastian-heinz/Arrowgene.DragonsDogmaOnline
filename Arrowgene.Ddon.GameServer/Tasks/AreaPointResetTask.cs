@@ -1,21 +1,17 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Ddon.Shared.Model.Scheduler;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.GameServer.Tasks
 {
     public class AreaPointResetTask : WeeklyTask
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(EpitaphSchedulerTask));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(AreaPointResetTask));
 
         public AreaPointResetTask(DayOfWeek day, uint hour, uint minute) : base(TaskType.AreaPointReset, day, hour, minute)
         {
