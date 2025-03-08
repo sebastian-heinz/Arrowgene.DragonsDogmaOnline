@@ -166,6 +166,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public uint GetEffectiveRank(Character character, QuestAreaId areaId)
         {
+            if (!IsValidAreaId(areaId))
+            {
+                return 0;
+            }
+
             AreaRank rank = character.AreaRanks.GetValueOrDefault(areaId) 
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
 
@@ -179,10 +184,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public uint GetEffectiveRank(Character character, StageInfo stageInfo)
         {
-            if (stageInfo.AreaId == QuestAreaId.None)
+            if (!IsValidAreaId(stageInfo.AreaId))
             {
                 return 0;
             }
+
             return GetEffectiveRank(character, stageInfo.AreaId);
         }
 
