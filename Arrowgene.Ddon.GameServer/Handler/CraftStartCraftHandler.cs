@@ -163,14 +163,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     craftProgress.BonusExp = 0;
                 }
 
-            Server.Database.InsertPawnCraftProgress(craftProgress);
-            foreach (CraftPawn pawn in craftPawns)
-            {
-                if (pawn.Pawn != null)
+                Server.Database.InsertPawnCraftProgress(craftProgress, connection);
+                foreach (CraftPawn pawn in craftPawns)
                 {
-                    pawn.Pawn.PawnState = PawnState.Craft;
+                    if (pawn.Pawn != null)
+                    {
+                        pawn.Pawn.PawnState = PawnState.Craft;
+                    }
                 }
-            }
 
                 // Subtract craft price
                 uint cost = Server.CraftManager.CalculateRecipeCost(recipe.Cost, itemInfo, craftPawns) * request.CreateCount;
