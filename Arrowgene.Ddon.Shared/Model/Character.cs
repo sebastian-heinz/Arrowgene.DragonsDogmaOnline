@@ -42,6 +42,8 @@ namespace Arrowgene.Ddon.Shared.Model
             EpitaphRoadState = new EpitaphRoadState();
             AreaRanks = new();
             AreaSupply = new();
+
+            PartnerTimerLockObj = new();
         }
 
         public int AccountId { get; set; }
@@ -109,6 +111,9 @@ namespace Arrowgene.Ddon.Shared.Model
         public byte[] BinaryData;
         public GameMode GameMode {  get; set; }
         public Dictionary<uint, uint> LastSeenLobby { get; set; }
+        public uint PartnerPawnId { get; set; }
+        public uint PartnerPawnAdventureTimerId { get; set; }
+        public object PartnerTimerLockObj { get; set; }
         public List<Pawn> Pawns { get; set; }
         public List<Pawn> RentedPawns {  get; set; }
         public uint FavWarpSlotNum { get; set; }

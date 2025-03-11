@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -6,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public uint PawnId { get; set; }
         public uint Likability { get; set; }
-        public byte Personality { get; set; }
+        public PawnPersonality Personality { get; set; }
 
         public class Serializer : EntitySerializer<CDataPartnerPawnData>
         {
@@ -14,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 WriteUInt32(buffer, obj.PawnId);
                 WriteUInt32(buffer, obj.Likability);
-                WriteByte(buffer, obj.Personality);
+                WriteByte(buffer, (byte) obj.Personality);
             }
 
             public override CDataPartnerPawnData Read(IBuffer buffer)
@@ -22,7 +23,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 CDataPartnerPawnData obj = new CDataPartnerPawnData();
                 obj.PawnId = ReadUInt32(buffer);
                 obj.Likability = ReadUInt32(buffer);
-                obj.Personality = ReadByte(buffer);
+                obj.Personality = (PawnPersonality) ReadByte(buffer);
                 return obj;
             }
         }

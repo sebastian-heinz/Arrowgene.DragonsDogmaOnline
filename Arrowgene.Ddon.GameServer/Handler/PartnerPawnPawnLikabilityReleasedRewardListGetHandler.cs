@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -18,40 +16,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CPartnerPawnPawnLikabilityReleasedRewardListGetRes Handle(GameClient client, C2SPartnerPawnPawnLikabilityReleasedRewardListGetReq request)
         {
-            S2CPartnerPawnPawnLikabilityReleasedRewardListGetRes res = new S2CPartnerPawnPawnLikabilityReleasedRewardListGetRes();
-
-            res.ReleasedRewardList = new List<CDataPartnerPawnReward>
+            return new S2CPartnerPawnPawnLikabilityReleasedRewardListGetRes()
             {
-                // new CDataPartnerPawnReward
-                // {
-                //     Type = 3,
-                //     Value = new CDataPartnerPawnRewardParam
-                //     {
-                //         ParamTypeId = 0,
-                //         UID = 45
-                //     }
-                // },
-                // new CDataPartnerPawnReward
-                // {
-                //     Type = 2,
-                //     Value = new CDataPartnerPawnRewardParam
-                //     {
-                //         ParamTypeId = 0,
-                //         UID = 2
-                //     }
-                // },
-                // new CDataPartnerPawnReward
-                // {
-                //     Type = 1,
-                //     Value = new CDataPartnerPawnRewardParam
-                //     {
-                //         ParamTypeId = 2,
-                //         UID = 72
-                //     }
-                // }
+                ReleasedRewardList = Server.PartnerPawnManager.GetReleasedRewards(client)
             };
-
-            return res;
         }
     }
 }

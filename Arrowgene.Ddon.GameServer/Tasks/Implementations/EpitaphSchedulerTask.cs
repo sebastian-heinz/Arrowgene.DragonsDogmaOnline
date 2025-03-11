@@ -4,7 +4,7 @@ using Arrowgene.Ddon.Shared.Model.Scheduler;
 using Arrowgene.Logging;
 using System;
 
-namespace Arrowgene.Ddon.GameServer.Tasks
+namespace Arrowgene.Ddon.GameServer.Tasks.Implementations
 {
     public class EpitaphSchedulerTask : WeeklyTask
     {

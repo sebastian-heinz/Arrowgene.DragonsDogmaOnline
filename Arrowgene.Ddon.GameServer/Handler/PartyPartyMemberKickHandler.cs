@@ -36,6 +36,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (member is PawnPartyMember pawnMember)
             {
                 pawnMember.Pawn.PawnState = PawnState.None;
+
+                if (pawnMember.PawnId == client.Character.PartnerPawnId)
+                {
+                    Server.PartnerPawnManager.HandleKickFromParty(client);
+                }
             }
 
             return res;

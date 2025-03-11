@@ -761,10 +761,14 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SOrbDevoteGetPawnReleaseOrbElementListReq.Serializer());
             Create(new C2SOrbDevoteReleaseOrbElementReq.Serializer());
             Create(new C2SOrbDevoteReleasePawnOrbElementReq.Serializer());
+
+            Create(new C2SPartnerPawnNextPresentTimeGetReq.Serializer());
             Create(new C2SPartnerPawnPawnLikabilityReleasedRewardListGetReq.Serializer());
             Create(new C2SPartnerPawnPawnLikabilityRewardGetReq.Serializer());
             Create(new C2SPartnerPawnPawnLikabilityRewardListGetReq.Serializer());
+            Create(new C2SPartnerPawnPresentForPartnerPawnReq.Serializer());
             Create(new C2SPartnerPawnSetReq.Serializer());
+
             Create(new C2SPartyPartyBreakupReq.Serializer());
             Create(new C2SPartyPartyChangeLeaderReq.Serializer());
             Create(new C2SPartyPartyCreateReq.Serializer());
@@ -1339,10 +1343,13 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2COrbDevoteReleaseOrbElementRes.Serializer());
             Create(new S2COrbDevoteReleasePawnOrbElementRes.Serializer());
 
+            Create(new S2CPartnerPawnNextPresentTimeGetRes.Serializer());
+            Create(new S2CPartnerPawnPresentForPartnerPawnRes.Serializer());
             Create(new S2CPartnerPawnPawnLikabilityReleasedRewardListGetRes.Serializer());
-            Create(new S2CPartnerPawnPawnLikabilityRewardListGetRes.Serializer());
             Create(new S2CPartnerPawnPawnLikabilityRewardGetRes.Serializer());
+            Create(new S2CPartnerPawnPawnLikabilityRewardListGetRes.Serializer());
             Create(new S2CPartnerPawnSetRes.Serializer());
+            Create(new S2CPartnerPawnLikabilityUpNtc.Serializer());
 
             Create(new S2CPartyPartyBreakupNtc.Serializer());
             Create(new S2CPartyPartyBreakupRes.Serializer());

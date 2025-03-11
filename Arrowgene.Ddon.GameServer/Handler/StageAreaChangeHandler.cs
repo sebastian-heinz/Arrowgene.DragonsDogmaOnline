@@ -91,6 +91,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
+            if (client.IsPartyLeader())
+            {
+                Server.PartnerPawnManager.HandleStageAreaChange(client);
+            }
+
             Server.EpitaphRoadManager.AreaChange(client, packet.StageId, queue);
             return queue;
         }

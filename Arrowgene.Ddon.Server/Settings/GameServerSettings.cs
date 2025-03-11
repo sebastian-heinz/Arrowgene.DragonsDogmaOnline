@@ -47,6 +47,25 @@ namespace Arrowgene.Ddon.Server.Settings
         private const double _AdditionalCostPerformanceFactor = 1.0;
 
         /// <summary>
+        /// The amount of seconds that the party leaders partner pawn must be
+        /// out in a non-safe area to receive credit for adventuering with the
+        /// player for the day.
+        /// </summary>
+        [DefaultValue(_PartnerPawnAdventureDurationInSeconds)]
+        public uint PartnerPawnAdventureDurationInSeconds
+        {
+            set
+            {
+                SetSetting("PartnerPawnAdventureDurationInSeconds", value);
+            }
+            get
+            {
+                return TryGetSetting("PartnerPawnAdventureDurationInSeconds", _PartnerPawnAdventureDurationInSeconds);
+            }
+        }
+        private const uint _PartnerPawnAdventureDurationInSeconds = 1800;
+
+        /// <summary>
         /// Controls whether to pass lobby context packets on demand or only on entry to the server.
         /// True = Server entry only. Lower packet load, but also causes invisible people in lobbies.
         /// False = On-demand. May cause performance issues due to packet load.

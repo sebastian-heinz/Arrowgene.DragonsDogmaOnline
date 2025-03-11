@@ -85,6 +85,7 @@ namespace Arrowgene.Ddon.GameServer
             ScheduleManager = new ScheduleManager(this);
             AreaRankManager = new AreaRankManager(this);
             GameTimeManager = new GameTimeManager(this);
+            PartnerPawnManager = new PartnerPawnManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
@@ -123,9 +124,10 @@ namespace Arrowgene.Ddon.GameServer
         public ClanManager ClanManager { get; }
         public RpcManager RpcManager { get; }
         public EpitaphRoadManager EpitaphRoadManager { get; }
-        private ScheduleManager ScheduleManager { get; }
+        public ScheduleManager ScheduleManager { get; }
         public AreaRankManager AreaRankManager { get; }
         public GameTimeManager GameTimeManager { get; }
+        public PartnerPawnManager PartnerPawnManager { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
 
@@ -475,11 +477,13 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new OrbDevoteGetPawnReleaseOrbElementListHandler(this));
             AddHandler(new OrbDevoteReleasePawnOrbElementHandler(this));
 
-            AddHandler(new PartnerPawnSetHandler(this));
+            AddHandler(new PartnerPawnNextPresentTimeGetHandler(this));
             AddHandler(new PartnerPawnPawnLikabilityReleasedRewardListGetHandler(this));
-            AddHandler(new PartnerPawnPawnLikabilityRewardListGetHandler(this));
             AddHandler(new PartnerPawnPawnLikabilityRewardGetHandler(this));
-            
+            AddHandler(new PartnerPawnPawnLikabilityRewardListGetHandler(this));
+            AddHandler(new PartnerPawnPresentForPartnerPawnHandler(this));
+            AddHandler(new PartnerPawnSetHandler(this));
+
             AddHandler(new PartyMemberSetValueHandler(this));
             AddHandler(new PartyPartyBreakupHandler(this));
             AddHandler(new PartyPartyChangeLeaderHandler(this));

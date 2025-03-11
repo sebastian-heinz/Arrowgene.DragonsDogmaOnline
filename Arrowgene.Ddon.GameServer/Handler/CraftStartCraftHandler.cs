@@ -184,6 +184,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_GP_LACK_GP);
                     updateCharacterItemNtc.UpdateWalletList.Add(updateGP);
                 }
+
+                if (leadPawn.PawnId == client.Character.PartnerPawnId)
+                {
+                    Server.PartnerPawnManager.UpdateLikabilityIncreaseAction(client, PartnerPawnAffectionAction.Craft, connection)
+                        .Send();
+                }
             });
 
             client.Send(updateCharacterItemNtc);
