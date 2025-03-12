@@ -57,7 +57,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var enemy = client.Party.InstanceEnemyManager.GetInstanceEnemy(stageLayoutId, instancedEnemyList[i].Index);
                 if (enemy == null)
                 {
-                    enemy = instancedEnemyList[i];
+                    enemy = instancedEnemyList[i].CreateNewInstance();
                     foreach (var generator in Server.ScriptManager.InstanceEnemyPropertyGeneratorModule.GetGenerators())
                     {
                         generator.ApplyChanges(client, stageLayoutId, subGroupId, enemy);

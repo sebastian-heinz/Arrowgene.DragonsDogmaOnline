@@ -152,17 +152,32 @@ namespace Arrowgene.Ddon.GameServer.Scripting
                 return CreateAuto(enemyId, lv, 0, isBoss, assignDefaultDrops, scheme);
             }
 
-            public InstancedEnemy CreateRandom(ushort lv, uint exp, byte index, List<EnemyId> enemyIds, bool assignDefaultDrops = true)
+
+            public InstancedEnemy CreateRandom(ushort lv, uint exp, byte index, List<(EnemyId EnemyId, uint NamedParamId)> enemies, bool assignDefaultDrops = true)
             {
                 var dropTables = new Dictionary<EnemyId, DropsTable>();
-                if (assignDefaultDrops)
+                
+                foreach (var enemyParams in enemies)
                 {
-                    foreach (var enemyId in enemyIds)
+                    if (assignDefaultDrops)
                     {
-                        dropTables.Add(enemyId, GetDropsTable(enemyId, lv));
+                        dropTables.Add(enemyParams.EnemyId, GetDropsTable(enemyParams.EnemyId, lv));
+                    }
+                    else
+                    {
+                        dropTables.Add(enemyParams.EnemyId, new());
                     }
                 }
-                return new InstancedRandomEnemy(enemyIds, dropTables, lv, exp, index);
+
+                // Convert Id's into object with stats
+                var updatedList = enemies.Select(x => (x.EnemyId, GetNamedParam(x.NamedParamId))).ToList();
+                return new InstancedRandomEnemy(updatedList, dropTables, lv, exp, index);
+            }
+
+            public InstancedEnemy CreateRandom(ushort lv, uint exp, byte index, List<EnemyId> enemyIds, bool assignDefaultDrops = true)
+            {
+                var enemies = enemyIds.Select(x => (x, 2298u)).ToList();
+                return CreateRandom(lv, exp, index, enemies, assignDefaultDrops);
             }
 
             public InstancedEnemy CreateRandom(ushort lv, uint exp, List<EnemyId> enemyIds, bool assignDefaultDrops = true)

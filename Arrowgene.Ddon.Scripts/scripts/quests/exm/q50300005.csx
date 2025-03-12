@@ -135,7 +135,7 @@ public class ScriptedQuest : IQuest
 
     private InstancedEnemy CreateRandomFlyingEnemy(ushort lv, byte index)
     {
-        return LibDdon.Enemy.CreateRandom(lv, 0, index, new() {
+        return LibDdon.Enemy.CreateRandom(lv, 0, index, new List<EnemyId>() {
             EnemyId.Harpy,
             EnemyId.SnowHarpy
         }).SetIsRequired(false).SetEnemyTargetTypesId(TargetTypesId.Normal);
@@ -143,7 +143,7 @@ public class ScriptedQuest : IQuest
 
     private InstancedEnemy CreateRandomGroundEnemy(ushort lv, byte index)
     {
-        return LibDdon.Enemy.CreateRandom(lv, 0, index, new() {
+        return LibDdon.Enemy.CreateRandom(lv, 0, index, new List<EnemyId>() {
             EnemyId.Wolf,
             EnemyId.Grimwarg,
             EnemyId.StoutUndead,
@@ -155,7 +155,7 @@ public class ScriptedQuest : IQuest
 
     private InstancedEnemy CreateRandomDragonKin(ushort lv, byte index)
     {
-        return LibDdon.Enemy.CreateRandom(lv, 0, index, new() {
+        return LibDdon.Enemy.CreateRandom(lv, 0, index, new List<EnemyId>() {
             EnemyId.Behemoth0,
             EnemyId.Lindwurm0,
             EnemyId.Angules0,
