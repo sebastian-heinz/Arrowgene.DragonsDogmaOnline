@@ -4,6 +4,7 @@ using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
@@ -11,7 +12,10 @@ using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics.Metrics;
+using System.IO;
 using System.Linq;
+using System.Numerics;
 
 namespace Arrowgene.Ddon.GameServer.Party
 {
@@ -368,6 +372,33 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
+        private void CleanupClientPawns(GameClient client)
+        {
+            if (client.Character.PartnerPawnId != 0)
+            {
+                _partyManager.Server.PartnerPawnManager.HandleLeaveFromParty(client);
+            }
+
+            foreach (var member in client.Party.Members)
+            {
+                if (member is PawnPartyMember pawnMember)
+                {
+                    if (pawnMember.Pawn.CharacterId == client.Character.CharacterId)
+                    {
+                        Logger.Info(client, $"[PartyId:{Id}][Kick] removed pawn {pawnMember.PawnId} for player {client.Identity}");
+
+                        // TODO: The pawn vanishes already, do we still need the NTC
+                        // TODO: or just need to update and maintain internal state?
+                        client.Party.SendToAll(new S2CPartyPartyMemberKickNtc()
+                        {
+                            MemberIndex = (byte) pawnMember.MemberIndex
+                        });
+                        FreeSlot(pawnMember.MemberIndex);
+                    }
+                }
+            }
+        }
+
         public PartyMember Kick(GameClient client, byte memberIndex)
         {
             if (client == null)
@@ -392,10 +423,14 @@ namespace Arrowgene.Ddon.GameServer.Party
                         throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_IS_NOT_LEADER, $"[PartyId:{Id}][Kick] is not authorized (not leader)");
                     }
 
-                    //Hand off any enemy groups they're responsible for.
+                    // Hand off any enemy groups they're responsible for.
                     ContextManager.DelegateAllMasters(player.Client);
 
+                    // Clean up state for dependent pawns
+                    CleanupClientPawns(player.Client);
+                    // Free slot for player
                     FreeSlot(member.MemberIndex);
+
                     Logger.Info(client, $"[PartyId:{Id}][Kick] kicked player {player.Client.Identity}");
                     return member;
                 }

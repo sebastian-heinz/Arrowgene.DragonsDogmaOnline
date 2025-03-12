@@ -20,6 +20,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             PartyGroup party = client.Party
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_NOT_FOUNDED, "Could not leave party, does not exist");
 
+            if (client.Character.PartnerPawnId != 0)
+            {
+                Server.PartnerPawnManager.HandleLeaveFromParty(client);
+            }
+
             party.Leave(client);
             Logger.Info(client, $"Left PartyId:{party.Id}");
 

@@ -221,7 +221,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public bool HandleKickFromParty(GameClient client)
+        public bool HandleLeaveFromParty(GameClient client)
         {
             lock (client.Character.PartnerTimerLockObj)
             {
@@ -229,7 +229,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     return true;
                 }
-                Logger.Info($"(PartnerPawn) PartnerPawnId={client.Character.PartnerPawnAdventureTimerId} kicked from party, canceling timer");
+                Logger.Info($"(PartnerPawn) PartnerPawnId={client.Character.PartnerPawnAdventureTimerId} kicked/left party, canceling timer");
                 return CancelAdventureTimer(client);
             }
         }
