@@ -18,7 +18,7 @@ public class MonsterSpotInfo : IMonsterSpotInfo
 
     private InstancedEnemy CreateRandomHobgoblin(ushort lv, uint exp, byte index)
     {
-        return LibDdon.Enemy.CreateRandom(lv, exp, index, new() {
+        return LibDdon.Enemy.CreateRandom(lv, exp, index, new List<EnemyId>() {
             EnemyId.Hobgoblin,
             EnemyId.HobgoblinFighter,
             EnemyId.SlingHobgoblinTorch,

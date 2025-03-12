@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.Shared.Model
             [EnemyId.MistSorcerer] = HmPresetId.MistSorcerer,
             [EnemyId.MistWarrior] = HmPresetId.MistWarrior,
             [EnemyId.Iris] = HmPresetId.Iris,
-            [EnemyId.Diamantes] = HmPresetId.DiamantesHuman,
+            [EnemyId.DiamantesHuman] = HmPresetId.DiamantesHuman,
             [EnemyId.Leo] = HmPresetId.LeoS1,
             [EnemyId.HoodedIris] = HmPresetId.HoodedIris,
             [EnemyId.FormerCommanderLeoFinalBoss] = HmPresetId.LeoS3,

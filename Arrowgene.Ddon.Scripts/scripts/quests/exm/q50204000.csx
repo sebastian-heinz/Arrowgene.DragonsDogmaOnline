@@ -228,7 +228,7 @@ public class ScriptedQuest : IQuest
 
     private InstancedEnemy CreateRandomPixieEnemy(ushort lv, byte index)
     {
-        return LibDdon.Enemy.CreateRandom(lv, 0, index, new() {
+        return LibDdon.Enemy.CreateRandom(lv, 0, index, new List<EnemyId>() {
             EnemyId.Pixie,
             EnemyId.PixieBiff,
             EnemyId.PixieDin,
