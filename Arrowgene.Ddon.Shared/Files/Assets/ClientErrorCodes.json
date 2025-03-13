@@ -78,5 +78,9 @@
     {
         "code": "ERROR_CODE_PARTY_INVITE_CANCEL_REASON_CANCEL",
         "en": "The party invite has been cancelled."
+    },
+    {
+        "code": "ERROR_CODE_LOBBY_JOIN_NUM_OVER",
+        "en": "The channel is full; Please select another channel."
     }
 ]

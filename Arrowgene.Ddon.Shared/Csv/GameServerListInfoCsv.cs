@@ -1,11 +1,10 @@
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Csv;
 
 public class GameServerListInfoCsv : CsvReaderWriter<ServerInfo>
 {
-    protected override int NumExpectedItems => 10;
+    protected override int NumExpectedItems => 11;
     protected override ServerInfo CreateInstance(string[] properties)
     {
         if (!ushort.TryParse(properties[0], out ushort id)) return null;
@@ -18,6 +17,7 @@ public class GameServerListInfoCsv : CsvReaderWriter<ServerInfo>
         if (!ushort.TryParse(properties[7], out ushort rpcPort)) return null;
         string authToken = properties[8];
         if (!ushort.TryParse(properties[9], out ushort loginId)) return null;
+        if (!bool.TryParse(properties[10], out bool preventLogin)) return null;
 
         return new ServerInfo()
         {
@@ -32,6 +32,7 @@ public class GameServerListInfoCsv : CsvReaderWriter<ServerInfo>
             RpcPort = rpcPort,
             RpcAuthToken = authToken,
             LoginId = loginId,
+            PreventLogin = preventLogin,
         };
     }
 }

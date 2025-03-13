@@ -201,6 +201,14 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             }
 
             var channel = Server.AssetRepository.ServerList.Find(x => x.Id == connection.ServerId);
+            if (channel is null)
+            {
+                // If the server can't be found, the entry in the DB is erroneous and should be cleared.
+                Logger.Info($"Clearing bad connection record for account {connection.AccountId} from server {connection.ServerId}");
+                Server.Database.DeleteConnection(connection.ServerId, connection.AccountId);
+                return;
+            }
+
             var route = $"http://{channel.Addr}:{channel.RpcPort}/rpc/internal/command";
 
             var wrappedObject = new RpcWrappedObject()

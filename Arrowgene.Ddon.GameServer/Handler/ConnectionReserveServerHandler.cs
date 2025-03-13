@@ -25,14 +25,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Type = ConnectionType.GameServer,
                 Created = DateTime.UtcNow
             };
-
+            
             if (!Server.RpcManager.DoesGameServerExist(request.GameServerUniqueID))
             {
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_NET_NOT_CONNECT_GAME_SERVER,
                     $"The requested server {request.GameServerUniqueID} does not exist.");
             }
 
-            if(!Server.Database.InsertConnection(reservedConnection))
+            var targetServerInfo = Server.RpcManager.ServerListInfo(request.GameServerUniqueID);
+            if (targetServerInfo.LoginNum >= targetServerInfo.MaxLoginNum)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_LOBBY_JOIN_NUM_OVER,
+                    $"Attempting to join server {request.GameServerUniqueID} that is over capacity ({targetServerInfo.LoginNum}/{targetServerInfo.MaxLoginNum})");
+            }
+
+            if (!Server.Database.InsertConnection(reservedConnection))
             {
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_NET_NOT_CONNECT_GAME_SERVER, 
                     $"Failed to reserve connection on server {request.GameServerUniqueID} for account {client.Account.Id}");

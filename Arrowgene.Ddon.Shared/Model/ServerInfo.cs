@@ -22,6 +22,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public ushort RpcPort { get; set; }
         public string RpcAuthToken { get; set; }
         public ushort LoginId { get; set; }
+        public bool PreventLogin { get; set; }
 
         public CDataGameServerListInfo ToCDataGameServerListInfo()
         {
