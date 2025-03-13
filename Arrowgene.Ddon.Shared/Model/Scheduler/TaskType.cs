@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.Shared.Model.Scheduler
         SubstoryQuestRotation = 10,
         ExtremeMissionRewardUpdate = 11,
         PawnExpedition = 12,
-        PawnAffectionIncreaseInteraction = 13,
+        PawnAffectionIncreaseInteractionReset = 13,
         PawnTrainingExperiencePoints = 14,
         ClanDungeonReset = 15,
         MandragoraGrowth = 16,

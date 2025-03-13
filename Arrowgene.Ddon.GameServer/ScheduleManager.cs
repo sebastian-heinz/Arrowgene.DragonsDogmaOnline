@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.GameServer.Tasks;
+using Arrowgene.Ddon.GameServer.Tasks.Implementations;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Model.Scheduler;
 using Arrowgene.Logging;
@@ -29,7 +30,8 @@ namespace Arrowgene.Ddon.GameServer
             {
                 new EpitaphSchedulerTask(DayOfWeek.Monday, 5, 0),
                 new AreaPointResetTask(DayOfWeek.Monday, 5, 0),
-                new RankingBoardResetTask(DayOfWeek.Monday, 5, 0)
+                new RankingBoardResetTask(DayOfWeek.Monday, 5, 0),
+                new PawnLikabilityIncreaseResetTask(5, 0),
             };
         }
 
@@ -87,6 +89,26 @@ namespace Arrowgene.Ddon.GameServer
                     }
                 }, null, timerTick, timerTick);
             }
+        }
+
+        public long TimeToNextTaskUpdate(TaskType taskType)
+        {
+            long now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+            var task = Tasks.Where(x => x.Type == taskType).FirstOrDefault();
+            if (task == null)
+            {
+                return 0;
+            }
+
+            long next = task.NextTimestamp();
+
+            return (next > now) ? (next - now) : 0;
+        }
+
+        public List<SchedulerTask> GetTasks()
+        {
+            return Tasks;
         }
     }
 }

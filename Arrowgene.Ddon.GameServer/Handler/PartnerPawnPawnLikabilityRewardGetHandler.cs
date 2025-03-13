@@ -1,7 +1,6 @@
-using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -16,23 +15,32 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CPartnerPawnPawnLikabilityRewardGetRes Handle(GameClient client, C2SPartnerPawnPawnLikabilityRewardGetReq request)
         {
-            S2CPartnerPawnPawnLikabilityRewardGetRes res = new S2CPartnerPawnPawnLikabilityRewardGetRes();
-            
-            // TODO: probably a list only out of convenience? update DB to remove this from reward list and add to released rewards list
-            res.RewardList = new List<CDataPartnerPawnReward>
+            // Returns pending rewards when player clicks on the pawn
+            Server.Database.ExecuteInTransaction(connection =>
             {
-                // new CDataPartnerPawnReward
-                // {
-                //     Type = 4,
-                //     Value = new CDataPartnerPawnRewardParam
-                //     {
-                //         ParamTypeId = 0,
-                //         UID = 441
-                //     }
-                // }
-            };
+                foreach (var reward in request.RewardUidList)
+                {
+                    switch (reward.Type)
+                    {
+                        case PawnLikabilityRewardType.Ability:
+                            Server.Database.InsertSecretAbilityUnlock(client.Character.CommonId, (SecretAbility)reward.Value.UID, connection);
+                            break;
+                    }
 
-            return res;
+                    uint level = Server.PartnerPawnManager.GetLevelForReward(reward);
+                    if (level > 0)
+                    {
+                        Server.Database.DeletePartnerPawnPendingReward(client.Character.CharacterId, client.Character.PartnerPawnId, level, connection);
+                    }
+                }
+            });
+
+            // What is the client expecting to be sent back to it?
+            // Seems strange we would send back the same list?
+            return new S2CPartnerPawnPawnLikabilityRewardGetRes()
+            {
+                RewardList = request.RewardUidList
+            };
         }
     }
 }

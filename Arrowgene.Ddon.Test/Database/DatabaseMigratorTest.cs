@@ -254,7 +254,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertPriorityQuest(uint characterCommonId, uint questScheduleId, DbConnection? connectionIn = null) { return true; }
         public bool InsertQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType, uint step, DbConnection? connectionIn = null) { return true; }
         public bool InsertReleasedWarpPoint(uint characterId, ReleasedWarpPoint ReleasedWarpPoint) { return true; }
-        public bool InsertSecretAbilityUnlock(uint commonId, SecretAbility secretAbility) { return true; }
+        public bool InsertSecretAbilityUnlock(uint commonId, SecretAbility secretAbility, DbConnection? connectionIn = null) { return true; }
         public bool InsertShortcut(uint characterId, CDataShortCut shortcut) { return true; }
         public CraftProgress SelectPawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId) { return new CraftProgress(); }
         public bool InsertSpSkill(uint pawnId, JobId job, CDataSpSkill spSkill) { return true; }
@@ -445,6 +445,19 @@ namespace Arrowgene.Ddon.Test.Database
         public List<CDataRankingData> SelectRankingDataByCharacterId(uint characterId, uint questId, uint limit = 1000, DbConnection? connectionIn = null) { return new(); }
         public List<CDataRankingData> SelectRankingData(uint questId, uint limit = 1000, DbConnection? connectionIn = null) { return new(); }
         public bool DeleteAllRankRecords(DbConnection? connectionIn = null) { return true; }
+
+        public bool InsertPartnerPawnRecord(uint characterId, PartnerPawnData partnerPawnData, DbConnection? connectionIn = null) { return true; }
+        public bool UpdatePartnerPawnRecord(uint characterId, PartnerPawnData partnerPawnData, DbConnection? connectionIn = null) { return true; }
+        public PartnerPawnData GetPartnerPawnRecord(uint characterId, uint pawnId, DbConnection? connectionIn = null) { return new(); }
+        public bool SetPartnerPawn(uint characterId, uint pawnId, DbConnection? connectionIn = null) { return true; }
+
+        public bool InsertPartnerPawnLastAffectionIncreaseRecord(uint characterId, uint pawnId, PartnerPawnAffectionAction action, DbConnection? connectionIn = null) { return true; }
+        public bool HasPartnerPawnLastAffectionIncreaseRecord(uint characterId, uint pawnId, PartnerPawnAffectionAction action, DbConnection? connectionIn = null) { return true; }
+        public void DeleteAllPartnerPawnLastAffectionIncreaseRecords(DbConnection? connectionIn = null) { }
+
+        public HashSet<uint> GetPartnerPawnPendingRewards(uint characterId, uint pawnId, DbConnection? connectionIn = null) { return new(); }
+        public bool InsertPartnerPawnPendingReward(uint characterId, uint pawnId, uint rewardLevel, DbConnection? connectionIn = null) { return true; }
+        public void DeletePartnerPawnPendingReward(uint characterId, uint pawnId, uint rewardLevel, DbConnection? connectionIn = null) { }
 
         public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
         public void AddParameter(DbCommand command, string name, string value) { }

@@ -1,7 +1,5 @@
-using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -17,23 +15,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CPartnerPawnPawnLikabilityRewardListGetRes Handle(GameClient client, C2SPartnerPawnPawnLikabilityRewardListGetReq request)
         {
-            S2CPartnerPawnPawnLikabilityRewardListGetRes res = new S2CPartnerPawnPawnLikabilityRewardListGetRes();
-
-            // TODO: figure out if we have dumps for this
-            res.RewardList = new List<CDataPartnerPawnReward>
+            // Returns unclaimed rewards when the player enters into the arisens room
+            return new S2CPartnerPawnPawnLikabilityRewardListGetRes()
             {
-                // new CDataPartnerPawnReward
-                // {
-                //     Type = 4,
-                //     Value = new CDataPartnerPawnRewardParam
-                //     {
-                //         ParamTypeId = 0,
-                //         UID = 441
-                //     }
-                // }
+                RewardList = Server.PartnerPawnManager.GetUnclaimedRewardsForCurrentPartnerPawn(client)
             };
-
-            return res;
         }
     }
 }

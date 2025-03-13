@@ -1,4 +1,5 @@
 using System.Linq;
+using System.Numerics;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -29,13 +30,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 MemberIndex = (byte)member.MemberIndex
             };
             party.SendToAll(ntc);
+
             if (member is PlayerPartyMember playerMember)
             {
                 playerMember.Client.Send(ntc);
-            }           
-            if (member is PawnPartyMember pawnMember)
+            } 
+            else if (member is PawnPartyMember pawnMember)
             {
+                // todo handle other party member pawn
                 pawnMember.Pawn.PawnState = PawnState.None;
+
+                if (!pawnMember.Pawn.IsRented)
+                {
+                    var memberClient = Server.ClientLookup.GetClientByCharacterId(pawnMember.Pawn.CharacterId);
+                    if (memberClient != null && (pawnMember.PawnId == memberClient.Character.PartnerPawnId))
+                    {
+                        Server.PartnerPawnManager.HandleLeaveFromParty(memberClient);
+                    }
+                }
             }
 
             return res;

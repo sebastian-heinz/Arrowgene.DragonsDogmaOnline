@@ -47,7 +47,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
 
                 Server.HubManager.LeaveAllHubs(client);
-                Server.CharacterManager.UpdateDatabaseOnExit(client.Character);
+                Server.CharacterManager.CleanupOnExit(client);
                 Server.PartyManager.CleanupOnExit(client);
                 Server.RpcManager.AnnouncePlayerList(client.Character);
             }

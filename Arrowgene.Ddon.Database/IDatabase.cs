@@ -296,7 +296,7 @@ namespace Arrowgene.Ddon.Database
         bool ReplaceAbilityPreset(uint characterId, CDataPresetAbilityParam preset);
         bool UpdateAbilityPreset(uint characterId, CDataPresetAbilityParam preset);
 
-        bool InsertSecretAbilityUnlock(uint commonId, SecretAbility secretAbility);
+        bool InsertSecretAbilityUnlock(uint commonId, SecretAbility secretAbility, DbConnection? connectionIn = null);
         List<SecretAbility> SelectAllUnlockedSecretAbilities(uint commonId);
 
         // (Learned) Normal Skills / Learned Core Skills
@@ -619,5 +619,19 @@ namespace Arrowgene.Ddon.Database
         List<CDataRankingData> SelectRankingDataByCharacterId(uint characterId, uint questId, uint limit = 1000, DbConnection? connectionIn = null);
         List<CDataRankingData> SelectRankingData(uint questId, uint limit = 1000, DbConnection? connectionIn = null);
         bool DeleteAllRankRecords(DbConnection? connectionIn = null);
+
+        // Partner Pawn
+        bool InsertPartnerPawnRecord(uint characterId, PartnerPawnData partnerPawnData, DbConnection? connectionIn = null);
+        bool UpdatePartnerPawnRecord(uint characterId, PartnerPawnData partnerPawnData, DbConnection? connectionIn = null);
+        PartnerPawnData GetPartnerPawnRecord(uint characterId, uint pawnId, DbConnection? connectionIn = null);
+        bool SetPartnerPawn(uint characterId, uint pawnId, DbConnection? connectionIn = null);
+
+        bool InsertPartnerPawnLastAffectionIncreaseRecord(uint characterId, uint pawnId, PartnerPawnAffectionAction action, DbConnection? connectionIn = null);
+        bool HasPartnerPawnLastAffectionIncreaseRecord(uint characterId, uint pawnId, PartnerPawnAffectionAction action, DbConnection? connectionIn = null);
+        void DeleteAllPartnerPawnLastAffectionIncreaseRecords(DbConnection? connectionIn = null);
+
+        HashSet<uint> GetPartnerPawnPendingRewards(uint characterId, uint pawnId, DbConnection? connectionIn = null);
+        bool InsertPartnerPawnPendingReward(uint characterId, uint pawnId, uint rewardLevel, DbConnection? connectionIn = null);
+        void DeletePartnerPawnPendingReward(uint characterId, uint pawnId, uint rewardLevel, DbConnection? connectionIn = null);
     }
 }

@@ -19,13 +19,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CPartnerPawnSetRes res = new S2CPartnerPawnSetRes();
 
             Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == request.PawnId);
-            res.PartnerInfo = new CDataPartnerPawnData
+
+            client.Character.PartnerPawnId = pawn.PawnId;
+            Server.Database.ExecuteInTransaction(connection =>
             {
-                PawnId = pawn.PawnId,
-                // TODO: Likability and other attributes are not stored in the pawn memory entity yet
-                Likability = 1,
-                Personality = 1
-            };
+                Server.Database.SetPartnerPawn(client.Character.CharacterId, pawn.PawnId, connection);
+
+                var record = Server.Database.GetPartnerPawnRecord(client.Character.CharacterId, pawn.PawnId, connection);
+                if (record == null)
+                {
+                    record = new PartnerPawnData()
+                    {
+                        PawnId = pawn.PawnId,
+                        NumGifts = 0,
+                        NumCrafts = 0,
+                        NumAdventures = 0,
+                    };
+                    Server.Database.InsertPartnerPawnRecord(client.Character.CharacterId, record, connection);
+                }
+                res.PartnerInfo = record.ToCDataPartnerPawnData(pawn);
+            });
 
             return res;
         }

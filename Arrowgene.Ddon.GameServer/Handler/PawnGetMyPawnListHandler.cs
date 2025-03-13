@@ -3,7 +3,6 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -18,7 +17,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CPawnGetMypawnListRes Handle(GameClient client, C2SPawnGetMyPawnListReq request)
         {
-
             S2CPawnGetMypawnListRes res = new S2CPawnGetMypawnListRes();
 
             uint index = 1;
@@ -44,13 +42,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 res.PawnList.Add(pawnListData);
             }
 
-            // TODO: PartnerInfo
-            res.PartnerInfo = new CDataPartnerPawnData()
+            var partnerPawn = client.Character.Pawns.Where(x => x.PawnId == client.Character.PartnerPawnId).FirstOrDefault();
+            if (partnerPawn != null)
             {
-                PawnId = client.Character.Pawns.FirstOrDefault()?.PawnId ?? 0,
-                Likability = 1,
-                Personality = 1
-            };
+                var partnerData = Server.Database.GetPartnerPawnRecord(client.Character.CharacterId, client.Character.PartnerPawnId);
+                res.PartnerInfo =  (partnerData != null) ? partnerData.ToCDataPartnerPawnData(partnerPawn) : new CDataPartnerPawnData();
+            }
 
             return res;
         }

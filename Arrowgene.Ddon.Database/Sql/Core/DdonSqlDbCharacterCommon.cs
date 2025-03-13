@@ -323,7 +323,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             common.EditInfo.Sex = GetByte(reader, "sex");
             common.EditInfo.Voice = GetByte(reader, "voice");
             common.EditInfo.VoicePitch = GetUInt16(reader, "voice_pitch");
-            common.EditInfo.Personality = GetByte(reader, "personality");
+            common.EditInfo.Personality = (PawnPersonality) GetByte(reader, "personality");
             common.EditInfo.SpeechFreq = GetByte(reader, "speech_freq");
             common.EditInfo.BodyType = GetByte(reader, "body_type");
             common.EditInfo.Hair = GetByte(reader, "hair");
@@ -417,7 +417,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@sex", common.EditInfo.Sex);
             AddParameter(command, "@voice", common.EditInfo.Voice);
             AddParameter(command, "@voice_pitch", common.EditInfo.VoicePitch);
-            AddParameter(command, "@personality", common.EditInfo.Personality);
+            AddParameter(command, "@personality", (byte) common.EditInfo.Personality);
             AddParameter(command, "@speech_freq", common.EditInfo.SpeechFreq);
             AddParameter(command, "@body_type", common.EditInfo.BodyType);
             AddParameter(command, "@hair", common.EditInfo.Hair);

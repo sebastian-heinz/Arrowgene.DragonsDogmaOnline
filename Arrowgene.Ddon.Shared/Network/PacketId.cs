@@ -1830,9 +1830,9 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_PARTNER_PAWN_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_RES = new PacketId(53, 7, 2, "S2C_PARTNER_PAWN_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_RES", ServerType.Game, PacketSource.Server); // 次に欠片を渡せるまでの時間(sec)を取得に
         public static readonly PacketId C2S_PARTNER_PAWN_PRESENT_FOR_PARTNER_PAWN_REQ = new PacketId(53, 8, 1, "C2S_PARTNER_PAWN_PRESENT_FOR_PARTNER_PAWN_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_PARTNER_PAWN_PRESENT_FOR_PARTNER_PAWN_RES = new PacketId(53, 8, 2, "S2C_PARTNER_PAWN_PRESENT_FOR_PARTNER_PAWN_RES", ServerType.Game, PacketSource.Server); // パートナーポーンにプレゼントに
-        public static readonly PacketId S2C_PARTNER_53_9_16_NTC = new PacketId(53, 9, 16, "S2C_PARTNER_53_9_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_PARTNER_PAWN_LIKABILITY_UP_NTC = new PacketId(53, 9, 16, "S2C_PARTNER_PAWN_LIKABILITY_UP_NTC", ServerType.Game, PacketSource.Server, "S2C_PARTNER_53_9_16_NTC");
 
-// Group: 54 - (CRAFT)
+        // Group: 54 - (CRAFT)
         public static readonly PacketId C2S_CRAFT_RECIPE_GET_CRAFT_RECIPE_REQ = new PacketId(54, 0, 1, "C2S_CRAFT_RECIPE_GET_CRAFT_RECIPE_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_CRAFT_RECIPE_GET_CRAFT_RECIPE_RES = new PacketId(54, 0, 2, "S2C_CRAFT_RECIPE_GET_CRAFT_RECIPE_RES", ServerType.Game, PacketSource.Server); // クラフト生産レシピ取得に
         public static readonly PacketId C2S_CRAFT_RECIPE_GET_CRAFT_RECIPE_DESIGNATE_REQ = new PacketId(54, 1, 1, "C2S_CRAFT_RECIPE_GET_CRAFT_RECIPE_DESIGNATE_REQ", ServerType.Game, PacketSource.Client);
@@ -3761,7 +3761,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_PARTNER_PAWN_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_RES);
             AddPacketIdEntry(packetIds, C2S_PARTNER_PAWN_PRESENT_FOR_PARTNER_PAWN_REQ);
             AddPacketIdEntry(packetIds, S2C_PARTNER_PAWN_PRESENT_FOR_PARTNER_PAWN_RES);
-            AddPacketIdEntry(packetIds, S2C_PARTNER_53_9_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_PARTNER_PAWN_LIKABILITY_UP_NTC);
 
 // Group: 54 - (CRAFT)
             AddPacketIdEntry(packetIds, C2S_CRAFT_RECIPE_GET_CRAFT_RECIPE_REQ);
