@@ -88,5 +88,28 @@ namespace Arrowgene.Ddon.GameServer
                 }, null, timerTick, timerTick);
             }
         }
+<<<<<<< Updated upstream
+=======
+
+        public long TimeToNextTaskUpdate(TaskType taskType)
+        {
+            long now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+
+            var task = Tasks.Where(x => x.Type == taskType).FirstOrDefault();
+            if (task == null)
+            {
+                return 0;
+            }
+
+            long next = task.NextTimestamp();
+
+            return (next > now) ? (next - now) : 0;
+        }
+
+        public List<SchedulerTask> GetTasks()
+        {
+            return Tasks;
+        }
+>>>>>>> Stashed changes
     }
 }
