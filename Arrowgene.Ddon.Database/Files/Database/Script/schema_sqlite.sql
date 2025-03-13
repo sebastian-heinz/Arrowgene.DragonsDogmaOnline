@@ -828,7 +828,6 @@ CREATE TABLE IF NOT EXISTS "ddon_partner_pawn"
 (
     "character_id" INTEGER NOT NULL,
     "pawn_id" INTEGER NOT NULL,
-    "personality" INTEGER NOT NULL,
     "num_gifts" INTEGER NOT NULL,
     "num_crafts" INTEGER NOT NULL,
     "num_adventures" INTEGER NOT NULL,

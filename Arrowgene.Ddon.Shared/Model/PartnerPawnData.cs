@@ -6,7 +6,6 @@ namespace Arrowgene.Ddon.Shared.Model
     public class PartnerPawnData
     {
         public uint PawnId { get; set; }
-        public PawnPersonality Personality { get; set; }
         public uint NumGifts { get; set; }
         public uint NumCrafts { get; set; }
         public uint NumAdventures { get; set; }
@@ -18,12 +17,12 @@ namespace Arrowgene.Ddon.Shared.Model
             return Math.Min(level, 25);  // Clamp 0 to 25
         }
 
-        public CDataPartnerPawnData ToCDataPartnerPawnData()
+        public CDataPartnerPawnData ToCDataPartnerPawnData(Pawn pawn)
         {
             return new CDataPartnerPawnData()
             {
                 PawnId = PawnId,
-                Personality = Personality,
+                Personality = pawn.EditInfo.Personality,
                 Likability = CalculateLikability()
             };
         }

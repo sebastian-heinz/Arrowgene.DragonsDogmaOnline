@@ -47,9 +47,9 @@ namespace Arrowgene.Ddon.Server.Settings
         private const double _AdditionalCostPerformanceFactor = 1.0;
 
         /// <summary>
-        /// The amount of seconds that the party leaders partner pawn must be
-        /// out in a non-safe area to receive credit for adventuering with the
-        /// player for the day.
+        /// The amount of seconds that the partner pawn must be a member of the
+        /// party, adventuring in a non-safe area to receive adventure credit
+        /// for the day.
         /// </summary>
         [DefaultValue(_PartnerPawnAdventureDurationInSeconds)]
         public uint PartnerPawnAdventureDurationInSeconds

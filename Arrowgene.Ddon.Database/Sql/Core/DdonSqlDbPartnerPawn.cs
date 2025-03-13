@@ -11,7 +11,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         /* ddon_partner_pawn */
         protected static readonly string[] PartnerPawnFields= new string[]
         {
-            "character_id", "pawn_id", "personality", "num_gifts", "num_crafts", "num_adventures"
+            "character_id", "pawn_id", "num_gifts", "num_crafts", "num_adventures"
         };
 
         private readonly string SqlSelectPartnerPawnRecord = $"SELECT {BuildQueryField(PartnerPawnFields)} FROM \"ddon_partner_pawn\" WHERE \"character_id\"=@character_id AND \"pawn_id\" = @pawn_id;";
@@ -26,7 +26,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 {
                     AddParameter(command, "character_id", characterId);
                     AddParameter(command, "pawn_id", partnerPawnData.PawnId);
-                    AddParameter(command, "personality", (byte)partnerPawnData.Personality);
                     AddParameter(command, "num_gifts", partnerPawnData.NumGifts);
                     AddParameter(command, "num_crafts", partnerPawnData.NumCrafts);
                     AddParameter(command, "num_adventures", partnerPawnData.NumAdventures);
@@ -42,7 +41,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 {
                     AddParameter(command, "character_id", characterId);
                     AddParameter(command, "pawn_id", partnerPawnData.PawnId);
-                    AddParameter(command, "personality", (byte) partnerPawnData.Personality);
                     AddParameter(command, "num_gifts", partnerPawnData.NumGifts);
                     AddParameter(command, "num_crafts", partnerPawnData.NumCrafts);
                     AddParameter(command, "num_adventures", partnerPawnData.NumAdventures);
@@ -66,7 +64,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         result = new PartnerPawnData()
                         {
                             PawnId = GetUInt32(reader, "pawn_id"),
-                            Personality = (PawnPersonality) GetByte(reader, "personality"),
                             NumGifts = GetUInt32(reader, "num_gifts"),
                             NumCrafts = GetUInt32(reader, "num_crafts"),
                             NumAdventures = GetUInt32(reader, "num_adventures"),

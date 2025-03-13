@@ -3,6 +3,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -41,10 +42,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 res.PawnList.Add(pawnListData);
             }
 
-            if (client.Character.PartnerPawnId != 0)
+            var partnerPawn = client.Character.Pawns.Where(x => x.PawnId == client.Character.PartnerPawnId).FirstOrDefault();
+            if (partnerPawn != null)
             {
                 var partnerData = Server.Database.GetPartnerPawnRecord(client.Character.CharacterId, client.Character.PartnerPawnId);
-                res.PartnerInfo =  (partnerData != null) ? partnerData.ToCDataPartnerPawnData() : new CDataPartnerPawnData();
+                res.PartnerInfo =  (partnerData != null) ? partnerData.ToCDataPartnerPawnData(partnerPawn) : new CDataPartnerPawnData();
             }
 
             return res;

@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -9,7 +10,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             Sex = 1;
             Voice = 1;
             VoicePitch = 30000;
-            Personality = 1;
+            Personality = PawnPersonality.Normal;
             SpeechFreq = 1;
             BodyType = 0;
             Hair = 25;
@@ -82,7 +83,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public byte Sex;
         public byte Voice;
         public ushort VoicePitch;
-        public byte Personality;
+        public PawnPersonality Personality;
         public byte SpeechFreq;
         public byte BodyType;
         public byte Hair;
@@ -158,7 +159,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteByte(buffer, obj.Sex);
                 WriteByte(buffer, obj.Voice);
                 WriteUInt16(buffer, obj.VoicePitch);
-                WriteByte(buffer, obj.Personality);
+                WriteByte(buffer, (byte) obj.Personality);
                 WriteByte(buffer, obj.SpeechFreq);
                 WriteByte(buffer, obj.BodyType);
                 WriteByte(buffer, obj.Hair);
@@ -234,7 +235,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.Sex = ReadByte(buffer);
                 obj.Voice = ReadByte(buffer);
                 obj.VoicePitch = ReadUInt16(buffer);
-                obj.Personality = ReadByte(buffer);
+                obj.Personality = (PawnPersonality) ReadByte(buffer);
                 obj.SpeechFreq = ReadByte(buffer);
                 obj.BodyType = ReadByte(buffer);
                 obj.Hair = ReadByte(buffer);

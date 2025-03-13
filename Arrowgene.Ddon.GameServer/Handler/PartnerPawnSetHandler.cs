@@ -31,14 +31,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     record = new PartnerPawnData()
                     {
                         PawnId = pawn.PawnId,
-                        Personality = PawnPersonality.Normal,
                         NumGifts = 0,
                         NumCrafts = 0,
                         NumAdventures = 0,
                     };
                     Server.Database.InsertPartnerPawnRecord(client.Character.CharacterId, record, connection);
                 }
-                res.PartnerInfo = record.ToCDataPartnerPawnData();
+                res.PartnerInfo = record.ToCDataPartnerPawnData(pawn);
             });
 
             return res;

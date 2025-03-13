@@ -20,9 +20,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override PacketQueue Handle(GameClient client, C2SPartnerPawnPresentForPartnerPawnReq request)
         {
+            CDataPartnerPawnData partnerPawnData = new CDataPartnerPawnData();
             var packets = new PacketQueue();
-
-            PartnerPawnData partnerPawnData = new PartnerPawnData();
 
             List<CDataItemUpdateResult> itemUpdateResults = new List<CDataItemUpdateResult>();
             Server.Database.ExecuteInTransaction(connection =>
@@ -38,6 +37,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     packets.AddRange(Server.PartnerPawnManager.UpdateLikabilityIncreaseAction(client, PartnerPawnAffectionAction.Gift, connection));
                 }
+
+                partnerPawnData = Server.PartnerPawnManager.GetCDataPartnerPawnData(client, connection);
             });
 
             packets.Enqueue(client, new S2CItemUpdateCharacterItemNtc()
@@ -48,7 +49,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             packets.Enqueue(client, new S2CPartnerPawnPresentForPartnerPawnRes()
             {
-                PartnerInfo = partnerPawnData.ToCDataPartnerPawnData()
+                PartnerInfo = partnerPawnData
             });
 
             return packets;

@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -23,6 +24,36 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public PartnerPawnManager(DdonGameServer server)
         {
             Server = server;
+        }
+
+        public Pawn GetPartnerPawn(GameClient client)
+        {
+            if (client.Character.PartnerPawnId == 0)
+            {
+                return null;
+            }
+            return client.Character.Pawns.Where(x => x.PawnId == client.Character.PartnerPawnId).FirstOrDefault();
+        }
+
+        public PartnerPawnData? GetPartnerPawnData(GameClient client, DbConnection? connectionIn = null)
+        {
+            if (client.Character.PartnerPawnId == 0)
+            {
+                return null;
+            }
+            return Server.Database.GetPartnerPawnRecord(client.Character.CharacterId, client.Character.PartnerPawnId, connectionIn);
+        }
+
+        public CDataPartnerPawnData? GetCDataPartnerPawnData(GameClient client, DbConnection? connectionIn = null)
+        {
+            var pawn = GetPartnerPawn(client);
+            if (pawn == null)
+            {
+                return null;
+            }
+
+            var partnerPawnData = GetPartnerPawnData(client, connectionIn);
+            return partnerPawnData.ToCDataPartnerPawnData(pawn);
         }
 
         public PacketQueue UpdateLikabilityIncreaseAction(GameClient client, PartnerPawnAffectionAction action, DbConnection? connectionIn = null)
@@ -74,7 +105,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return packets;
         }
 
-        public bool IsActionConsumedForDay(GameClient client, PartnerPawnAffectionAction action)
+        public bool IsActionConsumedForDay(GameClient client, PartnerPawnAffectionAction action, DbConnection? connectionIn = null)
         {
             if (client.Character.PartnerPawnId == 0)
             {
@@ -113,7 +144,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new();
             }
 
-            var fileredTypes = new List<PawnLikabilityRewardType>()
+            var filteredTypes = new List<PawnLikabilityRewardType>()
             {
                 PawnLikabilityRewardType.Talk,
                 PawnLikabilityRewardType.Emotion,
@@ -122,7 +153,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             return gLikabilityRewards
                 .Where(x => x.Key <= likeability)
-                .Where(x => fileredTypes.Contains(x.Value.Type))
+                .Where(x => filteredTypes.Contains(x.Value.Type))
                 .Select(x => x.Value)
                 .ToList();
         }
@@ -150,7 +181,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 if (client.Character.PartnerPawnAdventureTimerId != 0 || !StageManager.IsSafeArea(client.Character.Stage))
                 {
-                    Logger.Error("Attempted to create an adventure timer in an invalid state");
+                    Logger.Error(client, "Attempted to create an adventure timer in an invalid state");
                     return false;
                 }
 
@@ -160,7 +191,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     CancelAdventureTimer(client);
                     UpdateLikabilityIncreaseAction(client, PartnerPawnAffectionAction.Adventure);
                 });
-                Logger.Info($"(PartnerPawn) Adventure timer for PartnerPawnId={client.Character.PartnerPawnAdventureTimerId} created");
+                Logger.Info(client, $"(PartnerPawn) Adventure timer for PartnerPawnId={client.Character.PartnerPawnAdventureTimerId} created");
             }
 
             return true;
@@ -197,7 +228,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 if (client.Character.PartnerPawnAdventureTimerId == 0)
                 {
-                    Logger.Error("Attempted to start/resume the adventure timer but the timer id is invalid");
+                    Logger.Error(client, "Attempted to start/resume the adventure timer but the timer id is invalid");
                     return false;
                 }
                 return Server.TimerManager.StartTimer(client.Character.PartnerPawnAdventureTimerId);
@@ -210,12 +241,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 if (client.Character.PartnerPawnAdventureTimerId == 0)
                 {
-                    Logger.Error("Attempted to start/resume the adventure timer but the timer id is invalid");
+                    Logger.Error(client, "Attempted to start/resume the adventure timer but the timer id is invalid");
                     return false;
                 }
 
                 Server.TimerManager.PauseTimer(client.Character.PartnerPawnAdventureTimerId);
-                Logger.Info($"(PartnerPawn) Adventure timer for PartnerPawnId={client.Character.PartnerPawnAdventureTimerId} paused");
+                Logger.Info(client, $"(PartnerPawn) Adventure timer for PartnerPawnId={client.Character.PartnerPawnAdventureTimerId} paused");
 
                 return true;
             }
@@ -229,7 +260,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     return true;
                 }
-                Logger.Info($"(PartnerPawn) PartnerPawnId={client.Character.PartnerPawnAdventureTimerId} kicked/left party, canceling timer");
+                Logger.Info(client, $"(PartnerPawn) PartnerPawnId={client.Character.PartnerPawnAdventureTimerId} kicked/left party, canceling timer");
                 return CancelAdventureTimer(client);
             }
         }
@@ -240,7 +271,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 if (client.Character.PartnerPawnAdventureTimerId == 0)
                 {
-                    Logger.Error("Attempted to cancel the adventure timer but the timer id is invalid");
+                    Logger.Error(client, "Attempted to cancel the adventure timer but the timer id is invalid");
                     return false;
                 }
 

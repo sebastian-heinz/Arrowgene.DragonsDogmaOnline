@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -76,6 +77,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             craftPawns.AddRange(request.CraftSupportPawnIDList.Select(p => new CraftPawn(Server.CraftManager.FindPawn(client, p.PawnId), CraftPosition.Assistant)));
             craftPawns.AddRange(request.CraftMasterLegendPawnIDList.Select(p => new CraftPawn(Server.AssetRepository.PawnCraftMasterLegendAsset.Single(m => m.PawnId == p.PawnId))));
 
+            PacketQueue packets = new();
             Server.Database.ExecuteInTransaction(connection =>
             {
                 // Remove crafting materials
@@ -187,10 +189,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (leadPawn.PawnId == client.Character.PartnerPawnId)
                 {
-                    Server.PartnerPawnManager.UpdateLikabilityIncreaseAction(client, PartnerPawnAffectionAction.Craft, connection)
-                        .Send();
+                    packets.AddRange(Server.PartnerPawnManager.UpdateLikabilityIncreaseAction(client, PartnerPawnAffectionAction.Craft, connection));
                 }
             });
+
+            packets.Send();
 
             client.Send(updateCharacterItemNtc);
             return new S2CCraftStartCraftRes();
