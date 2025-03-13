@@ -127,6 +127,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 Logger.Info($"Setting timer to {timeInSeconds} seconds for TimerId={timerId}");
                 _Timers[timerId].Duration = TimeSpan.FromSeconds(timeInSeconds);
+                _Timers[timerId].TimeStart = DateTime.Now;
                 return (ulong)((DateTimeOffset)(_Timers[timerId].TimeStart + _Timers[timerId].Duration)).ToUnixTimeSeconds();
             }
         }

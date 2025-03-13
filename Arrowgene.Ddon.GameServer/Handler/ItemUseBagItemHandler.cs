@@ -100,7 +100,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Enqueue(ntc, queue);
 
             // Lantern start NTC
-            // TODO: Figure out all item IDs that do lantern stuff
             if (item.ItemId == (uint)ItemId.LanternKindling && EquipManager.HasLantern(client.Character))
             {
                 queue.AddRange(Server.ItemManager.StartLantern(client, _Server.GameSettings.GameServerSettings.LanternBurnTimeInSeconds));
