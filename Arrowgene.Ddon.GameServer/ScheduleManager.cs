@@ -105,5 +105,10 @@ namespace Arrowgene.Ddon.GameServer
 
             return (next > now) ? (next - now) : 0;
         }
+
+        public List<SchedulerTask> GetTasks()
+        {
+            return Tasks;
+        }
     }
 }

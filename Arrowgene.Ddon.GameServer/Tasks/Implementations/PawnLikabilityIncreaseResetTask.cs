@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.GameServer.Tasks.Implementations
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnLikabilityIncreaseResetTask));
 
-        public PawnLikabilityIncreaseResetTask(uint hour, uint minute) : base(TaskType.PawnAffectionIncreaseInteraction, hour, minute)
+        public PawnLikabilityIncreaseResetTask(uint hour, uint minute) : base(TaskType.PawnAffectionIncreaseInteractionReset, hour, minute)
         {
         }
 

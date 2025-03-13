@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 isMax = partnerPawnData.CalculateLikability() >= PartnerPawnManager.MAX_PARTNER_PAWN_LIKABILITY_RATING;
                 if (!isMax && Server.Database.HasPartnerPawnLastAffectionIncreaseRecord(client.Character.CharacterId, client.Character.PartnerPawnId, PartnerPawnAffectionAction.Gift, connection))
                 {
-                    timeToNext = Server.ScheduleManager.TimeToNextTaskUpdate(TaskType.PawnAffectionIncreaseInteraction);
+                    timeToNext = Server.ScheduleManager.TimeToNextTaskUpdate(TaskType.PawnAffectionIncreaseInteractionReset);
                 }
             });
 
