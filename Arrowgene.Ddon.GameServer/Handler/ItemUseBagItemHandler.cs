@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -100,13 +101,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // Lantern start NTC
             // TODO: Figure out all item IDs that do lantern stuff
-            if (item.ItemId == 55)
+            if (item.ItemId == (uint)ItemId.LanternKindling && EquipManager.HasLantern(client.Character))
             {
-                // client.Send(SelectedDump.lantern2_27_16);
-                // TODO: Start a timer to estinguish after LanternBurnTimeInSeconds expires
-                client.Character.IsLanternLit = true;
-                client.Enqueue(new S2CCharacterStartLanternNtc() { RemainTime = _Server.GameSettings.GameServerSettings.LanternBurnTimeInSeconds }, queue);
-                // client.Party.SendToAllExcept(new S2CCharacterStartLanternOtherNtc() { CharacterId = client.Character.CharacterId }, client);
+                queue.AddRange(Server.ItemManager.StartLantern(client, _Server.GameSettings.GameServerSettings.LanternBurnTimeInSeconds));
             }
 
             return queue;

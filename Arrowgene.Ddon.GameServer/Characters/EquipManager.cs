@@ -155,6 +155,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     updateCharacterItemNtc.UpdateItemList.AddRange(
                         server.ItemManager.MoveItem(server, client.Character, characterToEquipTo.Equipment.Storage, equipItemStorageSlot, 1, destinationStorage, 0, connectionIn)
                     );
+
+                    if (equipType == EquipType.Performance && equipSlot == (byte)EquipSlot.Lantern)
+                    {
+                        queue.AddRange(server.ItemManager.StopLantern(client, true));
+                    }
                 }
                 else
                 {
@@ -417,6 +422,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return itemRank > 0 ? itemRank : 1;
+        }
+
+        public static bool HasLantern(CharacterCommon characterCommon)
+        {
+            return characterCommon.EquipmentTemplate.GetEquipItem(characterCommon.Job, EquipType.Performance, EquipSlot.Lantern) != null;
         }
     }
 }

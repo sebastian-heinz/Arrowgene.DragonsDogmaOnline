@@ -127,6 +127,8 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint ClanId { get; set; }
         public ClanName ClanName { get; set; }
         public bool IsLanternLit { get; set; }
+        public uint LanternTimer { get; set; }
+
         public EpitaphRoadState EpitaphRoadState { get; set; }
         public Dictionary<QuestAreaId, AreaRank> AreaRanks { get; set; }
         public Dictionary<QuestAreaId, List<CDataRewardItemInfo>> AreaSupply { get; set; }

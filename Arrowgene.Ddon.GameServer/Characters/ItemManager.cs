@@ -1030,6 +1030,51 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             client.Send(ntc);
         }
+
+
+        #region Lanterns
+        public PacketQueue StartLantern(GameClient client, uint lanternTimer)
+        {
+            PacketQueue queue = new();
+            if (client.Character.IsLanternLit)
+            {
+                _Server.TimerManager.SetTimer(client.Character.LanternTimer, lanternTimer);
+            }
+            else
+            {
+                client.Character.LanternTimer = _Server.TimerManager.CreateTimer(lanternTimer, () =>
+                {
+                    StopLantern(client).Send();
+                });
+                _Server.TimerManager.StartTimer(client.Character.LanternTimer);
+                client.Enqueue(new S2CCharacterStartLanternNtc() { RemainTime = lanternTimer }, queue);
+                //client.Party.EnqueueToAllExcept(new S2CCharacterStartLanternOtherNtc() { CharacterId = client.Character.CharacterId }, queue, client);
+            }
+            client.Character.IsLanternLit = true;
+
+            return queue;
+        }
+
+        public PacketQueue StopLantern(GameClient client, bool force = false)
+        {
+            PacketQueue queue = new();
+
+            if (client.Character.IsLanternLit)
+            {
+                if (force)
+                {
+                    _Server.TimerManager.CancelTimer(client.Character.LanternTimer);
+                }
+                client.Enqueue(new S2CCharacterFinishLanternNtc(), queue);
+                //client.Party.EnqueueToAllExcept(new S2CCharacterFinishLanternOtherNtc() { CharacterId = client.Character.CharacterId }, queue, client);
+            }
+
+            client.Character.IsLanternLit = false;
+
+            return queue;
+        }
+
+        #endregion
     }
 
     [Serializable]

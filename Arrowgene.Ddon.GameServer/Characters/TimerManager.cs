@@ -121,6 +121,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        public ulong SetTimer(uint timerId, uint timeInSeconds)
+        {
+            lock (_Timers)
+            {
+                Logger.Info($"Setting timer to {timeInSeconds} seconds for TimerId={timerId}");
+                _Timers[timerId].Duration = TimeSpan.FromSeconds(timeInSeconds);
+                return (ulong)((DateTimeOffset)(_Timers[timerId].TimeStart + _Timers[timerId].Duration)).ToUnixTimeSeconds();
+            }
+        }
+
         public ulong GetTimeLeftInSeconds(uint timerId)
         {
             lock (_Timers)
