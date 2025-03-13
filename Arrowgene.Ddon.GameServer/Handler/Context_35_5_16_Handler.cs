@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // If you fall in and past the trigger plane, you usually only get one notice.
             // If it's a walkoff like a beach, you can stand in the water and send like one NTC a frame.
 
-            client.Character.IsLanternLit = false;
+            Server.ItemManager.StopLantern(client, true).Send();
         }
     }
 }
