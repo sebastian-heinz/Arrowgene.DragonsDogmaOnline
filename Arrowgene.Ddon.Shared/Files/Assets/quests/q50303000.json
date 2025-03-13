@@ -133,9 +133,8 @@
             "comment": "Blaze Harpy",
             "stage_id": {
                 "id": 586,
-                "group_id": 2
+                "group_id": 3
             },
-            "starting_index": 1,
             "enemies": [
                 {
                     "enemy_id": "0x010608",
@@ -162,12 +161,44 @@
                     "enemy_target_types_id": 1
                 },
                 {
-                    "enemy_id": "0x010608",
-                    "level": 95,
-                    "exp": 0,
-                    "repop_count": 50,
-                    "repop_wait_second": 60,
-                    "enemy_target_types_id": 1
+                  "enemy_id": "0x010608",
+                  "level": 95,
+                  "exp": 0,
+                  "repop_count": 50,
+                  "repop_wait_second": 60,
+                  "enemy_target_types_id": 1
+                },
+                {
+                  "enemy_id": "0x010608",
+                  "level": 95,
+                  "exp": 0,
+                  "repop_count": 50,
+                  "repop_wait_second": 60,
+                  "enemy_target_types_id": 1
+                },
+                {
+                  "enemy_id": "0x010608",
+                  "level": 95,
+                  "exp": 0,
+                  "repop_count": 50,
+                  "repop_wait_second": 60,
+                  "enemy_target_types_id": 1
+                },
+                {
+                  "enemy_id": "0x010608",
+                  "level": 95,
+                  "exp": 0,
+                  "repop_count": 50,
+                  "repop_wait_second": 60,
+                  "enemy_target_types_id": 1
+                },
+                {
+                  "enemy_id": "0x010608",
+                  "level": 95,
+                  "exp": 0,
+                  "repop_count": 50,
+                  "repop_wait_second": 60,
+                  "enemy_target_types_id": 1
                 }
             ]
         }
@@ -205,6 +236,7 @@
                 },
                 {
                     "type": "KillGroup",
+                    "show_marker": false,
                     "reset_group": false,
                     "groups": [1]
                 }
@@ -215,7 +247,7 @@
                 {
                     "type": "Raw",
                     "check_commands": [
-                        {"type": "EmHpLess", "Param1": 138, "Param2": 1, "Param3": 0, "Param4": 40}
+                        {"type": "EmHpLess", "Param1": 138, "Param2": 1, "Param3": 0, "Param4": 50}
                     ]
                 },
                 {

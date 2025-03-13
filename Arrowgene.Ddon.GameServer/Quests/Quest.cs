@@ -877,6 +877,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     switch (action.OmInstantValueAction)
                     {
                         case OmInstantValueAction.ResetGroup:
+                            client.Party.InstanceEnemyManager.ResetEnemyNode(action.StageLayoutId);
                             client.Party.SendToAll(new S2CInstanceEnemyGroupResetNtc()
                             {
                                 LayoutId = new CDataStageLayoutId()
