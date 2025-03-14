@@ -23,6 +23,7 @@
 using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.LoginServer.Handler;
+using Arrowgene.Ddon.LoginServer.Manager;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Handler;
 using Arrowgene.Ddon.Server.Network;
@@ -43,11 +44,13 @@ namespace Arrowgene.Ddon.LoginServer
             Setting = new LoginServerSetting(setting);
             GameSetting = gameSetting;
             ClientLookup = new LoginClientLookup();
+            LoginQueueManager = new(this);
             LoadPacketHandler();
         }
 
         public LoginServerSetting Setting { get; }
         public GameSettings GameSetting { get; }
+        public LoginQueueManager LoginQueueManager { get; }
 
         public override LoginClientLookup ClientLookup { get; }
 
@@ -59,6 +62,7 @@ namespace Arrowgene.Ddon.LoginServer
 
         protected override void ClientDisconnected(LoginClient client)
         {
+            LoginQueueManager.Remove(client.Account.Id);
             ClientLookup.Remove(client);
 
             Account account = client.Account;
@@ -91,6 +95,7 @@ namespace Arrowgene.Ddon.LoginServer
             AddHandler(new ClientGetGameSessionKeyHandler(this));
             AddHandler(new ClientLogoutHandler(this));
             AddHandler(new CreateCharacterHandler(this));
+            AddHandler(new ClientDecideCancelCharacterHandler(this));
         }
     }
 }

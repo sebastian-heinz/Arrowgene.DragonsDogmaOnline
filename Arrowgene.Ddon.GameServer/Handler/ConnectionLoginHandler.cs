@@ -94,6 +94,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_AUTH_SESSION_KEY_GENERATE);
             }
 
+            Server.RpcManager.AnnouncePlayerList();
 
             Logger.Debug(client, $"Updated OneTimeToken:{client.Account.LoginToken}");
 

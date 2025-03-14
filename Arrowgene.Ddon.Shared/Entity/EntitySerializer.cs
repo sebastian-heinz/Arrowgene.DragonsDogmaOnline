@@ -473,6 +473,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             // Packet structure serializers
             Create(new C2LClientChallengeReq.Serializer());
             Create(new C2LCreateCharacterDataReq.Serializer());
+            Create(new C2LDecideCancelCharacterReq.Serializer());
             Create(new C2LDecideCharacterIdReq.Serializer());
             Create(new C2LDeleteCharacterInfoReq.Serializer());
             Create(new C2LGetCharacterListReq.Serializer());
@@ -1638,8 +1639,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new L2CClientChallengeRes.Serializer());
             Create(new L2CCreateCharacterDataNtc.Serializer());
             Create(new L2CCreateCharacterDataRes.Serializer());
+            Create(new L2CDecideCancelCharacterRes.Serializer());
             Create(new L2CDecideCharacterIdRes.Serializer());
             Create(new L2CDeleteCharacterInfoRes.Serializer());
+            Create(new L2CEjectionNtc.Serializer());
             Create(new L2CGetCharacterListRes.Serializer());
             Create(new L2CGetErrorMessageListNtc.Serializer());
             Create(new L2CGetErrorMessageListRes.Serializer());
