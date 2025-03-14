@@ -104,8 +104,7 @@ namespace Arrowgene.Ddon.GameServer
             var info = ChannelInfo[channelId].ToCDataGameServerListInfo();
             if (channelId == Server.Id)
             {
-                // Check against StageId to not count clients that are in the character select.
-                info.LoginNum = (uint)Server.ClientLookup.GetAll().Where(x => x.Character != null && x.Character.Stage.Id != 0).Count();
+                info.LoginNum = (uint)Server.ClientLookup.GetAll().Where(x => x.Character != null).Count();
             }
             else
             {
@@ -116,7 +115,7 @@ namespace Arrowgene.Ddon.GameServer
             return info;
         }
 
-        private static string GetTrafficName(uint count)
+        public static string GetTrafficName(uint count)
         {
             uint index = 0;
             if (count > 0)
@@ -126,6 +125,12 @@ namespace Arrowgene.Ddon.GameServer
             }
             return $"{TRAFFIC_LABELS[index]} ({count})";
         }
+
+        public bool DoesGameServerExist(ushort channelId)
+        {
+            return ChannelInfo.ContainsKey(channelId);
+        }
+
         #endregion
 
         #region RPC Machinery

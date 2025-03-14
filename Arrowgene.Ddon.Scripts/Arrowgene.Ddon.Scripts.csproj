@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <GenerateDocumentationFile>false</GenerateDocumentationFile>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsing>enable</ImplicitUsing>
+        <RootNamespace>Arrowgene.Ddon.Scripts</RootNamespace>
+        <ProduceReferenceAssembly>False</ProduceReferenceAssembly>
+    </PropertyGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Arrowgene.Ddon.Shared\Arrowgene.Ddon.Shared.csproj" />
+        <ProjectReference Include="..\Arrowgene.Ddon.GameServer\Arrowgene.Ddon.GameServer.csproj" />
+        <ProjectReference Include="..\Arrowgene.Ddon.Database\Arrowgene.Ddon.Database.csproj" />
+    </ItemGroup>
+    <Target Name="CreateOutputDirectory" AfterTargets="PrepareForBuild">
+        <MakeDir Directories="$(OutputPath)\net6.0\Files\Assets\scripts" Condition="!Exists('$(ProjectDir)\net6.0\Files\Assets\scripts')" />
+    </Target>
+    <ItemGroup>
+        <ContentWithTargetPath Include="scripts\**">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+            <TargetPath>Files\Assets\scripts\%(RecursiveDir)%(Filename)%(Extension)</TargetPath>
+        </ContentWithTargetPath>
+    </ItemGroup>
+</Project>

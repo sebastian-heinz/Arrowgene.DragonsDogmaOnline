@@ -84,7 +84,7 @@ namespace Arrowgene.Ddon.Shared.Asset
             DropTablesIds = new List<uint>();
         }
 
-        public StageId StageId { get; set; }
+        public StageLayoutId StageId { get; set; }
         public uint PosId { get; set; }
         public List<uint> DropTablesIds { get; set; }
     }
@@ -96,7 +96,7 @@ namespace Arrowgene.Ddon.Shared.Asset
             Door = new EpitaphDoor();
         }
 
-        public StageId StageId { get; set; }
+        public StageLayoutId StageId { get; set; }
         public uint PosId { get; set; }
         public EpitaphDoor Door { get; set; }
 
@@ -113,14 +113,14 @@ namespace Arrowgene.Ddon.Shared.Asset
             GatheringPoints = new List<EpitaphGatheringPoint>();
         }
 
-        public StageId StageId { get; set; }
+        public StageLayoutId StageId { get; set; }
         public uint PosId { get; set; }
         public List<EpitaphGatheringPoint> GatheringPoints { get; set; }
     }
 
     public class EpitaphStatue : EpitaphObject
     {
-        public StageId StageId { get; set; }
+        public StageLayoutId StageId { get; set; }
         public uint PosId { get; set; }
     }
 
@@ -134,7 +134,7 @@ namespace Arrowgene.Ddon.Shared.Asset
         }
 
         public string Name { get; set; }
-        public StageId StageId { get; set; }
+        public StageLayoutId StageId { get; set; }
         public uint PosId { get; set; }
         public NpcId NpcId;
         public List<CDataSoulOrdealItem> UnlockCost { get; set; }
@@ -196,7 +196,7 @@ namespace Arrowgene.Ddon.Shared.Asset
 
         public string Name { get; set; }
         public uint DungeonId { get; set; }
-        public (StageId StageId, uint PosId) FinalTrialId { get; set; }
+        public (StageLayoutId StageId, uint PosId) FinalTrialId { get; set; }
         public uint HubStageId { get; set; }
         public uint SoulItemId { get; set; }
         public bool RewardBuffs { get; set; }
@@ -218,12 +218,12 @@ namespace Arrowgene.Ddon.Shared.Asset
             Paths = new Dictionary<uint, EpitaphPath>();
             BuffsByType = new Dictionary<SoulOrdealBuffType, List<EpitaphBuff>>();
             BuffsById = new Dictionary<uint, EpitaphBuff>();
-            BarriersByOmId = new Dictionary<StageId, EpitaphBarrier>();
+            BarriersByOmId = new Dictionary<StageLayoutId, EpitaphBarrier>();
             BarriersByNpcId = new Dictionary<NpcId, EpitaphBarrier>();
-            StatuesByOmId = new Dictionary <(StageId StageId, uint PosId), EpitaphStatue>();
-            ChestsByOmId = new Dictionary<(StageId StageId, uint PosId), EpitaphWeeklyReward>();
-            DoorsByOmId = new Dictionary<(StageId StageId, uint PosId), EpitaphDoor>();
-            GatheringPointsByOmId = new Dictionary<(StageId StageId, uint PosId), EpitaphGatheringPoint>();
+            StatuesByOmId = new Dictionary <(StageLayoutId StageId, uint PosId), EpitaphStatue>();
+            ChestsByOmId = new Dictionary<(StageLayoutId StageId, uint PosId), EpitaphWeeklyReward>();
+            DoorsByOmId = new Dictionary<(StageLayoutId StageId, uint PosId), EpitaphDoor>();
+            GatheringPointsByOmId = new Dictionary<(StageLayoutId StageId, uint PosId), EpitaphGatheringPoint>();
             RandomLootByStageId = new Dictionary<uint, List<EpitaphItemReward>>();
             EpitaphObjects = new Dictionary<uint, EpitaphObject>();
         }
@@ -231,12 +231,12 @@ namespace Arrowgene.Ddon.Shared.Asset
         public Dictionary<uint, EpitaphPath> Paths { get; set; }
         public Dictionary<SoulOrdealBuffType, List<EpitaphBuff>> BuffsByType { get; set; }
         public Dictionary<uint, EpitaphBuff> BuffsById { get; set; }
-        public Dictionary<StageId, EpitaphBarrier> BarriersByOmId { get; set; }
+        public Dictionary<StageLayoutId, EpitaphBarrier> BarriersByOmId { get; set; }
         public Dictionary<NpcId, EpitaphBarrier> BarriersByNpcId { get; set; }
-        public Dictionary<(StageId StageId, uint PosId), EpitaphStatue> StatuesByOmId;
-        public Dictionary<(StageId StageId, uint PosId), EpitaphWeeklyReward> ChestsByOmId;
-        public Dictionary<(StageId StageId, uint PosId), EpitaphDoor> DoorsByOmId;
-        public Dictionary<(StageId StageId, uint PosId), EpitaphGatheringPoint> GatheringPointsByOmId;
+        public Dictionary<(StageLayoutId StageId, uint PosId), EpitaphStatue> StatuesByOmId;
+        public Dictionary<(StageLayoutId StageId, uint PosId), EpitaphWeeklyReward> ChestsByOmId;
+        public Dictionary<(StageLayoutId StageId, uint PosId), EpitaphDoor> DoorsByOmId;
+        public Dictionary<(StageLayoutId StageId, uint PosId), EpitaphGatheringPoint> GatheringPointsByOmId;
         public Dictionary<uint, List<EpitaphItemReward>> RandomLootByStageId;
 
         public Dictionary<uint, EpitaphObject> EpitaphObjects { get; set; }

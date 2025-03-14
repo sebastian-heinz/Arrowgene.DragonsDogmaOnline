@@ -43,7 +43,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             Objectives = new Dictionary<SoulOrdealObjective, EpitaphObjective>();
             Trial = new EpitaphTrialOption();
-            AbnormalStatus = new Dictionary<(StageId StageId, uint PosId), bool>();
+            AbnormalStatus = new Dictionary<(StageLayoutId StageId, uint PosId), bool>();
         }
 
         public uint PartyId { get; set; }
@@ -51,7 +51,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public SoulOrdealObjective PrimaryObjective;
         public Dictionary<SoulOrdealObjective, EpitaphObjective> Objectives { get; set; }
         public EpitaphTrialOption Trial { get; set; }
-        public Dictionary<(StageId StageId, uint PosId), bool> AbnormalStatus { get; set; }
+        public Dictionary<(StageLayoutId StageId, uint PosId), bool> AbnormalStatus { get; set; }
 
         public List<CDataSoulOrdealObjective> GetObjectiveList()
         {
@@ -73,10 +73,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private EpitaphRoadAsset _EpitaphAssets;
 
         private Dictionary<uint, EpitaphPartyState> _TrialsInProgress;
-        private Dictionary<uint, Dictionary<(StageId StageId, uint PosId), EpitaphPartyRewards>> _TrialHasRewards;
+        private Dictionary<uint, Dictionary<(StageLayoutId StageId, uint PosId), EpitaphPartyRewards>> _TrialHasRewards;
         private Dictionary<uint, Dictionary<uint, Dictionary<uint, EpitaphBuff>>> _PartyBuffs;
-        private Dictionary<uint, HashSet<(StageId StageId, uint PosId)>> _CompletedTrials;
-        private Dictionary<uint, Dictionary<(StageId stageId, uint PosId), EpitaphMysteriousDoorState>> _DoorState;
+        private Dictionary<uint, HashSet<(StageLayoutId StageId, uint PosId)>> _CompletedTrials;
+        private Dictionary<uint, Dictionary<(StageLayoutId stageId, uint PosId), EpitaphMysteriousDoorState>> _DoorState;
 
         public EpitaphRoadManager(DdonGameServer server)
         {
@@ -84,10 +84,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
             _TrialAssets = server.AssetRepository.EpitaphTrialAssets;
             _EpitaphAssets = server.AssetRepository.EpitaphRoadAssets;
             _TrialsInProgress = new Dictionary<uint, EpitaphPartyState>();
-            _TrialHasRewards = new Dictionary<uint, Dictionary<(StageId StageId, uint PosId), EpitaphPartyRewards>>();
+            _TrialHasRewards = new Dictionary<uint, Dictionary<(StageLayoutId StageId, uint PosId), EpitaphPartyRewards>>();
             _PartyBuffs = new Dictionary<uint, Dictionary<uint, Dictionary<uint, EpitaphBuff>>>();
-            _CompletedTrials = new Dictionary<uint, HashSet<(StageId StageId, uint PosId)>>();
-            _DoorState = new Dictionary<uint, Dictionary<(StageId stageId, uint PosId), EpitaphMysteriousDoorState>>();
+            _CompletedTrials = new Dictionary<uint, HashSet<(StageLayoutId StageId, uint PosId)>>();
+            _DoorState = new Dictionary<uint, Dictionary<(StageLayoutId stageId, uint PosId), EpitaphMysteriousDoorState>>();
         }
 
         public void ResetInstance(PartyGroup party)
@@ -116,7 +116,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 if (!_CompletedTrials.ContainsKey(party.Id))
                 {
-                    _CompletedTrials[party.Id] = new HashSet<(StageId, uint)>();
+                    _CompletedTrials[party.Id] = new HashSet<(StageLayoutId, uint)>();
                 }
 
                 var trial = GetTrialOptionInfo(trialId);
@@ -139,8 +139,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 foreach (var enemyGroup in trial.EnemyGroups.Values)
                 {
-                    party.InstanceEnemyManager.ResetEnemyNode(enemyGroup.StageId);
-                    party.SendToAll(new S2CInstanceEnemyGroupResetNtc() { LayoutId = enemyGroup.StageId.ToStageLayoutId() });
+                    party.InstanceEnemyManager.ResetEnemyNode(enemyGroup.StageLayoutId);
+                    party.SendToAll(new S2CInstanceEnemyGroupResetNtc() { LayoutId = enemyGroup.StageLayoutId.ToCDataStageLayoutId() });
                 }
 
                 if (partyState.Objectives.ContainsKey(SoulOrdealObjective.CompleteConditionsWithinTimeLimit))
@@ -190,7 +190,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public bool TrialHasRewards(GameClient client, StageId stageId, uint posId)
+        public bool TrialHasRewards(GameClient client, StageLayoutId stageId, uint posId)
         {
             lock (_TrialsInProgress)
             {
@@ -203,7 +203,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public EpitaphPartyRewards GetRewards(GameClient client, StageId stageId, uint posId)
+        public EpitaphPartyRewards GetRewards(GameClient client, StageLayoutId stageId, uint posId)
         {
             lock (_TrialsInProgress)
             {
@@ -221,7 +221,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public void CollectTrialRewards(GameClient client, StageId stageId, uint posId)
+        public void CollectTrialRewards(GameClient client, StageLayoutId stageId, uint posId)
         {
             lock (_TrialsInProgress)
             {
@@ -233,7 +233,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public bool TrialHasEnemies(PartyGroup party, StageId stageId, byte subGroupId)
+        public bool TrialHasEnemies(PartyGroup party, StageLayoutId stageId, byte subGroupId)
         {
             lock (_TrialsInProgress)
             {
@@ -252,7 +252,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public List<InstancedEnemy> GetInstancedEnemies(PartyGroup party, StageId stageId, byte subGroupId)
+        public List<InstancedEnemy> GetInstancedEnemies(PartyGroup party, StageLayoutId stageId, byte subGroupId)
         {
             lock (_TrialsInProgress)
             {
@@ -353,7 +353,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return 0;
         }
 
-        public void EvaluateEnemyAbnormalStatusEffectStart(PartyGroup party, StageId stageId, uint posId)
+        public void EvaluateEnemyAbnormalStatusEffectStart(PartyGroup party, StageLayoutId stageId, uint posId)
         {
             lock (_TrialsInProgress)
             {
@@ -387,7 +387,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public void EvaluateEnemyAbnormalStatusEffectEnd(PartyGroup party, StageId stageId, uint posId)
+        public void EvaluateEnemyAbnormalStatusEffectEnd(PartyGroup party, StageLayoutId stageId, uint posId)
         {
             lock (_TrialsInProgress)
             {
@@ -438,7 +438,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return partyState.Objectives[objectiveId].IsObjectiveMet();
         }
 
-        public void EvaluateEnemyKilled(PartyGroup party, StageId stageId, uint posId, InstancedEnemy enemy)
+        public void EvaluateEnemyKilled(PartyGroup party, StageLayoutId stageId, uint posId, InstancedEnemy enemy)
         {
             lock (_TrialsInProgress)
             {
@@ -531,7 +531,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             // End Trial
             party.SendToAll(new S2CSeasonDungeonEndSoulOrdealNtc() { EndState = endState,
-                    LayoutId = partyState.Trial.StageId.ToStageLayoutId(), PosId = partyState.Trial.PosId,
+                    LayoutId = partyState.Trial.StageId.ToCDataStageLayoutId(), PosId = partyState.Trial.PosId,
                     EpitaphState = ((endState == SoulOrdealEndState.Success) ? SoulOrdealOmState.TrialComplete : SoulOrdealOmState.TrialAvailable)});
 
             if (endState == SoulOrdealEndState.Success)
@@ -544,7 +544,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     party.SendToAll(new S2CSeasonDungeonSetOmStateNtc()
                     {
-                        LayoutId = unlock.StageId.ToStageLayoutId(),
+                        LayoutId = unlock.StageId.ToCDataStageLayoutId(),
                         PosId = unlock.PosId,
                         State = SoulOrdealOmState.AreaUnlocked
                     });
@@ -558,8 +558,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             foreach (var enemyGroup in partyState.Trial.EnemyGroups.Values)
             {
-                party.InstanceEnemyManager.ResetEnemyNode(enemyGroup.StageId);
-                party.SendToAll(new S2CInstanceEnemyGroupResetNtc() { LayoutId = enemyGroup.StageId.ToStageLayoutId() });
+                party.InstanceEnemyManager.ResetEnemyNode(enemyGroup.StageLayoutId);
+                party.SendToAll(new S2CInstanceEnemyGroupResetNtc() { LayoutId = enemyGroup.StageLayoutId.ToCDataStageLayoutId() });
             }
         }
 
@@ -571,7 +571,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     if (!_TrialHasRewards.ContainsKey(client.Character.CharacterId))
                     {
-                        _TrialHasRewards[client.Character.CharacterId] = new Dictionary<(StageId StageId, uint PosId), EpitaphPartyRewards>();
+                        _TrialHasRewards[client.Character.CharacterId] = new Dictionary<(StageLayoutId StageId, uint PosId), EpitaphPartyRewards>();
                     }
 
                     var rewards = new EpitaphPartyRewards()
@@ -656,7 +656,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public EpitaphTrial GetTrial(StageId stageId, uint posId)
+        public EpitaphTrial GetTrial(StageLayoutId stageId, uint posId)
         {
             if (_TrialAssets == null || !_TrialAssets.Trials.ContainsKey(stageId))
             {
@@ -775,7 +775,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public SoulOrdealOmState GetEpitaphState(GameClient client, StageId stageId, uint posId)
+        public SoulOrdealOmState GetEpitaphState(GameClient client, StageLayoutId stageId, uint posId)
         {
             lock (_TrialsInProgress)
             {
@@ -809,7 +809,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public bool TrialCompleted(PartyGroup party, StageId stageId, uint posId)
+        public bool TrialCompleted(PartyGroup party, StageLayoutId stageId, uint posId)
         {
             lock (_TrialsInProgress)
             {
@@ -868,7 +868,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     {
                         client.Send(new S2CSeasonDungeonSetOmStateNtc()
                         {
-                            LayoutId = barrier.StageId.ToStageLayoutId(),
+                            LayoutId = barrier.StageId.ToCDataStageLayoutId(),
                             PosId = barrier.PosId,
                             State = SoulOrdealOmState.Locked
                         });
@@ -889,7 +889,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         {
                             client.Send(new S2CSeasonDungeonSetOmStateNtc()
                             {
-                                LayoutId = unlock.StageId.ToStageLayoutId(),
+                                LayoutId = unlock.StageId.ToCDataStageLayoutId(),
                                 PosId = unlock.PosId,
                                 State = SoulOrdealOmState.AreaUnlocked
                             });
@@ -951,7 +951,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return _Server.AssetRepository.EpitaphRoadAssets.Paths.Values.Where(x => x.StageIds.Contains(stageId)).FirstOrDefault();
         }
 
-        public EpitaphPath GetDungeonInfoByStageId(StageId stageId)
+        public EpitaphPath GetDungeonInfoByStageId(StageLayoutId stageId)
         {
             return GetDungeonInfoByStageId(stageId.Id);
         }
@@ -961,7 +961,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return _Server.AssetRepository.EpitaphRoadAssets.Paths.Values.Where(x => x.HubStageId == stageId).FirstOrDefault();
         }
 
-        public EpitaphPath GetDungeonInfoByHubStageId(StageId stageId)
+        public EpitaphPath GetDungeonInfoByHubStageId(StageLayoutId stageId)
         {
             return GetDungeonInfoByHubStageId(stageId.Id);
         }
@@ -1000,7 +1000,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return IsTrialUnlocked(party, GetEpitahObject<EpitaphTrial>(epitaphId));
         }
 
-        public bool IsTrialUnlocked(PartyGroup party, StageId stageId, uint posId)
+        public bool IsTrialUnlocked(PartyGroup party, StageLayoutId stageId, uint posId)
         {
             if (!_Server.AssetRepository.EpitaphTrialAssets.Trials.ContainsKey(stageId))
             {
@@ -1021,7 +1021,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return GetEpitahObject<EpitaphStatue>(epitaphId);
         }
 
-        public EpitaphStatue GetStatue(StageId stageId, uint posId)
+        public EpitaphStatue GetStatue(StageLayoutId stageId, uint posId)
         {
             if (!_Server.AssetRepository.EpitaphRoadAssets.StatuesByOmId.ContainsKey((stageId, posId)))
             {
@@ -1030,7 +1030,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return _Server.AssetRepository.EpitaphRoadAssets.StatuesByOmId[(stageId, posId)];
         }
 
-        public bool IsStatueUnlocked(GameClient client, StageId stageId, uint posId)
+        public bool IsStatueUnlocked(GameClient client, StageLayoutId stageId, uint posId)
         {
             var statue = GetStatue(stageId, posId);
             if (statue == null)
@@ -1041,7 +1041,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return client.Character.EpitaphRoadState.UnlockedContent.Contains(statue.EpitaphId);
         }
 
-        public void HandleStatueUnlock(GameClient client, StageId stageId, uint posId)
+        public void HandleStatueUnlock(GameClient client, StageLayoutId stageId, uint posId)
         {
             Logger.Info($"EpitaphStatueOm: StageId={stageId}, PosId={posId}");
 
@@ -1055,13 +1055,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // We need to send back a packet still, otherwise the player will get soft locked.
             client.Send(new S2CSeasonDungeonSetOmStateNtc()
             {
-                LayoutId = stageId.ToStageLayoutId(),
+                LayoutId = stageId.ToCDataStageLayoutId(),
                 PosId = posId,
                 State = SoulOrdealOmState.AreaUnlocked
             });
         }
 
-        public EpitaphDoor GetMysteriousDoor(StageId stageId, uint posId)
+        public EpitaphDoor GetMysteriousDoor(StageLayoutId stageId, uint posId)
         {
             if (!_Server.AssetRepository.EpitaphRoadAssets.DoorsByOmId.ContainsKey((stageId, posId)))
             {
@@ -1075,7 +1075,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return GetEpitahObject<EpitaphDoor>(epitaphId);
         }
 
-        public EpitaphMysteriousDoorState GetMysteriousDoorState(PartyGroup party, StageId stageId, uint posId)
+        public EpitaphMysteriousDoorState GetMysteriousDoorState(PartyGroup party, StageLayoutId stageId, uint posId)
         {
             lock (_DoorState)
             {
@@ -1083,7 +1083,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     if (!_DoorState.ContainsKey(party.Id))
                     {
-                        _DoorState[party.Id] = new Dictionary<(StageId stageId, uint PosId), EpitaphMysteriousDoorState>();
+                        _DoorState[party.Id] = new Dictionary<(StageLayoutId stageId, uint PosId), EpitaphMysteriousDoorState>();
                     }
 
                     if (!_DoorState[party.Id].ContainsKey((stageId, posId)))
@@ -1098,20 +1098,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public void SetMysteriousDoorState(PartyGroup party, StageId stageId, uint posId, SoulOrdealOmState state)
+        public void SetMysteriousDoorState(PartyGroup party, StageLayoutId stageId, uint posId, SoulOrdealOmState state)
         {
             lock (_DoorState)
             {
                 if (!_DoorState.ContainsKey(party.Id))
                 {
-                    _DoorState[party.Id] = new Dictionary<(StageId stageId, uint PosId), EpitaphMysteriousDoorState>();
+                    _DoorState[party.Id] = new Dictionary<(StageLayoutId stageId, uint PosId), EpitaphMysteriousDoorState>();
                     _DoorState[party.Id][(stageId, posId)] = new EpitaphMysteriousDoorState();
                 }
                 _DoorState[party.Id][(stageId, posId)].State = state;
             }
         }
 
-        public void UpdateAllMysteriousDoorOmState(GameClient client, StageId stageId, PacketQueue queue)
+        public void UpdateAllMysteriousDoorOmState(GameClient client, StageLayoutId stageId, PacketQueue queue)
         {
             UpdateAllMysteriousDoorOmState(client, stageId.Id, queue);
         }
@@ -1135,7 +1135,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                     client.Enqueue(new S2CSeasonDungeonSetOmStateNtc()
                     {
-                        LayoutId = door.StageId.ToStageLayoutId(),
+                        LayoutId = door.StageId.ToCDataStageLayoutId(),
                         PosId = door.PosId,
                         State = GetMysteriousDoorState(client.Party, door.StageId, door.PosId).State
                     }, queue);
@@ -1143,7 +1143,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public void SpreadMysteriousPowers(PartyGroup party, StageId stageId, uint posId)
+        public void SpreadMysteriousPowers(PartyGroup party, StageLayoutId stageId, uint posId)
         {
             lock (_DoorState)
             {
@@ -1154,7 +1154,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 party.SendToAll(new S2CSeasonDungeonSetOmStateNtc()
                 {
-                    LayoutId = doorState.GatheringPoint.StageId.ToStageLayoutId(),
+                    LayoutId = doorState.GatheringPoint.StageId.ToCDataStageLayoutId(),
                     State = SoulOrdealOmState.GatheringPointSpawned
                 });
             }
@@ -1181,13 +1181,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 client.Party.SendToAll(new S2C_SEASON_62_28_16_NTC()
                 {
                     Message = "The mysterious door can be unsealed",
-                    LayoutId = gatheringPoint.Door.StageId.ToStageLayoutId(),
+                    LayoutId = gatheringPoint.Door.StageId.ToCDataStageLayoutId(),
                     PosId = gatheringPoint.Door.PosId
                 });
             }
         }
 
-        public EpitaphGatheringPoint GetGatheringPoint(StageId stageId, uint posId)
+        public EpitaphGatheringPoint GetGatheringPoint(StageLayoutId stageId, uint posId)
         {
             if (!_Server.AssetRepository.EpitaphRoadAssets.GatheringPointsByOmId.ContainsKey((stageId, posId)))
             {
@@ -1201,7 +1201,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return GetEpitahObject<EpitaphGatheringPoint>(epitaphId);
         }
 
-        private EpitaphWeeklyReward GetReward(StageId stageId, uint posId)
+        private EpitaphWeeklyReward GetReward(StageLayoutId stageId, uint posId)
         {
             if (!_Server.AssetRepository.EpitaphRoadAssets.ChestsByOmId.ContainsKey((stageId, posId)))
             {
@@ -1219,7 +1219,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return _Server.AssetRepository.EpitaphRoadAssets.RandomLootByStageId[stageId];
         }
 
-        public List<EpitaphItemReward> GetRandomLootForStageId(StageId stageId)
+        public List<EpitaphItemReward> GetRandomLootForStageId(StageLayoutId stageId)
         {
             return GetRandomLootForStageId(stageId.Id);
         }
@@ -1235,7 +1235,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     results.Add(new InstancedGatheringItem()
                     {
-                        ItemId = rolledItem.ItemId,
+                        ItemId = (ItemId) rolledItem.ItemId,
                         ItemNum = rolledItem.ItemNum,
                         IsHidden = rolledItem.IsHidden,
                         Quality = rolledItem.Quality,
@@ -1265,7 +1265,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return rewards;
         }
 
-        public List<InstancedGatheringItem> RollGatheringLoot(GameClient client, Character character, StageId stageId, uint posId)
+        public List<InstancedGatheringItem> RollGatheringLoot(GameClient client, Character character, StageLayoutId stageId, uint posId)
         {
             var results = new List<InstancedGatheringItem>();
 
@@ -1290,7 +1290,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 results.AddRange(RollWeeklyChestReward(dungeonInfo, reward));
 
-                if (_Server.GameLogicSettings.EnableEpitaphWeeklyRewards)
+                if (_Server.GameSettings.GameServerSettings.EnableEpitaphWeeklyRewards)
                 {
                     character.EpitaphRoadState.WeeklyRewardsClaimed.Add(reward.EpitaphId);
                     _Server.Database.InsertEpitaphWeeklyReward(character.CharacterId, reward.EpitaphId);
@@ -1313,7 +1313,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // TODO: Make this configurable
                     results.Add(new InstancedGatheringItem()
                     {
-                        ItemId = (gatheringPoint == null) ? 9393 : dungeonInfo.SoulItemId,
+                        ItemId = (gatheringPoint == null) ? ItemId.WaterFlask : (ItemId) dungeonInfo.SoulItemId,
                         ItemNum = (uint) Random.Shared.Next(1, 4)
                     });
                 }

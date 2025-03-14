@@ -1,9 +1,9 @@
-﻿using System;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -25,10 +25,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Type = ConnectionType.GameServer,
                 Created = DateTime.UtcNow
             };
-            if(!Server.Database.InsertConnection(reservedConnection))
+            
+            if (!Server.RpcManager.DoesGameServerExist(request.GameServerUniqueID))
             {
-                Logger.Error($"Failed to reserve connection on server {request.GameServerUniqueID} for account {client.Account.Id}");
-                throw new ResponseErrorException(ErrorCode.ERROR_CODE_NET_NOT_CONNECT_GAME_SERVER);
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_NET_NOT_CONNECT_GAME_SERVER,
+                    $"The requested server {request.GameServerUniqueID} does not exist.");
+            }
+
+            var targetServerInfo = Server.RpcManager.ServerListInfo(request.GameServerUniqueID);
+            if (targetServerInfo.LoginNum >= targetServerInfo.MaxLoginNum)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_LOBBY_JOIN_NUM_OVER,
+                    $"Attempting to join server {request.GameServerUniqueID} that is over capacity ({targetServerInfo.LoginNum}/{targetServerInfo.MaxLoginNum})");
+            }
+
+            if (!Server.Database.InsertConnection(reservedConnection))
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_NET_NOT_CONNECT_GAME_SERVER, 
+                    $"Failed to reserve connection on server {request.GameServerUniqueID} for account {client.Account.Id}");
             }
 
             return new S2CConnectionReserveServerRes()

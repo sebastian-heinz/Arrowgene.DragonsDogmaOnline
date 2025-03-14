@@ -59,8 +59,7 @@ public class PartyManager
 
         if (!_invites.TryAdd(invitee, invitation))
         {
-            Logger.Error(invitee, $"Already has pending invite)");
-            return false;
+            throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_ALREADY_INVITE, $"[PartyId:{party.Id}][Invite] could not be invited; already has pending invite");
         }
 
         invitation.StartTimer(RemoveExpiredInvite, InvitationTimeoutSec + 2);

@@ -206,7 +206,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             return asset;
         }
 
-        private StageId ParseStageId(JsonElement jStageId)
+        private StageLayoutId ParseStageId(JsonElement jStageId)
         {
             uint id = jStageId.GetProperty("id").GetUInt32();
 
@@ -222,7 +222,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 groupId = jGroupId.GetUInt32();
             }
 
-            return new StageId(id, layerNo, groupId);
+            return new StageLayoutId(id, layerNo, groupId);
         }
     }
 }

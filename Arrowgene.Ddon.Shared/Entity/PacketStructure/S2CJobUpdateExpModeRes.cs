@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public override PacketId Id => PacketId.S2C_JOB_UPDATE_EXP_MODE_RES;
 
-        public List<CDataJobPlayPoint> PlayPointList { get; set; }
+        public List<CDataJobPlayPoint> PlayPointList { get; set; } = new();
 
         public class Serializer : PacketEntitySerializer<S2CJobUpdateExpModeRes>
         {

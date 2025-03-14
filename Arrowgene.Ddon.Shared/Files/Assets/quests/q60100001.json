@@ -1,0 +1,149 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Zandora Wastelands Trial: To Arms (Zandora Wastelands AR5)",
+    "quest_id": 60100001,
+    "next_quest": 0,
+    "base_level": 49,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {
+        "id": 139
+    },
+    "area_id": "ZandoraWastelands",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 10,
+            "Param2": 4
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 6200
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 6800
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 620
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 438
+            },
+            "starting_index": 2,
+            "enemies": [
+                {
+                    "comment": "Rusted Alchemized Goblin",
+                    "enemy_id": "0x011122",
+                    "level": 49,
+                    "exp": 244,
+                    "named_enemy_params_id": 250
+                },
+                {
+                    "comment": "Rusted Alchemized Goblin",
+                    "enemy_id": "0x011121",
+                    "level": 49,
+                    "exp": 244,
+                    "named_enemy_params_id": 250
+                },
+                {
+                    "comment": "Rusted Alchemized Goblin",
+                    "enemy_id": "0x011122",
+                    "level": 49,
+                    "exp": 244,
+                    "named_enemy_params_id": 250
+                },
+                {
+                    "comment": "Rusted Iron Giant Warrior (Damned Golem)",
+                    "enemy_id": "0x015103",
+                    "level": 49,
+                    "exp": 4617,
+                    "is_boss": true,
+                    "named_enemy_params_id": 249
+                },
+                {
+                    "comment": "Rusted Alchemized Goblin",
+                    "enemy_id": "0x011121",
+                    "level": 49,
+                    "exp": 244,
+                    "named_enemy_params_id": 250
+                },
+                {
+                    "comment": "Rusted Alchemized Goblin",
+                    "enemy_id": "0x011120",
+                    "level": 49,
+                    "exp": 244,
+                    "named_enemy_params_id": 250
+                },
+                {
+                    "comment": "Rusted Alchemized Goblin",
+                    "enemy_id": "0x011122",
+                    "level": 49,
+                    "exp": 244,
+                    "named_enemy_params_id": 250
+                },
+                {
+                    "comment": "Rusted Alchemized Goblin",
+                    "enemy_id": "0x011120",
+                    "level": 49,
+                    "exp": 244,
+                    "named_enemy_params_id": 250
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 139
+            },
+            "npc_id": "Dian",
+            "message_id": 14465
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [
+                0
+            ],
+            "result_commands": [
+                {
+                    "comment": "Dian idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 4507,
+                    "Param2": 14467
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [
+                0
+            ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 139
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Dian",
+            "message_id": 14466
+        }
+    ]
+}

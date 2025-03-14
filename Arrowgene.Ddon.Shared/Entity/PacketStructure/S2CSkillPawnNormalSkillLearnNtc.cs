@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public PacketId Id => PacketId.S2C_SKILL_PAWN_NORMAL_SKILL_LEARN_NTC;
 
         public uint PawnId { get; set; }
-        public CDataContextNormalSkillData NormalSkillData { get; set; }
+        public CDataContextNormalSkillData NormalSkillData { get; set; } = new();
 
         public class Serializer : PacketEntitySerializer<S2CSkillPawnNormalSkillLearnNtc>
         {

@@ -7,7 +7,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PawnTrainingSetTrainingStatusHandler : GameStructurePacketHandler<C2SPawnTrainingSetTrainingStatusReq>
+    public class PawnTrainingSetTrainingStatusHandler : GameRequestPacketHandler<C2SPawnTrainingSetTrainingStatusReq, S2CPawnTrainingSetTrainingStatusRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnTrainingSetTrainingStatusHandler));
         
@@ -15,17 +15,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SPawnTrainingSetTrainingStatusReq> packet)
+        public override S2CPawnTrainingSetTrainingStatusRes Handle(GameClient client, C2SPawnTrainingSetTrainingStatusReq request)
         {
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
-            pawn.TrainingStatus[packet.Structure.Job] = packet.Structure.TrainingStatus;
-            pawn.TrainingPoints -= packet.Structure.SpentTrainingPoints;
+            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
+            pawn.TrainingStatus[request.Job] = request.TrainingStatus;
+            pawn.TrainingPoints -= request.SpentTrainingPoints;
 
-            Server.Database.ReplacePawnTrainingStatus(pawn.PawnId, packet.Structure.Job, packet.Structure.TrainingStatus);
+            Server.Database.ReplacePawnTrainingStatus(pawn.PawnId, request.Job, request.TrainingStatus);
             Server.Database.UpdatePawnBaseInfo(pawn);
             
-            S2CPawnTrainingSetTrainingStatusRes res = new S2CPawnTrainingSetTrainingStatusRes();
-            client.Send(res);
+            return new();
         }
     }
 }

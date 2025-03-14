@@ -4,7 +4,7 @@ using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Csv
 {
-    public class GatheringItemCsv : IAssetDeserializer<Dictionary<(StageId, uint), List<GatheringItem>>>
+    public class GatheringItemCsv : IAssetDeserializer<Dictionary<(StageLayoutId, uint), List<GatheringItem>>>
     {
         private GatheringItemRowCsv rowReader = new GatheringItemRowCsv();
 
@@ -12,15 +12,15 @@ namespace Arrowgene.Ddon.Shared.Csv
         {
         }
 
-        public Dictionary<(StageId, uint), List<GatheringItem>> ReadPath(string path)
+        public Dictionary<(StageLayoutId, uint), List<GatheringItem>> ReadPath(string path)
         {
-            Dictionary<(StageId, uint), List<GatheringItem>> dict = new Dictionary<(StageId, uint), List<GatheringItem>>();
+            Dictionary<(StageLayoutId, uint), List<GatheringItem>> dict = new Dictionary<(StageLayoutId, uint), List<GatheringItem>>();
             foreach (GatheringItemRow row in rowReader.ReadPath(path))
             {
                 List<GatheringItem> itemsInSpot = dict.GetValueOrDefault((row.StageId, row.SubGroupId)) ?? new List<GatheringItem>();
                 itemsInSpot.Add(new GatheringItem()
                 {
-                    ItemId = row.ItemId,
+                    ItemId = (ItemId) row.ItemId,
                     ItemNum = row.ItemNum,
                     MaxItemNum = row.MaxItemNum,
                     Quality = row.Quality,
@@ -70,7 +70,7 @@ namespace Arrowgene.Ddon.Shared.Csv
 
                 return new GatheringItemRow
                 {
-                    StageId = new StageId(stageId, layerNo, groupNo),
+                    StageId = new StageLayoutId(stageId, layerNo, groupNo),
                     SubGroupId = posId,
                     ItemId = itemId,
                     ItemNum = itemNum,
@@ -84,7 +84,7 @@ namespace Arrowgene.Ddon.Shared.Csv
 
         private class GatheringItemRow
         {
-            public StageId StageId { get; set; }
+            public StageLayoutId StageId { get; set; }
             public uint SubGroupId { get; set; }
             public uint ItemId { get; set; }
             public uint ItemNum { get; set; }

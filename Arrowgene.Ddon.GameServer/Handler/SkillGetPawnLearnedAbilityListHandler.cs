@@ -1,13 +1,12 @@
-using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class SkillGetPawnLearnedAbilityListHandler : GameStructurePacketHandler<C2SSkillGetPawnLearnedAbilityListReq>
+    public class SkillGetPawnLearnedAbilityListHandler : GameRequestPacketHandler<C2SSkillGetPawnLearnedAbilityListReq, S2CSkillGetPawnLearnedAbilityListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillGetPawnLearnedAbilityListHandler));
         
@@ -15,14 +14,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SSkillGetPawnLearnedAbilityListReq> packet)
+        public override S2CSkillGetPawnLearnedAbilityListRes Handle(GameClient client, C2SSkillGetPawnLearnedAbilityListReq request)
         {
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
-            client.Send(new S2CSkillGetPawnLearnedAbilityListRes()
+            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
+            return new S2CSkillGetPawnLearnedAbilityListRes()
             {
                 PawnId = pawn.PawnId,
                 SetAcquierementParam = pawn.LearnedAbilities.Select(x => x.AsCDataLearnedSetAcquirementParam()).ToList()
-            });
+            };
         }
     }
 }

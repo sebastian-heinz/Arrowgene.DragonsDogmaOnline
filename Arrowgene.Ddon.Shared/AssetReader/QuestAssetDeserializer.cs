@@ -92,10 +92,10 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 assetData.QuestAreaId = areaId;
             }
 
-            assetData.StageId = StageId.Invalid;
+            assetData.StageLayoutId = StageLayoutId.Invalid;
             if (questType == QuestType.Tutorial)
             {
-                assetData.StageId = AssetCommonDeserializer.ParseStageId(jQuest.GetProperty("stage_id"));
+                assetData.StageLayoutId = AssetCommonDeserializer.ParseStageId(jQuest.GetProperty("stage_id"));
             }
 
             assetData.NewsImageId = 0;
@@ -188,7 +188,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                 ParseLightQuestDetails(assetData, jLightQuestDetails);
             }
-
+            
             ParseRewards(assetData, jQuest);
 
             if (!ParseServerActions(assetData, jQuest))
@@ -201,7 +201,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 return false;
             }
 
-            if (!_CommonEnemyDeserializer.ParseEnemyGroups(_QuestDrops, assetData.EnemyGroups, jQuest))
+            if (!_CommonEnemyDeserializer.ParseEnemyGroups(assetData.QuestScheduleId, _QuestDrops, assetData.EnemyGroups, jQuest))
             {
                 Logger.Error($"Unable to create the quest '{assetData.QuestId}'. Skipping.");
                 return false;
@@ -209,11 +209,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
             if (jQuest.TryGetProperty("blocks", out JsonElement jBlocksV1))
             {
-                QuestProcess questProcess = new QuestProcess()
-                {
-                    ProcessNo = 0
-                };
-
+                QuestProcess questProcess = new QuestProcess(0, assetData.QuestScheduleId);
                 if (!ParseBlocks(questProcess, jBlocksV1))
                 {
                     Logger.Error($"Unable to create the quest '{assetData.QuestId}'. Skipping.");
@@ -226,10 +222,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 ushort ProcessNo = 0;
                 foreach (var jProcess in jProcesses.EnumerateArray())
                 {
-                    QuestProcess questProcess = new QuestProcess()
-                    {
-                        ProcessNo = ProcessNo
-                    };
+                    QuestProcess questProcess = new QuestProcess(ProcessNo, assetData.QuestScheduleId);
 
                     var jBlocks = jProcess.GetProperty("blocks");
                     if (!ParseBlocks(questProcess, jBlocks))
@@ -310,12 +303,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             // Keep track of random rewards for the quest
                             randomRewards += 1;
 
-                            rewardItem = new QuestRandomRewardItem();
+                            rewardItem = new QuestRandomChanceRewardItem();
                             foreach (var item in reward.GetProperty("loot_pool").EnumerateArray())
                             {
-                                rewardItem.LootPool.Add(new RandomLootPoolItem()
+                                rewardItem.LootPool.Add(new ChanceLootPoolItem()
                                 {
-                                    ItemId = item.GetProperty("item_id").GetUInt32(),
+                                    ItemId = AssetCommonDeserializer.ParseItemId(item.GetProperty("item_id")),
                                     Num = item.GetProperty("num").GetUInt16(),
                                     Chance = item.GetProperty("chance").GetDouble()
                                 });
@@ -328,7 +321,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             {
                                 rewardItem.LootPool.Add(new SelectLootPoolItem()
                                 {
-                                    ItemId = item.GetProperty("item_id").GetUInt32(),
+                                    ItemId = AssetCommonDeserializer.ParseItemId(item.GetProperty("item_id")),
                                     Num = item.GetProperty("num").GetUInt16(),
                                 });
                             }
@@ -340,7 +333,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             {
                                 rewardItem.LootPool.Add(new FixedLootPoolItem()
                                 {
-                                    ItemId = item.GetProperty("item_id").GetUInt32(),
+                                    ItemId = AssetCommonDeserializer.ParseItemId(item.GetProperty("item_id")),
                                     Num = item.GetProperty("num").GetUInt16(),
                                 });
                             };
@@ -375,6 +368,14 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             PointType = PointType.JobPoints,
                             Amount = reward.GetProperty("amount").GetUInt32()
                         });
+                        break;
+                    case "ap":
+                        assetData.PointRewards.Add(new QuestPointReward()
+                        {
+                            PointType = PointType.AreaPoints,
+                            Amount = reward.GetProperty("amount").GetUInt32()
+                        });
+                        assetData.LightQuestDetail.GetAp = reward.GetProperty("amount").GetUInt32();
                         break;
                     case "wallet":
                         if (!Enum.TryParse(reward.GetProperty("wallet_type").GetString(), true, out WalletType walletType))
@@ -425,16 +426,17 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         Logger.Error($"Unable to parse the quest announce type of BlockNo={blockIndex}.");
                         return false;
                     }
-                    questBlock.AnnounceType = announceType;
+
+                    // Handles special pseudo announce types
+                    QuestBlock.EvaluateAnnounceType(questBlock, announceType);
                 }
 
-                ParseAnnoucementSubtypes(questBlock, jblock);
-
-                questBlock.IsCheckpoint = false;
                 if (jblock.TryGetProperty("checkpoint", out JsonElement jCheckpoint))
                 {
                     questBlock.IsCheckpoint = jCheckpoint.GetBoolean();
                 }
+
+                ParseAnnoucementSubtypes(questBlock, jblock);
 
                 if (jblock.TryGetProperty("stage_id", out JsonElement jStageId))
                 {
@@ -514,16 +516,15 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     questBlock.QuestCameraEvent.EventNo = jCameraEvent.GetProperty("event_no").GetInt32();
                 }
 
+                questBlock.ShowMarker = true;
+                if (jblock.TryGetProperty("show_marker", out JsonElement jShowMarker))
+                {
+                    questBlock.ShowMarker = jShowMarker.GetBoolean();
+                }
+
                 switch (questBlockType)
                 {
                     case QuestBlockType.IsStageNo:
-                        {
-                            questBlock.ShowMarker = true;
-                            if (jblock.TryGetProperty("show_marker", out JsonElement jShowMarker))
-                            {
-                                questBlock.ShowMarker = jShowMarker.GetBoolean();
-                            }
-                        }
                         break;
                     case QuestBlockType.NpcTalkAndOrder:
                     case QuestBlockType.NewNpcTalkAndOrder:
@@ -583,12 +584,6 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                                 return false;
                             }
 
-                            questBlock.ShowMarker = true;
-                            if (jblock.TryGetProperty("show_marker", out JsonElement jShowMarker))
-                            {
-                                questBlock.ShowMarker = jShowMarker.GetBoolean();
-                            }
-
                             questBlock.NpcOrderDetails.Add(new QuestNpcOrder()
                             {
                                 NpcId = npcId,
@@ -605,12 +600,6 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                                 return false;
                             }
 
-                            questBlock.ShowMarker = true;
-                            if (jblock.TryGetProperty("show_marker", out JsonElement jShowMarker))
-                            {
-                                questBlock.ShowMarker = jShowMarker.GetBoolean();
-                            }
-
                             questBlock.NpcOrderDetails.Add(new QuestNpcOrder()
                             {
                                 NpcId = npcId,
@@ -623,6 +612,21 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             {
                                 questBlock.NpcOrderDetails[0].QuestId = (QuestId)jOrderQuestId.GetUInt32();
                             }
+                        }
+                        break;
+                    case QuestBlockType.TouchNpc:
+                        {
+                            if (!Enum.TryParse(jblock.GetProperty("npc_id").GetString(), true, out NpcId npcId))
+                            {
+                                Logger.Error($"Unable to parse the npc_id in block @ index {blockIndex - 1}.");
+                                return false;
+                            }
+
+                            questBlock.NpcOrderDetails.Add(new QuestNpcOrder()
+                            {
+                                NpcId = npcId,
+                                StageId = AssetCommonDeserializer.ParseStageId(jblock.GetProperty("stage_id"))
+                            });
                         }
                         break;
                     case QuestBlockType.IsQuestOrdered:
@@ -662,13 +666,6 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         }
                         break;
                     case QuestBlockType.CollectItem:
-                        {
-                            questBlock.ShowMarker = true;
-                            if (jblock.TryGetProperty("show_marker", out JsonElement jShowMarker))
-                            {
-                                questBlock.ShowMarker = jShowMarker.GetBoolean();
-                            }
-                        }
                         break;
                     case QuestBlockType.OmInteractEvent:
                         {
@@ -685,12 +682,6 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                                 return false;
                             }
                             questBlock.OmInteractEvent.InteractType = interactType;
-
-                            questBlock.ShowMarker = true;
-                            if (jblock.TryGetProperty("show_marker", out JsonElement jShowMarker))
-                            {
-                                questBlock.ShowMarker = jShowMarker.GetBoolean();
-                            }
 
                             if (jblock.TryGetProperty("quest_id", out JsonElement jQuestId))
                             {
@@ -813,30 +804,15 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 blockIndex += 1;
             }
 
-            if (questProcess.ProcessNo == 0)
+            // Add an implicit EndBlock
+            questProcess.Blocks[blockIndex] = new QuestBlock()
             {
-                // Add an implicit EndBlock
-                questProcess.Blocks[blockIndex] = new QuestBlock()
-                {
-                    BlockType = QuestBlockType.End,
-                    ProcessNo = questProcess.ProcessNo,
-                    BlockNo = blockIndex,
-                    SequenceNo = 1,
-                    AnnounceType = QuestAnnounceType.None
-                };
-            }
-            else
-            {
-                // Add a block which does nothing
-                questProcess.Blocks[blockIndex] = new QuestBlock()
-                {
-                    ProcessNo = questProcess.ProcessNo,
-                    BlockType = QuestBlockType.None,
-                    BlockNo = blockIndex,
-                    SequenceNo = 1,
-                    AnnounceType = QuestAnnounceType.None
-                };
-            }
+                BlockType = (questProcess.ProcessNo == 0) ? QuestBlockType.End : QuestBlockType.None,
+                ProcessNo = questProcess.ProcessNo,
+                BlockNo = blockIndex,
+                SequenceNo = 1,
+                AnnounceType = QuestAnnounceType.None
+            };
 
             return true;
         }
@@ -868,6 +844,11 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             {
                 announcements.EndContentsPurpose = jEndContentsPurpose.GetInt32();
             }
+
+            if (jBlock.TryGetProperty("caution", out JsonElement jCaution))
+            {
+                announcements.Caution = jCaution.GetBoolean();
+        }
         }
 
         private QuestFlag ParseQuestFlag(JsonElement jFlag)
@@ -1024,7 +1005,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     action.OmInstantValueAction = instantValueAction;
                     action.Key = jServerAction.GetProperty("key").GetUInt64();
                     action.Value = jServerAction.GetProperty("value").GetUInt32();
-                    action.StageId = AssetCommonDeserializer.ParseStageId(jServerAction.GetProperty("stage_id"));
+                    action.StageLayoutId = AssetCommonDeserializer.ParseStageId(jServerAction.GetProperty("stage_id"));
                 }
 
                 assetData.ServerActions.Add(action);
@@ -1170,10 +1151,6 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             if (jLightQuestDetails.TryGetProperty("get_cp", out JsonElement jGetCP))
             {
                 assetData.LightQuestDetail.GetCp = jGetCP.GetUInt32();
-            }
-            if (jLightQuestDetails.TryGetProperty("get_ap", out JsonElement jGetAP))
-            {
-                assetData.LightQuestDetail.GetAp = jGetAP.GetUInt32();
             }
 
             return true;

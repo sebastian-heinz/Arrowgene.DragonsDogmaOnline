@@ -34,7 +34,6 @@ using Arrowgene.Ddon.GameServer.Shop;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Handler;
 using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Server.Scripting.interfaces;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -51,11 +50,11 @@ namespace Arrowgene.Ddon.GameServer
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DdonGameServer));
 
-        public DdonGameServer(GameServerSetting setting, GameLogicSetting gameLogicSettings, IDatabase database, AssetRepository assetRepository)
+        public DdonGameServer(GameServerSetting setting, GameSettings gameSettings, IDatabase database, AssetRepository assetRepository)
             : base(ServerType.Game, setting.ServerSetting, database, assetRepository)
         {
             ServerSetting = new GameServerSetting(setting);
-            GameLogicSettings = gameLogicSettings;
+            GameSettings = gameSettings;
             ScriptManager = new GameServerScriptManager(this);
             ClientLookup = new GameClientLookup();
             ChatLogHandler = new ChatLogHandler();
@@ -84,6 +83,9 @@ namespace Arrowgene.Ddon.GameServer
             RpcManager = new RpcManager(this);
             EpitaphRoadManager = new EpitaphRoadManager(this);
             ScheduleManager = new ScheduleManager(this);
+            AreaRankManager = new AreaRankManager(this);
+            GameTimeManager = new GameTimeManager(this);
+            PartnerPawnManager = new PartnerPawnManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
@@ -95,7 +97,7 @@ namespace Arrowgene.Ddon.GameServer
 
         public event EventHandler<ClientConnectionChangeArgs> ClientConnectionChangeEvent;
         public GameServerSetting ServerSetting { get; }
-        public GameLogicSetting GameLogicSettings { get; }
+        public GameSettings GameSettings { get; }
         public GameServerScriptManager ScriptManager { get; }
         public ChatManager ChatManager { get; }
         public ItemManager ItemManager { get; }
@@ -122,7 +124,10 @@ namespace Arrowgene.Ddon.GameServer
         public ClanManager ClanManager { get; }
         public RpcManager RpcManager { get; }
         public EpitaphRoadManager EpitaphRoadManager { get; }
-        private ScheduleManager ScheduleManager { get; }
+        public ScheduleManager ScheduleManager { get; }
+        public AreaRankManager AreaRankManager { get; }
+        public GameTimeManager GameTimeManager { get; }
+        public PartnerPawnManager PartnerPawnManager { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
 
@@ -173,11 +178,7 @@ namespace Arrowgene.Ddon.GameServer
                 Database.DeleteConnection(Id, client.Account.Id);
             }
 
-            PartyGroup party = client.Party;
-            if (party != null)
-            {
-                party.Leave(client);
-            }
+            client.Party?.Leave(client);
 
             EventHandler<ClientConnectionChangeArgs> connectionChangeEvent = ClientConnectionChangeEvent;
             if (connectionChangeEvent != null)
@@ -219,6 +220,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new AreaGetAreaSupplyInfoHandler(this));
             AddHandler(new AreaGetLeaderAreaReleaseListHandler(this));
             AddHandler(new AreaGetSpotInfoListHandler(this));
+            AddHandler(new AreaAreaRankUpHandler(this));
+            AddHandler(new AreaGetAreaSupplyHandler(this));
 
             AddHandler(new BattleContentInfoListHandler(this));
             AddHandler(new BattleContentGetContentStatusFromOmHandler(this));
@@ -457,6 +460,10 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new MailSystemMailDeleteHandler(this));
 
             AddHandler(new MandragoraGetMyMandragoraHandler(this));
+            AddHandler(new MandragoraGetSpeciesCategoryListHandler(this));
+            AddHandler(new MandragoraGetSpeciesListHandler(this));
+            AddHandler(new MandragoraGetCraftRecipeListHandler(this));
+            AddHandler(new MandragoraBeginCraftHandler(this));
 
             AddHandler(new MyRoomFurnitureListGetHandler(this));
             AddHandler(new MyRoomMyRoomBgmUpdateHandler(this));
@@ -470,8 +477,12 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new OrbDevoteGetPawnReleaseOrbElementListHandler(this));
             AddHandler(new OrbDevoteReleasePawnOrbElementHandler(this));
 
+            AddHandler(new PartnerPawnNextPresentTimeGetHandler(this));
             AddHandler(new PartnerPawnPawnLikabilityReleasedRewardListGetHandler(this));
+            AddHandler(new PartnerPawnPawnLikabilityRewardGetHandler(this));
             AddHandler(new PartnerPawnPawnLikabilityRewardListGetHandler(this));
+            AddHandler(new PartnerPawnPresentForPartnerPawnHandler(this));
+            AddHandler(new PartnerPawnSetHandler(this));
 
             AddHandler(new PartyMemberSetValueHandler(this));
             AddHandler(new PartyPartyBreakupHandler(this));
@@ -575,6 +586,10 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestPlayInterruptAnswerHandler(this));
             AddHandler(new QuestGetEndContentsRecruitListHandler(this));
             AddHandler(new QuestGetQuestScheduleInfoHandler(this));
+
+            AddHandler(new RankingBoardListHandler(this));
+            AddHandler(new RankingRankListHandler(this));
+            AddHandler(new RankingRankListByCharacterIdHandler(this));
 
 			AddHandler(new EntryBoardEntryBoardListHandler(this));
 			AddHandler(new EntryBoardEntryBoardItemCreateHandler(this));

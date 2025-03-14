@@ -12,8 +12,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         }
 
         public List<CDataCommonU8> SearchGroups {  get; set; } // 1 = Friends, 2 = Clan Members, 3 = Party Members, 4 = Group Chat
-        public string FirstName {  get; set; }
-        public string LastName { get; set; }
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
         public bool RankSetting {  get; set; }
         public uint RankMin {  get; set; } // Min Level
         public uint RankMax {  get; set; } // Max Level

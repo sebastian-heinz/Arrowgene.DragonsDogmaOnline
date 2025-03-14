@@ -67,6 +67,7 @@ CREATE TABLE IF NOT EXISTS "ddon_character"
     "arisen_profile_share_range" SMALLINT                          NOT NULL,
     "fav_warp_slot_num"          INTEGER                           NOT NULL,
     "max_bazaar_exhibits"        INTEGER                           NOT NULL,
+    "partner_pawn_id"            INTEGER                           NOT NULL DEFAULT 0,
     "game_mode"                  INTEGER                           NOT NULL,
     CONSTRAINT "fk_ddon_character_character_common_id" FOREIGN KEY ("character_common_id") REFERENCES "ddon_character_common" ("character_common_id") ON DELETE CASCADE,
     CONSTRAINT "fk_ddon_character_account_id" FOREIGN KEY ("account_id") REFERENCES "account" ("id") ON DELETE CASCADE
@@ -776,17 +777,79 @@ CREATE TABLE IF NOT EXISTS "ddon_epitaph_road_unlocks" (
 	CONSTRAINT "fk_ddon_epitaph_road_unlocks_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character"("character_id") ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS ddon_epitaph_claimed_weekly_rewards (
+CREATE TABLE IF NOT EXISTS "ddon_epitaph_claimed_weekly_rewards" (
 	"character_id"	INTEGER NOT NULL,
 	"epitaph_id"	INTEGER NOT NULL,
     CONSTRAINT "pk_ddon_epitaph_claimed_weekly_rewards" PRIMARY KEY ("character_id", "epitaph_id"),
 	CONSTRAINT "fk_ddon_epitaph_claimed_weekly_rewards_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character"("character_id") ON DELETE CASCADE
 );
 
-
-CREATE TABLE IF NOT EXISTS ddon_schedule_next (
+CREATE TABLE IF NOT EXISTS "ddon_schedule_next" (
 	"type"	INTEGER NOT NULL,
 	"timestamp"	BIGINT NOT NULL,
 	PRIMARY KEY("type")
 );
 INSERT INTO ddon_schedule_next(type, timestamp) VALUES (19, 0);
+
+CREATE TABLE IF NOT EXISTS "ddon_area_rank" (
+    "character_id"      INTEGER NOT NULL,
+    "area_id"           INTEGER NOT NULL,
+    "rank"              INTEGER NOT NULL,
+    "point"             INTEGER NOT NULL,
+    "week_point"        INTEGER NOT NULL,
+    "last_week_point"   INTEGER NOT NULL,
+    CONSTRAINT "pk_ddon_area_rank" PRIMARY KEY ("character_id", "area_id"),
+	CONSTRAINT "fk_ddon_area_rank_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character"("character_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_area_rank_supply" (
+    "character_id"      INTEGER NOT NULL,
+    "area_id"           INTEGER NOT NULL,
+    "index"             INTEGER NOT NULL,
+    "item_id"           INTEGER NOT NULL,
+    "num"               INTEGER NOT NULL,
+    CONSTRAINT "pk_ddon_area_rank_supply" PRIMARY KEY ("character_id", "area_id", "index"),
+	CONSTRAINT "fk_ddon_area_rank_supply_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character"("character_id") ON DELETE CASCADE
+);
+INSERT INTO "ddon_schedule_next" ("type", "timestamp") VALUES (4, 0);
+
+CREATE TABLE IF NOT EXISTS "ddon_rank_record"
+(
+    "record_id"           INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    "character_id"        INTEGER                           NOT NULL,
+    "quest_id"            INTEGER                           NOT NULL,
+    "score"               INTEGER                           NOT NULL,
+    "date"                DATETIME                          NOT NULL,
+    CONSTRAINT "fk_ddon_rank_record_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character"("character_id") ON DELETE CASCADE
+);
+INSERT INTO ddon_schedule_next(type, timestamp) VALUES (23, 0);
+
+CREATE TABLE IF NOT EXISTS "ddon_partner_pawn"
+(
+    "character_id" INTEGER NOT NULL,
+    "pawn_id" INTEGER NOT NULL,
+    "num_gifts" INTEGER NOT NULL,
+    "num_crafts" INTEGER NOT NULL,
+    "num_adventures" INTEGER NOT NULL,
+    CONSTRAINT pk_ddon_partner_pawn PRIMARY KEY ("character_id", "pawn_id"),
+    CONSTRAINT fk_ddonpartner_pawn_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_partner_pawn_last_affection_increase"
+(
+    "character_id" INTEGER NOT NULL,
+    "pawn_id" INTEGER NOT NULL,
+    "action" INTEGER NOT NULL,
+    CONSTRAINT pk_ddon_partner_pawn PRIMARY KEY ("character_id", "pawn_id", "action"),
+    CONSTRAINT fk_ddon_partner_pawn_affection_increase_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+);
+INSERT INTO ddon_schedule_next(type, timestamp) VALUES (13, 0);
+
+CREATE TABLE IF NOT EXISTS "ddon_partner_pawn_pending_rewards"
+(
+    "character_id" INTEGER NOT NULL,
+    "pawn_id" INTEGER NOT NULL,
+    "reward_level" INTEGER NOT NULL,
+    CONSTRAINT pk_ddon_partner_pawn_pending_rewards PRIMARY KEY ("character_id", "pawn_id"),
+    CONSTRAINT fk_ddon_partner_pawn_pending_rewards_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+);

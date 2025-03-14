@@ -538,6 +538,12 @@
                     ]
                 },
                 {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 459
+                    }
+                },
+                {
                     "comment": "Kill Wisened Tarasque",
                     "type": "KillGroup",
                     "groups": [5]
@@ -561,6 +567,12 @@
                     "result_commands": [
                         {"type": "StageJump", "Param1": 436, "Param2": 0}
                     ]
+                },
+                {
+                    "type": "IsGatherPartyInStage",
+                    "stage_id": {
+                        "id": 381
+                    }
                 },
                 {
                     "comment": "Kill Spirit Dragon",

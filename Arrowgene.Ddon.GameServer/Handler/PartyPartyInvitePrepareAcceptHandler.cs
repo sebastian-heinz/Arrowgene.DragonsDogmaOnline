@@ -1,14 +1,14 @@
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PartyPartyInvitePrepareAcceptHandler : GameStructurePacketHandler<C2SPartyPartyInvitePrepareAcceptReq>
+    public class PartyPartyInvitePrepareAcceptHandler : GameRequestPacketQueueHandler<C2SPartyPartyInvitePrepareAcceptReq, S2CPartyPartyInvitePrepareAcceptRes>
     {
         private static readonly ServerLogger Logger =
             LogProvider.Logger<ServerLogger>(typeof(PartyPartyInvitePrepareAcceptHandler));
@@ -17,38 +17,21 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SPartyPartyInvitePrepareAcceptReq> packet)
+        public override PacketQueue Handle(GameClient client, C2SPartyPartyInvitePrepareAcceptReq request)
         {
+            PacketQueue queue = new();
             S2CPartyPartyInvitePrepareAcceptRes res = new S2CPartyPartyInvitePrepareAcceptRes();
 
-            PartyInvitation invitation = Server.PartyManager.GetPartyInvitation(client);
-            if (invitation == null)
-            {
-                Logger.Error(client, "failed to find invitation");
-                client.Send(res);
-                return;
-            }
+            PartyInvitation invitation = Server.PartyManager.GetPartyInvitation(client)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_NOT_FOUNDED, "failed to find invitation");
 
-            PartyGroup party = invitation.Party;
-            if (party == null)
-            {
-                Logger.Error(client, "failed to find invited party");
-                client.Send(res);
-                return;
-            }
+            PartyGroup party = invitation.Party
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_NOT_FOUNDED, "failed to find inviting party");
 
-            ErrorRes<PlayerPartyMember> partyMember = party.Accept(client);
-            if (partyMember.HasError)
-            {
-                Logger.Error(client, "failed to accept invite");
-                res.Error = (uint)partyMember.ErrorCode;
-                client.Send(res);
-                return;
-            }
-
+            PlayerPartyMember partyMember = party.Accept(client);
+            
             Logger.Info(client, $"Accepted Invite for PartyId:{party.Id}");
-            client.Send(res);
-
+            client.Enqueue(res, queue);
 
             // The invited player doesn't move to the new party leader's server until this packet is sent
             // Why this wasn't included in the Response packet directly beats me
@@ -57,20 +40,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
             inviteAcceptNtc.PartyId = party.Id;
             inviteAcceptNtc.StageId = party.Leader.Client.Character.Stage.Id;
             inviteAcceptNtc.PositionId = 0; // TODO: Figure what this is about
-            inviteAcceptNtc.MemberIndex = (byte)partyMember.Value.MemberIndex;
-            client.Send(inviteAcceptNtc);
+            inviteAcceptNtc.MemberIndex = (byte)partyMember.MemberIndex;
+            client.Enqueue(inviteAcceptNtc, queue);
 
             // Notify party leader of the accepted invitation
             S2CPartyPartyInviteJoinMemberNtc inviteJoinMemberNtc = new S2CPartyPartyInviteJoinMemberNtc();
             CDataPartyMemberMinimum newMemberMinimum = new CDataPartyMemberMinimum();
             GameStructure.CDataCommunityCharacterBaseInfo(newMemberMinimum.CommunityCharacterBaseInfo,
-                partyMember.Value.Client.Character);
-            newMemberMinimum.IsLeader = partyMember.Value.IsLeader;
-            newMemberMinimum.MemberIndex = partyMember.Value.MemberIndex;
-            newMemberMinimum.MemberType = partyMember.Value.MemberType;
-            newMemberMinimum.PawnId = partyMember.Value.PawnId;
+                partyMember.Client.Character);
+            newMemberMinimum.IsLeader = partyMember.IsLeader;
+            newMemberMinimum.MemberIndex = partyMember.MemberIndex;
+            newMemberMinimum.MemberType = partyMember.MemberType;
+            newMemberMinimum.PawnId = partyMember.PawnId;
             inviteJoinMemberNtc.MemberMinimumList.Add(newMemberMinimum);
-            party.Leader.Client.Send(inviteJoinMemberNtc);
+            party.Leader.Client.Enqueue(inviteJoinMemberNtc, queue);
+
+            return queue;
         }
     }
 }

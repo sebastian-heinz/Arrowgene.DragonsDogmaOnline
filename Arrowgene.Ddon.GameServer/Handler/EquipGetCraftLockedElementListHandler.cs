@@ -7,7 +7,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class EquipGetCraftLockedElementListHandler : GameStructurePacketHandler<C2SEquipGetCraftLockedElementListReq>
+    public class EquipGetCraftLockedElementListHandler : GameRequestPacketHandler<C2SEquipGetCraftLockedElementListReq, S2CEquipGetCraftLockedElementListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(EquipGetCraftLockedElementListHandler));
 
@@ -15,13 +15,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SEquipGetCraftLockedElementListReq> packet)
+        public override S2CEquipGetCraftLockedElementListRes Handle(GameClient client, C2SEquipGetCraftLockedElementListReq request)
         {
             S2CEquipGetCraftLockedElementListRes res = new S2CEquipGetCraftLockedElementListRes();
             
             //TODO: Add list of items whose quality is locked, i.e. crests can not be destroyed and quality can not be upgraded
 
-            client.Send(res);
+            return res;
         }
     }
 }

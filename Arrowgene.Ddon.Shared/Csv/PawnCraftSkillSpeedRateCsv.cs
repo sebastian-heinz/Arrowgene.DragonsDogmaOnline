@@ -2,7 +2,7 @@ using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Csv
 {
-    internal class PawnCraftSkillSpeedRateCsv : CsvReaderWriter<PawnCraftSkillSpeedRate>
+    public class PawnCraftSkillSpeedRateCsv : CsvReaderWriter<PawnCraftSkillSpeedRate>
     {
         protected override int NumExpectedItems => 3;
 

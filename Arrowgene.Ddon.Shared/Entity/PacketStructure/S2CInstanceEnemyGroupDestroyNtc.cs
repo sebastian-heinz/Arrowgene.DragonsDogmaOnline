@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.S2C_INSTANCE_ENEMY_GROUP_DESTROY_NTC;
 
-        public CDataStageLayoutId LayoutId { get; set; }
+        public CDataStageLayoutId LayoutId { get; set; } = new();
         public bool IsAreaBoss { get; set; }
 
 

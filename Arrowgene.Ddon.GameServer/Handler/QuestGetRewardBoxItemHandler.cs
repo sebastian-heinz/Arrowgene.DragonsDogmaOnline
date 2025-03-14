@@ -34,8 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var rewardIndex = packet.ListNo;
             if (rewardIndex == 0 || rewardIndex > questBoxRewards.Count)
             {
-                Logger.Error($"Illegal reward request sent to server.");
-                return new S2CQuestGetRewardBoxItemRes() { Error = 1};
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_QUEST_NOT_EXIST_REWARD_BOX_LIST_NO, $"Illegal reward request sent to server.");
             }
 
             // Make zero based index
@@ -64,7 +63,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             var distinctRewards = packet.GetRewardBoxItemList.Select(x => x.UID).Distinct().ToList();
 
-            var slotCount = coalescedRewards.Sum(x => distinctRewards.Contains(x.Key) ? Server.ItemManager.PredictAddItemSlots(client.Character, StorageType.StorageBoxNormal, x.Value.ItemId, x.Value.Num) : 0);
+            var slotCount = coalescedRewards.Sum(x => distinctRewards.Contains(x.Key) ? Server.ItemManager.PredictAddItemSlots(client.Character, StorageType.StorageBoxNormal, (uint) x.Value.ItemId, x.Value.Num) : 0);
             if (slotCount > client.Character.Storage.GetStorage(StorageType.StorageBoxNormal).EmptySlots())
             {
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_STORAGE_OVERFLOW);
@@ -83,7 +82,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                     else if (reward.Num > 0)
                     {
-                        var result = Server.ItemManager.AddItem(Server, client.Character, false, reward.ItemId, reward.Num, connectionIn: connection);
+                        var result = Server.ItemManager.AddItem(Server, client.Character, false, (uint) reward.ItemId, reward.Num, connectionIn: connection);
                         updateCharacterItemNtc.UpdateItemList.AddRange(result);
                     }
                 }

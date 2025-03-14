@@ -1,15 +1,12 @@
-using System.Linq;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class SkillGetPawnSetSkillListHandler : GameStructurePacketHandler<C2SSkillGetPawnSetSkillListReq>
+    public class SkillGetPawnSetSkillListHandler : GameRequestPacketHandler<C2SSkillGetPawnSetSkillListReq, S2CSkillGetPawnSetSkillListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillGetPawnSetSkillListHandler));
         
@@ -17,17 +14,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SSkillGetPawnSetSkillListReq> packet)
+        public override S2CSkillGetPawnSetSkillListRes Handle(GameClient client, C2SSkillGetPawnSetSkillListReq request)
         {
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
+            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
             // TODO: Check if its necessary to filter so only the current job skills are sent
-            S2CSkillGetPawnSetSkillListRes res = new S2CSkillGetPawnSetSkillListRes();
-            res.PawnId = pawn.PawnId;
-            res.SetAcquierementParamList = pawn.EquippedCustomSkillsDictionary[pawn.Job]
-                .Select((x, index) => x?.AsCDataSetAcquirementParam((byte)(index+1)))
-                .Where(x => x != null)
-                .ToList();
-            client.Send(res);
+            return new S2CSkillGetPawnSetSkillListRes()
+            {
+                PawnId = pawn.PawnId,
+                SetAcquierementParamList = pawn.EquippedCustomSkillsDictionary[pawn.Job]
+                    .Select((x, index) => x?.AsCDataSetAcquirementParam((byte)(index + 1)))
+                    .Where(x => x != null)
+                    .ToList()
+            };
         }
     }
 }

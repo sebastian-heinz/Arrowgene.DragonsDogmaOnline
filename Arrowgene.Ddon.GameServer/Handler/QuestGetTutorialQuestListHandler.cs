@@ -32,7 +32,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (var questScheduleId in QuestManager.GetTutorialQuestsByStageNo(request.StageNo))
             {
                 var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
-                if (quest == null || !quest.IsActive(Server, client))
+                if (quest == null || !quest.IsActive(client))
                 {
                     continue;
                 }

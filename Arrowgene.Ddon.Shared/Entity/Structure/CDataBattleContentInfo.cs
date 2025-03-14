@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         }
 
         public GameMode GameMode { get; set; } // GameMode 2 or KeyId 2 is active?
-        public string ContentName { get; set; }
+        public string ContentName { get; set; } = string.Empty;
         public List<CDataBattleContentStage> BattleContentStageList { get; set; } // Information about each stage of the battle content
         public List<CDataBattleContentStageProgression> BattleContentStageProgressionList {  get; set; } // Looks to define all the different battle content and how they link together
         public List<CDataCommonU32> RareItemAppraisalList { get; set; } // Makes a ! on the Lyka NPC when these items are present

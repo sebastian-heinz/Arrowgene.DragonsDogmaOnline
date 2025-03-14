@@ -15,15 +15,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CSeasonDungeonUpdateKeyPointDoorStatusRes Handle(GameClient client, C2SSeasonDungeonUpdateKeyPointDoorStatusReq request)
         {
-            Logger.Info($"KeyPointDoor: StageId{request.LayoutId.AsStageId()}, PosId={request.PosId}");
+            Logger.Info($"KeyPointDoor: StageId{request.LayoutId.AsStageLayoutId()}, PosId={request.PosId}");
 
-            var doorState = Server.EpitaphRoadManager.GetMysteriousDoorState(client.Party, request.LayoutId.AsStageId(), request.PosId);
+            var doorState = Server.EpitaphRoadManager.GetMysteriousDoorState(client.Party, request.LayoutId.AsStageLayoutId(), request.PosId);
 
             string message = "";
             if (doorState.State == SoulOrdealOmState.DoorLocked)
             {
                 message = "A mysterious power was scattered all around";
-                Server.EpitaphRoadManager.SetMysteriousDoorState(client.Party, request.LayoutId.AsStageId(), request.PosId, SoulOrdealOmState.ScatterPowers);
+                Server.EpitaphRoadManager.SetMysteriousDoorState(client.Party, request.LayoutId.AsStageLayoutId(), request.PosId, SoulOrdealOmState.ScatterPowers);
 
                 client.Party.SendToAll(new S2CSeasonDungeonSetOmStateNtc()
                 {
@@ -32,7 +32,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     State = SoulOrdealOmState.ScatterPowers
                 });
 
-                Server.EpitaphRoadManager.SpreadMysteriousPowers(client.Party, request.LayoutId.AsStageId(), request.PosId);
+                Server.EpitaphRoadManager.SpreadMysteriousPowers(client.Party, request.LayoutId.AsStageLayoutId(), request.PosId);
             }
             else if (doorState.State == SoulOrdealOmState.ScatterPowers)
             {

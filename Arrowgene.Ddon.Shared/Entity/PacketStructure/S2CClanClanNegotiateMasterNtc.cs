@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public PacketId Id => PacketId.S2C_CLAN_CLAN_NEGOTIATE_MASTER_NTC;
 
         public uint ClanId { get; set; }
-        public CDataClanMemberInfo MemberInfo { get; set; }
+        public CDataClanMemberInfo MemberInfo { get; set; } = new();
 
         public class Serializer : PacketEntitySerializer<S2CClanClanNegotiateMasterNtc>
         {

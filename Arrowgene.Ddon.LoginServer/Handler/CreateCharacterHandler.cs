@@ -509,8 +509,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     Value = 0
                 }
             };
-            character.FavWarpSlotNum = Server.GameSetting.DefaultWarpFavorites;
-            character.MaxBazaarExhibits = Server.GameSetting.DefaultMaxBazaarExhibits;
+            character.FavWarpSlotNum = Server.GameSetting.GameServerSettings.DefaultWarpFavorites;
+            character.MaxBazaarExhibits = Server.GameSetting.GameServerSettings.DefaultMaxBazaarExhibits;
 
             // Add starting storage items
             foreach (var tuple in Server.AssetRepository.StorageItemAsset)
@@ -555,20 +555,34 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 client.Send(res);
             }
 
-            // Populate playpoint data.
-            Enum.GetValues(typeof(JobId)).Cast<JobId>().Select(job => new CDataJobPlayPoint()
+            Database.ExecuteInTransaction(connection =>
             {
-                Job = job,
-                PlayPoint = new CDataPlayPointData()
+                // Populate playpoint data.
+                Enum.GetValues(typeof(JobId)).Cast<JobId>().Select(job => new CDataJobPlayPoint()
                 {
-                    ExpMode = ExpMode.Experience, // EXP
-                    PlayPoint = 0
-                }
-            }).ToList().ForEach((Action<CDataJobPlayPoint>)(x => {
-                Database.ReplaceCharacterPlayPointData((uint)character.CharacterId, x);
-                character.PlayPointList.Add(x);
-            }));
+                    Job = job,
+                    PlayPoint = new CDataPlayPointData()
+                    {
+                        ExpMode = ExpMode.Experience, // EXP
+                        PlayPoint = 0
+                    }
+                }).ToList().ForEach((Action<CDataJobPlayPoint>)(x => {
+                    Database.ReplaceCharacterPlayPointData((uint)character.CharacterId, x, connection);
+                    character.PlayPointList.Add(x);
+                }));
 
+                // Populate area ranks.
+                for (int i = (int)QuestAreaId.HidellPlains; i <= (int)QuestAreaId.UrtecaMountains; i++)
+                {
+                    var rank = new AreaRank()
+                    {
+                        AreaId = (QuestAreaId)i
+                    };
+                    Database.InsertAreaRank(character.CharacterId, rank, connection);
+                    character.AreaRanks[rank.AreaId] = rank;
+                }
+            });
+            
             // Default unlock some secret abilities based on server admin desires
             foreach (var ability in _AssetRepository.SecretAbilitiesAsset.DefaultSecretAbilities)
             {

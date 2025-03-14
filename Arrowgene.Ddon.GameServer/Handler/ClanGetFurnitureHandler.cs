@@ -11,54 +11,65 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClanGetFurnitureHandler));
 
-        private static Dictionary<ClanBaseCustomizationType, uint> MandatoryTypes = new()
+        /// <summary>
+        /// Required default furniture.
+        /// </summary>
+        private static readonly Dictionary<byte, ItemId> MandatoryTypes = new()
         {
-            { ClanBaseCustomizationType.PlazaObject, 18484 },
-            { ClanBaseCustomizationType.Statue, 18505 },
-            { ClanBaseCustomizationType.DiningTable, 18638 },
-            { ClanBaseCustomizationType.LargeCarpet, 18639 },
-            { ClanBaseCustomizationType.HallDecoration, 21131 }
+            { ClanFurnitureType.PlazaObject, ItemId.Fountain },
+            { ClanFurnitureType.Statue, ItemId.WhiteDragonStatue0 },
+            { ClanFurnitureType.DiningTable, ItemId.DiningTable1 },
+            { ClanFurnitureType.LargeCarpet, ItemId.LargeCarpet },
+            { ClanFurnitureType.HallDecoration, ItemId.HallDecoration }
         };
-        private static Dictionary<uint, ClanBaseCustomizationType> ItemIdToLayoutId = new()
+
+        /// <summary>
+        /// Maps an item to the internal ID of the furniture. 
+        /// </summary>
+        private static readonly Dictionary<ItemId, byte> ItemIdToLayoutId = new()
         {
-            {18484, ClanBaseCustomizationType.PlazaObject},
-            {18505, ClanBaseCustomizationType.Statue},
-            {18638, ClanBaseCustomizationType.DiningTable},
-            {18639, ClanBaseCustomizationType.LargeCarpet},
-            {21129, ClanBaseCustomizationType.PlazaObject},
-            {21130, ClanBaseCustomizationType.LargeCarpet},
-            {21131, ClanBaseCustomizationType.HallDecoration},
-            {21132, ClanBaseCustomizationType.HallDecoration},
-            {21133, ClanBaseCustomizationType.LoungeBoard},
-            {21713, ClanBaseCustomizationType.PlazaObject},
-            {21714, ClanBaseCustomizationType.DiningTable},
-            {21715, ClanBaseCustomizationType.LargeCarpet},
-            {21776, ClanBaseCustomizationType.HallDecoration},
-            {23124, ClanBaseCustomizationType.HallDecoration},
-            {23125, ClanBaseCustomizationType.LargeCarpet},
-            {23126, ClanBaseCustomizationType.DiningTable},
-            {23127, ClanBaseCustomizationType.LoungeBoard},
-            {23128, ClanBaseCustomizationType.PlazaObject},
-            {23129, ClanBaseCustomizationType.DiningTable},
-            {23130, ClanBaseCustomizationType.PlazaObject}
+            {ItemId.Fountain, ClanFurnitureType.PlazaObject},
+            {ItemId.WhiteDragonStatue0, ClanFurnitureType.Statue},
+            {ItemId.DiningTable1, ClanFurnitureType.DiningTable},
+            {ItemId.LargeCarpet, ClanFurnitureType.LargeCarpet},
+            {ItemId.ChristmasTree1, ClanFurnitureType.PlazaObject},
+            {ItemId.LargeCarpetChristmas, ClanFurnitureType.LargeCarpet},
+            {ItemId.HallDecoration, ClanFurnitureType.HallDecoration},
+            {ItemId.HallDecorationChristmas, ClanFurnitureType.HallDecoration},
+            {ItemId.LittleFrost1, ClanFurnitureType.LoungeBoard},
+            {ItemId.ThirdAnniversaryPuppet1, ClanFurnitureType.PlazaObject},
+            {ItemId.ThirdAnniversaryMenu, ClanFurnitureType.DiningTable},
+            {ItemId.LargeCarpetThirdAnniversary, ClanFurnitureType.LargeCarpet},
+            {ItemId.HallDecorationThirdAnniversary, ClanFurnitureType.HallDecoration},
+            {ItemId.ClanHallHalloweenDecoration, ClanFurnitureType.HallDecoration},
+            {ItemId.ClanHallHalloweenLargeCarpet, ClanFurnitureType.LargeCarpet},
+            {ItemId.ClanHallHalloweenCuisine, ClanFurnitureType.DiningTable},
+            {ItemId.ClanHallHalloweenPlush, ClanFurnitureType.LoungeBoard},
+            {ItemId.ClanHallHalloweenTree, ClanFurnitureType.PlazaObject},
+            {ItemId.ClanHallChristmasCuisine, ClanFurnitureType.DiningTable},
+            {ItemId.ClanHallWhiteTree, ClanFurnitureType.PlazaObject}
         };
-        private static Dictionary<uint, uint> LineupIdToFurnitureId = new()
+
+        /// <summary>
+        /// Maps purchased clan upgrade LineupId to the item ID.
+        /// </summary>
+        private static readonly Dictionary<uint, ItemId> LineupIdToFurnitureId = new()
         {
-            {53, 21129},
-            {54, 21130},
-            {55, 21132},
-            {56, 21133},
-            {57, 21713},
-            {58, 21714},
-            {59, 21715},
-            {60, 21776},
-            {64, 23124},
-            {63, 23125},
-            {62, 23126},
-            {61, 23127},
-            {65, 23128},
-            {66, 23129},
-            {67, 23130}
+            {53, ItemId.ChristmasTree1},
+            {54, ItemId.LargeCarpetChristmas},
+            {55, ItemId.HallDecorationChristmas},
+            {56, ItemId.LittleFrost1},
+            {57, ItemId.ThirdAnniversaryPuppet1},
+            {58, ItemId.ThirdAnniversaryMenu},
+            {59, ItemId.LargeCarpetThirdAnniversary},
+            {60, ItemId.HallDecorationThirdAnniversary},
+            {64, ItemId.ClanHallHalloweenDecoration},
+            {63, ItemId.ClanHallHalloweenLargeCarpet},
+            {62, ItemId.ClanHallHalloweenCuisine},
+            {61, ItemId.ClanHallHalloweenPlush},
+            {65, ItemId.ClanHallHalloweenTree},
+            {66, ItemId.ClanHallChristmasCuisine},
+            {67, ItemId.ClanHallWhiteTree}
         };
         
         public ClanGetFurnitureHandler(DdonGameServer server) : base(server)
@@ -71,12 +82,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var pcap = new S2CClanGetFurnitureRes.Serializer().Read(FurnitureData);
 
             List<uint> baseFuncs = new();
-            Dictionary<ClanBaseCustomizationType, uint> customDict = new();
+            Dictionary<byte, uint> customDict = new();
             Server.Database.ExecuteInTransaction(connection =>
             {
                 baseFuncs = Server.Database.SelectClanShopPurchases(client.Character.ClanId, connection);
                 customDict = Server.Database.SelectClanBaseCustomizations(client.Character.ClanId, connection)
-                    .Where(x => x.Type != ClanBaseCustomizationType.Concierge)
+                    .Where(x => x.Type != 1)
                     .ToDictionary(key => key.Type, value => value.Id);
             });
 
@@ -86,7 +97,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     ItemID = furnitureId,
                     OmID = 0,
-                    LayoutId = 0
+                    LayoutID = 0
                 });
             }
 
@@ -99,28 +110,28 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         ItemID = furnitureId,
                         OmID = 0,
-                        LayoutId = 0
+                        LayoutID = 0
                     });
                 }
             }
 
             foreach ((var type, var defaultId) in MandatoryTypes)
             {
-                uint furnitureId = defaultId;
+                var furnitureId = defaultId;
                 if (customDict.ContainsKey(type))
                 {
-                    furnitureId = customDict[type];
+                    furnitureId = (ItemId)customDict[type];
                 }
 
                 var match = res.FurnitureLayouts.Find(x => x.ItemID == furnitureId);
                 if (match != null)
                 {
-                    match.LayoutId = type;
+                    match.LayoutID = type;
                 }
                 else
                 {
                     var backupMatch = res.FurnitureLayouts.Find(x => x.ItemID == defaultId);
-                    backupMatch.LayoutId = type;
+                    backupMatch.LayoutID = type;
                 }
             }
 

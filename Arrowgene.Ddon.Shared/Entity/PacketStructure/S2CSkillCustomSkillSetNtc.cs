@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public PacketId Id => PacketId.S2C_SKILL_CUSTOM_SKILL_SET_NTC;
 
         public uint CharacterId { get; set; }
-        public CDataContextAcquirementData ContextAcquirementData { get; set; }
+        public CDataContextAcquirementData ContextAcquirementData { get; set; } = new();
 
         public class Serializer : PacketEntitySerializer<S2CSkillCustomSkillSetNtc>
         {

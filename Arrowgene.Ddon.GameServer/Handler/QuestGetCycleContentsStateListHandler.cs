@@ -29,14 +29,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CQuestJoinLobbyQuestInfoNtc pcap = serializer.Read(InGameDump.data_Dump_20A);
             client.Send(pcap);
 #else
-            S2CQuestJoinLobbyQuestInfoNtc pcap = EntitySerializer.Get<S2CQuestJoinLobbyQuestInfoNtc>().Read(InGameDump.data_Dump_20A);
+            S2CQuestJoinLobbyQuestInfoNtc pcap = EntitySerializer.Get<S2CQuestJoinLobbyQuestInfoNtc>().Read(InGameDump.data_Dump_20B);
             S2CQuestJoinLobbyQuestInfoNtc ntc = new S2CQuestJoinLobbyQuestInfoNtc();
 
             ntc.WorldManageQuestOrderList = pcap.WorldManageQuestOrderList; // Recover paths + change vocation
 
             ntc.QuestDefine = pcap.QuestDefine; // Recover quest log data to be able to accept quests
-            ntc.QuestDefine.OrderMaxNum = Server.GameLogicSettings.QuestOrderMax;
-            ntc.QuestDefine.RewardBoxMaxNum = Server.GameLogicSettings.RewardBoxMax;
+            ntc.QuestDefine.OrderMaxNum = Server.GameSettings.GameServerSettings.QuestOrderMax;
+            ntc.QuestDefine.RewardBoxMaxNum = Server.GameSettings.GameServerSettings.RewardBoxMax;
 
             // pcap.MainQuestIdList; (this will add back all missing functionality which depends on complete MSQ)
             var completedMsq = client.Character.CompletedQuests.Values.Where(x => x.QuestType == QuestType.Main);
@@ -51,11 +51,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ntc.TutorialQuestIdList.Add(new CDataQuestId() { QuestId = (uint)tut.QuestId });
             }
 
+            // Add special quest to handle caution message
+            var customWorldManageQuest = QuestManager.GetQuestByScheduleId(79000001);
+            ntc.WorldManageQuestOrderList.Add(customWorldManageQuest.ToCDataWorldManageQuestOrderList(0));
+
             var allQuestsInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All);
             foreach (var questProgress in allQuestsInProgress)
             {
                 var quest = QuestManager.GetQuestByScheduleId(questProgress.QuestScheduleId);
-                if (quest == null || !quest.IsActive(Server, client))
+                if (quest == null || !quest.IsActive(client))
                 {
                     continue;
                 }
@@ -72,6 +76,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         break;
                     case QuestType.Light:
                         var lightQuest = quest.ToCDataLightQuestOrderList(questProgress.Step);
+                        if (lightQuest.Detail.BoardType == 1 && lightQuest.Detail.GetAp == 0)
+                        {
+                            lightQuest.Detail.GetAp = Server.AreaRankManager.GetAreaPointReward(quest);
+                        }
                         ntc.LightQuestOrderList.Add(lightQuest);
                         break;
                 }
@@ -83,7 +91,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 foreach (var questScheduleId in priorityQuests)
                 {
                     var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
-                    if (quest == null || !quest.IsActive(Server, client))
+                    if (quest == null || !quest.IsActive(client))
                     {
                         continue;
                     }

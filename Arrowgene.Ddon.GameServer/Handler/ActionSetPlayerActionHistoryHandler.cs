@@ -1,14 +1,10 @@
-using Arrowgene.Buffers;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class ActionSetPlayerActionHistoryHandler : StructurePacketHandler<GameClient, C2SActionSetPlayerActionHistoryReq>
+    public class ActionSetPlayerActionHistoryHandler : GameRequestPacketHandler<C2SActionSetPlayerActionHistoryReq, S2CActionSetPlayerActionHistoryRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ActionSetPlayerActionHistoryHandler));
 
@@ -16,10 +12,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SActionSetPlayerActionHistoryReq> packet)
+        public override S2CActionSetPlayerActionHistoryRes Handle(GameClient client, C2SActionSetPlayerActionHistoryReq request)
         {
-            S2CActionSetPlayerActionHistoryRes res = new S2CActionSetPlayerActionHistoryRes();
-            client.Send(res);
+            return new();
         }
     }
 }

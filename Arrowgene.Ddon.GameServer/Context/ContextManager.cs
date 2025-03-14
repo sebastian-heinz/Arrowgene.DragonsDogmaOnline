@@ -8,7 +8,6 @@ using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Permissions;
 
 namespace Arrowgene.Ddon.GameServer.Context
 {
@@ -41,11 +40,11 @@ namespace Arrowgene.Ddon.GameServer.Context
             }
         }
 
-        public static void RemoveContext(PartyGroup partyGroup, ulong uniqueId)
+        public static bool RemoveContext(PartyGroup partyGroup, ulong uniqueId)
         {
             lock (partyGroup.Contexts)
             {
-                partyGroup.Contexts.Remove(uniqueId);
+                return partyGroup.Contexts.Remove(uniqueId);
             }
         }
 

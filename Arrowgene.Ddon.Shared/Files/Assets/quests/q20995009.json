@@ -44,14 +44,27 @@
         {
             "stage_id": {
                 "id": 84,
-                "group_id": 6
+                "group_id": 5
             },
+            "starting_index": 6,
             "enemies": [
                 {
                     "enemy_id": "0x015505",
                     "level": 52,
                     "exp": 14000,
                     "is_boss": true
+                },
+                {
+                    "enemy_id": "0x010103",
+                    "level": 52,
+                    "exp": 1500,
+                    "is_boss": false
+                },
+                {
+                    "enemy_id": "0x010103",
+                    "level": 52,
+                    "exp": 1500,
+                    "is_boss": false
                 },
                 {
                     "enemy_id": "0x010103",

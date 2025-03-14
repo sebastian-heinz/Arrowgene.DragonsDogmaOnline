@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class SkillGetCurrentSetSkillListHandler : StructurePacketHandler<GameClient, C2SSkillGetCurrentSetSkillListReq>
+    public class SkillGetCurrentSetSkillListHandler : GameRequestPacketHandler<C2SSkillGetCurrentSetSkillListReq, S2CSkillGetCurrentSetSkillListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillGetCurrentSetSkillListHandler));
 
@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SSkillGetCurrentSetSkillListReq> packet)
+        public override S2CSkillGetCurrentSetSkillListRes Handle(GameClient client, C2SSkillGetCurrentSetSkillListReq request)
         {
             // TODO: Check if its necessary to filter so only the current job skills are sent
             S2CSkillGetCurrentSetSkillListRes res = new S2CSkillGetCurrentSetSkillListRes();
@@ -32,7 +32,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .Select((x, index) => x?.AsCDataSetAcquirementParam((byte)(index+1)))
                 .Where(x => x != null)
                 .ToList();
-            client.Send(res);
+            return res;
         }
     }
 }

@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using System;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Model.Quest
@@ -9,6 +10,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public int StageStart {  get; set; }
         public int StageClear { get; set; }
         public int EndContentsPurpose {  get; set; }
+        public bool Caution { get; set; }
     }
 
     public class QuestReturnCheckpoint
@@ -31,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public ushort BlockNo { get; set; }
         public QuestAnnounceType AnnounceType { get; set; }
         public Announcements Announcements { get; set; }
-        public StageId StageId { get; set; }
+        public StageLayoutId StageId { get; set; }
         public ushort SubGroupId { get; set; }
         public uint SetNo { get; set; }
         public uint QuestLayoutFlag { get; set; } // For groups
@@ -39,6 +41,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public List<uint> MyQstCheckFlags { get; set; }
         public List<QuestFlag> QuestFlags { get; set; }
         public List<QuestFlag> CheckpointQuestFlags { get; set; }
+        public List<Object> Callbacks { get; set; }
 
         public bool ShouldStageJump { get; set; }
         public uint JumpPos { get; set; }
@@ -73,6 +76,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         // Used for raw blocks
         public List<List<CDataQuestCommand>> CheckCommands { get; set; }
         public List<CDataQuestCommand> ResultCommands { get; set; }
+        public List<CDataQuestProgressWork> WorkCommands { get; set; }
 
         public QuestBlock(ushort blockNo = 0, ushort seqNo = 0)
         {
@@ -94,6 +98,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 
             CheckCommands = new List<List<CDataQuestCommand>>();
             ResultCommands = new List<CDataQuestCommand>();
+            WorkCommands = new List<CDataQuestProgressWork>();
             QuestOrderDetails = new QuestOrder();
             EnemyGroupIds = new List<uint>();
 
@@ -106,6 +111,8 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 
             TargetEnemy = new QuestTargetEnemy();
             Announcements = new Announcements();
+
+            Callbacks = new List<Object>();
         }
 
         public QuestBlock AddAnnotation(string msg)
@@ -146,7 +153,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return this;
         }
 
-        public QuestBlock SetAnnounceType(QuestAnnounceType value)
+        public static void EvaluateAnnounceType(QuestBlock questBlock, QuestAnnounceType value)
         {
             var isCheckPoint = (value == QuestAnnounceType.Checkpoint) ||
                                (value == QuestAnnounceType.CheckpointAndUpdate);
@@ -161,9 +168,13 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
                     break;
             }
 
-            IsCheckpoint = isCheckPoint;
-            AnnounceType = value;
+            questBlock.IsCheckpoint = isCheckPoint;
+            questBlock.AnnounceType = value;
+        }
 
+        public QuestBlock SetAnnounceType(QuestAnnounceType value)
+        {
+            EvaluateAnnounceType(this, value);
             return this;
         }
 
@@ -173,7 +184,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return this;
         }
 
-        public QuestBlock SetStageId(StageId value)
+        public QuestBlock SetStageId(StageLayoutId value)
         {
             StageId = value;
             return this;
@@ -203,7 +214,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return this;
         }
 
-        public QuestBlock AddMyQuestSetFlag(uint value)
+        public QuestBlock AddMyQstSetFlag(uint value)
         {
             MyQstSetFlags.Add(value);
             return this;
@@ -304,7 +315,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return this;
         }
 
-        public QuestBlock SetQuestEvent(StageId stageId, uint eventId, uint startPos, QuestJumpType jumpType = QuestJumpType.After)
+        public QuestBlock SetQuestEvent(StageLayoutId stageId, uint eventId, uint startPos, QuestJumpType jumpType = QuestJumpType.After)
         {
             QuestEvent = new QuestEvent()
             {
@@ -506,7 +517,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return this;
         }
 
-        public QuestBlock AddNpcOrderDetails(StageId stageId, NpcId npcId, uint msgId, QuestId questId = QuestId.None)
+        public QuestBlock AddNpcOrderDetails(StageLayoutId stageId, NpcId npcId, uint msgId, QuestId questId = QuestId.None)
         {
             NpcOrderDetails.Add(new QuestNpcOrder()
             {
@@ -518,7 +529,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return this;
         }
 
-        public QuestBlock AddNpcOrderDetails(StageId stageId, NpcId npcId, uint msgId, uint questId = 0)
+        public QuestBlock AddNpcOrderDetails(StageLayoutId stageId, NpcId npcId, uint msgId, uint questId = 0)
         {
             return AddNpcOrderDetails(stageId, npcId, msgId, (QuestId)questId);
         }

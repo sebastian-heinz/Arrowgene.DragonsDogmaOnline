@@ -1,35 +1,29 @@
-using System.Collections.Generic;
-using System.Linq;
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class SkillLearnPawnAbilityHandler : GameStructurePacketHandler<C2SSkillLearnPawnAbilityReq>
+    public class SkillLearnPawnAbilityHandler : GameRequestPacketQueueHandler<C2SSkillLearnPawnAbilityReq, S2CSkillLearnPawnAbilityRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillLearnPawnAbilityHandler));
         
-        private readonly JobManager jobManager;
-
         public SkillLearnPawnAbilityHandler(DdonGameServer server) : base(server)
         {
-            this.jobManager = server.JobManager;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SSkillLearnPawnAbilityReq> packet)
+        public override PacketQueue Handle(GameClient client, C2SSkillLearnPawnAbilityReq request)
         {
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.Structure.PawnId).Single();
+            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
 
 
             var AllAbilities = SkillGetAcquirableAbilityListHandler.AllAbilities.Concat(SkillGetAcquirableAbilityListHandler.AllSecretAbilities);
 
-            JobId augJob = AllAbilities.Where(aug => aug.AbilityNo == packet.Structure.AbilityId).Select(aug => aug.Job).Single(); // why is this not in the packet
-            this.jobManager.UnlockAbility(Server.Database, client, pawn, augJob, packet.Structure.AbilityId, packet.Structure.AbilityLv);
+            JobId augJob = AllAbilities.Where(aug => aug.AbilityNo == request.AbilityId).Select(aug => aug.Job).Single(); // why is this not in the packet
+            return Server.JobManager.UnlockAbility(Server.Database, client, pawn, augJob, request.AbilityId, request.AbilityLv);
         }
     }
 }

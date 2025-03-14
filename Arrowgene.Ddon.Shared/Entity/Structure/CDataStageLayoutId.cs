@@ -26,9 +26,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             GroupId = groupId;
         }
 
-        public StageId AsStageId()
+        public StageLayoutId AsStageLayoutId()
         {
-            return new StageId(this);
+            return new StageLayoutId(this);
         }
 
         public class Serializer : EntitySerializer<CDataStageLayoutId>

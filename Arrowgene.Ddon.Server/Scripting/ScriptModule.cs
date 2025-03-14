@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         public abstract string ModuleRoot { get; }
         public abstract string Filter { get; }
         public abstract bool ScanSubdirectories { get; }
-        public FileSystemWatcher Watcher { get; set; }
+        public List<FileSystemWatcher> Watchers { get; set; }
 
         /// <summary>
         /// Determines if this module is able to be hot-loadable or not.
@@ -30,6 +30,14 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         public ScriptModule()
         {
             Scripts = new HashSet<string>();
+            Watchers = new List<FileSystemWatcher>();
+        }
+
+        /// <summary>
+        /// Code that a module can execute before EvaluateResult is called for each script.
+        /// </summary>
+        public virtual void Initialize()
+        {
         }
 
         /// <summary>

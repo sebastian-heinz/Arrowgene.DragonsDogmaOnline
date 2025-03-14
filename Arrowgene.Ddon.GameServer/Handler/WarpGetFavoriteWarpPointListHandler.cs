@@ -1,28 +1,23 @@
-﻿using System.Linq;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class WarpGetFavoriteWarpPointListHandler : StructurePacketHandler<GameClient, C2SWarpGetFavoriteWarpPointListReq>
+    public class WarpGetFavoriteWarpPointListHandler : GameRequestPacketHandler<C2SWarpGetFavoriteWarpPointListReq, S2CWarpGetFavoriteWarpPointListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(WarpGetFavoriteWarpPointListHandler));
-
 
         public WarpGetFavoriteWarpPointListHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SWarpGetFavoriteWarpPointListReq> packet)
+        public override S2CWarpGetFavoriteWarpPointListRes Handle(GameClient client, C2SWarpGetFavoriteWarpPointListReq request)
         {
             // Requested when using the Rift Teleport menu option
-            client.Send(new S2CWarpGetFavoriteWarpPointListRes()
+            return new S2CWarpGetFavoriteWarpPointListRes()
             {
                 SlotIdMax = client.Character.FavWarpSlotNum,
                 FavoriteWarpPointList = client.Character.ReleasedWarpPoints.Select(rwp => new CDataFavoriteWarpPoint()
@@ -31,7 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Price = Server.AssetRepository.WarpPoints.Where(wp => wp.WarpPointId == rwp.WarpPointId).Single().CalculateFinalPrice(rwp.IsFavorite),
                     SlotNo = rwp.FavoriteSlotNo
                 }).ToList()
-            });
+            };
         }
     }
 }

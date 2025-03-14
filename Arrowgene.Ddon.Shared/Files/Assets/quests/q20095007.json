@@ -6,65 +6,127 @@
     "base_level": 56,
     "minimum_item_rank": 0,
     "discoverable": true,
-  "area_id": "ZandoraWastelands",	
+    "area_id": "ZandoraWastelands",	
+    "news_image": 183,
     "rewards": [
         {
             "type": "exp",
-            "amount": 5590
+            "amount": 2580
         },
         {
             "type": "wallet",
             "wallet_type": "Gold",
-            "amount": 3750
+            "amount": 1840
         },
         {
             "type": "wallet",
             "wallet_type": "RiftPoints",
-            "amount": 330
+            "amount": 290
         },
         {
             "type": "select",
             "loot_pool": [
                 {
-                    "item_id": 7959,
+                    "item_id": 9438,
                     "num": 1
                 },
                 {
-                    "item_id": 7745,
+                    "item_id": 7740,
                     "num": 1
                 },
                 {
-                    "item_id": 7744,
-                    "num": 1					
+                    "item_id": 7924,
+                    "num": 3					
                 }
             ]
-        }
-    ],
+          },
+                {
+                    "type": "random",
+                    "loot_pool": [
+                      {
+                        "item_id": 7554,
+                        "num": 1,
+                        "chance": 0.6
+                      },
+                      {
+                        "item_id": 41,
+                        "num": 1,
+                        "chance": 0.6
+                      }
+                    ]
+                  }
+                ],
     "enemy_groups" : [
         {
             "stage_id": {
                 "id": 1,
                 "group_id": 391
             },
+            "placement_type": "manual",
             "enemies": [
                 {
-                    "enemy_id": "0x015040",
-                    "level": 54,
-                    "exp": 25000,
-                    "is_boss": true
+                    "enemy_id": "0x011130",
+                    "start_think_tbl_no": 1,
+                    "named_enemy_params_id": 53,
+                    "level": 55,
+                    "exp": 6476,
+                    "is_boss": false,
+                    "index": 3                    
+        },
+        {
+            "enemy_id": "0x011130",
+            "start_think_tbl_no": 1,
+            "named_enemy_params_id": 53,
+            "level": 55,
+            "exp": 6476,
+            "is_boss": false,
+            "index": 6                    
+},
+{
+    "enemy_id": "0x011130",
+    "start_think_tbl_no": 1,
+    "named_enemy_params_id": 53,
+    "level": 55,
+    "exp": 6476,
+    "is_boss": false,
+    "index": 4                    
+},
+{
+    "enemy_id": "0x011130",
+    "start_think_tbl_no": 1,
+    "named_enemy_params_id": 53,
+    "level": 55,
+    "exp": 6476,
+    "is_boss": false,
+    "index": 5                    
+},
+        {
+                    "enemy_id": "0x011132",
+                    "start_think_tbl_no": 1,
+                    "named_enemy_params_id": 53,
+                    "level": 55,
+                    "exp": 6476,
+                    "is_boss": false,
+                    "index": 0
         },
         {
                     "enemy_id": "0x011132",
-                    "level": 50,
-                    "exp": 1400,
-                    "is_boss": false
-        },
-        {
-                    "enemy_id": "0x011132",
-                    "level": 50,
-                    "exp": 1400,
-                    "is_boss": false					
-                }
+                    "start_think_tbl_no": 1,
+                    "named_enemy_params_id": 53,
+                    "level": 55,
+                    "exp": 6476,
+                    "is_boss": false,
+                    "index": 1					
+                },
+                {
+                    "enemy_id": "0x015000",
+                    "start_think_tbl_no": 1,
+                    "named_enemy_params_id": 56,
+                    "level": 56,
+                    "exp": 21700,
+                    "is_boss": true,
+                    "index": 2
+        }
             ]
         }
     ],	
@@ -87,6 +149,7 @@
         {
             "type": "KillGroup",
             "announce_type": "Update",
+            "reset_group": false,
             "groups": [0]
         },
         {		

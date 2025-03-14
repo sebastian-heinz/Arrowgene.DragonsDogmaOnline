@@ -19,6 +19,24 @@ namespace Arrowgene.Ddon.Shared.Asset
     {
         public PointType PointType { get; set; }
         public uint Amount { get; set; }
+
+        public static QuestPointReward Create(PointType type, uint amount)
+        {
+            return new QuestPointReward()
+            {
+                PointType = type,
+                Amount = amount
+            };
+        }
+
+        public CDataQuestExp AsCDataQuestExp()
+        {
+            return new CDataQuestExp()
+            {
+                Type = PointType,
+                Reward = Amount,
+            };
+        }
     }
 
     public class QuestAssetData
@@ -30,12 +48,13 @@ namespace Arrowgene.Ddon.Shared.Asset
         public uint QuestScheduleId { get; set; }
         public QuestAreaId QuestAreaId { get; set; }
         public uint QuestOrderBackgroundImage { get; set; }
-        public StageId StageId {  get; set; }
+        public StageLayoutId StageLayoutId {  get; set; }
         public uint NewsImageId { get; set; }
         public ushort BaseLevel { get; set; }
         public byte MinimumItemRank { get; set; }
         public bool Enabled { get; set; }
         public bool OverrideEnemySpawn { get; set; }
+        public bool EnableCancel { get; set; }
         public QuestSource QuestSource { get; set; }
 
         public List<QuestPointReward> PointRewards { get; set; }

@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 UpdateType = ItemNoticeType.SoulOrdealReward
             };
 
-            var rewards = Server.EpitaphRoadManager.GetRewards(client, request.LayoutId.AsStageId(), request.PosId);
+            var rewards = Server.EpitaphRoadManager.GetRewards(client, request.LayoutId.AsStageLayoutId(), request.PosId);
             Server.Database.ExecuteInTransaction(connection =>
             {
                 foreach (var reward in request.RewardList)
@@ -51,7 +51,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             });
             client.Send(updateCharacterItemNtc);
 
-            Server.EpitaphRoadManager.CollectTrialRewards(client, request.LayoutId.AsStageId(), request.PosId);
+            Server.EpitaphRoadManager.CollectTrialRewards(client, request.LayoutId.AsStageLayoutId(), request.PosId);
 
             return new S2CSeasonDungeonReceiveSoulOrdealRewardRes()
             {

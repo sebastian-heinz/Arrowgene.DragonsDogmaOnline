@@ -1,15 +1,11 @@
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
-using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class InnGetStayPriceHandler : StructurePacketHandler<GameClient, C2SInnGetStayPriceReq>
+    public class InnGetStayPriceHandler : GameRequestPacketHandler<C2SInnGetStayPriceReq, S2CInnGetStayPriceRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InnGetStayPriceHandler));
 
@@ -21,13 +17,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SInnGetStayPriceReq> req)
+        public override S2CInnGetStayPriceRes Handle(GameClient client, C2SInnGetStayPriceReq request)
         {
-            client.Send(new S2CInnGetStayPriceRes()
+            return new S2CInnGetStayPriceRes()
             {
-                PointType = InnGetStayPriceHandler.PointType,
-                Point = InnGetStayPriceHandler.Point
-            });
+                PointType = PointType,
+                Point = Point
+            };
         }
     }
 }

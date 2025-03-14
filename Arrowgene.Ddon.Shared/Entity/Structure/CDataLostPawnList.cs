@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 
         public int PawnId { get; set; }
         public uint SlotNo { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
         public byte Sex { get; set; }
         public PawnState PawnState { get; set; }
         public byte ShareRange { get; set; }

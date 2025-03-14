@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataMoveItemUIDFromTo
     {
-        public string ItemUId { get; set; }
+        public string ItemUId { get; set; } = string.Empty;
         public uint Num { get; set; }
         public StorageType SrcStorageType { get; set; }
         public StorageType DstStorageType { get; set; }

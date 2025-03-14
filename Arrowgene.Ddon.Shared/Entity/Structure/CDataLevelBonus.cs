@@ -6,7 +6,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     public class CDataLevelBonus
     {
         public uint Unk0 { get; set; }
-        public List<CDataLevelBonusElement> BonusList { get; set;}
+        public List<CDataLevelBonusElement> BonusList { get; set; } = new();
 
         public class Serializer : EntitySerializer<CDataLevelBonus>
         {

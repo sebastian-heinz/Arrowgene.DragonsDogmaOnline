@@ -8,7 +8,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class InstanceEnemyGroupEntryHandler : StructurePacketHandler<GameClient, C2SInstanceEnemyGroupEntryNtc>
+    public class InstanceEnemyGroupEntryHandler : GameStructurePacketHandler<C2SInstanceEnemyGroupEntryNtc>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceEnemyGroupEntryHandler));
 
@@ -19,6 +19,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, StructurePacket<C2SInstanceEnemyGroupEntryNtc> packet)
         {
             CDataStageLayoutId layout = packet.Structure.LayoutId;
+
+            client.Character.Stage = layout.AsStageLayoutId();
 
             ContextManager.HandleEntry(client, layout);
         }

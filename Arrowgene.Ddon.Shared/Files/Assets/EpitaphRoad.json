@@ -130,7 +130,7 @@
                     "comment": "Cave: 4th Space",
                     "stage_id": {"id": 551, "group_id": 70}, "pos_id": 0,
                     "gathering_points": {
-                        "stage_id": {"id": 550, "group_id": 71},
+                        "stage_id": {"id": 551, "group_id": 71},
                         "amount": 14
                     }
                 },

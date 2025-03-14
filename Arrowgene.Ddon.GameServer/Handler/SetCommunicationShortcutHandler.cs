@@ -1,35 +1,30 @@
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class SetCommunicationShortcutHandler : StructurePacketHandler<GameClient, C2SSetCommunicationShortcutReq>
+    public class SetCommunicationShortcutHandler : GameRequestPacketHandler<C2SSetCommunicationShortcutReq, S2CSetCommunicationShortcutRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SetCommunicationShortcutHandler));
-
 
         public SetCommunicationShortcutHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SSetCommunicationShortcutReq> request)
+        public override S2CSetCommunicationShortcutRes Handle(GameClient client, C2SSetCommunicationShortcutReq request)
         {
-            S2CSetCommunicationShortcutRes response = new S2CSetCommunicationShortcutRes();
-
             Server.Database.ExecuteInTransaction(connection =>
             {
-                foreach (CDataCommunicationShortCut shortcut in request.Structure.CommunicationShortCutList)
+                foreach (CDataCommunicationShortCut shortcut in request.CommunicationShortCutList)
                 {
                     Server.Database.ReplaceCommunicationShortcut(client.Character.CharacterId, shortcut, connection);
                 }
             });
 
-            client.Character.CommunicationShortCutList = request.Structure.CommunicationShortCutList;
-            client.Send(response);
+            client.Character.CommunicationShortCutList = request.CommunicationShortCutList;
+            return new();
         }
     }
 }

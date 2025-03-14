@@ -41,14 +41,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var questStateManager = QuestManager.GetQuestStateManager(client, quest);
                 if (questStateManager == null)
                 {
-                    Logger.Error(client, $"Unable to fetch the quest state manager for ${questScheduleId}");
+                    Logger.Error(client, $"Unable to fetch the quest state manager for {questScheduleId}");
                     continue;
                 }
 
                 var questState = questStateManager.GetQuestState(questScheduleId);
                 if (questState == null)
                 {
-                    Logger.Error(client, $"Failed to find quest state for ${questScheduleId}");
+                    Logger.Error(client, $"Failed to find quest state for {questScheduleId}");
                     continue;
                 }
                 ntc.PriorityQuestList.Add(quest.ToCDataPriorityQuest(questState?.Step ?? 0));

@@ -1,14 +1,10 @@
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PartyMemberSetValueHandler : GameStructurePacketHandler<C2SPartyPartyMemberSetValueReq>
+    public class PartyMemberSetValueHandler : GameRequestPacketHandler<C2SPartyPartyMemberSetValueReq, S2CPartyPartyMemberSetValueRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartyMemberSetValueHandler));
 
@@ -16,7 +12,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SPartyPartyMemberSetValueReq> req)
+        public override S2CPartyPartyMemberSetValueRes Handle(GameClient client, C2SPartyPartyMemberSetValueReq request)
         {
             // client.Send(GameFull.Dump_900);
             S2CPartyPartyMemberSetValueRes res = new S2CPartyPartyMemberSetValueRes();
@@ -24,12 +20,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CPartyPartyMemberSetValueNtc ntc = new S2CPartyPartyMemberSetValueNtc()
             {
                 CharacterId = client.Character.CharacterId,
-                Index = req.Structure.Index,
-                Value = req.Structure.Value
+                Index = request.Index,
+                Value = request.Value
             };
             client.Party.SendToAllExcept(ntc, client);
 
-            client.Send(res);
+            return res;
         }
     }
 }

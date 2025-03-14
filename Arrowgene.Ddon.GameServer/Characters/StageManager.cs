@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -11,193 +12,209 @@ namespace Arrowgene.Ddon.GameServer.Characters
     {
         private readonly static List<CDataStageInfo> StageList = EntitySerializer.Get<S2CStageGetStageListRes>().Read(GameDump.data_Dump_19).StageList;
 
-        public static StageNo ConvertIdToStageNo(uint stageId)
+        public static uint ConvertIdToStageNo(uint stageId)
         {
             foreach (CDataStageInfo stageInfo in StageList)
             {
                 if (stageInfo.Id == stageId)
-                    return (StageNo)stageInfo.StageNo;
+                    return stageInfo.StageNo;
             }
 
             return 0;
         }
 
-        public static StageNo ConvertIdToStageNo(StageId stageId)
+        public static uint ConvertIdToStageNo(StageLayoutId stageId)
         {
-            return StageManager.ConvertIdToStageNo(stageId.Id);
+            return ConvertIdToStageNo(stageId.Id);
         }
 
         // List of "safe" areas, where the context reset NTC will be sent.
         // TODO: Complete with all the safe areas. Maybe move it to DB or config?
-        private static readonly HashSet<uint> SafeStageIds = new HashSet<uint>()
-        {
-            2, // White Dragon Temple
-            341, // Dana Centrum
-            487, // Fortress City Megado: Residential Level
-            4, // Craft Room
-            5, // Cave Harbor
-            24, // White Deer Inn
-            25, // Black Grape Inn
-            26, // Sea Dragon Inn
-            48, // Singing Winds Inn
-            52, // Red Crystal Inn
-            53, // Sleeping Wolf Inn
-            61, // Golden Tankard Inn
-            66, // Gritten Fort
-            78, // Pawn Cathedral
-            95, // Hobolic Cave
-            137, // Mysree Grove Shrine
-            139, // Zandora Wastelands Shrine
-            141, // Breya Coast (Summer Event Hub Area)
-            237, // Mergoda Residential Area
-            317, // Expedition Garrison
-            339, // Protector's Retreat
-            340, // Morfaul Centrum
-            347, // Clan Hall
-            348, // Arisen's Room
-            377, // Glyndwr Centrum
-            384, // Hollow of Beginnings: Gathering Area
-            400, // Tower of Ivanos
-            401, // Spirit Arts Hut
-            411, // Manun Village
-            467, // Fort Thines
-            478, // Lookout Castle
-            480, // Bertha's Bandit Group Hideout
-            511, // Piremoth Traveler's Inn
-            512, // Rothgill Traveler's Inn
-            520, // Mephite Traveler's Inn
-            549, // Heroic Spirit Sleeping Path: Rathnite Foothills
-            557, // Heroic Spirit Sleeping Path: Feryana Wilderness
-            558, // Old Heroic Spirit Shrine
-            576, // Fort Thines: Great Dining Hall
-            578, // Bonus Dungeon Lobby
-            580, // Fortress City Megado: Craft Room
-            584, // Eli Guard Tower
-            594, // Northern Bandit Hideout
-            602, // Bitterblack Maze Cove
-        };
+        private static readonly HashSet<uint> SafeStageIds = new HashSet<StageInfo>()
+            {
+                //WDT
+                Stage.TheWhiteDragonTemple0, // TODO: The other WDT stage?
+                Stage.CraftRoom,
+                Stage.CaveHarbor,
+                Stage.ClanHall,
+                Stage.ArisensRoom,
+
+                //Lestania
+                Stage.WhiteDeerInn,
+                Stage.BlackGrapeInn,
+                Stage.SeaDragonInn,
+                Stage.SingingWindsInn,
+                Stage.RedCrystalInn,
+                Stage.SleepingWolfInn,
+                Stage.GoldenTankardInn,
+                Stage.GrittenFort0, // TODO: The others are used for EXMs and other stuff?
+                Stage.PawnCathedral,
+                Stage.HobolicCave,
+                Stage.MysreeGroveShrine,
+                Stage.ZandoraWastelandsShrine,
+                Stage.MergodaResidentialArea,
+                Stage.SecretBowmakersHome,
+
+                //BBI
+                Stage.ExpeditionGarrison,
+
+                //Phindym
+                Stage.ProtectorsRetreat,
+                Stage.MorfaulCentrum,
+                Stage.DanaCentrum,
+                Stage.GlyndwrCentrum,
+                Stage.HollowofBeginningsGatheringArea,
+                Stage.TowerofIvanos,
+                Stage.SpiritArtsHut,
+                Stage.ManunVillage,
+
+                //Acre Selund
+                Stage.FortressCityMegadoResidentialLevel0,
+                Stage.FortressCityMegadoResidentialLevel1,
+                Stage.FortressCityMegadoResidentialLevel2,
+                Stage.FortressCityMegadoResidentialLevel3,
+                Stage.FortThines1, // TODO: The other ones?
+                Stage.FortThinesGreatDiningHall,
+                Stage.LookoutCastle0, // TODO: The other ones?
+                Stage.BerthasBanditGroupHideout,
+                Stage.PiremothTravelersInn,
+                Stage.RothgillTravelersInn,
+                Stage.MephiteTravelersInn,
+                Stage.HeroicSpiritSleepingPathRathniteFoothills,
+                Stage.HeroicSpiritSleepingPathFeryanaWilderness,
+                Stage.OldHeroicSpiritShrine,
+                Stage.EliGuardTower,
+                Stage.NorthernBanditHideout,
+
+                //Other
+                Stage.BonusDungeonLobby,
+                Stage.BitterblackMazeCove,
+                Stage.BreyaCoast, // Summer Event Hub Area
+            }.Select(x => x.StageId).ToHashSet();
         public static bool IsSafeArea(uint stageId)
         {
             return SafeStageIds.Contains(stageId);
         }
 
-        public static bool IsSafeArea(StageId stageId)
+        public static bool IsSafeArea(StageLayoutId stageId)
         {
-            return StageManager.IsSafeArea(stageId.Id);
+            return IsSafeArea(stageId.Id);
         }
 
         // List of lobby areas, where you're supposed to see all other players.
         // TODO: Complete with all the safe areas. Maybe move it to DB or config?
-        public static readonly HashSet<uint> HubStageIds = new HashSet<uint>(){
-            2, // White Dragon Temple
-            141, // Breya Coast (Summer Event Hub Area)
-            341, // Dana Centrum
-            347, // Clan Hall (has special handling)
-            486, // Fortress City Megado: Residential Level
-            487, // Fortress City Megado: Residential Level
-            488, // Fortress City Megado: Royal Palace Level
-            602, // Bitterblack Maze Cove
-        };
+        public static readonly HashSet<uint> HubStageIds = new HashSet<StageInfo>(){
+            Stage.TheWhiteDragonTemple0,
+            Stage.BreyaCoast, // (Summer Event Hub Area)
+            Stage.DanaCentrum, 
+            Stage.ClanHall, //  (has special handling)
+            Stage.FortressCityMegadoResidentialLevel0, 
+            Stage.FortressCityMegadoResidentialLevel1, 
+            Stage.FortressCityMegadoResidentialLevel2, 
+            Stage.FortressCityMegadoResidentialLevel3,
+            Stage.FortressCityMegadoRoyalPalaceLevel,
+            Stage.BitterblackMazeCove
+        }.Select(x => x.StageId).ToHashSet();
 
         public static bool IsHubArea(uint stageId)
         {
             return HubStageIds.Contains(stageId);
         }
 
-        public static bool IsHubArea(StageId stageId)
+        public static bool IsHubArea(StageLayoutId stageId)
         {
-            return StageManager.IsHubArea(stageId.Id);
+            return IsHubArea(stageId.Id);
         }
 
-        public static readonly uint BitterblackCove = 602;
+        public static readonly uint BitterblackCove = Stage.BitterblackMazeCove.StageId;
 
-        private static readonly HashSet<uint> BitterBlackStageIds = new HashSet<uint>()
+        private static readonly HashSet<uint> BitterBlackStageIds = new HashSet<StageInfo>()
         {
-            602, // Bitterblack Maze Cove
-            603, // Garden of Ignominy
-            604, // Duskmoon Tower
-            605, // Rotunda of Dread
-            610, // Netherworld 1
-            611, // Netherworld 1
-            612, // Netherworld 1
-            614, // Netherworld 2
-            615, // Netherworld 2
-            616, // Netherworld 2
-            617, // Netherworld 3
-            618, // Netherworld 3
-            619, // Netherworld 3
-            620, // Netherworld 3
-            621, // Netherworld 3
-            622, // Netherworld 3
-            623, // Rift
-            624, // Rift
-            682, // Noxious Cathedral
-            683, // Traitors Cathedral
-            684, // Fallen City
-            685, // Altar of the Black Curse
-            686, // Netherworld 1
-            687, // Netherworld 1
-            688, // Netherworld 1
-            689, // Netherworld 2
-            690, // Netherworld 2
-            691, // Netherworld 2
-            692, // Netherworld 3
-            693, // Netherworld 3
-            694, // Netherworld 3
-            695, // Netherworld 4
-            696, // Netherworld 4
-            697, // Netherworld 4
-            698, // Rift
-            699, // Rift
-            700, // Rift
-            715, // Netherworld 4
-            716, // Netherworld 4
-            717, // Netherworld 4
-        };
+            Stage.BitterblackMazeCove,
+            Stage.BitterblackMazeNetherworld1AbyssA,
+            Stage.BitterblackMazeNetherworld1AbyssB,
+            Stage.BitterblackMazeNetherworld1AbyssC,
+            Stage.BitterblackMazeNetherworld1RoutundaA,
+            Stage.BitterblackMazeNetherworld1RoutundaB,
+            Stage.BitterblackMazeNetherworld1RoutundaC,
+            Stage.BitterblackMazeNetherworld2AbyssA,
+            Stage.BitterblackMazeNetherworld2AbyssB,
+            Stage.BitterblackMazeNetherworld2AbyssC,
+            Stage.BitterblackMazeNetherworld2RoutundaA,
+            Stage.BitterblackMazeNetherworld2RoutundaB,
+            Stage.BitterblackMazeNetherworld2RoutundaC,
+            Stage.BitterblackMazeNetherworld3AbyssA,
+            Stage.BitterblackMazeNetherworld3AbyssB,
+            Stage.BitterblackMazeNetherworld3AbyssC,
+            Stage.BitterblackMazeNetherworld3RoutundaA,
+            Stage.BitterblackMazeNetherworld3RoutundaB,
+            Stage.BitterblackMazeNetherworld3RoutundaC,
+            Stage.BitterblackMazeNetherworld3RoutundaADeath,
+            Stage.BitterblackMazeNetherworld3RoutundaBDeath,
+            Stage.BitterblackMazeNetherworld3RoutundaCDeath,
+            Stage.BitterblackMazeNetherworld4AbyssA,
+            Stage.BitterblackMazeNetherworld4AbyssB,
+            Stage.BitterblackMazeNetherworld4AbyssC,
+            Stage.BitterblackMazeNetherworld4AbyssADeath,
+            Stage.BitterblackMazeNetherworld4AbyssBDeath,
+            Stage.BitterblackMazeNetherworld4AbyssCDeath,
+            Stage.BitterblackMazeRift0,
+            Stage.BitterblackMazeRift1,
+            Stage.BitterblackMazeRift2,
+            Stage.BitterblackMazeRift3,
+            Stage.BitterblackMazeRift4,
+            Stage.BitterblackMazeGardenofIgnominy,
+            Stage.BitterblackMazeDuskmoonTower,
+            Stage.BitterblackMazeRotundaofDread,
+            Stage.BitterblackMazeNoxiousCathedral,
+            Stage.BitterblackMazeTraitorsTower,
+            Stage.BitterblackMazeFallenCity,
+            Stage.BitterblackMazeAltaroftheBlackCurse
+        }.Select(x => x.StageId).ToHashSet();
 
         public static bool IsBitterBlackMazeStageId(uint stageId)
         {
             return BitterBlackStageIds.Contains(stageId);
         }
 
-        public static bool IsBitterBlackMazeStageId(StageId stageId)
+        public static bool IsBitterBlackMazeStageId(StageLayoutId stageId)
         {
-            return StageManager.IsBitterBlackMazeStageId(stageId.Id);
+            return IsBitterBlackMazeStageId(stageId.Id);
         }
 
-        private static readonly HashSet<uint> BitterBlackNormalBossStageIds = new HashSet<uint>()
+        private static readonly HashSet<uint> BitterBlackNormalBossStageIds = new HashSet<StageInfo>()
         {
-            603, // Garden of Ignominy
-            604, // Duskmoon Tower
-            605, // Rotunda of Dread
-        };
+            Stage.BitterblackMazeGardenofIgnominy, 
+            Stage.BitterblackMazeDuskmoonTower, 
+            Stage.BitterblackMazeRotundaofDread, 
+        }.Select(x => x.StageId).ToHashSet();
 
         public static bool IsBitterBlackMazeBossStageId(uint stageId)
         {
             return BitterBlackNormalBossStageIds.Contains(stageId);
         }
 
-        public static bool IsBitterBlackMazeBossStageId(StageId stageId)
+        public static bool IsBitterBlackMazeBossStageId(StageLayoutId stageId)
         {
-            return StageManager.IsBitterBlackMazeBossStageId(stageId.Id);
+            return IsBitterBlackMazeBossStageId(stageId.Id);
         }
 
-        private static readonly HashSet<uint> BitterBlackAbyssBossStageIds = new HashSet<uint>()
+        private static readonly HashSet<uint> BitterBlackAbyssBossStageIds = new HashSet<StageInfo>()
         {
-            682, // Noxious Cathedral
-            683, // Traitors Tower
-            684, // Fallen City
-            685, // Alter of the Black Curse
-        };
+            Stage.BitterblackMazeNoxiousCathedral,
+            Stage.BitterblackMazeTraitorsTower, 
+            Stage.BitterblackMazeFallenCity, 
+            Stage.BitterblackMazeAltaroftheBlackCurse, 
+        }.Select(x => x.StageId).ToHashSet();
 
         public static bool IsBitterBlackMazeAbyssBossStageId(uint stageId)
         {
             return BitterBlackAbyssBossStageIds.Contains(stageId);
         }
 
-        public static bool IsBitterBlackMazeAbyssBossStageId(StageId stageId)
+        public static bool IsBitterBlackMazeAbyssBossStageId(StageLayoutId stageId)
         {
-            return StageManager.IsBitterBlackMazeAbyssBossStageId(stageId.Id);
+            return IsBitterBlackMazeAbyssBossStageId(stageId.Id);
         }
 
         // Hubs
@@ -205,95 +222,95 @@ namespace Arrowgene.Ddon.GameServer.Characters
         // 557 Sleeping Path : Feryana (Ira)
         // 558 Old Heroic Spirit Shrine (Morgan -> Memory of Megadosys, Selim -> Memory of Urteca)
 
-        private static readonly HashSet<uint> EpitaphRoadStageIds = new HashSet<uint>()
+        private static readonly HashSet<uint> EpitaphRoadStageIds = new HashSet<StageInfo>()
         {
             // 3.0
-            550, // Heroic Spirit Sleeping Path: Shrine
-            551, // Heroic Spirit Sleeping Path: Cave
+            Stage.HeroicSpiritSleepingPathShrine, 
+            Stage.HeroicSpiritSleepingPathCave,
             // Cave Depth??
-            553, // Heroic Spirit Sleeping Path: Waterway
+            Stage.HeroicSpiritSleepingPathWaterway, 
             // 3.1
-            552, // Heroic Spirit Sleeping Path: Ruins
-            554, // Heroic Spirit Sleeping Path: Well
-            555, // Heroic Spirit Sleeping Path: Tomb
-            556, // Heroic Spirit Sleeping Path Ruins: Deepest Level
+            Stage.HeroicSpiritSleepingPathRuins, 
+            Stage.HeroicSpiritSleepingPathWell, 
+            Stage.HeroicSpiritSleepingPathTomb, 
+            Stage.HeroicSpiritSleepingPathRuinsDeepestLevel, 
             // 3.2
-            559, // Memory of Megadosys
-            560, // Memory of Megadosys: Old Road
-            561, // Memory of Megadosys: War God Space
+            Stage.MemoryofMegadosys, 
+            Stage.MemoryofMegadosysOldRoad,
+            Stage.MemoryofMegadosysWarGodSpace, 
             // 3.3
-            563, // Memory of Urteca
-            564, // Memories of the Earth: Sacred Flame Path
-            565, // Memory of Urteca: War God Space
-            566, // Memory of Royal Family Mausoleum
-            567, // Memory of Firefall Mountain Campsite
-        };
+            Stage.MemoryofUrteca, 
+            Stage.MemoriesoftheEarthSacredFlamePath, 
+            Stage.MemoryofUrtecaWarGodSpace, 
+            Stage.MemoryofRoyalFamilyMausoleum, 
+            Stage.MemoryofFirefallMountainCampsite,
+        }.Select(x => x.StageId).ToHashSet();
 
         public static bool IsEpitaphRoadStageId(uint stageId)
         {
             return EpitaphRoadStageIds.Contains(stageId);
         }
 
-        public static bool IsEpitaphRoadStageId(StageId stageId)
+        public static bool IsEpitaphRoadStageId(StageLayoutId stageId)
         {
-            return StageManager.IsEpitaphRoadStageId(stageId.Id);
+            return IsEpitaphRoadStageId(stageId.Id);
         }
 
-        private static readonly HashSet<uint> LegacyEpitaphRoadStageIds = new HashSet<uint>
+        private static readonly HashSet<uint> LegacyEpitaphRoadStageIds = new HashSet<StageInfo>
         {
             // 3.0
-            550, // Heroic Spirit Sleeping Path: Shrine
-            551, // Heroic Spirit Sleeping Path: Cave
+            Stage.HeroicSpiritSleepingPathShrine,
+            Stage.HeroicSpiritSleepingPathCave, 
             // Cave Depth??
-            553, // Heroic Spirit Sleeping Path: Waterway
+            Stage.HeroicSpiritSleepingPathWaterway, 
             // 3.1
-            552, // Heroic Spirit Sleeping Path: Ruins
-            554, // Heroic Spirit Sleeping Path: Well
-            555, // Heroic Spirit Sleeping Path: Tomb
-            556, // Heroic Spirit Sleeping Path Ruins: Deepest Level
-        };
+            Stage.HeroicSpiritSleepingPathRuins, 
+            Stage.HeroicSpiritSleepingPathWell, 
+            Stage.HeroicSpiritSleepingPathTomb, 
+            Stage.HeroicSpiritSleepingPathRuinsDeepestLevel,
+        }.Select(x => x.StageId).ToHashSet();
 
         public static bool IsLegacyEpitaphRoadStageId(uint stageId)
         {
             return LegacyEpitaphRoadStageIds.Contains(stageId);
         }
 
-        public static bool IsLegacyEpitaphRoadStageId(StageId stageId)
+        public static bool IsLegacyEpitaphRoadStageId(StageLayoutId stageId)
         {
-            return StageManager.IsLegacyEpitaphRoadStageId(stageId.Id);
+            return IsLegacyEpitaphRoadStageId(stageId.Id);
         }
 
-        private static readonly HashSet<uint> EpitaphHubArea = new HashSet<uint>
+        private static readonly HashSet<uint> EpitaphHubArea = new HashSet<StageInfo>
         {
-            549, // Heroic Spirit Sleeping Path: Rathnite Foothills
-            1148, // Heroic Spirit Sleeping Path: Feryana Wilderness
-            1149, // Memory of Megadosys/Memory of Urteca
-        };
+            Stage.HeroicSpiritSleepingPathRathniteFoothills,
+            Stage.HeroicSpiritSleepingPathFeryanaWilderness, 
+            Stage.MemoryofUrteca, 
+        }.Select(x => x.StageId).ToHashSet();
 
         public static bool IsEpitaphHubArea(uint stageId)
         {
             return EpitaphHubArea.Contains(stageId);
         }
 
-        public static bool IsEpitaphHubArea(StageId stageId)
+        public static bool IsEpitaphHubArea(StageLayoutId stageId)
         {
-            return StageManager.IsEpitaphHubArea(stageId.Id);
+            return IsEpitaphHubArea(stageId.Id);
         }
 
-        private static readonly HashSet<uint> LegacyEpitaphHubArea = new HashSet<uint>
+        private static readonly HashSet<uint> LegacyEpitaphHubArea = new HashSet<StageInfo>
         {
-            549, // Heroic Spirit Sleeping Path: Rathnite Foothills
-            1148, // Heroic Spirit Sleeping Path: Feryana Wilderness
-        };
+            Stage.HeroicSpiritSleepingPathRathniteFoothills,
+            Stage.HeroicSpiritSleepingPathFeryanaWilderness,
+        }.Select(x => x.StageId).ToHashSet();
 
         public static bool IsLegacyEpitaphHubArea(uint stageId)
         {
             return LegacyEpitaphHubArea.Contains(stageId);
         }
 
-        public static bool IsLegacyEpitaphHubArea(StageId stageId)
+        public static bool IsLegacyEpitaphHubArea(StageLayoutId stageId)
         {
-            return StageManager.IsLegacyEpitaphHubArea(stageId.Id);
+            return IsLegacyEpitaphHubArea(stageId.Id);
         }
     }
 }

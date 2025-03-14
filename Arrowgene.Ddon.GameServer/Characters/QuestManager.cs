@@ -1,8 +1,6 @@
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared;
-using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
@@ -24,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         /**
          * @note gQuests contains a map of <QuestScheduleId:QuestId>.
          * @note gVarientQuests maps QuestId:HashSet<QuestScheduleId>.
-         * 
+         *
          * A QuestScheduleId should always get us back to a unique quest object.
          * A QuestId can return us a list of related QuestScheduleIds which all use the same QuestId.
          */
@@ -35,7 +33,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static Dictionary<QuestAreaId, HashSet<QuestId>> gWorldQuests = new Dictionary<QuestAreaId, HashSet<QuestId>>();
 
         /// <summary>
-        /// QuestScheduleIds that are requested as part of World Manage Quests from pcaps. 
+        /// QuestScheduleIds that are requested as part of World Manage Quests from pcaps.
         /// We know they can't be found, so don't audibly complain about them.
         /// TODO: Remove this when those quests are handled properly.
         /// </summary>
@@ -71,21 +69,19 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        public static void LoadScriptedQuest(DdonGameServer server, IQuest questScript)
+        {
+            gQuests[questScript.QuestScheduleId] = questScript.GenerateQuest(server);
+            var quest = gQuests[questScript.QuestScheduleId];
+            if (quest.Enabled)
+            {
+                AddQuestToCategory(quest);
+            }
+        }
+
         public static void LoadQuests(DdonGameServer server)
         {
             var assetRepository = server.AssetRepository;
-
-            // Iterate over quests generated from script
-            foreach (var questScript in server.ScriptManager.QuestModule.QuestsByScheduleId.Values)
-            {
-                gQuests[questScript.QuestScheduleId] = questScript.GenerateQuest(server);
-
-                var quest = gQuests[questScript.QuestScheduleId];
-                if (quest.Enabled)
-                {
-                    AddQuestToCategory(quest);
-                }
-            }
 
             // Iterate over quests generated from json
             foreach (var questAsset in assetRepository.QuestAssets.Quests)
@@ -162,6 +158,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return gQuests[questScheduleId];
         }
 
+        public static Quest GetQuestByQuestId(QuestId questId)
+        {
+            var questScheduleIds = GetQuestScheduleIdsForQuestId(questId);
+            if (questScheduleIds.Count > 1)
+            {
+                throw new Exception($"The quest {questId} has multiple implementations. Use GetQuestScheduleIdsForQuestId instead.");
+            }
+
+            return questScheduleIds.Count > 0 ? QuestManager.GetQuestByScheduleId(questScheduleIds.ToList()[0]) : null;
+        }
+
         public static HashSet<uint> GetQuestScheduleIdsForQuestId(QuestId questId)
         {
             if (gVariantQuests.ContainsKey(questId))
@@ -189,14 +196,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return quest.IsPersonal ? client.QuestState : client.Party.QuestState;
         }
 
-        public static HashSet<uint> CollectQuestScheduleIds(GameClient client, StageId stageId)
+        public static HashSet<uint> CollectQuestScheduleIds(GameClient client, StageLayoutId stageId)
         {
             var questScheduleIds = new HashSet<uint>();
 
             questScheduleIds.UnionWith(client.Party.QuestState.StageQuests(stageId));
-            if (client.Party.Clients.Count == 1)
+            if (client.Party.Leader is not null)
             {
-                questScheduleIds.UnionWith(client.QuestState.StageQuests(stageId));
+                questScheduleIds.UnionWith(client.Party.Leader.QuestState.StageQuests(stageId));
             }
 
             return questScheduleIds;
@@ -204,7 +211,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public class LayoutFlag
         {
-            public static CDataQuestLayoutFlagSetInfo Create(uint layoutFlag, StageNo stageNo, uint groupId)
+            public static CDataQuestLayoutFlagSetInfo Create(uint layoutFlag, uint stageNo, uint groupId)
             {
                 return new CDataQuestLayoutFlagSetInfo()
                 {
@@ -213,11 +220,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     {
                         new CDataQuestSetInfo()
                         {
-                            StageNo = (uint) stageNo,
+                            StageNo = stageNo,
                             GroupId = groupId
                         }
                     }
                 };
+            }
+
+            public static CDataQuestLayoutFlagSetInfo Create(uint layoutFlag, StageInfo stageInfo, uint groupId)
+            {
+                return Create(layoutFlag, stageInfo.StageNo, groupId);
             }
         }
 
@@ -313,7 +325,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             public static List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand> AppendCheckCommands(List<CDataQuestProcessState.MtTypedArrayCDataQuestCommand> obj, List<CDataQuestCommand> commands)
             {
-                obj[0].ResultCommandList.Concat(commands);
+                obj[0].ResultCommandList.AddRange(commands);
                 return obj;
             }
 
@@ -323,7 +335,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param stageNo
              * @param npcId
              */
-            public static CDataQuestCommand TalkNpc(StageNo stageNo, NpcId npcId, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand TalkNpc(uint stageNo, NpcId npcId, int param03 = 0, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.TalkNpc, Param01 = (int)stageNo, Param02 = (int)npcId, Param03 = param03, Param04 = param04 };
             }
@@ -334,7 +346,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param groupNo
              * @param setNo
              */
-            public static CDataQuestCommand DieEnemy(StageNo stageNo, int groupNo, int setNo, int param04 = 0)
+            public static CDataQuestCommand DieEnemy(uint stageNo, int groupNo, int setNo, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.DieEnemy, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = param04 };
             }
@@ -344,7 +356,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param stageNo
              * @param sceNo
              */
-            public static CDataQuestCommand SceHitIn(StageNo stageNo, int sceNo, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand SceHitIn(uint stageNo, int sceNo, int param03 = 0, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.SceHitIn, Param01 = (int)stageNo, Param02 = sceNo, Param03 = param03, Param04 = param04 };
             }
@@ -448,7 +460,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @brief
              * @param stageNo
              */
-            public static CDataQuestCommand StageNo(StageNo stageNo, int param02 = 0, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand StageNo(uint stageNo, int param02 = 0, int param03 = 0, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.StageNo, Param01 = (int)stageNo, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
@@ -458,7 +470,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param stageNo
              * @param eventNo
              */
-            public static CDataQuestCommand EventEnd(StageNo stageNo, int eventNo, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand EventEnd(uint stageNo, int eventNo, int param03 = 0, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.EventEnd, Param01 = (int)stageNo, Param02 = eventNo, Param03 = param03, Param04 = param04 };
             }
@@ -470,7 +482,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param y
              * @param z
              */
-            public static CDataQuestCommand Prt(StageNo stageNo, int x, int y, int z)
+            public static CDataQuestCommand Prt(uint stageNo, int x, int y, int z)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.Prt, Param01 = (int)stageNo, Param02 = x, Param03 = y, Param04 = z };
             }
@@ -508,7 +520,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param stageNo
              * @param npcId
              */
-            public static CDataQuestCommand TouchActToNpc(StageNo stageNo, NpcId npcId, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand TouchActToNpc(uint stageNo, NpcId npcId, int param03 = 0, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.TouchActToNpc, Param01 = (int)stageNo, Param02 = (int)npcId, Param03 = param03, Param04 = param04 };
             }
@@ -560,7 +572,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param npcId
              * @param noOrderGroupSerial
              */
-            public static CDataQuestCommand NpcTalkAndOrderUi(StageNo stageNo, NpcId npcId, int noOrderGroupSerial, int param04 = 0)
+            public static CDataQuestCommand NpcTalkAndOrderUi(uint stageNo, NpcId npcId, int noOrderGroupSerial, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.NpcTalkAndOrderUi, Param01 = (int)stageNo, Param02 = (int)npcId, Param03 = noOrderGroupSerial, Param04 = param04 };
             }
@@ -571,7 +583,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param npcId
              * @param noOrderGroupSerial
              */
-            public static CDataQuestCommand NpcTouchAndOrderUi(StageNo stageNo, NpcId npcId, int noOrderGroupSerial, int param04 = 0)
+            public static CDataQuestCommand NpcTouchAndOrderUi(uint stageNo, NpcId npcId, int noOrderGroupSerial, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.NpcTouchAndOrderUi, Param01 = (int)stageNo, Param02 = (int)npcId, Param03 = noOrderGroupSerial, Param04 = param04 };
             }
@@ -580,7 +592,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @brief
              * @param stageNo
              */
-            public static CDataQuestCommand StageNoNotEq(StageNo stageNo, int param02 = 0, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand StageNoNotEq(uint stageNo, int param02 = 0, int param03 = 0, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.StageNoNotEq, Param01 = (int)stageNo, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
@@ -599,7 +611,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param stageNo
              * @param npcId
              */
-            public static CDataQuestCommand TalkNpcWithoutMarker(StageNo stageNo, NpcId npcId, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand TalkNpcWithoutMarker(uint stageNo, NpcId npcId, int param03 = 0, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.TalkNpcWithoutMarker, Param01 = (int)stageNo, Param02 = (int)npcId, Param03 = param03, Param04 = param04 };
             }
@@ -655,7 +667,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param groupNo
              * @param setNo
              */
-            public static CDataQuestCommand IsEnemyFound(StageNo stageNo, int groupNo, int setNo, int param04 = 0)
+            public static CDataQuestCommand IsEnemyFound(uint stageNo, int groupNo, int setNo, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsEnemyFound, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = param04 };
             }
@@ -767,7 +779,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param setNo
              * @param hpRate
              */
-            public static CDataQuestCommand EmHpNotLess(StageNo stageNo, int groupNo, int setNo, int hpRate)
+            public static CDataQuestCommand EmHpNotLess(uint stageNo, int groupNo, int setNo, int hpRate)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.EmHpNotLess, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = hpRate };
             }
@@ -779,7 +791,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param setNo
              * @param hpRate
              */
-            public static CDataQuestCommand EmHpLess(StageNo stageNo, int groupNo, int setNo, int hpRate)
+            public static CDataQuestCommand EmHpLess(uint stageNo, int groupNo, int setNo, int hpRate)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.EmHpLess, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = hpRate };
             }
@@ -843,7 +855,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param stageNo
              * @param sceNo
              */
-            public static CDataQuestCommand SceHitOut(StageNo stageNo, int sceNo, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand SceHitOut(uint stageNo, int sceNo, int param03 = 0, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.SceHitOut, Param01 = (int)stageNo, Param02 = sceNo, Param03 = param03, Param04 = param04 };
             }
@@ -862,7 +874,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param groupNo
              * @param setNo
              */
-            public static CDataQuestCommand OmSetTouch(StageNo stageNo, int groupNo, int setNo, int param04 = 0)
+            public static CDataQuestCommand OmSetTouch(uint stageNo, int groupNo, int setNo, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.OmSetTouch, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = param04 };
             }
@@ -873,7 +885,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param groupNo
              * @param setNo
              */
-            public static CDataQuestCommand OmReleaseTouch(StageNo stageNo, int groupNo, int setNo, int param04 = 0)
+            public static CDataQuestCommand OmReleaseTouch(uint stageNo, int groupNo, int setNo, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.OmReleaseTouch, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = param04 };
             }
@@ -912,7 +924,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param stageNo
              * @param sceNo
              */
-            public static CDataQuestCommand SceHitInWithoutMarker(StageNo stageNo, int sceNo, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand SceHitInWithoutMarker(uint stageNo, int sceNo, int param03 = 0, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.SceHitInWithoutMarker, Param01 = (int)stageNo, Param02 = sceNo, Param03 = param03, Param04 = param04 };
             }
@@ -922,7 +934,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param stageNo
              * @param sceNo
              */
-            public static CDataQuestCommand SceHitOutWithoutMarker(StageNo stageNo, int sceNo, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand SceHitOutWithoutMarker(uint stageNo, int sceNo, int param03 = 0, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.SceHitOutWithoutMarker, Param01 = (int)stageNo, Param02 = sceNo, Param03 = param03, Param04 = param04 };
             }
@@ -969,7 +981,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param groupNo
              * @param setNo
              */
-            public static CDataQuestCommand IsEnemyFoundForOrder(StageNo stageNo, int groupNo, int setNo, int param04 = 0)
+            public static CDataQuestCommand IsEnemyFoundForOrder(uint stageNo, int groupNo, int setNo, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsEnemyFoundForOrder, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = param04 };
             }
@@ -989,7 +1001,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param groupNo
              * @param setNo
              */
-            public static CDataQuestCommand QuestOmSetTouch(StageNo stageNo, int groupNo, int setNo, int param04 = 0)
+            public static CDataQuestCommand QuestOmSetTouch(uint stageNo, int groupNo, int setNo, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.QuestOmSetTouch, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = param04 };
             }
@@ -1000,7 +1012,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param groupNo
              * @param setNo
              */
-            public static CDataQuestCommand QuestOmReleaseTouch(StageNo stageNo, int groupNo, int setNo, int param04 = 0)
+            public static CDataQuestCommand QuestOmReleaseTouch(uint stageNo, int groupNo, int setNo, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.QuestOmReleaseTouch, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = param04 };
             }
@@ -1012,7 +1024,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param setNo
              * @param questId
              */
-            public static CDataQuestCommand NewTalkNpc(StageNo stageNo, int groupNo, int setNo, int questId)
+            public static CDataQuestCommand NewTalkNpc(uint stageNo, int groupNo, int setNo, int questId)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.NewTalkNpc, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = questId };
             }
@@ -1024,7 +1036,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param setNo
              * @param questId
              */
-            public static CDataQuestCommand NewTalkNpcWithoutMarker(StageNo stageNo, int groupNo, int setNo, int questId)
+            public static CDataQuestCommand NewTalkNpcWithoutMarker(uint stageNo, int groupNo, int setNo, int questId)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.NewTalkNpcWithoutMarker, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = questId };
             }
@@ -1062,7 +1074,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param groupNo
              * @param setNo
              */
-            public static CDataQuestCommand IsTouchPawnDungeonOm(StageNo stageNo, int groupNo, int setNo, int param04 = 0)
+            public static CDataQuestCommand IsTouchPawnDungeonOm(uint stageNo, int groupNo, int setNo, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsTouchPawnDungeonOm, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = param04 };
             }
@@ -1074,7 +1086,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param setNo
              * @param questId
              */
-            public static CDataQuestCommand IsOpenDoorOmQuestSet(StageNo stageNo, int groupNo, int setNo, int questId)
+            public static CDataQuestCommand IsOpenDoorOmQuestSet(uint stageNo, int groupNo, int setNo, int questId)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsOpenDoorOmQuestSet, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = questId };
             }
@@ -1085,7 +1097,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param enemyId
              * @param enemyNum
              */
-            public static CDataQuestCommand EmDieForRandomDungeon(StageNo stageNo, int enemyId, int enemyNum, int param04 = 0)
+            public static CDataQuestCommand EmDieForRandomDungeon(uint stageNo, int enemyId, int enemyNum, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.EmDieForRandomDungeon, Param01 = (int)stageNo, Param02 = enemyId, Param03 = enemyNum, Param04 = param04 };
             }
@@ -1097,7 +1109,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param setNo
              * @param hpRate
              */
-            public static CDataQuestCommand NpcHpNotLess(StageNo stageNo, int groupNo, int setNo, int hpRate)
+            public static CDataQuestCommand NpcHpNotLess(uint stageNo, int groupNo, int setNo, int hpRate)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.NpcHpNotLess, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = hpRate };
             }
@@ -1109,7 +1121,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param setNo
              * @param hpRate
              */
-            public static CDataQuestCommand NpcHpLess(StageNo stageNo, int groupNo, int setNo, int hpRate)
+            public static CDataQuestCommand NpcHpLess(uint stageNo, int groupNo, int setNo, int hpRate)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.NpcHpLess, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = hpRate };
             }
@@ -1120,7 +1132,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param groupNo
              * @param setNo
              */
-            public static CDataQuestCommand IsEnemyFoundWithoutMarker(StageNo stageNo, int groupNo, int setNo, int param04 = 0)
+            public static CDataQuestCommand IsEnemyFoundWithoutMarker(uint stageNo, int groupNo, int setNo, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsEnemyFoundWithoutMarker, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = param04 };
             }
@@ -1283,7 +1295,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param setNo
              * @param questId
              */
-            public static CDataQuestCommand QuestNpcTalkAndOrderUi(StageNo stageNo, int groupNo, int setNo, int questId)
+            public static CDataQuestCommand QuestNpcTalkAndOrderUi(uint stageNo, int groupNo, int setNo, int questId)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.QuestNpcTalkAndOrderUi, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = questId };
             }
@@ -1295,7 +1307,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param setNo
              * @param questId
              */
-            public static CDataQuestCommand QuestNpcTouchAndOrderUi(StageNo stageNo, int groupNo, int setNo, int questId)
+            public static CDataQuestCommand QuestNpcTouchAndOrderUi(uint stageNo, int groupNo, int setNo, int questId)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.QuestNpcTouchAndOrderUi, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = questId };
             }
@@ -1307,7 +1319,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param setNo
              * @param enemyId
              */
-            public static CDataQuestCommand IsFoundRaidBoss(StageNo stageNo, int groupNo, int setNo, int enemyId)
+            public static CDataQuestCommand IsFoundRaidBoss(uint stageNo, int groupNo, int setNo, int enemyId)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsFoundRaidBoss, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = enemyId };
             }
@@ -1318,7 +1330,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param groupNo
              * @param setNo
              */
-            public static CDataQuestCommand QuestOmSetTouchWithoutMarker(StageNo stageNo, int groupNo, int setNo, int param04 = 0)
+            public static CDataQuestCommand QuestOmSetTouchWithoutMarker(uint stageNo, int groupNo, int setNo, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.QuestOmSetTouchWithoutMarker, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = param04 };
             }
@@ -1329,7 +1341,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param groupNo
              * @param setNo
              */
-            public static CDataQuestCommand QuestOmReleaseTouchWithoutMarker(StageNo stageNo, int groupNo, int setNo, int param04 = 0)
+            public static CDataQuestCommand QuestOmReleaseTouchWithoutMarker(uint stageNo, int groupNo, int setNo, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.QuestOmReleaseTouchWithoutMarker, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = param04 };
             }
@@ -1339,7 +1351,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param stageNo
              * @param npcId
              */
-            public static CDataQuestCommand TutorialTalkNpc(StageNo stageNo, NpcId npcId, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand TutorialTalkNpc(uint stageNo, NpcId npcId, int param03 = 0, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.TutorialTalkNpc, Param01 = (int)stageNo, Param02 = (int)npcId, Param03 = param03, Param04 = param04 };
             }
@@ -1393,7 +1405,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param groupNo
              * @param setNo
              */
-            public static CDataQuestCommand OmEndText(StageNo stageNo, int groupNo, int setNo, int param04 = 0)
+            public static CDataQuestCommand OmEndText(uint stageNo, int groupNo, int setNo, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.OmEndText, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = param04 };
             }
@@ -1404,7 +1416,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param groupNo
              * @param setNo
              */
-            public static CDataQuestCommand QuestOmEndText(StageNo stageNo, int groupNo, int setNo, int param04 = 0)
+            public static CDataQuestCommand QuestOmEndText(uint stageNo, int groupNo, int setNo, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.QuestOmEndText, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = param04 };
             }
@@ -1448,7 +1460,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @brief
              * @param stageNo
              */
-            public static CDataQuestCommand StageNoWithoutMarker(StageNo stageNo, int param02 = 0, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand StageNoWithoutMarker(uint stageNo, int param02 = 0, int param03 = 0, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.StageNoWithoutMarker, Param01 = (int)stageNo, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
@@ -1460,7 +1472,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param setNo
              * @param questId
              */
-            public static CDataQuestCommand TalkQuestNpcUnitMarker(StageNo stageNo, int groupNo, int setNo, int questId)
+            public static CDataQuestCommand TalkQuestNpcUnitMarker(uint stageNo, int groupNo, int setNo, int questId)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.TalkQuestNpcUnitMarker, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = questId };
             }
@@ -1472,7 +1484,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param setNo
              * @param questId
              */
-            public static CDataQuestCommand TouchQuestNpcUnitMarker(StageNo stageNo, int groupNo, int setNo, int questId)
+            public static CDataQuestCommand TouchQuestNpcUnitMarker(uint stageNo, int groupNo, int setNo, int questId)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.TouchQuestNpcUnitMarker, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = questId };
             }
@@ -1720,7 +1732,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param setNo
              * @param questId
              */
-            public static CDataQuestCommand TouchActQuestNpc(StageNo stageNo, int groupNo, int setNo, int questId)
+            public static CDataQuestCommand TouchActQuestNpc(uint stageNo, int groupNo, int setNo, int questId)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.TouchActQuestNpc, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = questId };
             }
@@ -1824,7 +1836,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param setNo
              * @param questId
              */
-            public static CDataQuestCommand HasUsedKey(StageNo stageNo, int groupNo, int setNo, int questId)
+            public static CDataQuestCommand HasUsedKey(uint stageNo, int groupNo, int setNo, int questId)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.HasUsedKey, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = questId };
             }
@@ -1843,7 +1855,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param groupNo
              * @param setNo
              */
-            public static CDataQuestCommand IsEnemyFoundGmMain(StageNo stageNo, int groupNo, int setNo, int param04 = 0)
+            public static CDataQuestCommand IsEnemyFoundGmMain(uint stageNo, int groupNo, int setNo, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsEnemyFoundGmMain, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = param04 };
             }
@@ -1854,7 +1866,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param groupNo
              * @param setNo
              */
-            public static CDataQuestCommand IsEnemyFoundGmSub(StageNo stageNo, int groupNo, int setNo, int param04 = 0)
+            public static CDataQuestCommand IsEnemyFoundGmSub(uint stageNo, int groupNo, int setNo, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsEnemyFoundGmSub, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = param04 };
             }
@@ -1969,7 +1981,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @brief
              * @param stageNo
              */
-            public static CDataQuestCommand IsGatherPartyInStage(StageNo stageNo, int param02 = 0, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand IsGatherPartyInStage(uint stageNo, int param02 = 0, int param03 = 0, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsGatherPartyInStage, Param01 = (int)stageNo, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
@@ -1989,7 +2001,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param setNo
              * @param questId
              */
-            public static CDataQuestCommand IsOpenDoorOmQuestSetNoMarker(StageNo stageNo, int groupNo, int setNo, int questId)
+            public static CDataQuestCommand IsOpenDoorOmQuestSetNoMarker(uint stageNo, int groupNo, int setNo, int questId)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsOpenDoorOmQuestSetNoMarker, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = questId };
             }
@@ -1999,7 +2011,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param stageNo
              * @param eventNo
              */
-            public static CDataQuestCommand IsFinishedEventOrderNum(StageNo stageNo, int eventNo, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand IsFinishedEventOrderNum(uint stageNo, int eventNo, int param03 = 0, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsFinishedEventOrderNum, Param01 = (int)stageNo, Param02 = eventNo, Param03 = param03, Param04 = param04 };
             }
@@ -2018,7 +2030,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param groupNo
              * @param setNo
              */
-            public static CDataQuestCommand IsOmBrokenLayout(StageNo stageNo, int groupNo, int setNo, int param04 = 0)
+            public static CDataQuestCommand IsOmBrokenLayout(uint stageNo, int groupNo, int setNo, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsOmBrokenLayout, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = param04 };
             }
@@ -2029,7 +2041,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param groupNo
              * @param setNo
              */
-            public static CDataQuestCommand IsOmBrokenQuest(StageNo stageNo, int groupNo, int setNo, int param04 = 0)
+            public static CDataQuestCommand IsOmBrokenQuest(uint stageNo, int groupNo, int setNo, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsOmBrokenQuest, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = param04 };
             }
@@ -2090,7 +2102,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @brief
              * @param stageNo
              */
-            public static CDataQuestCommand IsStageForMainQuest(StageNo stageNo, int param02 = 0, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand IsStageForMainQuest(uint stageNo, int param02 = 0, int param03 = 0, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsStageForMainQuest, Param01 = (int)stageNo, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
@@ -2150,7 +2162,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param groupNo
              * @param setNo
              */
-            public static CDataQuestCommand IsOmBrokenLayoutNoMarker(StageNo stageNo, int groupNo, int setNo, int param04 = 0)
+            public static CDataQuestCommand IsOmBrokenLayoutNoMarker(uint stageNo, int groupNo, int setNo, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsOmBrokenLayoutNoMarker, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = param04 };
             }
@@ -2161,7 +2173,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param groupNo
              * @param setNo
              */
-            public static CDataQuestCommand IsOmBrokenQuestNoMarker(StageNo stageNo, int groupNo, int setNo, int param04 = 0)
+            public static CDataQuestCommand IsOmBrokenQuestNoMarker(uint stageNo, int groupNo, int setNo, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsOmBrokenQuestNoMarker, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = param04 };
             }
@@ -2210,7 +2222,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param npcId02
              * @param npcId03
              */
-            public static CDataQuestCommand IsTakePicturesNpc(StageNo stageNo, int npcId01, int npcId02, int npcId03)
+            public static CDataQuestCommand IsTakePicturesNpc(uint stageNo, int npcId01, int npcId02, int npcId03)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsTakePicturesNpc, Param01 = (int)stageNo, Param02 = npcId01, Param03 = npcId02, Param04 = npcId03 };
             }
@@ -2230,7 +2242,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param y
              * @param z
              */
-            public static CDataQuestCommand IsTakePicturesWithoutPawn(StageNo stageNo, int x, int y, int z)
+            public static CDataQuestCommand IsTakePicturesWithoutPawn(uint stageNo, int x, int y, int z)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsTakePicturesWithoutPawn, Param01 = (int)stageNo, Param02 = x, Param03 = y, Param04 = z };
             }
@@ -2242,7 +2254,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param setNo
              * @param flagNo
              */
-            public static CDataQuestCommand IsLinkageEnemyFlag(StageNo stageNo, int groupNo, int setNo, int flagNo)
+            public static CDataQuestCommand IsLinkageEnemyFlag(uint stageNo, int groupNo, int setNo, int flagNo)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsLinkageEnemyFlag, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = flagNo };
             }
@@ -2254,7 +2266,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param setNo
              * @param flagNo
              */
-            public static CDataQuestCommand IsLinkageEnemyFlagOff(StageNo stageNo, int groupNo, int setNo, int flagNo)
+            public static CDataQuestCommand IsLinkageEnemyFlagOff(uint stageNo, int groupNo, int setNo, int flagNo)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestCheckCommand.IsLinkageEnemyFlagOff, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = flagNo };
             }
@@ -2283,7 +2295,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
               * @param stageNo
               * @param lotNo
               */
-            public static CDataQuestCommand LotOn(StageNo stageNo, int lotNo, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand LotOn(uint stageNo, int lotNo, int param03 = 0, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.LotOn, Param01 = (int)stageNo, Param02 = lotNo, Param03 = param03, Param04 = param04 };
             }
@@ -2293,7 +2305,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param stageNo
              * @param lotNo
              */
-            public static CDataQuestCommand LotOff(StageNo stageNo, int lotNo, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand LotOff(uint stageNo, int lotNo, int param03 = 0, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.LotOff, Param01 = (int)stageNo, Param02 = lotNo, Param03 = param03, Param04 = param04 };
             }
@@ -2384,7 +2396,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param stageNo
              * @param startPos
              */
-            public static CDataQuestCommand StageJump(StageNo stageNo, int startPos, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand StageJump(uint stageNo, int startPos, int param03 = 0, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.StageJump, Param01 = (int)stageNo, Param02 = startPos, Param03 = param03, Param04 = param04 };
             }
@@ -2396,7 +2408,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param jumpStageNo
              * @param jumpStartPosNo
              */
-            public static CDataQuestCommand EventExec(StageNo stageNo, int eventNo, StageNo jumpStageNo, int jumpStartPosNo)
+            public static CDataQuestCommand EventExec(uint stageNo, int eventNo, uint jumpStageNo, int jumpStartPosNo)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.EventExec, Param01 = (int)stageNo, Param02 = eventNo, Param03 = (int)jumpStageNo, Param04 = jumpStartPosNo };
             }
@@ -2416,7 +2428,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param y
              * @param z
              */
-            public static CDataQuestCommand Prt(StageNo stageNo, int x, int y, int z)
+            public static CDataQuestCommand Prt(uint stageNo, int x, int y, int z)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.Prt, Param01 = (int)stageNo, Param02 = x, Param03 = y, Param04 = z };
             }
@@ -2497,7 +2509,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param y
              * @param z
              */
-            public static CDataQuestCommand AddMarkerAtItem(StageNo stageNo, int x, int y, int z)
+            public static CDataQuestCommand AddMarkerAtItem(uint stageNo, int x, int y, int z)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.AddMarkerAtItem, Param01 = (int)stageNo, Param02 = x, Param03 = y, Param04 = z };
             }
@@ -2509,7 +2521,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param y
              * @param z
              */
-            public static CDataQuestCommand AddMarkerAtDest(StageNo stageNo, int x, int y, int z)
+            public static CDataQuestCommand AddMarkerAtDest(uint stageNo, int x, int y, int z)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.AddMarkerAtDest, Param01 = (int)stageNo, Param02 = x, Param03 = y, Param04 = z };
             }
@@ -2754,7 +2766,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param startPos
              * @param outSceNo
              */
-            public static CDataQuestCommand SetDiePlayerReturnPos(StageNo stageNo, int startPos, int outSceNo, int param04 = 0)
+            public static CDataQuestCommand SetDiePlayerReturnPos(uint stageNo, int startPos, int outSceNo, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetDiePlayerReturnPos, Param01 = (int)stageNo, Param02 = startPos, Param03 = outSceNo, Param04 = param04 };
             }
@@ -2801,7 +2813,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param stageNo
              * @param startPos
              */
-            public static CDataQuestCommand ResetDiePlayerReturnPos(StageNo stageNo, int startPos, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand ResetDiePlayerReturnPos(uint stageNo, int startPos, int param03 = 0, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.ResetDiePlayerReturnPos, Param01 = (int)stageNo, Param02 = startPos, Param03 = param03, Param04 = param04 };
             }
@@ -2860,7 +2872,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param stageNo
              * @param eventNo
              */
-            public static CDataQuestCommand PlayCameraEvent(StageNo stageNo, int eventNo, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand PlayCameraEvent(uint stageNo, int eventNo, int param03 = 0, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.PlayCameraEvent, Param01 = (int)stageNo, Param02 = eventNo, Param03 = param03, Param04 = param04 };
             }
@@ -2944,7 +2956,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param npcId
              * @param groupSerial
              */
-            public static CDataQuestCommand SetDeliverInfo(StageNo stageNo, NpcId npcId, int groupSerial, int param04 = 0)
+            public static CDataQuestCommand SetDeliverInfo(uint stageNo, NpcId npcId, int groupSerial, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetDeliverInfo, Param01 = (int)stageNo, Param02 = (int)npcId, Param03 = groupSerial, Param04 = param04 };
             }
@@ -2956,7 +2968,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param setNo
              * @param groupSerial
              */
-            public static CDataQuestCommand SetDeliverInfoQuest(StageNo stageNo, int groupNo, int setNo, int groupSerial)
+            public static CDataQuestCommand SetDeliverInfoQuest(uint stageNo, int groupNo, int setNo, int groupSerial)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.SetDeliverInfoQuest, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = groupSerial };
             }
@@ -2978,7 +2990,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param jumpStageNo
              * @param jumpStartPosNo
              */
-            public static CDataQuestCommand EventExecCont(StageNo stageNo, int eventNo, StageNo jumpStageNo, int jumpStartPosNo)
+            public static CDataQuestCommand EventExecCont(uint stageNo, int eventNo, uint jumpStageNo, int jumpStartPosNo)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.EventExecCont, Param01 = (int)stageNo, Param02 = eventNo, Param03 = (int)jumpStageNo, Param04 = jumpStartPosNo };
             }
@@ -3066,7 +3078,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param eventNo
              * @param startPos
              */
-            public static CDataQuestCommand ExeEventAfterStageJump(StageNo stageNo, int eventNo, int startPos, int param04 = 0)
+            public static CDataQuestCommand ExeEventAfterStageJump(uint stageNo, int eventNo, int startPos, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.ExeEventAfterStageJump, Param01 = (int)stageNo, Param02 = eventNo, Param03 = startPos, Param04 = param04 };
             }
@@ -3077,7 +3089,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param eventNo
              * @param startPos
              */
-            public static CDataQuestCommand ExeEventAfterStageJumpContinue(StageNo stageNo, int eventNo, int startPos, int param04 = 0)
+            public static CDataQuestCommand ExeEventAfterStageJumpContinue(uint stageNo, int eventNo, int startPos, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.ExeEventAfterStageJumpContinue, Param01 = (int)stageNo, Param02 = eventNo, Param03 = startPos, Param04 = param04 };
             }
@@ -3105,7 +3117,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param stageNo
              * @param startPosNo
              */
-            public static CDataQuestCommand DecideDivideArea(StageNo stageNo, int startPosNo, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand DecideDivideArea(uint stageNo, int startPosNo, int param03 = 0, int param04 = 0)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.DecideDivideArea, Param01 = (int)stageNo, Param02 = startPosNo, Param03 = param03, Param04 = param04 };
             }
@@ -3176,7 +3188,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param setNo
              * @param flagId
              */
-            public static CDataQuestCommand LinkageEnemyFlagOn(StageNo stageNo, int groupNo, int setNo, int flagId)
+            public static CDataQuestCommand LinkageEnemyFlagOn(uint stageNo, int groupNo, int setNo, int flagId)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.LinkageEnemyFlagOn, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = flagId };
             }
@@ -3188,7 +3200,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param setNo
              * @param flagId
              */
-            public static CDataQuestCommand LinkageEnemyFlagOff(StageNo stageNo, int groupNo, int setNo, int flagId)
+            public static CDataQuestCommand LinkageEnemyFlagOff(uint stageNo, int groupNo, int setNo, int flagId)
             {
                 return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.LinkageEnemyFlagOff, Param01 = (int)stageNo, Param02 = groupNo, Param03 = setNo, Param04 = flagId };
             }
@@ -3218,7 +3230,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param stageNo
              * @param groupNo
              */
-            public static CDataQuestProgressWork KilledTargetEnemySetGroup(int flagNo, StageNo stageNo, int groupNo, int work04 = 0)
+            public static CDataQuestProgressWork KilledTargetEnemySetGroup(int flagNo, uint stageNo, int groupNo, int work04 = 0)
             {
                 return new CDataQuestProgressWork() { CommandNo = (uint)QuestNotifyCommand.KilledTargetEnemySetGroup, Work01 = flagNo, Work02 = (int)stageNo, Work03 = groupNo, Work04 = work04 };
             }
@@ -3229,7 +3241,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @param stageNo
              * @param groupNo
              */
-            public static CDataQuestProgressWork KilledTargetEmSetGrpNoMarker(int flagNo, StageNo stageNo, int groupNo, int work04 = 0)
+            public static CDataQuestProgressWork KilledTargetEmSetGrpNoMarker(int flagNo, uint stageNo, int groupNo, int work04 = 0)
             {
                 return new CDataQuestProgressWork() { CommandNo = (uint)QuestNotifyCommand.KilledTargetEmSetGrpNoMarker, Work01 = flagNo, Work02 = (int)stageNo, Work03 = groupNo, Work04 = work04 };
             }

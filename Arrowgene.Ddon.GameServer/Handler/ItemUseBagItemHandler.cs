@@ -1,15 +1,15 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class ItemUseBagItemHandler : StructurePacketHandler<GameClient, C2SItemUseBagItemReq>
+    public class ItemUseBagItemHandler : GameRequestPacketQueueHandler<C2SItemUseBagItemReq, S2CItemUseBagItemRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ItemUseBagItemHandler));
 
@@ -21,20 +21,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
             _Server = server;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SItemUseBagItemReq> req)
+        public override PacketQueue Handle(GameClient client, C2SItemUseBagItemReq request)
         {
+            PacketQueue queue = new();
+
             S2CItemUseBagItemRes res = new S2CItemUseBagItemRes();
-            client.Send(res);
+            client.Enqueue(res, queue);
 
             // TODO: Send S2CItemUseBagItemNtc?
 
             var tuple = client.Character.Storage.GetStorage(DestinationStorageType).Items
-                .Select((x, index) => new {item = x, slot = index+1})
-                .Where(tuple => tuple.item?.Item1.UId == req.Structure.ItemUId)
+                .Select((x, index) => new { item = x, slot = index + 1 })
+                .Where(tuple => tuple.item?.Item1.UId == request.ItemUId)
                 .First();
             Item item = tuple.item.Item1;
             uint itemNum = tuple.item.Item2;
-            ushort slotNo = (ushort) tuple.slot;
+            ushort slotNo = (ushort)tuple.slot;
 
             itemNum--;
 
@@ -45,12 +47,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (_Server.ItemManager.IsSecretAbilityItem(item.ItemId))
             {
-                _Server.JobManager.UnlockSecretAbility(client, client.Character, (SecretAbility) _Server.ItemManager.GetAbilityId(item.ItemId));
+                _Server.JobManager.UnlockSecretAbility(client, client.Character, (SecretAbility)_Server.ItemManager.GetAbilityId(item.ItemId));
             }
 
             if (_Server.ScriptManager.GameItemModule.HasItem(item.ItemId))
             {
-                _Server.ScriptManager.GameItemModule.GetItemInterface(item.ItemId)?.OnUse(_Server, client);
+                _Server.ScriptManager.GameItemModule.GetItemInterface(item.ItemId)?.OnUse(client);
             }
 
             if (_Server.EpitaphRoadManager.TrialInProgress(client.Party))
@@ -58,26 +60,32 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 _Server.EpitaphRoadManager.EvaluateItemUsed(client.Party, item.ItemId);
             }
 
-            CDataItemUpdateResult ntcData0 = new CDataItemUpdateResult();
-            ntcData0.ItemList.ItemUId = item.UId;
-            ntcData0.ItemList.ItemId = item.ItemId;
-            ntcData0.ItemList.ItemNum = itemNum;
-            ntcData0.ItemList.SafetySetting = item.SafetySetting;
-            ntcData0.ItemList.StorageType = DestinationStorageType;
-            ntcData0.ItemList.SlotNo = slotNo;
-            ntcData0.ItemList.Color = item.Color; // ?
-            ntcData0.ItemList.PlusValue = item.PlusValue; // ?
-            ntcData0.ItemList.Bind = false;
-            ntcData0.ItemList.EquipPoint = item.EquipPoints;
-            ntcData0.ItemList.EquipCharacterID = 0;
-            ntcData0.ItemList.EquipPawnID = 0;
-            ntcData0.ItemList.EquipElementParamList = item.EquipElementParamList;
-            ntcData0.ItemList.AddStatusParamList = item.AddStatusParamList;
-            ntcData0.ItemList.Unk2List = item.Unk2List;
-            ntcData0.UpdateItemNum = - (int) req.Structure.Amount;
+            CDataItemUpdateResult ntcData0 = new CDataItemUpdateResult()
+            {
+                ItemList = new()
+                {
+                    ItemUId = item.UId,
+                    ItemId = item.ItemId,
+                    ItemNum = itemNum,
+                    SafetySetting = item.SafetySetting,
+                    StorageType = DestinationStorageType,
+                    SlotNo = slotNo,
+                    Color = item.Color, // ?
+                    PlusValue = item.PlusValue, // ?
+                    Bind = false,
+                    EquipPoint = item.EquipPoints,
+                    EquipCharacterID = 0,
+                    EquipPawnID = 0,
+                    EquipElementParamList = item.EquipElementParamList,
+                    AddStatusParamList = item.AddStatusParamList,
+                    Unk2List = item.Unk2List
+                },
+                UpdateItemNum = -(int)request.Amount
+            };
+
             ntc.UpdateItemList.Add(ntcData0);
 
-            if(itemNum == 0)
+            if (itemNum == 0)
             {
                 // Delete item when ItemNum reaches 0 to free up the slot
                 client.Character.Storage.GetStorage(DestinationStorageType).SetItem(null, 0, slotNo);
@@ -89,18 +97,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Server.Database.ReplaceStorageItem(client.Character.ContentCharacterId, DestinationStorageType, slotNo, itemNum, item);
             }
 
-            client.Send(ntc);
+            client.Enqueue(ntc, queue);
 
             // Lantern start NTC
-            // TODO: Figure out all item IDs that do lantern stuff
-            if (item.ItemId == 55)
+            if (item.ItemId == (uint)ItemId.LanternKindling && EquipManager.HasLantern(client.Character))
             {
-                // client.Send(SelectedDump.lantern2_27_16);
-                // TODO: Start a timer to estinguish after LaternBurnTimeInSeconds expires
-                client.Character.IsLanternLit = true;
-                client.Send(new S2CCharacterStartLanternNtc() { RemainTime = _Server.GameLogicSettings.LaternBurnTimeInSeconds});
-                // client.Party.SendToAllExcept(new S2CCharacterStartLanternOtherNtc() { CharacterId = client.Character.CharacterId }, client);
+                queue.AddRange(Server.ItemManager.StartLantern(client, _Server.GameSettings.GameServerSettings.LanternBurnTimeInSeconds));
             }
+
+            return queue;
         }
     }
 }

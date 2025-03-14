@@ -3,7 +3,6 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Threading;
 
 namespace Arrowgene.Ddon.GameServer.Characters
@@ -30,6 +29,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             public Timer Timer { get; set; }
             public Action Action {  get; set; }
             public bool TimerStarted {  get; set; }
+            public bool TimerPaused { get; set; }
         }
 
         public uint CreateTimer(uint timeoutInSeconds, Action action)
@@ -45,7 +45,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 _Timers[timerId] = new TimerState()
                 {
                     Action = action,
-                    Duration = TimeSpan.FromSeconds(timeoutInSeconds)
+                    Duration = TimeSpan.FromSeconds(timeoutInSeconds),
+                    TimerPaused = false
                 };
             }
 
@@ -62,12 +63,21 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
 
                 var timerState = _Timers[timerId];
-                if (timerState.TimerStarted)
+                if (timerState.TimerStarted && !timerState.TimerPaused)
                 {
                     return false;
                 }
 
-                timerState.TimeStart = DateTime.Now;
+                if (!timerState.TimerPaused)
+                {
+                    timerState.TimeStart = DateTime.Now;
+                    Logger.Info($"Starting {timerState.Duration.TotalSeconds} second timer for TimerId={timerId}");
+                }
+                else
+                {
+                    Logger.Info($"Resuming {GetTimeLeftInSeconds(timerId)} second timer for TimerId={timerId}");
+                }
+
                 timerState.Timer = new Timer(task =>
                 {
                     TimeSpan alreadyElapsed = DateTime.Now.Subtract(timerState.TimeStart);
@@ -81,7 +91,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         CancelTimer(timerId);
                     }
                 }, null, 0, 1000);
-                Logger.Info($"Starting {timerState.Duration.TotalSeconds} second timer for TimerId={timerId}");
+                timerState.TimerPaused = false;
+                timerState.TimerStarted = true;
             }
 
             return true;
@@ -93,6 +104,30 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 Logger.Info($"Extending timer by {amountInSeconds} seconds for TimerId={timerId}");
                 _Timers[timerId].Duration += TimeSpan.FromSeconds(amountInSeconds);
+                return (ulong)((DateTimeOffset)(_Timers[timerId].TimeStart + _Timers[timerId].Duration)).ToUnixTimeSeconds();
+            }
+        }
+
+        public void PauseTimer(uint timerId)
+        {
+            lock (_Timers)
+            {
+                Logger.Info($"Pausing timer for TimerId={timerId}");
+                if (!_Timers[timerId].TimerPaused)
+                {
+                    _Timers[timerId].Timer.Dispose();
+                    _Timers[timerId].TimerPaused = true;
+                }
+            }
+        }
+
+        public ulong SetTimer(uint timerId, uint timeInSeconds)
+        {
+            lock (_Timers)
+            {
+                Logger.Info($"Setting timer to {timeInSeconds} seconds for TimerId={timerId}");
+                _Timers[timerId].Duration = TimeSpan.FromSeconds(timeInSeconds);
+                _Timers[timerId].TimeStart = DateTime.Now;
                 return (ulong)((DateTimeOffset)(_Timers[timerId].TimeStart + _Timers[timerId].Duration)).ToUnixTimeSeconds();
             }
         }
@@ -112,6 +147,30 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        public bool IsTimerStarted(uint timerId)
+        {
+            lock (_Timers)
+            {
+                if (!_Timers.ContainsKey(timerId))
+                {
+                    return false;
+                }
+                return _Timers[timerId].TimerStarted;
+            }
+        }
+
+        public bool IsTimerPaused(uint timerId)
+        {
+            lock (_Timers)
+            {
+                if (!_Timers.ContainsKey(timerId))
+                {
+                    return false;
+                }
+                return _Timers[timerId].TimerPaused;
+            }
+        }
+
         public (TimeSpan Elapsed, TimeSpan MaximumDuration) CancelTimer(uint timerId)
         {
             lock (_Timers)
@@ -119,7 +178,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 if (_Timers.ContainsKey(timerId))
                 {
                     Logger.Info($"Canceling timer for TimerId={timerId}");
-                    _Timers[timerId].Timer.Dispose();
+                    if (_Timers[timerId].TimerStarted)
+                    {
+                        _Timers[timerId].Timer.Dispose();
+                    }
 
                     var timerState = _Timers[timerId];
 

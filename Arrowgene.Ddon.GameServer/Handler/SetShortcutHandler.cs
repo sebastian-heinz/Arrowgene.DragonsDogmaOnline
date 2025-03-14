@@ -1,13 +1,11 @@
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class SetShortcutHandler : StructurePacketHandler<GameClient, C2SSetShortcutReq>
+    public class SetShortcutHandler : GameRequestPacketHandler<C2SSetShortcutReq, S2CSetShortcutRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(WarpGetWarpPointListHandler));
 
@@ -15,20 +13,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SSetShortcutReq> request)
+        public override S2CSetShortcutRes Handle(GameClient client, C2SSetShortcutReq request)
         {
-            S2CSetShortcutRes response = new S2CSetShortcutRes();
-
             Server.Database.ExecuteInTransaction(connection =>
             {
-                foreach (CDataShortCut shortcut in request.Structure.ShortCutList)
+                foreach (CDataShortCut shortcut in request.ShortCutList)
                 {
                     Server.Database.ReplaceShortcut(client.Character.CharacterId, shortcut, connection);
                 }
             });
 
-            client.Character.ShortCutList = request.Structure.ShortCutList;
-            client.Send(response);
+            client.Character.ShortCutList = request.ShortCutList;
+
+            return new();
         }
     }
 }

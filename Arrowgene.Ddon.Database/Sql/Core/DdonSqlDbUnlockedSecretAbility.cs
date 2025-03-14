@@ -21,19 +21,16 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private readonly string SqlSelectAllUnlockedSecretAbility = $"SELECT {BuildQueryField(UnlockedSecretAbilityFields)} FROM \"ddon_unlocked_secret_ability\" WHERE \"character_common_id\" = @character_common_id;";
 
 
-        public bool InsertSecretAbilityUnlock(uint commonId, SecretAbility secretAbility)
+        public bool InsertSecretAbilityUnlock(uint commonId, SecretAbility secretAbility, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return InsertSecretAbilityUnlock(connection, commonId, secretAbility);
-        }
-
-        public bool InsertSecretAbilityUnlock(TCon conn, uint commonId, SecretAbility secretAbility)
-        {
-            return ExecuteNonQuery(conn, SqlInsertIfNotExistsUnlockedSecretAbility, command =>
+            return ExecuteQuerySafe<bool>(connectionIn, (connection) =>
             {
-                AddParameter(command, "character_common_id", commonId);
-                AddParameter(command, "ability_id", (uint) secretAbility);
-            }) == 1;
+                return ExecuteNonQuery(connection, SqlInsertIfNotExistsUnlockedSecretAbility, command =>
+                {
+                    AddParameter(command, "character_common_id", commonId);
+                    AddParameter(command, "ability_id", (uint)secretAbility);
+                }) == 1;
+            });
         }
 
         public List<SecretAbility> SelectAllUnlockedSecretAbilities(uint commonId)

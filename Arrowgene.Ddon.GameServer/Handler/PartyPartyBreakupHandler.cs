@@ -1,14 +1,13 @@
-using System.Collections.Generic;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PartyPartyBreakupHandler : GameStructurePacketHandler<C2SPartyPartyBreakupReq>
+    public class PartyPartyBreakupHandler : GameRequestPacketHandler<C2SPartyPartyBreakupReq, S2CPartyPartyBreakupRes>
     {
         private static readonly ServerLogger Logger =
             LogProvider.Logger<ServerLogger>(typeof(PartyPartyChangeLeaderHandler));
@@ -17,38 +16,27 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SPartyPartyBreakupReq> packet)
+        public override S2CPartyPartyBreakupRes Handle(GameClient client, C2SPartyPartyBreakupReq request)
         {
             S2CPartyPartyBreakupRes res = new S2CPartyPartyBreakupRes();
 
-            PartyGroup party = client.Party;
-            if (party == null)
-            {
-                Logger.Error(client, "Could not breakup party, does not exist");
-                // todo return error
-                return;
-            }
+            PartyGroup party = client.Party
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_NOT_FOUNDED, "Could not breakup party, does not exist");
 
-            ErrorRes<List<PartyMember>> members = party.Breakup(client);
-            if (members.HasError)
-            {
-                Logger.Info(client, $"error during breakup");
-                res.Error = (uint)members.ErrorCode;
-                client.Send(res);
-                return;
-            }
+            List<PartyMember> members = party.Breakup(client);
 
             S2CPartyPartyBreakupNtc ntc = new S2CPartyPartyBreakupNtc();
-            foreach (PartyMember member in members.Value)
+            foreach (PartyMember member in members)
             {
                 if (member is PlayerPartyMember player)
                 {
+                    Server.PartnerPawnManager.HandleLeaveFromParty(player.Client);
                     player.Client.Send(ntc);
                 }
             }
 
-            client.Send(res);
             Logger.Info(client, $"breakup PartyId:{party.Id}");
+            return res;
         }
     }
 }

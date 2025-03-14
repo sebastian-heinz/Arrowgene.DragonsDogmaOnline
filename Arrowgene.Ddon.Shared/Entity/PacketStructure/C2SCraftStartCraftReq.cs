@@ -15,6 +15,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             RefineMaterialUID = string.Empty;
             AdditionalStatusMaterialList = new List<CDataCraftMaterial>();
             CraftSupportPawnIDList = new List<CDataCraftSupportPawnID>();
+            CraftMasterLegendPawnIDList = new();
         }
 
         public uint RecipeID { get; set; }

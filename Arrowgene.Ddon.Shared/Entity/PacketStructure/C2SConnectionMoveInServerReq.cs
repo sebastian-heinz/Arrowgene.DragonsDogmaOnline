@@ -5,7 +5,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class C2SConnectionMoveInServerReq : IPacketStructure
     {
-        public string SessionKey { get; set; }
+        public string SessionKey { get; set; } = string.Empty;
 
         public PacketId Id => PacketId.C2S_CONNECTION_MOVE_IN_SERVER_REQ;
         

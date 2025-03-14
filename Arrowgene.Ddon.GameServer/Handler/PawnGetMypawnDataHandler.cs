@@ -1,15 +1,13 @@
-using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
-using Arrowgene.Logging;
-using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PawnGetMypawnDataHandler : StructurePacketHandler<GameClient, C2SPawnGetMypawnDataReq>
+    public class PawnGetMypawnDataHandler : GameRequestPacketHandler<C2SPawnGetMypawnDataReq, S2CPawnGetMypawnDataRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnGetMypawnDataHandler));
 
@@ -22,10 +20,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             _CharacterManager = server.CharacterManager;
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SPawnGetMypawnDataReq> req)
+        public override S2CPawnGetMypawnDataRes Handle(GameClient client, C2SPawnGetMypawnDataReq request)
         {
-            Pawn pawn = client.Character.PawnBySlotNo(req.Structure.SlotNo);
-
+            Pawn pawn = client.Character.PawnBySlotNo(request.SlotNo);
 
             S2CPawnGetPawnProfileNtc pcap33 = EntitySerializer.Get<S2CPawnGetPawnProfileNtc>().Read(new byte[] {0x0, 0x20, 0xB8, 0xF8, 0x0, 0xDB, 0x3B, 0xCF, 0x0, 0x20, 0xB8, 0xF8, 0x0, 0x5, 0x44, 0x69, 0x61, 0x6E, 0x61, 0x0, 0x6, 0x53, 0x65, 0x65, 0x6C, 0x69, 0x78, 0x0, 0x3, 0x53, 0x3B, 0x52, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x1, 0xB8, 0xC0, 0xC1});
             pcap33.CharacterId = client.Character.CharacterId;
@@ -48,20 +45,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: Etc
             client.Send(pcap35);
 
-            S2CPawnGetPawnOrbDevoteInfoNtc pcap36 = new S2CPawnGetPawnOrbDevoteInfoNtc()
+            S2CPawnGetPawnOrbDevoteInfoNtc orbNtc = new S2CPawnGetPawnOrbDevoteInfoNtc()
             {
                 CharacterId = client.Character.CharacterId,
                 PawnId = pawn.PawnId,
                 OrbPageStatusList = _OrbUnlockManager.GetOrbPageStatus(pawn)
             };
-            client.Send(pcap36);
+            client.Send(orbNtc);
 
             var res = new S2CPawnGetMypawnDataRes();
             res.PawnId = pawn.PawnId;
             GameStructure.CDataPawnInfo(res.PawnInfo, pawn);
             res.PawnInfo.AbilityCostMax = _CharacterManager.GetMaxAugmentAllocation(pawn);
 
-            client.Send(res);
+            return res;
         }
     }
 }

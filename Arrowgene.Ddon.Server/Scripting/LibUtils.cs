@@ -6,6 +6,15 @@ namespace Arrowgene.Ddon.Server.Scripting
     {
         public static DateTime EventTime(int month, int day)
         {
+            if (month == 2 && day == 29)
+            {
+                if (!DateTime.IsLeapYear(DateTime.Today.Year))
+                {
+                    // Move the date back by 1 since this year is not a leap year
+                    day = 28;
+                }
+            }
+
             return new DateTime(DateTime.Now.Year, month, day);
         }
 
@@ -23,8 +32,7 @@ namespace Arrowgene.Ddon.Server.Scripting
         public static bool WithinTimespan(DateTime startDate, DateTime endDate)
         {
             var now = DateTime.Now;
-            return (now.Month >= startDate.Month && now.Month <= endDate.Month) &&
-                   (now.Day >= startDate.Day && now.Day <= endDate.Day);
+            return (now >= startDate && now <= endDate);
         }
 
         public static bool WithinTimespan((DateTime StartDate, DateTime EndDate) timespan)

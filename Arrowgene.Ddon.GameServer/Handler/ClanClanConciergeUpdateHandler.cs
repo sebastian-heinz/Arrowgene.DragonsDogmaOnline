@@ -1,10 +1,6 @@
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
-using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -22,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CClanClanConciergeUpdateRes res = new S2CClanClanConciergeUpdateRes();
             var clan = Server.ClanManager.GetClan(client.Character.ClanId);
 
-            Server.Database.InsertOrUpdateClanBaseCustomization(client.Character.ClanId, Shared.Model.ClanBaseCustomizationType.Concierge, request.ConciergeId);
+            Server.Database.InsertOrUpdateClanBaseCustomization(client.Character.ClanId, Shared.Model.ClanFurnitureType.Concierge, request.ConciergeId);
             res.NpcId = request.ConciergeId;
             return res;
         }

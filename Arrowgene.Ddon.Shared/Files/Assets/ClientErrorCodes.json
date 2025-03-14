@@ -4,6 +4,10 @@
         "en": "An internal server error has occured."
     },
     {
+        "code": "ERROR_CODE_NOT_IMPLEMENTED",
+        "en": "This feature is not yet implemented."
+    },
+    {
         "code": "ERROR_CODE_JOBCHANGE_STORAGE_FULL",
         "en": "Make room in your normal storage chest before changing vocations. (JOBCHANGE_STORAGE_FULL)"
     },
@@ -54,5 +58,29 @@
     {
         "code": "ERROR_CODE_SKILL_COST_OVER",
         "en": "This character does not have enough points to apply this preset."
+    },
+    {
+        "code": "ERROR_CODE_PARTY_INVITE_FAIL_REASON_TIMEOUT",
+        "en": "The party invitation has timed out."
+    },
+    {
+        "code": "ERROR_CODE_PARTY_JOIN_NUM_OVER",
+        "en": "Unable to join; the party does not have room for you and your Main Pawns."
+    },
+    {
+        "code": "ERROR_CODE_PAWN_NOT_FOUNDED",
+        "en": "A pawn could not be found; try relogging. (ERROR_CODE_PAWN_NOT_FOUNDED)"
+    },
+    {
+        "code": "ERROR_CODE_ITEM_NOT_FOUND",
+        "en": "An item could not be found; try relogging. (ERROR_CODE_ITEM_NOT_FOUND)"
+    },
+    {
+        "code": "ERROR_CODE_PARTY_INVITE_CANCEL_REASON_CANCEL",
+        "en": "The party invite has been cancelled."
+    },
+    {
+        "code": "ERROR_CODE_LOBBY_JOIN_NUM_OVER",
+        "en": "The channel is full; Please select another channel."
     }
 ]

@@ -21,18 +21,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             PacketQueue queue = new();
             S2CStageAreaChangeRes res = new S2CStageAreaChangeRes();
-            res.StageNo = (uint) StageManager.ConvertIdToStageNo(packet.StageId);
-            res.IsBase = false; // This is set true for audience chamber and WDT for example
+            res.StageNo = StageManager.ConvertIdToStageNo(packet.StageId);
+            res.IsBase = StageManager.IsSafeArea(packet.StageId); // This is set true for audience chamber and WDT for example
+            
+            if (res.StageNo == Stage.ArisensRoom.StageNo)
+            {
+                // Re-enables Arisen's Room dialogue for pawns.
+                // These StageFeatures control chatter and other pawn behaviors.
+                res.StageFeatureList.Add(new(9001));
+            }
 
             // Order is notices sent manually, then the response, then other queued notices for Epitaph Road stuff.
-            client.Enqueue(res, queue); 
 
             uint previousStageId = client.Character.Stage.Id;
 
             ContextManager.DelegateAllMasters(client);
 
             client.Character.StageNo = res.StageNo;
-            client.Character.Stage = new StageId(packet.StageId, 0, 0);
+            client.Character.Stage = new StageLayoutId(packet.StageId, 0, 0);
 
             // For shared spaces, deal with all the context updating required for characters to be visible.
             // Must be done after Character.StageNo is set because of how the context is structured.
@@ -43,9 +49,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 pawn.StageNo = res.StageNo;
             }
 
-            if (StageManager.IsSafeArea(client.Character.Stage))
+            if (res.IsBase)
             {
-                res.IsBase = true;
                 client.Character.LastSafeStageId = packet.StageId;
 
                 bool shouldReset = true;
@@ -75,6 +80,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
+            client.Enqueue(res, queue);
+
             if (client.Party.ExmInProgress && BoardManager.BoardIdIsExm(client.Party.ContentId))
             {
                 var quest = QuestManager.GetQuestByBoardId(client.Party.ContentId);
@@ -82,6 +89,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     quest.HandleAreaChange(client, client.Character.Stage);
                 }
+            }
+
+            if (client.IsPartyLeader())
+            {
+                Server.PartnerPawnManager.HandleStageAreaChange(client);
             }
 
             Server.EpitaphRoadManager.AreaChange(client, packet.StageId, queue);

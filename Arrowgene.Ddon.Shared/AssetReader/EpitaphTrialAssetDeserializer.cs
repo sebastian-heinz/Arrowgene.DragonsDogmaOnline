@@ -89,7 +89,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 var stageId = jUnlock.GetProperty("stage_id").GetUInt32();
                 var groupId = jUnlock.GetProperty("group_id").GetUInt32();
                 var posId = jUnlock.GetProperty("pos_id").GetUInt32();
-                assetData.Unlocks.Add((new StageId(stageId, 0, groupId), posId));
+                assetData.Unlocks.Add((new StageLayoutId(stageId, 0, groupId), posId));
             }
 
             uint i = 1;
@@ -120,7 +120,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     trialOption.EntryCost.Add(item);
                 }
 
-                if (!_CommonEnemyDeserializer.ParseEnemyGroups(_QuestDrops, trialOption.EnemyGroups, jOption))
+                if (!_CommonEnemyDeserializer.ParseEnemyGroups(0, _QuestDrops, trialOption.EnemyGroups, jOption))
                 {
                     Logger.Error($"Unable to parse enemies for epitah trial {trialOption.TrialName}:{trialOption.EpitaphId}. Skipping.");
                     return false;
@@ -140,7 +140,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                 foreach (var enemyGroup in trialOption.EnemyGroups.Values)
                 {
-                    trialOption.EnemyGroupsByStageId[(enemyGroup.StageId, enemyGroup.SubGroupId)] = enemyGroup;
+                    trialOption.EnemyGroupsByStageId[(enemyGroup.StageLayoutId, enemyGroup.SubGroupId)] = enemyGroup;
                 }
 
                 foreach (var jItemReward in jOption.GetProperty("item_rewards").EnumerateArray())

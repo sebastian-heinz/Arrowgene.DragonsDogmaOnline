@@ -21,10 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (!Server.BoardManager.ExtendReadyUpTimer(data.EntryItem.Id))
             {
-                return new S2CEntryBoardEntryBoardItemExtendTimeoutRes()
-                {
-                    Error = (uint) ErrorCode.ERROR_CODE_TIMER_INTERNAL_ERROR
-                };
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_TIMER_INTERNAL_ERROR);
             }
 
             foreach (var characterId in data.Members)

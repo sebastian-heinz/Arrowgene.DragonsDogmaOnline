@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SInstancePlTouchOmNtc> packet)
         {
-            StageId stageId = packet.Structure.LayoutId.AsStageId();
+            StageLayoutId stageId = packet.Structure.LayoutId.AsStageLayoutId();
             if (StageManager.IsEpitaphRoadStageId(stageId))
             {
                 _Server.EpitaphRoadManager.HandleStatueUnlock(client, stageId, packet.Structure.SubGroupId);

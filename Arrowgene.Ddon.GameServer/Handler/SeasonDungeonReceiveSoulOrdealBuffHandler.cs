@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CSeasonDungeonReceiveSoulOrdealRewardBuffRes Handle(GameClient client, C2SSeasonDungeonReceiveSoulOrdealRewardBuffReq request)
         {
-            var rewards = Server.EpitaphRoadManager.GetRewards(client, request.LayoutId.AsStageId(), request.PosId);
+            var rewards = Server.EpitaphRoadManager.GetRewards(client, request.LayoutId.AsStageLayoutId(), request.PosId);
 
             if (request.BuffId == 0)
             {

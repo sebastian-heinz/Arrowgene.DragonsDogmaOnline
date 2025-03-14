@@ -415,7 +415,10 @@
                     "type": "IsGatherPartyInStage",
                     "stage_id": {
                         "id": 381
-                    }
+                    },
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 6105, "comment": "Spawns purple crystal platforms"}
+                    ]
                 },
                 {
                     "type": "KillGroup",

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 
 namespace Arrowgene.Ddon.Database.Sql.Core
 {
@@ -16,7 +17,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly string[] CharacterFields = new string[]
         {
-            /* character_id */ "version", "character_common_id", "account_id", "first_name", "last_name", "created", "my_pawn_slot_num", "rental_pawn_slot_num", "hide_equip_head_pawn", "hide_equip_lantern_pawn", "arisen_profile_share_range", "fav_warp_slot_num", "max_bazaar_exhibits", "game_mode"
+            /* character_id */ "version", "character_common_id", "account_id", "first_name", "last_name", "created", "my_pawn_slot_num", "rental_pawn_slot_num", "hide_equip_head_pawn", "hide_equip_lantern_pawn", "arisen_profile_share_range", "fav_warp_slot_num", "max_bazaar_exhibits", "partner_pawn_id", "game_mode"
         };
 
         private static readonly string[] CDataMatchingProfileFields = new string[]
@@ -85,6 +86,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private readonly string SqlInsertCharacterBinaryData = $"INSERT INTO \"ddon_binary_data\" ({BuildQueryField(CharacterBinaryDataFields)}) VALUES ({BuildQueryInsert(CharacterBinaryDataFields)});";
         private readonly string SqlUpdateCharacterBinaryData = $"UPDATE \"ddon_binary_data\" SET {BuildQueryUpdate(CharacterBinaryDataFields)} WHERE \"character_id\" = @character_id;";
         private static readonly string SqlSelectCharacterBinaryData = $"SELECT {BuildQueryField(CharacterBinaryDataFields)} FROM \"ddon_binary_data\" WHERE \"character_id\" = @character_id;";
+
+        private readonly string SqlUpdatePartnerPawnId = $"UPDATE \"ddon_character\" SET \"partner_pawn_id\" = @partner_pawn_id WHERE \"character_id\" = @character_id;";
 
         public bool CreateCharacter(Character character)
         {
@@ -423,6 +426,10 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             //Clan membership
             character.ClanId = SelectClanMembershipByCharacterId(character.CharacterId, conn);
             character.ClanName = GetClanNameByClanId(character.ClanId);
+
+            // Area Ranks
+            character.AreaRanks = SelectAreaRank(character.CharacterId, conn);
+            character.AreaSupply = SelectAreaRankSupply(character.CharacterId, conn);
         }
 
         public bool UpdateMyPawnSlot(uint characterId, uint num)
@@ -678,6 +685,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             character.LastName = GetString(reader, "last_name");
             character.Created = GetDateTime(reader, "created");
             character.MyPawnSlotNum = GetByte(reader, "my_pawn_slot_num");
+            character.PartnerPawnId = GetUInt32(reader, "partner_pawn_id");
             character.RentalPawnSlotNum = GetByte(reader, "rental_pawn_slot_num");
             character.HideEquipHeadPawn = GetBoolean(reader, "hide_equip_head_pawn");
             character.HideEquipLanternPawn = GetBoolean(reader, "hide_equip_lantern_pawn");
@@ -720,6 +728,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             AddParameter(command, "@last_name", character.LastName);
             AddParameter(command, "@created", character.Created);
             AddParameter(command, "@my_pawn_slot_num", character.MyPawnSlotNum);
+            AddParameter(command, "@partner_pawn_id", character.PartnerPawnId);
             AddParameter(command, "@rental_pawn_slot_num", character.RentalPawnSlotNum);
             AddParameter(command, "@hide_equip_head_pawn", character.HideEquipHeadPawn);
             AddParameter(command, "@hide_equip_lantern_pawn", character.HideEquipLanternPawn);

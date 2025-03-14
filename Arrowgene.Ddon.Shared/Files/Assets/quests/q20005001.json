@@ -193,6 +193,7 @@
   "blocks": [
     {
       "type": "DiscoverEnemy",
+      "show_marker": false,
       "groups": [ 0 ]
     },
     {

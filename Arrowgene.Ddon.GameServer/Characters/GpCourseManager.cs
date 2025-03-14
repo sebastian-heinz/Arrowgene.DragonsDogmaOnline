@@ -32,11 +32,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             public double WorldQuestExpBonus = 0.0;
             public double EnemyPlayPointBonus = 0.0;
             public double PawnCraftBonus = 0.0;
-            public bool DisablePartyExpAdjustment = false;
+            public uint DisablePartyExpAdjustment = 0;
             public double EnemyBloodOrbMultiplier = 0.0;
-            public bool InfiniteRevive = false;
+            public uint InfiniteRevive = 0;
             public uint BazaarExhibitExtend = 0;
             public ulong BazaarReExhibitShorten = 0;
+            public double BoardQuestApBonus = 0.0;
+            public double WorldQuestApBonus = 0.0;
+            public uint AreaMasterSupply = 0;
         };
 
         private void ApplyCourseEffects(uint courseId)
@@ -66,20 +69,29 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         case GPCourseId.PawnCraftExpUp:
                             _CourseBonus.PawnCraftBonus += (effect.Param0 / 100.0);
                             break;
+                        case GPCourseId.AreaPointBQRewardUp:
+                            _CourseBonus.BoardQuestApBonus += (effect.Param0 / 100.0);
+                            break;
+                        case GPCourseId.AreaPointWQRewardUp:
+                            _CourseBonus.WorldQuestApBonus += (effect.Param0 / 100.0);
+                            break;
                         case GPCourseId.DisablePartyAdjustEnemyExp:
-                            _CourseBonus.DisablePartyExpAdjustment = true;
+                            _CourseBonus.DisablePartyExpAdjustment += 1;
                             break;
                         case GPCourseId.BloodOrbUp:
                             _CourseBonus.EnemyBloodOrbMultiplier += (effect.Param0 / 100.0);
                             break;
                         case GPCourseId.InfiniteRevive:
-                            _CourseBonus.InfiniteRevive = true;
+                            _CourseBonus.InfiniteRevive += 1;
                             break;
                         case GPCourseId.BazaarExhibitExtend:
                             _CourseBonus.BazaarExhibitExtend += effect.Param0;
                             break;
                         case GPCourseId.BazaarReExhibitShorten:
                             _CourseBonus.BazaarReExhibitShorten += effect.Param0;
+                            break;
+                        case GPCourseId.AreaMasterSupply:
+                            _CourseBonus.AreaMasterSupply += 1;
                             break;
                     }
                 }
@@ -110,17 +122,32 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         case GPCourseId.EnemyPpUp:
                             _CourseBonus.EnemyPlayPointBonus -= (effect.Param0 / 100.0);
                             break;
+                        case GPCourseId.AreaPointBQRewardUp:
+                            _CourseBonus.BoardQuestApBonus -= (effect.Param0 / 100.0);
+                            break;
+                        case GPCourseId.AreaPointWQRewardUp:
+                            _CourseBonus.WorldQuestApBonus -= (effect.Param0 / 100.0);
+                            break;
                         case GPCourseId.PawnCraftExpUp:
-                            _CourseBonus.PawnCraftBonus += (effect.Param0 / 100.0);
+                            _CourseBonus.PawnCraftBonus -= (effect.Param0 / 100.0);
                             break;
                         case GPCourseId.DisablePartyAdjustEnemyExp:
-                            _CourseBonus.DisablePartyExpAdjustment = false;
+                            _CourseBonus.DisablePartyExpAdjustment -= 1;
                             break;
                         case GPCourseId.BloodOrbUp:
                             _CourseBonus.EnemyBloodOrbMultiplier -= (effect.Param0 / 100.0);
                             break;
                         case GPCourseId.InfiniteRevive:
-                            _CourseBonus.InfiniteRevive = false;
+                            _CourseBonus.InfiniteRevive -= 1;
+                            break;
+                        case GPCourseId.BazaarExhibitExtend:
+                            _CourseBonus.BazaarExhibitExtend -= effect.Param0;
+                            break;
+                        case GPCourseId.BazaarReExhibitShorten:
+                            _CourseBonus.BazaarReExhibitShorten -= effect.Param0;
+                            break;
+                        case GPCourseId.AreaMasterSupply:
+                            _CourseBonus.AreaMasterSupply -= 1;
                             break;
                     }
                 }
@@ -219,6 +246,22 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        public double QuestApBonus(QuestType questType)
+        {
+            lock (_CourseBonus)
+            {
+                switch (questType)
+                {
+                    case QuestType.World:
+                        return _CourseBonus.WorldQuestApBonus;
+                    case QuestType.Board:
+                        return _CourseBonus.BoardQuestApBonus;
+                    default:
+                        return 0;
+                }
+            }
+        }
+
         public double EnemyPlayPointBonus()
         {
             lock (_CourseBonus)
@@ -239,7 +282,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             lock (_CourseBonus)
             {
-                return _CourseBonus.DisablePartyExpAdjustment;
+                return _CourseBonus.DisablePartyExpAdjustment > 0;
             }
         }
 
@@ -255,7 +298,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             lock (_CourseBonus)
             {
-                return _CourseBonus.InfiniteRevive;
+                return _CourseBonus.InfiniteRevive > 0;
             }
         }
 
@@ -272,6 +315,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             lock (_CourseBonus)
             {
                 return _CourseBonus.BazaarReExhibitShorten;
+            }
+        }
+
+        public bool AreaMasterSupply()
+        {
+            lock (_CourseBonus)
+            {
+                return _CourseBonus.AreaMasterSupply > 0;
             }
         }
     }

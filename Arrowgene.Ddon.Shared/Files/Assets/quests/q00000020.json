@@ -8,7 +8,8 @@
     "minimum_item_rank": 0,
     "discoverable": true,
     "order_conditions": [
-        {"type": "MainQuestCompleted", "Param1": 29}
+        {"type": "MainQuestCompleted", "Param1": 29},
+        {"type": "AreaRank","Param1": 11,"Param2": 2}
     ],
     "rewards": [
         {

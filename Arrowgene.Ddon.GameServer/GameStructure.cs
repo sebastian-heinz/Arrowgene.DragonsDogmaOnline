@@ -158,7 +158,7 @@ public static class GameStructure
         cDataPawnInfo.ShareRange = 1;
         cDataPawnInfo.Likability = 2;
         cDataPawnInfo.TrainingStatus = pawn.TrainingStatus.GetValueOrDefault(pawn.Job, new byte[64]);
-        cDataPawnInfo.Unk1 = new CData_772E80() {Unk0 = 0x7530, Unk1 = 0x3, Unk2 = 0x3, Unk3 = 0x1, Unk4 = 0x3};
+        cDataPawnInfo.PawnTrainingProfile = new CDataPawnTrainingProfile() {TrainingExp = 30000, DialogCount = 3, DialogCountMax = 3, AttackFrequencyAndDistance = 1, TrainingLv = 3};
         cDataPawnInfo.SpSkillList = pawn.SpSkills.GetValueOrDefault(pawn.Job, new List<CDataSpSkill>());
     }
 
@@ -167,67 +167,12 @@ public static class GameStructure
         cDataNoraPawnInfo.Name = pawn.Name;
         cDataNoraPawnInfo.EditInfo = pawn.EditInfo;
         cDataNoraPawnInfo.Job = (byte)pawn.Job;
-
-        // Merge visual and performance equips
-        var performanceEquips = pawn.Equipment.GetItems(EquipType.Performance);
-        var visualEquips = pawn.Equipment.GetItems(EquipType.Visual);
-
-        List<ClientItemInfo> perfInfo = performanceEquips.Select(x => x is not null ? server.ItemManager.LookupInfoByItem(server, x) : new()).ToList();
-        List<ClientItemInfo> visualInfo = visualEquips.Select(x => x is not null ? server.ItemManager.LookupInfoByItem(server, x) : new()).ToList();
-
-        List<Item?> mergedEquips = new();
-        List<ClientItemInfo> mergedInfo = new();
-
-        for (int i = 0; i < visualEquips.Count; i++)
-        {
-            mergedEquips.Add(visualEquips[i] ?? performanceEquips[i]);
-            mergedInfo.Add(mergedEquips[i] is not null ? server.ItemManager.LookupInfoByItem(server, mergedEquips[i]) : new ClientItemInfo());
-        }
-
-        // Check for ensembles
-        bool overwriteBody = perfInfo.Any(x => x.SubCategory == ItemSubCategory.EquipEnsemble) 
-            && visualInfo.Any(x => x.EquipSlot is not null && EquipManager.EnsembleSlots.Contains((EquipSlot)x.EquipSlot));
-        bool overwriteOthers = visualInfo.Any(x => x.SubCategory == ItemSubCategory.EquipEnsemble);
-
-        if (overwriteBody && !overwriteOthers)
-        {
-            mergedEquips[(byte)EquipSlot.ArmorBody - 1] = null;
-        }
-        else if (overwriteOthers && !overwriteBody)
-        {
-            for (int i = 0; i < mergedInfo.Count; i++)
-            {
-                if (mergedInfo[i].EquipSlot is null) continue;
-                if (EquipManager.EnsembleSlots.Contains((EquipSlot)mergedInfo[i].EquipSlot))
-                {
-                    mergedEquips[i] = null;
-                }
-            }
-        }
-
-        // Process to CDataEquipItemInfo
-        var mergedCData = mergedEquips.Select((item, index) => new CDataEquipItemInfo()
-                {
-                    ItemId = item?.ItemId ?? 0,
-                    Unk0 = item?.SafetySetting ?? 0,
-                    EquipType = EquipType.Performance,
-                    EquipSlot = (byte)(index + 1),
-                    Color = item?.Color ?? 0,
-                    PlusValue = item?.PlusValue ?? 0,
-                    EquipElementParamList = item?.EquipElementParamList ?? new List<CDataEquipElementParam>(),
-                    AddStatusParamList = item?.AddStatusParamList ?? new List<CDataAddStatusParam>(),
-                    Unk2List = item?.Unk2List ?? new List<CDataEquipItemInfoUnk2>()
-                })
-                .ToList();
-
-
-        cDataNoraPawnInfo.CharacterEquipData = new()
-        {
-            new CDataCharacterEquipData() {
-                Equips = mergedCData
-            },
-            new CDataCharacterEquipData() // The client expects a second element to this list, even if its not used.
-        };
+        cDataNoraPawnInfo.CharacterEquipData = new List<CDataCharacterEquipData>() { new CDataCharacterEquipData() {
+                    Equips = pawn.Equipment.AsCDataEquipItemInfo(EquipType.Performance)
+            }};
+        cDataNoraPawnInfo.CharacterEquipViewData = new List<CDataCharacterEquipData>() { new CDataCharacterEquipData() {
+                    Equips = pawn.Equipment.AsCDataEquipItemInfo(EquipType.Visual)
+            }};
     }
 
     public static void CDataCharacterLevelParam(CDataCharacterLevelParam characterLevelParam, CharacterCommon character)

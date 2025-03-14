@@ -1,16 +1,12 @@
-using System.Linq;
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
-using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PawnTrainingGetPreparetionInfoToAdviceHandler : StructurePacketHandler<GameClient, C2SPawnTrainingGetPreparetionInfoToAdviceReq>
+    public class PawnTrainingGetPreparetionInfoToAdviceHandler : GameRequestPacketHandler<C2SPawnTrainingGetPreparetionInfoToAdviceReq, S2CPawnTrainingGetPreparetionInfoToAdviceRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnTrainingGetPreparetionInfoToAdviceHandler));
 
@@ -18,7 +14,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SPawnTrainingGetPreparetionInfoToAdviceReq> req)
+        public override S2CPawnTrainingGetPreparetionInfoToAdviceRes Handle(GameClient client, C2SPawnTrainingGetPreparetionInfoToAdviceReq request)
         {
             // TODO: Proper implementation
             S2CPawnTrainingGetPreparetionInfoToAdviceRes res = new S2CPawnTrainingGetPreparetionInfoToAdviceRes
@@ -35,7 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     })
                     .ToList()
             };
-            client.Send(res);
+            return res;
         }
 
         // PCAP:

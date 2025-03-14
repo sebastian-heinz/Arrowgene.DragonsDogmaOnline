@@ -18,8 +18,14 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
 
         private bool DropEnabled(GameClient client, EventItem item, InstancedEnemy enemy)
         {
-            var stageId = enemy.StageId;
-            if (item.QuestIds.Count > 0 && !item.QuestIds.Any(x => QuestManager.GetQuestByScheduleId(x).IsActive(Server, client)))
+            var stageId = enemy.StageLayoutId;
+
+            if (StageManager.IsBitterBlackMazeStageId(stageId))
+            {
+                return false;
+            }
+            
+            if (item.QuestIds.Count > 0 && !item.QuestIds.Any(x => QuestManager.GetQuestByScheduleId(x).IsActive(client)))
             {
                 return false;
             }
@@ -145,7 +151,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
                 {
                     results.Add(new InstancedGatheringItem()
                     {
-                        ItemId = item.ItemId,
+                        ItemId = (ItemId) item.ItemId,
                         ItemNum = (uint)Random.Shared.Next((int)item.MinAmount, (int)(item.MaxAmount + 1)),
                     });
                 }

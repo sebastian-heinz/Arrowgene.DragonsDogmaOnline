@@ -1,0 +1,151 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Mergoda Ruins Trial: The Price of the Secret Arts (Mergoda Ruins AR5)",
+    "quest_id": 60120001,
+    "next_quest": 0,
+    "base_level": 53,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": {
+        "id": 237
+    },
+    "area_id": "MergodaRuins",
+    "order_conditions": [
+        {
+            "type": "MainQuestCompleted",
+            "Param1": 23
+        },
+        {
+            "type": "AreaRank",
+            "Param1": 12,
+            "Param2": 4
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 6300
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 7000
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 630
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 64,
+                "group_id": 1
+            },
+            "enemies": [
+                {
+                    "comment": "Immortal Drug Test Subject",
+                    "enemy_id": "0x011020",
+                    "level": 53,
+                    "exp": 273,
+                    "named_enemy_params_id": 381,
+                    "hm_present_no": 59
+                },
+                {
+                    "comment": "Immortal Drug Test Subject",
+                    "enemy_id": "0x011021",
+                    "level": 53,
+                    "exp": 273,
+                    "named_enemy_params_id": 381,
+                    "hm_present_no": 60
+                },
+                {
+                    "comment": "Immortal Drug Test Subject",
+                    "enemy_id": "0x011022",
+                    "level": 53,
+                    "exp": 273,
+                    "named_enemy_params_id": 381,
+                    "hm_present_no": 61
+                },
+                {
+                    "comment": "Immortal Drug Test Subject",
+                    "enemy_id": "0x011023",
+                    "level": 53,
+                    "exp": 273,
+                    "named_enemy_params_id": 381,
+                    "hm_present_no": 62
+                },
+                {
+                    "comment": "Immortal Drug Test Subject",
+                    "enemy_id": "0x011024",
+                    "level": 53,
+                    "exp": 273,
+                    "named_enemy_params_id": 381,
+                    "hm_present_no": 63
+                },
+                {
+                    "comment": "Immortal Drug Test Subject",
+                    "enemy_id": "0x011026",
+                    "level": 53,
+                    "exp": 273,
+                    "named_enemy_params_id": 381,
+                    "hm_present_no": 65
+                },
+                {
+                    "comment": "Sergius the Apothecary",
+                    "enemy_id": "0x011025",
+                    "level": 55,
+                    "exp": 281,
+                    "named_enemy_params_id": 386,
+                    "hm_present_no": 64
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 237
+            },
+            "npc_id": "Beatrix",
+            "message_id": 14478
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [
+                0
+            ],
+            "result_commands": [
+                {
+                    "comment": "Beatrix idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 2301,
+                    "Param2": 14480
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [
+                0
+            ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 237
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Beatrix",
+            "message_id": 14479
+        }
+    ]
+}

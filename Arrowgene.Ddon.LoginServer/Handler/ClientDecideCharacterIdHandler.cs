@@ -4,6 +4,11 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.LoginServer.Handler
 {
@@ -14,6 +19,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         private static int LoadBalanceServerIndex = 0;
         private static object LoadBalanceLock = new object();
+
 
         public ClientDecideCharacterIdHandler(DdonLoginServer server) : base(server)
         {
@@ -36,31 +42,32 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 WaitNum = request.WaitNum
             }, packetQueue);
 
-            // This is NOT required to get in game (can be commented out entirely).
-            // Causes a "Server is busy, 100 people waiting message" if L2CNextConnectionServerNtc isn't sent
-            client.Enqueue(new L2CLoginWaitNumNtc()
-            {
-                Unknown = 100
-            }, packetQueue);
-
             // TODO: Figure out packet.Structure.RotationServerId. Always a 2?
 
-            CDataGameServerListInfo serverListInfo;
-            lock (LoadBalanceLock)
+            CDataGameServerListInfo serverListInfo = Server.LoginQueueManager.GetBalancedServer();
+
+            if (serverListInfo is not null)
             {
-                serverListInfo = Server.AssetRepository.ServerList[LoadBalanceServerIndex].ToCDataGameServerListInfo();
-                LoadBalanceServerIndex = (LoadBalanceServerIndex + 1) % Server.AssetRepository.ServerList.Count;
+                Logger.Info(client, $"Connecting To: {serverListInfo.Addr}:{serverListInfo.Port}");
+
+                client.Enqueue(new L2CNextConnectionServerNtc()
+                {
+                    ServerList = serverListInfo,
+                    Counter = request.Counter
+                }, packetQueue);
             }
-
-            Logger.Info(client, $"Connecting To: {serverListInfo.Addr}:{serverListInfo.Port}");
-
-            client.Enqueue(new L2CNextConnectionServerNtc()
+            else
             {
-                ServerList = serverListInfo,
-                Counter = request.Counter
-            }, packetQueue);
+                var currentQueue = Server.LoginQueueManager.Enqueue(client.Account.Id);
+                client.Enqueue(new L2CLoginWaitNumNtc()
+                {
+                    WaitNum = (uint)currentQueue
+                }, packetQueue);
+            }
 
             return packetQueue;
         }
+
+        
     }
 }

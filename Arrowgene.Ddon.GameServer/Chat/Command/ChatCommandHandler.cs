@@ -63,7 +63,7 @@ namespace Arrowgene.Ddon.GameServer.Chat.Command
 
             IChatCommand chatCommand = Server.ScriptManager.ChatCommandModule.Commands[commandKey];
 
-            var disableAccountCheckType = Server.GameLogicSettings.Get<bool>("ChatCommands", "DisableAccountTypeCheck");
+            var disableAccountCheckType = Server.GameSettings.ChatCommandsSettings.DisableAccountTypeCheck;
             if (!disableAccountCheckType && (client.Account.State < chatCommand.AccountState))
             {
                 Logger.Error(client,

@@ -1,15 +1,12 @@
 #nullable enable
-using System.Linq;
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class WarpRegisterFavoriteWarpHandler : StructurePacketHandler<GameClient, C2SWarpRegisterFavoriteWarpReq>
+    public class WarpRegisterFavoriteWarpHandler : GameRequestPacketHandler<C2SWarpRegisterFavoriteWarpReq, S2CWarpRegisterFavoriteWarpRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(WarpRegisterFavoriteWarpHandler));
 
@@ -17,10 +14,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SWarpRegisterFavoriteWarpReq> request)
+        public override S2CWarpRegisterFavoriteWarpRes Handle(GameClient client, C2SWarpRegisterFavoriteWarpReq request)
         {
             // TODO: Run in transaction
-            ReleasedWarpPoint? oldFavorite = client.Character.ReleasedWarpPoints.Where(rwp => rwp.FavoriteSlotNo == request.Structure.SlotNo).SingleOrDefault();
+            ReleasedWarpPoint? oldFavorite = client.Character.ReleasedWarpPoints.Where(rwp => rwp.FavoriteSlotNo == request.SlotNo).SingleOrDefault();
             if (oldFavorite != null)
             {
                 oldFavorite.FavoriteSlotNo = 0;
@@ -30,20 +27,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 oldFavorite = new ReleasedWarpPoint()
                 {
-                    WarpPointId = request.Structure.WarpPointId,
-                    FavoriteSlotNo = request.Structure.SlotNo
+                    WarpPointId = request.WarpPointId,
+                    FavoriteSlotNo = request.SlotNo
                 };
             }
 
-            ReleasedWarpPoint newFavorite = client.Character.ReleasedWarpPoints.Where(rwp => rwp.WarpPointId == request.Structure.WarpPointId).Single();
-            newFavorite.FavoriteSlotNo = request.Structure.SlotNo;
+            ReleasedWarpPoint newFavorite = client.Character.ReleasedWarpPoints.Where(rwp => rwp.WarpPointId == request.WarpPointId).Single();
+            newFavorite.FavoriteSlotNo = request.SlotNo;
             Server.Database.UpdateReleasedWarpPoint(client.Character.CharacterId, newFavorite);
             
-            client.Send(new S2CWarpRegisterFavoriteWarpRes
+            return new S2CWarpRegisterFavoriteWarpRes
             {
-                WarpPointId = request.Structure.WarpPointId,
-                SlotNo = request.Structure.SlotNo
-            });
+                WarpPointId = request.WarpPointId,
+                SlotNo = request.SlotNo
+            };
         }
     }
 }

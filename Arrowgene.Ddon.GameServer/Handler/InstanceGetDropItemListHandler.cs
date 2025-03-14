@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ItemList = items.Select((dropItem, index) => new CDataGatheringItemElement()
                 {
                     SlotNo = (uint) index,
-                    ItemId = dropItem.ItemId,
+                    ItemId = (uint) dropItem.ItemId,
                     ItemNum = dropItem.ItemNum
                     // TODO: Other properties
                 }).ToList()

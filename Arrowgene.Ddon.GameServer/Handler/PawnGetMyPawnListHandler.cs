@@ -1,16 +1,13 @@
-using System.Collections.Generic;
-using System.Linq;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PawnGetMyPawnListHandler : StructurePacketHandler<GameClient, C2SPawnGetMyPawnListReq>
+    public class PawnGetMyPawnListHandler : GameRequestPacketHandler<C2SPawnGetMyPawnListReq, S2CPawnGetMypawnListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnGetMyPawnListHandler));
 
@@ -18,14 +15,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SPawnGetMyPawnListReq> packet)
+        public override S2CPawnGetMypawnListRes Handle(GameClient client, C2SPawnGetMyPawnListReq request)
         {
-            List<CDataPawnList> pawnList = new List<CDataPawnList>();
+            S2CPawnGetMypawnListRes res = new S2CPawnGetMypawnListRes();
 
             uint index = 1;
             foreach (Pawn pawn in client.Character.Pawns)
             {
-                CDataPawnList pawnListData = new CDataPawnList()
+                CDataPawnList pawnListData = new CDataPawnList
                 {
                     PawnId = (int)pawn.PawnId,
                     SlotNo = index++,
@@ -37,27 +34,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         Job = pawn.Job,
                         Level = pawn.ActiveCharacterJobData.Lv,
                         CraftRank = pawn.CraftData.CraftRank,
-                        PawnCraftSkillList = pawn.CraftData.PawnCraftSkillList
+                        PawnCraftSkillList = pawn.CraftData.PawnCraftSkillList,
                         // TODO: CommentSize, LatestReturnDate
                     },
                     // TODO: ShareRange, Unk0, Unk1, Unk2
                 };
-                pawnList.Add(pawnListData);
+                res.PawnList.Add(pawnListData);
             }
 
-            // TODO: PartnerInfo
-            CDataPartnerPawnInfo partnerInfo = new CDataPartnerPawnInfo()
+            var partnerPawn = client.Character.Pawns.Where(x => x.PawnId == client.Character.PartnerPawnId).FirstOrDefault();
+            if (partnerPawn != null)
             {
-                PawnId = client.Character.Pawns.FirstOrDefault()?.PawnId ?? 0,
-                Likability = 1,
-                Personality = 1
-            };
+                var partnerData = Server.Database.GetPartnerPawnRecord(client.Character.CharacterId, client.Character.PartnerPawnId);
+                res.PartnerInfo =  (partnerData != null) ? partnerData.ToCDataPartnerPawnData(partnerPawn) : new CDataPartnerPawnData();
+            }
 
-            S2CPawnGetMypawnListRes res = new S2CPawnGetMypawnListRes();
-            res.PawnList = pawnList;
-            res.PartnerInfo = partnerInfo;
-
-            client.Send(res);
+            return res;
         }
     }
 }

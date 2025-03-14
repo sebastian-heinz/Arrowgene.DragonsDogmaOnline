@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2S_SEASON_62_40_16_NTC> packet)
         {
-            StageId stageId = packet.Structure.LayoutId.AsStageId();
+            StageLayoutId stageId = packet.Structure.LayoutId.AsStageLayoutId();
             Logger.Info($"Other packet: {stageId}");
 
             if (StageManager.IsLegacyEpitaphHubArea(stageId))

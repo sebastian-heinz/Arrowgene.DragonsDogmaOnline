@@ -119,7 +119,7 @@ namespace Arrowgene.Ddon.Cli.Command
 
             if (_loginServer == null)
             {
-                _loginServer = new DdonLoginServer(_setting.LoginServerSetting, _serverScriptManager.GameServerSettings.GameLogicSetting, _database, _assetRepository);
+                _loginServer = new DdonLoginServer(_setting.LoginServerSetting, _serverScriptManager.GameServerSettingsModule.GameSettings, _database, _assetRepository);
             }
 
             if (_webServer == null)
@@ -129,7 +129,7 @@ namespace Arrowgene.Ddon.Cli.Command
 
             if (_gameServer == null)
             {
-                _gameServer = new DdonGameServer(_setting.GameServerSetting, _serverScriptManager.GameServerSettings.GameLogicSetting, _database, _assetRepository);
+                _gameServer = new DdonGameServer(_setting.GameServerSetting, _serverScriptManager.GameServerSettingsModule.GameSettings, _database, _assetRepository);
             }
 
             if (_rpcWebServer == null)

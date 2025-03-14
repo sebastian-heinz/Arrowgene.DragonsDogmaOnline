@@ -40,6 +40,10 @@ namespace Arrowgene.Ddon.Shared.Model
             CompletedQuests = new Dictionary<QuestId, CompletedQuest>();
             ClanName = new ClanName();
             EpitaphRoadState = new EpitaphRoadState();
+            AreaRanks = new();
+            AreaSupply = new();
+
+            PartnerTimerLockObj = new();
         }
 
         public int AccountId { get; set; }
@@ -107,6 +111,9 @@ namespace Arrowgene.Ddon.Shared.Model
         public byte[] BinaryData;
         public GameMode GameMode {  get; set; }
         public Dictionary<uint, uint> LastSeenLobby { get; set; }
+        public uint PartnerPawnId { get; set; }
+        public uint PartnerPawnAdventureTimerId { get; set; }
+        public object PartnerTimerLockObj { get; set; }
         public List<Pawn> Pawns { get; set; }
         public List<Pawn> RentedPawns {  get; set; }
         public uint FavWarpSlotNum { get; set; }
@@ -120,7 +127,11 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint ClanId { get; set; }
         public ClanName ClanName { get; set; }
         public bool IsLanternLit { get; set; }
+        public uint LanternTimer { get; set; }
+
         public EpitaphRoadState EpitaphRoadState { get; set; }
+        public Dictionary<QuestAreaId, AreaRank> AreaRanks { get; set; }
+        public Dictionary<QuestAreaId, List<CDataRewardItemInfo>> AreaSupply { get; set; }
 
         // TODO: Move to a more sensible place
         public uint LastEnteredShopId { get; set; }

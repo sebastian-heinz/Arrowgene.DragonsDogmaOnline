@@ -1,7 +1,6 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 using System;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure;
 
@@ -12,7 +11,7 @@ public class CDataRewardBoxItem
         UID = "";
     }
 
-    public UInt32 ItemId { get; set; }
+    public ItemId ItemId { get; set; }
     public UInt16 Num {  get; set; }
     public string UID {  get; set; }
     public byte Type { get; set; }
@@ -23,7 +22,7 @@ public class CDataRewardBoxItem
     {
         public override void Write(IBuffer buffer, CDataRewardBoxItem obj)
         {
-            WriteUInt32(buffer, obj.ItemId);
+            WriteUInt32(buffer, (uint) obj.ItemId);
             WriteUInt16(buffer, obj.Num);
             WriteMtString(buffer, obj.UID);
             WriteByte(buffer, obj.Type);
@@ -34,7 +33,7 @@ public class CDataRewardBoxItem
         public override CDataRewardBoxItem Read(IBuffer buffer)
         {
             CDataRewardBoxItem obj = new CDataRewardBoxItem();
-            obj.ItemId = ReadUInt32(buffer);
+            obj.ItemId = (ItemId) ReadUInt32(buffer);
             obj.Num = ReadUInt16(buffer);
             obj.UID = ReadMtString(buffer);
             obj.Type = ReadByte(buffer);

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -76,6 +77,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             craftPawns.AddRange(request.CraftSupportPawnIDList.Select(p => new CraftPawn(Server.CraftManager.FindPawn(client, p.PawnId), CraftPosition.Assistant)));
             craftPawns.AddRange(request.CraftMasterLegendPawnIDList.Select(p => new CraftPawn(Server.AssetRepository.PawnCraftMasterLegendAsset.Single(m => m.PawnId == p.PawnId))));
 
+            PacketQueue packets = new();
             Server.Database.ExecuteInTransaction(connection =>
             {
                 // Remove crafting materials
@@ -164,6 +166,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
 
                 Server.Database.InsertPawnCraftProgress(craftProgress, connection);
+                foreach (CraftPawn pawn in craftPawns)
+                {
+                    if (pawn.Pawn != null)
+                    {
+                        pawn.Pawn.PawnState = PawnState.Craft;
+                        Server.Database.UpdatePawnBaseInfo(pawn.Pawn, connection);
+                    }
+                }
 
                 // Subtract craft price
                 uint cost = Server.CraftManager.CalculateRecipeCost(recipe.Cost, itemInfo, craftPawns) * request.CreateCount;
@@ -177,7 +187,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_GP_LACK_GP);
                     updateCharacterItemNtc.UpdateWalletList.Add(updateGP);
                 }
+
+                if (leadPawn.PawnId == client.Character.PartnerPawnId)
+                {
+                    packets.AddRange(Server.PartnerPawnManager.UpdateLikabilityIncreaseAction(client, PartnerPawnAffectionAction.Craft, connection));
+                }
             });
+
+            packets.Send();
 
             client.Send(updateCharacterItemNtc);
             return new S2CCraftStartCraftRes();

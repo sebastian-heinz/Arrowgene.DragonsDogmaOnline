@@ -55,21 +55,21 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
         }
 #endif
 
-        public override void SendProgressWorkNotices(GameClient client, StageId stageId, uint subGroupId)
+        public override void SendProgressWorkNotices(GameClient client, StageLayoutId stageId, uint subGroupId)
         {
-            if (!gQuestProgressWork.ContainsKey((StageNo) stageId.Id))
+            if (!gQuestProgressWork.ContainsKey(stageId.Id))
             {
                 client.Party.SendToAll(new S2CQuestQuestProgressWorkSaveNtc());
                 return;
             }
 
-            if (!gQuestProgressWork[(StageNo) stageId.Id].ContainsKey(stageId.GroupId))
+            if (!gQuestProgressWork[stageId.Id].ContainsKey(stageId.GroupId))
             {
                 client.Party.SendToAll(new S2CQuestQuestProgressWorkSaveNtc());
                 return;
             }
 
-            foreach (var work in gQuestProgressWork[(StageNo)stageId.Id][stageId.GroupId])
+            foreach (var work in gQuestProgressWork[stageId.Id][stageId.GroupId])
             {
                 client.Party.SendToAll(work);
             }
@@ -131,7 +131,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     },
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.NpcTalkAndOrderUi(StageNo.AudienceChamber, NpcId.TheWhiteDragon, 0)
+                        QuestManager.CheckCommand.NpcTalkAndOrderUi(Stage.AudienceChamber.StageNo, NpcId.TheWhiteDragon, 0)
                     }),
                 },
                 new CDataQuestProcessState()
@@ -148,7 +148,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
                         QuestManager.CheckCommand.MyQstFlagOn(4765),
-                        QuestManager.CheckCommand.StageNoWithoutMarker(StageNo.EvilDragonsRoost1),
+                        QuestManager.CheckCommand.StageNoWithoutMarker(Stage.EvilDragonsRoost1.StageNo),
                         QuestManager.CheckCommand.MyQstFlagOff(4766)
                     })
                 },
@@ -159,7 +159,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     {
                         QuestManager.CheckCommand.MyQstFlagOn(4925),
                         QuestManager.CheckCommand.MyQstFlagOff(4928),
-                        QuestManager.CheckCommand.SceHitInWithoutMarker(StageNo.SacredFlamePath, 1)
+                        QuestManager.CheckCommand.SceHitInWithoutMarker(Stage.SacredFlamePath0.StageNo, 1)
                     })
                 },
                 new CDataQuestProcessState()
@@ -169,7 +169,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     {
                         QuestManager.CheckCommand.MyQstFlagOn(4926),
                         QuestManager.CheckCommand.MyQstFlagOff(4929),
-                        QuestManager.CheckCommand.SceHitInWithoutMarker(StageNo.SacredFlamePath, 2)
+                        QuestManager.CheckCommand.SceHitInWithoutMarker(Stage.SacredFlamePath0.StageNo, 2)
                     })
                 },
                 new CDataQuestProcessState()
@@ -179,7 +179,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     {
                         QuestManager.CheckCommand.MyQstFlagOn(4927),
                         QuestManager.CheckCommand.MyQstFlagOff(4930),
-                        QuestManager.CheckCommand.SceHitInWithoutMarker(StageNo.SacredFlamePath, 3)
+                        QuestManager.CheckCommand.SceHitInWithoutMarker(Stage.SacredFlamePath0.StageNo, 3)
                     })
                 },
                 new CDataQuestProcessState()
@@ -195,7 +195,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo=0x7, SequenceNo=0x0, BlockNo=0x0,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.IsLinkageEnemyFlag(StageNo.EvilDragonsRoost1, 1, 0, 2)
+                        QuestManager.CheckCommand.IsLinkageEnemyFlag(Stage.EvilDragonsRoost1.StageNo, 1, 0, 2)
                     })
                 },
                 new CDataQuestProcessState()
@@ -211,7 +211,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo=0x9, SequenceNo=0x0, BlockNo=0x0,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.IsLinkageEnemyFlag(StageNo.EvilDragonsRoost1, 1, 0, 3),
+                        QuestManager.CheckCommand.IsLinkageEnemyFlag(Stage.EvilDragonsRoost1.StageNo, 1, 0, 3),
                         QuestManager.CheckCommand.DummyNotProgress()
                     })
                 },
@@ -229,7 +229,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo=11, SequenceNo=0x0, BlockNo=0x0,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.IsLinkageEnemyFlag(StageNo.EvilDragonsRoost1, 1, 0, 3),
+                        QuestManager.CheckCommand.IsLinkageEnemyFlag(Stage.EvilDragonsRoost1.StageNo, 1, 0, 3),
                     })
                 }
             };
@@ -244,10 +244,10 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
             quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 368, Lv = 100, IsPartyRecommend = false });
 
             quest.QuestLayoutFlagSetInfoList = new List<CDataQuestLayoutFlagSetInfo>() {
-                QuestManager.LayoutFlag.Create(7866, StageNo.SacredFlamePath, 17),
-                QuestManager.LayoutFlag.Create(7864, StageNo.SacredFlamePath, 18),
-                QuestManager.LayoutFlag.Create(7865, StageNo.SacredFlamePath, 3),
-                QuestManager.LayoutFlag.Create(7867, StageNo.EvilDragonsRoost1, 1),
+                QuestManager.LayoutFlag.Create(7866, Stage.SacredFlamePath0.StageNo, 17),
+                QuestManager.LayoutFlag.Create(7864, Stage.SacredFlamePath0.StageNo, 18),
+                QuestManager.LayoutFlag.Create(7865, Stage.SacredFlamePath0.StageNo, 3),
+                QuestManager.LayoutFlag.Create(7867, Stage.EvilDragonsRoost1.StageNo, 1),
             };
 
             return quest;
@@ -286,10 +286,10 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
         }
 
         // groupNo, List<CDataQuestProgressWork>
-        private readonly Dictionary<StageNo, Dictionary<uint, List<S2CQuestQuestProgressWorkSaveNtc>>> gQuestProgressWork = new Dictionary<StageNo, Dictionary<uint, List<S2CQuestQuestProgressWorkSaveNtc>>>()
+        private readonly Dictionary<uint, Dictionary<uint, List<S2CQuestQuestProgressWorkSaveNtc>>> gQuestProgressWork = new Dictionary<uint, Dictionary<uint, List<S2CQuestQuestProgressWorkSaveNtc>>>()
         {
             #region SacredFlamePath
-            [StageNo.SacredFlamePath] = new Dictionary<uint, List<S2CQuestQuestProgressWorkSaveNtc>>()
+            [Stage.SacredFlamePath0.StageNo] = new Dictionary<uint, List<S2CQuestQuestProgressWorkSaveNtc>>()
             {
                 [17] = new List<S2CQuestQuestProgressWorkSaveNtc>()
                 {
@@ -299,7 +299,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                         ProcessNo = 0, SequenceNo = 0, BlockNo = 8,
                         WorkList = new List<CDataQuestProgressWork>
                         {
-                            QuestManager.NotifyCommand.KilledTargetEnemySetGroup(7866, StageNo.SacredFlamePath, 17)
+                            QuestManager.NotifyCommand.KilledTargetEnemySetGroup(7866, Stage.SacredFlamePath0.StageNo, 17)
                         }
                     },
                     new S2CQuestQuestProgressWorkSaveNtc()
@@ -308,7 +308,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                         ProcessNo = 3, SequenceNo = 0, BlockNo = 1,
                         WorkList = new List<CDataQuestProgressWork>
                         {
-                            QuestManager.NotifyCommand.KilledTargetEmSetGrpNoMarker(7866, StageNo.SacredFlamePath, 17)
+                            QuestManager.NotifyCommand.KilledTargetEmSetGrpNoMarker(7866, Stage.SacredFlamePath0.StageNo, 17)
                         }
                     },
                 },
@@ -320,7 +320,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                         ProcessNo = 0, SequenceNo = 0, BlockNo = 10,
                         WorkList = new List<CDataQuestProgressWork>
                         {
-                            QuestManager.NotifyCommand.KilledTargetEnemySetGroup(7864, StageNo.SacredFlamePath, 18)
+                            QuestManager.NotifyCommand.KilledTargetEnemySetGroup(7864, Stage.SacredFlamePath0.StageNo, 18)
                         }
                     },
                     new S2CQuestQuestProgressWorkSaveNtc()
@@ -329,7 +329,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                         ProcessNo = 4, SequenceNo = 0, BlockNo = 1,
                         WorkList = new List<CDataQuestProgressWork>
                         {
-                            QuestManager.NotifyCommand.KilledTargetEmSetGrpNoMarker(7864, StageNo.SacredFlamePath, 18)
+                            QuestManager.NotifyCommand.KilledTargetEmSetGrpNoMarker(7864, Stage.SacredFlamePath0.StageNo, 18)
                         }
                     },
                 },
@@ -341,7 +341,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                         ProcessNo = 0, SequenceNo = 0, BlockNo = 12,
                         WorkList = new List<CDataQuestProgressWork>
                         {
-                            QuestManager.NotifyCommand.KilledTargetEnemySetGroup(7865, StageNo.SacredFlamePath, 3)
+                            QuestManager.NotifyCommand.KilledTargetEnemySetGroup(7865, Stage.SacredFlamePath0.StageNo, 3)
                         }
                     },
                     new S2CQuestQuestProgressWorkSaveNtc()
@@ -350,14 +350,14 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                         ProcessNo = 5, SequenceNo = 0, BlockNo = 1,
                         WorkList = new List<CDataQuestProgressWork>
                         {
-                            QuestManager.NotifyCommand.KilledTargetEmSetGrpNoMarker(7865, StageNo.SacredFlamePath, 3)
+                            QuestManager.NotifyCommand.KilledTargetEmSetGrpNoMarker(7865, Stage.SacredFlamePath0.StageNo, 3)
                         }
                     },
                 },
             },
             #endregion
             #region EvilDragonsRoost
-            [StageNo.EvilDragonsRoost1] = new Dictionary<uint, List<S2CQuestQuestProgressWorkSaveNtc>>()
+            [Stage.EvilDragonsRoost1.StageNo] = new Dictionary<uint, List<S2CQuestQuestProgressWorkSaveNtc>>()
             {
                 [1] = new List<S2CQuestQuestProgressWorkSaveNtc>()
                 {
@@ -367,7 +367,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                         ProcessNo = 0, SequenceNo = 0, BlockNo = 19,
                         WorkList = new List<CDataQuestProgressWork>
                         {
-                            QuestManager.NotifyCommand.KilledTargetEnemySetGroup(7867, StageNo.EvilDragonsRoost1, 1)
+                            QuestManager.NotifyCommand.KilledTargetEnemySetGroup(7867, Stage.EvilDragonsRoost1.StageNo, 1)
                         }
                     }
                 },
@@ -386,7 +386,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo = 0, SequenceNo = 0, BlockNo = 2,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.Prt(StageNo.LookoutCastle1, 15, 18280, -14593)
+                        QuestManager.CheckCommand.Prt(Stage.LookoutCastle1.StageNo, 15, 18280, -14593)
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
@@ -401,7 +401,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                         QuestManager.ResultCommand.QstTalkChg(NpcId.Meirova0, 26024),
                         QuestManager.ResultCommand.QstTalkChg(NpcId.Gillian0, 26025),
                         QuestManager.ResultCommand.QstTalkChg(NpcId.Bertha, 26026),
-                        QuestManager.ResultCommand.Prt(StageNo.LookoutCastle1, 15, 18280, -14593),
+                        QuestManager.ResultCommand.Prt(Stage.LookoutCastle1.StageNo, 15, 18280, -14593),
                         QuestManager.ResultCommand.QstLayoutFlagOn(7891),
                         QuestManager.ResultCommand.QstLayoutFlagOff(8013),
                         QuestManager.ResultCommand.WorldManageLayoutFlagOff(8036, 70033001),
@@ -413,11 +413,11 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo = 0, SequenceNo = 0, BlockNo = 3,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.EventEnd(StageNo.LookoutCastle1, 20)
+                        QuestManager.CheckCommand.EventEnd(Stage.LookoutCastle1.StageNo, 20)
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
-                        QuestManager.ResultCommand.EventExec(StageNo.LookoutCastle1, 20, StageNo.LookoutCastle1, 0x20),
+                        QuestManager.ResultCommand.EventExec(Stage.LookoutCastle1.StageNo, 20, Stage.LookoutCastle1.StageNo, 0x20),
                         QuestManager.ResultCommand.SetCheckPoint()
                     }
                 },
@@ -426,7 +426,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo = 0, SequenceNo = 0, BlockNo = 4,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.NewTalkNpc(StageNo.LookoutCastle1, 0, 1, 0)
+                        QuestManager.CheckCommand.NewTalkNpc(Stage.LookoutCastle1.StageNo, 0, 1, 0)
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
@@ -447,7 +447,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo = 0, SequenceNo = 0, BlockNo = 5,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.NewTalkNpc(StageNo.FirefallMountainCampsite, 0, 0, 0)
+                        QuestManager.CheckCommand.NewTalkNpc(Stage.FirefallMountainCampsite.StageNo, 0, 0, 0)
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
@@ -464,7 +464,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo = 0, SequenceNo = 0, BlockNo = 6,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.StageNo(StageNo.SacredFlamePath)
+                        QuestManager.CheckCommand.StageNo(Stage.SacredFlamePath0.StageNo)
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
@@ -479,7 +479,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo = 0, SequenceNo = 0, BlockNo = 7,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.IsEnemyFound(StageNo.SacredFlamePath, 17, -1) // Might need to revisit this?
+                        QuestManager.CheckCommand.IsEnemyFound(Stage.SacredFlamePath0.StageNo, 17, -1) // Might need to revisit this?
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
@@ -506,7 +506,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo = 0, SequenceNo = 0, BlockNo = 9,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.IsEnemyFound(StageNo.SacredFlamePath, 18, -1)
+                        QuestManager.CheckCommand.IsEnemyFound(Stage.SacredFlamePath0.StageNo, 18, -1)
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
@@ -534,7 +534,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo = 0, SequenceNo = 0, BlockNo = 11,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.IsEnemyFound(StageNo.SacredFlamePath, 3, -1)
+                        QuestManager.CheckCommand.IsEnemyFound(Stage.SacredFlamePath0.StageNo, 3, -1)
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
@@ -562,7 +562,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo = 0, SequenceNo = 0, BlockNo = 13,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.StageNo(StageNo.ScaredFlamePathUpperLevel)
+                        QuestManager.CheckCommand.StageNo(Stage.SacredFlamePathUpperLevel.StageNo)
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
@@ -579,11 +579,11 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo = 0, SequenceNo = 0, BlockNo = 14,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.Prt(StageNo.ScaredFlamePathUpperLevel, 21030, 2934, -24797)
+                        QuestManager.CheckCommand.Prt(Stage.SacredFlamePathUpperLevel.StageNo, 21030, 2934, -24797)
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
-                        QuestManager.ResultCommand.Prt(StageNo.ScaredFlamePathUpperLevel, 21030, 2934, -24797),
+                        QuestManager.ResultCommand.Prt(Stage.SacredFlamePathUpperLevel.StageNo, 21030, 2934, -24797),
                         QuestManager.ResultCommand.UpdateAnnounce(),
                         QuestManager.ResultCommand.QstLayoutFlagOn(7904),
                         QuestManager.ResultCommand.MyQstFlagOn(4830),
@@ -598,11 +598,11 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo = 0, SequenceNo = 0, BlockNo = 15,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.EventEnd(StageNo.EvilDragonsRoost1, 0)
+                        QuestManager.CheckCommand.EventEnd(Stage.EvilDragonsRoost1.StageNo, 0)
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
-                        QuestManager.ResultCommand.ExeEventAfterStageJumpContinue(StageNo.EvilDragonsRoost1, 0, 1),
+                        QuestManager.ResultCommand.ExeEventAfterStageJumpContinue(Stage.EvilDragonsRoost1.StageNo, 0, 1),
                         QuestManager.ResultCommand.SetCheckPoint()
                     }
                 },
@@ -611,11 +611,11 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo = 0, SequenceNo = 0, BlockNo = 16,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.StageNo(StageNo.EvilDragonsRoost1)
+                        QuestManager.CheckCommand.StageNo(Stage.EvilDragonsRoost1.StageNo)
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
-                        QuestManager.ResultCommand.StageJump(StageNo.EvilDragonsRoost1, 1)
+                        QuestManager.ResultCommand.StageJump(Stage.EvilDragonsRoost1.StageNo, 1)
                     }
                 },
                 new CDataQuestProcessState()
@@ -623,7 +623,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo = 0, SequenceNo = 0, BlockNo = 17,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.IsLinkageEnemyFlag(StageNo.EvilDragonsRoost1, 1, 0, 3)
+                        QuestManager.CheckCommand.IsLinkageEnemyFlag(Stage.EvilDragonsRoost1.StageNo, 1, 0, 3)
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
@@ -631,7 +631,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                         QuestManager.ResultCommand.MyQstFlagOn(4765),
                         QuestManager.ResultCommand.QstLayoutFlagOn(7867),
                         QuestManager.ResultCommand.QstLayoutFlagOn(7868),
-                        QuestManager.ResultCommand.SetDiePlayerReturnPos(StageNo.EvilDragonsRoost1, 1, 0),
+                        QuestManager.ResultCommand.SetDiePlayerReturnPos(Stage.EvilDragonsRoost1.StageNo, 1, 0),
                         QuestManager.ResultCommand.BgmRequestFix(1, 264),
                         QuestManager.ResultCommand.Unknown(126, 2),
                         QuestManager.ResultCommand.QstLayoutFlagOff(7904),
@@ -642,14 +642,14 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo = 0, SequenceNo = 0, BlockNo = 18,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.EmHpNotLess(StageNo.EvilDragonsRoost1, 1, 0, 100)
+                        QuestManager.CheckCommand.EmHpNotLess(Stage.EvilDragonsRoost1.StageNo, 1, 0, 100)
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
                         QuestManager.ResultCommand.MyQstFlagOn(5054),
                         QuestManager.ResultCommand.MyQstFlagOff(5053),
                         QuestManager.ResultCommand.ResetDiePlayerReturnPos(0, 0),
-                        QuestManager.ResultCommand.SetDiePlayerReturnPos(StageNo.EvilDragonsRoost1, 2, 0),
+                        QuestManager.ResultCommand.SetDiePlayerReturnPos(Stage.EvilDragonsRoost1.StageNo, 2, 0),
                         QuestManager.ResultCommand.QstLayoutFlagOff(7868),
                     }
                 },
@@ -673,11 +673,11 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo = 0, SequenceNo = 0, BlockNo = 20,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.EventEnd(StageNo.EvilDragonsRoost1, 5)
+                        QuestManager.CheckCommand.EventEnd(Stage.EvilDragonsRoost1.StageNo, 5)
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
-                        QuestManager.ResultCommand.EventExec(StageNo.EvilDragonsRoost1, 5, 0, 0),
+                        QuestManager.ResultCommand.EventExec(Stage.EvilDragonsRoost1.StageNo, 5, 0, 0),
                         QuestManager.ResultCommand.QstLayoutFlagOff(7867),
                         QuestManager.ResultCommand.QstLayoutFlagOff(7903),
                         QuestManager.ResultCommand.MyQstFlagOn(4766),
@@ -692,7 +692,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo = 0, SequenceNo = 0, BlockNo = 21,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.NewTalkNpc(StageNo.EvilDragonsRoost1, 1, 0, 0)
+                        QuestManager.CheckCommand.NewTalkNpc(Stage.EvilDragonsRoost1.StageNo, 1, 0, 0)
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
@@ -707,7 +707,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                         QuestManager.ResultCommand.ResetDiePlayerReturnPos(0, 0),
                         QuestManager.ResultCommand.QstLayoutFlagOff(7868),
                         QuestManager.ResultCommand.QstLayoutFlagOff(8277),
-                        QuestManager.ResultCommand.SetDiePlayerReturnPos(StageNo.EvilDragonsRoost1, 2, 0),
+                        QuestManager.ResultCommand.SetDiePlayerReturnPos(Stage.EvilDragonsRoost1.StageNo, 2, 0),
                     }
                 },
                 new CDataQuestProcessState()
@@ -715,7 +715,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo = 0, SequenceNo = 0, BlockNo = 22,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.TalkNpc(StageNo.AudienceChamber, NpcId.TheWhiteDragon)
+                        QuestManager.CheckCommand.TalkNpc(Stage.AudienceChamber.StageNo, NpcId.TheWhiteDragon)
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
@@ -760,7 +760,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     {
                         QuestManager.CheckCommand.MyQstFlagOn(4765),
                         QuestManager.CheckCommand.IsMyquestLayoutFlagOff(8200),
-                        QuestManager.CheckCommand.StageNoNotEq(StageNo.EvilDragonsRoost1)
+                        QuestManager.CheckCommand.StageNoNotEq(Stage.EvilDragonsRoost1.StageNo)
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
@@ -840,7 +840,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(
                     new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.StageNoWithoutMarker(StageNo.ScaredFlamePathUpperLevel)
+                        QuestManager.CheckCommand.StageNoWithoutMarker(Stage.SacredFlamePathUpperLevel.StageNo)
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
@@ -882,7 +882,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo = 4, SequenceNo = 0, BlockNo = 2,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.StageNoWithoutMarker(StageNo.ScaredFlamePathUpperLevel),
+                        QuestManager.CheckCommand.StageNoWithoutMarker(Stage.SacredFlamePathUpperLevel.StageNo),
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
@@ -926,7 +926,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(
                     new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.StageNoWithoutMarker(StageNo.ScaredFlamePathUpperLevel),
+                        QuestManager.CheckCommand.StageNoWithoutMarker(Stage.SacredFlamePathUpperLevel.StageNo),
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
@@ -1007,7 +1007,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
-                        QuestManager.ResultCommand.LinkageEnemyFlagOn(StageNo.EvilDragonsRoost1, 1, 0, 1),
+                        QuestManager.ResultCommand.LinkageEnemyFlagOn(Stage.EvilDragonsRoost1.StageNo, 1, 0, 1),
                         QuestManager.ResultCommand.SetCheckPoint()
                     }
                 }
@@ -1051,12 +1051,12 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     ProcessNo = 11, SequenceNo = 0, BlockNo = 1,
                     CheckCommandList = QuestManager.CheckCommand.AddCheckCommands(new List<CDataQuestCommand>()
                     {
-                        QuestManager.CheckCommand.IsLinkageEnemyFlag(StageNo.EvilDragonsRoost1, 1, 0, 12),
+                        QuestManager.CheckCommand.IsLinkageEnemyFlag(Stage.EvilDragonsRoost1.StageNo, 1, 0, 12),
                     }),
                     ResultCommandList = new List<CDataQuestCommand>()
                     {
                         QuestManager.ResultCommand.SetCheckPoint(),
-                        QuestManager.ResultCommand.LinkageEnemyFlagOff(StageNo.EvilDragonsRoost1, 1, 0, 12)
+                        QuestManager.ResultCommand.LinkageEnemyFlagOff(Stage.EvilDragonsRoost1.StageNo, 1, 0, 12)
                     }
                 },
                 new CDataQuestProcessState()

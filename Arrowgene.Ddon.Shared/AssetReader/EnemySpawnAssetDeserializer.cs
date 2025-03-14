@@ -58,7 +58,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 {
                     List<JsonElement> row = dropsTableItemsRow.EnumerateArray().ToList();
                     GatheringItem gatheringItem = new GatheringItem();
-                    gatheringItem.ItemId = row[dropsTableSchemaIndexes["ItemId"]].GetUInt32();
+                    gatheringItem.ItemId = (ItemId) row[dropsTableSchemaIndexes["ItemId"]].GetUInt32();
                     gatheringItem.ItemNum = row[dropsTableSchemaIndexes["ItemNum"]].GetUInt32();
                     gatheringItem.MaxItemNum = row[dropsTableSchemaIndexes["MaxItemNum"]].GetUInt32();
                     gatheringItem.Quality = row[dropsTableSchemaIndexes["Quality"]].GetUInt32();
@@ -84,7 +84,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             foreach (JsonElement enemyRow in enemiesElement.EnumerateArray())
             {
                 List<JsonElement> row = enemyRow.EnumerateArray().ToList();
-                StageId layoutId = new StageId(
+                StageLayoutId layoutId = new StageLayoutId(
                     row[enemySchemaIndexes["StageId"]].GetUInt32(),
                     row[enemySchemaIndexes["LayerNo"]].GetByte(),
                     row[enemySchemaIndexes["GroupId"]].GetUInt32()

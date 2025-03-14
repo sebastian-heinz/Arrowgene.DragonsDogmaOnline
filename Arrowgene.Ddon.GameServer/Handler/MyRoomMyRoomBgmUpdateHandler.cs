@@ -1,14 +1,10 @@
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Network;
-using Arrowgene.Logging;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class MyRoomMyRoomBgmUpdateHandler : StructurePacketHandler<GameClient, C2SMyRoomMyRoomBgmUpdateReq>
+    public class MyRoomMyRoomBgmUpdateHandler : GameRequestPacketHandler<C2SMyRoomMyRoomBgmUpdateReq, S2CMyRoomMyRoomBgmUpdateRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(MyRoomMyRoomBgmUpdateHandler));
 
@@ -16,11 +12,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SMyRoomMyRoomBgmUpdateReq> req)
+        public override S2CMyRoomMyRoomBgmUpdateRes Handle(GameClient client, C2SMyRoomMyRoomBgmUpdateReq request)
         {
             S2CMyRoomMyRoomBgmUpdateRes res = new S2CMyRoomMyRoomBgmUpdateRes();
-            res.ItemId = req.Structure;
-            client.Send(res);
+
+            // TODO: maybe store so it's "remembered" for next time when FurnitureList returns BGM 
+
+            return res;
         }
     }
 }

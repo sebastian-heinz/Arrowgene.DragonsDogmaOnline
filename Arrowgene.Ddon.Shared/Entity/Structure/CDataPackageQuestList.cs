@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         }
 
         public uint Unk0 { get; set; }
-        public List<CDataPackageQuestDetail> Details {  get; set; }
+        public List<CDataPackageQuestDetail> Details { get; set; } = new();
 
 
         public class Serializer : EntitySerializer<CDataPackageQuestList>

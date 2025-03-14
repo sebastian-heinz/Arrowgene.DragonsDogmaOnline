@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
         }
 
-        public CDataCommunityCharacterBaseInfo CharacterInfo { get; set; }
+        public CDataCommunityCharacterBaseInfo CharacterInfo { get; set; } = new();
 
         /// <summary>
         /// Note that My Phrases are interpreted as regular message & emotes do not use this packet
@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         /// </summary>
         public uint PhrasesIndex { get; set; }
 
-        public string Message { get; set; }
+        public string Message { get; set; } = string.Empty;
 
         public class Serializer : PacketEntitySerializer<C2SChatSendTellMsgReq>
         {

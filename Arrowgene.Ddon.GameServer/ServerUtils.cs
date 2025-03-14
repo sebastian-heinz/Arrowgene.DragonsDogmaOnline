@@ -1,5 +1,3 @@
-using System.Linq;
-
 namespace Arrowgene.Ddon.GameServer
 {
     public class ServerUtils

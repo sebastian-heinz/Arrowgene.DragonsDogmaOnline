@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Model
             };
             TrainingStatus = new Dictionary<JobId, byte[]>();
             IsRented = false;
-            PawnState = PawnState.Wait;
+            PawnState = PawnState.None;
         }
         
         public Pawn(uint ownerCharacterId):this()

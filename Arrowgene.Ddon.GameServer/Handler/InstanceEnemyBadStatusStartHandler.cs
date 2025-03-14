@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (_Server.EpitaphRoadManager.TrialInProgress(client.Party))
             {
-                _Server.EpitaphRoadManager.EvaluateEnemyAbnormalStatusEffectStart(client.Party, packet.Structure.LayoutId.AsStageId(), packet.Structure.PosId);
+                _Server.EpitaphRoadManager.EvaluateEnemyAbnormalStatusEffectStart(client.Party, packet.Structure.LayoutId.AsStageLayoutId(), packet.Structure.PosId);
             }
         }
     }

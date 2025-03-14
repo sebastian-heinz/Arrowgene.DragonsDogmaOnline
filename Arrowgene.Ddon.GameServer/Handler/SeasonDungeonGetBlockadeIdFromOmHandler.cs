@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             var result = new S2CSeasonDungeonGetBlockadeIdFromOmRes();
 
-            var stageId = request.LayoutId.AsStageId();
+            var stageId = request.LayoutId.AsStageLayoutId();
             if (Server.AssetRepository.EpitaphTrialAssets.Trials.ContainsKey(stageId))
             {
                 var trial = Server.EpitaphRoadManager.GetTrial(stageId, request.PosId);

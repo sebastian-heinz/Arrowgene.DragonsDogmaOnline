@@ -21,31 +21,17 @@ namespace Arrowgene.Ddon.Rpc.Web.Route
         public class ServerStatus
         {
             public ushort Id { get; set; }
-            public string Name { get; set; }
-            public string Brief { get; set; }
-            public string TrafficName { get; set; }
+            public string Name { get; set; } = string.Empty;
+            public string Brief { get; set; } = string.Empty;
+            public string TrafficName { get; set; } = string.Empty;
             public uint TrafficLevel { get; set; }
             public uint MaxLoginNum { get; set; }
             public uint LoginNum { get; set; }
-            public string Addr { get; set; }
+            public string Addr { get; set; } = string.Empty;
             public ushort Port { get; set; }
             public ushort RpcPort { get; set; }
             public bool IsHide { get; set; }
-
-            public ServerStatus()
-            {
-                Id = 0;
-                Name = "";
-                Brief = "";
-                TrafficName = "";
-                TrafficLevel = 0;
-                MaxLoginNum = 0;
-                LoginNum = 0;
-                Addr = "";
-                Port = 0;
-                RpcPort = 0;
-                IsHide = false;
-            }
+            public bool PreventLogin { get; set; }
         }
 
         public override string Name => "ServerStatusCommand";
@@ -77,7 +63,8 @@ namespace Arrowgene.Ddon.Rpc.Web.Route
                         Addr = server.Addr,
                         Port = server.Port,
                         RpcPort = server.RpcPort,
-                        IsHide = server.IsHide
+                        IsHide = server.IsHide,
+                        PreventLogin = server.PreventLogin
                     });
                 }
             }

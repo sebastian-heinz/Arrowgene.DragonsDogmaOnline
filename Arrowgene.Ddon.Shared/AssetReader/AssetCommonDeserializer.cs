@@ -4,6 +4,8 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text.Json;
 
 namespace Arrowgene.Ddon.Shared.AssetReader
@@ -19,7 +21,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             NamedParams = namedParams;
         }
 
-        public bool ParseEnemyGroups(QuestDropItemAsset questDrops, Dictionary<uint, QuestEnemyGroup> EnemyGroups, JsonElement jElement)
+        public bool ParseEnemyGroups(uint questScheduleId, QuestDropItemAsset questDrops, Dictionary<uint, QuestEnemyGroup> EnemyGroups, JsonElement jElement)
         {
             if (!jElement.TryGetProperty("enemy_groups", out JsonElement jGroups))
             {
@@ -32,7 +34,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             {
                 QuestEnemyGroup enemyGroup = new QuestEnemyGroup()
                 {
-                    GroupId = groupId
+                    GroupId = groupId,
                 };
 
                 if (!jGroup.TryGetProperty("stage_id", out JsonElement jStageId))
@@ -41,7 +43,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     return false;
                 }
 
-                enemyGroup.StageId = ParseStageId(jStageId);
+                enemyGroup.StageLayoutId = ParseStageId(jStageId);
 
                 enemyGroup.SubGroupId = 0;
                 if (jGroup.TryGetProperty("subgroup_id", out JsonElement jSubGroupId))
@@ -67,10 +69,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     enemyGroup.PlacementType = placementType;
                 }
 
-                foreach (var enemy in jGroup.GetProperty("enemies").EnumerateArray())
+                for (int i = 0; i < jGroup.GetProperty("enemies").EnumerateArray().Count(); i++)
                 {
+                    var jEnemy = jGroup.GetProperty("enemies")[i];
+
                     bool isBoss = false;
-                    if (enemy.TryGetProperty("is_boss", out JsonElement jIsBoss))
+                    if (jEnemy.TryGetProperty("is_boss", out JsonElement jIsBoss))
                     {
                         isBoss = jIsBoss.GetBoolean();
                     }
@@ -78,22 +82,26 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     byte index = 0;
                     if (enemyGroup.PlacementType == QuestEnemyPlacementType.Manual)
                     {
-                        if (!enemy.TryGetProperty("index", out JsonElement jEnemyIndex))
+                        if (!jEnemy.TryGetProperty("index", out JsonElement jEnemyIndex))
                         {
                             Logger.Error($"Manual placed enemy group requires an index value. Unable to parse.");
                             return false;
                         }
                         index = jEnemyIndex.GetByte();
                     }
+                    else
+                    {
+                        index = (byte)(enemyGroup.StartingIndex + i);
+                    }
 
                     bool isRequired = true;
-                    if (enemy.TryGetProperty("is_required", out JsonElement jIsRequired))
+                    if (jEnemy.TryGetProperty("is_required", out JsonElement jIsRequired))
                     {
                         isRequired = jIsRequired.GetBoolean();
                     }
 
                     uint repopWaitSecond = 0;
-                    if (enemy.TryGetProperty("repop_wait_second", out JsonElement jRepopWaitSecond))
+                    if (jEnemy.TryGetProperty("repop_wait_second", out JsonElement jRepopWaitSecond))
                     {
                         repopWaitSecond = jRepopWaitSecond.GetUInt32();
                     }
@@ -108,7 +116,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         MdlType = 0,
                     };
 
-                    if (enemy.TryGetProperty("drop_items", out JsonElement itemsList))
+                    if (jEnemy.TryGetProperty("drop_items", out JsonElement itemsList))
                     {
                         customDropItems = true;
                         var list = itemsList.EnumerateArray();
@@ -117,7 +125,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         {
                             GatheringItem dropItems = new()
                             {
-                                ItemId = items.GetProperty("item_id").GetUInt32(),
+                                ItemId = AssetCommonDeserializer.ParseItemId(items.GetProperty("item_id")),
                                 ItemNum = items.GetProperty("item_min").GetUInt32(),
                                 MaxItemNum = items.GetProperty("item_max").GetUInt32(),
                                 Quality = items.GetProperty("quality").GetUInt32(),
@@ -132,9 +140,9 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                     var questEnemy = new InstancedEnemy()
                     {
-                        EnemyId = Convert.ToUInt32(enemy.GetProperty("enemy_id").GetString(), 16),
-                        Lv = enemy.GetProperty("level").GetUInt16(),
-                        Experience = enemy.GetProperty("exp").GetUInt32(),
+                        EnemyId = Convert.ToUInt32(jEnemy.GetProperty("enemy_id").GetString(), 16),
+                        Lv = jEnemy.GetProperty("level").GetUInt16(),
+                        Experience = jEnemy.GetProperty("exp").GetUInt32(),
                         IsBossBGM = isBoss,
                         IsBossGauge = isBoss,
                         Scale = 100,
@@ -142,9 +150,10 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         Index = index,
                         IsRequired = isRequired,
                         RepopWaitSecond = repopWaitSecond,
+                        QuestScheduleId = questScheduleId,
                     };
 
-                    ApplyOptionalEnemyKeys(enemy, questEnemy);
+                    ApplyOptionalEnemyKeys(jEnemy, questEnemy);
 
                     if (customDropItems)
                     {
@@ -267,7 +276,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             }
         }
 
-        public static StageId ParseStageId(JsonElement jStageId)
+        public static StageLayoutId ParseStageId(JsonElement jStageId)
         {
             uint id = jStageId.GetProperty("id").GetUInt32();
 
@@ -283,7 +292,26 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 groupId = jGroupId.GetUInt32();
             }
 
-            return new StageId(id, layerNo, groupId);
+            return new StageLayoutId(id, layerNo, groupId);
+        }
+
+        public static ItemId ParseItemId(JsonElement jItemId)
+        {
+            ItemId result = ItemId.HealingPotion;
+
+            if (jItemId.ValueKind == JsonValueKind.Number)
+            {
+                result = (ItemId) jItemId.GetUInt32();
+            }
+            else if (jItemId.ValueKind == JsonValueKind.String)
+            {
+                if (!Enum.TryParse(jItemId.GetString(), true, out result))
+                {
+                    throw new Exception("Failed to parse item reward. Skipping.");
+                }
+            }
+
+            return result;
         }
     }
 }

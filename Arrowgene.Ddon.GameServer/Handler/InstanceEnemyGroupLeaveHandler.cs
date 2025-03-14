@@ -7,7 +7,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class InstanceEnemyGroupLeaveHandler : StructurePacketHandler<GameClient, C2SInstanceEnemyGroupLeaveNtc>
+    public class InstanceEnemyGroupLeaveHandler : GameStructurePacketHandler<C2SInstanceEnemyGroupLeaveNtc>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceEnemyGroupLeaveHandler));
 

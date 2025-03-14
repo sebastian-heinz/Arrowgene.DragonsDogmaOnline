@@ -4,7 +4,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure;
 
 public class CDataGetRewardBoxItem
 {
-    public string UID { get; set; }
+    public string UID { get; set; } = string.Empty;
 
     public class Serializer : EntitySerializer<CDataGetRewardBoxItem>
     {

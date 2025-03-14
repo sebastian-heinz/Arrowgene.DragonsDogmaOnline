@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CPawnLostPawnGoldenReviveRes Handle(GameClient client, C2SPawnLostPawnGoldenReviveReq request)
         {
             Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
-            pawn.PawnState = PawnState.Wait;
+            pawn.PawnState = PawnState.None;
             Server.Database.UpdatePawnBaseInfo(pawn);
             
             bool walletUpdate = Server.WalletManager.RemoveFromWalletNtc(client, client.Character, WalletType.GoldenGemstones, 1); // TODO: Get price from settings.

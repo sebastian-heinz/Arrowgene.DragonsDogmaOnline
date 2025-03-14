@@ -1,13 +1,11 @@
-using System.Linq;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class SkillGetLearnedAbilityListHandler : StructurePacketHandler<GameClient, C2SSkillGetLearnedAbilityListReq>
+    public class SkillGetLearnedAbilityListHandler : GameRequestPacketHandler<C2SSkillGetLearnedAbilityListReq, S2CSkillGetLearnedAbilityListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillGetLearnedAbilityListHandler));
 
@@ -15,15 +13,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override void Handle(GameClient client, StructurePacket<C2SSkillGetLearnedAbilityListReq> packet)
+        public override S2CSkillGetLearnedAbilityListRes Handle(GameClient client, C2SSkillGetLearnedAbilityListReq request)
         {
-            client.Send(new S2CSkillGetLearnedAbilityListRes()
+            return new S2CSkillGetLearnedAbilityListRes()
             {
                 SetAcquierementParam = client.Character.LearnedAbilities
                     .Select(x => x?.AsCDataLearnedSetAcquirementParam())
                     .Where(x => x != null)
                     .ToList()
-            });            
+            };            
         }
     }
 }

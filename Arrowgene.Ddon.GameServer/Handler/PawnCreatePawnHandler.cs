@@ -59,35 +59,24 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             if (client.Character.MyPawnSlotNum < request.SlotNo)
             {
-                Logger.Error($"Character with ID {client.Character.CharacterId} has attempted to create a pawn without having the necessary number of slots: {client.Character.MyPawnSlotNum}/{request.SlotNo}. Client should have disallowed that, sending error response.");
-                return new S2CPawnCreatePawnRes()
-                {
-                    Error = (uint)ErrorCode.ERROR_CODE_PAWN_INVALID_SLOT_NO
-                };
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID_SLOT_NO,
+                    $"Character with ID {client.Character.CharacterId} has attempted to create a pawn without having the necessary number of slots: {client.Character.MyPawnSlotNum}/{request.SlotNo}. Client should have disallowed that.");
             }
             if (request.SlotNo > 1)
             {
                 // We need to consume 10 rift crystals for the cost
-                var result = Server.ItemManager.ConsumeItemByIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, 10133, 10);
-                if (result == null)
+                var result = Server.ItemManager.ConsumeItemByIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, 10133, 10)
+                    ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CHARACTER_ITEM_NOT_FOUND,
+                    $"Character with ID {client.Character.CharacterId} has attempted to create a pawn without having the necessary number of riftstone shards.");
+
+                client.Send(new S2CItemUpdateCharacterItemNtc()
                 {
-                    Logger.Debug($"Character with ID {client.Character.CharacterId} has attempted to create a pawn without having the necessary number of riftstone shards, sending error response.");
-                    return new S2CPawnCreatePawnRes()
-                    {
-                        Error = (uint)ErrorCode.ERROR_CODE_CHARACTER_ITEM_NOT_FOUND
-                    };
-                }
-                else
-                {
-                    client.Send(new S2CItemUpdateCharacterItemNtc()
-                    {
-                        UpdateType = ItemNoticeType.CreatePawn,
-                        UpdateItemList = new()
+                    UpdateType = ItemNoticeType.CreatePawn,
+                    UpdateItemList = new()
                         {
                             result
                         }
-                    });
-                }
+                });
             }           
             
             Pawn pawn = new Pawn(client.Character.CharacterId)

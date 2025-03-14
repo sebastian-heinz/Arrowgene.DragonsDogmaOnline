@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.Shared.Model.Scheduler
         SubstoryQuestRotation = 10,
         ExtremeMissionRewardUpdate = 11,
         PawnExpedition = 12,
-        PawnAffectionIncreaseInteraction = 13,
+        PawnAffectionIncreaseInteractionReset = 13,
         PawnTrainingExperiencePoints = 14,
         ClanDungeonReset = 15,
         MandragoraGrowth = 16,
@@ -29,6 +29,7 @@ namespace Arrowgene.Ddon.Shared.Model.Scheduler
         AwardBitterblackMazeResetTickets = 20,
         TimeLockedDungeons = 21,
         // Others not from above webpage
-        SeasonalEventSchedule = 22
+        SeasonalEventSchedule = 22,
+        RankingBoardReset = 23
     }
 }

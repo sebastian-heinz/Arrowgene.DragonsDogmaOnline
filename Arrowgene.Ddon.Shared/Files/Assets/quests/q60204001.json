@@ -1,0 +1,118 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "Tutorial",
+    "comment": "Volden Mines Trial: Spirits Aflame (Volden Mines AR15)",
+    "quest_id": 60204001,
+    "next_quest": 0,
+    "base_level": 63,
+    "minimum_item_rank": 0,
+    "discoverable": false,
+    "stage_id": { "id": 80 },
+    "area_id": "VoldenMines",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 4,
+            "Param2": 14
+        }
+    ],
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 1938
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1039
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 132
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 410,
+                "group_id": 6
+            },
+            "starting_index": 9,
+            "enemies": [
+                {
+                    "comment": "Voldic Geo Golem",
+                    "enemy_id": "0x015707",
+                    "level": 63,
+                    "exp": 19380,
+                    "is_boss": true,
+                    "named_enemy_params_id": 907
+                },
+                {
+                    "comment": "Sludgeman",
+                    "enemy_id": "0x010510",
+                    "level": 63,
+                    "exp": 775
+                },
+                {
+                    "comment": "Sludgeman",
+                    "enemy_id": "0x010510",
+                    "level": 63,
+                    "exp": 775
+                },
+                {
+                    "comment": "Sludgeman",
+                    "enemy_id": "0x010510",
+                    "level": 63,
+                    "exp": 775
+                },
+                {
+                    "comment": "Sludgeman",
+                    "enemy_id": "0x010510",
+                    "level": 63,
+                    "exp": 775
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 80
+            },
+            "npc_id": "Roy",
+            "message_id": 17700
+        },
+        {
+            "type": "DiscoverEnemy",
+            "announce_type": "Accept",
+            "groups": [ 0 ],
+            "result_commands": [
+                {
+                    "comment": "Roy idle dialogue.",
+                    "type": "QstTalkChg",
+                    "Param1": 1604,
+                    "Param2": 17701
+                }
+            ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "caution": true,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 80
+            },
+            "checkpoint": true,
+            "announce_type": "Update",
+            "npc_id": "Roy",
+            "message_id": 17702
+        }
+    ]
+}

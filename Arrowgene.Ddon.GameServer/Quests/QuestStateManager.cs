@@ -1,4 +1,3 @@
-using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
@@ -11,7 +10,6 @@ using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Drawing;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Quests
@@ -52,16 +50,18 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public uint Step { get; set; }
 
         public Dictionary<ushort, QuestProcessState> ProcessState { get; set; }
-        public Dictionary<StageId, Dictionary<uint, List<InstancedEnemy>>> QuestEnemies { get; set; }
+        public Dictionary<StageLayoutId, Dictionary<uint, List<InstancedEnemy>>> QuestEnemies { get; set; }
         public Dictionary<uint, QuestDeliveryRecord> DeliveryRecords { get; set; }
         public Dictionary<uint, QuestEnemyHuntRecord> HuntRecords { get; set; }
+        public QuestInstanceVars InstanceVars { get; set; }
 
         public QuestState()
         {
             ProcessState = new Dictionary<ushort, QuestProcessState>();
-            QuestEnemies = new Dictionary<StageId, Dictionary<uint, List<InstancedEnemy>>>();
+            QuestEnemies = new Dictionary<StageLayoutId, Dictionary<uint, List<InstancedEnemy>>>();
             DeliveryRecords = new Dictionary<uint, QuestDeliveryRecord>();
             HuntRecords = new Dictionary<uint, QuestEnemyHuntRecord>();
+            InstanceVars = new QuestInstanceVars();
         }
 
         public uint UpdateDeliveryRequest(uint itemId, uint amount)
@@ -163,14 +163,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestStateManager));
 
         protected Dictionary<uint, QuestState> ActiveQuests { get; set; }
-        private Dictionary<StageId, HashSet<uint>> QuestLookupTable { get; set; }
+        private Dictionary<StageLayoutId, HashSet<uint>> QuestLookupTable { get; set; }
         private List<QuestId> CompletedWorldQuests { get; set; }
         private Dictionary<QuestAreaId, HashSet<uint>> RolledInstanceWorldQuests { get; set; }
 
         public QuestStateManager()
         {
             ActiveQuests = new Dictionary<uint, QuestState>();
-            QuestLookupTable = new Dictionary<StageId, HashSet<uint>>();
+            QuestLookupTable = new Dictionary<StageLayoutId, HashSet<uint>>();
             CompletedWorldQuests = new List<QuestId>();
             RolledInstanceWorldQuests = new Dictionary<QuestAreaId, HashSet<uint>>();
 
@@ -241,6 +241,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 {
                     ActiveQuests[quest.QuestScheduleId].AddDeliveryRequest(request.ItemId, request.Amount);
                 }
+
                 foreach (var request in quest.EnemyHunts)
                 {
                     uint storedHunts = (quest.SaveWorkAsStep && step >= 1) ? (step - 1) : 0;
@@ -252,6 +253,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
                 // Initialize enemy data are the current point
                 quest.PopulateStartingEnemyData(this);
+
+                // Allow scripted quests to initialize additional custom state information
+                quest.InitializeInstanceState(ActiveQuests[quest.QuestScheduleId]);
             }
         }
 
@@ -261,7 +265,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             AddNewQuest(quest, step);
         }
 
-        public bool HasEnemiesInCurrentStageGroup(Quest quest, StageId stageId)
+        public bool HasEnemiesInCurrentStageGroup(Quest quest, StageLayoutId stageId)
         {
             lock (ActiveQuests)
             {
@@ -270,7 +274,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
         }
 
-        public bool HasEnemiesInCurrentStageGroup(Quest quest, StageId stageId, uint subGroupId)
+        public bool HasEnemiesForCurrentQuestStepInStageGroup(Quest quest, StageLayoutId stageId, uint subGroupId)
         {
             lock (ActiveQuests)
             {
@@ -289,7 +293,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
         }
 
-        public void SetInstanceEnemies(Quest quest, StageId stageId, ushort subGroupId, List<InstancedEnemy> enemies)
+        public void SetInstanceEnemies(Quest quest, StageLayoutId stageId, ushort subGroupId, List<InstancedEnemy> enemies)
         {
             lock (ActiveQuests)
             {
@@ -303,7 +307,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
         }
 
-        public List<InstancedEnemy> GetInstancedEnemies(Quest quest, StageId stageId, ushort subGroupId)
+        public List<InstancedEnemy> GetInstancedEnemies(Quest quest, StageLayoutId stageId, ushort subGroupId)
         {
             lock (ActiveQuests)
             {
@@ -327,7 +331,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
         }
 
-        public InstancedEnemy GetInstancedEnemy(Quest quest, StageId stageId, ushort subGroupId, uint index)
+        public InstancedEnemy GetInstancedEnemy(Quest quest, StageLayoutId stageId, ushort subGroupId, uint index)
         {
             lock (ActiveQuests)
             {
@@ -458,7 +462,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
         }
 
-        public HashSet<uint> StageQuests(StageId stageId)
+        public HashSet<uint> StageQuests(StageLayoutId stageId)
         {
             lock (ActiveQuests)
             {
@@ -559,13 +563,16 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public abstract PacketQueue DistributeQuestRewards(uint questScheduleId, DbConnection? connectionIn = null);
         public abstract PacketQueue UpdatePriorityQuestList(GameClient requestingClient, DbConnection? connectionIn = null);
 
-        private uint CalculateTotalPointAmount(DdonGameServer server, GameClient client, CDataQuestExp point)
+        private (uint BasePoints, uint BonusPoints) CalculateTotalPointAmount(DdonGameServer server, GameClient client, CDataQuestExp point, QuestType questType)
         {
-            uint amount = point.Reward;
+            (uint BasePoints, uint BonusPoints) amount = (point.Reward, 0);
             switch (point.Type)
             {
                 case PointType.ExperiencePoints:
-                    amount = server.ExpManager.GetAdjustedExp(client.GameMode, RewardSource.Quest, null, point.Reward, 0);
+                    amount = server.ExpManager.GetAdjustedPoints(client, RewardSource.Quest, client.Character, null, PointType.ExperiencePoints, point.Reward, null, questType);
+                    break;
+                case PointType.AreaPoints:
+                    amount = server.ExpManager.GetAdjustedPointsForQuest(PointType.AreaPoints, point.Reward, questType);
                     break;
                 default:
                     break;
@@ -597,10 +604,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 client.Enqueue(updateCharacterItemNtc, packets);
             }
 
-            foreach (var point in quest.ScaledExpRewards())
+            var scaledRewards = quest.ScaledExpRewards();
+            foreach (var point in scaledRewards)
             {
-                uint amount = CalculateTotalPointAmount(server, client, point);
-                if (amount == 0)
+                var amount = CalculateTotalPointAmount(server, client, point, quest.QuestType);
+                if (amount.BasePoints == 0)
                 {
                     continue;
                 }
@@ -609,7 +617,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 {
                     case PointType.ExperiencePoints:
                         packets.AddRange(server.ExpManager.AddExp(client, client.Character, amount, RewardSource.Quest, quest.QuestType, connectionIn));
-                        if (server.GameLogicSettings.EnableMainPartyPawnsQuestRewards)
+                        if (server.GameSettings.GameServerSettings.EnableMainPartyPawnsQuestRewards)
                         {
                             foreach (PartyMember member in client.Party.Members)
                             {
@@ -621,14 +629,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         }
                         break;
                     case PointType.JobPoints:
-                        packets.AddRange(server.ExpManager.AddJp(client, client.Character, amount, RewardSource.Quest, quest.QuestType, connectionIn));
-                        if (server.GameLogicSettings.EnableMainPartyPawnsQuestRewards)
+                        packets.AddRange(server.ExpManager.AddJp(client, client.Character, amount.BasePoints, RewardSource.Quest, quest.QuestType, connectionIn));
+                        if (server.GameSettings.GameServerSettings.EnableMainPartyPawnsQuestRewards)
                         {
                             foreach (PartyMember member in client.Party.Members)
                             {
                                 if (member is PawnPartyMember pawnMember && client.Character.Pawns.Contains(pawnMember.Pawn))
                                 {
-                                    packets.AddRange(server.ExpManager.AddJp(client, pawnMember.Pawn, amount, RewardSource.Quest, quest.QuestType, connectionIn));
+                                    packets.AddRange(server.ExpManager.AddJp(client, pawnMember.Pawn, amount.BasePoints, RewardSource.Quest, quest.QuestType, connectionIn));
                                 }
                             }
                         }
@@ -637,9 +645,23 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         var ntc = server.PPManager.AddPlayPoint(client, amount, type: 1, connectionIn: connectionIn);
                         client.Enqueue(ntc, packets);
                         break;
+                    case PointType.AreaPoints:
+                        var areaId = quest.QuestAreaId > 0 ? quest.QuestAreaId : (QuestAreaId)quest.LightQuestDetail.AreaId;
+                        var areaRankNtcs = server.AreaRankManager.AddAreaPoint(client, areaId, amount, connectionIn);
+                        packets.AddRange(areaRankNtcs);
+                        break;
                 }
             }
-            
+
+            // Fallback so that existing quests still get AP.
+            if (!scaledRewards.Where(x => x.Type == PointType.AreaPoints).Any() && (QuestManager.IsWorldQuest(quest) || QuestManager.IsBoardQuest(quest)))
+            {
+                var areaId = quest.QuestAreaId > 0 ? quest.QuestAreaId : (QuestAreaId)quest.LightQuestDetail.AreaId;
+                var amount = server.ExpManager.GetAdjustedPointsForQuest(PointType.AreaPoints, server.AreaRankManager.GetAreaPointReward(quest), quest.QuestType);
+                var areaRankNtcs = server.AreaRankManager.AddAreaPoint(client, areaId, amount, connectionIn);
+                packets.AddRange(areaRankNtcs);
+            }
+
             if (QuestManager.IsClanQuest(quest) && client.Character.ClanId != 0)
             {
                 var amount = quest.LightQuestDetail.GetCp;
@@ -652,7 +674,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 var completeNtcs = server.ClanManager.CompleteClanQuest(quest, client);
                 packets.AddRange(completeNtcs);
             }
-            
+       
             return packets;
         }
 
@@ -667,6 +689,27 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 }
                 CompletedWorldQuests.Clear();
             }
+        }
+
+        public PacketQueue HandleDestroyGroupWorkNotice(PartyGroup party, Quest quest, StageLayoutId stageLayoutId, InstancedEnemy enemy, DbConnection? connectionIn = null)
+        {
+            PacketQueue packets = new();
+
+            var ntc = new S2CQuestQuestProgressWorkSaveNtc()
+            {
+                QuestScheduleId = quest.QuestScheduleId,
+                ProcessNo = enemy.QuestProcessInfo.ProcessNo,
+                SequenceNo = enemy.QuestProcessInfo.SequenceNo,
+                BlockNo = enemy.QuestProcessInfo.BlockNo,
+                WorkList = new List<CDataQuestProgressWork>
+                {
+                    QuestManager.NotifyCommand.KilledTargetEnemySetGroup((int) enemy.QuestEnemyGroupId, StageManager.ConvertIdToStageNo(stageLayoutId), (int) stageLayoutId.GroupId),
+                    QuestManager.NotifyCommand.KilledTargetEmSetGrpNoMarker((int) enemy.QuestEnemyGroupId, StageManager.ConvertIdToStageNo(stageLayoutId), (int) stageLayoutId.GroupId),
+                }
+            };
+            party.EnqueueToAll(ntc, packets);
+
+            return packets;
         }
     }
 

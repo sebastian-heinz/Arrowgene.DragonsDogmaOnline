@@ -63,7 +63,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 character.EpitaphRoadState.UnlockedContent = _Server.Database.GetEpitaphRoadUnlocks(character.CharacterId, connectionIn);
 
-                if (_Server.GameLogicSettings.EnableEpitaphWeeklyRewards)
+                if (_Server.GameSettings.GameServerSettings.EnableEpitaphWeeklyRewards)
                 {
                     character.EpitaphRoadState.WeeklyRewardsClaimed = _Server.Database.GetEpitaphClaimedWeeklyRewards(character.CharacterId, connectionIn);
                 }
@@ -172,7 +172,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
             character.StatusInfo.MaxStamina = CharacterManager.BASE_STAMINA;
         }
 
-        public void UpdateDatabaseOnExit(Character character)
+        public void CleanupOnExit(GameClient client)
+        {
+            // Cancel any pending timers
+            _Server.PartnerPawnManager.HandleLeaveFromParty(client);
+
+            // Update player health in the DB
+            UpdateDatabaseOnExit(client.Character);
+        }
+
+        private void UpdateDatabaseOnExit(Character character)
         {
             // When the character is first logging in, the HP
             // values are set to 0. If the player disconnects

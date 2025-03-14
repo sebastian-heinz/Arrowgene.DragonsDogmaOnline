@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
     {
         public PacketId Id => PacketId.S2C_MAIL_37_13_16_NTC;
 
-        public CDataMailInfo MailInfo { get; set; }
+        public CDataMailInfo MailInfo { get; set; } = new();
 
         public class Serializer : PacketEntitySerializer<S2CMailSystemMailSendNtc>
         {

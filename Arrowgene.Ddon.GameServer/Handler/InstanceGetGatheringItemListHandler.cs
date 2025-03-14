@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .Select((asset, index) => new CDataGatheringItemElement()
                 {
                     SlotNo = (uint)index,
-                    ItemId = asset.ItemId,
+                    ItemId = (uint) asset.ItemId,
                     ItemNum = asset.ItemNum,
                     Quality = asset.Quality,
                     IsHidden = asset.IsHidden

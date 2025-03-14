@@ -6,7 +6,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class C2LLoginReq : IPacketStructure
     {
-        public string OneTimeToken { get; set; }
+        public string OneTimeToken { get; set; } = string.Empty;
         public PlatformType PlatformType { get; set; }
 
         public PacketId Id => PacketId.C2L_LOGIN_REQ;

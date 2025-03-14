@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    internal class ClanClanShopGetBuffItemListHandler : GameRequestPacketHandler<C2SClanClanShopGetBuffItemListReq, S2CClanClanShopGetBuffItemListRes>
+    public class ClanClanShopGetBuffItemListHandler : GameRequestPacketHandler<C2SClanClanShopGetBuffItemListReq, S2CClanClanShopGetBuffItemListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClanClanGetMemberListHandler));
 

@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
         }
 
-        public string ItemUid { get; set; }
+        public string ItemUid { get; set; } = string.Empty;
         public uint Num { get; set; }
 
         public class Serializer : EntitySerializer<CDataStageTicketDungeonItemInfo>

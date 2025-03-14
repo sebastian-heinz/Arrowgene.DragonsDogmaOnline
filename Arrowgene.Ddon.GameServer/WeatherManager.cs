@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer
         public WeatherManager(DdonGameServer server)
         {
             _Server = server;
-            GameClockTimescale = server.GameLogicSettings.GameClockTimescale;
+            GameClockTimescale = server.GameSettings.GameServerSettings.GameClockTimescale;
             GenerateWeatherSequence();
         }
 
@@ -65,7 +65,7 @@ namespace Arrowgene.Ddon.GameServer
 
         public uint GetMoonPhase(DateTimeOffset time)
         {
-            ulong secondsPerLestanianDay = _Server.GameLogicSettings.GameClockTimescale * 60;
+            ulong secondsPerLestanianDay = _Server.GameSettings.GameServerSettings.GameClockTimescale * 60;
             ulong secondsPerMoonAge = MoonAgeLoopSec / GameTimeMoonAges;
             ulong secondsElapsed = (ulong)(time.ToUnixTimeSeconds() - OriginalRealTimeSec);
 
@@ -140,8 +140,8 @@ namespace Arrowgene.Ddon.GameServer
         {
             List<CDataWeatherLoop> weatherLoop = new List<CDataWeatherLoop>();
 
-            uint seqLength = _Server.GameLogicSettings.WeatherSequenceLength;
-            List<(uint MeanLength, uint Weight)> seqStats = _Server.GameLogicSettings.WeatherStatistics;
+            uint seqLength = _Server.GameSettings.GameServerSettings.WeatherSequenceLength;
+            List<(uint MeanLength, uint Weight)> seqStats = _Server.GameSettings.GameServerSettings.WeatherStatistics;
 
             if (!seqStats.Where(x => x.Weight > 0).Any())
             {

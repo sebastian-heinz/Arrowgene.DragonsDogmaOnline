@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.Shared.Model.EpitaphRoad
         // Index common for both
         private static readonly Bitfield Index = new Bitfield(31, 30, "Index");
 
-        public static uint GenerateTrialId(StageId location, uint posId, uint index)
+        public static uint GenerateTrialId(StageLayoutId location, uint posId, uint index)
         {
             return (uint)(Kind.Value((ulong)EpitaphIdKind.Trial) |
                           StageId.Value(location.Id) |
@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.Shared.Model.EpitaphRoad
                           Index.Value(index));
         }
 
-        public static uint GenerateBarrierId(StageId location, uint posId, uint index)
+        public static uint GenerateBarrierId(StageLayoutId location, uint posId, uint index)
         {
             return (uint)(Kind.Value((ulong)EpitaphIdKind.Barrier) |
                           StageId.Value(location.Id) |
@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.Shared.Model.EpitaphRoad
                           Index.Value(index));
         }
 
-        public static uint GenerateStatueId(StageId location, uint posId, uint index)
+        public static uint GenerateStatueId(StageLayoutId location, uint posId, uint index)
         {
             return (uint)(Kind.Value((ulong)EpitaphIdKind.Statue) |
                           StageId.Value(location.Id) |
@@ -60,7 +60,7 @@ namespace Arrowgene.Ddon.Shared.Model.EpitaphRoad
                           Index.Value(index));
         }
 
-        public static uint GenerateWeeklyRewardId(StageId location, uint posId, uint index)
+        public static uint GenerateWeeklyRewardId(StageLayoutId location, uint posId, uint index)
         {
             return (uint)(Kind.Value((ulong)EpitaphIdKind.WeeklyReward) |
               StageId.Value(location.Id) |
@@ -69,7 +69,7 @@ namespace Arrowgene.Ddon.Shared.Model.EpitaphRoad
               Index.Value(index));
         }
 
-        public static uint GenerateDoorId(StageId location, uint posId, uint index)
+        public static uint GenerateDoorId(StageLayoutId location, uint posId, uint index)
         {
             return (uint)(Kind.Value((ulong)EpitaphIdKind.Door) |
               StageId.Value(location.Id) |
@@ -78,7 +78,7 @@ namespace Arrowgene.Ddon.Shared.Model.EpitaphRoad
               Index.Value(index));
         }
 
-        public static uint GenerateGatheringPointId(StageId location, uint posId, uint index)
+        public static uint GenerateGatheringPointId(StageLayoutId location, uint posId, uint index)
         {
             return (uint)(Kind.Value((ulong)EpitaphIdKind.GatheringPoint) |
               StageId.Value(location.Id) |
