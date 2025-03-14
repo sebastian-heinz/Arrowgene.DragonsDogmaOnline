@@ -57,19 +57,20 @@ namespace Arrowgene.Ddon.LoginServer.Manager
         private static void ResolveQueue(object source, ElapsedEventArgs e)
         {
             LoginQueueManager obj = (LoginQueueManager)source;
-            Logger.Debug($"Waking up to handle a login queue of {obj.LoginQueue.Count} players");
-
-            if (!obj.LoginQueue.Any())
-            {
-                // Nobody in queue, go back to sleep.
-                return;
-            }
-
-            var servers = obj.GetServerInfo().GetAwaiter().GetResult();
-            var filteredServers = FilterServers(servers);
 
             lock(obj.LoginQueue)
             {
+                if (!obj.LoginQueue.Any())
+                {
+                    // Nobody in queue, go back to sleep.
+                    return;
+                }
+
+                var servers = obj.GetServerInfo().GetAwaiter().GetResult();
+                var filteredServers = FilterServers(servers);
+
+                Logger.Debug($"Handling a login queue of {obj.LoginQueue.Count} players");
+
                 // Try and hand out login spots to players if possible.
                 int i = 0;
                 while (filteredServers.Any() && i < obj.LoginQueue.Count)
@@ -93,27 +94,11 @@ namespace Arrowgene.Ddon.LoginServer.Manager
                 }
 
                 // Clean out any leavers and update anyone who remains about their current status.
-                List<int> leavers = new();
-                foreach (var id in obj.LoginQueue)
+                obj.LoginQueue.RemoveAll(x => obj.Server.ClientLookup.GetClientByAccountId(x) is null);
+                obj.LoginQueue.ForEach(x => obj.Server.ClientLookup.GetClientByAccountId(x)?.Send(new L2CLoginWaitNumNtc()
                 {
-                    var currentClient = obj.Server.ClientLookup.GetClientByAccountId(id);
-                    if (currentClient is not null)
-                    {
-                        currentClient.Send(new L2CLoginWaitNumNtc()
-                        {
-                            WaitNum = (uint)obj.LoginQueue.Count,
-                        });
-                    }
-                    else
-                    {
-                        leavers.Add(id);
-                    }
-                }
-
-                foreach (var id in leavers)
-                {
-                    obj.LoginQueue.RemoveAll(x => x == id);
-                }
+                    WaitNum = (uint)obj.LoginQueue.Count,
+                }));
             }
         }
 
