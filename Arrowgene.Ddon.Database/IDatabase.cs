@@ -121,7 +121,7 @@ namespace Arrowgene.Ddon.Database
             CDataPawnSearchParameter searchParams
         );
         bool DeletePawn(uint pawnId);
-        bool UpdatePawnBaseInfo(Pawn pawn);
+        bool UpdatePawnBaseInfo(Pawn pawn, DbConnection? connectionIn = null);
         uint GetPawnOwnerCharacterId(uint pawnId, DbConnection? connectionIn = null);
         bool ReplacePawnReaction(uint pawnId, CDataPawnReaction pawnReaction, DbConnection? connectionIn = null);
 
@@ -136,8 +136,8 @@ namespace Arrowgene.Ddon.Database
         bool InsertPawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);
         bool InsertIfNotExistsPawnCraftProgress(CraftProgress craftProgress);
         bool UpdatePawnCraftProgress(CraftProgress craftProgress);
-        bool DeletePawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId);
-        CraftProgress SelectPawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId);
+        bool DeletePawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, DbConnection? connectionIn = null);
+        CraftProgress SelectPawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, DbConnection? connectionIn = null);
         #endregion
 
         // Pawn Sp Skills

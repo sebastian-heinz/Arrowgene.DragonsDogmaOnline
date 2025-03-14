@@ -397,24 +397,19 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return rowsAffected > NoRowsAffected;
         }
 
-        public bool UpdatePawnBaseInfo(Pawn pawn)
+        public bool UpdatePawnBaseInfo(Pawn pawn, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return UpdatePawnBaseInfo(connection, pawn);
-        }
-
-        public bool UpdatePawnBaseInfo(TCon conn, Pawn pawn)
-        {
-            int characterUpdateRowsAffected = ExecuteNonQuery(
-                conn,
-                SqlUpdatePawn,
-                command =>
-                {
-                    AddParameter(command, pawn);
-                }
-            );
-
-            return characterUpdateRowsAffected > NoRowsAffected;
+            return ExecuteQuerySafe<int>(connectionIn, (connection) =>
+            {
+                return ExecuteNonQuery(
+                    connection,
+                    SqlUpdatePawn,
+                    command =>
+                    {
+                        AddParameter(command, pawn);
+                    }
+                );
+            }) > NoRowsAffected;
         }
 
         private void QueryPawnData(DbConnection conn, Pawn pawn)
