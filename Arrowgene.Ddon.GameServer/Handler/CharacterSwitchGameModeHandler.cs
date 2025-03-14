@@ -38,6 +38,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var bbmProgress = client.Character.BbmProgress;
             var walletPointList = client.Character.WalletPointList;
             var warpPointList = client.Character.ReleasedWarpPoints;
+            var clanId = client.Character.ClanId;
+            var clanName = client.Character.ClanName;
 
             var serverInfo = client.Character.Server;
             if (client.GameMode == GameMode.Normal)
@@ -73,6 +75,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Character.WalletPointList = walletPointList;
             client.Character.ReleasedWarpPoints = warpPointList;
             client.Character.OnlineStatus = OnlineStatus.Online;
+            client.Character.ClanId = clanId;
+            client.Character.ClanName = clanName;
 
             S2CCharacterSwitchGameModeNtc ntc = new S2CCharacterSwitchGameModeNtc()
             {

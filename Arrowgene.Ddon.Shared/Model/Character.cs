@@ -73,23 +73,23 @@ namespace Arrowgene.Ddon.Shared.Model
             }
         }
 
-        public uint CharacterId;
-        public uint BbmCharacterId;
-        public uint UserId;
-        public uint Version;
-        public string FirstName;
-        public string LastName;
-        public List<CDataJobPlayPoint> PlayPointList;
-        public Storages Storage;
-        public List<CDataEquipItemInfoUnk2> CharacterEquipItemInfoUnk2;
-        public List<CDataWalletPoint> WalletPointList;
+        public uint CharacterId { get; set; }
+        public uint BbmCharacterId { get; set; }
+        public uint UserId { get; set; }
+        public uint Version { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public List<CDataJobPlayPoint> PlayPointList { get; set; }
+        public Storages Storage { get; set; }
+        public List<CDataEquipItemInfoUnk2> CharacterEquipItemInfoUnk2 { get; set; }
+        public List<CDataWalletPoint> WalletPointList { get; set; }
         /// <summary>
         /// num = 0: New character
         /// num = 1: Complete the main quest "A Servant's Pledge"
         /// num = 2: Riftstone Shards×10, Available in each area's supplies
         /// num = 3: Dragonforce Augmentation, Obtain "Master Vessel +1", ×10 Riftstone Shards, "3rd Level of Dragon Power" ○ Main Quest "The Whereabouts of Life" ○ Total Level of the Master is 120 or more ○ Required BO for the Master: 19370 (3rd level)
         /// </summary>
-        public byte MyPawnSlotNum;
+        public byte MyPawnSlotNum { get; set; }
         /// <summary>
         /// Support Pawns can join a party as long as there is at least one main Pawn in the party. (e.g. 1 main pawn + 2 support pawns)
         /// num = 0: New character
@@ -97,18 +97,18 @@ namespace Arrowgene.Ddon.Shared.Model
         /// num = 4: Dragonforce Augmentation Obtain "Vessel of Leadership +1" ← "2nd Level of Dragon Power" ○ Complete the main Quest "Awakening of the Gods" ○ Total Level of the Master is 70 or more ○ Required BO for the Master: 4990 (2nd level)
         /// num = 5: Dragonforce Augmentation Obtain "Commander's Vessel +1" ← "4th Level of Dragon Power" ○ Complete the main quest "White Dragon, Be Eternal" ○ The total level of the Master is 160 or more ○ Required BO for the Master: 70100 (4th level)
         /// </summary>
-        public byte RentalPawnSlotNum;
-        public List<CDataOrbPageStatus> OrbStatusList;
-        public List<CDataCharacterMsgSet> MsgSetList;
-        public List<CDataShortCut> ShortCutList;
-        public List<CDataCommunicationShortCut> CommunicationShortCutList;
-        public CDataMatchingProfile MatchingProfile;
-        public CDataArisenProfile ArisenProfile;
-        public bool HideEquipHeadPawn;
-        public bool HideEquipLanternPawn;
-        public byte ArisenProfileShareRange;
-        public List<CDataPresetAbilityParam> AbilityPresets;
-        public byte[] BinaryData;
+        public byte RentalPawnSlotNum { get; set; }
+        public List<CDataOrbPageStatus> OrbStatusList { get; set; }
+        public List<CDataCharacterMsgSet> MsgSetList { get; set; }
+        public List<CDataShortCut> ShortCutList { get; set; }
+        public List<CDataCommunicationShortCut> CommunicationShortCutList { get; set; }
+        public CDataMatchingProfile MatchingProfile { get; set; }
+        public CDataArisenProfile ArisenProfile { get; set; }
+        public bool HideEquipHeadPawn { get; set; }
+        public bool HideEquipLanternPawn { get; set; }
+        public byte ArisenProfileShareRange { get; set; }
+        public List<CDataPresetAbilityParam> AbilityPresets { get; set; }
+        public byte[] BinaryData { get; set; }
         public GameMode GameMode {  get; set; }
         public Dictionary<uint, uint> LastSeenLobby { get; set; }
         public uint PartnerPawnId { get; set; }
