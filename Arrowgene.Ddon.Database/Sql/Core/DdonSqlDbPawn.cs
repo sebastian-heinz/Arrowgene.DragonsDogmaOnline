@@ -399,6 +399,15 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         public bool UpdatePawnBaseInfo(Pawn pawn, DbConnection? connectionIn = null)
         {
+            // TODO: Make this less super dangerous.
+            // This has a potential for pawn kidnapping by overwriting the pawn's characterId.
+            // Until we better implement rental pawns, this should ONLY write for main pawns.
+
+            if (pawn.PawnType != PawnType.Main)
+            {
+                return false;
+            }
+
             return ExecuteQuerySafe<int>(connectionIn, (connection) =>
             {
                 return ExecuteNonQuery(
