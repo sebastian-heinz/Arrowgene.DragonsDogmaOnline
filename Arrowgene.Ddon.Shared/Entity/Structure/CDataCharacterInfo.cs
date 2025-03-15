@@ -1,7 +1,6 @@
-using System.Collections.Generic;
-using System.Linq;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Model;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -48,70 +47,39 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 
         public CDataCharacterInfo()
         {
-            CharacterId = 0;
-            UserId = 0;
-            Version = 0;
-            FirstName = "";
-            LastName = "";
-            EditInfo = new CDataEditInfo();
-            StatusInfo = new CDataStatusInfo();
-            Job = 0;
-            CharacterJobDataList = new List<CDataCharacterJobData>();
-            PlayPointList = new List<CDataJobPlayPoint>();
-            CharacterEquipDataList = new List<CDataCharacterEquipData>();
-            CharacterEquipViewDataList = new List<CDataCharacterEquipData>();
-            CharacterEquipJobItemList = new List<CDataEquipJobItem>();
-            JewelrySlotNum = 0;
-            CharacterEquipItemInfoUnk2 = new List<CDataEquipItemInfoUnk2>();
-            CharacterItemSlotInfoList = new List<CDataCharacterItemSlotInfo>();
-            WalletPointList = new List<CDataWalletPoint>();
-            MyPawnSlotNum = 0;
-            RentalPawnSlotNum = 0;
-            OrbStatusList = new List<CDataOrbPageStatus>();
-            MsgSetList = new List<CDataCharacterMsgSet>();
-            ShortCutList = new List<CDataShortCut>();
-            CommunicationShortCutList = new List<CDataCommunicationShortCut>();
-            MatchingProfile = new CDataMatchingProfile();
-            ArisenProfile = new CDataArisenProfile();
-            HideEquipHead = false;
-            HideEquipLantern = false;
-            HideEquipHeadPawn = false;
-            HideEquipLanternPawn = false;
-            ArisenProfileShareRange = 0;
-            OnlineStatus = 0;
         }
 
-        public uint CharacterId;
-        public uint UserId;
-        public uint Version;
-        public string FirstName;
-        public string LastName;
-        public CDataEditInfo EditInfo;
-        public CDataStatusInfo StatusInfo;
-        public JobId Job;
-        public List<CDataCharacterJobData> CharacterJobDataList;
-        public List<CDataJobPlayPoint> PlayPointList;
-        public List<CDataCharacterEquipData> CharacterEquipDataList;
-        public List<CDataCharacterEquipData> CharacterEquipViewDataList;
-        public List<CDataEquipJobItem> CharacterEquipJobItemList;
-        public byte JewelrySlotNum;
-        public List<CDataEquipItemInfoUnk2> CharacterEquipItemInfoUnk2; //from Ghidra
-        public List<CDataCharacterItemSlotInfo> CharacterItemSlotInfoList;
-        public List<CDataWalletPoint> WalletPointList;
-        public byte MyPawnSlotNum;
-        public byte RentalPawnSlotNum;
-        public List<CDataOrbPageStatus> OrbStatusList;
-        public List<CDataCharacterMsgSet> MsgSetList;
-        public List<CDataShortCut> ShortCutList;
-        public List<CDataCommunicationShortCut> CommunicationShortCutList;
-        public CDataMatchingProfile MatchingProfile;
-        public CDataArisenProfile ArisenProfile;
-        public bool HideEquipHead;
-        public bool HideEquipLantern;
-        public bool HideEquipHeadPawn;
-        public bool HideEquipLanternPawn;
-        public byte ArisenProfileShareRange;
-        public OnlineStatus OnlineStatus;
+        public uint CharacterId { get; set; }
+        public uint UserId { get; set; }
+        public uint Version { get; set; }
+        public string FirstName { get; set; } = string.Empty;
+        public string LastName { get; set; } = string.Empty;
+        public CDataEditInfo EditInfo { get; set; } = new();
+        public CDataStatusInfo StatusInfo { get; set; } = new();
+        public JobId Job { get; set; }
+        public List<CDataCharacterJobData> CharacterJobDataList { get; set; } = new();
+        public List<CDataJobPlayPoint> PlayPointList { get; set; } = new();
+        public List<CDataCharacterEquipData> CharacterEquipDataList { get; set; } = new();
+        public List<CDataCharacterEquipData> CharacterEquipViewDataList { get; set; } = new();
+        public List<CDataEquipJobItem> CharacterEquipJobItemList { get; set; } = new();
+        public byte JewelrySlotNum { get; set; }
+        public List<CDataEquipItemInfoUnk2> CharacterEquipItemInfoUnk2 { get; set; } = new();//from Ghidra
+        public List<CDataCharacterItemSlotInfo> CharacterItemSlotInfoList { get; set; } = new();
+        public List<CDataWalletPoint> WalletPointList { get; set; } = new();
+        public byte MyPawnSlotNum { get; set; }
+        public byte RentalPawnSlotNum { get; set; }
+        public List<CDataOrbPageStatus> OrbStatusList { get; set; } = new();
+        public List<CDataCharacterMsgSet> MsgSetList { get; set; } = new();
+        public List<CDataShortCut> ShortCutList { get; set; } = new();
+        public List<CDataCommunicationShortCut> CommunicationShortCutList { get; set; } = new();
+        public CDataMatchingProfile MatchingProfile { get; set; } = new();
+        public CDataArisenProfile ArisenProfile { get; set; } = new();
+        public bool HideEquipHead { get; set; }
+        public bool HideEquipLantern { get; set; }
+        public bool HideEquipHeadPawn { get; set; }
+        public bool HideEquipLanternPawn { get; set; }
+        public byte ArisenProfileShareRange { get; set; }
+        public OnlineStatus OnlineStatus { get; set; }
 
         public class Serializer : EntitySerializer<CDataCharacterInfo>
         {

@@ -53,8 +53,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     if (supportPawn != null)
                     {
                         supportPawn.PawnState = PawnState.None;
-                        Server.Database.UpdatePawnBaseInfo(supportPawn, connection);
-
+                        if (supportPawn.PawnType == PawnType.Main)
+                        {
+                            Server.Database.UpdatePawnBaseInfo(supportPawn, connection);
+                        }
                     }
                 }
             });

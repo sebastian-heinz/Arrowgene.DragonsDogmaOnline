@@ -57,6 +57,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // TODO: Add pawn to rented pawn list for player
             // TODO: Store snapshot in DB
+            pawn.PawnType = PawnType.Support;
+            pawn.PawnState = PawnState.None;
             client.Character.RentedPawns.Add(pawn);
 
             var walletUpdate = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.RiftPoints, request.RentalCost)

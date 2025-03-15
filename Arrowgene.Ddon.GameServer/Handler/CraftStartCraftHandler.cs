@@ -171,7 +171,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     if (pawn.Pawn != null)
                     {
                         pawn.Pawn.PawnState = PawnState.Craft;
-                        Server.Database.UpdatePawnBaseInfo(pawn.Pawn, connection);
+                        if (pawn.Pawn.PawnType == PawnType.Main)
+                        {
+                            Server.Database.UpdatePawnBaseInfo(pawn.Pawn, connection);
+                        }
                     }
                 }
 
