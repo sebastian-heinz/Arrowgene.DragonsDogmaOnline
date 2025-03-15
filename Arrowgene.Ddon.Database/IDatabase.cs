@@ -120,7 +120,7 @@ namespace Arrowgene.Ddon.Database
             Character searchingCharacter,
             CDataPawnSearchParameter searchParams
         );
-        bool DeletePawn(uint pawnId);
+        bool DeletePawn(uint pawnId, DbConnection? connectionIn = null);
         bool UpdatePawnBaseInfo(Pawn pawn, DbConnection? connectionIn = null);
         uint GetPawnOwnerCharacterId(uint pawnId, DbConnection? connectionIn = null);
         bool ReplacePawnReaction(uint pawnId, CDataPawnReaction pawnReaction, DbConnection? connectionIn = null);

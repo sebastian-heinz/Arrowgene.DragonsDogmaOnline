@@ -1,16 +1,17 @@
 #nullable enable
 
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
     public class Storages
     {
+        private static readonly ILogger Logger = LogProvider.Logger(typeof(Storages));
+
         private Dictionary<StorageType, Storage> storages;
 
         public Storages(Dictionary<StorageType, ushort> maxSlotsDict)
@@ -138,7 +139,16 @@ namespace Arrowgene.Ddon.Shared.Model
             if(storageType == StorageType.PawnEquipment)
             {
                 int pawnIndex = slot / (EquipmentTemplate.TOTAL_EQUIP_SLOTS * 2);
-                return character.Pawns[pawnIndex].PawnId;
+                if (pawnIndex < character.Pawns.Count)
+                {
+                    return character.Pawns[pawnIndex].PawnId;
+                }
+                else
+                {
+                    var item = character.Storage.GetStorage(storageType).GetItem(slot);
+                    Logger.Error($"Invalid PawnId/Slot for item {item?.Item1.UId} for character {character.CharacterId}: storage {(byte)storageType} slot {slot}");
+                    return 0;
+                }
             }
             else
             {
@@ -149,6 +159,8 @@ namespace Arrowgene.Ddon.Shared.Model
 
     public class Storage
     {
+        private static readonly ILogger Logger = LogProvider.Logger(typeof(Storage));
+
         public StorageType Type { get; private set; }
         public List<Tuple<Item, uint>?> Items { get; set; }
         public byte[] SortData { get; set; }
@@ -198,11 +210,18 @@ namespace Arrowgene.Ddon.Shared.Model
             }
             
             // TODO: Limit itemCount to the item ID's max stack size in storageType
-            Tuple<Item, uint>? oldItem = GetItem(slot);
-            Items[slot-1] = newItem == null
-                ? null
-                : new Tuple<Item, uint>(newItem, itemCount);
-            return oldItem;
+            try
+            {
+                Tuple<Item, uint>? oldItem = GetItem(slot);
+                Items[slot - 1] = newItem == null
+                    ? null
+                    : new Tuple<Item, uint>(newItem, itemCount);
+                return oldItem;
+            } catch (ArgumentOutOfRangeException)
+            {
+                Logger.Error($"Attempting to set item {newItem?.UId} in bad slot: storage {(byte)Type}, slot {slot}");
+                return null;
+            }
         }
 
         public Tuple<ushort, Item, uint>? FindItemByUId(string itemUId)
