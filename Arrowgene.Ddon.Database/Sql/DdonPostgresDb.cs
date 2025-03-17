@@ -38,7 +38,22 @@ namespace Arrowgene.Ddon.Database.Sql
             }
 
             ReusableConnection = _dataSource.OpenConnection();
-            return true;
+            
+            // check to see if account table exists, if it does then dont run the global schema file
+            string sql =
+                "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'account') AS table_existence;";
+
+            bool tableExists = false;
+            ExecuteReader(sql,
+                command => { }, reader =>
+                {
+                    if (reader.Read())
+                    {
+                        tableExists = GetBoolean(reader, "table_existence");
+                    }
+                });
+            
+            return !tableExists;
         }
 
         private string BuildConnectionString(string host, string user, string password, string database)
