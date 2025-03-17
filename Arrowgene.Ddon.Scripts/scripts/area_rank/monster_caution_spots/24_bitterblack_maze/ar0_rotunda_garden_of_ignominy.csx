@@ -19,7 +19,7 @@ public class MonsterSpotInfo : IMonsterSpotInfo
     {
         AddEnemies(new List<InstancedEnemy>()
         {
-            LibDdon.Enemy.Create(EnemyId.Zuhl2, 10, 2250, 0, assignDefaultDrops: false)
+            LibDdon.Enemy.Create(EnemyId.Zuhl1, 10, 2250, 0, assignDefaultDrops: false)
                 .SetIsBoss(true)
                 .SetIsAreaBoss(true)
                 .SetNamedEnemyParams(NamedParamId.NetherworldFiend),
