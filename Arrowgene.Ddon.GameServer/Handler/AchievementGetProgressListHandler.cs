@@ -1,12 +1,13 @@
-using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler;
 
-public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAchievementGetProgressListReq, S2CAchievementGetProgressListRes>
+public class AchievementGetProgressListHandler : GameRequestPacketQueueHandler<C2SAchievementGetProgressListReq, S2CAchievementGetProgressListRes>
 {
     private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(AchievementGetProgressListHandler));
 
@@ -21,7 +22,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -32,7 +33,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -43,7 +44,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -54,7 +55,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -65,7 +66,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -76,7 +77,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -87,7 +88,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -98,7 +99,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -109,7 +110,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -120,7 +121,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -131,7 +132,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -142,7 +143,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -153,7 +154,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -164,7 +165,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -175,7 +176,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -186,7 +187,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -197,7 +198,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -208,7 +209,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -219,7 +220,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -230,7 +231,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -241,7 +242,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -252,7 +253,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -263,7 +264,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -274,7 +275,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -285,7 +286,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -296,7 +297,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -307,7 +308,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -318,7 +319,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -329,7 +330,6 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 100,
             Sequence = 0,
-            CompleteDate = 1550409326
         },
         new()
         {
@@ -340,7 +340,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -351,7 +351,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -362,7 +362,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -373,7 +373,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -384,7 +384,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -395,7 +395,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -406,7 +406,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -417,7 +417,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -428,7 +428,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -439,7 +439,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -450,7 +450,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -461,7 +461,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -472,7 +472,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -483,7 +483,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -494,7 +494,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -505,7 +505,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -516,7 +516,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -527,7 +527,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -538,7 +538,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -549,7 +549,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -560,7 +560,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -571,7 +571,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -582,7 +582,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -593,7 +593,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -604,7 +604,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -615,7 +615,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -626,7 +626,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -637,7 +637,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -648,7 +648,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -659,7 +659,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -670,7 +670,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -681,7 +681,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -692,7 +692,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -703,7 +703,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -714,7 +714,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -725,7 +725,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -736,7 +736,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -747,7 +747,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -758,7 +758,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -769,7 +769,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -780,7 +780,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -791,7 +791,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -802,7 +802,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -813,7 +813,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -824,7 +824,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -835,7 +835,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -846,7 +846,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -857,7 +857,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -868,7 +868,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -879,7 +879,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -890,7 +890,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -901,7 +901,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -912,7 +912,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -923,7 +923,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -934,7 +934,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -945,7 +945,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -956,7 +956,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -967,7 +967,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -978,7 +978,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -989,7 +989,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1000,7 +1000,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1011,7 +1011,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1022,7 +1022,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1033,7 +1033,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1044,7 +1044,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1055,7 +1055,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1066,7 +1066,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1077,7 +1077,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1088,7 +1088,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1099,7 +1099,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1110,7 +1110,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1121,7 +1121,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1132,7 +1132,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1143,7 +1143,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1154,7 +1154,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1165,7 +1165,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1176,7 +1176,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1187,7 +1187,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1198,7 +1198,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1209,7 +1209,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1220,7 +1220,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1231,7 +1231,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1242,7 +1242,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1253,7 +1253,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1264,7 +1264,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1275,7 +1275,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1286,7 +1286,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1297,7 +1297,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1308,7 +1308,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1319,7 +1319,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1330,7 +1330,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1341,7 +1341,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1352,7 +1352,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1363,7 +1363,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1374,7 +1374,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1385,7 +1385,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1396,7 +1396,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1407,7 +1407,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1418,7 +1418,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1429,7 +1429,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1440,7 +1440,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1451,7 +1451,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1462,7 +1462,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1473,7 +1473,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1484,7 +1484,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1495,7 +1495,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1506,7 +1506,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1517,7 +1517,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1528,7 +1528,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1539,7 +1539,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1550,7 +1550,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1561,7 +1561,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1572,7 +1572,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1583,7 +1583,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1594,7 +1594,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1605,7 +1605,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1616,7 +1616,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1627,7 +1627,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1638,7 +1638,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1649,7 +1649,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1660,7 +1660,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1671,7 +1671,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1682,7 +1682,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1693,7 +1693,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1704,7 +1704,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1715,7 +1715,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1726,7 +1726,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1737,7 +1737,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1748,7 +1748,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1759,7 +1759,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1770,7 +1770,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1781,7 +1781,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1792,7 +1792,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1803,7 +1803,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1814,7 +1814,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1825,7 +1825,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1836,7 +1836,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1847,7 +1847,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1858,7 +1858,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1869,7 +1869,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1880,7 +1880,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1891,7 +1891,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1902,7 +1902,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1913,7 +1913,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1924,7 +1924,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1935,7 +1935,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1946,7 +1946,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1957,7 +1957,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1968,7 +1968,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1979,7 +1979,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -1990,7 +1990,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2001,7 +2001,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2012,7 +2012,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2023,7 +2023,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2034,7 +2034,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2045,7 +2045,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2056,7 +2056,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2067,7 +2067,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2078,7 +2078,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2089,7 +2089,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2100,7 +2100,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2111,7 +2111,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2122,7 +2122,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2133,7 +2133,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2144,7 +2144,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2155,7 +2155,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2166,7 +2166,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2177,7 +2177,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2188,7 +2188,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2199,7 +2199,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2210,7 +2210,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2221,7 +2221,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2232,7 +2232,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2243,7 +2243,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2254,7 +2254,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2265,7 +2265,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2276,7 +2276,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2287,7 +2287,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2298,7 +2298,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2309,7 +2309,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2320,7 +2320,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2331,7 +2331,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2342,7 +2342,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2353,7 +2353,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2364,7 +2364,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2375,7 +2375,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2386,7 +2386,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2397,7 +2397,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2408,7 +2408,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2419,7 +2419,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2430,7 +2430,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2441,7 +2441,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2452,7 +2452,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2463,7 +2463,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2474,7 +2474,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2485,7 +2485,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2496,7 +2496,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2507,7 +2507,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2518,7 +2518,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2529,7 +2529,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2540,7 +2540,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2551,7 +2551,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2562,7 +2562,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2573,7 +2573,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2584,7 +2584,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2595,7 +2595,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2606,7 +2606,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2617,7 +2617,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2628,7 +2628,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2639,7 +2639,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2650,7 +2650,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2661,7 +2661,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2672,7 +2672,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2683,7 +2683,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2694,7 +2694,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2705,7 +2705,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2716,7 +2716,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2727,7 +2727,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2738,7 +2738,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2749,7 +2749,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2760,7 +2760,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2771,7 +2771,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2782,7 +2782,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2793,7 +2793,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2804,7 +2804,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2815,7 +2815,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2826,7 +2826,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2837,7 +2837,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2848,7 +2848,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2859,7 +2859,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2870,7 +2870,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2881,7 +2881,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2892,7 +2892,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2903,7 +2903,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2914,7 +2914,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2925,7 +2925,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2936,7 +2936,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2947,7 +2947,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2958,7 +2958,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2969,7 +2969,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2980,7 +2980,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -2991,7 +2991,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3002,7 +3002,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3013,7 +3013,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3024,7 +3024,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3035,7 +3035,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3046,7 +3046,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3057,7 +3057,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3068,7 +3068,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3079,7 +3079,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3090,7 +3090,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3101,7 +3101,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3112,7 +3112,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3123,7 +3123,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3134,7 +3134,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3145,7 +3145,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3156,7 +3156,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3167,7 +3167,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3178,7 +3178,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3189,7 +3189,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3200,7 +3200,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3211,7 +3211,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3222,7 +3222,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3233,7 +3233,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3244,7 +3244,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3255,7 +3255,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3266,7 +3266,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3277,7 +3277,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3288,7 +3288,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3299,7 +3299,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3310,7 +3310,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3321,7 +3321,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3332,7 +3332,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3343,7 +3343,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3354,7 +3354,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3365,7 +3365,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3376,7 +3376,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3387,7 +3387,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3398,7 +3398,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3409,7 +3409,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3420,7 +3420,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3431,7 +3431,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3442,7 +3442,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3453,7 +3453,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3464,7 +3464,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3475,7 +3475,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3486,7 +3486,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3497,7 +3497,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3508,7 +3508,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3519,7 +3519,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3530,7 +3530,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3541,7 +3541,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3552,7 +3552,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3563,7 +3563,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3574,7 +3574,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3585,7 +3585,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3596,7 +3596,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3607,7 +3607,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3618,7 +3618,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3629,7 +3629,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3640,7 +3640,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3651,7 +3651,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3662,7 +3662,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3673,7 +3673,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3684,7 +3684,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3695,7 +3695,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3706,7 +3706,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3717,7 +3717,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3728,7 +3728,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3739,7 +3739,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3750,7 +3750,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3761,7 +3761,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3772,7 +3772,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3783,7 +3783,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3794,7 +3794,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3805,7 +3805,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3816,7 +3816,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3827,7 +3827,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3838,7 +3838,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3849,7 +3849,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3860,7 +3860,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3871,7 +3871,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3882,7 +3882,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3893,7 +3893,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3904,7 +3904,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3915,7 +3915,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3926,7 +3926,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3937,7 +3937,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3948,7 +3948,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3959,7 +3959,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3970,7 +3970,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3981,7 +3981,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -3992,7 +3992,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4003,7 +4003,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4014,7 +4014,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4025,7 +4025,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4036,7 +4036,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4047,7 +4047,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4058,7 +4058,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4069,7 +4069,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4080,7 +4080,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4091,7 +4091,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4102,7 +4102,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4113,7 +4113,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4124,7 +4124,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4135,7 +4135,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4146,7 +4146,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4157,7 +4157,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4168,7 +4168,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4179,7 +4179,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4190,7 +4190,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4201,7 +4201,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4212,7 +4212,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4223,7 +4223,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4234,7 +4234,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4245,7 +4245,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4256,7 +4256,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4267,7 +4267,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4278,7 +4278,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4289,7 +4289,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4300,7 +4300,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4311,7 +4311,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4322,7 +4322,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4333,7 +4333,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4344,7 +4344,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4355,7 +4355,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4366,7 +4366,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4377,7 +4377,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4388,7 +4388,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4399,7 +4399,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4410,7 +4410,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4421,7 +4421,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4432,7 +4432,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4443,7 +4443,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4454,7 +4454,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4465,7 +4465,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4476,7 +4476,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4487,7 +4487,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4498,7 +4498,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4509,7 +4509,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4520,7 +4520,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4531,7 +4531,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4542,7 +4542,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4553,7 +4553,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4564,7 +4564,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4575,7 +4575,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4586,7 +4586,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4597,7 +4597,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4608,7 +4608,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4619,7 +4619,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4630,7 +4630,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4641,7 +4641,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4652,7 +4652,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4663,7 +4663,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4674,7 +4674,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4685,7 +4685,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4696,7 +4696,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4707,7 +4707,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4718,7 +4718,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4729,7 +4729,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4740,7 +4740,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4751,7 +4751,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4762,7 +4762,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4773,7 +4773,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4784,7 +4784,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4795,7 +4795,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4806,7 +4806,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4817,7 +4817,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4828,7 +4828,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4839,7 +4839,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4850,7 +4850,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4861,7 +4861,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4872,7 +4872,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4883,7 +4883,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4894,7 +4894,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4905,7 +4905,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4916,7 +4916,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4927,7 +4927,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4938,7 +4938,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4949,7 +4949,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4960,7 +4960,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4971,7 +4971,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4982,7 +4982,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -4993,7 +4993,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5004,7 +5004,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5015,7 +5015,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5026,7 +5026,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5037,7 +5037,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5048,7 +5048,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5059,7 +5059,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5070,7 +5070,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5081,7 +5081,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5092,7 +5092,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5103,7 +5103,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5114,7 +5114,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5125,7 +5125,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5136,7 +5136,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5147,7 +5147,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5158,7 +5158,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5169,7 +5169,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5180,7 +5180,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5191,7 +5191,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5202,7 +5202,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5213,7 +5213,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5224,7 +5224,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5235,7 +5235,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5246,7 +5246,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5257,7 +5257,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5268,7 +5268,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5279,7 +5279,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5290,7 +5290,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5301,7 +5301,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5312,7 +5312,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5323,7 +5323,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5334,7 +5334,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5345,7 +5345,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5356,7 +5356,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5367,7 +5367,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5378,7 +5378,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5389,7 +5389,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5400,7 +5400,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5411,7 +5411,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5422,7 +5422,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5433,7 +5433,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5444,7 +5444,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5455,7 +5455,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5466,7 +5466,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5477,7 +5477,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5488,7 +5488,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5499,7 +5499,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5510,7 +5510,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5521,7 +5521,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5532,7 +5532,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5543,7 +5543,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5554,7 +5554,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5565,7 +5565,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5576,7 +5576,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5587,7 +5587,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5598,7 +5598,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5609,7 +5609,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5620,7 +5620,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5631,7 +5631,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5642,7 +5642,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5653,7 +5653,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5664,7 +5664,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5675,7 +5675,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5686,7 +5686,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5697,7 +5697,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5708,7 +5708,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5719,7 +5719,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5730,7 +5730,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5741,7 +5741,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5752,7 +5752,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5763,7 +5763,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5774,7 +5774,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5785,7 +5785,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5796,7 +5796,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5807,7 +5807,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5818,7 +5818,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5829,7 +5829,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5840,7 +5840,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5851,7 +5851,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5862,7 +5862,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5873,7 +5873,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5884,7 +5884,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5895,7 +5895,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5906,7 +5906,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5917,7 +5917,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5928,7 +5928,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5939,7 +5939,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5950,7 +5950,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5961,7 +5961,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5972,7 +5972,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5983,7 +5983,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -5994,7 +5994,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6005,7 +6005,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6016,7 +6016,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6027,7 +6027,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6038,7 +6038,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6049,7 +6049,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6060,7 +6060,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6071,7 +6071,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6082,7 +6082,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6093,7 +6093,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6104,7 +6104,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6115,7 +6115,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6126,7 +6126,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6137,7 +6137,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6148,7 +6148,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6159,7 +6159,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6170,7 +6170,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6181,7 +6181,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6192,7 +6192,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6203,7 +6203,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6214,7 +6214,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6225,7 +6225,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6236,7 +6236,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6247,7 +6247,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6258,7 +6258,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6269,7 +6269,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6280,7 +6280,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6291,7 +6291,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6302,7 +6302,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6313,7 +6313,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6324,7 +6324,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6335,7 +6335,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6346,7 +6346,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6357,7 +6357,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6368,7 +6368,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6379,7 +6379,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6390,7 +6390,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6401,7 +6401,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6412,7 +6412,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6423,7 +6423,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6434,7 +6434,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6445,7 +6445,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6456,7 +6456,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6467,7 +6467,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6478,7 +6478,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6489,7 +6489,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6500,7 +6500,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6511,7 +6511,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6522,7 +6522,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6533,7 +6533,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6544,7 +6544,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6555,7 +6555,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6566,7 +6566,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6577,7 +6577,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6588,7 +6588,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6599,7 +6599,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6610,7 +6610,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6621,7 +6621,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6632,7 +6632,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6643,7 +6643,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6654,7 +6654,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6665,7 +6665,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6676,7 +6676,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6687,7 +6687,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6698,7 +6698,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6709,7 +6709,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6720,7 +6720,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6731,7 +6731,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6742,7 +6742,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6753,7 +6753,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6764,7 +6764,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6775,7 +6775,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6786,7 +6786,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6797,7 +6797,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6808,7 +6808,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6819,7 +6819,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6830,7 +6830,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6841,7 +6841,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6852,7 +6852,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6863,7 +6863,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6874,7 +6874,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6885,7 +6885,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6896,7 +6896,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6907,7 +6907,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6918,7 +6918,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6929,7 +6929,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6940,7 +6940,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6951,7 +6951,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6962,7 +6962,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6973,7 +6973,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6984,7 +6984,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -6995,7 +6995,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7006,7 +7006,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7017,7 +7017,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7028,7 +7028,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7039,7 +7039,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7050,7 +7050,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7061,7 +7061,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7072,7 +7072,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7083,7 +7083,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7094,7 +7094,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7105,7 +7105,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7116,7 +7116,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7127,7 +7127,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7138,7 +7138,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7149,7 +7149,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7160,7 +7160,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7171,7 +7171,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7182,7 +7182,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7193,7 +7193,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7204,7 +7204,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7215,7 +7215,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7226,7 +7226,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7237,7 +7237,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7248,7 +7248,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7259,7 +7259,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7270,7 +7270,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7281,7 +7281,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7292,7 +7292,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7303,7 +7303,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7314,7 +7314,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7325,7 +7325,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7336,7 +7336,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7347,7 +7347,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7358,7 +7358,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7369,7 +7369,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7380,7 +7380,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7391,7 +7391,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7402,7 +7402,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7413,7 +7413,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7424,7 +7424,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7435,7 +7435,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7446,7 +7446,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7457,7 +7457,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         },
         new()
         {
@@ -7468,7 +7468,7 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
             },
             CurrentNum = 0,
             Sequence = 0,
-            CompleteDate = 0
+            
         }
     };
 
@@ -7476,13 +7476,8 @@ public class AchievementGetProgressListHandler : GameRequestPacketHandler<C2SAch
     {
     }
 
-    public override S2CAchievementGetProgressListRes Handle(GameClient client, C2SAchievementGetProgressListReq request)
+    public override PacketQueue Handle(GameClient client, C2SAchievementGetProgressListReq request)
     {
-        S2CAchievementGetProgressListRes res = new S2CAchievementGetProgressListRes();
-
-        // TODO: given an asset with all achievements, for each character store the progress in a DB table and retrieve progress here
-        res.AchievementProgressList = AchievementProgressList;
-
-        return res;
+        return Server.AchievementManager.CalculateProgress(client);
     }
 }

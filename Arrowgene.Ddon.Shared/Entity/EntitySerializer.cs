@@ -494,13 +494,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2LLogoutReq.Serializer());
             Create(new C2LPingReq.Serializer());
 
-            Create(new C2SAchievementCompleteNtc.Serializer());
             Create(new C2SAchievementGetCategoryProgressListReq.Serializer());
             Create(new C2SAchievementGetFurnitureRewardListReq.Serializer());
             Create(new C2SAchievementGetProgressListReq.Serializer());
             Create(new C2SAchievementGetReceivableRewardListReq.Serializer());
             Create(new C2SAchievementGetRewardListReq.Serializer());
-            Create(new C2SAchievementReceivableRewardNtc.Serializer());
             Create(new C2SAchievementRewardReceiveReq.Serializer());
 
             Create(new C2SActionSetPlayerActionHistoryReq.Serializer());
@@ -988,13 +986,17 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2S_SEASON_62_40_16_NTC.Serializer());
             Create(new C2S_SEASON_DUNGEON_62_12_16_NTC.Serializer());
 
+            Create(new S2CAchievementCompleteNtc.Serializer());
             Create(new S2CAchievementGetCategoryProgressListRes.Serializer());
             Create(new S2CAchievementGetFurnitureRewardListRes.Serializer());
             Create(new S2CAchievementGetProgressListRes.Serializer());
             Create(new S2CAchievementGetReceivableRewardListRes.Serializer());
             Create(new S2CAchievementGetRewardListRes.Serializer());
+            Create(new S2CAchievementReceivableRewardNtc.Serializer());
             Create(new S2CAchievementRewardReceiveRes.Serializer());
+
             Create(new S2CActionSetPlayerActionHistoryRes.Serializer());
+
             Create(new S2CAreaAreaRankUpRes.Serializer());
             Create(new S2CAreaBuyAreaQuestHintRes.Serializer());
             Create(new S2CAreaGetAreaBaseInfoListRes.Serializer());

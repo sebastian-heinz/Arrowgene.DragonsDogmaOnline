@@ -19,7 +19,7 @@ public class AchievementGetFurnitureRewardListHandler : GameRequestPacketHandler
             AchieveIdentifier = new CDataAchievementIdentifier
             {
                 UId = 530, // Bounty Hunter
-                Index = 12
+                Index = 530
             },
             FurnitureItemId = 13225, // Mini Table
             IsReceived = true

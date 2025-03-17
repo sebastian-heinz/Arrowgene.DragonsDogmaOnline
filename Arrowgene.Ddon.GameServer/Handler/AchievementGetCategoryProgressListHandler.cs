@@ -20,8 +20,7 @@ public class AchievementGetCategoryProgressListHandler : GameRequestPacketHandle
                 Index = 1725
             },
             CurrentNum = 0,
-            Sequence = 0,
-            CompleteDate = 0
+            Sequence = 0
         }
     };
 

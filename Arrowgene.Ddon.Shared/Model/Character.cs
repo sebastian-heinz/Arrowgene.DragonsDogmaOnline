@@ -42,6 +42,8 @@ namespace Arrowgene.Ddon.Shared.Model
             EpitaphRoadState = new EpitaphRoadState();
             AreaRanks = new();
             AreaSupply = new();
+            AchievementProgress = new();
+
             PartnerTimerLockObj = new();
             ContentsReleased = new HashSet<ContentsRelease>();
             WorldManageUnlocks = new Dictionary<QuestId, List<QuestFlagInfo>>();
@@ -132,6 +134,10 @@ namespace Arrowgene.Ddon.Shared.Model
         public EpitaphRoadState EpitaphRoadState { get; set; }
         public Dictionary<QuestAreaId, AreaRank> AreaRanks { get; set; }
         public Dictionary<QuestAreaId, List<CDataRewardItemInfo>> AreaSupply { get; set; }
+
+        public Dictionary<(AchievementType, uint), uint> AchievementProgress { get; set; }
+        public Dictionary<uint, (DateTimeOffset DateAchieved, bool RewardRecieved)> AchievementStatus { get; set; }
+        public Dictionary<AchievementCraftTypeParam, HashSet<ItemId>> AchievementUniqueCrafts { get; set; }
 
         public HashSet<ContentsRelease> ContentsReleased { get; set; }
         public Dictionary<QuestId, List<QuestFlagInfo>> WorldManageUnlocks { get; set; }

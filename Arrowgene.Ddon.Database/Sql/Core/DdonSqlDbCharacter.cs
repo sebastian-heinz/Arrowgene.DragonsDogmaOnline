@@ -432,6 +432,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             // Area Ranks
             character.AreaRanks = SelectAreaRank(character.CharacterId, conn);
             character.AreaSupply = SelectAreaRankSupply(character.CharacterId, conn);
+
+            // Achievements
+            character.AchievementStatus = SelectAchievementStatus(character.CharacterId, conn);
+            character.AchievementProgress = SelectAchievementProgress(character.CharacterId, conn);
+            character.AchievementUniqueCrafts = SelectAchievementUniqueCrafts(character.CharacterId, conn);
         }
 
         public bool UpdateMyPawnSlot(uint characterId, uint num)
