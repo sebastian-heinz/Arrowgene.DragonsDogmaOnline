@@ -15,10 +15,10 @@
 // Otherwise point these into the Arrowgene.Ddon.Scripts in the source
 // When using hotload we need to make sure that this file loads the same file as the server will, otherwise we will get symbol conflicts
 // because both .csx files will define the same symbols.
-#load "libs\DropRate.csx"
-#load "libs\ExtremeMissionUtils.csx"
-#load "libs\ScriptUtils.csx"
-#load "libs\SeasonalEvents.csx"
+#load "libs/DropRate.csx"
+#load "libs/ExtremeMissionUtils.csx"
+#load "libs/ScriptUtils.csx"
+#load "libs/SeasonalEvents.csx"
 
 // Using statements added by server so scripts don't need to add them
 global using System;
