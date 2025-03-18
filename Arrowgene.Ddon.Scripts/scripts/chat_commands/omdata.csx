@@ -32,17 +32,17 @@ public class ChatCommand : IChatCommand
         {
             if (!client.Party.InstanceOmData.ContainsKey(stageId))
             {
-                responses.Add(new ChatResponse() { Message = $"StageId={stageId} has no OM data" });
+                responses.Add(ChatResponse.ServerChat(client, $"StageId={stageId} has no OM data"));
                 return;
             }
 
             foreach (var datum in client.Party.InstanceOmData[stageId])
             {
-                responses.Add(new ChatResponse() { Message = $"key=0x{datum.Key:x16}, value=0x{datum.Value:x8}"});
+                responses.Add(ChatResponse.ServerChat(client, $"key=0x{datum.Key:x16}, value=0x{datum.Value:x8}"));
 
                 ulong eStageId = OmFields.StageId.Get(datum.Key);
                 ulong eGroupId = OmFields.GroupId.Get(datum.Key);
-                responses.Add(new ChatResponse() { Message = $"  StageId={eStageId}, GroupId={eGroupId}" });
+                responses.Add(ChatResponse.ServerChat(client, $"  StageId={eStageId}, GroupId={eGroupId}"));
             }
         }
     }

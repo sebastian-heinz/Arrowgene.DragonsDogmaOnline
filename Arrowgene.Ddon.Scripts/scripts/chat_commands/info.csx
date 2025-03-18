@@ -13,9 +13,7 @@ public class ChatCommand : IChatCommand
         sb.Append($"StageNo: {client.Character.StageNo} ");
         sb.Append($"Pos:[X:{client.Character.X:F4} Y:{client.Character.Y:F4} Z:{client.Character.Z:F4}]");
 
-        ChatResponse response = new ChatResponse();
-        response.Message = sb.ToString();
-        responses.Add(response);
+        responses.Add(ChatResponse.ServerChat(client, sb.ToString()));
     }
 }
 

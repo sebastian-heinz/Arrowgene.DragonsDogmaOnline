@@ -1,5 +1,7 @@
 #load "libs.csx"
 
+using System;
+
 public class ChatCommand : IChatCommand
 {
     public override AccountStateType AccountState => AccountStateType.Admin;
@@ -18,10 +20,9 @@ public class ChatCommand : IChatCommand
             lines.Add(line);
         }
 
-        ChatResponse response = new ChatResponse();
-        response.Message = String.Join("\n", lines);
-        responses.Add(response);
-        Console.WriteLine(response.Message);
+        var msg = String.Join("\n", lines);
+        responses.Add(ChatResponse.ServerChat(client, msg));
+        Console.WriteLine(msg);
     }
 }
 

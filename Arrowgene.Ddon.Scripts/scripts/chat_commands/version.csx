@@ -6,9 +6,7 @@ public class ChatCommand : IChatCommand
 
     public override void Execute(DdonGameServer server, string[] command, GameClient client, ChatMessage message, List<ChatResponse> responses)
     {
-        ChatResponse response = new ChatResponse();
-        response.Message = Util.GetVersion("GameServer");
-        responses.Add(response);
+        responses.Add(ChatResponse.ServerChat(client, Util.GetVersion("GameServer")));
     }
 }
 
