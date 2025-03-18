@@ -33,25 +33,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CQuestPlayEndRes Handle(GameClient client, C2SQuestPlayEndReq request)
         {
-            var timeData = Server.PartyQuestContentManager.CancelTimer(client.Party.Id);
+            var (elapsed, _) = Server.PartyQuestContentManager.CancelTimer(client.Party.Id);
             var quest = QuestManager.GetQuestByBoardId(client.Party.ContentId);
-
-            double timeScore = (timeData.MaximumDuration - timeData.Elapsed).TotalSeconds;
-            double playerMult = 1 + (8 - client.Party.MemberCount()) * 0.2;
-            long totalScore = (long)(timeScore * playerMult);
-            Server.Database.ExecuteInTransaction(conn =>
-            {
-                foreach (var player in client.Party.Clients.Select(x => x.Character.CharacterId).OrderBy(x => Random.Shared.Next()))
-                {
-                    Server.Database.InsertRankRecord(player, (uint)quest.QuestId, totalScore, conn);
-                }
-            });
-            
             client.Party.ExmInProgress = false;
 
             var ntc = new S2CQuestPlayEndNtc();
             ntc.ContentsPlayEnd.RewardItemDetailList = quest.ToCDataTimeGainQuestList(0).RewardItemDetailList;
-            ntc.ContentsPlayEnd.PlayTimeMillSec = (uint) timeData.Elapsed.Milliseconds;
+            ntc.ContentsPlayEnd.PlayTimeMillSec = (uint) elapsed.Milliseconds;
             client.Party.SendToAll(ntc);
 
             return new S2CQuestPlayEndRes();

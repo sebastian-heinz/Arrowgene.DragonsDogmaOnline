@@ -182,5 +182,19 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
             return (TimeSpan.Zero, TimeSpan.Zero);
         }
+
+        public ulong CheckTimer(uint partyId)
+        {
+            lock (_ContentTimers)
+            {
+                if (_ContentTimers.ContainsKey(partyId))
+                {
+                    var results = _Server.TimerManager.GetTimeLeftInSeconds(_ContentTimers[partyId]);
+                    return results;
+                }
+            }
+
+            return 0;
+        }
     }
 }
