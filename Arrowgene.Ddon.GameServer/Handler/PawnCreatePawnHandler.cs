@@ -147,7 +147,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 GainMagicDefense = activeJobPreset.GainMagicDefense,
             };
 
-            pawn.CharacterJobDataList = Server.AssetRepository.ArisenAsset.Select(arisenPreset => new CDataCharacterJobData
+            pawn.CharacterJobDataList = Server.AssetRepository.ArisenAsset.Where(x => x.Job == pawn.Job).Select(arisenPreset => new CDataCharacterJobData
             {
                 Job = arisenPreset.Job,
                 Exp = arisenPreset.Exp,
@@ -452,6 +452,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
             pawn.TrainingPoints = int.MaxValue;
             pawn.AvailableTraining = uint.MaxValue;
             pawn.PawnReactionList = Enumerable.Range(1, 11).Select(x => new CDataPawnReaction() { ReactionType = (byte)x, MotionNo = 1 }).ToList();
+
+            foreach (JobId job in Enum.GetValues(typeof(JobId)))
+            {
+                var startingSkill = SkillData.AllSkills.Where(x => x.Job == job && x.Params.FirstOrDefault()?.RequireJobLevel == 0).FirstOrDefault();
+                if (startingSkill != null && !pawn.LearnedCustomSkills.Where(x => (x.Job == job) && (x.SkillId == startingSkill.SkillNo)).Any())
+                {
+                    pawn.LearnedCustomSkills.Add(new() { Job = job, SkillId = startingSkill.SkillNo, SkillLv = 1 });
+                }
+            }
 
             // Add current job's equipment to the equipment storage
             // EquipmentTemplate.TOTAL_EQUIP_SLOTS * 2
