@@ -1027,6 +1027,7 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new S2CCertClientChallengeRes.Serializer());
 
+            Create(new S2CCharacterAddWalletPointNtc.Serializer());
             Create(new S2CCharacterCharacterGoldenReviveRes.Serializer());
             Create(new S2CCharacterCharacterPenaltyReviveRes.Serializer());
             Create(new S2CCharacterCharacterPointReviveRes.Serializer());
@@ -1047,6 +1048,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCharacterFinishDeathPenaltyNtc.Serializer());
             Create(new S2CCharacterFinishLanternNtc.Serializer());
             Create(new S2CCharacterFinishLanternOtherNtc.Serializer());
+            Create(new S2CCharacterGainCharacterParamNtc.Serializer());
+            Create(new S2CCharacterGetCharacterBinaryStatusNtc.Serializer());
+            Create(new S2CCharacterGetCharacterHistoryInfoNtc.Serializer());
             Create(new S2CCharacterGetCharacterStatusNtc.Serializer());
             Create(new S2CCharacterGetReviveChargeableTimeRes.Serializer());
             Create(new S2CCharacterPawnGoldenReviveRes.Serializer());
@@ -1055,9 +1059,16 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCharacterStartDeathPenaltyNtc.Serializer());
             Create(new S2CCharacterStartLanternNtc.Serializer());
             Create(new S2CCharacterStartLanternOtherNtc.Serializer());
+            Create(new S2CCharacterSubWalletPointNtc.Serializer());
             Create(new S2CCharacterSwitchGameModeNtc.Serializer());
             Create(new S2CCharacterSwitchGameModeRes.Serializer());
             Create(new S2CCharacterUpdateRevivePointNtc.Serializer());
+
+            Create(new S2C_CHARACTER_2_5_16_NTC.Serializer());
+            Create(new S2C_CHARACTER_2_33_16_NTC.Serializer());
+            Create(new S2C_CHARACTER_2_34_16_NTC.Serializer());
+            Create(new S2C_CHARACTER_2_35_16_NTC.Serializer());
+            Create(new S2C_CHARACTER_2_36_16_NTC.Serializer());
 
             Create(new S2CChatSendTellMsgRes.Serializer());
 
@@ -1337,7 +1348,7 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new S2CNpcGetNpcExtendedFacilityRes.Serializer());
 
-            Create(new S2COrb25_6_16_Ntc.Serializer());
+            Create(new S2COrbDevoteGetCharacterOrbDevoteInfoNtc.Serializer());
             Create(new S2COrbDevoteGetOrbGainExtendParamRes.Serializer());
             Create(new S2COrbDevoteGetPawnReleaseOrbElementListRes.Serializer());
             Create(new S2COrbDevoteGetReleaseOrbElementListRes.Serializer());
