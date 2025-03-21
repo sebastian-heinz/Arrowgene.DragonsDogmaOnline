@@ -189,8 +189,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 if (_ContentTimers.ContainsKey(partyId))
                 {
-                    var results = _Server.TimerManager.GetTimeLeftInSeconds(_ContentTimers[partyId]);
-                    return results;
+                    return _Server.TimerManager.GetTimeLeftInSeconds(_ContentTimers[partyId]);
                 }
             }
 
