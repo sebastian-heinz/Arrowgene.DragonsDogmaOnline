@@ -159,6 +159,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public static Item ApplyCrest(IDatabase database, Character character, Item item, DbConnection? connectionIn = null)
         {
+            // Don't allow crests to be applied if it's already gotten one by the Dispel Handler.
+            if (item.EquipElementParamList.Any())
+            {
+                return item;
+            }
+
             if (item.ItemId == BitterblackMazeManager.BitterblackBraceletItemId)
             {
                 uint crestId = BitterBlackMazeRewards.BraceletRolls[Random.Shared.Next(BitterBlackMazeRewards.BraceletRolls.Count)];

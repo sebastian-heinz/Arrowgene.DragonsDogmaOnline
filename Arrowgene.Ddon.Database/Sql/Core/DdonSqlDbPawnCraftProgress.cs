@@ -31,58 +31,47 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private const string SqlDeletePawnCraftProgress =
             "DELETE FROM \"ddon_pawn_craft_progress\" WHERE \"craft_character_id\" = @craft_character_id AND \"craft_lead_pawn_id\" = @craft_lead_pawn_id;";
 
-        public bool ReplacePawnCraftProgress(CraftProgress craftProgress)
+        public bool ReplacePawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return ReplacePawnCraftProgress(connection, craftProgress);
-        }
-
-        public bool ReplacePawnCraftProgress(TCon connection, CraftProgress craftProgress)
-        {
-            Logger.Debug("Inserting pawn craft progress.");
-            if (!InsertIfNotExistsPawnCraftProgress(connection, craftProgress))
+            return ExecuteQuerySafe(connectionIn, connection =>
             {
-                Logger.Debug("Pawn craft progress already exists, replacing.");
-                return UpdatePawnCraftProgress(connection, craftProgress);
-            }
+                Logger.Debug("Inserting pawn craft progress.");
+                if (!InsertIfNotExistsPawnCraftProgress(craftProgress, connection))
+                {
+                    Logger.Debug("Pawn craft progress already exists, replacing.");
+                    return UpdatePawnCraftProgress(craftProgress, connection);
+                }
 
-            return true;
+                return true;
+            });
         }
 
         public bool InsertPawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null)
         {
-            bool isTransaction = connectionIn is not null;
-            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
-            try
+            return ExecuteQuerySafe(connectionIn, connection =>
             {
                 return ExecuteNonQuery(connection, SqlInsertPawnCraftProgress, command => { AddAllParameters(command, craftProgress); }) == 1;
-            }
-            finally
+            });
+        }
+
+        public bool InsertIfNotExistsPawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null)
+        {
+            return ExecuteQuerySafe(connectionIn, connection =>
             {
-                if (!isTransaction) connection.Dispose();
-            }
+                return ExecuteNonQuery(connection, SqlInsertIfNotExistsPawnCraftProgress, command => { 
+                    AddAllParameters(command, craftProgress); 
+                }) == 1;
+            });
         }
 
-        public bool InsertIfNotExistsPawnCraftProgress(CraftProgress craftProgress)
+        public bool UpdatePawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return InsertIfNotExistsPawnCraftProgress(connection, craftProgress);
-        }
-
-        public bool InsertIfNotExistsPawnCraftProgress(TCon connection, CraftProgress craftProgress)
-        {
-            return ExecuteNonQuery(connection, SqlInsertIfNotExistsPawnCraftProgress, command => { AddAllParameters(command, craftProgress); }) == 1;
-        }
-
-        public bool UpdatePawnCraftProgress(CraftProgress craftProgress)
-        {
-            using TCon connection = OpenNewConnection();
-            return UpdatePawnCraftProgress(connection, craftProgress);
-        }
-
-        public bool UpdatePawnCraftProgress(TCon connection, CraftProgress craftProgress)
-        {
-            return ExecuteNonQuery(connection, SqlUpdatePawnCraftProgress, command => { AddAllParameters(command, craftProgress); }) == 1;
+            return ExecuteQuerySafe(connectionIn, connection =>
+            {
+                return ExecuteNonQuery(connection, SqlUpdatePawnCraftProgress, command => { 
+                    AddAllParameters(command, craftProgress); 
+                }) == 1;
+            });
         }
 
         public bool DeletePawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, DbConnection? connectionIn = null)

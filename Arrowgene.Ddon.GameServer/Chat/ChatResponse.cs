@@ -27,6 +27,17 @@ namespace Arrowgene.Ddon.GameServer.Chat
             };
         }
 
+        public static ChatResponse ServerChat(GameClient client, string message)
+        {
+            return new ChatResponse()
+            {
+                Deliver = true,
+                Message = message,
+                Type = LobbyChatMsgType.ManagementGuideC,
+                Recipients = { client }
+            };
+        }
+
         public static ChatResponse FromMessage(GameClient client, ChatMessage message)
         {
             return new ChatResponse()

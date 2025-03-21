@@ -359,7 +359,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 // EX T Skill
                 uint exSkillTId = skillId + 100;
-                CDataSkillParam? exSkillT = SkillGetAcquirableSkillListHandler.AllSkills.Where(skill => skill.Job == job && skill.SkillNo == exSkillTId).SingleOrDefault();
+                CDataSkillParam? exSkillT = SkillData.AllSkills.Where(skill => skill.Job == job && skill.SkillNo == exSkillTId).SingleOrDefault();
                 if (exSkillT != null)
                 {
                     // Add new skill
@@ -377,7 +377,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 // EX P Skill
                 uint exSkillPId = skillId + 200;
-                CDataSkillParam? exSkillP = SkillGetAcquirableSkillListHandler.AllSkills.Where(skill => skill.Job == job && skill.SkillNo == exSkillPId).SingleOrDefault();
+                CDataSkillParam? exSkillP = SkillData.AllSkills.Where(skill => skill.Job == job && skill.SkillNo == exSkillPId).SingleOrDefault();
                 if (exSkillP != null)
                 {
                     // Add new skill
@@ -392,7 +392,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
             }
 
-            uint jpCost = SkillGetAcquirableSkillListHandler.AllSkills
+            uint jpCost = SkillData.AllSkills
                 .Where(skill => skill.Job == job && skill.SkillNo == skillId)
                 .SelectMany(skill => skill.Params)
                 .Where(skillParams => skillParams.Lv == skillLv)

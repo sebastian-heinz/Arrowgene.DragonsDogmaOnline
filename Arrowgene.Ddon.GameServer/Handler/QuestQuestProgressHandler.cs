@@ -6,7 +6,9 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
+using System;
 using System.Data.Common;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -162,6 +164,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 client.Party.EnqueueToAll(completeNtc, packets);
                 packets.AddRange(client.Party.QuestState.UpdatePriorityQuestList(client.Party.Leader.Client, connectionIn));
+            }
+
+            if (quest.QuestType == QuestType.ExtremeMission)
+            {
+                double timeScore = Server.PartyQuestContentManager.CheckTimer(client.Party.Id);
+                double playerMult = 1 + (8 - client.Party.MemberCount()) * 0.2;
+                long totalScore = (long)(timeScore * playerMult);
+                foreach (var player in client.Party.Clients.Select(x => x.Character.CharacterId).OrderBy(x => Random.Shared.Next()))
+                {
+                    Server.Database.InsertRankRecord(player, (uint)quest.QuestId, totalScore, connectionIn);
+                }
             }
 
             if (quest.ResetPlayerAfterQuest)

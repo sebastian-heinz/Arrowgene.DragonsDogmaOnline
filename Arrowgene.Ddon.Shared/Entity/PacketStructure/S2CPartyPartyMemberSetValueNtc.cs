@@ -5,7 +5,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CPartyPartyMemberSetValueNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.S2C_PARTY_6_15_16_NTC; // S2C_PARTY_PARTY_MEMBER_SET_VALUE_NTC;
+        public PacketId Id => PacketId.S2C_PARTY_PARTY_MEMBER_SET_VALUE_NTC;
 
         public uint CharacterId { get; set; }
         public byte Index { get; set; }

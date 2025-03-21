@@ -225,7 +225,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                 int additionalSlotsRequired = client.Party.Members.Where(x => x is PawnPartyMember pawn
                     && pawn.Pawn.PawnType == PawnType.Main
                     && pawn.Pawn.CharacterId == client.Character.CharacterId).Count();
-                if (ContentId > 0 && additionalSlotsRequired > CountEmptySlots())
+                if (ContentId == 0 && additionalSlotsRequired > CountEmptySlots())
                 {
                     // Failure due to not enough room in the party. Don't remove so the timer can handle naturally.
                     // Enforce this check only for "normal" parties because Entry Boards manage it automatically?
@@ -727,9 +727,7 @@ namespace Arrowgene.Ddon.GameServer.Party
                     if (_slots[i] != null && _slots[i].CommonId == partyMember.CommonId)
                     {
                         // This character is already in the party, so fail gracefully without letting them take a second slot.
-                        Logger.Error($"[PartyId:{Id}][TakeSlot] Party member already present.");
-                        slotIndex = i;
-                        break;
+                        throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_ALREADY_ENTRY, $"[PartyId:{Id}][TakeSlot] Party member already present.");
                     }
                 }
 

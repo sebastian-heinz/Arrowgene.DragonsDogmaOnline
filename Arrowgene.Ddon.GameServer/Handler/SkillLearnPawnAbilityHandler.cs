@@ -19,10 +19,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
 
+            var allAbilities = SkillData.AllAbilities.Concat(SkillData.AllSecretAbilities);
 
-            var AllAbilities = SkillGetAcquirableAbilityListHandler.AllAbilities.Concat(SkillGetAcquirableAbilityListHandler.AllSecretAbilities);
-
-            JobId augJob = AllAbilities.Where(aug => aug.AbilityNo == request.AbilityId).Select(aug => aug.Job).Single(); // why is this not in the packet
+            JobId augJob = SkillData.AllAbilities.Where(aug => aug.AbilityNo == request.AbilityId).Select(aug => aug.Job).Single(); // why is this not in the packet
             return Server.JobManager.UnlockAbility(Server.Database, client, pawn, augJob, request.AbilityId, request.AbilityLv);
         }
     }

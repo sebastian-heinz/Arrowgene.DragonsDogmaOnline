@@ -10,7 +10,7 @@ public class ChatCommand : IChatCommand
 
         server.ScriptManager.ChatCommandModule.Commands.Values
             .Where(x => (client.Account.State >= x.AccountState) || disableAccountCheckType)
-            .Select(cmd => new ChatResponse() {Message = cmd.HelpText})
+            .Select(cmd => ChatResponse.ServerChat(client, cmd.HelpText))
             .ToList()
             .ForEach(response => responses.Add(response));
     }

@@ -47,7 +47,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Pawn mainPawn = client.Character.Pawns.First(p => p.PawnId == request.CraftMainPawnID);
                 mainPawn.PawnState = PawnState.None;
                 Server.Database.UpdatePawnBaseInfo(mainPawn, connection);
-                foreach (var supportId in new List<uint>(){ craftProgress.CraftSupportPawnId1, craftProgress.CraftSupportPawnId1, craftProgress.CraftSupportPawnId1 })
+                foreach (var supportId in new List<uint>(){ 
+                    craftProgress.CraftSupportPawnId1, 
+                    craftProgress.CraftSupportPawnId2, 
+                    craftProgress.CraftSupportPawnId3 
+                })
                 {
                     Pawn supportPawn = client.Character.Pawns.FirstOrDefault(p => p.PawnId == supportId, null);
                     if (supportPawn != null)
