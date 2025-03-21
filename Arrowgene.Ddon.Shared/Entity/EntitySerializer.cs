@@ -1363,6 +1363,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPartnerPawnSetRes.Serializer());
             Create(new S2CPartnerPawnLikabilityUpNtc.Serializer());
 
+            Create(new S2CPartyChangeHostNtc.Serializer());
             Create(new S2CPartyPartyBreakupNtc.Serializer());
             Create(new S2CPartyPartyBreakupRes.Serializer());
             Create(new S2CPartyPartyChangeLeaderNtc.Serializer());
