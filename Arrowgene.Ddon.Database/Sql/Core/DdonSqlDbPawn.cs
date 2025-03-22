@@ -385,16 +385,19 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return pawns;
         }
 
-        public bool DeletePawn(uint pawnId)
+        public bool DeletePawn(uint pawnId, DbConnection? connectionIn = null)
         {
-            int rowsAffected = ExecuteNonQuery(
-                SqlDeletePawn,
-                command =>
-                {
-                    AddParameter(command, "@pawn_id", pawnId);
-                }
-            );
-            return rowsAffected > NoRowsAffected;
+            return ExecuteQuerySafe<int>(connectionIn, connection =>
+            {
+                return ExecuteNonQuery(
+                    connection,
+                    SqlDeletePawn,
+                    command =>
+                    {
+                        AddParameter(command, "@pawn_id", pawnId);
+                    }
+                );
+            }) > NoRowsAffected;
         }
 
         public bool UpdatePawnBaseInfo(Pawn pawn, DbConnection? connectionIn = null)

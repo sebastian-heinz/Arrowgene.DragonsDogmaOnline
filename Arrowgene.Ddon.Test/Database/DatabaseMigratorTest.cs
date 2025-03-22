@@ -209,7 +209,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool DeleteEquippedAbility(uint commonId, JobId equippedToJob, byte slotNo) { return true; }
         public bool DeleteEquippedCustomSkill(uint commonId, JobId job, byte slotNo) { return true; }
         public bool DeleteNormalSkillParam(uint commonId, JobId job, uint skillNo) { return true; }
-        public bool DeletePawn(uint pawnId) { return true; }
+        public bool DeletePawn(uint pawnId, DbConnection? connectionIn = null) { return true; }
         public bool DeletePriorityQuest(uint characterCommonId, uint questScheduleId, DbConnection? connectionIn = null) { return true; }
         public bool DeleteReleasedWarpPoint(uint characterId, uint warpPointId) { return true; }
         public bool DeleteShortcut(uint characterId, uint pageNo, uint buttonNo) { return true; }
