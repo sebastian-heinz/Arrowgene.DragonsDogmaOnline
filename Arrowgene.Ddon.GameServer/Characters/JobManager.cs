@@ -53,12 +53,54 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             if (activeCharacterJobData == null)
             {
-                activeCharacterJobData = new CDataCharacterJobData();
-                activeCharacterJobData.Job = jobId;
-                activeCharacterJobData.Exp = 0;
-                activeCharacterJobData.JobPoint = 0;
-                activeCharacterJobData.Lv = 1;
-                // TODO: All the other stats
+                activeCharacterJobData = _Server.AssetRepository.ArisenAsset.Where(x => x.Job == jobId).Select(arisenPreset => new CDataCharacterJobData
+                {
+                    Job = arisenPreset.Job,
+                    Exp = arisenPreset.Exp,
+                    JobPoint = arisenPreset.JobPoint,
+                    Lv = arisenPreset.Lv,
+                    Atk = arisenPreset.PAtk,
+                    Def = arisenPreset.PDef,
+                    MAtk = arisenPreset.MAtk,
+                    MDef = arisenPreset.MDef,
+                    Strength = arisenPreset.Strength,
+                    DownPower = arisenPreset.DownPower,
+                    ShakePower = arisenPreset.ShakePower,
+                    StunPower = arisenPreset.StunPower,
+                    Consitution = arisenPreset.Consitution,
+                    Guts = arisenPreset.Guts,
+                    FireResist = arisenPreset.FireResist,
+                    IceResist = arisenPreset.IceResist,
+                    ThunderResist = arisenPreset.ThunderResist,
+                    HolyResist = arisenPreset.HolyResist,
+                    DarkResist = arisenPreset.DarkResist,
+                    SpreadResist = arisenPreset.SpreadResist,
+                    FreezeResist = arisenPreset.FreezeResist,
+                    ShockResist = arisenPreset.ShockResist,
+                    AbsorbResist = arisenPreset.AbsorbResist,
+                    DarkElmResist = arisenPreset.DarkElmResist,
+                    PoisonResist = arisenPreset.PoisonResist,
+                    SlowResist = arisenPreset.SlowResist,
+                    SleepResist = arisenPreset.SleepResist,
+                    StunResist = arisenPreset.StunResist,
+                    WetResist = arisenPreset.WetResist,
+                    OilResist = arisenPreset.OilResist,
+                    SealResist = arisenPreset.SealResist,
+                    CurseResist = arisenPreset.CurseResist,
+                    SoftResist = arisenPreset.SoftResist,
+                    StoneResist = arisenPreset.StoneResist,
+                    GoldResist = arisenPreset.GoldResist,
+                    FireReduceResist = arisenPreset.FireReduceResist,
+                    IceReduceResist = arisenPreset.IceReduceResist,
+                    ThunderReduceResist = arisenPreset.ThunderReduceResist,
+                    HolyReduceResist = arisenPreset.HolyReduceResist,
+                    DarkReduceResist = arisenPreset.DarkReduceResist,
+                    AtkDownResist = arisenPreset.AtkDownResist,
+                    DefDownResist = arisenPreset.DefDownResist,
+                    MAtkDownResist = arisenPreset.MAtkDownResist,
+                    MDefDownResist = arisenPreset.MDefDownResist
+                }).FirstOrDefault() ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_JOBCHANGE_INTERNAL_ERROR, $"Missing preset for job {jobId}");
+
                 common.CharacterJobDataList.Add(activeCharacterJobData);
                 _Server.Database.ReplaceCharacterJobData(common.CommonId, activeCharacterJobData, connectionIn);
             }
