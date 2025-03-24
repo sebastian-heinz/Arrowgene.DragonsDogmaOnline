@@ -58,7 +58,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public CDataUpdateWalletPoint RemoveFromWallet(Character Character, WalletType Type, uint Amount, DbConnection? connectionIn = null)
         {
-            CDataWalletPoint Wallet = Character.WalletPointList.Where(wp => wp.Type == Type).Single();
+            CDataWalletPoint Wallet = Character.WalletPointList.Where(wp => wp.Type == Type).SingleOrDefault()
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_WALLET, $"Invalid wallet type {Type} for character {Character.CharacterId}");
 
             if (Wallet.Value < Amount)
             {
@@ -97,7 +98,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public uint GetWalletAmount(Character Character, WalletType Type)
         {
-            CDataWalletPoint Wallet = Character.WalletPointList.Where(wp => wp.Type == Type).Single();
+            CDataWalletPoint Wallet = Character.WalletPointList.Where(wp => wp.Type == Type).SingleOrDefault()
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_WALLET, $"Invalid wallet type {Type} for character {Character.CharacterId}");
             return Wallet.Value;
         }
 
