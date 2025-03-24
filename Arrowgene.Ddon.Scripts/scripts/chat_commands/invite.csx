@@ -10,7 +10,7 @@ public class ChatCommand : IChatCommand
     public override void Execute(DdonGameServer server, string[] command, GameClient client, ChatMessage message, List<ChatResponse> responses)
     {
         var inviteCharacterHandler = new PartyPartyInviteCharacterHandler(server);
-        var inviteMypawnHandler = new PawnJoinPartyMypawnHandler(server);
+        var inviteMypawnHandler = new PawnJoinPartyMyPawnHandler(server);
 
         if (command.Length == 0)
         {

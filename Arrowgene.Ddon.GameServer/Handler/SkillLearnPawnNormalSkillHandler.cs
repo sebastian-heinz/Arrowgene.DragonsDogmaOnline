@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             var (pawn, _) = client.Character.PawnById(request.PawnId, PawnType.Main);
 
-            return _jobManager.UnlockLearnedNormalSkill(Server.AssetRepository, Server.Database, client, Pawn,
+            return _jobManager.UnlockLearnedNormalSkill(Server.AssetRepository, Server.Database, client, pawn,
                                                  request.Job, request.SkillId);
         }
     }

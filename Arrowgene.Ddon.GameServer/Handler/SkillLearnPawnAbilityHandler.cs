@@ -19,10 +19,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             var (pawn, _) = client.Character.PawnById(request.PawnId, PawnType.Main);
 
-            var allAbilities = SkillData.AllAbilities.Concat(SkillData.AllSecretAbilities);
+            var ability = SkillData.AllAbilities.Concat(SkillData.AllSecretAbilities)
+                .Where(aug => aug.AbilityNo == request.AbilityId)
+                .SingleOrDefault()
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_INVALID_SKILL_ID);
 
-            JobId augJob = SkillData.AllAbilities.Where(aug => aug.AbilityNo == request.AbilityId).Select(aug => aug.Job).Single(); // why is this not in the packet
-            return Server.JobManager.UnlockAbility(Server.Database, client, pawn, augJob, request.AbilityId, request.AbilityLv);
+            return Server.JobManager.UnlockAbility(Server.Database, client, pawn, ability.Job, request.AbilityId, request.AbilityLv);
         }
     }
 }
