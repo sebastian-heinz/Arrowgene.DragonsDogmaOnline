@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PawnGetMyPawnListHandler : GameRequestPacketHandler<C2SPawnGetMyPawnListReq, S2CPawnGetMypawnListRes>
+    public class PawnGetMyPawnListHandler : GameRequestPacketHandler<C2SPawnGetMyPawnListReq, S2CPawnGetMyPawnListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnGetMyPawnListHandler));
 
@@ -15,9 +15,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override S2CPawnGetMypawnListRes Handle(GameClient client, C2SPawnGetMyPawnListReq request)
+        public override S2CPawnGetMyPawnListRes Handle(GameClient client, C2SPawnGetMyPawnListReq request)
         {
-            S2CPawnGetMypawnListRes res = new S2CPawnGetMypawnListRes();
+            S2CPawnGetMyPawnListRes res = new S2CPawnGetMyPawnListRes();
 
             uint index = 1;
             foreach (Pawn pawn in client.Character.Pawns)

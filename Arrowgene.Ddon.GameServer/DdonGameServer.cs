@@ -500,7 +500,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PartySendBinaryMsgHandler(this));
 
             AddHandler(new PawnGetLostPawnListHandler(this));
-            AddHandler(new PawnGetMypawnDataHandler(this));
+            AddHandler(new PawnGetMyPawnDataHandler(this));
             AddHandler(new PawnGetMyPawnListHandler(this));
             AddHandler(new PawnGetNoraPawnListHandler(this));
             AddHandler(new PawnGetPartyPawnDataHandler(this));
@@ -509,7 +509,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new PawnGetRegisteredPawnDataHandler(this));
             AddHandler(new PawnGetRentedPawnDataHandler(this));
             AddHandler(new PawnGetRentedPawnListHandler(this));
-            AddHandler(new PawnJoinPartyMypawnHandler(this));
+            AddHandler(new PawnJoinPartyMyPawnHandler(this));
             AddHandler(new PawnLostPawnGoldenReviveHandler(this));
             AddHandler(new PawnLostPawnPointReviveHandler(this));
             AddHandler(new PawnLostPawnReviveHandler(this));

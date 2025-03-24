@@ -7,20 +7,20 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PawnGetMypawnDataHandler : GameRequestPacketHandler<C2SPawnGetMypawnDataReq, S2CPawnGetMypawnDataRes>
+    public class PawnGetMyPawnDataHandler : GameRequestPacketHandler<C2SPawnGetMyPawnDataReq, S2CPawnGetMyPawnDataRes>
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnGetMypawnDataHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnGetMyPawnDataHandler));
 
         private readonly OrbUnlockManager _OrbUnlockManager;
         private readonly CharacterManager _CharacterManager;
 
-        public PawnGetMypawnDataHandler(DdonGameServer server) : base(server)
+        public PawnGetMyPawnDataHandler(DdonGameServer server) : base(server)
         {
             _OrbUnlockManager = server.OrbUnlockManager;
             _CharacterManager = server.CharacterManager;
         }
 
-        public override S2CPawnGetMypawnDataRes Handle(GameClient client, C2SPawnGetMypawnDataReq request)
+        public override S2CPawnGetMyPawnDataRes Handle(GameClient client, C2SPawnGetMyPawnDataReq request)
         {
             Pawn pawn = client.Character.PawnBySlotNo(request.SlotNo);
 
@@ -53,7 +53,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
             client.Send(orbNtc);
 
-            var res = new S2CPawnGetMypawnDataRes();
+            var res = new S2CPawnGetMyPawnDataRes();
             res.PawnId = pawn.PawnId;
             GameStructure.CDataPawnInfo(res.PawnInfo, pawn);
             res.PawnInfo.AbilityCostMax = _CharacterManager.GetMaxAugmentAllocation(pawn);
