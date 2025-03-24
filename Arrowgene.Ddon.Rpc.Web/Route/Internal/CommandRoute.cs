@@ -45,20 +45,27 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                     case RpcInternalCommand.EpitaphRoadWeeklyReset:
                         {
                             gameServer.EpitaphRoadManager.PerformWeeklyReset();
-                            return new RpcCommandResult(this, true);
+                            return new RpcCommandResult(this, true)
+                            {
+                                Message = "EpitaphRoadWeeklyReset"
+                            };
                         }
                     case RpcInternalCommand.KickInternal:
                         {
                             int target = _entry.GetData<int>();
-                            foreach (var client in gameServer.ClientLookup.GetAll())
+                            var clientList = gameServer.ClientLookup.GetAll();
+                            foreach (var client in clientList)
                             {
-                                if (client.Account.Id == target)
+                                if (client.Account?.Id == target)
                                 {
                                     client.Close();
                                 }
                             }
                             gameServer.Database.DeleteConnection(gameServer.Id, target);
-                            return new RpcCommandResult(this, true);
+                            return new RpcCommandResult(this, true)
+                            {
+                                Message = $"KickInternal for AccountId {target}"
+                            };
                         }
 
                     case RpcInternalCommand.AreaRankResetStart:
@@ -76,7 +83,10 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                                 character.AreaSupply.Clear();
                             }
                             
-                            return new RpcCommandResult(this, true);
+                            return new RpcCommandResult(this, true)
+                            {
+                                Message = "AreaRankResetStart"
+                            };
                         }
                     case RpcInternalCommand.AreaRankResetEnd:
                         {
@@ -87,7 +97,10 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                                     character.AreaSupply = gameServer.Database.SelectAreaRankSupply(character.CharacterId, connection);
                                 }
                             });
-                            return new RpcCommandResult(this, true);
+                            return new RpcCommandResult(this, true)
+                            {
+                                Message = "AreaRankResetEnd"
+                            };
                         }
                     default:
                         return new RpcCommandResult(this, false);
