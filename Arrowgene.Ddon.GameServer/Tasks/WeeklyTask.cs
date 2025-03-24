@@ -33,5 +33,10 @@ namespace Arrowgene.Ddon.GameServer.Tasks
             var nextDate = DateUtils.GetNextWeekday(DateTime.Today.AddDays(1), Day);
             return new DateTimeOffset(new DateTime(nextDate.Year, nextDate.Month, nextDate.Day, (int)Hour, (int)Minute, 0)).ToUnixTimeSeconds();
         }
+
+        public override string TaskTypeName()
+        {
+            return "Weekly Task";
+        }
     }
 }

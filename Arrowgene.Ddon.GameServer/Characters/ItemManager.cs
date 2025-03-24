@@ -1,23 +1,16 @@
 #nullable enable
 using Arrowgene.Ddon.Database;
-using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using YamlDotNet.Core.Tokens;
-using YamlDotNet.Core;
-using Arrowgene.Ddon.GameServer.Quests;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -72,7 +65,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {ItemId.RiftCrystal1000Rp, (WalletType.RiftPoints, 1000)},
             {ItemId.BloodOrb1000Bo, (WalletType.BloodOrbs, 1000)},
             // TODO: Requires special item notice type 47, could be offered in adventure pass shop
-            {ItemId.CurrencyForResettingCraftP, (WalletType.ResetCraftSkills, 1)}
+            {ItemId.CurrencyForResettingCraftP, (WalletType.ResetCraftSkills, 1)},
+            {ItemId.SilverTicket, (WalletType.SilverTickets, 1) },
+            {ItemId.CustomMadeServiceTicket, (WalletType.CustomMadeServiceTickets, 1) }
             // TODO: Find all items that add wallet points
         };
 
@@ -231,9 +226,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public PacketQueue GatherItem(GameClient client, S2CItemUpdateCharacterItemNtc ntc, InstancedGatheringItem gatheringItem, uint pickedGatherItems, DbConnection? connectionIn = null)
         {
             PacketQueue queue = new PacketQueue();
-            if (ItemIdWalletTypeAndQuantity.ContainsKey((ItemId) gatheringItem.ItemId)) 
+            if (ItemIdWalletTypeAndQuantity.ContainsKey(gatheringItem.ItemId)) 
             {
-                var walletTypeAndQuantity = ItemIdWalletTypeAndQuantity[(ItemId) gatheringItem.ItemId];
+                var walletTypeAndQuantity = ItemIdWalletTypeAndQuantity[gatheringItem.ItemId];
                 uint totalQuantityToAdd = walletTypeAndQuantity.Quantity * gatheringItem.ItemNum;
 
                 ntc.UpdateWalletList.Add(

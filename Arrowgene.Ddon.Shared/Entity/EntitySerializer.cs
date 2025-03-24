@@ -372,6 +372,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataRaidBossPlayStartData.Serializer());
             Create(new CDataRankingBoard.Serializer());
             Create(new CDataRankingData.Serializer());
+
+            Create(new CDataRecycleWalletCost.Serializer());
+            Create(new CDataRecycleItemLot.Serializer());
+
             Create(new CDataRefiningMaterialInfo.Serializer());
             Create(new CDataRegisterdPawnList.Serializer());
             Create(new CDataRegisteredLegendPawnInfo.Serializer());
@@ -870,6 +874,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SRankingBoardListReq.Serializer());
             Create(new C2SRankingRankListReq.Serializer());
             Create(new C2SRankingRankListByCharacterIdReq.Serializer());
+
+            Create(new C2SRecycleGetInfoReq.Serializer());
+            Create(new C2SRecycleGetLotForcastReq.Serializer());
+            Create(new C2SRecycleResetCountReq.Serializer());
+            Create(new C2SRecycleStartExchangeReq.Serializer());
 
             Create(new C2SSeasonDungeonDeliverItemForExReq.Serializer());
             Create(new C2SSeasonDungeonExecuteSoulOrdealReq.Serializer());
@@ -1519,6 +1528,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CRankingBoardListRes.Serializer());
             Create(new S2CRankingRankListRes.Serializer());
             Create(new S2CRankingRankListByCharacterIdRes.Serializer());
+
+            Create(new S2CRecycleGetInfoRes.Serializer());
+            Create(new S2CRecycleGetLotForcastRes.Serializer());
+            Create(new S2CRecycleResetCountRes.Serializer());
+            Create(new S2CRecycleStartExchangeRes.Serializer());
 
             Create(new S2CSeasonDungeonAreaBuffEffectNtc.Serializer());
             Create(new S2CSeasonDungeonDeliverItemForExRes.Serializer());

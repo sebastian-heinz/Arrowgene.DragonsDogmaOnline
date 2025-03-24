@@ -103,6 +103,40 @@ namespace Arrowgene.Ddon.Server.Settings
         private const byte _CraftConsumableProductionTimesMax = 10;
 
         /// <summary>
+        /// Determines the maximum amount of items you can recycle/disassemble at Craig before a reset is required.
+        /// </summary>
+        [DefaultValue(_CraftItemRecycleMax)]
+        public byte CraftItemRecycleMax
+        {
+            set
+            {
+                SetSetting("CraftItemRecycleMax", value);
+            }
+            get
+            {
+                return TryGetSetting("CraftItemRecycleMax", _CraftItemRecycleMax);
+            }
+        }
+        private const byte _CraftItemRecycleMax = 10;
+
+        /// <summary>
+        /// The amount of Golden Gemstones (GG) required to reset the recycle/disassemble count.
+        /// </summary>
+        [DefaultValue(_CraftItemRecycleResetCost)]
+        public byte CraftItemRecycleResetGGCost
+        {
+            set
+            {
+                SetSetting("CraftItemRecycleResetCost", value);
+            }
+            get
+            {
+                return TryGetSetting("CraftItemRecycleResetCost", _CraftItemRecycleResetCost);
+            }
+        }
+        private const byte _CraftItemRecycleResetCost = 1;
+
+        /// <summary>
         /// The number of real world minutes that make up an in-game day.
         /// </summary>
         [DefaultValue(_GameClockTimescale)]
@@ -334,7 +368,7 @@ namespace Arrowgene.Ddon.Server.Settings
                     {WalletType.HighOrbs, 5000},
                     {WalletType.DominionPoints, 999999999},
                     {WalletType.AdventurePassPoints, 80},
-                    {WalletType.UnknownTickets, 999999999},
+                    {WalletType.CustomMadeServiceTickets, 999999999},
                     {WalletType.BitterblackMazeResetTicket, 3},
                     {WalletType.GoldenDragonMark, 30},
                     {WalletType.SilverDragonMark, 150},

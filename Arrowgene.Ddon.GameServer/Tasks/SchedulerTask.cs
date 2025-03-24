@@ -45,5 +45,11 @@ namespace Arrowgene.Ddon.GameServer.Tasks
         {
             return true;
         }
+
+        /// <summary>
+        /// Returns the name of the task type.
+        /// </summary>
+        /// <returns></returns>
+        public abstract string TaskTypeName();
     }
 }

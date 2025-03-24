@@ -607,6 +607,11 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new EntryBoardEntryBoardItemExtendTimeoutHandler(this));
             AddHandler(new EntryBoardPartyRecruitCategoryListHandler(this));
 
+            AddHandler(new RecycleGetInfoHandler(this));
+            AddHandler(new RecycleGetLotForcastHandler(this));
+            AddHandler(new RecycleResetCountHandler(this));
+            AddHandler(new RecycleStartExchangeHandler(this));
+
             AddHandler(new SeasonDungeon62_40_16_Handler(this));
             AddHandler(new SeasonDungeonGetIdFromNpcIdHandler(this));
             AddHandler(new SeasonDungeonGetInfoHandler(this));

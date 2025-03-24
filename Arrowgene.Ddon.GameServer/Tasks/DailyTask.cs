@@ -19,5 +19,10 @@ namespace Arrowgene.Ddon.GameServer.Tasks
             var tomorrow = DateTime.Today.AddDays(1);
             return new DateTimeOffset(new DateTime(tomorrow.Year, tomorrow.Month, tomorrow.Day, (int)Hour, (int)Minute, 0)).ToUnixTimeSeconds();
         }
+
+        public override string TaskTypeName()
+        {
+            return "Daily Task";
+        }
     }
 }

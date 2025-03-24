@@ -21,6 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         public static EnemyUtils Enemy { get; private set; } = new EnemyUtils();
         public static CharacterUtils Character { get; private set; } = new CharacterUtils();
         public static TimeUtils GameTime { get; private set; } = new TimeUtils();
+        public static CraftUtils Crafting { get; private set; } = new CraftUtils();
 
         public static void SetServer(DdonGameServer server)
         {
@@ -93,7 +94,12 @@ namespace Arrowgene.Ddon.GameServer.Scripting
             {
                 return Server.ScriptManager.GameItemModule.GetItemInterface(itemId);
             }
-            
+
+            public ClientItemInfo GetClientItemInfo(ItemId itemId)
+            {
+                return Server.ItemManager.LookupInfoByItemID(Server, (uint) itemId);
+            }
+
             public GatheringItem CreateDropItem(ItemId itemId, uint minAmount, uint maxAmount, double dropChance)
             {
                 return new GatheringItem()
@@ -241,6 +247,14 @@ namespace Arrowgene.Ddon.GameServer.Scripting
             public long ConvertToGameTime(string time)
             {
                 return Server.GameTimeManager.ConvertTimeToMilliseconds(time);
+            }
+        }
+
+        public class CraftUtils
+        {
+            public CraftManager GetCraftManager()
+            {
+                return Server.CraftManager;
             }
         }
     }
