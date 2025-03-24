@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override PacketQueue Handle(GameClient client, C2SSkillLearnPawnAbilityReq request)
         {
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
+            var (pawn, _) = client.Character.PawnById(request.PawnId, PawnType.Main);
 
             var allAbilities = SkillData.AllAbilities.Concat(SkillData.AllSecretAbilities);
 

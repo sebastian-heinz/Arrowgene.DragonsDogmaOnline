@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CSkillGetPawnAbilityCostRes Handle(GameClient client, C2SSkillGetPawnAbilityCostReq request)
         {
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
+            var (pawn, _) = client.Character.PawnById(request.PawnId, PawnType.Main);
 
             return new S2CSkillGetPawnAbilityCostRes()
             {

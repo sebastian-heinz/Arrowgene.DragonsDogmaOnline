@@ -136,19 +136,60 @@ namespace Arrowgene.Ddon.Shared.Model
         // TODO: Move to a more sensible place
         public uint LastEnteredShopId { get; set; }
 
-        public Pawn PawnBySlotNo(byte SlotNo)
+        public Pawn PawnBySlotNo(byte slotNo)
         {
-            return Pawns[SlotNo-1];
+            if (slotNo > Pawns.Count)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID_SLOT_NO,
+                    $"Requesting invalid main pawn slot {slotNo} for character {CharacterId}");
+            }
+
+            return Pawns[slotNo-1];
         }
 
         public Pawn RentedPawnBySlotNo(byte slotNo)
         {
+            if (slotNo > RentedPawns.Count)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID_SLOT_NO,
+                    $"Requesting invalid rented slot {slotNo} for character {CharacterId}");
+            }
+
             return RentedPawns[slotNo - 1];
         }
 
         public void RemovedRentedPawnBySlotNo(byte slotNo)
         {
+            if (slotNo > RentedPawns.Count)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID_SLOT_NO,
+                    $"Removing invalid rented slot {slotNo} for character {CharacterId}");
+            }
+
             RentedPawns.RemoveAt(slotNo - 1);
+        }
+
+        public (Pawn Pawn, PawnType Type) PawnById(uint pawnId, PawnType typeOnly = PawnType.None)
+        {
+            if (typeOnly == PawnType.None || typeOnly == PawnType.Main)
+            {
+                var mainPawn = Pawns.Where(x => x.PawnId == pawnId).FirstOrDefault();
+                if (mainPawn is not null)
+                {
+                    return (mainPawn, PawnType.Main);
+                }
+            }
+
+            if (typeOnly == PawnType.None || typeOnly == PawnType.Support)
+            {
+                var rentalPawn = RentedPawns.Where(x => x.PawnId == pawnId).FirstOrDefault();
+                if (rentalPawn is not null)
+                {
+                    return (rentalPawn, PawnType.Support);
+                }
+            }
+
+            throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_NOT_FOUNDED, $"Could not find pawn with ID {pawnId}");
         }
 
         public Dictionary<ulong, bool> ContextOwnership { get; set; }

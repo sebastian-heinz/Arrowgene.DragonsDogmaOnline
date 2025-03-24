@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CSkillSetOffPawnSkillRes Handle(GameClient client, C2SSkillSetOffPawnSkillReq request)
         {
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
+            var (pawn, _) = client.Character.PawnById(request.PawnId, PawnType.Main);
             jobManager.RemoveSkill(Server.Database, pawn, request.Job, request.SlotNo);
 
             return new S2CSkillSetOffPawnSkillRes() {

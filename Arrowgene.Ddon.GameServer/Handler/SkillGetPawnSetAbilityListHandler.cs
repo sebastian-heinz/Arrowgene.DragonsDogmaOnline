@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CSkillGetPawnSetAbilityListRes Handle(GameClient client, C2SSkillGetPawnSetAbilityListReq request)
         {
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
+            var (pawn, _) = client.Character.PawnById(request.PawnId, PawnType.Main);
             // TODO: Check if its necessary to filter so only the current job skills are sent
             return new S2CSkillGetPawnSetAbilityListRes()
             {

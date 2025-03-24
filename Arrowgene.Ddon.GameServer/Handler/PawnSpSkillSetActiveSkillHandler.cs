@@ -20,8 +20,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CPawnSpSkillSetActiveSkillRes Handle(GameClient client, C2SPawnSpSkillSetActiveSkillReq request)
         {
             S2CPawnSpSkillSetActiveSkillRes res = new S2CPawnSpSkillSetActiveSkillRes();
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
-            
+            var (pawn, _) = client.Character.PawnById(request.PawnId, PawnType.Main);
+
             List<CDataSpSkill> spSkills;
             if (pawn.SpSkills.ContainsKey(request.JobId))
             {

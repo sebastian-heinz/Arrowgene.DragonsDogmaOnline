@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override PacketQueue Handle(GameClient client, C2SSkillLearnPawnNormalSkillReq request)
         {
-            Pawn Pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
+            var (pawn, _) = client.Character.PawnById(request.PawnId, PawnType.Main);
 
             return _jobManager.UnlockLearnedNormalSkill(Server.AssetRepository, Server.Database, client, Pawn,
                                                  request.Job, request.SkillId);

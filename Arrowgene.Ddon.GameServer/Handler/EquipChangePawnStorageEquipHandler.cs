@@ -23,8 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override PacketQueue Handle(GameClient client, C2SEquipChangePawnStorageEquipReq request)
         {
             PacketQueue queue = new();
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).SingleOrDefault()
-                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID);
+            var (pawn, _) = client.Character.PawnById(request.PawnId, PawnType.Main);
 
             if (!Server.EquipManager.CanMeetStorageRequirements(Server, client, pawn, request.ChangeCharacterEquipList, new List<StorageType>() { StorageType.StorageBoxNormal }))
             {

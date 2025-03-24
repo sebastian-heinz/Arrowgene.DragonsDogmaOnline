@@ -18,10 +18,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             jobManager = server.JobManager;
         }
 
-        public override S2CSkillSetOffPawnAbilityRes Handle(GameClient client, C2SSkillSetOffPawnAbilityReq packet)
+        public override S2CSkillSetOffPawnAbilityRes Handle(GameClient client, C2SSkillSetOffPawnAbilityReq request)
         {
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.PawnId).Single();
-            jobManager.RemoveAbility(Server.Database, pawn, packet.SlotNo);
+            var (pawn, _) = client.Character.PawnById(request.PawnId, PawnType.Main);
+            jobManager.RemoveAbility(Server.Database, pawn, request.SlotNo);
 
             client.Send(new S2CSkillSetPresetPawnAbilityNtc()
             {
@@ -34,8 +34,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             return new S2CSkillSetOffPawnAbilityRes()
             {
-                PawnId = packet.PawnId,
-                SlotNo = packet.SlotNo
+                PawnId = request.PawnId,
+                SlotNo = request.SlotNo
             };
 
         }
