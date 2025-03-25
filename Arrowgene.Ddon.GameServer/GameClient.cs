@@ -56,7 +56,7 @@ namespace Arrowgene.Ddon.GameServer
 
         public bool IsPartyLeader()
         {
-            return Party.Leader.Client == this;
+            return Party.Leader?.Client == this;
         }
 
         // TODO: Place somewhere else more sensible

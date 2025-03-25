@@ -5,11 +5,11 @@ using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
-    public class S2CPawnGetMypawnListRes : ServerResponse
+    public class S2CPawnGetMyPawnListRes : ServerResponse
     {
         public override PacketId Id => PacketId.S2C_PAWN_GET_MYPAWN_LIST_RES;
 
-        public S2CPawnGetMypawnListRes()
+        public S2CPawnGetMyPawnListRes()
         {
             PawnList = new List<CDataPawnList>();
             PartnerInfo = new CDataPartnerPawnData();
@@ -18,18 +18,18 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataPawnList> PawnList { get; set; }
         public CDataPartnerPawnData PartnerInfo { get; set; }
 
-        public class Serializer : PacketEntitySerializer<S2CPawnGetMypawnListRes>
+        public class Serializer : PacketEntitySerializer<S2CPawnGetMyPawnListRes>
         {
-            public override void Write(IBuffer buffer, S2CPawnGetMypawnListRes obj)
+            public override void Write(IBuffer buffer, S2CPawnGetMyPawnListRes obj)
             {
                 WriteServerResponse(buffer, obj);
                 WriteEntityList<CDataPawnList>(buffer, obj.PawnList);
                 WriteEntity<CDataPartnerPawnData>(buffer, obj.PartnerInfo);
             }
 
-            public override S2CPawnGetMypawnListRes Read(IBuffer buffer)
+            public override S2CPawnGetMyPawnListRes Read(IBuffer buffer)
             {
-                S2CPawnGetMypawnListRes obj = new S2CPawnGetMypawnListRes();
+                S2CPawnGetMyPawnListRes obj = new S2CPawnGetMyPawnListRes();
                 ReadServerResponse(buffer, obj);
                 obj.PawnList = ReadEntityList<CDataPawnList>(buffer);
                 obj.PartnerInfo = ReadEntity<CDataPartnerPawnData>(buffer);

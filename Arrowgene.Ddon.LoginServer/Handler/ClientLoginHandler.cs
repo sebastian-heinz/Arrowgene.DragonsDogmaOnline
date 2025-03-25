@@ -3,7 +3,6 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Rpc;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
@@ -19,7 +18,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ClientLoginHandler));
 
         private readonly LoginServerSetting _setting;
-        private readonly object _tokensInFLightLock;
+        private readonly object _tokensInFlightLock;
         private readonly HashSet<string> _tokensInFlight;
 
         private readonly HttpClient _httpClient = new HttpClient();
@@ -28,7 +27,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
         public ClientLoginHandler(DdonLoginServer server) : base(server)
         {
             _setting = server.Setting;
-            _tokensInFLightLock = new object();
+            _tokensInFlightLock = new object();
             _tokensInFlight = new HashSet<string>();
         }
 
@@ -144,7 +143,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
 
         private void ReleaseToken(string token)
         {
-            lock (_tokensInFLightLock)
+            lock (_tokensInFlightLock)
             {
                 if (!_tokensInFlight.Contains(token))
                 {
@@ -162,7 +161,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
         /// <returns>true if token was locked, false if token already locked</returns>
         private bool LockToken(string token)
         {
-            lock (_tokensInFLightLock)
+            lock (_tokensInFlightLock)
             {
                 if (_tokensInFlight.Contains(token))
                 {
@@ -184,7 +183,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     ServerInfo serverInfo = Server.AssetRepository.ServerList.Find(x => x.LoginId == Server.Id);
                     if (serverInfo is null)
                     {
-                        Logger.Error($"Login server with ID {Server.Id} was not found in the ServerList asset.");
+                        Logger.Error($"[AUTOKICK] Login server with ID {Server.Id} was not found in the ServerList asset.");
                         return;
                     }
 
@@ -194,9 +193,11 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 }
             }
 
+            // Only one login server should be servicing requests, so it has to be this one.
             if (connection.Type == ConnectionType.LoginServer)
             {
-                Logger.Error($"Can't kick account {connection.AccountId}; stuck at login server.");
+                Logger.Error($"[AUTOKICK] Clearing double login for account {connection.AccountId}.");
+                Database.DeleteConnection(connection.ServerId, connection.AccountId);
                 return;
             }
 
@@ -204,7 +205,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             if (channel is null)
             {
                 // If the server can't be found, the entry in the DB is erroneous and should be cleared.
-                Logger.Info($"Clearing bad connection record for account {connection.AccountId} from server {connection.ServerId}");
+                Logger.Info($"[AUTOKICK] Clearing bad connection record for account {connection.AccountId} from server {connection.ServerId}");
                 Server.Database.DeleteConnection(connection.ServerId, connection.AccountId);
                 return;
             }
@@ -218,7 +219,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 Data = connection.AccountId
             };
 
-            Logger.Info($"Attempting to auto kick account {connection.AccountId} from server {connection.ServerId}");
+            Logger.Info($"[AUTOKICK] Attempting to auto kick account {connection.AccountId} from server {connection.ServerId}");
 
             var json = JsonSerializer.Serialize(wrappedObject);
             _ = _httpClient.PostAsync(route, new StringContent(json));

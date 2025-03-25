@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.GameServer.Enemies.Generators
             }
 
             StageInfo stageInfo = Stage.StageInfoFromStageLayoutId(stageLayoutId);
-            var areaRank = server.AreaRankManager.GetEffectiveRank(client.Party.Leader.Client.Character, stageInfo);
+            uint areaRank = client.Party.Leader is not null ? server.AreaRankManager.GetEffectiveRank(client.Party.Leader.Client.Character, stageInfo) : 0;
             instancedEnemySet.AddRange(client.Party.InstanceEnemyManager.GetAssets(stageLayoutId)
                 .Where(x => x.Subgroup == subGroupId)
                 .Select(x => new InstancedEnemy(x))

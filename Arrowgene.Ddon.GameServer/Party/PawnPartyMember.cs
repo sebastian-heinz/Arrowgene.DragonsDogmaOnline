@@ -32,14 +32,14 @@ public class PawnPartyMember : PartyMember
         GameStructure.CDataContextResist(partyContextPawn.ResistInfo, Pawn);
         partyContextPawn.EditInfo = Pawn.EditInfo;
 
-        S2CContextGetPartyMypawnContextNtc partyPlayerContextNtc = new S2CContextGetPartyMypawnContextNtc();
+        S2CContextGetPartyMyPawnContextNtc partyPlayerContextNtc = new S2CContextGetPartyMyPawnContextNtc();
         partyPlayerContextNtc.PawnId = PawnId;
         partyPlayerContextNtc.Context = partyContextPawn;
         partyPlayerContextNtc.Context.Base.MemberIndex = MemberIndex;
-        return new StructurePacket<S2CContextGetPartyMypawnContextNtc>(partyPlayerContextNtc);
+        return new StructurePacket<S2CContextGetPartyMyPawnContextNtc>(partyPlayerContextNtc);
     }
 
-    public S2CContextGetPartyMypawnContextNtc GetS2CContextGetParty_ContextNtcEx()
+    public S2CContextGetPartyMyPawnContextNtc GetS2CContextGetParty_ContextNtcEx()
     {
         CDataPartyContextPawn partyContextPawn = new CDataPartyContextPawn();
         GameStructure.CDataContextBase(partyContextPawn.Base, Pawn);
@@ -54,7 +54,7 @@ public class PawnPartyMember : PartyMember
         GameStructure.CDataContextResist(partyContextPawn.ResistInfo, Pawn);
         partyContextPawn.EditInfo = Pawn.EditInfo;
 
-        S2CContextGetPartyMypawnContextNtc partyPlayerContextNtc = new S2CContextGetPartyMypawnContextNtc();
+        S2CContextGetPartyMyPawnContextNtc partyPlayerContextNtc = new S2CContextGetPartyMyPawnContextNtc();
         partyPlayerContextNtc.PawnId = PawnId;
         partyPlayerContextNtc.Context = partyContextPawn;
         partyPlayerContextNtc.Context.Base.MemberIndex = MemberIndex;

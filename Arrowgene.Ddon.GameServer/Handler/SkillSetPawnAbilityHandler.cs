@@ -18,9 +18,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             jobManager = server.JobManager;
         }
 
-        public override S2CSkillSetPawnAbilityRes Handle(GameClient client, C2SSkillSetPawnAbilityReq packet)
+        public override S2CSkillSetPawnAbilityRes Handle(GameClient client, C2SSkillSetPawnAbilityReq request)
         {
-            if(packet.SlotNo == 0)
+            if(request.SlotNo == 0)
             {
                 Logger.Error(client, $"Requesting to set an ability to slot 0");
             }
@@ -29,14 +29,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // This is, also for whatever reason, important so it works properly, so we have to set it ourselves
             // TODO: Investigate this more, or optimize this
 
-            JobId abilityJob = SkillGetAcquirableAbilityListHandler.GetAbilityFromId(packet.SkillId).Job;
+            JobId abilityJob = SkillGetAcquirableAbilityListHandler.GetAbilityFromId(request.SkillId).Job;
 
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == packet.PawnId).Single();
-            Ability abilitySlot = jobManager.SetAbility(Server.Database, client, pawn, abilityJob, packet.SlotNo, packet.SkillId, packet.SkillLv);
+            Pawn pawn = client.Character.PawnById(request.PawnId, PawnType.Main);
+            Ability abilitySlot = jobManager.SetAbility(Server.Database, client, pawn, abilityJob, request.SlotNo, request.SkillId, request.SkillLv);
 
             return new S2CSkillSetPawnAbilityRes() {
                 PawnId = pawn.PawnId,
-                SlotNo = packet.SlotNo,
+                SlotNo = request.SlotNo,
                 AbilityId = abilitySlot.AbilityId,
                 AbilityLv = abilitySlot.AbilityLv
             };

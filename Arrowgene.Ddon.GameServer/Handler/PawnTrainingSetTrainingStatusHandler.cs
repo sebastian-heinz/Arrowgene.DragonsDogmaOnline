@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CPawnTrainingSetTrainingStatusRes Handle(GameClient client, C2SPawnTrainingSetTrainingStatusReq request)
         {
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
+            Pawn pawn = client.Character.PawnById(request.PawnId, PawnType.Main);
             pawn.TrainingStatus[request.Job] = request.TrainingStatus;
             pawn.TrainingPoints -= request.SpentTrainingPoints;
 

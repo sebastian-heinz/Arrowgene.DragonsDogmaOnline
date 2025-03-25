@@ -794,7 +794,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPawnExpeditionGetSallyInfoReq.Serializer());
             Create(new C2SPawnGetLostPawnListReq.Serializer());
             Create(new C2SPawnGetMyPawnListReq.Serializer());
-            Create(new C2SPawnGetMypawnDataReq.Serializer());
+            Create(new C2SPawnGetMyPawnDataReq.Serializer());
             Create(new C2SPawnGetNoraPawnListReq.Serializer());
             Create(new C2SPawnGetOfficialPawnListReq.Serializer());
             Create(new C2SPawnGetPartyPawnDataReq.Serializer());
@@ -803,7 +803,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPawnGetRegisteredPawnDataReq.Serializer());
             Create(new C2SPawnGetRegisteredPawnListReq.Serializer());
             Create(new C2SPawnGetRentedPawnDataReq.Serializer());
-            Create(new C2SPawnJoinPartyMypawnReq.Serializer());
+            Create(new C2SPawnJoinPartyMyPawnReq.Serializer());
             Create(new C2SPawnJoinPartyRentedPawnReq.Serializer());
             Create(new C2SPawnLostPawnGoldenReviveReq.Serializer());
             Create(new C2SPawnLostPawnPointReviveReq.Serializer());
@@ -1145,7 +1145,7 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new S2CContextGetAllPlayerContextNtc.Serializer());
             Create(new S2CContextGetLobbyPlayerContextNtc.Serializer());
-            Create(new S2CContextGetPartyMypawnContextNtc.Serializer());
+            Create(new S2CContextGetPartyMyPawnContextNtc.Serializer());
             Create(new S2CContextGetPartyPlayerContextNtc.Serializer());
             Create(new S2CContextGetPartyRentedPawnContextNtc.Serializer());
             Create(new S2CContextGetSetContextRes.Serializer());
@@ -1409,8 +1409,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPawnExtendMainPawnSlotNtc.Serializer());
             Create(new S2CPawnExtendSupportPawnSlotNtc.Serializer());
             Create(new S2CPawnGetLostPawnListRes.Serializer());
-            Create(new S2CPawnGetMypawnDataRes.Serializer());
-            Create(new S2CPawnGetMypawnListRes.Serializer());
+            Create(new S2CPawnGetMyPawnDataRes.Serializer());
+            Create(new S2CPawnGetMyPawnListRes.Serializer());
             Create(new S2CPawnGetNoraPawnListRes.Serializer());
             Create(new S2CPawnGetOfficialPawnListRes.Serializer());
             Create(new S2CPawnGetPartyPawnDataRes.Serializer());
@@ -1424,7 +1424,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPawnGetRegisteredPawnListRes.Serializer());
             Create(new S2CPawnGetRentedPawnDataRes.Serializer());
             Create(new S2CPawnGetRentedPawnListRes.Serializer());
-            Create(new S2CPawnJoinPartyMypawnRes.Serializer());
+            Create(new S2CPawnJoinPartyMyPawnRes.Serializer());
             Create(new S2CPawnJoinPartyPawnNtc.Serializer());
             Create(new S2CPawnJoinPartyRentedPawnRes.Serializer());
             Create(new S2CPawnLostPawnGoldenReviveRes.Serializer());

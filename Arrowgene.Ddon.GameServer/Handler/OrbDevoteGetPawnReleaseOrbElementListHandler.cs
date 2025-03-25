@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2COrbDevoteGetPawnReleaseOrbElementListRes Handle(GameClient client, C2SOrbDevoteGetPawnReleaseOrbElementListReq request)
         {
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
+            Pawn pawn = client.Character.PawnById(request.PawnId, PawnType.Main);
 
             S2COrbDevoteGetPawnReleaseOrbElementListRes response = new S2COrbDevoteGetPawnReleaseOrbElementListRes()
             {

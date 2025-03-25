@@ -17,8 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override PacketQueue Handle(GameClient client, C2SEquipChangePawnEquipJobItemReq request)
         {
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).SingleOrDefault()
-                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_NOT_FOUNDED);
+            Pawn pawn = client.Character.PawnById(request.PawnId, PawnType.Main);
             return Server.EquipManager.EquipJobItem(Server, client, pawn, request.ChangeEquipJobItemList);
         }
     }

@@ -96,7 +96,7 @@ namespace Arrowgene.Ddon.Server.Network
                 // at this point in time we only allow to send S2C_CERT_CLIENT_CHALLENGE_RES
                 // only after receiving the first client packet, we can assume the client is able
                 // to parse packets headers and process other packets.
-                Logger.Error(this,
+                Logger.Debug(this,
                     $"Tried to send Packet:\"{packet.PrintHeader()}\", while client not yet considered ready");
                 return;
             }
