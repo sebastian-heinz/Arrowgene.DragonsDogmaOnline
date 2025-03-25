@@ -1,0 +1,11 @@
+UPDATE "ddon_character_job_data" SET ("atk", "def", "m_atk", "m_def", "strength", "down_power", "shake_power", "stun_power", "consitution") = (30,120,20,83,25,50,50,0,21)      WHERE "job" = 1 AND "lv" = 1;
+UPDATE "ddon_character_job_data" SET ("atk", "def", "m_atk", "m_def", "strength", "down_power", "shake_power", "stun_power", "consitution") = (30,83,20,83,10,50,50,0,18)		WHERE "job" = 2 AND "lv" = 1;
+UPDATE "ddon_character_job_data" SET ("atk", "def", "m_atk", "m_def", "strength", "down_power", "shake_power", "stun_power", "consitution") = (30,83,20,83,25,50,50,0,9)		WHERE "job" = 3 AND "lv" = 1;
+UPDATE "ddon_character_job_data" SET ("atk", "def", "m_atk", "m_def", "strength", "down_power", "shake_power", "stun_power", "consitution") = (20,58,30,100,18,50,50,0,9)		WHERE "job" = 4 AND "lv" = 1;
+UPDATE "ddon_character_job_data" SET ("atk", "def", "m_atk", "m_def", "strength", "down_power", "shake_power", "stun_power", "consitution") = (30,120,30,120,30,50,50,0,30)	    WHERE "job" = 5 AND "lv" = 1;
+UPDATE "ddon_character_job_data" SET ("atk", "def", "m_atk", "m_def", "strength", "down_power", "shake_power", "stun_power", "consitution") = (20,58,30,100,30,50,50,0,9)		WHERE "job" = 6 AND "lv" = 1;
+UPDATE "ddon_character_job_data" SET ("atk", "def", "m_atk", "m_def", "strength", "down_power", "shake_power", "stun_power", "consitution") = (30,120,20,83,35,50,50,0,24)	    WHERE "job" = 7 AND "lv" = 1;
+UPDATE "ddon_character_job_data" SET ("atk", "def", "m_atk", "m_def", "strength", "down_power", "shake_power", "stun_power", "consitution") = (20,58,30,100,18,50,50,0,9)		WHERE "job" = 8 AND "lv" = 1;
+UPDATE "ddon_character_job_data" SET ("atk", "def", "m_atk", "m_def", "strength", "down_power", "shake_power", "stun_power", "consitution") = (30,100,30,100,25,50,50,0,27)	    WHERE "job" = 9 AND "lv" = 1;
+UPDATE "ddon_character_job_data" SET ("atk", "def", "m_atk", "m_def", "strength", "down_power", "shake_power", "stun_power", "consitution") = (30,83,30,83,25,50,50,0,18)		WHERE "job" = 10 AND "lv" = 1;
+UPDATE "ddon_character_job_data" SET ("atk", "def", "m_atk", "m_def", "strength", "down_power", "shake_power", "stun_power", "consitution") = (30,83,30,83,25,50,50,0,21)		WHERE "job" = 11 AND "lv" = 1;
