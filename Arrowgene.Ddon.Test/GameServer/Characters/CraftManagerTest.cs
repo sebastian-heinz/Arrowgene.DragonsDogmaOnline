@@ -42,7 +42,7 @@ public class CraftManagerTest
             {WalletType.HighOrbs, 5000},
             {WalletType.DominionPoints, 999999999},
             {WalletType.AdventurePassPoints, 80},
-            {WalletType.UnknownTickets, 999999999},
+            {WalletType.CustomMadeServiceTickets, 999999999},
             {WalletType.BitterblackMazeResetTicket, 3},
             {WalletType.GoldenDragonMark, 30},
             {WalletType.SilverDragonMark, 150},

@@ -459,6 +459,13 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertPartnerPawnPendingReward(uint characterId, uint pawnId, uint rewardLevel, DbConnection? connectionIn = null) { return true; }
         public void DeletePartnerPawnPendingReward(uint characterId, uint pawnId, uint rewardLevel, DbConnection? connectionIn = null) { }
 
+        public bool InsertRecycleEquipmentRecord(uint characterId, byte numAttempts, DbConnection? connectionIn = null) { return true; }
+        public bool UpdateRecycleEquipmentRecord(uint characterId, byte numAttempts, DbConnection? connectionIn = null) { return true;  }
+        public bool HasRecycleEquipmentRecord(uint characterId, DbConnection? connectionIn = null) { return true; }
+        public byte GetRecycleEquipmentAttempts(uint characterId, DbConnection? connectionIn = null) { return 0; }
+        public void ResetRecyleEquipmentRecords(DbConnection? connectionIn = null) { }
+        public bool UpsertRecycleEquipmentRecord(uint characterId, byte numAttempts, DbConnection? connectionIn = null) { return true; }
+
         public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
         public void AddParameter(DbCommand command, string name, string value) { }
         public void AddParameter(DbCommand command, string name, Int32 value) { }

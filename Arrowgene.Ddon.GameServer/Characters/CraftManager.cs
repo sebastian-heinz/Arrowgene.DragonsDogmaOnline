@@ -486,5 +486,30 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 ?? client.Character.RentedPawns.Find(p => p.PawnId == pawnId)
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID, "Couldn't find the Pawn ID.");
         }
+
+        public List<CDataMDataCraftMaterial> GetRecipeMaterialsForItemId(ItemId itemId)
+        {
+            var itemInfo = _server.ItemManager.LookupInfoByItemID(_server, (uint) itemId);
+            var recipeList = _server.AssetRepository.CraftingRecipesAsset
+                .Where(recipes => recipes.Category == itemInfo.RecipeCategory)
+                .Select(recipes => recipes.RecipeList)
+                .SingleOrDefault(new List<CDataMDataCraftRecipe>());
+            var recipie = recipeList.Where(x => x.ItemID == (uint)itemId).FirstOrDefault();
+            return (recipie != null) ? recipie.CraftMaterialList : new List<CDataMDataCraftMaterial>();
+        }
+
+        public ItemId GetItemBaseItemId(ItemId itemId)
+        {
+            var itemInfo = _server.ItemManager.LookupInfoByItemID(_server, (uint)itemId);
+            if (itemInfo == null || itemInfo.Quality == 0)
+            {
+                return itemId;
+            }
+
+            return _server.AssetRepository.ClientItemInfos.Values
+                .Where(x => x.Name == itemInfo.Name && x.Quality == 0)
+                .Select(x => (ItemId) x.ItemId)
+                .FirstOrDefault(itemId);
+        }
     }
 }

@@ -633,5 +633,13 @@ namespace Arrowgene.Ddon.Database
         HashSet<uint> GetPartnerPawnPendingRewards(uint characterId, uint pawnId, DbConnection? connectionIn = null);
         bool InsertPartnerPawnPendingReward(uint characterId, uint pawnId, uint rewardLevel, DbConnection? connectionIn = null);
         void DeletePartnerPawnPendingReward(uint characterId, uint pawnId, uint rewardLevel, DbConnection? connectionIn = null);
+
+        // Equipment Recycle
+        bool InsertRecycleEquipmentRecord(uint characterId, byte numAttempts, DbConnection? connectionIn = null);
+        bool UpdateRecycleEquipmentRecord(uint characterId, byte numAttempts, DbConnection? connectionIn = null);
+        bool HasRecycleEquipmentRecord(uint characterId, DbConnection? connectionIn = null);
+        byte GetRecycleEquipmentAttempts(uint characterId, DbConnection? connectionIn = null);
+        void ResetRecyleEquipmentRecords(DbConnection? connectionIn = null);
+        bool UpsertRecycleEquipmentRecord(uint characterId, byte numAttempts, DbConnection? connectionIn = null);
     }
 }

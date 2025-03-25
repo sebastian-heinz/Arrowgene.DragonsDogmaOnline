@@ -30,6 +30,7 @@ namespace Arrowgene.Ddon.Shared.Model.Scheduler
         TimeLockedDungeons = 21,
         // Others not from above webpage
         SeasonalEventSchedule = 22,
-        RankingBoardReset = 23
+        RankingBoardReset = 23,
+        EquipmentRecycleReset = 24,
     }
 }

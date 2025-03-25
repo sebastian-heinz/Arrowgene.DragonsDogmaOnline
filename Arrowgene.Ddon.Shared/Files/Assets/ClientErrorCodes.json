@@ -82,5 +82,17 @@
     {
         "code": "ERROR_CODE_LOBBY_JOIN_NUM_OVER",
         "en": "The channel is full; Please select another channel."
+    },
+    {
+        "code": "ERROR_CODE_SERVER_CONFIG_ERROR",
+        "en":  "The server is configured incorrectly."
+    },
+    {
+        "code": "ERROR_CODE_REQUIRED_SERVER_SCRIPT_MISSING",
+        "en":  "A required script is missing."
+    },
+    {
+        "code": "ERROR_CODE_CLIENT_ITEM_INFO_MISSING",
+        "en": "The item has no information."
     }
 ]

@@ -377,4 +377,25 @@ namespace Arrowgene.Ddon.Shared.Model
         ReceiveInItemBagCraft = 0x13,
         ReceiveInStorageCraft = 0x14
     }
+
+    public class StorageUtils
+    {
+        public static bool StorageToBag(byte storageType)
+        {
+            bool toItemBag = true;
+            switch (storageType)
+            {
+                case 13: // ItemPost   StorageType = 13
+                    toItemBag = false;
+                    break;
+                case 19: // ItemBag    StorageType = 19
+                    toItemBag = true;
+                    break;
+                case 20: // StorageBox StorageType = 20
+                    toItemBag = false;
+                    break;
+            }
+            return toItemBag;
+        }
+    }
 }

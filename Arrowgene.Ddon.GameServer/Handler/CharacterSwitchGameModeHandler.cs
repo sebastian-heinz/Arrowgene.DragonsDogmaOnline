@@ -409,7 +409,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Value = 0
                 },
                 new CDataWalletPoint() {
-                    Type = WalletType.UnknownTickets,
+                    Type = WalletType.CustomMadeServiceTickets,
                     Value = 0
                 },
                 new CDataWalletPoint() {

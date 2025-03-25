@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.Shared.Model
         HighOrbs = 9, // HO
         DominionPoints = 10, // DP
         AdventurePassPoints = 11, // BP
-        UnknownTickets = 12, // 枚
+        CustomMadeServiceTickets = 12, // 枚
         BitterblackMazeResetTicket = 13,
         GoldenDragonMark = 14, // 個
         SilverDragonMark = 15, // 個
