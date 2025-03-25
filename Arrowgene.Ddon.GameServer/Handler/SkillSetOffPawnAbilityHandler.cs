@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CSkillSetOffPawnAbilityRes Handle(GameClient client, C2SSkillSetOffPawnAbilityReq request)
         {
-            var (pawn, _) = client.Character.PawnById(request.PawnId, PawnType.Main);
+            Pawn pawn = client.Character.PawnById(request.PawnId, PawnType.Main);
             jobManager.RemoveAbility(Server.Database, pawn, request.SlotNo);
 
             client.Send(new S2CSkillSetPresetPawnAbilityNtc()

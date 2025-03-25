@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override PacketQueue Handle(GameClient client, C2SJobChangePawnJobReq request)
         {
             PacketQueue queue = new();
-            var (pawn, _) = client.Character.PawnById(request.PawnId, PawnType.Main);
+            Pawn pawn = client.Character.PawnById(request.PawnId, PawnType.Main);
 
             Server.Database.ExecuteInTransaction(connection =>
             {

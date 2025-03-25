@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             PacketQueue queue = new();
 
-            var (pawn, _) = client.Character.PawnById(request.PawnId, PawnType.Main);
+            Pawn pawn = client.Character.PawnById(request.PawnId, PawnType.Main);
             pawn.PawnState = PawnState.Lost;
             Server.Database.UpdatePawnBaseInfo(pawn);
 

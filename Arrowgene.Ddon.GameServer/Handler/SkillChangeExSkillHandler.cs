@@ -29,7 +29,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
-                var (pawn, _) = client.Character.PawnById(request.PawnId, PawnType.Main);
+                Pawn pawn = client.Character.PawnById(request.PawnId, PawnType.Main);
                 character = pawn;
             }
 

@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CSkillGetPawnLearnedSkillListRes Handle(GameClient client, C2SSkillGetPawnLearnedSkillListReq request)
         {
-            var (pawn, _) = client.Character.PawnById(request.PawnId, PawnType.Main);
+            Pawn pawn = client.Character.PawnById(request.PawnId, PawnType.Main);
             return new S2CSkillGetPawnLearnedSkillListRes()
             {
                 PawnId = pawn.PawnId,

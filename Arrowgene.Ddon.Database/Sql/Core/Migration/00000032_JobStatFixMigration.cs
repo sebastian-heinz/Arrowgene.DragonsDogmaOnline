@@ -4,8 +4,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
 {
     public class JobStatFixMigration : IMigrationStrategy
     {
-        public uint From => 30;
-        public uint To => 31;
+        public uint From => 31;
+        public uint To => 32;
 
         private readonly DatabaseSetting DatabaseSetting;
 

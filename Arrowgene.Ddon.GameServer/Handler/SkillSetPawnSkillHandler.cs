@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CSkillSetPawnSkillRes Handle(GameClient client, C2SSkillSetPawnSkillReq request)
         {
-            var (pawn, _) = client.Character.PawnById(request.PawnId, PawnType.Main);
+            Pawn pawn = client.Character.PawnById(request.PawnId, PawnType.Main);
             CustomSkill skillSlot = gameServer.JobManager.SetSkill(Server.Database, client, pawn, request.Job, request.SlotNo, request.SkillId, request.SkillLv);
             return new S2CSkillSetPawnSkillRes() {
                 PawnId = pawn.PawnId,

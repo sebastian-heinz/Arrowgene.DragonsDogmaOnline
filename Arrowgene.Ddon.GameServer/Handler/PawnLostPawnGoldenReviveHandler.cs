@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CPawnLostPawnGoldenReviveRes Handle(GameClient client, C2SPawnLostPawnGoldenReviveReq request)
         {
-            var (pawn, _) = client.Character.PawnById(request.PawnId, PawnType.Main);
+            Pawn pawn = client.Character.PawnById(request.PawnId, PawnType.Main);
             pawn.PawnState = PawnState.None;
             Server.Database.UpdatePawnBaseInfo(pawn);
             

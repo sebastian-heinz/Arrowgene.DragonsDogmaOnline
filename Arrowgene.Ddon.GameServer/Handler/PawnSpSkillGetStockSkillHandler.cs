@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         
         public override S2CPawnSpSkillGetStockSkillRes Handle(GameClient client, C2SPawnSpSkillGetStockSkillReq request)
         {
-            var (pawn, _) = client.Character.PawnById(request.PawnId, PawnType.Main);
+            Pawn pawn = client.Character.PawnById(request.PawnId, PawnType.Main);
             S2CPawnSpSkillGetStockSkillRes res = new S2CPawnSpSkillGetStockSkillRes
             {
                 SpSkillList = AllSpSkills,

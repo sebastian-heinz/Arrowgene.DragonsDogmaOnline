@@ -144,7 +144,7 @@ namespace Arrowgene.Ddon.Shared.Model
                     $"Requesting invalid main pawn slot {slotNo} for character {CharacterId}");
             }
 
-            return Pawns[slotNo-1];
+            return Pawns[slotNo - 1];
         }
 
         public Pawn RentedPawnBySlotNo(byte slotNo)
@@ -169,27 +169,27 @@ namespace Arrowgene.Ddon.Shared.Model
             RentedPawns.RemoveAt(slotNo - 1);
         }
 
-        public (Pawn Pawn, PawnType Type) PawnById(uint pawnId, PawnType typeOnly = PawnType.None)
+        public Pawn PawnById(uint pawnId, PawnType type = PawnType.None)
         {
-            if (typeOnly == PawnType.None || typeOnly == PawnType.Main)
+            switch (type)
             {
-                var mainPawn = Pawns.Where(x => x.PawnId == pawnId).FirstOrDefault();
-                if (mainPawn is not null)
-                {
-                    return (mainPawn, PawnType.Main);
-                }
+                case PawnType.Main:
+                    var mainPawn = Pawns.Where(x => x.PawnId == pawnId).FirstOrDefault();
+                    if (mainPawn is not null)
+                    {
+                        return mainPawn;
+                    }
+                    break;
+                case PawnType.Support:
+                    var rentalPawn = RentedPawns.Where(x => x.PawnId == pawnId).FirstOrDefault();
+                    if (rentalPawn is not null)
+                    {
+                        return rentalPawn;
+                    }
+                    break;
             }
 
-            if (typeOnly == PawnType.None || typeOnly == PawnType.Support)
-            {
-                var rentalPawn = RentedPawns.Where(x => x.PawnId == pawnId).FirstOrDefault();
-                if (rentalPawn is not null)
-                {
-                    return (rentalPawn, PawnType.Support);
-                }
-            }
-
-            throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_NOT_FOUNDED, $"Could not find pawn with ID {pawnId}");
+            throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_NOT_FOUNDED, $"Could not find pawn with ID {pawnId}, type {type}");
         }
 
         public Dictionary<ulong, bool> ContextOwnership { get; set; }

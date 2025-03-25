@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override PacketQueue Handle(GameClient client, C2SOrbDevoteReleasePawnOrbElementReq request)
         {
 
-            var (pawn, _) = client.Character.PawnById(request.PawnId, PawnType.Main);
+            Pawn pawn = client.Character.PawnById(request.PawnId, PawnType.Main);
 
             return Server.OrbUnlockManager.UnlockDragonForceAugmentationUpgrade(client, pawn, request.ElementId);
         }

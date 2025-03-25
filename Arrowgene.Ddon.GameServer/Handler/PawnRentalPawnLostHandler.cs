@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             PacketQueue queue = new();
 
-            var (pawn, _) = client.Character.PawnById(request.PawnId, PawnType.Support);
+            Pawn pawn = client.Character.PawnById(request.PawnId, PawnType.Support);
             // TODO: Decrement by one the rented pawn's adventure count
 
             S2CPawnRentalPawnLostNtc ntc = new S2CPawnRentalPawnLostNtc()

@@ -31,7 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             JobId abilityJob = SkillGetAcquirableAbilityListHandler.GetAbilityFromId(request.SkillId).Job;
 
-            var (pawn, _) = client.Character.PawnById(request.PawnId, PawnType.Main);
+            Pawn pawn = client.Character.PawnById(request.PawnId, PawnType.Main);
             Ability abilitySlot = jobManager.SetAbility(Server.Database, client, pawn, abilityJob, request.SlotNo, request.SkillId, request.SkillLv);
 
             return new S2CSkillSetPawnAbilityRes() {
