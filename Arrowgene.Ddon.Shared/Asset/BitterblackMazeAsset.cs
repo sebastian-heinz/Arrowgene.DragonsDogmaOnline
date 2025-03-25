@@ -13,6 +13,7 @@ namespace Arrowgene.Ddon.Shared.Asset
             Stages = new Dictionary<StageLayoutId, BitterblackMazeConfig>();
             StarterEquipment = new Dictionary<JobId, Dictionary<EquipType, List<Item>>>();
             StarterJobEquipment = new Dictionary<JobId, List<Item>>();
+            StarterJobItems = new List<(uint ItemId, uint Amount)>();
             RareItemAppraisalList = new List<CDataCommonU32>();
             ItemTakeawayList = new List<CDataCommonU32>();
             StageProgressionList = new List<CDataBattleContentStageProgression>();
@@ -42,6 +43,7 @@ namespace Arrowgene.Ddon.Shared.Asset
         public Dictionary<uint, LootRange> LootRanges { get; set; }
         public Dictionary<JobId, Dictionary<EquipType, List<Item>>> StarterEquipment {  get; set; }
         public Dictionary<JobId, List<Item>> StarterJobEquipment { get; set; }
+        public List<(uint ItemId, uint Amount)>  StarterJobItems { get; set; }
         public List<CDataCommonU32> RareItemAppraisalList { get; set; }
         public List<CDataCommonU32> ItemTakeawayList {  get; set; }
         public List<CDataBattleContentStageProgression> StageProgressionList {  get; set; }
@@ -88,6 +90,17 @@ namespace Arrowgene.Ddon.Shared.Asset
                 {
                     result[jobId].Add((item == null) ? null : new Item(item));
                 }
+            }
+
+            return result;
+        }
+
+        //Hunter arrows and Alchemist elixirs
+        public List<(uint ItemId, uint Amount)> GenerateStarterJobItems() {
+            var result = new List<(uint ItemId, uint Amount)>();
+            foreach(var (itemId, quantity) in StarterJobItems) 
+            {
+                result.Add((itemId, quantity));
             }
 
             return result;
