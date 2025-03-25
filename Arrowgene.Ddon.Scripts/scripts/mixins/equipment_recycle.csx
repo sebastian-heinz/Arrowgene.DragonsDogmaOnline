@@ -4,7 +4,7 @@
  * - Disassemble Special Arms
  * At the NPC Craig in the Craft Room
  * @settings scripts/uncategorized/recycle_equipment.csx
- *   - RewardItems : List<(ItemId Itemid, uint Amount)>
+ *   - CrestRewardItems : List<(ItemId Itemid, uint Amount)>
  *   - CrestToItemRankRanges : List<(uint ItemRank, uint MinLv, uint MaxLv)>
  */
 
@@ -34,7 +34,7 @@ public class Mixin : IEquipmentRecycleMixin
         // Find any crafting materials associated with the item
         var baseItemId = LibDdon.Crafting.GetCraftManager().GetItemBaseItemId((ItemId)itemInfo.ItemId);
         rewards.ItemRewards = LibDdon.Crafting.GetCraftManager()
-            .GetRecipieMaterialsForItemId((ItemId)baseItemId)
+            .GetRecipeMaterialsForItemId((ItemId)baseItemId)
             .Select(x => (x.ItemId, x.Num))
             .ToList();
 
@@ -152,7 +152,7 @@ public class Mixin : IEquipmentRecycleMixin
     }
 
     /// <summary>
-    /// Until actual gacha flags are extracted assume an item which has an IR > 0 and level 1 is gacha.
+    /// Until actual gacha flags are extracted assume an item which has an IR > 1 and level 1 is gacha.
     /// </summary>
     /// <param name="itemInfo"></param>
     /// <returns></returns>

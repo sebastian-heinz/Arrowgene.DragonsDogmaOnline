@@ -85,14 +85,14 @@
     },
     {
         "code": "ERROR_CODE_SERVER_CONFIG_ERROR",
-        "en":  "The server is configured incorrectly"
+        "en":  "The server is configured incorrectly."
     },
     {
         "code": "ERROR_CODE_REQUIRED_SERVER_SCRIPT_MISSING",
-        "en":  "A required script is missing"
+        "en":  "A required script is missing."
     },
     {
         "code": "ERROR_CODE_CLIENT_ITEM_INFO_MISSING",
-        "en": "The item has no information"
+        "en": "The item has no information."
     }
 ]

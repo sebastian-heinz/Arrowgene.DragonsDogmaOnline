@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             });
         }
 
-        public bool UpdatetRecycleEquipmentRecord(uint characterId, byte numAttempts, DbConnection? connectionIn = null)
+        public bool UpdateRecycleEquipmentRecord(uint characterId, byte numAttempts, DbConnection? connectionIn = null)
         {
             return ExecuteQuerySafe<bool>(connectionIn, (connection) =>
             {
@@ -61,7 +61,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         public bool UpsertRecycleEquipmentRecord(uint characterId, byte numAttempts, DbConnection? connectionIn = null)
         {
             return HasRecycleEquipmentRecord(characterId, connectionIn) ?
-                UpdatetRecycleEquipmentRecord(characterId, numAttempts, connectionIn) :
+                UpdateRecycleEquipmentRecord(characterId, numAttempts, connectionIn) :
                 InsertRecycleEquipmentRecord(characterId, numAttempts, connectionIn);
         }
 

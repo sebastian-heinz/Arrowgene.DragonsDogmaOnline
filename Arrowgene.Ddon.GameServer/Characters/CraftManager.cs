@@ -487,14 +487,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID, "Couldn't find the Pawn ID.");
         }
 
-        public List<CDataMDataCraftMaterial> GetRecipieMaterialsForItemId(ItemId itemId)
+        public List<CDataMDataCraftMaterial> GetRecipeMaterialsForItemId(ItemId itemId)
         {
             var itemInfo = _server.ItemManager.LookupInfoByItemID(_server, (uint) itemId);
-            var recipieList = _server.AssetRepository.CraftingRecipesAsset
+            var recipeList = _server.AssetRepository.CraftingRecipesAsset
                 .Where(recipes => recipes.Category == itemInfo.RecipeCategory)
                 .Select(recipes => recipes.RecipeList)
                 .SingleOrDefault(new List<CDataMDataCraftRecipe>());
-            var recipie = recipieList.Where(x => x.ItemID == (uint)itemId).FirstOrDefault();
+            var recipie = recipeList.Where(x => x.ItemID == (uint)itemId).FirstOrDefault();
             return (recipie != null) ? recipie.CraftMaterialList : new List<CDataMDataCraftMaterial>();
         }
 

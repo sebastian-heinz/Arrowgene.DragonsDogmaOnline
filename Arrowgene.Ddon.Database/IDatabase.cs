@@ -636,7 +636,7 @@ namespace Arrowgene.Ddon.Database
 
         // Equipment Recycle
         bool InsertRecycleEquipmentRecord(uint characterId, byte numAttempts, DbConnection? connectionIn = null);
-        bool UpdatetRecycleEquipmentRecord(uint characterId, byte numAttempts, DbConnection? connectionIn = null);
+        bool UpdateRecycleEquipmentRecord(uint characterId, byte numAttempts, DbConnection? connectionIn = null);
         bool HasRecycleEquipmentRecord(uint characterId, DbConnection? connectionIn = null);
         byte GetRecycleEquipmentAttempts(uint characterId, DbConnection? connectionIn = null);
         void ResetRecyleEquipmentRecords(DbConnection? connectionIn = null);
