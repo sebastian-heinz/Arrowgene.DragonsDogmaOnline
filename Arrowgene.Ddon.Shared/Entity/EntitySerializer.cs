@@ -213,6 +213,23 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataGoodsParamRequirement.Serializer());
 
             Create(new CDataHasRegionBreakReward.Serializer());
+
+            Create(new CDataGPShopDisplayType.Serializer());
+            Create(new CDataGPShopBuyHistoryElement.Serializer());
+            
+            Create(new CDataGachaInfo.Serializer());
+            Create(new CDataGachaDrawGroupInfo.Serializer());
+            Create(new CDataGachaSettlementInfo.Serializer());
+            Create(new CDataGachaDrawInfo.Serializer());
+            Create(new CDataGachaItemInfo.Serializer());
+            Create(new CDataBoxGachaInfo.Serializer());
+            Create(new CDataBoxGachaItemInfo.Serializer());
+            Create(new CDataBoxGachaSettlementInfo.Serializer());
+            
+            Create(new CDataGameItemStorageInfo.Serializer());
+            Create(new CDataGameItemStorage.Serializer());
+            
+            
             Create(new CDataHistoryElement.Serializer());
 
             Create(new CDataInformationParagraph.Serializer());
@@ -327,6 +344,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataPawnHistory.Serializer());
             Create(new CDataPawnHp.Serializer());
             Create(new CDataPawnInfo.Serializer());
+            
             Create(new CDataPawnJobChangeInfo.Serializer());
             Create(new CDataPawnList.Serializer());
             Create(new CDataPawnListData.Serializer());
@@ -677,6 +695,24 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SGpGetValidChatComGroupReq.Serializer());
             Create(new C2SGpGpEditGetVoiceListReq.Serializer());
 
+            Create(new C2SGpShopDisplayGetTypeReq.Serializer());
+            Create(new C2SGpCogGetIdReq.Serializer());
+            Create(new C2SGpGetCapToGpChangeListReq.Serializer());
+            Create(new C2SGpChangeCapToGpReq.Serializer());
+            Create(new C2SGpCourseGetAvailableListReq.Serializer());
+            Create(new C2SGpCourseGetValidListReq.Serializer());
+            Create(new C2SGpShopGetBuyHistoryReq.Serializer());
+            Create(new C2SGpCourseUseFromAvailableReq.Serializer());
+            Create(new C2SGpGetCapReq.Serializer());
+            
+            Create(new C2SGachaListReq.Serializer());
+            Create(new C2SBoxGachaListReq.Serializer());
+            Create(new C2SBoxGachaBuyReq.Serializer());
+            Create(new C2SBoxGachaDrawInfoReq.Serializer());
+            Create(new C2SGachaBuyReq.Serializer());
+            
+            Create(new C2SEventCodeInputReq.Serializer());
+            
             Create(new C2SInnGetPenaltyHealStayPriceReq.Serializer());
             Create(new C2SInnGetStayPriceReq.Serializer());
             Create(new C2SInnHpRecoveryCompleteNtc.Serializer());
@@ -709,6 +745,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SItemEmbodyItemsReq.Serializer());
             Create(new C2SItemGetDefaultStorageEmptySlotNumReq.Serializer());
             Create(new C2SItemGetEmbodyPayCostReq.Serializer());
+            Create(new C2SItemGetItemStorageInfoReq.Serializer());
             Create(new C2SItemGetPostItemListReq.Serializer());
             Create(new C2SItemGetSpecifiedHavingItemListReq.Serializer());
             Create(new C2SItemGetStorageItemListReq.Serializer());
@@ -788,6 +825,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPawnCreatePawnReq.Serializer());
             Create(new C2SPawnDeleteMyPawnReq.Serializer());
             Create(new C2SPawnExpeditionGetSallyInfoReq.Serializer());
+            Create(new C2SPawnGetFreeRentalPawnListReq.Serializer());
             Create(new C2SPawnGetLostPawnListReq.Serializer());
             Create(new C2SPawnGetMyPawnListReq.Serializer());
             Create(new C2SPawnGetMypawnDataReq.Serializer());
@@ -1025,6 +1063,10 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new S2CBinarySaveSetCharacterBinSaveDataRes.Serializer());
 
+            Create(new S2CBoxGachaBuyRes.Serializer());
+            Create(new S2CBoxGachaDrawInfoRes.Serializer());
+            Create(new S2CBoxGachaListRes.Serializer());
+
             Create(new S2CCertClientChallengeRes.Serializer());
 
             Create(new S2CCharacterAddWalletPointNtc.Serializer());
@@ -1218,6 +1260,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CEquipUpdateHideCharacterLanternRes.Serializer());
             Create(new S2CEquipUpdateHidePawnHeadArmorRes.Serializer());
             Create(new S2CEquipUpdateHidePawnLanternRes.Serializer());
+
+            Create(new S2CEventCodeInputRes.Serializer());
+
             Create(new S2CExtendEquipSlotNtc.Serializer());
 
             Create(new S2CFriendApplyFriendNtc.Serializer());
@@ -1231,15 +1276,26 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CFriendRemoveFriendNtc.Serializer());
             Create(new S2CFriendRemoveFriendRes.Serializer());
 
-            Create(new S2CGPCourseExtendNtc.Serializer());
-            Create(new S2CGPCourseStartNtc.Serializer());
+            Create(new S2CGachaBuyRes.Serializer());
+            Create(new S2CGachaListRes.Serializer());
+
+            Create(new S2CGpChangeCapToGpRes.Serializer());
+            Create(new S2CGpCogGetIdRes.Serializer());
             Create(new S2CGpCourseEndNtc.Serializer());
+            Create(new S2CGpCourseExtendNtc.Serializer());
+            Create(new S2CGpCourseGetValidListRes.Serializer());
+            Create(new S2CGpCourseStartNtc.Serializer());
+            Create(new S2CGpCourseUseFromAvailableRes.Serializer());
+            Create(new S2CGpGetCapRes.Serializer());
+            Create(new S2CGpGetCapToGpChangeListRes.Serializer());
             Create(new S2CGpGetGpDetailRes.Serializer());
             Create(new S2CGpGetGpPeriodRes.Serializer());
             Create(new S2CGpGetGpRes.Serializer());
             Create(new S2CGpGetValidChatComGroupRes.Serializer());
             Create(new S2CGpGpCourseGetAvailableListRes.Serializer());
             Create(new S2CGpGpEditGetVoiceListRes.Serializer());
+            Create(new S2CGpShopDisplayGetTypeRes.Serializer());
+            Create(new S2CGpShopGetBuyHistoryRes.Serializer());
 
             Create(new S2CInnGetPenaltyHealStayPriceRes.Serializer());
             Create(new S2CInnGetStayPriceRes.Serializer());
@@ -1280,6 +1336,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CItemExtendItemSlotNtc.Serializer());
             Create(new S2CItemGetDefaultStorageEmptySlotNumRes.Serializer());
             Create(new S2CItemGetEmbodyPayCostRes.Serializer());
+            Create(new S2CItemGetItemStorageInfoRes.Serializer());
             Create(new S2CItemGetPostItemListRes.Serializer());
             Create(new S2CItemGetSpecifiedHavingItemListRes.Serializer());
             Create(new S2CItemGetStorageItemListRes.Serializer());
@@ -1399,6 +1456,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPawnExpeditionGetSallyInfoRes.Serializer());
             Create(new S2CPawnExtendMainPawnSlotNtc.Serializer());
             Create(new S2CPawnExtendSupportPawnSlotNtc.Serializer());
+            Create(new S2CPawnGetFreeRentalPawnListRes.Serializer());
             Create(new S2CPawnGetLostPawnListRes.Serializer());
             Create(new S2CPawnGetMypawnDataRes.Serializer());
             Create(new S2CPawnGetMypawnListRes.Serializer());
@@ -1808,6 +1866,15 @@ namespace Arrowgene.Ddon.Shared.Entity
 
         private static void TestSerializers()
         {
+            // These handlers do some unusual manipulation of byte arrays and get a pass for being misaligned in this test.
+            HashSet<Type> knownMisalignmentHandlers = new()
+            {
+                typeof(C2LClientChallengeReq),
+                typeof(C2SCertClientChallengeReq),
+                typeof(S2CCertClientChallengeRes),
+                typeof(L2CClientChallengeRes)
+            };
+
             foreach (var serializer in Serializers)
             {
                 try
@@ -1819,9 +1886,9 @@ namespace Arrowgene.Ddon.Shared.Entity
 
                     buffer.SetPositionStart();
                     serializer.Value.ReadObj(buffer);
-                    if (buffer.Position != endPosition)
+                    if (!knownMisalignmentHandlers.Contains(serializer.Key) && buffer.Position != endPosition)
                     {
-                        //throw new DataMisalignedException($"Serializer reading fewer bytes than are written. {buffer.Position} < {endPosition}");
+                        throw new DataMisalignedException($"Serializer reading fewer bytes than are written. {buffer.Position} < {endPosition}");
                     }
                 }
                 catch (Exception ex)

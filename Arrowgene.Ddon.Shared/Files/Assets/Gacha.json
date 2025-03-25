@@ -1,0 +1,132 @@
+{
+    "comment": "This file describes loot box contents",
+    "boxes": [
+        {
+            "gacha_id": 1225,
+            "start_time": 0,
+            "end_time": 4131210198,
+            "name": "Shining snow Christmas box",
+            "description": "Lottery for Christmas event items from the <COL ff8c00>Shining snow Christmas box</COL>",
+            "detail": "",
+            "weight_display_type": 2,
+            "weight_display_title": "Percentage Provided",
+            "weight_display_text": "Class S 100.0%\r\n*Probability of provision is rounded to one decimal place.",
+            "list_address": "/shop/img/payment/icon_lot.png",
+            "image_address": "shop/img/payment/image_lot1225_campaign.jpg",
+            "draw_groups": [
+                {
+                    "group_id": 351,
+                    "wallet_type": "GoldenGemstones",
+                    "price": 1,
+                    "base_price": 1,
+                    "purchase_num": 0,
+                    "purchase_max_num": 0,
+                    "special_price_num": 0,
+                    "special_price_max_num": 0,
+                    "unk1": 0
+                },
+                {
+                    "group_id": 352,
+                    "wallet_type": "SilverTickets",
+                    "price": 10,
+                    "base_price": 10,
+                    "purchase_num": 0,
+                    "purchase_max_num": 0,
+                    "special_price_num": 0,
+                    "special_price_max_num": 0,
+                    "unk1": 0
+                }
+            ],
+            "draw_list": [
+                {
+                    "comment": "Christmas Tree onepiece",
+                    "item_id": 23461,
+                    "amount": 1,
+                    "rank": 1,
+                    "effect": 0,
+                    "chance": 0.1
+                },
+                {
+                    "comment": "Santa's Robe Coat (red)",
+                    "item_id": 23452,
+                    "amount": 1,
+                    "rank": 1,
+                    "effect": 0,
+                    "chance": 0.1
+                },
+                {
+                    "comment": "Santa's Robe Coat (White)",
+                    "item_id": 23453,
+                    "amount": 1,
+                    "rank": 1,
+                    "effect": 0,
+                    "chance": 0.1
+                },
+                {
+                    "comment": "Reindeer's Ears (Brown)",
+                    "item_id": 23454,
+                    "amount": 1,
+                    "rank": 1,
+                    "effect": 0,
+                    "chance": 0.1
+                },
+                {
+                    "comment": "Reindeer's Ears (White)",
+                    "item_id": 23455,
+                    "amount": 1,
+                    "rank": 1,
+                    "effect": 0,
+                    "chance": 0.1
+                },
+                {
+                    "comment": "Reindeer's Costume (Brown)",
+                    "item_id": 23456,
+                    "amount": 1,
+                    "rank": 1,
+                    "effect": 0,
+                    "chance": 0.1
+                },
+                {
+                    "comment": "Reindeer's Costume (White)",
+                    "item_id": 23457,
+                    "amount": 1,
+                    "rank": 1,
+                    "effect": 0,
+                    "chance": 0.1
+                },
+                {
+                    "comment": "Reindeer's Mouton Boots (Brown)",
+                    "item_id": 23458,
+                    "amount": 1,
+                    "rank": 1,
+                    "effect": 0,
+                    "chance": 0.1
+                },
+                {
+                    "comment": "Reindeer's Mouton Boots (White)",
+                    "item_id": 23459,
+                    "amount": 1,
+                    "rank": 1,
+                    "effect": 0,
+                    "chance": 0.1
+                },
+                {
+                    "comment": "Sparkling Snow Large Crystal",
+                    "item_id": 23548,
+                    "amount": 50,
+                    "rank": 3,
+                    "effect": 0,
+                    "chance": 0.5
+                },
+                {
+                    "comment": "Rainbow Dye",
+                    "item_id": 8141,
+                    "amount": 1,
+                    "rank": 3,
+                    "effect": 0,
+                    "chance": 0.5
+                }
+            ]
+        }
+    ]
+}

@@ -57,7 +57,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 if (now >= course.StartTime && now <= course.EndTime)
                 {
-                    S2CGPCourseExtendNtc courseExtendNtc = new S2CGPCourseExtendNtc()
+                    S2CGpCourseExtendNtc courseExtendNtc = new S2CGpCourseExtendNtc()
                     {
                         CourseID = course.Id,
                         ExpiryTimestamp = course.EndTime

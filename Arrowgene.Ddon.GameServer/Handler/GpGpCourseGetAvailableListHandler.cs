@@ -1,15 +1,14 @@
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.GameServer.Dump;
+using System;
+using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Network;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class GpGpCourseGetAvailableListHandler : PacketHandler<GameClient>
+    public class GpGpCourseGetAvailableListHandler : GameRequestPacketHandler<C2SGpCourseGetAvailableListReq, S2CGpGpCourseGetAvailableListRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(GpGpCourseGetAvailableListHandler));
 
@@ -20,20 +19,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
             _AssetRepo = server.AssetRepository;
         }
 
-        public override PacketId Id => PacketId.C2S_GP_GP_COURSE_GET_AVAILABLE_LIST_REQ;
-
-        public override void Handle(GameClient client, IPacket packet)
+        public override S2CGpGpCourseGetAvailableListRes Handle(GameClient client, C2SGpCourseGetAvailableListReq request)
         {
-            S2CGpGpCourseGetAvailableListRes Response = new S2CGpGpCourseGetAvailableListRes();
+            S2CGpGpCourseGetAvailableListRes res = new S2CGpGpCourseGetAvailableListRes();
 
-            // foreach (var Course in _AssetRepo.GPCourseInfoAsset.ValidCourses)
-            // {
-            //
-            // }
+            string urlBase = Server.GameSettings.GameServerSettings.UrlDomain;
+            DateTimeOffset offset = DateTimeOffset.UtcNow;
+            res.Items = new List<CDataGPCourseAvailable>
+            {
+                new CDataGPCourseAvailable
+                {
+                    ID = 1,
+                    Name = "Adventure Passport (available)",
+                    UseLimitTime = offset.AddMonths(12),
+                    CourseID = 1,
+                    LineupID = 1,
+                    ImageAddr = $"{urlBase}/shop/img/payment/icon_course1.png",
+                }
+            };
 
-            // TODO: Send back real data based on JSON contents?
-            // TODO: PCAP doesn't have sample packet contents to see what is in it.
-            client.Send(Response);
+            return res;
         }
     }
 }

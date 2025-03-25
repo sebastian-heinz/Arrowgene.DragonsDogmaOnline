@@ -1,0 +1,50 @@
+using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
+using System.Collections.Generic;
+
+namespace Arrowgene.Ddon.GameServer.Handler
+{
+    public class BoxGachaBuyHandler : GameRequestPacketHandler<C2SBoxGachaBuyReq, S2CBoxGachaBuyRes>
+    {
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(BoxGachaBuyHandler));
+
+        public BoxGachaBuyHandler(DdonGameServer server) : base(server)
+        {
+        }
+
+        public override S2CBoxGachaBuyRes Handle(GameClient client, C2SBoxGachaBuyReq request)
+        {
+            throw new ResponseErrorException(ErrorCode.ERROR_CODE_NOT_IMPLEMENTED);
+
+            S2CBoxGachaBuyRes res = new S2CBoxGachaBuyRes();
+
+            // TODO: based on gacha ID & draw ID figure out which items were bought
+            res.BoxGachaId = request.BoxGachaId;
+            res.BoxGachaItemList.Add(new CDataBoxGachaItemInfo
+            {
+                ItemId = 13800,
+                ItemNum = 5,
+                ItemStock = 13,
+                Rank = 2,
+                Effect = 0,
+                Probability = 0,
+                DrawNum = 0
+            });
+
+            List<CDataItemUpdateResult> itemUpdateResult = new List<CDataItemUpdateResult>();
+            foreach (CDataBoxGachaItemInfo gachaItemInfo in res.BoxGachaItemList)
+            {
+                // TODO: support adding to item post
+                itemUpdateResult.AddRange(Server.ItemManager.AddItem(Server, client.Character, true, gachaItemInfo.ItemId, gachaItemInfo.ItemNum));
+            }
+
+            // TODO: based on Settlement ID figure out which currency was used
+            Server.WalletManager.RemoveFromWalletNtc(client, client.Character, WalletType.GoldenGemstones, request.Price);
+
+            return res;
+        }
+    }
+}

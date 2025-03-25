@@ -48,8 +48,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     {
                         Id = c.CharacterId,
                         CourseId = ValidCourse.Value.Id,
-                        NameA = Server.AssetRepository.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].Name, // Course Name
-                        NameB = Server.AssetRepository.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].IconPath, // Link to a icon
+                        Name = Server.AssetRepository.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].Name, // Course Name
+                        ImageAddr = Server.AssetRepository.GPCourseInfoAsset.Courses[ValidCourse.Value.Id].IconPath, // Link to a icon
                     };
 
                     if ((now >= ValidCourse.Value.StartTime) && (now <= ValidCourse.Value.EndTime))
