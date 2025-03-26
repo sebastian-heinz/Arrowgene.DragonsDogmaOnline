@@ -587,13 +587,16 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         }
                     }
                 }
-                //Generate starting job items for BBM
-                var itemBagJob = character.Storage.GetAllStorages()[StorageType.ItemBagJob];
-                foreach(var (itemId, quantity) in character.BbmStarterItems) {
-                    Item jobItem = new Item() { ItemId = itemId };
-                    ushort slot = itemBagJob.AddItem(jobItem, quantity);
-                    InsertStorageItem(character.ContentCharacterId, StorageType.ItemBagJob, slot, quantity, jobItem, conn);
-                }
+            }
+        }
+
+        //Helper function to add specific items to a storage
+        public void CreateListItems(DbConnection conn, Character character, StorageType storageType, List<(uint ItemId, uint Amount)> itemList) {
+            var itemBagJob = character.Storage.GetAllStorages()[storageType];
+            foreach(var (itemId, quantity) in itemList) {
+                Item jobItem = new Item() { ItemId = itemId };
+                ushort slot = itemBagJob.AddItem(jobItem, quantity);
+                InsertStorageItem(character.ContentCharacterId, StorageType.ItemBagJob, slot, quantity, jobItem, conn);
             }
         }
 

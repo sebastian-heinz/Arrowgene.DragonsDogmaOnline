@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -40,8 +41,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             // Add back equipment templates
             client.Character.EquipmentTemplate = new EquipmentTemplate(Server.AssetRepository.BitterblackMazeAsset.GenerateStarterEquipment(), Server.AssetRepository.BitterblackMazeAsset.GenerateStarterJobEquipment());
-            //Add starter job items(elixirs/arrows)
-            client.Character.BbmStarterItems = new List<(uint ItemId, uint Amount)>(Server.AssetRepository.BitterblackMazeAsset.GenerateStarterJobItems());
 
             List<CDataItemUpdateResult> updateItemList = null;
             Server.Database.ExecuteInTransaction(connection =>
@@ -54,9 +53,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 // Recreate starting items for player
                 Server.Database.CreateItems(connection, client.Character);
+
+                // Add starter job items for Bitterblack Maze characters
+                if(client.Character.GameMode == GameMode.BitterblackMaze) {
+                    Server.Database.CreateListItems(connection, client.Character, StorageType.ItemBagJob, Server.AssetRepository.BitterblackMazeAsset.GenerateStarterJobItems());
+                }
             });
 
-            //job items created in CreateItems() needs to be updated to the Client
+            //job items added for Bitterblack Maze needs to be updated to the Client
             updateItemList.AddRange(GetRefreshInventoryList(client.Character, StorageType.ItemBagJob));
             
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
