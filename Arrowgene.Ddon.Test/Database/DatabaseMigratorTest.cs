@@ -193,6 +193,8 @@ namespace Arrowgene.Ddon.Test.Database
         public bool CreateDatabase() { return true; }
         public bool CreatePawn(Pawn pawn) { return true; }
         public void CreateItems(DbConnection connection, Character character) { }
+        public void CreateListItems(DbConnection conn, Character character, StorageType storageType, List<(uint ItemId, uint Amount)> itemList) {}
+
         public bool DeleteAccount(int accountId) { return true; }
         public int DeleteBazaarExhibition(ulong bazaarId) { return 1; }
         public bool DeleteBoxRewardItem(uint commonId, uint uniqId, DbConnection? connectionIn = null) { return true; }
