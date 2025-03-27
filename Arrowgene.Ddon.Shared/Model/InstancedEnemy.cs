@@ -289,7 +289,7 @@ namespace Arrowgene.Ddon.Shared.Model
             return this;
         }
 
-        public InstancedEnemy AddDrop(ItemId itemId, uint minAmount, uint maxAmount, double chance, uint quality = 0, bool isHidden = false)
+        public virtual InstancedEnemy AddDrop(ItemId itemId, uint minAmount, uint maxAmount, double chance, uint quality = 0, bool isHidden = false)
         {
             var table = DropsTable.Clone().AddDrop(itemId, minAmount, maxAmount, chance, quality, isHidden);
             SetDropsTable(table);
