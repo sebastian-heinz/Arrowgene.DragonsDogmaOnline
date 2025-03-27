@@ -5,7 +5,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Scripting;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Arrowgene.Ddon.GameServer.Scripting
 {
@@ -38,6 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
                 .AddImports("Arrowgene.Ddon.GameServer.Quests.Extensions")
                 .AddImports("Arrowgene.Ddon.GameServer.Scripting")
                 .AddImports("Arrowgene.Ddon.GameServer.Scripting.Interfaces")
+                .AddImports("Arrowgene.Ddon.Server.Network")
                 .AddImports("Arrowgene.Ddon.Server.Scripting")
                 .AddImports("Arrowgene.Ddon.Shared")
                 .AddImports("Arrowgene.Ddon.Shared.Entity.PacketStructure")

@@ -137,6 +137,28 @@ namespace Arrowgene.Ddon.Server.Settings
         private const byte _CraftItemRecycleResetCost = 1;
 
         /// <summary>
+        /// Modifier used to skew the randomness during equipment unlimit.
+        /// Bias of 1.0 has a uniform distribution
+        /// Bias of 2.0 has a moderate bias towards lower numbers
+        /// Bias of 3.0 has a high bias towards lower numbers
+        /// Bias of 4.0 has an extreme bias towards lower numbers
+        /// </summary>
+        [DefaultValue(_EquipmentLimitBreakBias)]
+        public double EquipmentLimitBreakBias
+        {
+            set
+            {
+                SetSetting("EquipmentLimitBreakBias", value);
+            }
+            get
+            {
+                return TryGetSetting("EquipmentLimitBreakBias", _EquipmentLimitBreakBias);
+            }
+        }
+        private const double _EquipmentLimitBreakBias = 3.0;
+
+
+        /// <summary>
         /// The number of real world minutes that make up an in-game day.
         /// </summary>
         [DefaultValue(_GameClockTimescale)]
@@ -340,7 +362,7 @@ namespace Arrowgene.Ddon.Server.Settings
             "    {WalletType.HighOrbs, 5000},\n" +
             "    {WalletType.DominionPoints, 999999999},\n" +
             "    {WalletType.AdventurePassPoints, 80},\n" +
-            "    {WalletType.UnknownTickets, 999999999},\n" +
+            "    {WalletType.CustomMadeServiceTickets, 999999999},\n" +
             "    {WalletType.BitterblackMazeResetTicket, 3},\n" +
             "    {WalletType.GoldenDragonMark, 30},\n" +
             "    {WalletType.SilverDragonMark, 150},\n" +

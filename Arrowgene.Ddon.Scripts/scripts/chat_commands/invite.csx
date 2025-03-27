@@ -60,7 +60,7 @@ public class ChatCommand : IChatCommand
                     responses.Add(ChatResponse.CommandError(client, "The party already contains that pawn."));
                     return;
                 }
-                inviteMypawnHandler.Handle(client, new StructurePacket<C2SPawnJoinPartyMypawnReq>(new C2SPawnJoinPartyMypawnReq()
+                inviteMypawnHandler.Handle(client, new StructurePacket<C2SPawnJoinPartyMyPawnReq>(new C2SPawnJoinPartyMyPawnReq()
                 {
                     PawnNumber = myTuple.pawnNumber
                 }));
