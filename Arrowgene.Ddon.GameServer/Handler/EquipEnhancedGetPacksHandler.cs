@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.GameServer.Dump;
+using Arrowgene.Ddon.GameServer.Shop;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -16,8 +17,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CEquipEnhancedGetPacksRes Handle(GameClient client, C2SEquipEnhancedGetPacksReq request)
         {
-            // TODO: Implement.
-            S2CEquipEnhancedGetPacksRes res = EntitySerializer.Get<S2CEquipEnhancedGetPacksRes>().Read(InGameDump.data_Dump_111);
+            S2CEquipEnhancedGetPacksRes res;
+            if (request.Unk0 == 1)
+            {
+                var limitBreakAsset = Server.AssetRepository.LimitBreakAsset;
+                res = new S2CEquipEnhancedGetPacksRes()
+                {
+                    ParamList = limitBreakAsset.ToLotteryExampleList()
+                };
+            }
+            else
+            {
+                res = EntitySerializer.Get<S2CEquipEnhancedGetPacksRes>().Read(InGameDump.data_Dump_111);
+            }
+                
             return res;
         }
     }

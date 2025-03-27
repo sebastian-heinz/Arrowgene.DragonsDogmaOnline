@@ -185,6 +185,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataEquipItemInfoUnk2.Serializer());
             Create(new CDataEquipJobItem.Serializer());
             Create(new CDataEquipSlot.Serializer());
+            Create(new CDataEquipEnhanceUnk0.Serializer());
+            Create(new CDataEquipEnhanceItem.Serializer());
+
             Create(new CDataErrorMessage.Serializer());
             Create(new CDataExpiredQuestList.Serializer());
             Create(new CDataExpRequirement.Serializer());
@@ -392,7 +395,7 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new CDataS2CCraftGetCraftSettingResUnk0Unk6.Serializer());
             Create(new CDataS2CCraftStartQualityUpResUnk0.Serializer());
-            Create(new CDataS2CEquipEnhancedGetPacksResUnk0.Serializer());
+            Create(new CDataEquipEnhanceLotteryOption.Serializer());
             Create(new CDataS2CEquipEnhancedGetPacksResUnk0Unk10.Serializer());
             Create(new CDataS2CEquipEnhancedGetPacksResUnk0Unk10Unk1.Serializer());
             Create(new CDataRequiredItem.Serializer());
@@ -665,6 +668,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SEquipUpdateHideCharacterLanternReq.Serializer());
             Create(new C2SEquipUpdateHidePawnHeadArmorReq.Serializer());
             Create(new C2SEquipUpdateHidePawnLanternReq.Serializer());
+            Create(new C2SEquipEnhancedEnhanceItemReq.Serializer());
+            
             Create(new C2SEventEndNtc.Serializer());
             Create(new C2SEventStartNtc.Serializer());
 
@@ -723,6 +728,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SItemSortSetItemSortDataBinReq.Serializer());
             Create(new C2SItemUseBagItemReq.Serializer());
             Create(new C2SItemUseJobItemsReq.Serializer());
+            Create(new C2SItemGetEquipRareTypeItemsReq.Serializer());
 
             Create(new C2SJobChangeJobReq.Serializer());
             Create(new C2SJobChangePawnJobReq.Serializer());
@@ -1227,6 +1233,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CEquipUpdateHideCharacterLanternRes.Serializer());
             Create(new S2CEquipUpdateHidePawnHeadArmorRes.Serializer());
             Create(new S2CEquipUpdateHidePawnLanternRes.Serializer());
+            Create(new S2CEquipEnhancedEnhanceItemRes.Serializer());
+            Create(new S2C_EQUIP_65_0_16_NTC.Serializer());
             Create(new S2CExtendEquipSlotNtc.Serializer());
 
             Create(new S2CFriendApplyFriendNtc.Serializer());
@@ -1302,6 +1310,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CItemUpdateCharacterItemNtc.Serializer());
             Create(new S2CItemUseBagItemRes.Serializer());
             Create(new S2CItemUseJobItemsRes.Serializer());
+            Create(new S2CItemGetEquipRareTypeItemsRes.Serializer());
 
             Create(new S2CJobChangeJobNtc.Serializer());
             Create(new S2CJobChangeJobRes.Serializer());

@@ -154,6 +154,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                         }
                                         });
 
+                                    item.AddStatusParamList = GetEquipmentLimitBreakRecord(item.UId, connection);
+
                                     common.EquipmentTemplate.SetEquipItem(item, job, equipType, equipSlot);
                                 }
                             });

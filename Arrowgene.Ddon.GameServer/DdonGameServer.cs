@@ -363,6 +363,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new EquipUpdateHideCharacterLanternHandler(this));
             AddHandler(new EquipUpdateHidePawnHeadArmorHandler(this));
             AddHandler(new EquipUpdateHidePawnLanternHandler(this));
+            AddHandler(new EquipEnhancedEnhanceItemHandler(this));
 
             AddHandler(new EventStartHandler(this));
             AddHandler(new EventEndHandler(this));
@@ -428,6 +429,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ItemGetSpecifiedHavingItemListHandler(this));
             AddHandler(new ItemEmbodyItemsHandler(this));
             AddHandler(new ItemChangeAttrDiscardHandler(this));
+            AddHandler(new ItemGetEquipRareTypeItemsHandler(this));
 
             AddHandler(new JobChangeJobHandler(this));
             AddHandler(new JobChangePawnJobHandler(this));

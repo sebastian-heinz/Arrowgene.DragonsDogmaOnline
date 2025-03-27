@@ -639,6 +639,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 server.Database.InsertCrest(character.CommonId, item.UId, crest.SlotNo, crest.CrestId, crest.Add, connectionIn);
             }
+
+            foreach (var addStatusParam in item.AddStatusParamList)
+            {
+                server.Database.UpsertEquipmentLimitBreakRecord(character.CharacterId, item.UId, addStatusParam, connectionIn);
+            }
         }
 
         public List<CDataItemUpdateResult> MoveItem(DdonServer<GameClient> server, Character character, Storage fromStorage, ushort fromSlotNo, uint num, Storage toStorage, ushort toSlotNo, DbConnection? connectionIn = null)

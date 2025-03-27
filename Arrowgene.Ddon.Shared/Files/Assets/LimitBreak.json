@@ -1,0 +1,43 @@
+{
+    "title": "【Limit Break】",
+    "weapon_lottery": {
+        "great_success_min": 4,
+        "shop_listings": [1],
+        "payment_options": [
+            {"type": "RiftPoints", "name": "Rift Points", "amount": 300, "min_reward": 1},
+            {"type": "GoldenGemstones", "name": "Golden Gemstones", "amount": 1, "min_reward": 4},
+            {"type": "CustomMadeServiceTickets", "name": "Custom-Made Service Tickets", "amount": 1, "min_reward": 4}
+        ],
+        "stats": [
+            {"name": "Blow Power", "ids": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]},
+            {"name": "Knockout Power", "ids": [21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 38, 40]},
+            {"name": "Inflict Poison", "ids": [41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60]},
+            {"name": "Inflict Torpor", "ids": [61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80]},
+            {"name": "Inflict Sleep", "ids": [81, 82, 83, 84, 85, 85, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100]},
+            {"name": "Inflict Drenching", "ids": [101, 102, 103, 104, 105, 106, 107, 108, 109, 110, 111, 112, 113, 114, 115, 116, 117, 118, 119, 120]},
+            {"name": "Inflict Tarring", "ids": [121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 134, 136, 137, 138, 139, 140]},
+            {"name": "Inflict Skill Stifling", "ids": [141, 142, 143, 144, 145, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160]},
+            {"name": "Inflict Frail", "ids": [161, 162, 163, 164, 165, 166, 167, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180]}
+        ]
+    },
+    "armor_lottery": {
+        "great_success_min": 7,
+        "shop_listings": [5],
+        "payment_options": [
+            {"type": "RiftPoints", "name": "Rift Points", "amount": 1000, "min_reward": 1},
+            {"type": "GoldenGemstones", "name": "Golden Gemstones", "amount": 1, "min_reward": 7},
+            {"type": "CustomMadeServiceTickets", "name": "Custom-Made Service Tickets", "amount": 1, "min_reward": 7}
+        ],
+        "stats": [
+            {"name": "Endurance", "ids": [451, 452, 453, 454, 455, 456, 457, 458, 459, 460]},
+            {"name": "Healing Power", "ids": [461, 462, 463, 464, 465, 466, 467, 468, 469, 470]},
+            {"name": "Fire Resist", "ids": [471, 472, 473, 474, 475, 476, 477, 478, 479, 480]},
+            {"name": "Ice Resist", "ids": [481, 482, 483, 484, 485, 486, 487, 488, 489, 490]},
+            {"name": "Thunder Resist", "ids": [491, 492, 493, 494, 495, 496, 497, 498, 499, 500]},
+            {"name": "Holy Resist", "ids": [501, 502, 503, 504, 505, 506, 507, 508, 509, 510]},
+            {"name": "Dark Resist", "ids": [511, 512, 513, 514, 515, 516, 517, 518, 519, 520]},
+            {"name": "Resist Catching Fire", "ids": [521, 522, 523, 524, 525, 526, 527, 528, 529, 530]},
+            {"name": "Resist Frozen Solid", "ids": [531, 532, 533, 534, 535, 536, 537, 538, 539, 540]}
+        ]
+    }
+}
