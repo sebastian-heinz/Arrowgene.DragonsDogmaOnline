@@ -226,7 +226,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataItemList.Serializer());
             Create(new CDataItemSort.Serializer());
             Create(new CDataItemStorageIndicateNum.Serializer());
-            Create(new CDataItemUIdList.Serializer());
+            Create(new CDataItemUIDList.Serializer());
             Create(new CDataItemUpdateResult.Serializer());
 
             Create(new CDataJewelryEquipLimit.Serializer());

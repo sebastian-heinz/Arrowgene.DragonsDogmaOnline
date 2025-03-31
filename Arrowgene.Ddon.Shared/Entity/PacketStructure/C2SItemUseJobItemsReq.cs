@@ -11,23 +11,23 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public C2SItemUseJobItemsReq()
         {
-            ItemUIdList = new List<CDataItemUIdList>();
+            ItemUIdList = new List<CDataItemUIDList>();
         }
 
-        public List<CDataItemUIdList> ItemUIdList { get; set; }
+        public List<CDataItemUIDList> ItemUIdList { get; set; }
         
 
         public class Serializer : PacketEntitySerializer<C2SItemUseJobItemsReq>
         {
             public override void Write(IBuffer buffer, C2SItemUseJobItemsReq obj)
             {
-                WriteEntityList<CDataItemUIdList>(buffer, obj.ItemUIdList);
+                WriteEntityList<CDataItemUIDList>(buffer, obj.ItemUIdList);
             }
 
             public override C2SItemUseJobItemsReq Read(IBuffer buffer)
             {
                 C2SItemUseJobItemsReq obj = new();
-                obj.ItemUIdList = ReadEntityList<CDataItemUIdList>(buffer);
+                obj.ItemUIdList = ReadEntityList<CDataItemUIDList>(buffer);
                 return obj;
             }
         }
