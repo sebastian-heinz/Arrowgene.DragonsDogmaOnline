@@ -11,10 +11,10 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public C2SItemChangeAttrDiscardReq()
         {
-            ItemList = new List<CDataItemUIdList>();
+            ItemList = new List<CDataItemUIDList>();
         }
 
-        public List<CDataItemUIdList> ItemList { get; set; }
+        public List<CDataItemUIDList> ItemList { get; set; }
         public bool DiscardSetting { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SItemChangeAttrDiscardReq>
@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override C2SItemChangeAttrDiscardReq Read(IBuffer buffer)
             {
                 C2SItemChangeAttrDiscardReq obj = new C2SItemChangeAttrDiscardReq();
-                obj.ItemList = ReadEntityList<CDataItemUIdList>(buffer);
+                obj.ItemList = ReadEntityList<CDataItemUIDList>(buffer);
                 obj.DiscardSetting = ReadBool(buffer);
                 return obj;
             }

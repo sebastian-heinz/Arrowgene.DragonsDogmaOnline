@@ -47,7 +47,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 bool hasFullPayment = true;
                 foreach (var payment in item.UIDList)
                 {
-                    hasFullPayment &= Server.ItemManager.HasItem(Server, client.Character, ItemManager.BothStorageTypes, payment.UId, payment.Num);
+                    hasFullPayment &= Server.ItemManager.HasItem(Server, client.Character, ItemManager.BothStorageTypes, payment.ItemUID, payment.Num);
                 }
 
                 if (!hasFullPayment)
@@ -63,7 +63,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 // Consume payment
                 foreach (var payment in item.UIDList)
                 {
-                    List<CDataItemUpdateResult> updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, payment.UId, payment.Num);
+                    List<CDataItemUpdateResult> updateResults = Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, payment.ItemUID, payment.Num);
                     updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                 }
 

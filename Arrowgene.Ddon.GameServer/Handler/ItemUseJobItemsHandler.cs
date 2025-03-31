@@ -26,9 +26,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 UpdateType = ItemNoticeType.UseJobItem
             };
 
-            foreach (CDataItemUIdList itemUIdListElement in request.ItemUIdList)
+            foreach (CDataItemUIDList itemUIdListElement in request.ItemUIdList)
             {
-                var update = _itemManager.ConsumeItemByUId(Server, client.Character, StorageType.ItemBagJob, itemUIdListElement.UId, itemUIdListElement.Num);
+                var update = _itemManager.ConsumeItemByUId(Server, client.Character, StorageType.ItemBagJob, itemUIdListElement.ItemUID, itemUIdListElement.Num);
                 if (update != null)
                 {
                     ntc.UpdateItemList.Add(update);

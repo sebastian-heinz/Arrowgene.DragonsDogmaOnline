@@ -998,7 +998,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return results;
         }
 
-        public void SetSafetySetting(GameClient client, Character character, List<CDataItemUIdList> uids, bool safetySetting)
+        public void SetSafetySetting(GameClient client, Character character, List<CDataItemUIDList> uids, bool safetySetting)
         {
             List<(ushort SlotNo, Item Item, uint Amount, Storage Storage)> items = new();
 
@@ -1010,7 +1010,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             uint updateItemNum = 0;
             foreach (var reqitem in uids)
             {
-                (StorageType storageType, Tuple<ushort, Item, uint> itemProps) = character.Storage.FindItemByUIdInStorage(ItemManager.AllItemStorages, reqitem.UId);
+                (StorageType storageType, Tuple<ushort, Item, uint> itemProps) = character.Storage.FindItemByUIdInStorage(ItemManager.AllItemStorages, reqitem.ItemUID);
                 var (slotNo, item, amount) = itemProps;
                 var storage = character.Storage.GetStorage(storageType);
 
