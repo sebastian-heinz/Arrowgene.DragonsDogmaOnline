@@ -77,6 +77,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 Server.Database.UpsertEquipmentLimitBreakRecord(client.Character.CharacterId, item.UId, newAddStatusParam, connection);
 
+                item.AddStatusParamList.Clear();
+                item.AddStatusParamList.Add(newAddStatusParam);
+                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(client.Character, item, storageType, slotNo, 1, 1));
+                updateCharacterItemNtc.UpdateType = ItemNoticeType.GatherEquipItem;
+                packets.Enqueue(client, updateCharacterItemNtc);
+
                 packets.Enqueue(client, new S2CEquipEnhancedEnhanceItemRes()
                 {
                     Unk0 = request.UpgradeItemUID,
@@ -85,12 +91,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Unk4 = 0,
                     Unk3 = 0,
                 });
-
-                item.AddStatusParamList.Clear();
-                item.AddStatusParamList.Add(newAddStatusParam);
-                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(client.Character, item, storageType, slotNo, 1, 1));
-                updateCharacterItemNtc.UpdateType = ItemNoticeType.GatherEquipItem;
-                packets.Enqueue(client, updateCharacterItemNtc);
             });
 
             return packets;
