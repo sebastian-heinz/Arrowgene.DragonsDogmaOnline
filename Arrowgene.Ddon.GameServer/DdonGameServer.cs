@@ -539,8 +539,11 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new PhotoPhotoTakeHandler(this));
 
+            AddHandler(new ProfileGetAvailableBackgroundListHandler(this));
             AddHandler(new ProfileGetCharacterProfileHandler(this));
             AddHandler(new ProfileGetMyCharacterProfileHandler(this));
+            AddHandler(new ProfileSetArisenProfileHandler(this));
+            AddHandler(new ProfileSetMatchingProfileHandler(this));
 
             AddHandler(new Quest_11_60_16_Handler(this));
             AddHandler(new QuestCancelHandler(this));

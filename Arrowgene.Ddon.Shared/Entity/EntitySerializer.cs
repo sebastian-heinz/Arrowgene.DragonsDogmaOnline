@@ -827,9 +827,14 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPawnTrainingGetTrainingStatusReq.Serializer());
             Create(new C2SPawnTrainingSetTrainingStatusReq.Serializer());
             Create(new C2SPawnUpdatePawnReactionListReq.Serializer());
+
             Create(new C2SPhotoPhotoTakeNtc.Serializer());
+
+            Create(new C2SProfileGetAvailableBackgroundListReq.Serializer());
             Create(new C2SProfileGetCharacterProfileReq.Serializer());
             Create(new C2SProfileGetMyCharacterProfileReq.Serializer());
+            Create(new C2SProfileSetArisenProfileReq.Serializer());
+            Create(new C2SProfileSetMatchingProfileReq.Serializer());
 
             Create(new C2SQuestSetPriorityQuestReq.Serializer());
             Create(new C2SQuestSetNavigationQuestReq.Serializer());
@@ -1462,8 +1467,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPawnUpdatePawnReactionListNtc.Serializer());
             Create(new S2CPawnUpdatePawnReactionListRes.Serializer());
 
+            Create(new S2CProfileGetAvailableBackgroundListRes.Serializer());
             Create(new S2CProfileGetCharacterProfileRes.Serializer());
             Create(new S2CProfileGetMyCharacterProfileRes.Serializer());
+            Create(new S2CProfileSetArisenProfileRes.Serializer());
+            Create(new S2CProfileSetMatchingProfileRes.Serializer());
 
             Create(new S2CQuest_11_125_16_Ntc.Serializer());
             Create(new S2CQuestCancelNavigationQuestRes.Serializer());
