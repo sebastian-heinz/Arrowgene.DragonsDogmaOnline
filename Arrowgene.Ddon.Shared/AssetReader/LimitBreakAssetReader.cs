@@ -31,11 +31,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             {
                 var jLotteryCategory = document.RootElement.GetProperty(categoryName);
 
-                LimitBreakCategory lotteryCategory = new()
-                {
-                    GreatSuccessMin = jLotteryCategory.GetProperty("great_success_min").GetInt32(),
-                };
-
+                LimitBreakCategory lotteryCategory = new();
                 foreach (var jListing in jLotteryCategory.GetProperty("shop_listings").EnumerateArray())
                 {
                     lotteryCategory.ShopListings.Add(jListing.GetByte());
@@ -50,9 +46,8 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                     string optionLabel = jPaymentOption.GetProperty("name").GetString();
                     uint costAmount = jPaymentOption.GetProperty("amount").GetUInt32();
-                    uint minReward = jPaymentOption.GetProperty("min_reward").GetUInt32();
 
-                    lotteryCategory.PaymentOptions.Add((walletType, optionLabel, costAmount, minReward));
+                    lotteryCategory.PaymentOptions.Add((walletType, optionLabel, costAmount));
                 }
 
                 foreach (var jStatList in jLotteryCategory.GetProperty("stats").EnumerateArray())
