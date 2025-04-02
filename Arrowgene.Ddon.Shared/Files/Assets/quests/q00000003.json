@@ -9,7 +9,8 @@
     "discoverable": true,
     "order_conditions": [
         {"type": "Solo"},
-        {"type": "MainQuestCompleted", "Param1": 2}
+        {"type": "MainQuestCompleted", "Param1": 2},
+        {"type": "ClearPersonalQuest", "Param1": 60000012}
     ],
     "rewards": [
         {
@@ -65,34 +66,39 @@
             },
             "enemies": [
                 {
+                    "comment":  "Flocking Undead",
                     "enemy_id": "0x010500",
                     "level": 4,
                     "exp": 52,
-                    "is_boss": false
+                    "named_enemy_params_id": 129
                 },
                 {
+                    "comment": "Flocking Undead",
                     "enemy_id": "0x010500",
                     "level": 4,
                     "exp": 52,
-                    "is_boss": false
+                    "named_enemy_params_id": 129
                 },
                 {
+                    "comment": "Flocking Undead",
                     "enemy_id": "0x010500",
                     "level": 4,
                     "exp": 52,
-                    "is_boss": false
+                    "named_enemy_params_id": 129
                 },
                 {
+                    "comment": "Flocking Undead",
                     "enemy_id": "0x010500",
                     "level": 4,
                     "exp": 52,
-                    "is_boss": false
+                    "named_enemy_params_id": 129
                 },
                 {
+                    "comment": "Flocking Undead",
                     "enemy_id": "0x010500",
                     "level": 4,
                     "exp": 52,
-                    "is_boss": false
+                    "named_enemy_params_id": 129
                 }
             ]
         }
@@ -174,7 +180,10 @@
             "announce_type": "Update",
             "checkpoint": true,
             "check_commands": [
-                {"type": "IsReleaseWarpPointAnyone", "Param1": 2}
+                {
+                    "type": "IsFavoriteWarpPoint",
+                    "Param1": 2
+                }
             ],
             "result_commands": []
         },

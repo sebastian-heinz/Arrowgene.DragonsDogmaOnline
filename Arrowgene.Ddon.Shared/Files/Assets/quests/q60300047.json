@@ -7,10 +7,23 @@
     "base_level": 1,
     "minimum_item_rank": 0,
     "discoverable": false,
-    "stage_id": {"id": 5},
+    "stage_id": { "id": 5 },
+    "adventure_guide_category": "QuestUsefulForAdventure",
     "order_conditions": [
-        {"type": "SoloWithPawns"},
-        {"type": "MainQuestCompleted", "Param1": 26}
+        {
+            "type": "SoloWithPawns"
+        },
+        {
+            "type": "ClearPersonalQuest",
+            "Param1": 60000014
+        }
+    ],
+    "contents_release": [
+        {
+            "type": "None",
+            "tutorial_id": "WhatIstheBitterblackMaze",
+            "flag_info": "CaveHarbor.BitterblackMazeEntrance"
+        }
     ],
     "rewards": [
         {
@@ -36,7 +49,13 @@
                 "group_id": 1
             },
             "flags": [
-                {"type": "WorldManageQuest", "action": "Clear", "value": 4978, "quest_id": 70032001, "Comment": "Bitterblack Maze Entrance"}
+                {
+                    "type": "WorldManageQuest",
+                    "action": "Clear",
+                    "value": 4978,
+                    "quest_id": 70032001,
+                    "Comment": "Bitterblack Maze Entrance"
+                }
             ],
             "npc_id": "Lyka1",
             "message_id": 27922
@@ -57,7 +76,13 @@
                 "id": 5
             },
             "flags": [
-                {"type": "WorldManageQuest", "action": "Set", "value": 4978, "quest_id": 70032001, "Comment": "Bitterblack Maze Entrance"}
+                {
+                    "type": "WorldManageQuest",
+                    "action": "Set",
+                    "value": 4978,
+                    "quest_id": 70032001,
+                    "Comment": "Bitterblack Maze Entrance"
+                }
             ]
         }
     ]

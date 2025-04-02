@@ -9,7 +9,7 @@ public class ChatCommand : IChatCommand
     public override void Execute(DdonGameServer server, string[] command, GameClient client, ChatMessage message, List<ChatResponse> responses)
     {
         StringBuilder sb = new StringBuilder();
-        sb.Append($"StageId: {client.Character.Stage} ");
+        sb.Append($"StageLayoutId: {client.Character.Stage} ");
         sb.Append($"StageNo: {client.Character.StageNo} ");
         sb.Append($"Pos:[X:{client.Character.X:F4} Y:{client.Character.Y:F4} Z:{client.Character.Z:F4}]");
 

@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -12,7 +13,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         /// <summary>
         /// 1-8. See QUEST_MSG_ADV_GUIDE_CATEGORY strings.
         /// </summary>
-        public byte Category { get; set; }
+        public QuestAdventureGuideCategory Category { get; set; }
         public CDataQuestOrderList Param { get; set; }
         public bool Important { get; set; }
         public bool Unk2 { get; set; }
@@ -22,7 +23,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             public override void Write(IBuffer buffer, CDataQuestAdventureGuideList obj)
             {
-                WriteByte(buffer, obj.Category);
+                WriteByte(buffer, (byte) obj.Category);
                 WriteEntity<CDataQuestOrderList>(buffer, obj.Param);
                 WriteBool(buffer, obj.Important);
                 WriteBool(buffer, obj.Unk2);
@@ -32,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataQuestAdventureGuideList Read(IBuffer buffer)
             {
                 CDataQuestAdventureGuideList obj = new CDataQuestAdventureGuideList();
-                obj.Category = ReadByte(buffer);
+                obj.Category = (QuestAdventureGuideCategory) ReadByte(buffer);
                 obj.Param = ReadEntity<CDataQuestOrderList>(buffer);
                 obj.Important = ReadBool(buffer);
                 obj.Unk2 = ReadBool(buffer);

@@ -58,6 +58,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 if (enemy == null)
                 {
                     enemy = instancedEnemyList[i].CreateNewInstance();
+                    if (Server.GameSettings.GameServerSettings.EnableAutomaticExpCalculationForAll)
+                    {
+                        enemy.ExpScheme = EnemyExpScheme.Automatic;
+                    }
+
                     foreach (var generator in Server.ScriptManager.InstanceEnemyPropertyGeneratorModule.GetGenerators())
                     {
                         generator.ApplyChanges(client, stageLayoutId, subGroupId, enemy);

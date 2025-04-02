@@ -48,6 +48,9 @@ namespace Arrowgene.Ddon.Shared.Asset
         public uint QuestScheduleId { get; set; }
         public QuestAreaId QuestAreaId { get; set; }
         public uint QuestOrderBackgroundImage { get; set; }
+        public bool IsImportant { get; set; }
+        public QuestAdventureGuideCategory AdventureGuideCategory { get; set; }
+
         public StageLayoutId StageLayoutId {  get; set; }
         public uint NewsImageId { get; set; }
         public ushort BaseLevel { get; set; }
@@ -70,6 +73,9 @@ namespace Arrowgene.Ddon.Shared.Asset
         public QuestMissionParams MissionParams {  get; set; }
         public CDataLightQuestDetail LightQuestDetail { get; set; }
         public List<QuestServerAction> ServerActions { get; set; }
+        public HashSet<QuestUnlock> ContentsReleased { get; set; }
+        public Dictionary<QuestId, List<QuestFlagInfo>> WorldManageUnlocks { get; set; }
+        public List<QuestProgressWork> QuestProgressWork { get; set; }
 
         public QuestAssetData()
         {
@@ -84,6 +90,9 @@ namespace Arrowgene.Ddon.Shared.Asset
             MissionParams = new QuestMissionParams();
             ServerActions = new List<QuestServerAction>();
             LightQuestDetail = new CDataLightQuestDetail();
+            ContentsReleased = new HashSet<QuestUnlock>();
+            WorldManageUnlocks = new Dictionary<QuestId, List<QuestFlagInfo>>();
+            QuestProgressWork = new List<QuestProgressWork>();
         }
     }
 }

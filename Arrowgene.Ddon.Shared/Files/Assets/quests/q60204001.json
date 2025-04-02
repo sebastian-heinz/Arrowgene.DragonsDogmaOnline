@@ -9,6 +9,7 @@
     "discoverable": false,
     "stage_id": { "id": 80 },
     "area_id": "VoldenMines",
+    "adventure_guide_category": "AreaTrialOrMission",
     "order_conditions": [
         {
             "type": "AreaRank",

@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server.Scripting;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Logging;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Scripting;
 using System.Linq;
@@ -20,11 +21,13 @@ namespace Arrowgene.Ddon.GameServer.Scripting
                 .AddReferences(MetadataReference.CreateFromFile(typeof(Enumerable).Assembly.Location))
                 .AddReferences(MetadataReference.CreateFromFile(typeof(LibDdon).Assembly.Location))
                 .AddReferences(MetadataReference.CreateFromFile(typeof(LibUtils).Assembly.Location))
+                .AddReferences(MetadataReference.CreateFromFile(typeof(LogProvider).Assembly.Location))
                 .AddImports("System", "System.Linq")
                 .AddImports("System.Collections")
                 .AddImports("System.Collections.Generic")
                 .AddImports("System.Collections.ObjectModel")
                 .AddImports("System.Runtime.CompilerServices")
+                .AddImports("Arrowgene.Logging")
                 .AddImports("Arrowgene.Ddon.Database")
                 .AddImports("Arrowgene.Ddon.Database.Model")
                 .AddImports("Arrowgene.Ddon.GameServer")
@@ -37,6 +40,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
                 .AddImports("Arrowgene.Ddon.GameServer.Quests.Extensions")
                 .AddImports("Arrowgene.Ddon.GameServer.Scripting")
                 .AddImports("Arrowgene.Ddon.GameServer.Scripting.Interfaces")
+                .AddImports("Arrowgene.Ddon.Server")
                 .AddImports("Arrowgene.Ddon.Server.Network")
                 .AddImports("Arrowgene.Ddon.Server.Scripting")
                 .AddImports("Arrowgene.Ddon.Shared")

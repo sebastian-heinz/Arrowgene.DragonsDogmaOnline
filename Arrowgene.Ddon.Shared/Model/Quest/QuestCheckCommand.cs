@@ -224,5 +224,8 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         MarkerWithRadius0 = 230, // Param01=StageNo, Param02=int (looks like SCE no but different)
         MarkerWithRadius1 = 231, // Param01=StageNo, Param02=int (looks like SCE no but different)
         MarkerWithRadius2 = 248, // Param01=StageNo, Param02=int (looks like SCE no but different)
+
+        // Unknown packets
+        Unk252 = 252, // Seen in a wild hunt packet
     }
 }

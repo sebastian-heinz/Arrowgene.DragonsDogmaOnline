@@ -43,7 +43,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public static readonly StageInfo AudienceChamber = new StageInfo(3, 201, QuestAreaId.HidellPlains, "AudienceChamber");
         public static readonly StageInfo Balcony = new StageInfo(121, 536, QuestAreaId.BetlandPlains, "Balcony");
         public static readonly StageInfo BanditHideaway = new StageInfo(102, 517, QuestAreaId.VoldenMines, "BanditHideaway");
-        public static readonly StageInfo BattlefieldoutsideGrittenFort = new StageInfo(230, 101, QuestAreaId.HidellPlains, "BattlefieldoutsideGrittenFort");
+        public static readonly StageInfo BattlefieldOutsideGrittenFort = new StageInfo(230, 101, QuestAreaId.HidellPlains, "BattlefieldOutsideGrittenFort");
         public static readonly StageInfo BeachUndergroundStores = new StageInfo(34, 351, QuestAreaId.BreyaCoast, "BeachUndergroundStores");
         public static readonly StageInfo BeforetheSecretSpring = new StageInfo(482, 1021, QuestAreaId.FeryanaWilderness, "BeforetheSecretSpring");
         public static readonly StageInfo BerthasBanditGroupHideout = new StageInfo(480, 1001, QuestAreaId.RathniteFoothills, "BerthasBanditGroupHideout");

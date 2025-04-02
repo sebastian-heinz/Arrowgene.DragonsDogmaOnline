@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using System;
@@ -16,12 +17,13 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         }
 
         private static DdonGameServer Server { get; set; } = null;
-        public static ItemUtils Item { get; private set; } = new ItemUtils();
-        public static QuestUtils Quest { get; private set; } = new QuestUtils();
-        public static EnemyUtils Enemy { get; private set; } = new EnemyUtils();
-        public static CharacterUtils Character { get; private set; } = new CharacterUtils();
-        public static TimeUtils GameTime { get; private set; } = new TimeUtils();
-        public static CraftUtils Crafting { get; private set; } = new CraftUtils();
+        public static LibDdonItemUtils Item { get; private set; } = new LibDdonItemUtils();
+        public static LibDdonQuestUtils Quest { get; private set; } = new LibDdonQuestUtils();
+        public static LibDdonEnemyUtils Enemy { get; private set; } = new LibDdonEnemyUtils();
+        public static LibDdonCharacterUtils Character { get; private set; } = new LibDdonCharacterUtils();
+        public static LibDdonTimeUtils GameTime { get; private set; } = new LibDdonTimeUtils();
+        public static LibDdonCraftUtils Crafting { get; private set; } = new LibDdonCraftUtils();
+        public static LibDdonChatUtils ChatMgr { get; private set; } = new LibDdonChatUtils();
 
         public static void SetServer(DdonGameServer server)
         {
@@ -76,7 +78,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
             return result;
         }
 
-        public class QuestUtils
+        public class LibDdonQuestUtils
         {
             public void ApplyTimeExtension(GameClient client, uint amount)
             {
@@ -88,7 +90,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
             }
         }
 
-        public class ItemUtils
+        public class LibDdonItemUtils
         {
             public IGameItem GetItemInterface(ItemId itemId)
             {
@@ -112,7 +114,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
             }
         }
 
-        public class EnemyUtils
+        public class LibDdonEnemyUtils
         {
             public NamedParam GetNamedParam(uint paramId)
             {
@@ -191,7 +193,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
             }
         }
 
-        public class CharacterUtils
+        public class LibDdonCharacterUtils
         {
             public bool HasEquipped(CharacterCommon characterCommon, EquipType equipType, ItemId itemId)
             {
@@ -228,7 +230,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
             }
         }
 
-        public class TimeUtils
+        public class LibDdonTimeUtils
         {
             public long GetCurrentGameTime()
             {
@@ -250,11 +252,24 @@ namespace Arrowgene.Ddon.GameServer.Scripting
             }
         }
 
-        public class CraftUtils
+        public class LibDdonCraftUtils
         {
             public CraftManager GetCraftManager()
             {
                 return Server.CraftManager;
+            }
+        }
+
+        public class LibDdonChatUtils
+        {
+            public void SendMessageToParty(GameClient client, LobbyChatMsgType msgType, string message)
+            {
+                Server.ChatManager.BroadcastMessageToParty(client.Party, msgType, message);
+            }
+
+            public void SendMessageToPlayer(GameClient client, LobbyChatMsgType msgType, string message)
+            {
+                Server.ChatManager.SendMessage(message, string.Empty, string.Empty, msgType, new List<GameClient>() { client });
             }
         }
     }

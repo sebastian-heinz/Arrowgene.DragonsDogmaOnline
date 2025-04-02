@@ -11,52 +11,52 @@
     { "type": "SoloWithPawns" },
     { "type": "MainQuestCompleted", "Param1": 4 }
   ],
-  "rewards": [
-    {
-      "type": "exp",
-      "amount": 2350
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "Gold",
-      "amount": 1500
-    },
-    {
-      "type": "wallet",
-      "wallet_type": "RiftPoints",
-      "amount": 200
-    },
-    {
-      "type": "fixed",
-      "loot_pool": [
+    "rewards": [
         {
-          "item_id": 514,
-          "num": 1
+            "type": "exp",
+            "amount": 2350
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 1500
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 200
+        },
+        {
+            "type": "fixed",
+            "loot_pool": [
+                {
+                    "item_id": 514,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 427,
+                    "num": 1
+                },
+                {
+                    "item_id": 459,
+                    "num": 1
+                },
+                {
+                    "item_id": 475,
+                    "num": 1
+                },
+                {
+                    "item_id": 443,
+                    "num": 1
+                }
+            ]
         }
-      ]
-    },
-    {
-      "type": "select",
-      "loot_pool": [
-        {
-          "item_id": 427,
-          "num": 1
-        },
-        {
-          "item_id": 459,
-          "num": 1
-        },
-        {
-          "item_id": 475,
-          "num": 1
-        },
-        {
-          "item_id": 443,
-          "num": 1
-        }
-      ]
-    }
-  ],
+    ],
   "enemy_groups": [],
   "blocks": [
     {
@@ -248,23 +248,34 @@
       }
     },
     {
-      "type": "Raw",
-      "check_commands": [
-        {
-          "type": "EventEnd",
-          "Param1": 201,
-          "Param2": 10
-        }
-      ],
-      "result_commands": [
-        {
-          "type": "EventExec",
-          "Param1": 201,
-          "Param2": 10,
-          "Param3": 0,
-          "Param4": 0
-        }
-      ]
+        "type": "Raw",
+        "check_commands": [
+            {
+                "type": "EventEnd",
+                "Param1": 201,
+                "Param2": 10
+            }
+        ],
+        "result_commands": [
+            {
+                "type": "EventExec",
+                "Param1": 201,
+                "Param2": 10,
+                "Param3": 0,
+                "Param4": 0
+            }
+        ]
+    },
+    {
+        "type": "IsStageNo",
+        "stage_id": {
+            "id": 3
+        },
+        "contents_release": [
+            {"type": "Riftstone"},
+            {"type": "PawnAndPartyPlay"},
+            {"type": "AdventureBroker"}
+        ]
     }
   ]
 }

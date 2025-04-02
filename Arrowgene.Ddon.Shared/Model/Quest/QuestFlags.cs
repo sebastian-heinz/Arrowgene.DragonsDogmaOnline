@@ -1,0 +1,426 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
+
+namespace Arrowgene.Ddon.Shared.Model.Quest
+{
+    public static class QuestFlags
+    {
+        private static Dictionary<string, QuestFlagInfo> QuestFlagInfoMap = new Dictionary<string, QuestFlagInfo>();
+
+        static QuestFlags()
+        {
+            Type outerType = typeof(QuestFlags);
+
+            Type[] nestedTypes = outerType.GetNestedTypes(BindingFlags.Public | BindingFlags.NonPublic);
+            foreach (var nestedType in nestedTypes)
+            {
+                FieldInfo[] staticFields = nestedType.GetFields(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                foreach (FieldInfo field in staticFields)
+                {
+                    if (field.FieldType != typeof(QuestFlagInfo))
+                    {
+                        continue;
+                    }
+
+                    var fieldName = field.Name;
+                    if (fieldName.Contains("<"))
+                    {
+                        fieldName = GetNameBetweenBrackets(fieldName);
+                    }
+
+                    QuestFlagInfo value = (QuestFlagInfo)field.GetValue(null);
+                    QuestFlagInfoMap[$"{nestedType.Name}.{fieldName}"] = value;
+                }
+            }
+        }
+
+        static string GetNameBetweenBrackets(string input)
+        {
+            int start = input.IndexOf('<');
+            int end = input.IndexOf('>');
+
+            if (start >= 0 && end > start)
+            {
+                return input.Substring(start + 1, end - start - 1);
+            }
+            return input; // Return original if no < > found
+        }
+
+        public static void InvokeTypeInitializer()
+        {
+            Type outerType = typeof(QuestFlags);
+            outerType.TypeInitializer.Invoke(null, null);
+        }
+
+        public static QuestFlagInfo GetFlagInfoFromName(string name)
+        {
+            if (QuestFlagInfoMap.ContainsKey(name))
+            {
+                return QuestFlagInfoMap[name];
+            }
+            return null;
+        }
+
+        // NPC flags come from stxxxx_n_gpl.json
+        // Search for LayoutFlagNo and QuestNo
+        public static class TheWhiteDragonTemple0
+        {
+            private static StageInfo StageInfo = Stage.TheWhiteDragonTemple0;
+
+            // st0200\scr\st0200\etc\st0200_p.gpl.json
+            /// <summary>
+            /// Spawns a red/white flags around the stage.
+            /// </summary>
+            public static QuestFlagInfo RedWhiteFlagDecoration { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(1149, QuestId.Q70000001, StageInfo);
+            
+            /// <summary>
+            /// 
+            /// </summary>
+            public static QuestFlagInfo Q70000001Unk1 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(1150, QuestId.Q70000001, StageInfo);
+
+            // st0200\scr\st0200\etc\st0200_n.gpl.json
+            public static QuestFlagInfo Q70020001Unk0 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(3805, QuestId.Q70020001, StageInfo);
+            public static QuestFlagInfo Q70034001Unk0 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(8486, QuestId.Q70034001, StageInfo);
+
+            /// <summary>
+            /// Controls if Mayleaf appears or not in the stage.
+            /// </summary>
+            public static QuestFlagInfo Mayleaf { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(2245, QuestId.Q70000001, StageInfo);
+
+            /// <summary>
+            /// Controls if Fabio appears or not in the stage.
+            /// </summary>
+            public static QuestFlagInfo Fabio { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(2246, QuestId.Q70000001, StageInfo);
+
+            /// <summary>
+            /// Controls if Heniz appears or not in the stage.
+            /// </summary>
+            public static QuestFlagInfo Heniz { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(2247, QuestId.Q70000001, StageInfo);
+
+            /// <summary>
+            /// Controls if Julia appears or not in the stage in Group 6.
+            /// @note This one may be the final NPC located when achievments are unlocked.
+            /// </summary>
+            public static QuestFlagInfo Julia0 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(3805, QuestId.Q70020001, StageInfo);
+
+            /// <summary>
+            /// Controls if Julia appears or not in the stage in Group 0.
+            /// @note This one may be used for unlocking the arisens room as it has a movement FSM.
+            /// </summary>
+            public static QuestFlagInfo Julia1 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(4037, QuestId.Q70020001, StageInfo);
+        }
+
+        public static class AudienceChamber
+        {
+            private static StageInfo StageInfo = Stage.AudienceChamber;
+
+            /// <summary>
+            /// Controls if Mysial appears or not in the stage.
+            /// </summary>
+            public static QuestFlagInfo Mysial { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(1215, QuestId.Q70000001, StageInfo);
+            
+            /// <summary>
+            /// Controls if Season 1 Leo appears or not in the stage.
+            /// </summary>
+            public static QuestFlagInfo Leo { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(1218, QuestId.Q70000001, StageInfo);
+            
+            /// <summary>
+            /// Controls if Iris appears or not in the stage.
+            /// </summary>
+            public static QuestFlagInfo Iris { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(1219, QuestId.Q70000001, StageInfo);
+
+            /// Season 1 White Dragon flags
+
+            /// <summary>
+            /// The White Dragon is gravely Injured.
+            /// </summary>
+            public static QuestFlagInfo TheWhiteDragon0 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(1293, QuestId.Q70000001, StageInfo);
+
+            /// <summary>
+            /// The White Dragon is slightly healed.
+            /// </summary>
+            public static QuestFlagInfo TheWhiteDragon1 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(1294, QuestId.Q70000001, StageInfo);
+
+            /// <summary>
+            /// The White Dragon is mostly healed.
+            /// </summary>
+            public static QuestFlagInfo TheWhiteDragon2 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(1295, QuestId.Q70000001, StageInfo);
+
+            /// <summary>
+            /// The White Dragon is fully healed.
+            /// </summary>
+            public static QuestFlagInfo TheWhiteDragon3 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(1296, QuestId.Q70000001, StageInfo);
+
+            /// Season 3 White Dragon Flags
+
+            /// <summary>
+            /// The White Dragon is gravely Injured.
+            /// </summary>
+            public static QuestFlagInfo TheWhiteDragon4 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(7387, QuestId.Q70032001, StageInfo);
+
+            /// <summary>
+            /// The White Dragon is slightly healed.
+            /// </summary>
+            public static QuestFlagInfo TheWhiteDragon5 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(7388, QuestId.Q70032001, StageInfo);
+
+            /// <summary>
+            /// The White Dragon is mostly healed.
+            /// </summary>
+            public static QuestFlagInfo TheWhiteDragon6 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(7389, QuestId.Q70032001, StageInfo);
+
+            /// <summary>
+            /// The White Dragon is fully healed.
+            /// </summary>
+            public static QuestFlagInfo TheWhiteDragon7 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(7390, QuestId.Q70032001, StageInfo);
+
+            /// <summary>
+            /// Spawns Elliot, Lise and Gurdolin after season 2 is completed.
+            /// </summary>
+            public static QuestFlagInfo TheCrewEndSeason2 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(3442, QuestId.Q70020001, StageInfo);
+
+            /// <summary>
+            /// Spawns Gurdolin, Lise, Elliot after Clearing (クリア後)
+            /// </summary>
+            public static QuestFlagInfo TheCrewEndSeason32 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(7169, QuestId.Q70032001, StageInfo);
+
+            /// <summary>
+            /// Spawns Gurdolin, Lise, Elliot after Clearing
+            /// </summary>
+            public static QuestFlagInfo TheCrewEndSeason34 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(8630, QuestId.Q70034001, StageInfo);
+        }
+
+        public static class CaveHarbor
+        {
+            private static StageInfo StageInfo = Stage.CaveHarbor;
+
+            /// <summary>
+            /// Controls if the portal to Bitterblack Maze is usable or not.
+            /// </summary>
+            public static QuestFlagInfo BitterblackMazeEntrance { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(977, QuestId.Q70000001, StageInfo);
+        }
+
+        public static class Lestania
+        {
+            private static StageInfo StageInfo = Stage.Lestania;
+
+            /// <summary>
+            /// Spawns Gerd and the White Knights outside for the 3rd MSQ.
+            /// </summary>
+            public static QuestFlagInfo GerdWhiteKnights0 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(977, QuestId.Q70000001, StageInfo);
+
+            /// <summary>
+            /// Changes the entrance of The 1st Ark to teleport the player to st0573.
+            /// </summary>
+            public static QuestFlagInfo The1stArkRandom { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(2201, QuestId.Q70000001, StageInfo);
+
+            /// <summary>
+            /// Changes the entrance of The 1st Ark to teleport the player to st0576.
+            /// </summary>
+            public static QuestFlagInfo The1stArkQuest { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(2202, QuestId.Q70000001, StageInfo);
+
+            /// <summary>
+            /// Changes the entrance of The 2nd Ark to teleport the player to st0574.
+            /// </summary>
+            public static QuestFlagInfo The2ndArkRandom { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(1263, QuestId.Q70000001, StageInfo);
+
+            /// <summary>
+            /// Changes the entrance of The 2nd Ark to teleport the player to st0571.
+            /// </summary>
+            public static QuestFlagInfo The2ndArkQuest { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(2204, QuestId.Q70000001, StageInfo);
+        }
+
+        public static class GardnoxFortress0
+        {
+            private static StageInfo StageInfo = Stage.GardnoxFortress0;
+
+            /// <summary>
+            /// Floor Lever and Large Door closed?
+            /// </summary>
+            public static QuestFlagInfo FloorLever { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(3859, QuestId.Q70002001, StageInfo);
+
+            /// <summary>
+            /// Large door open?
+            /// </summary>
+            public static QuestFlagInfo LargeDoor { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(3860, QuestId.Q70002001, StageInfo);
+        }
+
+        public static class ErteDeenan
+        {
+            private static StageInfo StageInfo = Stage.ErteDeenan;
+
+            /// <summary>
+            /// Large Door Closed.
+            /// </summary>
+            public static QuestFlagInfo LargeDoorClosed { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(1113, QuestId.Q70002001, StageInfo);
+
+            /// <summary>
+            /// Large Door Open.
+            /// </summary>
+            public static QuestFlagInfo LargeDoorOpen { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(1114, QuestId.Q70002001, StageInfo);
+        }
+
+        public static class DreedCastle
+        {
+            private static StageInfo StageInfo = Stage.DreedCastle;
+
+            /// <summary>
+            /// Locks the double doors to the Chapel at (x:51,y:89)
+            /// </summary>
+            public static QuestFlagInfo LockChapelDoors { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(1109, QuestId.Q70000001, StageInfo);
+
+            /// <summary>
+            /// Unlocks the double doors to the Chapel at (x:51,y:89)
+            /// </summary>
+            public static QuestFlagInfo UnlockChapelDoors { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(1110, QuestId.Q70000001, StageInfo);
+        }
+
+        public static class TempleofPurification
+        {
+            private static StageInfo StageInfo = Stage.TempleofPurification;
+
+            /// <summary>
+            /// Locks the door to the water flow control room.
+            /// </summary>
+            public static QuestFlagInfo LockWaterFlowControlRoomDoor { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(1111, QuestId.Q70000001, StageInfo);
+
+            /// <summary>
+            /// Unlocks the door to the water flow control room.
+            /// </summary>
+            public static QuestFlagInfo UnlockWaterFlowControlRoomDoor { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(1112, QuestId.Q70000001, StageInfo);
+
+            /// <summary>
+            /// Used to turn on/off the waterfall gimmick in the dungeon.
+            /// </summary>
+            public static QuestFlagInfo WaterfallGimmick { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(1317, QuestId.Q70000001, StageInfo);
+
+            /// <summary>
+            /// Closed Lever Door (Stone Door, middle)
+            /// </summary>
+            public static QuestFlagInfo CloseLeverDoor { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(1671, QuestId.Q70000001, StageInfo);
+
+            /// <summary>
+            /// Open Lever Door  (Stone Door, middle)
+            /// </summary>
+            public static QuestFlagInfo OpenLeverDoor { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(1672, QuestId.Q70000001, StageInfo);
+        }
+
+        public static class MorfaulChiefsHome
+        {
+            private static StageInfo StageInfo = Stage.MorfaulChiefsHome;
+
+            /// <summary>
+            /// Placement of Geroid before clearing Season 2
+            /// </summary>
+            public static QuestFlagInfo Geroid0 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(4053, QuestId.Q70022001, StageInfo);
+
+            /// <summary>
+            /// Placement of Geroid after clearing Season 2
+            /// </summary>
+            public static QuestFlagInfo Geroid1 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(4066, QuestId.Q70023001, StageInfo);
+        }
+
+        public static class RathniteFoothills
+        {
+            private static StageInfo StageInfo = Stage.RathniteFoothills;
+
+            /// <summary>
+            /// Enables NPCs and Shops in rathnite foothills Orc encampmet
+            /// </summary>
+            public static QuestFlagInfo OrcEncampmentNpcs { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(3283, QuestId.Q70030001, StageInfo);
+        }
+
+        public static class NpcFunctions
+        {
+            /// <summary>
+            /// Adds "Grand Mission" title and functionality to Travers, Logan, Hancock and Cornelia.
+            /// Found in npc.nll.json
+            /// </summary>
+            public static QuestFlagInfo GrandMission { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(657, QuestId.Q70000001);
+
+            /// <summary>
+            /// Adds "Dragon Force Augmentation" functionality to The White Dragon.
+            /// Found in npc.nll.json
+            /// </summary>
+            public static QuestFlagInfo DragonForceAugmentation { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(658, QuestId.Q70000001);
+
+            /// <summary>
+            /// Adds "Party Creation" to various NCPCs.
+            /// </summary>
+            public static QuestFlagInfo PartyCreation { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(659, QuestId.Q70000001);
+
+            /// <summary>
+            /// Adds "Area Information" to various NPCs.
+            /// Found in npc.nll.json
+            /// </summary>
+            public static QuestFlagInfo AreaInformation { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(660, QuestId.Q70000001);
+
+            /// <summary>
+            /// Adds "Clan Management" to Kibiza.
+            /// Found in npc.nll.json
+            /// </summary>
+            public static QuestFlagInfo ClanManagement { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(661, QuestId.Q70000001);
+
+            /// <summary>
+            /// Adds Crafting options to Sonia.
+            /// Found in npc.nll.json
+            /// </summary>
+            public static QuestFlagInfo CraftOfficer { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(662, QuestId.Q70000001);
+
+            /// <summary>
+            /// Adds "Vocation/Arts support" options to Archibald.
+            /// Found in npc.nll.json
+            /// </summary>
+            public static QuestFlagInfo VocationArts { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(663, QuestId.Q70000001);
+
+            /// <summary>
+            /// Adds "Pawn Contract" options to the "Second Pawn".
+            /// Found in npc.nll.json
+            /// </summary>
+            public static QuestFlagInfo PawnContracts { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(765, QuestId.Q70000001);
+
+            /// <summary>
+            /// Adds "Lestania News" functionality to Seneka.
+            /// Found in npc.nll.json
+            /// </summary>
+            public static QuestFlagInfo LestaniaNews { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(772, QuestId.Q70000001);
+
+            /// <summary>
+            /// Adds "Myrmidons Pledge" to The White Dragon
+            /// Found in npc.nll.json
+            /// </summary>
+            public static QuestFlagInfo MyrmidonsPledge { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(787, QuestId.Q70000001);
+
+            /// <summary>
+            /// Adds "Vocation Emblem" option to Renton.
+            /// </summary>
+            public static QuestFlagInfo VocationEmblem { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2946, QuestId.Q70030001);
+
+            /// <summary>
+            /// Adds "Play Point Shop" option to Renton.
+            /// </summary>
+            public static QuestFlagInfo PlayPointShop { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2477, QuestId.Q70021001);
+
+            /// <summary>
+            /// Unlocks the Arisen's Room.
+            /// </summary>
+            public static QuestFlagInfo ArisensRoom { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1490, QuestId.Q70020001);
+
+            /// <summary>
+            /// Unlocks the NPC options "Custom Made Arms" and "Equipment Dissaembly" at the NPC Craig.
+            /// </summary>
+            public static QuestFlagInfo CustomMadeArmsAndEquipmentDissaembly { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(3592, QuestId.Q70030001);
+
+            /// <summary>
+            /// Unlocks the NPC option "Synthesis of Dragon Abilities" at the NPC Craig.
+            /// </summary>
+            public static QuestFlagInfo SynthesisOfDragonAbilities { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(5274, QuestId.Q70034001);
+
+            /// <summary>
+            /// Unlocks the NPC option "Dragon Armor Appraisal" at the NPC Craig.
+            /// </summary>
+            public static QuestFlagInfo DragonArmorAppraisal { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(5380, QuestId.Q70034001);
+        }
+    }
+}

@@ -8,7 +8,15 @@
     "minimum_item_rank": 0,
     "discoverable": false,
     "stage_id": {"id": 339},
-    "order_conditions": [],
+    "area_id": "ElanWaterGrove",
+    "adventure_guide_category": "AreaTrialOrMission",
+    "order_conditions": [
+        {
+            "type": "AreaRank",
+            "Param1": 14,
+            "Param2": 14
+        }
+    ],
     "rewards": [
         {
             "type": "exp",
