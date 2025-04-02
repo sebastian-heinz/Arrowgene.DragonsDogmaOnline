@@ -505,7 +505,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach ((JobId job, byte[] trainingStatus) in pawn.TrainingStatus)
             {
-                ReplacePawnTrainingStatus(conn, pawn.PawnId, job, trainingStatus);
+                ReplacePawnTrainingStatus(pawn.PawnId, job, trainingStatus, conn);
             }
         }
 

@@ -149,7 +149,7 @@ namespace Arrowgene.Ddon.GameServer
             List<BazaarExhibition> exhibitionsToReceive = GetSoldExhibitionsByCharacter(client.Character);
 
             uint totalProceeds = (uint) exhibitionsToReceive.Sum(exhibition => exhibition.Info.Proceeds);
-            Server.WalletManager.AddToWalletNtc(client, client.Character, WalletType.Gold, totalProceeds);
+            client.Send(Server.WalletManager.AddToWalletNtc(client, client.Character, WalletType.Gold, totalProceeds));
 
             DateTimeOffset now = DateTimeOffset.UtcNow;
             foreach (BazaarExhibition exhibition in exhibitionsToReceive)

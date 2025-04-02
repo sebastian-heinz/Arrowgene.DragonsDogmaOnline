@@ -1,4 +1,3 @@
-using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -8,10 +7,7 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -279,16 +275,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 queue.AddRange(CheckGainAchievement(client, key.Item1, key.Item2, progress, connection));
 
                 // Handle job groups
-                foreach ((var groupType, var group) in LevelGroupMap)
+                foreach ((var groupType, var group) in LevelGroupMap.Where(x => x.Value.Contains(client.Character.Job)))
                 {
+                    int lowestLevel = group.Select(job => client.Character.CharacterJobDataList.Where(x => x.Job == job).Select(x => (int)x.Lv).FirstOrDefault()).Min();
                     (AchievementType, uint) groupKey = (AchievementType.MainLevelGroup, (uint)groupType);
-                    uint groupProgress = 0;
-                    foreach (var job in group)
-                    {
-                        groupProgress += client.Character.CharacterJobDataList.Where(x => x.Job == job).FirstOrDefault()?.Lv ?? 0;
-                    }
 
-                    queue.AddRange(CheckGainAchievement(client, groupKey.Item1, groupKey.Item2, groupProgress, connection));
+                    queue.AddRange(CheckGainAchievement(client, groupKey.Item1, groupKey.Item2, lowestLevel, connection));
                 }
             });
 
@@ -483,7 +475,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private PacketQueue CheckGainAchievement(GameClient client, AchievementType type, uint param, uint count, DbConnection? connectionIn = null)
         {
             PacketQueue queue = new();
-            foreach (var asset in Server.AssetRepository.AchievementAsset.GetValueOrDefault((type, param)))
+            foreach (var asset in Server.AssetRepository.AchievementAsset.GetValueOrDefault((type, param)) ?? new())
             {
                 if (count >= asset.Count && !client.Character.AchievementStatus.ContainsKey(asset.Id))
                 {
@@ -497,11 +489,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return queue;
-        }
-
-        public uint CheckProgress(GameClient client, AchievementAsset asset, DbConnection? connectionIn = null)
-        {
-            return CheckProgress(client, new List<AchievementAsset> { asset }, connectionIn).FirstOrDefault();
         }
 
         public List<uint> CheckProgress(GameClient client, IEnumerable<AchievementAsset> assets, DbConnection? connectionIn = null)
@@ -582,12 +569,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     case AchievementType.PawnCrafting:
                         progress.Add(client.Character.Pawns
                             .Select(x => x.CraftData.CraftRank)
+                            .DefaultIfEmpty()
                             .Max());
                         break;
                     case AchievementType.PawnCraftingExam:
                         {
                             var highestCrafting = client.Character.Pawns
                             .Select(x => x.CraftData.CraftRankLimit)
+                            .DefaultIfEmpty()
                             .Max();
                             var result = highestCrafting > asset.Count ? 1u : 0u;
                             progress.Add(result);
@@ -833,7 +822,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {AchievementEnemyParam.ShadowChimera, new() { EnemyId.ShadowChimera} },
             {AchievementEnemyParam.ShadowGoblin, new() { EnemyId.ShadowGoblin, EnemyId.ShadowGoblinFighter, EnemyId.ShadowGoblinLeader, EnemyId.ShadowSlingGoblin } },
             {AchievementEnemyParam.ShadowHarpy, new() { EnemyId.ShadowHarpy} },
-            {AchievementEnemyParam.ShadowMaster, new() { EnemyId.ShadowMasterGiant} }, //???
+            {AchievementEnemyParam.ShadowMaster, new() { EnemyId.ShadowMasterGiant} }, // ???
             {AchievementEnemyParam.ShadowWolf, new() { EnemyId.ShadowWolf} },
             {AchievementEnemyParam.SilverRoar, new() { EnemyId.SilverRoar} },
             {AchievementEnemyParam.Siren, new() { EnemyId.Siren } },
@@ -863,7 +852,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {AchievementEnemyParam.Wight, new() { EnemyId.Wight0, EnemyId.Wight1} },
             {AchievementEnemyParam.WildBoar, new() {EnemyId.Boar, EnemyId.WildBoarBrown, EnemyId.WildBoarStripes} },
             {AchievementEnemyParam.Witch, new() { EnemyId.Witch } },
-            {AchievementEnemyParam.Wolf, new() { EnemyId.Wolf} },
+            {AchievementEnemyParam.Wolf, new() { EnemyId.Wolf, EnemyId.Direwolf} },
             {AchievementEnemyParam.Wyrm, new() { EnemyId.Wyrm0, EnemyId.Wyrm1} },
             {AchievementEnemyParam.Zuhl, new() { EnemyId.Zuhl0, EnemyId.Zuhl1} },
         };

@@ -132,6 +132,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 progress.ContentId = 0;
                 progress.Tier = 0;
+
+                packets.AddRange(server.AchievementManager.HandleClearBBM(client, match.ContentMode == BattleContentMode.Abyss, connectionIn));
             }
             server.Database.UpdateBBMProgress(character.CharacterId, progress, connectionIn);
 

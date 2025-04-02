@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SPhotoPhotoTakeNtc> packet)
         {
-            //TODO: Figure out what the heck CAPCOM wanted with this packet.
+            Server.AchievementManager.HandleTakePhoto(client).Send();
         }
     }
 }

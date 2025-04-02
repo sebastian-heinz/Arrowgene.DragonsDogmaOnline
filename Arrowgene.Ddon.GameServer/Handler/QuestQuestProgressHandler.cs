@@ -188,11 +188,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     packets.AddRange(client.Party.QuestState.UpdatePriorityQuestList(client.Party.Leader.Client, connectionIn));
                 }
+
+                packets.AddRange(Server.AchievementManager.HandleClearQuest(client, quest, connectionIn));
             }
             else
             {
                 client.Party.EnqueueToAll(completeNtc, packets);
                 packets.AddRange(client.Party.QuestState.UpdatePriorityQuestList(client.Party.Leader.Client, connectionIn));
+                foreach(var memberClient in client.Party.Clients)
+                {
+                    packets.AddRange(Server.AchievementManager.HandleClearQuest(memberClient, quest, connectionIn));
+                }
             }
 
             if (quest.QuestType == QuestType.ExtremeMission)

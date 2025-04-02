@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -10,7 +11,7 @@ using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class DispelExchangeDispelItemHandler : GameRequestPacketHandler<C2SDispelExchangeDispelItemReq, S2CDispelExchangeDispelItemRes>
+    public class DispelExchangeDispelItemHandler : GameRequestPacketQueueHandler<C2SDispelExchangeDispelItemReq, S2CDispelExchangeDispelItemRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(DispelExchangeDispelItemHandler));
 
@@ -18,30 +19,28 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override S2CDispelExchangeDispelItemRes Handle(GameClient client, C2SDispelExchangeDispelItemReq request)
+        public override PacketQueue Handle(GameClient client, C2SDispelExchangeDispelItemReq request)
         {
+            PacketQueue queue = new();
             var res = new S2CDispelExchangeDispelItemRes();
+            var appraisalItems = Server.AssetRepository.SpecialShopAsset.AppraisalItems;
 
-            var appraisialItems = Server.AssetRepository.SpecialShopAsset.AppraisalItems;
-            foreach (var item in request.GetDispelItemList)
+            Server.Database.ExecuteInTransaction(connection =>
             {
-                if (!appraisialItems.ContainsKey(item.Id))
+                foreach (var item in request.GetDispelItemList)
                 {
-                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_NOT_FOUND);
-                }
+                    if (!appraisalItems.ContainsKey(item.Id))
+                    {
+                        throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_NOT_FOUND);
+                    }
 
-                bool toBag = false;
-                switch (item.StorageType)
-                {
-                    case 19:
-                        toBag = true;
-                        break;
-                    case 20:
-                        toBag = false;
-                        break;
-                    default:
-                        throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_STORAGE_TYPE, $"Unexpected destination when exchanging items {item.StorageType}");
-                }
+                    bool toBag = false;
+                    toBag = item.StorageType switch
+                    {
+                        19 => true,
+                        20 => false,
+                        _ => throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_STORAGE_TYPE, $"Unexpected destination when exchanging items {item.StorageType}"),
+                    };
 
                 // Check for cost
                 bool hasFullPayment = true;
@@ -50,15 +49,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     hasFullPayment &= Server.ItemManager.HasItem(Server, client.Character, ItemManager.BothStorageTypes, payment.ItemUID, payment.Num);
                 }
 
-                if (!hasFullPayment)
-                {
-                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_DISPEL_LACK_MONEY);
-                }
+                    if (!hasFullPayment)
+                    {
+                        throw new ResponseErrorException(ErrorCode.ERROR_CODE_DISPEL_LACK_MONEY);
+                    }
 
-                var updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
-                {
-                    UpdateType = ItemNoticeType.GetDispelItem
-                };
+                    var updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
+                    {
+                        UpdateType = ItemNoticeType.GetDispelItem
+                    };
 
                 // Consume payment
                 foreach (var payment in item.UIDList)
@@ -67,34 +66,38 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                 }
 
-                var purchase = AppraiseItem(client.Character, appraisialItems[item.Id]);
+                    var purchase = AppraiseItem(client.Character, appraisalItems[item.Id]);
 
-                List<CDataItemUpdateResult> itemUpdateResults = Server.ItemManager.AddItem(Server, client.Character, toBag, purchase.ItemId, purchase.ItemNum);
-                if (itemUpdateResults.Count != 1)
-                {
-                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INTERNAL_ERROR);
-                }
-
-                var newItem = client.Character.Storage.FindItemByUIdInStorage(ItemManager.BothStorageTypes, itemUpdateResults[0].ItemList.ItemUId).Item2.Item2;
-                if (purchase.EquipElementParamList.Count > 0)
-                {
-                    foreach (var elementParam in purchase.EquipElementParamList)
+                    List<CDataItemUpdateResult> itemUpdateResults = Server.ItemManager.AddItem(Server, client.Character, toBag, purchase.ItemId, purchase.ItemNum, connectionIn:connection);
+                    if (itemUpdateResults.Count != 1)
                     {
-                        Server.Database.InsertCrest(client.Character.CommonId, itemUpdateResults[0].ItemList.ItemUId, elementParam.SlotNo, elementParam.CrestId, elementParam.Add);
-                        newItem.EquipElementParamList.Add(elementParam);
+                        throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INTERNAL_ERROR);
                     }
 
-                    itemUpdateResults[0].ItemList.EquipElementParamList = purchase.EquipElementParamList;
+                    var newItem = client.Character.Storage.FindItemByUIdInStorage(ItemManager.BothStorageTypes, itemUpdateResults[0].ItemList.ItemUId).Item2.Item2;
+                    if (purchase.EquipElementParamList.Count > 0)
+                    {
+                        foreach (var elementParam in purchase.EquipElementParamList)
+                        {
+                            Server.Database.InsertCrest(client.Character.CommonId, itemUpdateResults[0].ItemList.ItemUId, elementParam.SlotNo, elementParam.CrestId, elementParam.Add, connection);
+                            newItem.EquipElementParamList.Add(elementParam);
+                        }
+
+                        itemUpdateResults[0].ItemList.EquipElementParamList = purchase.EquipElementParamList;
+                    }
+
+                    updateCharacterItemNtc.UpdateItemList.AddRange(itemUpdateResults);
+
+                    client.Enqueue(updateCharacterItemNtc, queue);
+                    res.DispelItemResultList.Add(purchase);
+
+                    queue.AddRange(Server.AchievementManager.HandleAppraisal(client, connection));
                 }
+            });
 
-                updateCharacterItemNtc.UpdateItemList.AddRange(itemUpdateResults);
+            client.Enqueue(res, queue);
 
-                client.Send(updateCharacterItemNtc);
-
-                res.DispelItemResultList.Add(purchase);
-            }
-
-            return res;
+            return queue;
         }
 
         private CDataDispelResultInfo AppraiseItem(Character character, AppraisalItem item)

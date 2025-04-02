@@ -249,8 +249,8 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertIfNotExistsPawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus) { return true; }
         public bool InsertIfNotExistsReleasedWarpPoint(uint characterId, ReleasedWarpPoint ReleasedWarpPoint) { return true; }
         public bool InsertIfNotExistsReleasedWarpPoints(uint characterId, List<ReleasedWarpPoint> ReleasedWarpPoint) { return true; }
-        public bool InsertLearnedAbility(uint commonId, Ability ability) { return true; }
-        public bool InsertLearnedCustomSkill(uint commonId, CustomSkill skill) { return true; }
+        public bool InsertLearnedAbility(uint commonId, Ability ability, DbConnection? connectionIn = null) { return true; }
+        public bool InsertLearnedCustomSkill(uint commonId, CustomSkill skill, DbConnection? connectionIn = null) { return true; }
         public bool InsertNormalSkillParam(uint commonId, CDataNormalSkillParam normalSkillParam) { return true; }
         public bool InsertPawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus) { return true; }
         public bool InsertPriorityQuest(uint characterCommonId, uint questScheduleId, DbConnection? connectionIn = null) { return true; }
@@ -272,7 +272,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool ReplaceEquippedAbility(uint commonId, JobId equipptedToJob, byte slotNo, Ability ability) { return true; }
         public bool ReplaceEquippedCustomSkill(uint commonId, byte slotNo, CustomSkill skill) { return true; }
         public bool ReplaceNormalSkillParam(uint commonId, CDataNormalSkillParam normalSkillParam) { return true; }
-        public bool ReplacePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus) { return true; }
+        public bool ReplacePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus, DbConnection? connectionIn = null) { return true; }
         public bool ReplaceReleasedWarpPoint(uint characterId, ReleasedWarpPoint ReleasedWarpPoint) { return true; }
         public bool ReplaceShortcut(uint characterId, CDataShortCut shortcut, DbConnection? connectionIn = null) { return true; }
         public bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, DbConnection? connectionIn = null) { return true; }
@@ -323,8 +323,8 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId) { return true; }
         public bool UpdateEquippedAbility(uint commonId, JobId oldEquippedToJob, byte oldSlotNo, JobId equipptedToJob, byte slotNo, Ability ability) { return true; }
         public bool UpdateEquippedCustomSkill(uint commonId, JobId oldJob, byte oldSlotNo, byte slotNo, CustomSkill skill) { return true; }
-        public bool UpdateLearnedAbility(uint commonId, Ability ability) { return true; }
-        public bool UpdateLearnedCustomSkill(uint commonId, CustomSkill updatedSkill) { return true; }
+        public bool UpdateLearnedAbility(uint commonId, Ability ability, DbConnection? connectionIn = null) { return true; }
+        public bool UpdateLearnedCustomSkill(uint commonId, CustomSkill updatedSkill, DbConnection? connectionIn = null) { return true; }
         public bool UpdateNormalSkillParam(uint commonId, JobId job, uint skillNo, CDataNormalSkillParam normalSkillParam) { return true; }
         public bool UpdateOrbGainExtendParam(uint commonId, CDataOrbGainExtendParam Param) { return true; }
         public bool UpdatePawnBaseInfo(Pawn pawn, DbConnection? connectionIn = null) { return true; }
@@ -360,7 +360,7 @@ namespace Arrowgene.Ddon.Test.Database
         public List<SystemMailAttachment> SelectAttachmentsForSystemMail(ulong messageId) { return new List<SystemMailAttachment>(); }
         public bool UpdateSystemMailAttachmentReceivedStatus(ulong messageId, ulong attachmentId, bool isReceived) {  return true; }
         public bool DeleteSystemMailAttachment(ulong messageId) { return true; }
-        public bool UpdateItemEquipPoints(string itemUID, uint EquipPoints) {return true; }
+        public bool UpdateItemEquipPoints(string itemUID, uint equipPoints, DbConnection? connectionIn = null) {return true; }
         public bool InsertIfNotExistsAddStatus(string itemUid, uint characterId, byte isAddStat1, byte isAddStat2, ushort addStat1, ushort addStat2) { return true; }
         public bool InsertAddStatus(string itemUid, uint characterId, byte isAddStat1, byte isAddStat2, ushort addStat1, ushort addStat2) { return true; }
         public List<CDataAddStatusParam> GetAddStatusByUID(string itemUid) { return new List<CDataAddStatusParam>(); }

@@ -128,7 +128,7 @@ namespace Arrowgene.Ddon.Database
         bool ReplacePawnReaction(uint pawnId, CDataPawnReaction pawnReaction, DbConnection? connectionIn = null);
 
         // Pawn Training Status
-        bool ReplacePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
+        bool ReplacePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus, DbConnection? connectionIn = null);
         bool InsertPawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
         bool InsertIfNotExistsPawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
         bool UpdatePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
@@ -215,7 +215,7 @@ namespace Arrowgene.Ddon.Database
         );
         public void DeleteAllStorageItems(DbConnection connection, uint characterId);
 
-        bool UpdateItemEquipPoints(string itemUID, uint EquipPoints);
+        bool UpdateItemEquipPoints(string itemUID, uint equipPoints, DbConnection? connectionIn = null);
 
         // Equip
         bool InsertEquipItem(
@@ -256,8 +256,8 @@ namespace Arrowgene.Ddon.Database
         bool DeleteEquipJobItem(uint commonId, JobId job, ushort slotNo);
 
         // CustomSkills
-        bool InsertLearnedCustomSkill(uint commonId, CustomSkill skill);
-        bool UpdateLearnedCustomSkill(uint commonId, CustomSkill updatedSkill);
+        bool InsertLearnedCustomSkill(uint commonId, CustomSkill skill, DbConnection? connectionIn = null);
+        bool UpdateLearnedCustomSkill(uint commonId, CustomSkill updatedSkill, DbConnection? connectionIn = null);
         bool InsertEquippedCustomSkill(uint commonId, byte slotNo, CustomSkill skill);
         bool ReplaceEquippedCustomSkill(uint commonId, byte slotNo, CustomSkill skill);
         bool UpdateEquippedCustomSkill(
@@ -270,8 +270,8 @@ namespace Arrowgene.Ddon.Database
         bool DeleteEquippedCustomSkill(uint commonId, JobId job, byte slotNo);
 
         // Abilities
-        bool InsertLearnedAbility(uint commonId, Ability ability);
-        bool UpdateLearnedAbility(uint commonId, Ability ability);
+        bool InsertLearnedAbility(uint commonId, Ability ability, DbConnection? connectionIn = null);
+        bool UpdateLearnedAbility(uint commonId, Ability ability, DbConnection? connectionIn = null);
         bool InsertEquippedAbility(
             uint commonId,
             JobId equipptedToJob,

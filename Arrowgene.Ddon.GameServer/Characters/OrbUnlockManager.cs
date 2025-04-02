@@ -155,10 +155,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     _JobManager.UnlockSecretAbility(client, character, upgrade.SecretAbility);
                     break;
                 case OrbGainParamType.Rim:
-                    _WalletManager.AddToWalletNtc(client, client.Character, WalletType.RiftPoints, upgrade.Amount);
+                    client.Send(_WalletManager.AddToWalletNtc(client, client.Character, WalletType.RiftPoints, upgrade.Amount));
                     break;
                 case OrbGainParamType.Gold:
-                    _WalletManager.AddToWalletNtc(client, client.Character, WalletType.Gold, upgrade.Amount);
+                    client.Send(_WalletManager.AddToWalletNtc(client, client.Character, WalletType.Gold, upgrade.Amount));
                     break;
                 case OrbGainParamType.None:
                 default:

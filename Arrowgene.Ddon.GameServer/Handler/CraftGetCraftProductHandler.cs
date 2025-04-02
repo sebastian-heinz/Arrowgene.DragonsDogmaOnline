@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -19,6 +20,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CCraftGetCraftProductRes Handle(GameClient client, C2SCraftGetCraftProductReq request)
         {
             S2CCraftGetCraftProductRes craftGetCraftProductRes = new S2CCraftGetCraftProductRes();
+
+            PacketQueue queue = new();
 
             Server.Database.ExecuteInTransaction(connection =>
             {
@@ -63,8 +66,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         }
                     }
                 }
+
+                var itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, craftProgress.ItemId);
+                queue.AddRange(Server.AchievementManager.HandleCraft(client, itemInfo, connection));
             });
 
+            queue.Send();
             return craftGetCraftProductRes;
         }
     }

@@ -412,7 +412,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return rankUps;
         } 
 
-        public static void HandlePawnRankUpNtc(GameClient client, Pawn leadPawn)
+        public static S2CCraftCraftRankUpNtc HandlePawnRankUpNtc(GameClient client, Pawn leadPawn)
         {
             S2CCraftCraftRankUpNtc rankUpNtc = new S2CCraftCraftRankUpNtc
             {
@@ -435,7 +435,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 leadPawn.CraftData.CraftExp = Math.Clamp(leadPawn.CraftData.CraftExp, 0, craftRankExpLimit[(int)leadPawn.CraftData.CraftRankLimit-1]);
             }
 
-            client.Send(rankUpNtc);
+            return rankUpNtc;
         }
 
         public static bool CanPawnExpUp(Pawn pawn)
@@ -443,7 +443,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return pawn.CraftData.CraftRank < pawn.CraftData.CraftRankLimit;
         }
 
-        public static void HandlePawnExpUpNtc(GameClient client, Pawn leadPawn, uint exp, double BonusExpMultiplier)
+        public static S2CCraftCraftExpUpNtc HandlePawnExpUpNtc(GameClient client, Pawn leadPawn, uint exp, double BonusExpMultiplier)
         {
 
             uint expUp = exp;
@@ -477,7 +477,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 leadPawn.CraftData.CraftExp = Math.Clamp(leadPawn.CraftData.CraftExp, 0, craftRankExpLimit[(int)leadPawn.CraftData.CraftRankLimit]);
             }
 
-            client.Send(expNtc);
+            return expNtc;
         }
 
         public Pawn FindPawn(GameClient client, uint pawnId)

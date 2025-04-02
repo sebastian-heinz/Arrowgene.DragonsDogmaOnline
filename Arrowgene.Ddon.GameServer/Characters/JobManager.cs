@@ -374,138 +374,142 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             PacketQueue queue = new();
 
-            // Check if there is a learned skill of the same ID (This unlock is a level upgrade)
-            CustomSkill lowerLevelSkill = character.LearnedCustomSkills.Where(skill => skill != null && skill.Job == job && skill.SkillId == skillId).SingleOrDefault();
+            database.ExecuteInTransaction(connection =>
+            {
+                // Check if there is a learned skill of the same ID (This unlock is a level upgrade)
+                CustomSkill lowerLevelSkill = character.LearnedCustomSkills.Where(skill => skill != null && skill.Job == job && skill.SkillId == skillId).SingleOrDefault();
 
-            if (lowerLevelSkill == null)
-            {
-                // Add new skill
-                CustomSkill newSkill = new CustomSkill()
-                {
-                    Job = job,
-                    SkillId = skillId,
-                    SkillLv = skillLv
-                };
-                character.LearnedCustomSkills.Add(newSkill);
-                database.InsertLearnedCustomSkill(character.CommonId, newSkill);
-            }
-            else
-            {
-                // Upgrade existing skills
-                lowerLevelSkill.SkillLv = skillLv;
-                database.UpdateLearnedCustomSkill(character.CommonId, lowerLevelSkill);
-            }
-
-            // EX Skills
-            if (skillLv == 9)
-            {
-                // EX T Skill
-                uint exSkillTId = skillId + 100;
-                CDataSkillParam? exSkillT = SkillData.AllSkills.Where(skill => skill.Job == job && skill.SkillNo == exSkillTId).SingleOrDefault();
-                if (exSkillT != null)
+                if (lowerLevelSkill == null)
                 {
                     // Add new skill
-                    CustomSkill newExSkillT = new CustomSkill()
+                    CustomSkill newSkill = new CustomSkill()
                     {
                         Job = job,
-                        SkillId = exSkillTId,
-                        SkillLv = 1
+                        SkillId = skillId,
+                        SkillLv = skillLv
                     };
-                    character.LearnedCustomSkills.Add(newExSkillT);
-                    database.InsertLearnedCustomSkill(character.CommonId, newExSkillT);
+                    character.LearnedCustomSkills.Add(newSkill);
+                    database.InsertLearnedCustomSkill(character.CommonId, newSkill, connection);
                 }
-            }
-            else if (skillLv == 10)
-            {
-                // EX P Skill
-                uint exSkillPId = skillId + 200;
-                CDataSkillParam? exSkillP = SkillData.AllSkills.Where(skill => skill.Job == job && skill.SkillNo == exSkillPId).SingleOrDefault();
-                if (exSkillP != null)
+                else
                 {
-                    // Add new skill
-                    CustomSkill newExSkillP = new CustomSkill()
-                    {
-                        Job = job,
-                        SkillId = exSkillPId,
-                        SkillLv = 1
-                    };
-                    character.LearnedCustomSkills.Add(newExSkillP);
-                    database.InsertLearnedCustomSkill(character.CommonId, newExSkillP);
+                    // Upgrade existing skills
+                    lowerLevelSkill.SkillLv = skillLv;
+                    database.UpdateLearnedCustomSkill(character.CommonId, lowerLevelSkill, connection);
                 }
-            }
 
-            uint jpCost = SkillData.AllSkills
-                .Where(skill => skill.Job == job && skill.SkillNo == skillId)
-                .SelectMany(skill => skill.Params)
-                .Where(skillParams => skillParams.Lv == skillLv)
-                .Select(skillParams => skillParams.RequireJobPoint)
-                .Single();
-
-            // TODO: Check that this doesn't end up negative
-            CDataCharacterJobData learnedSkillCharacterJobData = character.CharacterJobDataList.Where(jobData => jobData.Job == job).Single();
-            learnedSkillCharacterJobData.JobPoint -= jpCost;
-            database.UpdateCharacterJobData(character.CommonId, learnedSkillCharacterJobData);
-
-            if (character is Character)
-            {
-                client.Enqueue(new S2CSkillLearnSkillRes()
+                // EX Skills
+                if (skillLv == 9)
                 {
-                    Job = job,
-                    NewJobPoint = learnedSkillCharacterJobData.JobPoint,
-                    SkillId = skillId,
-                    SkillLv = skillLv
-                }, queue);
-
-                //Find on the palletes (if any) where the skill is set and notify party. Can occur at two locations (Main + Secondary) for players.
-                List<CustomSkill?> equippedCustomSkillList = character.EquippedCustomSkillsDictionary[job];
-                var slotIndices = Enumerable.Range(0, equippedCustomSkillList.Count)
-                    .Where(i => equippedCustomSkillList[i] != null && equippedCustomSkillList[i].SkillId == skillId)
-                    .ToList();
-                foreach (int slotIndex in slotIndices)
-                {
-                    client.Party.EnqueueToAll(new S2CSkillCustomSkillSetNtc()
+                    // EX T Skill
+                    uint exSkillTId = skillId + 100;
+                    CDataSkillParam? exSkillT = SkillData.AllSkills.Where(skill => skill.Job == job && skill.SkillNo == exSkillTId).SingleOrDefault();
+                    if (exSkillT != null)
                     {
-                        CharacterId = ((Character)character).CharacterId,
-                        ContextAcquirementData = new CDataContextAcquirementData()
+                        // Add new skill
+                        CustomSkill newExSkillT = new CustomSkill()
                         {
-                            SlotNo = (byte)(slotIndex + 1),
-                            AcquirementNo = skillId,
-                            AcquirementLv = skillLv
-                        }
-                    }, queue);
-                }       
-            }
-            else if (character is Pawn)
-            {
-                client.Enqueue(new S2CSkillLearnPawnSkillRes()
+                            Job = job,
+                            SkillId = exSkillTId,
+                            SkillLv = 1
+                        };
+                        character.LearnedCustomSkills.Add(newExSkillT);
+                        database.InsertLearnedCustomSkill(character.CommonId, newExSkillT, connection);
+                    }
+                }
+                else if (skillLv == 10)
                 {
-                    PawnId = ((Pawn)character).PawnId,
-                    Job = job,
-                    NewJobPoint = learnedSkillCharacterJobData.JobPoint,
-                    SkillId = skillId,
-                    SkillLv = skillLv
-                }, queue);
+                    // EX P Skill
+                    uint exSkillPId = skillId + 200;
+                    CDataSkillParam? exSkillP = SkillData.AllSkills.Where(skill => skill.Job == job && skill.SkillNo == exSkillPId).SingleOrDefault();
+                    if (exSkillP != null)
+                    {
+                        // Add new skill
+                        CustomSkill newExSkillP = new CustomSkill()
+                        {
+                            Job = job,
+                            SkillId = exSkillPId,
+                            SkillLv = 1
+                        };
+                        character.LearnedCustomSkills.Add(newExSkillP);
+                        database.InsertLearnedCustomSkill(character.CommonId, newExSkillP, connection);
+                    }
+                }
 
-                //Find on the palletes (if any) where the skill is set. 
-                List<CustomSkill?> equippedCustomSkillList = character.EquippedCustomSkillsDictionary[job];
-                var slotIndices = Enumerable.Range(0, equippedCustomSkillList.Count)
-                    .Where(i => equippedCustomSkillList[i] != null && equippedCustomSkillList[i].SkillId == skillId)
-                    .ToList();
-                foreach (int slotIndex in slotIndices)
+                uint jpCost = SkillData.AllSkills
+                    .Where(skill => skill.Job == job && skill.SkillNo == skillId)
+                    .SelectMany(skill => skill.Params)
+                    .Where(skillParams => skillParams.Lv == skillLv)
+                    .Select(skillParams => skillParams.RequireJobPoint)
+                    .Single();
+
+                // TODO: Check that this doesn't end up negative
+                CDataCharacterJobData learnedSkillCharacterJobData = character.CharacterJobDataList.Where(jobData => jobData.Job == job).Single();
+                learnedSkillCharacterJobData.JobPoint -= jpCost;
+                database.UpdateCharacterJobData(character.CommonId, learnedSkillCharacterJobData, connection);
+
+                if (character is Character)
                 {
-                    client.Party.EnqueueToAll(new S2CSkillPawnCustomSkillSetNtc()
+                    client.Enqueue(new S2CSkillLearnSkillRes()
+                    {
+                        Job = job,
+                        NewJobPoint = learnedSkillCharacterJobData.JobPoint,
+                        SkillId = skillId,
+                        SkillLv = skillLv
+                    }, queue);
+
+                    //Find on the palletes (if any) where the skill is set and notify party. Can occur at two locations (Main + Secondary) for players.
+                    List<CustomSkill?> equippedCustomSkillList = character.EquippedCustomSkillsDictionary[job];
+                    var slotIndices = Enumerable.Range(0, equippedCustomSkillList.Count)
+                        .Where(i => equippedCustomSkillList[i] != null && equippedCustomSkillList[i].SkillId == skillId)
+                        .ToList();
+                    foreach (int slotIndex in slotIndices)
+                    {
+                        client.Party.EnqueueToAll(new S2CSkillCustomSkillSetNtc()
+                        {
+                            CharacterId = ((Character)character).CharacterId,
+                            ContextAcquirementData = new CDataContextAcquirementData()
+                            {
+                                SlotNo = (byte)(slotIndex + 1),
+                                AcquirementNo = skillId,
+                                AcquirementLv = skillLv
+                            }
+                        }, queue);
+                    }
+
+                    queue.AddRange(_Server.AchievementManager.HandleLearnSkills(client, connection));
+                }
+                else if (character is Pawn)
+                {
+                    client.Enqueue(new S2CSkillLearnPawnSkillRes()
                     {
                         PawnId = ((Pawn)character).PawnId,
-                        ContextAcquirementData = new CDataContextAcquirementData()
-                        {
-                            SlotNo = (byte)(slotIndex + 1),
-                            AcquirementNo = skillId,
-                            AcquirementLv = skillLv
-                        }
+                        Job = job,
+                        NewJobPoint = learnedSkillCharacterJobData.JobPoint,
+                        SkillId = skillId,
+                        SkillLv = skillLv
                     }, queue);
-                }
-            }
 
+                    //Find on the palletes (if any) where the skill is set. 
+                    List<CustomSkill?> equippedCustomSkillList = character.EquippedCustomSkillsDictionary[job];
+                    var slotIndices = Enumerable.Range(0, equippedCustomSkillList.Count)
+                        .Where(i => equippedCustomSkillList[i] != null && equippedCustomSkillList[i].SkillId == skillId)
+                        .ToList();
+                    foreach (int slotIndex in slotIndices)
+                    {
+                        client.Party.EnqueueToAll(new S2CSkillPawnCustomSkillSetNtc()
+                        {
+                            PawnId = ((Pawn)character).PawnId,
+                            ContextAcquirementData = new CDataContextAcquirementData()
+                            {
+                                SlotNo = (byte)(slotIndex + 1),
+                                AcquirementNo = skillId,
+                                AcquirementLv = skillLv
+                            }
+                        }, queue);
+                    }
+                }
+            });
             return queue;
         }
 
@@ -701,54 +705,59 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // Check if there is a learned ability of the same ID (This unlock is a level upgrade)
             Ability lowerLevelAbility = character.LearnedAbilities.SingleOrDefault(aug => aug != null && aug.AbilityId == abilityId);
 
-            if (lowerLevelAbility == null)
+            database.ExecuteInTransaction(connection =>
             {
-                // New ability
-                Ability newAbility = new Ability()
+                if (lowerLevelAbility == null)
                 {
-                    Job = owningJob,
-                    AbilityId = abilityId,
-                    AbilityLv = abilityLv
-                };
-                character.LearnedAbilities.Add(newAbility);
-                database.InsertLearnedAbility(character.CommonId, newAbility);
-            }
-            else
-            {
-                // Level upgrade
-                lowerLevelAbility.AbilityLv = abilityLv;
-                database.UpdateLearnedAbility(character.CommonId, lowerLevelAbility);
-            }
-
-            uint jpCost = abilityData.Params.Where(x => x.Lv == abilityLv).Single().RequireJobPoint;
-
-            CDataCharacterJobData learnedAbilityCharacterJobData = owningJob == 0
-                ? character.ActiveCharacterJobData! // Secret Augments -> Use current job's JP TODO: Verify if this is the correct behaviour
-                : character.CharacterJobDataList.Where(jobData => jobData.Job == owningJob).Single(); // Job Augments -> Use that job's JP
-            learnedAbilityCharacterJobData.JobPoint -= jpCost;
-            database.UpdateCharacterJobData(character.CommonId, learnedAbilityCharacterJobData);
-
-            if (character is Character)
-            {
-                client.Enqueue(new S2CSkillLearnAbilityRes()
+                    // New ability
+                    Ability newAbility = new Ability()
+                    {
+                        Job = owningJob,
+                        AbilityId = abilityId,
+                        AbilityLv = abilityLv
+                    };
+                    character.LearnedAbilities.Add(newAbility);
+                    database.InsertLearnedAbility(character.CommonId, newAbility, connection);
+                }
+                else
                 {
-                    Job = learnedAbilityCharacterJobData.Job,
-                    NewJobPoint = learnedAbilityCharacterJobData.JobPoint,
-                    AbilityId = abilityId,
-                    AbilityLv = abilityLv
-                }, queue);
-            }
-            else if (character is Pawn pawn)
-            {
-                client.Enqueue(new S2CSkillLearnPawnAbilityRes()
+                    // Level upgrade
+                    lowerLevelAbility.AbilityLv = abilityLv;
+                    database.UpdateLearnedAbility(character.CommonId, lowerLevelAbility, connection);
+                }
+
+                uint jpCost = abilityData.Params.Where(x => x.Lv == abilityLv).Single().RequireJobPoint;
+
+                CDataCharacterJobData learnedAbilityCharacterJobData = owningJob == 0
+                    ? character.ActiveCharacterJobData! // Secret Augments -> Use current job's JP TODO: Verify if this is the correct behaviour
+                    : character.CharacterJobDataList.Where(jobData => jobData.Job == owningJob).Single(); // Job Augments -> Use that job's JP
+                learnedAbilityCharacterJobData.JobPoint -= jpCost;
+                database.UpdateCharacterJobData(character.CommonId, learnedAbilityCharacterJobData, connection);
+
+                if (character is Character)
                 {
-                    PawnId = pawn.PawnId,
-                    Job = learnedAbilityCharacterJobData.Job,
-                    NewJobPoint = learnedAbilityCharacterJobData.JobPoint,
-                    AbilityId = abilityId,
-                    AbilityLv = abilityLv
-                }, queue);
-            }
+                    client.Enqueue(new S2CSkillLearnAbilityRes()
+                    {
+                        Job = learnedAbilityCharacterJobData.Job,
+                        NewJobPoint = learnedAbilityCharacterJobData.JobPoint,
+                        AbilityId = abilityId,
+                        AbilityLv = abilityLv
+                    }, queue);
+
+                    queue.AddRange(_Server.AchievementManager.HandleLearnAugments(client, connection));
+                }
+                else if (character is Pawn pawn)
+                {
+                    client.Enqueue(new S2CSkillLearnPawnAbilityRes()
+                    {
+                        PawnId = pawn.PawnId,
+                        Job = learnedAbilityCharacterJobData.Job,
+                        NewJobPoint = learnedAbilityCharacterJobData.JobPoint,
+                        AbilityId = abilityId,
+                        AbilityLv = abilityLv
+                    }, queue);
+                }
+            });
 
             return queue;
         }
