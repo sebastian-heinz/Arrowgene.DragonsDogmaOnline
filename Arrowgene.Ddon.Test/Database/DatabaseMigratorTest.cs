@@ -244,7 +244,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertEquippedCustomSkill(uint commonId, byte slotNo, CustomSkill skill) { return true; }
         public bool InsertGainExtendParam(uint commonId, CDataOrbGainExtendParam Param) { return true; }
         public bool InsertIfNotExistCompletedQuest(uint characterCommonId, QuestId questId, QuestType questType, DbConnection? connectionIn = null) { return true; }
-        public bool InsertIfNotExistsDragonForceAugmentation(uint commonId, uint elementId, uint pageNo, uint groupNo, uint indexNo) { return true; }
+        public bool InsertIfNotExistsDragonForceAugmentation(uint commonId, uint elementId, uint pageNo, uint groupNo, uint indexNo, DbConnection? connectionIn = null) { return true; }
         public bool InsertIfNotExistsNormalSkillParam(uint commonId, CDataNormalSkillParam normalSkillParam) { return true; }
         public bool InsertIfNotExistsPawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus) { return true; }
         public bool InsertIfNotExistsReleasedWarpPoint(uint characterId, ReleasedWarpPoint ReleasedWarpPoint) { return true; }
@@ -299,7 +299,7 @@ namespace Arrowgene.Ddon.Test.Database
         public Item SelectStorageItemByUId(string uId, DbConnection? connectionIn = null) { return new Item(); }
         public List<CDataNormalSkillParam> SelectNormalSkillParam(uint commonId, JobId job) { return new List<CDataNormalSkillParam>(); }
         public CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId, DbConnection? connectionIn = null) { return new CDataOrbGainExtendParam(); }
-        public List<CDataReleaseOrbElement> SelectOrbReleaseElementFromDragonForceAugmentation(uint commonId) { return new List<CDataReleaseOrbElement>(); }
+        public List<CDataReleaseOrbElement> SelectOrbReleaseElementFromDragonForceAugmentation(uint commonId, DbConnection? connectionIn = null) { return new List<CDataReleaseOrbElement>(); }
         public Pawn SelectPawn(uint pawnId) { return new Pawn(); }
         public Pawn SelectPawn(DbConnection connection, uint pawnId) { return new Pawn(); }
         public List<Pawn> SelectPawnsByCharacterId(uint characterId, DbConnection? connectionIn = null) { return new List<Pawn>(); }
@@ -326,7 +326,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateLearnedAbility(uint commonId, Ability ability, DbConnection? connectionIn = null) { return true; }
         public bool UpdateLearnedCustomSkill(uint commonId, CustomSkill updatedSkill, DbConnection? connectionIn = null) { return true; }
         public bool UpdateNormalSkillParam(uint commonId, JobId job, uint skillNo, CDataNormalSkillParam normalSkillParam) { return true; }
-        public bool UpdateOrbGainExtendParam(uint commonId, CDataOrbGainExtendParam Param) { return true; }
+        public bool UpdateOrbGainExtendParam(uint commonId, CDataOrbGainExtendParam param, DbConnection? connectionIn = null) { return true; }
         public bool UpdatePawnBaseInfo(Pawn pawn, DbConnection? connectionIn = null) { return true; }
         public bool UpdatePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus) { return true; }
         public bool ReplacePawnReaction(uint pawnId, CDataPawnReaction pawnReaction, DbConnection? connectionIn = null) { return true; }
@@ -342,11 +342,8 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateStorage(uint characterId, StorageType storageType, Storage storage) { return true; }
         public bool UpdateStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, DbConnection? connectionIn = null) { return true; }
         public bool UpdateWalletPoint(uint characterId, CDataWalletPoint updatedWalletPoint, DbConnection? connectionIn = null) { return true; }
-        public bool UpdateMyPawnSlot(uint characterId, uint num) { return true; }
-        public bool UpdateRentalPawnSlot(uint characterId, uint num)
-        {
-            return true;
-        }
+        public bool UpdateMyPawnSlot(uint characterId, uint num, DbConnection? connectionIn = null) { return true; }
+        public bool UpdateRentalPawnSlot(uint characterId, uint num, DbConnection? connectionIn = null) { return true; }
 
         public bool MigrateDatabase(DatabaseMigrator migrator, uint toVersion) { return true; }
         public long InsertSystemMailMessage(SystemMailMessage message) { return 0; }

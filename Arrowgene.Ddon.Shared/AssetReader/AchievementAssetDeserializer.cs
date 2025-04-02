@@ -57,7 +57,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                         achievement.Param = (uint)Enum.Parse(typeof(AchievementLevelGroupParam), jParam.GetString(), true);
                         break;
                     case AchievementType.OrbDevote:
-                        achievement.Param = (uint)Enum.Parse(typeof(AchievementOrbDevoteParam), jParam.GetString(), true);
+                        achievement.Param = (byte)Enum.Parse(typeof(OrbGainParamType), jParam.GetString(), true);
                         break;
                     case AchievementType.SparkleCollect:
                         achievement.Param = (uint)Enum.Parse(typeof(QuestAreaId), jParam.GetString(), true);

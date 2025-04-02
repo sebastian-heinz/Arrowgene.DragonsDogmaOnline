@@ -92,8 +92,8 @@ namespace Arrowgene.Ddon.Database
         bool UpdateCharacterBaseInfo(Character character);
         bool UpdateCharacterMatchingProfile(Character character);
         bool UpdateCharacterArisenProfile(Character character);
-        bool UpdateMyPawnSlot(uint characterId, uint num);
-        bool UpdateRentalPawnSlot(uint characterId, uint num);
+        bool UpdateMyPawnSlot(uint characterId, uint num, DbConnection? connectionIn = null);
+        bool UpdateRentalPawnSlot(uint characterId, uint num, DbConnection? connectionIn = null);
         bool UpdateCharacterBinaryData(uint characterId, byte[] data);
         void CreateItems(DbConnection conn, Character character);
         void CreateListItems(DbConnection conn, Character character, StorageType storageType, List<(uint ItemId, uint Amount)> itemList); 
@@ -395,13 +395,14 @@ namespace Arrowgene.Ddon.Database
             uint elementId,
             uint pageNo,
             uint groupNo,
-            uint indexNo
+            uint indexNo,
+            DbConnection? connectionIn = null
         );
         List<CDataReleaseOrbElement> SelectOrbReleaseElementFromDragonForceAugmentation(
-            uint commonId
+            uint commonId, DbConnection? connectionIn = null
         );
         bool InsertGainExtendParam(uint commonId, CDataOrbGainExtendParam Param);
-        bool UpdateOrbGainExtendParam(uint commonId, CDataOrbGainExtendParam Param);
+        bool UpdateOrbGainExtendParam(uint commonId, CDataOrbGainExtendParam param, DbConnection? connectionIn = null);
         CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId, DbConnection? connectionIn = null);
 
         // Bazaar

@@ -6075,7 +6075,7 @@
             "id": 1095,
             "name": "The Arisen Mind",
             "type": "OrbDevote",
-            "param": "Augment",
+            "param": "AbilityCost",
             "count": 1,
             "reward": 0,
             "sort_id": 608
@@ -6085,7 +6085,7 @@
             "id": 1096,
             "name": "Arisen Sacred Treasure",
             "type": "OrbDevote",
-            "param": "Augment",
+            "param": "AbilityCost",
             "count": 12,
             "reward": 0,
             "sort_id": 609
@@ -6095,7 +6095,7 @@
             "id": 1091,
             "name": "Seed of Life",
             "type": "OrbDevote",
-            "param": "Health",
+            "param": "HpMax",
             "count": 1,
             "reward": 0,
             "sort_id": 610
@@ -6105,7 +6105,7 @@
             "id": 1092,
             "name": "Tree of Life",
             "type": "OrbDevote",
-            "param": "Health",
+            "param": "HpMax",
             "count": 20,
             "reward": 0,
             "sort_id": 611
@@ -6115,7 +6115,7 @@
             "id": 1097,
             "name": "Faithful Follower",
             "type": "OrbDevote",
-            "param": "MainPawn",
+            "param": "MainPawnSlot",
             "count": 1,
             "reward": 13320,
             "sort_id": 612
@@ -6125,7 +6125,7 @@
             "id": 1093,
             "name": "Tireless Worker",
             "type": "OrbDevote",
-            "param": "Stamina",
+            "param": "StaminaMax",
             "count": 1,
             "reward": 0,
             "sort_id": 613
@@ -6135,7 +6135,7 @@
             "id": 1094,
             "name": "Constant Labourer",
             "type": "OrbDevote",
-            "param": "Stamina",
+            "param": "StaminaMax",
             "count": 28,
             "reward": 0,
             "sort_id": 614
@@ -6145,7 +6145,7 @@
             "id": 1098,
             "name": "Squire's Loyalty",
             "type": "OrbDevote",
-            "param": "SupportPawn",
+            "param": "SupportPawnSlot",
             "count": 2,
             "reward": 0,
             "sort_id": 615

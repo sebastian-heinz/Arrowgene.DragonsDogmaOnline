@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.Shared.Model
         MainLevelGroup, // Param = AchievementLevelGroupParam
         MandragoraSpecies,
         MountCrest,
-        OrbDevote, // Param = AchievementOrbDevoteParam
+        OrbDevote, // Param = OrbGainParamType
         PawnAffection,
         PawnCrafting,
         PawnCraftingExam,
@@ -211,15 +211,6 @@ namespace Arrowgene.Ddon.Shared.Model
         Herb,
         Ore,
         Wood
-    }
-
-    public enum AchievementOrbDevoteParam : uint
-    {
-        Health,
-        Stamina,
-        Augment,
-        MainPawn,
-        SupportPawn
     }
 
     public enum AchievementBBMParam : uint

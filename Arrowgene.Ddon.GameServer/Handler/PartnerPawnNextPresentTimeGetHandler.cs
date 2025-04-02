@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Scheduler;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -22,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Server.Database.ExecuteInTransaction(connection =>
             {
-                var partnerPawnData = Server.Database.GetPartnerPawnRecord(client.Character.CharacterId, client.Character.PartnerPawnId, connection) ?? new PartnerPawnData();
+                PartnerPawnData partnerPawnData = client.Character.Pawns.Find(x => x.PawnId == client.Character.PartnerPawnId)?.PartnerPawnData ?? new();
 
                 isMax = partnerPawnData.CalculateLikability() >= PartnerPawnManager.MAX_PARTNER_PAWN_LIKABILITY_RATING;
                 if (!isMax && Server.Database.HasPartnerPawnLastAffectionIncreaseRecord(client.Character.CharacterId, client.Character.PartnerPawnId, PartnerPawnAffectionAction.Gift, connection))

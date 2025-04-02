@@ -572,6 +572,14 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
+        public void EnqueueToAll(Packet res, PacketQueue queue)
+        {
+            foreach(GameClient client in Clients)
+            {
+                queue.Enqueue((client, res));
+            }
+        }
+
         public void SendToAll(Packet packet)
         {
             foreach (GameClient client in Clients)

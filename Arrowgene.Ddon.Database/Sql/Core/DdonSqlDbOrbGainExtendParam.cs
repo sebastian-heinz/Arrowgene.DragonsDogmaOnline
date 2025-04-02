@@ -54,15 +54,17 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }) == 1;
         }
 
-        public bool UpdateOrbGainExtendParam(uint commonId, CDataOrbGainExtendParam Param)
+        public bool UpdateOrbGainExtendParam(uint commonId, CDataOrbGainExtendParam param, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return UpdateOrbGainExtendParam(connection, commonId, Param);
-        }
+            return ExecuteQuerySafe(connectionIn, connection =>
+            {
+                return ExecuteNonQuery(connection, 
+                    SqlUpdateOrbGainExtendParam, 
+                    command => { 
+                        AddParameter(command, commonId, param); 
+                    }) == 1;
 
-        public bool UpdateOrbGainExtendParam(TCon conn, uint commonId, CDataOrbGainExtendParam Param)
-        {
-            return ExecuteNonQuery(conn, SqlUpdateOrbGainExtendParam, command => { AddParameter(command, commonId, Param); }) == 1;
+            });
         }
 
         public CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId, DbConnection? connectionIn = null)

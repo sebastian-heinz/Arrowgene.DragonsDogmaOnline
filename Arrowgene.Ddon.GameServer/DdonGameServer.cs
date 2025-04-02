@@ -89,7 +89,7 @@ namespace Arrowgene.Ddon.GameServer
             AchievementManager = new AchievementManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
-            OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
+            OrbUnlockManager = new OrbUnlockManager(this);
 
             S2CStageGetStageListRes stageListPacket =
                 EntitySerializer.Get<S2CStageGetStageListRes>().Read(GameDump.data_Dump_19);

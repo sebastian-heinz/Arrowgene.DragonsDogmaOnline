@@ -216,7 +216,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 foreach (var memberClient in client.Party.Clients)
                 {
-                    Server.CharacterManager.UpdateCharacterExtendedParamsNtc(memberClient, memberClient.Character);
+                    packets.AddRange(Server.CharacterManager.UpdateCharacterExtendedParamsNtc(memberClient, memberClient.Character));
                 }
             }
 

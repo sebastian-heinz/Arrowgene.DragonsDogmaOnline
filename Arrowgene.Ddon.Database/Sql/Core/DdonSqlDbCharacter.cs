@@ -439,34 +439,28 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             character.AchievementUniqueCrafts = SelectAchievementUniqueCrafts(character.CharacterId, conn);
         }
 
-        public bool UpdateMyPawnSlot(uint characterId, uint num)
+        public bool UpdateMyPawnSlot(uint characterId, uint num, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return UpdateMyPawnSlot(connection, characterId, num);
-        }
-
-        public bool UpdateMyPawnSlot(TCon conn, uint characterId, uint num)
-        {
-            return ExecuteNonQuery(conn, SqlUpdateMyPawnSlot, command =>
+            return ExecuteQuerySafe(connectionIn, connection =>
             {
-                AddParameter(command, "character_id", characterId);
-                AddParameter(command, "my_pawn_slot_num", num);
-            })  == 1;
+                return ExecuteNonQuery(connection, SqlUpdateMyPawnSlot, command =>
+                {
+                    AddParameter(command, "character_id", characterId);
+                    AddParameter(command, "my_pawn_slot_num", num);
+                }) == 1;
+            });
         }
         
-        public bool UpdateRentalPawnSlot(uint characterId, uint num)
+        public bool UpdateRentalPawnSlot(uint characterId, uint num, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return UpdateRentalPawnSlot(connection, characterId, num);
-        }
-
-        public bool UpdateRentalPawnSlot(TCon conn, uint characterId, uint num)
-        {
-            return ExecuteNonQuery(conn, SqlUpdateRentalPawnSlot, command =>
+            return ExecuteQuerySafe(connectionIn, connection =>
             {
-                AddParameter(command, "character_id", characterId);
-                AddParameter(command, "rental_pawn_slot_num", num);
-            })  == 1;
+                return ExecuteNonQuery(connection, SqlUpdateRentalPawnSlot, command =>
+                {
+                    AddParameter(command, "character_id", characterId);
+                    AddParameter(command, "rental_pawn_slot_num", num);
+                }) == 1;
+            });
         }
 
         private void StoreCharacterData(TCon conn, Character character)

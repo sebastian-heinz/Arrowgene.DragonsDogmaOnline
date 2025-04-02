@@ -7,6 +7,8 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics;
+using System.Diagnostics.Metrics;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
@@ -277,7 +279,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 // Handle job groups
                 foreach ((var groupType, var group) in LevelGroupMap.Where(x => x.Value.Contains(client.Character.Job)))
                 {
-                    int lowestLevel = group.Select(job => client.Character.CharacterJobDataList.Where(x => x.Job == job).Select(x => (int)x.Lv).FirstOrDefault()).Min();
+                    uint lowestLevel = (uint)group.Select(job => client.Character.CharacterJobDataList.Where(x => x.Job == job).Select(x => (int)x.Lv).FirstOrDefault()).Min();
                     (AchievementType, uint) groupKey = (AchievementType.MainLevelGroup, (uint)groupType);
 
                     queue.AddRange(CheckGainAchievement(client, groupKey.Item1, groupKey.Item2, lowestLevel, connection));
@@ -312,10 +314,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return queue;
         }
 
-        public PacketQueue HandleOrbDevote(GameClient client, DbConnection? connectionIn = null)
+        public PacketQueue HandleOrbDevote(GameClient client, OrbGainParamType type, DbConnection? connectionIn = null)
         {
-            // TODO: Untangle the awful mess that is the Orb Unlock manager.
             PacketQueue queue = new();
+
+            (AchievementType, uint) key = (AchievementType.OrbDevote, (uint) type);
+            var progress = (uint)OrbUnlockManager.CountParamType(client.Character).GetValueOrDefault(type);
+
+            Server.Database.ExecuteQuerySafe(connectionIn, connection =>
+            {
+                queue.AddRange(CheckGainAchievement(client, key.Item1, key.Item2, progress, connection));
+            });
+
             return queue;
         }
 
@@ -328,21 +338,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return queue;
             }
 
-            uint maxAffection = 0;
-            // TODO: Cache this serverside so its not so expensive.
-            Server.Database.ExecuteQuerySafe(connectionIn, connection =>
-            {
-                foreach (var pawn in client.Character.Pawns)
-                {
-                    var record = Server.Database.GetPartnerPawnRecord(client.Character.CharacterId, pawn.PawnId, connection);
-                    if (record is null)
-                    {
-                        continue;
-                    }
-                    
-                    maxAffection = Math.Max(maxAffection, record.ToCDataPartnerPawnData(pawn).Likability);
-                }
-            });
+            uint maxAffection = client.Character.Pawns.Select(x => x.PartnerPawnData?.CalculateLikability() ?? 0).DefaultIfEmpty().Max();
 
             queue.AddRange(CheckGainAchievement(client, AchievementType.PawnAffection, 0, maxAffection, connectionIn));
 
@@ -495,26 +491,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
         { 
             var progress = new List<uint>();
 
-            uint pawnAffection = 0;
-            // TODO: Cache this serverside so its not so expensive.
-            Server.Database.ExecuteQuerySafe(connectionIn, connection =>
-            {
-                foreach (var pawn in client.Character.Pawns)
-                {
-                    var record = Server.Database.GetPartnerPawnRecord(client.Character.CharacterId, pawn.PawnId, connection);
-                    if (record is null)
-                    {
-                        continue;
-                    }
-
-                    pawnAffection = Math.Max(pawnAffection, record.ToCDataPartnerPawnData(pawn).Likability);
-                }
-            });
-
+            var orbProgress = OrbUnlockManager.CountParamType(client.Character);
 
             foreach (var asset in assets)
             {
-                // TODO: ClearSubstory, EmblemStone, EpitaphRoad, MandragoraSpecies, OrbDevote
+                // Shortcut math for achievements we know we've completed.
+                if (client.Character.AchievementStatus.ContainsKey(asset.Id))
+                {
+                    progress.Add(uint.MaxValue);
+                    continue;
+                }
+
+                // TODO: ClearSubstory, EmblemStone, EpitaphRoad, MandragoraSpecies
                 switch (asset.Type)
                 {
                     case AchievementType.Appraisal:
@@ -558,6 +546,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             break;
                         }
                     case AchievementType.PawnAffection:
+                        uint pawnAffection = client.Character.Pawns.Select(x => x.PartnerPawnData?.CalculateLikability() ?? 0).DefaultIfEmpty().Max();
                         progress.Add(pawnAffection >= asset.Count ? 1u : 0u);
                         break;
                     case AchievementType.PawnLevel:
@@ -580,6 +569,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                             .Max();
                             var result = highestCrafting > asset.Count ? 1u : 0u;
                             progress.Add(result);
+                            break;
+                        }
+                    case AchievementType.OrbDevote:
+                        {
+                            progress.Add((uint)orbProgress.GetValueOrDefault((OrbGainParamType)asset.Param));
                             break;
                         }
                     default:

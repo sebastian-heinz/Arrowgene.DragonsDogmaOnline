@@ -68,7 +68,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new();
             }
 
-            var partnerPawnData = Server.Database.GetPartnerPawnRecord(client.Character.CharacterId, client.Character.PartnerPawnId, connectionIn);
+            PartnerPawnData partnerPawnData = client.Character.Pawns.Find(x => x.PawnId == client.Character.PartnerPawnId)?.PartnerPawnData;
             var previousLikability = partnerPawnData.CalculateLikability();
             switch (action)
             {
