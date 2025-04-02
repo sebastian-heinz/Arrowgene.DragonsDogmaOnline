@@ -9,6 +9,7 @@
     "discoverable": false,
     "stage_id": { "id": 24 },
     "area_id": "MysreeForest",
+    "adventure_guide_category": "AreaTrialOrMission",
     "order_conditions": [
         {
             "type": "AreaRank",

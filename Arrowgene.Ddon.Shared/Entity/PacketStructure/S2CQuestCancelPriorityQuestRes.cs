@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using Arrowgene.Buffers;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -14,7 +11,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         {
         }
 
-        public UInt32 QuestScheduleId { get; set; }
+        public uint QuestScheduleId { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CQuestCancelPriorityQuestRes>
         {

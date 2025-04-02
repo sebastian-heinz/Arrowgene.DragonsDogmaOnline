@@ -2,27 +2,27 @@ using Arrowgene.Buffers;
         
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public class CDataItemUIdList
+    public class CDataItemUIDList
     {
-        public CDataItemUIdList() {
-            UId = string.Empty;
+        public CDataItemUIDList() {
+            ItemUID = string.Empty;
         }
     
-        public string UId { get; set; }
+        public string ItemUID { get; set; }
         public uint Num { get; set; }
     
-        public class Serializer : EntitySerializer<CDataItemUIdList>
+        public class Serializer : EntitySerializer<CDataItemUIDList>
         {
-            public override void Write(IBuffer buffer, CDataItemUIdList obj)
+            public override void Write(IBuffer buffer, CDataItemUIDList obj)
             {
-                WriteMtString(buffer, obj.UId);
+                WriteMtString(buffer, obj.ItemUID);
                 WriteUInt32(buffer, obj.Num);
             }
         
-            public override CDataItemUIdList Read(IBuffer buffer)
+            public override CDataItemUIDList Read(IBuffer buffer)
             {
-                CDataItemUIdList obj = new CDataItemUIdList();
-                obj.UId = ReadMtString(buffer);
+                CDataItemUIDList obj = new CDataItemUIDList();
+                obj.ItemUID = ReadMtString(buffer);
                 obj.Num = ReadUInt32(buffer);
                 return obj;
             }

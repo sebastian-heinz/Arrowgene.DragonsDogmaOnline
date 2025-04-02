@@ -22,6 +22,9 @@ namespace Arrowgene.Ddon.Shared.AssetReader
         {
             _QuestDrops = questDrops;
             _CommonEnemyDeserializer = commonEnemyDeserializer;
+
+            // Force this class to be invoked so we can look up flags during deserialization
+            QuestFlags.InvokeTypeInitializer();
         }
 
         public bool LoadQuestsFromDirectory(string path, QuestAsset questAssets)
@@ -169,6 +172,43 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 {
                     Logger.Error($"The value of 'order_background_id' must be > 0, for the quest '{assetData.QuestId}'. Skipping.");
                     return false;
+                }
+            }
+
+            assetData.AdventureGuideCategory = QuestUtils.DetermineQuestAdventureCategory(assetData.QuestId, assetData.QuestType);
+            if (jQuest.TryGetProperty("adventure_guide_category", out JsonElement jAdventureGuideCategory))
+            {
+                if (!Enum.TryParse(jAdventureGuideCategory.GetString(), true, out QuestAdventureGuideCategory adventureGuideCategory))
+                {
+                    Logger.Error($"The value of 'adventure_guide_category' '{jAdventureGuideCategory.GetString()}' for '{assetData.QuestId}' is invalid. Skipping.");
+                    return false;
+                }
+                assetData.AdventureGuideCategory = adventureGuideCategory;
+            }
+
+            assetData.IsImportant = QuestUtils.DetermineIfQuestIsImportant(assetData.AdventureGuideCategory);
+            if (jQuest.TryGetProperty("is_important", out JsonElement jIsImportant))
+            {
+                assetData.IsImportant = jIsImportant.GetBoolean();
+            }
+
+            if (jQuest.TryGetProperty("contents_release", out JsonElement jContentsReleaseList))
+            {
+                if (!ParseContentsRelease(assetData.ContentsReleased, jContentsReleaseList))
+                {
+                    return false;
+                }
+
+                foreach (var contentRelease in assetData.ContentsReleased)
+                {
+                    if (contentRelease.FlagInfo != null)
+                    {
+                        if (!assetData.WorldManageUnlocks.ContainsKey(contentRelease.FlagInfo.QuestId))
+                        {
+                            assetData.WorldManageUnlocks[contentRelease.FlagInfo.QuestId] = new List<QuestFlagInfo>();
+                        }
+                        assetData.WorldManageUnlocks[contentRelease.FlagInfo.QuestId].Add(contentRelease.FlagInfo);
+                    }
                 }
             }
 
@@ -404,10 +444,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                 if (!Enum.TryParse(jblock.GetProperty("type").GetString(), true, out QuestBlockType questBlockType))
                 {
-                    Logger.Error($"Unable to parse the quest block type of BlockNo={blockIndex}.");
+                    var blockTypeName = jblock.GetProperty("type").GetString();
+                    Logger.Error($"Unable to parse the quest block type '{blockTypeName}' of {questProcess.ProcessNo}.0.{blockIndex}.");
                     return false;
                 }
 
+                questBlock.QuestScheduleId = questProcess.QuestScheduleId;
                 questBlock.ProcessNo = questProcess.ProcessNo;
                 questBlock.BlockType = questBlockType;
                 questBlock.BlockNo = blockIndex;
@@ -440,7 +482,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                 if (jblock.TryGetProperty("stage_id", out JsonElement jStageId))
                 {
-                    questBlock.StageId = AssetCommonDeserializer.ParseStageId(jStageId);
+                    questBlock.StageLayoutId = AssetCommonDeserializer.ParseStageId(jStageId);
                 }
 
                 questBlock.SubGroupId = 0;
@@ -522,6 +564,14 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     questBlock.ShowMarker = jShowMarker.GetBoolean();
                 }
 
+                if (jblock.TryGetProperty("contents_release", out JsonElement jContentsReleased))
+                {
+                    if (!ParseContentsRelease(questBlock.ContentsReleased, jContentsReleased, questBlock))
+                    {
+                        return false;
+                    }
+                }
+
                 switch (questBlockType)
                 {
                     case QuestBlockType.IsStageNo:
@@ -538,7 +588,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             {
                                 NpcId = npcId,
                                 MsgId = jblock.GetProperty("message_id").GetInt32(),
-                                StageId = questBlock.StageId
+                                StageId = questBlock.StageLayoutId
                             });
                         }
                         break;
@@ -781,6 +831,14 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                                     Amount = item.GetProperty("amount").GetUInt32()
                                 });
                             }
+                        }
+                        break;
+                    case QuestBlockType.SceHitIn:
+                    case QuestBlockType.SceHitOut:
+                        {
+                            // Uses marker visibilty from the common field
+                            questBlock.SceNo = jblock.GetProperty("sce_no").GetUInt32();
+                            questBlock.StageLayoutId = AssetCommonDeserializer.ParseStageId(jblock.GetProperty("stage_id"));
                         }
                         break;
                     case QuestBlockType.Raw:
@@ -1151,6 +1209,55 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             if (jLightQuestDetails.TryGetProperty("get_cp", out JsonElement jGetCP))
             {
                 assetData.LightQuestDetail.GetCp = jGetCP.GetUInt32();
+            }
+
+            return true;
+        }
+
+        private bool ParseContentsRelease(HashSet<QuestUnlock> contentsReleased, JsonElement jContentsReleaseList, QuestBlock questBlock = null)
+        {
+            foreach (var jContentsReleaseId in jContentsReleaseList.EnumerateArray())
+            {
+                if (!Enum.TryParse(jContentsReleaseId.GetProperty("type").GetString(), true, out ContentsRelease contentsReleaseId))
+                {
+                    Logger.Error($"Unable to parse contents release element. Skipping.");
+                    return false;
+                }
+
+                var unlock = new QuestUnlock()
+                {
+                    ReleaseId = contentsReleaseId
+                };
+
+                if (jContentsReleaseId.TryGetProperty("tutorial_id", out JsonElement jTutorialId))
+                {
+                    if (!Enum.TryParse(jTutorialId.GetString(), true, out TutorialId tutorialId))
+                    {
+                        Logger.Error($"Unable to parse tutorial id for relased element. Skipping.");
+                        return false;
+                    }
+                    unlock.TutorialId = tutorialId;
+                }
+
+                if (jContentsReleaseId.TryGetProperty("flag_info", out JsonElement jFlagInfo))
+                {
+                    var flagInfo = QuestFlags.GetFlagInfoFromName(jFlagInfo.GetString());
+                    if (flagInfo == null)
+                    {
+                        Logger.Error($"Unable to locate a QuestFlagInfo with the name '{jFlagInfo.GetString()}'. Skipping.");
+                        return false;
+                    }
+                    unlock.FlagInfo = flagInfo;
+
+                    
+                    if (questBlock != null)
+                    {
+                        questBlock.WorldManageUnlocks.Add(flagInfo);
+                        questBlock.AddQuestFlag(QuestFlagAction.Set, flagInfo);
+                    }
+                }
+
+                contentsReleased.Add(unlock);
             }
 
             return true;

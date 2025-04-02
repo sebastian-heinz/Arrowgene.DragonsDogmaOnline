@@ -9,6 +9,7 @@
     "discoverable": false,
     "stage_id": { "id": 137 },
     "area_id": "MysreeGrove",
+    "adventure_guide_category": "AreaTrialOrMission",
     "order_conditions": [
         {
             "type": "AreaRank",

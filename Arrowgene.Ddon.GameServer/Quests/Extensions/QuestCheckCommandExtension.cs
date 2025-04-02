@@ -224,6 +224,18 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return checkCommands;
         }
 
+        public static List<CDataQuestCommand> AddCheckCmdTouchActToNpc(this List<CDataQuestCommand> checkCommands, StageInfo stageInfo, NpcId npcId)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.TouchActToNpc(stageInfo.StageNo, npcId));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdNpcTouchAndOrderUi(this List<CDataQuestCommand> checkCommands, StageInfo stageInfo, NpcId npcId, int noOrderGroupSerial)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.NpcTouchAndOrderUi(stageInfo.StageNo, npcId, noOrderGroupSerial));
+            return checkCommands;
+        }
+
         public static List<CDataQuestCommand> AddCheckCmdHasUsedKey(this List<CDataQuestCommand> checkCommands, StageInfo stageInfo, uint groupId, uint setNo, QuestId questId)
         {
             checkCommands.Add(QuestManager.CheckCommand.HasUsedKey(stageInfo.StageNo, (int)groupId, (int)setNo, (int)questId));
@@ -260,15 +272,311 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return checkCommands;
         }
 
-        public static List<CDataQuestCommand> AddCheckCmdStageNo(this List<CDataQuestCommand> checkCommands, StageInfo stageInfo)
+        public static List<CDataQuestCommand> AddCheckCmdIsMainQuestClear(this List<CDataQuestCommand> checkCommands, QuestId questId)
         {
-            checkCommands.Add(QuestManager.CheckCommand.StageNo(stageInfo.StageNo));
+            checkCommands.Add(QuestManager.CheckCommand.IsMainQuestClear((int)questId));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdIsTutorialQuestClear(this List<CDataQuestCommand> checkCommands, QuestId questId)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsTutorialQuestClear((int) questId));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdIsClearLightQuest(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsClearLightQuest());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdIsOrderLightQuest(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsOrderLightQuest());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdIsAcceptLightQuest(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsAcceptLightQuest());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdIsSetPlayerSkill(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsSetPlayerSkill());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdOpenQuestBoard(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.OpenQuestBoard());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdIsOpenWarehouseReward(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsOpenWarehouseReward());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdTouchRimStone(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.TouchRimStone());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdOpenNewspaper(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.OpenNewspaper());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdIsOpenAreaListUi(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsOpenAreaListUi());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdOpenAreaMaster(this List<CDataQuestCommand> checkCommands, QuestAreaId areaId)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.OpenAreaMaster((int) areaId));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdOpenAreaMasterSupplies(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.OpenAreaMasterSupplies());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdIsStageNo(this List<CDataQuestCommand> checkCommands, StageInfo stageInfo, bool showMarker = true)
+        {
+            checkCommands.Add(showMarker ? 
+                QuestManager.CheckCommand.StageNo(stageInfo.StageNo) :
+                QuestManager.CheckCommand.StageNoWithoutMarker(stageInfo.StageNo));
             return checkCommands;
         }
 
         public static List<CDataQuestCommand> AddCheckCmdStageNoNotEq(this List<CDataQuestCommand> checkCommands, StageInfo stageInfo)
         {
             checkCommands.Add(QuestManager.CheckCommand.StageNoNotEq(stageInfo.StageNo));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdHaveItemAllBag(this List<CDataQuestCommand> checkCommands, ItemId itemId, uint amount)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.HaveItemAllBag((int) itemId, (int) amount));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdIsFullBag(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsFullBag());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdCraft(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.Craft());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdMakeCraft(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.MakeCraft());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdOpenCraftExam(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.OpenCraftExam());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdLevelUpCraft(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.LevelUpCraft());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdDogmaOrb(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.DogmaOrb());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdIsMyquestLayoutFlagOn(this List<CDataQuestCommand> checkCommands, uint flagNo)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsMyquestLayoutFlagOn((int)flagNo));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdIsMyquestLayoutFlagOff(this List<CDataQuestCommand> checkCommands, uint flagNo)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsMyquestLayoutFlagOff((int)flagNo));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdMyQstFlagOn(this List<CDataQuestCommand> checkCommands, uint flagNo)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.MyQstFlagOn((int)flagNo));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdMyQstFlagOff(this List<CDataQuestCommand> checkCommands, uint flagNo)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.MyQstFlagOff((int)flagNo));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdIsTutorialFlagOn(this List<CDataQuestCommand> checkCommands, uint flagNo)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsTutorialFlagOn((int)flagNo));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdMyQstFlagOnFromFsm(this List<CDataQuestCommand> checkCommands, uint flagNo)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.MyQstFlagOnFromFsm((int)flagNo));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdQstFlagOn(this List<CDataQuestCommand> checkCommands, QuestId questId, uint flagNo)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.QstFlagOn((int)questId, (int)flagNo));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdQstFlagOff(this List<CDataQuestCommand> checkCommands, QuestId questId, uint flagNo)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.QstFlagOff((int)questId, (int)flagNo));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdWorldManageQuestFlagOn(this List<CDataQuestCommand> checkCommands, QuestId questId, uint flagNo)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.QstFlagOn((int)questId, (int)flagNo));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdWorldManageQuestFlagOff(this List<CDataQuestCommand> checkCommands, QuestId questId, uint flagNo)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.QstFlagOn((int)questId, (int)flagNo));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdJobLevelNotLess(this List<CDataQuestCommand> checkCommands, QuestLevelCheckType checkType, uint level)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.JobLevelNotLess((int)checkType, (int) level));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdJobLevelLess(this List<CDataQuestCommand> checkCommands, QuestLevelCheckType checkType, uint level)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.JobLevelLess((int)checkType, (int)level));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdOpenPpMode(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.OpenPpMode());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdOpenPpShop(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.OpenPpShop());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdPpNotLess(this List<CDataQuestCommand> checkCommands, uint points)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.PpNotLess((int)points));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdIsOrderMyQuest(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsOrderMyQuest());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdIsNotOrderMyQuest(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsNotOrderMyQuest());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdIsPresentPartnerPawn(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsPresentPartnerPawn());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdIsPresentPartnerPawnNoMarker(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsPresentPartnerPawnNoMarker());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdIsSetPartnerPawn(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsSetPartnerPawn());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdIsFavoriteWarpPoint(this List<CDataQuestCommand> checkCommands, int warpPointId)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsFavoriteWarpPoint(warpPointId));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdOrderDecide(this List<CDataQuestCommand> checkCommands, NpcId npcId)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.OrderDecide(npcId));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdSpTalkNpc(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.SpTalkNpc());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdTutorialTalkNpc(this List<CDataQuestCommand> checkCommands, StageInfo stageInfo, NpcId npcId)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.TutorialTalkNpc(stageInfo.StageNo, npcId));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdEventEnd(this List<CDataQuestCommand> checkCommands, StageInfo stageInfo, uint eventNo)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.EventEnd(stageInfo.StageNo, (int) eventNo));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdIsLogin(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsLogin());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdIsLoginBugFixedOnly(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsLoginBugFixedOnly());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdPlJobEq(this List<CDataQuestCommand> checkCommands, JobId jobId)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.PlJobEq((int)jobId));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdPlJobNotEq(this List<CDataQuestCommand> checkCommands, JobId jobId)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.PlJobNotEq((int)jobId));
             return checkCommands;
         }
     }

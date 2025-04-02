@@ -342,6 +342,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                             }
                         });
 
+                        item.AddStatusParamList = GetEquipmentLimitBreakRecord(item.UId, connection);
+
                         character.Storage.GetStorage(storageType).SetItem(item, itemNum, slot);
                     }
                 });
@@ -652,6 +654,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                 item.EquipElementParamList.Add(result.ToCDataEquipElementParam());
                             }
                         });
+
+                        item.AddStatusParamList = GetEquipmentLimitBreakRecord(item.UId, connection);
 
                         storages.GetStorage(storageType).SetItem(item, itemNum, slot);
                     }

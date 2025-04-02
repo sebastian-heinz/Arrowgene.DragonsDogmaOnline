@@ -30,7 +30,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // S2CCharacterContentsReleaseElementNtc contentsReleaseElementNotice = EntitySerializer.Get<S2CCharacterContentsReleaseElementNtc>().Read(GameFull.data_Dump_20);
             S2CCharacterContentsReleaseElementNtc contentsReleaseElementNotice = new S2CCharacterContentsReleaseElementNtc()
             {
-                CharacterReleaseElements = gContentsReleaseIds
+                CharacterReleaseElements = client.Character.GetReleasedContent()
+                // CharacterReleaseElements = gContentsReleaseIds
             };
             client.Enqueue(contentsReleaseElementNotice, packetQueue);
 
@@ -59,7 +60,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             new CDataCharacterReleaseElement(ContentsRelease.RiftTeleport),
             new CDataCharacterReleaseElement(ContentsRelease.SorcererVocationEmblem),
             new CDataCharacterReleaseElement(ContentsRelease.PartyPlayers),
-            new CDataCharacterReleaseElement(ContentsRelease.PawnandPartyPlay),
+            new CDataCharacterReleaseElement(ContentsRelease.PawnAndPartyPlay),
             new CDataCharacterReleaseElement(ContentsRelease.WorldQuests),
             new CDataCharacterReleaseElement(ContentsRelease.GrandMissions),
             new CDataCharacterReleaseElement(ContentsRelease.ExtremeMissions),

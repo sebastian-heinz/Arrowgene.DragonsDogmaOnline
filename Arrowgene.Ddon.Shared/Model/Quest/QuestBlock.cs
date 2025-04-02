@@ -28,12 +28,13 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
     public class QuestBlock
     {
         public QuestBlockType BlockType { get; set; }
+        public uint QuestScheduleId { get; set; }
         public ushort ProcessNo { get; set; }
         public ushort SequenceNo { get; set; }
         public ushort BlockNo { get; set; }
         public QuestAnnounceType AnnounceType { get; set; }
         public Announcements Announcements { get; set; }
-        public StageLayoutId StageId { get; set; }
+        public StageLayoutId StageLayoutId { get; set; }
         public ushort SubGroupId { get; set; }
         public uint SetNo { get; set; }
         public uint QuestLayoutFlag { get; set; } // For groups
@@ -47,6 +48,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public uint JumpPos { get; set; }
         public bool IsCheckpoint { get; set; }
         public uint TimeAmount { get; set; }
+        public uint SceNo { get; set; }
 
         public QuestEvent QuestEvent { get; set; }
         public QuestCameraEvent QuestCameraEvent { get; set; }
@@ -66,6 +68,9 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public List<QuestItem> ConsumePlayerItems { get; set; }
         public List<QuestNpcOrder> NpcOrderDetails { get; set; }
         public QuestOrder QuestOrderDetails { get; set; }
+        public HashSet<QuestUnlock> ContentsReleased { get; set; }
+        public List<QuestFlagInfo> WorldManageUnlocks { get; set; }
+        public List<QuestProgressWork> QuestProgressWork { get; set; }
         
         public QuestTargetEnemy TargetEnemy { get; set; }
 
@@ -111,8 +116,17 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 
             TargetEnemy = new QuestTargetEnemy();
             Announcements = new Announcements();
+            ContentsReleased = new HashSet<QuestUnlock>();
+            WorldManageUnlocks = new List<QuestFlagInfo>();
+            QuestProgressWork = new List<QuestProgressWork>();
 
             Callbacks = new List<Object>();
+        }
+
+        public QuestBlock SetQuestScheduleId(uint questScheduleId)
+        {
+            QuestScheduleId = questScheduleId;
+            return this;
         }
 
         public QuestBlock AddAnnotation(string msg)
@@ -186,7 +200,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 
         public QuestBlock SetStageId(StageLayoutId value)
         {
-            StageId = value;
+            StageLayoutId = value;
             return this;
         }
 
@@ -244,7 +258,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return this;
         }
 
-        public QuestBlock AddQuestFlag(QuestFlagType type, QuestFlagAction action, uint value, uint questId = 0)
+        public QuestBlock AddQuestFlag(QuestFlagType type, QuestFlagAction action, uint value, QuestId questId = QuestId.None)
         {
             QuestFlags.Add(new QuestFlag()
             {
@@ -254,6 +268,11 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
                 QuestId = (int) questId
             });
             return this;
+        }
+
+        public QuestBlock AddQuestFlag(QuestFlagAction action, QuestFlagInfo flagInfo)
+        {
+            return AddQuestFlag(flagInfo.FlagType, action, flagInfo.Value, flagInfo.QuestId);
         }
 
         public QuestBlock AddCheckpointQuestFlags(List<QuestFlag> values)
@@ -282,7 +301,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 
         public QuestBlock AddCheckpointQuestFlag(QuestFlagType type, QuestFlagAction action, uint value, QuestId questId)
         {
-            return AddQuestFlag(type, action, value, (uint)questId);
+            return AddQuestFlag(type, action, value, questId);
         }
 
         public QuestBlock SetShouldStageJump(bool value)
@@ -631,6 +650,16 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public QuestBlock AddResultCommand(QuestResultCommand resultCommand, int param01 = 0, int param02 = 0, int param03 = 0, int param04 = 0)
         {
             return AddResultCommand((ushort) resultCommand, param01, param02, param03, param04);
+        }
+
+        public QuestProcessState AsQuestProcessState()
+        {
+            return new QuestProcessState()
+            {
+                ProcessNo = ProcessNo,
+                BlockNo = BlockNo,
+                SequenceNo = SequenceNo,
+            };
         }
     }
 }

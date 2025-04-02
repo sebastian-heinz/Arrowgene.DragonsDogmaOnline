@@ -7,7 +7,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataCharacterReleaseElement()
         {
-            ReleaseElementNo=0;
+            ReleaseElementNo = 0;
         }
 
         public CDataCharacterReleaseElement(ContentsRelease ReleaseElement)

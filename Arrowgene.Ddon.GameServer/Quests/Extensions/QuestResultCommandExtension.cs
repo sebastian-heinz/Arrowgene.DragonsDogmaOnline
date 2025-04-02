@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
 {
     public static class QuestResultCommandExtension
     {
-        public static List<CDataQuestCommand> AddResultCmdReleaseAnnounce(this List<CDataQuestCommand> resultCommands, int releaseId)
+        public static List<CDataQuestCommand> AddResultCmdReleaseAnnounce(this List<CDataQuestCommand> resultCommands, ContentsRelease releaseId)
         {
             resultCommands.Add(QuestManager.ResultCommand.ReleaseAnnounce(releaseId));
             return resultCommands;
@@ -109,6 +109,18 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return resultCommands;
         }
 
+        public static List<CDataQuestCommand> AddResultCmdWorldManageQuestFlagOn(this List<CDataQuestCommand> resultCommands, uint flagNo, QuestId questId)
+        {
+            resultCommands.Add(QuestManager.ResultCommand.WorldManageQuestFlagOn((int)flagNo, (int)questId));
+            return resultCommands;
+        }
+
+        public static List<CDataQuestCommand> AddResultCmdWorldManageQuestFlagOff(this List<CDataQuestCommand> resultCommands, uint flagNo, QuestId questId)
+        {
+            resultCommands.Add(QuestManager.ResultCommand.WorldManageQuestFlagOff((int)flagNo, (int)questId));
+            return resultCommands;
+        }
+
         public static List<CDataQuestCommand> AddResultCmdQstSceFlagOn(this List<CDataQuestCommand> resultCommands)
         {
             resultCommands.Add(QuestManager.ResultCommand.QstSceFlagOn());
@@ -127,7 +139,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdTutorialDialog(this List<CDataQuestCommand> resultCommands, int guideNo)
+        public static List<CDataQuestCommand> AddResultCmdTutorialDialog(this List<CDataQuestCommand> resultCommands, TutorialId guideNo)
         {
             resultCommands.Add(QuestManager.ResultCommand.TutorialDialog(guideNo));
             return resultCommands;
@@ -228,6 +240,60 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
         public static List<CDataQuestCommand> AddResultCmdStartTimer(this List<CDataQuestCommand> resultCommands, int timerNo, int waitTimeInSec)
         {
             resultCommands.Add(QuestManager.ResultCommand.StartTimer(timerNo, waitTimeInSec));
+            return resultCommands;
+        }
+
+        public static List<CDataQuestCommand> AddResultCmdHandItem(this List<CDataQuestCommand> resultCommands, ItemId itemId, uint amount)
+        {
+            resultCommands.Add(QuestManager.ResultCommand.HandItem((int)itemId, (int) amount));
+            return resultCommands;
+        }
+
+        public static List<CDataQuestCommand> PlayCameraEvent(this List<CDataQuestCommand> resultCommands, StageInfo stageInfo, int eventNo)
+        {
+            resultCommands.Add(QuestManager.ResultCommand.PlayCameraEvent(stageInfo.StageNo, eventNo));
+            return resultCommands;
+        }
+
+        public static List<CDataQuestCommand> AddResultCmdQstTalkChg(this List<CDataQuestCommand> resultCommands, NpcId npcId, int msgNo)
+        {
+            resultCommands.Add(QuestManager.ResultCommand.QstTalkChg(npcId, msgNo));
+            return resultCommands;
+        }
+
+        public static List<CDataQuestCommand> AddResultCmdQstTalkDel(this List<CDataQuestCommand> resultCommands, NpcId npcId)
+        {
+            resultCommands.Add(QuestManager.ResultCommand.QstTalkDel(npcId));
+            return resultCommands;
+        }
+
+        public static List<CDataQuestCommand> AddResultCmdEventExec(this List<CDataQuestCommand> resultCommands, StageInfo stageInfo, uint eventNo, StageInfo destStageInfo, uint jumpPos)
+        {
+            resultCommands.Add(QuestManager.ResultCommand.EventExec(stageInfo.StageNo, (int)eventNo, destStageInfo.StageNo, (int) jumpPos));
+            return resultCommands;
+        }
+
+        public static List<CDataQuestCommand> AddResultCmdExeEventAfterStageJump(this List<CDataQuestCommand> resultCommands, StageInfo stageInfo, uint eventNo, uint startPos)
+        {
+            resultCommands.Add(QuestManager.ResultCommand.ExeEventAfterStageJump(stageInfo.StageNo, (int)eventNo, (int)startPos));
+            return resultCommands;
+        }
+
+        public static List<CDataQuestCommand> AddResultCmdExeEventAfterStageJumpContinue(this List<CDataQuestCommand> resultCommands, StageInfo stageInfo, uint eventNo, uint startPos)
+        {
+            resultCommands.Add(QuestManager.ResultCommand.ExeEventAfterStageJumpContinue(stageInfo.StageNo, (int)eventNo, (int)startPos));
+            return resultCommands;
+        }
+
+        public static List<CDataQuestCommand> AddResultCmdStageJump(this List<CDataQuestCommand> resultCommands, StageInfo stageInfo, uint startPos)
+        {
+            resultCommands.Add(QuestManager.ResultCommand.StageJump(stageInfo.StageNo, (int)startPos));
+            return resultCommands;
+        }
+
+        public static List<CDataQuestCommand> AddResultCmdAreaJumpFadeContinue(this List<CDataQuestCommand> resultCommands)
+        {
+            resultCommands.Add(QuestManager.ResultCommand.AreaJumpFadeContinue());
             return resultCommands;
         }
     }

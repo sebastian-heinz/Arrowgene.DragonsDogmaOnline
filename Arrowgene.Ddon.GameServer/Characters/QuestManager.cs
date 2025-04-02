@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
@@ -31,6 +32,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private static Dictionary<uint, HashSet<uint>> gTutorialQuests = new Dictionary<uint, HashSet<uint>>();
         private static Dictionary<QuestAreaId, HashSet<QuestId>> gWorldQuests = new Dictionary<QuestAreaId, HashSet<QuestId>>();
+        private static Dictionary<QuestAdventureGuideCategory, HashSet<uint>> gAdventureGuideCategories = new Dictionary<QuestAdventureGuideCategory, HashSet<uint>>();
+        private static Dictionary<QuestAreaId, Dictionary<uint,uint>> gAreaTrialRanks = new Dictionary<QuestAreaId, Dictionary<uint, uint>>();
 
         /// <summary>
         /// QuestScheduleIds that are requested as part of World Manage Quests from pcaps.
@@ -66,6 +69,25 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     gWorldQuests[quest.QuestAreaId] = new HashSet<QuestId>();
                 }
                 gWorldQuests[quest.QuestAreaId].Add(quest.QuestId);
+            }
+
+            if (!gAdventureGuideCategories.ContainsKey(quest.AdventureGuideCategory))
+            {
+                gAdventureGuideCategories[quest.AdventureGuideCategory] = new HashSet<uint>();
+            }
+            gAdventureGuideCategories[quest.AdventureGuideCategory].Add(quest.QuestScheduleId);
+
+            // Build a ranking list for quests for area trials
+            // TODO: This should probably be done in quest scripts, but who wants to rewrite 70+ quests?
+            if (quest.AdventureGuideCategory == QuestAdventureGuideCategory.AreaTrialOrMission)
+            {
+                if (!gAreaTrialRanks.ContainsKey(quest.QuestAreaId))
+                {
+                    gAreaTrialRanks[quest.QuestAreaId] = new Dictionary<uint, uint>();
+                }
+
+                var orderCondition = quest.OrderConditions.Where(x => x.Type == QuestOrderConditionType.AreaRank).First();
+                gAreaTrialRanks[quest.QuestAreaId][quest.QuestScheduleId] = (uint) orderCondition.Param02;
             }
         }
 
@@ -185,6 +207,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return gQuests[questScheduleId];
         }
 
+        public static HashSet<uint> GetQuestsByAdventureGuideCategory(QuestAdventureGuideCategory category)
+        {
+            if (!gAdventureGuideCategories.ContainsKey(category))
+            {
+                return new();
+            }
+            return gAdventureGuideCategories[category].ToHashSet();
+        }
+
         public static bool IsQuestEnabled(uint questScheduleId)
         {
             var quest = GetQuestByScheduleId(questScheduleId);
@@ -194,6 +225,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public static QuestStateManager GetQuestStateManager(GameClient client, Quest quest)
         {
             return quest.IsPersonal ? client.QuestState : client.Party.QuestState;
+        }
+
+        public static QuestStateManager GetQuestStateManager(GameClient client, uint questScheduleId)
+        {
+            return GetQuestStateManager(client, QuestManager.GetQuestByScheduleId(questScheduleId));
         }
 
         public static HashSet<uint> CollectQuestScheduleIds(GameClient client, StageLayoutId stageId)
@@ -207,6 +243,57 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return questScheduleIds;
+        }
+
+        public static void PurgeUnstartedTutorialQuests(GameClient client)
+        {
+            var unstartedTutorialQuests = client.QuestState.GetActiveQuestScheduleIds()
+                .Where(x => QuestManager.GetQuestByScheduleId(x).QuestType == QuestType.Tutorial)
+                .Where(x => QuestManager.GetQuestStateManager(client, x).GetQuestState(x).State == QuestProgressState.Unknown)
+                .Select(x => QuestManager.GetQuestByScheduleId(x))
+                .ToList();
+
+            foreach (var quest in unstartedTutorialQuests)
+            {
+                if (quest == null)
+                {
+                    continue;
+                }
+
+                var questStateManager = QuestManager.GetQuestStateManager(client, quest);
+                if (questStateManager != null)
+                {
+                    questStateManager.RemoveQuest(quest);
+                }
+            }
+        }
+
+        public static HashSet<uint> GetActiveQuestScheduleIds(GameClient client, QuestType questType = QuestType.All)
+        {
+            var activeQuestScheduleIds = client.Party.QuestState.GetActiveQuestScheduleIds()
+                .Where(x => (questType == QuestType.All) || QuestManager.GetQuestByScheduleId(x).QuestType == questType)
+                .ToList()
+                .ToHashSet();
+            activeQuestScheduleIds.UnionWith(
+                client.QuestState.GetActiveQuestScheduleIds()
+                    .Where(x => (questType == QuestType.All) || QuestManager.GetQuestByScheduleId(x).QuestType == questType)
+                    .ToList()
+                    .ToHashSet());
+            return activeQuestScheduleIds;
+        }
+
+        public static Dictionary<uint,uint> GetAreaTrialRankings(QuestAreaId areaId)
+        {
+            if (!gAreaTrialRanks.ContainsKey(areaId))
+            {
+                return new();
+            }
+            return gAreaTrialRanks[areaId];
+        }
+
+        public static List<QuestProgressWork> CollectWorkItems(GameClient client, QuestProgressWorkType workType)
+        {
+            return client.QuestState.ProgressWork[workType].Concat(client.Party.QuestState.ProgressWork[workType]).ToList();
         }
 
         public class LayoutFlag
@@ -2620,9 +2707,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @brief
              * @param guideNo
              */
-            public static CDataQuestCommand TutorialDialog(int guideNo, int param02 = 0, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand TutorialDialog(TutorialId guideNo, int param02 = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.TutorialDialog, Param01 = guideNo, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.TutorialDialog, Param01 = (int) guideNo, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
             /**
@@ -3041,9 +3128,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * @brief
              * @param id
              */
-            public static CDataQuestCommand ReleaseAnnounce(int id, int param02 = 0, int param03 = 0, int param04 = 0)
+            public static CDataQuestCommand ReleaseAnnounce(ContentsRelease releaseId, int param02 = 0, int param03 = 0, int param04 = 0)
             {
-                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.ReleaseAnnounce, Param01 = id, Param02 = param02, Param03 = param03, Param04 = param04 };
+                return new CDataQuestCommand() { Command = (ushort)QuestResultCommand.ReleaseAnnounce, Param01 = (int) releaseId, Param02 = param02, Param03 = param03, Param04 = param04 };
             }
 
             /**
@@ -3217,11 +3304,19 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public class NotifyCommand
         {
             /**
-             * @brief Used to send progress work values with unknown names
+             * @brief Generic function used to create CDataQuestProjectWork objects.
              */
-            public static CDataQuestProgressWork Unknown(uint commandNo, int work01 = 0, int work02 = 0, int work03 = 0, int work04 = 0)
+            public static CDataQuestProgressWork QuestProgressWork(uint commandNo, int work01 = 0, int work02 = 0, int work03 = 0, int work04 = 0)
             {
                 return new CDataQuestProgressWork() { CommandNo = commandNo, Work01 = work01, Work02 = work02, Work03 = work03, Work04 = work04 };
+            }
+
+            /**
+             * @brief Used to let the client know a World Quest (set quest) has been completed.
+             */
+            public static CDataQuestProgressWork WorldQuestClearNum(QuestAreaId areaId, uint amount, int work03 = 0, int work04 = 0)
+            {
+                return QuestProgressWork((int) QuestNotifyCommand.SetQuestClearNum, (int) amount, (int) areaId, work03, work04);
             }
 
             /**
@@ -3258,7 +3353,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public static bool IsBoardQuest(QuestId questId)
         {
-            return (((uint)questId) >= 40000000) && (((uint)questId) < 50000000);
+            return QuestUtils.IsBoardQuest(questId);
         }
 
         public static bool IsBoardQuest(Quest quest)
@@ -3268,7 +3363,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public static bool IsTutorialQuest(QuestId questId)
         {
-            return (((uint)questId) >= 60000000) && (((uint)questId) < 70000000);
+            return QuestUtils.IsTutorialQuest(questId);
         }
 
         public static bool IsTutorialQuest(Quest quest)
@@ -3278,7 +3373,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public static bool IsWorldQuest(QuestId questId)
         {
-            return (((uint)questId) >= 20000000) && (((uint)questId) < 30000000);
+            return QuestUtils.IsWorldQuest(questId);
         }
 
         public static bool IsWorldQuest(Quest quest)
@@ -3288,7 +3383,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public static bool IsClanQuest(QuestId questId)
         {
-            return (((uint)questId) >= 30000000) && (((uint)questId) < 40000000);
+            return QuestUtils.IsClanQuest(questId);
         }
 
         public static bool IsClanQuest(Quest quest)

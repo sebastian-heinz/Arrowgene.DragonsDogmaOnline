@@ -468,6 +468,12 @@ namespace Arrowgene.Ddon.Test.Database
         public void ResetRecyleEquipmentRecords(DbConnection? connectionIn = null) { }
         public bool UpsertRecycleEquipmentRecord(uint characterId, byte numAttempts, DbConnection? connectionIn = null) { return true; }
 
+        public bool InsertEquipmentLimitBreakRecord(uint characterId, string itemUID, CDataAddStatusParam statusParam, DbConnection? connectionIn = null) { return true; }
+        public bool UpdateEquipmentLimitBreakRecord(uint characterId, string itemUID, CDataAddStatusParam statusParam, DbConnection? connectionIn = null) { return true; }
+        public bool HasEquipmentLimitBreakRecord(uint characterId, string itemUID, DbConnection? connectionIn = null) { return true; }
+        public bool UpsertEquipmentLimitBreakRecord(uint characterId, string itemUID, CDataAddStatusParam statusParam, DbConnection? connectionIn = null) { return true; }
+        public List<CDataAddStatusParam> GetEquipmentLimitBreakRecord(string itemUID, DbConnection? connectionIn = null) { return new(); }
+
         public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
         public void AddParameter(DbCommand command, string name, string value) { }
         public void AddParameter(DbCommand command, string name, Int32 value) { }

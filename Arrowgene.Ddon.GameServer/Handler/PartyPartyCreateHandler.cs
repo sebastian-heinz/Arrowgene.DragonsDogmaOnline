@@ -37,6 +37,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     continue;
                 }
 
+                Logger.Info($"QuestScheduleId={quest.QuestScheduleId}");
+
                 QuestStateManager questStateManager = QuestManager.GetQuestStateManager(client, quest);
                 questStateManager.AddNewQuest(questProgress.QuestScheduleId, questProgress.Step);
             }

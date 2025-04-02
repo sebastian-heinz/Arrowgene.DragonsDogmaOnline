@@ -3,11 +3,10 @@ using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -28,56 +27,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             AreaRank clientRank = client.Character.AreaRanks.GetValueOrDefault(request.AreaId)
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
 
-            uint requiredPoint = Server.AreaRankManager.GetMaxPoints(request.AreaId, clientRank.Rank);
-            if (clientRank.Point < requiredPoint)
+            do
             {
-                throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_POINT_LACK);
-            }
-
-            lock (clientRank)
-            {
-                clientRank.Rank += 1;
-                clientRank.Point -= requiredPoint;
-            }
-
-            res.AreaId = request.AreaId;
-            res.AreaRank = clientRank.Rank;
-            res.AreaPoint = clientRank.Point;
-            res.NextAreaPoint = Server.AreaRankManager.GetMaxPoints(request.AreaId, clientRank.Rank);
-
-            if (Server.GameSettings.GameServerSettings.EnableAreaRankSpotLocks)
-            {
-                res.ReleaseList = Server.AssetRepository.AreaRankSpotInfoAsset[request.AreaId]
-                .Where(x => x.UnlockRank == clientRank.Rank)
-                .Select(x => new CDataCommonU32(x.SpotId))
-                .ToList();
-            }
+                // Rank up once and then see if there are any rank ups after we can also complete
+                HandleRankUp(client, request.AreaId, clientRank, res);
+            } while (Server.AreaRankManager.CanRankUp(client, request.AreaId));
             
-            Server.Database.ExecuteInTransaction(connection =>
-            {
-                Server.Database.UpdateAreaRank(client.Character.CharacterId, clientRank, connection);
-
-                // First rank unlocks supplies, so give them out immediately.
-                if (clientRank.Rank == 1)
-                {
-                    var rewards = Server.AreaRankManager.GetSupplyRewardList(request.AreaId, clientRank.Rank, 0);
-                    client.Character.AreaSupply[request.AreaId] = new();
-
-                    foreach (var reward in rewards)
-                    {
-                        Server.Database.InsertAreaRankSupply(client.Character.CharacterId, request.AreaId, reward.Index, reward.ItemId, reward.Num, connection);
-
-                        // Do a manual deep copy to prevent reference issues down the line.
-                        client.Character.AreaSupply[request.AreaId].Add(new()
-                        {
-                            Index = reward.Index,
-                            ItemId = reward.ItemId,
-                            Num = reward.Num
-                        });
-                    }
-                }
-            });
-
             client.Enqueue(res, packetQueue);
 
             // Allow for further levelups.
@@ -90,6 +45,59 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             return packetQueue;
+        }
+
+        private void HandleRankUp(GameClient client, QuestAreaId areaId, AreaRank clientRank, S2CAreaAreaRankUpRes res)
+        {
+            uint requiredPoint = Server.AreaRankManager.GetMaxPoints(areaId, clientRank.Rank);
+            if (clientRank.Point < requiredPoint)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_POINT_LACK);
+            }
+
+            lock (clientRank)
+            {
+                clientRank.Rank += 1;
+                clientRank.Point -= requiredPoint;
+            }
+
+            res.AreaId = areaId;
+            res.AreaRank = clientRank.Rank;
+            res.AreaPoint = clientRank.Point;
+            res.NextAreaPoint = Server.AreaRankManager.GetMaxPoints(areaId, clientRank.Rank);
+
+            if (Server.GameSettings.GameServerSettings.EnableAreaRankSpotLocks)
+            {
+                res.ReleaseList = Server.AssetRepository.AreaRankSpotInfoAsset[areaId]
+                .Where(x => x.UnlockRank == clientRank.Rank)
+                .Select(x => new CDataCommonU32(x.SpotId))
+                .ToList();
+            }
+
+            Server.Database.ExecuteInTransaction(connection =>
+            {
+                Server.Database.UpdateAreaRank(client.Character.CharacterId, clientRank, connection);
+
+                // First rank unlocks supplies, so give them out immediately.
+                if (clientRank.Rank == 1)
+                {
+                    var rewards = Server.AreaRankManager.GetSupplyRewardList(areaId, clientRank.Rank, 0);
+                    client.Character.AreaSupply[areaId] = new();
+
+                    foreach (var reward in rewards)
+                    {
+                        Server.Database.InsertAreaRankSupply(client.Character.CharacterId, areaId, reward.Index, reward.ItemId, reward.Num, connection);
+
+                        // Do a manual deep copy to prevent reference issues down the line.
+                        client.Character.AreaSupply[areaId].Add(new()
+                        {
+                            Index = reward.Index,
+                            ItemId = reward.ItemId,
+                            Num = reward.Num
+                        });
+                    }
+                }
+            });
         }
     }
 }

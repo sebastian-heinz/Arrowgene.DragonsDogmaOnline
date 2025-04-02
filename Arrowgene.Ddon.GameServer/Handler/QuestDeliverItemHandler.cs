@@ -35,9 +35,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 foreach (var item in request.ItemUIDList)
                 {
-                    uint itemId = Server.ItemManager.LookupItemByUID(Server, item.UId);
-                    var searchResult = client.Character.Storage.FindItemByUIdInStorage(ItemManager.BothStorageTypes, item.UId);
-                    var itemUpdate = Server.ItemManager.ConsumeItemByUId(Server, client.Character, searchResult.Item1, item.UId, item.Num, connectionIn: connection)
+                    uint itemId = Server.ItemManager.LookupItemByUID(Server, item.ItemUID);
+                    var searchResult = client.Character.Storage.FindItemByUIdInStorage(ItemManager.BothStorageTypes, item.ItemUID);
+                    var itemUpdate = Server.ItemManager.ConsumeItemByUId(Server, client.Character, searchResult.Item1, item.ItemUID, item.Num, connectionIn: connection)
                         ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_QUEST_DONT_HAVE_DELIVERY_ITEM);
 
                     itemUpdateResults.Add(itemUpdate);
@@ -63,7 +63,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             client.Send(new S2CItemUpdateCharacterItemNtc()
             {
-                UpdateType = (ushort) ItemNoticeType.Default,
+                UpdateType = ItemNoticeType.QuestDelivery,
                 UpdateItemList = itemUpdateResults
             });
 

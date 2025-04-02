@@ -639,6 +639,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 server.Database.InsertCrest(character.CommonId, item.UId, crest.SlotNo, crest.CrestId, crest.Add, connectionIn);
             }
+
+            foreach (var addStatusParam in item.AddStatusParamList)
+            {
+                server.Database.UpsertEquipmentLimitBreakRecord(character.CharacterId, item.UId, addStatusParam, connectionIn);
+            }
         }
 
         public List<CDataItemUpdateResult> MoveItem(DdonServer<GameClient> server, Character character, Storage fromStorage, ushort fromSlotNo, uint num, Storage toStorage, ushort toSlotNo, DbConnection? connectionIn = null)
@@ -993,7 +998,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return results;
         }
 
-        public void SetSafetySetting(GameClient client, Character character, List<CDataItemUIdList> uids, bool safetySetting)
+        public void SetSafetySetting(GameClient client, Character character, List<CDataItemUIDList> uids, bool safetySetting)
         {
             List<(ushort SlotNo, Item Item, uint Amount, Storage Storage)> items = new();
 
@@ -1005,7 +1010,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             uint updateItemNum = 0;
             foreach (var reqitem in uids)
             {
-                (StorageType storageType, Tuple<ushort, Item, uint> itemProps) = character.Storage.FindItemByUIdInStorage(ItemManager.AllItemStorages, reqitem.UId);
+                (StorageType storageType, Tuple<ushort, Item, uint> itemProps) = character.Storage.FindItemByUIdInStorage(ItemManager.AllItemStorages, reqitem.ItemUID);
                 var (slotNo, item, amount) = itemProps;
                 var storage = character.Storage.GetStorage(storageType);
 

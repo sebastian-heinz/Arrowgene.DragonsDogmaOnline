@@ -11,24 +11,24 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public S2CEquipEnhancedGetPacksRes()
         {
-            Unk0 = new List<CDataS2CEquipEnhancedGetPacksResUnk0>();
+            ParamList = new List<CDataEquipEnhanceLotteryOption>();
         }
 
-        public List<CDataS2CEquipEnhancedGetPacksResUnk0> Unk0 { get; set; }
+        public List<CDataEquipEnhanceLotteryOption> ParamList { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CEquipEnhancedGetPacksRes>
         {
             public override void Write(IBuffer buffer, S2CEquipEnhancedGetPacksRes obj)
             {
                 WriteServerResponse(buffer, obj);
-                WriteEntityList<CDataS2CEquipEnhancedGetPacksResUnk0>(buffer, obj.Unk0);
+                WriteEntityList<CDataEquipEnhanceLotteryOption>(buffer, obj.ParamList);
             }
 
             public override S2CEquipEnhancedGetPacksRes Read(IBuffer buffer)
             {
                 S2CEquipEnhancedGetPacksRes obj = new S2CEquipEnhancedGetPacksRes();
                 ReadServerResponse(buffer, obj);
-                obj.Unk0 = ReadEntityList<CDataS2CEquipEnhancedGetPacksResUnk0>(buffer);
+                obj.ParamList = ReadEntityList<CDataEquipEnhanceLotteryOption>(buffer);
                 return obj;
             }
         }

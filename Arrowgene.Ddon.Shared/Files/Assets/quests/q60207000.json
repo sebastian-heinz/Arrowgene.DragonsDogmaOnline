@@ -9,6 +9,7 @@
     "discoverable": false,
     "stage_id": { "id": 105 },
     "area_id": "DeenanWoods",
+    "adventure_guide_category": "AreaTrialOrMission",
     "order_conditions": [
         {
             "type": "AreaRank",

@@ -197,15 +197,17 @@ namespace Arrowgene.Ddon.Shared.Model
             return this;
         }
 
-        public InstancedEnemy SetBloodOrbs(uint bloodOrbs)
+        public InstancedEnemy SetBloodOrbs(uint bloodOrbs, bool isBoEnemy = false)
         {
             BloodOrbs = bloodOrbs;
+            IsBloodOrbEnemy = isBoEnemy;
             return this;
         }
 
-        public InstancedEnemy SetHighOrbs(uint highOrbs)
+        public InstancedEnemy SetHighOrbs(uint highOrbs, bool isHoEnemy = false)
         {
             HighOrbs = highOrbs;
+            IsHighOrbEnemy = isHoEnemy;
             return this;
         }
 
@@ -289,7 +291,7 @@ namespace Arrowgene.Ddon.Shared.Model
             return this;
         }
 
-        public InstancedEnemy AddDrop(ItemId itemId, uint minAmount, uint maxAmount, double chance, uint quality = 0, bool isHidden = false)
+        public virtual InstancedEnemy AddDrop(ItemId itemId, uint minAmount, uint maxAmount, double chance, uint quality = 0, bool isHidden = false)
         {
             var table = DropsTable.Clone().AddDrop(itemId, minAmount, maxAmount, chance, quality, isHidden);
             SetDropsTable(table);

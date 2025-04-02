@@ -643,5 +643,12 @@ namespace Arrowgene.Ddon.Database
         byte GetRecycleEquipmentAttempts(uint characterId, DbConnection? connectionIn = null);
         void ResetRecyleEquipmentRecords(DbConnection? connectionIn = null);
         bool UpsertRecycleEquipmentRecord(uint characterId, byte numAttempts, DbConnection? connectionIn = null);
+
+        // Equipment Limit Break
+        bool InsertEquipmentLimitBreakRecord(uint characterId, string itemUID, CDataAddStatusParam statusParam, DbConnection? connectionIn = null);
+        bool UpdateEquipmentLimitBreakRecord(uint characterId, string itemUID, CDataAddStatusParam statusParam, DbConnection? connectionIn = null);
+        bool HasEquipmentLimitBreakRecord(uint characterId, string itemUID, DbConnection? connectionIn = null);
+        bool UpsertEquipmentLimitBreakRecord(uint characterId, string itemUID, CDataAddStatusParam statusParam, DbConnection? connectionIn = null);
+        List<CDataAddStatusParam> GetEquipmentLimitBreakRecord(string itemUID, DbConnection? connectionIn = null);
     }
 }

@@ -11,6 +11,7 @@
         "id": 53
     },
     "area_id": "NorthernBetlandPlains",
+    "adventure_guide_category": "AreaTrialOrMission",
     "order_conditions": [
         {
             "type": "AreaRank",

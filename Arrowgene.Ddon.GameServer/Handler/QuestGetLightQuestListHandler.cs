@@ -38,7 +38,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 data.Detail.ClearNum = Server.ClanManager.ClanQuestCompletionStatistics(client.Character.CharacterId, questScheduleId);
                 if (data.Detail.BoardType == 1 && data.Detail.GetAp == 0)
                 {
-                    data.Detail.GetAp = Server.AreaRankManager.GetAreaPointReward(lightQuest);
+                    data.Detail.GetAp = AreaRankManager.GetAreaPointReward(lightQuest);
                 }
 
                 res.LightQuestList.Add(data);
