@@ -437,6 +437,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             character.AchievementStatus = SelectAchievementStatus(character.CharacterId, conn);
             character.AchievementProgress = SelectAchievementProgress(character.CharacterId, conn);
             character.AchievementUniqueCrafts = SelectAchievementUniqueCrafts(character.CharacterId, conn);
+            character.UnlockableItems = SelectUnlockedItems(character.CharacterId, conn);
         }
 
         public bool UpdateMyPawnSlot(uint characterId, uint num, DbConnection? connectionIn = null)

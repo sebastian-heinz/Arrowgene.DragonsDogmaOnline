@@ -475,12 +475,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 if (count >= asset.Count && !client.Character.AchievementStatus.ContainsKey(asset.Id))
                 {
-                    client.Character.AchievementStatus.Add(asset.Id, (DateTimeOffset.UtcNow, asset.RewardId > 0));
+                    client.Character.AchievementStatus.Add(asset.Id, DateTimeOffset.UtcNow);
                     queue.Enqueue(client, new S2CAchievementCompleteNtc()
                     {
                         AchievementIdList = new() { new(asset.Id) }
                     });
-                    Server.Database.UpsertAchievementStatus(client.Character.CharacterId, asset, asset.RewardId > 0, connectionIn);
+                    Server.Database.InsertAchievementStatus(client.Character.CharacterId, asset, asset.RewardId > 0, connectionIn);
                 }
             }
 
@@ -611,16 +611,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     CurrentNum = z.Item2
                 };
 
-                if (client.Character.AchievementStatus.TryGetValue(z.Item1.Id, out var status))
+                if (client.Character.AchievementStatus.TryGetValue(z.Item1.Id, out var dateAchieved))
                 {
-                    cdata.CompleteDate = status.DateAchieved;
+                    cdata.CompleteDate = dateAchieved;
                 }
                 else if (z.Item2 >= z.Item1.Count)
                 {
                     // Check if you missed the DB write here because migrating this is nigh-impossible, so do it as people check.
                     cdata.CompleteDate = DateTimeOffset.UtcNow;
                     missedAchievements.Add(z.Item1);
-                    client.Character.AchievementStatus[z.Item1.Id] = (DateTimeOffset.UtcNow, z.Item1.RewardId > 0);
+                    client.Character.AchievementStatus[z.Item1.Id] = DateTimeOffset.UtcNow;
                 }
                 else
                 {
@@ -638,7 +638,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     foreach (var achievement in missedAchievements)
                     {
-                        Server.Database.UpsertAchievementStatus(client.Character.CharacterId, achievement, achievement.RewardId > 0, connection);
+                        Server.Database.InsertAchievementStatus(client.Character.CharacterId, achievement, achievement.RewardId > 0, connection);
                         
                         // This can hardcore spam packets just to fill out some log info; probably not necessary.
                         //client.Enqueue(new S2CAchievementCompleteNtc() { AchievementIdList = new() { new(achievement.Id) } }, queue);
@@ -647,6 +647,36 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return queue;
+        }
+
+        public List<CDataAchieveRewardCommon> GetRewards(GameClient client)
+        {
+            List<CDataAchieveRewardCommon> rewardList = new();
+
+            var bgRewards = client.Character.UnlockableItems
+                .Where(x => x.Category == UnlockableItemCategory.ArisenCardBackground)
+                .Select(x => x.Id);
+
+            var itemRewards = client.Character.UnlockableItems
+                .Where(x => x.Category == UnlockableItemCategory.FurnitureItem || x.Category == UnlockableItemCategory.CraftingRecipe)
+                .Select(x => x.Id);
+
+            rewardList.AddRange(Server.AssetRepository.AchievementBackgroundAsset.UnlockableBackgrounds
+                .Where(x => x.Required <= client.Character.AchievementStatus.Count && !bgRewards.Contains(x.Id))
+                .Select(x => new CDataAchieveRewardCommon()
+                {
+                    Type = 1,
+                    RewardId = x.Id
+                }));
+            rewardList.AddRange(Server.AssetRepository.AchievementAsset.SelectMany(x => x.Value)
+                .Where(x => x.RewardId > 0 && client.Character.AchievementStatus.ContainsKey(x.Id) && !itemRewards.Contains(x.RewardId))
+                .Select(x => new CDataAchieveRewardCommon()
+                {
+                    Type = 2,
+                    RewardId = x.Id,
+                }));
+
+            return rewardList;
         }
 
         private static AchievementCraftTypeParam GetCraftTypeSubtype(ClientItemInfo item)

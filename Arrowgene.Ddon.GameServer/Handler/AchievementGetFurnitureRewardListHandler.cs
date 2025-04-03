@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -10,22 +11,6 @@ public class AchievementGetFurnitureRewardListHandler : GameRequestPacketHandler
 {
     private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(AchievementGetFurnitureRewardListHandler));
 
-    private static readonly List<CDataAchievementFurnitureReward> RewardList = new()
-    {
-        new()
-        {
-            RewardId = 1,
-            SortId = 1,
-            AchieveIdentifier = new CDataAchievementIdentifier
-            {
-                UId = 530, // Bounty Hunter
-                Index = 530
-            },
-            FurnitureItemId = 13225, // Mini Table
-            IsReceived = true
-        }
-    };
-
     public AchievementGetFurnitureRewardListHandler(DdonGameServer server) : base(server)
     {
     }
@@ -34,8 +19,22 @@ public class AchievementGetFurnitureRewardListHandler : GameRequestPacketHandler
     {
         S2CAchievementGetFurnitureRewardListRes res = new S2CAchievementGetFurnitureRewardListRes();
 
-        // TODO: based on an asset with all achievements, for each character store the progress and retrieve here
-        res.RewardList = RewardList;
+        res.RewardList = Server.AssetRepository.AchievementAsset
+            .SelectMany(x => x.Value)
+            .Where(x => x.RewardId > 0)
+            .Select((x, i) => new CDataAchievementFurnitureReward()
+            {
+                RewardId = x.Id,
+                SortId = x.SortId,
+                AchieveIdentifier = new()
+                {
+                    UId = x.Id,
+                    Index = x.SortId,
+                },
+                FurnitureItemId = x.RewardId,
+                IsReceived = client.Character.AchievementStatus.ContainsKey(x.Id)
+            })
+            .ToList();
 
         return res;
     }

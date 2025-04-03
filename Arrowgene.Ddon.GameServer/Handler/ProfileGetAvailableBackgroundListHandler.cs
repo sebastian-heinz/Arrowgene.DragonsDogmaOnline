@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System.Linq;
 
@@ -20,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CProfileGetAvailableBackgroundListRes res = new();
 
             res.BackgroundIdList.AddRange(Server.AssetRepository.AchievementBackgroundAsset.DefaultBackgrounds.Select(x => new CDataCommonU32(x)));
-            res.BackgroundIdList.AddRange(Server.AssetRepository.AchievementBackgroundAsset.UnlockableBackgrounds.Where(x => x.Required <= count).Select(x => new CDataCommonU32(x.Id)));
+            res.BackgroundIdList.AddRange(client.Character.UnlockableItems.Where(x => x.Category == UnlockableItemCategory.ArisenCardBackground).Select(x => new CDataCommonU32(x.Id)));
 
             return res;
         }

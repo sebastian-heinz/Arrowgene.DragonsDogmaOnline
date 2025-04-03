@@ -869,7 +869,6 @@ CREATE TABLE IF NOT EXISTS "ddon_achievement"
     "character_id"      INTEGER NOT NULL,
     "achievement_id"    INTEGER NOT NULL,
     "date"              DATETIME NOT NULL,
-    "reward_waiting"   BOOLEAN NOT NULL,
     CONSTRAINT pk_ddon_achievement PRIMARY KEY ("character_id", "achievement_id"),
     CONSTRAINT fk_ddon_achievement_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
@@ -881,6 +880,15 @@ CREATE TABLE IF NOT EXISTS "ddon_achievement_unique_crafts"
     "craft_type"        TINYINT NOT NULL,
     CONSTRAINT pk_ddon_achievement_unique_crafts PRIMARY KEY ("character_id", "item_id"),
     CONSTRAINT fk_ddon_achievement_unique_crafts_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_unlocked_items"
+(
+    "character_id"      INTEGER NOT NULL,
+    "category"          INTEGER NOT NULL,
+    "item_id"           INTEGER NOT NULL,
+    CONSTRAINT pk_ddon_unlocked_items PRIMARY KEY ("character_id", "category", "item_id"),
+    CONSTRAINT fk_ddon_unlocked_items_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS "ddon_recycle_equipment"

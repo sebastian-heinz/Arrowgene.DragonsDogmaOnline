@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartnerPawnManager));
 
-        public static uint MAX_PARTNER_PAWN_LIKABILITY_RATING = 25;
+        public static uint MAX_PARTNER_PAWN_LIKABILITY_RATING = 26;
 
         private DdonGameServer Server;
 

@@ -25,17 +25,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private static readonly string[] AchievementFields = new string[]
         {
-            "character_id", "achievement_id", "date", "reward_waiting"
-        };
-
-        private static readonly string[] AchievementFieldsForUpdate = new string[]
-        {
-            "character_id", "achievement_id", "reward_waiting"
+            "character_id", "achievement_id", "date"
         };
 
         private readonly string SqlSelectAchievementStatus = $"SELECT {BuildQueryField(AchievementFields)} FROM \"ddon_achievement\" WHERE \"character_id\" = @character_id;";
         private readonly string SqlInsertAchievementStatus = $"INSERT INTO \"ddon_achievement\" ({BuildQueryField(AchievementFields)}) VALUES ({BuildQueryInsert(AchievementFields)});";
-        private readonly string SqlUpdateAchievementStatus = $"UPDATE \"ddon_achievement\" SET {BuildQueryUpdate(AchievementFieldsForUpdate)} WHERE \"character_id\" = @character_id AND \"achievement_id\" = @achievement_id;";
 
         private static readonly string[] AchievementUniqueCraftFields = new string[]
         {
@@ -44,6 +38,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private readonly string SqlSelectAchievementUniqueCraft = $"SELECT {BuildQueryField(AchievementUniqueCraftFields)} FROM \"ddon_achievement_unique_crafts\" WHERE \"character_id\" = @character_id;";
         private readonly string SqlInsertAchievementUniqueCraft = $"INSERT INTO \"ddon_achievement_unique_crafts\" ({BuildQueryField(AchievementUniqueCraftFields)}) VALUES ({BuildQueryInsert(AchievementProgressFields)});";
+
+        private static readonly string[] UnlockedItemFields = new string[]
+        {
+            "character_id", "category", "item_id"
+        };
+
+        private readonly string SqlSelectUnlockedItem = $"SELECT {BuildQueryField(UnlockedItemFields)} FROM \"ddon_unlocked_items\" WHERE \"character_id\" = @character_id;";
+        private readonly string SqlInsertUnlockedItem = $"INSERT INTO \"ddon_unlocked_items\" ({BuildQueryField(UnlockedItemFields)}) VALUES ({BuildQueryInsert(UnlockedItemFields)});";
 
         public Dictionary<(AchievementType, uint), uint> SelectAchievementProgress(uint characterId, DbConnection? connectionIn = null)
         {
@@ -102,11 +104,11 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             });
         }
 
-        public Dictionary<uint, (DateTimeOffset DateAchieved, bool RewardRecieved)> SelectAchievementStatus(uint characterId, DbConnection? connectionIn = null)
+        public Dictionary<uint, DateTimeOffset> SelectAchievementStatus(uint characterId, DbConnection? connectionIn = null)
         {
             return ExecuteQuerySafe(connectionIn, connection =>
             {
-                var status = new Dictionary<uint, (DateTimeOffset DateAchieved, bool RewardRecieved)>();
+                var status = new Dictionary<uint, DateTimeOffset>();
                 ExecuteReader(connection,
                     SqlSelectAchievementStatus,
                     command => { AddParameter(command, "@character_id", characterId); },
@@ -116,45 +118,27 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         {
                             var achievementId = GetUInt32(reader, "achievement_id");
                             var date = GetDateTime(reader, "date");
-                            var reward = GetBoolean(reader, "reward_waiting");
-                            status[achievementId] = (date, reward);
+                            status[achievementId] = date;
                         }
                     });
                 return status;
             });
         }
 
-        public bool UpsertAchievementStatus(uint characterId, AchievementAsset achievement, bool reward = false, DbConnection? connectionIn = null)
+        public bool InsertAchievementStatus(uint characterId, AchievementAsset achievement, bool reward = false, DbConnection? connectionIn = null)
         {
             return ExecuteQuerySafe(connectionIn, connection =>
             {
-                bool check = ExecuteNonQuery(
-                    connection,
-                    SqlUpdateAchievementStatus,
-                    command =>
-                    {
-                        AddParameter(command, "character_id", characterId);
-                        AddParameter(command, "achievement_id", achievement.Id);
-                        AddParameter(command, "reward_waiting", reward);
-                    }
-                    ) == 1;
-
-                if (!check)
-                {
-                    check = ExecuteNonQuery(
+                return ExecuteNonQuery(
                     connection,
                     SqlInsertAchievementStatus,
                     command =>
                     {
                         AddParameter(command, "character_id", characterId);
                         AddParameter(command, "achievement_id", achievement.Id);
-                        AddParameter(command, "reward_waiting", reward);
                         AddParameter(command, "date", DateTime.UtcNow);
                     }
                     ) == 1;
-                }
-
-                return check;
             });
         }
 
@@ -195,6 +179,45 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     {
                         AddParameter(command, "character_id", characterId);
                         AddParameter(command, "craft_type", (uint)craftType);
+                        AddParameter(command, "item_id", (uint)itemId);
+                    }
+                    ) == 1;
+            });
+        }
+    
+        public HashSet<(UnlockableItemCategory Category, uint Id)> SelectUnlockedItems(uint characterId, DbConnection? connectionIn = null)
+        {
+            return ExecuteQuerySafe(connectionIn, connection =>
+            {
+                var unlocks = new HashSet<(UnlockableItemCategory Category, uint Id)>();
+                ExecuteReader(connection,
+                    SqlSelectUnlockedItem,
+                    command => { AddParameter(command, "@character_id", characterId); },
+                    reader =>
+                    {
+                        while (reader.Read())
+                        {
+                            var category = (UnlockableItemCategory)GetUInt32(reader, "category");
+                            var itemId = GetUInt32(reader, "item_id");
+
+                            unlocks.Add((category, itemId));
+                        }
+                    });
+                return unlocks;
+            });
+        }
+
+        public bool InsertUnlockedItem(uint characterId, UnlockableItemCategory category, uint itemId, DbConnection? connectionIn = null)
+        {
+            return ExecuteQuerySafe(connectionIn, connection =>
+            {
+                return ExecuteNonQuery(
+                    connection,
+                    SqlInsertUnlockedItem,
+                    command =>
+                    {
+                        AddParameter(command, "character_id", characterId);
+                        AddParameter(command, "category", (byte)category);
                         AddParameter(command, "item_id", (uint)itemId);
                     }
                     ) == 1;

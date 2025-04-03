@@ -1,10 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler;
 
@@ -24,20 +25,21 @@ public class AchievementGetRewardListHandler : GameRequestPacketHandler<C2SAchie
 
         uint count = (uint)client.Character.AchievementStatus.Count;
 
-        res.BackgroundProgressList.AddRange(Server.AssetRepository.AchievementBackgroundAsset.DefaultBackgrounds.Select(x => new CDataAchievementRewardProgress()
-        {
-            RewardId = x,
-            CurrentNum = 0,
-            TargetNum = 0,
-            IsReceived = true,
-        }));
+        // These are always available, should they be included in this list?
+        //res.BackgroundProgressList.AddRange(Server.AssetRepository.AchievementBackgroundAsset.DefaultBackgrounds.Select(x => new CDataAchievementRewardProgress()
+        //{
+        //    RewardId = x,
+        //    CurrentNum = 0,
+        //    TargetNum = 0,
+        //    IsReceived = true,
+        //}));
 
         res.BackgroundProgressList.AddRange(Server.AssetRepository.AchievementBackgroundAsset.UnlockableBackgrounds.Select(x => new CDataAchievementRewardProgress()
         {
             RewardId = x.Id,
             CurrentNum = Math.Min(count, x.Required),
             TargetNum = x.Required,
-            IsReceived = count >= x.Required,
+            IsReceived = client.Character.UnlockableItems.Contains((UnlockableItemCategory.ArisenCardBackground, x.Id)),
         }));
 
         return res;
