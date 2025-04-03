@@ -118,7 +118,8 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             }
             
             var starterJobItems = document.RootElement.GetProperty("starter_job_items").EnumerateArray();
-            foreach(var jobItem in starterJobItems) {
+            foreach(var jobItem in starterJobItems) 
+            {
                 uint itemId = jobItem.GetProperty("item_id").GetUInt32();
                 uint itemQuantity = jobItem.GetProperty("quantity").GetUInt32();
                 asset.StarterJobItems.Add((itemId, itemQuantity));

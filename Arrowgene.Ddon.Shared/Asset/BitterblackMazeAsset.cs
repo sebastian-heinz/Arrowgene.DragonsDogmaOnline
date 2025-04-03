@@ -96,7 +96,8 @@ namespace Arrowgene.Ddon.Shared.Asset
         }
 
         //Hunter arrows and Alchemist elixirs
-        public List<(uint ItemId, uint Amount)> GenerateStarterJobItems() {
+        public List<(uint ItemId, uint Amount)> GenerateStarterJobItems() 
+        {
             var result = new List<(uint ItemId, uint Amount)>();
             foreach(var (itemId, quantity) in StarterJobItems) 
             {

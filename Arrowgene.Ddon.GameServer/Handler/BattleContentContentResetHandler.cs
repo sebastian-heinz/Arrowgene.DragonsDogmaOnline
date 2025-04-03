@@ -14,15 +14,19 @@ namespace Arrowgene.Ddon.GameServer.Handler
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(BattleContentContentResetHandler));
         
         //Helper function to get the list of items to send to the client after a reset
-        private List<CDataItemUpdateResult> GetRefreshInventoryList(Character character, StorageType storageType) {
+        private List<CDataItemUpdateResult> GetRefreshInventoryList(Character character, StorageType storageType) 
+        {
             List<CDataItemUpdateResult> result = new List<CDataItemUpdateResult>();
-            for (int i = 0; i < character.Storage.GetStorage(storageType).Items.Count; i++) {
+            for (int i = 0; i < character.Storage.GetStorage(storageType).Items.Count; i++) 
+            {
                 ushort slotNo = (ushort)(i + 1);
                 var storageItem = character.Storage.GetStorage(storageType).GetItem(slotNo);
-                if(storageItem != null) {
+                if(storageItem != null) 
+                {
                     result.Add(Server.ItemManager.CreateItemUpdateResult(null, storageItem.Item1, storageType, slotNo, storageItem.Item2, storageItem.Item2));
                 }
-                else {
+                else
+                 {
                     Item item = new Item()
                     {
                         ItemId = 0,
@@ -55,7 +59,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Server.Database.CreateItems(connection, client.Character);
 
                 // Add starter job items for Bitterblack Maze characters
-                if(client.Character.GameMode == GameMode.BitterblackMaze) {
+                if(client.Character.GameMode == GameMode.BitterblackMaze) 
+                {
                     Server.Database.CreateListItems(connection, client.Character, StorageType.ItemBagJob, Server.AssetRepository.BitterblackMazeAsset.GenerateStarterJobItems());
                 }
             });

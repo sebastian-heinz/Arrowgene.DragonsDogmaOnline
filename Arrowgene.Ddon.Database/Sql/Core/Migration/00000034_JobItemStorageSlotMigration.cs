@@ -4,8 +4,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
 {
     public class JobItemStorageSlotMigration : IMigrationStrategy
     {
-        public uint From => 32;
-        public uint To => 33;
+        public uint From => 33;
+        public uint To => 34;
 
         private readonly DatabaseSetting DatabaseSetting;
 
