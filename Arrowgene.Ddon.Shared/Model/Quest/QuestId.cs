@@ -155,6 +155,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         CustomMadeWorkshop1SearchersReturn = 60300002,
         CustomMadeWorkshop2LimitBreak = 60300003,
         CustomMadeWorkshop3UltimateArmsSynthesis = 60300004,
+        TheHighSceptersHeir = 60300044,
 
         ShiningWithinALoyalHeart = 60300011,
         ArmsWithThePowerOfTheDragon1 = 61000001,

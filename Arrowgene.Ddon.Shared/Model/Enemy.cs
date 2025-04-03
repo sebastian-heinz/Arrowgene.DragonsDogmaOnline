@@ -114,10 +114,25 @@ namespace Arrowgene.Ddon.Shared.Model
         }
 
         /// <summary>
+        /// Uses the EnemyId enum to find a name for the UI.
+        /// </summary>
+        /// <param name="enemyId"></param>
+        /// <returns></returns>
+        public static uint GetNameId(EnemyId enemyId)
+        {
+            if (!NameMap.ContainsKey((uint) enemyId))
+            {
+                return 0;
+            }
+            return NameMap[(uint)enemyId];
+        }
+
+        /// <summary>
         /// Maps enemyId to the index used by the UI to fetch the enemy's name. 
         /// </summary>
         public static readonly Dictionary<uint, uint> NameMap = new Dictionary<uint, uint>()
         {
+            { 0x000000 , 0 },
             { 0x010100 , 1 },
             { 0x010101 , 2 },
             { 0x010102 , 3 },

@@ -132,6 +132,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                 }
 
+                queuedPackets.AddRange(Server.JobMasterManager.HandleEnemyKill(client, enemyKilled, connectionIn));
+
                 if (packet.IsNoBattleReward)
                 {
                     queuedPackets.Send();

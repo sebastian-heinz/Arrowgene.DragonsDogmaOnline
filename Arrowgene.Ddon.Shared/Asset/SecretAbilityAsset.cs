@@ -7,9 +7,9 @@ namespace Arrowgene.Ddon.Shared.Asset
     {
         public SecretAbilityAsset()
         {
-            DefaultSecretAbilities = new List<SecretAbility>();
+            DefaultSecretAbilities = new List<AbilityId>();
         }
 
-        public List<SecretAbility> DefaultSecretAbilities { get; set; }
+        public List<AbilityId> DefaultSecretAbilities { get; set; }
     }
 }

@@ -2,6 +2,7 @@ namespace Arrowgene.Ddon.Shared.Model
 {
     public enum EnemyId : uint
     {
+        None = 0,
         Abaddon0 = 0x015230,
         Abbadon1 = 0x080800,
         AcidBlob = 0x010911,

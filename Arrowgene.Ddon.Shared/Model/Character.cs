@@ -51,6 +51,11 @@ namespace Arrowgene.Ddon.Shared.Model
             PartnerTimerLockObj = new();
             ContentsReleased = new HashSet<ContentsRelease>();
             WorldManageUnlocks = new Dictionary<QuestId, List<QuestFlagInfo>>();
+
+            JobMasterReleasedElements = new();
+            JobMasterActiveOrders = new();
+            AcquirableSkills = new();
+            AcquirableAbilities = new();
         }
 
         public int AccountId { get; set; }
@@ -149,6 +154,11 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public HashSet<ContentsRelease> ContentsReleased { get; set; }
         public Dictionary<QuestId, List<QuestFlagInfo>> WorldManageUnlocks { get; set; }
+
+        public Dictionary<JobId, List<CDataReleaseElement>> JobMasterReleasedElements { get; set; }
+        public Dictionary<JobId, List<CDataActiveJobOrder>> JobMasterActiveOrders { get; set; }
+        public Dictionary<JobId, List<CDataSkillParam>> AcquirableSkills { get; set; }
+        public Dictionary<JobId, List<CDataAbilityParam>> AcquirableAbilities { get; set; }
 
         // TODO: Move to a more sensible place
         public uint LastEnteredShopId { get; set; }

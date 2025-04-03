@@ -18,7 +18,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             return new S2CSkillGetAcquirableSkillListRes()
             {
-                SkillParamList = SkillData.AllSkills.Where(x => x.Job == request.Job).ToList()
+                SkillParamList = (client.GameMode == GameMode.Normal) ?
+                    client.Character.AcquirableSkills[request.Job] :
+                    SkillData.AllSkills.Where(x => x.Job == request.Job).ToList()
             };
         }
     }

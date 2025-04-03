@@ -26,7 +26,9 @@ public class PropertyGenerator : IInstanceEnemyPropertyGenerator
             {
                 enemy.NamedEnemyParams = LibDdon.Enemy.GetNamedParam(BloodOrbEnemyId);
                 enemy.IsBloodOrbEnemy = true;
-                enemy.Scale = (ushort)Random.Shared.Next(80, 200);
+                enemy.Scale = (ushort) Random.Shared.Next(110, 141);
+                enemy.Lv += (ushort) Math.Round((enemy.Scale - 110) * 0.25);
+                enemy.ExpScheme = EnemyExpScheme.Automatic;
                 enemy.BloodOrbs = CalculateBloodOrb(enemy);
             }
         }

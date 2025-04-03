@@ -236,8 +236,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataJobExpMode.Serializer());
             Create(new CDataJobOrbDevoteElement.Serializer());
             Create(new CDataJobOrbTreeStatus.Serializer());
+            Create(new CDataActiveJobOrder.Serializer());
+            Create(new CDataJobOrderProgress.Serializer());
             Create(new CDataJobPlayPoint.Serializer());
             Create(new CDataJobValueShopItem.Serializer());
+            Create(new CDataJobMasterUnk0.Serializer());
             Create(new CDataJumpLocation.Serializer());
 
             Create(new CDataLayoutEnemyData.Serializer());
@@ -386,6 +389,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataRegisterdPawnList.Serializer());
             Create(new CDataRegisteredLegendPawnInfo.Serializer());
             Create(new CDataReleaseAreaInfoSet.Serializer());
+            Create(new CDataReleaseElement.Serializer());
+            Create(new CDataReleaseAcquirementParam.Serializer());
             Create(new CDataReleaseOrbElement.Serializer());
             Create(new CDataRentedPawnList.Serializer());
             Create(new CDataResetInfo.Serializer());
@@ -741,6 +746,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SJobOrbTreeGetJobOrbTreeGetAllJobOrbElementListReq.Serializer());
             Create(new C2SJobUpdateExpModeReq.Serializer());
 
+            Create(new C2SJobMasterReportJobOrderProgressReq.Serializer());
+            Create(new C2SJobMasterGetJobMasterOrderProgressReq.Serializer());
+
             Create(new C2SLoadingInfoLoadingGetInfoReq.Serializer());
 
             Create(new C2SLobbyChatMsgReq.Serializer());
@@ -967,6 +975,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SSkillSetPresetAbilityListReq.Serializer());
             Create(new C2SSkillSetPresetAbilityNameReq.Serializer());
             Create(new C2SSkillSetSkillReq.Serializer());
+            Create(new C2SSkillGetReleaseSkillListReq.Serializer());
+            Create(new C2SSkillGetReleaseAbilityListReq.Serializer());
 
             Create(new C2SStageAreaChangeReq.Serializer());
             Create(new C2SStageGetSpAreaChangeIdFromNpcIdReq.Serializer());
@@ -1353,6 +1363,12 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CJobUpdateExpModeRes.Serializer());
             Create(new S2CJobUpdatePlayPointNtc.Serializer());
             Create(new S2CJob_33_3_16_Ntc.Serializer());
+            Create(new S2CJobOrderCompleteNtc.Serializer());
+            Create(new S2CJob24_5_16_NTC.Serializer());
+            Create(new S2CJob24_6_16_NTC.Serializer());
+
+            Create(new S2CJobMasterReportJobOrderProgressRes.Serializer());
+            Create(new S2CJobMasterGetJobMasterOrderProgressRes.Serializer());
 
             Create(new S2CLoadingInfoLoadingGetInfoRes.Serializer());
 
@@ -1662,6 +1678,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CSkillSetPresetAbilityNtc.Serializer());
             Create(new S2CSkillSetPresetPawnAbilityNtc.Serializer());
             Create(new S2CSkillSetSkillRes.Serializer());
+            Create(new S2CSkillGetReleaseSkillListRes.Serializer());
+            Create(new S2CSkillGetReleaseAbilityListRes.Serializer());
 
             Create(new S2CStageAreaChangeRes.Serializer());
             Create(new S2CStageDungeonStartNtc.Serializer());

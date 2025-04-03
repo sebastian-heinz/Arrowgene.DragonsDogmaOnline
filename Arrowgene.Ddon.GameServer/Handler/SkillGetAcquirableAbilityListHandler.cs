@@ -29,15 +29,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CSkillGetAcquirableAbilityListRes response = new S2CSkillGetAcquirableAbilityListRes();
             if (request.Job != 0)
             {
-                response.AbilityParamList = SkillData.AllAbilities.Where(x => x.Job == request.Job).ToList();
+                response.AbilityParamList = (client.GameMode == GameMode.Normal) ?
+                    client.Character.AcquirableAbilities[request.Job] :
+                    SkillData.AllAbilities.Where(x => x.Job == request.Job).ToList();
             }
             else if (request.CharacterId == 0)
             {
                 // Player characters come in as CharacterId == 0.
                 // Pawns seem to not need the information from this query. The UI still is populated by the skills
                 // acquired by the player character (is this intended?).
-                List<SecretAbility> UnlockedAbilities = Server.Database.SelectAllUnlockedSecretAbilities(client.Character.CommonId);
-                response.AbilityParamList = SkillData.AllSecretAbilities.Where(x => UnlockedAbilities.Contains((SecretAbility)x.AbilityNo)).ToList();
+                List<AbilityId> UnlockedAbilities = Server.Database.SelectAllUnlockedSecretAbilities(client.Character.CommonId);
+                response.AbilityParamList = SkillData.AllSecretAbilities.Where(x => UnlockedAbilities.Contains((AbilityId)x.AbilityNo)).ToList();
             }
 
             return response;

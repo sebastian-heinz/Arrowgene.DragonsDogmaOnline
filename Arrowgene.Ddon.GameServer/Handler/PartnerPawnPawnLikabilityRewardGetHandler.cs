@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     switch (reward.Type)
                     {
                         case PawnLikabilityRewardType.Ability:
-                            Server.Database.InsertSecretAbilityUnlock(client.Character.CommonId, (SecretAbility)reward.Value.UID, connection);
+                            Server.Database.InsertSecretAbilityUnlock(client.Character.CommonId, (AbilityId)reward.Value.UID, connection);
                             break;
                     }
 
