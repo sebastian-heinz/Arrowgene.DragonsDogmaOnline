@@ -61,8 +61,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ntc.TutorialQuestIdList.Add(new CDataQuestId() { QuestId = (uint)tut.QuestId });
             }
 
-            // Add special quest to handle caution message
-            foreach (var questId in new List<QuestId>() {QuestId.WorldManageMonsterCaution , QuestId.WorldManageJobTutorial})
+            // Add special quests not normally part of DDON
+            foreach (var questId in new List<QuestId>() {QuestId.WorldManageMonsterCaution , QuestId.WorldManageJobTutorial, QuestId.WorldManageDebug})
             {
                 var customWorldManageQuest = QuestManager.GetQuestByQuestId(questId);
                 ntc.WorldManageQuestOrderList.Add(customWorldManageQuest.ToCDataWorldManageQuestOrderList(0));

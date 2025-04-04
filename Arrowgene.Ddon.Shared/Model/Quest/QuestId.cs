@@ -183,5 +183,6 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         // Custom World Manage Quest Ids
         WorldManageMonsterCaution = 79000001,
         WorldManageJobTutorial = 79000002,
+        WorldManageDebug = 79000003,
     }
 }

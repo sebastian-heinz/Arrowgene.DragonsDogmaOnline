@@ -18,7 +18,7 @@
         }
     ],
     "contents_release": [
-        { "type": "MorrowForestWorldQuests" }
+        { "type": "MorrowForestWorldQuests", "flag_info": "NpcFunctions.MorrowForestAreaInfo" }
     ],
     "rewards": [
         {
@@ -174,7 +174,8 @@
                     "announce_type": "Update",
                     "checkpoint": true,
                     "contents_release": [
-                        { "type": "ElanWaterGroveWorldQuests" }
+                        { "type": "ElanWaterGroveWorldQuests", "flag_info": "NpcFunctions.ElanWaterGroveAreaInfo" },
+                        { "type": "None", "flag_info": "ElanWaterGrove.PathToMorrow"}
                     ]
                 },
                 {
@@ -236,7 +237,13 @@
                         "x": -62456,
                         "y": -128,
                         "z": -37192
-                    }
+                    },
+                    "contents_release": [
+                        {
+                            "type": "None",
+                            "flag_info": "MorrowForest.MorfaulWestGate"
+                        }
+                    ]
                 },
                 {
                     "type": "PlayEvent",
