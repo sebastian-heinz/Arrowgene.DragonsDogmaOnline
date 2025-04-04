@@ -100,7 +100,7 @@ namespace Arrowgene.Ddon.Shared
             StorageItemAsset = new List<Tuple<StorageType, uint, Item>>();
             ShopAsset = new List<Shop>();
             WarpPoints = new List<WarpPoint>();
-            CraftingRecipesAsset = new List<S2CCraftRecipeGetCraftRecipeRes>();
+            CraftingRecipesAsset = new();
             CraftingGradeUpRecipesAsset = new List<S2CCraftRecipeGetCraftGradeupRecipeRes>();
             LearnedNormalSkillsAsset = new LearnedNormalSkillsAsset();
             GPCourseInfoAsset = new GPCourseInfoAsset();
@@ -142,7 +142,7 @@ namespace Arrowgene.Ddon.Shared
         public List<Tuple<StorageType, uint, Item>> StorageItemAsset { get; private set; }
         public List<Shop> ShopAsset { get; private set; }
         public List<WarpPoint> WarpPoints { get; private set; }
-        public List<S2CCraftRecipeGetCraftRecipeRes> CraftingRecipesAsset { get; private set; }
+        public List<CraftingRecipeGroup> CraftingRecipesAsset { get; private set; }
         public List<S2CCraftRecipeGetCraftGradeupRecipeRes> CraftingGradeUpRecipesAsset { get; private set; }
         public LearnedNormalSkillsAsset LearnedNormalSkillsAsset { get; set; }
         public GPCourseInfoAsset GPCourseInfoAsset { get; private set; }
@@ -187,7 +187,7 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => StorageItemAsset = value, StorageItemKey, new StorageItemCsv());
             RegisterAsset(value => ShopAsset = value, ShopKey, new JsonReaderWriter<List<Shop>>());
             RegisterAsset(value => WarpPoints = value, WarpPointsKey, new WarpPointCsv());
-            RegisterAsset(value => CraftingRecipesAsset = value, CraftingRecipesKey, new JsonReaderWriter<List<S2CCraftRecipeGetCraftRecipeRes>>());
+            RegisterAsset(value => CraftingRecipesAsset = value, CraftingRecipesKey, new JsonReaderWriter<List<CraftingRecipeGroup>>());
             RegisterAsset(value => CraftingGradeUpRecipesAsset = value, CraftingRecipesGradeUpKey, new JsonReaderWriter<List<S2CCraftRecipeGetCraftGradeupRecipeRes>>());
             RegisterAsset(value => LearnedNormalSkillsAsset = value, LearnedNormalSkillsKey, new LearnedNormalSkillsDeserializer());
             RegisterAsset(value => GPCourseInfoAsset = value, GPCourseInfoKey, new GPCourseInfoDeserializer());

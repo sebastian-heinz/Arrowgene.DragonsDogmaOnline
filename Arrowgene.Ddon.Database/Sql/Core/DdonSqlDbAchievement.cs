@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         };
 
         private readonly string SqlSelectAchievementUniqueCraft = $"SELECT {BuildQueryField(AchievementUniqueCraftFields)} FROM \"ddon_achievement_unique_crafts\" WHERE \"character_id\" = @character_id;";
-        private readonly string SqlInsertAchievementUniqueCraft = $"INSERT INTO \"ddon_achievement_unique_crafts\" ({BuildQueryField(AchievementUniqueCraftFields)}) VALUES ({BuildQueryInsert(AchievementProgressFields)});";
+        private readonly string SqlInsertAchievementUniqueCraft = $"INSERT INTO \"ddon_achievement_unique_crafts\" ({BuildQueryField(AchievementUniqueCraftFields)}) VALUES ({BuildQueryInsert(AchievementProgressFields)}) ON CONFLICT DO NOTHING;";
 
         private static readonly string[] UnlockedItemFields = new string[]
         {
@@ -45,7 +45,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         };
 
         private readonly string SqlSelectUnlockedItem = $"SELECT {BuildQueryField(UnlockedItemFields)} FROM \"ddon_unlocked_items\" WHERE \"character_id\" = @character_id;";
-        private readonly string SqlInsertUnlockedItem = $"INSERT INTO \"ddon_unlocked_items\" ({BuildQueryField(UnlockedItemFields)}) VALUES ({BuildQueryInsert(UnlockedItemFields)});";
+        private readonly string SqlInsertUnlockedItem = $"INSERT INTO \"ddon_unlocked_items\" ({BuildQueryField(UnlockedItemFields)}) VALUES ({BuildQueryInsert(UnlockedItemFields)}) ON CONFLICT DO NOTHING;";
 
         public Dictionary<(AchievementType, uint), uint> SelectAchievementProgress(uint characterId, DbConnection? connectionIn = null)
         {
@@ -173,15 +173,15 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return ExecuteQuerySafe(connectionIn, connection =>
             {
                 return ExecuteNonQuery(
-                    connection,
-                    SqlInsertAchievementUniqueCraft,
-                    command =>
-                    {
-                        AddParameter(command, "character_id", characterId);
-                        AddParameter(command, "craft_type", (uint)craftType);
-                        AddParameter(command, "item_id", (uint)itemId);
-                    }
-                    ) == 1;
+                connection,
+                SqlInsertAchievementUniqueCraft,
+                command =>
+                {
+                    AddParameter(command, "character_id", characterId);
+                    AddParameter(command, "craft_type", (uint)craftType);
+                    AddParameter(command, "item_id", (uint)itemId);
+                }
+                ) == 1;
             });
         }
     

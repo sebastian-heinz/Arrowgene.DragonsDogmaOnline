@@ -34125,7 +34125,27 @@
                       "IsSp": true
                   }
               ]
-          }
+          },
+          {
+            "RecipeID": 5042,
+            "UnlockID": 23398,
+            "ItemID": 23380,
+            "Time": 3600,
+            "Num": 1,
+            "Cost": 1000,
+            "Exp": 1500,
+            "NeedRank": 6,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 21292,
+                    "Num": 30,
+                    "SortNo": 1,
+                    "IsSp": true
+                }
+            ]
+        }
       ]
   },
   {
@@ -64084,7 +64104,67 @@
                       "IsSp": true
                   }
               ]
-          }
+          },
+          {
+            "RecipeID": 5024,
+            "UnlockID": 19148,
+            "ItemID": 18739,
+            "Time": 3600,
+            "Num": 1,
+            "Cost": 1000,
+            "Exp": 1500,
+            "NeedRank": 6,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 18738,
+                    "Num": 30,
+                    "SortNo": 1,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5025,
+            "UnlockID": 21356,
+            "ItemID": 18740,
+            "Time": 3600,
+            "Num": 1,
+            "Cost": 1000,
+            "Exp": 1500,
+            "NeedRank": 6,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 19652,
+                    "Num": 30,
+                    "SortNo": 1,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5036,
+            "UnlockID": 21775,
+            "ItemID": 18814,
+            "Time": 3600,
+            "Num": 1,
+            "Cost": 1000,
+            "Exp": 1500,
+            "NeedRank": 6,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 21252,
+                    "Num": 30,
+                    "SortNo": 1,
+                    "IsSp": true
+                }
+            ]
+        }
       ]
   },
   {
@@ -72297,63 +72377,4801 @@
   {
       "Category": 27,
       "RecipeList": [
-          {
-              "RecipeID": 1989,
-              "ItemID": 13225,
-              "Time": 1800,
-              "Num": 1,
-              "Cost": 10000,
-              "Exp": 1500,
-              "NeedRank": 8,
-              "NpcAct": 1,
-              "IsHide": true,
-              "CraftMaterialList": [
-                  {
-                      "ItemId": 7972,
-                      "Num": 1,
-                      "SortNo": 1,
-                      "IsSp": false
-                  },
-                  {
-                      "ItemId": 7787,
-                      "Num": 4,
-                      "SortNo": 1,
-                      "IsSp": false
-                  }
-              ]
-          },
-          {
-              "RecipeID": 1990,
-              "ItemID": 16126,
-              "Time": 7200,
-              "Num": 1,
-              "Cost": 50000,
-              "Exp": 1500,
-              "NeedRank": 8,
-              "NpcAct": 1,
-              "IsHide": true,
-              "CraftMaterialList": [
-                  {
-                      "ItemId": 8008,
-                      "Num": 1,
-                      "SortNo": 1,
-                      "IsSp": false
-                  },
-                  {
-                      "ItemId": 7937,
-                      "Num": 1,
-                      "SortNo": 1,
-                      "IsSp": false
-                  },
-                  {
-                      "ItemId": 15948,
-                      "Num": 1,
-                      "SortNo": 1,
-                      "IsSp": false
-                  }
-              ]
-          }
-      ]
+        {
+            "RecipeID": 5000,
+            "UnlockID": 18762,
+            "ItemID": 17071,
+            "Time": 3600,
+            "Num": 1,
+            "Cost": 25000,
+            "Exp": 1500,
+            "NeedRank": 30,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 18507,
+                    "Num": 3,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17870,
+                    "Num": 3,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17886,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18664,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5001,
+            "UnlockID": 18763,
+            "ItemID": 17072,
+            "Time": 3600,
+            "Num": 1,
+            "Cost": 25000,
+            "Exp": 1500,
+            "NeedRank": 30,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 18507,
+                    "Num": 3,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17870,
+                    "Num": 3,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17886,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18664,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5002,
+            "UnlockID": 18761,
+            "ItemID": 17070,
+            "Time": 3600,
+            "Num": 1,
+            "Cost": 25000,
+            "Exp": 1500,
+            "NeedRank": 30,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 18507,
+                    "Num": 3,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17870,
+                    "Num": 3,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17886,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18664,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5003,
+            "UnlockID": 16223,
+            "ItemID": 16122,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7813,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7935,
+                    "Num": 4,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15945,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5004,
+            "UnlockID": 16224,
+            "ItemID": 16123,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 8006,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7946,
+                    "Num": 3,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15945,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5005,
+            "UnlockID": 16225,
+            "ItemID": 16124,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 8010,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7940,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 16002,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5006,
+            "UnlockID": 21467,
+            "ItemID": 17091,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 31,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 18664,
+                    "Num": 3,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17916,
+                    "Num": 10,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17864,
+                    "Num": 10,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17894,
+                    "Num": 5,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5007,
+            "UnlockID": 18797,
+            "ItemID": 17086,
+            "Time": 3600,
+            "Num": 1,
+            "Cost": 25000,
+            "Exp": 1500,
+            "NeedRank": 30,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 17892,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17857,
+                    "Num": 5,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17886,
+                    "Num": 5,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18647,
+                    "Num": 1,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18664,
+                    "Num": 1,
+                    "SortNo": 5,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5008,
+            "UnlockID": 21464,
+            "ItemID": 17090,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 30,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 18647,
+                    "Num": 3,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 21230,
+                    "Num": 2,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 21217,
+                    "Num": 10,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 21218,
+                    "Num": 10,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5009,
+            "UnlockID": 18805,
+            "ItemID": 17094,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 30,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 18647,
+                    "Num": 3,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 21230,
+                    "Num": 2,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 21217,
+                    "Num": 10,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 21218,
+                    "Num": 10,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5010,
+            "UnlockID": 18799,
+            "ItemID": 17088,
+            "Time": 3600,
+            "Num": 1,
+            "Cost": 25000,
+            "Exp": 1500,
+            "NeedRank": 30,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 17892,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17930,
+                    "Num": 3,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17886,
+                    "Num": 5,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18664,
+                    "Num": 1,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18647,
+                    "Num": 1,
+                    "SortNo": 5,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5011,
+            "UnlockID": 18807,
+            "ItemID": 17096,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 31,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 18664,
+                    "Num": 3,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17916,
+                    "Num": 10,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17864,
+                    "Num": 10,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17894,
+                    "Num": 5,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5012,
+            "UnlockID": 18804,
+            "ItemID": 17093,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 30,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 18647,
+                    "Num": 3,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 21230,
+                    "Num": 2,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 21217,
+                    "Num": 10,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 21218,
+                    "Num": 10,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5013,
+            "UnlockID": 13319,
+            "ItemID": 13229,
+            "Time": 3600,
+            "Num": 1,
+            "Cost": 10000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 9159,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7808,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5014,
+            "UnlockID": 13320,
+            "ItemID": 13231,
+            "Time": 30,
+            "Num": 1,
+            "Cost": 3000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7873,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7872,
+                    "Num": 2,
+                    "SortNo": 2,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5015,
+            "UnlockID": 13317,
+            "ItemID": 13226,
+            "Time": 3600,
+            "Num": 1,
+            "Cost": 10000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7963,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7919,
+                    "Num": 2,
+                    "SortNo": 2,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5016,
+            "UnlockID": 16209,
+            "ItemID": 16173,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 12,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7943,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7900,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7899,
+                    "Num": 1,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7898,
+                    "Num": 1,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7897,
+                    "Num": 1,
+                    "SortNo": 5,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15957,
+                    "Num": 5,
+                    "SortNo": 6,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5017,
+            "UnlockID": 13368,
+            "ItemID": 13248,
+            "Time": 1800,
+            "Num": 1,
+            "Cost": 10000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7968,
+                    "Num": 3,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7787,
+                    "Num": 2,
+                    "SortNo": 2,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5018,
+            "UnlockID": 13359,
+            "ItemID": 13236,
+            "Time": 1800,
+            "Num": 1,
+            "Cost": 10000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7964,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7875,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5019,
+            "UnlockID": 13318,
+            "ItemID": 13227,
+            "Time": 1800,
+            "Num": 1,
+            "Cost": 10000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 9445,
+                    "Num": 3,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7774,
+                    "Num": 5,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7743,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5020,
+            "UnlockID": 18787,
+            "ItemID": 17067,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 30,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 18508,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17871,
+                    "Num": 3,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17886,
+                    "Num": 5,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18664,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5021,
+            "UnlockID": 18783,
+            "ItemID": 17063,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 30,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 18508,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17871,
+                    "Num": 3,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17886,
+                    "Num": 5,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18664,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5022,
+            "UnlockID": 18784,
+            "ItemID": 17064,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 31,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 18663,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17927,
+                    "Num": 5,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18726,
+                    "Num": 5,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17893,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5023,
+            "UnlockID": 18759,
+            "ItemID": 17153,
+            "Time": 3600,
+            "Num": 1,
+            "Cost": 25000,
+            "Exp": 1500,
+            "NeedRank": 30,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7783,
+                    "Num": 5,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17928,
+                    "Num": 5,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17886,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18664,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5026,
+            "UnlockID": 16212,
+            "ItemID": 16177,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 12,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7846,
+                    "Num": 5,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7979,
+                    "Num": 4,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7984,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7972,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15945,
+                    "Num": 10,
+                    "SortNo": 5,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5027,
+            "UnlockID": 16211,
+            "ItemID": 16176,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 12,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7965,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7827,
+                    "Num": 2,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7861,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7972,
+                    "Num": 1,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15945,
+                    "Num": 10,
+                    "SortNo": 5,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5028,
+            "UnlockID": 16210,
+            "ItemID": 16175,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 12,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7965,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7827,
+                    "Num": 2,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7861,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7972,
+                    "Num": 1,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15945,
+                    "Num": 10,
+                    "SortNo": 5,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5029,
+            "UnlockID": 13321,
+            "ItemID": 13232,
+            "Time": 1800,
+            "Num": 1,
+            "Cost": 10000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7857,
+                    "Num": 3,
+                    "SortNo": 1,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5030,
+            "UnlockID": 16206,
+            "ItemID": 16170,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 12,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7943,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7900,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7899,
+                    "Num": 1,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7898,
+                    "Num": 1,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7897,
+                    "Num": 1,
+                    "SortNo": 5,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15957,
+                    "Num": 5,
+                    "SortNo": 6,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5031,
+            "UnlockID": 18812,
+            "ItemID": 17062,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 30,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 17889,
+                    "Num": 5,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18507,
+                    "Num": 5,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17886,
+                    "Num": 5,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18664,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5032,
+            "UnlockID": 18809,
+            "ItemID": 17059,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 31,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 18663,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18662,
+                    "Num": 5,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17869,
+                    "Num": 5,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17894,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5033,
+            "UnlockID": 16207,
+            "ItemID": 16171,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 12,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7943,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7900,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7899,
+                    "Num": 1,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7898,
+                    "Num": 1,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7897,
+                    "Num": 1,
+                    "SortNo": 5,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15957,
+                    "Num": 5,
+                    "SortNo": 6,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5034,
+            "UnlockID": 21469,
+            "ItemID": 19507,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 32,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 18663,
+                    "Num": 3,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 21229,
+                    "Num": 2,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 21213,
+                    "Num": 10,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 21214,
+                    "Num": 10,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5035,
+            "UnlockID": 13358,
+            "ItemID": 13235,
+            "Time": 1800,
+            "Num": 1,
+            "Cost": 10000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7972,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7884,
+                    "Num": 2,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 9410,
+                    "Num": 1,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 9411,
+                    "Num": 1,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 9412,
+                    "Num": 1,
+                    "SortNo": 5,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5037,
+            "UnlockID": 13360,
+            "ItemID": 13238,
+            "Time": 3600,
+            "Num": 1,
+            "Cost": 10000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7966,
+                    "Num": 4,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7921,
+                    "Num": 2,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7777,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7940,
+                    "Num": 1,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7957,
+                    "Num": 1,
+                    "SortNo": 5,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5038,
+            "UnlockID": 16214,
+            "ItemID": 16179,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 12,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 9445,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7972,
+                    "Num": 2,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 11777,
+                    "Num": 1,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7943,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15953,
+                    "Num": 10,
+                    "SortNo": 5,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5039,
+            "UnlockID": 16213,
+            "ItemID": 16178,
+            "Time": 3600,
+            "Num": 1,
+            "Cost": 25000,
+            "Exp": 1500,
+            "NeedRank": 12,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 9445,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7972,
+                    "Num": 2,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7931,
+                    "Num": 1,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7943,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15954,
+                    "Num": 10,
+                    "SortNo": 5,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5040,
+            "UnlockID": 16215,
+            "ItemID": 16180,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 12,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 9445,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7972,
+                    "Num": 2,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 11777,
+                    "Num": 1,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7943,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15953,
+                    "Num": 10,
+                    "SortNo": 5,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5041,
+            "UnlockID": 16208,
+            "ItemID": 16172,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 12,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7943,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7900,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7899,
+                    "Num": 1,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7898,
+                    "Num": 1,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7897,
+                    "Num": 1,
+                    "SortNo": 5,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15957,
+                    "Num": 5,
+                    "SortNo": 6,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5043,
+            "UnlockID": 13319,
+            "ItemID": 17134,
+            "Time": 1800,
+            "Num": 1,
+            "Cost": 10000,
+            "Exp": 1500,
+            "NeedRank": 30,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 18508,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18648,
+                    "Num": 5,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17886,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18664,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5044,
+            "UnlockID": 13319,
+            "ItemID": 17142,
+            "Time": 1800,
+            "Num": 1,
+            "Cost": 10000,
+            "Exp": 1500,
+            "NeedRank": 30,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 18507,
+                    "Num": 5,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18649,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17886,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18664,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5045,
+            "UnlockID": 13361,
+            "ItemID": 13239,
+            "Time": 3600,
+            "Num": 1,
+            "Cost": 10000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7924,
+                    "Num": 3,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7740,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7762,
+                    "Num": 1,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7955,
+                    "Num": 5,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5046,
+            "UnlockID": 13367,
+            "ItemID": 13247,
+            "Time": 1800,
+            "Num": 1,
+            "Cost": 10000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7924,
+                    "Num": 10,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7740,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7762,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7956,
+                    "Num": 5,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5047,
+            "UnlockID": 13362,
+            "ItemID": 13240,
+            "Time": 1800,
+            "Num": 1,
+            "Cost": 10000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 9445,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7942,
+                    "Num": 5,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7959,
+                    "Num": 5,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 9446,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5048,
+            "UnlockID": 13366,
+            "ItemID": 13245,
+            "Time": 1800,
+            "Num": 1,
+            "Cost": 10000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 9414,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 9416,
+                    "Num": 2,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 9415,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7857,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5049,
+            "UnlockID": 24784,
+            "ItemID": 23582,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5050,
+            "UnlockID": 24767,
+            "ItemID": 23565,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5051,
+            "UnlockID": 24773,
+            "ItemID": 23571,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5052,
+            "UnlockID": 24778,
+            "ItemID": 23576,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5053,
+            "UnlockID": 24769,
+            "ItemID": 23567,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5054,
+            "UnlockID": 24759,
+            "ItemID": 23557,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5055,
+            "UnlockID": 24783,
+            "ItemID": 23581,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5056,
+            "UnlockID": 24772,
+            "ItemID": 23570,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5057,
+            "UnlockID": 24775,
+            "ItemID": 23573,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5058,
+            "UnlockID": 24752,
+            "ItemID": 23532,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5059,
+            "UnlockID": 24760,
+            "ItemID": 23558,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5060,
+            "UnlockID": 24780,
+            "ItemID": 23578,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5061,
+            "UnlockID": 24755,
+            "ItemID": 23553,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5062,
+            "UnlockID": 24750,
+            "ItemID": 23530,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5063,
+            "UnlockID": 24763,
+            "ItemID": 23561,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5064,
+            "UnlockID": 24766,
+            "ItemID": 23564,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5065,
+            "UnlockID": 24751,
+            "ItemID": 23531,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5066,
+            "UnlockID": 24747,
+            "ItemID": 23527,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5067,
+            "UnlockID": 24782,
+            "ItemID": 23580,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5068,
+            "UnlockID": 24749,
+            "ItemID": 23529,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5069,
+            "UnlockID": 24758,
+            "ItemID": 23556,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5070,
+            "UnlockID": 24785,
+            "ItemID": 23583,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5071,
+            "UnlockID": 24748,
+            "ItemID": 23528,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5072,
+            "UnlockID": 24745,
+            "ItemID": 23525,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5073,
+            "UnlockID": 24774,
+            "ItemID": 23572,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5074,
+            "UnlockID": 24756,
+            "ItemID": 23554,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5075,
+            "UnlockID": 24761,
+            "ItemID": 23559,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5076,
+            "UnlockID": 24757,
+            "ItemID": 23555,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5077,
+            "UnlockID": 24765,
+            "ItemID": 23563,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5078,
+            "UnlockID": 24776,
+            "ItemID": 23574,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5079,
+            "UnlockID": 24746,
+            "ItemID": 23526,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5080,
+            "UnlockID": 24762,
+            "ItemID": 23560,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5081,
+            "UnlockID": 24777,
+            "ItemID": 23575,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5082,
+            "UnlockID": 24768,
+            "ItemID": 23566,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5083,
+            "UnlockID": 24781,
+            "ItemID": 23579,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5084,
+            "UnlockID": 24779,
+            "ItemID": 23577,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5085,
+            "UnlockID": 24764,
+            "ItemID": 23562,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5086,
+            "UnlockID": 24770,
+            "ItemID": 23568,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5087,
+            "UnlockID": 24771,
+            "ItemID": 23569,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5088,
+            "UnlockID": 24753,
+            "ItemID": 23551,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5089,
+            "UnlockID": 24754,
+            "ItemID": 23552,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17881,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24725,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 24726,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5090,
+            "UnlockID": 16631,
+            "ItemID": 13503,
+            "Time": 30,
+            "Num": 1,
+            "Cost": 125,
+            "Exp": 1500,
+            "NeedRank": 6,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 16522,
+                    "Num": 30,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15945,
+                    "Num": 30,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15948,
+                    "Num": 30,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15951,
+                    "Num": 30,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15954,
+                    "Num": 30,
+                    "SortNo": 5,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5091,
+            "UnlockID": 13316,
+            "ItemID": 13225,
+            "Time": 1800,
+            "Num": 1,
+            "Cost": 10000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7972,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7787,
+                    "Num": 4,
+                    "SortNo": 2,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5092,
+            "UnlockID": 13365,
+            "ItemID": 13243,
+            "Time": 1800,
+            "Num": 1,
+            "Cost": 10000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7901,
+                    "Num": 5,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 9796,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7886,
+                    "Num": 1,
+                    "SortNo": 3,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5093,
+            "UnlockID": 13364,
+            "ItemID": 13242,
+            "Time": 1800,
+            "Num": 1,
+            "Cost": 10000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7901,
+                    "Num": 5,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 9796,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7886,
+                    "Num": 1,
+                    "SortNo": 3,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5094,
+            "UnlockID": 16217,
+            "ItemID": 16186,
+            "Time": 1800,
+            "Num": 1,
+            "Cost": 10000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7901,
+                    "Num": 5,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 9796,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7886,
+                    "Num": 1,
+                    "SortNo": 3,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5095,
+            "UnlockID": 13363,
+            "ItemID": 13241,
+            "Time": 3600,
+            "Num": 1,
+            "Cost": 10000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7901,
+                    "Num": 5,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7869,
+                    "Num": 4,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7859,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5096,
+            "UnlockID": 16204,
+            "ItemID": 16174,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 12,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7891,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 9059,
+                    "Num": 5,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7807,
+                    "Num": 1,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 16003,
+                    "Num": 5,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5097,
+            "UnlockID": 16236,
+            "ItemID": 16183,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 12,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 15957,
+                    "Num": 10,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7860,
+                    "Num": 4,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7979,
+                    "Num": 1,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7990,
+                    "Num": 1,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7954,
+                    "Num": 4,
+                    "SortNo": 5,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15948,
+                    "Num": 15,
+                    "SortNo": 6,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5098,
+            "UnlockID": 16235,
+            "ItemID": 16182,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 12,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 16006,
+                    "Num": 3,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7860,
+                    "Num": 6,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7979,
+                    "Num": 1,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7990,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7954,
+                    "Num": 6,
+                    "SortNo": 5,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 16001,
+                    "Num": 5,
+                    "SortNo": 6,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5099,
+            "UnlockID": 16216,
+            "ItemID": 16181,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 12,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 15957,
+                    "Num": 5,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7860,
+                    "Num": 2,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7979,
+                    "Num": 1,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7954,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15948,
+                    "Num": 10,
+                    "SortNo": 5,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5100,
+            "UnlockID": 16203,
+            "ItemID": 16169,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 12,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7901,
+                    "Num": 3,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 8012,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 8018,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 16006,
+                    "Num": 3,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5101,
+            "UnlockID": 16202,
+            "ItemID": 16168,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 12,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7869,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 8011,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15951,
+                    "Num": 10,
+                    "SortNo": 3,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5102,
+            "UnlockID": 16221,
+            "ItemID": 16184,
+            "Time": 86400,
+            "Num": 1,
+            "Cost": 200000,
+            "Exp": 1500,
+            "NeedRank": 12,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7868,
+                    "Num": 10,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7764,
+                    "Num": 2,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 9442,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15958,
+                    "Num": 5,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15957,
+                    "Num": 5,
+                    "SortNo": 5,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5103,
+            "UnlockID": 16229,
+            "ItemID": 16128,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7943,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7842,
+                    "Num": 2,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15951,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5104,
+            "UnlockID": 16230,
+            "ItemID": 16129,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7943,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7837,
+                    "Num": 5,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15951,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5105,
+            "UnlockID": 16231,
+            "ItemID": 16130,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7943,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7833,
+                    "Num": 3,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 16003,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5106,
+            "UnlockID": 16226,
+            "ItemID": 16125,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 8005,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7945,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15948,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5107,
+            "UnlockID": 16227,
+            "ItemID": 16126,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 8004,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7937,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15948,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5108,
+            "UnlockID": 16228,
+            "ItemID": 16127,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 8010,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7940,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 16002,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5109,
+            "UnlockID": 16232,
+            "ItemID": 16131,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7948,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 9065,
+                    "Num": 5,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15954,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5110,
+            "UnlockID": 16233,
+            "ItemID": 16132,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7949,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7984,
+                    "Num": 5,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15954,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5111,
+            "UnlockID": 16234,
+            "ItemID": 16133,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 8,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7950,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7983,
+                    "Num": 5,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 16004,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5112,
+            "UnlockID": 21462,
+            "ItemID": 19506,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 32,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 18663,
+                    "Num": 3,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 21229,
+                    "Num": 2,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 21213,
+                    "Num": 10,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 21214,
+                    "Num": 10,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5113,
+            "UnlockID": 21465,
+            "ItemID": 19563,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 55,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 24724,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5114,
+            "UnlockID": 16220,
+            "ItemID": 16190,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 12,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7846,
+                    "Num": 3,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7979,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 9064,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7978,
+                    "Num": 1,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7972,
+                    "Num": 3,
+                    "SortNo": 5,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15954,
+                    "Num": 10,
+                    "SortNo": 6,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5115,
+            "UnlockID": 16219,
+            "ItemID": 16188,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 12,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7972,
+                    "Num": 3,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7848,
+                    "Num": 2,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7899,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 8012,
+                    "Num": 1,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 16004,
+                    "Num": 5,
+                    "SortNo": 5,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5116,
+            "UnlockID": 16218,
+            "ItemID": 16187,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 12,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7972,
+                    "Num": 3,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7848,
+                    "Num": 2,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7899,
+                    "Num": 2,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 8012,
+                    "Num": 1,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 16004,
+                    "Num": 5,
+                    "SortNo": 5,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5117,
+            "UnlockID": 21468,
+            "ItemID": 17140,
+            "Time": 1800,
+            "Num": 1,
+            "Cost": 10000,
+            "Exp": 1500,
+            "NeedRank": 30,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 17891,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7976,
+                    "Num": 10,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17886,
+                    "Num": 5,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18663,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5118,
+            "UnlockID": 18771,
+            "ItemID": 17135,
+            "Time": 1800,
+            "Num": 1,
+            "Cost": 10000,
+            "Exp": 1500,
+            "NeedRank": 30,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 17891,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7976,
+                    "Num": 10,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17886,
+                    "Num": 5,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18663,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5119,
+            "UnlockID": 18779,
+            "ItemID": 17143,
+            "Time": 3600,
+            "Num": 1,
+            "Cost": 25000,
+            "Exp": 1500,
+            "NeedRank": 30,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 17891,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15944,
+                    "Num": 5,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15947,
+                    "Num": 5,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15950,
+                    "Num": 5,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15953,
+                    "Num": 5,
+                    "SortNo": 5,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17886,
+                    "Num": 5,
+                    "SortNo": 6,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18663,
+                    "Num": 2,
+                    "SortNo": 7,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5120,
+            "UnlockID": 21463,
+            "ItemID": 17141,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 30,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 18664,
+                    "Num": 3,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 21229,
+                    "Num": 2,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 21215,
+                    "Num": 10,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 21216,
+                    "Num": 10,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5121,
+            "UnlockID": 21466,
+            "ItemID": 17144,
+            "Time": 3600,
+            "Num": 1,
+            "Cost": 25000,
+            "Exp": 1500,
+            "NeedRank": 30,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 17891,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15944,
+                    "Num": 5,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15947,
+                    "Num": 5,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15950,
+                    "Num": 5,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15953,
+                    "Num": 5,
+                    "SortNo": 5,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17886,
+                    "Num": 5,
+                    "SortNo": 6,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18663,
+                    "Num": 2,
+                    "SortNo": 7,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5122,
+            "UnlockID": 16222,
+            "ItemID": 16185,
+            "Time": 86400,
+            "Num": 1,
+            "Cost": 200000,
+            "Exp": 1500,
+            "NeedRank": 12,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 7868,
+                    "Num": 20,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7830,
+                    "Num": 5,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 7832,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 9442,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15958,
+                    "Num": 5,
+                    "SortNo": 5,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 15957,
+                    "Num": 5,
+                    "SortNo": 6,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5123,
+            "UnlockID": 18790,
+            "ItemID": 17145,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 31,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 18647,
+                    "Num": 3,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17915,
+                    "Num": 10,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17869,
+                    "Num": 10,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17893,
+                    "Num": 5,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5124,
+            "UnlockID": 18751,
+            "ItemID": 17098,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 30,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 17870,
+                    "Num": 3,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18508,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17886,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18647,
+                    "Num": 1,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5125,
+            "UnlockID": 18752,
+            "ItemID": 17099,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 30,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 17870,
+                    "Num": 3,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18508,
+                    "Num": 1,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17886,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18647,
+                    "Num": 1,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5126,
+            "UnlockID": 18767,
+            "ItemID": 17116,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 30,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 17891,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18646,
+                    "Num": 5,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17886,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18647,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5127,
+            "UnlockID": 18768,
+            "ItemID": 17117,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 31,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 18663,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17917,
+                    "Num": 5,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17868,
+                    "Num": 5,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17893,
+                    "Num": 5,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5128,
+            "UnlockID": 18792,
+            "ItemID": 17147,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 30,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 17891,
+                    "Num": 1,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18646,
+                    "Num": 5,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17886,
+                    "Num": 3,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 18647,
+                    "Num": 2,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        },
+        {
+            "RecipeID": 5129,
+            "UnlockID": 18793,
+            "ItemID": 17148,
+            "Time": 7200,
+            "Num": 1,
+            "Cost": 50000,
+            "Exp": 1500,
+            "NeedRank": 31,
+            "NpcAct": 1,
+            "IsHide": false,
+            "CraftMaterialList": [
+                {
+                    "ItemId": 18663,
+                    "Num": 2,
+                    "SortNo": 1,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17917,
+                    "Num": 5,
+                    "SortNo": 2,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17868,
+                    "Num": 5,
+                    "SortNo": 3,
+                    "IsSp": true
+                },
+                {
+                    "ItemId": 17893,
+                    "Num": 5,
+                    "SortNo": 4,
+                    "IsSp": true
+                }
+            ]
+        }
+    ]
   },
   {
       "Category": 28,

@@ -493,9 +493,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
             var recipeList = _server.AssetRepository.CraftingRecipesAsset
                 .Where(recipes => recipes.Category == itemInfo.RecipeCategory)
                 .Select(recipes => recipes.RecipeList)
-                .SingleOrDefault(new List<CDataMDataCraftRecipe>());
-            var recipie = recipeList.Where(x => x.ItemID == (uint)itemId).FirstOrDefault();
-            return (recipie != null) ? recipie.CraftMaterialList : new List<CDataMDataCraftMaterial>();
+                .SingleOrDefault(new List<CraftingRecipe>());
+            var recipe = recipeList.Where(x => x.ItemID == (uint)itemId).FirstOrDefault();
+            return (recipe != null) ? recipe.CraftMaterialList : new List<CDataMDataCraftMaterial>();
         }
 
         public ItemId GetItemBaseItemId(ItemId itemId)
@@ -510,6 +510,28 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .Where(x => x.Name == itemInfo.Name && x.Quality == 0)
                 .Select(x => (ItemId) x.ItemId)
                 .FirstOrDefault(itemId);
+        }
+
+        public bool CheckUnlockableRecipe(GameClient client, CraftingRecipe recipe)
+        {
+            ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(_server.AssetRepository.ClientItemInfos, recipe.ItemID);
+            if (itemInfo.Category == 6 && client.Character.UnlockableItems.Contains((UnlockableItemCategory.FurnitureItem, recipe.ItemID)))
+            {
+                // Cannot craft furniture a second time.
+                return false;
+            }
+            else if (recipe.UnlockID == 0)
+            {
+                return true;
+            }
+            else if (client.Character.UnlockableItems.Contains((UnlockableItemCategory.CraftingRecipe, recipe.UnlockID)))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

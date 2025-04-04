@@ -47,7 +47,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         CDataMDataCraftRecipe recipe = Server.AssetRepository.CraftingRecipesAsset
                             .SelectMany(recipes => recipes.RecipeList)
-                            .Single(recipe => recipe.RecipeID == request.RecipeId);
+                            .Single(recipe => recipe.RecipeID == request.RecipeId)
+                            .AsCData();
 
                         ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, recipe.ItemID);
 
