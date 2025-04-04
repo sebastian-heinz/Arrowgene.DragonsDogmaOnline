@@ -121,8 +121,8 @@
     762
     1062
 70021001
-    1433
-    1489
+    1433 // Bloodbane Isle Precipice
+    1489 // Bloodbane Isle Summit
     1545
     2439
     2474
