@@ -137,7 +137,13 @@
                         "layer_no": 1
                     },
                     "npc_id": "Leo0",
-                    "message_id": 8315
+                    "message_id": 8315,
+                    "contents_release": [
+                        {
+                            "type": "None",
+                            "flag_info": "Lestania.MergodaSecurityDistrict"
+                        }
+                    ]
                 },
                 {
                     "type": "OmInteractEvent",

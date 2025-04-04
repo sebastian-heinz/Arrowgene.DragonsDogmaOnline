@@ -18,7 +18,7 @@
         }
     ],
     "contents_release": [
-        { "type": "FaranaPlainsWorldQuests" }
+        { "type": "FaranaPlainsWorldQuests", "flag_info": "NpcFunctions.FaranaPlainsAreaInfo" }
     ],
     "rewards": [
         {
@@ -175,6 +175,12 @@
                             "action": "Set",
                             "value": 3946,
                             "comment": "Gurdolin, Pisarr, Blair, Gavan, Cana and Cecily"
+                        }
+                    ],
+                    "contents_release": [
+                        {
+                            "type": "None",
+                            "flag_info": "FaranaPlains.DanaGate"
                         }
                     ]
                 },

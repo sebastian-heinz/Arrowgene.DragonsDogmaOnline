@@ -56,8 +56,14 @@ public class ScriptedQuest : IQuest
         process0.AddPlayEventBlock(QuestAnnounceType.None, Stage.AudienceChamber, 11, 3);
         process0.AddIsStageNoBlock(QuestAnnounceType.None, Stage.AudienceChamber)
             .AddResultCmdTutorialDialog(TutorialId.RewardMissions)
-            .AddResultCmdReleaseAnnounce(ContentsRelease.GrandMissions)
-            .AddResultCmdReleaseAnnounce(ContentsRelease.ExtremeMissions);
+            .AddResultCmdReleaseAnnounce(ContentsRelease.GrandMissions, flagInfo: QuestFlags.NpcFunctions.GrandMission)
+            // TODO: Issac, Dooris, Endale and Nayajiku might be unlocked at different points
+            .AddResultCmdReleaseAnnounce(ContentsRelease.ExtremeMissions, flagInfo: QuestFlags.NpcFunctions.SenekaExm)
+            .AddResultCmdReleaseAnnounce(ContentsRelease.ExtremeMissions, flagInfo: QuestFlags.NpcFunctions.IsaacExm)
+            .AddResultCmdReleaseAnnounce(ContentsRelease.ExtremeMissions, flagInfo: QuestFlags.NpcFunctions.DorisExm)
+            .AddResultCmdReleaseAnnounce(ContentsRelease.ExtremeMissions, flagInfo: QuestFlags.NpcFunctions.EndaleExm)
+            .AddResultCmdReleaseAnnounce(ContentsRelease.ExtremeMissions, flagInfo: QuestFlags.NpcFunctions.NayajikuExm);
+
         process0.AddProcessEndBlock(true);
     }
 }
