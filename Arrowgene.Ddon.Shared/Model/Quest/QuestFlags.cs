@@ -199,6 +199,11 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             /// Controls if the portal to Bitterblack Maze is usable or not.
             /// </summary>
             public static QuestFlagInfo BitterblackMazeEntrance { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(4978, QuestId.Q70032001);
+
+            /// <summary>
+            /// Controls if the portal in cave harbor can warp to Bloodbane Isle Precipice or not.
+            /// </summary>
+            public static QuestFlagInfo BloodbaneIslePrecipice { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1433, QuestId.Q70021001);
         }
 
         public static class Lestania
@@ -319,6 +324,16 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             /// Open Lever Door  (Stone Door, middle)
             /// </summary>
             public static QuestFlagInfo OpenLeverDoor { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(1672, QuestId.Q70000001, StageInfo);
+        }
+
+        public static class ExpeditionGarrison
+        {
+            private static StageInfo StageInfo = Stage.ExpeditionGarrison;
+
+            /// <summary>
+            /// Unlocks the door to Bloodbane Isle Summit and opens the gate at (51,-28)
+            /// </summary>
+            public static QuestFlagInfo BloodbaneIsleSummit { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1489, QuestId.Q70021001);
         }
 
         public static class ElanWaterGrove
