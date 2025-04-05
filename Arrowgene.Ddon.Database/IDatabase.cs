@@ -661,8 +661,10 @@ namespace Arrowgene.Ddon.Database
         bool InsertAchievementUniqueCraft(uint characterId, AchievementCraftTypeParam craftType, ItemId itemId, DbConnection? connectionIn = null);
 
         // Unlockable Items (Recipes, Furniture, Backgrounds)
-
         HashSet<(UnlockableItemCategory Category, uint Id)> SelectUnlockedItems(uint characterId, DbConnection? connectionIn = null);
         bool InsertUnlockedItem(uint characterId, UnlockableItemCategory type, uint itemId, DbConnection? connectionIn = null);
+        Dictionary<ItemId, byte> SelectMyRoomCustomization(uint characterId, DbConnection? connectionIn = null);
+        bool UpsertMyRoomCustomization(uint characterId, byte layoutId, uint itemId, DbConnection? connectionIn = null);
+        bool DeleteMyRoomCustomization(uint characterId, uint itemId, DbConnection? connectionIn = null);
     }
 }

@@ -891,6 +891,15 @@ CREATE TABLE IF NOT EXISTS "ddon_unlocked_items"
     CONSTRAINT fk_ddon_unlocked_items_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
 
+CREATE TABLE IF NOT EXISTS "ddon_myroom_customization"
+(
+    "character_id"      INTEGER NOT NULL,
+    "layout_id"         TINYINT NOT NULL,
+    "item_id"           INTEGER NOT NULL,
+    CONSTRAINT pk_ddon_myroom_customization PRIMARY KEY ("character_id", "layout_id"),
+    CONSTRAINT fk_ddon_myroom_customization_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+);
+
 CREATE TABLE IF NOT EXISTS "ddon_recycle_equipment"
 (
     "character_id" INTEGER NOT NULL,

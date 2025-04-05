@@ -763,6 +763,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SMandragoraGetSpeciesListReq.Serializer());
             Create(new C2SMandragoraGetCraftRecipeListReq.Serializer());
             Create(new C2SMandragoraBeginCraftReq.Serializer());
+
+            Create(new C2SMyRoomFurnitureLayoutReq.Serializer());
             Create(new C2SMyRoomFurnitureListGetReq.Serializer());
             Create(new C2SMyRoomMyRoomBgmUpdateReq.Serializer());
             Create(new C2SMyRoomUpdatePlanetariumReq.Serializer());
@@ -1371,6 +1373,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CMandragoraGetSpeciesListRes.Serializer());
             Create(new S2CMandragoraGetCraftRecipeListRes.Serializer());
             Create(new S2CMandragoraBeginCraftRes.Serializer());
+
+            Create(new S2CMyRoomFurnitureLayoutRes.Serializer());
             Create(new S2CMyRoomFurnitureListGetRes.Serializer());
             Create(new S2CMyRoomMyRoomBgmUpdateRes.Serializer());
             Create(new S2CMyRoomUpdatePlanetariumRes.Serializer());

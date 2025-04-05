@@ -39,14 +39,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private readonly string SqlSelectAchievementUniqueCraft = $"SELECT {BuildQueryField(AchievementUniqueCraftFields)} FROM \"ddon_achievement_unique_crafts\" WHERE \"character_id\" = @character_id;";
         private readonly string SqlInsertAchievementUniqueCraft = $"INSERT INTO \"ddon_achievement_unique_crafts\" ({BuildQueryField(AchievementUniqueCraftFields)}) VALUES ({BuildQueryInsert(AchievementProgressFields)}) ON CONFLICT DO NOTHING;";
 
-        private static readonly string[] UnlockedItemFields = new string[]
-        {
-            "character_id", "category", "item_id"
-        };
-
-        private readonly string SqlSelectUnlockedItem = $"SELECT {BuildQueryField(UnlockedItemFields)} FROM \"ddon_unlocked_items\" WHERE \"character_id\" = @character_id;";
-        private readonly string SqlInsertUnlockedItem = $"INSERT INTO \"ddon_unlocked_items\" ({BuildQueryField(UnlockedItemFields)}) VALUES ({BuildQueryInsert(UnlockedItemFields)}) ON CONFLICT DO NOTHING;";
-
         public Dictionary<(AchievementType, uint), uint> SelectAchievementProgress(uint characterId, DbConnection? connectionIn = null)
         {
             return ExecuteQuerySafe(connectionIn, connection =>
@@ -182,45 +174,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     AddParameter(command, "item_id", (uint)itemId);
                 }
                 ) == 1;
-            });
-        }
-    
-        public HashSet<(UnlockableItemCategory Category, uint Id)> SelectUnlockedItems(uint characterId, DbConnection? connectionIn = null)
-        {
-            return ExecuteQuerySafe(connectionIn, connection =>
-            {
-                var unlocks = new HashSet<(UnlockableItemCategory Category, uint Id)>();
-                ExecuteReader(connection,
-                    SqlSelectUnlockedItem,
-                    command => { AddParameter(command, "@character_id", characterId); },
-                    reader =>
-                    {
-                        while (reader.Read())
-                        {
-                            var category = (UnlockableItemCategory)GetUInt32(reader, "category");
-                            var itemId = GetUInt32(reader, "item_id");
-
-                            unlocks.Add((category, itemId));
-                        }
-                    });
-                return unlocks;
-            });
-        }
-
-        public bool InsertUnlockedItem(uint characterId, UnlockableItemCategory category, uint itemId, DbConnection? connectionIn = null)
-        {
-            return ExecuteQuerySafe(connectionIn, connection =>
-            {
-                return ExecuteNonQuery(
-                    connection,
-                    SqlInsertUnlockedItem,
-                    command =>
-                    {
-                        AddParameter(command, "character_id", characterId);
-                        AddParameter(command, "category", (byte)category);
-                        AddParameter(command, "item_id", (uint)itemId);
-                    }
-                    ) == 1;
             });
         }
     }
