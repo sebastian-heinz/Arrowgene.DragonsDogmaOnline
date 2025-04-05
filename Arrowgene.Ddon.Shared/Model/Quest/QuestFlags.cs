@@ -249,6 +249,16 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             /// Allows the player to enter Mergoda Security District when set
             /// </summary>
             public static QuestFlagInfo MergodaSecurityDistrict { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(5187, QuestId.Q70034001);
+
+            /// <summary>
+            /// Allows the player to enter the Knights' Depot Ruins when set
+            /// </summary>
+            public static QuestFlagInfo KnightsDepotRuins { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1545, QuestId.Q70021001);
+
+            /// <summary>
+            /// Allows the player to enter "Temple of Purification: South Chamber" when set
+            /// </summary>
+            public static QuestFlagInfo TempleOfPurificationSouthChamber { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(926, QuestId.Q70000001);
         }
 
         public static class GardnoxFortress0
@@ -354,6 +364,16 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             /// Opens the gates around Dana when set.
             /// </summary>
             public static QuestFlagInfo DanaGate { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1698, QuestId.Q70022001);
+
+            /// <summary>
+            /// Unlocks the "Kingal Canyon Border Checkpoint" when set (from Dana to Glyndwr)
+            /// </summary>
+            public static QuestFlagInfo KingalCanyonBorderCheckpoint { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1703, QuestId.Q70023001);
+
+            /// <summary>
+            /// Unlocks the southern "Vegasa Corridor" entrance when set
+            /// </summary>
+            public static QuestFlagInfo VegasaCorridorSouth { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1997, QuestId.Q70022001);
         }
 
         public static class MorrowForest
@@ -364,6 +384,12 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             /// Opens the Western Gate in Morfaul when set
             /// </summary>
             public static QuestFlagInfo MorfaulWestGate { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1999, QuestId.Q70022001);
+
+            /// <summary>
+            /// Unlocks the western "Vegasa Corridor" entrance when set
+            /// Morrow Forest
+            /// </summary>
+            public static QuestFlagInfo VegasaCorridorWest { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2402, QuestId.Q70022001);
         }
 
         public static class MorfaulChiefsHome
@@ -394,6 +420,43 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             /// Unlocks "Shadolean Great Temple" when set (st0439).
             /// </summary>
             public static QuestFlagInfo ShadoleanGreatTemple { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(5184, QuestId.Q70034001);
+
+            /// <summary>
+            /// Unlocks the eastern "Vegasa Corridor" entrance when set
+            /// Kingal Canyon
+            /// </summary>
+            public static QuestFlagInfo VegasaCorridorEast { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2400, QuestId.Q70022001);
+        }
+
+        public static class TowerOfIvanos
+        {
+            private static StageInfo StageInfo = Stage.TowerofIvanos;
+
+            /// <summary>
+            /// Unlocks the quest board in the Tower of Ivanos when set.
+            /// </summary>
+            public static QuestFlagInfo QuestBoard { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2246, QuestId.Q70023001);
+        }
+
+        public static class HollowOfBeginnings
+        {
+            /// <summary>
+            /// Unlocks "Hollow Of Beginnings GatheringArea" in Stage.HollowofBeginnings0 when set.
+            /// </summary>
+            public static QuestFlagInfo HollowOfBeginningsGatheringArea { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2182, QuestId.Q70023001);
+
+            /// <summary>
+            /// Unlocks "Valtable Hall" in Stage.HollowofBeginnings0 when set
+            /// </summary>
+            public static QuestFlagInfo ValtableHall { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2183, QuestId.Q70023001);
+        }
+
+        public static class ValtableHall
+        {
+            /// <summary>
+            /// Unlocks "Valtable Hall Upper Area" when set.
+            /// </summary>
+            public static QuestFlagInfo ValtableHallUpperArea { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2184, QuestId.Q70023001);
         }
 
         public static class RathniteFoothills

@@ -117,7 +117,10 @@
                     "announce_type": "Update",
                     "stage_id": {
                         "id": 61
-                    }
+                    },
+                    "contents_release": [
+                        {"flag_info": "Lestania.TempleOfPurificationSouthChamber"}
+                    ]
                 },
                 {
                     "type": "TalkToNpc",

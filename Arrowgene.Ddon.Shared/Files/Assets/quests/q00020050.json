@@ -249,6 +249,7 @@
                     "flags": [
                         {"type": "QstLayout", "action": "Clear", "value": 2741, "comment": "Spawns Gurdolin"}
                     ],
+                    "bgm_stop": true,
                     "npc_id": "Joseph",
                     "message_id": 15208
                 }
