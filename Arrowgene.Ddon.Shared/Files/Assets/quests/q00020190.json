@@ -91,7 +91,9 @@
                     ],
                     "contents_release": [
                         {
-                            "type": "None",
+                            "flag_info": "FaranaPlains.KingalCanyonBorderCheckpoint"
+                        },
+                        {
                             "flag_info": "KingalCanyon.GlyndwrGates"
                         }
                     ]

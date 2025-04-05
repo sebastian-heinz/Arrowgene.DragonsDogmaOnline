@@ -233,7 +233,10 @@
                     "checkpoint": true,
                     "stage_id": {
                         "id": 386
-                    }
+                    },
+                    "contents_release": [
+                        {"flag_info": "ValtableHall.ValtableHallUpperArea"}
+                    ]
                 },
                 {
                     "type": "PartyGather",

@@ -199,7 +199,8 @@
                     "stage_id": {
                         "id": 372
                     },
-                    "event_id": 5
+                    "event_id": 5,
+                    "bgm_stop": true
                 },
                 {
                     "type": "PartyGather",

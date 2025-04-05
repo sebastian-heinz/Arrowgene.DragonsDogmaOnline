@@ -139,7 +139,8 @@
                     "stage_id": {
                         "id": 335
                     },
-                    "event_id": 25
+                    "event_id": 25,
+                    "bgm_stop": true
                 },
                 {
                     "type": "TalkToNpc",

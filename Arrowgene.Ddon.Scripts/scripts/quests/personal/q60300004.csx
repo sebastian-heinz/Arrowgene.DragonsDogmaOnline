@@ -31,7 +31,7 @@ public class ScriptedQuest : IQuest
     {
         var process0 = AddNewProcess(0);
         process0.AddNpcTalkAndOrderBlock(Stage.CraftRoom, NpcId.Craig0, 26396);
-        process0.AddIsStageNoBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.CraftRoom, false)
+        process0.AddIsStageNoBlock(QuestAnnounceType.Accept, Stage.CraftRoom, false)
             .AddResultCmdTutorialDialog(TutorialId.UltimateSynthesisofArms)
             .AddAnnotation("TODO: Detect an ultimate synthesis has occurred");
         process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.CraftRoom, NpcId.Craig0, 26398);

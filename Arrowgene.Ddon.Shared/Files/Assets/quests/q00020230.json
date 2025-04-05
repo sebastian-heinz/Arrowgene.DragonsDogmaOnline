@@ -162,7 +162,8 @@
                     "stage_id": {
                         "id": 373
                     },
-                    "event_id": 5
+                    "event_id": 5,
+                    "bgm_stop": true
                 },
                 {
                     "type": "PartyGather",
@@ -236,6 +237,7 @@
                         "id": 382
                     },
                     "event_id": 20,
+                    "bgm_stop": true,
                     "flags": [
                         {"type": "QstLayout", "action": "Clear", "value": 4212, "comment": "Walls"},
                         {"type": "QstLayout", "action": "Clear", "value": 4059, "comment": "Battle NPCs"},
