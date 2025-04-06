@@ -249,7 +249,7 @@
                     "contents_release": [
                         {"flag_info": "FaranaPlains.VegasaCorridorSouth"},
                         {"flag_info": "MorrowForest.VegasaCorridorWest"},
-                        {"flag_info": "FaranaPlains.VegasaCorridorEast"}
+                        {"flag_info": "KingalCanyon.VegasaCorridorEast"}
                     ],
                     "result_commands": [
                         {"type": "RefreshOmKeyDisp"}
