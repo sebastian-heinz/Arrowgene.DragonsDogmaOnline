@@ -373,7 +373,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             /// <summary>
             /// Unlocks the southern "Vegasa Corridor" entrance when set
             /// </summary>
-            public static QuestFlagInfo VegasaCorridorSouth { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1997, QuestId.Q70022001);
+            public static QuestFlagInfo VegasaCorridorSouth { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1997, QuestId.Q70023001);
         }
 
         public static class MorrowForest
@@ -389,7 +389,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             /// Unlocks the western "Vegasa Corridor" entrance when set
             /// Morrow Forest
             /// </summary>
-            public static QuestFlagInfo VegasaCorridorWest { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2402, QuestId.Q70022001);
+            public static QuestFlagInfo VegasaCorridorWest { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2402, QuestId.Q70023001);
         }
 
         public static class MorfaulChiefsHome
@@ -425,7 +425,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             /// Unlocks the eastern "Vegasa Corridor" entrance when set
             /// Kingal Canyon
             /// </summary>
-            public static QuestFlagInfo VegasaCorridorEast { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2400, QuestId.Q70022001);
+            public static QuestFlagInfo VegasaCorridorEast { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2400, QuestId.Q70023001);
         }
 
         public static class TowerOfIvanos
