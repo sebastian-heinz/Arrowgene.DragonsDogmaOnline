@@ -368,7 +368,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             /// <summary>
             /// Unlocks the "Kingal Canyon Border Checkpoint" when set (from Dana to Glyndwr)
             /// </summary>
-            public static QuestFlagInfo KingalCanyonBorderCheckpoint { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1703, QuestId.Q70023001);
+            public static QuestFlagInfo KingalCanyonBorderCheckpoint { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1703, QuestId.Q70022001);
 
             /// <summary>
             /// Unlocks the southern "Vegasa Corridor" entrance when set
