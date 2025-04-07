@@ -64,13 +64,13 @@ public class ChatCommand : IChatCommand
 
         var ntc = new S2CItemUpdateCharacterItemNtc()
         {
-            UpdateType = ItemNoticeType.StampBonus
+            UpdateType = ItemNoticeType.Gather
         };
 
         var (queue, isSpecial) = server.ItemManager.HandleSpecialItem(client, ntc, (ItemId)itemId, amount);
         if (!isSpecial)
         {
-            ntc.UpdateItemList.AddRange(server.ItemManager.AddItem(server, client.Character, StorageType.ItemPost, itemId, amount));
+            ntc.UpdateItemList.AddRange(server.ItemManager.AddItem(server, client.Character, true, itemId, amount));
         }
 
         queue.Send();

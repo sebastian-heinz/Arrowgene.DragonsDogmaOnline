@@ -123,10 +123,22 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return queue;
         }
 
-        public PacketQueue HandleCollect(GameClient client, DbConnection? connectionIn = null)
+        public PacketQueue HandleCollect(GameClient client, AchievementCollectParam collectType, DbConnection? connectionIn = null)
         {
             // TODO: Need the information about which gathering points are which.
             PacketQueue queue = new();
+
+            (AchievementType, uint) key = (AchievementType.CollectType, (uint)collectType);
+            uint progress = client.Character.AchievementProgress.GetValueOrDefault(key);
+            progress++;
+            client.Character.AchievementProgress[key] = progress;
+
+            Server.Database.ExecuteQuerySafe(connectionIn, connection =>
+            {
+                Server.Database.UpsertAchievementProgress(client.Character.CharacterId, key.Item1, key.Item2, progress, connection);
+                queue.AddRange(CheckGainAchievement(client, key.Item1, key.Item2, progress, connection));
+            });
+
             return queue;
         }
 

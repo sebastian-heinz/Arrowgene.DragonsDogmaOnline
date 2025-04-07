@@ -97,6 +97,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     Server.Database.InsertPartnerPawnPendingReward(client.Character.CharacterId, client.Character.PartnerPawnId, currentLikability, connectionIn);
                 }
+
+                packets.AddRange(Server.AchievementManager.HandlePawnAffection(client, connectionIn));
             }
 
             return packets;

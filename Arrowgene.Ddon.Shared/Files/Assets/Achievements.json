@@ -367,7 +367,7 @@
             "type": "ClearQuest",
             "param": 20200,
             "count": 1,
-            "reward": 0,
+            "reward": 16221,
             "sort_id": 37
         },
         {
@@ -377,7 +377,7 @@
             "type": "ClearQuest",
             "param": 20250,
             "count": 1,
-            "reward": 0,
+            "reward": 16222,
             "sort_id": 38
         },
         {
@@ -1287,7 +1287,7 @@
             "type": "ClearSubstory",
             "param": 3,
             "count": 1,
-            "reward": 0,
+            "reward": 18761,
             "sort_id": 129
         },
         {
@@ -1677,7 +1677,7 @@
             "type": "EmblemStone",
             "param": "",
             "count": 20,
-            "reward": 0,
+            "reward": 18783,
             "sort_id": 168
         },
         {
@@ -1767,7 +1767,7 @@
             "type": "EpitaphRoad",
             "param": "MemoryOfMegadosys",
             "count": 1,
-            "reward": 0,
+            "reward": 18805,
             "sort_id": 177
         },
         {
@@ -1777,7 +1777,7 @@
             "type": "EpitaphRoad",
             "param": "MemoryOfUrteca",
             "count": 1,
-            "reward": 0,
+            "reward": 18804,
             "sort_id": 178
         },
         {
@@ -3577,7 +3577,7 @@
             "type": "KillEnemyType",
             "param": "Mandragora",
             "count": 100,
-            "reward": 0,
+            "reward": 16235,
             "sort_id": 358
         },
         {
@@ -3587,7 +3587,7 @@
             "type": "KillEnemyType",
             "param": "Mandragora",
             "count": 1000,
-            "reward": 0,
+            "reward": 16236,
             "sort_id": 359
         },
         {

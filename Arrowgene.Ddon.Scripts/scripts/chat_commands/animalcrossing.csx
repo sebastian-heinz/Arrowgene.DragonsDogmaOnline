@@ -10,12 +10,17 @@ public class ChatCommand : IChatCommand
     public override void Execute(DdonGameServer server, string[] command, GameClient client, ChatMessage message, List<ChatResponse> responses)
     {
         var furnitureIds = server.AssetRepository.ClientItemInfos.Values.Where(x => x.Category == 6).Select(x => x.ItemId);
+        var recipeIds = server.AssetRepository.ClientItemInfos.Values.Where(x => x.Category == 7).Select(x => x.ItemId);
 
         server.Database.ExecuteInTransaction(connection =>
         {
             foreach (var id in furnitureIds) 
             {
                 server.Database.InsertUnlockedItem(client.Character.CharacterId, UnlockableItemCategory.FurnitureItem, id, connection);
+            }
+            foreach (var id in recipeIds)
+            {
+                server.Database.InsertUnlockedItem(client.Character.CharacterId, UnlockableItemCategory.CraftingRecipe, id, connection);
             }
         });
 
