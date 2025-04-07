@@ -471,7 +471,11 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new MyRoomFurnitureLayoutHandler(this));
             AddHandler(new MyRoomFurnitureListGetHandler(this));
+            AddHandler(new MyRoomGetOtherRoomPermissionHandler(this));
             AddHandler(new MyRoomMyRoomBgmUpdateHandler(this));
+            AddHandler(new MyRoomOtherRoomLayoutGetHandler(this));
+            AddHandler(new MyRoomOtherRoomLayoutUpdateHandler(this));
+            AddHandler(new MyRoomSetOtherRoomPermissionHandler(this));
             AddHandler(new MyRoomUpdatePlanetariumHandler(this));
 
             AddHandler(new NpcGetExtendedFacilityHandler(this));

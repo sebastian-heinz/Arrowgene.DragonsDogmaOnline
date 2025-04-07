@@ -147,7 +147,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         while (reader.Read())
                         {
                             var craftType = (AchievementCraftTypeParam)GetUInt32(reader, "craft_type");
-                            var itemId = (ItemId)GetUInt32(reader, "uint");
+                            var itemId = (ItemId)GetUInt32(reader, "item_id");
 
                             if (!uniqueCrafts.ContainsKey(craftType))
                             {

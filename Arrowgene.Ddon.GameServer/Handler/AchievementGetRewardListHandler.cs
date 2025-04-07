@@ -25,15 +25,6 @@ public class AchievementGetRewardListHandler : GameRequestPacketHandler<C2SAchie
 
         uint count = (uint)client.Character.AchievementStatus.Count;
 
-        // These are always available, should they be included in this list?
-        //res.BackgroundProgressList.AddRange(Server.AssetRepository.AchievementBackgroundAsset.DefaultBackgrounds.Select(x => new CDataAchievementRewardProgress()
-        //{
-        //    RewardId = x,
-        //    CurrentNum = 0,
-        //    TargetNum = 0,
-        //    IsReceived = true,
-        //}));
-
         res.BackgroundProgressList.AddRange(Server.AssetRepository.AchievementBackgroundAsset.UnlockableBackgrounds.Select(x => new CDataAchievementRewardProgress()
         {
             RewardId = x.Id,

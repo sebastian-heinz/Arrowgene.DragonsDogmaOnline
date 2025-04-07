@@ -56,7 +56,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         /// <summary>
         /// Furniture that comes with the room by default. Several of these occupy unique slots and cannot be replaced. 
         /// </summary>
-        private static readonly HashSet<ItemId> DefaultFurnitureIds = new HashSet<ItemId>()
+        public static readonly HashSet<ItemId> DefaultFurnitureIds = new HashSet<ItemId>()
         {
             ItemId.AChair,
             ItemId.ArisensDesk,
@@ -75,7 +75,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         /// Furniture that either fills spots that do not permit being empty, or fill special slots that cannot be overwritten by the player.
         /// Will fill their LayoutId if no other customization entry exists for that slot.
         /// </summary>
-        private static readonly Dictionary<ItemId, byte> RequiredFurniturePlacements = new()
+        public static readonly Dictionary<ItemId, byte> RequiredFurniturePlacements = new()
         {
             { ItemId.ArisensDesk, 1 },                          // Default
             { ItemId.AChair, 5 },                               // Special Slot
@@ -94,7 +94,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         /// <summary>
         /// "Furniture" items for the various sheet music used by the Music Player.
         /// </summary>
-        private static readonly HashSet<ItemId> SheetMusicIds = new HashSet<ItemId>()
+        public static readonly HashSet<ItemId> SheetMusicIds = new HashSet<ItemId>()
         {
             ItemId.SheetMusicProtectionOfTheFiveDragons,
             ItemId.SheetMusicTwinFangsOfTheEarthDragon,
@@ -112,7 +112,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         /// <summary>
         /// "Furniture" items for the various light vision displays used by the Stereoscopic Projector.
         /// </summary>
-        private static readonly HashSet<ItemId> LightVisionIds = new HashSet<ItemId>()
+        public static readonly HashSet<ItemId> LightVisionIds = new HashSet<ItemId>()
         {
             ItemId.LightVision,
             ItemId.LightVisionAdairDonnchadh,

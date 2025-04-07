@@ -308,6 +308,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataOrbGainExtendParam.Serializer());
             Create(new CDataOrbPageStatus.Serializer());
             Create(new CDataOrderConditionInfo.Serializer());
+            Create(new CDataOtherRoomLayoutUpdate.Serializer());
 
             Create(new CDataPackageQuestDetail.Serializer());
             Create(new CDataPackageQuestList.Serializer());
@@ -767,7 +768,11 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new C2SMyRoomFurnitureLayoutReq.Serializer());
             Create(new C2SMyRoomFurnitureListGetReq.Serializer());
+            Create(new C2SMyRoomGetOtherRoomPermissionReq.Serializer());
             Create(new C2SMyRoomMyRoomBgmUpdateReq.Serializer());
+            Create(new C2SMyRoomOtherRoomGetLayoutReq.Serializer());
+            Create(new C2SMyRoomOtherRoomLayoutUpdateReq.Serializer());
+            Create(new C2SMyRoomSetOtherRoomPermissionReq.Serializer());
             Create(new C2SMyRoomUpdatePlanetariumReq.Serializer());
 
             Create(new C2SNpcGetNpcExtendedFacilityReq.Serializer());
@@ -1378,7 +1383,12 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new S2CMyRoomFurnitureLayoutRes.Serializer());
             Create(new S2CMyRoomFurnitureListGetRes.Serializer());
+            Create(new S2CMyRoomGetOtherRoomPermissionRes.Serializer());
             Create(new S2CMyRoomMyRoomBgmUpdateRes.Serializer());
+            Create(new S2CMyRoomOtherRoomLayoutGetRes.Serializer());
+            Create(new S2CMyRoomOtherRoomLayoutUpdateRes.Serializer());
+            Create(new S2CMyRoomOtherRoomLayoutUpdateNtc.Serializer());
+            Create(new S2CMyRoomSetOtherRoomPermissionRes.Serializer());
             Create(new S2CMyRoomUpdatePlanetariumRes.Serializer());
 
             Create(new S2CNpcGetNpcExtendedFacilityRes.Serializer());

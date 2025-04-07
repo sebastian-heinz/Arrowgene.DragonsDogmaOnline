@@ -1800,9 +1800,9 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_MY_ROOM_MY_ROOM_BGM_UPDATE_RES = new PacketId(52, 3, 2, "S2C_MY_ROOM_MY_ROOM_BGM_UPDATE_RES", ServerType.Game, PacketSource.Server); // 自室BGM変更に
         public static readonly PacketId C2S_MY_ROOM_OTHER_ROOM_LAYOUT_GET_REQ = new PacketId(52, 4, 1, "C2S_MY_ROOM_OTHER_ROOM_LAYOUT_GET_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_MY_ROOM_OTHER_ROOM_LAYOUT_GET_RES = new PacketId(52, 4, 2, "S2C_MY_ROOM_OTHER_ROOM_LAYOUT_GET_RES", ServerType.Game, PacketSource.Server); // 他人の部屋情報取得
-        public static readonly PacketId C2S_MY_52_5_1_REQ = new PacketId(52, 5, 1, "C2S_MY_52_5_1_REQ", ServerType.Game, PacketSource.Client);
-        public static readonly PacketId S2C_MY_52_5_2_RES = new PacketId(52, 5, 2, "S2C_MY_52_5_2_RES", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_MY_52_5_16_NTC = new PacketId(52, 5, 16, "S2C_MY_52_5_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId C2S_MY_ROOM_OTHER_ROOM_LAYOUT_UPDATE_REQ = new PacketId(52, 5, 1, "C2S_MY_ROOM_OTHER_ROOM_LAYOUT_UPDATE_REQ", ServerType.Game, PacketSource.Client, "C2S_MY_52_5_1_REQ");
+        public static readonly PacketId S2C_MY_ROOM_OTHER_ROOM_LAYOUT_UPDATE_RES = new PacketId(52, 5, 2, "S2C_MY_ROOM_OTHER_ROOM_LAYOUT_UPDATE_RES", ServerType.Game, PacketSource.Server, "S2C_MY_52_5_2_RES");
+        public static readonly PacketId S2C_MY_ROOM_OTHER_ROOM_LAYOUT_UPDATE_NTC = new PacketId(52, 5, 16, "S2C_MY_ROOM_OTHER_ROOM_LAYOUT_UPDATE_NTC", ServerType.Game, PacketSource.Server, "S2C_MY_52_5_16_NTC");
         public static readonly PacketId C2S_MY_ROOM_UPDATE_PLANETARIUM_REQ = new PacketId(52, 6, 1, "C2S_MY_ROOM_UPDATE_PLANETARIUM_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_MY_ROOM_UPDATE_PLANETARIUM_RES = new PacketId(52, 6, 2, "S2C_MY_ROOM_UPDATE_PLANETARIUM_RES", ServerType.Game, PacketSource.Server); // 自室のプラネタリウムの状態の更新
         public static readonly PacketId C2S_MY_ROOM_GET_OTHER_ROOM_PERMISSION_REQ = new PacketId(52, 7, 1, "C2S_MY_ROOM_GET_OTHER_ROOM_PERMISSION_REQ", ServerType.Game, PacketSource.Client);
@@ -3731,9 +3731,9 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_MY_ROOM_MY_ROOM_BGM_UPDATE_RES);
             AddPacketIdEntry(packetIds, C2S_MY_ROOM_OTHER_ROOM_LAYOUT_GET_REQ);
             AddPacketIdEntry(packetIds, S2C_MY_ROOM_OTHER_ROOM_LAYOUT_GET_RES);
-            AddPacketIdEntry(packetIds, C2S_MY_52_5_1_REQ);
-            AddPacketIdEntry(packetIds, S2C_MY_52_5_2_RES);
-            AddPacketIdEntry(packetIds, S2C_MY_52_5_16_NTC);
+            AddPacketIdEntry(packetIds, C2S_MY_ROOM_OTHER_ROOM_LAYOUT_UPDATE_REQ);
+            AddPacketIdEntry(packetIds, S2C_MY_ROOM_OTHER_ROOM_LAYOUT_UPDATE_RES);
+            AddPacketIdEntry(packetIds, S2C_MY_ROOM_OTHER_ROOM_LAYOUT_UPDATE_NTC);
             AddPacketIdEntry(packetIds, C2S_MY_ROOM_UPDATE_PLANETARIUM_REQ);
             AddPacketIdEntry(packetIds, S2C_MY_ROOM_UPDATE_PLANETARIUM_RES);
             AddPacketIdEntry(packetIds, C2S_MY_ROOM_GET_OTHER_ROOM_PERMISSION_REQ);

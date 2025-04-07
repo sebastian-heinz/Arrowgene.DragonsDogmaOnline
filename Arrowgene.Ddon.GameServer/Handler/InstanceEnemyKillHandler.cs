@@ -234,25 +234,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                                 var ntcs = _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp, RewardSource.Enemy, connectionIn: connectionIn);
                                 queuedPackets.AddRange(ntcs);
                             }
+
+                            queuedPackets.AddRange(Server.AchievementManager.HandleKillEnemy(memberClient, enemyKilled, connectionIn: connectionIn));
+
                         }
                         else if (member is PawnPartyMember pawnMember)
                         {
                             Pawn pawn = pawnMember.Pawn;
                             memberClient = _gameServer.ClientLookup.GetClientByCharacterId(pawn.CharacterId);
                             memberCharacter = pawn;
-                        if ((gainedExp.BasePoints + gainedExp.BonusPoints) > 0)
-                        {
-                            var ntcs = _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp, RewardSource.Enemy, connectionIn: connectionIn); 
-                            queuedPackets.AddRange(ntcs);
-                        }
-
-                        queuedPackets.AddRange(Server.AchievementManager.HandleKillEnemy(memberClient, enemyKilled, connectionIn:connectionIn));
-                    }
-                    else if (member is PawnPartyMember pawnMember)
-                    {
-                        Pawn pawn = pawnMember.Pawn;
-                        memberClient = _gameServer.ClientLookup.GetClientByCharacterId(pawn.CharacterId);
-                        memberCharacter = pawn;
 
                             if (memberClient is null || memberClient.Character.Stage.Id != stageId.Id || pawn.IsRented)
                             {
