@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .Where(recipes => recipes.Category == request.Category)
                 .Select(recipes => recipes.RecipeList)
                 .SingleOrDefault(new List<CraftingRecipe>())
-                .Where(x => Server.CraftManager.CheckUnlockableRecipe(client, x));
+                .Where(recipe => recipe.UnlockID == 0 || client.Character.UnlockableItems.Contains((UnlockableItemCategory.CraftingRecipe, recipe.UnlockID)));
 
             return new S2CCraftRecipeGetCraftRecipeRes
             {

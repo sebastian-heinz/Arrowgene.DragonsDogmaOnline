@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -18,6 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CCraftGetCraftProgressListRes Handle(GameClient client, C2SCraftGetCraftProgressListReq request)
         {
             S2CCraftGetCraftProgressListRes res = new S2CCraftGetCraftProgressListRes();
+            HashSet<uint> createdRecipes = new();
 
             foreach (Pawn pawn in client.Character.Pawns)
             {
@@ -68,7 +70,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     res.CraftProgressList.Add(CDataCraftProgress);
                     if (craftProgress.RemainTime == 0)
                     {
-                        res.CreatedRecipeList.Add(new CDataCommonU32(CDataCraftProgress.RecipeId));
+                        createdRecipes.Add(CDataCraftProgress.RecipeId);
                     }
                     else
                     {
@@ -79,6 +81,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                 }
             }
+
+            // Furniture can only be crafted once.
+            createdRecipes.UnionWith(Server.AssetRepository.CraftingRecipesAsset
+                    .Where(recipes => recipes.Category == RecipeCategory.Furniture)
+                    .SelectMany(recipes => recipes.RecipeList)
+                    .Where(recipe => client.Character.UnlockableItems.Contains((UnlockableItemCategory.FurnitureItem, recipe.ItemID)))
+                    .Select(recipe => recipe.RecipeID));
+
+            // Hopefully this is not super slow or pushes up against the packet limit.
+            foreach (var item in client.Character.AchievementUniqueCrafts.Values.SelectMany(x => x))
+            {
+                var itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, (uint)item);
+                createdRecipes.UnionWith(Server.AssetRepository.CraftingRecipesAsset
+                    .Where(x => x.Category == itemInfo?.RecipeCategory)
+                    .SelectMany(x => x.RecipeList)
+                    .Where(recipe => recipe.ItemID == (uint)item)
+                    .Select(x => x.RecipeID));
+            }
+
+            res.CreatedRecipeList.AddRange(createdRecipes.Select(x => new CDataCommonU32(x)));
 
             return res;
         }

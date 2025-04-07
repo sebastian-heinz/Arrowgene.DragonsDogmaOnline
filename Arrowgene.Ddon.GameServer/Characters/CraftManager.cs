@@ -511,27 +511,5 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .Select(x => (ItemId) x.ItemId)
                 .FirstOrDefault(itemId);
         }
-
-        public bool CheckUnlockableRecipe(GameClient client, CraftingRecipe recipe)
-        {
-            ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(_server.AssetRepository.ClientItemInfos, recipe.ItemID);
-            if (itemInfo.Category == 6 && client.Character.UnlockableItems.Contains((UnlockableItemCategory.FurnitureItem, recipe.ItemID)))
-            {
-                // Cannot craft furniture a second time.
-                return false;
-            }
-            else if (recipe.UnlockID == 0)
-            {
-                return true;
-            }
-            else if (client.Character.UnlockableItems.Contains((UnlockableItemCategory.CraftingRecipe, recipe.UnlockID)))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
     }
 }

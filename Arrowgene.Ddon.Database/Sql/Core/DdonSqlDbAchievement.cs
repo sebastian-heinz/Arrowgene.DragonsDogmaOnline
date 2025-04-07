@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         };
 
         private readonly string SqlSelectAchievementUniqueCraft = $"SELECT {BuildQueryField(AchievementUniqueCraftFields)} FROM \"ddon_achievement_unique_crafts\" WHERE \"character_id\" = @character_id;";
-        private readonly string SqlInsertAchievementUniqueCraft = $"INSERT INTO \"ddon_achievement_unique_crafts\" ({BuildQueryField(AchievementUniqueCraftFields)}) VALUES ({BuildQueryInsert(AchievementProgressFields)}) ON CONFLICT DO NOTHING;";
+        private readonly string SqlInsertAchievementUniqueCraft = $"INSERT INTO \"ddon_achievement_unique_crafts\" ({BuildQueryField(AchievementUniqueCraftFields)}) VALUES ({BuildQueryInsert(AchievementUniqueCraftFields)}) ON CONFLICT DO NOTHING;";
 
         public Dictionary<(AchievementType, uint), uint> SelectAchievementProgress(uint characterId, DbConnection? connectionIn = null)
         {

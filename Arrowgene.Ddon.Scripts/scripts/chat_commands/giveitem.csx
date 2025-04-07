@@ -1,11 +1,10 @@
+using System.Collections;
+
 public class ChatCommand : IChatCommand
 {
     public override AccountStateType AccountState => AccountStateType.Admin;
     public override string CommandName            => "giveitem";
-    public override string HelpText               => "usage: `/giveitem <itemid> [amount?]` - Obtain items.";
-
-    private const uint DefaultAmount = 1;
-    private const bool DefaultToStorage = false;
+    public override string HelpText               => "usage: `/giveitem <itemid> [amount?] [force?]` - Obtain items.";
 
     public override void Execute(DdonGameServer server, string[] command, GameClient client, ChatMessage message, List<ChatResponse> responses)
     {
@@ -24,12 +23,12 @@ public class ChatCommand : IChatCommand
             }
             else
             {
-                responses.Add(ChatResponse.CommandError(client, $"Invalid itemId \"{command[0]}\". It must be a number"));
+                responses.Add(ChatResponse.CommandError(client, $"Invalid itemId \"{command[0]}\". It must be a number."));
                 return;
             }
         }
 
-        uint amount = DefaultAmount;
+        uint amount = 1;
         if (command.Length >= 2)
         {
             if (uint.TryParse(command[1], out uint parsedAmount))
@@ -38,7 +37,21 @@ public class ChatCommand : IChatCommand
             }
             else
             {
-                responses.Add(ChatResponse.CommandError(client, $"Invalid amount \"{command[1]}\". It must be a number"));
+                responses.Add(ChatResponse.CommandError(client, $"Invalid amount \"{command[1]}\". It must be a number."));
+                return;
+            }
+        }
+
+        bool force = false;
+        if (command.Length >= 3)
+        {
+            if (bool.TryParse(command[2], out bool parsedForce))
+            {
+                force = parsedForce;
+            }
+            else
+            {
+                responses.Add(ChatResponse.CommandError(client, $"Invalid force \"{command[2]}\". It must be a bool."));
                 return;
             }
         }
@@ -49,11 +62,19 @@ public class ChatCommand : IChatCommand
             return;
         }
 
-        client.Send(new S2CItemUpdateCharacterItemNtc()
+        var ntc = new S2CItemUpdateCharacterItemNtc()
         {
-            UpdateType = ItemNoticeType.StampBonus,
-            UpdateItemList = server.ItemManager.AddItem(server, client.Character, StorageType.ItemPost, itemId, amount),
-        });
+            UpdateType = ItemNoticeType.StampBonus
+        };
+
+        var (queue, isSpecial) = server.ItemManager.HandleSpecialItem(client, ntc, (ItemId)itemId, amount);
+        if (!isSpecial)
+        {
+            ntc.UpdateItemList.AddRange(server.ItemManager.AddItem(server, client.Character, StorageType.ItemPost, itemId, amount));
+        }
+
+        queue.Send();
+        client.Send(ntc);
     }
 }
 

@@ -12,10 +12,6 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataFurnitureLayout> FurnitureList { get; set; } = new();
         public CDataMyRoomOption MyRoomOption { get; set; } = new();
 
-        public S2CMyRoomFurnitureListGetRes()
-        {
-        }
-
         public class Serializer : PacketEntitySerializer<S2CMyRoomFurnitureListGetRes>
         {
             public override void Write(IBuffer buffer, S2CMyRoomFurnitureListGetRes obj)

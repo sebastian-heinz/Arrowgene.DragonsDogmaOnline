@@ -223,43 +223,51 @@ namespace Arrowgene.Ddon.GameServer.Characters
         // old = 'プレイポイント'
         // new = 'Play Point'
 
-        public PacketQueue GatherItem(GameClient client, S2CItemUpdateCharacterItemNtc ntc, InstancedGatheringItem gatheringItem, uint pickedGatherItems, DbConnection? connectionIn = null)
+        public (PacketQueue queue, bool IsSpecial) HandleSpecialItem(GameClient client, S2CItemUpdateCharacterItemNtc ntc, ItemId item, uint count, DbConnection? connectionIn = null)
         {
-            PacketQueue queue = new PacketQueue();
-            if (ItemIdWalletTypeAndQuantity.ContainsKey(gatheringItem.ItemId)) 
+            var itemInfo = ClientItemInfo.GetInfoForItemId(_Server.AssetRepository.ClientItemInfos, (uint)item);
+            if (ItemIdWalletTypeAndQuantity.ContainsKey(item))
             {
-                var walletTypeAndQuantity = ItemIdWalletTypeAndQuantity[gatheringItem.ItemId];
-                uint totalQuantityToAdd = walletTypeAndQuantity.Quantity * gatheringItem.ItemNum;
+                var walletTypeAndQuantity = ItemIdWalletTypeAndQuantity[item];
+                uint totalQuantityToAdd = walletTypeAndQuantity.Quantity * count;
 
                 ntc.UpdateWalletList.Add(
                     _Server.WalletManager.AddToWallet(client.Character, walletTypeAndQuantity.Type, totalQuantityToAdd, 0, connectionIn
                 ));
 
-                if (pickedGatherItems > gatheringItem.ItemNum)
-                {
-                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_ITEM_NUM, 
-                        $"Overflow error, trying to remove {pickedGatherItems} from stack of ID {gatheringItem.ItemId} x{gatheringItem.ItemNum}",
-                        critical:true);
-                }
-
-                gatheringItem.ItemNum -= pickedGatherItems;     
+                return (new(), true);
             }
-            else if (AreaPointItems.TryGetValue(gatheringItem.ItemId, out var pointArea))
+            else if (AreaPointItems.TryGetValue(item, out var pointArea))
             {
-                if (pickedGatherItems > gatheringItem.ItemNum)
-                {
-                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_ITEM_NUM,
-                        $"Overflow error, trying to remove {pickedGatherItems} from stack of ID {gatheringItem.ItemId} x{gatheringItem.ItemNum}",
-                        critical: true);
-                }
-
-                gatheringItem.ItemNum -= pickedGatherItems;
-
-                return _Server.AreaRankManager.AddAreaPoint(client, pointArea, (10 * pickedGatherItems, 0), connectionIn);
+                return (_Server.AreaRankManager.AddAreaPoint(client, pointArea, (10 * count, 0), connectionIn), true);
             }
-            else 
+            else if (itemInfo?.Category == 6 || itemInfo?.Category == 7)
             {
-                List<CDataItemUpdateResult> results = AddItem(_Server, client.Character, true, (uint) gatheringItem.ItemId, pickedGatherItems, connectionIn:connectionIn);
+                PacketQueue queue = new();
+                client.Enqueue(new S2CItemAchievementRewardReceiveNtc()
+                {
+                    Unk0 = 2,
+                    Unk1 = 1,
+                    Unk2 = 7,
+                    ItemId = (uint)item
+                }, queue);
+                var unlockType = itemInfo.Category == 6 ? UnlockableItemCategory.FurnitureItem : UnlockableItemCategory.CraftingRecipe;
+                _Server.Database.InsertUnlockedItem(client.Character.CharacterId, unlockType, (uint)item, connectionIn);
+                return (queue, true);
+            }
+            else
+            {
+                return (new(), false);
+            }
+        }
+
+        public PacketQueue GatherItem(GameClient client, S2CItemUpdateCharacterItemNtc ntc, InstancedGatheringItem gatheringItem, uint pickedGatherItems, DbConnection? connectionIn = null)
+        {
+            //PacketQueue queue = new PacketQueue();
+            var (queue, isSpecial) = HandleSpecialItem(client, ntc, gatheringItem.ItemId, pickedGatherItems, connectionIn);
+            if (!isSpecial)
+            {
+                List<CDataItemUpdateResult> results = AddItem(_Server, client.Character, true, (uint)gatheringItem.ItemId, pickedGatherItems, connectionIn: connectionIn);
                 ntc.UpdateItemList.AddRange(results);
 
                 uint totalRemoved = (uint)results.Select(result => result.UpdateItemNum).Sum();
@@ -273,6 +281,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 gatheringItem.ItemNum -= totalRemoved;
             }
+
             return queue;
         }
 
