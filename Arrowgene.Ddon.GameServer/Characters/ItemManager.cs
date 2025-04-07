@@ -263,7 +263,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public PacketQueue GatherItem(GameClient client, S2CItemUpdateCharacterItemNtc ntc, InstancedGatheringItem gatheringItem, uint pickedGatherItems, DbConnection? connectionIn = null)
         {
-            //PacketQueue queue = new PacketQueue();
             var (queue, isSpecial) = HandleSpecialItem(client, ntc, gatheringItem.ItemId, pickedGatherItems, connectionIn);
             if (!isSpecial)
             {
@@ -280,6 +279,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
 
                 gatheringItem.ItemNum -= totalRemoved;
+            }
+            else
+            {
+                gatheringItem.ItemNum = 0;
             }
 
             return queue;
