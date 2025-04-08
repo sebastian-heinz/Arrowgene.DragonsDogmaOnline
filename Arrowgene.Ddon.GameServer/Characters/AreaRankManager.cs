@@ -66,7 +66,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             var requirements = Server.AssetRepository.AreaRankRequirementAsset[areaId];
 
-            if (rank >= requirements.Count())
+            if (rank >= requirements.Count)
             {
                 return 0;
             }

@@ -12,13 +12,7 @@
     },
     "area_id": "BetlandPlains",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 8,
-            "Param2": 12
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -47,34 +41,44 @@
                     "comment": "Disturbed Gargoyle",
                     "enemy_id": "0x010603",
                     "level": 63,
-                    "exp": 457,
-                    "named_enemy_params_id": 896
+                    "named_enemy_params_id": 896,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Disturbed Gargoyle",
                     "enemy_id": "0x010603",
                     "level": 63,
-                    "exp": 457,
-                    "named_enemy_params_id": 896
+                    "named_enemy_params_id": 896,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Disturbed Gargoyle",
                     "enemy_id": "0x010603",
                     "level": 63,
-                    "exp": 457,
-                    "named_enemy_params_id": 896
+                    "named_enemy_params_id": 896,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Disturbed Gargoyle",
                     "enemy_id": "0x010603",
                     "level": 63,
-                    "exp": 457,
-                    "named_enemy_params_id": 896
+                    "named_enemy_params_id": 896,
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 8,
+                    "Param2": 12
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {

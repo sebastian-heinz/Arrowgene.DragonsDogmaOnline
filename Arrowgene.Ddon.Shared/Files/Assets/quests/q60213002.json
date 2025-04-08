@@ -12,13 +12,7 @@
     },
     "area_id": "BloodbaneIsle",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 13,
-            "Param2": 14
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -47,34 +41,44 @@
                     "comment": "Infected Behemoth (Mild)",
                     "enemy_id": "0x015712",
                     "level": 68,
-                    "exp": 29625,
                     "is_boss": true,
-                    "infection_type": 1
+                    "infection_type": 1,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "enemy_id": "0x010160",
                     "level": 68,
-                    "exp": 1185
+                    "exp_scheme": "automatic"
                 },
                 {
                     "enemy_id": "0x010160",
                     "level": 68,
-                    "exp": 1185
+                    "exp_scheme": "automatic"
                 },
                 {
                     "enemy_id": "0x010160",
                     "level": 68,
-                    "exp": 1185
+                    "exp_scheme": "automatic"
                 },
                 {
                     "enemy_id": "0x010160",
                     "level": 68,
-                    "exp": 1185
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 13,
+                    "Param2": 14
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {

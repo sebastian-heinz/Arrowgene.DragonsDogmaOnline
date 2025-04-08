@@ -12,13 +12,7 @@
     },
     "area_id": "BetlandPlains",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 8,
-            "Param2": 9
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -46,48 +40,58 @@
                     "comment": "Gesomu the War Demon (General Orc)",
                     "enemy_id": "0x015830",
                     "level": 45,
-                    "exp": 1165,
-                    "named_enemy_params_id": 347
+                    "named_enemy_params_id": 347,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "War Demon's Lieutenant'",
                     "enemy_id": "0x015820",
                     "level": 45,
-                    "exp": 277,
-                    "named_enemy_params_id": 348
+                    "named_enemy_params_id": 348,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Troop of Shadows",
                     "enemy_id": "0x015801",
                     "level": 45,
-                    "exp": 277,
-                    "named_enemy_params_id": 353
+                    "named_enemy_params_id": 353,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Troop of Shadows",
                     "enemy_id": "0x015810",
                     "level": 45,
-                    "exp": 277,
-                    "named_enemy_params_id": 353
+                    "named_enemy_params_id": 353,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Troop of Shadows",
                     "enemy_id": "0x015811",
                     "level": 45,
-                    "exp": 277,
-                    "named_enemy_params_id": 353
+                    "named_enemy_params_id": 353,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Troop of Shadows",
                     "enemy_id": "0x015812",
                     "level": 45,
-                    "exp": 277,
-                    "named_enemy_params_id": 353
+                    "named_enemy_params_id": 353,
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 8,
+                    "Param2": 9
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {

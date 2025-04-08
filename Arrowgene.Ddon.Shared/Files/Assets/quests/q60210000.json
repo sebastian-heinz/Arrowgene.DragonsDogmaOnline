@@ -12,13 +12,7 @@
     },
     "area_id": "ZandoraWastelands",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 10,
-            "Param2": 12
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -47,14 +41,24 @@
                     "comment": "Black Sea Eagle of the Ruined Site (Black Griffin)",
                     "enemy_id": "0x015303",
                     "level": 70,
-                    "exp": 6840,
                     "is_boss": true,
-                    "named_enemy_params_id": 901
+                    "named_enemy_params_id": 901,
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 10,
+                    "Param2": 12
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {

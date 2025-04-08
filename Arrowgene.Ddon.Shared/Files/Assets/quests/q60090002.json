@@ -12,13 +12,7 @@
     },
     "area_id": "NorthernBetlandPlains",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 9,
-            "Param2": 9
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -46,14 +40,24 @@
                     "comment": "Bifang Military Dragon Behemoth (Behemoth)",
                     "enemy_id": "0x015709",
                     "level": 52,
-                    "exp": 8624,
                     "is_boss": true,
-                    "named_enemy_params_id": 240
+                    "named_enemy_params_id": 240,
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 9,
+                    "Param2": 9
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {

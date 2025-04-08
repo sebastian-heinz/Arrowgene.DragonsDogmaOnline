@@ -12,13 +12,7 @@
     },
     "area_id": "BetlandPlains",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 8,
-            "Param2": 4
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -47,32 +41,42 @@
                     "comment": "Corpse-Eating Troll",
                     "enemy_id": "0x015040",
                     "level": 40,
-                    "exp": 3060,
                     "is_boss": true,
-                    "named_enemy_params_id": 345
+                    "named_enemy_params_id": 345,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Grimwarg",
                     "enemy_id": "0x010205",
                     "level": 40,
-                    "exp": 210
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Grimwarg",
                     "enemy_id": "0x010205",
                     "level": 40,
-                    "exp": 210
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Grimwarg",
                     "enemy_id": "0x010205",
                     "level": 40,
-                    "exp": 210
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 8,
+                    "Param2": 4
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {

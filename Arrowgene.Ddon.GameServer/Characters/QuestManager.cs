@@ -86,8 +86,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     gAreaTrialRanks[quest.QuestAreaId] = new Dictionary<uint, uint>();
                 }
 
-                var orderCondition = quest.OrderConditions.Where(x => x.Type == QuestOrderConditionType.AreaRank).First();
-                gAreaTrialRanks[quest.QuestAreaId][quest.QuestScheduleId] = (uint) orderCondition.Param02;
+                // Nightmarish
+                var requiredRank = quest.ToCDataQuestList(0).QuestProcessStateList.First().CheckCommandList.First().ResultCommandList.First().Param02;
+                gAreaTrialRanks[quest.QuestAreaId][quest.QuestScheduleId] = (uint) requiredRank;
             }
         }
 

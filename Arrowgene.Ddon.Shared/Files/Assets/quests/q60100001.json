@@ -12,13 +12,7 @@
     },
     "area_id": "ZandoraWastelands",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 10,
-            "Param2": 4
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -47,63 +41,73 @@
                     "comment": "Rusted Alchemized Goblin",
                     "enemy_id": "0x011122",
                     "level": 49,
-                    "exp": 244,
-                    "named_enemy_params_id": 250
+                    "named_enemy_params_id": 250,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Rusted Alchemized Goblin",
                     "enemy_id": "0x011121",
                     "level": 49,
-                    "exp": 244,
-                    "named_enemy_params_id": 250
+                    "named_enemy_params_id": 250,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Rusted Alchemized Goblin",
                     "enemy_id": "0x011122",
                     "level": 49,
-                    "exp": 244,
-                    "named_enemy_params_id": 250
+                    "named_enemy_params_id": 250,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Rusted Iron Giant Warrior (Damned Golem)",
                     "enemy_id": "0x015103",
                     "level": 49,
-                    "exp": 4617,
                     "is_boss": true,
-                    "named_enemy_params_id": 249
+                    "named_enemy_params_id": 249,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Rusted Alchemized Goblin",
                     "enemy_id": "0x011121",
                     "level": 49,
-                    "exp": 244,
-                    "named_enemy_params_id": 250
+                    "named_enemy_params_id": 250,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Rusted Alchemized Goblin",
                     "enemy_id": "0x011120",
                     "level": 49,
-                    "exp": 244,
-                    "named_enemy_params_id": 250
+                    "named_enemy_params_id": 250,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Rusted Alchemized Goblin",
                     "enemy_id": "0x011122",
                     "level": 49,
-                    "exp": 244,
-                    "named_enemy_params_id": 250
+                    "named_enemy_params_id": 250,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Rusted Alchemized Goblin",
                     "enemy_id": "0x011120",
                     "level": 49,
-                    "exp": 244,
-                    "named_enemy_params_id": 250
+                    "named_enemy_params_id": 250,
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 10,
+                    "Param2": 4
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {

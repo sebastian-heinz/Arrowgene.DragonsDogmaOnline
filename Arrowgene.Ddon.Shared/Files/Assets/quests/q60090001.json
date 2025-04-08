@@ -12,13 +12,7 @@
     },
     "area_id": "NorthernBetlandPlains",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 9,
-            "Param2": 4
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -46,35 +40,45 @@
                     "comment": "Drawan Immortal (Sword Undead)",
                     "enemy_id": "0x010503",
                     "level": 45,
-                    "exp": 165,
-                    "named_enemy_params_id": 360
+                    "named_enemy_params_id": 360,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Ossuary Ghoul (Ghoul)",
                     "enemy_id": "0x015503",
                     "level": 45,
-                    "exp": 3700,
                     "is_boss": true,
-                    "named_enemy_params_id": 359
+                    "named_enemy_params_id": 359,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Drawan Immortal (Sword Undead)",
                     "enemy_id": "0x010503",
                     "level": 45,
-                    "exp": 165,
-                    "named_enemy_params_id": 360
+                    "named_enemy_params_id": 360,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Drawan Immortal (Stout Undead)",
                     "enemy_id": "0x010502",
                     "level": 45,
-                    "exp": 185,
-                    "named_enemy_params_id": 360
+                    "named_enemy_params_id": 360,
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 9,
+                    "Param2": 4
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {

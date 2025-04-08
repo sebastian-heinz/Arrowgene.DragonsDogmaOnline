@@ -12,13 +12,7 @@
     },
     "area_id": "MergodaRuins",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 12,
-            "Param2": 12
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -46,41 +40,48 @@
                     "comment": "Remnant",
                     "enemy_id": "0x011026",
                     "level": 68,
-                    "exp": 330,
                     "named_enemy_params_id": 890,
-                    "hm_present_no": 65
-
+                    "hm_present_no": 65,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Remnant",
                     "enemy_id": "0x011026",
                     "level": 68,
-                    "exp": 330,
                     "named_enemy_params_id": 890,
-                    "hm_present_no": 65
-
+                    "hm_present_no": 65,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Remnant",
                     "enemy_id": "0x011027",
                     "level": 68,
-                    "exp": 330,
                     "named_enemy_params_id": 890,
-                    "hm_present_no": 66
-
+                    "hm_present_no": 66,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Remnant",
                     "enemy_id": "0x011023",
                     "level": 68,
-                    "exp": 330,
                     "named_enemy_params_id": 890,
-                    "hm_present_no": 62
+                    "hm_present_no": 62,
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 12,
+                    "Param2": 12
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {

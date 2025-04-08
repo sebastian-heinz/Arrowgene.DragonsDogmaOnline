@@ -7,16 +7,12 @@
     "base_level": 57,
     "minimum_item_rank": 0,
     "discoverable": false,
-    "stage_id": { "id": 25 },
+    "stage_id": {
+        "id": 25
+    },
     "area_id": "HidellPlains",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 1,
-            "Param2": 12
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -45,34 +41,44 @@
                     "comment": "Wandering Alchemized Skeleton",
                     "enemy_id": "0x010312",
                     "level": 57,
-                    "exp": 615,
-                    "named_enemy_params_id": 891
+                    "named_enemy_params_id": 891,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Wandering Alchemized Skeleton",
                     "enemy_id": "0x010312",
                     "level": 57,
-                    "exp": 615,
-                    "named_enemy_params_id": 891
+                    "named_enemy_params_id": 891,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Wandering Alchemized Skeleton",
                     "enemy_id": "0x010312",
                     "level": 57,
-                    "exp": 615,
-                    "named_enemy_params_id": 891
+                    "named_enemy_params_id": 891,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Wandering Alchemized Skeleton",
                     "enemy_id": "0x010312",
                     "level": 57,
-                    "exp": 615,
-                    "named_enemy_params_id": 891
+                    "named_enemy_params_id": 891,
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 1,
+                    "Param2": 12
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {
@@ -84,7 +90,9 @@
         {
             "type": "DiscoverEnemy",
             "announce_type": "Accept",
-            "groups": [ 0 ],
+            "groups": [
+                0
+            ],
             "result_commands": [
                 {
                     "type": "QstTalkChg",
@@ -98,7 +106,9 @@
             "announce_type": "Update",
             "caution": true,
             "reset_group": false,
-            "groups": [ 0 ]
+            "groups": [
+                0
+            ]
         },
         {
             "type": "TalkToNpc",

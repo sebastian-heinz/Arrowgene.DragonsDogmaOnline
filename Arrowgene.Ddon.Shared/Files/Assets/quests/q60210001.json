@@ -1,7 +1,7 @@
 {
     "state_machine": "GenericStateMachine",
     "type": "Tutorial",
-    "comment": "Zandora Wastelands Trial: 赤き十字架の礎 (Zandora Wastelands AR15)",
+    "comment": "Zandora Wastelands Trial: \u8d64\u304d\u5341\u5b57\u67b6\u306e\u790e (Zandora Wastelands AR15)",
     "quest_id": 60210001,
     "next_quest": 0,
     "base_level": 70,
@@ -12,13 +12,7 @@
     },
     "area_id": "ZandoraWastelands",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 10,
-            "Param2": 14
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -46,14 +40,24 @@
                     "comment": "Beast Devourer Gigant Machina",
                     "enemy_id": "0x015850",
                     "level": 70,
-                    "exp": 38375,
                     "is_boss": true,
-                    "named_enemy_params_id": 914
+                    "named_enemy_params_id": 914,
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 10,
+                    "Param2": 14
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {

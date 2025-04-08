@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class AreaAreaRankUpHandler : GameRequestPacketQueueHandler<C2SAreaAreaRankUpReq, S2CAreaAreaRankUpRes>
+    public class AreaAreaRankUpHandler : GameRequestPacketHandler<C2SAreaAreaRankUpReq, S2CAreaAreaRankUpRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(AreaAreaRankUpHandler));
 
@@ -19,10 +19,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        public override PacketQueue Handle(GameClient client, C2SAreaAreaRankUpReq request)
+        public override S2CAreaAreaRankUpRes Handle(GameClient client, C2SAreaAreaRankUpReq request)
         {
 
-            PacketQueue packetQueue = new PacketQueue();
             S2CAreaAreaRankUpRes res = new();
             AreaRank clientRank = client.Character.AreaRanks.GetValueOrDefault(request.AreaId)
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_AREAMASTER_AREA_INFO_NOT_FOUND);
@@ -33,18 +32,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 HandleRankUp(client, request.AreaId, clientRank, res);
             } while (Server.AreaRankManager.CanRankUp(client, request.AreaId));
             
-            client.Enqueue(res, packetQueue);
-
-            // Allow for further levelups.
-            if (Server.AreaRankManager.CanRankUp(client, request.AreaId))
-            {
-                client.Enqueue(new S2CAreaRankUpReadyNtc()
-                {
-                    AreaRankList = new() { new() { AreaId = request.AreaId, Rank = clientRank.Rank + 1 } }
-                }, packetQueue);
-            }
-
-            return packetQueue;
+            return res;
         }
 
         private void HandleRankUp(GameClient client, QuestAreaId areaId, AreaRank clientRank, S2CAreaAreaRankUpRes res)
@@ -68,10 +56,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (Server.GameSettings.GameServerSettings.EnableAreaRankSpotLocks)
             {
-                res.ReleaseList = Server.AssetRepository.AreaRankSpotInfoAsset[areaId]
+                res.ReleaseList.AddRange(Server.AssetRepository.AreaRankSpotInfoAsset[areaId]
                 .Where(x => x.UnlockRank == clientRank.Rank)
                 .Select(x => new CDataCommonU32(x.SpotId))
-                .ToList();
+                .ToList());
             }
 
             Server.Database.ExecuteInTransaction(connection =>

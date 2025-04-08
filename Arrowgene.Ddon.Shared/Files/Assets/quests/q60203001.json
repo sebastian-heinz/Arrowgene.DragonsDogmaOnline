@@ -7,16 +7,12 @@
     "base_level": 70,
     "minimum_item_rank": 0,
     "discoverable": false,
-    "stage_id": { "id": 24 },
+    "stage_id": {
+        "id": 24
+    },
     "area_id": "MysreeForest",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 3,
-            "Param2": 14
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -44,49 +40,59 @@
                     "comment": "Tomb Death Knight",
                     "enemy_id": "0x010310",
                     "level": 70,
-                    "exp": 1535,
-                    "named_enemy_params_id": 917
+                    "named_enemy_params_id": 917,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Gravekeep's Beast (Shadow Chimera)'",
                     "enemy_id": "0x015203",
                     "level": 70,
-                    "exp": 38375,
                     "is_boss": true,
-                    "named_enemy_params_id": 906
+                    "named_enemy_params_id": 906,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Tomb Eliminator",
                     "enemy_id": "0x010508",
                     "level": 70,
-                    "exp": 1535,
-                    "named_enemy_params_id": 917
+                    "named_enemy_params_id": 917,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Tomb Eliminator",
                     "enemy_id": "0x010508",
                     "level": 70,
-                    "exp": 1535,
-                    "named_enemy_params_id": 917
+                    "named_enemy_params_id": 917,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Tomb Eliminator",
                     "enemy_id": "0x010508",
                     "level": 70,
-                    "exp": 1535,
-                    "named_enemy_params_id": 917
+                    "named_enemy_params_id": 917,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Tomb Eliminator",
                     "enemy_id": "0x010508",
                     "level": 70,
-                    "exp": 1535,
-                    "named_enemy_params_id": 917
+                    "named_enemy_params_id": 917,
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 3,
+                    "Param2": 14
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {
@@ -98,7 +104,9 @@
         {
             "type": "DiscoverEnemy",
             "announce_type": "Accept",
-            "groups": [ 0 ],
+            "groups": [
+                0
+            ],
             "result_commands": [
                 {
                     "comment": "Patricia idle dialogue.",
@@ -112,7 +120,9 @@
             "type": "KillGroup",
             "announce_type": "Update",
             "reset_group": false,
-            "groups": [ 0 ]
+            "groups": [
+                0
+            ]
         },
         {
             "type": "TalkToNpc",

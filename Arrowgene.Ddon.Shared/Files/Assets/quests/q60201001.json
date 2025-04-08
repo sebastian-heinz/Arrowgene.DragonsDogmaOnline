@@ -7,16 +7,12 @@
     "base_level": 57,
     "minimum_item_rank": 0,
     "discoverable": false,
-    "stage_id": { "id": 25 },
+    "stage_id": {
+        "id": 25
+    },
     "area_id": "HidellPlains",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 1,
-            "Param2": 14
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -44,42 +40,52 @@
                     "comment": "Assault-Type Goliath #1056",
                     "enemy_id": "0x015102",
                     "level": 57,
-                    "exp": 7626,
                     "named_enemy_params_id": 904,
-                    "is_boss": true
+                    "is_boss": true,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Alchemized Harpy",
                     "enemy_id": "0x010606",
                     "level": 57,
-                    "exp": 321,
-                    "is_required": false
+                    "is_required": false,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Alchemized Harpy",
                     "enemy_id": "0x010606",
                     "level": 57,
-                    "exp": 321,
-                    "is_required": false
+                    "is_required": false,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Alchemized Harpy",
                     "enemy_id": "0x010606",
                     "level": 57,
-                    "exp": 321,
-                    "is_required": false
+                    "is_required": false,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Alchemized Harpy",
                     "enemy_id": "0x010606",
                     "level": 57,
-                    "exp": 321,
-                    "is_required": false
+                    "is_required": false,
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 1,
+                    "Param2": 14
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {
@@ -91,7 +97,9 @@
         {
             "type": "DiscoverEnemy",
             "announce_type": "Accept",
-            "groups": [ 0 ],
+            "groups": [
+                0
+            ],
             "result_commands": [
                 {
                     "type": "QstTalkChg",
@@ -104,7 +112,9 @@
             "type": "KillGroup",
             "announce_type": "Update",
             "reset_group": false,
-            "groups": [ 0 ],
+            "groups": [
+                0
+            ],
             "caution": true
         },
         {

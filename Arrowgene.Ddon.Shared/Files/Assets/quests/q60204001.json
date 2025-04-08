@@ -7,16 +7,12 @@
     "base_level": 63,
     "minimum_item_rank": 0,
     "discoverable": false,
-    "stage_id": { "id": 80 },
+    "stage_id": {
+        "id": 80
+    },
     "area_id": "VoldenMines",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 4,
-            "Param2": 14
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -45,38 +41,48 @@
                     "comment": "Voldic Geo Golem",
                     "enemy_id": "0x015707",
                     "level": 63,
-                    "exp": 19380,
                     "is_boss": true,
-                    "named_enemy_params_id": 907
+                    "named_enemy_params_id": 907,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Sludgeman",
                     "enemy_id": "0x010510",
                     "level": 63,
-                    "exp": 775
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Sludgeman",
                     "enemy_id": "0x010510",
                     "level": 63,
-                    "exp": 775
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Sludgeman",
                     "enemy_id": "0x010510",
                     "level": 63,
-                    "exp": 775
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Sludgeman",
                     "enemy_id": "0x010510",
                     "level": 63,
-                    "exp": 775
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 4,
+                    "Param2": 14
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {
@@ -88,7 +94,9 @@
         {
             "type": "DiscoverEnemy",
             "announce_type": "Accept",
-            "groups": [ 0 ],
+            "groups": [
+                0
+            ],
             "result_commands": [
                 {
                     "comment": "Roy idle dialogue.",
@@ -103,7 +111,9 @@
             "announce_type": "Update",
             "reset_group": false,
             "caution": true,
-            "groups": [ 0 ]
+            "groups": [
+                0
+            ]
         },
         {
             "type": "TalkToNpc",

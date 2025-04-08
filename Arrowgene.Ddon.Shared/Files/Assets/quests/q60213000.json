@@ -12,13 +12,7 @@
     },
     "area_id": "BloodbaneIsle",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 13,
-            "Param2": 4
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -46,14 +40,24 @@
                     "comment": "Corrupted and Berserk Eagle (Infected Griffon)",
                     "enemy_id": "0x015306",
                     "level": 63,
-                    "exp": 22218,
                     "is_boss": true,
-                    "named_enemy_params_id": 902
+                    "named_enemy_params_id": 902,
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 13,
+                    "Param2": 4
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {

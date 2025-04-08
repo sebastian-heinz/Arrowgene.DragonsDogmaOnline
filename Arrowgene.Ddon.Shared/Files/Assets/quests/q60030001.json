@@ -7,16 +7,12 @@
     "base_level": 18,
     "minimum_item_rank": 0,
     "discoverable": false,
-    "stage_id": { "id": 24 },
+    "stage_id": {
+        "id": 24
+    },
     "area_id": "MysreeForest",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 3,
-            "Param2": 4
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -54,56 +50,66 @@
                     "comment": "Forest Goblin Fighter Ancient",
                     "enemy_id": "0x011101",
                     "level": 17,
-                    "exp": 64,
-                    "named_enemy_params_id": 213
+                    "named_enemy_params_id": 213,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Forest Goblin Fighter Ancient",
                     "enemy_id": "0x011101",
                     "level": 17,
-                    "exp": 64,
-                    "named_enemy_params_id": 213
+                    "named_enemy_params_id": 213,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Forest Goblin Fighter Ancient",
                     "enemy_id": "0x011101",
                     "level": 17,
-                    "exp": 64,
-                    "named_enemy_params_id": 213
+                    "named_enemy_params_id": 213,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Sling Forest Goblin Ancient",
                     "enemy_id": "0x011102",
                     "level": 17,
-                    "exp": 64,
-                    "named_enemy_params_id": 213
+                    "named_enemy_params_id": 213,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Sling Forest Goblin Ancient",
                     "enemy_id": "0x011102",
                     "level": 17,
-                    "exp": 64,
-                    "named_enemy_params_id": 213
+                    "named_enemy_params_id": 213,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Sling Forest Goblin Ancient",
                     "enemy_id": "0x011102",
                     "level": 17,
-                    "exp": 64,
-                    "named_enemy_params_id": 213
+                    "named_enemy_params_id": 213,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Old Grown Ent",
                     "enemy_id": "0x015031",
                     "level": 19,
-                    "exp": 2236,
                     "is_boss": true,
-                    "named_enemy_params_id": 212
+                    "named_enemy_params_id": 212,
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 3,
+                    "Param2": 4
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {
@@ -115,7 +121,9 @@
         {
             "type": "DiscoverEnemy",
             "announce_type": "Accept",
-            "groups": [ 0 ],
+            "groups": [
+                0
+            ],
             "result_commands": [
                 {
                     "comment": "Patricia idle dialogue.",
@@ -130,7 +138,9 @@
             "announce_type": "Update",
             "reset_group": false,
             "caution": true,
-            "groups": [ 0 ]
+            "groups": [
+                0
+            ]
         },
         {
             "type": "TalkToNpc",

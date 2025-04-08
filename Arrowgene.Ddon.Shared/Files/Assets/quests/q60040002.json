@@ -7,16 +7,12 @@
     "base_level": 40,
     "minimum_item_rank": 0,
     "discoverable": false,
-    "stage_id": { "id": 80 },
+    "stage_id": {
+        "id": 80
+    },
     "area_id": "VoldenMines",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 4,
-            "Param2": 9
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -45,38 +41,48 @@
                     "comment": "Harpy Grave Robber",
                     "enemy_id": "0x010600",
                     "level": 38,
-                    "exp": 72,
                     "is_boss": true,
-                    "named_enemy_params_id": 217
+                    "named_enemy_params_id": 217,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Harpy Grave Robber",
                     "enemy_id": "0x010600",
                     "level": 38,
-                    "exp": 72,
                     "is_boss": true,
-                    "named_enemy_params_id": 217
+                    "named_enemy_params_id": 217,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Harpy Grave Robber",
                     "enemy_id": "0x010600",
                     "level": 38,
-                    "exp": 72,
                     "is_boss": true,
-                    "named_enemy_params_id": 217
+                    "named_enemy_params_id": 217,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Treasure Seeking Griffon",
                     "enemy_id": "0x015300",
                     "level": 40,
-                    "exp": 4500,
                     "is_boss": true,
-                    "named_enemy_params_id": 216
+                    "named_enemy_params_id": 216,
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 4,
+                    "Param2": 9
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {
@@ -88,7 +94,9 @@
         {
             "type": "DiscoverEnemy",
             "announce_type": "Accept",
-            "groups": [ 0 ],
+            "groups": [
+                0
+            ],
             "result_commands": [
                 {
                     "comment": "Roy idle dialogue.",
@@ -103,7 +111,9 @@
             "announce_type": "Update",
             "reset_group": false,
             "caution": true,
-            "groups": [ 0 ]
+            "groups": [
+                0
+            ]
         },
         {
             "type": "TalkToNpc",

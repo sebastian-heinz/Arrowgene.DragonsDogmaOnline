@@ -12,13 +12,7 @@
     },
     "area_id": "ZandoraWastelands",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 10,
-            "Param2": 9
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -47,14 +41,24 @@
                     "comment": "Wailing Mora (Nightmare)",
                     "enemy_id": "0x015305",
                     "level": 58,
-                    "exp": 17662,
                     "is_boss": true,
-                    "named_enemy_params_id": 263
+                    "named_enemy_params_id": 263,
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 10,
+                    "Param2": 9
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {
