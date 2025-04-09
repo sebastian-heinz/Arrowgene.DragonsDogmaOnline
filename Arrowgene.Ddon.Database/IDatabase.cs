@@ -96,6 +96,8 @@ namespace Arrowgene.Ddon.Database
         bool UpdateRentalPawnSlot(uint characterId, uint num);
         bool UpdateCharacterBinaryData(uint characterId, byte[] data);
         void CreateItems(DbConnection conn, Character character);
+        void CreateListItems(DbConnection conn, Character character, StorageType storageType, List<(uint ItemId, uint Amount)> itemList); 
+
         CDataCharacterSearchParam SelectCharacterNameById(uint characterId);
         CDataCharacterSearchParam SelectCharacterNameById(
             DbConnection connection,

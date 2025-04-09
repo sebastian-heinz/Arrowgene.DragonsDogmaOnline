@@ -119,7 +119,6 @@ namespace Arrowgene.Ddon.Shared.Model
         public List<Pawn> RentedPawns {  get; set; }
         public uint FavWarpSlotNum { get; set; }
         public List<ReleasedWarpPoint> ReleasedWarpPoints { get; set; }
-
         public BitterblackMazeProgress BbmProgress;
         public uint NextBBMStageId {  get; set; }
         public uint MaxBazaarExhibits { get; set; }

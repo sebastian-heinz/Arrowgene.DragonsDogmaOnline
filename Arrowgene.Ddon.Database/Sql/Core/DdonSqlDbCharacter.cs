@@ -592,6 +592,18 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }
         }
 
+        //Helper function to add specific items to a storage
+        public void CreateListItems(DbConnection conn, Character character, StorageType storageType, List<(uint ItemId, uint Amount)> itemList) 
+        {
+            var itemBagJob = character.Storage.GetAllStorages()[storageType];
+            foreach(var (itemId, quantity) in itemList) 
+            {
+                Item jobItem = new Item() { ItemId = itemId };
+                ushort slot = itemBagJob.AddItem(jobItem, quantity);
+                InsertStorageItem(character.ContentCharacterId, StorageType.ItemBagJob, slot, quantity, jobItem, conn);
+            }
+        }
+
         public Storages SelectAllStoragesByCharacterId(uint characterId)
         {
             using TCon connection = OpenNewConnection();
