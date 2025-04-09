@@ -114,23 +114,6 @@
         "enemy_ids": []
     },
     {
-        "item_id": 7790,
-        "comment": "Adds randomized gold drop of 10-200 gold to all enemies between level 1-10",
-        "min_num": 1,
-        "max_num": 20,
-        "drop_chance": 0.3,
-        "quest_ids": [],
-        "stage_ids": [],
-        "enemy_ids": [],
-        "requirements": {
-            "enemy_level": {
-                "constraint": "InRange",
-                "min_lv": 1,
-                "max_lv": 10
-            }
-        }
-    },
-    {
         "item_id": 17106,
         "comment": "Handpicked Cacao (Valentines Day 2017)",
         "min_num": 1,

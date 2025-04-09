@@ -36,7 +36,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             }
         }
 
-        static string GetNameBetweenBrackets(string input)
+        private static string GetNameBetweenBrackets(string input)
         {
             int start = input.IndexOf('<');
             int end = input.IndexOf('>');

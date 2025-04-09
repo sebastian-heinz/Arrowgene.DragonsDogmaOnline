@@ -3,8 +3,13 @@ using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
 {
-    public interface IGatheringGenerator
+    public abstract class IGatheringGenerator
     {
-        public List<InstancedGatheringItem> Generate(GameClient client, StageLayoutId stageId, uint index);
+        public virtual bool IsEnabled()
+        {
+            return true;
+        }
+
+        public abstract List<InstancedGatheringItem> Generate(GameClient client, StageLayoutId stageId, uint index);
     }
 }

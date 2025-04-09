@@ -21,6 +21,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             // client.Send(GameFull.Dump_132);
 
+            client.Character.AreaId = request.DistributeId;
+
             S2CQuestGetSetQuestListRes res = new S2CQuestGetSetQuestListRes();
 
             // Remove all world quests which have no progress made
