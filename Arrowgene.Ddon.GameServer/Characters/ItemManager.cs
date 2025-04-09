@@ -67,7 +67,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             // TODO: Requires special item notice type 47, could be offered in adventure pass shop
             {ItemId.CurrencyForResettingCraftP, (WalletType.ResetCraftSkills, 1)},
             {ItemId.SilverTicket, (WalletType.SilverTickets, 1) },
-            {ItemId.CustomMadeServiceTicket, (WalletType.CustomMadeServiceTickets, 1) }
+            {ItemId.CustomMadeServiceTicket, (WalletType.CustomMadeServiceTickets, 1) },
+            {ItemId.GoldenGemstone, (WalletType.GoldenGemstones, 1) }
             // TODO: Find all items that add wallet points
         };
 
