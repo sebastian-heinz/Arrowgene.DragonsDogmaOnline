@@ -125,7 +125,10 @@
                     "checkpoint": true,
                     "stage_id": {
                         "id": 336
-                    }
+                    },
+                    "contents_release": [
+                        { "type": "None", "flag_info": "CaveHarbor.BloodbaneIslePrecipice"}
+                    ]
                 },
                 {
                     "type": "NewTalkToNpc",

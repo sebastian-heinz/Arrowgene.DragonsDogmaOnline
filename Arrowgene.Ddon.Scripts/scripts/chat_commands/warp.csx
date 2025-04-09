@@ -51,6 +51,7 @@ public class ChatCommand : IChatCommand
             responses.Add(ChatResponse.CommandError(client, $"Missing base quest."));
             return;
         }
+
         var questResultCommands = new List<CDataQuestCommand>()
         {
             QuestManager.ResultCommand.StageJump((uint)stageNo, startingLocation)

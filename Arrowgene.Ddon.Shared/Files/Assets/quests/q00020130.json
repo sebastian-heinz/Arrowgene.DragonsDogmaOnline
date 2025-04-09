@@ -62,7 +62,7 @@
                     "exp": 197000,
                     "named_enemy_params_id": 942,
                     "is_boss": true,
-					"is_boss_bgm": true
+                    "is_boss_bgm": true
                 }
             ]
         }
@@ -164,7 +164,8 @@
                     "stage_id": {
                         "id": 361
                     },
-                    "event_id": 5
+                    "event_id": 5,
+                    "bgm_stop": true
                 },
                 {
                     "type": "PartyGather",

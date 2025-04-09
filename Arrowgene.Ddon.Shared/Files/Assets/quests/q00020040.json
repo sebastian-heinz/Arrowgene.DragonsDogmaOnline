@@ -18,7 +18,7 @@
         }
     ],
     "contents_release": [
-        { "type": "BloodbaneIsleWorldQuests" }
+        { "type": "BloodbaneIsleWorldQuests", "flag_info": "NpcFunctions.BloodbaneAreaInfo"}
     ],
     "rewards": [
         {

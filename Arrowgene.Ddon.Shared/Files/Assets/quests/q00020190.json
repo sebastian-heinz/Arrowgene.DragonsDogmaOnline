@@ -18,7 +18,7 @@
         }
     ],
     "contents_release": [
-        { "type": "KingalCanyonWorldQuests" }
+        { "type": "KingalCanyonWorldQuests", "flag_info": "NpcFunctions.KingalCanyonAreaInfo" }
     ],
     "rewards": [
         {
@@ -88,6 +88,14 @@
                             "value": 3957,
                             "comment": "Cecily, Gurdolin, Lise and Elliot"
                         }
+                    ],
+                    "contents_release": [
+                        {
+                            "flag_info": "FaranaPlains.KingalCanyonBorderCheckpoint"
+                        },
+                        {
+                            "flag_info": "KingalCanyon.GlyndwrGates"
+                        }
                     ]
                 },
                 {
@@ -135,7 +143,10 @@
                     "checkpoint": true,
                     "stage_id": {
                         "id": 376
-                    }
+                    },
+                    "contents_release": [
+                        { "type": "None", "flag_info": "KingalCanyon.ShadoleanGreatTemple"}
+                    ]
                 },
                 {
                     "type": "NewTalkToNpc",

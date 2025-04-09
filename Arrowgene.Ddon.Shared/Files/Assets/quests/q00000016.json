@@ -226,7 +226,13 @@
                     "checkpoint": true,
                     "stage_id": {
                         "id": 68
-                    }
+                    },
+                    "contents_release": [
+                        {
+                            "type": "None",
+                            "flag_info": "Lestania.GardnoxFortress"
+                        }
+                    ]
                 },
                 {
                     "type": "OmInteractEvent",

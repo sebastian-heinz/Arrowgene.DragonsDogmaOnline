@@ -132,7 +132,13 @@
                         "x": 3353,
                         "y": 10072,
                         "z": -35198
-                    }
+                    },
+                    "contents_release": [
+                        {
+                            "type": "None",
+                            "flag_info": "Lestania.DreedCastle"
+                        }
+                    ]
                 },
                 {
                     "type": "Raw",

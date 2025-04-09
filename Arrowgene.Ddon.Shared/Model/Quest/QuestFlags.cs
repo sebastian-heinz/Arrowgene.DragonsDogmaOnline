@@ -198,7 +198,12 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             /// <summary>
             /// Controls if the portal to Bitterblack Maze is usable or not.
             /// </summary>
-            public static QuestFlagInfo BitterblackMazeEntrance { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(977, QuestId.Q70000001, StageInfo);
+            public static QuestFlagInfo BitterblackMazeEntrance { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(4978, QuestId.Q70032001);
+
+            /// <summary>
+            /// Controls if the portal in cave harbor can warp to Bloodbane Isle Precipice or not.
+            /// </summary>
+            public static QuestFlagInfo BloodbaneIslePrecipice { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1433, QuestId.Q70021001);
         }
 
         public static class Lestania
@@ -229,6 +234,31 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             /// Changes the entrance of The 2nd Ark to teleport the player to st0571.
             /// </summary>
             public static QuestFlagInfo The2ndArkQuest { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(2204, QuestId.Q70000001, StageInfo);
+
+            /// <summary>
+            /// Allows the player to enter Gardnox Fortress when set
+            /// </summary>
+            public static QuestFlagInfo GardnoxFortress { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(925, QuestId.Q70002001);
+
+            /// <summary>
+            /// Allows the player to enter Dreed Castle when set
+            /// </summary>
+            public static QuestFlagInfo DreedCastle { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(5186, QuestId.Q70034001);
+
+            /// <summary>
+            /// Allows the player to enter Mergoda Security District when set
+            /// </summary>
+            public static QuestFlagInfo MergodaSecurityDistrict { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(5187, QuestId.Q70034001);
+
+            /// <summary>
+            /// Allows the player to enter the Knights' Depot Ruins when set
+            /// </summary>
+            public static QuestFlagInfo KnightsDepotRuins { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1545, QuestId.Q70021001);
+
+            /// <summary>
+            /// Allows the player to enter "Temple of Purification: South Chamber" when set
+            /// </summary>
+            public static QuestFlagInfo TempleOfPurificationSouthChamber { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(926, QuestId.Q70000001);
         }
 
         public static class GardnoxFortress0
@@ -306,6 +336,62 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             public static QuestFlagInfo OpenLeverDoor { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(1672, QuestId.Q70000001, StageInfo);
         }
 
+        public static class ExpeditionGarrison
+        {
+            private static StageInfo StageInfo = Stage.ExpeditionGarrison;
+
+            /// <summary>
+            /// Unlocks the door to Bloodbane Isle Summit and opens the gate at (51,-28)
+            /// </summary>
+            public static QuestFlagInfo BloodbaneIsleSummit { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1489, QuestId.Q70021001);
+        }
+
+        public static class ElanWaterGrove
+        {
+            private static StageInfo StageInfo = Stage.ElanWaterGrove;
+
+            /// <summary>
+            /// Unlocks the Path to Morrow when set.
+            /// </summary>
+            public static QuestFlagInfo PathToMorrow { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1699, QuestId.Q70022001);
+        }
+
+        public static class FaranaPlains
+        {
+            private static StageInfo StageInfo = Stage.FaranaPlains0;
+
+            /// <summary>
+            /// Opens the gates around Dana when set.
+            /// </summary>
+            public static QuestFlagInfo DanaGate { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1698, QuestId.Q70022001);
+
+            /// <summary>
+            /// Unlocks the "Kingal Canyon Border Checkpoint" when set (from Dana to Glyndwr)
+            /// </summary>
+            public static QuestFlagInfo KingalCanyonBorderCheckpoint { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1703, QuestId.Q70022001);
+
+            /// <summary>
+            /// Unlocks the southern "Vegasa Corridor" entrance when set
+            /// </summary>
+            public static QuestFlagInfo VegasaCorridorSouth { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1997, QuestId.Q70023001);
+        }
+
+        public static class MorrowForest
+        {
+            private static StageInfo StageInfo = Stage.MorrowForest;
+
+            /// <summary>
+            /// Opens the Western Gate in Morfaul when set
+            /// </summary>
+            public static QuestFlagInfo MorfaulWestGate { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1999, QuestId.Q70022001);
+
+            /// <summary>
+            /// Unlocks the western "Vegasa Corridor" entrance when set
+            /// Morrow Forest
+            /// </summary>
+            public static QuestFlagInfo VegasaCorridorWest { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2402, QuestId.Q70023001);
+        }
+
         public static class MorfaulChiefsHome
         {
             private static StageInfo StageInfo = Stage.MorfaulChiefsHome;
@@ -319,6 +405,58 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             /// Placement of Geroid after clearing Season 2
             /// </summary>
             public static QuestFlagInfo Geroid1 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(4066, QuestId.Q70023001, StageInfo);
+        }
+
+        public static class KingalCanyon
+        {
+            private static StageInfo StageInfo = Stage.KingalCanyon;
+
+            /// <summary>
+            /// Opens the gates around Glyndwr when set
+            /// </summary>
+            public static QuestFlagInfo GlyndwrGates { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1998, QuestId.Q70022001);
+
+            /// <summary>
+            /// Unlocks "Shadolean Great Temple" when set (st0439).
+            /// </summary>
+            public static QuestFlagInfo ShadoleanGreatTemple { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(5184, QuestId.Q70034001);
+
+            /// <summary>
+            /// Unlocks the eastern "Vegasa Corridor" entrance when set
+            /// Kingal Canyon
+            /// </summary>
+            public static QuestFlagInfo VegasaCorridorEast { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2400, QuestId.Q70023001);
+        }
+
+        public static class TowerOfIvanos
+        {
+            private static StageInfo StageInfo = Stage.TowerofIvanos;
+
+            /// <summary>
+            /// Unlocks the quest board in the Tower of Ivanos when set.
+            /// </summary>
+            public static QuestFlagInfo QuestBoard { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2246, QuestId.Q70023001);
+        }
+
+        public static class HollowOfBeginnings
+        {
+            /// <summary>
+            /// Unlocks "Hollow Of Beginnings GatheringArea" in Stage.HollowofBeginnings0 when set.
+            /// </summary>
+            public static QuestFlagInfo HollowOfBeginningsGatheringArea { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2182, QuestId.Q70023001);
+
+            /// <summary>
+            /// Unlocks "Valtable Hall" in Stage.HollowofBeginnings0 when set
+            /// </summary>
+            public static QuestFlagInfo ValtableHall { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2183, QuestId.Q70023001);
+        }
+
+        public static class ValtableHall
+        {
+            /// <summary>
+            /// Unlocks "Valtable Hall Upper Area" when set.
+            /// </summary>
+            public static QuestFlagInfo ValtableHallUpperArea { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2184, QuestId.Q70023001);
         }
 
         public static class RathniteFoothills
@@ -421,6 +559,57 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             /// Unlocks the NPC option "Dragon Armor Appraisal" at the NPC Craig.
             /// </summary>
             public static QuestFlagInfo DragonArmorAppraisal { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(5380, QuestId.Q70034001);
+
+            /// <summary>
+            /// Unlocks the NPC option "Area Information" for the NPC Bertrand in BBI
+            /// </summary>
+            public static QuestFlagInfo BloodbaneAreaInfo { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1479, QuestId.Q70020001);
+
+            /// <summary>
+            /// Unlocks the NPC option "Area Information" for the NPC Musel in Elan Water Grove (Protector's Retreat)
+            /// </summary>
+            public static QuestFlagInfo ElanWaterGroveAreaInfo { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1709, QuestId.Q70022001);
+
+            /// <summary>
+            /// Unlocks the NPC option "Area Information" for the NPC Arthfael in Morrow Forest (Moarfaul Centrum)
+            /// </summary>
+            public static QuestFlagInfo MorrowForestAreaInfo { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1710, QuestId.Q70022001);
+
+            /// <summary>
+            /// Unlocks the NPC option "Area Information" for the NPC Razanailt in Farna Plains (Dana Centrum)
+            /// </summary>
+            public static QuestFlagInfo FaranaPlainsAreaInfo { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1711, QuestId.Q70022001);
+
+            /// <summary>
+            /// Unlocks the NPC option "Area Information" for the NPC Ciaran in Kingal Canyon (Glyndwr Centrum)
+            /// </summary>
+            public static QuestFlagInfo KingalCanyonAreaInfo { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1712, QuestId.Q70022001);
+
+            /// <summary>
+            /// Adds the NPC option "Extreme Mission" for the NPC Seneka
+            /// </summary>
+            public static QuestFlagInfo SenekaExm { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(761, QuestId.Q70004001);
+
+            /// <summary>
+            /// Adds the NPC option "Extreme Mission" for the NPC Issac
+            /// </summary>
+            public static QuestFlagInfo IsaacExm { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1524, QuestId.Q70020001);
+
+            /// <summary>
+            /// Adds the NPC option "Extreme Mission" for the NPC Doris
+            /// </summary>
+            public static QuestFlagInfo DorisExm { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(4410, QuestId.Q70032001);
+
+            /// <summary>
+            /// Adds the NPC option "Extreme Mission" for the NPC Endale
+            /// @warning the QuestId might be wrong, it is not in the packet capture
+            /// </summary>
+            public static QuestFlagInfo EndaleExm { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2922, QuestId.Q70031001);
+
+            /// <summary>
+            /// Adds the NPC option "Extreme Mission" for the NPC Nayajiku
+            /// </summary>
+            public static QuestFlagInfo NayajikuExm { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2923, QuestId.Q70031001);
         }
     }
 }

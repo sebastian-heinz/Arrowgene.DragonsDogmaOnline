@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_INTERNAL_ERROR, $"can not invite (invitedClient == client)");
             }
 
-            if (!invitedClient.Character.HasContentReleased(ContentsRelease.PartyPlayers))
+            if (client.GameMode == GameMode.Normal && !invitedClient.Character.HasContentReleased(ContentsRelease.PartyPlayers))
             {
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_CONTENTS_RELEASE_NOT_PARTY_PLAY_WITH_PLAYER, "unable to invite to party (party play not unlocked)");
             }

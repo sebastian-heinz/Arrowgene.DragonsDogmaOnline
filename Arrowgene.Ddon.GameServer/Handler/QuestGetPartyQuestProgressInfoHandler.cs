@@ -38,7 +38,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             
             foreach (var quest in pcap.QuestOrderList)
-            {                   
+            {
                 quest.QuestFlagList = leaderClient.Character.GetWorldManageQuestUnlocks((QuestId)quest.QuestId);
                 // TODO: This will probably break everything currently if cleared as all doors in the world will be closed
                 // TODO: Need to go track down all quests

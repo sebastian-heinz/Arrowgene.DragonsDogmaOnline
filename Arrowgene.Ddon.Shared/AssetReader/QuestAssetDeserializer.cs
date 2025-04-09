@@ -1218,17 +1218,20 @@ namespace Arrowgene.Ddon.Shared.AssetReader
         {
             foreach (var jContentsReleaseId in jContentsReleaseList.EnumerateArray())
             {
-                if (!Enum.TryParse(jContentsReleaseId.GetProperty("type").GetString(), true, out ContentsRelease contentsReleaseId))
+                var unlock = new QuestUnlock();
+
+                unlock.ReleaseId = ContentsRelease.None;
+                if (jContentsReleaseId.TryGetProperty("type", out JsonElement jReleaseId))
                 {
-                    Logger.Error($"Unable to parse contents release element. Skipping.");
-                    return false;
+                    if (!Enum.TryParse(jReleaseId.GetString(), true, out ContentsRelease releaseId))
+                    {
+                        Logger.Error($"Unable to parse contents release element. Skipping.");
+                        return false;
+                    }
+                    unlock.ReleaseId = releaseId;
                 }
 
-                var unlock = new QuestUnlock()
-                {
-                    ReleaseId = contentsReleaseId
-                };
-
+                unlock.TutorialId = TutorialId.None;
                 if (jContentsReleaseId.TryGetProperty("tutorial_id", out JsonElement jTutorialId))
                 {
                     if (!Enum.TryParse(jTutorialId.GetString(), true, out TutorialId tutorialId))
