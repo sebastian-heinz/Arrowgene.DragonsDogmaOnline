@@ -30,8 +30,6 @@ public class MonsterSpotInfo : IMonsterSpotInfo
                 .SetNamedEnemyParams(NamedParamId.OddsElite),
             LibDdon.Enemy.CreateAuto(EnemyId.OrcAimer, 37, 2)
                 .SetNamedEnemyParams(NamedParamId.OddsElite),
-            LibDdon.Enemy.CreateAuto(EnemyId.OrcAimer, 37, 3)
-                .SetNamedEnemyParams(NamedParamId.OddsElite),
             LibDdon.Enemy.CreateAuto(EnemyId.OrcAimer, 37, 4)
                 .SetNamedEnemyParams(NamedParamId.OddsElite),
         };

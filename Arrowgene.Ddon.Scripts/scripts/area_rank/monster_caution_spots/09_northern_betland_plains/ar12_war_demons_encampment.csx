@@ -20,7 +20,7 @@ public class MonsterSpotInfo : IMonsterSpotInfo
         var enemies = new List<InstancedEnemy>()
         {
             LibDdon.Enemy.CreateAuto(EnemyId.OrcBringer, 65, 0),
-            LibDdon.Enemy.CreateAuto(EnemyId.InfectedOrcSoldier, 65, 0)
+            LibDdon.Enemy.CreateAuto(EnemyId.InfectedOrcSoldier, 65, 1)
                 .SetNamedEnemyParams(NamedParamId.InfectionResistingWarDemon),
         };
 

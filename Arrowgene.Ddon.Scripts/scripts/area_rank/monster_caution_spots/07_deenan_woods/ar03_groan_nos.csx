@@ -26,11 +26,11 @@ public class MonsterSpotInfo : IMonsterSpotInfo
                 .AddDrop(ItemId.SilverOre, 1, 3, DropRate.UNCOMMON),
             LibDdon.Enemy.CreateAuto(EnemyId.GluttonOoze, 41, 1)
                 .SetNamedEnemyParams(NamedParamId.CrystalOfStagnation),
-            LibDdon.Enemy.CreateAuto(EnemyId.GluttonOoze, 41, 1)
+            LibDdon.Enemy.CreateAuto(EnemyId.GluttonOoze, 41, 2)
                 .SetNamedEnemyParams(NamedParamId.CrystalOfStagnation),
-            LibDdon.Enemy.CreateAuto(EnemyId.GluttonOoze, 41, 1)
+            LibDdon.Enemy.CreateAuto(EnemyId.GluttonOoze, 41, 3)
                 .SetNamedEnemyParams(NamedParamId.CrystalOfStagnation),
-            LibDdon.Enemy.CreateAuto(EnemyId.GluttonOoze, 41, 1)
+            LibDdon.Enemy.CreateAuto(EnemyId.GluttonOoze, 41, 4)
                 .SetNamedEnemyParams(NamedParamId.CrystalOfStagnation),
         });
     }
