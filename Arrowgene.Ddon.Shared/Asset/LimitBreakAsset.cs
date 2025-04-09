@@ -15,19 +15,29 @@ namespace Arrowgene.Ddon.Shared.Asset
         public List<LimitBreakCategory> Categories { get; set; }
     }
 
+    public class LimitStatLottery
+    {
+        public LimitStatLottery()
+        {
+            Rolls = new List<ushort>();
+        }
+        public uint MinGreatSuccessIndex { get; set; }
+        public List<ushort> Rolls { get; set; }
+    }
+
     public class LimitBreakCategory
     {
         public LimitBreakCategory()
         {
             ShopListings = new List<byte>();
             PaymentOptions = new List<(WalletType WalletType, string Label, uint Cost)>();
-            StatLottery = new List<List<ushort>>();
+            StatLottery = new List<LimitStatLottery>();
         }
 
         public ushort Key { get; set; }
         public byte Index { get; set; }
         public List<byte> ShopListings { get; set; }
         public List<(WalletType WalletType, string Label, uint Cost)> PaymentOptions { get; set; }
-        public List<List<ushort>> StatLottery { get; set; }
+        public List<LimitStatLottery> StatLottery { get; set; }
     }
 }

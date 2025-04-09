@@ -6,7 +6,7 @@
 
 public class MonsterSpotInfo : IMonsterSpotInfo
 {
-    public override StageLayoutId StageLayoutId => Stage.Lestania.AsStageLayoutId(91);
+    public override StageLayoutId StageLayoutId => Stage.LighthouseOldWell.AsStageLayoutId(4);
     public override QuestAreaId AreaId => QuestAreaId.BreyaCoast;
     public override uint RequiredAreaRank => 12;
 
@@ -19,13 +19,13 @@ public class MonsterSpotInfo : IMonsterSpotInfo
     {
         AddEnemies(new List<InstancedEnemy>()
         {
-            LibDdon.Enemy.Create(EnemyId.LargeNewt, 60, 18000, 0)
+            LibDdon.Enemy.CreateAuto(EnemyId.LargeNewt, 60, 0)
                 .SetNamedEnemyParams(NamedParamId.SparkBlue),
-            LibDdon.Enemy.Create(EnemyId.BlueNewt, 60, 15254, 0),
-            LibDdon.Enemy.Create(EnemyId.BlueNewt, 60, 15254, 0),
-            LibDdon.Enemy.Create(EnemyId.BlueNewt, 60, 15254, 0),
-            LibDdon.Enemy.Create(EnemyId.BlueNewt, 60, 15254, 0),
-            LibDdon.Enemy.Create(EnemyId.BlueNewt, 60, 15254, 0),
+            LibDdon.Enemy.CreateAuto(EnemyId.BlueNewt, 60, 1),
+            LibDdon.Enemy.CreateAuto(EnemyId.BlueNewt, 60, 2),
+            LibDdon.Enemy.CreateAuto(EnemyId.BlueNewt, 60, 3),
+            LibDdon.Enemy.CreateAuto(EnemyId.BlueNewt, 60, 4),
+            LibDdon.Enemy.CreateAuto(EnemyId.BlueNewt, 60, 5),
         });
     }
 }

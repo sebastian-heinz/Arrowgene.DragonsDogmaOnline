@@ -35,8 +35,6 @@ public class MonsterSpotInfo : IMonsterSpotInfo
                 .SetNamedEnemyParams(NamedParamId.BadgerMember),
             LibDdon.Enemy.CreateAuto(EnemyId.RogueFighter, 35, 4)
                 .SetNamedEnemyParams(NamedParamId.BadgerMember),
-            LibDdon.Enemy.CreateAuto(EnemyId.RogueHunter, 36, 6)
-                .SetNamedEnemyParams(NamedParamId.BadgerMember),
         };
 
         var dropsTable = LibDdon.Enemy.GetDropsTable(enemies[0]).Clone()
