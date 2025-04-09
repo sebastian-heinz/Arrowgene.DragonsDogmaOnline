@@ -41,7 +41,7 @@ namespace Arrowgene.Ddon.GameServer.Shop
                     {
                         lotteryCandidates.EffectParamList.Add(new CDataS2CEquipEnhancedGetPacksResUnk0Unk10Unk1()
                         {
-                            BuffId = stat.Last(),
+                            BuffId = stat.Rolls.Last(),
                             Unk1 = 1,
                             Unk2 = 2
                         });

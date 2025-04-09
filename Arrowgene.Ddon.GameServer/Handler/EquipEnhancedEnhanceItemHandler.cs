@@ -51,24 +51,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
 
                 var statRolls = category.StatLottery.OrderBy(x => Random.Shared.Next()).First();
-
-                var pityRoll = (statRolls.Count / 3);
-
-                var lowBias = !forceGreatSuccess ? // Improve odds if we have a great success
-                    Server.GameSettings.GameServerSettings.EquipmentLimitBreakBias : 
-                    Math.Min(2.0, Server.GameSettings.GameServerSettings.EquipmentLimitBreakBias);
-                var middleBias = !forceGreatSuccess ? // Try to increase chance of a middle pick in the range if forceGreatSuccess is true
-                    0.3 : 0.5; 
-
-                var statRoll = statRolls.GetWeightedRandomElement(lowBias, middleBias);
-
-                var index = statRolls.FindIndex(x => x == statRoll);
-                if (forceGreatSuccess && (index  < pityRoll))
-                {
-                    // If we still ended up with a bad roll, give the minimum
-                    // on the good side for this category
-                    statRoll = statRolls[pityRoll];
-                }
+                var statRoll = forceGreatSuccess ?
+                    statRolls.Rolls[Random.Shared.Next((int) statRolls.MinGreatSuccessIndex, statRolls.Rolls.Count)] :
+                    statRolls.Rolls.GetWeightedRandomElement(Server.GameSettings.GameServerSettings.EquipmentLimitBreakBias, 0.5);
 
                 var newAddStatusParam = new CDataAddStatusParam()
                 {

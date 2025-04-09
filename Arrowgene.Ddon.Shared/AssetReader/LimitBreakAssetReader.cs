@@ -52,12 +52,16 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                 foreach (var jStatList in jLotteryCategory.GetProperty("stats").EnumerateArray())
                 {
-                    var stats = new List<ushort>();
+                    var stat = new LimitStatLottery()
+                    {
+                        MinGreatSuccessIndex = jStatList.GetProperty("min_great_success_index").GetUInt32()
+                    };
+
                     foreach (var jId in jStatList.GetProperty("ids").EnumerateArray())
                     {
-                        stats.Add(jId.GetUInt16());
+                        stat.Rolls.Add(jId.GetUInt16());
                     }
-                    lotteryCategory.StatLottery.Add(stats);
+                    lotteryCategory.StatLottery.Add(stat);
                 }
 
                 asset.Categories.Add(lotteryCategory);
