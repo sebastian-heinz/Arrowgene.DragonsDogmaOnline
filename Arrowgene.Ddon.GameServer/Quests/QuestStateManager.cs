@@ -620,7 +620,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 client.Enqueue(updateCharacterItemNtc, packets);
             }
 
-            var scaledRewards = quest.ScaledExpRewards();
+            var scaledRewards = quest.BaseExpRewards();
             foreach (var point in scaledRewards)
             {
                 var amount = CalculateTotalPointAmount(server, client, point, quest.QuestType);

@@ -122,6 +122,32 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return result;
         }
 
+        public List<CDataQuestExp> BaseExpRewards()
+        {
+            var result = new List<CDataQuestExp>();
+            foreach (var pointReward in ExpRewards)
+            {
+                result.Add(new CDataQuestExp()
+                {
+                    Type = pointReward.Type,
+                    Reward = pointReward.Reward
+                });
+            }
+
+            if (AreaRankManager.GetAreaPointReward(this) > 0)
+            {
+                var areaRankPoints = AreaRankManager.GetAreaPointReward(this);
+                result.Add(new CDataQuestExp()
+                {
+                    Type = PointType.AreaPoints,
+                    Reward = areaRankPoints,
+                });
+            }
+
+            return result;
+
+        }
+
         public List<CDataQuestExp> ScaledExpRewards()
         {
             var result = new List<CDataQuestExp>();
@@ -548,7 +574,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             {
                 Param = param,
                 Contents = contents,
-                Detail = LightQuestDetail
+                Detail = LightQuestDetail.Clone()
             };
         }
 

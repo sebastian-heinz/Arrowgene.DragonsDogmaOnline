@@ -4,6 +4,11 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
     public class CDataLightQuestDetail
     {
+        public CDataLightQuestDetail Clone()
+        {
+            return (CDataLightQuestDetail)this.MemberwiseClone();
+        }
+
         /// <summary>
         /// Area associated with the quest reward reputation.
         /// </summary>
