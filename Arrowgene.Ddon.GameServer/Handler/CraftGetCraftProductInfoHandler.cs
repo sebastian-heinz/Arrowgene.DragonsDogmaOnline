@@ -45,7 +45,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     // TODO: This is not accurate to the original game but currently there is no other way to gain crafting reset points.
                     client.Enqueue(Server.WalletManager.AddToWalletNtc(client, client.Character, WalletType.ResetCraftSkills, 1, 0, ItemNoticeType.ResetCraftpoint, connection), queue);
                     Server.Database.UpdatePawnBaseInfo(leadPawn, connection);
-                    queue.AddRange(Server.AchievementManager.HandlePawnCraftingExam(client, leadPawn));
+                    queue.AddRange(Server.AchievementManager.HandlePawnCraftingExam(client, leadPawn, connection));
                 }
                 else
                 {
@@ -56,7 +56,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         if (CraftManager.CanPawnRankUp(leadPawn))
                         {
                             client.Enqueue(CraftManager.HandlePawnRankUpNtc(client, leadPawn), queue);
-                            queue.AddRange(Server.AchievementManager.HandlePawnCrafting(client, leadPawn));
+                            queue.AddRange(Server.AchievementManager.HandlePawnCrafting(client, leadPawn, connection));
                         }
 
                         Server.Database.UpdatePawnBaseInfo(leadPawn, connection);

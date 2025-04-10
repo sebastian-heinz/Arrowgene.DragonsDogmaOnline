@@ -9,8 +9,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
 {
     public class AchievementMigration : IMigrationStrategy
     {
-        public uint From => 33;
-        public uint To => 34;
+        public uint From => 34;
+        public uint To => 35;
 
         private readonly DatabaseSetting DatabaseSetting;
 

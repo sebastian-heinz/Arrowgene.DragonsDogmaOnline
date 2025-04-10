@@ -106,7 +106,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     if (CraftManager.CanPawnRankUp(leadPawn))
                     {
                         client.Enqueue(CraftManager.HandlePawnRankUpNtc(client, leadPawn), queue);
-                        queue.AddRange(Server.AchievementManager.HandlePawnCrafting(client, leadPawn));
+                        queue.AddRange(Server.AchievementManager.HandlePawnCrafting(client, leadPawn, connection));
                     }
                 }
                 else
