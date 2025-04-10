@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -73,34 +74,37 @@ namespace Arrowgene.Ddon.GameServer
 
         public void HandleStampBonuses(GameClient client, IEnumerable<CDataStampBonusAsset> stamps)
         {
-            List<CDataItemUpdateResult> totalItems = new List<CDataItemUpdateResult>();
-            List<CDataUpdateWalletPoint> totalWallet = new List<CDataUpdateWalletPoint>();
+            S2CItemUpdateCharacterItemNtc ntc = new();
+            PacketQueue queue = new();
+
             foreach (var entry in stamps)
             {
                 foreach (var bonus in entry.StampBonus)
                 {
+                    var (bonusQueue, isSpecial) = Server.ItemManager.HandleSpecialItem(client, ntc, (ItemId)bonus.BonusType, bonus.BonusValue);
+
                     // Currency
                     // Only the first five (GP, RP, BO, Silver Tickets, GP) seem to be valid items for display.
                     if (bonus.BonusType <= 5)
                     {
-                        totalWallet.Add(Server.WalletManager.AddToWallet(client.Character, (WalletType)bonus.BonusType, bonus.BonusValue));
+                        ntc.UpdateWalletList.Add(Server.WalletManager.AddToWallet(client.Character, (WalletType)bonus.BonusType, bonus.BonusValue));
+                    }
+                    else if (isSpecial)
+                    {
+                        queue.AddRange(bonusQueue);
                     }
                     else
                     {
-                        totalItems = totalItems.Concat(Server.ItemManager.AddItem(Server, client.Character, StorageType.ItemPost, bonus.BonusType, bonus.BonusValue)).ToList();
+                        ntc.UpdateItemList.AddRange(Server.ItemManager.AddItem(Server, client.Character, StorageType.ItemPost, bonus.BonusType, bonus.BonusValue));
                     }
                 }
             }
 
-            if (totalItems.Any() || totalWallet.Any())
+            if (ntc.UpdateWalletList.Any() || ntc.UpdateItemList.Any())
             {
-                client.Send(new S2CItemUpdateCharacterItemNtc()
-                {
-                    UpdateItemList = totalItems,
-                    UpdateWalletList = totalWallet,
-                    UpdateType = ItemNoticeType.StampBonus
-                });
+                client.Send(ntc);
             }
+            queue.Send();
         }
 
         static public bool CanResetConsecutiveStamp(CharacterStampBonus stampData)

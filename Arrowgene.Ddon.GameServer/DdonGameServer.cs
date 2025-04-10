@@ -86,9 +86,10 @@ namespace Arrowgene.Ddon.GameServer
             AreaRankManager = new AreaRankManager(this);
             GameTimeManager = new GameTimeManager(this);
             PartnerPawnManager = new PartnerPawnManager(this);
+            AchievementManager = new AchievementManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
-            OrbUnlockManager = new OrbUnlockManager(database, WalletManager, JobManager, CharacterManager);
+            OrbUnlockManager = new OrbUnlockManager(this);
 
             S2CStageGetStageListRes stageListPacket =
                 EntitySerializer.Get<S2CStageGetStageListRes>().Read(GameDump.data_Dump_19);
@@ -128,7 +129,7 @@ namespace Arrowgene.Ddon.GameServer
         public AreaRankManager AreaRankManager { get; }
         public GameTimeManager GameTimeManager { get; }
         public PartnerPawnManager PartnerPawnManager { get; }
-
+        public AchievementManager AchievementManager { get; }
         public ChatLogHandler ChatLogHandler { get; }
 
         public List<CDataStageInfo> StageList { get; }
@@ -330,6 +331,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new CraftGetCraftProgressListHandler(this));
             AddHandler(new CraftGetCraftSettingHandler(this));
             AddHandler(new CraftRecipeGetCraftRecipeHandler(this));
+            AddHandler(new CraftRecipeGetCraftRecipeDesignateHandler(this));
             AddHandler(new CraftStartCraftHandler(this));
             AddHandler(new CraftSkillUpHandler(this));
             AddHandler(new CraftGetCraftProductInfoHandler(this));
@@ -467,8 +469,13 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new MandragoraGetCraftRecipeListHandler(this));
             AddHandler(new MandragoraBeginCraftHandler(this));
 
+            AddHandler(new MyRoomFurnitureLayoutHandler(this));
             AddHandler(new MyRoomFurnitureListGetHandler(this));
+            AddHandler(new MyRoomGetOtherRoomPermissionHandler(this));
             AddHandler(new MyRoomMyRoomBgmUpdateHandler(this));
+            AddHandler(new MyRoomOtherRoomLayoutGetHandler(this));
+            AddHandler(new MyRoomOtherRoomLayoutUpdateHandler(this));
+            AddHandler(new MyRoomSetOtherRoomPermissionHandler(this));
             AddHandler(new MyRoomUpdatePlanetariumHandler(this));
 
             AddHandler(new NpcGetExtendedFacilityHandler(this));
@@ -538,8 +545,11 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new PhotoPhotoTakeHandler(this));
 
+            AddHandler(new ProfileGetAvailableBackgroundListHandler(this));
             AddHandler(new ProfileGetCharacterProfileHandler(this));
             AddHandler(new ProfileGetMyCharacterProfileHandler(this));
+            AddHandler(new ProfileSetArisenProfileHandler(this));
+            AddHandler(new ProfileSetMatchingProfileHandler(this));
 
             AddHandler(new Quest_11_60_16_Handler(this));
             AddHandler(new QuestCancelHandler(this));

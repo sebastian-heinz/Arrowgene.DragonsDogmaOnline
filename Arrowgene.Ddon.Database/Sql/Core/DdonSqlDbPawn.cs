@@ -482,6 +482,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     }
                 }
             );
+
+            pawn.PartnerPawnData = GetPartnerPawnRecord(pawn.CharacterId, pawn.PawnId, conn);
         }
 
         private void StorePawnData(TCon conn, Pawn pawn)
@@ -505,7 +507,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach ((JobId job, byte[] trainingStatus) in pawn.TrainingStatus)
             {
-                ReplacePawnTrainingStatus(conn, pawn.PawnId, job, trainingStatus);
+                ReplacePawnTrainingStatus(pawn.PawnId, job, trainingStatus, conn);
             }
         }
 

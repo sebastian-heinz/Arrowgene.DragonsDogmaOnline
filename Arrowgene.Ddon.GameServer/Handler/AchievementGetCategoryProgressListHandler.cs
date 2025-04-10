@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -10,21 +12,6 @@ public class AchievementGetCategoryProgressListHandler : GameRequestPacketHandle
 {
     private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(AchievementGetCategoryProgressListHandler));
 
-    private static readonly List<CDataAchievementProgress> AchievementProgressListCategory6 = new()
-    {
-        new()
-        {
-            AchieveIdentifier = new CDataAchievementIdentifier
-            {
-                UId = 2856,
-                Index = 1725
-            },
-            CurrentNum = 0,
-            Sequence = 0,
-            CompleteDate = 0
-        }
-    };
-
     public AchievementGetCategoryProgressListHandler(DdonGameServer server) : base(server)
     {
     }
@@ -33,7 +20,23 @@ public class AchievementGetCategoryProgressListHandler : GameRequestPacketHandle
     {
         S2CAchievementGetCategoryProgressListRes res = new S2CAchievementGetCategoryProgressListRes();
 
-        if (request.Category == 6) res.AchievementProgressList = AchievementProgressListCategory6;
+        var achievements = Server.AssetRepository.AchievementAsset.SelectMany(x => x.Value).Where(x => (byte)x.Category == request.Category);
+        var progress = Server.AchievementManager.CheckProgress(client, achievements);
+
+        res.AchievementProgressList = achievements.Zip(progress, (Achievement, Progress) => (Achievement, Progress))
+            .Select(z => 
+                new CDataAchievementProgress()
+                {
+                    AchieveIdentifier = new()
+                    {
+                        UId = z.Achievement.Id,
+                        Index = z.Achievement.SortId
+                    },
+                    CurrentNum = z.Progress,
+                    CompleteDate = client.Character.AchievementStatus.GetValueOrDefault(z.Achievement.Id, DateTimeOffset.MaxValue)
+                }
+            )
+            .ToList();
 
         return res;
     }

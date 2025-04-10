@@ -1,12 +1,12 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model.BattleContent;
-using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Model.Clan;
 using Arrowgene.Ddon.Shared.Model.EpitaphRoad;
+using Arrowgene.Ddon.Shared.Model.Quest;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
@@ -42,6 +42,12 @@ namespace Arrowgene.Ddon.Shared.Model
             EpitaphRoadState = new EpitaphRoadState();
             AreaRanks = new();
             AreaSupply = new();
+            AchievementProgress = new();
+            AchievementStatus = new();
+            AchievementUniqueCrafts = new();
+
+            UnlockableItems = new();
+
             PartnerTimerLockObj = new();
             ContentsReleased = new HashSet<ContentsRelease>();
             WorldManageUnlocks = new Dictionary<QuestId, List<QuestFlagInfo>>();
@@ -132,6 +138,12 @@ namespace Arrowgene.Ddon.Shared.Model
         public EpitaphRoadState EpitaphRoadState { get; set; }
         public Dictionary<QuestAreaId, AreaRank> AreaRanks { get; set; }
         public Dictionary<QuestAreaId, List<CDataRewardItemInfo>> AreaSupply { get; set; }
+
+        public Dictionary<(AchievementType, uint), uint> AchievementProgress { get; set; }
+        public Dictionary<uint, DateTimeOffset> AchievementStatus { get; set; }
+        public Dictionary<AchievementCraftTypeParam, HashSet<ItemId>> AchievementUniqueCrafts { get; set; }
+
+        public HashSet<(UnlockableItemCategory Category, uint Id)> UnlockableItems { get; set; }
 
         public HashSet<ContentsRelease> ContentsReleased { get; set; }
         public Dictionary<QuestId, List<QuestFlagInfo>> WorldManageUnlocks { get; set; }

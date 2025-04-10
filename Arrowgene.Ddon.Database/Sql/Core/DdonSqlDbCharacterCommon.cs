@@ -247,8 +247,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         common.LearnedAbilities.Add(ReadLearnedAbility(reader));
                     }
                 });
-
-
             ExecuteReader(conn, SqlSelectEquippedAbilities,
                 command => { AddParameter(command, "@character_common_id", common.CommonId); },
                 reader =>
@@ -271,6 +269,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         common.EquippedAbilitiesDictionary[equippedToJob][slotNo-1] = aug;
                     }
                 });
+
+            common.OrbRelease = SelectOrbReleaseElementFromDragonForceAugmentation(common.CommonId, conn);
         }
 
         private void StoreCharacterCommonData(TCon conn, CharacterCommon common)

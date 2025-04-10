@@ -1,0 +1,7096 @@
+{
+    "achievement_data": [
+        {
+            "category": 4,
+            "id": 2308,
+            "name": "The Appraiser's Client",
+            "type": "Appraisal",
+            "param": "",
+            "count": 10,
+            "reward": 13366,
+            "sort_id": 1
+        },
+        {
+            "category": 4,
+            "id": 2309,
+            "name": "Professional Connoisseur",
+            "type": "Appraisal",
+            "param": "",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 2
+        },
+        {
+            "category": 4,
+            "id": 2310,
+            "name": "Treasure Appraiser",
+            "type": "Appraisal",
+            "param": "",
+            "count": 100,
+            "reward": 16215,
+            "sort_id": 3
+        },
+        {
+            "category": 4,
+            "id": 1278,
+            "name": "Color Surveyor",
+            "type": "ChangeColor",
+            "param": "",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 4
+        },
+        {
+            "category": 4,
+            "id": 1279,
+            "name": "Fashionable Color Pioneer",
+            "type": "ChangeColor",
+            "param": "",
+            "count": 100,
+            "reward": 13365,
+            "sort_id": 5
+        },
+        {
+            "category": 4,
+            "id": 2529,
+            "name": "Color Planner",
+            "type": "ChangeColor",
+            "param": "",
+            "count": 200,
+            "reward": 16217,
+            "sort_id": 6
+        },
+        {
+            "category": 4,
+            "id": 2530,
+            "name": "Color Master",
+            "type": "ChangeColor",
+            "param": "",
+            "count": 500,
+            "reward": 16225,
+            "sort_id": 7
+        },
+        {
+            "category": 1,
+            "id": 2959,
+            "name": "Bitterblack Maze Beginner",
+            "type": "ClearBBM",
+            "param": "Abyss",
+            "count": 1,
+            "reward": 24750,
+            "sort_id": 8
+        },
+        {
+            "category": 1,
+            "id": 2960,
+            "name": "Extreme Bitterblack Maze",
+            "type": "ClearBBM",
+            "param": "Abyss",
+            "count": 3,
+            "reward": 24751,
+            "sort_id": 9
+        },
+        {
+            "category": 1,
+            "id": 2961,
+            "name": "I Love Bitterblack Maze",
+            "type": "ClearBBM",
+            "param": "Abyss",
+            "count": 10,
+            "reward": 24752,
+            "sort_id": 10
+        },
+        {
+            "category": 1,
+            "id": 2962,
+            "name": "Haunted by Bitterblack Maze",
+            "type": "ClearBBM",
+            "param": "Abyss",
+            "count": 30,
+            "reward": 24753,
+            "sort_id": 11
+        },
+        {
+            "category": 1,
+            "id": 2963,
+            "name": "Bitterblack Maze, Once More",
+            "type": "ClearBBM",
+            "param": "Abyss",
+            "count": 50,
+            "reward": 24754,
+            "sort_id": 12
+        },
+        {
+            "category": 1,
+            "id": 2964,
+            "name": "Extreme Bitterblack Maze Explorer",
+            "type": "ClearBBM",
+            "param": "Abyss",
+            "count": 100,
+            "reward": 24755,
+            "sort_id": 13
+        },
+        {
+            "category": 1,
+            "id": 2965,
+            "name": "I Want to Live in Bitterblack Maze",
+            "type": "ClearBBM",
+            "param": "Abyss",
+            "count": 200,
+            "reward": 24756,
+            "sort_id": 14
+        },
+        {
+            "category": 1,
+            "id": 2966,
+            "name": "Extreme Dark Arisen",
+            "type": "ClearBBM",
+            "param": "Abyss",
+            "count": 300,
+            "reward": 24811,
+            "sort_id": 15
+        },
+        {
+            "category": 1,
+            "id": 2939,
+            "name": "Beginning Bitterblack Maze",
+            "type": "ClearBBM",
+            "param": "Normal",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 16
+        },
+        {
+            "category": 1,
+            "id": 2940,
+            "name": "Endless Bitterblack Maze",
+            "type": "ClearBBM",
+            "param": "Normal",
+            "count": 3,
+            "reward": 21463,
+            "sort_id": 17
+        },
+        {
+            "category": 1,
+            "id": 2941,
+            "name": "Bitterblack Maze Love",
+            "type": "ClearBBM",
+            "param": "Normal",
+            "count": 10,
+            "reward": 21464,
+            "sort_id": 18
+        },
+        {
+            "category": 1,
+            "id": 2942,
+            "name": "Bitterblack Obsession",
+            "type": "ClearBBM",
+            "param": "Normal",
+            "count": 30,
+            "reward": 21465,
+            "sort_id": 19
+        },
+        {
+            "category": 1,
+            "id": 2943,
+            "name": "Bitterblack Maze, Again",
+            "type": "ClearBBM",
+            "param": "Normal",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 20
+        },
+        {
+            "category": 1,
+            "id": 2944,
+            "name": "Bitterblack Maze Traveler",
+            "type": "ClearBBM",
+            "param": "Normal",
+            "count": 100,
+            "reward": 21466,
+            "sort_id": 21
+        },
+        {
+            "category": 1,
+            "id": 2945,
+            "name": "Bitterblack Maze Dweller",
+            "type": "ClearBBM",
+            "param": "Normal",
+            "count": 200,
+            "reward": 21467,
+            "sort_id": 22
+        },
+        {
+            "category": 1,
+            "id": 2946,
+            "name": "Dark Arisen",
+            "type": "ClearBBM",
+            "param": "Normal",
+            "count": 300,
+            "reward": 21468,
+            "sort_id": 23
+        },
+        {
+            "category": 1,
+            "id": 450,
+            "name": "The Slumbering God",
+            "type": "ClearQuest",
+            "param": 2,
+            "count": 1,
+            "reward": 0,
+            "sort_id": 24
+        },
+        {
+            "category": 1,
+            "id": 519,
+            "name": "Soldiers of the Rift",
+            "type": "ClearQuest",
+            "param": 4,
+            "count": 1,
+            "reward": 0,
+            "sort_id": 25
+        },
+        {
+            "category": 1,
+            "id": 520,
+            "name": "The House of Steam",
+            "type": "ClearQuest",
+            "param": 7,
+            "count": 1,
+            "reward": 13317,
+            "sort_id": 26
+        },
+        {
+            "category": 1,
+            "id": 521,
+            "name": "The God's Awakening",
+            "type": "ClearQuest",
+            "param": 11,
+            "count": 1,
+            "reward": 13360,
+            "sort_id": 27
+        },
+        {
+            "category": 1,
+            "id": 522,
+            "name": "The Girl Clad in Darkness",
+            "type": "ClearQuest",
+            "param": 12,
+            "count": 1,
+            "reward": 13361,
+            "sort_id": 28
+        },
+        {
+            "category": 1,
+            "id": 523,
+            "name": "The Course of Life",
+            "type": "ClearQuest",
+            "param": 17,
+            "count": 1,
+            "reward": 13363,
+            "sort_id": 29
+        },
+        {
+            "category": 1,
+            "id": 525,
+            "name": "The Entrusted Future",
+            "type": "ClearQuest",
+            "param": 20,
+            "count": 1,
+            "reward": 0,
+            "sort_id": 30
+        },
+        {
+            "category": 1,
+            "id": 526,
+            "name": "The Quandary of Soldiers",
+            "type": "ClearQuest",
+            "param": 21,
+            "count": 1,
+            "reward": 0,
+            "sort_id": 31
+        },
+        {
+            "category": 1,
+            "id": 527,
+            "name": "The Great Alchemist",
+            "type": "ClearQuest",
+            "param": 24,
+            "count": 1,
+            "reward": 13319,
+            "sort_id": 32
+        },
+        {
+            "category": 1,
+            "id": 524,
+            "name": "A Brief Respite",
+            "type": "ClearQuest",
+            "param": 28,
+            "count": 1,
+            "reward": 0,
+            "sort_id": 33
+        },
+        {
+            "category": 1,
+            "id": 2285,
+            "name": "The Fate of Lestania",
+            "type": "ClearQuest",
+            "param": 20070,
+            "count": 1,
+            "reward": 13318,
+            "sort_id": 34
+        },
+        {
+            "category": 1,
+            "id": 2286,
+            "name": "The Entrusted One",
+            "type": "ClearQuest",
+            "param": 20140,
+            "count": 1,
+            "reward": 0,
+            "sort_id": 35
+        },
+        {
+            "category": 1,
+            "id": 2520,
+            "name": "Gallant Footsteps",
+            "type": "ClearQuest",
+            "param": 20190,
+            "count": 1,
+            "reward": 16213,
+            "sort_id": 36
+        },
+        {
+            "category": 1,
+            "id": 2287,
+            "name": "The Darkness of the Heart",
+            "type": "ClearQuest",
+            "param": 20200,
+            "count": 1,
+            "reward": 16221,
+            "sort_id": 37
+        },
+        {
+            "category": 1,
+            "id": 2288,
+            "name": "The New Generation",
+            "type": "ClearQuest",
+            "param": 20250,
+            "count": 1,
+            "reward": 16222,
+            "sort_id": 38
+        },
+        {
+            "category": 1,
+            "id": 2848,
+            "name": "Prince Nedo",
+            "type": "ClearQuest",
+            "param": 30070,
+            "count": 1,
+            "reward": 18759,
+            "sort_id": 39
+        },
+        {
+            "category": 1,
+            "id": 2849,
+            "name": "The Battle of Lookout Castle",
+            "type": "ClearQuest",
+            "param": 30130,
+            "count": 1,
+            "reward": 0,
+            "sort_id": 40
+        },
+        {
+            "category": 1,
+            "id": 2850,
+            "name": "The Final Battle of the Royal Capital",
+            "type": "ClearQuest",
+            "param": 30200,
+            "count": 1,
+            "reward": 21462,
+            "sort_id": 41
+        },
+        {
+            "category": 1,
+            "id": 2851,
+            "name": "Those Who Follow the Dragon",
+            "type": "ClearQuest",
+            "param": 30270,
+            "count": 1,
+            "reward": 21469,
+            "sort_id": 42
+        },
+        {
+            "category": 1,
+            "id": 2950,
+            "name": "Breakdown of Reason",
+            "type": "ClearQuest",
+            "param": 30410,
+            "count": 1,
+            "reward": 24759,
+            "sort_id": 43
+        },
+        {
+            "category": 1,
+            "id": 2951,
+            "name": "Spun Together Hope",
+            "type": "ClearQuest",
+            "param": 30420,
+            "count": 1,
+            "reward": 24762,
+            "sort_id": 44
+        },
+        {
+            "category": 1,
+            "id": 2952,
+            "name": "The White Dragons' Arisen",
+            "type": "ClearQuest",
+            "param": 30430,
+            "count": 1,
+            "reward": 24746,
+            "sort_id": 45
+        },
+        {
+            "category": 1,
+            "id": 2953,
+            "name": "The Fate of All",
+            "type": "ClearQuest",
+            "param": 30440,
+            "count": 1,
+            "reward": 24745,
+            "sort_id": 46
+        },
+        {
+            "category": 1,
+            "id": 2983,
+            "name": "Lestania Guardian",
+            "type": "ClearQuest",
+            "param": 21000056,
+            "count": 10,
+            "reward": 24774,
+            "sort_id": 47
+        },
+        {
+            "category": 1,
+            "id": 2984,
+            "name": "Lestania Faithful",
+            "type": "ClearQuest",
+            "param": 21000056,
+            "count": 50,
+            "reward": 24775,
+            "sort_id": 48
+        },
+        {
+            "category": 1,
+            "id": 2985,
+            "name": "Lestania Lover",
+            "type": "ClearQuest",
+            "param": 21000056,
+            "count": 100,
+            "reward": 24776,
+            "sort_id": 49
+        },
+        {
+            "category": 1,
+            "id": 2986,
+            "name": "Lestania Eternal",
+            "type": "ClearQuest",
+            "param": 21000056,
+            "count": 200,
+            "reward": 0,
+            "sort_id": 50
+        },
+        {
+            "category": 6,
+            "id": 2860,
+            "name": "War Mission \"Jifule Fortress Capture Battle\" Cleared!",
+            "type": "ClearQuest",
+            "param": 29300001,
+            "count": 1,
+            "reward": 18768,
+            "sort_id": 51
+        },
+        {
+            "category": 1,
+            "id": 2971,
+            "name": "Spirit Dragon Guardian",
+            "type": "ClearQuest",
+            "param": 50400001,
+            "count": 10,
+            "reward": 24748,
+            "sort_id": 52
+        },
+        {
+            "category": 1,
+            "id": 2972,
+            "name": "Spirit Dragon Faithful",
+            "type": "ClearQuest",
+            "param": 50400001,
+            "count": 50,
+            "reward": 24763,
+            "sort_id": 53
+        },
+        {
+            "category": 1,
+            "id": 2973,
+            "name": "Spirit Dragon Lover",
+            "type": "ClearQuest",
+            "param": 50400001,
+            "count": 100,
+            "reward": 24764,
+            "sort_id": 54
+        },
+        {
+            "category": 1,
+            "id": 2974,
+            "name": "Spirit Dragon Eternal",
+            "type": "ClearQuest",
+            "param": 50400001,
+            "count": 200,
+            "reward": 24765,
+            "sort_id": 55
+        },
+        {
+            "category": 1,
+            "id": 2979,
+            "name": "Fire Dragon Guardian",
+            "type": "ClearQuest",
+            "param": 50400003,
+            "count": 10,
+            "reward": 24770,
+            "sort_id": 56
+        },
+        {
+            "category": 1,
+            "id": 2980,
+            "name": "Fire Dragon Faithful",
+            "type": "ClearQuest",
+            "param": 50400003,
+            "count": 50,
+            "reward": 24771,
+            "sort_id": 57
+        },
+        {
+            "category": 1,
+            "id": 2981,
+            "name": "Fire Dragon Lover",
+            "type": "ClearQuest",
+            "param": 50400003,
+            "count": 100,
+            "reward": 24772,
+            "sort_id": 58
+        },
+        {
+            "category": 1,
+            "id": 2982,
+            "name": "Fire Dragon Eternal",
+            "type": "ClearQuest",
+            "param": 50400003,
+            "count": 200,
+            "reward": 24773,
+            "sort_id": 59
+        },
+        {
+            "category": 1,
+            "id": 2987,
+            "name": "White Dragon Guardian",
+            "type": "ClearQuest",
+            "param": 50400007,
+            "count": 10,
+            "reward": 24778,
+            "sort_id": 60
+        },
+        {
+            "category": 1,
+            "id": 2988,
+            "name": "White Dragon Faithful",
+            "type": "ClearQuest",
+            "param": 50400007,
+            "count": 50,
+            "reward": 24779,
+            "sort_id": 61
+        },
+        {
+            "category": 1,
+            "id": 2989,
+            "name": "White Dragon Lover",
+            "type": "ClearQuest",
+            "param": 50400007,
+            "count": 100,
+            "reward": 24780,
+            "sort_id": 62
+        },
+        {
+            "category": 1,
+            "id": 2990,
+            "name": "White Dragon Eternal",
+            "type": "ClearQuest",
+            "param": 50400007,
+            "count": 200,
+            "reward": 24781,
+            "sort_id": 63
+        },
+        {
+            "category": 1,
+            "id": 2995,
+            "name": "Arisen Guardian",
+            "type": "ClearQuest",
+            "param": 50400007,
+            "count": 10,
+            "reward": 24777,
+            "sort_id": 64
+        },
+        {
+            "category": 1,
+            "id": 2996,
+            "name": "Arisen Faithful",
+            "type": "ClearQuest",
+            "param": 50400007,
+            "count": 50,
+            "reward": 24769,
+            "sort_id": 65
+        },
+        {
+            "category": 1,
+            "id": 2997,
+            "name": "Arisen Lover",
+            "type": "ClearQuest",
+            "param": 50400007,
+            "count": 100,
+            "reward": 24785,
+            "sort_id": 66
+        },
+        {
+            "category": 1,
+            "id": 2998,
+            "name": "Arisen Eternal",
+            "type": "ClearQuest",
+            "param": 50400007,
+            "count": 200,
+            "reward": 24812,
+            "sort_id": 67
+        },
+        {
+            "category": 1,
+            "id": 2967,
+            "name": "Phindym Guardian",
+            "type": "ClearQuest",
+            "param": 50400008,
+            "count": 10,
+            "reward": 24758,
+            "sort_id": 68
+        },
+        {
+            "category": 1,
+            "id": 2968,
+            "name": "Phindym Faithful",
+            "type": "ClearQuest",
+            "param": 50400008,
+            "count": 50,
+            "reward": 24747,
+            "sort_id": 69
+        },
+        {
+            "category": 1,
+            "id": 2969,
+            "name": "Phindym Lover",
+            "type": "ClearQuest",
+            "param": 50400008,
+            "count": 100,
+            "reward": 24760,
+            "sort_id": 70
+        },
+        {
+            "category": 1,
+            "id": 2970,
+            "name": "Phindym Eternal",
+            "type": "ClearQuest",
+            "param": 50400008,
+            "count": 200,
+            "reward": 24761,
+            "sort_id": 71
+        },
+        {
+            "category": 1,
+            "id": 2975,
+            "name": "Acre Selund Guardian",
+            "type": "ClearQuest",
+            "param": 50400009,
+            "count": 10,
+            "reward": 24766,
+            "sort_id": 72
+        },
+        {
+            "category": 1,
+            "id": 2976,
+            "name": "Acre Selund Faithful",
+            "type": "ClearQuest",
+            "param": 50400009,
+            "count": 50,
+            "reward": 24767,
+            "sort_id": 73
+        },
+        {
+            "category": 1,
+            "id": 2977,
+            "name": "Acre Selund Lover",
+            "type": "ClearQuest",
+            "param": 50400009,
+            "count": 100,
+            "reward": 24768,
+            "sort_id": 74
+        },
+        {
+            "category": 1,
+            "id": 2978,
+            "name": "Acre Selund Eternal",
+            "type": "ClearQuest",
+            "param": 50400009,
+            "count": 200,
+            "reward": 0,
+            "sort_id": 75
+        },
+        {
+            "category": 1,
+            "id": 2991,
+            "name": "Realm Guardian",
+            "type": "ClearQuest",
+            "param": 50400011,
+            "count": 10,
+            "reward": 24782,
+            "sort_id": 76
+        },
+        {
+            "category": 1,
+            "id": 2992,
+            "name": "Realm Faithful",
+            "type": "ClearQuest",
+            "param": 50400011,
+            "count": 50,
+            "reward": 24783,
+            "sort_id": 77
+        },
+        {
+            "category": 1,
+            "id": 2993,
+            "name": "Realm Lover",
+            "type": "ClearQuest",
+            "param": 50400011,
+            "count": 100,
+            "reward": 24784,
+            "sort_id": 78
+        },
+        {
+            "category": 1,
+            "id": 2994,
+            "name": "Realm Eternal",
+            "type": "ClearQuest",
+            "param": 50400011,
+            "count": 200,
+            "reward": 24813,
+            "sort_id": 79
+        },
+        {
+            "category": 4,
+            "id": 2311,
+            "name": "Got a Nice Room",
+            "type": "ClearQuest",
+            "param": 60200000,
+            "count": 1,
+            "reward": 0,
+            "sort_id": 80
+        },
+        {
+            "category": 4,
+            "id": 2888,
+            "name": "Gardener",
+            "type": "ClearQuest",
+            "param": 60300000,
+            "count": 1,
+            "reward": 18751,
+            "sort_id": 81
+        },
+        {
+            "category": 4,
+            "id": 2889,
+            "name": "Beginning Breeder",
+            "type": "ClearQuest",
+            "param": 60300001,
+            "count": 1,
+            "reward": 18771,
+            "sort_id": 82
+        },
+        {
+            "category": 3,
+            "id": 2902,
+            "name": "Myrmidon Seminar Opening",
+            "type": "ClearQuest",
+            "param": 60300010,
+            "count": 1,
+            "reward": 18797,
+            "sort_id": 83
+        },
+        {
+            "category": 6,
+            "id": 2856,
+            "name": "Acre Selund \"Rathnite Foothills\" Restoration Accomplished!",
+            "type": "ClearQuest",
+            "param": 60300040,
+            "count": 1,
+            "reward": 0,
+            "sort_id": 84
+        },
+        {
+            "category": 6,
+            "id": 2861,
+            "name": "Acre Selund \"Feryana Wilderness\" Restoration Accomplished!",
+            "type": "ClearQuest",
+            "param": 60300041,
+            "count": 1,
+            "reward": 0,
+            "sort_id": 85
+        },
+        {
+            "category": 6,
+            "id": 2866,
+            "name": "Acre Selund \"Megadosys Plateau\" Restoration Accomplished!",
+            "type": "ClearQuest",
+            "param": 60300042,
+            "count": 1,
+            "reward": 0,
+            "sort_id": 86
+        },
+        {
+            "category": 6,
+            "id": 2871,
+            "name": "Acre Selund \"Urteca Mountains\" Restoration Accomplished!",
+            "type": "ClearQuest",
+            "param": 60300043,
+            "count": 1,
+            "reward": 0,
+            "sort_id": 87
+        },
+        {
+            "category": 6,
+            "id": 2852,
+            "name": "Area Mission \"Demon Army Tank Catoblepas\" Cleared!",
+            "type": "ClearQuest",
+            "param": 60318011,
+            "count": 1,
+            "reward": 18812,
+            "sort_id": 88
+        },
+        {
+            "category": 6,
+            "id": 2857,
+            "name": "Area Mission \"Into the Ancient Darkness\" Cleared!",
+            "type": "ClearQuest",
+            "param": 60319011,
+            "count": 1,
+            "reward": 18809,
+            "sort_id": 89
+        },
+        {
+            "category": 6,
+            "id": 2862,
+            "name": "Area Mission \"The Ruler Overwhelmed by Power\" Cleared!",
+            "type": "ClearQuest",
+            "param": 60320011,
+            "count": 1,
+            "reward": 0,
+            "sort_id": 90
+        },
+        {
+            "category": 6,
+            "id": 2867,
+            "name": "Area Mission \"Magick Called to the Deepest Depths \" Cleared!",
+            "type": "ClearQuest",
+            "param": 60321011,
+            "count": 1,
+            "reward": 0,
+            "sort_id": 91
+        },
+        {
+            "category": 6,
+            "id": 2855,
+            "name": "War Mission \"Dacreim Fortress Recapture Battle\" Cleared!",
+            "type": "ClearQuest",
+            "param": 90030100,
+            "count": 1,
+            "reward": 18792,
+            "sort_id": 92
+        },
+        {
+            "category": 6,
+            "id": 2865,
+            "name": "War Mission \"The Deathly Battle of the Forest of Mist\" Cleared!",
+            "type": "ClearQuest",
+            "param": 90030300,
+            "count": 1,
+            "reward": 0,
+            "sort_id": 93
+        },
+        {
+            "category": 6,
+            "id": 2870,
+            "name": "War Mission \"Resurrection of the Flame of Despair\" Cleared!",
+            "type": "ClearQuest",
+            "param": 90030400,
+            "count": 1,
+            "reward": 0,
+            "sort_id": 94
+        },
+        {
+            "category": 1,
+            "id": 2958,
+            "name": "Complete Demon Domination",
+            "type": "ClearQuest",
+            "param": 90040000,
+            "count": 50,
+            "reward": 24810,
+            "sort_id": 95
+        },
+        {
+            "category": 1,
+            "id": 528,
+            "name": "The Heart of a Recruit",
+            "type": "ClearQuestType",
+            "param": "Bounty",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 96
+        },
+        {
+            "category": 1,
+            "id": 529,
+            "name": "Contract Elimination",
+            "type": "ClearQuestType",
+            "param": "Bounty",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 97
+        },
+        {
+            "category": 1,
+            "id": 530,
+            "name": "Bounty Hunter",
+            "type": "ClearQuestType",
+            "param": "Bounty",
+            "count": 100,
+            "reward": 13316,
+            "sort_id": 98
+        },
+        {
+            "category": 1,
+            "id": 531,
+            "name": "Battle Elite",
+            "type": "ClearQuestType",
+            "param": "Bounty",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 99
+        },
+        {
+            "category": 1,
+            "id": 532,
+            "name": "The Executioner",
+            "type": "ClearQuestType",
+            "param": "Bounty",
+            "count": 600,
+            "reward": 16202,
+            "sort_id": 100
+        },
+        {
+            "category": 1,
+            "id": 533,
+            "name": "Reliable",
+            "type": "ClearQuestType",
+            "param": "Delivery",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 101
+        },
+        {
+            "category": 1,
+            "id": 534,
+            "name": "Reliable and Polite",
+            "type": "ClearQuestType",
+            "param": "Delivery",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 102
+        },
+        {
+            "category": 1,
+            "id": 535,
+            "name": "Reliable, Polite and Prompt",
+            "type": "ClearQuestType",
+            "param": "Delivery",
+            "count": 100,
+            "reward": 13368,
+            "sort_id": 103
+        },
+        {
+            "category": 1,
+            "id": 536,
+            "name": "Reliable, Polite, Prompt and with a Smile",
+            "type": "ClearQuestType",
+            "param": "Delivery",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 104
+        },
+        {
+            "category": 1,
+            "id": 537,
+            "name": "Reliable, Polite, Prompt, with a Smile and Gentlemanly",
+            "type": "ClearQuestType",
+            "param": "Delivery",
+            "count": 600,
+            "reward": 16203,
+            "sort_id": 105
+        },
+        {
+            "category": 1,
+            "id": 2292,
+            "name": "Extreme Arisen",
+            "type": "ClearQuestType",
+            "param": "Extreme",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 106
+        },
+        {
+            "category": 1,
+            "id": 2293,
+            "name": "Extreme Abolisher",
+            "type": "ClearQuestType",
+            "param": "Extreme",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 107
+        },
+        {
+            "category": 1,
+            "id": 2294,
+            "name": "Mr. Extreme",
+            "type": "ClearQuestType",
+            "param": "Extreme",
+            "count": 100,
+            "reward": 13362,
+            "sort_id": 108
+        },
+        {
+            "category": 1,
+            "id": 2523,
+            "name": "King Extreme",
+            "type": "ClearQuestType",
+            "param": "Extreme",
+            "count": 200,
+            "reward": 16210,
+            "sort_id": 109
+        },
+        {
+            "category": 1,
+            "id": 538,
+            "name": "Stranger",
+            "type": "ClearQuestType",
+            "param": "Hidden",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 110
+        },
+        {
+            "category": 1,
+            "id": 539,
+            "name": "Mystery Hunter",
+            "type": "ClearQuestType",
+            "param": "Hidden",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 111
+        },
+        {
+            "category": 1,
+            "id": 540,
+            "name": "World Watcher",
+            "type": "ClearQuestType",
+            "param": "Hidden",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 112
+        },
+        {
+            "category": 1,
+            "id": 1292,
+            "name": "Lestanian Explorer",
+            "type": "ClearQuestType",
+            "param": "Hidden",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 113
+        },
+        {
+            "category": 1,
+            "id": 2289,
+            "name": "Grand Apprentice",
+            "type": "ClearQuestType",
+            "param": "War",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 114
+        },
+        {
+            "category": 1,
+            "id": 2290,
+            "name": "Grand Life",
+            "type": "ClearQuestType",
+            "param": "War",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 115
+        },
+        {
+            "category": 1,
+            "id": 2291,
+            "name": "Grand Slam",
+            "type": "ClearQuestType",
+            "param": "War",
+            "count": 100,
+            "reward": 13364,
+            "sort_id": 116
+        },
+        {
+            "category": 1,
+            "id": 2522,
+            "name": "Grand Champion",
+            "type": "ClearQuestType",
+            "param": "War",
+            "count": 200,
+            "reward": 16218,
+            "sort_id": 117
+        },
+        {
+            "category": 1,
+            "id": 2954,
+            "name": "Beginner Hunter",
+            "type": "ClearQuestType",
+            "param": "WildHunt",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 118
+        },
+        {
+            "category": 1,
+            "id": 2955,
+            "name": "Strange Hunter",
+            "type": "ClearQuestType",
+            "param": "WildHunt",
+            "count": 30,
+            "reward": 24749,
+            "sort_id": 119
+        },
+        {
+            "category": 1,
+            "id": 2956,
+            "name": "World Hunter",
+            "type": "ClearQuestType",
+            "param": "WildHunt",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 120
+        },
+        {
+            "category": 1,
+            "id": 2957,
+            "name": "Wild Rank 999999999",
+            "type": "ClearQuestType",
+            "param": "WildHunt",
+            "count": 300,
+            "reward": 24757,
+            "sort_id": 121
+        },
+        {
+            "category": 1,
+            "id": 541,
+            "name": "Read the News",
+            "type": "ClearQuestType",
+            "param": "World",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 122
+        },
+        {
+            "category": 1,
+            "id": 542,
+            "name": "News Subscriber",
+            "type": "ClearQuestType",
+            "param": "World",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 123
+        },
+        {
+            "category": 1,
+            "id": 543,
+            "name": "World Information Gatherer",
+            "type": "ClearQuestType",
+            "param": "World",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 124
+        },
+        {
+            "category": 1,
+            "id": 544,
+            "name": "Witness of the Truth",
+            "type": "ClearQuestType",
+            "param": "World",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 125
+        },
+        {
+            "category": 1,
+            "id": 2521,
+            "name": "Peacemaker",
+            "type": "ClearQuestType",
+            "param": "World",
+            "count": 3000,
+            "reward": 16214,
+            "sort_id": 126
+        },
+        {
+            "category": 6,
+            "id": 2854,
+            "name": "Substory \"Save the Royal Family Cook\" Goal Accomplished!",
+            "type": "ClearSubstory",
+            "param": 1,
+            "count": 1,
+            "reward": 18762,
+            "sort_id": 127
+        },
+        {
+            "category": 6,
+            "id": 2859,
+            "name": "Substory \"Rescue the Genius Commander\" Goal Accomplished!",
+            "type": "ClearSubstory",
+            "param": 2,
+            "count": 1,
+            "reward": 18763,
+            "sort_id": 128
+        },
+        {
+            "category": 6,
+            "id": 2864,
+            "name": "Substory \"Expose the Dark Side to the One Operating behind the Scenes\" Goal Accomplished!",
+            "type": "ClearSubstory",
+            "param": 3,
+            "count": 1,
+            "reward": 18761,
+            "sort_id": 129
+        },
+        {
+            "category": 4,
+            "id": 1228,
+            "name": "Treasure Beginner",
+            "type": "CollectType",
+            "param": "Chest",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 130
+        },
+        {
+            "category": 4,
+            "id": 1229,
+            "name": "Treasure Hunter",
+            "type": "CollectType",
+            "param": "Chest",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 131
+        },
+        {
+            "category": 4,
+            "id": 1230,
+            "name": "Treasure Master",
+            "type": "CollectType",
+            "param": "Chest",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 132
+        },
+        {
+            "category": 4,
+            "id": 2525,
+            "name": "King of Treasure",
+            "type": "CollectType",
+            "param": "Chest",
+            "count": 1000,
+            "reward": 16206,
+            "sort_id": 133
+        },
+        {
+            "category": 4,
+            "id": 1231,
+            "name": "Gathering Scholar",
+            "type": "CollectType",
+            "param": "Herb",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 134
+        },
+        {
+            "category": 4,
+            "id": 1232,
+            "name": "Gathering Expert",
+            "type": "CollectType",
+            "param": "Herb",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 135
+        },
+        {
+            "category": 4,
+            "id": 1233,
+            "name": "Gathering Champion",
+            "type": "CollectType",
+            "param": "Herb",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 136
+        },
+        {
+            "category": 4,
+            "id": 2526,
+            "name": "King of Gather",
+            "type": "CollectType",
+            "param": "Herb",
+            "count": 1000,
+            "reward": 16207,
+            "sort_id": 137
+        },
+        {
+            "category": 4,
+            "id": 1234,
+            "name": "Beginner Miner",
+            "type": "CollectType",
+            "param": "Ore",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 138
+        },
+        {
+            "category": 4,
+            "id": 1235,
+            "name": "Mister Miner",
+            "type": "CollectType",
+            "param": "Ore",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 139
+        },
+        {
+            "category": 4,
+            "id": 1236,
+            "name": "Master Miner",
+            "type": "CollectType",
+            "param": "Ore",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 140
+        },
+        {
+            "category": 4,
+            "id": 2527,
+            "name": "King of Miners",
+            "type": "CollectType",
+            "param": "Ore",
+            "count": 1000,
+            "reward": 16208,
+            "sort_id": 141
+        },
+        {
+            "category": 4,
+            "id": 1237,
+            "name": "Rookie Lumberjack",
+            "type": "CollectType",
+            "param": "Wood",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 142
+        },
+        {
+            "category": 4,
+            "id": 1238,
+            "name": "Ace Lumberjack",
+            "type": "CollectType",
+            "param": "Wood",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 143
+        },
+        {
+            "category": 4,
+            "id": 1239,
+            "name": "Professional Lumberjack",
+            "type": "CollectType",
+            "param": "Wood",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 144
+        },
+        {
+            "category": 4,
+            "id": 2528,
+            "name": "King of Lumberjacks",
+            "type": "CollectType",
+            "param": "Wood",
+            "count": 1000,
+            "reward": 16209,
+            "sort_id": 145
+        },
+        {
+            "category": 4,
+            "id": 1247,
+            "name": "Armor Carpenter",
+            "type": "CraftType",
+            "param": "Armor",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 146
+        },
+        {
+            "category": 4,
+            "id": 1248,
+            "name": "The Armorer",
+            "type": "CraftType",
+            "param": "Armor",
+            "count": 30,
+            "reward": 16223,
+            "sort_id": 147
+        },
+        {
+            "category": 4,
+            "id": 1249,
+            "name": "Skilled Armorer",
+            "type": "CraftType",
+            "param": "Armor",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 148
+        },
+        {
+            "category": 4,
+            "id": 1250,
+            "name": "Master Armorer",
+            "type": "CraftType",
+            "param": "Armor",
+            "count": 300,
+            "reward": 16219,
+            "sort_id": 149
+        },
+        {
+            "category": 4,
+            "id": 2312,
+            "name": "DIY Beginner",
+            "type": "CraftType",
+            "param": "Furniture",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 150
+        },
+        {
+            "category": 4,
+            "id": 1251,
+            "name": "Beginner Crafter",
+            "type": "CraftType",
+            "param": "Other",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 151
+        },
+        {
+            "category": 4,
+            "id": 1252,
+            "name": "Craftsman",
+            "type": "CraftType",
+            "param": "Other",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 152
+        },
+        {
+            "category": 4,
+            "id": 1253,
+            "name": "Technical Craftsman",
+            "type": "CraftType",
+            "param": "Other",
+            "count": 100,
+            "reward": 16220,
+            "sort_id": 153
+        },
+        {
+            "category": 4,
+            "id": 1243,
+            "name": "First Weapon",
+            "type": "CraftType",
+            "param": "Weapon",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 154
+        },
+        {
+            "category": 4,
+            "id": 1244,
+            "name": "Weapon Maker",
+            "type": "CraftType",
+            "param": "Weapon",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 155
+        },
+        {
+            "category": 4,
+            "id": 1245,
+            "name": "Weapon Father",
+            "type": "CraftType",
+            "param": "Weapon",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 156
+        },
+        {
+            "category": 4,
+            "id": 1246,
+            "name": "Lord of Iron",
+            "type": "CraftType",
+            "param": "Weapon",
+            "count": 300,
+            "reward": 16211,
+            "sort_id": 157
+        },
+        {
+            "category": 4,
+            "id": 1258,
+            "name": "Armourer",
+            "type": "CraftTypeUnique",
+            "param": "Armor",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 158
+        },
+        {
+            "category": 4,
+            "id": 1259,
+            "name": "Successful Armourer",
+            "type": "CraftTypeUnique",
+            "param": "Armor",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 159
+        },
+        {
+            "category": 4,
+            "id": 1260,
+            "name": "Renowned Armourer",
+            "type": "CraftTypeUnique",
+            "param": "Armor",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 160
+        },
+        {
+            "category": 4,
+            "id": 1261,
+            "name": "The God of Armor",
+            "type": "CraftTypeUnique",
+            "param": "Armor",
+            "count": 500,
+            "reward": 16224,
+            "sort_id": 161
+        },
+        {
+            "category": 4,
+            "id": 1254,
+            "name": "Blacksmith",
+            "type": "CraftTypeUnique",
+            "param": "Weapon",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 162
+        },
+        {
+            "category": 4,
+            "id": 1255,
+            "name": "Hot-Selling Blacksmith",
+            "type": "CraftTypeUnique",
+            "param": "Weapon",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 163
+        },
+        {
+            "category": 4,
+            "id": 1256,
+            "name": "Prestigious Blacksmith",
+            "type": "CraftTypeUnique",
+            "param": "Weapon",
+            "count": 200,
+            "reward": 0,
+            "sort_id": 164
+        },
+        {
+            "category": 4,
+            "id": 1257,
+            "name": "God Hand",
+            "type": "CraftTypeUnique",
+            "param": "Weapon",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 165
+        },
+        {
+            "category": 3,
+            "id": 2898,
+            "name": "Emblem of Probity",
+            "type": "EmblemStone",
+            "param": "",
+            "count": 5,
+            "reward": 18787,
+            "sort_id": 166
+        },
+        {
+            "category": 3,
+            "id": 2899,
+            "name": "Emblem of Fidelity",
+            "type": "EmblemStone",
+            "param": "",
+            "count": 15,
+            "reward": 18784,
+            "sort_id": 167
+        },
+        {
+            "category": 3,
+            "id": 2900,
+            "name": "Emblem of Mentality",
+            "type": "EmblemStone",
+            "param": "",
+            "count": 20,
+            "reward": 18783,
+            "sort_id": 168
+        },
+        {
+            "category": 3,
+            "id": 2901,
+            "name": "Emblem of Eternity",
+            "type": "EmblemStone",
+            "param": "",
+            "count": 25,
+            "reward": 0,
+            "sort_id": 169
+        },
+        {
+            "category": 4,
+            "id": 1262,
+            "name": "A Better Partner",
+            "type": "EnhanceItem",
+            "param": 2,
+            "count": 1,
+            "reward": 0,
+            "sort_id": 170
+        },
+        {
+            "category": 4,
+            "id": 1263,
+            "name": "More and More",
+            "type": "EnhanceItem",
+            "param": 2,
+            "count": 10,
+            "reward": 0,
+            "sort_id": 171
+        },
+        {
+            "category": 4,
+            "id": 1264,
+            "name": "Forged Armaments",
+            "type": "EnhanceItem",
+            "param": 3,
+            "count": 1,
+            "reward": 0,
+            "sort_id": 172
+        },
+        {
+            "category": 4,
+            "id": 1265,
+            "name": "Give It That Extra Shine",
+            "type": "EnhanceItem",
+            "param": 3,
+            "count": 10,
+            "reward": 0,
+            "sort_id": 173
+        },
+        {
+            "category": 4,
+            "id": 1266,
+            "name": "Polished and Exquisite",
+            "type": "EnhanceItem",
+            "param": 4,
+            "count": 1,
+            "reward": 0,
+            "sort_id": 174
+        },
+        {
+            "category": 4,
+            "id": 1267,
+            "name": "Master Artisan's Touch",
+            "type": "EnhanceItem",
+            "param": 4,
+            "count": 10,
+            "reward": 13359,
+            "sort_id": 175
+        },
+        {
+            "category": 6,
+            "id": 2858,
+            "name": "The Epitaph Road \"Heroic Spirit Sleeping Path: Feryana Wilderness\" Cleared!",
+            "type": "EpitaphRoad",
+            "param": "FeryanaWilderness",
+            "count": 1,
+            "reward": 18807,
+            "sort_id": 176
+        },
+        {
+            "category": 6,
+            "id": 2863,
+            "name": "The Epitaph Road \"Heroic Spirit Sleeping Path: Memory of Megadosys\" Cleared!",
+            "type": "EpitaphRoad",
+            "param": "MemoryOfMegadosys",
+            "count": 1,
+            "reward": 18805,
+            "sort_id": 177
+        },
+        {
+            "category": 6,
+            "id": 2868,
+            "name": "The Epitaph Road \"Heroic Spirit Sleeping Path: Memory of Urteca\" Cleared!",
+            "type": "EpitaphRoad",
+            "param": "MemoryOfUrteca",
+            "count": 1,
+            "reward": 18804,
+            "sort_id": 178
+        },
+        {
+            "category": 6,
+            "id": 2853,
+            "name": "The Epitaph Road \"Heroic Spirit Sleeping Path: Rathnite Foothills\" Cleared!",
+            "type": "EpitaphRoad",
+            "param": "RathniteFoothills",
+            "count": 1,
+            "reward": 18799,
+            "sort_id": 179
+        },
+        {
+            "category": 3,
+            "id": 1143,
+            "name": "Rookie Employer",
+            "type": "HirePawn",
+            "param": "",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 180
+        },
+        {
+            "category": 3,
+            "id": 1144,
+            "name": "Good Employer",
+            "type": "HirePawn",
+            "param": "",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 181
+        },
+        {
+            "category": 3,
+            "id": 1145,
+            "name": "Best Employer",
+            "type": "HirePawn",
+            "param": "",
+            "count": 100,
+            "reward": 13358,
+            "sort_id": 182
+        },
+        {
+            "category": 2,
+            "id": 881,
+            "name": "Strange Goblin I",
+            "type": "KillEnemyType",
+            "param": "AlchemizedGoblin",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 183
+        },
+        {
+            "category": 2,
+            "id": 882,
+            "name": "Strange Goblin II",
+            "type": "KillEnemyType",
+            "param": "AlchemizedGoblin",
+            "count": 200,
+            "reward": 0,
+            "sort_id": 184
+        },
+        {
+            "category": 2,
+            "id": 883,
+            "name": "Strange Goblin III",
+            "type": "KillEnemyType",
+            "param": "AlchemizedGoblin",
+            "count": 500,
+            "reward": 0,
+            "sort_id": 185
+        },
+        {
+            "category": 2,
+            "id": 977,
+            "name": "Synthetic Winged Beast I",
+            "type": "KillEnemyType",
+            "param": "AlchemizedGriffin",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 186
+        },
+        {
+            "category": 2,
+            "id": 978,
+            "name": "Synthetic Winged Beast II",
+            "type": "KillEnemyType",
+            "param": "AlchemizedGriffin",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 187
+        },
+        {
+            "category": 2,
+            "id": 979,
+            "name": "Synthetic Winged Beast III",
+            "type": "KillEnemyType",
+            "param": "AlchemizedGriffin",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 188
+        },
+        {
+            "category": 2,
+            "id": 725,
+            "name": "Brilliant Feathers I",
+            "type": "KillEnemyType",
+            "param": "AlchemizedHarpy",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 189
+        },
+        {
+            "category": 2,
+            "id": 726,
+            "name": "Brilliant Feathers II",
+            "type": "KillEnemyType",
+            "param": "AlchemizedHarpy",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 190
+        },
+        {
+            "category": 2,
+            "id": 727,
+            "name": "Brilliant Feathers III",
+            "type": "KillEnemyType",
+            "param": "AlchemizedHarpy",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 191
+        },
+        {
+            "category": 2,
+            "id": 668,
+            "name": "Demon Skull I",
+            "type": "KillEnemyType",
+            "param": "AlchemizedSkeleton",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 192
+        },
+        {
+            "category": 2,
+            "id": 669,
+            "name": "Demon Skull II",
+            "type": "KillEnemyType",
+            "param": "AlchemizedSkeleton",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 193
+        },
+        {
+            "category": 2,
+            "id": 670,
+            "name": "Demon Skull III",
+            "type": "KillEnemyType",
+            "param": "AlchemizedSkeleton",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 194
+        },
+        {
+            "category": 2,
+            "id": 635,
+            "name": "Golden Animal Fangs I",
+            "type": "KillEnemyType",
+            "param": "AlchemizedWolf",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 195
+        },
+        {
+            "category": 2,
+            "id": 636,
+            "name": "Golden Animal Fangs II",
+            "type": "KillEnemyType",
+            "param": "AlchemizedWolf",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 196
+        },
+        {
+            "category": 2,
+            "id": 637,
+            "name": "Golden Animal Fangs III",
+            "type": "KillEnemyType",
+            "param": "AlchemizedWolf",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 197
+        },
+        {
+            "category": 2,
+            "id": 995,
+            "name": "Mechanical Eye I",
+            "type": "KillEnemyType",
+            "param": "AlchemyEye",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 198
+        },
+        {
+            "category": 2,
+            "id": 996,
+            "name": "Mechanical Eye II",
+            "type": "KillEnemyType",
+            "param": "AlchemyEye",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 199
+        },
+        {
+            "category": 2,
+            "id": 997,
+            "name": "Mechanical Eye III",
+            "type": "KillEnemyType",
+            "param": "AlchemyEye",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 200
+        },
+        {
+            "category": 2,
+            "id": 2344,
+            "name": "What The Heck!",
+            "type": "KillEnemyType",
+            "param": "AlteredZuhl",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 201
+        },
+        {
+            "category": 2,
+            "id": 2345,
+            "name": "I Have No Use For You!",
+            "type": "KillEnemyType",
+            "param": "AlteredZuhl",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 202
+        },
+        {
+            "category": 2,
+            "id": 2346,
+            "name": "I Hate You!",
+            "type": "KillEnemyType",
+            "param": "AlteredZuhl",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 203
+        },
+        {
+            "category": 2,
+            "id": 1031,
+            "name": "Thunder-shrouded Sea Demon I",
+            "type": "KillEnemyType",
+            "param": "Angules",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 204
+        },
+        {
+            "category": 2,
+            "id": 1032,
+            "name": "Thunder-shrouded Sea Demon II",
+            "type": "KillEnemyType",
+            "param": "Angules",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 205
+        },
+        {
+            "category": 2,
+            "id": 1033,
+            "name": "Thunder-shrouded Sea Demon III",
+            "type": "KillEnemyType",
+            "param": "Angules",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 206
+        },
+        {
+            "category": 2,
+            "id": 1001,
+            "name": "Monkey on a Rampage I",
+            "type": "KillEnemyType",
+            "param": "Ape",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 207
+        },
+        {
+            "category": 2,
+            "id": 1002,
+            "name": "Monkey on a Rampage II",
+            "type": "KillEnemyType",
+            "param": "Ape",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 208
+        },
+        {
+            "category": 2,
+            "id": 1003,
+            "name": "Monkey on a Rampage III",
+            "type": "KillEnemyType",
+            "param": "Ape",
+            "count": 200,
+            "reward": 0,
+            "sort_id": 209
+        },
+        {
+            "category": 2,
+            "id": 773,
+            "name": "Violent Subjugation I",
+            "type": "KillEnemyType",
+            "param": "Banded",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 210
+        },
+        {
+            "category": 2,
+            "id": 774,
+            "name": "Violent Subjugation II",
+            "type": "KillEnemyType",
+            "param": "Banded",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 211
+        },
+        {
+            "category": 2,
+            "id": 775,
+            "name": "Violent Subjugation III",
+            "type": "KillEnemyType",
+            "param": "Banded",
+            "count": 200,
+            "reward": 0,
+            "sort_id": 212
+        },
+        {
+            "category": 2,
+            "id": 2908,
+            "name": "Beast Hunter",
+            "type": "KillEnemyType",
+            "param": "BeastMaster",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 213
+        },
+        {
+            "category": 2,
+            "id": 2909,
+            "name": "Beast Tamer",
+            "type": "KillEnemyType",
+            "param": "BeastMaster",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 214
+        },
+        {
+            "category": 2,
+            "id": 2910,
+            "name": "Beast Caller",
+            "type": "KillEnemyType",
+            "param": "BeastMaster",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 215
+        },
+        {
+            "category": 2,
+            "id": 1034,
+            "name": "Monster of the Earth I",
+            "type": "KillEnemyType",
+            "param": "Behemoth",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 216
+        },
+        {
+            "category": 2,
+            "id": 1035,
+            "name": "Monster of the Earth II",
+            "type": "KillEnemyType",
+            "param": "Behemoth",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 217
+        },
+        {
+            "category": 2,
+            "id": 1036,
+            "name": "Monster of the Earth III",
+            "type": "KillEnemyType",
+            "param": "Behemoth",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 218
+        },
+        {
+            "category": 2,
+            "id": 2360,
+            "name": "A Bird Called a Rainbow",
+            "type": "KillEnemyType",
+            "param": "Bifrest",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 219
+        },
+        {
+            "category": 2,
+            "id": 974,
+            "name": "Jet Black Guardian I",
+            "type": "KillEnemyType",
+            "param": "BlackGriffin",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 220
+        },
+        {
+            "category": 2,
+            "id": 975,
+            "name": "Jet Black Guardian II",
+            "type": "KillEnemyType",
+            "param": "BlackGriffin",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 221
+        },
+        {
+            "category": 2,
+            "id": 976,
+            "name": "Jet Black Guardian III",
+            "type": "KillEnemyType",
+            "param": "BlackGriffin",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 222
+        },
+        {
+            "category": 2,
+            "id": 2373,
+            "name": "Black Knight",
+            "type": "KillEnemyType",
+            "param": "BlackKnight",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 223
+        },
+        {
+            "category": 2,
+            "id": 2374,
+            "name": "Crusader",
+            "type": "KillEnemyType",
+            "param": "BlackKnight",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 224
+        },
+        {
+            "category": 2,
+            "id": 2375,
+            "name": "Revenger",
+            "type": "KillEnemyType",
+            "param": "BlackKnight",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 225
+        },
+        {
+            "category": 2,
+            "id": 689,
+            "name": "Saurian Electric I",
+            "type": "KillEnemyType",
+            "param": "BlueNewt",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 226
+        },
+        {
+            "category": 2,
+            "id": 690,
+            "name": "Saurian Electric II",
+            "type": "KillEnemyType",
+            "param": "BlueNewt",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 227
+        },
+        {
+            "category": 2,
+            "id": 691,
+            "name": "Saurian Electric III",
+            "type": "KillEnemyType",
+            "param": "BlueNewt",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 228
+        },
+        {
+            "category": 2,
+            "id": 2319,
+            "name": "Thunder Beast Hunter",
+            "type": "KillEnemyType",
+            "param": "BoltGrimwarg",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 229
+        },
+        {
+            "category": 2,
+            "id": 2911,
+            "name": "Virtous Mourner",
+            "type": "KillEnemyType",
+            "param": "Catoblepas",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 230
+        },
+        {
+            "category": 2,
+            "id": 2912,
+            "name": "Tornado Caller",
+            "type": "KillEnemyType",
+            "param": "Catoblepas",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 231
+        },
+        {
+            "category": 2,
+            "id": 2913,
+            "name": "Tank Hunter",
+            "type": "KillEnemyType",
+            "param": "Catoblepas",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 232
+        },
+        {
+            "category": 5,
+            "id": 2384,
+            "name": "Chicken",
+            "type": "KillEnemyType",
+            "param": "Chicken",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 233
+        },
+        {
+            "category": 2,
+            "id": 956,
+            "name": "Three Heads Howling I",
+            "type": "KillEnemyType",
+            "param": "Chimera",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 234
+        },
+        {
+            "category": 2,
+            "id": 957,
+            "name": "Three Heads Howling II",
+            "type": "KillEnemyType",
+            "param": "Chimera",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 235
+        },
+        {
+            "category": 2,
+            "id": 958,
+            "name": "Three Heads Howling III",
+            "type": "KillEnemyType",
+            "param": "Chimera",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 236
+        },
+        {
+            "category": 2,
+            "id": 968,
+            "name": "One Year on a Rock",
+            "type": "KillEnemyType",
+            "param": "Cockatrice",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 237
+        },
+        {
+            "category": 2,
+            "id": 969,
+            "name": "Two Years on a Rock",
+            "type": "KillEnemyType",
+            "param": "Cockatrice",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 238
+        },
+        {
+            "category": 2,
+            "id": 970,
+            "name": "Three Years on a Rock",
+            "type": "KillEnemyType",
+            "param": "Cockatrice",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 239
+        },
+        {
+            "category": 2,
+            "id": 929,
+            "name": "Giant Killer I",
+            "type": "KillEnemyType",
+            "param": "Colossus",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 240
+        },
+        {
+            "category": 2,
+            "id": 930,
+            "name": "Giant Killer II",
+            "type": "KillEnemyType",
+            "param": "Colossus",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 241
+        },
+        {
+            "category": 2,
+            "id": 931,
+            "name": "Giant Killer III",
+            "type": "KillEnemyType",
+            "param": "Colossus",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 242
+        },
+        {
+            "category": 2,
+            "id": 713,
+            "name": "Mortician I",
+            "type": "KillEnemyType",
+            "param": "Corpse",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 243
+        },
+        {
+            "category": 2,
+            "id": 714,
+            "name": "Mortician II",
+            "type": "KillEnemyType",
+            "param": "Corpse",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 244
+        },
+        {
+            "category": 2,
+            "id": 715,
+            "name": "Mortician III",
+            "type": "KillEnemyType",
+            "param": "Corpse",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 245
+        },
+        {
+            "category": 2,
+            "id": 2333,
+            "name": "King of Purple Light",
+            "type": "KillEnemyType",
+            "param": "CursedDragon",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 246
+        },
+        {
+            "category": 2,
+            "id": 2334,
+            "name": "King of Rot",
+            "type": "KillEnemyType",
+            "param": "CursedDragon",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 247
+        },
+        {
+            "category": 2,
+            "id": 2335,
+            "name": "King of Chaos",
+            "type": "KillEnemyType",
+            "param": "CursedDragon",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 248
+        },
+        {
+            "category": 2,
+            "id": 917,
+            "name": "One-Eye Buster I",
+            "type": "KillEnemyType",
+            "param": "Cyclops",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 249
+        },
+        {
+            "category": 2,
+            "id": 918,
+            "name": "One-Eye Buster II",
+            "type": "KillEnemyType",
+            "param": "Cyclops",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 250
+        },
+        {
+            "category": 2,
+            "id": 919,
+            "name": "One-Eye Buster III",
+            "type": "KillEnemyType",
+            "param": "Cyclops",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 251
+        },
+        {
+            "category": 2,
+            "id": 2947,
+            "name": "Under Cover of Darkness",
+            "type": "KillEnemyType",
+            "param": "Death",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 252
+        },
+        {
+            "category": 2,
+            "id": 2948,
+            "name": "Soul of Sacrifice",
+            "type": "KillEnemyType",
+            "param": "Death",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 253
+        },
+        {
+            "category": 2,
+            "id": 2949,
+            "name": "Death",
+            "type": "KillEnemyType",
+            "param": "Death",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 254
+        },
+        {
+            "category": 2,
+            "id": 662,
+            "name": "Deathly Presence I",
+            "type": "KillEnemyType",
+            "param": "DeathKnight",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 255
+        },
+        {
+            "category": 2,
+            "id": 663,
+            "name": "Deathly Presence II",
+            "type": "KillEnemyType",
+            "param": "DeathKnight",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 256
+        },
+        {
+            "category": 2,
+            "id": 664,
+            "name": "Deathly Presence III",
+            "type": "KillEnemyType",
+            "param": "DeathKnight",
+            "count": 200,
+            "reward": 0,
+            "sort_id": 257
+        },
+        {
+            "category": 5,
+            "id": 1076,
+            "name": "Pay Attention to Deer!",
+            "type": "KillEnemyType",
+            "param": "Deer",
+            "count": 5,
+            "reward": 0,
+            "sort_id": 258
+        },
+        {
+            "category": 5,
+            "id": 1926,
+            "name": "Could It Be a Deer?",
+            "type": "KillEnemyType",
+            "param": "Deer",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 259
+        },
+        {
+            "category": 5,
+            "id": 1927,
+            "name": "In Search of Deer...",
+            "type": "KillEnemyType",
+            "param": "Deer",
+            "count": 20,
+            "reward": 0,
+            "sort_id": 260
+        },
+        {
+            "category": 5,
+            "id": 1928,
+            "name": "Deer over Yonder",
+            "type": "KillEnemyType",
+            "param": "Deer",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 261
+        },
+        {
+            "category": 5,
+            "id": 1929,
+            "name": "Deer Eternity",
+            "type": "KillEnemyType",
+            "param": "Deer",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 262
+        },
+        {
+            "category": 2,
+            "id": 1022,
+            "name": "Hellfire Conqueror I",
+            "type": "KillEnemyType",
+            "param": "Drake",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 263
+        },
+        {
+            "category": 2,
+            "id": 1023,
+            "name": "Hellfire Conqueror II",
+            "type": "KillEnemyType",
+            "param": "Drake",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 264
+        },
+        {
+            "category": 2,
+            "id": 1024,
+            "name": "Hellfire Conqueror III",
+            "type": "KillEnemyType",
+            "param": "Drake",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 265
+        },
+        {
+            "category": 2,
+            "id": 1085,
+            "name": "Dragon Hunter",
+            "type": "KillEnemyType",
+            "param": "ElderDragon",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 266
+        },
+        {
+            "category": 2,
+            "id": 1086,
+            "name": "Dragon Slayer",
+            "type": "KillEnemyType",
+            "param": "ElderDragon",
+            "count": 5,
+            "reward": 0,
+            "sort_id": 267
+        },
+        {
+            "category": 2,
+            "id": 1087,
+            "name": "Dragon Dominator",
+            "type": "KillEnemyType",
+            "param": "ElderDragon",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 268
+        },
+        {
+            "category": 2,
+            "id": 2321,
+            "name": "The Eliminator",
+            "type": "KillEnemyType",
+            "param": "Eliminator",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 269
+        },
+        {
+            "category": 2,
+            "id": 1019,
+            "name": "Empress Rebellion I",
+            "type": "KillEnemyType",
+            "param": "EmpressGhost",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 270
+        },
+        {
+            "category": 2,
+            "id": 1020,
+            "name": "Empress Rebellion II",
+            "type": "KillEnemyType",
+            "param": "EmpressGhost",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 271
+        },
+        {
+            "category": 2,
+            "id": 1021,
+            "name": "Empress Rebellion III",
+            "type": "KillEnemyType",
+            "param": "EmpressGhost",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 272
+        },
+        {
+            "category": 2,
+            "id": 935,
+            "name": "Tree Feller I",
+            "type": "KillEnemyType",
+            "param": "Ent",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 273
+        },
+        {
+            "category": 2,
+            "id": 936,
+            "name": "Tree Feller II",
+            "type": "KillEnemyType",
+            "param": "Ent",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 274
+        },
+        {
+            "category": 2,
+            "id": 937,
+            "name": "Tree Feller III",
+            "type": "KillEnemyType",
+            "param": "Ent",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 275
+        },
+        {
+            "category": 2,
+            "id": 2929,
+            "name": "Power Is Truth",
+            "type": "KillEnemyType",
+            "param": "EvilDragon",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 276
+        },
+        {
+            "category": 2,
+            "id": 2930,
+            "name": "Symbol of Violence",
+            "type": "KillEnemyType",
+            "param": "EvilDragon",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 277
+        },
+        {
+            "category": 2,
+            "id": 2931,
+            "name": "Weakness of Sin",
+            "type": "KillEnemyType",
+            "param": "EvilDragon",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 278
+        },
+        {
+            "category": 2,
+            "id": 2917,
+            "name": "Don't Stare!",
+            "type": "KillEnemyType",
+            "param": "EvilEye",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 279
+        },
+        {
+            "category": 2,
+            "id": 2918,
+            "name": "Do Stare!",
+            "type": "KillEnemyType",
+            "param": "EvilEye",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 280
+        },
+        {
+            "category": 2,
+            "id": 2919,
+            "name": "Hot Gaze!",
+            "type": "KillEnemyType",
+            "param": "EvilEye",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 281
+        },
+        {
+            "category": 2,
+            "id": 2354,
+            "name": "Biting for Attention",
+            "type": "KillEnemyType",
+            "param": "Footbiter",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 282
+        },
+        {
+            "category": 2,
+            "id": 863,
+            "name": "Forest Demon I",
+            "type": "KillEnemyType",
+            "param": "ForestGoblin",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 283
+        },
+        {
+            "category": 2,
+            "id": 864,
+            "name": "Forest Demon II",
+            "type": "KillEnemyType",
+            "param": "ForestGoblin",
+            "count": 200,
+            "reward": 0,
+            "sort_id": 284
+        },
+        {
+            "category": 2,
+            "id": 865,
+            "name": "Forest Demon III",
+            "type": "KillEnemyType",
+            "param": "ForestGoblin",
+            "count": 500,
+            "reward": 0,
+            "sort_id": 285
+        },
+        {
+            "category": 5,
+            "id": 2386,
+            "name": "Frogman",
+            "type": "KillEnemyType",
+            "param": "Frog",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 286
+        },
+        {
+            "category": 2,
+            "id": 2329,
+            "name": "Frost Blower",
+            "type": "KillEnemyType",
+            "param": "FrostMachina",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 287
+        },
+        {
+            "category": 2,
+            "id": 2322,
+            "name": "Gutterbeast",
+            "type": "KillEnemyType",
+            "param": "Gargoyle",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 288
+        },
+        {
+            "category": 2,
+            "id": 953,
+            "name": "Scorching Hammer I",
+            "type": "KillEnemyType",
+            "param": "GeoGolem",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 289
+        },
+        {
+            "category": 2,
+            "id": 954,
+            "name": "Scorching Hammer II",
+            "type": "KillEnemyType",
+            "param": "GeoGolem",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 290
+        },
+        {
+            "category": 2,
+            "id": 955,
+            "name": "Scorching Hammer III",
+            "type": "KillEnemyType",
+            "param": "GeoGolem",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 291
+        },
+        {
+            "category": 2,
+            "id": 2328,
+            "name": "Ghost Buster",
+            "type": "KillEnemyType",
+            "param": "Ghost",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 292
+        },
+        {
+            "category": 2,
+            "id": 665,
+            "name": "Phantom Knight I",
+            "type": "KillEnemyType",
+            "param": "GhostMail",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 293
+        },
+        {
+            "category": 2,
+            "id": 666,
+            "name": "Phantom Knight II",
+            "type": "KillEnemyType",
+            "param": "GhostMail",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 294
+        },
+        {
+            "category": 2,
+            "id": 667,
+            "name": "Phantom Knight III",
+            "type": "KillEnemyType",
+            "param": "GhostMail",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 295
+        },
+        {
+            "category": 2,
+            "id": 1004,
+            "name": "Dead Eater I",
+            "type": "KillEnemyType",
+            "param": "Ghoul",
+            "count": 20,
+            "reward": 0,
+            "sort_id": 296
+        },
+        {
+            "category": 2,
+            "id": 1005,
+            "name": "Dead Eater II",
+            "type": "KillEnemyType",
+            "param": "Ghoul",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 297
+        },
+        {
+            "category": 2,
+            "id": 1006,
+            "name": "Dead Eater III",
+            "type": "KillEnemyType",
+            "param": "Ghoul",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 298
+        },
+        {
+            "category": 2,
+            "id": 947,
+            "name": "Giant Warrior Destroyer I",
+            "type": "KillEnemyType",
+            "param": "GiantWarrior",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 299
+        },
+        {
+            "category": 2,
+            "id": 948,
+            "name": "Giant Warrior Destroyer II",
+            "type": "KillEnemyType",
+            "param": "GiantWarrior",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 300
+        },
+        {
+            "category": 2,
+            "id": 949,
+            "name": "Giant Warrior Destroyer III",
+            "type": "KillEnemyType",
+            "param": "GiantWarrior",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 301
+        },
+        {
+            "category": 2,
+            "id": 1070,
+            "name": "Gigant Slayer I",
+            "type": "KillEnemyType",
+            "param": "GigantMachina",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 302
+        },
+        {
+            "category": 2,
+            "id": 1071,
+            "name": "Gigant Slayer II",
+            "type": "KillEnemyType",
+            "param": "GigantMachina",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 303
+        },
+        {
+            "category": 2,
+            "id": 1072,
+            "name": "Gigant Slayer III",
+            "type": "KillEnemyType",
+            "param": "GigantMachina",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 304
+        },
+        {
+            "category": 5,
+            "id": 2385,
+            "name": "Goat Shepard",
+            "type": "KillEnemyType",
+            "param": "Goat",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 305
+        },
+        {
+            "category": 2,
+            "id": 590,
+            "name": "Goblin Extermination I",
+            "type": "KillEnemyType",
+            "param": "Goblin",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 306
+        },
+        {
+            "category": 2,
+            "id": 591,
+            "name": "Goblin Extermination II",
+            "type": "KillEnemyType",
+            "param": "Goblin",
+            "count": 200,
+            "reward": 0,
+            "sort_id": 307
+        },
+        {
+            "category": 2,
+            "id": 592,
+            "name": "Goblin Extermination III",
+            "type": "KillEnemyType",
+            "param": "Goblin",
+            "count": 500,
+            "reward": 0,
+            "sort_id": 308
+        },
+        {
+            "category": 2,
+            "id": 944,
+            "name": "Stone Cutter I",
+            "type": "KillEnemyType",
+            "param": "Golem",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 309
+        },
+        {
+            "category": 2,
+            "id": 945,
+            "name": "Stone Cutter II",
+            "type": "KillEnemyType",
+            "param": "Golem",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 310
+        },
+        {
+            "category": 2,
+            "id": 946,
+            "name": "Stone Cutter III",
+            "type": "KillEnemyType",
+            "param": "Golem",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 311
+        },
+        {
+            "category": 2,
+            "id": 2355,
+            "name": "Black Lion",
+            "type": "KillEnemyType",
+            "param": "Gorechimera",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 312
+        },
+        {
+            "category": 2,
+            "id": 2325,
+            "name": "The Mace",
+            "type": "KillEnemyType",
+            "param": "Gorecyclops",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 313
+        },
+        {
+            "category": 2,
+            "id": 1297,
+            "name": "Forest Sage I",
+            "type": "KillEnemyType",
+            "param": "GrandEnt",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 314
+        },
+        {
+            "category": 2,
+            "id": 1298,
+            "name": "Forest Sage II",
+            "type": "KillEnemyType",
+            "param": "GrandEnt",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 315
+        },
+        {
+            "category": 2,
+            "id": 1299,
+            "name": "Forest Sage III",
+            "type": "KillEnemyType",
+            "param": "GrandEnt",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 316
+        },
+        {
+            "category": 2,
+            "id": 2368,
+            "name": "Wolf in the Forest",
+            "type": "KillEnemyType",
+            "param": "GreenGuardian",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 317
+        },
+        {
+            "category": 2,
+            "id": 965,
+            "name": "Sky Glider I",
+            "type": "KillEnemyType",
+            "param": "Griffin",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 318
+        },
+        {
+            "category": 2,
+            "id": 966,
+            "name": "Sky Glider II",
+            "type": "KillEnemyType",
+            "param": "Griffin",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 319
+        },
+        {
+            "category": 2,
+            "id": 967,
+            "name": "Sky Glider III",
+            "type": "KillEnemyType",
+            "param": "Griffin",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 320
+        },
+        {
+            "category": 2,
+            "id": 2353,
+            "name": "The Watchman",
+            "type": "KillEnemyType",
+            "param": "Grigori",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 321
+        },
+        {
+            "category": 2,
+            "id": 629,
+            "name": "Greedy Demonic Beast I",
+            "type": "KillEnemyType",
+            "param": "Grimwarg",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 322
+        },
+        {
+            "category": 2,
+            "id": 630,
+            "name": "Greedy Demonic Beast II",
+            "type": "KillEnemyType",
+            "param": "Grimwarg",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 323
+        },
+        {
+            "category": 2,
+            "id": 631,
+            "name": "Greedy Demonic Beast III",
+            "type": "KillEnemyType",
+            "param": "Grimwarg",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 324
+        },
+        {
+            "category": 2,
+            "id": 731,
+            "name": "Insect Repellent Boy",
+            "type": "KillEnemyType",
+            "param": "GroundInsect",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 325
+        },
+        {
+            "category": 2,
+            "id": 732,
+            "name": "Insect Repellent Pro",
+            "type": "KillEnemyType",
+            "param": "GroundInsect",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 326
+        },
+        {
+            "category": 2,
+            "id": 733,
+            "name": "Insect Repellent Expert",
+            "type": "KillEnemyType",
+            "param": "GroundInsect",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 327
+        },
+        {
+            "category": 2,
+            "id": 719,
+            "name": "Demonic Songbird I",
+            "type": "KillEnemyType",
+            "param": "Harpy",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 328
+        },
+        {
+            "category": 2,
+            "id": 720,
+            "name": "Demonic Songbird II",
+            "type": "KillEnemyType",
+            "param": "Harpy",
+            "count": 200,
+            "reward": 0,
+            "sort_id": 329
+        },
+        {
+            "category": 2,
+            "id": 721,
+            "name": "Demonic Songbird III",
+            "type": "KillEnemyType",
+            "param": "Harpy",
+            "count": 500,
+            "reward": 0,
+            "sort_id": 330
+        },
+        {
+            "category": 2,
+            "id": 608,
+            "name": "Demihuman Hunter I",
+            "type": "KillEnemyType",
+            "param": "Hobgoblin",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 331
+        },
+        {
+            "category": 2,
+            "id": 609,
+            "name": "Demihuman Hunter II",
+            "type": "KillEnemyType",
+            "param": "Hobgoblin",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 332
+        },
+        {
+            "category": 2,
+            "id": 610,
+            "name": "Demihuman Hunter III",
+            "type": "KillEnemyType",
+            "param": "Hobgoblin",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 333
+        },
+        {
+            "category": 2,
+            "id": 2926,
+            "name": "Flame Challenger",
+            "type": "KillEnemyType",
+            "param": "Ifrit",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 334
+        },
+        {
+            "category": 2,
+            "id": 2927,
+            "name": "Fire Warrior",
+            "type": "KillEnemyType",
+            "param": "Ifrit",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 335
+        },
+        {
+            "category": 2,
+            "id": 2928,
+            "name": "Reincarnation of the Flames",
+            "type": "KillEnemyType",
+            "param": "Ifrit",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 336
+        },
+        {
+            "category": 2,
+            "id": 2318,
+            "name": "Battlefield Wolf",
+            "type": "KillEnemyType",
+            "param": "InfectedDirewolf",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 337
+        },
+        {
+            "category": 2,
+            "id": 2326,
+            "name": "Arrogant Beast",
+            "type": "KillEnemyType",
+            "param": "InfectedGriffin",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 338
+        },
+        {
+            "category": 2,
+            "id": 2316,
+            "name": "Little Demon",
+            "type": "KillEnemyType",
+            "param": "InfectedHobgoblin",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 339
+        },
+        {
+            "category": 2,
+            "id": 2337,
+            "name": "Orc Hunter",
+            "type": "KillEnemyType",
+            "param": "InfectedOrc",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 340
+        },
+        {
+            "category": 2,
+            "id": 2324,
+            "name": "Blooming Fairy Bird",
+            "type": "KillEnemyType",
+            "param": "InfectedSnowHarpy",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 341
+        },
+        {
+            "category": 2,
+            "id": 983,
+            "name": "Mysterious Eyes I",
+            "type": "KillEnemyType",
+            "param": "JewelEye",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 342
+        },
+        {
+            "category": 2,
+            "id": 984,
+            "name": "Mysterious Eyes II",
+            "type": "KillEnemyType",
+            "param": "JewelEye",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 343
+        },
+        {
+            "category": 2,
+            "id": 985,
+            "name": "Mysterious Eyes III",
+            "type": "KillEnemyType",
+            "param": "JewelEye",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 344
+        },
+        {
+            "category": 2,
+            "id": 914,
+            "name": "Exterminator I",
+            "type": "KillEnemyType",
+            "param": "KillerBee",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 345
+        },
+        {
+            "category": 2,
+            "id": 915,
+            "name": "Exterminator II",
+            "type": "KillEnemyType",
+            "param": "KillerBee",
+            "count": 200,
+            "reward": 0,
+            "sort_id": 346
+        },
+        {
+            "category": 2,
+            "id": 916,
+            "name": "Exterminator III",
+            "type": "KillEnemyType",
+            "param": "KillerBee",
+            "count": 500,
+            "reward": 0,
+            "sort_id": 347
+        },
+        {
+            "category": 2,
+            "id": 1028,
+            "name": "Frost Fang Slayer I",
+            "type": "KillEnemyType",
+            "param": "Lindwurm",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 348
+        },
+        {
+            "category": 2,
+            "id": 1029,
+            "name": "Frost Fang Slayer II",
+            "type": "KillEnemyType",
+            "param": "Lindwurm",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 349
+        },
+        {
+            "category": 2,
+            "id": 1030,
+            "name": "Frost Fang Slayer III",
+            "type": "KillEnemyType",
+            "param": "Lindwurm",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 350
+        },
+        {
+            "category": 2,
+            "id": 653,
+            "name": "Phantom of Sword and Shield I",
+            "type": "KillEnemyType",
+            "param": "LivingArmor",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 351
+        },
+        {
+            "category": 2,
+            "id": 654,
+            "name": "Phantom of Sword and Shield II",
+            "type": "KillEnemyType",
+            "param": "LivingArmor",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 352
+        },
+        {
+            "category": 2,
+            "id": 655,
+            "name": "Phantom of Sword and Shield III",
+            "type": "KillEnemyType",
+            "param": "LivingArmor",
+            "count": 200,
+            "reward": 0,
+            "sort_id": 353
+        },
+        {
+            "category": 2,
+            "id": 836,
+            "name": "Comfort to Lost Pawns I",
+            "type": "KillEnemyType",
+            "param": "LostPawn",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 354
+        },
+        {
+            "category": 2,
+            "id": 837,
+            "name": "Comfort to Lost Pawns II",
+            "type": "KillEnemyType",
+            "param": "LostPawn",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 355
+        },
+        {
+            "category": 2,
+            "id": 838,
+            "name": "Comfort to Lost Pawns III",
+            "type": "KillEnemyType",
+            "param": "LostPawn",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 356
+        },
+        {
+            "category": 2,
+            "id": 2352,
+            "name": "Death-Calling Screams",
+            "type": "KillEnemyType",
+            "param": "Mandragora",
+            "count": 50,
+            "reward": 16216,
+            "sort_id": 357
+        },
+        {
+            "category": 2,
+            "id": 2535,
+            "name": "Earplugs, Please",
+            "type": "KillEnemyType",
+            "param": "Mandragora",
+            "count": 100,
+            "reward": 16235,
+            "sort_id": 358
+        },
+        {
+            "category": 2,
+            "id": 2536,
+            "name": "I'm in Love with You",
+            "type": "KillEnemyType",
+            "param": "Mandragora",
+            "count": 1000,
+            "reward": 16236,
+            "sort_id": 359
+        },
+        {
+            "category": 2,
+            "id": 2327,
+            "name": "Man Eater",
+            "type": "KillEnemyType",
+            "param": "Maneater",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 360
+        },
+        {
+            "category": 2,
+            "id": 2338,
+            "name": "Manticore Slasher",
+            "type": "KillEnemyType",
+            "param": "Manticore",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 361
+        },
+        {
+            "category": 2,
+            "id": 2339,
+            "name": "Blind Fighter",
+            "type": "KillEnemyType",
+            "param": "Medusa",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 362
+        },
+        {
+            "category": 2,
+            "id": 752,
+            "name": "Mergan's Sworn Enemy I",
+            "type": "KillEnemyType",
+            "param": "Mergan",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 363
+        },
+        {
+            "category": 2,
+            "id": 753,
+            "name": "Mergan's Sworn Enemy II",
+            "type": "KillEnemyType",
+            "param": "Mergan",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 364
+        },
+        {
+            "category": 2,
+            "id": 754,
+            "name": "Mergan's Sworn Enemy III",
+            "type": "KillEnemyType",
+            "param": "Mergan",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 365
+        },
+        {
+            "category": 2,
+            "id": 1300,
+            "name": "Blazing Red Flame in the Fog I",
+            "type": "KillEnemyType",
+            "param": "MistDrake",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 366
+        },
+        {
+            "category": 2,
+            "id": 1301,
+            "name": "Blazing Red Flame in the Fog II",
+            "type": "KillEnemyType",
+            "param": "MistDrake",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 367
+        },
+        {
+            "category": 2,
+            "id": 1302,
+            "name": "Blazing Red Flame in the Fog III",
+            "type": "KillEnemyType",
+            "param": "MistDrake",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 368
+        },
+        {
+            "category": 2,
+            "id": 818,
+            "name": "Ghost Buster I",
+            "type": "KillEnemyType",
+            "param": "MistMan",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 369
+        },
+        {
+            "category": 2,
+            "id": 819,
+            "name": "Ghost Buster II",
+            "type": "KillEnemyType",
+            "param": "MistMan",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 370
+        },
+        {
+            "category": 2,
+            "id": 820,
+            "name": "Ghost Buster III",
+            "type": "KillEnemyType",
+            "param": "MistMan",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 371
+        },
+        {
+            "category": 2,
+            "id": 1303,
+            "name": "Frost Above Azure Zero I",
+            "type": "KillEnemyType",
+            "param": "MistWyrm",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 372
+        },
+        {
+            "category": 2,
+            "id": 1304,
+            "name": "Frost Above Azure Zero II",
+            "type": "KillEnemyType",
+            "param": "MistWyrm",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 373
+        },
+        {
+            "category": 2,
+            "id": 1305,
+            "name": "Frost Above Azure Zero III",
+            "type": "KillEnemyType",
+            "param": "MistWyrm",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 374
+        },
+        {
+            "category": 2,
+            "id": 2351,
+            "name": "Big Moth",
+            "type": "KillEnemyType",
+            "param": "Moth",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 375
+        },
+        {
+            "category": 2,
+            "id": 707,
+            "name": "Puppet Crusher I",
+            "type": "KillEnemyType",
+            "param": "Mudmen",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 376
+        },
+        {
+            "category": 2,
+            "id": 708,
+            "name": "Puppet Crusher II",
+            "type": "KillEnemyType",
+            "param": "Mudmen",
+            "count": 200,
+            "reward": 0,
+            "sort_id": 377
+        },
+        {
+            "category": 2,
+            "id": 709,
+            "name": "Puppet Crusher III",
+            "type": "KillEnemyType",
+            "param": "Mudmen",
+            "count": 500,
+            "reward": 0,
+            "sort_id": 378
+        },
+        {
+            "category": 2,
+            "id": 2914,
+            "name": "Necro Hunter",
+            "type": "KillEnemyType",
+            "param": "NecroMaster",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 379
+        },
+        {
+            "category": 2,
+            "id": 2915,
+            "name": "Necro Tamer",
+            "type": "KillEnemyType",
+            "param": "NecroMaster",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 380
+        },
+        {
+            "category": 2,
+            "id": 2916,
+            "name": "Necro Caller",
+            "type": "KillEnemyType",
+            "param": "NecroMaster",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 381
+        },
+        {
+            "category": 2,
+            "id": 980,
+            "name": "Flapping Nightmare I",
+            "type": "KillEnemyType",
+            "param": "Nightmare",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 382
+        },
+        {
+            "category": 2,
+            "id": 981,
+            "name": "Flapping Nightmare II",
+            "type": "KillEnemyType",
+            "param": "Nightmare",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 383
+        },
+        {
+            "category": 2,
+            "id": 982,
+            "name": "Flapping Nightmare III",
+            "type": "KillEnemyType",
+            "param": "Nightmare",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 384
+        },
+        {
+            "category": 2,
+            "id": 998,
+            "name": "Demon Exterminator I",
+            "type": "KillEnemyType",
+            "param": "Ogre",
+            "count": 20,
+            "reward": 0,
+            "sort_id": 385
+        },
+        {
+            "category": 2,
+            "id": 999,
+            "name": "Demon Exterminator II",
+            "type": "KillEnemyType",
+            "param": "Ogre",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 386
+        },
+        {
+            "category": 2,
+            "id": 1000,
+            "name": "Demon Exterminator III",
+            "type": "KillEnemyType",
+            "param": "Ogre",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 387
+        },
+        {
+            "category": 2,
+            "id": 1043,
+            "name": "Rumored Orc Killer I",
+            "type": "KillEnemyType",
+            "param": "Orc",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 388
+        },
+        {
+            "category": 2,
+            "id": 1044,
+            "name": "Rumored Orc Killer II",
+            "type": "KillEnemyType",
+            "param": "Orc",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 389
+        },
+        {
+            "category": 2,
+            "id": 1045,
+            "name": "Rumored Orc Killer III",
+            "type": "KillEnemyType",
+            "param": "Orc",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 390
+        },
+        {
+            "category": 2,
+            "id": 1061,
+            "name": "Leader-beheader I",
+            "type": "KillEnemyType",
+            "param": "OrcLeader",
+            "count": 20,
+            "reward": 0,
+            "sort_id": 391
+        },
+        {
+            "category": 2,
+            "id": 1062,
+            "name": "Leader-beheader II",
+            "type": "KillEnemyType",
+            "param": "OrcLeader",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 392
+        },
+        {
+            "category": 2,
+            "id": 1063,
+            "name": "Leader-beheader III",
+            "type": "KillEnemyType",
+            "param": "OrcLeader",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 393
+        },
+        {
+            "category": 5,
+            "id": 1074,
+            "name": "Bullfighter",
+            "type": "KillEnemyType",
+            "param": "Ox",
+            "count": 5,
+            "reward": 0,
+            "sort_id": 394
+        },
+        {
+            "category": 5,
+            "id": 1922,
+            "name": "Talented Bullfighter",
+            "type": "KillEnemyType",
+            "param": "Ox",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 395
+        },
+        {
+            "category": 5,
+            "id": 1923,
+            "name": "Veteran Bullfighter",
+            "type": "KillEnemyType",
+            "param": "Ox",
+            "count": 20,
+            "reward": 0,
+            "sort_id": 396
+        },
+        {
+            "category": 5,
+            "id": 1924,
+            "name": "Star Bullfighter",
+            "type": "KillEnemyType",
+            "param": "Ox",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 397
+        },
+        {
+            "category": 5,
+            "id": 1925,
+            "name": "Legendary Bullfighter",
+            "type": "KillEnemyType",
+            "param": "Ox",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 398
+        },
+        {
+            "category": 2,
+            "id": 2341,
+            "name": "The White Dragon's Advocate",
+            "type": "KillEnemyType",
+            "param": "PhantasmicGreatDragon",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 399
+        },
+        {
+            "category": 2,
+            "id": 2342,
+            "name": "Chosen of the White Dragon",
+            "type": "KillEnemyType",
+            "param": "PhantasmicGreatDragon",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 400
+        },
+        {
+            "category": 2,
+            "id": 2343,
+            "name": "Helix of Time",
+            "type": "KillEnemyType",
+            "param": "PhantasmicGreatDragon",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 401
+        },
+        {
+            "category": 2,
+            "id": 2350,
+            "name": "Trickster",
+            "type": "KillEnemyType",
+            "param": "Phindymian",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 402
+        },
+        {
+            "category": 2,
+            "id": 2372,
+            "name": "Standing in the Earth",
+            "type": "KillEnemyType",
+            "param": "PhyndymianEnt",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 403
+        },
+        {
+            "category": 5,
+            "id": 1077,
+            "name": "No Memory",
+            "type": "KillEnemyType",
+            "param": "Pig",
+            "count": 5,
+            "reward": 0,
+            "sort_id": 404
+        },
+        {
+            "category": 5,
+            "id": 1930,
+            "name": "It's Not What You Think It Is",
+            "type": "KillEnemyType",
+            "param": "Pig",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 405
+        },
+        {
+            "category": 5,
+            "id": 1931,
+            "name": "Going Swimmingly",
+            "type": "KillEnemyType",
+            "param": "Pig",
+            "count": 20,
+            "reward": 0,
+            "sort_id": 406
+        },
+        {
+            "category": 5,
+            "id": 1932,
+            "name": "Ridiculously Round",
+            "type": "KillEnemyType",
+            "param": "Pig",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 407
+        },
+        {
+            "category": 5,
+            "id": 1933,
+            "name": "Very Important Pig",
+            "type": "KillEnemyType",
+            "param": "Pig",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 408
+        },
+        {
+            "category": 2,
+            "id": 2347,
+            "name": "The Pixie",
+            "type": "KillEnemyType",
+            "param": "Pixie",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 409
+        },
+        {
+            "category": 5,
+            "id": 1073,
+            "name": "Found a Rabbit!",
+            "type": "KillEnemyType",
+            "param": "Rabbit",
+            "count": 5,
+            "reward": 0,
+            "sort_id": 410
+        },
+        {
+            "category": 5,
+            "id": 1845,
+            "name": "Rabbit Chaser",
+            "type": "KillEnemyType",
+            "param": "Rabbit",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 411
+        },
+        {
+            "category": 5,
+            "id": 1846,
+            "name": "Rabbit's Buttocks Are Far Away",
+            "type": "KillEnemyType",
+            "param": "Rabbit",
+            "count": 20,
+            "reward": 0,
+            "sort_id": 412
+        },
+        {
+            "category": 5,
+            "id": 1847,
+            "name": "Endless Race to Rabbit",
+            "type": "KillEnemyType",
+            "param": "Rabbit",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 413
+        },
+        {
+            "category": 5,
+            "id": 1848,
+            "name": "Leaping Beyond the Rabbit",
+            "type": "KillEnemyType",
+            "param": "Rabbit",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 414
+        },
+        {
+            "category": 5,
+            "id": 1081,
+            "name": "Rat Captor",
+            "type": "KillEnemyType",
+            "param": "Rat",
+            "count": 5,
+            "reward": 0,
+            "sort_id": 415
+        },
+        {
+            "category": 5,
+            "id": 1938,
+            "name": "Rat Reflector",
+            "type": "KillEnemyType",
+            "param": "Rat",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 416
+        },
+        {
+            "category": 5,
+            "id": 1939,
+            "name": "Rat Sweeper",
+            "type": "KillEnemyType",
+            "param": "Rat",
+            "count": 20,
+            "reward": 0,
+            "sort_id": 417
+        },
+        {
+            "category": 5,
+            "id": 1940,
+            "name": "Rat Bringer",
+            "type": "KillEnemyType",
+            "param": "Rat",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 418
+        },
+        {
+            "category": 5,
+            "id": 1941,
+            "name": "Ratinator",
+            "type": "KillEnemyType",
+            "param": "Rat",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 419
+        },
+        {
+            "category": 2,
+            "id": 872,
+            "name": "Bloody Red Cap I",
+            "type": "KillEnemyType",
+            "param": "Redcap",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 420
+        },
+        {
+            "category": 2,
+            "id": 873,
+            "name": "Bloody Red Cap II",
+            "type": "KillEnemyType",
+            "param": "Redcap",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 421
+        },
+        {
+            "category": 2,
+            "id": 874,
+            "name": "Bloody Red Cap III",
+            "type": "KillEnemyType",
+            "param": "Redcap",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 422
+        },
+        {
+            "category": 2,
+            "id": 683,
+            "name": "Rock Crawler I",
+            "type": "KillEnemyType",
+            "param": "RockSaurian",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 423
+        },
+        {
+            "category": 2,
+            "id": 684,
+            "name": "Rock Crawler II",
+            "type": "KillEnemyType",
+            "param": "RockSaurian",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 424
+        },
+        {
+            "category": 2,
+            "id": 685,
+            "name": "Rock Crawler III",
+            "type": "KillEnemyType",
+            "param": "RockSaurian",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 425
+        },
+        {
+            "category": 2,
+            "id": 794,
+            "name": "Bandit Hunter I",
+            "type": "KillEnemyType",
+            "param": "Rogue",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 426
+        },
+        {
+            "category": 2,
+            "id": 795,
+            "name": "Bandit Hunter II",
+            "type": "KillEnemyType",
+            "param": "Rogue",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 427
+        },
+        {
+            "category": 2,
+            "id": 796,
+            "name": "Bandit Hunter III",
+            "type": "KillEnemyType",
+            "param": "Rogue",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 428
+        },
+        {
+            "category": 2,
+            "id": 671,
+            "name": "Scaled Warrior I",
+            "type": "KillEnemyType",
+            "param": "Saurian",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 429
+        },
+        {
+            "category": 2,
+            "id": 672,
+            "name": "Scaled Warrior II",
+            "type": "KillEnemyType",
+            "param": "Saurian",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 430
+        },
+        {
+            "category": 2,
+            "id": 673,
+            "name": "Scaled Warrior III",
+            "type": "KillEnemyType",
+            "param": "Saurian",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 431
+        },
+        {
+            "category": 2,
+            "id": 2320,
+            "name": "Scarlet Lady",
+            "type": "KillEnemyType",
+            "param": "Scarlet",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 432
+        },
+        {
+            "category": 2,
+            "id": 2330,
+            "name": "Punisher",
+            "type": "KillEnemyType",
+            "param": "Scourge",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 433
+        },
+        {
+            "category": 2,
+            "id": 2331,
+            "name": "Divine Punisher",
+            "type": "KillEnemyType",
+            "param": "Scourge",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 434
+        },
+        {
+            "category": 2,
+            "id": 2332,
+            "name": "They Who Bring War",
+            "type": "KillEnemyType",
+            "param": "Scourge",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 435
+        },
+        {
+            "category": 2,
+            "id": 2371,
+            "name": "Tainted by Evil",
+            "type": "KillEnemyType",
+            "param": "SeverelyInfectedDemon",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 436
+        },
+        {
+            "category": 2,
+            "id": 2370,
+            "name": "Blinding Wings",
+            "type": "KillEnemyType",
+            "param": "SeverelyInfectedGriffin",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 437
+        },
+        {
+            "category": 2,
+            "id": 962,
+            "name": "Cursed Beast I",
+            "type": "KillEnemyType",
+            "param": "ShadowChimera",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 438
+        },
+        {
+            "category": 2,
+            "id": 963,
+            "name": "Cursed Beast II",
+            "type": "KillEnemyType",
+            "param": "ShadowChimera",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 439
+        },
+        {
+            "category": 2,
+            "id": 964,
+            "name": "Cursed Beast III",
+            "type": "KillEnemyType",
+            "param": "ShadowChimera",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 440
+        },
+        {
+            "category": 2,
+            "id": 899,
+            "name": "Cursed Fairy I",
+            "type": "KillEnemyType",
+            "param": "ShadowGoblin",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 441
+        },
+        {
+            "category": 2,
+            "id": 900,
+            "name": "Cursed Fairy II",
+            "type": "KillEnemyType",
+            "param": "ShadowGoblin",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 442
+        },
+        {
+            "category": 2,
+            "id": 901,
+            "name": "Cursed Fairy III",
+            "type": "KillEnemyType",
+            "param": "ShadowGoblin",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 443
+        },
+        {
+            "category": 2,
+            "id": 728,
+            "name": "Soaring Black Wings I",
+            "type": "KillEnemyType",
+            "param": "ShadowHarpy",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 444
+        },
+        {
+            "category": 2,
+            "id": 729,
+            "name": "Soaring Black Wings II",
+            "type": "KillEnemyType",
+            "param": "ShadowHarpy",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 445
+        },
+        {
+            "category": 2,
+            "id": 730,
+            "name": "Soaring Black Wings III",
+            "type": "KillEnemyType",
+            "param": "ShadowHarpy",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 446
+        },
+        {
+            "category": 2,
+            "id": 2920,
+            "name": "Shadow Hunter",
+            "type": "KillEnemyType",
+            "param": "ShadowMaster",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 447
+        },
+        {
+            "category": 2,
+            "id": 2921,
+            "name": "Shadow Tamer",
+            "type": "KillEnemyType",
+            "param": "ShadowMaster",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 448
+        },
+        {
+            "category": 2,
+            "id": 2922,
+            "name": "Shadow Caller",
+            "type": "KillEnemyType",
+            "param": "ShadowMaster",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 449
+        },
+        {
+            "category": 2,
+            "id": 632,
+            "name": "Black Shadow Wolf I",
+            "type": "KillEnemyType",
+            "param": "ShadowWolf",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 450
+        },
+        {
+            "category": 2,
+            "id": 633,
+            "name": "Black Shadow Wolf II",
+            "type": "KillEnemyType",
+            "param": "ShadowWolf",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 451
+        },
+        {
+            "category": 2,
+            "id": 634,
+            "name": "Black Shadow Wolf III",
+            "type": "KillEnemyType",
+            "param": "ShadowWolf",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 452
+        },
+        {
+            "category": 2,
+            "id": 1010,
+            "name": "Furious Silver Roar I",
+            "type": "KillEnemyType",
+            "param": "SilverRoar",
+            "count": 20,
+            "reward": 0,
+            "sort_id": 453
+        },
+        {
+            "category": 2,
+            "id": 1011,
+            "name": "Furious Silver Roar II",
+            "type": "KillEnemyType",
+            "param": "SilverRoar",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 454
+        },
+        {
+            "category": 2,
+            "id": 1012,
+            "name": "Furious Silver Roar III",
+            "type": "KillEnemyType",
+            "param": "SilverRoar",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 455
+        },
+        {
+            "category": 2,
+            "id": 2369,
+            "name": "Flying Singer",
+            "type": "KillEnemyType",
+            "param": "Siren",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 456
+        },
+        {
+            "category": 2,
+            "id": 641,
+            "name": "Roaming Skull I",
+            "type": "KillEnemyType",
+            "param": "Skeleton",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 457
+        },
+        {
+            "category": 2,
+            "id": 642,
+            "name": "Roaming Skull II",
+            "type": "KillEnemyType",
+            "param": "Skeleton",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 458
+        },
+        {
+            "category": 2,
+            "id": 643,
+            "name": "Roaming Skull III",
+            "type": "KillEnemyType",
+            "param": "Skeleton",
+            "count": 1000,
+            "reward": 0,
+            "sort_id": 459
+        },
+        {
+            "category": 2,
+            "id": 2336,
+            "name": "Skull Mania",
+            "type": "KillEnemyType",
+            "param": "SkeletonBrute",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 460
+        },
+        {
+            "category": 2,
+            "id": 650,
+            "name": "Bone King I",
+            "type": "KillEnemyType",
+            "param": "SkullLord",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 461
+        },
+        {
+            "category": 2,
+            "id": 651,
+            "name": "Bone King II",
+            "type": "KillEnemyType",
+            "param": "SkullLord",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 462
+        },
+        {
+            "category": 2,
+            "id": 652,
+            "name": "Bone King III",
+            "type": "KillEnemyType",
+            "param": "SkullLord",
+            "count": 200,
+            "reward": 0,
+            "sort_id": 463
+        },
+        {
+            "category": 2,
+            "id": 737,
+            "name": "Lotion Player I",
+            "type": "KillEnemyType",
+            "param": "Slime",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 464
+        },
+        {
+            "category": 2,
+            "id": 738,
+            "name": "Lotion Player II",
+            "type": "KillEnemyType",
+            "param": "Slime",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 465
+        },
+        {
+            "category": 2,
+            "id": 739,
+            "name": "Lotion Player III",
+            "type": "KillEnemyType",
+            "param": "Slime",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 466
+        },
+        {
+            "category": 2,
+            "id": 971,
+            "name": "Terrifying Diva I",
+            "type": "KillEnemyType",
+            "param": "Sphinx",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 467
+        },
+        {
+            "category": 2,
+            "id": 972,
+            "name": "Terrifying Diva II",
+            "type": "KillEnemyType",
+            "param": "Sphinx",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 468
+        },
+        {
+            "category": 2,
+            "id": 973,
+            "name": "Terrifying Diva III",
+            "type": "KillEnemyType",
+            "param": "Sphinx",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 469
+        },
+        {
+            "category": 5,
+            "id": 1079,
+            "name": "Suddenly, Spider!",
+            "type": "KillEnemyType",
+            "param": "Spider",
+            "count": 5,
+            "reward": 0,
+            "sort_id": 470
+        },
+        {
+            "category": 5,
+            "id": 1934,
+            "name": "Spider Elimination!",
+            "type": "KillEnemyType",
+            "param": "Spider",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 471
+        },
+        {
+            "category": 5,
+            "id": 1935,
+            "name": "Spider Extermination!",
+            "type": "KillEnemyType",
+            "param": "Spider",
+            "count": 20,
+            "reward": 0,
+            "sort_id": 472
+        },
+        {
+            "category": 5,
+            "id": 1936,
+            "name": "Spider Repelling!!",
+            "type": "KillEnemyType",
+            "param": "Spider",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 473
+        },
+        {
+            "category": 5,
+            "id": 1937,
+            "name": "Spider Thoroughly Annihilated!!!",
+            "type": "KillEnemyType",
+            "param": "Spider",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 474
+        },
+        {
+            "category": 2,
+            "id": 2358,
+            "name": "Spike Mania",
+            "type": "KillEnemyType",
+            "param": "Spine",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 475
+        },
+        {
+            "category": 2,
+            "id": 2376,
+            "name": "Bond of the Spirit Dragon",
+            "type": "KillEnemyType",
+            "param": "SpiritDragonWilmia",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 476
+        },
+        {
+            "category": 2,
+            "id": 2377,
+            "name": "Sanctuary of the Spirit Dragon",
+            "type": "KillEnemyType",
+            "param": "SpiritDragonWilmia",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 477
+        },
+        {
+            "category": 2,
+            "id": 2378,
+            "name": "Destroyer of Worlds",
+            "type": "KillEnemyType",
+            "param": "SpiritDragonWilmia",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 478
+        },
+        {
+            "category": 2,
+            "id": 2323,
+            "name": "Birds of Ill-Fortune",
+            "type": "KillEnemyType",
+            "param": "Strix",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 479
+        },
+        {
+            "category": 2,
+            "id": 2349,
+            "name": "God of War's Monster Bird",
+            "type": "KillEnemyType",
+            "param": "Stymphalides",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 480
+        },
+        {
+            "category": 2,
+            "id": 677,
+            "name": "Creeping Stripes I",
+            "type": "KillEnemyType",
+            "param": "SulfurSaurian",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 481
+        },
+        {
+            "category": 2,
+            "id": 678,
+            "name": "Creeping Stripes II",
+            "type": "KillEnemyType",
+            "param": "SulfurSaurian",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 482
+        },
+        {
+            "category": 2,
+            "id": 679,
+            "name": "Creeping Stripes III",
+            "type": "KillEnemyType",
+            "param": "SulfurSaurian",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 483
+        },
+        {
+            "category": 2,
+            "id": 2362,
+            "name": "A Monster-Eating Monster",
+            "type": "KillEnemyType",
+            "param": "Tarasque",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 484
+        },
+        {
+            "category": 2,
+            "id": 2363,
+            "name": "Wicked Family",
+            "type": "KillEnemyType",
+            "param": "Tarasque",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 485
+        },
+        {
+            "category": 2,
+            "id": 2364,
+            "name": "Fierce Dragon",
+            "type": "KillEnemyType",
+            "param": "Tarasque",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 486
+        },
+        {
+            "category": 2,
+            "id": 938,
+            "name": "Giant Slayer I",
+            "type": "KillEnemyType",
+            "param": "Troll",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 487
+        },
+        {
+            "category": 2,
+            "id": 939,
+            "name": "Giant Slayer III",
+            "type": "KillEnemyType",
+            "param": "Troll",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 488
+        },
+        {
+            "category": 2,
+            "id": 940,
+            "name": "Giant Slayer III",
+            "type": "KillEnemyType",
+            "param": "Troll",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 489
+        },
+        {
+            "category": 2,
+            "id": 692,
+            "name": "Undeath Killer I",
+            "type": "KillEnemyType",
+            "param": "Undead",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 490
+        },
+        {
+            "category": 2,
+            "id": 693,
+            "name": "Undeath Killer II",
+            "type": "KillEnemyType",
+            "param": "Undead",
+            "count": 200,
+            "reward": 0,
+            "sort_id": 491
+        },
+        {
+            "category": 2,
+            "id": 694,
+            "name": "Undeath Killer III",
+            "type": "KillEnemyType",
+            "param": "Undead",
+            "count": 500,
+            "reward": 0,
+            "sort_id": 492
+        },
+        {
+            "category": 2,
+            "id": 2932,
+            "name": "Watcher",
+            "type": "KillEnemyType",
+            "param": "Ushumgal",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 493
+        },
+        {
+            "category": 2,
+            "id": 2933,
+            "name": "Diviner",
+            "type": "KillEnemyType",
+            "param": "Ushumgal",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 494
+        },
+        {
+            "category": 2,
+            "id": 2934,
+            "name": "Foreseer",
+            "type": "KillEnemyType",
+            "param": "Ushumgal",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 495
+        },
+        {
+            "category": 2,
+            "id": 2348,
+            "name": "Lone Wolf",
+            "type": "KillEnemyType",
+            "param": "Warg",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 496
+        },
+        {
+            "category": 2,
+            "id": 2923,
+            "name": "War Hunter",
+            "type": "KillEnemyType",
+            "param": "WarMaster",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 497
+        },
+        {
+            "category": 2,
+            "id": 2924,
+            "name": "War Tamer",
+            "type": "KillEnemyType",
+            "param": "WarMaster",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 498
+        },
+        {
+            "category": 2,
+            "id": 2925,
+            "name": "War Caller",
+            "type": "KillEnemyType",
+            "param": "WarMaster",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 499
+        },
+        {
+            "category": 2,
+            "id": 959,
+            "name": "White Phantom Beast I",
+            "type": "KillEnemyType",
+            "param": "WhiteChimera",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 500
+        },
+        {
+            "category": 2,
+            "id": 960,
+            "name": "White Phantom Beast II",
+            "type": "KillEnemyType",
+            "param": "WhiteChimera",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 501
+        },
+        {
+            "category": 2,
+            "id": 961,
+            "name": "White Phantom Beast III",
+            "type": "KillEnemyType",
+            "param": "WhiteChimera",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 502
+        },
+        {
+            "category": 2,
+            "id": 2359,
+            "name": "Wicked White Bird",
+            "type": "KillEnemyType",
+            "param": "WhiteGriffin",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 503
+        },
+        {
+            "category": 2,
+            "id": 1013,
+            "name": "Exorcist I",
+            "type": "KillEnemyType",
+            "param": "Wight",
+            "count": 20,
+            "reward": 0,
+            "sort_id": 504
+        },
+        {
+            "category": 2,
+            "id": 1014,
+            "name": "Exorcist II",
+            "type": "KillEnemyType",
+            "param": "Wight",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 505
+        },
+        {
+            "category": 2,
+            "id": 1015,
+            "name": "Exorcist III",
+            "type": "KillEnemyType",
+            "param": "Wight",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 506
+        },
+        {
+            "category": 5,
+            "id": 2387,
+            "name": "Reckless Warrior",
+            "type": "KillEnemyType",
+            "param": "WildBoar",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 507
+        },
+        {
+            "category": 2,
+            "id": 1016,
+            "name": "Inquisitor I",
+            "type": "KillEnemyType",
+            "param": "Witch",
+            "count": 20,
+            "reward": 0,
+            "sort_id": 508
+        },
+        {
+            "category": 2,
+            "id": 1017,
+            "name": "Inquisitor II",
+            "type": "KillEnemyType",
+            "param": "Witch",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 509
+        },
+        {
+            "category": 2,
+            "id": 1018,
+            "name": "Inquisitor III",
+            "type": "KillEnemyType",
+            "param": "Witch",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 510
+        },
+        {
+            "category": 2,
+            "id": 623,
+            "name": "Wild Wolf I",
+            "type": "KillEnemyType",
+            "param": "Wolf",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 511
+        },
+        {
+            "category": 2,
+            "id": 624,
+            "name": "Wild Wolf II",
+            "type": "KillEnemyType",
+            "param": "Wolf",
+            "count": 200,
+            "reward": 0,
+            "sort_id": 512
+        },
+        {
+            "category": 2,
+            "id": 625,
+            "name": "Wild Wolf III",
+            "type": "KillEnemyType",
+            "param": "Wolf",
+            "count": 500,
+            "reward": 0,
+            "sort_id": 513
+        },
+        {
+            "category": 2,
+            "id": 1025,
+            "name": "Flame in the Mist I",
+            "type": "KillEnemyType",
+            "param": "Wyrm",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 514
+        },
+        {
+            "category": 2,
+            "id": 1026,
+            "name": "Flame in the Mist II",
+            "type": "KillEnemyType",
+            "param": "Wyrm",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 515
+        },
+        {
+            "category": 2,
+            "id": 1027,
+            "name": "Flame in the Mist III",
+            "type": "KillEnemyType",
+            "param": "Wyrm",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 516
+        },
+        {
+            "category": 2,
+            "id": 1082,
+            "name": "Demon Hunter",
+            "type": "KillEnemyType",
+            "param": "Zuhl",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 517
+        },
+        {
+            "category": 2,
+            "id": 1083,
+            "name": "Demon Slayer",
+            "type": "KillEnemyType",
+            "param": "Zuhl",
+            "count": 5,
+            "reward": 0,
+            "sort_id": 518
+        },
+        {
+            "category": 2,
+            "id": 1084,
+            "name": "Demon Dominator",
+            "type": "KillEnemyType",
+            "param": "Zuhl",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 519
+        },
+        {
+            "category": 2,
+            "id": 582,
+            "name": "100 War Veteran",
+            "type": "KillTotalEnemy",
+            "param": "",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 520
+        },
+        {
+            "category": 2,
+            "id": 583,
+            "name": "300 Defeats",
+            "type": "KillTotalEnemy",
+            "param": "",
+            "count": 300,
+            "reward": 0,
+            "sort_id": 521
+        },
+        {
+            "category": 2,
+            "id": 584,
+            "name": "The Unmatched Warrior",
+            "type": "KillTotalEnemy",
+            "param": "",
+            "count": 1000,
+            "reward": 0,
+            "sort_id": 522
+        },
+        {
+            "category": 2,
+            "id": 585,
+            "name": "A Match for Thousands",
+            "type": "KillTotalEnemy",
+            "param": "",
+            "count": 10000,
+            "reward": 16229,
+            "sort_id": 523
+        },
+        {
+            "category": 2,
+            "id": 1295,
+            "name": "20,000 Slain",
+            "type": "KillTotalEnemy",
+            "param": "",
+            "count": 20000,
+            "reward": 0,
+            "sort_id": 524
+        },
+        {
+            "category": 2,
+            "id": 1296,
+            "name": "King of the Underworld",
+            "type": "KillTotalEnemy",
+            "param": "",
+            "count": 30000,
+            "reward": 16233,
+            "sort_id": 525
+        },
+        {
+            "category": 2,
+            "id": 2534,
+            "name": "Paradise",
+            "type": "KillTotalEnemy",
+            "param": "",
+            "count": 100000,
+            "reward": 16228,
+            "sort_id": 526
+        },
+        {
+            "category": 3,
+            "id": 1137,
+            "name": "Augment Opener",
+            "type": "LearnAugments",
+            "param": "",
+            "count": 10,
+            "reward": 24802,
+            "sort_id": 527
+        },
+        {
+            "category": 3,
+            "id": 1138,
+            "name": "Augment Holder",
+            "type": "LearnAugments",
+            "param": "",
+            "count": 50,
+            "reward": 24803,
+            "sort_id": 528
+        },
+        {
+            "category": 3,
+            "id": 1139,
+            "name": "Augment Collector",
+            "type": "LearnAugments",
+            "param": "",
+            "count": 100,
+            "reward": 24806,
+            "sort_id": 529
+        },
+        {
+            "category": 3,
+            "id": 1140,
+            "name": "Augment Meister",
+            "type": "LearnAugments",
+            "param": "",
+            "count": 300,
+            "reward": 24807,
+            "sort_id": 530
+        },
+        {
+            "category": 3,
+            "id": 1133,
+            "name": "Learned Arisen",
+            "type": "LearnSkills",
+            "param": "",
+            "count": 10,
+            "reward": 24804,
+            "sort_id": 531
+        },
+        {
+            "category": 3,
+            "id": 1134,
+            "name": "Seeker",
+            "type": "LearnSkills",
+            "param": "",
+            "count": 50,
+            "reward": 24805,
+            "sort_id": 532
+        },
+        {
+            "category": 3,
+            "id": 1135,
+            "name": "Super Seeker",
+            "type": "LearnSkills",
+            "param": "",
+            "count": 100,
+            "reward": 24808,
+            "sort_id": 533
+        },
+        {
+            "category": 3,
+            "id": 1136,
+            "name": "Extreme Seeker",
+            "type": "LearnSkills",
+            "param": "",
+            "count": 300,
+            "reward": 24809,
+            "sort_id": 534
+        },
+        {
+            "category": 3,
+            "id": 1123,
+            "name": "Smelter",
+            "type": "MainLevel",
+            "param": "Alchemist",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 535
+        },
+        {
+            "category": 3,
+            "id": 1124,
+            "name": "Alchemist",
+            "type": "MainLevel",
+            "param": "Alchemist",
+            "count": 40,
+            "reward": 0,
+            "sort_id": 536
+        },
+        {
+            "category": 3,
+            "id": 1125,
+            "name": "Sage of Alchemy",
+            "type": "MainLevel",
+            "param": "Alchemist",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 537
+        },
+        {
+            "category": 3,
+            "id": 2303,
+            "name": "Chemist",
+            "type": "MainLevel",
+            "param": "Alchemist",
+            "count": 80,
+            "reward": 0,
+            "sort_id": 538
+        },
+        {
+            "category": 3,
+            "id": 2880,
+            "name": "Master of the Arts",
+            "type": "MainLevel",
+            "param": "Alchemist",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 539
+        },
+        {
+            "category": 3,
+            "id": 1117,
+            "name": "Light Bullet",
+            "type": "MainLevel",
+            "param": "ElementArcher",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 540
+        },
+        {
+            "category": 3,
+            "id": 1118,
+            "name": "Flashbang",
+            "type": "MainLevel",
+            "param": "ElementArcher",
+            "count": 40,
+            "reward": 0,
+            "sort_id": 541
+        },
+        {
+            "category": 3,
+            "id": 1119,
+            "name": "The Magic Shot",
+            "type": "MainLevel",
+            "param": "ElementArcher",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 542
+        },
+        {
+            "category": 3,
+            "id": 2301,
+            "name": "Ricochet Shooter",
+            "type": "MainLevel",
+            "param": "ElementArcher",
+            "count": 80,
+            "reward": 0,
+            "sort_id": 543
+        },
+        {
+            "category": 3,
+            "id": 2878,
+            "name": "Lightspeed Shooter",
+            "type": "MainLevel",
+            "param": "ElementArcher",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 544
+        },
+        {
+            "category": 3,
+            "id": 1099,
+            "name": "Swordsman",
+            "type": "MainLevel",
+            "param": "Fighter",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 545
+        },
+        {
+            "category": 3,
+            "id": 1100,
+            "name": "Great Swordsman",
+            "type": "MainLevel",
+            "param": "Fighter",
+            "count": 40,
+            "reward": 0,
+            "sort_id": 546
+        },
+        {
+            "category": 3,
+            "id": 1101,
+            "name": "Master Swordsman",
+            "type": "MainLevel",
+            "param": "Fighter",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 547
+        },
+        {
+            "category": 3,
+            "id": 2295,
+            "name": "Sword Emperor",
+            "type": "MainLevel",
+            "param": "Fighter",
+            "count": 80,
+            "reward": 0,
+            "sort_id": 548
+        },
+        {
+            "category": 3,
+            "id": 2872,
+            "name": "King of Swords",
+            "type": "MainLevel",
+            "param": "Fighter",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 549
+        },
+        {
+            "category": 3,
+            "id": 2882,
+            "name": "Magick Swordsman",
+            "type": "MainLevel",
+            "param": "HighScepter",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 550
+        },
+        {
+            "category": 3,
+            "id": 2883,
+            "name": "Magick Sword Master",
+            "type": "MainLevel",
+            "param": "HighScepter",
+            "count": 40,
+            "reward": 0,
+            "sort_id": 551
+        },
+        {
+            "category": 3,
+            "id": 2884,
+            "name": "Magick Sword Saint",
+            "type": "MainLevel",
+            "param": "HighScepter",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 552
+        },
+        {
+            "category": 3,
+            "id": 2885,
+            "name": "Magick Sword Emperor",
+            "type": "MainLevel",
+            "param": "HighScepter",
+            "count": 80,
+            "reward": 0,
+            "sort_id": 553
+        },
+        {
+            "category": 3,
+            "id": 2886,
+            "name": "Magick Sword King",
+            "type": "MainLevel",
+            "param": "HighScepter",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 554
+        },
+        {
+            "category": 3,
+            "id": 1102,
+            "name": "Standstill",
+            "type": "MainLevel",
+            "param": "Hunter",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 555
+        },
+        {
+            "category": 3,
+            "id": 1103,
+            "name": "Steady Stance",
+            "type": "MainLevel",
+            "param": "Hunter",
+            "count": 40,
+            "reward": 0,
+            "sort_id": 556
+        },
+        {
+            "category": 3,
+            "id": 1104,
+            "name": "Ever Alert",
+            "type": "MainLevel",
+            "param": "Hunter",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 557
+        },
+        {
+            "category": 3,
+            "id": 2296,
+            "name": "Bowlord",
+            "type": "MainLevel",
+            "param": "Hunter",
+            "count": 80,
+            "reward": 0,
+            "sort_id": 558
+        },
+        {
+            "category": 3,
+            "id": 2873,
+            "name": "God of War",
+            "type": "MainLevel",
+            "param": "Hunter",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 559
+        },
+        {
+            "category": 3,
+            "id": 1105,
+            "name": "Healer",
+            "type": "MainLevel",
+            "param": "Priest",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 560
+        },
+        {
+            "category": 3,
+            "id": 1106,
+            "name": "Accomplished Healer",
+            "type": "MainLevel",
+            "param": "Priest",
+            "count": 40,
+            "reward": 0,
+            "sort_id": 561
+        },
+        {
+            "category": 3,
+            "id": 1107,
+            "name": "Saint of Healing",
+            "type": "MainLevel",
+            "param": "Priest",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 562
+        },
+        {
+            "category": 3,
+            "id": 2297,
+            "name": "Healing Hermit",
+            "type": "MainLevel",
+            "param": "Priest",
+            "count": 80,
+            "reward": 0,
+            "sort_id": 563
+        },
+        {
+            "category": 3,
+            "id": 2874,
+            "name": "Soothing Idol",
+            "type": "MainLevel",
+            "param": "Priest",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 564
+        },
+        {
+            "category": 3,
+            "id": 1111,
+            "name": "Acrobat",
+            "type": "MainLevel",
+            "param": "Seeker",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 565
+        },
+        {
+            "category": 3,
+            "id": 1112,
+            "name": "Master Acrobat",
+            "type": "MainLevel",
+            "param": "Seeker",
+            "count": 40,
+            "reward": 0,
+            "sort_id": 566
+        },
+        {
+            "category": 3,
+            "id": 1113,
+            "name": "Assassin Acrobat",
+            "type": "MainLevel",
+            "param": "Seeker",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 567
+        },
+        {
+            "category": 3,
+            "id": 2299,
+            "name": "Superlative Acrobat",
+            "type": "MainLevel",
+            "param": "Seeker",
+            "count": 80,
+            "reward": 0,
+            "sort_id": 568
+        },
+        {
+            "category": 3,
+            "id": 2876,
+            "name": "Connsumate Acrobat",
+            "type": "MainLevel",
+            "param": "Seeker",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 569
+        },
+        {
+            "category": 3,
+            "id": 1108,
+            "name": "Protector",
+            "type": "MainLevel",
+            "param": "ShieldSage",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 570
+        },
+        {
+            "category": 3,
+            "id": 1109,
+            "name": "Guardian",
+            "type": "MainLevel",
+            "param": "ShieldSage",
+            "count": 40,
+            "reward": 0,
+            "sort_id": 571
+        },
+        {
+            "category": 3,
+            "id": 1110,
+            "name": "Divine Shield",
+            "type": "MainLevel",
+            "param": "ShieldSage",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 572
+        },
+        {
+            "category": 3,
+            "id": 2298,
+            "name": "Guardian Deity",
+            "type": "MainLevel",
+            "param": "ShieldSage",
+            "count": 80,
+            "reward": 0,
+            "sort_id": 573
+        },
+        {
+            "category": 3,
+            "id": 2875,
+            "name": "Absolute Guardian Deity",
+            "type": "MainLevel",
+            "param": "ShieldSage",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 574
+        },
+        {
+            "category": 3,
+            "id": 1114,
+            "name": "Magician",
+            "type": "MainLevel",
+            "param": "Sorcerer",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 575
+        },
+        {
+            "category": 3,
+            "id": 1115,
+            "name": "Master of Sorcery",
+            "type": "MainLevel",
+            "param": "Sorcerer",
+            "count": 40,
+            "reward": 0,
+            "sort_id": 576
+        },
+        {
+            "category": 3,
+            "id": 1116,
+            "name": "Elucidator of Magic",
+            "type": "MainLevel",
+            "param": "Sorcerer",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 577
+        },
+        {
+            "category": 3,
+            "id": 2300,
+            "name": "Magic Dreamer",
+            "type": "MainLevel",
+            "param": "Sorcerer",
+            "count": 80,
+            "reward": 0,
+            "sort_id": 578
+        },
+        {
+            "category": 3,
+            "id": 2877,
+            "name": "The Embodiment of Magic",
+            "type": "MainLevel",
+            "param": "Sorcerer",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 579
+        },
+        {
+            "category": 3,
+            "id": 2304,
+            "name": "Spear Apprentice",
+            "type": "MainLevel",
+            "param": "SpiritLancer",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 580
+        },
+        {
+            "category": 3,
+            "id": 2305,
+            "name": "Spear User",
+            "type": "MainLevel",
+            "param": "SpiritLancer",
+            "count": 40,
+            "reward": 0,
+            "sort_id": 581
+        },
+        {
+            "category": 3,
+            "id": 2306,
+            "name": "Spearman",
+            "type": "MainLevel",
+            "param": "SpiritLancer",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 582
+        },
+        {
+            "category": 3,
+            "id": 2307,
+            "name": "Spear Specialist",
+            "type": "MainLevel",
+            "param": "SpiritLancer",
+            "count": 80,
+            "reward": 0,
+            "sort_id": 583
+        },
+        {
+            "category": 3,
+            "id": 2881,
+            "name": "The Spear Hunter",
+            "type": "MainLevel",
+            "param": "SpiritLancer",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 584
+        },
+        {
+            "category": 3,
+            "id": 1120,
+            "name": "Great Sword Wielder",
+            "type": "MainLevel",
+            "param": "Warrior",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 585
+        },
+        {
+            "category": 3,
+            "id": 1121,
+            "name": "Wielder of a Heavy Sword",
+            "type": "MainLevel",
+            "param": "Warrior",
+            "count": 40,
+            "reward": 0,
+            "sort_id": 586
+        },
+        {
+            "category": 3,
+            "id": 1122,
+            "name": "Iron Slab Wielder",
+            "type": "MainLevel",
+            "param": "Warrior",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 587
+        },
+        {
+            "category": 3,
+            "id": 2302,
+            "name": "Wielder of Wrath",
+            "type": "MainLevel",
+            "param": "Warrior",
+            "count": 80,
+            "reward": 0,
+            "sort_id": 588
+        },
+        {
+            "category": 3,
+            "id": 2879,
+            "name": "They Who Wield Fury",
+            "type": "MainLevel",
+            "param": "Warrior",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 589
+        },
+        {
+            "category": 3,
+            "id": 2887,
+            "name": "Arisen of the Land",
+            "type": "MainLevelGroup",
+            "param": "GroupAll",
+            "count": 80,
+            "reward": 0,
+            "sort_id": 590
+        },
+        {
+            "category": 3,
+            "id": 1127,
+            "name": "Hawk-Eye",
+            "type": "MainLevelGroup",
+            "param": "GroupArcher",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 591
+        },
+        {
+            "category": 3,
+            "id": 1128,
+            "name": "Etherium",
+            "type": "MainLevelGroup",
+            "param": "GroupBlue",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 592
+        },
+        {
+            "category": 3,
+            "id": 2524,
+            "name": "Master of the Forest",
+            "type": "MainLevelGroup",
+            "param": "GroupFirst10",
+            "count": 60,
+            "reward": 16204,
+            "sort_id": 593
+        },
+        {
+            "category": 3,
+            "id": 1132,
+            "name": "The Golden Arisen",
+            "type": "MainLevelGroup",
+            "param": "GroupFirst9",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 594
+        },
+        {
+            "category": 3,
+            "id": 1129,
+            "name": "Nightingale",
+            "type": "MainLevelGroup",
+            "param": "GroupGreen",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 595
+        },
+        {
+            "category": 3,
+            "id": 1130,
+            "name": "Big Mage",
+            "type": "MainLevelGroup",
+            "param": "GroupMage",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 596
+        },
+        {
+            "category": 3,
+            "id": 1126,
+            "name": "Destroyer",
+            "type": "MainLevelGroup",
+            "param": "GroupMelee",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 597
+        },
+        {
+            "category": 4,
+            "id": 2890,
+            "name": "Rookie Breeder",
+            "type": "MandragoraSpecies",
+            "param": "",
+            "count": 5,
+            "reward": 18779,
+            "sort_id": 598
+        },
+        {
+            "category": 4,
+            "id": 2891,
+            "name": "Established Breeder",
+            "type": "MandragoraSpecies",
+            "param": "",
+            "count": 50,
+            "reward": 18767,
+            "sort_id": 599
+        },
+        {
+            "category": 4,
+            "id": 2892,
+            "name": "Great Breeder",
+            "type": "MandragoraSpecies",
+            "param": "",
+            "count": 100,
+            "reward": 18752,
+            "sort_id": 600
+        },
+        {
+            "category": 4,
+            "id": 2893,
+            "name": "Legendary Breeder",
+            "type": "MandragoraSpecies",
+            "param": "",
+            "count": 150,
+            "reward": 18768,
+            "sort_id": 601
+        },
+        {
+            "category": 4,
+            "id": 2894,
+            "name": "Mandragora Bachelor",
+            "type": "MandragoraSpecies",
+            "param": "",
+            "count": 200,
+            "reward": 0,
+            "sort_id": 602
+        },
+        {
+            "category": 4,
+            "id": 2895,
+            "name": "Mandragora Researcher",
+            "type": "MandragoraSpecies",
+            "param": "",
+            "count": 230,
+            "reward": 0,
+            "sort_id": 603
+        },
+        {
+            "category": 4,
+            "id": 2896,
+            "name": "Mandragora Professor",
+            "type": "MandragoraSpecies",
+            "param": "",
+            "count": 270,
+            "reward": 0,
+            "sort_id": 604
+        },
+        {
+            "category": 4,
+            "id": 2897,
+            "name": "Mandragora Doctor",
+            "type": "MandragoraSpecies",
+            "param": "",
+            "count": 312,
+            "reward": 0,
+            "sort_id": 605
+        },
+        {
+            "category": 4,
+            "id": 1276,
+            "name": "Mystic Crest",
+            "type": "MountCrest",
+            "param": "",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 606
+        },
+        {
+            "category": 4,
+            "id": 1277,
+            "name": "Secret Crest",
+            "type": "MountCrest",
+            "param": "",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 607
+        },
+        {
+            "category": 3,
+            "id": 1095,
+            "name": "The Arisen Mind",
+            "type": "OrbDevote",
+            "param": "AbilityCost",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 608
+        },
+        {
+            "category": 3,
+            "id": 1096,
+            "name": "Arisen Sacred Treasure",
+            "type": "OrbDevote",
+            "param": "AbilityCost",
+            "count": 12,
+            "reward": 0,
+            "sort_id": 609
+        },
+        {
+            "category": 3,
+            "id": 1091,
+            "name": "Seed of Life",
+            "type": "OrbDevote",
+            "param": "HpMax",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 610
+        },
+        {
+            "category": 3,
+            "id": 1092,
+            "name": "Tree of Life",
+            "type": "OrbDevote",
+            "param": "HpMax",
+            "count": 20,
+            "reward": 0,
+            "sort_id": 611
+        },
+        {
+            "category": 3,
+            "id": 1097,
+            "name": "Faithful Follower",
+            "type": "OrbDevote",
+            "param": "MainPawnSlot",
+            "count": 1,
+            "reward": 13320,
+            "sort_id": 612
+        },
+        {
+            "category": 3,
+            "id": 1093,
+            "name": "Tireless Worker",
+            "type": "OrbDevote",
+            "param": "StaminaMax",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 613
+        },
+        {
+            "category": 3,
+            "id": 1094,
+            "name": "Constant Labourer",
+            "type": "OrbDevote",
+            "param": "StaminaMax",
+            "count": 28,
+            "reward": 0,
+            "sort_id": 614
+        },
+        {
+            "category": 3,
+            "id": 1098,
+            "name": "Squire's Loyalty",
+            "type": "OrbDevote",
+            "param": "SupportPawnSlot",
+            "count": 2,
+            "reward": 0,
+            "sort_id": 615
+        },
+        {
+            "category": 4,
+            "id": 2313,
+            "name": "Affection Awakened",
+            "type": "PawnAffection",
+            "param": "",
+            "count": 2,
+            "reward": 13321,
+            "sort_id": 616
+        },
+        {
+            "category": 4,
+            "id": 2314,
+            "name": "Love Me",
+            "type": "PawnAffection",
+            "param": "",
+            "count": 6,
+            "reward": 13367,
+            "sort_id": 617
+        },
+        {
+            "category": 4,
+            "id": 2315,
+            "name": "Exclaimed Love for the Arisen",
+            "type": "PawnAffection",
+            "param": "",
+            "count": 20,
+            "reward": 0,
+            "sort_id": 618
+        },
+        {
+            "category": 4,
+            "id": 2531,
+            "name": "With Love",
+            "type": "PawnAffection",
+            "param": "",
+            "count": 22,
+            "reward": 16232,
+            "sort_id": 619
+        },
+        {
+            "category": 4,
+            "id": 2532,
+            "name": "All You Need Is Love",
+            "type": "PawnAffection",
+            "param": "",
+            "count": 24,
+            "reward": 16227,
+            "sort_id": 620
+        },
+        {
+            "category": 4,
+            "id": 2533,
+            "name": "Love Will Win",
+            "type": "PawnAffection",
+            "param": "",
+            "count": 26,
+            "reward": 16231,
+            "sort_id": 621
+        },
+        {
+            "category": 3,
+            "id": 1173,
+            "name": "Craft Man",
+            "type": "PawnCrafting",
+            "param": "",
+            "count": 5,
+            "reward": 0,
+            "sort_id": 622
+        },
+        {
+            "category": 3,
+            "id": 1174,
+            "name": "Craft Knight",
+            "type": "PawnCrafting",
+            "param": "",
+            "count": 15,
+            "reward": 0,
+            "sort_id": 623
+        },
+        {
+            "category": 3,
+            "id": 1175,
+            "name": "Craft Meister",
+            "type": "PawnCrafting",
+            "param": "",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 624
+        },
+        {
+            "category": 3,
+            "id": 1176,
+            "name": "Bronze Hand",
+            "type": "PawnCraftingExam",
+            "param": "",
+            "count": 16,
+            "reward": 0,
+            "sort_id": 625
+        },
+        {
+            "category": 3,
+            "id": 1177,
+            "name": "Silver Hand",
+            "type": "PawnCraftingExam",
+            "param": "",
+            "count": 24,
+            "reward": 0,
+            "sort_id": 626
+        },
+        {
+            "category": 1,
+            "id": 2379,
+            "name": "The Overseer",
+            "type": "PawnExpedition",
+            "param": "",
+            "count": 5,
+            "reward": 16226,
+            "sort_id": 627
+        },
+        {
+            "category": 1,
+            "id": 2380,
+            "name": "Leader",
+            "type": "PawnExpedition",
+            "param": "",
+            "count": 50,
+            "reward": 16230,
+            "sort_id": 628
+        },
+        {
+            "category": 1,
+            "id": 2381,
+            "name": "Commander",
+            "type": "PawnExpedition",
+            "param": "",
+            "count": 150,
+            "reward": 16234,
+            "sort_id": 629
+        },
+        {
+            "category": 3,
+            "id": 1170,
+            "name": "Student of Alchemy",
+            "type": "PawnLevel",
+            "param": "Alchemist",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 630
+        },
+        {
+            "category": 3,
+            "id": 1171,
+            "name": "Master of Alchemy",
+            "type": "PawnLevel",
+            "param": "Alchemist",
+            "count": 40,
+            "reward": 0,
+            "sort_id": 631
+        },
+        {
+            "category": 3,
+            "id": 1172,
+            "name": "Alchemical Explorer",
+            "type": "PawnLevel",
+            "param": "Alchemist",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 632
+        },
+        {
+            "category": 3,
+            "id": 1164,
+            "name": "Esoteric Archer",
+            "type": "PawnLevel",
+            "param": "ElementArcher",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 633
+        },
+        {
+            "category": 3,
+            "id": 1165,
+            "name": "Hidden Arrow",
+            "type": "PawnLevel",
+            "param": "ElementArcher",
+            "count": 40,
+            "reward": 0,
+            "sort_id": 634
+        },
+        {
+            "category": 3,
+            "id": 1166,
+            "name": "Secret Bow Master",
+            "type": "PawnLevel",
+            "param": "ElementArcher",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 635
+        },
+        {
+            "category": 3,
+            "id": 1146,
+            "name": "Bodyguard",
+            "type": "PawnLevel",
+            "param": "Fighter",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 636
+        },
+        {
+            "category": 3,
+            "id": 1147,
+            "name": "Loyal Sword",
+            "type": "PawnLevel",
+            "param": "Fighter",
+            "count": 40,
+            "reward": 0,
+            "sort_id": 637
+        },
+        {
+            "category": 3,
+            "id": 1148,
+            "name": "Reliable Power",
+            "type": "PawnLevel",
+            "param": "Fighter",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 638
+        },
+        {
+            "category": 3,
+            "id": 1149,
+            "name": "Archer",
+            "type": "PawnLevel",
+            "param": "Hunter",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 639
+        },
+        {
+            "category": 3,
+            "id": 1150,
+            "name": "Protected by the Bow",
+            "type": "PawnLevel",
+            "param": "Hunter",
+            "count": 40,
+            "reward": 0,
+            "sort_id": 640
+        },
+        {
+            "category": 3,
+            "id": 1151,
+            "name": "Blessing of the Bow God",
+            "type": "PawnLevel",
+            "param": "Hunter",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 641
+        },
+        {
+            "category": 3,
+            "id": 1152,
+            "name": "Medic",
+            "type": "PawnLevel",
+            "param": "Priest",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 642
+        },
+        {
+            "category": 3,
+            "id": 1153,
+            "name": "The Key to Recovery",
+            "type": "PawnLevel",
+            "param": "Priest",
+            "count": 40,
+            "reward": 0,
+            "sort_id": 643
+        },
+        {
+            "category": 3,
+            "id": 1154,
+            "name": "Eternal Refuge",
+            "type": "PawnLevel",
+            "param": "Priest",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 644
+        },
+        {
+            "category": 3,
+            "id": 1161,
+            "name": "Tricky",
+            "type": "PawnLevel",
+            "param": "Seeker",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 645
+        },
+        {
+            "category": 3,
+            "id": 1162,
+            "name": "Wire Man",
+            "type": "PawnLevel",
+            "param": "Seeker",
+            "count": 40,
+            "reward": 0,
+            "sort_id": 646
+        },
+        {
+            "category": 3,
+            "id": 1163,
+            "name": "Assassin",
+            "type": "PawnLevel",
+            "param": "Seeker",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 647
+        },
+        {
+            "category": 3,
+            "id": 1155,
+            "name": "Toughness",
+            "type": "PawnLevel",
+            "param": "ShieldSage",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 648
+        },
+        {
+            "category": 3,
+            "id": 1156,
+            "name": "Dauntless",
+            "type": "PawnLevel",
+            "param": "ShieldSage",
+            "count": 40,
+            "reward": 0,
+            "sort_id": 649
+        },
+        {
+            "category": 3,
+            "id": 1157,
+            "name": "Aegis",
+            "type": "PawnLevel",
+            "param": "ShieldSage",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 650
+        },
+        {
+            "category": 3,
+            "id": 1158,
+            "name": "Mage",
+            "type": "PawnLevel",
+            "param": "Sorcerer",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 651
+        },
+        {
+            "category": 3,
+            "id": 1159,
+            "name": "Elder Mage",
+            "type": "PawnLevel",
+            "param": "Sorcerer",
+            "count": 40,
+            "reward": 0,
+            "sort_id": 652
+        },
+        {
+            "category": 3,
+            "id": 1160,
+            "name": "Arch Mage",
+            "type": "PawnLevel",
+            "param": "Sorcerer",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 653
+        },
+        {
+            "category": 3,
+            "id": 1167,
+            "name": "Raider",
+            "type": "PawnLevel",
+            "param": "Warrior",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 654
+        },
+        {
+            "category": 3,
+            "id": 1168,
+            "name": "Heavy Hitter",
+            "type": "PawnLevel",
+            "param": "Warrior",
+            "count": 40,
+            "reward": 0,
+            "sort_id": 655
+        },
+        {
+            "category": 3,
+            "id": 1169,
+            "name": "Human Tank",
+            "type": "PawnLevel",
+            "param": "Warrior",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 656
+        },
+        {
+            "category": 3,
+            "id": 2903,
+            "name": "Rookie Teacher",
+            "type": "PawnTraining",
+            "param": "",
+            "count": 1,
+            "reward": 0,
+            "sort_id": 657
+        },
+        {
+            "category": 3,
+            "id": 2904,
+            "name": "Enthusiastic Teacher",
+            "type": "PawnTraining",
+            "param": "",
+            "count": 10,
+            "reward": 0,
+            "sort_id": 658
+        },
+        {
+            "category": 3,
+            "id": 2905,
+            "name": "Passionate Teacher",
+            "type": "PawnTraining",
+            "param": "",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 659
+        },
+        {
+            "category": 3,
+            "id": 2906,
+            "name": "Brilliant Teacher",
+            "type": "PawnTraining",
+            "param": "",
+            "count": 50,
+            "reward": 0,
+            "sort_id": 660
+        },
+        {
+            "category": 3,
+            "id": 2907,
+            "name": "Legendary Teacher",
+            "type": "PawnTraining",
+            "param": "",
+            "count": 100,
+            "reward": 0,
+            "sort_id": 661
+        },
+        {
+            "category": 4,
+            "id": 2537,
+            "name": "Elan Guide",
+            "type": "SparkleCollect",
+            "param": "ElanWaterGrove",
+            "count": 15,
+            "reward": 0,
+            "sort_id": 662
+        },
+        {
+            "category": 4,
+            "id": 2538,
+            "name": "Elan Explorer",
+            "type": "SparkleCollect",
+            "param": "ElanWaterGrove",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 663
+        },
+        {
+            "category": 4,
+            "id": 2539,
+            "name": "Farana Guide",
+            "type": "SparkleCollect",
+            "param": "FaranaPlains",
+            "count": 15,
+            "reward": 0,
+            "sort_id": 664
+        },
+        {
+            "category": 4,
+            "id": 2540,
+            "name": "Farana Explorer",
+            "type": "SparkleCollect",
+            "param": "FaranaPlains",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 665
+        },
+        {
+            "category": 4,
+            "id": 2936,
+            "name": "Feryana Explorer",
+            "type": "SparkleCollect",
+            "param": "FeryanaWilderness",
+            "count": 30,
+            "reward": 21356,
+            "sort_id": 666
+        },
+        {
+            "category": 4,
+            "id": 2543,
+            "name": "Kingal Guide",
+            "type": "SparkleCollect",
+            "param": "KingalCanyon",
+            "count": 15,
+            "reward": 0,
+            "sort_id": 667
+        },
+        {
+            "category": 4,
+            "id": 2544,
+            "name": "Kingal Explorer",
+            "type": "SparkleCollect",
+            "param": "KingalCanyon",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 668
+        },
+        {
+            "category": 4,
+            "id": 2937,
+            "name": "Megadosys Explorer",
+            "type": "SparkleCollect",
+            "param": "MegadosysPlateau",
+            "count": 30,
+            "reward": 21775,
+            "sort_id": 669
+        },
+        {
+            "category": 4,
+            "id": 2541,
+            "name": "Morrow Guide",
+            "type": "SparkleCollect",
+            "param": "MorrowForest",
+            "count": 15,
+            "reward": 0,
+            "sort_id": 670
+        },
+        {
+            "category": 4,
+            "id": 2542,
+            "name": "Morrow Explorer",
+            "type": "SparkleCollect",
+            "param": "MorrowForest",
+            "count": 30,
+            "reward": 0,
+            "sort_id": 671
+        },
+        {
+            "category": 4,
+            "id": 2935,
+            "name": "Rathnite Explorer",
+            "type": "SparkleCollect",
+            "param": "RathniteFoothills",
+            "count": 30,
+            "reward": 19148,
+            "sort_id": 672
+        },
+        {
+            "category": 4,
+            "id": 2545,
+            "name": "Little Collector",
+            "type": "SparkleCollect",
+            "param": "None",
+            "count": 30,
+            "reward": 16631,
+            "sort_id": 673
+        },
+        {
+            "category": 4,
+            "id": 2546,
+            "name": "Enlightened Collector",
+            "type": "SparkleCollect",
+            "param": "None",
+            "count": 60,
+            "reward": 0,
+            "sort_id": 674
+        },
+        {
+            "category": 4,
+            "id": 2547,
+            "name": "Great Collector",
+            "type": "SparkleCollect",
+            "param": "None",
+            "count": 90,
+            "reward": 0,
+            "sort_id": 675
+        },
+        {
+            "category": 4,
+            "id": 2548,
+            "name": "Legendary Collector",
+            "type": "SparkleCollect",
+            "param": "None",
+            "count": 120,
+            "reward": 0,
+            "sort_id": 676
+        },
+        {
+            "category": 4,
+            "id": 2938,
+            "name": "Urteca Explorer",
+            "type": "SparkleCollect",
+            "param": "UrtecaMountains",
+            "count": 30,
+            "reward": 23398,
+            "sort_id": 677
+        },
+        {
+            "category": 5,
+            "id": 1291,
+            "name": "Combat Cameraman",
+            "type": "TakePhoto",
+            "param": "",
+            "count": 100,
+            "reward": 16212,
+            "sort_id": 678
+        }
+    ],
+    "background_data": {
+        "default_backgrounds": [
+            1,
+            2,
+            3,
+            45,
+            48,
+            51
+        ],
+        "unlockable_backgrounds": [
+            {
+                "id": 4,
+                "required_achievements": 10,
+                "name_jp": "ノーマルブルー",
+                "name_en": "Normal Blue"
+            },
+            {
+                "id": 7,
+                "required_achievements": 40,
+                "name_jp": "オールドスクロール",
+                "name_en": "Old Scroll"
+            },
+            {
+                "id": 5,
+                "required_achievements": 70,
+                "name_jp": "ノーマルブラウン",
+                "name_en": "Normal Brown"
+            },
+            {
+                "id": 24,
+                "required_achievements": 100,
+                "name_jp": "モンスターズ",
+                "name_en": "Monsters"
+            },
+            {
+                "id": 6,
+                "required_achievements": 150,
+                "name_jp": "ダークマーブル",
+                "name_en": "Dark Marble"
+            },
+            {
+                "id": 23,
+                "required_achievements": 250,
+                "name_jp": "アーガイル",
+                "name_en": "Argyle"
+            },
+            {
+                "id": 25,
+                "required_achievements": 260,
+                "name_jp": "マリン・ノート",
+                "name_en": "Marine Note"
+            },
+            {
+                "id": 41,
+                "required_achievements": 280,
+                "name_jp": "ウェーブストライプ",
+                "name_en": "Wave Stripe"
+            },
+            {
+                "id": 42,
+                "required_achievements": 300,
+                "name_jp": "ピンクフラワー",
+                "name_en": "Pink Flower"
+            },
+            {
+                "id": 49,
+                "required_achievements": 330,
+                "name_jp": "モノグラム",
+                "name_en": "Monogram"
+            },
+            {
+                "id": 50,
+                "required_achievements": 360,
+                "name_jp": "オールドストライプ",
+                "name_en": "Old Stripe"
+            },
+            {
+                "id": 53,
+                "required_achievements": 400,
+                "name_jp": "キューブ",
+                "name_en": "Cube"
+            },
+            {
+                "id": 31,
+                "required_achievements": 410,
+                "name_jp": "神殿",
+                "name_en": "Temple"
+            },
+            {
+                "id": 36,
+                "required_achievements": 415,
+                "name_jp": "カラフルエッグ",
+                "name_en": "Colorful Egg"
+            },
+            {
+                "id": 15,
+                "required_achievements": 420,
+                "name_jp": "紋章",
+                "name_en": "Cord"
+            },
+            {
+                "id": 28,
+                "required_achievements": 425,
+                "name_jp": "スポットライト",
+                "name_en": "Spotlight"
+            },
+            {
+                "id": 27,
+                "required_achievements": 430,
+                "name_jp": "スティグマ",
+                "name_en": "Stigma"
+            },
+            {
+                "id": 19,
+                "required_achievements": 435,
+                "name_jp": "石畳",
+                "name_en": "Cobblestone"
+            },
+            {
+                "id": 18,
+                "required_achievements": 440,
+                "name_jp": "オペラカーテン",
+                "name_en": "Opera Curtain"
+            },
+            {
+                "id": 44,
+                "required_achievements": 445,
+                "name_jp": "ゴールドダマスク",
+                "name_en": "Gold Damask"
+            },
+            {
+                "id": 30,
+                "required_achievements": 450,
+                "name_jp": "オベリスク",
+                "name_en": "Obelisk"
+            },
+            {
+                "id": 54,
+                "required_achievements": 455,
+                "name_jp": "ロイヤル",
+                "name_en": "Royal"
+            },
+            {
+                "id": 39,
+                "required_achievements": 460,
+                "name_jp": "ウッドテクスチャ",
+                "name_en": "Wood Texture"
+            },
+            {
+                "id": 52,
+                "required_achievements": 465,
+                "name_jp": "アンティーク",
+                "name_en": "Antique"
+            },
+            {
+                "id": 43,
+                "required_achievements": 470,
+                "name_jp": "クラシックフラワー",
+                "name_en": "Classic Flower"
+            },
+            {
+                "id": 14,
+                "required_achievements": 475,
+                "name_jp": "シック",
+                "name_en": "Chic"
+            },
+            {
+                "id": 9,
+                "required_achievements": 480,
+                "name_jp": "セフィロトツリー",
+                "name_en": "Sephiroth Tree"
+            },
+            {
+                "id": 40,
+                "required_achievements": 485,
+                "name_jp": "ステンドグラス",
+                "name_en": "Stained Glass"
+            },
+            {
+                "id": 8,
+                "required_achievements": 490,
+                "name_jp": "ファイヤー",
+                "name_en": "Fire"
+            },
+            {
+                "id": 10,
+                "required_achievements": 495,
+                "name_jp": "ドラゴン",
+                "name_en": "Dragon"
+            },
+            {
+                "id": 11,
+                "required_achievements": 500,
+                "name_jp": "アルカナ",
+                "name_en": "Arcana"
+            },
+            {
+                "id": 12,
+                "required_achievements": 505,
+                "name_jp": "シーリングワックス",
+                "name_en": "Sealing Wax"
+            },
+            {
+                "id": 13,
+                "required_achievements": 510,
+                "name_jp": "ロイヤルティ",
+                "name_en": "Royalty"
+            },
+            {
+                "id": 16,
+                "required_achievements": 515,
+                "name_jp": "リーガルブルー",
+                "name_en": "Regal Blue"
+            },
+            {
+                "id": 17,
+                "required_achievements": 520,
+                "name_jp": "レスタニア全土",
+                "name_en": "All of Restania"
+            },
+            {
+                "id": 20,
+                "required_achievements": 525,
+                "name_jp": "チョコレート",
+                "name_en": "Chocolate"
+            },
+            {
+                "id": 21,
+                "required_achievements": 530,
+                "name_jp": "ブック",
+                "name_en": "Book"
+            },
+            {
+                "id": 22,
+                "required_achievements": 535,
+                "name_jp": "白竜シンボル",
+                "name_en": "White Dragon Symbol"
+            },
+            {
+                "id": 26,
+                "required_achievements": 540,
+                "name_jp": "エレガント",
+                "name_en": "Elegant"
+            },
+            {
+                "id": 29,
+                "required_achievements": 545,
+                "name_jp": "ウッドボード",
+                "name_en": "Wood Board"
+            },
+            {
+                "id": 32,
+                "required_achievements": 550,
+                "name_jp": "ゲート",
+                "name_en": "Gate"
+            },
+            {
+                "id": 33,
+                "required_achievements": 555,
+                "name_jp": "燐光虫",
+                "name_en": "Phosphorescent Bug"
+            },
+            {
+                "id": 34,
+                "required_achievements": 560,
+                "name_jp": "サマー",
+                "name_en": "Summer"
+            },
+            {
+                "id": 35,
+                "required_achievements": 565,
+                "name_jp": "トリック・オア・トリート",
+                "name_en": "Trick or Treat"
+            },
+            {
+                "id": 37,
+                "required_achievements": 570,
+                "name_jp": "知識の木",
+                "name_en": "Tree of Knowledge"
+            },
+            {
+                "id": 38,
+                "required_achievements": 575,
+                "name_jp": "アンティークパターン",
+                "name_en": "Antique Pattern"
+            },
+            {
+                "id": 46,
+                "required_achievements": 580,
+                "name_jp": "リム石碑",
+                "name_en": "Rim Stone"
+            },
+            {
+                "id": 47,
+                "required_achievements": 585,
+                "name_jp": "レリーフ",
+                "name_en": "Relief"
+            },
+            {
+                "id": 55,
+                "required_achievements": 590,
+                "name_jp": "エピック",
+                "name_en": "Epic"
+            },
+            {
+                "id": 56,
+                "required_achievements": 595,
+                "name_jp": "レジェンダリー",
+                "name_en": "Legendary"
+            }
+        ]
+    }
+}

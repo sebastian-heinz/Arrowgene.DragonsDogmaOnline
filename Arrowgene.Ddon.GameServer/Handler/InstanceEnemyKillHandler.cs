@@ -234,6 +234,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
                                 var ntcs = _gameServer.ExpManager.AddExp(memberClient, memberCharacter, gainedExp, RewardSource.Enemy, connectionIn: connectionIn);
                                 queuedPackets.AddRange(ntcs);
                             }
+
+                            queuedPackets.AddRange(Server.AchievementManager.HandleKillEnemy(memberClient, enemyKilled, connectionIn: connectionIn));
+
                         }
                         else if (member is PawnPartyMember pawnMember)
                         {

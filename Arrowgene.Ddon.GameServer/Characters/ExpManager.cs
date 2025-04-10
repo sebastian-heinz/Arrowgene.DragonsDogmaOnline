@@ -521,7 +521,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                     CalculateAndAssignStats(characterToAddExpTo);
 
-                    if(characterToAddExpTo is Character)
+                    if(characterToAddExpTo is Character character)
                     {
                         // Inform client of lvl up
                         S2CJobCharacterJobLevelUpNtc lvlNtc = new S2CJobCharacterJobLevelUpNtc();
@@ -529,36 +529,40 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         lvlNtc.Level = activeCharacterJobData.Lv;
                         lvlNtc.AddJobPoint = addJobPoint;
                         lvlNtc.TotalJobPoint = activeCharacterJobData.JobPoint;
-                        GameStructure.CDataCharacterLevelParam(lvlNtc.CharacterLevelParam, (Character) characterToAddExpTo);
+                        GameStructure.CDataCharacterLevelParam(lvlNtc.CharacterLevelParam, character);
                         client.Enqueue(lvlNtc, packets);
+
+                        packets.AddRange(_Server.AchievementManager.HandleMainLevel(client, connectionIn));
 
                         // Inform other party members
                         S2CJobCharacterJobLevelUpMemberNtc lvlMemberNtc = new S2CJobCharacterJobLevelUpMemberNtc();
-                        lvlMemberNtc.CharacterId = ((Character) characterToAddExpTo).CharacterId;
+                        lvlMemberNtc.CharacterId = character.CharacterId;
                         lvlMemberNtc.Job = characterToAddExpTo.Job;
                         lvlMemberNtc.Level = activeCharacterJobData.Lv;
-                        GameStructure.CDataCharacterLevelParam(lvlMemberNtc.CharacterLevelParam, (Character) characterToAddExpTo);
+                        GameStructure.CDataCharacterLevelParam(lvlMemberNtc.CharacterLevelParam, character);
                         client.Party.EnqueueToAllExcept(lvlMemberNtc, packets, client);
                     }
-                    else if(characterToAddExpTo is Pawn)
+                    else if(characterToAddExpTo is Pawn pawn)
                     {
                         // Inform client of lvl up
                         S2CJobPawnJobLevelUpNtc lvlNtc = new S2CJobPawnJobLevelUpNtc();
-                        lvlNtc.PawnId = ((Pawn) characterToAddExpTo).PawnId;
+                        lvlNtc.PawnId = pawn.PawnId;
                         lvlNtc.Job = characterToAddExpTo.Job;
                         lvlNtc.Level = activeCharacterJobData.Lv;
                         lvlNtc.AddJobPoint = addJobPoint;
                         lvlNtc.TotalJobPoint = activeCharacterJobData.JobPoint;
-                        GameStructure.CDataCharacterLevelParam(lvlNtc.CharacterLevelParam, (Pawn) characterToAddExpTo);
+                        GameStructure.CDataCharacterLevelParam(lvlNtc.CharacterLevelParam, pawn);
                         client.Enqueue(lvlNtc, packets);
+
+                        packets.AddRange(_Server.AchievementManager.HandlePawnLevel(client, pawn, connectionIn));
 
                         // Inform other party members
                         S2CJobPawnJobLevelUpMemberNtc lvlMemberNtc = new S2CJobPawnJobLevelUpMemberNtc();
-                        lvlMemberNtc.CharacterId = ((Pawn) characterToAddExpTo).CharacterId;
-                        lvlMemberNtc.PawnId = ((Pawn) characterToAddExpTo).PawnId;
+                        lvlMemberNtc.CharacterId = pawn.CharacterId;
+                        lvlMemberNtc.PawnId = pawn.PawnId;
                         lvlMemberNtc.Job = characterToAddExpTo.Job;
                         lvlMemberNtc.Level = activeCharacterJobData.Lv;
-                        GameStructure.CDataCharacterLevelParam(lvlMemberNtc.CharacterLevelParam, (Pawn) characterToAddExpTo);
+                        GameStructure.CDataCharacterLevelParam(lvlMemberNtc.CharacterLevelParam, pawn);
                         client.Party.EnqueueToAllExcept(lvlMemberNtc, packets, client);
                     }
                 }

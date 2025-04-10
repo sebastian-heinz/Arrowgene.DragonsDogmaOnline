@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -275,14 +276,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public void UpdateCharacterExtendedParamsNtc(GameClient client, CharacterCommon character)
+        public PacketQueue UpdateCharacterExtendedParamsNtc(GameClient client, CharacterCommon character)
         {
             UpdateCharacterExtendedParams(character);
-            NotifyClientOfCharacterStatus(client, character);
+            return NotifyClientOfCharacterStatus(client, character);
         }
 
-        private void NotifyClientOfCharacterStatus(GameClient client, CharacterCommon character)
+        private PacketQueue NotifyClientOfCharacterStatus(GameClient client, CharacterCommon character)
         {
+            PacketQueue queue = new();
 
             if (character is Character)
             {
@@ -298,14 +300,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 if (client.Party != null)
                 {
-                    client.Party.SendToAll(ntc1);
+                    client.Party.EnqueueToAll(ntc1, queue);
                 }
                 else
                 {
-                    client.Send(ntc1);
+                    client.Enqueue(ntc1, queue);
                 }
 
-                client.Send(ntc2);
+                client.Enqueue(ntc2, queue);
             }
             else
             {
@@ -313,20 +315,22 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 if (partyMember == null || partyMember is not PawnPartyMember)
                 {
                     Logger.Error($"Failed to find party member in the list");
-                    return;
+                    return queue;
                 }
 
                 PawnPartyMember pawnPartyMember = (PawnPartyMember)partyMember;
                 if (client.Party != null)
                 {
-                    client.Party.SendToAll(pawnPartyMember.GetS2CContextGetParty_ContextNtc());
+                    client.Party.EnqueueToAll(pawnPartyMember.GetS2CContextGetParty_ContextNtc(), queue);
                 }
                 else
                 {
                     // This should never be true but if it is, why?
-                    client.Send(pawnPartyMember.GetS2CContextGetParty_ContextNtc());
+                    client.Enqueue(pawnPartyMember.GetS2CContextGetParty_ContextNtc(), queue);
                 }
             }
+
+            return queue;
         }
     }
 }

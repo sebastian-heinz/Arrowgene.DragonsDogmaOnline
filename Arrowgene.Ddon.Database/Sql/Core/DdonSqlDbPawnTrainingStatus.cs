@@ -32,21 +32,18 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private const string SqlDeletePawnTrainingStatus = "DELETE FROM \"ddon_pawn_training_status\" WHERE \"pawn_id\"=@pawn_id AND \"job\" = @job;";
 
-        public bool ReplacePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus)
+        public bool ReplacePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return ReplacePawnTrainingStatus(connection, pawnId, job, pawnTrainingStatus);
-        }
-
-        public bool ReplacePawnTrainingStatus(TCon connection, uint pawnId, JobId job, byte[] pawnTrainingStatus)
-        {
-            Logger.Debug("Inserting character job data.");
-            if (!InsertIfNotExistsPawnTrainingStatus(connection, pawnId, job, pawnTrainingStatus))
+            return ExecuteQuerySafe(connectionIn, connection =>
             {
-                Logger.Debug("Character job data already exists, replacing.");
-                return UpdatePawnTrainingStatus(connection, pawnId, job, pawnTrainingStatus);
-            }
-            return true;
+                Logger.Debug("Inserting pawn training status.");
+                if (!InsertIfNotExistsPawnTrainingStatus(connection, pawnId, job, pawnTrainingStatus))
+                {
+                    Logger.Debug("Character pawn training status, replacing.");
+                    return UpdatePawnTrainingStatus(connection, pawnId, job, pawnTrainingStatus);
+                }
+                return true;
+            });
         }
 
         public bool InsertPawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus)

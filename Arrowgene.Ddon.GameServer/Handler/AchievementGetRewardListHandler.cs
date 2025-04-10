@@ -1,8 +1,11 @@
-using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler;
 
@@ -20,8 +23,15 @@ public class AchievementGetRewardListHandler : GameRequestPacketHandler<C2SAchie
     {
         S2CAchievementGetRewardListRes res = new S2CAchievementGetRewardListRes();
 
-        // TODO: retrieve the amount of completed achievements here & check already claimed background rewards
-        res.BackgroundProgressList = BackgroundProgressList;
+        uint count = (uint)client.Character.AchievementStatus.Count;
+
+        res.BackgroundProgressList.AddRange(Server.AssetRepository.AchievementBackgroundAsset.UnlockableBackgrounds.Select(x => new CDataAchievementRewardProgress()
+        {
+            RewardId = x.Id,
+            CurrentNum = Math.Min(count, x.Required),
+            TargetNum = x.Required,
+            IsReceived = client.Character.UnlockableItems.Contains((UnlockableItemCategory.ArisenCardBackground, x.Id)),
+        }));
 
         return res;
     }

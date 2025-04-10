@@ -40,6 +40,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var warpPointList = client.Character.ReleasedWarpPoints;
             var clanId = client.Character.ClanId;
             var clanName = client.Character.ClanName;
+            var achievements = (client.Character.AchievementStatus, client.Character.AchievementProgress, client.Character.AchievementUniqueCrafts);
 
             var serverInfo = client.Character.Server;
             if (client.GameMode == GameMode.Normal)
@@ -77,6 +78,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Character.OnlineStatus = OnlineStatus.Online;
             client.Character.ClanId = clanId;
             client.Character.ClanName = clanName;
+            client.Character.AchievementStatus = achievements.Item1;
+            client.Character.AchievementProgress = achievements.Item2;
+            client.Character.AchievementUniqueCrafts = achievements.Item3;
 
             S2CCharacterSwitchGameModeNtc ntc = new S2CCharacterSwitchGameModeNtc()
             {

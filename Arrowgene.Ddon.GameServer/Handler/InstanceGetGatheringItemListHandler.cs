@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -25,15 +26,47 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             bool isGatheringItemBreak = false;
             var (isNew, gatheringItems) = client.InstanceGatheringItemManager.FetchOrGenerate(request.LayoutId, request.PosId);
-            if(isNew && request.GatheringItemUId.Any() && Random.Shared.NextDouble() < BREAK_CHANCE)
+
+            PacketQueue queue = new();
+
+            Server.Database.ExecuteInTransaction(connection =>
             {
-                isGatheringItemBreak = true;
+                if (isNew && request.GatheringItemUId.Any())
+                {
+                    var gatheringItem = Server.ItemManager.LookupInfoByUID(Server, request.GatheringItemUId, connection);
 
-                S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
-                ntc.UpdateItemList.AddRange(Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.ItemBagStorageTypes, request.GatheringItemUId, 1));
-                client.Send(ntc);
-            }
+                    switch ((ItemId)gatheringItem.ItemId)
+                    {
+                        case ItemId.Pickaxe:
+                        case ItemId.ArtisansPickaxe:
+                        case ItemId.EnhancedPickaxe:
+                            queue.AddRange(Server.AchievementManager.HandleCollect(client, AchievementCollectParam.Ore, connection));
+                            break;
+                        case ItemId.Lockpick:
+                        case ItemId.AllPurposeLockpick:
+                        case ItemId.EnhancedLockpick:
+                            queue.AddRange(Server.AchievementManager.HandleCollect(client, AchievementCollectParam.Chest, connection));
+                            break;
+                        case ItemId.LumberKnife:
+                        case ItemId.ArtisansLumberKnife:
+                        case ItemId.EnhancedLumberKnife:
+                            queue.AddRange(Server.AchievementManager.HandleCollect(client, AchievementCollectParam.Wood, connection));
+                            break;
+                    }
 
+                    if (Random.Shared.NextDouble() < BREAK_CHANCE)
+                    {
+                        isGatheringItemBreak = true;
+
+                        S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
+                        ntc.UpdateItemList.AddRange(Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.ItemBagStorageTypes, request.GatheringItemUId, 1, connection));
+                        client.Enqueue(ntc, queue);
+                    }
+                }
+
+            });
+
+            queue.Send();
             S2CInstanceGetGatheringItemListRes res = new()
             {
                 LayoutId = request.LayoutId,

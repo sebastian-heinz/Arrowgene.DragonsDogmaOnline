@@ -39,7 +39,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CCraftStartCraftRes Handle(GameClient client, C2SCraftStartCraftReq request)
         {
-            CDataMDataCraftRecipe recipe;
+            CraftingRecipe recipe;
             try
             {
                 recipe = Server.AssetRepository.CraftingRecipesAsset

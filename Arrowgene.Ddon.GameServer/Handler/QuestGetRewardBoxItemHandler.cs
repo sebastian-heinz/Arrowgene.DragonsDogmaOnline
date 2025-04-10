@@ -69,16 +69,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_STORAGE_OVERFLOW);
             }
 
+            PacketQueue queue = new();
             Server.Database.ExecuteInTransaction(connection =>
             {
                 foreach (var rewardUID in distinctRewards)
                 {
                     var reward = coalescedRewards[rewardUID];
-                    if (Server.ItemManager.IsItemWalletPoint(reward.ItemId))
+
+                    var (specialQueue, isSpecial) = Server.ItemManager.HandleSpecialItem(client, updateCharacterItemNtc, reward.ItemId, reward.Num, connection);
+                    if (isSpecial)
                     {
-                        (WalletType walletType, uint amount) = Server.ItemManager.ItemToWalletPoint(reward.ItemId);
-                        var result = Server.WalletManager.AddToWallet(client.Character, walletType, amount * reward.Num, connectionIn: connection);
-                        updateCharacterItemNtc.UpdateWalletList.Add(result);
+                        queue.AddRange(specialQueue);
                     }
                     else if (reward.Num > 0)
                     {
@@ -90,6 +91,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             });
 
             client.Send(updateCharacterItemNtc);
+            queue.Send();
 
             return new S2CQuestGetRewardBoxItemRes();
         }

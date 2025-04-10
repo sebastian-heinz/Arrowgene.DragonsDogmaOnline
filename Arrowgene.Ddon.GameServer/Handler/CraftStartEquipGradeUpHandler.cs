@@ -1,9 +1,12 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -13,7 +16,7 @@ using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class CraftStartEquipGradeUpHandler : GameRequestPacketHandler<C2SCraftStartEquipGradeUpReq, S2CCraftStartEquipGradeUpRes>
+    public class CraftStartEquipGradeUpHandler : GameRequestPacketQueueHandler<C2SCraftStartEquipGradeUpReq, S2CCraftStartEquipGradeUpRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(CraftStartEquipGradeUpHandler));
         private readonly ItemManager _itemManager;
@@ -25,8 +28,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             _craftManager = Server.CraftManager;
         }
 
-        public override S2CCraftStartEquipGradeUpRes Handle(GameClient client, C2SCraftStartEquipGradeUpReq request)
+        public override PacketQueue Handle(GameClient client, C2SCraftStartEquipGradeUpReq request)
         {
+            PacketQueue queue = new();
+
             string equipItemUID = request.EquipItemUID;
             Character character = client.Character;
             var ramItem = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
@@ -48,7 +53,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             bool doUpgrade = false;
             uint currentTotalEquipPoint = equipItem.EquipPoints;
 
-            CDataCurrentEquipInfo CurrentEquipInfo = new()
+            CDataCurrentEquipInfo currentEquipInfo = new()
             {
                 ItemUId = equipItemUID,
             };
@@ -61,170 +66,177 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 DragonAugment = false, // makes the DragonAugment slot popup appear if set to true.
             };
 
-            var res = new S2CCraftStartEquipGradeUpRes();
+            S2CCraftStartEquipGradeUpRes res = new();
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new();
 
-            // Removes crafting materials
-            foreach (var craftMaterial in request.CraftMaterialList)
+            Server.Database.ExecuteInTransaction(connection =>
             {
-                try
+                // Removes crafting materials
+                foreach (var craftMaterial in request.CraftMaterialList)
                 {
-                    var updateResults =
-                        _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, craftMaterial.ItemUId, craftMaterial.ItemNum);
-                    updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
-                }
-                catch (NotEnoughItemsException)
-                {
-                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_ITEM_NUM, "Client Item Desync has Occurred.");
-                }
-            }
-
-
-            Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnID);
-
-            List<CraftPawn> craftPawns = new()
-            {
-                new CraftPawn(leadPawn, CraftPosition.Leader)
-            };
-            craftPawns.AddRange(request.CraftSupportPawnIDList.Select(p => new CraftPawn(Server.CraftManager.FindPawn(client, p.PawnId), CraftPosition.Assistant)));
-            craftPawns.AddRange(request.CraftMasterLegendPawnIDList.Select(p => new CraftPawn(Server.AssetRepository.PawnCraftMasterLegendAsset.Single(m => m.PawnId == p.PawnId))));
-
-            double calculatedOdds = CraftManager.CalculateEquipmentQualityIncreaseRate(craftPawns);
-            CraftCalculationResult enhnacementResult = _craftManager.CalculateEquipmentEnhancement(craftPawns, (uint)calculatedOdds);
-            bool isGreatSuccess = enhnacementResult.IsGreatSuccess;
-            uint addEquipPoint = enhnacementResult.CalculatedValue;
-
-            currentTotalEquipPoint += addEquipPoint;
-
-            uint cost = Server.CraftManager.CalculateRecipeCost(recipeData.Cost, itemInfo, craftPawns);
-            CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, cost)
-                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CRAFT_INSUFFICIENT_GOLD, $"Insufficient gold. {cost} > {Server.WalletManager.GetWalletAmount(client.Character, WalletType.Gold)}"); updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
-
-            updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
-
-            if (request.CraftMasterLegendPawnIDList.Count > 0)
-            {
-                uint totalGPcost = (uint)request.CraftMasterLegendPawnIDList.Sum(p => Server.AssetRepository.PawnCraftMasterLegendAsset.Single(m => m.PawnId == p.PawnId).RentalCost);
-                CDataUpdateWalletPoint updateGP = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.GoldenGemstones, totalGPcost)
-                    ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_GP_LACK_GP);
-                updateCharacterItemNtc.UpdateWalletList.Add(updateGP);
-            }
-
-            byte currentStars = (byte)itemInfo.Quality;
-            uint remainingPoints = currentTotalEquipPoint;
-            List<CDataCommonU32> gradeupList = new List<CDataCommonU32>();
-
-            uint[] thresholds = { 350, 700, 1000, 1500, 800 };
-
-            // Determine the required points based on the current star level
-            uint requiredPoints = currentStars >= 0 && currentStars < thresholds.Length 
-                ? thresholds[currentStars] 
-                : throw new InvalidOperationException("Invalid star level");
-
-            if (recipeData.AllowMultiGrade)
-            {
-                if (currentTotalEquipPoint >= requiredPoints)
-                {
-                    doUpgrade = true;
-                    List<CDataMDataCraftGradeupRecipe> itemIDsList = FindRecipeFamily(recipeData);
-                    remainingPoints = currentTotalEquipPoint;
-                    int thresholdsExceeded = 0;
-
-                    for (int i = currentStars; i < thresholds.Length; i++)
+                    try
                     {
-                        if (remainingPoints >= thresholds[i])
-                        {
-                            remainingPoints -= thresholds[i];
-                            thresholdsExceeded++;
-                        }
-                        else
-                        {
-                            break;
-                        }
+                        var updateResults =
+                            _itemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, craftMaterial.ItemUId, craftMaterial.ItemNum, connection);
+                        updateCharacterItemNtc.UpdateItemList.AddRange(updateResults);
                     }
-
-                    gradeupList = itemIDsList.Take(thresholdsExceeded).Select(recipe => new CDataCommonU32(recipe.GradeupItemID)).ToList();
-                    upgradableStatus = itemIDsList.Take(thresholdsExceeded).LastOrDefault().Upgradable;
-                    gearUpgradeID = gradeupList.Count > 0 ? gradeupList.Last().Value : 0;
-                }
-            }
-
-            else
-            {
-                if (currentTotalEquipPoint >= requiredPoints)
-                {
-                    currentTotalEquipPoint -= requiredPoints;
-
-                    if (currentStars < 4)
+                    catch (NotEnoughItemsException)
                     {
-                        int nextThresholdIndex = currentStars + 1;
-                        uint nextThreshold = thresholds[nextThresholdIndex];
-
-                        // Cap remaining points or just update them based on the next threshold
-                        remainingPoints = Math.Min(currentTotalEquipPoint, nextThreshold - 1);
+                        throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_ITEM_NUM, "Client Item Desync has Occurred.");
                     }
-                    else
+                }
+
+
+                Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnID);
+
+                List<CraftPawn> craftPawns = new()
+                {
+                    new CraftPawn(leadPawn, CraftPosition.Leader)
+                };
+                craftPawns.AddRange(request.CraftSupportPawnIDList.Select(p => new CraftPawn(Server.CraftManager.FindPawn(client, p.PawnId), CraftPosition.Assistant)));
+                craftPawns.AddRange(request.CraftMasterLegendPawnIDList.Select(p => new CraftPawn(Server.AssetRepository.PawnCraftMasterLegendAsset.Single(m => m.PawnId == p.PawnId))));
+
+                double calculatedOdds = CraftManager.CalculateEquipmentQualityIncreaseRate(craftPawns);
+                CraftCalculationResult enhnacementResult = _craftManager.CalculateEquipmentEnhancement(craftPawns, (uint)calculatedOdds);
+                bool isGreatSuccess = enhnacementResult.IsGreatSuccess;
+                uint addEquipPoint = enhnacementResult.CalculatedValue;
+
+                currentTotalEquipPoint += addEquipPoint;
+
+                uint cost = Server.CraftManager.CalculateRecipeCost(recipeData.Cost, itemInfo, craftPawns);
+                CDataUpdateWalletPoint updateWalletPoint = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.Gold, cost, connection)
+                    ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CRAFT_INSUFFICIENT_GOLD, $"Insufficient gold. {cost} > {Server.WalletManager.GetWalletAmount(client.Character, WalletType.Gold)}"); updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
+
+                updateCharacterItemNtc.UpdateWalletList.Add(updateWalletPoint);
+
+                if (request.CraftMasterLegendPawnIDList.Count > 0)
+                {
+                    uint totalGPcost = (uint)request.CraftMasterLegendPawnIDList.Sum(p => Server.AssetRepository.PawnCraftMasterLegendAsset.Single(m => m.PawnId == p.PawnId).RentalCost);
+                    CDataUpdateWalletPoint updateGP = Server.WalletManager.RemoveFromWallet(client.Character, WalletType.GoldenGemstones, totalGPcost, connection)
+                        ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_GP_LACK_GP);
+                    updateCharacterItemNtc.UpdateWalletList.Add(updateGP);
+                }
+
+                byte currentStars = (byte)itemInfo.Quality;
+                uint remainingPoints = currentTotalEquipPoint;
+                List<CDataCommonU32> gradeupList = new List<CDataCommonU32>();
+
+                uint[] thresholds = { 350, 700, 1000, 1500, 800 };
+
+                // Determine the required points based on the current star level
+                uint requiredPoints = currentStars >= 0 && currentStars < thresholds.Length 
+                    ? thresholds[currentStars] 
+                    : throw new InvalidOperationException("Invalid star level");
+
+                if (recipeData.AllowMultiGrade)
+                {
+                    if (currentTotalEquipPoint >= requiredPoints)
                     {
+                        doUpgrade = true;
+                        List<CDataMDataCraftGradeupRecipe> itemIDsList = FindRecipeFamily(recipeData);
                         remainingPoints = currentTotalEquipPoint;
-                    }
-                    // Prepare to grade up
-                    gradeupList = new() { new CDataCommonU32(gearUpgradeID) };
-                    doUpgrade = true;
-                }
-            }
-            if (upgradableStatus == UpgradableStatus.No)
-            {
-                canContinue = false;
-            }
+                        int thresholdsExceeded = 0;
 
-            if (doUpgrade)
-            {
-                equipItem.ItemId = gearUpgradeID;
-                if (canContinue)
-                {
-                    currentTotalEquipPoint = remainingPoints;
+                        for (int i = currentStars; i < thresholds.Length; i++)
+                        {
+                            if (remainingPoints >= thresholds[i])
+                            {
+                                remainingPoints -= thresholds[i];
+                                thresholdsExceeded++;
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        gradeupList = itemIDsList.Take(thresholdsExceeded).Select(recipe => new CDataCommonU32(recipe.GradeupItemID)).ToList();
+                        upgradableStatus = itemIDsList.Take(thresholdsExceeded).LastOrDefault().Upgradable;
+                        gearUpgradeID = gradeupList.Count > 0 ? gradeupList.Last().Value : 0;
+                    }
                 }
                 else
                 {
-                    currentTotalEquipPoint = 0;
+                    if (currentTotalEquipPoint >= requiredPoints)
+                    {
+                        currentTotalEquipPoint -= requiredPoints;
+
+                        if (currentStars < 4)
+                        {
+                            int nextThresholdIndex = currentStars + 1;
+                            uint nextThreshold = thresholds[nextThresholdIndex];
+
+                            // Cap remaining points or just update them based on the next threshold
+                            remainingPoints = Math.Min(currentTotalEquipPoint, nextThreshold - 1);
+                        }
+                        else
+                        {
+                            remainingPoints = currentTotalEquipPoint;
+                        }
+                        // Prepare to grade up
+                        gradeupList = new() { new CDataCommonU32(gearUpgradeID) };
+                        doUpgrade = true;
+                    }
                 }
-
-                equipItem.EquipPoints = currentTotalEquipPoint;
-                Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
-                UpdateCharacterItem(client, equipItemUID, equipItem, charid, updateCharacterItemNtc, CurrentEquipInfo);
-                res = CreateUpgradeResponse(equipItemUID, gearUpgradeID, gradeupList, addEquipPoint, currentTotalEquipPoint, (uint)upgradableStatus, goldRequired, isGreatSuccess,
-                    CurrentEquipInfo, equipItem.ItemId, canContinue, dummydata);
-            }
-            else
-            {
-                equipItem.ItemId = equipItem.ItemId;
-                equipItem.EquipPoints = currentTotalEquipPoint;
-                Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint);
-                res = CreateEquipPointResponse(equipItemUID, addEquipPoint, currentTotalEquipPoint, goldRequired, isGreatSuccess, CurrentEquipInfo, canContinue, dummydata);
-            }
-
-            if (CraftManager.CanPawnExpUp(leadPawn))
-            {
-                double BonusExpMultiplier = Server.GpCourseManager.PawnCraftBonus();
-                CraftManager.HandlePawnExpUpNtc(client, leadPawn, pawnExp, BonusExpMultiplier);
-                if (CraftManager.CanPawnRankUp(leadPawn))
+                if (upgradableStatus == UpgradableStatus.No)
                 {
-                    CraftManager.HandlePawnRankUpNtc(client, leadPawn);
+                    canContinue = false;
                 }
-            }
-            else
-            {
-                CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0);
-            }
 
-            Server.Database.UpdatePawnBaseInfo(leadPawn);
+                if (doUpgrade)
+                {
+                    equipItem.ItemId = gearUpgradeID;
+                    if (canContinue)
+                    {
+                        currentTotalEquipPoint = remainingPoints;
+                    }
+                    else
+                    {
+                        currentTotalEquipPoint = 0;
+                    }
 
-            client.Send(updateCharacterItemNtc);
-            return res;
+                    equipItem.EquipPoints = currentTotalEquipPoint;
+                    Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint, connection);
+                    UpdateCharacterItem(client, equipItemUID, equipItem, charid, updateCharacterItemNtc, currentEquipInfo, connection);
+                    res = CreateUpgradeResponse(equipItemUID, gearUpgradeID, gradeupList, addEquipPoint, currentTotalEquipPoint, (uint)upgradableStatus, goldRequired, isGreatSuccess,
+                        currentEquipInfo, equipItem.ItemId, canContinue, dummydata);
+
+                    var newItem = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
+                    queue.AddRange(Server.AchievementManager.HandleEnhanceItem(client, newItem, connection));
+                }
+                else
+                {
+                    equipItem.ItemId = equipItem.ItemId;
+                    equipItem.EquipPoints = currentTotalEquipPoint;
+                    Server.Database.UpdateItemEquipPoints(equipItemUID, currentTotalEquipPoint, connection);
+                    res = CreateEquipPointResponse(equipItemUID, addEquipPoint, currentTotalEquipPoint, goldRequired, isGreatSuccess, currentEquipInfo, canContinue, dummydata);
+                }
+
+                if (CraftManager.CanPawnExpUp(leadPawn))
+                {
+                    double BonusExpMultiplier = Server.GpCourseManager.PawnCraftBonus();
+                    client.Enqueue(CraftManager.HandlePawnExpUpNtc(client, leadPawn, pawnExp, BonusExpMultiplier), queue);
+                    if (CraftManager.CanPawnRankUp(leadPawn))
+                    {
+                        client.Enqueue(CraftManager.HandlePawnRankUpNtc(client, leadPawn), queue);
+                        queue.AddRange(Server.AchievementManager.HandlePawnCrafting(client, leadPawn));
+                    }
+                }
+                else
+                {
+                    client.Enqueue(CraftManager.HandlePawnExpUpNtc(client, leadPawn, 0, 0), queue);
+                }
+
+                Server.Database.UpdatePawnBaseInfo(leadPawn, connection);
+            });
+
+            client.Enqueue(updateCharacterItemNtc, queue);
+            client.Enqueue(res, queue);
+            return queue;
         }
 
         private void UpdateCharacterItem(GameClient client, string equipItemUID, Item equipItem, uint charid, S2CItemUpdateCharacterItemNtc updateCharacterItemNtc,
-            CDataCurrentEquipInfo CurrentEquipInfo)
+            CDataCurrentEquipInfo CurrentEquipInfo, DbConnection? connectionIn = null)
         {
             var (storageType, foundItem) = client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
             if (foundItem != null)
@@ -252,7 +264,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 updateCharacterItemNtc.UpdateType = ItemNoticeType.StartEquipGradeUp;
                 updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, slotno, 0, 0));
 
-                _itemManager.UpgradeStorageItem(Server, client, charid, storageType, equipItem, slotno);
+                _itemManager.UpgradeStorageItem(Server, client, charid, storageType, equipItem, slotno, connectionIn);
                 updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, equipItem, storageType, slotno, 1, 1));
             }
             else

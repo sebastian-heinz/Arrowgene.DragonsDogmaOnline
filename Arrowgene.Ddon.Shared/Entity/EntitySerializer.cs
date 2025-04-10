@@ -308,6 +308,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataOrbGainExtendParam.Serializer());
             Create(new CDataOrbPageStatus.Serializer());
             Create(new CDataOrderConditionInfo.Serializer());
+            Create(new CDataOtherRoomLayoutUpdate.Serializer());
 
             Create(new CDataPackageQuestDetail.Serializer());
             Create(new CDataPackageQuestList.Serializer());
@@ -494,13 +495,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2LLogoutReq.Serializer());
             Create(new C2LPingReq.Serializer());
 
-            Create(new C2SAchievementCompleteNtc.Serializer());
             Create(new C2SAchievementGetCategoryProgressListReq.Serializer());
             Create(new C2SAchievementGetFurnitureRewardListReq.Serializer());
             Create(new C2SAchievementGetProgressListReq.Serializer());
             Create(new C2SAchievementGetReceivableRewardListReq.Serializer());
             Create(new C2SAchievementGetRewardListReq.Serializer());
-            Create(new C2SAchievementReceivableRewardNtc.Serializer());
             Create(new C2SAchievementRewardReceiveReq.Serializer());
 
             Create(new C2SActionSetPlayerActionHistoryReq.Serializer());
@@ -627,6 +626,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SCraftGetCraftSettingReq.Serializer());
             Create(new C2SCraftRecipeGetCraftGradeupRecipeReq.Serializer());
             Create(new C2SCraftRecipeGetCraftRecipeReq.Serializer());
+            Create(new C2SCraftRecipeGetCraftRecipeDesignateReq.Serializer());
             Create(new C2SCraftResetCraftpointReq.Serializer());
             Create(new C2SCraftSkillAnalyzeReq.Serializer());
             Create(new C2SCraftSkillUpReq.Serializer());
@@ -765,8 +765,14 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SMandragoraGetSpeciesListReq.Serializer());
             Create(new C2SMandragoraGetCraftRecipeListReq.Serializer());
             Create(new C2SMandragoraBeginCraftReq.Serializer());
+
+            Create(new C2SMyRoomFurnitureLayoutReq.Serializer());
             Create(new C2SMyRoomFurnitureListGetReq.Serializer());
+            Create(new C2SMyRoomGetOtherRoomPermissionReq.Serializer());
             Create(new C2SMyRoomMyRoomBgmUpdateReq.Serializer());
+            Create(new C2SMyRoomOtherRoomGetLayoutReq.Serializer());
+            Create(new C2SMyRoomOtherRoomLayoutUpdateReq.Serializer());
+            Create(new C2SMyRoomSetOtherRoomPermissionReq.Serializer());
             Create(new C2SMyRoomUpdatePlanetariumReq.Serializer());
 
             Create(new C2SNpcGetNpcExtendedFacilityReq.Serializer());
@@ -829,9 +835,14 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPawnTrainingGetTrainingStatusReq.Serializer());
             Create(new C2SPawnTrainingSetTrainingStatusReq.Serializer());
             Create(new C2SPawnUpdatePawnReactionListReq.Serializer());
+
             Create(new C2SPhotoPhotoTakeNtc.Serializer());
+
+            Create(new C2SProfileGetAvailableBackgroundListReq.Serializer());
             Create(new C2SProfileGetCharacterProfileReq.Serializer());
             Create(new C2SProfileGetMyCharacterProfileReq.Serializer());
+            Create(new C2SProfileSetArisenProfileReq.Serializer());
+            Create(new C2SProfileSetMatchingProfileReq.Serializer());
 
             Create(new C2SQuestSetPriorityQuestReq.Serializer());
             Create(new C2SQuestSetNavigationQuestReq.Serializer());
@@ -988,13 +999,17 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2S_SEASON_62_40_16_NTC.Serializer());
             Create(new C2S_SEASON_DUNGEON_62_12_16_NTC.Serializer());
 
+            Create(new S2CAchievementCompleteNtc.Serializer());
             Create(new S2CAchievementGetCategoryProgressListRes.Serializer());
             Create(new S2CAchievementGetFurnitureRewardListRes.Serializer());
             Create(new S2CAchievementGetProgressListRes.Serializer());
             Create(new S2CAchievementGetReceivableRewardListRes.Serializer());
             Create(new S2CAchievementGetRewardListRes.Serializer());
+            Create(new S2CAchievementReceivableRewardNtc.Serializer());
             Create(new S2CAchievementRewardReceiveRes.Serializer());
+
             Create(new S2CActionSetPlayerActionHistoryRes.Serializer());
+
             Create(new S2CAreaAreaRankUpRes.Serializer());
             Create(new S2CAreaBuyAreaQuestHintRes.Serializer());
             Create(new S2CAreaGetAreaBaseInfoListRes.Serializer());
@@ -1176,6 +1191,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CCraftGetCraftSettingRes.Serializer());
             Create(new S2CCraftRecipeGetCraftGradeupRecipeRes.Serializer());
             Create(new S2CCraftRecipeGetCraftRecipeRes.Serializer());
+            Create(new S2CCraftRecipeGetCraftRecipeDesignateRes.Serializer());
             Create(new S2CCraftResetCraftpointRes.Serializer());
             Create(new S2CCraftSkillAnalyzeRes.Serializer());
             Create(new S2CCraftSkillUpRes.Serializer());
@@ -1364,8 +1380,15 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CMandragoraGetSpeciesListRes.Serializer());
             Create(new S2CMandragoraGetCraftRecipeListRes.Serializer());
             Create(new S2CMandragoraBeginCraftRes.Serializer());
+
+            Create(new S2CMyRoomFurnitureLayoutRes.Serializer());
             Create(new S2CMyRoomFurnitureListGetRes.Serializer());
+            Create(new S2CMyRoomGetOtherRoomPermissionRes.Serializer());
             Create(new S2CMyRoomMyRoomBgmUpdateRes.Serializer());
+            Create(new S2CMyRoomOtherRoomLayoutGetRes.Serializer());
+            Create(new S2CMyRoomOtherRoomLayoutUpdateRes.Serializer());
+            Create(new S2CMyRoomOtherRoomLayoutUpdateNtc.Serializer());
+            Create(new S2CMyRoomSetOtherRoomPermissionRes.Serializer());
             Create(new S2CMyRoomUpdatePlanetariumRes.Serializer());
 
             Create(new S2CNpcGetNpcExtendedFacilityRes.Serializer());
@@ -1460,8 +1483,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPawnUpdatePawnReactionListNtc.Serializer());
             Create(new S2CPawnUpdatePawnReactionListRes.Serializer());
 
+            Create(new S2CProfileGetAvailableBackgroundListRes.Serializer());
             Create(new S2CProfileGetCharacterProfileRes.Serializer());
             Create(new S2CProfileGetMyCharacterProfileRes.Serializer());
+            Create(new S2CProfileSetArisenProfileRes.Serializer());
+            Create(new S2CProfileSetMatchingProfileRes.Serializer());
 
             Create(new S2CQuest_11_125_16_Ntc.Serializer());
             Create(new S2CQuestCancelNavigationQuestRes.Serializer());

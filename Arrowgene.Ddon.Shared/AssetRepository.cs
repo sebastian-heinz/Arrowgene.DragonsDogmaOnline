@@ -61,6 +61,7 @@ namespace Arrowgene.Ddon.Shared
         public const string AreaRankSupplyKey = "AreaRankSupply.json";
         public const string AreaRankRequirementKey = "AreaRankRequirements.json";
         public const string LimitBreakKey = "LimitBreak.json";
+        public const string AchievementAssetKey = "Achievements.json";
 
         public const string QuestAssestKey = "quests";
         public const string EpitaphAssestKey = "epitaph";
@@ -99,7 +100,7 @@ namespace Arrowgene.Ddon.Shared
             StorageItemAsset = new List<Tuple<StorageType, uint, Item>>();
             ShopAsset = new List<Shop>();
             WarpPoints = new List<WarpPoint>();
-            CraftingRecipesAsset = new List<S2CCraftRecipeGetCraftRecipeRes>();
+            CraftingRecipesAsset = new();
             CraftingGradeUpRecipesAsset = new List<S2CCraftRecipeGetCraftGradeupRecipeRes>();
             LearnedNormalSkillsAsset = new LearnedNormalSkillsAsset();
             GPCourseInfoAsset = new GPCourseInfoAsset();
@@ -124,6 +125,7 @@ namespace Arrowgene.Ddon.Shared
             AreaRankSupplyAsset = new();
             AreaRankRequirementAsset = new();
             LimitBreakAsset = new();
+            AchievementAsset = new();
         }
 
         public Dictionary<ErrorCode, ClientErrorCode> ClientErrorCodes { get; private set; }
@@ -140,7 +142,7 @@ namespace Arrowgene.Ddon.Shared
         public List<Tuple<StorageType, uint, Item>> StorageItemAsset { get; private set; }
         public List<Shop> ShopAsset { get; private set; }
         public List<WarpPoint> WarpPoints { get; private set; }
-        public List<S2CCraftRecipeGetCraftRecipeRes> CraftingRecipesAsset { get; private set; }
+        public List<CraftingRecipeGroup> CraftingRecipesAsset { get; private set; }
         public List<S2CCraftRecipeGetCraftGradeupRecipeRes> CraftingGradeUpRecipesAsset { get; private set; }
         public LearnedNormalSkillsAsset LearnedNormalSkillsAsset { get; set; }
         public GPCourseInfoAsset GPCourseInfoAsset { get; private set; }
@@ -166,6 +168,8 @@ namespace Arrowgene.Ddon.Shared
         public Dictionary<QuestAreaId, List<AreaRankSupply>> AreaRankSupplyAsset { get; private set; }
         public Dictionary<QuestAreaId, List<AreaRankRequirement>> AreaRankRequirementAsset { get; private set; }
         public LimitBreakAsset LimitBreakAsset { get; private set; }
+        public Dictionary<(AchievementType, uint), List<AchievementAsset>> AchievementAsset { get; private set; }
+        public AchievementBackgroundAsset AchievementBackgroundAsset { get; private set; }
 
         public void Initialize()
         {
@@ -183,7 +187,7 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => StorageItemAsset = value, StorageItemKey, new StorageItemCsv());
             RegisterAsset(value => ShopAsset = value, ShopKey, new JsonReaderWriter<List<Shop>>());
             RegisterAsset(value => WarpPoints = value, WarpPointsKey, new WarpPointCsv());
-            RegisterAsset(value => CraftingRecipesAsset = value, CraftingRecipesKey, new JsonReaderWriter<List<S2CCraftRecipeGetCraftRecipeRes>>());
+            RegisterAsset(value => CraftingRecipesAsset = value, CraftingRecipesKey, new JsonReaderWriter<List<CraftingRecipeGroup>>());
             RegisterAsset(value => CraftingGradeUpRecipesAsset = value, CraftingRecipesGradeUpKey, new JsonReaderWriter<List<S2CCraftRecipeGetCraftGradeupRecipeRes>>());
             RegisterAsset(value => LearnedNormalSkillsAsset = value, LearnedNormalSkillsKey, new LearnedNormalSkillsDeserializer());
             RegisterAsset(value => GPCourseInfoAsset = value, GPCourseInfoKey, new GPCourseInfoDeserializer());
@@ -207,6 +211,8 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => AreaRankSupplyAsset = value, AreaRankSupplyKey, new AreaRankSupplyDeserializer());
             RegisterAsset(value => AreaRankRequirementAsset = value, AreaRankRequirementKey, new AreaRankRequirementDeserializer());
             RegisterAsset(value => LimitBreakAsset = value, LimitBreakKey, new LimitBreakAssetReader());
+            RegisterAsset(value => AchievementAsset = value, AchievementAssetKey, new AchievementAssetDeserializer());
+            RegisterAsset(value => AchievementBackgroundAsset = value, AchievementAssetKey, new AchievementBackgroundAssetDeserializer());
 
             // This must be set before calling QuestAssertDeserializer and EpitaphTrialAssertDeserializer
             var commonEnemyDeserializer = new AssetCommonDeserializer(this.NamedParamAsset);

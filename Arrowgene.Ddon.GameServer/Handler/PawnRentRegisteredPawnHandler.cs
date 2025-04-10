@@ -64,6 +64,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             pawn.PawnState = PawnState.None;
             client.Character.RentedPawns.Add(pawn);
 
+            Server.AchievementManager.HandleHirePawn(client).Send();
+
             return new S2CPawnRentRegisteredPawnRes()
             {
                 TotalRim = walletUpdate.Value

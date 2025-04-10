@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartnerPawnManager));
 
-        public static uint MAX_PARTNER_PAWN_LIKABILITY_RATING = 25;
+        public static uint MAX_PARTNER_PAWN_LIKABILITY_RATING = 26;
 
         private DdonGameServer Server;
 
@@ -68,7 +68,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new();
             }
 
-            var partnerPawnData = Server.Database.GetPartnerPawnRecord(client.Character.CharacterId, client.Character.PartnerPawnId, connectionIn);
+            PartnerPawnData partnerPawnData = client.Character.Pawns.Find(x => x.PawnId == client.Character.PartnerPawnId)?.PartnerPawnData;
             var previousLikability = partnerPawnData.CalculateLikability();
             switch (action)
             {
@@ -97,6 +97,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     Server.Database.InsertPartnerPawnPendingReward(client.Character.CharacterId, client.Character.PartnerPawnId, currentLikability, connectionIn);
                 }
+
+                packets.AddRange(Server.AchievementManager.HandlePawnAffection(client, connectionIn));
             }
 
             return packets;
