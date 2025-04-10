@@ -253,6 +253,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     ItemId = (uint)item
                 }, queue);
                 var unlockType = itemInfo.Category == 6 ? UnlockableItemCategory.FurnitureItem : UnlockableItemCategory.CraftingRecipe;
+                client.Character.UnlockableItems.Add((unlockType, (uint)item));
                 _Server.Database.InsertUnlockedItem(client.Character.CharacterId, unlockType, (uint)item, connectionIn);
                 return (queue, true);
             }
