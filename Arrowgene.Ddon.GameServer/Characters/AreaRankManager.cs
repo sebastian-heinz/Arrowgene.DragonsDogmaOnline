@@ -291,7 +291,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             // Temporarily while S2 trials in development.
-            if (spot.AreaId >= QuestAreaId.ElanWaterGrove)
+            if (spot.AreaId >= QuestAreaId.FaranaPlains)
             {
                 return true;
             }
