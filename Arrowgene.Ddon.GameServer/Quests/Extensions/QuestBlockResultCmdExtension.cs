@@ -31,9 +31,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
-        public static QuestBlock AddResultCmdGeneralAnnounce(this QuestBlock questBlock, QuestGeneralAnnounceType announceType, int msgNo)
+        public static QuestBlock AddResultCmdGeneralAnnounce(this QuestBlock questBlock, QuestGeneralAnnounceType announceType, int msgNo, bool toChatLog = false)
         {
-            questBlock.ResultCommands.AddResultCmdGeneralAnnounce(announceType, msgNo);
+            questBlock.ResultCommands.AddResultCmdGeneralAnnounce(announceType, msgNo, toChatLog);
             return questBlock;
         }
 

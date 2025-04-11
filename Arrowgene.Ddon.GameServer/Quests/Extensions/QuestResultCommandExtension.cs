@@ -14,9 +14,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return resultCommands;
         }
 
-        public static List<CDataQuestCommand> AddResultCmdGeneralAnnounce(this List<CDataQuestCommand> resultCommands, QuestGeneralAnnounceType announceType, int msgNo)
+        public static List<CDataQuestCommand> AddResultCmdGeneralAnnounce(this List<CDataQuestCommand> resultCommands, QuestGeneralAnnounceType announceType, int msgNo, bool toChatLog = false)
         {
-            resultCommands.Add(QuestManager.ResultCommand.CallGeneralAnnounce((int)announceType, msgNo));
+            resultCommands.Add(QuestManager.ResultCommand.CallGeneralAnnounce((int)announceType, msgNo, toChatLog ? 1 : 0));
             return resultCommands;
         }
 
