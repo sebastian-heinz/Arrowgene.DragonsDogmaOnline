@@ -661,6 +661,41 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return queue;
         }
 
+        public List<CDataHistoryElement> GetArisenAchievementHistory(GameClient client)
+        {
+            return client.Character.AchievementStatus.Select(x => new CDataHistoryElement()
+            {
+                Type = 1,
+                TargetID = x.Key,
+                DateTime = x.Value,
+            }).ToList();
+        }
+
+        public List<CDataAchieveCategoryStatus> GetCategoryStatus(GameClient client)
+        {
+            List<CDataAchieveCategoryStatus> categoryStatus = new();
+            var achievements = Server.AssetRepository.AchievementAsset
+                .SelectMany(x => x.Value)
+                .Select(x => (x.Category, x.Id))
+                .GroupBy(x => x.Category, x => x.Id);
+
+            var achievementStatus = client.Character.AchievementStatus.Keys.ToHashSet();
+            foreach (var category in achievements)
+            {
+                var categoryAchievements = category.ToHashSet();
+                var finishedAchievements = categoryAchievements.Intersect(achievementStatus).ToHashSet();
+
+                categoryStatus.Add(new()
+                {
+                    CategoryID = (byte)category.Key,
+                    AchieveNum = (ushort)finishedAchievements.Count,
+                    TargetNum = (ushort)categoryAchievements.Count,
+                });
+            }
+
+            return categoryStatus;
+        }
+
         public List<CDataAchieveRewardCommon> GetRewards(GameClient client)
         {
             List<CDataAchieveRewardCommon> rewardList = new();
