@@ -16,6 +16,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             return new S2CProfileGetMyCharacterProfileRes
             {
+                HistoryElementList = Server.AchievementManager.GetArisenAchievementHistory(client),
+                AchieveCategoryStatusList = Server.AchievementManager.GetCategoryStatus(client),
                 OrbStatusList = Server.OrbUnlockManager.GetOrbPageStatus(client.Character),
                 AbilityCostMax = Server.CharacterManager.GetMaxAugmentAllocation(client.Character)
             };

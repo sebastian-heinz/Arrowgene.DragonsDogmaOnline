@@ -794,10 +794,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
             database.ReplaceEquippedAbilities(character.CommonId, character.Job, equippedAbilities);
         }
 
-        public void UnlockSecretAbility(GameClient client, CharacterCommon character, SecretAbility secretAbilityType)
+        public void UnlockSecretAbility(GameClient client, CharacterCommon character, SecretAbility secretAbilityType, DbConnection? connectionIn = null)
         {
             // MSG_GROUP_TYPE_GET_SECRET_ABILITY = 0x30,
-            if (_Server.Database.InsertSecretAbilityUnlock(character.CommonId, secretAbilityType))
+            if (_Server.Database.InsertSecretAbilityUnlock(character.CommonId, secretAbilityType, connectionIn))
             {
                 var newAbility = new Ability()
                 {
@@ -806,7 +806,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     AbilityLv = 1
                 };
                 character.LearnedAbilities.Add(newAbility);
-                _Server.Database.InsertLearnedAbility(character.CommonId, newAbility);
+                _Server.Database.InsertLearnedAbility(character.CommonId, newAbility, connectionIn);
             }
         }
 
