@@ -627,7 +627,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     cdata.CompleteDate = dateAchieved;
                 }
-                else if (z.Item2 >= z.Item1.Count)
+                else if (CheckLateAchievement(z))
                 {
                     // Check if you missed the DB write here because migrating this is nigh-impossible, so do it as people check.
                     cdata.CompleteDate = DateTimeOffset.UtcNow;
@@ -659,6 +659,19 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return queue;
+        }
+
+        private static bool CheckLateAchievement((AchievementAsset, uint, DateTimeOffset) zippedAchievement)
+        {
+            switch (zippedAchievement.Item1.Type)
+            {
+                case AchievementType.MainLevelGroup:
+                case AchievementType.PawnAffection:
+                case AchievementType.PawnCraftingExam:
+                    return zippedAchievement.Item1.Count > 0;
+                default:
+                    return zippedAchievement.Item2 >= zippedAchievement.Item1.Count;
+            }
         }
 
         public List<CDataHistoryElement> GetArisenAchievementHistory(GameClient client)
@@ -930,14 +943,17 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private static readonly Dictionary<AchievementLevelGroupParam, HashSet<JobId>> LevelGroupMap = new()
         {
-            {AchievementLevelGroupParam.GroupFirst9, new() {JobId.Fighter, JobId.Seeker, JobId.Hunter,
+            {AchievementLevelGroupParam.GroupFirst9, new() {
+                JobId.Fighter, JobId.Seeker, JobId.Hunter,
                 JobId.Priest,JobId.ShieldSage,JobId.Sorcerer,
                 JobId.Warrior,JobId.ElementArcher,JobId.Alchemist  } },
-            {AchievementLevelGroupParam.GroupFirst10, new() {JobId.Fighter, JobId.Seeker, JobId.Hunter,
+            {AchievementLevelGroupParam.GroupFirst10, new() {
+                JobId.Fighter, JobId.Seeker, JobId.Hunter,
                 JobId.Priest,JobId.ShieldSage,JobId.Sorcerer,
                 JobId.Warrior,JobId.ElementArcher,JobId.Alchemist,
                 JobId.SpiritLancer} },
-            {AchievementLevelGroupParam.GroupAll, new() { JobId.Fighter, JobId.Seeker, JobId.Hunter,
+            {AchievementLevelGroupParam.GroupAll, new() { 
+                JobId.Fighter, JobId.Seeker, JobId.Hunter,
                 JobId.Priest,JobId.ShieldSage,JobId.Sorcerer,
                 JobId.Warrior,JobId.ElementArcher,JobId.Alchemist,
                 JobId.SpiritLancer, JobId.HighScepter} },
