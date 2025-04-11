@@ -97,28 +97,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 bool groupDestroyed = group.Where(x => x.IsRequired).All(x => x.IsKilled);
                 if (groupDestroyed)
                 {
-
-                    bool IsAreaBoss = false;
-                    foreach (var enemy in group)
-                    {
-                        IsAreaBoss = IsAreaBoss || enemy.IsAreaBoss;
-                        if (IsAreaBoss)
-                        {
-                            break;
-                        }
-                    }
-
+                    bool IsAreaBoss = group.Any(x => x.IsAreaBoss);
+                    bool isDungeon = StageManager.IsDungeon(stageId);
+                    
                     if (isQuestControlled)
                     {
                         var ntcs = QuestManager.GetQuestStateManager(client, quest).HandleDestroyGroupWorkNotice(client.Party, quest, stageId, enemyKilled, connectionIn);
                         queuedPackets.AddRange(ntcs);
                     }
-                    
+
                     // This is used for quests and things like key door monsters
                     S2CInstanceEnemyGroupDestroyNtc groupDestroyedNtc = new S2CInstanceEnemyGroupDestroyNtc()
                     {
                         LayoutId = packet.LayoutId,
-                        IsAreaBoss = IsAreaBoss && (client.GameMode == GameMode.Normal)
+                        IsAreaBoss = IsAreaBoss && !isDungeon && (client.GameMode == GameMode.Normal)
                     };
                     client.Party.EnqueueToAll(groupDestroyedNtc, queuedPackets);
 
@@ -129,6 +121,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             var ntcs = BitterblackMazeManager.HandleTierClear(_gameServer, memberClient, memberClient.Character, stageId, connectionIn);
                             queuedPackets.AddRange(ntcs);
                         }
+                    }
+                    else if (IsAreaBoss && isDungeon && client.GameMode == GameMode.Normal)
+                    {
+                        var boss = group.Where(x => x.IsAreaBoss).First();
+                        client.Party.EnqueueToAll(new S2CInstanceEnemyStageBossAnnihilateNtc()
+                        {
+                            LayoutId = boss.StageLayoutId.ToCDataStageLayoutId(),
+                        }, queuedPackets);
                     }
                 }
 

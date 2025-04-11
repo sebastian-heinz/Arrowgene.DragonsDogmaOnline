@@ -13,7 +13,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
             Server = server;
         }
 
-        public List<InstancedGatheringItem> Generate(GameClient client, StageLayoutId stageId, uint index)
+        public override List<InstancedGatheringItem> Generate(GameClient client, StageLayoutId stageId, uint index)
         {   
             if (!StageManager.IsEpitaphRoadStageId(stageId))
             {

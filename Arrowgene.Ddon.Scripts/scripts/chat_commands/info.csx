@@ -14,6 +14,7 @@ public class ChatCommand : IChatCommand
         sb.Append($"Pos:[X:{client.Character.X:F4} Y:{client.Character.Y:F4} Z:{client.Character.Z:F4}]");
 
         responses.Add(ChatResponse.ServerChat(client, sb.ToString()));
+        responses.Add(ChatResponse.ServerChat(client, $"Area: {client.Character.AreaId.PrettyName()}"));
     }
 }
 

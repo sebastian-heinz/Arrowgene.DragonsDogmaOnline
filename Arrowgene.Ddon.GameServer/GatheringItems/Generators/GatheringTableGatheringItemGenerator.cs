@@ -14,7 +14,12 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
             Server = server;
         }
 
-        public List<InstancedGatheringItem> Generate(GameClient client, StageLayoutId stageId, uint index)
+        public override bool IsEnabled()
+        {
+            return Server.GameSettings.GameServerSettings.EnableToolGatheringDrops;
+        }
+
+        public override List<InstancedGatheringItem> Generate(GameClient client, StageLayoutId stageId, uint index)
         {
             if (StageManager.IsBitterBlackMazeStageId(stageId) || StageManager.IsEpitaphRoadStageId(stageId))
             {

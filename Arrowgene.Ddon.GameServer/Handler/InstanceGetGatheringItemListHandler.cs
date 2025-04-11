@@ -15,8 +15,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceGetGatheringItemListHandler));
 
-        // TODO: Different chances for each gathering item type
-        private static readonly double BREAK_CHANCE = 0.1;
+        private static readonly Dictionary<ItemId, double> BreakChance = new Dictionary<ItemId, double>()
+        {
+
+        };
 
         public InstanceGetGatheringItemListHandler(DdonGameServer server) : base(server)
         {
@@ -24,17 +26,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CInstanceGetGatheringItemListRes Handle(GameClient client, C2SInstanceGetGatheringItemListReq request)
         {
-            bool isGatheringItemBreak = false;
-            var (isNew, gatheringItems) = client.InstanceGatheringItemManager.FetchOrGenerate(request.LayoutId, request.PosId);
-
             PacketQueue queue = new();
 
+            var (isNew, gatheringItems) = client.InstanceGatheringItemManager.FetchOrGenerate(request.LayoutId, request.PosId);
+
+            bool isGatheringItemBreak = false;
             Server.Database.ExecuteInTransaction(connection =>
             {
                 if (isNew && request.GatheringItemUId.Any())
                 {
                     var gatheringItem = Server.ItemManager.LookupInfoByUID(Server, request.GatheringItemUId, connection);
-
                     switch ((ItemId)gatheringItem.ItemId)
                     {
                         case ItemId.Pickaxe:
@@ -54,7 +55,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             break;
                     }
 
-                    if (Random.Shared.NextDouble() < BREAK_CHANCE)
+                    double breakChance = 0.3; // Set the default break chance in case an item is missing
+                    var itemId = gatheringItem.ItemId;
+                    if (Server.GameSettings.GameServerSettings.ToolBreakChance.ContainsKey((ItemId)itemId))
+                    {
+                        breakChance = Server.GameSettings.GameServerSettings.ToolBreakChance[(ItemId)itemId];
+                    }
+
+                    if (Random.Shared.NextDouble() < breakChance)
                     {
                         isGatheringItemBreak = true;
 
@@ -63,7 +71,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         client.Enqueue(ntc, queue);
                     }
                 }
-
             });
 
             queue.Send();

@@ -54,9 +54,6 @@ public class PropertyGenerator : IInstanceEnemyPropertyGenerator
             baseBo *= 1.5;
         }
 
-        // Some calculations based on scale
-        baseBo *= Math.Max(0.5, Math.Min(2.0, enemy.Scale / 100.0));
-
         double variance;
         if (enemy.Lv < 20)
         {

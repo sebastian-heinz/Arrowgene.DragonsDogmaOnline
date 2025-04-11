@@ -22,6 +22,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
             InstancedItems = new();
             Generators = new()
             {
+                new DefaultGatheringItemGenerator(server),
                 new GatheringTableGatheringItemGenerator(server),
                 new BitterblackGatheringItemGenerator(server),
                 new EpitaphRoadGatheringItemGenerator(server)
@@ -30,7 +31,9 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
 
         public Dictionary<Type, List<InstancedGatheringItem>> Generate(StageLayoutId stageId, uint index)
         {
-            return Generators.ToDictionary(key => key.GetType(), val => val.Generate(Client, stageId, index));
+            return Generators
+                .Where(x => x.IsEnabled())
+                .ToDictionary(key => key.GetType(), val => val.Generate(Client, stageId, index));
         }
 
         private uint Assign(StageLayoutId stageId, uint index, List<InstancedGatheringItem> items)

@@ -2,6 +2,7 @@ using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server.Network;
+using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using System;
@@ -24,6 +25,13 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         public static LibDdonTimeUtils GameTime { get; private set; } = new LibDdonTimeUtils();
         public static LibDdonCraftUtils Crafting { get; private set; } = new LibDdonCraftUtils();
         public static LibDdonChatUtils ChatMgr { get; private set; } = new LibDdonChatUtils();
+        public static AssetRepository Assets
+        { 
+            get
+            {
+                return Server.AssetRepository;
+            }
+        }
 
         public static void SetServer(DdonGameServer server)
         {

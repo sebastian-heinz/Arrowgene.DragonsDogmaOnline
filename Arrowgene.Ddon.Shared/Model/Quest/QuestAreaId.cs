@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Arrowgene.Ddon.Shared.Model.Quest
 {
     public enum QuestAreaId : uint
@@ -27,5 +29,42 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         MemoryOfMegadosys = 22,
         MemoryOfUrteca = 23,
         BitterblackMaze = 24
+    }
+
+    public static class QuestAreaIdExtension
+    {
+        private static Dictionary<QuestAreaId, string> PrettyNameMap = new Dictionary<QuestAreaId, string>()
+        {
+            [QuestAreaId.None] = "Unknown",
+            [QuestAreaId.HidellPlains] = "Hidell Plains",
+            [QuestAreaId.BreyaCoast] = "Breya Coast",
+            [QuestAreaId.MysreeForest] = "Mysree Forest",
+            [QuestAreaId.VoldenMines] = "Volden Mines",
+            [QuestAreaId.DoweValley] = "Dowe Valley",
+            [QuestAreaId.MysreeGrove] = "Mysree Grove",
+            [QuestAreaId.DeenanWoods] = "Deenan Woods",
+            [QuestAreaId.BetlandPlains] = "Betland Plains",
+            [QuestAreaId.NorthernBetlandPlains] = "Northern Betland Plains",
+            [QuestAreaId.ZandoraWastelands] = "Zandora Wastelands",
+            [QuestAreaId.EasternZandora] = "Eastern Zandora",
+            [QuestAreaId.MergodaRuins] = "Mergoda Ruins",
+            [QuestAreaId.BloodbaneIsle] = "Bloodbane Island",
+            [QuestAreaId.ElanWaterGrove] = "Elan Water Grove",
+            [QuestAreaId.FaranaPlains] = "Farana Plains",
+            [QuestAreaId.MorrowForest] = "Morrow Forest",
+            [QuestAreaId.KingalCanyon] = "Kingal Canyon",
+            [QuestAreaId.RathniteFoothills] = "Rathnite Foothills",
+            [QuestAreaId.FeryanaWilderness] = "Feryana Wilderness",
+            [QuestAreaId.MegadosysPlateau] = "Megadosys Plateau",
+            [QuestAreaId.UrtecaMountains] = "Urteca Mountains",
+            [QuestAreaId.MemoryOfMegadosys] = "Memory of Megadosys",
+            [QuestAreaId.MemoryOfUrteca] = "Memory of Urteca",
+            [QuestAreaId.BitterblackMaze] = "Bitterblack Maze",
+        };
+
+        public static string PrettyName(this QuestAreaId areaId)
+        {
+            return PrettyNameMap[areaId];
+        }
     }
 }

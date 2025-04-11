@@ -1,0 +1,33 @@
+namespace Arrowgene.Ddon.Shared.Model
+{
+    public enum DropCategory : uint
+    {
+        None,
+        Meat,
+        Horns,
+        Bones,
+        Claws,
+        Liquids,
+        Sand,
+        Ore,
+        Ingots,
+        Gemstones,
+        Hides,
+        Leather,
+        Thread,
+        Plants,
+        Furs,
+        Feathers,
+        Fabric,
+        Lumber,
+        Mushrooms,
+        Scrolls,
+        Other,
+        Regional,
+        Unappraised,
+        Consumable,
+        Currency,
+        Equipment,
+        Jewelry,
+    }
+}

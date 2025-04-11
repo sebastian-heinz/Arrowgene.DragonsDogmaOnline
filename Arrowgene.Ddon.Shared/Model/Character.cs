@@ -90,6 +90,8 @@ namespace Arrowgene.Ddon.Shared.Model
         public Storages Storage { get; set; }
         public List<CDataEquipItemInfoUnk2> CharacterEquipItemInfoUnk2 { get; set; }
         public List<CDataWalletPoint> WalletPointList { get; set; }
+        public QuestAreaId AreaId { get; set; }
+
         /// <summary>
         /// num = 0: New character
         /// num = 1: Complete the main quest "A Servant's Pledge"

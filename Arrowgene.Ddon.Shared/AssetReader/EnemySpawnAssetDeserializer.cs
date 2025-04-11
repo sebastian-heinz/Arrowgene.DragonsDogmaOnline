@@ -20,7 +20,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
         private static readonly ILogger Logger = LogProvider.Logger(typeof(EnemySpawnAssetDeserializer));
 
-        private static readonly string[] ENEMY_HEADERS = new string[]{"StageId", "LayerNo", "GroupId", "SubGroupId", "EnemyId", "NamedEnemyParamsId", "RaidBossId", "Scale", "Lv", "HmPresetNo", "StartThinkTblNo", "RepopNum", "RepopCount", "EnemyTargetTypesId", "MontageFixNo", "SetType", "InfectionType", "IsBossGauge", "IsBossBGM", "IsManualSet", "IsAreaBoss", "BloodOrbs", "HighOrbs", "Experience", "DropsTableId", "SpawnTime", "PPDrop"};
+        private static readonly string[] ENEMY_HEADERS = new string[]{"StageId", "LayerNo", "GroupId", "SubGroupId", "EnemyId", "NamedEnemyParamsId", "RaidBossId", "Scale", "Lv", "HmPresetNo", "StartThinkTblNo", "RepopNum", "RepopCount", "EnemyTargetTypesId", "MontageFixNo", "SetType", "InfectionType", "IsBossGauge", "IsBossBGM", "IsManualSet", "IsAreaBoss", "IsBloodOrbEnemy", "BloodOrbs", "IsHighOrbEnemy", "HighOrbs", "Experience", "DropsTableId", "SpawnTime", "PPDrop"};
         private static readonly string[] DROPS_TABLE_HEADERS = new string[]{"ItemId", "ItemNum", "MaxItemNum", "Quality", "IsHidden", "DropChance"};
 
         private Dictionary<uint, NamedParam> namedParams;
@@ -117,18 +117,38 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     Subgroup = subGroupId,
                 };
 
+                if (enemySchemaIndexes.ContainsKey("IsBloodOrbEnemy"))
+                {
+                    enemy.IsBloodOrbEnemy = row[enemySchemaIndexes["IsBloodOrbEnemy"]].GetBoolean();
+                }
+                else
+                {
+                    // Fallback for old style schema
+                    enemy.IsBloodOrbEnemy = enemy.BloodOrbs > 0;
+                }
+
+                if (enemySchemaIndexes.ContainsKey("IsHighOrbEnemy"))
+                {
+                    enemy.IsBloodOrbEnemy = row[enemySchemaIndexes["IsHighOrbEnemy"]].GetBoolean();
+                }
+                else
+                {
+                    // Fallback for old style schema
+                    enemy.IsHighOrbEnemy = enemy.HighOrbs > 0;
+                }
+
                 // checking if the file has spawntime, if yes we convert the time and pass it along to enemy.cs
-                if(enemySchemaIndexes.ContainsKey("SpawnTime"))
+                if (enemySchemaIndexes.ContainsKey("SpawnTime"))
                 {
                     string SpawnTimeGet = row[enemySchemaIndexes["SpawnTime"]].GetString();
-                    ConvertSpawnTimeToMilliseconds(SpawnTimeGet, out long start, out long end);
+                    var (start, end) = AssetCommonDeserializer.ConvertTimeToMilliseconds(SpawnTimeGet);
                     enemy.SpawnTimeStart = start;
                     enemy.SpawnTimeEnd = end;
                 }
                 else
                 {
                     // if no, we define it to the "allday" spawn time range and pass this along to the enemy.cs instead.
-                    ConvertSpawnTimeToMilliseconds("00:00,23:59", out long start, out long end);
+                    var (start, end) = AssetCommonDeserializer.ConvertTimeToMilliseconds("00:00,23:59");
                     enemy.SpawnTimeStart = start;
                     enemy.SpawnTimeEnd = end;
                 }
@@ -157,33 +177,6 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             return asset;
         }
 
-        // this converts the time (07:00,18:00) as example, down into milliseconds, via splitting into hours/minutes and then combining each respect time into start/end
-        public void ConvertSpawnTimeToMilliseconds(string SpawnTime, out long startMilliseconds, out long endMilliseconds)
-        {
-            // Split the spawnTime string at the comma to get start and end times
-            string[] spawnTimes = SpawnTime.Split(',');
-
-            // Split the start time at the colon to get hours and minutes
-            string[] startTimeComponents = spawnTimes[0].Split(':');
-            int startHours = int.Parse(startTimeComponents[0]);
-            int startMinutes = int.Parse(startTimeComponents[1]);
-
-            // Split the end time at the colon to get hours and minutes
-            string[] endTimeComponents = spawnTimes[1].Split(':');
-            int endHours = int.Parse(endTimeComponents[0]);
-            int endMinutes = int.Parse(endTimeComponents[1]);
-
-            // Convert hours and minutes into milliseconds
-            startMilliseconds = (startHours * 3600000) + (startMinutes * 60000);
-            endMilliseconds = (endHours * 3600000) + (endMinutes * 60000);
-        }
-
-        protected uint ParseHexUInt(string str)
-        {
-            str = str.TrimStart('0', 'x');
-            return uint.Parse(str, NumberStyles.HexNumber, null);
-        }
-
         private Dictionary<string, int> findSchemaIndexes(string[] reference, List<string> schema)
         {
             Dictionary<string, int> schemaIndexes = new Dictionary<string, int>();
@@ -196,6 +189,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 }
             }
             return schemaIndexes;
+        }
+
+        private uint ParseHexUInt(string str)
+        {
+            str = str.TrimStart('0', 'x');
+            return uint.Parse(str, NumberStyles.HexNumber, null);
         }
     }
 }
