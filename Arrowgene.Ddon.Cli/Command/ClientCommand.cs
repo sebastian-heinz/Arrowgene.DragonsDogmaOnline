@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.Json;
 using Arrowgene.Ddon.Client;
@@ -9,7 +8,6 @@ using Arrowgene.Ddon.Client.Resource;
 using Arrowgene.Ddon.Client.Resource.Texture;
 using Arrowgene.Ddon.Client.Resource.Texture.Dds;
 using Arrowgene.Ddon.Client.Resource.Texture.Tex;
-using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Csv;
 using Arrowgene.Logging;
 
@@ -312,27 +310,33 @@ namespace Arrowgene.Ddon.Cli.Command
             TexTexture texTexture = new TexTexture();
             texTexture.Open(fileInfo.FullName);
             DdsTexture ddsTexture = TexConvert.ToDdsTexture(texTexture);
-            string outPath = $"{fileInfo.FullName}.dds";
+            string outPath = Path.Combine(Path.GetDirectoryName(fileInfo.FullName), Path.GetFileNameWithoutExtension(fileInfo.FullName)+".dds");
             ddsTexture.Save(outPath);
             Logger.Info($"Written: {outPath}");
+
+            // Dump original TEX header to .txt file
+            string headerPath = Path.Combine(Path.GetDirectoryName(fileInfo.FullName), Path.GetFileNameWithoutExtension(fileInfo.FullName)+".txt");
+            string headerDump = TexConvert.DumpTexHeader(texTexture.Header);
+            File.WriteAllText(headerPath, headerDump);
+            Logger.Info($"Written TEX headers: {headerPath}");
         }
 
         public void DdsToTex(FileInfo fileInfo, CommandParameter parameter)
         {
-            TexHeaderVersion headerVersion = TexHeaderVersion.Ddon;
-            if (parameter.Switches.Contains("--ddda"))
+            // Read original TEX header from .txt file
+            FileInfo headerDumpFile = new FileInfo(Path.Combine(Path.GetDirectoryName(fileInfo.FullName), Path.GetFileNameWithoutExtension(fileInfo.FullName)+".txt"));
+            if (!headerDumpFile.Exists)
             {
-                headerVersion = TexHeaderVersion.Ddda;
+                Logger.Error($"Original TEX headers file not found: {fileInfo.FullName}");
+                return;
             }
-            else if (parameter.Switches.Contains("--ddon"))
-            {
-                headerVersion = TexHeaderVersion.Ddon;
-            }
+            string texHeaderDump = File.ReadAllText(headerDumpFile.FullName);
+            TexHeader originalTexHeader = TexConvert.ReadTexHeaderDump(texHeaderDump);
 
             DdsTexture ddsTexture = new DdsTexture();
             ddsTexture.Open(fileInfo.FullName);
-            TexTexture texTexture = TexConvert.ToTexTexture(ddsTexture, headerVersion);
-            string outPath = $"{fileInfo.FullName}.tex";
+            TexTexture texTexture = TexConvert.ToTexTexture(ddsTexture, originalTexHeader);
+            string outPath = Path.Combine(Path.GetDirectoryName(fileInfo.FullName), Path.GetFileNameWithoutExtension(fileInfo.FullName)+".tex");
             texTexture.Save(outPath);
             Logger.Info($"Written: {outPath}");
         }

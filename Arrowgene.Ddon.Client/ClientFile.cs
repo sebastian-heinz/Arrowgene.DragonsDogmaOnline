@@ -61,9 +61,9 @@ namespace Arrowgene.Ddon.Client
             Open(buffer);
         }
 
-        protected abstract void Read(IBuffer buffer);
+        public abstract void Read(IBuffer buffer);
 
-        protected abstract void Write(IBuffer buffer);
+        public abstract void Write(IBuffer buffer);
 
         protected void WriteMtString(IBuffer buffer, string str)
         {

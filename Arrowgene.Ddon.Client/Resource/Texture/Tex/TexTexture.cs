@@ -58,7 +58,7 @@ namespace Arrowgene.Ddon.Client.Resource.Texture.Tex
             }
         }
 
-        public void Save(string path)
+        protected override void WriteResource(IBuffer buffer)
         {
             if (Header.Version == TexHeaderVersion.Ddda)
             {
@@ -74,23 +74,7 @@ namespace Arrowgene.Ddon.Client.Resource.Texture.Tex
                 return;
             }
 
-            string shFactorFile = null;
-            if (path.LastIndexOf('.') > 0)
-            {
-                shFactorFile = path.Substring(0, path.LastIndexOf('.'));
-                shFactorFile += ".shfactor";
-            }
-
-            if (!Header.HasSphericalHarmonicsFactor && File.Exists(shFactorFile))
-            {
-                Header.HasSphericalHarmonicsFactor = true;
-                byte[] shFactor = File.ReadAllBytes(shFactorFile);
-                SphericalHarmonics.Decode(shFactor);
-            }
-
-            StreamBuffer sb = new StreamBuffer();
-            sb.WriteBytes(Encoding.UTF8.GetBytes(TexHeaderMagic));
-            sb.WriteBytes(Header.Encode());
+            buffer.WriteBytes(Header.Encode());
 
             if (Header.HasSphericalHarmonicsFactor)
             {
@@ -100,7 +84,7 @@ namespace Arrowgene.Ddon.Client.Resource.Texture.Tex
                         "SphericalHarmonics requested by TexHeader, but structure not marked as Loaded, writing anyways");
                 }
 
-                sb.WriteBytes(SphericalHarmonics.Encode());
+                buffer.WriteBytes(SphericalHarmonics.Encode());
             }
 
             if (Images == null)
@@ -116,24 +100,43 @@ namespace Arrowgene.Ddon.Client.Resource.Texture.Tex
             }
 
             int offsetByteLength = (int) Header.LayerCount * 4;
-            int offsetBytePosition = sb.Position;
-            sb.WriteBytes(new byte[offsetByteLength]);
+            int offsetBytePosition = buffer.Position;
+            buffer.WriteBytes(new byte[offsetByteLength]);
             for (int layerIndex = 0;
                  layerIndex < Header.LayerCount;
                  layerIndex++)
             {
-                Images[layerIndex].Offset = (uint) sb.Position;
-                sb.WriteBytes(Images[layerIndex].Data);
+                Images[layerIndex].Offset = (uint) buffer.Position;
+                buffer.WriteBytes(Images[layerIndex].Data);
             }
 
-            sb.Position = offsetBytePosition;
+            buffer.Position = offsetBytePosition;
             for (int layerIndex = 0;
                  layerIndex < Header.LayerCount;
                  layerIndex++)
             {
-                sb.WriteUInt32(Images[layerIndex].Offset);
+                buffer.WriteUInt32(Images[layerIndex].Offset);
+            }
+        }
+
+        public void Save(string path)
+        {
+            string shFactorFile = null;
+            if (path.LastIndexOf('.') > 0)
+            {
+                shFactorFile = path.Substring(0, path.LastIndexOf('.'));
+                shFactorFile += ".shfactor";
             }
 
+            if (!Header.HasSphericalHarmonicsFactor && File.Exists(shFactorFile))
+            {
+                Header.HasSphericalHarmonicsFactor = true;
+                byte[] shFactor = File.ReadAllBytes(shFactorFile);
+                SphericalHarmonics.Decode(shFactor);
+            }
+
+            StreamBuffer sb = new StreamBuffer();
+            Write(sb);
             File.WriteAllBytes(path, sb.GetAllBytes());
         }
     }

@@ -331,7 +331,7 @@ namespace Arrowgene.Ddon.Client
             File.WriteAllBytes(fileInfo.FullName, file.Data);
         }
 
-        protected override void Read(IBuffer buffer)
+        public override void Read(IBuffer buffer)
         {
             _files.Clear();
 
@@ -380,7 +380,7 @@ namespace Arrowgene.Ddon.Client
             }
         }
 
-        protected override void Write(IBuffer buffer)
+        public override void Write(IBuffer buffer)
         {
             byte[] magicTag = Encoding.UTF8.GetBytes(MagicTag);
             buffer.WriteBytes(magicTag);

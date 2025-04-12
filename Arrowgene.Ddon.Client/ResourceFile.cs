@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.Client
         // TODO Magic Validation
         // protected abstract string ExpectedMagic { get; }
 
-        protected override void Read(IBuffer buffer)
+        public override void Read(IBuffer buffer)
         {
             if (buffer.Size < 8)
             {
@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.Client
             }
         }
 
-        protected override void Write(IBuffer buffer)
+        public override void Write(IBuffer buffer)
         {
             byte[] magicTag = Encoding.UTF8.GetBytes(Magic);
             buffer.WriteBytes(magicTag);

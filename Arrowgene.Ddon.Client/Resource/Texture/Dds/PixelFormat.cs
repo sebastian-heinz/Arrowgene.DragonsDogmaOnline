@@ -16,6 +16,11 @@ public struct DDSPixelFormat
                (uint) Convert.ToByte(char4) << 24;
     }
 
+    public static string FormatFourCc(uint fourCc)
+    {
+        return $"{(char) (fourCc & 0xFF)}{(char) ((fourCc >> 8) & 0xFF)}{(char) ((fourCc >> 16) & 0xFF)}{(char) ((fourCc >> 24) & 0xFF)}";
+    }
+
     public uint Size;
     public DdsPixelFormatFlag Flags;
     public uint FourCc;

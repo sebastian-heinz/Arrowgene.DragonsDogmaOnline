@@ -6,6 +6,10 @@ public struct TexHeader
 {
     public const int Size = 12;
 
+    public uint _header4;
+    public uint _header8;
+    public uint _header12;
+
     public TexHeaderVersion Version;
     public uint Height;
     public uint Width;
@@ -15,7 +19,7 @@ public struct TexHeader
     public TexPixelFormat PixelFormat;
     public byte TextureArraySize;
     public uint MipMapCount;
-    public uint UnknownA;
+    public TexType Type;
     public uint UnknownB;
     public bool HasSphericalHarmonicsFactor;
 
@@ -23,30 +27,20 @@ public struct TexHeader
 
     public void Decode(byte[] bytes)
     {
-        uint header4 = BitConverter.ToUInt32(bytes, 0);
-        uint header8 = BitConverter.ToUInt32(bytes, 4);
-        uint header12 = BitConverter.ToUInt32(bytes, 8);
+        _header4 = BitConverter.ToUInt32(bytes, 0);
+        _header8 = BitConverter.ToUInt32(bytes, 4);
+        _header12 = BitConverter.ToUInt32(bytes, 8);
 
-        HasSphericalHarmonicsFactor = (header4 & 0xF0000000) == 0x60000000;
+        HasSphericalHarmonicsFactor = (_header4 & 0xF0000000) == 0x60000000;
 
-        uint versionBits12__0_11 = header4 & ((1 << 12) - 1);
-        uint alphaBits12__12_23 = (header4 >> 12) & ((1 << 12) - 1);
-        uint shiftBits4__24_27 = (header4 >> 24) & ((1 << 4) - 1);
-        uint unkBits4__28_31 = (header4 >> 28) & ((1 << 4) - 1); // switchNum 1,2|3|6
+        _parseHeader4(_header4, out var versionBits16__0_15, out var alphaBits8__16_23, out var shiftBits4__24_27, out var typeBits4__28_31);
+        _parseHeader8(_header8, out var mipMapCountBits6_0__5, out var widthBits13_6__18, out var heightBits13_19__31);
+        _parseHeader12(_header12, out var textureArraySizeBits8__0_7, out var pixelFormatBits8__8_15, out var depthBits13__16_28, out var unkBits3__29_31);
 
-        uint mipMapCountBits6_0__5 = header8 & ((1 << 6) - 1);
-        uint widthBits13_6__18 = (header8 >> 6) & ((1 << 13) - 1);
-        uint heightBits13_19__31 = (header8 >> 19) & ((1 << 13) - 1);
-
-        uint textureArraySizeBits8__0_7 = header12 & ((1 << 8) - 1);
-        uint pixelFormatBits8__8_15 = (header12 >> 8) & ((1 << 8) - 1);
-        uint depthBits13__16_28 = (header12 >> 16) & ((1 << 13) - 1);
-        uint unkBits3__29_31 = (header12 >> 29) & ((1 << 3) - 1);
-
-        Version = (TexHeaderVersion)versionBits12__0_11;
-        Alpha = alphaBits12__12_23;
+        Version = (TexHeaderVersion)versionBits16__0_15;
+        Alpha = alphaBits8__16_23;
         Shift = shiftBits4__24_27;
-        UnknownA = unkBits4__28_31;
+        Type = (TexType)typeBits4__28_31;
         MipMapCount = mipMapCountBits6_0__5;
         Width = widthBits13_6__18 << (byte) shiftBits4__24_27;
         Height = heightBits13_19__31 << (byte) shiftBits4__24_27;
@@ -62,7 +56,7 @@ public struct TexHeader
             (uint) Version
             | ((uint) Alpha << 12)
             | ((uint) Shift << 24)
-            | ((uint) UnknownA << 28);
+            | ((uint) Type << 28);
 
         if (HasSphericalHarmonicsFactor)
         {
@@ -96,5 +90,28 @@ public struct TexHeader
         result[10] = bytes12[2];
         result[11] = bytes12[3];
         return result;
+    }
+
+    public static void _parseHeader4(uint header4, out TexHeaderVersion version, out uint alpha, out uint shift, out TexType type)
+    {
+        version = (TexHeaderVersion) (header4 & ((1 << 16) - 1));
+        alpha = (header4 >> 16) & ((1 << 8) - 1);
+        shift = (header4 >> 24) & ((1 << 4) - 1);
+        type = (TexType) ((header4 >> 28) & ((1 << 4) - 1)); // switchNum 1,2|3|6
+    }
+
+    public static void _parseHeader8(uint header8, out uint mipMapCount, out uint width, out uint height)
+    {
+        mipMapCount = header8 & ((1 << 6) - 1);
+        width = (header8 >> 6) & ((1 << 13) - 1);
+        height = (header8 >> 19) & ((1 << 13) - 1);
+    }
+
+    public static void _parseHeader12(uint header12, out uint textureArraySize, out TexPixelFormat pixelFormat, out uint depth, out uint unknownB)
+    {
+        textureArraySize = header12 & ((1 << 8) - 1);
+        pixelFormat = (TexPixelFormat) ((header12 >> 8) & ((1 << 8) - 1));
+        depth = (header12 >> 16) & ((1 << 13) - 1);
+        unknownB = (header12 >> 29) & ((1 << 3) - 1);
     }
 }
