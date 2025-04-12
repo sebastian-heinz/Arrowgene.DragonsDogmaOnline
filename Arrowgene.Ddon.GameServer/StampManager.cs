@@ -81,21 +81,23 @@ namespace Arrowgene.Ddon.GameServer
             {
                 foreach (var bonus in entry.StampBonus)
                 {
-                    var (bonusQueue, isSpecial) = Server.ItemManager.HandleSpecialItem(client, ntc, (ItemId)bonus.BonusType, bonus.BonusValue);
-
                     // Currency
                     // Only the first five (GP, RP, BO, Silver Tickets, GP) seem to be valid items for display.
                     if (bonus.BonusType <= 5)
                     {
                         ntc.UpdateWalletList.Add(Server.WalletManager.AddToWallet(client.Character, (WalletType)bonus.BonusType, bonus.BonusValue));
                     }
-                    else if (isSpecial)
+                    else 
                     {
-                        queue.AddRange(bonusQueue);
-                    }
-                    else
-                    {
-                        ntc.UpdateItemList.AddRange(Server.ItemManager.AddItem(Server, client.Character, StorageType.ItemPost, bonus.BonusType, bonus.BonusValue));
+                        var (bonusQueue, isSpecial) = Server.ItemManager.HandleSpecialItem(client, ntc, (ItemId)bonus.BonusType, bonus.BonusValue);
+                        if (isSpecial)
+                        {
+                            queue.AddRange(bonusQueue);
+                        }
+                        else
+                        {
+                            ntc.UpdateItemList.AddRange(Server.ItemManager.AddItem(Server, client.Character, StorageType.ItemPost, bonus.BonusType, bonus.BonusValue));
+                        }
                     }
                 }
             }
