@@ -85,7 +85,7 @@ namespace Arrowgene.Ddon.Client.Resource.Texture.Dds
             else
             {
                 Metadata.ArraySize = 1;
-                if (Header.Flags.HasFlag(DdsHeaderFlags.Volume))
+                if (Header.Flags.HasFlag(DdsHeaderFlags.Depth))
                 {
                     Metadata.Dimension = TexDimension.Texture3D;
                 }

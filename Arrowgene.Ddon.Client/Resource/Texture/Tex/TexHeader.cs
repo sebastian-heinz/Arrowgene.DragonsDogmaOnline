@@ -15,7 +15,7 @@ public struct TexHeader
     public TexPixelFormat PixelFormat;
     public byte TextureArraySize;
     public uint MipMapCount;
-    public uint UnknownA;
+    public TexType Type;
     public uint UnknownB;
     public bool HasSphericalHarmonicsFactor;
 
@@ -29,10 +29,10 @@ public struct TexHeader
 
         HasSphericalHarmonicsFactor = (header4 & 0xF0000000) == 0x60000000;
 
-        uint versionBits12__0_11 = header4 & ((1 << 12) - 1);
-        uint alphaBits12__12_23 = (header4 >> 12) & ((1 << 12) - 1);
+        uint versionBits16__0_15 = header4 & ((1 << 16) - 1);
+        uint alphaBits8__16_23 = (header4 >> 16) & ((1 << 8) - 1);
         uint shiftBits4__24_27 = (header4 >> 24) & ((1 << 4) - 1);
-        uint unkBits4__28_31 = (header4 >> 28) & ((1 << 4) - 1); // switchNum 1,2|3|6
+        uint typeBits4__28_31 = (header4 >> 28) & ((1 << 4) - 1); // switchNum 1,2|3|6
 
         uint mipMapCountBits6_0__5 = header8 & ((1 << 6) - 1);
         uint widthBits13_6__18 = (header8 >> 6) & ((1 << 13) - 1);
@@ -43,10 +43,10 @@ public struct TexHeader
         uint depthBits13__16_28 = (header12 >> 16) & ((1 << 13) - 1);
         uint unkBits3__29_31 = (header12 >> 29) & ((1 << 3) - 1);
 
-        Version = (TexHeaderVersion)versionBits12__0_11;
-        Alpha = alphaBits12__12_23;
+        Version = (TexHeaderVersion)versionBits16__0_15;
+        Alpha = alphaBits8__16_23;
         Shift = shiftBits4__24_27;
-        UnknownA = unkBits4__28_31;
+        Type = (TexType)typeBits4__28_31;
         MipMapCount = mipMapCountBits6_0__5;
         Width = widthBits13_6__18 << (byte) shiftBits4__24_27;
         Height = heightBits13_19__31 << (byte) shiftBits4__24_27;
@@ -62,7 +62,7 @@ public struct TexHeader
             (uint) Version
             | ((uint) Alpha << 12)
             | ((uint) Shift << 24)
-            | ((uint) UnknownA << 28);
+            | ((uint) Type << 28);
 
         if (HasSphericalHarmonicsFactor)
         {
