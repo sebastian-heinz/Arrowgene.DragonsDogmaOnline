@@ -17,11 +17,12 @@ namespace Arrowgene.Ddon.Server
 
         private Globals Globals { get; set; }
 
-        public GameServerSettingsModule GameServerSettingsModule { get; private set; } = new GameServerSettingsModule();
-
+        public GameServerSettingsModule GameServerSettingsModule { get; private set; }
         public ServerScriptManager(string assetsPath) : base(assetsPath, "")
         {
             Globals = new Globals();
+
+            GameServerSettingsModule = new GameServerSettingsModule(ScriptsRoot);
 
             // Add modules to the list so the generic logic can iterate over all scripting modules
             ScriptModules[GameServerSettingsModule.ModuleRoot] = GameServerSettingsModule;

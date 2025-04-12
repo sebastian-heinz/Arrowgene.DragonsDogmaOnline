@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.Shared.Scripting
 
             if (libsPath != "")
             {
-                LibsRoot = $"{ScriptsRoot}{Path.DirectorySeparatorChar}{libsPath}";
+                LibsRoot = Path.Combine(ScriptsRoot, libsPath);
             }
         }
 
@@ -58,14 +58,16 @@ namespace Arrowgene.Ddon.Shared.Scripting
         /// <param name="path">Path to the main script being executed</param>
         private void EmitScriptsAsDllForDebug(Script script, string path)
         {
-            if (!Directory.Exists("script_assemblies"))
+            // Put the debug assemblies in <asset_path>/net9.0/Files
+            var assembliesPath = Path.Combine(ScriptsRoot, "../../script_assemblies");
+            if (!Directory.Exists(assembliesPath))
             {
-                Directory.CreateDirectory("script_assemblies");
+                Directory.CreateDirectory(assembliesPath);
             }
 
             var compilation = script.GetCompilation();
 
-            var outputPath = Path.Combine("script_assemblies", $"{Path.GetFileNameWithoutExtension(path)}.dll");
+            var outputPath = Path.Combine(assembliesPath, $"{Path.GetFileNameWithoutExtension(path)}.dll");
             var emitOptions = new EmitOptions()
                 .WithDebugInformationFormat(DebugInformationFormat.Pdb)
                 .WithPdbFilePath(outputPath);
