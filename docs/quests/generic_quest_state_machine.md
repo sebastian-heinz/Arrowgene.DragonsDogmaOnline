@@ -133,7 +133,7 @@ In this particular quest, this is all the information we need. Let's use it to c
 
 #### Populating the common information
 
-First let's create a new file under `Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Cli\bin\Debug\net6.0\Files\Assets\quests` called `q20005010.json`. The name of this file should reflect the quest id used by the client.
+First let's create a new file under `Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Cli\bin\Debug\net9.0\Files\Assets\quests` called `q20005010.json`. The name of this file should reflect the quest id used by the client.
 
 Each file should start with the following generic format.
 

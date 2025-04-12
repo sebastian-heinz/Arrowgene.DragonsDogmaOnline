@@ -21,7 +21,7 @@ The project is intended for educational purpose only.
 
 . Clone the repository
 .. `git clone https://github.com/sebastian-heinz/Arrowgene.DragonsDogmaOnline.git`
-. Install .NET 6.0 SDK or later https://dotnet.microsoft.com/download
+. Install .NET 9.0 SDK or later https://dotnet.microsoft.com/download
 . Use your IDE of choice
 .. *Visual Studio*
 ... Open the `DragonsDogmaOnline.sln`-file
@@ -39,7 +39,7 @@ The project is intended for educational purpose only.
 
 == Deployment
 
-The application (server) requires the (ASP).NET runtime 6 to function. Alternatively the SDK also works and is required when building from source.
+The application (server) requires the (ASP).NET runtime 9 to function. Alternatively the SDK also works and is required when building from source.
 
 On a high level, a total of four components are required to successfully connect a client:
 

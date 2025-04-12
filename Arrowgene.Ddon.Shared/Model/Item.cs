@@ -1,6 +1,6 @@
-using System.Security.Cryptography;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Shared.Model
@@ -9,21 +9,20 @@ namespace Arrowgene.Ddon.Shared.Model
     {
         public const int UIdLength = 8;
 
-        public string UId { 
+        public string UId
+        {
             get
             {
-                if(this._uid == null)
+                if (_uid == null)
                 {
                     UpdateUId();
                 }
-                return this._uid;
+
+                return _uid;
             }
-            set
-            {
-                this._uid = value;
-            }
+            set => _uid = value;
         }
-        
+
         public uint ItemId { get; set; }
         public byte SafetySetting { get; set; } // This is safety setting.
         public byte Color { get; set; }
@@ -56,11 +55,14 @@ namespace Arrowgene.Ddon.Shared.Model
             this.Unk2List = obj.Unk2List;
         }
 
-        public string UpdateUId()
+        private string UpdateUId()
         {
-            Random rnd = new Random();
-            this._uid = $"{rnd.Next():X08}";
-            return this._uid;
+            // The max value that can be represented in hex in 8 characters is 0xFFFF_FFFF which is equal to uint.MaxValue,
+            //  unfortunately there is no built-in uint support, so we force cast the random full range int -> uint instead.
+            int rnd = Random.Shared.Next(int.MinValue, int.MaxValue);
+            uint urnd = Unsafe.As<int, uint>(ref rnd);
+            _uid = urnd.ToString($"X{UIdLength}");
+            return _uid;
         }
     }
 }

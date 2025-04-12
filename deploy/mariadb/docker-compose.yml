@@ -1,5 +1,3 @@
-version: '3.8'
-
 volumes:
   ddon-mariadb-volume:
 
@@ -12,8 +10,8 @@ services:
     restart: no
     volumes:
       - ddon-mariadb-volume:/var/lib/mysql
-#      - $PWD/schema_mariadb.sql:/docker-entrypoint-initdb.d/schema_mariadb.sql:ro
-      - $PWD/mariadb.cnf:/etc/mysql/mariadb.conf.d/mariadb.cnf:ro
+#      - ./schema_mariadb.sql:/docker-entrypoint-initdb.d/schema_mariadb.sql:ro
+      - ./mariadb.cnf:/etc/mysql/mariadb.conf.d/mariadb.cnf:ro
     environment:
       - MARIADB_USER=admin
       - MARIADB_ROOT_PASSWORD=admin

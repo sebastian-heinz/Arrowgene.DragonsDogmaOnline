@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private readonly string SqlSelectAreaRank = $"SELECT {BuildQueryField(DdonAreaRankFields)} FROM \"ddon_area_rank\" WHERE \"character_id\"=@character_id;";
         private readonly string SqlSelectAreaRankAll = $"SELECT {BuildQueryField(DdonAreaRankFields)} FROM \"ddon_area_rank\" WHERE \"rank\">0;";
 
-        private readonly string SqlResetAreaRankPoint = "UPDATE \"ddon_area_rank\" SET (\"last_week_point\", \"week_point\") = (\"week_point\", 0);";
+        private readonly string SqlResetAreaRankPoint = "UPDATE \"ddon_area_rank\" SET \"last_week_point\" = \"week_point\", \"week_point\" = 0;";
 
         private readonly string SqlInsertAreaRankSupply = $"INSERT INTO \"ddon_area_rank_supply\" ({BuildQueryField(DdonAreaRankSupplyFields)}) VALUES ({BuildQueryInsert(DdonAreaRankSupplyFields)});";
         private readonly string SqlSelectAreaRankSupply = $"SELECT {BuildQueryField(DdonAreaRankSupplyFields)} FROM \"ddon_area_rank_supply\" WHERE \"character_id\"=@character_id;";
