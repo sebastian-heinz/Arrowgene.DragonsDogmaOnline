@@ -175,7 +175,7 @@ namespace Arrowgene.Ddon.Shared.Model
             return RentedPawns[slotNo - 1];
         }
 
-        public void RemovedRentedPawnBySlotNo(byte slotNo)
+        public void RemoveRentedPawnBySlotNo(byte slotNo)
         {
             if (slotNo > RentedPawns.Count)
             {

@@ -483,7 +483,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                 }
             );
 
-            pawn.PartnerPawnData = GetPartnerPawnRecord(pawn.CharacterId, pawn.PawnId, conn);
+            pawn.PartnerPawnData = GetPartnerPawnRecord(pawn.CharacterId, pawn.PawnId, conn) ?? new PartnerPawnData();
         }
 
         private void StorePawnData(TCon conn, Pawn pawn)

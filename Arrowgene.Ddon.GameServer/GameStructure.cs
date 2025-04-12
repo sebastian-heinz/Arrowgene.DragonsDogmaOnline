@@ -156,7 +156,7 @@ public static class GameStructure
         cDataPawnInfo.PawnType = pawn.PawnType;
         // TODO: ShareRange, Likability, Unk1
         cDataPawnInfo.ShareRange = 1;
-        cDataPawnInfo.Likability = 2;
+        cDataPawnInfo.Likability = pawn.PartnerPawnData.NumGifts; // Shows up as Number of Presents
         cDataPawnInfo.TrainingStatus = pawn.TrainingStatus.GetValueOrDefault(pawn.Job, new byte[64]);
         cDataPawnInfo.PawnTrainingProfile = new CDataPawnTrainingProfile() {TrainingExp = 30000, DialogCount = 3, DialogCountMax = 3, AttackFrequencyAndDistance = 1, TrainingLv = 3};
         cDataPawnInfo.SpSkillList = pawn.SpSkills.GetValueOrDefault(pawn.Job, new List<CDataSpSkill>());
