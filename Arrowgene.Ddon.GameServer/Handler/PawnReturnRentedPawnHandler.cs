@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: Remove pawn from rented pawn list for character
             // TODO: Remove snapshot from DB
             // TODO: Save Feedback in the database
-            client.Character.RemovedRentedPawnBySlotNo(request.SlotNo);
+            client.Character.RemoveRentedPawnBySlotNo(request.SlotNo);
 
             return new S2CPawnReturnRentedPawnRes();
         }

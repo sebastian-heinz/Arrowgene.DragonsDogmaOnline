@@ -90,6 +90,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 PawnType = PawnType.Main,
                 ExtendedParams = new CDataOrbGainExtendParam(),
                 Server = client.Character.Server,
+                PartnerPawnData = new PartnerPawnData(),
                 CraftData = new CDataPawnCraftData
                 {
                     CraftExp = 0,
