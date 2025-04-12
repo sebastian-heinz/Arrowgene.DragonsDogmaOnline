@@ -4,5 +4,5 @@ public enum TexHeaderVersion : short
 {
     Unknown = 0,
     Ddon = 0x209D,
-    Ddda = 0x0099 // TODO: Verify this
+    Ddda = 0x0099
 }

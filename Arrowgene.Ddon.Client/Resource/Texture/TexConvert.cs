@@ -47,26 +47,20 @@ public static class TexConvert
         return ddsTexture;
     }
 
-    public static TexTexture ToTexTexture(DdsTexture ddsTexture, TexHeaderVersion headerVersion)
+    public static TexTexture ToTexTexture(DdsTexture ddsTexture, TexHeader originalTexHeader)
     {
-        DdsHeaderFlags requiredHeaderFlags = DdsHeaderFlags.Caps | DdsHeaderFlags.Height | DdsHeaderFlags.Width | DdsHeaderFlags.PixelFormat;
-        if ((ddsTexture.Header.Flags & requiredHeaderFlags) != requiredHeaderFlags)
-        {
-            throw new Exception("Unsupported DDS header flags");
-        }
-
         TexTexture texTexture = new TexTexture();
         texTexture.Magic = TexTexture.TexHeaderMagic;
-        texTexture.Header.Version = headerVersion;
+        texTexture.Header.Version = originalTexHeader.Version;
         texTexture.Header.Height = (uint) ddsTexture.Metadata.Height;
         texTexture.Header.Width = (uint) ddsTexture.Metadata.Width;
-        texTexture.Header.Shift = 0; // TODO
-        texTexture.Header.Alpha = 0; // TODO
+        texTexture.Header.Shift = originalTexHeader.Shift;
+        texTexture.Header.Alpha = originalTexHeader.Alpha;
+        texTexture.Header.Type = originalTexHeader.Type;
         texTexture.Header.Depth = (uint) ddsTexture.Metadata.Depth;
-        texTexture.Header.PixelFormat = GetTexPixelFormat(ddsTexture); // TODO
+        texTexture.Header.PixelFormat = originalTexHeader.PixelFormat;
         texTexture.Header.TextureArraySize = (byte) ddsTexture.Metadata.ArraySize;
         texTexture.Header.MipMapCount = (uint) ddsTexture.Metadata.MipLevels;
-        texTexture.Header.Type = GetTexType(ddsTexture.Header);
         texTexture.Header.UnknownB = 0; // TODO
         texTexture.Header.HasSphericalHarmonicsFactor = false;
 
@@ -96,6 +90,75 @@ public static class TexConvert
         }
         return ddsdFlags;
     }
+
+    public static string DumpTexHeader(TexHeader header)
+    {
+        // Dump using the ARCtool format for compatibility
+        return $"TEX\n" +
+               $"Texversion=RE6\n" +
+               $"Textype={(int) header.PixelFormat}\n" +
+               $"Width={header.Width}\n" +
+               $"Height={header.Height}\n" +
+               $"Mips={header.MipMapCount}\n" +
+               $"Uint1={header._header4}\n" +
+               $"Byte1={header.TextureArraySize}\n" +
+               $"Byte2={header.Depth}\n" +
+               $"Byte3={header.UnknownB}\n" +
+               $"DDSFormat={DDSPixelFormat.FormatFourCc(GetDDSPixelFormat(header).FourCc)}";
+    }
+
+    public static TexHeader ReadTexHeaderDump(string dump)
+    {
+        // Read a TexHeader dump in the ARCtool format
+        string[] lines = dump.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        if (!lines.Any(line => line.Trim() == "TEX"))
+        {
+            throw new Exception("Invalid TEX header dump format.");
+        }
+
+        TexHeader header = new TexHeader();
+
+        foreach (string line in lines)
+        {
+            string[] parts = line.Split('=');
+            if (parts.Length != 2) continue;
+
+            string key = parts[0].Trim();
+            string value = parts[1].Trim();
+
+            switch (key)
+            {
+                case "Textype":
+                    header.PixelFormat = (TexPixelFormat)int.Parse(value);
+                    break;
+                case "Width":
+                    header.Width = uint.Parse(value);
+                    break;
+                case "Height":
+                    header.Height = uint.Parse(value);
+                    break;
+                case "Mips":
+                    header.MipMapCount = uint.Parse(value);
+                    break;
+                case "Uint1":
+                    header._header4 = uint.Parse(value);
+                    TexHeader._parseHeader4(header._header4, out header.Version, out header.Alpha, out header.Shift, out header.Type);
+                    break;
+                case "Byte1":
+                    header.TextureArraySize = byte.Parse(value);
+                    break;
+                case "Byte2":
+                    header.Depth = uint.Parse(value);
+                    break;
+                case "Byte3":
+                    header.UnknownB = uint.Parse(value);
+                    break;
+            }
+        }
+
+        return header;
+    }
+
 
     private static uint GetDDSPitchOrLinearSize(TexTexture texTexture) {
         // For compressed textures the linear size is equal to the first non-mip-mapped face
@@ -198,63 +261,5 @@ public static class TexConvert
             caps2Flags |= DdsCaps2.CubeMapAllFaces;
         }
         return caps2Flags;
-    }
-
-    private static TexType GetTexType(DdsHeader ddsHeader)
-    {
-        // DDON only makes use of 2D & Cube
-        return (ddsHeader.Caps2 & DdsCaps2.CubeMapAllFaces) != 0 
-            ? TexType.Cube 
-            : TexType.Texture2D;
-    }
-
-    private static TexPixelFormat GetTexPixelFormat(DdsTexture ddsTexture)
-    {
-        if(ddsTexture.Header.PixelFormat.Size != 32)
-        {
-            throw new Exception("Unsupported DDS pixel format size: " + ddsTexture.Header.PixelFormat.Size);
-        }
-
-        switch (ddsTexture.Header.PixelFormat.Flags)
-        {
-            case DdsPixelFormatFlag.DDS_FOURCC:
-                switch (ddsTexture.Header.PixelFormat.FourCc)
-                {
-                    case 0x31545844: // 'DXT1'
-                        return TexPixelFormat.FORMAT_BC1_UNORM;
-                    case 0x33545844: // 'DXT3'
-                        return TexPixelFormat.FORMAT_BC2_UNORM;
-                    case 0x35545844: // 'DXT5'
-                        return TexPixelFormat.FORMAT_BC3_UNORM_SRGB;
-                    default:
-                        throw new Exception("Unsupported FOURCC format: " + ddsTexture.Header.PixelFormat.FourCc);
-                }
-            case DdsPixelFormatFlag.DDS_ALPHAPIXELS | DdsPixelFormatFlag.DDS_RGB:
-                switch (ddsTexture.Header.PixelFormat.RgbBitCount)
-                {
-                    case 32:
-                        if (ddsTexture.Header.PixelFormat.RBitMask != 0x00_00_FF_00 ||
-                            ddsTexture.Header.PixelFormat.GBitMask != 0x00_FF_00_00 ||
-                            ddsTexture.Header.PixelFormat.BBitMask != 0xFF_00_00_00 ||
-                            ddsTexture.Header.PixelFormat.ABitMask != 0x00_00_00_FF)
-                        {
-                            throw new Exception("Unsupported RGBA bit mask");
-                        }
-                        return TexPixelFormat.FORMAT_B8G8R8A8_UNORM;
-                    case 16:
-                        if (ddsTexture.Header.PixelFormat.RBitMask != 0b0000_0000_1111_0000 ||
-                            ddsTexture.Header.PixelFormat.GBitMask != 0b0000_1111_0000_0000 ||
-                            ddsTexture.Header.PixelFormat.BBitMask != 0b1111_0000_0000_0000 ||
-                            ddsTexture.Header.PixelFormat.ABitMask != 0b0000_0000_0000_1111)
-                        {
-                            throw new Exception("Unsupported RGBA bit mask");
-                        }
-                        return TexPixelFormat.FORMAT_B4G4R4A4_UNORM;
-                    default:
-                        throw new Exception("Unsupported RGBA bit count: " + ddsTexture.Header.PixelFormat.RgbBitCount);
-                }
-            default:
-                throw new Exception("Unsupported DDS pixel format flag: " + ddsTexture.Header.PixelFormat.Flags.ToString("X8"));
-        }
     }
 }
