@@ -17,13 +17,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override PacketQueue Handle(GameClient client, C2SSkillLearnPawnAbilityReq request)
         {
-            Pawn pawn = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
+            Pawn pawn = client.Character.PawnById(request.PawnId, PawnType.Main);
 
+            var ability = SkillData.AllAbilities.Concat(SkillData.AllSecretAbilities)
+                .Where(aug => aug.AbilityNo == request.AbilityId)
+                .SingleOrDefault()
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_INVALID_SKILL_ID);
 
-            var AllAbilities = SkillGetAcquirableAbilityListHandler.AllAbilities.Concat(SkillGetAcquirableAbilityListHandler.AllSecretAbilities);
-
-            JobId augJob = AllAbilities.Where(aug => aug.AbilityNo == request.AbilityId).Select(aug => aug.Job).Single(); // why is this not in the packet
-            return Server.JobManager.UnlockAbility(Server.Database, client, pawn, augJob, request.AbilityId, request.AbilityLv);
+            return Server.JobManager.UnlockAbility(Server.Database, client, pawn, ability.Job, request.AbilityId, request.AbilityLv);
         }
     }
 }

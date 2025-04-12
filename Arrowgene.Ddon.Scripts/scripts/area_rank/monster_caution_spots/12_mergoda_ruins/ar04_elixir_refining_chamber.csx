@@ -25,11 +25,11 @@ public class MonsterSpotInfo : IMonsterSpotInfo
                 .SetNamedEnemyParams(NamedParamId.SergiusTheApothecary),
             LibDdon.Enemy.CreateAuto(EnemyId.MerganWarrior, 53, 1)
                 .SetNamedEnemyParams(NamedParamId.ImmortalDrugTestSubject),
-            LibDdon.Enemy.CreateAuto(EnemyId.MerganDefender, 53, 1)
+            LibDdon.Enemy.CreateAuto(EnemyId.MerganDefender, 53, 2)
                 .SetNamedEnemyParams(NamedParamId.ImmortalDrugTestSubject),
-            LibDdon.Enemy.CreateAuto(EnemyId.MerganHunter, 53, 1)
+            LibDdon.Enemy.CreateAuto(EnemyId.MerganHunter, 53, 3)
                 .SetNamedEnemyParams(NamedParamId.ImmortalDrugTestSubject),
-            LibDdon.Enemy.CreateAuto(EnemyId.MerganHealer, 53, 1)
+            LibDdon.Enemy.CreateAuto(EnemyId.MerganHealer, 53, 4)
                 .SetNamedEnemyParams(NamedParamId.ImmortalDrugTestSubject),
         });
     }

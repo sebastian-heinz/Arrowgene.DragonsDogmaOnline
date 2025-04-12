@@ -17,7 +17,7 @@ CREATE TABLE "ddon_partner_pawn_last_affection_increase"
     "character_id" INTEGER NOT NULL,
     "pawn_id" INTEGER NOT NULL,
     "action" INTEGER NOT NULL,
-    CONSTRAINT pk_ddon_partner_pawn PRIMARY KEY ("character_id", "pawn_id", "action"),
+    CONSTRAINT pk_ddon_partner_pawn_last_affection_increase PRIMARY KEY ("character_id", "pawn_id", "action"),
     CONSTRAINT fk_ddon_partner_pawn_affection_increase_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
 INSERT INTO ddon_schedule_next(type, timestamp) VALUES (13, 0);

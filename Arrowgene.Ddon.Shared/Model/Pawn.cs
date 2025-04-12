@@ -63,10 +63,12 @@ namespace Arrowgene.Ddon.Shared.Model
         public Dictionary<JobId, List<CDataSpSkill>> SpSkills { get; set; }
         public uint TrainingPoints { get; set; } // Training xp?
         public uint AvailableTraining { get; set; } // Training lv?
+        public PartnerPawnData PartnerPawnData { get; set; }
+
         public bool IsOfficialPawn {  get; set; }
         public bool IsRented {  get; set; }
         public PawnState PawnState { get; set; }
-        
+
         public CDataPawnInfo AsCDataPawnInfo()
         {
             return new CDataPawnInfo()

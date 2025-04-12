@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using System;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure;
 
@@ -16,7 +17,7 @@ public class CDataAchievementProgress
     /// <summary>
     /// Any given date in the past works for the UI to show it as complete.
     /// </summary>
-    public long CompleteDate { get; set; }
+    public DateTimeOffset CompleteDate { get; set; }
 
     public class Serializer : EntitySerializer<CDataAchievementProgress>
     {
@@ -25,7 +26,7 @@ public class CDataAchievementProgress
             WriteEntity(buffer, obj.AchieveIdentifier);
             WriteUInt32(buffer, obj.CurrentNum);
             WriteUInt32(buffer, obj.Sequence);
-            WriteInt64(buffer, obj.CompleteDate);
+            WriteInt64(buffer, obj.CompleteDate.ToUnixTimeSeconds());
         }
 
         public override CDataAchievementProgress Read(IBuffer buffer)
@@ -34,7 +35,7 @@ public class CDataAchievementProgress
             obj.AchieveIdentifier = ReadEntity<CDataAchievementIdentifier>(buffer);
             obj.CurrentNum = ReadUInt32(buffer);
             obj.Sequence = ReadUInt32(buffer);
-            obj.CompleteDate = ReadInt64(buffer);
+            obj.CompleteDate = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
             return obj;
         }
     }

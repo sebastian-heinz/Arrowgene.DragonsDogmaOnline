@@ -11,6 +11,7 @@
         "id": 53
     },
     "area_id": "NorthernBetlandPlains",
+    "adventure_guide_category": "AreaTrialOrMission",
     "order_conditions": [
         {
             "type": "AreaRank",
@@ -38,7 +39,7 @@
         {
             "stage_id": {
                 "id": 334,
-                "group_id": 100
+                "group_id": 7
             },
             "enemies": [
                 {

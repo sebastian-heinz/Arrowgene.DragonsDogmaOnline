@@ -47,7 +47,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         CDataMDataCraftRecipe recipe = Server.AssetRepository.CraftingRecipesAsset
                             .SelectMany(recipes => recipes.RecipeList)
-                            .Single(recipe => recipe.RecipeID == request.RecipeId);
+                            .Single(recipe => recipe.RecipeID == request.RecipeId)
+                            .AsCData();
 
                         ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, recipe.ItemID);
 
@@ -111,8 +112,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
         private CDataCraftSkillAnalyzeResult AnalyzeProductionSpeed(uint recipeTime, ClientItemInfo itemInfo, List<CraftPawn> craftPawns)
         {
             uint reducedTime = Server.CraftManager.CalculateRecipeProductionSpeed(recipeTime, itemInfo, craftPawns);
-            uint deltaTime = recipeTime - reducedTime;
-            byte timeFactor = (byte)(deltaTime * 100.0 / reducedTime);
+            byte timeFactor = 0;
+            if (reducedTime > recipeTime)
+            {
+                Logger.Error($"Overflow detected in [AnalyzeProductionSpeed]: {reducedTime} > {recipeTime} when crafting {itemInfo.Name}");
+                timeFactor = 100;
+            }
+            else
+            {
+                uint deltaTime = recipeTime - reducedTime;
+                timeFactor = (byte)(deltaTime * 100.0 / reducedTime);
+            }
 
             CDataCraftSkillAnalyzeResult productionSpeedAnalysisResult = new CDataCraftSkillAnalyzeResult
             {

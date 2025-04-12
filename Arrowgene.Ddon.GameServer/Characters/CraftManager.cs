@@ -412,7 +412,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return rankUps;
         } 
 
-        public static void HandlePawnRankUpNtc(GameClient client, Pawn leadPawn)
+        public static S2CCraftCraftRankUpNtc HandlePawnRankUpNtc(GameClient client, Pawn leadPawn)
         {
             S2CCraftCraftRankUpNtc rankUpNtc = new S2CCraftCraftRankUpNtc
             {
@@ -435,7 +435,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 leadPawn.CraftData.CraftExp = Math.Clamp(leadPawn.CraftData.CraftExp, 0, craftRankExpLimit[(int)leadPawn.CraftData.CraftRankLimit-1]);
             }
 
-            client.Send(rankUpNtc);
+            return rankUpNtc;
         }
 
         public static bool CanPawnExpUp(Pawn pawn)
@@ -443,7 +443,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return pawn.CraftData.CraftRank < pawn.CraftData.CraftRankLimit;
         }
 
-        public static void HandlePawnExpUpNtc(GameClient client, Pawn leadPawn, uint exp, double BonusExpMultiplier)
+        public static S2CCraftCraftExpUpNtc HandlePawnExpUpNtc(GameClient client, Pawn leadPawn, uint exp, double BonusExpMultiplier)
         {
 
             uint expUp = exp;
@@ -477,7 +477,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 leadPawn.CraftData.CraftExp = Math.Clamp(leadPawn.CraftData.CraftExp, 0, craftRankExpLimit[(int)leadPawn.CraftData.CraftRankLimit]);
             }
 
-            client.Send(expNtc);
+            return expNtc;
         }
 
         public Pawn FindPawn(GameClient client, uint pawnId)
@@ -485,6 +485,31 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return client.Character.Pawns.Find(p => p.PawnId == pawnId)
                 ?? client.Character.RentedPawns.Find(p => p.PawnId == pawnId)
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID, "Couldn't find the Pawn ID.");
+        }
+
+        public List<CDataMDataCraftMaterial> GetRecipeMaterialsForItemId(ItemId itemId)
+        {
+            var itemInfo = _server.ItemManager.LookupInfoByItemID(_server, (uint) itemId);
+            var recipeList = _server.AssetRepository.CraftingRecipesAsset
+                .Where(recipes => recipes.Category == itemInfo.RecipeCategory)
+                .Select(recipes => recipes.RecipeList)
+                .SingleOrDefault(new List<CraftingRecipe>());
+            var recipe = recipeList.Where(x => x.ItemID == (uint)itemId).FirstOrDefault();
+            return (recipe != null) ? recipe.CraftMaterialList : new List<CDataMDataCraftMaterial>();
+        }
+
+        public ItemId GetItemBaseItemId(ItemId itemId)
+        {
+            var itemInfo = _server.ItemManager.LookupInfoByItemID(_server, (uint)itemId);
+            if (itemInfo == null || itemInfo.Quality == 0)
+            {
+                return itemId;
+            }
+
+            return _server.AssetRepository.ClientItemInfos.Values
+                .Where(x => x.Name == itemInfo.Name && x.Quality == 0)
+                .Select(x => (ItemId) x.ItemId)
+                .FirstOrDefault(itemId);
         }
     }
 }

@@ -4,7 +4,8 @@ public class PropertyGenerator : IInstanceEnemyPropertyGenerator
 {
     public override void ApplyChanges(GameClient client, StageLayoutId stageLayoutId, byte subGroupId, InstancedEnemy enemy)
     {
-        if (stageLayoutId.Id != Stage.TheRift1.StageId)
+        if (stageLayoutId.Id != Stage.TheRift0.StageId &&
+            stageLayoutId.Id != Stage.TheRift1.StageId)
         {
             return;
         }

@@ -1,23 +1,16 @@
 #nullable enable
 using Arrowgene.Ddon.Database;
-using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using YamlDotNet.Core.Tokens;
-using YamlDotNet.Core;
-using Arrowgene.Ddon.GameServer.Quests;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -72,7 +65,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {ItemId.RiftCrystal1000Rp, (WalletType.RiftPoints, 1000)},
             {ItemId.BloodOrb1000Bo, (WalletType.BloodOrbs, 1000)},
             // TODO: Requires special item notice type 47, could be offered in adventure pass shop
-            {ItemId.CurrencyForResettingCraftP, (WalletType.ResetCraftSkills, 1)}
+            {ItemId.CurrencyForResettingCraftP, (WalletType.ResetCraftSkills, 1)},
+            {ItemId.SilverTicket, (WalletType.SilverTickets, 1) },
+            {ItemId.CustomMadeServiceTicket, (WalletType.CustomMadeServiceTickets, 1) },
+            {ItemId.GoldenGemstone, (WalletType.GoldenGemstones, 1) }
             // TODO: Find all items that add wallet points
         };
 
@@ -228,43 +224,51 @@ namespace Arrowgene.Ddon.GameServer.Characters
         // old = 'プレイポイント'
         // new = 'Play Point'
 
-        public PacketQueue GatherItem(GameClient client, S2CItemUpdateCharacterItemNtc ntc, InstancedGatheringItem gatheringItem, uint pickedGatherItems, DbConnection? connectionIn = null)
+        public (PacketQueue queue, bool IsSpecial) HandleSpecialItem(GameClient client, S2CItemUpdateCharacterItemNtc ntc, ItemId item, uint count, DbConnection? connectionIn = null)
         {
-            PacketQueue queue = new PacketQueue();
-            if (ItemIdWalletTypeAndQuantity.ContainsKey((ItemId) gatheringItem.ItemId)) 
+            var itemInfo = ClientItemInfo.GetInfoForItemId(_Server.AssetRepository.ClientItemInfos, (uint)item);
+            if (ItemIdWalletTypeAndQuantity.ContainsKey(item))
             {
-                var walletTypeAndQuantity = ItemIdWalletTypeAndQuantity[(ItemId) gatheringItem.ItemId];
-                uint totalQuantityToAdd = walletTypeAndQuantity.Quantity * gatheringItem.ItemNum;
+                var walletTypeAndQuantity = ItemIdWalletTypeAndQuantity[item];
+                uint totalQuantityToAdd = walletTypeAndQuantity.Quantity * count;
 
                 ntc.UpdateWalletList.Add(
                     _Server.WalletManager.AddToWallet(client.Character, walletTypeAndQuantity.Type, totalQuantityToAdd, 0, connectionIn
                 ));
 
-                if (pickedGatherItems > gatheringItem.ItemNum)
-                {
-                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_ITEM_NUM, 
-                        $"Overflow error, trying to remove {pickedGatherItems} from stack of ID {gatheringItem.ItemId} x{gatheringItem.ItemNum}",
-                        critical:true);
-                }
-
-                gatheringItem.ItemNum -= pickedGatherItems;     
+                return (new(), true);
             }
-            else if (AreaPointItems.TryGetValue(gatheringItem.ItemId, out var pointArea))
+            else if (AreaPointItems.TryGetValue(item, out var pointArea))
             {
-                if (pickedGatherItems > gatheringItem.ItemNum)
-                {
-                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_ITEM_NUM,
-                        $"Overflow error, trying to remove {pickedGatherItems} from stack of ID {gatheringItem.ItemId} x{gatheringItem.ItemNum}",
-                        critical: true);
-                }
-
-                gatheringItem.ItemNum -= pickedGatherItems;
-
-                return _Server.AreaRankManager.AddAreaPoint(client, pointArea, (10 * pickedGatherItems, 0), connectionIn);
+                return (_Server.AreaRankManager.AddAreaPoint(client, pointArea, (10 * count, 0), connectionIn), true);
             }
-            else 
+            else if (itemInfo?.Category == 6 || itemInfo?.Category == 7)
             {
-                List<CDataItemUpdateResult> results = AddItem(_Server, client.Character, true, (uint) gatheringItem.ItemId, pickedGatherItems, connectionIn:connectionIn);
+                PacketQueue queue = new();
+                client.Enqueue(new S2CItemAchievementRewardReceiveNtc()
+                {
+                    Unk0 = 2,
+                    Unk1 = 1,
+                    Unk2 = 7,
+                    ItemId = (uint)item
+                }, queue);
+                var unlockType = itemInfo.Category == 6 ? UnlockableItemCategory.FurnitureItem : UnlockableItemCategory.CraftingRecipe;
+                client.Character.UnlockableItems.Add((unlockType, (uint)item));
+                _Server.Database.InsertUnlockedItem(client.Character.CharacterId, unlockType, (uint)item, connectionIn);
+                return (queue, true);
+            }
+            else
+            {
+                return (new(), false);
+            }
+        }
+
+        public PacketQueue GatherItem(GameClient client, S2CItemUpdateCharacterItemNtc ntc, InstancedGatheringItem gatheringItem, uint pickedGatherItems, DbConnection? connectionIn = null)
+        {
+            var (queue, isSpecial) = HandleSpecialItem(client, ntc, gatheringItem.ItemId, pickedGatherItems, connectionIn);
+            if (!isSpecial)
+            {
+                List<CDataItemUpdateResult> results = AddItem(_Server, client.Character, true, (uint)gatheringItem.ItemId, pickedGatherItems, connectionIn: connectionIn);
                 ntc.UpdateItemList.AddRange(results);
 
                 uint totalRemoved = (uint)results.Select(result => result.UpdateItemNum).Sum();
@@ -278,6 +282,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 gatheringItem.ItemNum -= totalRemoved;
             }
+            else
+            {
+                gatheringItem.ItemNum = 0;
+            }
+
             return queue;
         }
 
@@ -644,6 +653,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 server.Database.InsertCrest(character.CommonId, item.UId, crest.SlotNo, crest.CrestId, crest.Add, connectionIn);
             }
+
+            foreach (var addStatusParam in item.AddStatusParamList)
+            {
+                server.Database.UpsertEquipmentLimitBreakRecord(character.CharacterId, item.UId, addStatusParam, connectionIn);
+            }
         }
 
         public List<CDataItemUpdateResult> MoveItem(DdonServer<GameClient> server, Character character, Storage fromStorage, ushort fromSlotNo, uint num, Storage toStorage, ushort toSlotNo, DbConnection? connectionIn = null)
@@ -998,7 +1012,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return results;
         }
 
-        public void SetSafetySetting(GameClient client, Character character, List<CDataItemUIdList> uids, bool safetySetting)
+        public void SetSafetySetting(GameClient client, Character character, List<CDataItemUIDList> uids, bool safetySetting)
         {
             List<(ushort SlotNo, Item Item, uint Amount, Storage Storage)> items = new();
 
@@ -1010,7 +1024,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             uint updateItemNum = 0;
             foreach (var reqitem in uids)
             {
-                (StorageType storageType, Tuple<ushort, Item, uint> itemProps) = character.Storage.FindItemByUIdInStorage(ItemManager.AllItemStorages, reqitem.UId);
+                (StorageType storageType, Tuple<ushort, Item, uint> itemProps) = character.Storage.FindItemByUIdInStorage(ItemManager.AllItemStorages, reqitem.ItemUID);
                 var (slotNo, item, amount) = itemProps;
                 var storage = character.Storage.GetStorage(storageType);
 

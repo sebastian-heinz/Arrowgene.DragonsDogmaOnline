@@ -9,6 +9,7 @@
     "discoverable": false,
     "stage_id": { "id": 25 },
     "area_id": "HidellPlains",
+    "adventure_guide_category": "AreaTrialOrMission",
     "order_conditions": [
         {
             "type": "AreaRank",

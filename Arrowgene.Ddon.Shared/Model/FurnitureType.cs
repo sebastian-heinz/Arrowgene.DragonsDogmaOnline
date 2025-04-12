@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Arrowgene.Ddon.Shared.Model
 {
     public class ClanFurnitureType
@@ -17,8 +11,4 @@ namespace Arrowgene.Ddon.Shared.Model
         public static readonly byte HallDecoration = 60;
     }
 
-    public class MyRoomFurnitureType
-    {
-
-    }
 }

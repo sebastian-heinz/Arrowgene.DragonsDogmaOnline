@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 foreach (CDataCommunicationShortCut shortcut in request.CommunicationShortCutList)
                 {
-                    Server.Database.ReplaceCommunicationShortcut(client.Character.CharacterId, shortcut, connection);
+                    Server.Database.ReplaceCommunicationShortcut(client.Character.ContentCharacterId, shortcut, connection);
                 }
             });
 

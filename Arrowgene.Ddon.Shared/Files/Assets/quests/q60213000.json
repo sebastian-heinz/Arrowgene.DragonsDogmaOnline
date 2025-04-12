@@ -11,6 +11,7 @@
         "id": 317
     },
     "area_id": "BloodbaneIsle",
+    "adventure_guide_category": "AreaTrialOrMission",
     "order_conditions": [
         {
             "type": "AreaRank",

@@ -385,20 +385,32 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return pawns;
         }
 
-        public bool DeletePawn(uint pawnId)
+        public bool DeletePawn(uint pawnId, DbConnection? connectionIn = null)
         {
-            int rowsAffected = ExecuteNonQuery(
-                SqlDeletePawn,
-                command =>
-                {
-                    AddParameter(command, "@pawn_id", pawnId);
-                }
-            );
-            return rowsAffected > NoRowsAffected;
+            return ExecuteQuerySafe<int>(connectionIn, connection =>
+            {
+                return ExecuteNonQuery(
+                    connection,
+                    SqlDeletePawn,
+                    command =>
+                    {
+                        AddParameter(command, "@pawn_id", pawnId);
+                    }
+                );
+            }) > NoRowsAffected;
         }
 
         public bool UpdatePawnBaseInfo(Pawn pawn, DbConnection? connectionIn = null)
         {
+            // TODO: Make this less super dangerous.
+            // This has a potential for pawn kidnapping by overwriting the pawn's characterId.
+            // Until we better implement rental pawns, this should ONLY write for main pawns.
+
+            if (pawn.PawnType != PawnType.Main)
+            {
+                return false;
+            }
+
             return ExecuteQuerySafe<int>(connectionIn, (connection) =>
             {
                 return ExecuteNonQuery(
@@ -470,6 +482,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     }
                 }
             );
+
+            pawn.PartnerPawnData = GetPartnerPawnRecord(pawn.CharacterId, pawn.PawnId, conn);
         }
 
         private void StorePawnData(TCon conn, Pawn pawn)
@@ -493,7 +507,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
             foreach ((JobId job, byte[] trainingStatus) in pawn.TrainingStatus)
             {
-                ReplacePawnTrainingStatus(conn, pawn.PawnId, job, trainingStatus);
+                ReplacePawnTrainingStatus(pawn.PawnId, job, trainingStatus, conn);
             }
         }
 

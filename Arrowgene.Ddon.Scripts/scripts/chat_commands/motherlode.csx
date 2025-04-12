@@ -54,7 +54,8 @@ public class ChatCommand : IChatCommand
         {"BO", WalletType.BloodOrbs},
         {"HO", WalletType.HighOrbs},
         {"GG", WalletType.GoldenGemstones},
-        {"RC", WalletType.ResetCraftSkills}
+        {"RC", WalletType.ResetCraftSkills},
+        {"ST", WalletType.SilverTickets},
     };
 
     private static readonly uint DefaultAmount = 10000;

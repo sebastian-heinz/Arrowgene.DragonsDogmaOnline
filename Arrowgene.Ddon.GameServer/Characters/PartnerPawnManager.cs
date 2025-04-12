@@ -1,12 +1,9 @@
-using Arrowgene.Ddon.Database.Model;
-using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -17,7 +14,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PartnerPawnManager));
 
-        public static uint MAX_PARTNER_PAWN_LIKABILITY_RATING = 25;
+        public static uint MAX_PARTNER_PAWN_LIKABILITY_RATING = 26;
 
         private DdonGameServer Server;
 
@@ -65,13 +62,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new();
             }
 
-            if (Server.Database.HasPartnerPawnLastAffectionIncreaseRecord(client.Character.CharacterId, client.Character.PartnerPawnId, action))
+            if (Server.Database.HasPartnerPawnLastAffectionIncreaseRecord(client.Character.CharacterId, client.Character.PartnerPawnId, action, connectionIn))
             {
                 // MAX contributed for the day, do nothing
                 return new();
             }
 
-            var partnerPawnData = Server.Database.GetPartnerPawnRecord(client.Character.CharacterId, client.Character.PartnerPawnId, connectionIn);
+            PartnerPawnData partnerPawnData = client.Character.Pawns.Find(x => x.PawnId == client.Character.PartnerPawnId)?.PartnerPawnData;
             var previousLikability = partnerPawnData.CalculateLikability();
             switch (action)
             {
@@ -100,6 +97,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     Server.Database.InsertPartnerPawnPendingReward(client.Character.CharacterId, client.Character.PartnerPawnId, currentLikability, connectionIn);
                 }
+
+                packets.AddRange(Server.AchievementManager.HandlePawnAffection(client, connectionIn));
             }
 
             return packets;
@@ -111,7 +110,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 return true;
             }
-            return Server.Database.HasPartnerPawnLastAffectionIncreaseRecord(client.Character.CharacterId, client.Character.PartnerPawnId, action);
+            return Server.Database.HasPartnerPawnLastAffectionIncreaseRecord(client.Character.CharacterId, client.Character.PartnerPawnId, action, connectionIn);
         }
 
         public uint GetLikabilityForCurrentPartnerPawn(GameClient client, DbConnection? connectionIn = null)

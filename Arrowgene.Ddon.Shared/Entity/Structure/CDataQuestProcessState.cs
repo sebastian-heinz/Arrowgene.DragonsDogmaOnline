@@ -84,5 +84,10 @@ public class CDataQuestProcessState
             }
         }
     }
+
+    public override string ToString()
+    {
+        return $"{ProcessNo}.{SequenceNo}.{BlockNo}";
+    }
 }
 

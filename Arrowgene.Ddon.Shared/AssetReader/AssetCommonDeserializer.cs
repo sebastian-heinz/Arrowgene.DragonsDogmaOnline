@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text.Json;
@@ -312,6 +313,27 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             }
 
             return result;
+        }
+
+
+        public static (long, long) ConvertTimeToMilliseconds(string SpawnTime)
+        {
+            // this converts the time (07:00,18:00) as example, down into milliseconds, via splitting into hours/minutes and then combining each respect time into start/end
+            // Split the spawnTime string at the comma to get start and end times
+            string[] spawnTimes = SpawnTime.Split(',');
+
+            // Split the start time at the colon to get hours and minutes
+            string[] startTimeComponents = spawnTimes[0].Split(':');
+            int startHours = int.Parse(startTimeComponents[0]);
+            int startMinutes = int.Parse(startTimeComponents[1]);
+
+            // Split the end time at the colon to get hours and minutes
+            string[] endTimeComponents = spawnTimes[1].Split(':');
+            int endHours = int.Parse(endTimeComponents[0]);
+            int endMinutes = int.Parse(endTimeComponents[1]);
+
+            // Convert hours and minutes into milliseconds
+            return ((startHours * 3600000) + (startMinutes * 60000), (endHours * 3600000) + (endMinutes * 60000));
         }
     }
 }

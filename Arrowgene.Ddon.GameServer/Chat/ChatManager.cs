@@ -75,6 +75,11 @@ namespace Arrowgene.Ddon.GameServer.Chat
             Send(response);
         }
 
+        public void BroadcastMessageToParty(PartyGroup party, LobbyChatMsgType type, string message)
+        {
+            SendMessage(message, string.Empty, string.Empty, type, party.Clients);
+        }
+
         public void BroadcastMessage(LobbyChatMsgType type, string message)
         {
             SendMessage(message, string.Empty, string.Empty, type, _Server.ClientLookup.GetAll());

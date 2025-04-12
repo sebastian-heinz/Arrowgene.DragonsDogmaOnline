@@ -1,11 +1,14 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Context;
 using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -74,6 +77,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (shouldReset)
                 {
+                    if (client.Party.MemberCount() > 1)
+                    {
+                        Server.ChatManager.BroadcastMessageToParty(client.Party, LobbyChatMsgType.ManagementGuideC, "The entire party has returned to a safe area.");
+                    }
+
                     Server.EpitaphRoadManager.ResetInstance(client.Party);
                     client.Party.ResetInstance();
                     client.Party.SendToAll(new S2CInstanceAreaResetNtc());
@@ -81,6 +89,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             client.Enqueue(res, queue);
+
+            // Tutorial quests which are not in the accepted state will continue to progress until they
+            // become accepted. This might happen when using rules to prevent the quest from showing
+            // until some requirements are met. Remove them when the player switches areas so when they
+            // reenter the area, it start's over.
+            QuestManager.PurgeUnstartedTutorialQuests(client);
 
             if (client.Party.ExmInProgress && BoardManager.BoardIdIsExm(client.Party.ContentId))
             {

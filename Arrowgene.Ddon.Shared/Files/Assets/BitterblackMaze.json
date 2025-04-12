@@ -1013,6 +1013,58 @@
             ]
         }
     ],
+    "starter_job_items": [
+        {
+            "comment": "9858,\u6bd2\u306e\u77e2,Poison Arrow,",
+            "item_id": 9858,
+            "quantity": 99
+        },
+        {
+            "comment": "9859,\u6cb9\u306e\u77e2,Oil Arrow,",
+            "item_id": 9859,
+            "quantity": 99
+        },
+        {
+            "comment": "9860,\u7761\u7720\u306e\u77e2,Sleeper Arrow,",
+            "item_id": 9860,
+            "quantity": 99
+        },
+        {
+            "comment": "9861,\u6c88\u9ed9\u306e\u77e2,Silencer Arrow,",
+            "item_id": 9861,
+            "quantity": 99
+        },
+        {
+            "comment": "9862,\u611a\u920d\u306e\u77e2,Asinity Arrow,",
+            "item_id": 9862,
+            "quantity": 99
+        },         
+        {
+            "comment": "10155,\u5931\u80fd\u306e\u30a8\u30ea\u30af\u30b7\u30eb,Stifling Elixir,",
+            "item_id": 10155,
+            "quantity": 99
+        },     
+        {
+            "comment": "10161,\u6bd2\u306e\u30a8\u30ea\u30af\u30b7\u30eb,Poison Elixir,",
+            "item_id": 10161,
+            "quantity": 99
+        },
+        {
+            "comment": "10162,\u7720\u308a\u306e\u30a8\u30ea\u30af\u30b7\u30eb,Sleep Elixir,",
+            "item_id": 10162,
+            "quantity": 99
+        },
+        {
+            "comment": "10163,\u5931\u6211\u306e\u30a8\u30ea\u30af\u30b7\u30eb,Disorienting Elixir,",
+            "item_id": 10163,
+            "quantity": 99
+        },
+        {
+            "comment": "10165,\u91d1\u306e\u30a8\u30ea\u30af\u30b7\u30eb,Gilding Elixir,",
+            "item_id": 10165,
+            "quantity": 99
+        }
+    ],
     "loot_ranges": [
         {
             "comment": "Rotunda 1",
@@ -1102,10 +1154,11 @@
             ]
         },
         "trash": [
-            {"id": 55,   "max_amount": 5, "comment": "Lantern Kindling"},
-            {"id": 9361, "max_amount": 2, "comment": "Quality Gala Extract"},
-            {"id": 41,   "max_amount": 1, "comment": "Panacea"},
-            {"id": 7552, "max_amount": 2, "comment": "Healing Elixer"}
+            {"id": 55,    "max_amount": 5, "comment": "Lantern Kindling"},
+            {"id": 9361,  "max_amount": 2, "comment": "Quality Gala Extract"},
+            {"id": 41,    "max_amount": 1, "comment": "Panacea"},
+            {"id": 7552,  "max_amount": 2, "comment": "Healing Elixir"},
+            {"id": 11510, "max_amount": 1, "comment": "Superior Anti-Corruption Medicine"}
         ],
         "other": {
             "low_quality": [

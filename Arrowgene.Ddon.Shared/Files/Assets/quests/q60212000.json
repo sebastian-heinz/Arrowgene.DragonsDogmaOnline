@@ -11,6 +11,7 @@
         "id": 237
     },
     "area_id": "MergodaRuins",
+    "adventure_guide_category": "AreaTrialOrMission",
     "order_conditions": [
         {
             "type": "AreaRank",
@@ -38,7 +39,7 @@
         {
             "stage_id": {
                 "id": 59,
-                "group_id": 100
+                "group_id": 1
             },
             "enemies": [
                 {

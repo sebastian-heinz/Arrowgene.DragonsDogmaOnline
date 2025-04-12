@@ -342,6 +342,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                             }
                         });
 
+                        item.AddStatusParamList = GetEquipmentLimitBreakRecord(item.UId, connection);
+
                         character.Storage.GetStorage(storageType).SetItem(item, itemNum, slot);
                     }
                 });
@@ -430,36 +432,36 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             // Area Ranks
             character.AreaRanks = SelectAreaRank(character.CharacterId, conn);
             character.AreaSupply = SelectAreaRankSupply(character.CharacterId, conn);
+
+            // Achievements
+            character.AchievementStatus = SelectAchievementStatus(character.CharacterId, conn);
+            character.AchievementProgress = SelectAchievementProgress(character.CharacterId, conn);
+            character.AchievementUniqueCrafts = SelectAchievementUniqueCrafts(character.CharacterId, conn);
+            character.UnlockableItems = SelectUnlockedItems(character.CharacterId, conn);
         }
 
-        public bool UpdateMyPawnSlot(uint characterId, uint num)
+        public bool UpdateMyPawnSlot(uint characterId, uint num, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return UpdateMyPawnSlot(connection, characterId, num);
-        }
-
-        public bool UpdateMyPawnSlot(TCon conn, uint characterId, uint num)
-        {
-            return ExecuteNonQuery(conn, SqlUpdateMyPawnSlot, command =>
+            return ExecuteQuerySafe(connectionIn, connection =>
             {
-                AddParameter(command, "character_id", characterId);
-                AddParameter(command, "my_pawn_slot_num", num);
-            })  == 1;
+                return ExecuteNonQuery(connection, SqlUpdateMyPawnSlot, command =>
+                {
+                    AddParameter(command, "character_id", characterId);
+                    AddParameter(command, "my_pawn_slot_num", num);
+                }) == 1;
+            });
         }
         
-        public bool UpdateRentalPawnSlot(uint characterId, uint num)
+        public bool UpdateRentalPawnSlot(uint characterId, uint num, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return UpdateRentalPawnSlot(connection, characterId, num);
-        }
-
-        public bool UpdateRentalPawnSlot(TCon conn, uint characterId, uint num)
-        {
-            return ExecuteNonQuery(conn, SqlUpdateRentalPawnSlot, command =>
+            return ExecuteQuerySafe(connectionIn, connection =>
             {
-                AddParameter(command, "character_id", characterId);
-                AddParameter(command, "rental_pawn_slot_num", num);
-            })  == 1;
+                return ExecuteNonQuery(connection, SqlUpdateRentalPawnSlot, command =>
+                {
+                    AddParameter(command, "character_id", characterId);
+                    AddParameter(command, "rental_pawn_slot_num", num);
+                }) == 1;
+            });
         }
 
         private void StoreCharacterData(TCon conn, Character character)
@@ -590,6 +592,18 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             }
         }
 
+        //Helper function to add specific items to a storage
+        public void CreateListItems(DbConnection conn, Character character, StorageType storageType, List<(uint ItemId, uint Amount)> itemList) 
+        {
+            var itemBagJob = character.Storage.GetAllStorages()[storageType];
+            foreach(var (itemId, quantity) in itemList) 
+            {
+                Item jobItem = new Item() { ItemId = itemId };
+                ushort slot = itemBagJob.AddItem(jobItem, quantity);
+                InsertStorageItem(character.ContentCharacterId, StorageType.ItemBagJob, slot, quantity, jobItem, conn);
+            }
+        }
+
         public Storages SelectAllStoragesByCharacterId(uint characterId)
         {
             using TCon connection = OpenNewConnection();
@@ -642,6 +656,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                 item.EquipElementParamList.Add(result.ToCDataEquipElementParam());
                             }
                         });
+
+                        item.AddStatusParamList = GetEquipmentLimitBreakRecord(item.UId, connection);
 
                         storages.GetStorage(storageType).SetItem(item, itemNum, slot);
                     }

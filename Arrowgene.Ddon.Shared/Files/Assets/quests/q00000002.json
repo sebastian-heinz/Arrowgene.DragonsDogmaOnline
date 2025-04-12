@@ -45,95 +45,153 @@
             ]
         }
     ],
-    "blocks": [
+    "processes": [
         {
-            "type": "Raw",
-            "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 273},
-                {"type": "WorldManageLayout", "action": "Set", "value": 1215, "quest_id": 70000001, "Comment": "Mysial"},
-                {"type": "WorldManageLayout", "action": "Set", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
-                {"type": "WorldManageLayout", "action": "Set", "value": 1219, "quest_id": 70000001, "comment": "Iris"},
-                {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"}
-            ],
-            "check_commands": [
-                {"type": "EventEnd", "Param1": 200, "Param2": 0}
-            ],
-            "result_commands": [
-                {"type": "EventExec", "Param1": 200, "Param2": 0, "Param3": 200, "Param4": 1}
+            "comment": "Main Quest Process",
+            "blocks": [
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 2
+                    },
+                    "event_id": 0,
+                    "jump_stage_id": {
+                        "id": 2
+                    },
+                    "start_pos_no": 1,
+                    "flags": [
+                        {"type": "QstLayout", "action": "Set", "value": 273},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1215, "quest_id": 70000001, "Comment": "Mysial"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1218, "quest_id": 70000001, "comment": "Leo"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1219, "quest_id": 70000001, "comment": "Iris"},
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 8630, "quest_id": 70034001, "comment": "Spawns Gurdolin, Lise and Elliot"}
+                    ]
+                },
+                {
+                    "type": "IsStageNo",
+                    "announce_type": "Accept",
+                    "flags": [
+                        {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
+                        {"type": "WorldManageLayout", "action": "Set", "value": 1293, "quest_id": 70000001, "comment": "The White Dragon (Dead)"},
+                        {"type": "QstLayout", "action": "Set", "value": 1225, "comment": "Spawns Fabio"},
+                        {"type": "MyQst", "action": "Set", "value": 1510, "comment": "Starts Fabio NPC Walk FSM"}
+                    ],
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "result_commands": [
+                        {"type": "QstTalkChg", "Param1": 12, "Param2": 10837, "comment": "Sets Fabios text properly after he finishes the tour"}
+                    ]
+                },
+                {
+                    "type": "TouchNpc",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "npc_id": "Leo0"
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "event_id": 0,
+                    "jump_stage_id": {
+                        "id": 3
+                    },
+                    "start_pos_no": 1
+                },
+                {
+                    "type": "TalkToNpc",
+                    "announce_type": "CheckpointAndUpdate",
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1
+                    },
+                    "npc_id": "Leo0",
+                    "message_id": 7454
+                },
+                {
+                    "type": "TalkToNpc",
+                    "checkpoint": true,
+                    "stage_id": {
+                        "id": 3,
+                        "group_id": 1
+                    },
+                    "npc_id": "Mysial0",
+                    "message_id": 7456
+                },
+                {
+                    "type": "TouchNpc",
+                    "announce_type": "CheckpointAndUpdate",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "npc_id": "TheWhiteDragon"
+                },
+                {
+                    "type": "PlayEvent",
+                    "stage_id": {
+                        "id": 3
+                    },
+                    "event_id": 3
+                }
             ]
         },
         {
-            "type": "Raw",
-            "flags": [
-                {"type": "WorldManageLayout", "action": "Clear", "value": 7390, "quest_id": 70032001, "comment": "The White Dragon (Full)"},
-                {"type": "WorldManageLayout", "action": "Set", "value": 1293, "quest_id": 70000001, "comment": "The White Dragon (Dead)"}
-            ],
-            "announce_type": "Accept",
-            "check_commands": [
-                {"type": "StageNo", "Param1": 201}
-            ],
-            "result_commands": []
-        },
-        {
-            "type": "TalkToNpc",
-            "stage_id": {
-                "id": 3,
-                "group_id": 1
-            },
-            "npc_id": "Leo0",
-            "message_id": 0
-        },
-        {
-            "type": "Raw",
-            "check_commands": [
-                {"type": "EventEnd", "Param1": 201, "Param2": 0}
-            ],
-            "result_commands": [
-                {"type": "EventExec", "Param1": 201, "Param2": 0, "Param3": 201, "Param4": 1}
-            ]
-        },
-        {
-            "type": "TalkToNpc",
-            "checkpoint": true,
-            "announce_type": "Update",
-            "stage_id": {
-                "id": 3,
-                "group_id": 1
-            },
-            "npc_id": "Leo0",
-            "message_id": 7454
-        },
-        {
-            "type": "TalkToNpc",
-            "checkpoint": true,
-            "stage_id": {
-                "id": 3,
-                "group_id": 1
-            },
-            "npc_id": "Mysial0",
-            "message_id": 7456
-        },
-        {
-            "type": "TalkToNpc",
-            "checkpoint": true,
-            "announce_type": "Update",
-            "stage_id": {
-                "id": 3,
-                "group_id": 1
-            },
-            "npc_id": "TheWhiteDragon",
-            "message_id": 0
-        },
-        {
-            "type": "Raw",
-            "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 1225}
-            ],
-            "check_commands": [
-                {"type": "EventEnd", "Param1": 201, "Param2": 3}
-            ],
-            "result_commands": [
-                {"type": "EventExec", "Param1": 201, "Param2": 3, "Param3": 0, "Param4": 0}
+            "comment": "Tutorial Process",
+            "blocks": [
+                {
+                    "comment": "Wait for <Tutorial Guide>",
+                    "type": "SceHitIn",
+                    "stage_id": {
+                        "id": 2
+                    },
+                    "sce_no": 5,
+                    "show_marker": false
+                },
+                {
+                    "comment": "Wait for <Main Quests>",
+                    "type": "SceHitIn",
+                    "stage_id": {
+                        "id": 2
+                    },
+                    "sce_no": 1,
+                    "show_marker": false,
+                    "result_commands": [
+                        {"type": "TutorialDialog", "Param1": 239, "comment": "Tutorial Guide"}
+                    ]
+                },
+                {
+                    "comment": "Wait for <The White Dragon Temple>",
+                    "type": "SceHitIn",
+                    "stage_id": {
+                        "id": 2
+                    },
+                    "sce_no": 2,
+                    "show_marker": false,
+                    "result_commands": [
+                        {"type": "TutorialDialog", "Param1": 8, "comment": "Main Quests"}
+                    ]
+                },
+                {
+                    "comment": "Wait for <Chat Log>",
+                    "type": "SceHitIn",
+                    "stage_id": {
+                        "id": 2
+                    },
+                    "sce_no": 3,
+                    "show_marker": false,
+                    "result_commands": [
+                        {"type": "TutorialDialog", "Param1": 35, "comment": "The White Dragon Temple"}
+                    ]
+                },
+                {
+                    "type": "Raw",
+                    "result_commands": [
+                        {"type": "TutorialDialog", "Param1": 46, "comment": "Chat Log"}
+                    ]
+                }
             ]
         }
     ]

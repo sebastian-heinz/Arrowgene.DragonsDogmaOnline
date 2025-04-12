@@ -1,18 +1,16 @@
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Appraisal;
+using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-using YamlDotNet.Core;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
     public class AppraisalManager
     {
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(AppraisalManager));
+
         public static uint RollDragonTrinketsAlpha(JobId jobId)
         {
             return DragonTrinketAlphaRewards.Rolls[jobId][Random.Shared.Next(0, DragonTrinketAlphaRewards.Rolls[jobId].Count)];
@@ -44,7 +42,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return jobCrests[Random.Shared.Next(0, jobCrests.Count)];
         }
 
-        public static ushort RollBitterBlackMazeEarringPercent(JobId job)
+        public static ushort RollBitterBlackMazeEarringPercent(JobId jobId)
         {
             /**
              * Based on research in discord, Warrior and Shield sage earrings can roll a
@@ -52,7 +50,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * 1-13% bonus on their equipment. The percentage values are encoded as ushorts.
              * For example 2 == 2% in the UI.
              */
-            if (job == JobId.Warrior || job == JobId.ShieldSage)
+            if (jobId == JobId.Warrior || jobId == JobId.ShieldSage)
             {
                 // [8, 20]
                 return (ushort)Random.Shared.Next(8, 20 + 1);

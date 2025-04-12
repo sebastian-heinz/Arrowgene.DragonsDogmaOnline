@@ -17,21 +17,29 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private readonly string SqlUpdateLearnedCustomSkill = $"UPDATE \"ddon_learned_custom_skill\" SET {BuildQueryUpdate(LearnedCustomSkillFields)} WHERE \"character_common_id\"=@character_common_id AND \"job\"=@job AND \"skill_id\"=@skill_id;";
         private static readonly string SqlSelectLearnedCustomSkills = $"SELECT {BuildQueryField(LearnedCustomSkillFields)} FROM \"ddon_learned_custom_skill\" WHERE \"character_common_id\"=@character_common_id;";
 
-        public bool InsertLearnedCustomSkill(uint commonId, CustomSkill skill)
+        public bool InsertLearnedCustomSkill(uint commonId, CustomSkill skill, DbConnection? connectionIn = null)
         {
-            ExecuteNonQuery(SqlInsertLearnedCustomSkill, command =>
+            ExecuteQuerySafe(connectionIn, connection =>
             {
-                AddParameter(command, commonId, skill);
+                ExecuteNonQuery(connection, SqlInsertLearnedCustomSkill, command =>
+                {
+                    AddParameter(command, commonId, skill);
+                });
             });
+            
             return true;
         }
 
-        public bool UpdateLearnedCustomSkill(uint commonId, CustomSkill updatedSkill)
+        public bool UpdateLearnedCustomSkill(uint commonId, CustomSkill updatedSkill, DbConnection? connectionIn = null)
         {
-            ExecuteNonQuery(SqlUpdateLearnedCustomSkill, command =>
+            ExecuteQuerySafe(connectionIn, connection =>
             {
-                AddParameter(command, commonId, updatedSkill);
+                ExecuteNonQuery(connection, SqlUpdateLearnedCustomSkill, command =>
+                {
+                    AddParameter(command, commonId, updatedSkill);
+                });
             });
+            
             return true;
         }
 

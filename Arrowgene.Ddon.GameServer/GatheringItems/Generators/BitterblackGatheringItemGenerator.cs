@@ -13,7 +13,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
 
         DdonGameServer Server { get; set; }
 
-        public List<InstancedGatheringItem> Generate(GameClient client, StageLayoutId stageId, uint index)
+        public override List<InstancedGatheringItem> Generate(GameClient client, StageLayoutId stageId, uint index)
         {
             if (!StageManager.IsBitterBlackMazeStageId(stageId))
             {

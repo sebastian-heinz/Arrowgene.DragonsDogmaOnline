@@ -26,6 +26,7 @@ public class ScriptedQuest : IQuest
     public override byte MinimumItemRank => 0;
     public override bool IsDiscoverable => true;
     public override StageInfo StageInfo => Stage.TheWhiteDragonTemple0;
+    public override QuestAdventureGuideCategory? AdventureGuideCategory => QuestAdventureGuideCategory.CollaborationOrSeasonalQuest;
 
     public override bool AcceptRequirementsMet(GameClient client)
     {

@@ -14,11 +14,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(ItemUseBagItemHandler));
 
         private static readonly StorageType DestinationStorageType = StorageType.ItemBagConsumable;
-        private DdonGameServer _Server;
 
         public ItemUseBagItemHandler(DdonGameServer server) : base(server)
         {
-            _Server = server;
         }
 
         public override PacketQueue Handle(GameClient client, C2SItemUseBagItemReq request)
@@ -45,20 +43,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 UpdateType = ItemNoticeType.UseBag
             };
 
-            if (_Server.ItemManager.IsSecretAbilityItem(item.ItemId))
+            if (Server.ItemManager.IsSecretAbilityItem(item.ItemId))
             {
-                _Server.JobManager.UnlockSecretAbility(client, client.Character, (SecretAbility)_Server.ItemManager.GetAbilityId(item.ItemId));
+                Server.JobManager.UnlockSecretAbility(client, client.Character, (SecretAbility)Server.ItemManager.GetAbilityId(item.ItemId));
             }
 
-            if (_Server.ScriptManager.GameItemModule.HasItem(item.ItemId))
+            if (Server.ScriptManager.GameItemModule.HasItem(item.ItemId))
             {
-                _Server.ScriptManager.GameItemModule.GetItemInterface(item.ItemId)?.OnUse(client);
+                Server.ScriptManager.GameItemModule.GetItemInterface(item.ItemId)?.OnUse(client);
             }
 
-            if (_Server.EpitaphRoadManager.TrialInProgress(client.Party))
+            if (Server.EpitaphRoadManager.TrialInProgress(client.Party))
             {
-                _Server.EpitaphRoadManager.EvaluateItemUsed(client.Party, item.ItemId);
+                Server.EpitaphRoadManager.EvaluateItemUsed(client.Party, item.ItemId);
             }
+
+            var (specialQueue, isSpecial) = Server.ItemManager.HandleSpecialItem(client, ntc, (ItemId)item.ItemId, request.Amount);
+            queue.AddRange(specialQueue);
 
             CDataItemUpdateResult ntcData0 = new CDataItemUpdateResult()
             {
@@ -102,7 +103,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Lantern start NTC
             if (item.ItemId == (uint)ItemId.LanternKindling && EquipManager.HasLantern(client.Character))
             {
-                queue.AddRange(Server.ItemManager.StartLantern(client, _Server.GameSettings.GameServerSettings.LanternBurnTimeInSeconds));
+                queue.AddRange(Server.ItemManager.StartLantern(client, Server.GameSettings.GameServerSettings.LanternBurnTimeInSeconds));
             }
 
             return queue;

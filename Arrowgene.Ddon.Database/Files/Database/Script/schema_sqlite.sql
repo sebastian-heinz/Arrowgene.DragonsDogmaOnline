@@ -840,7 +840,7 @@ CREATE TABLE IF NOT EXISTS "ddon_partner_pawn_last_affection_increase"
     "character_id" INTEGER NOT NULL,
     "pawn_id" INTEGER NOT NULL,
     "action" INTEGER NOT NULL,
-    CONSTRAINT pk_ddon_partner_pawn PRIMARY KEY ("character_id", "pawn_id", "action"),
+    CONSTRAINT pk_ddon_partner_pawn_last_affection_increase PRIMARY KEY ("character_id", "pawn_id", "action"),
     CONSTRAINT fk_ddon_partner_pawn_affection_increase_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
 INSERT INTO ddon_schedule_next(type, timestamp) VALUES (13, 0);
@@ -852,4 +852,72 @@ CREATE TABLE IF NOT EXISTS "ddon_partner_pawn_pending_rewards"
     "reward_level" INTEGER NOT NULL,
     CONSTRAINT pk_ddon_partner_pawn_pending_rewards PRIMARY KEY ("character_id", "pawn_id"),
     CONSTRAINT fk_ddon_partner_pawn_pending_rewards_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_achievement_progress"
+(
+    "character_id"      INTEGER NOT NULL,
+    "achievement_type"  INTEGER NOT NULL,
+    "achievement_param" INTEGER NOT NULL,
+    "progress"          INTEGER NOT NULL,
+    CONSTRAINT pk_ddon_achievement_progress PRIMARY KEY ("character_id", "achievement_type", "achievement_param"),
+    CONSTRAINT fk_ddon_achievement_progress_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_achievement"
+(
+    "character_id"      INTEGER NOT NULL,
+    "achievement_id"    INTEGER NOT NULL,
+    "date"              DATETIME NOT NULL,
+    CONSTRAINT pk_ddon_achievement PRIMARY KEY ("character_id", "achievement_id"),
+    CONSTRAINT fk_ddon_achievement_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_achievement_unique_crafts"
+(
+    "character_id"      INTEGER NOT NULL,
+    "item_id"           INTEGER NOT NULL,
+    "craft_type"        TINYINT NOT NULL,
+    CONSTRAINT pk_ddon_achievement_unique_crafts PRIMARY KEY ("character_id", "item_id"),
+    CONSTRAINT fk_ddon_achievement_unique_crafts_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_unlocked_items"
+(
+    "character_id"      INTEGER NOT NULL,
+    "category"          INTEGER NOT NULL,
+    "item_id"           INTEGER NOT NULL,
+    CONSTRAINT pk_ddon_unlocked_items PRIMARY KEY ("character_id", "category", "item_id"),
+    CONSTRAINT fk_ddon_unlocked_items_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_myroom_customization"
+(
+    "character_id"      INTEGER NOT NULL,
+    "layout_id"         TINYINT NOT NULL,
+    "item_id"           INTEGER NOT NULL,
+    CONSTRAINT pk_ddon_myroom_customization PRIMARY KEY ("character_id", "layout_id"),
+    CONSTRAINT fk_ddon_myroom_customization_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS "ddon_recycle_equipment"
+(
+    "character_id" INTEGER NOT NULL,
+    "num_attempts" INTEGER NOT NULL,
+    CONSTRAINT pk_ddon_recycle_equipment PRIMARY KEY ("character_id"),
+    CONSTRAINT fk_ddon_recycle_equipment_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+);
+INSERT INTO ddon_schedule_next(type, timestamp) VALUES (24, 0);
+
+CREATE TABLE IF NOT EXISTS "ddon_equipment_limit_break"
+(
+    "character_id" INTEGER NOT NULL,
+    "item_uid"     VARCHAR(8) NOT NULL,
+    "effect_1"     INTEGER NOT NULL,
+    "effect_2"     INTEGER NOT NULL,
+    "is_effect1_valid" BOOLEAN NOT NULL,
+    "is_effect2_valid" BOOLEAN NOT NULL,
+    CONSTRAINT pk_ddon_equipment_limit_break PRIMARY KEY ("character_id", "item_uid"),
+    CONSTRAINT fk_ddon_equipment_limit_break_item_uid FOREIGN KEY ("item_uid") REFERENCES "ddon_storage_item" ("item_uid") ON DELETE CASCADE,
+    CONSTRAINT fk_ddon_equipment_limit_break_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );

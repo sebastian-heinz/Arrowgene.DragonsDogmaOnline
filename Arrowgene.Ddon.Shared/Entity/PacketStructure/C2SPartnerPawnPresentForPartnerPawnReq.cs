@@ -12,10 +12,10 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public C2SPartnerPawnPresentForPartnerPawnReq()
         {
-            ItemUIDList = new List<CDataStorageItemUIDList>();
+            ItemUIDList = new List<CDataItemUIDList>();
         }
 
-        public List<CDataStorageItemUIDList> ItemUIDList { get; set; }
+        public List<CDataItemUIDList> ItemUIDList { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SPartnerPawnPresentForPartnerPawnReq>
         {
@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override C2SPartnerPawnPresentForPartnerPawnReq Read(IBuffer buffer)
             {
                 C2SPartnerPawnPresentForPartnerPawnReq obj = new C2SPartnerPawnPresentForPartnerPawnReq();
-                obj.ItemUIDList = ReadEntityList<CDataStorageItemUIDList>(buffer);
+                obj.ItemUIDList = ReadEntityList<CDataItemUIDList>(buffer);
                 return obj;
             }
         }

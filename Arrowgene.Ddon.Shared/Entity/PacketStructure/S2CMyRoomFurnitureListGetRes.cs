@@ -1,7 +1,7 @@
-using System.Collections.Generic;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
@@ -11,10 +11,6 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public List<CDataFurnitureLayout> FurnitureList { get; set; } = new();
         public CDataMyRoomOption MyRoomOption { get; set; } = new();
-
-        public S2CMyRoomFurnitureListGetRes()
-        {
-        }
 
         public class Serializer : PacketEntitySerializer<S2CMyRoomFurnitureListGetRes>
         {

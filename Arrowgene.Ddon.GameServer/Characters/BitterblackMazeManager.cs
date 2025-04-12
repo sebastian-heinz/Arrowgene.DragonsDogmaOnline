@@ -132,6 +132,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 progress.ContentId = 0;
                 progress.Tier = 0;
+
+                if (match.ContentMode == BattleContentMode.Abyss)
+                {
+                    // Clearing Abyss counts for both kinds of achievements.
+                    packets.AddRange(server.AchievementManager.HandleClearBBM(client, true, connectionIn));
+                }
+                packets.AddRange(server.AchievementManager.HandleClearBBM(client, false, connectionIn));
             }
             server.Database.UpdateBBMProgress(character.CharacterId, progress, connectionIn);
 
@@ -159,6 +166,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public static Item ApplyCrest(IDatabase database, Character character, Item item, DbConnection? connectionIn = null)
         {
+            // Don't allow crests to be applied if it's already gotten one by the Dispel Handler.
+            if (item.EquipElementParamList.Any())
+            {
+                return item;
+            }
+
             if (item.ItemId == BitterblackMazeManager.BitterblackBraceletItemId)
             {
                 uint crestId = BitterBlackMazeRewards.BraceletRolls[Random.Shared.Next(BitterBlackMazeRewards.BraceletRolls.Count)];

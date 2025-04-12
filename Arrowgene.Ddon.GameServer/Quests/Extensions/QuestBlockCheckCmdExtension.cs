@@ -1,3 +1,5 @@
+using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Quests.Work;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
@@ -207,6 +209,20 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
+        public static QuestBlock AddCheckCmdTouchActToNpc(this QuestBlock questBlock, StageInfo stageInfo, NpcId npcId, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdTouchActToNpc(stageInfo, npcId);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdNpcTouchAndOrderUi(this QuestBlock questBlock, StageInfo stageInfo, NpcId npcId, int noOrderGroupSerial, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdNpcTouchAndOrderUi(stageInfo, npcId, noOrderGroupSerial);
+            return questBlock;
+        }
+
         public static QuestBlock AddCheckCmdHasUsedKey(this QuestBlock questBlock, StageInfo stageInfo, uint groupId, uint setNo, QuestId questId, int commandListIndex = 0)
         {
             ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
@@ -260,6 +276,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
         {
             ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
             questBlock.CheckCommands[commandListIndex].AddCheckCmdWorldQuestClearNum(areaId, amount);
+
+            questBlock.QuestProgressWork.Add(new WorldQuestClearedProgressWork(questBlock.QuestScheduleId, questBlock.AsQuestProcessState(), areaId, amount));
+
             return questBlock;
         }
 
@@ -270,10 +289,94 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
-        public static QuestBlock AddCheckCmdStageNo(this QuestBlock questBlock, StageInfo stageInfo, int commandListIndex = 0)
+        public static QuestBlock AddCheckCmdIsMainQuestClear(this QuestBlock questBlock, QuestId questId, int commandListIndex = 0)
         {
             ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
-            questBlock.CheckCommands[commandListIndex].AddCheckCmdStageNo(stageInfo);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsMainQuestClear(questId);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdIsTutorialQuestClear(this QuestBlock questBlock, QuestId questId, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsTutorialQuestClear(questId);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdIsClearLightQuest(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsClearLightQuest();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdIsOrderLightQuest(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsOrderLightQuest();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdIsAcceptLightQuest(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsAcceptLightQuest();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdIsSetPlayerSkill(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsSetPlayerSkill();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdOpenQuestBoard(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdOpenQuestBoard();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdIsOpenWarehouseReward(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsOpenWarehouseReward();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdOpenNewspaper(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdOpenNewspaper();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdIsOpenAreaListUi(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsOpenAreaListUi();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdOpenAreaMaster(this QuestBlock questBlock, QuestAreaId areaId, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdOpenAreaMaster(areaId);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdOpenAreaMasterSupplies(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdOpenAreaMasterSupplies();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdIsStageNo(this QuestBlock questBlock, StageInfo stageInfo, bool showMarker = true, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsStageNo(stageInfo, showMarker);
             return questBlock;
         }
 
@@ -281,6 +384,265 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
         {
             ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
             questBlock.CheckCommands[commandListIndex].AddCheckCmdStageNoNotEq(stageInfo);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdHaveItemAllBag(this QuestBlock questBlock, ItemId itemId, uint amount, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdHaveItemAllBag(itemId, amount);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdIsFullBag(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsFullBag();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdIsMyquestLayoutFlagOn(this QuestBlock questBlock, uint flagNo, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsMyquestLayoutFlagOn(flagNo);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdIsMyquestLayoutFlagOff(this QuestBlock questBlock, uint flagNo, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsMyquestLayoutFlagOff(flagNo);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdMyQstFlagOn(this QuestBlock questBlock, uint flagNo, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdMyQstFlagOn(flagNo);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdMyQstFlagOff(this QuestBlock questBlock, uint flagNo, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdMyQstFlagOff(flagNo);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdIsTutorialFlagOn(this QuestBlock questBlock, uint flagNo, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsTutorialFlagOn(flagNo);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdMyQstFlagOnFromFsm(this QuestBlock questBlock, uint flagNo, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdMyQstFlagOnFromFsm(flagNo);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdQstFlagOn(this QuestBlock questBlock, QuestId questId, uint flagNo, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdQstFlagOn(questId, flagNo);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdQstFlagOff(this QuestBlock questBlock, QuestId questId, uint flagNo, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdQstFlagOff(questId, flagNo);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdWorldManageQuestFlagOn(this QuestBlock questBlock, QuestId questId, uint flagNo, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdWorldManageQuestFlagOn(questId, flagNo);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdWorldManageQuestFlagOff(this QuestBlock questBlock, QuestId questId, uint flagNo, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdWorldManageQuestFlagOff(questId, flagNo);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdCraft(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdCraft();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdMakeCraft(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdMakeCraft();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdOpenCraftExam(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdOpenCraftExam();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdLevelUpCraft(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdLevelUpCraft();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdDogmaOrb(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdDogmaOrb();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdJobLevelNotLess(this QuestBlock questBlock, QuestLevelCheckType checkType, uint level, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdJobLevelNotLess(checkType, level);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdJobLevelLess(this QuestBlock questBlock, QuestLevelCheckType checkType, uint level, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdJobLevelLess(checkType, level);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdOpenPpMode(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdOpenPpMode();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdOpenPpShop(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdOpenPpShop();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdPpNotLess(this QuestBlock questBlock, uint points, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdPpNotLess(points);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdIsOrderMyQuest(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsOrderMyQuest();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdIsNotOrderMyQuest(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsNotOrderMyQuest();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdTouchRimStone(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdTouchRimStone();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdIsPresentPartnerPawn(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsPresentPartnerPawn();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdIsPresentPartnerPawnNoMarker(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsPresentPartnerPawnNoMarker();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdIsSetPartnerPawn(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsSetPartnerPawn();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdIsFavoriteWarpPoint(this QuestBlock questBlock, int warpPointId, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsFavoriteWarpPoint(warpPointId);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdOrderDecide(this QuestBlock questBlock, NpcId npcId, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdOrderDecide(npcId);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdSpTalkNpc(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdSpTalkNpc();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdTutorialTalkNpc(this QuestBlock questBlock, StageInfo stageInfo, NpcId npcId, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdTutorialTalkNpc(stageInfo, npcId);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdEventEnd(this QuestBlock questBlock, StageInfo stageInfo, uint eventNo, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdEventEnd(stageInfo, eventNo);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdIsLogin(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsLogin();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdIsLoginBugFixedOnly(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsLoginBugFixedOnly();
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdPlJobEq(this QuestBlock questBlock, JobId jobId, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdPlJobEq(jobId);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdPlJobNotEq(this QuestBlock questBlock, JobId jobId, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdPlJobNotEq(jobId);
             return questBlock;
         }
     }

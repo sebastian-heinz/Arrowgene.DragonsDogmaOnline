@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Arrowgene.Ddon.Shared.Model.Quest
 {
     public enum QuestId : uint
@@ -108,12 +102,12 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         TheDreadfulPassage = 30240,
         TheRelicsOfTheFirstKing = 30250,
         HopesBitterEnd = 30260,
-        // Season 3.4?
         ThoseWhoFollowTheDragon = 30270,
-        Unknown30410 = 30410, // Name is in Japanese
-        Unknown30420 = 30420, // Name is in Japanese
-        Unknown30430 = 30430, // Name is in Japanese
-        Unknown30440 = 30440, // Name is in Japanese
+        // Season 3.4?
+        BreakdownOfReason = 30410,
+        SpunTogetherHope = 30420,
+        TheWhiteDragonsArisen = 30430,
+        TheFateOfAll = 30440,
 
         Unknown5004 = 5004,   // Entry is blank, just picture of a church?
 
@@ -122,10 +116,73 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         AmbushInTheWellsDepths = 20005002,
         TheKnightsBitterEnemy = 20005010,
 
-        // Personal Quests
+        // Personal/Tutorial Quests
+        GatheringInTheClanTavern = 60000002,
+        FighterTacticsTrialBreakAttack = 60000001,
+        FighterTacticsTrialAStubbornShield = 60000003,
+        PriestTacticsTrialPurification = 60000004,
+        SeekerTacticsTrialAWhirlwind = 60000005,
+        ShieldSageTacticsTrialAMagickShield = 60000006,
+        HunterTacticsTrialAnAmbushingBow = 60000007,
+        SorcerTacticsTrialAMagickAttack = 60000008,
+        ElementArcherTacticsTrialAMagickBow = 60000009,
+        WarriorTacticsTrialAStrongSword = 60000010,
+        AlchemistTacticsTrialAlchemy = 60000011,
+        TheArisensAbilities = 60000012,
+        TheTemplesTradespeople = 60000013,
+        ReliableSourceOfInformation = 60000014,
+        LestaniasBestDressed = 60000015,
         CraftedTokenOfTheHeart = 60000016,
+        PriestTacticsTrialBreakAttack = 60000017,
+        ShieldSageTacticsTrialBreakAttack = 60000018,
+        HunterTacticsTrialBreakAttack = 60000019,
+        GatheringInTheClanTavernContinued = 60000020,
+        SeekingTheMasterFighter = 60000050,
+        SeekingTheMasterPriest = 60000051,
+        SeekingTheMasterHunter = 60000052,
+        SeekingTheMasterShieldSage = 60000053,
+        SeekingTheMasterSeeker = 60000054,
+        SeekingTheMasterSorcerer = 60000055,
+        SeekingTheMasterElementArcher = 60000056,
+        SeekingTheMasterWarrior = 60000057,
+        SeekingTheMasterAlchemist = 60000058,
+        LivingWithThePartnerPawn = 60200000,
+        RoadToMastery = 60200014,
+        SpiritLancerTacticsTrialASpiritLance = 60200050,
+        SeekingTheMasterSpiritLancer = 60200051,
+        ExtendGarden = 60300000,
+
+        CustomMadeWorkshop1SearchersReturn = 60300002,
+        CustomMadeWorkshop2LimitBreak = 60300003,
+        CustomMadeWorkshop3UltimateArmsSynthesis = 60300004,
+
+        ShiningWithinALoyalHeart = 60300011,
+        ArmsWithThePowerOfTheDragon1 = 61000001,
+        ArmsWithThePowerOfTheDragon2 = 61000002,
+
+
+        // World Manage Quests
+        /// Season 1?
+        Q70000001 = 70000001,
+        Q70001001 = 70001001,
+        Q70002001 = 70002001,
+        Q70003001 = 70003001,
+        Q70004001 = 70004001,
+        /// Season 2?
+        Q70020001 = 70020001,
+        Q70021001 = 70021001,
+        Q70022001 = 70022001,
+        Q70023001 = 70023001,
+        /// Season 3?
+        Q70030001 = 70030001,
+        Q70031001 = 70031001,
+        Q70032001 = 70032001,
+        Q70033001 = 70033001,
+        Q70034001 = 70034001,
 
         // Custom World Manage Quest Ids
         WorldManageMonsterCaution = 79000001,
+        WorldManageJobTutorial = 79000002,
+        WorldManageDebug = 79000003,
     }
 }

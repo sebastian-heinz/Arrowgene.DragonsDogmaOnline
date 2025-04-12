@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
@@ -86,6 +87,11 @@ namespace Arrowgene.Ddon.Server.Network
             queue.Enqueue((this, packet));
         }
 
+        public void Enqueue(Packet res, PacketQueue queue)
+        {
+            queue.Enqueue((this, res));
+        }
+
         public void Send(Packet packet)
         {
             if (!_challengeCompleted 
@@ -96,7 +102,7 @@ namespace Arrowgene.Ddon.Server.Network
                 // at this point in time we only allow to send S2C_CERT_CLIENT_CHALLENGE_RES
                 // only after receiving the first client packet, we can assume the client is able
                 // to parse packets headers and process other packets.
-                Logger.Error(this,
+                Logger.Debug(this,
                     $"Tried to send Packet:\"{packet.PrintHeader()}\", while client not yet considered ready");
                 return;
             }

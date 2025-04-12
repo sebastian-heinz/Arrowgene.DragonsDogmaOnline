@@ -16,6 +16,7 @@ namespace Arrowgene.Ddon.GameServer
 
         private List<SchedulerTask> Tasks;
         private DdonGameServer Server;
+        private List<Timer> Timers;
 
         private static readonly int TIMER_TICK_HOURLY = 1 * 1000; // 1 second
         private static readonly int TIMER_TICK_DAILY = 10 * 1000; // 10 seconds
@@ -24,6 +25,7 @@ namespace Arrowgene.Ddon.GameServer
         public ScheduleManager(DdonGameServer server)
         {
             Server = server;
+            Timers = new List<Timer>();
 
             // TODO: Load from server config
             Tasks = new List<SchedulerTask>()
@@ -32,6 +34,7 @@ namespace Arrowgene.Ddon.GameServer
                 new AreaPointResetTask(DayOfWeek.Monday, 5, 0),
                 new RankingBoardResetTask(DayOfWeek.Monday, 5, 0),
                 new PawnLikabilityIncreaseResetTask(5, 0),
+                new EquipmentRecycleResetTask(5, 0),
             };
         }
 
@@ -78,7 +81,7 @@ namespace Arrowgene.Ddon.GameServer
                 }
 
                 var timerTick = GetTimerTick(task.Interval);
-                var Timer = new Timer(state =>
+                var timer = new Timer(state =>
                 {
                     long now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                     if (now >= entries[task.Type].Timestamp)
@@ -88,6 +91,8 @@ namespace Arrowgene.Ddon.GameServer
                         Server.Database.UpdateScheduleInfo(task.Type, entries[task.Type].Timestamp);
                     }
                 }, null, timerTick, timerTick);
+
+                Timers.Add(timer);
             }
         }
 
@@ -109,6 +114,11 @@ namespace Arrowgene.Ddon.GameServer
         public List<SchedulerTask> GetTasks()
         {
             return Tasks;
+        }
+
+        public SchedulerTask GetTask(TaskType type)
+        {
+            return Tasks.Where(x => x.Type == type).FirstOrDefault();
         }
     }
 }

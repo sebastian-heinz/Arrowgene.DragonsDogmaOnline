@@ -18,5 +18,10 @@ namespace Arrowgene.Ddon.GameServer.Tasks
         {
             return new DateTimeOffset(DateTime.Now.AddHours(Hours).AddMinutes(Minutes)).ToUnixTimeSeconds();
         }
+
+        public override string TaskTypeName()
+        {
+            return "Next Time Amount Task";
+        }
     }
 }

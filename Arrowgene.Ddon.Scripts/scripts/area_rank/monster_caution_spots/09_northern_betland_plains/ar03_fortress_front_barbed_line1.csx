@@ -24,7 +24,7 @@ public class MonsterSpotInfo : IMonsterSpotInfo
             LibDdon.Enemy.CreateAuto(EnemyId.Saurian, 35, 0),
             LibDdon.Enemy.CreateAuto(EnemyId.Saurian, 35, 1),
             LibDdon.Enemy.CreateAuto(EnemyId.Saurian, 35, 2),
-            LibDdon.Enemy.CreateAuto(EnemyId.Saurian, 35, 3),
+            LibDdon.Enemy.CreateAuto(EnemyId.Saurian, 35, 4),
         };
 
         AddEnemies(enemies);

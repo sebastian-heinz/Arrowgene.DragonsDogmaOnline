@@ -92,10 +92,12 @@ namespace Arrowgene.Ddon.Database
         bool UpdateCharacterBaseInfo(Character character);
         bool UpdateCharacterMatchingProfile(Character character);
         bool UpdateCharacterArisenProfile(Character character);
-        bool UpdateMyPawnSlot(uint characterId, uint num);
-        bool UpdateRentalPawnSlot(uint characterId, uint num);
+        bool UpdateMyPawnSlot(uint characterId, uint num, DbConnection? connectionIn = null);
+        bool UpdateRentalPawnSlot(uint characterId, uint num, DbConnection? connectionIn = null);
         bool UpdateCharacterBinaryData(uint characterId, byte[] data);
         void CreateItems(DbConnection conn, Character character);
+        void CreateListItems(DbConnection conn, Character character, StorageType storageType, List<(uint ItemId, uint Amount)> itemList); 
+
         CDataCharacterSearchParam SelectCharacterNameById(uint characterId);
         CDataCharacterSearchParam SelectCharacterNameById(
             DbConnection connection,
@@ -120,22 +122,22 @@ namespace Arrowgene.Ddon.Database
             Character searchingCharacter,
             CDataPawnSearchParameter searchParams
         );
-        bool DeletePawn(uint pawnId);
+        bool DeletePawn(uint pawnId, DbConnection? connectionIn = null);
         bool UpdatePawnBaseInfo(Pawn pawn, DbConnection? connectionIn = null);
         uint GetPawnOwnerCharacterId(uint pawnId, DbConnection? connectionIn = null);
         bool ReplacePawnReaction(uint pawnId, CDataPawnReaction pawnReaction, DbConnection? connectionIn = null);
 
         // Pawn Training Status
-        bool ReplacePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
+        bool ReplacePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus, DbConnection? connectionIn = null);
         bool InsertPawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
         bool InsertIfNotExistsPawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
         bool UpdatePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
 
         #region Pawn craft progress
-        bool ReplacePawnCraftProgress(CraftProgress craftProgress);
+        bool ReplacePawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);
         bool InsertPawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);
-        bool InsertIfNotExistsPawnCraftProgress(CraftProgress craftProgress);
-        bool UpdatePawnCraftProgress(CraftProgress craftProgress);
+        bool InsertIfNotExistsPawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);
+        bool UpdatePawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);
         bool DeletePawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, DbConnection? connectionIn = null);
         CraftProgress SelectPawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, DbConnection? connectionIn = null);
         #endregion
@@ -213,7 +215,7 @@ namespace Arrowgene.Ddon.Database
         );
         public void DeleteAllStorageItems(DbConnection connection, uint characterId);
 
-        bool UpdateItemEquipPoints(string itemUID, uint EquipPoints);
+        bool UpdateItemEquipPoints(string itemUID, uint equipPoints, DbConnection? connectionIn = null);
 
         // Equip
         bool InsertEquipItem(
@@ -254,8 +256,8 @@ namespace Arrowgene.Ddon.Database
         bool DeleteEquipJobItem(uint commonId, JobId job, ushort slotNo);
 
         // CustomSkills
-        bool InsertLearnedCustomSkill(uint commonId, CustomSkill skill);
-        bool UpdateLearnedCustomSkill(uint commonId, CustomSkill updatedSkill);
+        bool InsertLearnedCustomSkill(uint commonId, CustomSkill skill, DbConnection? connectionIn = null);
+        bool UpdateLearnedCustomSkill(uint commonId, CustomSkill updatedSkill, DbConnection? connectionIn = null);
         bool InsertEquippedCustomSkill(uint commonId, byte slotNo, CustomSkill skill);
         bool ReplaceEquippedCustomSkill(uint commonId, byte slotNo, CustomSkill skill);
         bool UpdateEquippedCustomSkill(
@@ -268,8 +270,8 @@ namespace Arrowgene.Ddon.Database
         bool DeleteEquippedCustomSkill(uint commonId, JobId job, byte slotNo);
 
         // Abilities
-        bool InsertLearnedAbility(uint commonId, Ability ability);
-        bool UpdateLearnedAbility(uint commonId, Ability ability);
+        bool InsertLearnedAbility(uint commonId, Ability ability, DbConnection? connectionIn = null);
+        bool UpdateLearnedAbility(uint commonId, Ability ability, DbConnection? connectionIn = null);
         bool InsertEquippedAbility(
             uint commonId,
             JobId equipptedToJob,
@@ -393,13 +395,14 @@ namespace Arrowgene.Ddon.Database
             uint elementId,
             uint pageNo,
             uint groupNo,
-            uint indexNo
+            uint indexNo,
+            DbConnection? connectionIn = null
         );
         List<CDataReleaseOrbElement> SelectOrbReleaseElementFromDragonForceAugmentation(
-            uint commonId
+            uint commonId, DbConnection? connectionIn = null
         );
         bool InsertGainExtendParam(uint commonId, CDataOrbGainExtendParam Param);
-        bool UpdateOrbGainExtendParam(uint commonId, CDataOrbGainExtendParam Param);
+        bool UpdateOrbGainExtendParam(uint commonId, CDataOrbGainExtendParam param, DbConnection? connectionIn = null);
         CDataOrbGainExtendParam SelectOrbGainExtendParam(uint commonId, DbConnection? connectionIn = null);
 
         // Bazaar
@@ -633,5 +636,35 @@ namespace Arrowgene.Ddon.Database
         HashSet<uint> GetPartnerPawnPendingRewards(uint characterId, uint pawnId, DbConnection? connectionIn = null);
         bool InsertPartnerPawnPendingReward(uint characterId, uint pawnId, uint rewardLevel, DbConnection? connectionIn = null);
         void DeletePartnerPawnPendingReward(uint characterId, uint pawnId, uint rewardLevel, DbConnection? connectionIn = null);
+
+        // Equipment Recycle
+        bool InsertRecycleEquipmentRecord(uint characterId, byte numAttempts, DbConnection? connectionIn = null);
+        bool UpdateRecycleEquipmentRecord(uint characterId, byte numAttempts, DbConnection? connectionIn = null);
+        bool HasRecycleEquipmentRecord(uint characterId, DbConnection? connectionIn = null);
+        byte GetRecycleEquipmentAttempts(uint characterId, DbConnection? connectionIn = null);
+        void ResetRecyleEquipmentRecords(DbConnection? connectionIn = null);
+        bool UpsertRecycleEquipmentRecord(uint characterId, byte numAttempts, DbConnection? connectionIn = null);
+
+        // Equipment Limit Break
+        bool InsertEquipmentLimitBreakRecord(uint characterId, string itemUID, CDataAddStatusParam statusParam, DbConnection? connectionIn = null);
+        bool UpdateEquipmentLimitBreakRecord(uint characterId, string itemUID, CDataAddStatusParam statusParam, DbConnection? connectionIn = null);
+        bool HasEquipmentLimitBreakRecord(uint characterId, string itemUID, DbConnection? connectionIn = null);
+        bool UpsertEquipmentLimitBreakRecord(uint characterId, string itemUID, CDataAddStatusParam statusParam, DbConnection? connectionIn = null);
+        List<CDataAddStatusParam> GetEquipmentLimitBreakRecord(string itemUID, DbConnection? connectionIn = null);
+
+        // Achievements
+        Dictionary<(AchievementType, uint), uint> SelectAchievementProgress(uint characterId, DbConnection? connectionIn = null);
+        bool UpsertAchievementProgress(uint characterId, AchievementType achievementType, uint achievementParam, uint progress, DbConnection? connectionIn = null);
+        Dictionary<uint, DateTimeOffset> SelectAchievementStatus(uint characterId, DbConnection? connectionIn = null);
+        bool InsertAchievementStatus(uint characterId, AchievementAsset achievement, bool reward = false, DbConnection? connectionIn = null);
+        Dictionary<AchievementCraftTypeParam, HashSet<ItemId>> SelectAchievementUniqueCrafts(uint characterId, DbConnection? connectionIn = null);
+        bool InsertAchievementUniqueCraft(uint characterId, AchievementCraftTypeParam craftType, ItemId itemId, DbConnection? connectionIn = null);
+
+        // Unlockable Items (Recipes, Furniture, Backgrounds)
+        HashSet<(UnlockableItemCategory Category, uint Id)> SelectUnlockedItems(uint characterId, DbConnection? connectionIn = null);
+        bool InsertUnlockedItem(uint characterId, UnlockableItemCategory type, uint itemId, DbConnection? connectionIn = null);
+        Dictionary<ItemId, byte> SelectMyRoomCustomization(uint characterId, DbConnection? connectionIn = null);
+        bool UpsertMyRoomCustomization(uint characterId, byte layoutId, uint itemId, DbConnection? connectionIn = null);
+        bool DeleteMyRoomCustomization(uint characterId, uint itemId, DbConnection? connectionIn = null);
     }
 }

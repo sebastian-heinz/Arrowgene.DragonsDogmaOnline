@@ -11,6 +11,9 @@
         {"type": "MinimumLevel", "Param1": 75},
         {"type": "MainQuestCompleted", "Param1": 20200}
     ],
+    "contents_release": [
+        {"flag_info": "TowerOfIvanos.QuestBoard"}
+    ],
     "rewards": [
         {
             "type": "exp",
@@ -242,7 +245,15 @@
                     "stage_id": {
                         "id": 371
                     },
-                    "event_id": 35
+                    "event_id": 35,
+                    "contents_release": [
+                        {"flag_info": "FaranaPlains.VegasaCorridorSouth"},
+                        {"flag_info": "MorrowForest.VegasaCorridorWest"},
+                        {"flag_info": "KingalCanyon.VegasaCorridorEast"}
+                    ],
+                    "result_commands": [
+                        {"type": "RefreshOmKeyDisp"}
+                    ]
                 },
                 {
                     "type": "DiscoverEnemy",
@@ -343,8 +354,14 @@
                     "type": "Raw",
                     "announce_type": "Update",
                     "checkpoint": true,
+                    "contents_release": [
+                        {"flag_info": "HollowOfBeginnings.HollowOfBeginningsGatheringArea"}
+                    ],
                     "check_commands": [
                         {"type": "IsReleaseWarpPointAnyone", "Param1": 21}
+                    ],
+                    "result_commands": [
+                        {"type": "RefreshOmKeyDisp"}
                     ]
                 },
                 {

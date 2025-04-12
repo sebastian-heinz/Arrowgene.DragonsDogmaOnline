@@ -3,7 +3,10 @@ using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
+using System;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -27,6 +30,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
             EntitySerializer<S2CQuestGetPartyQuestProgressInfoRes> serializer = EntitySerializer.Get<S2CQuestGetPartyQuestProgressInfoRes>();
             S2CQuestGetPartyQuestProgressInfoRes pcap = serializer.Read(GameFull.data_Dump_142);
             pcap.QuestOrderList.RemoveAll(x => x.QuestId < 70000000);
+
+            var leaderClient = client.Party.Leader.Client;
+            if (leaderClient == null)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_LEADER_ABSENCE);
+            }
+            
+            foreach (var quest in pcap.QuestOrderList)
+            {
+                quest.QuestFlagList = leaderClient.Character.GetWorldManageQuestUnlocks((QuestId)quest.QuestId);
+                // TODO: This will probably break everything currently if cleared as all doors in the world will be closed
+                // TODO: Need to go track down all quests
+                // quest.QuestLayoutFlagList = leaderClient.Character.GetWorldManageLayoutUnlocks((QuestId)quest.QuestId);
+            }
 
             // TODO: Do we need to check personal quests here?
             HashSet<uint> activeQuests = new(client.Party.QuestState.GetActiveQuestScheduleIds());

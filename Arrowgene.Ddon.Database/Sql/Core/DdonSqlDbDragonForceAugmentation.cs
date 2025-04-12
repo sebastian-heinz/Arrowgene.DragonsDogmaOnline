@@ -22,49 +22,40 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                                                          $"\"character_common_id\" = @character_common_id AND \"element_id\" = @element_id);";
         private readonly string SqlSelectAllDragonForceAugment = $"SELECT {BuildQueryField(DragonForceAugmentationFields)} FROM \"ddon_dragon_force_augmentation\" WHERE \"character_common_id\" = @character_common_id;";
 
-        public bool InsertIfNotExistsDragonForceAugmentation(uint commonId, uint elementId, uint pageNo, uint groupNo, uint indexNo)
+        public bool InsertIfNotExistsDragonForceAugmentation(uint commonId, uint elementId, uint pageNo, uint groupNo, uint indexNo, DbConnection? connectionIn = null)
         {
-            using TCon connection = OpenNewConnection();
-            return InsertIfNotExistsDragonForceAugmentation(connection, commonId, elementId, pageNo, groupNo, indexNo);
-        }
-
-        public bool InsertIfNotExistsDragonForceAugmentation(TCon conn, uint commonId, uint elementId, uint pageNo, uint groupNo, uint indexNo)
-        {
-            return ExecuteNonQuery(conn, SqlInsertIfNotExistsDragonForceAugment, command =>
+            return ExecuteQuerySafe(connectionIn, connection =>
             {
-                AddParameter(command, "character_common_id", commonId);
-                AddParameter(command, "element_id", elementId);
-                AddParameter(command, "page_no", pageNo);
-                AddParameter(command, "group_no", groupNo);
-                AddParameter(command, "index_no", indexNo);
-            }) == 1;
-        }
-
-        public List<CDataReleaseOrbElement> SelectOrbReleaseElementFromDragonForceAugmentation(uint commonId)
-        {
-            using TCon connection = OpenNewConnection();
-            return SelectOrbReleaseElementFromDragonForceAugmentation(connection, commonId);
-        }
-
-        public List<CDataReleaseOrbElement> SelectOrbReleaseElementFromDragonForceAugmentation(TCon conn, uint commonId)
-        {
-            List<CDataReleaseOrbElement> Results = new List<CDataReleaseOrbElement>();
-
-            ExecuteInTransaction(conn =>
-            {
-                ExecuteReader(conn, SqlSelectAllDragonForceAugment,
-                    command => {
-                        AddParameter(command, "@character_common_id", commonId);
-                    }, reader => {
-                        while (reader.Read())
-                        {
-                            CDataReleaseOrbElement ReleaseOrbElement = ReadReleaseOrbElement(reader);
-                            Results.Add(ReleaseOrbElement);
-                        }
-                    });
+                return ExecuteNonQuery(connection, SqlInsertIfNotExistsDragonForceAugment, command =>
+                {
+                    AddParameter(command, "character_common_id", commonId);
+                    AddParameter(command, "element_id", elementId);
+                    AddParameter(command, "page_no", pageNo);
+                    AddParameter(command, "group_no", groupNo);
+                    AddParameter(command, "index_no", indexNo);
+                }) == 1;
             });
+        }
 
-            return Results;
+        public List<CDataReleaseOrbElement> SelectOrbReleaseElementFromDragonForceAugmentation(uint commonId, DbConnection? connectionIn = null)
+        {
+            return ExecuteQuerySafe(connectionIn, connection =>
+            {
+                List<CDataReleaseOrbElement> results = new List<CDataReleaseOrbElement>();
+
+                ExecuteReader(connection, SqlSelectAllDragonForceAugment,
+                command => {
+                    AddParameter(command, "@character_common_id", commonId);
+                }, reader => {
+                    while (reader.Read())
+                    {
+                        CDataReleaseOrbElement ReleaseOrbElement = ReadReleaseOrbElement(reader);
+                        results.Add(ReleaseOrbElement);
+                    }
+                });
+
+                return results;
+            });
         }
 
         private CDataReleaseOrbElement ReadReleaseOrbElement(TReader reader)

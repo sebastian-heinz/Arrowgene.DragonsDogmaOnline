@@ -14,13 +14,6 @@ using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Quests
 {
-    public class QuestProcessState
-    {
-        public ushort ProcessNo { get; set; }
-        public ushort SequenceNo { get; set; }
-        public ushort BlockNo { get; set; }
-    }
-
     public class QuestDeliveryRecord
     {
         public uint ItemId { get; set; }
@@ -46,7 +39,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public QuestId QuestId { get; set; }
         public uint QuestScheduleId {  get; set; }
         public QuestType QuestType { get; set; }
-        public QuestProgressState State { get; set; }
+        public QuestProgressState State { get; set; } = QuestProgressState.Unknown;
         public uint Step { get; set; }
 
         public Dictionary<ushort, QuestProcessState> ProcessState { get; set; }
@@ -167,12 +160,16 @@ namespace Arrowgene.Ddon.GameServer.Quests
         private List<QuestId> CompletedWorldQuests { get; set; }
         private Dictionary<QuestAreaId, HashSet<uint>> RolledInstanceWorldQuests { get; set; }
 
+        // Deferred Generic Work to be triggered at various points
+        public Dictionary<QuestProgressWorkType, List<QuestProgressWork>> ProgressWork { get; set; }
+
         public QuestStateManager()
         {
             ActiveQuests = new Dictionary<uint, QuestState>();
             QuestLookupTable = new Dictionary<StageLayoutId, HashSet<uint>>();
             CompletedWorldQuests = new List<QuestId>();
             RolledInstanceWorldQuests = new Dictionary<QuestAreaId, HashSet<uint>>();
+            ProgressWork = new Dictionary<QuestProgressWorkType, List<QuestProgressWork>>();
 
             foreach (var areaId in Enum.GetValues<QuestAreaId>())
             {
@@ -185,6 +182,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 {
                     RolledInstanceWorldQuests[areaId].Add(QuestManager.RollQuestForQuestId(questId).QuestScheduleId);
                 }
+            }
+
+            foreach (var progressWorkType in Enum.GetValues<QuestProgressWorkType>())
+            {
+                ProgressWork[progressWorkType] = new List<QuestProgressWork>();
             }
         }
 
@@ -210,6 +212,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     QuestScheduleId = quest.QuestScheduleId,
                     QuestType = quest.QuestType,
                     Step = step,
+                    State = (step > 0) ? QuestProgressState.Accepted : QuestProgressState.Unknown
                 };
 
                 foreach (var stageId in quest.UniqueEnemyGroups)
@@ -246,6 +249,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 {
                     uint storedHunts = (quest.SaveWorkAsStep && step >= 1) ? (step - 1) : 0;
                     ActiveQuests[quest.QuestScheduleId].AddHuntRequest(request, storedHunts);
+                }
+
+                foreach (var workItem in quest.QuestProgressWork)
+                {
+                    ProgressWork[workItem.WorkType].Add(workItem);
                 }
 
                 // Initialize Process State Table
@@ -361,7 +369,15 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         QuestLookupTable[location.StageId].Remove(questScheduleId);
                     }
                 }
+
+                // Remove any unused work scheduled by the quest
+                PurgeWorkForQuest(questScheduleId);
             }
+        }
+
+        public void RemoveQuest(Quest quest)
+        {
+            RemoveQuest(quest.QuestScheduleId);
         }
 
         public void RemoveInactiveWorldQuests()
@@ -604,7 +620,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 client.Enqueue(updateCharacterItemNtc, packets);
             }
 
-            var scaledRewards = quest.ScaledExpRewards();
+            var scaledRewards = quest.BaseExpRewards();
             foreach (var point in scaledRewards)
             {
                 var amount = CalculateTotalPointAmount(server, client, point, quest.QuestType);
@@ -657,7 +673,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             if (!scaledRewards.Where(x => x.Type == PointType.AreaPoints).Any() && (QuestManager.IsWorldQuest(quest) || QuestManager.IsBoardQuest(quest)))
             {
                 var areaId = quest.QuestAreaId > 0 ? quest.QuestAreaId : (QuestAreaId)quest.LightQuestDetail.AreaId;
-                var amount = server.ExpManager.GetAdjustedPointsForQuest(PointType.AreaPoints, server.AreaRankManager.GetAreaPointReward(quest), quest.QuestType);
+                var amount = server.ExpManager.GetAdjustedPointsForQuest(PointType.AreaPoints, AreaRankManager.GetAreaPointReward(quest), quest.QuestType);
                 var areaRankNtcs = server.AreaRankManager.AddAreaPoint(client, areaId, amount, connectionIn);
                 packets.AddRange(areaRankNtcs);
             }
@@ -710,6 +726,56 @@ namespace Arrowgene.Ddon.GameServer.Quests
             party.EnqueueToAll(ntc, packets);
 
             return packets;
+        }
+
+        protected PacketQueue RewardReleasedContent(GameClient client, Quest quest, DbConnection? connectionIn = null)
+        {
+            PacketQueue packets = new();
+
+            // Check for any content released rewards
+            // These generally should onyl be on main story quests
+            // and personal quests
+            if (quest.ContentsRelease.Count > 0)
+            {
+                // TODO: Create DB methods
+                // Server.Database.InsertContentsReleaseId(memberClient.Character.CharacterId, quest.ContentsRelease, connectionIn);
+
+                // Add released contents to the cache
+                client.Character.ContentsReleased.UnionWith(quest.ContentsRelease.Select(x => x.ReleaseId).ToHashSet());
+
+                // Update the player
+                S2CCharacterContentsReleaseElementNtc contentsReleaseElementNotice = new S2CCharacterContentsReleaseElementNtc()
+                {
+                    CharacterReleaseElements = client.Character.GetReleasedContent()
+                };
+                client.Enqueue(contentsReleaseElementNotice, packets);
+            }
+
+            return packets;
+        }
+
+        public List<T> GetProgressWork<T>(QuestProgressWorkType workType)
+        {
+            lock (ActiveQuests)
+            {
+                return ProgressWork[workType].Cast<T>().ToList();
+            }
+        }
+
+        public void PurgeWorkForQuest(uint questScheduleId)
+        {
+            lock (ActiveQuests)
+            {
+                foreach (var progressWorkType in Enum.GetValues<QuestProgressWorkType>())
+                {
+                    ProgressWork[progressWorkType].RemoveAll(x => x.QuestScheduleId == questScheduleId);
+                }
+            }
+        }
+
+        public void PurgeWorkForQuest(Quest quest)
+        {
+            PurgeWorkForQuest(quest.QuestScheduleId);
         }
     }
 
@@ -820,6 +886,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         continue;
                     }
                 }
+
+                // Distribute any released content from the quest to the player
+                packets.AddRange(RewardReleasedContent(memberClient, quest, connectionIn));
 
                 // Check for Item Rewards
                 if (quest.HasRewards())
@@ -988,6 +1057,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         public override PacketQueue DistributeQuestRewards(uint questScheduleId, DbConnection? connectionIn = null)
         {
+            PacketQueue packets = new();
+
             Quest quest = GetQuest(questScheduleId);
             var questState = GetQuestState(quest);
             if (quest.HasRewards())
@@ -996,7 +1067,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
 
             // Check for Exp, Rift and Gold Rewards
-            return SendWalletRewards(Server, Member.Client, quest, connectionIn);
+            packets.AddRange(SendWalletRewards(Server, Member.Client, quest, connectionIn));
+
+            // Check for any content released by completing the quest
+            packets.AddRange(RewardReleasedContent(Member.Client, quest, connectionIn));
+
+            return packets;
         }
 
         public override PacketQueue UpdatePriorityQuestList(GameClient requestingClient, DbConnection? connectionIn = null)

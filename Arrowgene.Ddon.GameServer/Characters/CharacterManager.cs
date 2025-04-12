@@ -1,9 +1,13 @@
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
 
@@ -53,6 +57,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 character.Server = _Server.AssetRepository.ServerList.Where(server => server.Id == _Server.Id).Single().ToCDataGameServerListInfo();
                 character.Equipment = character.Storage.GetCharacterEquipment();
 
+                character.ContentsReleased = GetContentsReleased(character, connectionIn);
+                character.WorldManageUnlocks = GetWorldManageState(character, connectionIn);
+
                 character.ExtendedParams = _Server.Database.SelectOrbGainExtendParam(character.CommonId, connectionIn);
                 if (character.ExtendedParams == null)
                 {
@@ -68,7 +75,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     character.EpitaphRoadState.WeeklyRewardsClaimed = _Server.Database.GetEpitaphClaimedWeeklyRewards(character.CharacterId, connectionIn);
                 }
 
-
                 UpdateCharacterExtendedParams(character);
 
                 if (fetchPawns)
@@ -78,6 +84,70 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 return character;
             });
+        }
+
+        /**
+         * @note It is probably more efficient to have thiese entries in the DB but
+         * the migration tool doesn't currently load quest data, so this is a workaround
+         * to ensure everything works on existing characters.
+         */
+        private HashSet<ContentsRelease> GetContentsReleased(Character character, DbConnection? connectionIn = null)
+        {
+            var contentsReleased = new HashSet<ContentsRelease>();
+            
+            // Generate list of unlocked content
+            foreach (var completedQuest in character.CompletedQuests.Values.Where(x => (x.QuestType == QuestType.Main) || (x.QuestType == QuestType.Tutorial)))
+            {
+                var quest = QuestManager.GetQuestByQuestId(completedQuest.QuestId);
+                if (quest == null)
+                {
+                    continue;
+                }
+                contentsReleased.UnionWith(quest.ContentsRelease.Select(x => x.ReleaseId).ToHashSet());
+            }
+
+            // Find quests being resumed which have contents released mid quest
+            var allQuestsInProgress = _Server.Database.GetQuestProgressByType(character.CommonId, QuestType.All, connectionIn)
+                .Where(x => x.QuestType == QuestType.Main || x.QuestType == QuestType.Tutorial);
+            foreach (var progess in allQuestsInProgress)
+            {
+                var quest = QuestManager.GetQuestByScheduleId(progess.QuestScheduleId);
+                if (quest == null)
+                {
+                    continue;
+                }
+                contentsReleased.UnionWith(quest.GetPartialContentsReleaseList(progess.Step));
+            }
+
+            // TODO: Based on server settings add additional contents unlocked here
+            // TODO: For example, unlock everything, unlock all jobs, etc.
+
+            return contentsReleased;
+        }
+
+        private Dictionary<QuestId, List<QuestFlagInfo>> GetWorldManageState(Character character, DbConnection? connectionIn = null)
+        {
+            var result = new Dictionary<QuestId, List<QuestFlagInfo>>();
+            
+            foreach (var completedQuest in character.CompletedQuests.Values.Where(x => (x.QuestType == QuestType.Main) || (x.QuestType == QuestType.Tutorial)))
+            {
+                var quest = QuestManager.GetQuestByQuestId(completedQuest.QuestId);
+                if (quest == null)
+                {
+                    continue;
+                }
+
+                foreach (var (questId, flagList) in quest.WorldManageUnlocks)
+                {
+                    if (!result.ContainsKey(questId))
+                    {
+                        result[questId] = new List<QuestFlagInfo>();
+                    }
+                    result[questId].AddRange(flagList);
+                }
+            }
+
+            return result;
         }
 
         private void SelectPawns(Character character, DbConnection? connectionIn = null)
@@ -206,14 +276,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public void UpdateCharacterExtendedParamsNtc(GameClient client, CharacterCommon character)
+        public PacketQueue UpdateCharacterExtendedParamsNtc(GameClient client, CharacterCommon character)
         {
             UpdateCharacterExtendedParams(character);
-            NotifyClientOfCharacterStatus(client, character);
+            return NotifyClientOfCharacterStatus(client, character);
         }
 
-        private void NotifyClientOfCharacterStatus(GameClient client, CharacterCommon character)
+        private PacketQueue NotifyClientOfCharacterStatus(GameClient client, CharacterCommon character)
         {
+            PacketQueue queue = new();
 
             if (character is Character)
             {
@@ -229,14 +300,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 if (client.Party != null)
                 {
-                    client.Party.SendToAll(ntc1);
+                    client.Party.EnqueueToAll(ntc1, queue);
                 }
                 else
                 {
-                    client.Send(ntc1);
+                    client.Enqueue(ntc1, queue);
                 }
 
-                client.Send(ntc2);
+                client.Enqueue(ntc2, queue);
             }
             else
             {
@@ -244,20 +315,22 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 if (partyMember == null || partyMember is not PawnPartyMember)
                 {
                     Logger.Error($"Failed to find party member in the list");
-                    return;
+                    return queue;
                 }
 
                 PawnPartyMember pawnPartyMember = (PawnPartyMember)partyMember;
                 if (client.Party != null)
                 {
-                    client.Party.SendToAll(pawnPartyMember.GetS2CContextGetParty_ContextNtc());
+                    client.Party.EnqueueToAll(pawnPartyMember.GetS2CContextGetParty_ContextNtc(), queue);
                 }
                 else
                 {
                     // This should never be true but if it is, why?
-                    client.Send(pawnPartyMember.GetS2CContextGetParty_ContextNtc());
+                    client.Enqueue(pawnPartyMember.GetS2CContextGetParty_ContextNtc(), queue);
                 }
             }
+
+            return queue;
         }
     }
 }

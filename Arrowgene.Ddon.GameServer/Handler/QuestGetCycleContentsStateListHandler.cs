@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -34,6 +35,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             ntc.WorldManageQuestOrderList = pcap.WorldManageQuestOrderList; // Recover paths + change vocation
 
+            // TODO: Eventually populate all flags based player state for q7* quests
+            foreach (var quest in ntc.WorldManageQuestOrderList)
+            {
+                quest.Param.QuestFlagList.Clear();
+                quest.Param.QuestLayoutFlagList.Clear();
+                quest.Param.QuestFlagList = client.Character.GetWorldManageQuestUnlocks((QuestId) quest.Param.QuestId);
+                quest.Param.QuestLayoutFlagList = client.Character.GetWorldManageLayoutUnlocks((QuestId)quest.Param.QuestId);
+            }
+
             ntc.QuestDefine = pcap.QuestDefine; // Recover quest log data to be able to accept quests
             ntc.QuestDefine.OrderMaxNum = Server.GameSettings.GameServerSettings.QuestOrderMax;
             ntc.QuestDefine.RewardBoxMaxNum = Server.GameSettings.GameServerSettings.RewardBoxMax;
@@ -51,9 +61,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ntc.TutorialQuestIdList.Add(new CDataQuestId() { QuestId = (uint)tut.QuestId });
             }
 
-            // Add special quest to handle caution message
-            var customWorldManageQuest = QuestManager.GetQuestByScheduleId(79000001);
-            ntc.WorldManageQuestOrderList.Add(customWorldManageQuest.ToCDataWorldManageQuestOrderList(0));
+            // Add special quests not normally part of DDON
+            foreach (var questId in new List<QuestId>() {QuestId.WorldManageMonsterCaution , QuestId.WorldManageJobTutorial, QuestId.WorldManageDebug})
+            {
+                var customWorldManageQuest = QuestManager.GetQuestByQuestId(questId);
+                ntc.WorldManageQuestOrderList.Add(customWorldManageQuest.ToCDataWorldManageQuestOrderList(0));
+            }
 
             var allQuestsInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All);
             foreach (var questProgress in allQuestsInProgress)
@@ -78,7 +91,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         var lightQuest = quest.ToCDataLightQuestOrderList(questProgress.Step);
                         if (lightQuest.Detail.BoardType == 1 && lightQuest.Detail.GetAp == 0)
                         {
-                            lightQuest.Detail.GetAp = Server.AreaRankManager.GetAreaPointReward(quest);
+                            lightQuest.Detail.GetAp = AreaRankManager.GetAreaPointReward(quest);
                         }
                         ntc.LightQuestOrderList.Add(lightQuest);
                         break;

@@ -14,6 +14,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CQuestGetAdventureGuideQuestNtcRes Handle(GameClient client, C2SQuestGetAdventureGuideQuestNtcReq request)
         {
+            // Bool Has new quest?
             return new S2CQuestGetAdventureGuideQuestNtcRes();
         }
     }

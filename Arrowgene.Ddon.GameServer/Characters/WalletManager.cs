@@ -24,17 +24,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
             Server = server;
             WalletLimits = server.GameSettings.GameServerSettings.WalletLimits;
         }
-        public bool AddToWalletNtc(Client Client, Character Character, WalletType Type, uint Amount,  uint BonusAmount = 0, ItemNoticeType updateType = ItemNoticeType.Default, DbConnection? connectionIn = null)
+
+        public S2CItemUpdateCharacterItemNtc AddToWalletNtc(Client Client, Character Character, WalletType Type, uint Amount,  uint BonusAmount = 0, ItemNoticeType updateType = ItemNoticeType.Default, DbConnection? connectionIn = null)
         {
             CDataUpdateWalletPoint UpdateWalletPoint = AddToWallet(Character, Type, Amount, BonusAmount, connectionIn);
 
-            S2CItemUpdateCharacterItemNtc UpdateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
-            UpdateCharacterItemNtc.UpdateType = updateType;
-            UpdateCharacterItemNtc.UpdateWalletList.Add(UpdateWalletPoint);
+            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
+            updateCharacterItemNtc.UpdateType = updateType;
+            updateCharacterItemNtc.UpdateWalletList.Add(UpdateWalletPoint);
 
-            Client.Send(UpdateCharacterItemNtc);
-
-            return true;
+            return updateCharacterItemNtc;
         }
 
         public CDataUpdateWalletPoint AddToWallet(Character Character, WalletType Type, uint Amount, uint BonusAmount = 0, DbConnection? connectionIn = null)
@@ -58,7 +57,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public CDataUpdateWalletPoint RemoveFromWallet(Character Character, WalletType Type, uint Amount, DbConnection? connectionIn = null)
         {
-            CDataWalletPoint Wallet = Character.WalletPointList.Where(wp => wp.Type == Type).Single();
+            CDataWalletPoint Wallet = Character.WalletPointList.Where(wp => wp.Type == Type).SingleOrDefault()
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_WALLET, $"Invalid wallet type {Type} for character {Character.CharacterId}");
 
             if (Wallet.Value < Amount)
             {
@@ -97,7 +97,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public uint GetWalletAmount(Character Character, WalletType Type)
         {
-            CDataWalletPoint Wallet = Character.WalletPointList.Where(wp => wp.Type == Type).Single();
+            CDataWalletPoint Wallet = Character.WalletPointList.Where(wp => wp.Type == Type).SingleOrDefault()
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_WALLET, $"Invalid wallet type {Type} for character {Character.CharacterId}");
             return Wallet.Value;
         }
 

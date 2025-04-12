@@ -8,7 +8,7 @@
       },
       {
         "Rank": 2,
-        "MinPoint": 100
+        "MinPoint": 0
       },
       {
         "Rank": 3,
@@ -190,7 +190,7 @@
       },
       {
         "Rank": 15,
-        "MinPoint": 60203001
+        "AreaTrial": 60203001
       }
     ]
   },

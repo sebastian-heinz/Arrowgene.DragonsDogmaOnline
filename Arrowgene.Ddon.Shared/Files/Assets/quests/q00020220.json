@@ -261,6 +261,12 @@
                     "groups": [ 0 ],
                     "flags": [
                         {"type": "QstLayout", "action": "Set", "value": 4967, "comment": "Spawns plants and poison mist"}
+                    ],
+                    "contents_release": [
+                        {"flag_info": "HollowOfBeginnings.ValtableHall"}
+                    ],
+                    "result_commands": [
+                        {"type": "RefreshOmKeyDisp"}
                     ]
                 },
                 {
@@ -345,7 +351,8 @@
                     "event_id": 5,
                     "flags": [
                         {"type": "QstLayout", "action": "Clear", "value": 4509, "comment": "Blockade, poison"}
-                    ]
+                    ],
+                    "bgm_stop": true
                 },
                 {
                     "type": "NewTalkToNpc",

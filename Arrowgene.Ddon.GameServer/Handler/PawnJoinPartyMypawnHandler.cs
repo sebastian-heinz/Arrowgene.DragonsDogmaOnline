@@ -8,15 +8,15 @@ using System;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class PawnJoinPartyMypawnHandler : GameRequestPacketHandler<C2SPawnJoinPartyMypawnReq, S2CPawnJoinPartyMypawnRes>
+    public class PawnJoinPartyMyPawnHandler : GameRequestPacketHandler<C2SPawnJoinPartyMyPawnReq, S2CPawnJoinPartyMyPawnRes>
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnJoinPartyMypawnHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnJoinPartyMyPawnHandler));
 
-        public PawnJoinPartyMypawnHandler(DdonGameServer server) : base(server)
+        public PawnJoinPartyMyPawnHandler(DdonGameServer server) : base(server)
         {
         }
 
-        public override S2CPawnJoinPartyMypawnRes Handle(GameClient client, C2SPawnJoinPartyMypawnReq request)
+        public override S2CPawnJoinPartyMyPawnRes Handle(GameClient client, C2SPawnJoinPartyMyPawnReq request)
         {
             Pawn pawn = client.Character.Pawns[request.PawnNumber-1];
             PawnPartyMember partyMember = client.Party.Join(pawn);

@@ -103,6 +103,62 @@ namespace Arrowgene.Ddon.Server.Settings
         private const byte _CraftConsumableProductionTimesMax = 10;
 
         /// <summary>
+        /// Determines the maximum amount of items you can recycle/disassemble at Craig before a reset is required.
+        /// </summary>
+        [DefaultValue(_CraftItemRecycleMax)]
+        public byte CraftItemRecycleMax
+        {
+            set
+            {
+                SetSetting("CraftItemRecycleMax", value);
+            }
+            get
+            {
+                return TryGetSetting("CraftItemRecycleMax", _CraftItemRecycleMax);
+            }
+        }
+        private const byte _CraftItemRecycleMax = 10;
+
+        /// <summary>
+        /// The amount of Golden Gemstones (GG) required to reset the recycle/disassemble count.
+        /// </summary>
+        [DefaultValue(_CraftItemRecycleResetCost)]
+        public byte CraftItemRecycleResetGGCost
+        {
+            set
+            {
+                SetSetting("CraftItemRecycleResetCost", value);
+            }
+            get
+            {
+                return TryGetSetting("CraftItemRecycleResetCost", _CraftItemRecycleResetCost);
+            }
+        }
+        private const byte _CraftItemRecycleResetCost = 1;
+
+        /// <summary>
+        /// Modifier used to skew the randomness during equipment unlimit.
+        /// Bias of 1.0 has a uniform distribution
+        /// Bias of 2.0 has a moderate bias towards lower numbers
+        /// Bias of 3.0 has a high bias towards lower numbers
+        /// Bias of 4.0 has an extreme bias towards lower numbers
+        /// </summary>
+        [DefaultValue(_EquipmentLimitBreakBias)]
+        public double EquipmentLimitBreakBias
+        {
+            set
+            {
+                SetSetting("EquipmentLimitBreakBias", value);
+            }
+            get
+            {
+                return TryGetSetting("EquipmentLimitBreakBias", _EquipmentLimitBreakBias);
+            }
+        }
+        private const double _EquipmentLimitBreakBias = 3.0;
+
+
+        /// <summary>
         /// The number of real world minutes that make up an in-game day.
         /// </summary>
         [DefaultValue(_GameClockTimescale)]
@@ -183,6 +239,98 @@ namespace Arrowgene.Ddon.Server.Settings
         private const uint _LanternBurnTimeInSeconds = 1500;
 
         /// <summary>
+        /// When using the adventure guide, configures the listing level range +/- the value
+        /// of the level of the current job when displaying world quests.
+        /// </summary>
+        [DefaultValue(_AdventureGuideLevelRangeFilter)]
+        public uint AdventureGuideLevelRangeFilter
+        {
+            set
+            {
+                SetSetting("AdventureGuideLevelRangeFilter", value);
+            }
+            get
+            {
+                return TryGetSetting("AdventureGuideLevelRangeFilter", _AdventureGuideLevelRangeFilter);
+            }
+        }
+        private const uint _AdventureGuideLevelRangeFilter = 10;
+
+        /// <summary>
+        /// Configures the maximum amount of quests to display in the adventure guide
+        /// at one time.
+        /// </summary>
+        [DefaultValue(_AdventureGuideMaxQuestList)]
+        public uint AdventureGuideMaxQuestList
+        {
+            set
+            {
+                SetSetting("AdventureGuideMaxQuestList", value);
+            }
+            get
+            {
+                return TryGetSetting("AdventureGuideMaxQuestList", _AdventureGuideMaxQuestList);
+            }
+        }
+        private const uint _AdventureGuideMaxQuestList = 50;
+
+        /// <summary>
+        /// Uses the automatic exp calculation system for all enemies instead of just using the
+        /// ones marked in quest files.
+        /// </summary>
+        [DefaultValue(_EnableAutomaticExpCalculationForAll)]
+        public bool EnableAutomaticExpCalculationForAll
+        {
+            set
+            {
+                SetSetting("EnableAutomaticExpCalculationForAll", value);
+            }
+            get
+            {
+                return TryGetSetting("EnableAutomaticExpCalculationForAll", _EnableAutomaticExpCalculationForAll);
+            }
+        }
+        private const bool _EnableAutomaticExpCalculationForAll = false;
+
+        /// <summary>
+        /// When set to true, if the party leader has the content unlock of "OrbEnemy", random enemies
+        /// will appear as "Blood Orb [name]" each time the instance is reset. The amount of BO will
+        /// be calculated based on the enemy level.
+        /// </summary>
+        [DefaultValue(_EnableRandomizedBoEnemies)]
+        public bool EnableRandomizedBoEnemies
+        {
+            set
+            {
+                SetSetting("EnableRandomizedBoEnemies", value);
+            }
+            get
+            {
+                return TryGetSetting("EnableRandomizedBoEnemies", _EnableRandomizedBoEnemies);
+            }
+        }
+        private const bool _EnableRandomizedBoEnemies = false;
+
+        /// <summary>
+        /// If EnableRandomizedBoEnemies is set to true, this setting configures the chance % that
+        /// an enemy will be upgraded to being a BoEnemy instead of a normal enemy.
+        /// </summary>
+        [DefaultValue(_RandomizedBoEnemyChance)]
+        public double RandomizedBoEnemyChance
+        {
+            set
+            {
+                SetSetting("RandomizedBoEnemyChance", value);
+            }
+            get
+            {
+                return TryGetSetting("RandomizedBoEnemyChance", _RandomizedBoEnemyChance);
+            }
+        }
+        private const double _RandomizedBoEnemyChance = 0.05;
+
+
+        /// <summary>
         /// Maximum amount of play points the client will display in the UI. 
         /// Play points past this point will also trigger a chat log message saying you've reached the cap.
         /// </summary>
@@ -203,6 +351,20 @@ namespace Arrowgene.Ddon.Server.Settings
         /// <summary>
         /// Maximum level for each job. 
         /// Shared with the login server.
+        /// Level caps based on season release
+        /// Season 1.0: 40
+        /// Season 1.1: 45
+        /// Season 1.2: 55
+        /// Season 1.3: 60
+        /// Season 2.0: 65
+        /// Season 2.1: 70
+        /// Season 2.2: 75
+        /// Season 2.3: 80
+        /// Season 3.0: 85
+        /// Season 3.1: 90
+        /// Season 3.2: 95
+        /// Season 3.3: 100
+        /// Season 3.4: 120
         /// </summary>
         [DefaultValue(_JobLevelMax)]
         public uint JobLevelMax
@@ -306,7 +468,7 @@ namespace Arrowgene.Ddon.Server.Settings
             "    {WalletType.HighOrbs, 5000},\n" +
             "    {WalletType.DominionPoints, 999999999},\n" +
             "    {WalletType.AdventurePassPoints, 80},\n" +
-            "    {WalletType.UnknownTickets, 999999999},\n" +
+            "    {WalletType.CustomMadeServiceTickets, 999999999},\n" +
             "    {WalletType.BitterblackMazeResetTicket, 3},\n" +
             "    {WalletType.GoldenDragonMark, 30},\n" +
             "    {WalletType.SilverDragonMark, 150},\n" +
@@ -334,7 +496,7 @@ namespace Arrowgene.Ddon.Server.Settings
                     {WalletType.HighOrbs, 5000},
                     {WalletType.DominionPoints, 999999999},
                     {WalletType.AdventurePassPoints, 80},
-                    {WalletType.UnknownTickets, 999999999},
+                    {WalletType.CustomMadeServiceTickets, 999999999},
                     {WalletType.BitterblackMazeResetTicket, 3},
                     {WalletType.GoldenDragonMark, 30},
                     {WalletType.SilverDragonMark, 150},
@@ -685,6 +847,138 @@ namespace Arrowgene.Ddon.Server.Settings
             }
         }
         private const bool _EnableAreaRankSpotLocks = false;
+
+        /// <summary>
+        /// Configures the chance that various gathering tools can break
+        /// when the player performs a gathering action.
+        /// </summary>
+        [DefaultValue(@"new Dictionary<ItemId,double>
+        {
+            [ItemId.Pickaxe] = 0.3,
+            [ItemId.EnhancedPickaxe] = 0.2,
+            [ItemId.ArtisansPickaxe] = 0.1,
+            [ItemId.LumberKnife] = 0.3,
+            [ItemId.EnhancedLumberKnife] = 0.2,
+            [ItemId.ArtisansLumberKnife] = 0.1,
+            [ItemId.Lockpick] = 0.3,
+            [ItemId.EnhancedLockpick] = 0.2,
+            [ItemId.AllPurposeLockpick] = 0.1,
+        };")]
+        public Dictionary<ItemId,double> ToolBreakChance
+        {
+            set
+            {
+                SetSetting("ToolBreakChance", value);
+            }
+            get
+            {
+                return TryGetSetting("ToolBreakChance", new Dictionary<ItemId,double>
+                {
+                    [ItemId.Pickaxe] = 0.3,
+                    [ItemId.EnhancedPickaxe] = 0.2,
+                    [ItemId.ArtisansPickaxe] = 0.1,
+                    [ItemId.LumberKnife] = 0.3,
+                    [ItemId.EnhancedLumberKnife] = 0.2,
+                    [ItemId.ArtisansLumberKnife] = 0.1,
+                    [ItemId.Lockpick] = 0.3,
+                    [ItemId.EnhancedLockpick] = 0.2,
+                    [ItemId.AllPurposeLockpick] = 0.1,
+                });
+            }
+        }
+
+        /// <summary>
+        /// The maximum number of drop slots in a gather point
+        /// generated by the default drop generator.
+        /// </summary>
+        [DefaultValue(_DefaultGatherDropMaxSlots)]
+        public int DefaultGatherDropMaxSlots
+        {
+            set
+            {
+                SetSetting("DefaultGatherDropMaxSlots", value);
+            }
+            get
+            {
+                return TryGetSetting("DefaultGatherDropMaxSlots", _DefaultGatherDropMaxSlots);
+            }
+        }
+        private const int _DefaultGatherDropMaxSlots = 3;
+
+        /// <summary>
+        /// The maximum number of drops to be generated on a single roll
+        /// when auto generating gathering drops.
+        /// </summary>
+        [DefaultValue(_MaximumDropsPerDefaultGatherRoll)]
+        public int MaximumDropsPerDefaultGatherRoll
+        {
+            set
+            {
+                SetSetting("MaximumDropsPerDefaultGatherRoll", value);
+            }
+            get
+            {
+                return TryGetSetting("MaximumDropsPerDefaultGatherRoll", _MaximumDropsPerDefaultGatherRoll);
+            }
+        }
+        private const int _MaximumDropsPerDefaultGatherRoll = 3;
+
+        /// <summary>
+        /// Controls how punishing the gathering results are.
+        /// A high value is more punishing than a lower value.
+        /// </summary>
+        [DefaultValue(_DefaultGatherDropsRandomBias)]
+        public double DefaultGatherDropsRandomBias
+        {
+            set
+            {
+                SetSetting("DefaultGatherDropsRandomBias", value);
+            }
+            get
+            {
+                return TryGetSetting("DefaultGatherDropsRandomBias", _DefaultGatherDropsRandomBias);
+            }
+        }
+        private const double _DefaultGatherDropsRandomBias = 2.0;
+
+        /// <summary>
+        /// If set to true, enables the server to generate gathering drops
+        /// populated by ddon-tools.
+        /// </summary>
+        [DefaultValue(_EnableToolGatheringDrops)]
+        public bool EnableToolGatheringDrops
+        {
+            set
+            {
+                SetSetting("EnableToolGatheringDrops", value);
+            }
+            get
+            {
+                return TryGetSetting("EnableToolGatheringDrops", _EnableToolGatheringDrops);
+            }
+        }
+        private const bool _EnableToolGatheringDrops = true;
+
+        /// <summary>
+        /// If set to true, enables the automatically generate gathering drops
+        /// based on data scraped from wikis.
+        /// @note Experimental: This feature is still in development and needs
+        ///                     more balance and testing before being enabled
+        ///                     all the time.
+        /// </summary>
+        [DefaultValue(_EnableDefaultGatheringDrops)]
+        public bool EnableDefaultGatheringDrops
+        {
+            set
+            {
+                SetSetting("EnableDefaultGatheringDrops", value);
+            }
+            get
+            {
+                return TryGetSetting("EnableDefaultGatheringDrops", _EnableDefaultGatheringDrops);
+            }
+        }
+        private const bool _EnableDefaultGatheringDrops = false;
 
         /// <summary>
         /// 

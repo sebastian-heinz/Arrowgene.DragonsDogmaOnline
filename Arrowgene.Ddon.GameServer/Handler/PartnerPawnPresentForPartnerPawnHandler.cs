@@ -1,5 +1,4 @@
 using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -28,13 +27,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 foreach (var item in request.ItemUIDList)
                 {
-                    uint itemId = Server.ItemManager.LookupItemByUID(Server, item.ItemUId);
-                    var searchResult = client.Character.Storage.FindItemByUIdInStorage(ItemManager.BothStorageTypes, item.ItemUId);
-                    var itemUpdate = Server.ItemManager.ConsumeItemByUId(Server, client.Character, searchResult.Item1, item.ItemUId, item.Num, connectionIn: connection)
+                    uint itemId = Server.ItemManager.LookupItemByUID(Server, item.ItemUID);
+                    var searchResult = client.Character.Storage.FindItemByUIdInStorage(ItemManager.BothStorageTypes, item.ItemUID);
+                    var itemUpdate = Server.ItemManager.ConsumeItemByUId(Server, client.Character, searchResult.Item1, item.ItemUID, item.Num, connectionIn: connection)
                         ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_QUEST_DONT_HAVE_DELIVERY_ITEM);
 
                     itemUpdateResults.Add(itemUpdate);
-
                     packets.AddRange(Server.PartnerPawnManager.UpdateLikabilityIncreaseAction(client, PartnerPawnAffectionAction.Gift, connection));
                 }
 

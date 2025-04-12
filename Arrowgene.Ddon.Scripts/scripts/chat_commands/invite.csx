@@ -10,7 +10,7 @@ public class ChatCommand : IChatCommand
     public override void Execute(DdonGameServer server, string[] command, GameClient client, ChatMessage message, List<ChatResponse> responses)
     {
         var inviteCharacterHandler = new PartyPartyInviteCharacterHandler(server);
-        var inviteMypawnHandler = new PawnJoinPartyMypawnHandler(server);
+        var inviteMypawnHandler = new PawnJoinPartyMyPawnHandler(server);
 
         if (command.Length == 0)
         {
@@ -60,7 +60,7 @@ public class ChatCommand : IChatCommand
                     responses.Add(ChatResponse.CommandError(client, "The party already contains that pawn."));
                     return;
                 }
-                inviteMypawnHandler.Handle(client, new StructurePacket<C2SPawnJoinPartyMypawnReq>(new C2SPawnJoinPartyMypawnReq()
+                inviteMypawnHandler.Handle(client, new StructurePacket<C2SPawnJoinPartyMyPawnReq>(new C2SPawnJoinPartyMyPawnReq()
                 {
                     PawnNumber = myTuple.pawnNumber
                 }));

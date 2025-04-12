@@ -29,7 +29,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
-                character = client.Character.Pawns.Where(pawn => pawn.PawnId == request.PawnId).Single();
+                Pawn pawn = client.Character.PawnById(request.PawnId, PawnType.Main);
+                character = pawn;
             }
 
             IEnumerable<byte> skillSlots = jobManager.ChangeExSkill(Server.Database, client, character, request.Job, request.SkillId);

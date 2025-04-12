@@ -1,0 +1,23 @@
+UPDATE "ddon_character_job_data" SET ("atk", "def", "m_atk", "m_def") = (30,120,20,83)      WHERE "job" = 1 AND "lv" = 1;
+UPDATE "ddon_character_job_data" SET ("atk", "def", "m_atk", "m_def") = (30,83,20,83)	    WHERE "job" = 2 AND "lv" = 1;
+UPDATE "ddon_character_job_data" SET ("atk", "def", "m_atk", "m_def") = (30,83,20,83)	    WHERE "job" = 3 AND "lv" = 1;
+UPDATE "ddon_character_job_data" SET ("atk", "def", "m_atk", "m_def") = (20,58,30,100)	    WHERE "job" = 4 AND "lv" = 1;
+UPDATE "ddon_character_job_data" SET ("atk", "def", "m_atk", "m_def") = (30,120,30,120)	    WHERE "job" = 5 AND "lv" = 1;
+UPDATE "ddon_character_job_data" SET ("atk", "def", "m_atk", "m_def") = (20,58,30,100)	    WHERE "job" = 6 AND "lv" = 1;
+UPDATE "ddon_character_job_data" SET ("atk", "def", "m_atk", "m_def") = (30,120,20,83)      WHERE "job" = 7 AND "lv" = 1;
+UPDATE "ddon_character_job_data" SET ("atk", "def", "m_atk", "m_def") = (20,58,30,100)		WHERE "job" = 8 AND "lv" = 1;
+UPDATE "ddon_character_job_data" SET ("atk", "def", "m_atk", "m_def") = (30,100,30,100)	    WHERE "job" = 9 AND "lv" = 1;
+UPDATE "ddon_character_job_data" SET ("atk", "def", "m_atk", "m_def") = (30,83,30,83)		WHERE "job" = 10 AND "lv" = 1;
+UPDATE "ddon_character_job_data" SET ("atk", "def", "m_atk", "m_def") = (30,83,30,83)       WHERE "job" = 11 AND "lv" = 1;
+
+UPDATE "ddon_character_job_data" SET ("strength", "down_power", "shake_power", "stun_power", "consitution") = (25,50,50,0,21)       WHERE "job" = 1;
+UPDATE "ddon_character_job_data" SET ("strength", "down_power", "shake_power", "stun_power", "consitution") = (10,50,50,0,18)		WHERE "job" = 2;
+UPDATE "ddon_character_job_data" SET ("strength", "down_power", "shake_power", "stun_power", "consitution") = (25,50,50,0,9)		WHERE "job" = 3;
+UPDATE "ddon_character_job_data" SET ("strength", "down_power", "shake_power", "stun_power", "consitution") = (18,50,50,0,9)		WHERE "job" = 4;
+UPDATE "ddon_character_job_data" SET ("strength", "down_power", "shake_power", "stun_power", "consitution") = (30,50,50,0,30)	    WHERE "job" = 5;
+UPDATE "ddon_character_job_data" SET ("strength", "down_power", "shake_power", "stun_power", "consitution") = (30,50,50,0,9)		WHERE "job" = 6;
+UPDATE "ddon_character_job_data" SET ("strength", "down_power", "shake_power", "stun_power", "consitution") = (35,50,50,0,24)	    WHERE "job" = 7;
+UPDATE "ddon_character_job_data" SET ("strength", "down_power", "shake_power", "stun_power", "consitution") = (18,50,50,0,9)		WHERE "job" = 8;
+UPDATE "ddon_character_job_data" SET ("strength", "down_power", "shake_power", "stun_power", "consitution") = (25,50,50,0,27)	    WHERE "job" = 9;
+UPDATE "ddon_character_job_data" SET ("strength", "down_power", "shake_power", "stun_power", "consitution") = (25,50,50,0,18)		WHERE "job" = 10;
+UPDATE "ddon_character_job_data" SET ("strength", "down_power", "shake_power", "stun_power", "consitution") = (25,50,50,0,21)		WHERE "job" = 11;

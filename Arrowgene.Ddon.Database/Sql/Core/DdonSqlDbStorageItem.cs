@@ -178,16 +178,16 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             });
         }
 
-        public bool UpdateItemEquipPoints(string uid, uint equipPoints)
+        public bool UpdateItemEquipPoints(string uid, uint equipPoints, DbConnection? connectionIn = null)
         {
-            using (TCon connection = OpenNewConnection())
+            return ExecuteQuerySafe(connectionIn, connection =>
             {
                 return ExecuteNonQuery(connection, SqlUpdateEquipPoints, command =>
                 {
                     AddParameter(command, "item_uid", uid);
                     AddParameter(command, "equip_points", equipPoints);
                 }) == 1;
-            }
+            });
         }
     }
 }

@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -14,8 +15,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(InstanceGetGatheringItemListHandler));
 
-        // TODO: Different chances for each gathering item type
-        private static readonly double BREAK_CHANCE = 0.1;
+        private static readonly Dictionary<ItemId, double> BreakChance = new Dictionary<ItemId, double>()
+        {
+
+        };
 
         public InstanceGetGatheringItemListHandler(DdonGameServer server) : base(server)
         {
@@ -23,17 +26,54 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CInstanceGetGatheringItemListRes Handle(GameClient client, C2SInstanceGetGatheringItemListReq request)
         {
-            bool isGatheringItemBreak = false;
+            PacketQueue queue = new();
+
             var (isNew, gatheringItems) = client.InstanceGatheringItemManager.FetchOrGenerate(request.LayoutId, request.PosId);
-            if(isNew && request.GatheringItemUId.Any() && Random.Shared.NextDouble() < BREAK_CHANCE)
+
+            bool isGatheringItemBreak = false;
+            Server.Database.ExecuteInTransaction(connection =>
             {
-                isGatheringItemBreak = true;
+                if (isNew && request.GatheringItemUId.Any())
+                {
+                    var gatheringItem = Server.ItemManager.LookupInfoByUID(Server, request.GatheringItemUId, connection);
+                    switch ((ItemId)gatheringItem.ItemId)
+                    {
+                        case ItemId.Pickaxe:
+                        case ItemId.ArtisansPickaxe:
+                        case ItemId.EnhancedPickaxe:
+                            queue.AddRange(Server.AchievementManager.HandleCollect(client, AchievementCollectParam.Ore, connection));
+                            break;
+                        case ItemId.Lockpick:
+                        case ItemId.AllPurposeLockpick:
+                        case ItemId.EnhancedLockpick:
+                            queue.AddRange(Server.AchievementManager.HandleCollect(client, AchievementCollectParam.Chest, connection));
+                            break;
+                        case ItemId.LumberKnife:
+                        case ItemId.ArtisansLumberKnife:
+                        case ItemId.EnhancedLumberKnife:
+                            queue.AddRange(Server.AchievementManager.HandleCollect(client, AchievementCollectParam.Wood, connection));
+                            break;
+                    }
 
-                S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
-                ntc.UpdateItemList.AddRange(Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.ItemBagStorageTypes, request.GatheringItemUId, 1));
-                client.Send(ntc);
-            }
+                    double breakChance = 0.3; // Set the default break chance in case an item is missing
+                    var itemId = gatheringItem.ItemId;
+                    if (Server.GameSettings.GameServerSettings.ToolBreakChance.ContainsKey((ItemId)itemId))
+                    {
+                        breakChance = Server.GameSettings.GameServerSettings.ToolBreakChance[(ItemId)itemId];
+                    }
 
+                    if (Random.Shared.NextDouble() < breakChance)
+                    {
+                        isGatheringItemBreak = true;
+
+                        S2CItemUpdateCharacterItemNtc ntc = new S2CItemUpdateCharacterItemNtc();
+                        ntc.UpdateItemList.AddRange(Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.ItemBagStorageTypes, request.GatheringItemUId, 1, connection));
+                        client.Enqueue(ntc, queue);
+                    }
+                }
+            });
+
+            queue.Send();
             S2CInstanceGetGatheringItemListRes res = new()
             {
                 LayoutId = request.LayoutId,

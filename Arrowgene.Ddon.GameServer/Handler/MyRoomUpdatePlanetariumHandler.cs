@@ -8,17 +8,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(MyRoomUpdatePlanetariumHandler));
 
+        /// <summary>
+        /// Fake LayoutId used to store the currently active planetarium in the database.
+        /// </summary>
+        public static readonly byte MYROOM_PLANETARIUM_LAYOUTNO = 201;
+
         public MyRoomUpdatePlanetariumHandler(DdonGameServer server) : base(server)
         {
         }
 
         public override S2CMyRoomUpdatePlanetariumRes Handle(GameClient client, C2SMyRoomUpdatePlanetariumReq request)
         {
-            S2CMyRoomUpdatePlanetariumRes res = new S2CMyRoomUpdatePlanetariumRes();
-
-            // TODO: similar to BGM this might have to be returned as part of furniture list 
+            Server.Database.UpsertMyRoomCustomization(client.Character.CharacterId, MYROOM_PLANETARIUM_LAYOUTNO, request.PlanetariumId); 
             
-            return res;
+            return new();
         }
     }
 }

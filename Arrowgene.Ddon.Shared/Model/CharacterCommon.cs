@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
@@ -52,6 +53,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public Dictionary<JobId, List<Ability?>> EquippedAbilitiesDictionary { get; set; }
         public OnlineStatus OnlineStatus { get; set; }
         public CDataOrbGainExtendParam ExtendedParams { get; set; }
+        public List<CDataReleaseOrbElement> OrbRelease { get; set; }
 
         /// TODO combine into a location class ?
         public StageLayoutId Stage { get; set; }

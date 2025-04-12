@@ -8,17 +8,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(MyRoomMyRoomBgmUpdateHandler));
 
+        /// <summary>
+        /// Fake LayoutId used to store the currently active BGM in the database.
+        /// </summary>
+        public static readonly byte MYROOM_BGM_LAYOUTNO = 200;
+
         public MyRoomMyRoomBgmUpdateHandler(DdonGameServer server) : base(server)
         {
         }
 
         public override S2CMyRoomMyRoomBgmUpdateRes Handle(GameClient client, C2SMyRoomMyRoomBgmUpdateReq request)
         {
-            S2CMyRoomMyRoomBgmUpdateRes res = new S2CMyRoomMyRoomBgmUpdateRes();
+            Server.Database.UpsertMyRoomCustomization(client.Character.CharacterId, MYROOM_BGM_LAYOUTNO, request.BgmAcquirementNo);
 
-            // TODO: maybe store so it's "remembered" for next time when FurnitureList returns BGM 
-
-            return res;
+            return new();
         }
     }
 }

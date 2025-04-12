@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Arrowgene.Ddon.Shared.Model.Quest
 {
     public enum QuestOrderConditionType : uint
@@ -17,7 +11,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         MainQuestCompleted = 6, // Param01 = QuestId
         ClearPersonalQuest = 7, // Param01 = QuestId
         ClearExtremeMission = 8, // Param01 = QuestId
-        AreaRank = 9, // Param01 = RequiredRank
+        AreaRank = 9, // Param01 = AreaId, Param02 = RequiredRank
         SoloWithPawns = 10,
         ArisenTactics = 11, // Arisen Tactics trial from Renton in the white dragon temple?
         PrepareEquipment = 12, // How to prepare adequate equipment from iris

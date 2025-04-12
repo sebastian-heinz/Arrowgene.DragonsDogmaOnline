@@ -154,6 +154,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                                         }
                                         });
 
+                                    using TCon connection3 = OpenNewConnection();
+                                    item.AddStatusParamList = GetEquipmentLimitBreakRecord(item.UId, connection3);
+
                                     common.EquipmentTemplate.SetEquipItem(item, job, equipType, equipSlot);
                                 }
                             });
@@ -220,9 +223,16 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                     {
                         uint skillId = GetUInt32(reader, "skill_id");
                         JobId job = (JobId) GetByte(reader, "job");
-                        CustomSkill skill = common.LearnedCustomSkills.Where(x => x.Job == job && x.SkillId == skillId).Single();
-
                         byte slotNo = GetByte(reader, "slot_no");
+
+                        CustomSkill? skill = common.LearnedCustomSkills.Where(x => x.Job == job && x.SkillId == skillId).SingleOrDefault();
+
+                        if (skill is null)
+                        {
+                            Logger.Error($"Invalid equipped custom skill {skillId} in slot {slotNo} for character {common.CommonId}; skipping.");
+                            continue;
+                        }
+
                         common.EquippedCustomSkillsDictionary[job][slotNo-1] = skill;
                     }
                 });
@@ -237,8 +247,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         common.LearnedAbilities.Add(ReadLearnedAbility(reader));
                     }
                 });
-
-
             ExecuteReader(conn, SqlSelectEquippedAbilities,
                 command => { AddParameter(command, "@character_common_id", common.CommonId); },
                 reader =>
@@ -248,12 +256,21 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         uint abilityId = GetUInt32(reader, "ability_id");
                         JobId job = (JobId) GetByte(reader, "job");
                         JobId equippedToJob = (JobId) GetByte(reader, "equipped_to_job");
-                        Ability aug = common.LearnedAbilities.Where(x => x.Job == job && x.AbilityId == abilityId).Single();
-
                         byte slotNo = GetByte(reader, "slot_no");
+
+                        Ability? aug = common.LearnedAbilities.Where(x => x.Job == job && x.AbilityId == abilityId).SingleOrDefault();
+
+                        if (aug is null)
+                        {
+                            Logger.Error($"Invalid equipped ability {abilityId} in slot {slotNo} for character {common.CommonId}; skipping.");
+                            continue;
+                        }
+
                         common.EquippedAbilitiesDictionary[equippedToJob][slotNo-1] = aug;
                     }
                 });
+
+            common.OrbRelease = SelectOrbReleaseElementFromDragonForceAugmentation(common.CommonId, conn);
         }
 
         private void StoreCharacterCommonData(TCon conn, CharacterCommon common)

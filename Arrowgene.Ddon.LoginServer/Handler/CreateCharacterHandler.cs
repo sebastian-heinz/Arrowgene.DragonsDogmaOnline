@@ -137,7 +137,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                 GainMagicAttack = ActiveJobPreset.GainMagicAttack,
                 GainMagicDefense = ActiveJobPreset.GainMagicDefense
             };
-            character.CharacterJobDataList = Server.AssetRepository.ArisenAsset.Select(arisenPreset => new CDataCharacterJobData {
+            character.CharacterJobDataList = Server.AssetRepository.ArisenAsset.Where(x => x.Job == character.Job).Select(arisenPreset => new CDataCharacterJobData {
                     Job = arisenPreset.Job,
                     Exp = arisenPreset.Exp,
                     JobPoint = arisenPreset.JobPoint,
@@ -489,7 +489,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     Value = 0
                 },
                 new CDataWalletPoint() {
-                    Type = WalletType.UnknownTickets,
+                    Type = WalletType.CustomMadeServiceTickets,
                     Value = 0
                 },
                 new CDataWalletPoint() {
@@ -511,6 +511,16 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             };
             character.FavWarpSlotNum = Server.GameSetting.GameServerSettings.DefaultWarpFavorites;
             character.MaxBazaarExhibits = Server.GameSetting.GameServerSettings.DefaultMaxBazaarExhibits;
+
+            // Unlock starting abilities
+            foreach (JobId job in  Enum.GetValues(typeof(JobId)))
+            {
+                var startingSkill = SkillData.AllSkills.Where(x => x.Job == job && x.Params.FirstOrDefault()?.RequireJobLevel == 0).FirstOrDefault();
+                if (startingSkill != null && !character.LearnedCustomSkills.Where(x => (x.Job == job) && (x.SkillId == startingSkill.SkillNo)).Any())
+                {
+                    character.LearnedCustomSkills.Add(new() { Job = job, SkillId = startingSkill.SkillNo, SkillLv = 1 });
+                }
+            }
 
             // Add starting storage items
             foreach (var tuple in Server.AssetRepository.StorageItemAsset)

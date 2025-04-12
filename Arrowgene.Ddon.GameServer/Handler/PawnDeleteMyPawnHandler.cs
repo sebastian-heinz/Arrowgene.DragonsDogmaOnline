@@ -1,9 +1,8 @@
-using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -19,45 +18,64 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CPawnDeleteMyPawnRes res = new S2CPawnDeleteMyPawnRes();
             int pawnIndex = request.SlotNo - 1;
-            Pawn pawn = client.Character.Pawns[pawnIndex];
-            Equipment pawnEquipment = client.Character.Storage.GetPawnEquipment(pawnIndex);
-            List<Item> pawnStorageItems = new List<Item>(pawnEquipment.GetItems(EquipType.Performance).ToArray());
-            pawnStorageItems.AddRange(pawnEquipment.GetItems(EquipType.Visual).ToArray());
 
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc
             {
                 UpdateType = ItemNoticeType.DeletePawn
             };
-            List<CDataItemUpdateResult> updateItems = new List<CDataItemUpdateResult>();
-            foreach (Item storageItem in pawnStorageItems)
+            Server.Database.ExecuteInTransaction(connection =>
             {
-                if (storageItem == null)
+                Pawn pawn = client.Character.Pawns[pawnIndex];
+                Equipment pawnEquipment = client.Character.Storage.GetPawnEquipment(pawnIndex);
+                List<Item> pawnStorageItems = new List<Item>(pawnEquipment.GetItems(EquipType.Performance).ToArray());
+                pawnStorageItems.AddRange(pawnEquipment.GetItems(EquipType.Visual).ToArray());
+
+                foreach (Item storageItem in pawnStorageItems)
                 {
-                    continue;
+                    if (storageItem == null)
+                    {
+                        continue;
+                    }
+
+                    // UI indicates that holding a locked item should prevent pawn deletion.
+                    if (storageItem.SafetySetting > 0)
+                    {
+                        throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_SAFETY_SETTING);
+                    }
+
+                    if (request.IsKeepEquip)
+                    {
+                        updateCharacterItemNtc.UpdateItemList.AddRange(Server.ItemManager.MoveItem(Server, client.Character, pawn.Equipment.Storage, storageItem.UId, 1,
+                            client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0, connection));
+                    }
+                    else
+                    {
+                        updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.ConsumeItemByUId(Server, client.Character, StorageType.PawnEquipment, storageItem.UId, 1, connection));
+                    }
                 }
 
-                // UI indicates that holding a locked item should prevent pawn deletion.
-                if (storageItem.SafetySetting > 0)
+                // Later pawns in the list have to have their gear shuffled down to accomodate.
+                // Or be lazy and just throw them all into the item post.
+                // TODO: Stop being lazy and actually put them in their proper equip slots.
+                for (int nextIndex = pawnIndex + 1; nextIndex < client.Character.Pawns.Count; nextIndex++)
                 {
-                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_SAFETY_SETTING);
+                    Pawn nextPawn = client.Character.Pawns[nextIndex];
+                    Equipment nextEquipment = client.Character.Storage.GetPawnEquipment(nextIndex);
+                    List<Item> nextStorageItems = new List<Item>(nextEquipment.GetItems(EquipType.Performance).ToArray());
+                    nextStorageItems.AddRange(nextEquipment.GetItems(EquipType.Visual).ToArray());
+
+                    foreach (Item nextItem in nextStorageItems)
+                    {
+                        updateCharacterItemNtc.UpdateItemList.AddRange(Server.ItemManager.MoveItem(Server, client.Character, nextPawn.Equipment.Storage, nextItem.UId, 1,
+                            client.Character.Storage.GetStorage(StorageType.ItemPost), 0, connection));
+                    }
                 }
 
-                if (request.IsKeepEquip)
-                {
-                    updateItems.AddRange(Server.ItemManager.MoveItem(Server, client.Character, pawn.Equipment.Storage, storageItem.UId, 1,
-                        client.Character.Storage.GetStorage(StorageType.StorageBoxNormal), 0));
-                }
-                else
-                {
-                    updateItems.Add(Server.ItemManager.ConsumeItemByUId(Server, client.Character, StorageType.PawnEquipment, storageItem.UId, 1));
-                }
-            }
+                client.Character.Pawns.Remove(pawn);
+                Server.Database.DeletePawn(pawn.PawnId, connection);
+            });
 
-            updateCharacterItemNtc.UpdateItemList.AddRange(updateItems);
             client.Send(updateCharacterItemNtc);
-
-            client.Character.Pawns.Remove(pawn);
-            Server.Database.DeletePawn(pawn.PawnId);
 
             return res;
         }

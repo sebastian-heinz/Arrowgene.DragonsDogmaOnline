@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -11,7 +12,31 @@ namespace Arrowgene.Ddon.GameServer.Handler
     public class BattleContentContentResetHandler : GameRequestPacketHandler<C2SBattleContentContentResetReq, S2CBattleContentContentResetRes>
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(BattleContentContentResetHandler));
-
+        
+        //Helper function to get the list of items to send to the client after a reset
+        private List<CDataItemUpdateResult> GetRefreshInventoryList(Character character, StorageType storageType) 
+        {
+            List<CDataItemUpdateResult> result = new List<CDataItemUpdateResult>();
+            for (int i = 0; i < character.Storage.GetStorage(storageType).Items.Count; i++) 
+            {
+                ushort slotNo = (ushort)(i + 1);
+                var storageItem = character.Storage.GetStorage(storageType).GetItem(slotNo);
+                if(storageItem != null) 
+                {
+                    result.Add(Server.ItemManager.CreateItemUpdateResult(null, storageItem.Item1, storageType, slotNo, storageItem.Item2, storageItem.Item2));
+                }
+                else
+                 {
+                    Item item = new Item()
+                    {
+                        ItemId = 0,
+                        UId = ""
+                    };
+                    result.Add(Server.ItemManager.CreateItemUpdateResult(null, item, storageType, slotNo, 0, 0));
+                }
+            }
+            return result;
+        }
         public BattleContentContentResetHandler(DdonGameServer server) : base(server)
         {
         }
@@ -32,8 +57,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 // Recreate starting items for player
                 Server.Database.CreateItems(connection, client.Character);
+
+                // Add starter job items for Bitterblack Maze characters
+                if(client.Character.GameMode == GameMode.BitterblackMaze) 
+                {
+                    Server.Database.CreateListItems(connection, client.Character, StorageType.ItemBagJob, Server.AssetRepository.BitterblackMazeAsset.GenerateStarterJobItems());
+                }
             });
 
+            //job items added for Bitterblack Maze needs to be updated to the Client
+            updateItemList.AddRange(GetRefreshInventoryList(client.Character, StorageType.ItemBagJob));
+            
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
             {
                 UpdateType = ItemNoticeType.SwitchingStorage,

@@ -122,10 +122,9 @@ namespace Arrowgene.Ddon.Client
             byte[] magicTagBytes = r.ReadBytes(4);
             string magicTag = Encoding.UTF8.GetString(magicTagBytes);
             ushort magicId = r.ReadUInt16();
-            if (magicTag != "ARCC" || magicId != 0x07)
+            if ((magicTag != "ARC\0" && magicTag != "ARCC") || magicId != 0x07)
             {
-                Logger.Error("Invalid .arc File");
-                return indices;
+                throw new Exception($"Invalid .arc File. Invalid MagicTag ({magicTag}) or MagicId ({magicId})");
             }
 
             int entries = r.ReadUInt16();
@@ -133,7 +132,7 @@ namespace Arrowgene.Ddon.Client
             {
                 uint indexOffset = (uint)stream.Position;
                 byte[] indexData = r.ReadBytes(FileIndexSize);
-                FileIndex index = DeserializeFileIndex(indexData, indexOffset);
+                FileIndex index = DeserializeFileIndex(IsCypheredArc(magicTag), indexData, indexOffset);
                 if (search.Match(index))
                 {
                     indices.Add(index);
@@ -162,7 +161,7 @@ namespace Arrowgene.Ddon.Client
                     continue;
                 }
 
-                fileData = DeserializeFileData(fileData);
+                fileData = DeserializeFileData(index.IsCyphered, fileData);
                 if (fileData.Length != index.Size)
                 {
                     Logger.Error(
@@ -182,6 +181,11 @@ namespace Arrowgene.Ddon.Client
         public static FileIndexSearch Search()
         {
             return new FileIndexSearch();
+        }
+
+        public static bool IsCypheredArc(string MagicTag)
+        {
+            return MagicTag[3] == 'C';
         }
 
         private readonly List<ArcFile> _files;
@@ -340,11 +344,12 @@ namespace Arrowgene.Ddon.Client
             byte[] magicTag = buffer.ReadBytes(4);
             MagicTag = Encoding.UTF8.GetString(magicTag);
             MagicId = ReadUInt16(buffer);
-            if (MagicTag != "ARCC" || MagicId != 0x07)
+            if ((MagicTag != "ARC\0" && MagicTag != "ARCC") || MagicId != 0x07)
             {
-                Logger.Error("Invalid .arc File");
-                return;
+                throw new Exception($"Invalid .arc File. Invalid MagicTag ({MagicTag}) or MagicId ({MagicId})");
             }
+            
+            bool cypheredArc = IsCypheredArc(MagicTag);
 
             int entries = ReadInt16(buffer);
             List<FileIndex> indices = new List<FileIndex>();
@@ -352,7 +357,7 @@ namespace Arrowgene.Ddon.Client
             {
                 uint indexOffset = (uint)buffer.Position;
                 byte[] indexData = buffer.ReadBytes(FileIndexSize);
-                FileIndex index = DeserializeFileIndex(indexData, indexOffset);
+                FileIndex index = DeserializeFileIndex(cypheredArc, indexData, indexOffset);
                 indices.Add(index);
             }
 
@@ -360,7 +365,7 @@ namespace Arrowgene.Ddon.Client
             {
                 byte[] fileData = buffer.GetBytes((int)fileIndex.Offset, (int)fileIndex.CompressedSize);
 
-                fileData = DeserializeFileData(fileData);
+                fileData = DeserializeFileData(cypheredArc, fileData);
                 if (fileData.Length != fileIndex.Size)
                 {
                     Logger.Error(
@@ -428,15 +433,23 @@ namespace Arrowgene.Ddon.Client
             fileIndexBuffer.WriteUInt32(flags);
             fileIndexBuffer.WriteUInt32(fileIndex.Offset);
             byte[] buffer = fileIndexBuffer.GetAllBytes();
-            buffer = BlowFish.Encrypt_ECB(buffer);
+            if (fileIndex.IsCyphered)
+            {
+                buffer = BlowFish.Encrypt_ECB(buffer);
+            }
             return buffer;
         }
 
-        private static FileIndex DeserializeFileIndex(byte[] fileIndexData, uint indexOffset = 0)
+        private static FileIndex DeserializeFileIndex(bool cypheredArc, byte[] fileIndexData, uint indexOffset = 0)
         {
             FileIndex fileIndex = new FileIndex();
+            fileIndex.IsCyphered = cypheredArc;
             fileIndex.IndexOffset = indexOffset;
-            byte[] entry = BlowFish.Decrypt_ECB(fileIndexData);
+            byte[] entry = fileIndexData;
+            if (cypheredArc)
+            {
+                entry = BlowFish.Decrypt_ECB(entry);
+            }
             IBuffer entryBuffer = new StreamBuffer(entry);
             entryBuffer.Position = 0;
             fileIndex.ArcPath = entryBuffer.ReadFixedString(FileNameSize);
@@ -475,16 +488,22 @@ namespace Arrowgene.Ddon.Client
             byte[] copy = new byte[dataLen];
             Buffer.BlockCopy(fileData, 0, copy, 0, dataLen);
             copy = Compress(copy, (int)compression);
-            copy = BlowFish.Encrypt_ECB(copy);
+            if(IsCypheredArc(MagicTag))
+            {
+                copy = BlowFish.Encrypt_ECB(copy);
+            }
             return copy;
         }
 
-        private static byte[] DeserializeFileData(byte[] fileData)
+        private static byte[] DeserializeFileData(bool cypheredArc, byte[] fileData)
         {
             int dataLen = fileData.Length;
             byte[] copy = new byte[dataLen];
             Buffer.BlockCopy(fileData, 0, copy, 0, dataLen);
-            copy = BlowFish.Decrypt_ECB(copy);
+            if (cypheredArc)
+            {
+                copy = BlowFish.Decrypt_ECB(copy);
+            }
             copy = Decompress(copy);
             return copy;
         }
@@ -699,6 +718,7 @@ namespace Arrowgene.Ddon.Client
 
         public class FileIndex
         {
+            public bool IsCyphered { get; set; }
             public uint IndexOffset { get; set; }
             public string Name { get; set; }
             public string Directory { get; set; }

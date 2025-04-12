@@ -38,6 +38,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var bbmProgress = client.Character.BbmProgress;
             var walletPointList = client.Character.WalletPointList;
             var warpPointList = client.Character.ReleasedWarpPoints;
+            var clanId = client.Character.ClanId;
+            var clanName = client.Character.ClanName;
+            var achievements = (client.Character.AchievementStatus, client.Character.AchievementProgress, client.Character.AchievementUniqueCrafts);
 
             var serverInfo = client.Character.Server;
             if (client.GameMode == GameMode.Normal)
@@ -73,6 +76,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Character.WalletPointList = walletPointList;
             client.Character.ReleasedWarpPoints = warpPointList;
             client.Character.OnlineStatus = OnlineStatus.Online;
+            client.Character.ClanId = clanId;
+            client.Character.ClanName = clanName;
+            client.Character.AchievementStatus = achievements.Item1;
+            client.Character.AchievementProgress = achievements.Item2;
+            client.Character.AchievementUniqueCrafts = achievements.Item3;
 
             S2CCharacterSwitchGameModeNtc ntc = new S2CCharacterSwitchGameModeNtc()
             {
@@ -287,7 +295,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             )).ToDictionary(tuple => tuple.Item1, tuple => tuple.Item2);
 
             // In BBM, all custom skills are already learned so add them
-            bbmCharacter.LearnedCustomSkills = SkillGetAcquirableSkillListHandler.AllSkills.Select(x => new CustomSkill()
+            bbmCharacter.LearnedCustomSkills = SkillData.AllSkills.Select(x => new CustomSkill()
             {
                 Job = x.Job,
                 SkillId = x.SkillNo,
@@ -349,7 +357,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             )).ToDictionary(tuple => tuple.Item1, tuple => tuple.Item2);
 
             // In BBM, all abilities are already learned so add them
-            bbmCharacter.LearnedAbilities = SkillGetAcquirableAbilityListHandler.AllAbilities.Select(x => new Ability()
+            bbmCharacter.LearnedAbilities = SkillData.AllAbilities.Select(x => new Ability()
             {
                 Job = x.Job,
                 AbilityId = x.AbilityNo,
@@ -405,7 +413,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Value = 0
                 },
                 new CDataWalletPoint() {
-                    Type = WalletType.UnknownTickets,
+                    Type = WalletType.CustomMadeServiceTickets,
                     Value = 0
                 },
                 new CDataWalletPoint() {

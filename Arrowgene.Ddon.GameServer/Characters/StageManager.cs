@@ -312,5 +312,35 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             return IsLegacyEpitaphHubArea(stageId.Id);
         }
+
+        private static readonly HashSet<uint> OverworldAreas = new HashSet<StageInfo>
+        {
+            Stage.Lestania,
+            Stage.BloodbaneIsle0,
+            Stage.BloodbaneIsle1,
+            Stage.FaranaPlains0,
+            Stage.FaranaPlains1,
+            Stage.ElanWaterGrove,
+            Stage.KingalCanyon,
+            Stage.MorrowForest,
+            Stage.RathniteFoothills,
+            Stage.FeryanaWilderness,
+            Stage.MegadosysPlateau,
+            Stage.UrtecaMountains
+        }.Select(x => x.StageId).ToHashSet();
+
+        public static bool IsDungeon(uint stageId)
+        {
+            if (SafeStageIds.Contains(stageId) || OverworldAreas.Contains(stageId))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static bool IsDungeon(StageLayoutId stageId)
+        {
+            return IsDungeon(stageId.Id);
+        }
     }
 }
