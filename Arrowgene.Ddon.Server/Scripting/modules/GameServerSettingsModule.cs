@@ -28,9 +28,9 @@ namespace Arrowgene.Ddon.Server.Scripting.modules
 
         public string TemplatesDirectory {get; private set;}
 
-        public GameServerSettingsModule()
+        public GameServerSettingsModule(string scriptsRoot)
         {
-            TemplatesDirectory = Path.Combine("Files/Assets/scripts/settings", "templates");
+            TemplatesDirectory = Path.Combine(scriptsRoot, "settings/templates");
 
             SettingsData = new ScriptableSettings();
             GameSettings = new GameSettings(SettingsData);
