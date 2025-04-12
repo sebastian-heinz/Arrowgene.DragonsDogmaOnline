@@ -142,10 +142,8 @@ namespace Arrowgene.Ddon.Client.Resource.Texture.Dds
             }
         }
 
-        public void Save(string path)
+        protected override void WriteResource(IBuffer buffer)
         {
-            StreamBuffer buffer = new StreamBuffer();
-            buffer.WriteString(DdsHeader.Magic);
             buffer.WriteUInt32(Header.Size);
             buffer.WriteUInt32((uint) Header.Flags);
             buffer.WriteUInt32(Header.Height);
@@ -185,7 +183,12 @@ namespace Arrowgene.Ddon.Client.Resource.Texture.Dds
             {
                 buffer.WriteBytes(Images[i].Data);
             }
+        }
 
+        public void Save(string path)
+        {
+            StreamBuffer buffer = new StreamBuffer();
+            Write(buffer);
             File.WriteAllBytes(path, buffer.GetAllBytes());
         }
     }

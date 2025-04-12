@@ -10,6 +10,7 @@ public static class TexConvert
     public static DdsTexture ToDdsTexture(TexTexture texTexture)
     {
         DdsTexture ddsTexture = new DdsTexture();
+        ddsTexture.Magic = DdsHeader.Magic;
         ddsTexture.Header.Size = DdsHeader.StructSize;
         ddsTexture.Header.Flags = GetDDSDFlags(texTexture.Header);
         ddsTexture.Header.Height = texTexture.Header.Height;
@@ -55,6 +56,7 @@ public static class TexConvert
         }
 
         TexTexture texTexture = new TexTexture();
+        texTexture.Magic = TexTexture.TexHeaderMagic;
         texTexture.Header.Version = headerVersion;
         texTexture.Header.Height = (uint) ddsTexture.Metadata.Height;
         texTexture.Header.Width = (uint) ddsTexture.Metadata.Width;

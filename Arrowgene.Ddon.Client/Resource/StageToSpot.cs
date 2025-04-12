@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.Client.Resource
             Entries = new List<Entry>();
         }
 
-        protected override void Read(IBuffer buffer)
+        public override void Read(IBuffer buffer)
         {
             uint data = buffer.ReadUInt32();
             uint dataNum = buffer.ReadUInt32();
@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.Client.Resource
             }
         }
 
-        protected override void Write(IBuffer buffer)
+        public override void Write(IBuffer buffer)
         {
             throw new System.NotImplementedException();
         }
