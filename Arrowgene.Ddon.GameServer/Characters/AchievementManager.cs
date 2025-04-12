@@ -37,6 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        #region HandleAchievements
         public PacketQueue HandleAppraisal(GameClient client, DbConnection? connectionIn = null)
         {
             PacketQueue queue = new();
@@ -479,6 +480,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             return queue;
         }
+        #endregion
 
         private PacketQueue CheckGainAchievement(GameClient client, AchievementType type, uint param, uint count, DbConnection? connectionIn = null)
         {
@@ -668,7 +670,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 case AchievementType.MainLevelGroup:
                 case AchievementType.PawnAffection:
                 case AchievementType.PawnCraftingExam:
-                    return zippedAchievement.Item1.Count > 0;
+                    return zippedAchievement.Item2 > 0;
                 default:
                     return zippedAchievement.Item2 >= zippedAchievement.Item1.Count;
             }
