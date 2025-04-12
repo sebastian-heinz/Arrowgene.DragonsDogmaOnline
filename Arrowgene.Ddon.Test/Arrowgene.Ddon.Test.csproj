@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
         <RootNamespace>Arrowgene.Ddon.Test</RootNamespace>
         <Title>Dragons Dogma Online - Test</Title>
         <Company>DDON Team</Company>
@@ -8,7 +8,7 @@
         <Version>$(Version)</Version>
         <Copyright>Copyright © 2019-2022 DDON Team</Copyright>
         <IsPackable>false</IsPackable>
-        <LangVersion>10</LangVersion>
+        <LangVersion>13</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
       <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>

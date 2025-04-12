@@ -1,5 +1,3 @@
-version: '3.8'
-
 volumes:
   ddon-psql-data:
 
@@ -12,8 +10,8 @@ services:
     restart: no
     volumes:
       - ddon-psql-data:/var/lib/postgresql/data
-#      - $PWD/schema_postgres.sql:/docker-entrypoint-initdb.d/schema_postgres.sql:ro
-      - $PWD/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+#      - ./schema_postgres.sql:/docker-entrypoint-initdb.d/schema_postgres.sql:ro
+      - ./postgresql.conf:/etc/postgresql/postgresql.conf:ro
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root

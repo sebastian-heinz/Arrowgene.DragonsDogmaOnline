@@ -9,12 +9,12 @@ jobs:
     steps:
 
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v4
         
       - name: Setup .NET Core
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 6.0.200
+          dotnet-version: 9.x
           
       - name: Build Release
         id: build_release

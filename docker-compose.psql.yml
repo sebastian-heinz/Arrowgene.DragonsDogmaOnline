@@ -1,5 +1,3 @@
-version: '3.8'
-
 volumes:
   ddon-server-psql-volume:
 
@@ -12,7 +10,7 @@ services:
     build: 
       context: .
       args:
-        - RUNTIME=${RUNTIME}
+        - RUNTIME=${RUNTIME:-linux-x64}
     restart: no
     ports:
       # Game server
@@ -32,7 +30,8 @@ services:
       - DB_WIPE_ON_STARTUP=false
     volumes:
       - ./Arrowgene.Ddon.config.psql.local_dev.json:/var/ddon/server/Files/Arrowgene.Ddon.config.json:ro
-      - ./Arrowgene.Ddon.Shared/Files/Assets:/var/ddon/server/Files/Assets:ro
+      - ./Arrowgene.Ddon.Shared/Files/Assets:/var/ddon/server/Files/Assets
+      - ./Arrowgene.Ddon.Scripts/scripts:/var/ddon/server/Files/Assets/scripts
     networks:
       - ddon-network
     # Workaround: cli expects to be able to process keyboard input
@@ -51,7 +50,7 @@ services:
     restart: no
     volumes:
       - ddon-server-psql-volume:/var/lib/postgresql/data
-      - $PWD/deploy/postgresql/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+      - ./deploy/postgresql/postgresql.conf:/etc/postgresql/postgresql.conf:ro
     networks:
       - ddon-network
     environment:

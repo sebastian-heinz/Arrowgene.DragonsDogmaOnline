@@ -516,7 +516,7 @@ CREATE TABLE IF NOT EXISTS "ddon_contact_list"
     "requested_favorite"     BOOLEAN  NOT NULL,
     CONSTRAINT "fk_ddon_contact_list_requester_character_id" FOREIGN KEY ("requester_character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE,
     CONSTRAINT "fk_ddon_contact_list_requested_character_id" FOREIGN KEY ("requested_character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE,
-    CONSTRAINT "uq_ddon_contact_list_requester_character_id_requested_character_id" UNIQUE ("requester_character_id", "requested_character_id")
+    CONSTRAINT "uq_ddon_contact_list_requester_character_id_requested_char_id" UNIQUE ("requester_character_id", "requested_character_id")
 );
 
 CREATE TABLE IF NOT EXISTS "ddon_bazaar_exhibition"

@@ -1,13 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
         <RootNamespace>Arrowgene.Ddon.Cli</RootNamespace>
         <Title>Dragons Dogma Online - Command Line Interface</Title>
         <Company>Ddon Team</Company>
         <Product>Ddon.Cli</Product>
         <Version>$(Version)</Version>
         <Copyright>Copyright © 2019-2022 DDON Team</Copyright>
+        <LangVersion>13</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
       <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>

@@ -18,8 +18,8 @@ Suppose, you wanted to update the rewards of the EXM quest `q50300004`.
 
 ```plaintext
 2025-02-24 15:25:38 - Info - ScriptManager`1: Compiling scripts for module 'quests'
-2025-02-24 15:25:38 - Info - ScriptManager`1: C:\path\to\Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Cli\bin\Debug\net6.0\Files\Assets\scripts\custom\quests\exm\q50300004.csx
-2025-02-24 15:25:39 - Info - ScriptManager`1: C:\path\to\Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Cli\bin\Debug\net6.0\Files\Assets\scripts\quests\exm\q50300005.csx
+2025-02-24 15:25:38 - Info - ScriptManager`1: C:\path\to\Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Cli\bin\Debug\net9.0\Files\Assets\scripts\custom\quests\exm\q50300004.csx
+2025-02-24 15:25:39 - Info - ScriptManager`1: C:\path\to\Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Cli\bin\Debug\net9.0\Files\Assets\scripts\quests\exm\q50300005.csx
 ```
 
 Now when the server first loads, you will see that instead of selecting to load the file `<script_root>/quests/exm/q50300004.csx`, it will instead load the file `<script_root>/custom/quests/exm/q50300004.csx`.

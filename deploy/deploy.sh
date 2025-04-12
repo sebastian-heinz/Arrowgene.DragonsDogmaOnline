@@ -34,8 +34,8 @@ if ! which git > /dev/null 2>&1; then
     apt-get install -y git
 fi
 
-if ! which dotnet > /dev/null 2>&1 || ! dotnet --list-sdks | grep -q '6.0.202'; then  
-    echo "Installing dotnet 6.0.202"
+if ! which dotnet > /dev/null 2>&1 || ! dotnet --list-sdks | grep -q '9.0.203'; then  
+    echo "Installing dotnet 9.0.203"
     
     wget https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
     dpkg -i packages-microsoft-prod.deb
@@ -43,7 +43,7 @@ if ! which dotnet > /dev/null 2>&1 || ! dotnet --list-sdks | grep -q '6.0.202'; 
     
     apt-get install -y apt-transport-https
     apt-get update
-    apt-get install -y dotnet-sdk-6.0.202
+    apt-get install -y dotnet-sdk-9.0.203
 fi
 
 systemctl stop ddon-server

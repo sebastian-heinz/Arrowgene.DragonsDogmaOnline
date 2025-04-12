@@ -1,5 +1,3 @@
-version: '3.8'
-
 volumes:
   ddon-server-sqlite-volume:
 
@@ -12,7 +10,7 @@ services:
     build: 
       context: .
       args:
-        - RUNTIME=${RUNTIME}
+        - RUNTIME=${RUNTIME:-linux-x64}
     restart: no
     ports:
       # Database
@@ -32,7 +30,8 @@ services:
     volumes:
       - ddon-server-sqlite-volume:/var/ddon/server/Files/Database
       - ./Arrowgene.Ddon.config.local_dev.json:/var/ddon/server/Files/Arrowgene.Ddon.config.json:ro
-      - ./Arrowgene.Ddon.Shared/Files/Assets:/var/ddon/server/Files/Assets:ro
+      - ./Arrowgene.Ddon.Shared/Files/Assets:/var/ddon/server/Files/Assets
+      - ./Arrowgene.Ddon.Scripts/scripts:/var/ddon/server/Files/Assets/scripts
     networks:
       - ddon-network
     # Workaround: cli expects to be able to process keyboard input

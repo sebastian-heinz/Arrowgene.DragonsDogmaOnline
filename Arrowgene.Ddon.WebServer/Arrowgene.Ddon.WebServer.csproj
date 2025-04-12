@@ -1,13 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>net9.0</TargetFramework>
         <RootNamespace>Arrowgene.Ddon.WebServer</RootNamespace>
         <Title>Dragons Dogma Online - Web Server</Title>
         <Company>DDON Team</Company>
         <Product>Ddon.WebServer</Product>
         <Version>$(Version)</Version>
         <Copyright>Copyright © 2019-2022 DDON Team</Copyright>
-        <LangVersion>10</LangVersion>
+        <LangVersion>13</LangVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
       <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>

@@ -11,7 +11,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Arrowgene.Ddon.Cli/bin/Debug/net6.0/Arrowgene.Ddon.Cli.dll",
+            "program": "${workspaceFolder}/Arrowgene.Ddon.Cli/bin/Debug/net9.0/Arrowgene.Ddon.Cli.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Arrowgene.Ddon.Cli",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
@@ -32,7 +32,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Arrowgene.Ddon.Cli/bin/Debug/net6.0/Arrowgene.Ddon.Cli.dll",
+            "program": "${workspaceFolder}/Arrowgene.Ddon.Cli/bin/Debug/net9.0/Arrowgene.Ddon.Cli.dll",
             "args": ["server", "start"],
             "cwd": "${workspaceFolder}/Arrowgene.Ddon.Cli",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
@@ -51,7 +51,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Arrowgene.Ddon.Cli/bin/Debug/net6.0/Arrowgene.Ddon.Cli.dll",
+            "program": "${workspaceFolder}/Arrowgene.Ddon.Cli/bin/Debug/net9.0/Arrowgene.Ddon.Cli.dll",
             "args": ["dbmigration"],
             "cwd": "${workspaceFolder}/Arrowgene.Ddon.Cli",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
@@ -70,7 +70,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Arrowgene.Ddon.Cli/bin/Debug/net6.0/Arrowgene.Ddon.Cli.dll",
+            "program": "${workspaceFolder}/Arrowgene.Ddon.Cli/bin/Debug/net9.0/Arrowgene.Ddon.Cli.dll",
             "args": ["client", "D:\\Juegos\\DDOn\\Dragon's Dogma Online\\nativePC\\rom"],
             "cwd": "${workspaceFolder}/Arrowgene.Ddon.Cli",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
@@ -89,7 +89,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Arrowgene.Ddon.Cli/bin/Debug/net6.0/Arrowgene.Ddon.Cli.dll",
+            "program": "${workspaceFolder}/Arrowgene.Ddon.Cli/bin/Debug/net9.0/Arrowgene.Ddon.Cli.dll",
             "args": ["client", "packGmd", "gmdCsv=C:\\Users\\GAMER\\Downloads\\gmd.csv", "romDir=D:\\Juegos\\DDOn\\Dragon's Dogma Online\\nativePC\\rom", "romLang=English"],
             "cwd": "${workspaceFolder}/Arrowgene.Ddon.Cli",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
