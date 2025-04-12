@@ -68,24 +68,29 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new();
             }
 
-            PartnerPawnData partnerPawnData = client.Character.Pawns.Find(x => x.PawnId == client.Character.PartnerPawnId)?.PartnerPawnData;
-            var previousLikability = partnerPawnData.CalculateLikability();
+            Pawn partnerPawn = client.Character.Pawns.Find(x => x.PawnId == client.Character.PartnerPawnId);
+            if (partnerPawn == null)
+            {
+                return new();
+            }
+
+            var previousLikability = partnerPawn.PartnerPawnData.CalculateLikability();
             switch (action)
             {
                 case PartnerPawnAffectionAction.Gift:
-                    partnerPawnData.NumGifts += 1;
+                    partnerPawn.PartnerPawnData.NumGifts += 1;
                     break;
                 case PartnerPawnAffectionAction.Craft:
-                    partnerPawnData.NumCrafts += 1;
+                    partnerPawn.PartnerPawnData.NumCrafts += 1;
                     break;
                 case PartnerPawnAffectionAction.Adventure:
-                    partnerPawnData.NumAdventures += 1;
+                    partnerPawn.PartnerPawnData.NumAdventures += 1;
                     break;
             }
-            Server.Database.UpdatePartnerPawnRecord(client.Character.CharacterId, partnerPawnData, connectionIn);
+            Server.Database.UpdatePartnerPawnRecord(client.Character.CharacterId, partnerPawn.PartnerPawnData, connectionIn);
             Server.Database.InsertPartnerPawnLastAffectionIncreaseRecord(client.Character.CharacterId, client.Character.PartnerPawnId, action, connectionIn);
 
-            var currentLikability = partnerPawnData.CalculateLikability();
+            var currentLikability = partnerPawn.PartnerPawnData.CalculateLikability();
             if (previousLikability < currentLikability)
             {
                 packets.Enqueue(client, new S2CPartnerPawnLikabilityUpNtc()
