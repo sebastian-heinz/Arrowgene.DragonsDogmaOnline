@@ -186,6 +186,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return result;
         }
 
+        public abstract void Stop();
+
         protected override void Exception(Exception ex, string query)
         {
             Logger.Exception(ex);

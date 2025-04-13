@@ -9,18 +9,15 @@ namespace Arrowgene.Ddon.Database.Sql
     public class DdonSqLiteDb : DdonSqlDb<SQLiteConnection, SQLiteCommand, SQLiteDataReader>, IDatabase
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonSqLiteDb));
-
-
-        public const string MemoryDatabasePath = ":memory:";
-
         private readonly string _databasePath;
         private string _connectionString;
-        private SQLiteConnection _memoryConnection;
+        protected readonly bool EnableTracing;
+        protected const SQLiteTraceFlags TraceLevel = SQLiteTraceFlags.SQLITE_TRACE_ALL;
 
-        public DdonSqLiteDb(string databasePath, bool wipeOnStartup)
+        public DdonSqLiteDb(string databasePath, bool wipeOnStartup, bool enableTracing = false)
         {
-            _memoryConnection = null;
             _databasePath = databasePath;
+            EnableTracing = enableTracing;
             if (wipeOnStartup)
             {
                 try
@@ -45,13 +42,10 @@ namespace Arrowgene.Ddon.Database.Sql
             }
 
             ReusableConnection = new SQLiteConnection(_connectionString);
-
-            if (_databasePath == MemoryDatabasePath)
+            if (EnableTracing)
             {
-                throw new NotSupportedException("Connections are utilized via `using`, disposing the connection. In Memory DB only available for lifetime of connection");
-                _memoryConnection = new SQLiteConnection(_connectionString);
-                _memoryConnection.Open();
-                return true;
+                ReusableConnection.TraceFlags = TraceLevel;
+                ReusableConnection.Trace2 += TraceSqLiteEvent;
             }
 
             if (!File.Exists(_databasePath))
@@ -63,6 +57,11 @@ namespace Arrowgene.Ddon.Database.Sql
             }
 
             return false;
+        }
+
+        public override void Stop()
+        {
+            Logger.Info("Stopping database connection.");
         }
 
         private string BuildConnectionString(string source)
@@ -84,7 +83,14 @@ namespace Arrowgene.Ddon.Database.Sql
 
         protected override SQLiteConnection OpenNewConnection()
         {
-            return new SQLiteConnection(_connectionString).OpenAndReturn();
+            SQLiteConnection openNewConnection = new SQLiteConnection(_connectionString).OpenAndReturn();
+            if (EnableTracing)
+            {
+                openNewConnection.TraceFlags = TraceLevel;
+                openNewConnection.Trace2 += TraceSqLiteEvent;
+            }
+
+            return openNewConnection;
         }
 
         protected override SQLiteCommand Command(string query, SQLiteConnection connection)
@@ -106,6 +112,11 @@ namespace Arrowgene.Ddon.Database.Sql
             out long autoIncrement)
         {
             throw new NotImplementedException();
+        }
+
+        protected void TraceSqLiteEvent(object sender, TraceEventArgs e)
+        {
+            Logger.Debug($"statement={e.Statement};preparedStatement={e.PreparedStatement};elapsed={e.Elapsed}");
         }
     }
 }

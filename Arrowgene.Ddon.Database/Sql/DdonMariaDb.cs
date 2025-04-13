@@ -32,6 +32,11 @@ namespace Arrowgene.Ddon.Database.Sql
             return true;
         }
 
+        public override void Stop()
+        {
+            Logger.Info("Stopping database connection.");
+        }
+
         private string BuildConnectionString(string host, string user, string password, string database)
         {
             MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder

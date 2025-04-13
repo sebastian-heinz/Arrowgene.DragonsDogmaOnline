@@ -23,3 +23,14 @@ services:
       interval: 10s
       timeout: 1s
       retries: 3
+      
+  pgloader:
+    image: dimitri/pgloader:latest
+    depends_on:
+      psql:
+        condition: service_healthy
+    volumes:
+      - ../../Arrowgene.Ddon.Cli/bin/Debug/net9.0/Files/Database/db.sqlite:/db.sqlite:ro
+    entrypoint: pgloader
+    command: sqlite:///db.sqlite postgresql://root:root@psql:5432/postgres
+
