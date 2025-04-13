@@ -24,7 +24,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Server.Database.ExecuteInTransaction(connection =>
             {
                 Server.Database.SetPartnerPawn(client.Character.CharacterId, pawn.PawnId, connection);
-                var record = pawn.PartnerPawnData;
+
+                var record = Server.PartnerPawnManager.GetPartnerPawnData(client, connection);
                 if (record == null)
                 {
                     record = new PartnerPawnData()
@@ -34,12 +35,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         NumCrafts = 0,
                         NumAdventures = 0,
                     };
+                    pawn.PartnerPawnData = record;
                     Server.Database.InsertPartnerPawnRecord(client.Character.CharacterId, record, connection);
                 }
-                res.PartnerInfo = record.ToCDataPartnerPawnData(pawn);
+                res.PartnerInfo = Server.PartnerPawnManager.GetCDataPartnerPawnData(client, connection) ?? new CDataPartnerPawnData();
             });
-
-            // TODO: Store partner pawn
 
             return res;
         }

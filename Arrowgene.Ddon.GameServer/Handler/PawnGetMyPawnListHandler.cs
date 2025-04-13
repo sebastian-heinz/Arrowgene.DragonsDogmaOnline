@@ -45,8 +45,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var partnerPawn = client.Character.Pawns.Where(x => x.PawnId == client.Character.PartnerPawnId).FirstOrDefault();
             if (partnerPawn != null)
             {
-                var partnerData = Server.Database.GetPartnerPawnRecord(client.Character.CharacterId, client.Character.PartnerPawnId);
-                res.PartnerInfo =  (partnerData != null) ? partnerData.ToCDataPartnerPawnData(partnerPawn) : new CDataPartnerPawnData();
+                var partnerPawnData = Server.PartnerPawnManager.GetPartnerPawnData(client) ?? new PartnerPawnData();
+                res.PartnerInfo = partnerPawnData.ToCDataPartnerPawnData(partnerPawn);
             }
 
             return res;
