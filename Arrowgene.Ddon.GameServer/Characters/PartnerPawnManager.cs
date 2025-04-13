@@ -120,11 +120,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public uint GetLikabilityForCurrentPartnerPawn(GameClient client, DbConnection? connectionIn = null)
         {
-            if (client.Character.PartnerPawnId == 0)
+            var partnerPawnData = GetPartnerPawnData(client, connectionIn);
+            if (partnerPawnData == null)
             {
                 return 0;
             }
-            return Server.Database.GetPartnerPawnRecord(client.Character.CharacterId, client.Character.PartnerPawnId, connectionIn).CalculateLikability();
+            return partnerPawnData.CalculateLikability();
         }
 
         public List<CDataPartnerPawnReward> GetUnclaimedRewardsForCurrentPartnerPawn(GameClient client, DbConnection? connectionIn = null)
