@@ -10,7 +10,7 @@ services:
     restart: no
     volumes:
       - ddon-psql-data:/var/lib/postgresql/data
-#      - ./schema_postgres.sql:/docker-entrypoint-initdb.d/schema_postgres.sql:ro
+      - ./schema_postgres.sql:/docker-entrypoint-initdb.d/schema_postgres.sql:ro
       - ./postgresql.conf:/etc/postgresql/postgresql.conf:ro
     environment:
       - POSTGRES_USER=root
@@ -31,6 +31,7 @@ services:
         condition: service_healthy
     volumes:
       - ../../Arrowgene.Ddon.Cli/bin/Debug/net9.0/Files/Database/db.sqlite:/db.sqlite:ro
+      - ./pgloader.load:/pgloader.load:ro
     entrypoint: pgloader
-    command: sqlite:///db.sqlite postgresql://root:root@psql:5432/postgres
-
+#    command: sqlite:///db.sqlite postgresql://root:root@psql:5432/postgres
+    command: /pgloader.load
