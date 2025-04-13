@@ -22,6 +22,7 @@ namespace Arrowgene.Ddon.Database
             IDatabase database = dbType switch
             {
                 DatabaseType.SQLite => BuildSqLite(settings.DatabaseFolder, settings.WipeOnStartup),
+                DatabaseType.SQLiteInMemory => BuildSqLite(settings.DatabaseFolder, settings.WipeOnStartup, true),
                 DatabaseType.PostgreSQL => BuildPostgres(settings.DatabaseFolder, settings.Host, settings.User, settings.Password, settings.Database, settings.WipeOnStartup),
                 DatabaseType.MariaDb => BuildMariaDB(settings.DatabaseFolder, settings.Host, settings.User, settings.Password, settings.Database, settings.WipeOnStartup),
                 _ => throw new ArgumentOutOfRangeException($"Unknown database type '{settings.Type}' encountered!")
@@ -31,17 +32,8 @@ namespace Arrowgene.Ddon.Database
             {
                 DatabaseVersion = Version
             });
-
-            if (database == null)
-            {
-                Logger.Error("Database could not be created, exiting...");
-                Environment.Exit(1);
-            }
-            else
-            {
-                Logger.Info($"Database of type '${dbType.ToString()}' has been created.");
-                Logger.Info($"Database path: {settings.DatabaseFolder}");
-            }
+            Logger.Info($"Database of type '${dbType.ToString()}' has been created.");
+            Logger.Info($"Database path: {settings.DatabaseFolder}");
 
             return database;
         }
@@ -91,22 +83,22 @@ namespace Arrowgene.Ddon.Database
         {
             string schemaFilePath = Path.Combine(setting.DatabaseFolder, schemaPath);
             string schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
-            return DdonDatabaseBuilder.AdaptSQLiteSchemaTo(setting.Type, schema);
+            return AdaptSQLiteSchemaTo(setting.Type, schema);
         }
 
         public static string BuildSqLitePath(string databaseFolder)
         {
-            return Path.Combine(databaseFolder, $"db.sqlite");
+            return Path.Combine(databaseFolder, "db.sqlite");
         }
 
-        public static DdonSqLiteDb BuildSqLite(string databaseFolder, bool wipeOnStartup)
+        public static DdonSqLiteDb BuildSqLite(string databaseFolder, bool wipeOnStartup, bool inMemory = false)
         {
             string sqLitePath = BuildSqLitePath(databaseFolder);
-            DdonSqLiteDb db = new DdonSqLiteDb(sqLitePath, wipeOnStartup);
+            DdonSqLiteDb db = inMemory? new DdonSqLiteInMemoryDb(sqLitePath, wipeOnStartup) : new DdonSqLiteDb(sqLitePath, wipeOnStartup);
             if (db.CreateDatabase())
             {
                 string schemaFilePath = Path.Combine(databaseFolder, DefaultSchemaFile);
-                String schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
+                string schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
                 
                 db.Execute(schema);
 

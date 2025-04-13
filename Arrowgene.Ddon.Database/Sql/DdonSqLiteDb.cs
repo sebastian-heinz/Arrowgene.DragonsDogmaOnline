@@ -9,17 +9,11 @@ namespace Arrowgene.Ddon.Database.Sql
     public class DdonSqLiteDb : DdonSqlDb<SQLiteConnection, SQLiteCommand, SQLiteDataReader>, IDatabase
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonSqLiteDb));
-
-
-        public const string MemoryDatabasePath = ":memory:";
-
         private readonly string _databasePath;
         private string _connectionString;
-        private SQLiteConnection _memoryConnection;
 
         public DdonSqLiteDb(string databasePath, bool wipeOnStartup)
         {
-            _memoryConnection = null;
             _databasePath = databasePath;
             if (wipeOnStartup)
             {
@@ -46,14 +40,6 @@ namespace Arrowgene.Ddon.Database.Sql
 
             ReusableConnection = new SQLiteConnection(_connectionString);
 
-            if (_databasePath == MemoryDatabasePath)
-            {
-                throw new NotSupportedException("Connections are utilized via `using`, disposing the connection. In Memory DB only available for lifetime of connection");
-                _memoryConnection = new SQLiteConnection(_connectionString);
-                _memoryConnection.Open();
-                return true;
-            }
-
             if (!File.Exists(_databasePath))
             {
                 FileStream fs = File.Create(_databasePath);
@@ -63,6 +49,11 @@ namespace Arrowgene.Ddon.Database.Sql
             }
 
             return false;
+        }
+
+        public override void Stop()
+        {
+            Logger.Info("Stopping database connection.");
         }
 
         private string BuildConnectionString(string source)

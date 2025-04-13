@@ -666,5 +666,6 @@ namespace Arrowgene.Ddon.Database
         Dictionary<ItemId, byte> SelectMyRoomCustomization(uint characterId, DbConnection? connectionIn = null);
         bool UpsertMyRoomCustomization(uint characterId, byte layoutId, uint itemId, DbConnection? connectionIn = null);
         bool DeleteMyRoomCustomization(uint characterId, uint itemId, DbConnection? connectionIn = null);
+        void Stop();
     }
 }

@@ -483,6 +483,7 @@ namespace Arrowgene.Ddon.Test.Database
         public Dictionary<ItemId, byte> SelectMyRoomCustomization(uint characterId, DbConnection? connectionIn = null) { return new(); }
         public bool UpsertMyRoomCustomization(uint characterId, byte layoutId, uint itemId, DbConnection? connectionIn = null) { return true; }
         public bool DeleteMyRoomCustomization(uint characterId, uint itemId, DbConnection? connectionIn = null) { return true; }
+        public void Stop() { }
 
         public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
         public void AddParameter(DbCommand command, string name, string value) { }

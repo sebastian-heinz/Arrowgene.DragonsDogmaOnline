@@ -56,6 +56,11 @@ namespace Arrowgene.Ddon.Database.Sql
             return !tableExists;
         }
 
+        public override void Stop()
+        {
+            Logger.Info("Stopping database connection.");
+        }
+
         private string BuildConnectionString(string host, string user, string password, string database)
         {
             NpgsqlConnectionStringBuilder builder = new NpgsqlConnectionStringBuilder
