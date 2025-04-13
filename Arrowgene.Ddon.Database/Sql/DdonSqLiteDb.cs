@@ -11,10 +11,13 @@ namespace Arrowgene.Ddon.Database.Sql
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonSqLiteDb));
         private readonly string _databasePath;
         private string _connectionString;
+        protected readonly bool EnableTracing;
+        protected const SQLiteTraceFlags TraceLevel = SQLiteTraceFlags.SQLITE_TRACE_ALL;
 
-        public DdonSqLiteDb(string databasePath, bool wipeOnStartup)
+        public DdonSqLiteDb(string databasePath, bool wipeOnStartup, bool enableTracing = false)
         {
             _databasePath = databasePath;
+            EnableTracing = enableTracing;
             if (wipeOnStartup)
             {
                 try
@@ -39,6 +42,11 @@ namespace Arrowgene.Ddon.Database.Sql
             }
 
             ReusableConnection = new SQLiteConnection(_connectionString);
+            if (EnableTracing)
+            {
+                ReusableConnection.TraceFlags = TraceLevel;
+                ReusableConnection.Trace2 += TraceSqLiteEvent;
+            }
 
             if (!File.Exists(_databasePath))
             {
@@ -75,7 +83,14 @@ namespace Arrowgene.Ddon.Database.Sql
 
         protected override SQLiteConnection OpenNewConnection()
         {
-            return new SQLiteConnection(_connectionString).OpenAndReturn();
+            SQLiteConnection openNewConnection = new SQLiteConnection(_connectionString).OpenAndReturn();
+            if (EnableTracing)
+            {
+                openNewConnection.TraceFlags = TraceLevel;
+                openNewConnection.Trace2 += TraceSqLiteEvent;
+            }
+
+            return openNewConnection;
         }
 
         protected override SQLiteCommand Command(string query, SQLiteConnection connection)
@@ -97,6 +112,11 @@ namespace Arrowgene.Ddon.Database.Sql
             out long autoIncrement)
         {
             throw new NotImplementedException();
+        }
+
+        protected void TraceSqLiteEvent(object sender, TraceEventArgs e)
+        {
+            Logger.Debug($"statement={e.Statement};preparedStatement={e.PreparedStatement};elapsed={e.Elapsed}");
         }
     }
 }

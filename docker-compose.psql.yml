@@ -43,7 +43,7 @@ services:
 
   db:
     container_name: ddon-db
-    image: postgres:16-alpine
+    image: postgres:17-alpine
     ports:
       # Database
       - "5432:5432"

@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.Database.Sql
         private SQLiteConnection _keepAliveMemoryConnection;
         private bool _isRunning;
 
-        public DdonSqLiteInMemoryDb(string databasePath, bool wipeOnStartup) : base(databasePath, wipeOnStartup)
+        public DdonSqLiteInMemoryDb(string databasePath, bool wipeOnStartup, bool enableTracing = false) : base(databasePath, wipeOnStartup, enableTracing)
         {
             _fileDatabasePath = databasePath;
 
@@ -58,20 +58,24 @@ namespace Arrowgene.Ddon.Database.Sql
 
             // Establish memory-based connection setup
             _memoryConnectionString = BuildMemoryConnectionString();
-
             _keepAliveMemoryConnection = new SQLiteConnection(_memoryConnectionString);
             _keepAliveMemoryConnection.Open();
             ReusableConnection = new SQLiteConnection(_memoryConnectionString);
 
+            if (EnableTracing)
+            {
+                _fileConnection.TraceFlags = TraceLevel;
+                _fileConnection.Trace2 += TraceSqLiteEvent;
+                _backupFileConnection.TraceFlags = TraceLevel;
+                _backupFileConnection.Trace2 += TraceSqLiteEvent;
+                ReusableConnection.TraceFlags = TraceLevel;
+                ReusableConnection.Trace2 += TraceSqLiteEvent;
+            }
+
             // Load the file-based DB contents into memory
-            ReusableConnection.Open();
-            _fileConnection.Open();
-            _fileConnection.BackupDatabase(ReusableConnection, "main", "main", -1, null, 5000);
-            _fileConnection.Close();
-            ReusableConnection.Close();
+            LoadToMemory();
 
             _isRunning = true;
-            
             // If database had to be freshly created ensure that initial schema creation will run.
             return !databaseExists;
         }
@@ -82,18 +86,36 @@ namespace Arrowgene.Ddon.Database.Sql
             {
                 Logger.Info("Stopping database connection.");
 
-                _backupFileConnection.Open();
-                _fileConnection.Open();
-                // Dump the in-memory DB to file to not lose progress by overwriting the original file.
-                _fileConnection.BackupDatabase(_backupFileConnection, "main", "main", -1, null, 5000);
-                _keepAliveMemoryConnection.BackupDatabase(_fileConnection, "main", "main", -1, null, 5000);
-
-                _backupFileConnection.Close();
-                _fileConnection.Close();
-                _keepAliveMemoryConnection.Close();
+                CreateBackup();
             }
 
             _isRunning = false;
+        }
+
+        private void LoadToMemory()
+        {
+            ReusableConnection.Open();
+            _fileConnection.Open();
+
+            _fileConnection.BackupDatabase(ReusableConnection, ReusableConnection.Database, _fileConnection.Database, -1, null, 5000);
+
+            _fileConnection.Close();
+            ReusableConnection.Close();
+        }
+
+        private void CreateBackup()
+        {
+            _backupFileConnection.Open();
+            _fileConnection.Open();
+            ReusableConnection.Open();
+
+            // Dump the in-memory DB to file to not lose progress by overwriting the original file.
+            _fileConnection.BackupDatabase(_backupFileConnection, _backupFileConnection.Database, _fileConnection.Database, -1, null, 5000);
+            ReusableConnection.BackupDatabase(_fileConnection, _fileConnection.Database, ReusableConnection.Database, -1, null, 5000);
+
+            _backupFileConnection.Close();
+            _fileConnection.Close();
+            ReusableConnection.Close();
         }
 
         private static string BuildFileConnectionString(string source)
@@ -107,7 +129,6 @@ namespace Arrowgene.Ddon.Database.Sql
                 // Set ADO.NET conformance flag https://system.data.sqlite.org/index.html/info/e36e05e299
                 Flags = SQLiteConnectionFlags.Default | SQLiteConnectionFlags.StrictConformance
             };
-
             string connectionString = builder.ToString();
             Logger.Info($"Connection String: {connectionString}");
             return connectionString;
@@ -131,7 +152,14 @@ namespace Arrowgene.Ddon.Database.Sql
 
         protected override SQLiteConnection OpenNewConnection()
         {
-            return new SQLiteConnection(_memoryConnectionString).OpenAndReturn();
+            SQLiteConnection openNewConnection = new SQLiteConnection(_memoryConnectionString).OpenAndReturn();
+            if (EnableTracing)
+            {
+                openNewConnection.TraceFlags = TraceLevel;
+                openNewConnection.Trace2 += TraceSqLiteEvent;
+            }
+
+            return openNewConnection;
         }
     }
 }

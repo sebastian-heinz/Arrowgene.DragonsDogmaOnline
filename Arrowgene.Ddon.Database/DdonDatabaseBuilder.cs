@@ -1,11 +1,11 @@
-using Arrowgene.Ddon.Database.Model;
-using Arrowgene.Ddon.Database.Sql;
-using Arrowgene.Ddon.Shared.Entity;
-using Arrowgene.Logging;
 using System;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
+using Arrowgene.Ddon.Database.Model;
+using Arrowgene.Ddon.Database.Sql;
+using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.Database
 {
@@ -21,8 +21,8 @@ namespace Arrowgene.Ddon.Database
             Enum.TryParse(settings.Type, true, out DatabaseType dbType);
             IDatabase database = dbType switch
             {
-                DatabaseType.SQLite => BuildSqLite(settings.DatabaseFolder, settings.WipeOnStartup),
-                DatabaseType.SQLiteInMemory => BuildSqLite(settings.DatabaseFolder, settings.WipeOnStartup, true),
+                DatabaseType.SQLite => BuildSqLite(settings.DatabaseFolder, settings.WipeOnStartup, false, settings.EnableTracing),
+                DatabaseType.SQLiteInMemory => BuildSqLite(settings.DatabaseFolder, settings.WipeOnStartup, true, settings.EnableTracing),
                 DatabaseType.PostgreSQL => BuildPostgres(settings.DatabaseFolder, settings.Host, settings.User, settings.Password, settings.Database, settings.WipeOnStartup),
                 DatabaseType.MariaDb => BuildMariaDB(settings.DatabaseFolder, settings.Host, settings.User, settings.Password, settings.Database, settings.WipeOnStartup),
                 _ => throw new ArgumentOutOfRangeException($"Unknown database type '{settings.Type}' encountered!")
@@ -91,15 +91,15 @@ namespace Arrowgene.Ddon.Database
             return Path.Combine(databaseFolder, "db.sqlite");
         }
 
-        public static DdonSqLiteDb BuildSqLite(string databaseFolder, bool wipeOnStartup, bool inMemory = false)
+        public static DdonSqLiteDb BuildSqLite(string databaseFolder, bool wipeOnStartup, bool inMemory = false, bool enableTracing = false)
         {
             string sqLitePath = BuildSqLitePath(databaseFolder);
-            DdonSqLiteDb db = inMemory? new DdonSqLiteInMemoryDb(sqLitePath, wipeOnStartup) : new DdonSqLiteDb(sqLitePath, wipeOnStartup);
+            DdonSqLiteDb db = inMemory ? new DdonSqLiteInMemoryDb(sqLitePath, wipeOnStartup, enableTracing) : new DdonSqLiteDb(sqLitePath, wipeOnStartup, enableTracing);
             if (db.CreateDatabase())
             {
                 string schemaFilePath = Path.Combine(databaseFolder, DefaultSchemaFile);
                 string schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
-                
+
                 db.Execute(schema);
 
                 Logger.Info($"Created new v{Version} database");
@@ -116,7 +116,7 @@ namespace Arrowgene.Ddon.Database
                 string schemaFilePath = Path.Combine(databaseFolder, DefaultSchemaFile);
                 String schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
                 schema = AdaptSQLiteSchemaToPostgreSQL(schema);
-                
+
                 db.Execute(schema);
             }
 

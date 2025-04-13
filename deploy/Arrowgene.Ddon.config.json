@@ -140,7 +140,8 @@
     "User": "",
     "Password": "",
     "Database": "Ddon",
-    "WipeOnStartup": true
+    "WipeOnStartup": true,
+    "EnableTracing": true
   },
   "AssetPath": "\/var\/ddon\/server\/Files\/Assets"
 }
