@@ -16,8 +16,8 @@ public class ScriptedQuest : IQuest
 
     private class EnemyGroupId
     {
-        public const uint GlenisGroup = 1;
-        public const uint SecondGroup = 2;
+        public const uint GlenisGroup = 0;
+        public const uint SecondGroup = 10;
     }
 
     private class NamedParamId
@@ -53,11 +53,15 @@ public class ScriptedQuest : IQuest
 
     private class Flags
     {
+        // Control
+        public const int ControlSpawnTalismans = 1;
+        public const int ControlTalismansBroken = 2;
+
         // MyQst; the comments on these in the FSM json are totally wrong and flipped around.
-        public const uint Fsm2066 = 2066; // 束縛時; "When Bound", actually triggers her first combat routine.
-        public const uint Fsm2494 = 2494; // 戦闘開始; "Start Battle", actually makes her crouch and enables dialog.
-        public const uint Fsm2503 = 2503; // 待機; "Wait", actually triggers her second combat routine.
-        public const uint Fsm2505 = 2505; // 戦闘開始; "Start Battle", actually makes her stand still and enables dialog.
+        public const uint Fsm0 = 2066; // 束縛時; "When Bound", actually triggers her first combat routine.
+        public const uint Fsm1 = 2494; // 戦闘開始; "Start Battle", actually makes her crouch and enables dialog.
+        public const uint Fsm2 = 2503; // 待機; "Wait", actually triggers her second combat routine.
+        public const uint Fsm3 = 2505; // 戦闘開始; "Start Battle", actually makes her stand still and enables dialog.
 
         // Layout
         public const uint OmDestroy1 = 4303; // 破壊OM１; Destroy OM1, (0, 0)
@@ -65,6 +69,48 @@ public class ScriptedQuest : IQuest
         public const uint OmDestroy3 = 4532; // 破壊OM３; Destroy OM3, (2, 0)
         public const uint OmBarrier = 4985; // 結界OM; Barrier OM, (3, 0)
         public const uint Glenis = 4986; // 共闘NPC; Allied NPC = Glenis, (4, 0)
+    }
+
+    private class InstanceData
+    {
+        public static void SetTalismanCount(QuestState questState, int value)
+        {
+            questState.InstanceVars.SetData<int>("talisman_count", value);
+        }
+
+        public static int GetTalismanCount(QuestState questState)
+        {
+            return questState.InstanceVars.GetData<int>("talisman_count");
+        }
+    }
+
+    public override void InitializeInstanceState(QuestState questState)
+    {
+        InstanceData.SetTalismanCount(questState, 0);
+    }
+
+    private void UpdateTalismanCb(QuestCallbackParam param)
+    {
+        var count = InstanceData.GetTalismanCount(param.QuestState);
+        
+        switch (count)
+        {
+            case 0:
+                InstanceData.SetTalismanCount(param.QuestState, 1);
+                param.ResultCommands.AddResultCmdGeneralAnnounce(QuestGeneralAnnounceType.CommonMsg, GeneralAnnouncements.TalismanDestroyed1, true);
+                return;
+            case 1:
+                InstanceData.SetTalismanCount(param.QuestState, 2);
+                param.ResultCommands.AddResultCmdGeneralAnnounce(QuestGeneralAnnounceType.CommonMsg, GeneralAnnouncements.TalismanDestroyed2, true);
+                return;
+            case 2:
+                InstanceData.SetTalismanCount(param.QuestState, 3);
+                param.ResultCommands.AddResultCmdGeneralAnnounce(QuestGeneralAnnounceType.CommonMsg, GeneralAnnouncements.BarriedLifted, true);
+                param.ResultCommands.AddResultCmdMyQstFlagOn(Flags.ControlTalismansBroken);
+                return;
+            default:
+                return;
+        }
     }
 
     protected override void InitializeRewards()
@@ -90,6 +136,8 @@ public class ScriptedQuest : IQuest
                 .SetNamedEnemyParams(NamedParamId.TargetTitle),
         });
 
+        AddEnemies(EnemyGroupId.GlenisGroup+1, Stage.ElanWaterGrove, 27, QuestEnemyPlacementType.Manual, new());
+
         AddEnemies(EnemyGroupId.SecondGroup, Stage.ElanWaterGrove, 5, QuestEnemyPlacementType.Manual, new()
         {
             LibDdon.Enemy.CreateAuto(EnemyId.GreenGuardian, RecommendedLevel, 0),
@@ -102,15 +150,12 @@ public class ScriptedQuest : IQuest
             LibDdon.Enemy.CreateAuto(EnemyId.Ghost, RecommendedLevel, 6)
                 .SetNamedEnemyParams(NamedParamId.TargetTitle),
         });
+
+        AddEnemies(EnemyGroupId.SecondGroup+1, Stage.ElanWaterGrove, 40, QuestEnemyPlacementType.Manual, new());
     }
 
     protected override void InitializeBlocks()
     {
-        var flag1 = Flags.Fsm2505;
-        var flag2 = Flags.Fsm2066;
-        var flag3 = Flags.Fsm2494;
-        var flag4 = Flags.Fsm2503;
-
         var process0 = AddNewProcess(0);
 
         // Check area rank
@@ -127,49 +172,71 @@ public class ScriptedQuest : IQuest
         // 3,Search for <Glenis> near where you headed to investigate
         process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.ElanWaterGrove, 4, 0, NpcId.Glenis, NpcText.GlenisIntro)
             .AddResultCmdQstTalkChg(NpcId.Dirith1, NpcText.DirithIdle)
-            .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, Flags.Glenis)
-            .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, Flags.OmBarrier)
-            .AddQuestFlag(QuestFlagType.MyQst, QuestFlagAction.Set, Flags.Fsm2505);
+            .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, Flags.Glenis, preventReplay:true)
+            .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, Flags.OmBarrier, preventReplay:true)
+            .AddEnemyGroupId(EnemyGroupId.GlenisGroup+1)
+        ;
 
         // 4,Defeat the demons restraining the comrades
         process0.AddSpawnGroupBlock(QuestAnnounceType.Update, EnemyGroupId.GlenisGroup, true)
             .AddResultCmdQstTalkChg(NpcId.Glenis, NpcText.GlenisIdle)
-            .AddResultCmdGeneralAnnounce(QuestGeneralAnnounceType.CommonMsg, GeneralAnnouncements.MonsterAppeared)
-            // Spawn talismans & check for them being broken
-            .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, Flags.OmDestroy1)
-            .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, Flags.OmDestroy2)
-            .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, Flags.OmDestroy3)
-            .AddCheckCmdIsOmBrokenQuest(Stage.ElanWaterGrove, 0, 0, false)
-            .AddCheckCmdIsOmBrokenQuest(Stage.ElanWaterGrove, 1, 0, false)
-            .AddCheckCmdIsOmBrokenQuest(Stage.ElanWaterGrove, 2, 0, false);
+            .AddResultCmdGeneralAnnounce(QuestGeneralAnnounceType.CommonMsg, GeneralAnnouncements.MonsterAppeared, true)
+            .AddQuestFlag(QuestFlagType.MyQst, QuestFlagAction.Set, Flags.ControlSpawnTalismans, preventReplay:true)
+            .AddQuestFlag(QuestFlagType.MyQst, QuestFlagAction.CheckOn, Flags.ControlTalismansBroken)
         ;
+
+        // Talisman Processes
+        List<uint> TalismanSpawnFlags = new() {Flags.OmDestroy1, Flags.OmDestroy2, Flags.OmDestroy3};
+        for (int i = 0; i < 3; i++)
+        {
+            var talismanProcess = AddNewProcess((ushort)(i+1));
+
+            talismanProcess.AddRawBlock(QuestAnnounceType.None)
+                .AddQuestFlag(QuestFlagType.MyQst, QuestFlagAction.CheckOn, Flags.ControlSpawnTalismans)
+            ;
+
+            talismanProcess.AddRawBlock(QuestAnnounceType.None)
+                .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, TalismanSpawnFlags[i], preventReplay:true)
+                .AddCheckCmdIsOmBrokenQuest(Stage.ElanWaterGrove, (uint)i, 0, true)
+            ;
+            
+            talismanProcess.AddRawBlock(QuestAnnounceType.None)
+                .AddCallback(UpdateTalismanCb)
+            ;
+        }
 
         // Free Glenis and start her combat routine
         process0.AddRawBlock(QuestAnnounceType.None)
             .AddResultCmdGeneralAnnounce(QuestGeneralAnnounceType.CommonMsg, GeneralAnnouncements.BarriedLifted)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Clear, Flags.OmBarrier)
             .AddCheckCmdDieEnemy(Stage.ElanWaterGrove, 27, -1)
-            .AddQuestFlag(QuestFlagType.MyQst, QuestFlagAction.Set, Flags.Fsm2066)
+            .AddQuestFlag(QuestFlagType.MyQst, QuestFlagAction.Set, Flags.Fsm0)
         ;
 
         // 5,Inquire with <Glenis> about where the captured monsters are.
         process0.AddNewTalkToNpcBlock(QuestAnnounceType.Update, Stage.ElanWaterGrove, 4, 0, NpcId.Glenis, NpcText.GlenisMid)
-            .AddQuestFlag(QuestFlagType.MyQst, QuestFlagAction.Set, Flags.Fsm2494)
+            .AddQuestFlag(QuestFlagType.MyQst, QuestFlagAction.Set, Flags.Fsm1)
         ;
 
         // 6,Head to the location of the monster caught in the trap
         process0.AddDiscoverGroupBlock(QuestAnnounceType.Update, EnemyGroupId.SecondGroup)
-            .AddQuestFlag(QuestFlagType.MyQst, QuestFlagAction.Set, Flags.Fsm2503)
+            .AddEnemyGroupId(EnemyGroupId.SecondGroup+1)
+            .AddQuestFlag(QuestFlagType.MyQst, QuestFlagAction.Set, Flags.Fsm2)
         ;
 
         // 7,Defeat the demons
         process0.AddDestroyGroupBlock(QuestAnnounceType.Update, EnemyGroupId.SecondGroup, false);
 
+        // Can't have a play-message on a checkpoint block or it'll play on login.
+        process0.AddIsStageNoBlock(QuestAnnounceType.None, Stage.ElanWaterGrove, false)
+            .AddResultCmdPlayMessage(NpcText.GlenisShout, 0)
+        ;
+
+        // TODO: Something about her FSM still isn't right; she should be available for dialogue after killing the final set of enemies.
         // 8,Report to <Dirith1> in <SPOT 876>
         process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.ProtectorsRetreat, NpcId.Dirith1, NpcText.DirithReturn)
             .AddResultCmdQstTalkChg(NpcId.Glenis, NpcText.GlenisReturn)
-            .AddResultCmdPlayMessage(NpcText.GlenisShout, 0)
-            .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Clear, Flags.Fsm2505);
+        ;
 
         process0.AddProcessEndBlock(true);  
     }

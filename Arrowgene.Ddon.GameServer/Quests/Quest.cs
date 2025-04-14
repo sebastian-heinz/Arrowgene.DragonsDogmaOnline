@@ -342,7 +342,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 var flags = new List<QuestFlag>();
                 foreach (var flag in questFlags)
                 {
-                    flags.AddRange(flag.Value.Values.ToList());
+                    flags.AddRange(flag.Value.Values.Where(x => !x.PreventReplay).ToList());
                 }
                 
 

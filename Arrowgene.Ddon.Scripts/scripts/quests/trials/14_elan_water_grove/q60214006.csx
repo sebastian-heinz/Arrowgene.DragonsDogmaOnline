@@ -20,7 +20,6 @@ public class ScriptedQuest : IQuest
         public const uint Ide = 4959;
         public const uint Nora = 4960;
         public const uint Glenis = 4961;
-        public const uint Unk0 = 4968;
 
         public const uint GriffinSpawned = 1;
     }
@@ -28,7 +27,7 @@ public class ScriptedQuest : IQuest
     private class EnemyGroupId
     {
         public const uint InitialGroup = 1;
-        public const uint AmbushGroup = 2;
+        public const uint AmbushGroup = 10;
     }
 
     private class NamedParamId
@@ -77,6 +76,10 @@ public class ScriptedQuest : IQuest
             .ToList()
         );
 
+        AddEnemies(EnemyGroupId.InitialGroup+1, Stage.ElanWaterGrove, 50, 0, QuestEnemyPlacementType.Manual, new());
+        AddEnemies(EnemyGroupId.InitialGroup+2, Stage.ElanWaterGrove, 30, 0, QuestEnemyPlacementType.Manual, new());
+
+
         AddEnemies(EnemyGroupId.AmbushGroup, Stage.ElanWaterGrove, 50, 0, QuestEnemyPlacementType.Manual, new()
         {
             LibDdon.Enemy.CreateAuto(EnemyId.Stymphalides, RecommendedLevel, 0),
@@ -105,11 +108,13 @@ public class ScriptedQuest : IQuest
             .AddResultCmdQstTalkChg(NpcId.Musel0, NpcText.MuselIdle);
 
         // "Investigate the location of the attack"
-        process0.AddDiscoverGroupBlock(QuestAnnounceType.CheckpointAndUpdate, EnemyGroupId.InitialGroup)
+        process0.AddDiscoverGroupBlock(QuestAnnounceType.CheckpointAndUpdate, EnemyGroupId.InitialGroup, true)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, MyQstFlag.Glenis)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, MyQstFlag.Nora)
-            .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, MyQstFlag.FsmFlag)
-            .AddResultCmdQstTalkChg(NpcId.Ide, NpcText.IdeIdle);
+            .AddResultCmdQstTalkChg(NpcId.Ide, NpcText.IdeIdle)
+            .AddEnemyGroupId(EnemyGroupId.InitialGroup + 1) // Ensure the ambush is clear
+            .AddEnemyGroupId(EnemyGroupId.InitialGroup + 2) // Ensure the ambush is clear
+        ;
 
         // "Sweep away monsters in the middle of a melee"
         process0.AddDestroyGroupBlock(QuestAnnounceType.Update, EnemyGroupId.InitialGroup, false)
@@ -122,12 +127,14 @@ public class ScriptedQuest : IQuest
             .AddResultCmdSetAnnounce(QuestAnnounceType.Caution) // Controlling announce order
             .AddResultCmdPlayMessage(NpcText.GlenisShout1, 0)
             .AddCheckCmdEmHpLess(Stage.ElanWaterGrove, 50, 5, 99) // This is probably incorrect.
-            .AddQuestFlag(QuestFlagType.MyQst, QuestFlagAction.Set, MyQstFlag.GriffinSpawned);
+            .AddQuestFlag(QuestFlagType.MyQst, QuestFlagAction.Set, MyQstFlag.GriffinSpawned)
+        ;
 
         // "Tell Ide about the rebuilding of the investigation team"
         process0.AddNewTalkToNpcBlock(QuestAnnounceType.Update, Stage.ElanWaterGrove, 0, 0,NpcId.Ide, NpcText.IdeReturn)
             .AddResultCmdPlayMessage(NpcText.NoraShout0, 0)
-            .AddResultCmdGeneralAnnounce(QuestGeneralAnnounceType.CommonMsg, GeneralAnnouncements.RetreatOrder);
+            .AddResultCmdGeneralAnnounce(QuestGeneralAnnounceType.CommonMsg, GeneralAnnouncements.RetreatOrder)
+        ;
 
         // "Report to the Area Master"
         process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.ProtectorsRetreat, NpcId.Musel0, NpcText.MuselReturn)
@@ -135,15 +142,21 @@ public class ScriptedQuest : IQuest
 
         process0.AddProcessEndBlock(true);
 
+        // Extra quest path if you kill the griffin
         var process1 = AddNewProcess(1);
         process1.AddRawBlock(QuestAnnounceType.None)
             .AddCheckCmdMyQstFlagOn(MyQstFlag.GriffinSpawned)
-            .AddCheckCmdDieEnemy(Stage.ElanWaterGrove, 50, 5);  
+        ;
+            
+        process1.AddRawBlock(QuestAnnounceType.None)
+            .AddCheckCmdDieEnemy(Stage.ElanWaterGrove, 50, -1)
+        ;  
 
         process1.AddRawBlock(QuestAnnounceType.None)
-            .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Clear, MyQstFlag.FsmFlag)
+            .AddQuestFlag(QuestFlagType.MyQst, QuestFlagAction.Set, MyQstFlag.FsmFlag)
             .AddResultCmdQstTalkChg(NpcId.Glenis, NpcText.GlenisIdle)
-            .AddResultCmdQstTalkChg(NpcId.Nora, NpcText.NoraIdle);
+            .AddResultCmdQstTalkChg(NpcId.Nora, NpcText.NoraIdle)
+        ;
 
     }
 }

@@ -71,10 +71,10 @@ public class ScriptedQuest : IQuest
         process0.AddNpcTalkAndOrderBlock(Stage.ProtectorsRetreat, NpcId.Musel0, NpcText.MuselIntro);
 
         // Go check on Glenis
-        process0.AddDiscoverGroupBlock(QuestAnnounceType.Accept, EnemyGroupId.MainGroup)
+        process0.AddDiscoverGroupBlock(QuestAnnounceType.Accept, EnemyGroupId.MainGroup, true)
             .AddResultCmdQstTalkChg(NpcId.Musel0, NpcText.MuselIdle)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, MyQstFlag.Glenis)
-            .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, MyQstFlag.FsmFlag);
+        ;
 
         // Defeat the demons
         process0.AddDestroyGroupBlock(QuestAnnounceType.Update, EnemyGroupId.MainGroup, false)
@@ -86,9 +86,8 @@ public class ScriptedQuest : IQuest
         // Report to Musel in Protector's Retreat
         process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.ProtectorsRetreat, NpcId.Musel0, NpcText.MuselReturn)
             .AddResultCmdQstTalkChg(NpcId.Glenis, NpcText.GlenisIdle)
-            .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Clear, MyQstFlag.FsmFlag)
-            .AddQuestFlag(QuestFlagType.MyQst, QuestFlagAction.Set, MyQstFlag.FsmFlag); // There's no way this is correct but it gets the correct behavior.
-
+            .AddQuestFlag(QuestFlagType.MyQst, QuestFlagAction.Set, MyQstFlag.FsmFlag)
+        ;
 
         process0.AddProcessEndBlock(true);
     }

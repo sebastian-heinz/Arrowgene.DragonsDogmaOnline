@@ -28,5 +28,6 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public int Value { get; set; }
         public int QuestId { get; set; }
         public StageInfo stageInfo { get; set; }
+        public bool PreventReplay { get; set; }
     }
 }
