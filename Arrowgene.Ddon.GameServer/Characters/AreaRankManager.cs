@@ -290,8 +290,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return true;
             }
 
-            // Temporarily while S2 trials in development.
-            if (spot.AreaId >= QuestAreaId.FaranaPlains)
+            // Until S3.
+            if (spot.AreaId >= QuestAreaId.RathniteFoothills)
             {
                 return true;
             }

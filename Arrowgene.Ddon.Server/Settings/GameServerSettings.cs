@@ -846,7 +846,7 @@ namespace Arrowgene.Ddon.Server.Settings
                 return TryGetSetting("EnableAreaRankSpotLocks", _EnableAreaRankSpotLocks);
             }
         }
-        private const bool _EnableAreaRankSpotLocks = false;
+        private const bool _EnableAreaRankSpotLocks = true;
 
         /// <summary>
         /// Configures the chance that various gathering tools can break
