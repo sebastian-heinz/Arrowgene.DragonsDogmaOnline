@@ -579,5 +579,11 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             checkCommands.Add(QuestManager.CheckCommand.PlJobNotEq((int)jobId));
             return checkCommands;
         }
+
+        public static List<CDataQuestCommand> AddCheckCmdIsOneOffGather(this List<CDataQuestCommand> checkCommands)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsOneOffGather());
+            return checkCommands;
+        }
     }
 }

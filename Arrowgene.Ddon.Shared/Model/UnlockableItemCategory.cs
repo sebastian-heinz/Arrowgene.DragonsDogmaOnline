@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace Arrowgene.Ddon.Shared.Model
 {
     public enum UnlockableItemCategory : byte
@@ -11,6 +5,13 @@ namespace Arrowgene.Ddon.Shared.Model
         None,
         ArisenCardBackground,
         CraftingRecipe,
-        FurnitureItem
+        FurnitureItem,
+        AreaVisualSurveyElanWaterGrove,
+        AreaVisualSurveyFaranaPlains,
+        AreaVisualSurveyMorrowForest,
+        AreaVisualSurveyKingalCanyon,
+        AreaVisualSurveyRathniteFoothills,
+        AreaVisualSurveyFeryanaWilderness,
+        AreaVisualSurveyMegadosysPlateau
     }
 }

@@ -22,6 +22,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems
             InstancedItems = new();
             Generators = new()
             {
+                new OneOffGatheringItemGenerator(),
                 new DefaultGatheringItemGenerator(server),
                 new GatheringTableGatheringItemGenerator(server),
                 new BitterblackGatheringItemGenerator(server),

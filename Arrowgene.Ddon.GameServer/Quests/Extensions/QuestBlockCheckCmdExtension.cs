@@ -645,5 +645,12 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             questBlock.CheckCommands[commandListIndex].AddCheckCmdPlJobNotEq(jobId);
             return questBlock;
         }
+
+        public static QuestBlock AddCheckCmdIsOneOffGather(this QuestBlock questBlock, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsOneOffGather();
+            return questBlock;
+        }
     }
 }
