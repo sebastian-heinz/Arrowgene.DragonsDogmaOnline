@@ -29,15 +29,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new();
             }
 
-            bool isOrbEnemy = enemy.BloodOrbs > 0;
-
-            
             var jobId = client.Character.ActiveCharacterJobData.Job;
-            if (!client.Character.JobMasterActiveOrders.ContainsKey(jobId))
+            if (!client.Character.HasContentReleased(jobId.JobTrainingReleaseId()) || !client.Character.JobMasterActiveOrders.ContainsKey(jobId))
             {
-                // No Active job master requests, so skip
+                // Either job training is not released for
+                // this class or there are no Active job
+                // master requests, so skip
                 return new();
             }
+
+            bool isOrbEnemy = enemy.BloodOrbs > 0;
 
             var matchingOrders = client.Character.JobMasterActiveOrders[jobId]
                 .Where(x => x.JobOrderProgressList.Any(c => (c.TargetId == targetId) || ((c.ConditionType == JobOrderCondType.BloodOrbEnemies) && isOrbEnemy)))

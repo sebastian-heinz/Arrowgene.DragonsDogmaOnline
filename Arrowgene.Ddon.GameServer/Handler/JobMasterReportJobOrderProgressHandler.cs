@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -18,6 +19,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 JobId = request.JobId,
             };
+
+            if (!client.Character.HasContentReleased(request.JobId.JobTrainingReleaseId()))
+            {
+                return response;
+            }
 
             Server.Database.ExecuteInTransaction(connection =>
             {
