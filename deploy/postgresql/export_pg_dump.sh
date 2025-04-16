@@ -3,18 +3,16 @@
 # It creates a temporary .pgpass file inside the container for password authentication.
 #
 # Usage:
-#   ./export_pg_dump_with_pgpass.sh <CONTAINER_NAME> <DATABASE_NAME> <USERNAME> <DB_PASSWORD> [OUTPUT_DIR]
+#   ./export_pg_dump.sh <CONTAINER_NAME> <DATABASE_NAME> <USERNAME> <DB_PASSWORD> [OUTPUT_DIR]
 #
 # Example:
-#   ./export_pg_dump_with_pgpass.sh ddon-psql postgres root root ./
+#   ./export_pg_dump.sh ddon-psql postgres root root ./
 
-# Check for required arguments
 if [ "$#" -lt 4 ]; then
   echo "Usage: $0 <CONTAINER_NAME> <DATABASE_NAME> <USERNAME> <DB_PASSWORD> [OUTPUT_DIR]"
   exit 1
 fi
 
-# Assign script arguments to variables
 CONTAINER_NAME=$1
 DATABASE_NAME=$2
 DB_USER=$3
@@ -23,6 +21,7 @@ OUTPUT_DIR=${5:-$(pwd)}  # Default to current directory if not provided
 
 # Generate a timestamp and an output file name
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+mkdir -p "${OUTPUT_DIR}"
 OUTPUT_FILE="${OUTPUT_DIR}/${DATABASE_NAME}_${TIMESTAMP}.sql"
 
 echo "Starting backup of '${DATABASE_NAME}' from container '${CONTAINER_NAME}'..."
@@ -38,7 +37,7 @@ PGPASS_CONTENT="localhost:5432:${DATABASE_NAME}:${DB_USER}:${DB_PASSWORD}"
 docker exec "${CONTAINER_NAME}" bash -c "\
   echo '${PGPASS_CONTENT}' > ~/.pgpass && \
   chmod 600 ~/.pgpass && \
-  pg_dump -U ${DB_USER} ${DATABASE_NAME} && \
+  pg_dump -Fc -U ${DB_USER} ${DATABASE_NAME} && \
   rm ~/.pgpass" > "${OUTPUT_FILE}"
 EXIT_CODE=$?
 
