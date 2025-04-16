@@ -5,6 +5,14 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
 {
     public class OneOffGatheringItemGenerator : IGatheringGenerator
     {
+        DdonGameServer Server;
+
+        public OneOffGatheringItemGenerator(DdonGameServer server)
+        {
+            Server = server;
+        }
+
+
         public override bool IsEnabled()
         {
             return true;
@@ -34,6 +42,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
             { Stage.MegadosysPlateau, UnlockableItemCategory.AreaVisualSurveyMegadosysPlateau },
         };
 
+
         public override List<InstancedGatheringItem> Generate(GameClient client, StageLayoutId stageId, uint index)
         {
             var stage = Stage.StageInfoFromStageLayoutId(stageId);
@@ -41,14 +50,23 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
             if (client.Character.HasContentReleased(ContentsRelease.AreaInvestigation) 
                 && ValidStages.TryGetValue(stage, out ItemId itemId))
             {
-                return
-                [
-                    new()
-                    {
-                        ItemId = itemId,
-                        ItemNum = 1,
-                    }
-                ];
+                var stageSpots = Server.AssetRepository.GatheringSpotInfoAsset.GatheringInfoMap[stage.StageNo];
+
+                if (stageSpots.TryGetValue((stageId.GroupId, index), out var spotInfo) && spotInfo.GatheringType == GatheringType.OM_GATHER_ONE_OFF)
+                {
+                    return
+                    [
+                        new()
+                        {
+                            ItemId = itemId,
+                            ItemNum = 1,
+                        }
+                    ];
+                }
+                else
+                {
+                    return [];
+                }
             }
             else if (client.QuestState.GetActiveQuestScheduleIds().Contains(60215006) // Special case to show a shiny early
                 && stage == Stage.FaranaPlains0 && stageId.GroupId == 50 && index == 7)
