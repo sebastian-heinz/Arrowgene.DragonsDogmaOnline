@@ -1,4 +1,6 @@
-﻿CREATE TABLE "ddon_edit_info_new"
+﻿PRAGMA foreign_keys=OFF;
+
+CREATE TABLE "ddon_edit_info_new"
 (
     "character_common_id"         INTEGER PRIMARY KEY NOT NULL,
     "sex"                         INTEGER            NOT NULL,
@@ -77,3 +79,5 @@
 INSERT INTO "ddon_edit_info_new" SELECT * FROM "ddon_edit_info";
 DROP TABLE "ddon_edit_info";
 ALTER TABLE "ddon_edit_info_new" RENAME TO "ddon_edit_info";
+
+PRAGMA foreign_keys=ON;
