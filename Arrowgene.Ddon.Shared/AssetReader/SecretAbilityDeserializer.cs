@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             var secretAbilities = document.RootElement.GetProperty("default_abilitiles").EnumerateArray().ToList();
             foreach (var abilityId in secretAbilities)
             {
-                asset.DefaultSecretAbilities.Add((SecretAbility) abilityId.GetUInt32());
+                asset.DefaultSecretAbilities.Add((AbilityId) abilityId.GetUInt32());
             }
 
             return asset;

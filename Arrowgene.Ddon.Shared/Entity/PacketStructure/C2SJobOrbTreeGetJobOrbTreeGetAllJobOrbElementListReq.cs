@@ -14,8 +14,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
         public PacketId Id => PacketId.C2S_JOB_ORB_TREE_GET_ALL_JOB_ORB_ELEMENT_LIST_REQ;
 
+        public uint Unk0 { get; set; }
         public JobId JobId {  get; set; }
-        public UInt32 Unk0 { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SJobOrbTreeGetJobOrbTreeGetAllJobOrbElementListReq>
         {
