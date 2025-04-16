@@ -132,8 +132,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                 }
 
-                queuedPackets.AddRange(Server.JobMasterManager.HandleEnemyKill(client, enemyKilled, connectionIn));
-
                 if (packet.IsNoBattleReward)
                 {
                     queuedPackets.Send();
@@ -238,7 +236,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             }
 
                             queuedPackets.AddRange(Server.AchievementManager.HandleKillEnemy(memberClient, enemyKilled, connectionIn: connectionIn));
-
+                            queuedPackets.AddRange(Server.JobMasterManager.HandleEnemyKill(memberClient, enemyKilled, connectionIn));
                         }
                         else if (member is PawnPartyMember pawnMember)
                         {

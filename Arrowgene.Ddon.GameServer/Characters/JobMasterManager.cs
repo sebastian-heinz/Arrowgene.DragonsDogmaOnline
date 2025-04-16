@@ -31,57 +31,55 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             bool isOrbEnemy = enemy.BloodOrbs > 0;
 
-            foreach (var memberClient in client.Party.Clients)
+            
+            var jobId = client.Character.ActiveCharacterJobData.Job;
+            if (!client.Character.JobMasterActiveOrders.ContainsKey(jobId))
             {
-                var jobId = memberClient.Character.ActiveCharacterJobData.Job;
-                if (!memberClient.Character.JobMasterActiveOrders.ContainsKey(jobId))
-                {
-                    // No Active job master requests, so skip
-                    continue;
-                }
+                // No Active job master requests, so skip
+                return new();
+            }
 
-                var matchingOrders = memberClient.Character.JobMasterActiveOrders[jobId]
-                    .Where(x => x.JobOrderProgressList.Any(c => (c.TargetId == targetId) || ((c.ConditionType == JobOrderCondType.BloodOrbEnemies) && isOrbEnemy)))
-                    .Where(x => x.OrderAccepted)
-                    .ToList();
-                if (matchingOrders.Count == 0)
-                {
-                    // No order for this enemy exists
-                    continue;
-                }
+            var matchingOrders = client.Character.JobMasterActiveOrders[jobId]
+                .Where(x => x.JobOrderProgressList.Any(c => (c.TargetId == targetId) || ((c.ConditionType == JobOrderCondType.BloodOrbEnemies) && isOrbEnemy)))
+                .Where(x => x.OrderAccepted)
+                .ToList();
+            if (matchingOrders.Count == 0)
+            {
+                // No order for this enemy exists
+                return new();
+            }
 
-                foreach (var matchingOrder in matchingOrders)
+            foreach (var matchingOrder in matchingOrders)
+            {
+                bool updatedRecord = false;
+                foreach (var orderProgress in matchingOrder.JobOrderProgressList)
                 {
-                    bool updatedRecord = false;
-                    foreach (var orderProgress in matchingOrder.JobOrderProgressList)
+                    if (orderProgress.CurrentNum >= orderProgress.TargetNum || enemy.Lv < orderProgress.TargetRank)
                     {
-                        if (orderProgress.CurrentNum >= orderProgress.TargetNum || enemy.Lv < orderProgress.TargetRank)
-                        {
-                            // Objective was completed, but not claimed
-                            // or the enemy level was too low
-                            continue;
-                        }
-
-                        updatedRecord = true;
-                        orderProgress.CurrentNum += 1;
-
-                        if (!Server.Database.UpsertJobMasterActiveOrdersProgress(memberClient.Character.CharacterId, jobId, matchingOrder.ReleaseType, matchingOrder.ReleaseId, orderProgress, connectionIn))
-                        {
-                            throw new ResponseErrorException(ErrorCode.ERROR_CODE_DB_FAILURE, "Failed to upsert job training record");
-                        }
+                        // Objective was completed, but not claimed
+                        // or the enemy level was too low
+                        continue;
                     }
 
-                    if (updatedRecord && matchingOrder.JobOrderProgressList.All(x => x.CurrentNum == x.TargetNum))
+                    updatedRecord = true;
+                    orderProgress.CurrentNum += 1;
+
+                    if (!Server.Database.UpsertJobMasterActiveOrdersProgress(client.Character.CharacterId, jobId, matchingOrder.ReleaseType, matchingOrder.ReleaseId, orderProgress, connectionIn))
                     {
-                        // Alert the player that they completed their training
-                        packets.Enqueue(memberClient, new S2CJobOrderCompleteNtc()
-                        {
-                            JobId = jobId,
-                            RewardLv = matchingOrder.ReleaseLv,
-                            RewardNo = matchingOrder.ReleaseId,
-                            RewardType = matchingOrder.ReleaseType
-                        });
+                        throw new ResponseErrorException(ErrorCode.ERROR_CODE_DB_FAILURE, "Failed to upsert job training record");
                     }
+                }
+
+                if (updatedRecord && matchingOrder.JobOrderProgressList.All(x => x.CurrentNum == x.TargetNum))
+                {
+                    // Alert the player that they completed their training
+                    packets.Enqueue(client, new S2CJobOrderCompleteNtc()
+                    {
+                        JobId = jobId,
+                        RewardLv = matchingOrder.ReleaseLv,
+                        RewardNo = matchingOrder.ReleaseId,
+                        RewardType = matchingOrder.ReleaseType
+                    });
                 }
             }
 
