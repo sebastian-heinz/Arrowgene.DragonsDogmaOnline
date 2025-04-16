@@ -80,4 +80,20 @@ INSERT INTO "ddon_edit_info_new" SELECT * FROM "ddon_edit_info";
 DROP TABLE "ddon_edit_info";
 ALTER TABLE "ddon_edit_info_new" RENAME TO "ddon_edit_info";
 
-PRAGMA foreign_keys=ON;
+CREATE TABLE "ddon_priority_quests_new"
+(
+    "character_common_id" INTEGER NOT NULL,
+    "quest_schedule_id"   INTEGER NOT NULL,
+    CONSTRAINT "fk_ddon_priority_quests_character_common_id" FOREIGN KEY ("character_common_id") REFERENCES "ddon_character_common" ("character_common_id") ON DELETE CASCADE,
+    CONSTRAINT "uq_character_common_id_quest_schedule_id" UNIQUE ("character_common_id", "quest_schedule_id")
+);
+INSERT INTO "ddon_priority_quests_new" SELECT * FROM "ddon_priority_quests";
+DROP TABLE "ddon_priority_quests";
+ALTER TABLE "ddon_priority_quests_new" RENAME TO "ddon_priority_quests";
+
+CREATE INDEX "idx_ddon_character_account_game_mode" ON "ddon_character" ("account_id", "game_mode");
+CREATE INDEX "idx_ddon_pawn_character_id" ON "ddon_pawn" ("character_id");
+CREATE INDEX "idx_ddon_quest_progress_character_common_id" ON "ddon_quest_progress" ("character_common_id");
+CREATE INDEX "idx_completed_quests_character_common_id_type" ON "ddon_completed_quests" ("character_common_id", "quest_type");
+CREATE INDEX "idx_ddon_system_mail_character_id" ON "ddon_system_mail" ("character_id");
+CREATE INDEX "idx_ddon_crests_character_item" ON "ddon_crests" ("character_common_id", "item_uid");
