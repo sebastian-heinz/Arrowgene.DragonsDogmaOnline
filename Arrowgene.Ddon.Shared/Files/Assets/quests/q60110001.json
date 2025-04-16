@@ -12,13 +12,7 @@
     },
     "area_id": "EasternZandora",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 11,
-            "Param2": 4
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -46,14 +40,24 @@
                     "comment": "Torrid Geo Golem",
                     "enemy_id": "0x015104",
                     "level": 47,
-                    "exp": 4608,
                     "is_boss": true,
-                    "named_enemy_params_id": 271
+                    "named_enemy_params_id": 271,
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 11,
+                    "Param2": 4
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {

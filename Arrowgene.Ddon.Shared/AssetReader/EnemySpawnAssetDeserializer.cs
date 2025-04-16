@@ -166,7 +166,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 }
                 
                 int dropsTableId = row[enemySchemaIndexes["DropsTableId"]].GetInt32();
-                if(dropsTableId >= 0)
+                if(dropsTableId >= 0 && asset.DropsTables.ContainsKey((uint)dropsTableId))
                 {
                     enemy.DropsTable = asset.DropsTables[(uint) dropsTableId];
                 }

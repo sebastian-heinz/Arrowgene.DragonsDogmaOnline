@@ -66,7 +66,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             var requirements = Server.AssetRepository.AreaRankRequirementAsset[areaId];
 
-            if (rank >= requirements.Count())
+            if (rank >= requirements.Count)
             {
                 return 0;
             }
@@ -290,8 +290,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return true;
             }
 
-            // Temporarily while S2 trials in development.
-            if (spot.AreaId >= QuestAreaId.ElanWaterGrove)
+            // Until S3.
+            if (spot.AreaId >= QuestAreaId.RathniteFoothills)
             {
                 return true;
             }

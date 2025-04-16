@@ -7,16 +7,12 @@
     "base_level": 13,
     "minimum_item_rank": 0,
     "discoverable": false,
-    "stage_id": { "id": 25 },
+    "stage_id": {
+        "id": 25
+    },
     "area_id": "HidellPlains",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 1,
-            "Param2": 4
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -53,55 +49,65 @@
                     "comment": "Defiled Earth Figure",
                     "enemy_id": "0x010509",
                     "level": 12,
-                    "exp": 73,
-                    "named_enemy_params_id": 308
+                    "named_enemy_params_id": 308,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Defiled Earth Figure",
                     "enemy_id": "0x010509",
                     "level": 12,
-                    "exp": 73,
-                    "named_enemy_params_id": 308
+                    "named_enemy_params_id": 308,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Defiled Earth Figure",
                     "enemy_id": "0x010509",
                     "level": 12,
-                    "exp": 73,
-                    "named_enemy_params_id": 308
+                    "named_enemy_params_id": 308,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Defiled Earth Figure",
                     "enemy_id": "0x010509",
                     "level": 12,
-                    "exp": 73,
-                    "named_enemy_params_id": 308
+                    "named_enemy_params_id": 308,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Defiled Follower",
                     "enemy_id": "0x010308",
                     "level": 13,
-                    "exp": 73,
-                    "named_enemy_params_id": 309
+                    "named_enemy_params_id": 309,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Defiled Follower",
                     "enemy_id": "0x010308",
                     "level": 13,
-                    "exp": 73,
-                    "named_enemy_params_id": 309
+                    "named_enemy_params_id": 309,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Defiled Assistant Priest",
                     "enemy_id": "0x010308",
                     "level": 15,
-                    "exp": 244,
-                    "named_enemy_params_id": 307
+                    "named_enemy_params_id": 307,
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 1,
+                    "Param2": 4
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {
@@ -113,7 +119,9 @@
         {
             "type": "DiscoverEnemy",
             "announce_type": "Accept",
-            "groups": [ 0 ],
+            "groups": [
+                0
+            ],
             "result_commands": [
                 {
                     "type": "QstTalkChg",
@@ -127,7 +135,9 @@
             "announce_type": "Update",
             "reset_group": false,
             "caution": true,
-            "groups": [ 0 ]
+            "groups": [
+                0
+            ]
         },
         {
             "type": "TalkToNpc",

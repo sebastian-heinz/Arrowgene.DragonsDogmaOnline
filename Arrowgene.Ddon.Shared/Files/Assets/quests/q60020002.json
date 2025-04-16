@@ -7,16 +7,12 @@
     "base_level": 35,
     "minimum_item_rank": 0,
     "discoverable": false,
-    "stage_id": { "id": 26 },
+    "stage_id": {
+        "id": 26
+    },
     "area_id": "BreyaCoast",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 2,
-            "Param2": 9
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -44,14 +40,24 @@
                     "comment": "Sea Dragon the Treasure Guardian",
                     "enemy_id": "0x015707",
                     "level": 33,
-                    "exp": 11940,
                     "is_boss": true,
-                    "named_enemy_params_id": 316
+                    "named_enemy_params_id": 316,
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 2,
+                    "Param2": 9
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {
@@ -63,7 +69,9 @@
         {
             "type": "DiscoverEnemy",
             "announce_type": "Accept",
-            "groups": [ 0 ],
+            "groups": [
+                0
+            ],
             "result_commands": [
                 {
                     "comment": "ONeill idle dialogue.",
@@ -78,7 +86,9 @@
             "announce_type": "Update",
             "reset_group": false,
             "caution": true,
-            "groups": [ 0 ]
+            "groups": [
+                0
+            ]
         },
         {
             "type": "TalkToNpc",

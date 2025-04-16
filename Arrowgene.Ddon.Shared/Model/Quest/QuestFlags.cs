@@ -354,6 +354,10 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             /// Unlocks the Path to Morrow when set.
             /// </summary>
             public static QuestFlagInfo PathToMorrow { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1699, QuestId.Q70022001);
+            public static QuestFlagInfo Unk0 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(3954, QuestId.Q70022001, StageInfo);
+            public static QuestFlagInfo Unk1 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(4033, QuestId.Q70022001, StageInfo);
+            public static QuestFlagInfo Unk2 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(4968, QuestId.Q70022001, StageInfo);
+
         }
 
         public static class FaranaPlains

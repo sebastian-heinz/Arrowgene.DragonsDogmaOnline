@@ -12,13 +12,7 @@
     },
     "area_id": "EasternZandora",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 11,
-            "Param2": 9
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -46,50 +40,60 @@
                     "comment": "Black Knight of the Underworld (Death Knight)",
                     "enemy_id": "0x010310",
                     "level": 58,
-                    "exp": 3320,
-                    "named_enemy_params_id": 378
+                    "named_enemy_params_id": 378,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Accursed Court Lady (Empress Ghost)",
                     "enemy_id": "0x015605",
                     "level": 58,
-                    "exp": 8498,
-                    "named_enemy_params_id": 380
+                    "named_enemy_params_id": 380,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Corpse Torturer Frost",
                     "enemy_id": "0x010512",
                     "level": 58,
-                    "exp": 696
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Corpse Torturer Frost",
                     "enemy_id": "0x010512",
                     "level": 58,
-                    "exp": 696
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Corpse Torturer Frost",
                     "enemy_id": "0x010512",
                     "level": 58,
-                    "exp": 696
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Corpse Torturer Frost",
                     "enemy_id": "0x010512",
                     "level": 58,
-                    "exp": 696
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Corpse Torturer Frost",
                     "enemy_id": "0x010512",
                     "level": 58,
-                    "exp": 696
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 11,
+                    "Param2": 9
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {

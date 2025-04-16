@@ -12,13 +12,7 @@
     },
     "area_id": "EasternZandora",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 11,
-            "Param2": 14
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -48,50 +42,60 @@
                     "comment": "Restless Death Knight",
                     "enemy_id": "0x010310",
                     "level": 65,
-                    "exp": 19702,
                     "is_boss": true,
-                    "named_enemy_params_id": 911
+                    "named_enemy_params_id": 911,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Ghost",
                     "enemy_id": "0x015620",
                     "level": 65,
-                    "exp": 788
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Ghost",
                     "enemy_id": "0x015620",
                     "level": 65,
-                    "exp": 788
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Grimwarg",
                     "enemy_id": "0x010205",
                     "level": 65,
-                    "exp": 788
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Grimwarg",
                     "enemy_id": "0x010205",
                     "level": 65,
-                    "exp": 788
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Grimwarg",
                     "enemy_id": "0x010205",
                     "level": 65,
-                    "exp": 788
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Grimwarg",
                     "enemy_id": "0x010205",
                     "level": 65,
-                    "exp": 788
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 11,
+                    "Param2": 14
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {

@@ -12,13 +12,7 @@
     },
     "area_id": "NorthernBetlandPlains",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 9,
-            "Param2": 14
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -46,26 +40,36 @@
                     "comment": "Strange Beast of the Abandoned Water (Manticore)",
                     "enemy_id": "0x015210",
                     "level": 65,
-                    "exp": 18716,
                     "is_boss": true,
-                    "named_enemy_params_id": 912
+                    "named_enemy_params_id": 912,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Infected Hobgoblin",
                     "enemy_id": "0x010160",
                     "level": 65,
-                    "exp": 748
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Infected Hobgoblin",
                     "enemy_id": "0x010160",
                     "level": 65,
-                    "exp": 748
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 9,
+                    "Param2": 14
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {

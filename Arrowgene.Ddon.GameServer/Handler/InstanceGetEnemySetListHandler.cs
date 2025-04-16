@@ -16,6 +16,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         // Order in list indicates priority where first item has highest priority and last item has least.
         private readonly List<IEnemySetGenerator> EnemySetGenerators = new List<IEnemySetGenerator>()
         {
+            new SpawnTestingGenerator(),
             new QuestEnemySetGenerator(),
             new EpitaphRoadEnemySetGenerator(),
             new CautionSpotEnemyGenerator(),

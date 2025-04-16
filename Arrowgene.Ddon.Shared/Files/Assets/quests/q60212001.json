@@ -12,13 +12,7 @@
     },
     "area_id": "MergodaRuins",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 12,
-            "Param2": 14
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -47,44 +41,54 @@
                     "comment": "Infected Hobgoblin",
                     "enemy_id": "0x010160",
                     "level": 68,
-                    "exp": 1185
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Infected Hobgoblin",
                     "enemy_id": "0x010160",
                     "level": 68,
-                    "exp": 1185
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Infected Hobgoblin",
                     "enemy_id": "0x010160",
                     "level": 68,
-                    "exp": 1185
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Infected Hobgoblin",
                     "enemy_id": "0x010160",
                     "level": 68,
-                    "exp": 1185
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Infected Hobgoblin",
                     "enemy_id": "0x010160",
                     "level": 68,
-                    "exp": 1185
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Awakening Ice Knight (Frost Machina)",
                     "enemy_id": "0x015851",
                     "level": 68,
-                    "exp": 29625,
                     "is_boss": true,
-                    "named_enemy_params_id": 903
+                    "named_enemy_params_id": 903,
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 12,
+                    "Param2": 14
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {

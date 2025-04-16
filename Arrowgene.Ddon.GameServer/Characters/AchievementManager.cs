@@ -821,7 +821,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 EnemyId.CyclopsClub, EnemyId.CyclopsGiant, EnemyId.ArmoredCyclops, EnemyId.ArmoredCyclopsClub } },
             {AchievementEnemyParam.Death, new() { EnemyId.Death } },
             {AchievementEnemyParam.DeathKnight, new() { EnemyId.DeathKnight} },
-            {AchievementEnemyParam.Deer, new() { } }, // ???
+            {AchievementEnemyParam.Deer, new() { EnemyId.Doe, EnemyId.Buck } },
             {AchievementEnemyParam.Drake, new() { EnemyId.Drake0, EnemyId.Drake1 } },
             {AchievementEnemyParam.ElderDragon, new() { EnemyId.ElderDragon0, EnemyId.ElderDragon1, EnemyId.ElderDragonEpitathRoadTrial} },
             {AchievementEnemyParam.Eliminator, new() { EnemyId.Eliminator, EnemyId.EliminatorSlay } },

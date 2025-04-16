@@ -7,16 +7,12 @@
     "base_level": 68,
     "minimum_item_rank": 0,
     "discoverable": false,
-    "stage_id": { "id": 105 },
+    "stage_id": {
+        "id": 105
+    },
     "area_id": "DeenanWoods",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 7,
-            "Param2": 12
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -44,14 +40,24 @@
                     "comment": "Heretic Ent",
                     "enemy_id": "0x015031",
                     "level": 68,
-                    "exp": 4352,
                     "is_boss": true,
-                    "named_enemy_params_id": 898
+                    "named_enemy_params_id": 898,
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 7,
+                    "Param2": 12
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {
@@ -63,7 +69,9 @@
         {
             "type": "DiscoverEnemy",
             "announce_type": "Accept",
-            "groups": [ 0 ],
+            "groups": [
+                0
+            ],
             "result_commands": [
                 {
                     "comment": "Rondejeel0 idle dialogue.",
@@ -78,7 +86,9 @@
             "announce_type": "Update",
             "reset_group": false,
             "caution": true,
-            "groups": [ 0 ]
+            "groups": [
+                0
+            ]
         },
         {
             "type": "TalkToNpc",

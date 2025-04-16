@@ -12,13 +12,7 @@
     },
     "area_id": "EasternZandora",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 11,
-            "Param2": 12
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -46,20 +40,30 @@
                     "comment": "Hollow Knight (Ghost Mail)",
                     "enemy_id": "0x010311",
                     "level": 65,
-                    "exp": 720,
-                    "named_enemy_params_id": 900
+                    "named_enemy_params_id": 900,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Hollow Knight (Ghost Mail)",
                     "enemy_id": "0x010311",
                     "level": 65,
-                    "exp": 720,
-                    "named_enemy_params_id": 900
+                    "named_enemy_params_id": 900,
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 11,
+                    "Param2": 12
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {

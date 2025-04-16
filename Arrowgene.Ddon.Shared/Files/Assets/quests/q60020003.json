@@ -7,7 +7,9 @@
     "base_level": 14,
     "minimum_item_rank": 0,
     "discoverable": false,
-    "stage_id": { "id": 26 },
+    "stage_id": {
+        "id": 26
+    },
     "area_id": "BreyaCoast",
     "adventure_guide_category": "AreaTrialOrMission",
     "order_conditions": [
@@ -15,11 +17,6 @@
             "comment": "Troubled Shores 1",
             "type": "ClearPersonalQuest",
             "Param1": 60020001
-        },
-        {
-            "type": "AreaRank",
-            "Param1": 2,
-            "Param2": 4
         }
     ],
     "rewards": [
@@ -59,87 +56,97 @@
                     "comment": "Breya Treasure Bandit (Fighter)",
                     "enemy_id": "0x011000",
                     "level": 14,
-                    "exp": 73,
                     "named_enemy_params_id": 314,
                     "hm_present_no": 45,
-                    "index": 8
+                    "index": 8,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Breya Treasure Bandit (Seeker)",
                     "enemy_id": "0x011001",
                     "level": 14,
-                    "exp": 73,
                     "named_enemy_params_id": 314,
                     "hm_present_no": 46,
-                    "index": 9
+                    "index": 9,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Breya Treasure Bandit (Fighter)",
                     "enemy_id": "0x011000",
                     "level": 14,
-                    "exp": 73,
                     "named_enemy_params_id": 314,
                     "hm_present_no": 45,
-                    "index": 0
+                    "index": 0,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Breya Treasure Bandit (Seeker)",
                     "enemy_id": "0x011001",
                     "level": 14,
-                    "exp": 73,
                     "named_enemy_params_id": 314,
                     "hm_present_no": 46,
-                    "index": 1
+                    "index": 1,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Breya Treasure Banding (Fighter)",
                     "enemy_id": "0x011000",
                     "level": 14,
-                    "exp": 73,
                     "named_enemy_params_id": 314,
                     "hm_present_no": 45,
-                    "index": 2
+                    "index": 2,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Breya Treasure Bandit (Seeker)",
                     "enemy_id": "0x011001",
                     "level": 14,
-                    "exp": 73,
                     "named_enemy_params_id": 314,
                     "hm_present_no": 46,
-                    "index": 3
+                    "index": 3,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Breya Treasure Banding (Fighter)",
                     "enemy_id": "0x011000",
                     "level": 14,
-                    "exp": 73,
                     "named_enemy_params_id": 314,
                     "hm_present_no": 45,
-                    "index": 4
+                    "index": 4,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Breya Treasure Bandit (Defender)",
                     "enemy_id": "0x011004",
                     "level": 14,
-                    "exp": 73,
                     "named_enemy_params_id": 314,
                     "hm_present_no": 49,
-                    "index": 5
+                    "index": 5,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Breya Treasure Bandit (Mage)",
                     "enemy_id": "0x011005",
                     "level": 14,
-                    "exp": 73,
                     "named_enemy_params_id": 314,
                     "hm_present_no": 50,
-                    "index": 6
+                    "index": 6,
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 2,
+                    "Param2": 4
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {
@@ -151,7 +158,9 @@
         {
             "type": "DiscoverEnemy",
             "announce_type": "Accept",
-            "groups": [ 0 ],
+            "groups": [
+                0
+            ],
             "result_commands": [
                 {
                     "comment": "ONeill idle dialogue.",
@@ -165,7 +174,9 @@
             "type": "KillGroup",
             "announce_type": "Update",
             "reset_group": false,
-            "groups": [ 0 ]
+            "groups": [
+                0
+            ]
         },
         {
             "type": "TalkToNpc",

@@ -258,14 +258,15 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return this;
         }
 
-        public QuestBlock AddQuestFlag(QuestFlagType type, QuestFlagAction action, uint value, QuestId questId = QuestId.None)
+        public QuestBlock AddQuestFlag(QuestFlagType type, QuestFlagAction action, uint value, QuestId questId = QuestId.None, bool preventReplay = false)
         {
             QuestFlags.Add(new QuestFlag()
             {
                 Type = type,
                 Action = action,
                 Value = (int) value,
-                QuestId = (int) questId
+                QuestId = (int) questId,
+                PreventReplay = preventReplay
             });
             return this;
         }

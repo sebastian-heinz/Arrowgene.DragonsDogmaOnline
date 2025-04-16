@@ -143,7 +143,6 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     {
                         EnemyId = Convert.ToUInt32(jEnemy.GetProperty("enemy_id").GetString(), 16),
                         Lv = jEnemy.GetProperty("level").GetUInt16(),
-                        Experience = jEnemy.GetProperty("exp").GetUInt32(),
                         IsBossBGM = isBoss,
                         IsBossGauge = isBoss,
                         Scale = 100,
@@ -174,106 +173,123 @@ namespace Arrowgene.Ddon.Shared.AssetReader
             return true;
         }
 
-        private void ApplyOptionalEnemyKeys(JsonElement enemy, Enemy questEnemey)
+        private void ApplyOptionalEnemyKeys(JsonElement enemy, InstancedEnemy questEnemy)
         {
             if (enemy.TryGetProperty("pp", out JsonElement jPpAmount))
             {
-                questEnemey.PPDrop = jPpAmount.GetUInt32();
+                questEnemy.PPDrop = jPpAmount.GetUInt32();
             }
 
             if (enemy.TryGetProperty("named_enemy_params_id", out JsonElement jNamedEnemyParamsId))
             {
-                questEnemey.NamedEnemyParams = NamedParams.GetValueOrDefault(jNamedEnemyParamsId.GetUInt32(), NamedParam.DEFAULT_NAMED_PARAM);
+                questEnemy.NamedEnemyParams = NamedParams.GetValueOrDefault(jNamedEnemyParamsId.GetUInt32(), NamedParam.DEFAULT_NAMED_PARAM);
             }
 
             if (enemy.TryGetProperty("raid_boss_id", out JsonElement jRaidBossId))
             {
-                questEnemey.RaidBossId = jRaidBossId.GetUInt32();
+                questEnemy.RaidBossId = jRaidBossId.GetUInt32();
             }
 
             if (enemy.TryGetProperty("scale", out JsonElement jScale))
             {
-                questEnemey.Scale = jScale.GetUInt16();
+                questEnemy.Scale = jScale.GetUInt16();
             }
 
             if (enemy.TryGetProperty("hm_present_no", out JsonElement jHmPresetNo))
             {
-                questEnemey.HmPresetNo = jHmPresetNo.GetUInt16();
+                questEnemy.HmPresetNo = jHmPresetNo.GetUInt16();
             }
 
             if (enemy.TryGetProperty("start_think_tbl_no", out JsonElement jStartThinkTblNo))
             {
-                questEnemey.StartThinkTblNo = jStartThinkTblNo.GetByte();
+                questEnemy.StartThinkTblNo = jStartThinkTblNo.GetByte();
             }
 
             if (enemy.TryGetProperty("repop_num", out JsonElement jRepopNum))
             {
-                questEnemey.RepopNum = jRepopNum.GetByte();
+                questEnemy.RepopNum = jRepopNum.GetByte();
             }
 
             if (enemy.TryGetProperty("repop_count", out JsonElement jRepopCount))
             {
-                questEnemey.RepopCount = jRepopCount.GetByte();
+                questEnemy.RepopCount = jRepopCount.GetByte();
             }
 
             if (enemy.TryGetProperty("enemy_target_types_id", out JsonElement jEnemyTargetTypesId))
             {
-                questEnemey.EnemyTargetTypesId = jEnemyTargetTypesId.GetByte();
+                questEnemy.EnemyTargetTypesId = jEnemyTargetTypesId.GetByte();
             }
 
             if (enemy.TryGetProperty("montage_fix_no", out JsonElement jMontageFixNo))
             {
-                questEnemey.MontageFixNo = jMontageFixNo.GetByte();
+                questEnemy.MontageFixNo = jMontageFixNo.GetByte();
             }
 
             if (enemy.TryGetProperty("set_type", out JsonElement jSetType))
             {
-                questEnemey.SetType = jSetType.GetByte();
+                questEnemy.SetType = jSetType.GetByte();
             }
 
             if (enemy.TryGetProperty("infection_type", out JsonElement jInfectionType))
             {
-                questEnemey.InfectionType = jInfectionType.GetByte();
+                questEnemy.InfectionType = jInfectionType.GetByte();
             }
 
             if (enemy.TryGetProperty("is_boss_gauge", out JsonElement jIsBossGauge))
             {
-                questEnemey.IsBossGauge = jIsBossGauge.GetBoolean();
+                questEnemy.IsBossGauge = jIsBossGauge.GetBoolean();
             }
 
             if (enemy.TryGetProperty("is_boss_bgm", out JsonElement jIsBossBGM))
             {
-                questEnemey.IsBossBGM = jIsBossBGM.GetBoolean();
+                questEnemy.IsBossBGM = jIsBossBGM.GetBoolean();
             }
 
             if (enemy.TryGetProperty("is_manual_set", out JsonElement jIsManualSet))
             {
-                questEnemey.IsManualSet = jIsManualSet.GetBoolean();
+                questEnemy.IsManualSet = jIsManualSet.GetBoolean();
             }
 
             if (enemy.TryGetProperty("is_area_boss", out JsonElement jIsAreaBoss))
             {
-                questEnemey.IsAreaBoss = jIsAreaBoss.GetBoolean();
+                questEnemy.IsAreaBoss = jIsAreaBoss.GetBoolean();
             }
 
             if (enemy.TryGetProperty("blood_orbs", out JsonElement jBloodOrbs))
             {
-                questEnemey.BloodOrbs = jBloodOrbs.GetUInt32();
+                questEnemy.BloodOrbs = jBloodOrbs.GetUInt32();
             }
 
             if (enemy.TryGetProperty("high_orbs", out JsonElement jHighOrbs))
             {
-                questEnemey.HighOrbs = jHighOrbs.GetUInt32();
+                questEnemy.HighOrbs = jHighOrbs.GetUInt32();
             }
 
             if (enemy.TryGetProperty("spawn_time_start", out JsonElement jSpawnTimeStart))
             {
-                questEnemey.SpawnTimeStart = jSpawnTimeStart.GetUInt32();
+                questEnemy.SpawnTimeStart = jSpawnTimeStart.GetUInt32();
             }
 
             if (enemy.TryGetProperty("spawn_time_end", out JsonElement jSpawnTimeEnd))
             {
-                questEnemey.SpawnTimeEnd = jSpawnTimeEnd.GetUInt32();
+                questEnemy.SpawnTimeEnd = jSpawnTimeEnd.GetUInt32();
+            }
+
+            if (enemy.TryGetProperty("experience", out JsonElement jExperience))
+            {
+                questEnemy.Experience = jExperience.GetUInt32();
+            }
+
+            if (enemy.TryGetProperty("exp_scheme", out JsonElement jExpScheme))
+            {
+                if (Enum.TryParse(jExpScheme.GetString(), true, out EnemyExpScheme parsedScheme))
+                {
+                    questEnemy.ExpScheme = parsedScheme;
+                }
+                else
+                {
+                    Logger.Error($"Invalid exp scheme {jExpScheme}");
+                }
             }
         }
 

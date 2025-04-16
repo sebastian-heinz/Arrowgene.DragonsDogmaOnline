@@ -7,16 +7,12 @@
     "base_level": 63,
     "minimum_item_rank": 0,
     "discoverable": false,
-    "stage_id": { "id": 137 },
+    "stage_id": {
+        "id": 137
+    },
     "area_id": "MysreeGrove",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 6,
-            "Param2": 12
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -45,54 +41,64 @@
                     "comment": "Figure Fluctuating in the Mist (Mist Warrior)",
                     "enemy_id": "0x011034",
                     "level": 63,
-                    "exp": 296,
                     "hm_present_no": 72,
-                    "named_enemy_params_id": 895
+                    "named_enemy_params_id": 895,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Figure Fluctuating in the Mist (Mist Warrior)",
                     "enemy_id": "0x011034",
                     "level": 63,
-                    "exp": 296,
                     "hm_present_no": 72,
-                    "named_enemy_params_id": 895
+                    "named_enemy_params_id": 895,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Figure Fluctuating in the Mist (Mist Warrior)",
                     "enemy_id": "0x011034",
                     "level": 63,
-                    "exp": 296,
                     "hm_present_no": 72,
-                    "named_enemy_params_id": 895
+                    "named_enemy_params_id": 895,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Figure Fluctuating in the Mist (Mist Warrior)",
                     "enemy_id": "0x011034",
                     "level": 63,
-                    "exp": 296,
                     "hm_present_no": 72,
-                    "named_enemy_params_id": 895
+                    "named_enemy_params_id": 895,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Figure Fluctuating in the Mist (Mist Warrior)",
                     "enemy_id": "0x011034",
                     "level": 63,
-                    "exp": 296,
                     "hm_present_no": 72,
-                    "named_enemy_params_id": 895
+                    "named_enemy_params_id": 895,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "comment": "Figure Fluctuating in the Mist (Mist Warrior)",
                     "enemy_id": "0x011034",
                     "level": 63,
-                    "exp": 296,
                     "hm_present_no": 72,
-                    "named_enemy_params_id": 895
+                    "named_enemy_params_id": 895,
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 6,
+                    "Param2": 12
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {
@@ -104,7 +110,9 @@
         {
             "type": "DiscoverEnemy",
             "announce_type": "Accept",
-            "groups": [ 0 ],
+            "groups": [
+                0
+            ],
             "result_commands": [
                 {
                     "comment": "Christine idle dialogue.",
@@ -119,7 +127,9 @@
             "announce_type": "Update",
             "reset_group": false,
             "caution": true,
-            "groups": [ 0 ]
+            "groups": [
+                0
+            ]
         },
         {
             "type": "TalkToNpc",

@@ -7,16 +7,12 @@
     "base_level": 68,
     "minimum_item_rank": 0,
     "discoverable": false,
-    "stage_id": { "id": 48 },
+    "stage_id": {
+        "id": 48
+    },
     "area_id": "DoweValley",
     "adventure_guide_category": "AreaTrialOrMission",
-    "order_conditions": [
-        {
-            "type": "AreaRank",
-            "Param1": 5,
-            "Param2": 14
-        }
-    ],
+    "order_conditions": [],
     "rewards": [
         {
             "type": "exp",
@@ -45,34 +41,44 @@
                     "comment": "Deep Well Mistress (Medusa)",
                     "enemy_id": "0x015610",
                     "level": 68,
-                    "exp": 29625,
                     "is_boss": true,
-                    "named_enemy_params_id": 910
+                    "named_enemy_params_id": 910,
+                    "exp_scheme": "automatic"
                 },
                 {
                     "enemy_id": "0x010603",
                     "level": 68,
-                    "exp": 1185
+                    "exp_scheme": "automatic"
                 },
                 {
                     "enemy_id": "0x010603",
                     "level": 68,
-                    "exp": 1185
+                    "exp_scheme": "automatic"
                 },
                 {
                     "enemy_id": "0x010603",
                     "level": 68,
-                    "exp": 1185
+                    "exp_scheme": "automatic"
                 },
                 {
                     "enemy_id": "0x010603",
                     "level": 68,
-                    "exp": 1185
+                    "exp_scheme": "automatic"
                 }
             ]
         }
     ],
     "blocks": [
+        {
+            "type": "Raw",
+            "check_commands": [
+                {
+                    "type": "CheckAreaRank",
+                    "Param1": 5,
+                    "Param2": 14
+                }
+            ]
+        },
         {
             "type": "NpcTalkAndOrder",
             "stage_id": {
@@ -84,7 +90,9 @@
         {
             "type": "DiscoverEnemy",
             "announce_type": "Accept",
-            "groups": [ 0 ],
+            "groups": [
+                0
+            ],
             "result_commands": [
                 {
                     "comment": "Hayden idle dialogue.",
@@ -99,7 +107,9 @@
             "announce_type": "Update",
             "reset_group": false,
             "caution": true,
-            "groups": [ 0 ]
+            "groups": [
+                0
+            ]
         },
         {
             "type": "TalkToNpc",
