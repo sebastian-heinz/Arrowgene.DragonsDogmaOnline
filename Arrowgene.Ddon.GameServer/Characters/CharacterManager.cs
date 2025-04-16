@@ -1,4 +1,3 @@
-using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -7,6 +6,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -69,11 +69,21 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
 
                 character.EpitaphRoadState.UnlockedContent = _Server.Database.GetEpitaphRoadUnlocks(character.CharacterId, connectionIn);
-
                 if (_Server.GameSettings.GameServerSettings.EnableEpitaphWeeklyRewards)
                 {
                     character.EpitaphRoadState.WeeklyRewardsClaimed = _Server.Database.GetEpitaphClaimedWeeklyRewards(character.CharacterId, connectionIn);
                 }
+
+                foreach (var jobId in Enum.GetValues(typeof(JobId)).Cast<JobId>())
+                {
+                    character.JobMasterReleasedElements[jobId] = _Server.Database.GetJobMasterReleasedElements(character.CharacterId, jobId, connectionIn);
+
+                    character.JobMasterActiveOrders[jobId] = _Server.JobMasterManager.GetJobMasterActiveOrders(character, jobId, connectionIn);
+                }
+
+                // Calculate everything upfront so we don't need to calculate it every time in vocation select/upgrade handler.
+                character.AcquirableSkills = CalculateAcquirableSkills(character);
+                character.AcquirableAbilities = CalculateAcquirableAbilities(character);
 
                 UpdateCharacterExtendedParams(character);
 
@@ -148,6 +158,124 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return result;
+        }
+
+        private Dictionary<JobId, List<CDataAbilityParam>> CalculateAcquirableAbilities(Character character)
+        {
+            var acquirableSkills = new Dictionary<JobId, List<CDataAbilityParam>>();
+
+            foreach (var jobId in Enum.GetValues(typeof(JobId)).Cast<JobId>())
+            {
+                if (jobId == JobId.None)
+                {
+                    continue;
+                }
+
+                var allSkills = SkillData.AllAbilities.Where(x => x.Job == jobId).ToList();
+                var requiredTraining = _Server.AssetRepository.JobMasterAsset.JobOrders[jobId][JobTrainingReleaseType.Augment];
+
+                var skillData = new List<CDataAbilityParam>();
+                foreach (var skill in allSkills)
+                {
+                    var unlock = new CDataAbilityParam()
+                    {
+                        AbilityNo = skill.AbilityNo,
+                        Job = skill.Job,
+                        Type = skill.Type,
+                    };
+
+                    foreach (var skillLevel in skill.Params)
+                    {
+                        bool isRelease;
+                        if (!requiredTraining.ContainsKey(skill.AbilityNo) || !requiredTraining[skill.AbilityNo].Where(x => x.ReleaseLv == skillLevel.Lv).Any())
+                        {
+                            // The skill level has no unlock requirements
+                            isRelease = true;
+                        }
+                        else
+                        {
+                            // The skill level has an unlock requirement, so see if we unlocked it
+                            isRelease = character.JobMasterReleasedElements[jobId].Where(x => x.ReleaseLv == skillLevel.Lv && x.ReleaseId == skill.AbilityNo).Any();
+                        }
+
+                        unlock.Params.Add(new CDataAbilityLevelParam()
+                        {
+                            Lv = skillLevel.Lv,
+                            RequireJobLevel = skillLevel.RequireJobLevel,
+                            RequireJobPoint = skillLevel.RequireJobPoint,
+                            IsRelease = isRelease
+                        });
+                    }
+                    skillData.Add(unlock);
+                }
+
+                if (!acquirableSkills.ContainsKey(jobId))
+                {
+                    acquirableSkills[jobId] = new List<CDataAbilityParam>();
+                }
+                acquirableSkills[jobId].AddRange(skillData);
+            }
+
+            return acquirableSkills;
+        }
+
+        private Dictionary<JobId, List<CDataSkillParam>> CalculateAcquirableSkills(Character character)
+        {
+            var acquirableSkills = new Dictionary<JobId, List<CDataSkillParam>>();
+
+            foreach (var jobId in Enum.GetValues(typeof(JobId)).Cast<JobId>())
+            {
+                if (jobId == JobId.None)
+                {
+                    continue;
+                }
+
+                var allSkills = SkillData.AllSkills.Where(x => x.Job == jobId).ToList();
+                var requiredTraining = _Server.AssetRepository.JobMasterAsset.JobOrders[jobId][JobTrainingReleaseType.CustomSkill];
+
+                var skillData = new List<CDataSkillParam>();
+                foreach (var skill in allSkills)
+                {
+                    var unlock = new CDataSkillParam()
+                    {
+                        SkillNo = skill.SkillNo,
+                        Job = skill.Job,
+                        Type = skill.Type,
+                    };
+
+                    foreach (var skillLevel in skill.Params)
+                    {
+                        bool isRelease;
+                        if (!requiredTraining.ContainsKey(skill.SkillNo) || !requiredTraining[skill.SkillNo].Where(x => x.ReleaseLv == skillLevel.Lv).Any())
+                        {
+                            // The skill level has no unlock requirements
+                            isRelease = true;
+                        }
+                        else
+                        {
+                            // The skill level has an unlock requirement, so see if we unlocked it
+                            isRelease = character.JobMasterReleasedElements[jobId].Where(x => x.ReleaseLv == skillLevel.Lv && x.ReleaseId == skill.SkillNo).Any();
+                        }
+
+                        unlock.Params.Add(new CDataSkillLevelParam()
+                        {
+                            Lv = skillLevel.Lv,
+                            RequireJobLevel = skillLevel.RequireJobLevel,
+                            RequireJobPoint = skillLevel.RequireJobPoint,
+                            IsRelease = isRelease
+                        });
+                    }
+                    skillData.Add(unlock);
+                }
+
+                if (!acquirableSkills.ContainsKey(jobId))
+                {
+                    acquirableSkills[jobId] = new List<CDataSkillParam>();
+                }
+                acquirableSkills[jobId].AddRange(skillData);
+            }
+
+            return acquirableSkills;
         }
 
         private void SelectPawns(Character character, DbConnection? connectionIn = null)

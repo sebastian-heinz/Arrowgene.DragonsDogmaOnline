@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private readonly string SqlSelectAllUnlockedSecretAbility = $"SELECT {BuildQueryField(UnlockedSecretAbilityFields)} FROM \"ddon_unlocked_secret_ability\" WHERE \"character_common_id\" = @character_common_id;";
 
 
-        public bool InsertSecretAbilityUnlock(uint commonId, SecretAbility secretAbility, DbConnection? connectionIn = null)
+        public bool InsertSecretAbilityUnlock(uint commonId, AbilityId secretAbility, DbConnection? connectionIn = null)
         {
             return ExecuteQuerySafe<bool>(connectionIn, (connection) =>
             {
@@ -33,15 +33,15 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             });
         }
 
-        public List<SecretAbility> SelectAllUnlockedSecretAbilities(uint commonId)
+        public List<AbilityId> SelectAllUnlockedSecretAbilities(uint commonId)
         {
             using TCon connection = OpenNewConnection();
             return SelectAllUnlockedSecretAbilities(connection, commonId);
         }
 
-        public List<SecretAbility> SelectAllUnlockedSecretAbilities(TCon conn, uint commonId)
+        public List<AbilityId> SelectAllUnlockedSecretAbilities(TCon conn, uint commonId)
         {
-            List<SecretAbility> Results = new List<SecretAbility>();
+            List<AbilityId> Results = new List<AbilityId>();
 
             ExecuteInTransaction(conn =>
             {
@@ -59,15 +59,15 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return Results;
         }
 
-        private void AddParameter(TCom command, uint commonId, SecretAbility secretAbility)
+        private void AddParameter(TCom command, uint commonId, AbilityId secretAbility)
         {
             AddParameter(command, "character_common_id", commonId);
             AddParameter(command, "ability_id", (uint) secretAbility);
         }
 
-        private SecretAbility ReadUnlockedSecretAbility(TReader reader)
+        private AbilityId ReadUnlockedSecretAbility(TReader reader)
         {
-            return (SecretAbility) GetUInt32(reader, "ability_id");
+            return (AbilityId) GetUInt32(reader, "ability_id");
         }
     }
 }

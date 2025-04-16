@@ -100,7 +100,7 @@ namespace Arrowgene.Ddon.Server.Settings
             "    (      5,     6,           0.8),\n" +
             "    (      7,     8,           0.6),\n" +
             "    (      9,    10,           0.5),\n" +
-            "};")]
+            "}")]
         public List<(uint MinLv, uint MaxLv, double ExpMultiplier)> AdjustTargetLvEnemyExpTiers
         {
             set

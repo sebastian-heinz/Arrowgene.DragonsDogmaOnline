@@ -45,7 +45,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (Server.ItemManager.IsSecretAbilityItem(item.ItemId))
             {
-                Server.JobManager.UnlockSecretAbility(client, client.Character, (SecretAbility)Server.ItemManager.GetAbilityId(item.ItemId));
+                Server.JobManager.UnlockSecretAbility(client, client.Character, (AbilityId)Server.ItemManager.GetAbilityId(item.ItemId));
             }
 
             if (Server.ScriptManager.GameItemModule.HasItem(item.ItemId))

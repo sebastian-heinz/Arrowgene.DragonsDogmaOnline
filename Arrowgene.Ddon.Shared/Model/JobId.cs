@@ -59,5 +59,25 @@ namespace Arrowgene.Ddon.Shared.Model
         {
             return BlueJobs.Contains(jobId);
         }
+
+        private static Dictionary<JobId, ContentsRelease> JobTrainingReleaseIds = new Dictionary<JobId, ContentsRelease>()
+        {
+            [JobId.Fighter] = ContentsRelease.FighterJobTraining,
+            [JobId.Seeker] = ContentsRelease.SeekerJobTraining,
+            [JobId.Hunter] = ContentsRelease.HunterJobTraining,
+            [JobId.Priest] = ContentsRelease.PriestJobTraining,
+            [JobId.ShieldSage] = ContentsRelease.ShieldSageJobTraining,
+            [JobId.Sorcerer] = ContentsRelease.SorcererJobTraining,
+            [JobId.Warrior] = ContentsRelease.WarriorJobTraining,
+            [JobId.ElementArcher] = ContentsRelease.ElementArcherJobTraining,
+            [JobId.Alchemist] = ContentsRelease.AlchemistJobTraining,
+            [JobId.SpiritLancer] = ContentsRelease.SpiritLancerJobTraining,
+            [JobId.HighScepter] = ContentsRelease.HighScepterJobTraining,
+        };
+
+        public static ContentsRelease JobTrainingReleaseId(this JobId jobId)
+        {
+            return JobTrainingReleaseIds[jobId];
+        }
     }
 }

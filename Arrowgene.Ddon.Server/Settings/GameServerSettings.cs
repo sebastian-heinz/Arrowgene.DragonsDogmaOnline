@@ -352,19 +352,23 @@ namespace Arrowgene.Ddon.Server.Settings
         /// Maximum level for each job. 
         /// Shared with the login server.
         /// Level caps based on season release
-        /// Season 1.0: 40
-        /// Season 1.1: 45
-        /// Season 1.2: 55
-        /// Season 1.3: 60
-        /// Season 2.0: 65
-        /// Season 2.1: 70
-        /// Season 2.2: 75
-        /// Season 2.3: 80
-        /// Season 3.0: 85
-        /// Season 3.1: 90
-        /// Season 3.2: 95
-        /// Season 3.3: 100
-        /// Season 3.4: 120
+        /// Alpha:        10
+        /// CBT           15
+        /// Season 1.0:   40
+        /// Season 1.1:   45
+        /// Season 1.2:   55
+        /// Season 1.3:   60
+        /// Season 2.0:   65
+        /// Season 2.1:   70
+        /// Season 2.2:   75
+        /// Season 2.3:   80
+        /// Season 3.0:   85
+        /// Season 3.1:   90
+        /// Season 3.2:   95
+        /// Season 3.3:  100
+        /// Season 3.41: 105
+        /// Season 3.42: 110
+        /// Season 3.43: 120
         /// </summary>
         [DefaultValue(_JobLevelMax)]
         public uint JobLevelMax
@@ -853,17 +857,17 @@ namespace Arrowgene.Ddon.Server.Settings
         /// when the player performs a gathering action.
         /// </summary>
         [DefaultValue(@"new Dictionary<ItemId,double>
-        {
-            [ItemId.Pickaxe] = 0.3,
-            [ItemId.EnhancedPickaxe] = 0.2,
-            [ItemId.ArtisansPickaxe] = 0.1,
-            [ItemId.LumberKnife] = 0.3,
-            [ItemId.EnhancedLumberKnife] = 0.2,
-            [ItemId.ArtisansLumberKnife] = 0.1,
-            [ItemId.Lockpick] = 0.3,
-            [ItemId.EnhancedLockpick] = 0.2,
-            [ItemId.AllPurposeLockpick] = 0.1,
-        };")]
+{
+    [ItemId.Pickaxe] = 0.3,
+    [ItemId.EnhancedPickaxe] = 0.2,
+    [ItemId.ArtisansPickaxe] = 0.1,
+    [ItemId.LumberKnife] = 0.3,
+    [ItemId.EnhancedLumberKnife] = 0.2,
+    [ItemId.ArtisansLumberKnife] = 0.1,
+    [ItemId.Lockpick] = 0.3,
+    [ItemId.EnhancedLockpick] = 0.2,
+    [ItemId.AllPurposeLockpick] = 0.1,
+};")]
         public Dictionary<ItemId,double> ToolBreakChance
         {
             set

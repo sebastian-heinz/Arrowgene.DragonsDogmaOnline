@@ -20,9 +20,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CJobGetJobChangeListRes Handle(GameClient client, C2SJobGetJobChangeListReq request)
         {
+            bool isHighScepterUnlocked = client.Character.HasContentReleased(ContentsRelease.ChangetoHighScepter);
+            if (client.GameMode == GameMode.BitterblackMaze)
+            {
+                isHighScepterUnlocked = true;
+            }
+
             S2CJobGetJobChangeListRes res = new S2CJobGetJobChangeListRes();
-            res.JobChangeInfo = buildJobChangeInfoList(client.Character);
-            res.JobReleaseInfo = buildJobReleaseInfoList(client.Character);
+            res.JobChangeInfo = buildJobChangeInfoList(client.Character, isHighScepterUnlocked);
+            res.JobReleaseInfo = buildJobReleaseInfoList(client.Character, isHighScepterUnlocked);
+
+            // TODO: Check for released jobs
 
             if (client.Party is not null)
             {
@@ -39,8 +47,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         SlotNo = (byte)(index + 1),
                         PawnId = pawn.PawnId,
-                        JobChangeInfoList = buildJobChangeInfoList(pawn),
-                        JobReleaseInfoList = buildJobReleaseInfoList(pawn)
+                        JobChangeInfoList = buildJobChangeInfoList(pawn, isHighScepterUnlocked),
+                        JobReleaseInfoList = buildJobReleaseInfoList(pawn, isHighScepterUnlocked)
                     })
                     .ToList();
             }
@@ -49,16 +57,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
             return res;
         }
 
-        private List<CDataJobChangeInfo> buildJobChangeInfoList(CharacterCommon common)
+        private List<CDataJobChangeInfo> buildJobChangeInfoList(CharacterCommon common, bool isHighScepterUnlocked)
         {
             return common.CharacterJobDataList
+                .Where(x => x.Job != JobId.HighScepter || isHighScepterUnlocked)
                 .Select(jobData => getJobChangeInfo(common, jobData.Job))
                 .ToList();
         }
 
-        private List<CDataJobChangeInfo> buildJobReleaseInfoList(CharacterCommon common)
+        private List<CDataJobChangeInfo> buildJobReleaseInfoList(CharacterCommon common, bool isHighScepterUnlocked)
         {
             return ((JobId[]) JobId.GetValues(typeof(JobId)))
+                .Where(x => x != JobId.HighScepter || isHighScepterUnlocked)
                 .Where(x => !common.CharacterJobDataList.Any(job => job.Job == x))
                 .Select(jobId => getJobChangeInfo(common, jobId))
                 .ToList();

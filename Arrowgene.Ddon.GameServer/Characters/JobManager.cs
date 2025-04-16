@@ -378,7 +378,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 // Check if there is a learned skill of the same ID (This unlock is a level upgrade)
                 CustomSkill lowerLevelSkill = character.LearnedCustomSkills.Where(skill => skill != null && skill.Job == job && skill.SkillId == skillId).SingleOrDefault();
-
                 if (lowerLevelSkill == null)
                 {
                     // Add new skill
@@ -396,6 +395,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // Upgrade existing skills
                     lowerLevelSkill.SkillLv = skillLv;
                     database.UpdateLearnedCustomSkill(character.CommonId, lowerLevelSkill, connection);
+
+                    _Server.JobMasterManager.ScheduleCustomSkillTrainingTask(client, job, lowerLevelSkill, connection);
                 }
 
                 // EX Skills
@@ -704,7 +705,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             // Check if there is a learned ability of the same ID (This unlock is a level upgrade)
             Ability lowerLevelAbility = character.LearnedAbilities.SingleOrDefault(aug => aug != null && aug.AbilityId == abilityId);
-
             database.ExecuteInTransaction(connection =>
             {
                 if (lowerLevelAbility == null)
@@ -724,6 +724,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // Level upgrade
                     lowerLevelAbility.AbilityLv = abilityLv;
                     database.UpdateLearnedAbility(character.CommonId, lowerLevelAbility, connection);
+
+                    _Server.JobMasterManager.ScheduleAbilityTrainingTask(client, job, lowerLevelAbility, connection);
                 }
 
                 uint jpCost = abilityData.Params.Where(x => x.Lv == abilityLv).Single().RequireJobPoint;
@@ -794,7 +796,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             database.ReplaceEquippedAbilities(character.CommonId, character.Job, equippedAbilities);
         }
 
-        public void UnlockSecretAbility(GameClient client, CharacterCommon character, SecretAbility secretAbilityType, DbConnection? connectionIn = null)
+        public void UnlockSecretAbility(GameClient client, CharacterCommon character, AbilityId secretAbilityType, DbConnection? connectionIn = null)
         {
             // MSG_GROUP_TYPE_GET_SECRET_ABILITY = 0x30,
             if (_Server.Database.InsertSecretAbilityUnlock(character.CommonId, secretAbilityType, connectionIn))

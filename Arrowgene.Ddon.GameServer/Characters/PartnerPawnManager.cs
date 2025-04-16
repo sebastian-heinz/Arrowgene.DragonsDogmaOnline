@@ -290,22 +290,22 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             [1] = PartnerReward.CreateEmoteReward(EmoteId.ImHerePose1),
             // [2], TODO: Recipe: Achievement/Recipe: Dinner Set
-            [3] = PartnerReward.CreateAbilityReward(SecretAbility.CompanionHealth),
-            [4] = PartnerReward.CreateAbilityReward(SecretAbility.CompanionAttack),
+            [3] = PartnerReward.CreateAbilityReward(AbilityId.CompanionHealth),
+            [4] = PartnerReward.CreateAbilityReward(AbilityId.CompanionAttack),
             [5] = PartnerReward.CreateEmoteReward(EmoteId.ImHerePose2),
             // [6], TODO: Achievement/Recipe: Lestanian Puppet - Giant Cyclops
             [7] = PartnerReward.CreateCommunicationReward(2),
             [8] = PartnerReward.CreateHairstyleReward(HairStyleId.Ex1Men, 2),
-            [9] = PartnerReward.CreateAbilityReward(SecretAbility.CompanionDefense),
+            [9] = PartnerReward.CreateAbilityReward(AbilityId.CompanionDefense),
             [10] = PartnerReward.CreateEmoteReward(EmoteId.OriginalPose2),
             [11] = PartnerReward.CreateCommunicationReward(3),
             [12] = PartnerReward.CreateHairstyleReward(HairStyleId.Ex2Women, 2),
-            [13] = PartnerReward.CreateAbilityReward(SecretAbility.CompanionStamina),
+            [13] = PartnerReward.CreateAbilityReward(AbilityId.CompanionStamina),
             [14] = PartnerReward.CreateEmoteReward(EmoteId.ImHerePose3),
             [15] = PartnerReward.CreateCommunicationReward(4),
             [16] = PartnerReward.CreateHairstyleReward(HairStyleId.Ex3Women, 2),
-            [17] = PartnerReward.CreateAbilityReward(SecretAbility.CompanionMagick),
-            [18] = PartnerReward.CreateAbilityReward(SecretAbility.CompanionMagickDefense),
+            [17] = PartnerReward.CreateAbilityReward(AbilityId.CompanionMagick),
+            [18] = PartnerReward.CreateAbilityReward(AbilityId.CompanionMagickDefense),
             [19] = PartnerReward.CreateEmoteReward(EmoteId.ImHerePose4),
             // [20] = TODO: Achievement 愛を叫んだ覚者
             [21] = PartnerReward.CreateHairstyleReward(HairStyleId.Ex4Women, 2),

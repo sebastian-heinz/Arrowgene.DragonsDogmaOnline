@@ -1,13 +1,12 @@
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using Arrowgene.Ddon.Database;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Collections.Generic;
+using System.Data.Common;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Characters
 {
@@ -344,7 +343,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             public uint Amount { get; private set; }
             public LvlUpRestrictionType LvlUpRestrictionType { get; private set; }
             public uint LvlUpCost { get; private set; }
-            public SecretAbility SecretAbility { get; private set; }
+            public AbilityId SecretAbility { get; private set; }
             public uint PageNo { get; private set; }
             public uint GroupNo { get; private set; }
             public uint IndexNo { get; private set; }
@@ -398,7 +397,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return this;
             }
 
-            public DragonForceUpgrade Unlocks(SecretAbility Type)
+            public DragonForceUpgrade Unlocks(AbilityId Type)
             {
                 this.GainType = OrbGainParamType.SecretAbility;
                 this.SecretAbility = Type;
@@ -510,7 +509,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x16] = new DragonForceUpgrade()
                 .Location(PageNo.Page1, GroupNo.Group1, 2)
                 .HasOrbUnlockRestriction(70)
-                .Unlocks(SecretAbility.Efficacy),
+                .Unlocks(AbilityId.Efficacy),
             [0x17] = new DragonForceUpgrade()
                 .Location(PageNo.Page1, GroupNo.Group1, 3)
                 .HasOrbUnlockRestriction(10)
@@ -539,7 +538,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x1d] = new DragonForceUpgrade()
                 .Location(PageNo.Page1, GroupNo.Group2, 1)
                 .HasOrbUnlockRestriction(30)
-                .Unlocks(SecretAbility.EffectExtension),
+                .Unlocks(AbilityId.EffectExtension),
             [0x1e] = new DragonForceUpgrade()
                 .Location(PageNo.Page1, GroupNo.Group2, 2)
                 .HasOrbUnlockRestriction(75)
@@ -551,7 +550,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x20] = new DragonForceUpgrade()
                 .Location(PageNo.Page1, GroupNo.Group2, 4)
                 .HasOrbUnlockRestriction(30)
-                .Unlocks(SecretAbility.ExtendedSprings),
+                .Unlocks(AbilityId.ExtendedSprings),
             [0x21] = new DragonForceUpgrade()
                 .Location(PageNo.Page1, GroupNo.Group2, 5)
                 .HasOrbUnlockRestriction(50)
@@ -596,7 +595,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x2b] = new DragonForceUpgrade()
                 .Location(PageNo.Page1, GroupNo.Group3, 7)
                 .HasOrbUnlockRestriction(50)
-                .Unlocks(SecretAbility.RainDefense),
+                .Unlocks(AbilityId.RainDefense),
             [0x2c] = new DragonForceUpgrade()
                 .Location(PageNo.Page1, GroupNo.Group3, 8)
                 .HasOrbUnlockRestriction(30)
@@ -629,7 +628,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x33] = new DragonForceUpgrade()
                 .Location(PageNo.Page1, GroupNo.Group4, 7)
                 .HasOrbUnlockRestriction(50)
-                .Unlocks(SecretAbility.RainAttack),
+                .Unlocks(AbilityId.RainAttack),
             [0x34] = new DragonForceUpgrade()
                 .Location(PageNo.Page1, GroupNo.Group4, 8)
                 .HasOrbUnlockRestriction(30)
@@ -667,7 +666,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x36] = new DragonForceUpgrade()
                 .Location(PageNo.Page2, GroupNo.Group1, 2)
                 .HasOrbUnlockRestriction(220)
-                .Unlocks(SecretAbility.SoftTouch),
+                .Unlocks(AbilityId.SoftTouch),
             [0x37] = new DragonForceUpgrade()
                 .Location(PageNo.Page2, GroupNo.Group1, 3)
                 .HasOrbUnlockRestriction(100)
@@ -712,7 +711,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x41] = new DragonForceUpgrade()
                 .Location(PageNo.Page2, GroupNo.Group2, 5)
                 .HasOrbUnlockRestriction(250)
-                .Unlocks(SecretAbility.Gathering),
+                .Unlocks(AbilityId.Gathering),
             [0x42] = new DragonForceUpgrade()
                 .Location(PageNo.Page2, GroupNo.Group2, 6)
                 .HasOrbUnlockRestriction(100)
@@ -724,7 +723,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x44] = new DragonForceUpgrade()
                 .Location(PageNo.Page2, GroupNo.Group2, 8)
                 .HasOrbUnlockRestriction(200)
-                .Unlocks(SecretAbility.EnhancedThrow),
+                .Unlocks(AbilityId.EnhancedThrow),
 
             [0x45] = new DragonForceUpgrade()
                 .Location(PageNo.Page2, GroupNo.Group3, 1)
@@ -753,7 +752,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x4b] = new DragonForceUpgrade()
                 .Location(PageNo.Page2, GroupNo.Group3, 7)
                 .HasOrbUnlockRestriction(200)
-                .Unlocks(SecretAbility.NewDefense),
+                .Unlocks(AbilityId.NewDefense),
             [0x4c] = new DragonForceUpgrade()
                 .Location(PageNo.Page2, GroupNo.Group3, 8)
                 .HasOrbUnlockRestriction(160)
@@ -786,7 +785,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x53] = new DragonForceUpgrade()
                 .Location(PageNo.Page2, GroupNo.Group4, 7)
                 .HasOrbUnlockRestriction(200)
-                .Unlocks(SecretAbility.NewAttack),
+                .Unlocks(AbilityId.NewAttack),
             [0x54] = new DragonForceUpgrade()
                 .Location(PageNo.Page2, GroupNo.Group4, 8)
                 .HasOrbUnlockRestriction(160)
@@ -824,7 +823,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x56] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group1, 2)
                 .HasOrbUnlockRestriction(1000)
-                .Unlocks(SecretAbility.Flow),
+                .Unlocks(AbilityId.Flow),
             [0x57] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group1, 3)
                 .HasOrbUnlockRestriction(520)
@@ -865,7 +864,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x60] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group2, 4)
                 .HasOrbUnlockRestriction(750)
-                .Unlocks(SecretAbility.ExpertExcavator),
+                .Unlocks(AbilityId.ExpertExcavator),
             [0x61] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group2, 5)
                 .HasOrbUnlockRestriction(650)
@@ -877,7 +876,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x63] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group2, 7)
                 .HasOrbUnlockRestriction(750)
-                .Unlocks(SecretAbility.Featherfoot),
+                .Unlocks(AbilityId.Featherfoot),
             [0x64] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group2, 8)
                 .HasOrbUnlockRestriction(580)
@@ -910,7 +909,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x6b] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group3, 7)
                 .HasOrbUnlockRestriction(750)
-                .Unlocks(SecretAbility.MoonlightDefense),
+                .Unlocks(AbilityId.MoonlightDefense),
             [0x6c] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group3, 8)
                 .HasOrbUnlockRestriction(550)
@@ -943,7 +942,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x73] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group4, 7)
                 .HasOrbUnlockRestriction(750)
-                .Unlocks(SecretAbility.MoonlightAssault),
+                .Unlocks(AbilityId.MoonlightAssault),
             [0x74] = new DragonForceUpgrade()
                 .Location(PageNo.Page3, GroupNo.Group4, 8)
                 .HasOrbUnlockRestriction(550)
@@ -981,7 +980,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x76] = new DragonForceUpgrade()
                 .Location(PageNo.Page4, GroupNo.Group1, 2)
                 .HasOrbUnlockRestriction(5000)
-                .Unlocks(SecretAbility.Willpower),
+                .Unlocks(AbilityId.Willpower),
             [0x77] = new DragonForceUpgrade()
                 .Location(PageNo.Page4, GroupNo.Group1, 3)
                 .HasOrbUnlockRestriction(1800)
@@ -1022,7 +1021,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x80] = new DragonForceUpgrade()
                 .Location(PageNo.Page4, GroupNo.Group2, 4)
                 .HasOrbUnlockRestriction(2700)
-                .Unlocks(SecretAbility.TreasureEye),
+                .Unlocks(AbilityId.TreasureEye),
             [0x81] = new DragonForceUpgrade()
                 .Location(PageNo.Page4, GroupNo.Group2, 5)
                 .HasOrbUnlockRestriction(2200)
@@ -1030,7 +1029,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x82] = new DragonForceUpgrade()
                 .Location(PageNo.Page4, GroupNo.Group2, 6)
                 .HasOrbUnlockRestriction(3500)
-                .Unlocks(SecretAbility.SafeLanding),
+                .Unlocks(AbilityId.SafeLanding),
             [0x83] = new DragonForceUpgrade()
                 .Location(PageNo.Page4, GroupNo.Group2, 7)
                 .HasOrbUnlockRestriction(2200)
@@ -1055,7 +1054,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x88] = new DragonForceUpgrade()
                 .Location(PageNo.Page4, GroupNo.Group3, 4)
                 .HasOrbUnlockRestriction(3000)
-                .Unlocks(SecretAbility.Rakshasa),
+                .Unlocks(AbilityId.Rakshasa),
             [0x89] = new DragonForceUpgrade()
                 .Location(PageNo.Page4, GroupNo.Group3, 5)
                 .HasOrbUnlockRestriction(1500)
@@ -1088,7 +1087,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [0x90] = new DragonForceUpgrade()
                 .Location(PageNo.Page4, GroupNo.Group4, 4)
                 .HasOrbUnlockRestriction(3000)
-                .Unlocks(SecretAbility.Yasha),
+                .Unlocks(AbilityId.Yasha),
             [0x91] = new DragonForceUpgrade()
                 .Location(PageNo.Page4, GroupNo.Group4, 5)
                 .HasOrbUnlockRestriction(1500)

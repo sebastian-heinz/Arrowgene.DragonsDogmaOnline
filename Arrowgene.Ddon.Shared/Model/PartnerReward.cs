@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.Shared.Model
             };
         }
 
-        public static CDataPartnerPawnReward CreateAbilityReward(SecretAbility abilityId)
+        public static CDataPartnerPawnReward CreateAbilityReward(AbilityId abilityId)
         {
             return new CDataPartnerPawnReward()
             {

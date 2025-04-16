@@ -55,13 +55,21 @@ public class Mixin : IExpMixin
 
     public override uint GetExpValue(CharacterCommon characterCommon, InstancedEnemy enemy)
     {
+        uint result = 0;
+
         if (AutomaticExpQuestExceptions.Contains(enemy.QuestScheduleId))
         {
             return 0;
         }
 
-        uint result = 0;
-        switch (enemy.ExpScheme)
+        var scheme = enemy.ExpScheme;
+        if (StageManager.IsBitterBlackMazeStageId(enemy.StageLayoutId))
+        {
+            // TODO: Change to special BBM scheme
+            scheme = EnemyExpScheme.Tool;
+        }
+
+        switch (scheme)
         {
             case EnemyExpScheme.Automatic:
                 result = GetAutomaticExpCalculation(characterCommon, enemy);
@@ -133,9 +141,6 @@ public class Mixin : IExpMixin
             }
         }
         xp *= questModifier;
-
-        // Some enemy nameplates have an EXP modifier
-        xp *= (enemy.NamedEnemyParams.Experience / 100);
 
         // Put a cap on maximum amount of exp can be gained per kill
         // to slow down power leveling of early level players
