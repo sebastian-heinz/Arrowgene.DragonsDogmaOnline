@@ -112,7 +112,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public List<CDataReleaseElement> GetNewReleasedElements(GameClient client, JobId jobId, DbConnection? connectionIn = null)
         {
             var completedOrders = client.Character.JobMasterActiveOrders[jobId]
-                    .Where(x => x.JobOrderProgressList.All(x => x.TargetNum == x.CurrentNum)).ToList();
+                    .Where(x => x.JobOrderProgressList.All(c => c.TargetNum == c.CurrentNum)).ToList();
 
             var newReleasedElement = new List<CDataReleaseElement>();
             foreach (var completedOrder in completedOrders)
@@ -161,9 +161,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public void ScheduleCustomSkillTrainingTask(GameClient client, JobId jobId, CustomSkill customSkill, DbConnection? connectionIn = null)
         {
+            if (jobId == JobId.None)
+            {
+                return;
+            }
+
             var match = Server.AssetRepository.JobMasterAsset.JobOrders[jobId][JobTrainingReleaseType.CustomSkill]
                 .SelectMany(x => x.Value)
-                .Where(x => x.ReleaseLv == customSkill.SkillLv + 1 && x.ReleaseId == customSkill.SkillId)
+                .Where(x => x.ReleaseId == customSkill.SkillId)
+                .Where(x => x.ReleaseLv == customSkill.SkillLv + 1)
                 .FirstOrDefault();
             if (match == null)
             {
@@ -183,6 +189,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public void ScheduleAbilityTrainingTask(GameClient client, JobId jobId, Ability ability, DbConnection? connectionIn = null)
         {
+            if (jobId == JobId.None)
+            {
+                return;
+            }
+
             var match = Server.AssetRepository.JobMasterAsset.JobOrders[jobId][JobTrainingReleaseType.Augment]
                 .SelectMany(x => x.Value)
                 .Where(x => x.ReleaseLv == ability.AbilityLv + 1 && x.ReleaseId == ability.AbilityId)

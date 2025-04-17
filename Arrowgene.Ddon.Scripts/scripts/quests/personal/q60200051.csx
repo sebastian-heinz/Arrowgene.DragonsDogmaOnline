@@ -7,7 +7,7 @@
 public class ScriptedQuest : IQuest
 {
     public override QuestType QuestType => QuestType.Tutorial;
-    public override QuestId QuestId => QuestId.SeekingTheMasterAlchemist;
+    public override QuestId QuestId => QuestId.SeekingTheMasterSpiritLancer;
     public override ushort RecommendedLevel => 18;
     public override byte MinimumItemRank => 0;
     public override bool IsDiscoverable => true;
@@ -16,7 +16,8 @@ public class ScriptedQuest : IQuest
 
     public override bool AcceptRequirementsMet(GameClient client)
     {
-        return client.Character.ActiveCharacterJobData.Job == JobId.SpiritLancer;
+        return client.Character.ActiveCharacterJobData.Job == JobId.SpiritLancer &&
+               client.Character.HasQuestCompleted(QuestId.SpiritLancerTacticsTrialASpiritLance);
     }
 
     protected override void InitializeState()
@@ -40,7 +41,7 @@ public class ScriptedQuest : IQuest
         process0.AddRawBlock(QuestAnnounceType.None)
             .AddCheckCmdPlJobEq(JobId.SpiritLancer)
             .AddCheckCmdIsTutorialQuestClear(QuestId.SpiritLancerTacticsTrialASpiritLance);
-        process0.AddNpcTalkAndOrderBlock(Stage.TheWhiteDragonTemple0, NpcId.Razanailt, 19699);
+        process0.AddNpcTalkAndOrderBlock(Stage.DanaCentrum, NpcId.Razanailt, 19699);
         process0.AddTalkToNpcBlock(QuestAnnounceType.Accept, Stage.SpiritArtsHut, NpcId.AdairDonnchadh0, 19701);
         process0.AddIsStageNoBlock(QuestAnnounceType.None, Stage.SpiritArtsHut)
             .AddResultCmdReleaseAnnounce(ContentsRelease.SpiritLancerJobTraining, TutorialId.JobTrainingLog);

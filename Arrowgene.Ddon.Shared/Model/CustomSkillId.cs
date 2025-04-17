@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.Shared.Model
         SkywardLashT = 212,
         // Seeker
         BitingWind = 20,
-        TossandTrigger = 21,
+        TossAndTrigger = 21,
         Ensnare = 22,
         SteppingStone = 23,
         BackKick = 24,
@@ -278,7 +278,7 @@ namespace Arrowgene.Ddon.Shared.Model
             [CustomSkillId.SkywardLashT] = 22,
             // Seeker
             [CustomSkillId.BitingWind] = 1,
-            [CustomSkillId.TossandTrigger] = 2,
+            [CustomSkillId.TossAndTrigger] = 2,
             [CustomSkillId.Ensnare] = 3,
             [CustomSkillId.SteppingStone] = 4,
             [CustomSkillId.BackKick] = 5,
@@ -478,14 +478,14 @@ namespace Arrowgene.Ddon.Shared.Model
             [CustomSkillId.CureGlastaP] = 17,
             [CustomSkillId.CureGlastaT] = 18,
             // High Scepter
-            [CustomSkillId.FullMoonLight] = 1,
-            [CustomSkillId.WallBarrier] = 5,
+            [CustomSkillId.MirageShift] = 1,
+            [CustomSkillId.WallBarrier] = 2,
+            [CustomSkillId.PhantomEdge] = 3,
+            [CustomSkillId.FullMoonLight] = 4,
+            [CustomSkillId.BlackFlashFang] = 5,
+            [CustomSkillId.DimSlice] = 6,
             [CustomSkillId.EclipseBright] = 7,
-            [CustomSkillId.BlackFlashFang] = 4,
-            [CustomSkillId.MirageShift] = 2,
-            [CustomSkillId.TerrorBlast] = 6,
-            [CustomSkillId.PhantomEdge] = 8,
-            [CustomSkillId.DimSlice] = 3,
+            [CustomSkillId.TerrorBlast] = 8,
         };
     }
 }
