@@ -1,7 +1,9 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -16,22 +18,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CJobMasterGetJobMasterOrderProgressRes Handle(GameClient client, C2SJobMasterGetJobMasterOrderProgressReq request)
         {
-            var response = new S2CJobMasterGetJobMasterOrderProgressRes()
-            {
-                JobId = request.JobId
-            };
-
             if (!client.Character.HasContentReleased(request.JobId.JobTrainingReleaseId()))
             {
-                return response;
+                return new()
+                {
+                    JobId = request.JobId
+                };
             }
 
-            response.ActiveJobOrderList = client.Character.JobMasterActiveOrders
+            return new()
+            {
+                JobId = request.JobId,
+                ActiveJobOrderList = client.Character.JobMasterActiveOrders
                     .Where(x => x.Key == request.JobId)
                     .SelectMany(x => x.Value)
-                    .ToList();
-
-            return response;
+                    .ToList()
+            };
         }
     }
 }

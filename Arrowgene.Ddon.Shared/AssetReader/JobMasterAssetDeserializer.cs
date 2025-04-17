@@ -5,6 +5,7 @@ using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text.Json;
+using System.Xml.Linq;
 
 namespace Arrowgene.Ddon.Shared.AssetReader
 {
@@ -55,11 +56,16 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             Logger.Error($"Failed to parse JobTrainingReleaseType={name}. Skipping.");
                             continue;
                         }
+
                         releaseId = customSkillId.ReleaseId();
+                    }
+                    else if (releaseType == JobTrainingReleaseType.Augment)
+                    {
+                        releaseId = jSkill.GetProperty("id").GetUInt32();
                     }
                     else
                     {
-                        releaseId = jSkill.GetProperty("id").GetUInt32();
+                        throw new Exception("Invalid upgrade type!");
                     }
 
                     asset.JobOrders[jobId][releaseType][releaseId] = new List<CDataActiveJobOrder>();
@@ -97,7 +103,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             var enemyType = jTask.GetProperty("enemy_type").GetString();
                             if (enemyType == "OrbEnemy")
                             {
-                                conditionType = JobOrderCondType.BloodOrbEnemies;
+                                condition.ConditionType = JobOrderCondType.BloodOrbEnemies;
                             }
                             else
                             {
@@ -116,6 +122,11 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             }
 
                             condition.TargetId = Enemy.GetNameId(enemyId);
+                            if (condition.TargetId == 0 && condition.ConditionType != JobOrderCondType.BloodOrbEnemies)
+                            {
+                                Logger.Error($"Something went wrong with {jobId}, {releaseId}");
+                            }
+
                             condition.TargetRank = jTask.GetProperty("enemy_level").GetUInt32();
                             condition.TargetNum = jTask.GetProperty("enemy_count").GetUInt32();
                         }

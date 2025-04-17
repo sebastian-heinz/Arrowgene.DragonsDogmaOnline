@@ -6930,8 +6930,6 @@
             }
         ]
     },
-
-
     {
         "job": "Hunter",
         "release_type": "Augment",
@@ -15713,9 +15711,9 @@
                     {
                         "skill_level": 5,
                         "objective": "hunt",
-                        "enemy_type": "None",
+                        "enemy_type": "SkeletonKnight",
                         "enemy_level": 0,
-                        "enemy_count": 0
+                        "enemy_count": 12
                     },
                     {
                         "skill_level": 6,

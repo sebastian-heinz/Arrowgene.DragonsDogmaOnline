@@ -121,7 +121,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
                     }
 
                     refundedJp[characterCommonId][ability.Job] += SkillData.AllAbilities
-                        .Where(x => x.Job == ability.Job)
                         .Where(x => x.AbilityNo == ability.AbilityId)
                         .SelectMany(x => x.Params)
                         .Where(x => x.Lv > 3 && x.Lv <= ability.AbilityLv)
