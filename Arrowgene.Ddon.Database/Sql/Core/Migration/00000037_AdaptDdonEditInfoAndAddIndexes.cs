@@ -4,8 +4,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
 {
     public class FixDdonEditInfoAndAddIndexes : IMigrationStrategy
     {
-        public uint From => 35;
-        public uint To => 36;
+        public uint From => 36;
+        public uint To => 37;
 
         private readonly DatabaseSetting DatabaseSetting;
 
