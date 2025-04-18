@@ -91,9 +91,9 @@ INSERT INTO "ddon_priority_quests_new" SELECT * FROM "ddon_priority_quests";
 DROP TABLE "ddon_priority_quests";
 ALTER TABLE "ddon_priority_quests_new" RENAME TO "ddon_priority_quests";
 
-CREATE INDEX "idx_ddon_character_account_game_mode" ON "ddon_character" ("account_id", "game_mode");
-CREATE INDEX "idx_ddon_pawn_character_id" ON "ddon_pawn" ("character_id");
-CREATE INDEX "idx_ddon_quest_progress_character_common_id" ON "ddon_quest_progress" ("character_common_id");
-CREATE INDEX "idx_completed_quests_character_common_id_type" ON "ddon_completed_quests" ("character_common_id", "quest_type");
-CREATE INDEX "idx_ddon_system_mail_character_id" ON "ddon_system_mail" ("character_id");
-CREATE INDEX "idx_ddon_crests_character_item" ON "ddon_crests" ("character_common_id", "item_uid");
+CREATE INDEX IF NOT EXISTS "idx_ddon_character_account_game_mode" ON "ddon_character" ("account_id", "game_mode");
+CREATE INDEX IF NOT EXISTS "idx_ddon_pawn_character_id" ON "ddon_pawn" ("character_id");
+CREATE INDEX IF NOT EXISTS "idx_ddon_quest_progress_character_common_id" ON "ddon_quest_progress" ("character_common_id");
+CREATE INDEX IF NOT EXISTS "idx_completed_quests_character_common_id_type" ON "ddon_completed_quests" ("character_common_id", "quest_type");
+CREATE INDEX IF NOT EXISTS "idx_ddon_system_mail_character_id" ON "ddon_system_mail" ("character_id");
+CREATE INDEX IF NOT EXISTS "idx_ddon_crests_character_item" ON "ddon_crests" ("character_common_id", "item_uid");

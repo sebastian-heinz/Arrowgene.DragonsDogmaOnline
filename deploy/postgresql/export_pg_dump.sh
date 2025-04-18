@@ -6,7 +6,7 @@
 #   ./export_pg_dump.sh <CONTAINER_NAME> <DATABASE_NAME> <USERNAME> <DB_PASSWORD> [OUTPUT_DIR]
 #
 # Example:
-#   ./export_pg_dump.sh ddon-psql postgres root root ./
+#   ./export_pg_dump.sh ddon-psql postgres postgres postgres ./
 
 if [ "$#" -lt 4 ]; then
   echo "Usage: $0 <CONTAINER_NAME> <DATABASE_NAME> <USERNAME> <DB_PASSWORD> [OUTPUT_DIR]"

@@ -829,7 +829,7 @@ CREATE TABLE IF NOT EXISTS "ddon_rank_record"
     "date"                DATETIME                          NOT NULL,
     CONSTRAINT "fk_ddon_rank_record_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character"("character_id") ON DELETE CASCADE
 );
-INSERT INTO ddon_schedule_next(type, timestamp) VALUES (23, 0);
+INSERT INTO "ddon_schedule_next"(type, timestamp) VALUES (23, 0);
 
 CREATE TABLE IF NOT EXISTS "ddon_partner_pawn"
 (
@@ -838,8 +838,8 @@ CREATE TABLE IF NOT EXISTS "ddon_partner_pawn"
     "num_gifts" INTEGER NOT NULL,
     "num_crafts" INTEGER NOT NULL,
     "num_adventures" INTEGER NOT NULL,
-    CONSTRAINT pk_ddon_partner_pawn PRIMARY KEY ("character_id", "pawn_id"),
-    CONSTRAINT fk_ddonpartner_pawn_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+    CONSTRAINT "pk_ddon_partner_pawn" PRIMARY KEY ("character_id", "pawn_id"),
+    CONSTRAINT "fk_ddonpartner_pawn_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS "ddon_partner_pawn_last_affection_increase"
@@ -847,18 +847,18 @@ CREATE TABLE IF NOT EXISTS "ddon_partner_pawn_last_affection_increase"
     "character_id" INTEGER NOT NULL,
     "pawn_id" INTEGER NOT NULL,
     "action" INTEGER NOT NULL,
-    CONSTRAINT pk_ddon_partner_pawn_last_affection_increase PRIMARY KEY ("character_id", "pawn_id", "action"),
-    CONSTRAINT fk_ddon_partner_pawn_affection_increase_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+    CONSTRAINT "pk_ddon_partner_pawn_last_affection_increase" PRIMARY KEY ("character_id", "pawn_id", "action"),
+    CONSTRAINT "fk_ddon_partner_pawn_affection_increase_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
-INSERT INTO ddon_schedule_next(type, timestamp) VALUES (13, 0);
+INSERT INTO "ddon_schedule_next"(type, timestamp) VALUES (13, 0);
 
 CREATE TABLE IF NOT EXISTS "ddon_partner_pawn_pending_rewards"
 (
     "character_id" INTEGER NOT NULL,
     "pawn_id" INTEGER NOT NULL,
     "reward_level" INTEGER NOT NULL,
-    CONSTRAINT pk_ddon_partner_pawn_pending_rewards PRIMARY KEY ("character_id", "pawn_id"),
-    CONSTRAINT fk_ddon_partner_pawn_pending_rewards_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+    CONSTRAINT "pk_ddon_partner_pawn_pending_rewards" PRIMARY KEY ("character_id", "pawn_id"),
+    CONSTRAINT "fk_ddon_partner_pawn_pending_rewards_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS "ddon_achievement_progress"
@@ -867,8 +867,8 @@ CREATE TABLE IF NOT EXISTS "ddon_achievement_progress"
     "achievement_type"  INTEGER NOT NULL,
     "achievement_param" INTEGER NOT NULL,
     "progress"          INTEGER NOT NULL,
-    CONSTRAINT pk_ddon_achievement_progress PRIMARY KEY ("character_id", "achievement_type", "achievement_param"),
-    CONSTRAINT fk_ddon_achievement_progress_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+    CONSTRAINT "pk_ddon_achievement_progress" PRIMARY KEY ("character_id", "achievement_type", "achievement_param"),
+    CONSTRAINT "fk_ddon_achievement_progress_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS "ddon_achievement"
@@ -876,8 +876,8 @@ CREATE TABLE IF NOT EXISTS "ddon_achievement"
     "character_id"      INTEGER NOT NULL,
     "achievement_id"    INTEGER NOT NULL,
     "date"              DATETIME NOT NULL,
-    CONSTRAINT pk_ddon_achievement PRIMARY KEY ("character_id", "achievement_id"),
-    CONSTRAINT fk_ddon_achievement_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+    CONSTRAINT "pk_ddon_achievement" PRIMARY KEY ("character_id", "achievement_id"),
+    CONSTRAINT "fk_ddon_achievement_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS "ddon_achievement_unique_crafts"
@@ -885,8 +885,8 @@ CREATE TABLE IF NOT EXISTS "ddon_achievement_unique_crafts"
     "character_id"      INTEGER NOT NULL,
     "item_id"           INTEGER NOT NULL,
     "craft_type"        TINYINT NOT NULL,
-    CONSTRAINT pk_ddon_achievement_unique_crafts PRIMARY KEY ("character_id", "item_id"),
-    CONSTRAINT fk_ddon_achievement_unique_crafts_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+    CONSTRAINT "pk_ddon_achievement_unique_crafts" PRIMARY KEY ("character_id", "item_id"),
+    CONSTRAINT "fk_ddon_achievement_unique_crafts_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS "ddon_unlocked_items"
@@ -894,8 +894,8 @@ CREATE TABLE IF NOT EXISTS "ddon_unlocked_items"
     "character_id"      INTEGER NOT NULL,
     "category"          INTEGER NOT NULL,
     "item_id"           INTEGER NOT NULL,
-    CONSTRAINT pk_ddon_unlocked_items PRIMARY KEY ("character_id", "category", "item_id"),
-    CONSTRAINT fk_ddon_unlocked_items_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+    CONSTRAINT "pk_ddon_unlocked_items" PRIMARY KEY ("character_id", "category", "item_id"),
+    CONSTRAINT "fk_ddon_unlocked_items_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS "ddon_myroom_customization"
@@ -903,18 +903,18 @@ CREATE TABLE IF NOT EXISTS "ddon_myroom_customization"
     "character_id"      INTEGER NOT NULL,
     "layout_id"         TINYINT NOT NULL,
     "item_id"           INTEGER NOT NULL,
-    CONSTRAINT pk_ddon_myroom_customization PRIMARY KEY ("character_id", "layout_id"),
-    CONSTRAINT fk_ddon_myroom_customization_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+    CONSTRAINT "pk_ddon_myroom_customization" PRIMARY KEY ("character_id", "layout_id"),
+    CONSTRAINT "fk_ddon_myroom_customization_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS "ddon_recycle_equipment"
 (
     "character_id" INTEGER NOT NULL,
     "num_attempts" INTEGER NOT NULL,
-    CONSTRAINT pk_ddon_recycle_equipment PRIMARY KEY ("character_id"),
-    CONSTRAINT fk_ddon_recycle_equipment_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+    CONSTRAINT "pk_ddon_recycle_equipment" PRIMARY KEY ("character_id"),
+    CONSTRAINT "fk_ddon_recycle_equipment_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
-INSERT INTO ddon_schedule_next(type, timestamp) VALUES (24, 0);
+INSERT INTO "ddon_schedule_next"(type, timestamp) VALUES (24, 0);
 
 CREATE TABLE IF NOT EXISTS "ddon_equipment_limit_break"
 (
@@ -924,33 +924,33 @@ CREATE TABLE IF NOT EXISTS "ddon_equipment_limit_break"
     "effect_2"     INTEGER NOT NULL,
     "is_effect1_valid" BOOLEAN NOT NULL,
     "is_effect2_valid" BOOLEAN NOT NULL,
-    CONSTRAINT pk_ddon_equipment_limit_break PRIMARY KEY ("character_id", "item_uid"),
-    CONSTRAINT fk_ddon_equipment_limit_break_item_uid FOREIGN KEY ("item_uid") REFERENCES "ddon_storage_item" ("item_uid") ON DELETE CASCADE,
-    CONSTRAINT fk_ddon_equipment_limit_break_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+    CONSTRAINT "pk_ddon_equipment_limit_break" PRIMARY KEY ("character_id", "item_uid"),
+    CONSTRAINT "fk_ddon_equipment_limit_break_item_uid" FOREIGN KEY ("item_uid") REFERENCES "ddon_storage_item" ("item_uid") ON DELETE CASCADE,
+    CONSTRAINT "fk_ddon_equipment_limit_break_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS ddon_job_master_released_elements (
+CREATE TABLE IF NOT EXISTS "ddon_job_master_released_elements" (
 	"character_id"	INTEGER NOT NULL,
 	"job_id"	    INTEGER NOT NULL,
     "release_type"  INTEGER NOT NULL,
 	"release_id"	INTEGER NOT NULL,
     "release_level" INTEGER NOT NULL,
-    CONSTRAINT pk_ddon_job_master_released_elements PRIMARY KEY ("character_id", "job_id", "release_type", "release_id", "release_level"),
-    CONSTRAINT fk_ddon_job_master_released_elements_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+    CONSTRAINT "pk_ddon_job_master_released_elements" PRIMARY KEY ("character_id", "job_id", "release_type", "release_id", "release_level"),
+    CONSTRAINT "fk_ddon_job_master_released_elements_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS ddon_job_master_active_orders (
+CREATE TABLE IF NOT EXISTS "ddon_job_master_active_orders" (
 	"character_id"	INTEGER NOT NULL,
 	"job_id"	    INTEGER NOT NULL,
     "release_type"  INTEGER NOT NULL,
 	"release_id"	INTEGER NOT NULL,
 	"release_level"	INTEGER NOT NULL,
     "order_accepted" BOOLEAN NOT NULL,
-    CONSTRAINT pk_ddon_job_master_active_orders PRIMARY KEY ("character_id", "job_id", "release_type", "release_id"),
-    CONSTRAINT fk_ddon_job_master_active_orders_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+    CONSTRAINT "pk_ddon_job_master_active_orders" PRIMARY KEY ("character_id", "job_id", "release_type", "release_id"),
+    CONSTRAINT "fk_ddon_job_master_active_orders_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
 
-CREATE TABLE IF NOT EXISTS ddon_job_master_active_orders_progress (
+CREATE TABLE IF NOT EXISTS "ddon_job_master_active_orders_progress" (
 	"character_id"	INTEGER NOT NULL,
 	"job_id"	    INTEGER NOT NULL,
     "release_type"  INTEGER NOT NULL,
@@ -960,6 +960,6 @@ CREATE TABLE IF NOT EXISTS ddon_job_master_active_orders_progress (
     "target_rank"	INTEGER NOT NULL,
 	"target_num"	INTEGER NOT NULL,
     "current_num"	INTEGER NOT NULL,
-    CONSTRAINT fk_ddon_job_master_active_orders_progress FOREIGN KEY ("character_id", "job_id", "release_type", "release_id") REFERENCES "ddon_job_master_active_orders" ("character_id", "job_id", "release_type", "release_id") ON DELETE CASCADE,
-    CONSTRAINT fk_ddon_job_master_active_orders_progress_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
+    CONSTRAINT "fk_ddon_job_master_active_orders_progress" FOREIGN KEY ("character_id", "job_id", "release_type", "release_id") REFERENCES "ddon_job_master_active_orders" ("character_id", "job_id", "release_type", "release_id") ON DELETE CASCADE,
+    CONSTRAINT "fk_ddon_job_master_active_orders_progress_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );

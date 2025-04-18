@@ -6,7 +6,7 @@
 #   ./import_pg_dump.sh <CONTAINER_NAME> <DATABASE_NAME> <USERNAME> <DB_PASSWORD> <DUMP_FILE_PATH>
 #
 # Example:
-#   ./import_pg_dump.sh ddon-psql postgres root root ./postgres.sql
+#   ./import_pg_dump.sh ddon-psql postgres postgres postgres ./postgres.sql
 #
 # Note:
 # - The dump file must be in the pg_dump custom format (-Fc).
