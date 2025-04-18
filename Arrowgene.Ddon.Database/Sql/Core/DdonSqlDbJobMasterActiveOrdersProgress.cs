@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private readonly string SqlUpdateJobMasterActiveOrdersProgress = $"UPDATE \"ddon_job_master_active_orders_progress\" SET {BuildQueryUpdate(JobMasterActiveOrdersProgress)} WHERE \"character_id\"=@character_id AND \"job_id\"=@job_id AND \"release_type\"=@release_type AND \"release_id\"=@release_id AND \"target_id\"=@target_id;";
 
 
-        public bool InsertJobMasterActiveOrderProgress(uint characterId, JobId jobId, JobTrainingReleaseType releaseType, uint releaseId, CDataJobOrderProgress jobOrderProgress, DbConnection? connectionIn = null)
+        public bool InsertJobMasterActiveOrderProgress(uint characterId, JobId jobId, ReleaseType releaseType, uint releaseId, CDataJobOrderProgress jobOrderProgress, DbConnection? connectionIn = null)
         {
             return ExecuteQuerySafe<bool>(connectionIn, (connection) =>
             {
@@ -40,7 +40,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             });
         }
 
-        public bool UpdateJobMasterActiveOrderProgress(uint characterId, JobId jobId, JobTrainingReleaseType releaseType, uint releaseId, CDataJobOrderProgress jobOrderProgress, DbConnection? connectionIn = null)
+        public bool UpdateJobMasterActiveOrderProgress(uint characterId, JobId jobId, ReleaseType releaseType, uint releaseId, CDataJobOrderProgress jobOrderProgress, DbConnection? connectionIn = null)
         {
             return ExecuteQuerySafe<bool>(connectionIn, (connection) =>
             {
@@ -59,7 +59,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             });
         }
 
-        public bool HasJobMasterActiveOrderProgress(uint characterId, JobId jobId, JobTrainingReleaseType releaseType, uint releaseId, CDataJobOrderProgress jobOrderProgress, DbConnection? connectionIn = null)
+        public bool HasJobMasterActiveOrderProgress(uint characterId, JobId jobId, ReleaseType releaseType, uint releaseId, CDataJobOrderProgress jobOrderProgress, DbConnection? connectionIn = null)
         {
             bool foundRecord = false;
             ExecuteQuerySafe(connectionIn, (connection) =>
@@ -78,14 +78,14 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return foundRecord;
         }
 
-        public bool UpsertJobMasterActiveOrdersProgress(uint characterId, JobId jobId, JobTrainingReleaseType releaseType, uint releaseId, CDataJobOrderProgress jobOrderProgress, DbConnection? connectionIn = null)
+        public bool UpsertJobMasterActiveOrdersProgress(uint characterId, JobId jobId, ReleaseType releaseType, uint releaseId, CDataJobOrderProgress jobOrderProgress, DbConnection? connectionIn = null)
         {
             return HasJobMasterActiveOrderProgress(characterId, jobId, releaseType, releaseId, jobOrderProgress, connectionIn) ?
                 UpdateJobMasterActiveOrderProgress(characterId, jobId, releaseType, releaseId, jobOrderProgress, connectionIn) :
                 InsertJobMasterActiveOrderProgress(characterId, jobId, releaseType, releaseId, jobOrderProgress, connectionIn);
         }
 
-        public List<CDataJobOrderProgress> GetJobMasterActiveOrderProgress(uint characterId, JobId jobId, JobTrainingReleaseType releaseType, uint releaseId, DbConnection? connectionIn = null)
+        public List<CDataJobOrderProgress> GetJobMasterActiveOrderProgress(uint characterId, JobId jobId, ReleaseType releaseType, uint releaseId, DbConnection? connectionIn = null)
         {
             var results = new List<CDataJobOrderProgress>();
             ExecuteQuerySafe(connectionIn, (connection) =>

@@ -74,7 +74,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         result = new CDataReleaseElement()
                         {
                             ReleaseId = GetUInt32(reader, "release_id"),
-                            ReleaseType = (JobTrainingReleaseType) GetByte(reader, "release_type"),
+                            ReleaseType = (ReleaseType) GetByte(reader, "release_type"),
                             ReleaseLv = GetByte(reader, "release_level"),
                         };
                     }
@@ -99,7 +99,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         results.Add(new CDataReleaseElement()
                         {
                             ReleaseId = GetUInt32(reader, "release_id"),
-                            ReleaseType = (JobTrainingReleaseType)GetByte(reader, "release_type"),
+                            ReleaseType = (ReleaseType)GetByte(reader, "release_type"),
                             ReleaseLv = GetByte(reader, "release_level"),
                         });
                     }
