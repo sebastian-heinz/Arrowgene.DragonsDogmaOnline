@@ -1,5 +1,7 @@
 using System;
 using System.Data;
+using System.Data.Common;
+using System.Runtime.CompilerServices;
 using Arrowgene.Ddon.Database.Sql.Core;
 using Arrowgene.Logging;
 using Npgsql;
@@ -134,5 +136,20 @@ namespace Arrowgene.Ddon.Database.Sql
 
             return DateTime.SpecifyKind(reader.GetDateTime(ordinal), DateTimeKind.Utc);
         }
+        
+        public override ushort GetUInt16(DbDataReader reader, string column)
+        {
+            var int32 = Convert.ToInt32(reader[column]);
+            var uint16 = Unsafe.As<int, ushort>(ref int32);
+            return uint16;
+        }
+        
+        public override byte GetByte(DbDataReader reader, string column)
+        {
+            var int32 = Convert.ToInt32(reader[column]);
+            var u8 = Unsafe.As<int, byte>(ref int32);
+            return u8;
+        }
+
     }
 }

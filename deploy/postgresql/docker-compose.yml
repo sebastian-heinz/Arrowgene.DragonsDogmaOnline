@@ -2,8 +2,8 @@ volumes:
   ddon-psql-data:
 
 services:
-  psql:
-    container_name: ddon-psql
+  db:
+    container_name: db
     image: postgres:17-alpine
     ports:
       - "5432:5432"
@@ -11,10 +11,10 @@ services:
     volumes:
       - ddon-psql-data:/var/lib/postgresql/data
 #      - ./schema_postgres.sql:/docker-entrypoint-initdb.d/schema_postgres.sql:ro
-      - ./postgresql.conf:/etc/postgresql/postgresql.conf:ro
+      - ./postgresql-debug-logging.conf:/etc/postgresql/postgresql.conf:ro
     environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=postgres
       - POSTGRES_INITDB_ARGS=--auth=scram-sha-256 --lc-numeric=en_US.UTF-8
     command: postgres -c config_file=/etc/postgresql/postgresql.conf

@@ -272,7 +272,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return base.GetUInt32((TReader)reader, column);
         }
 
-        public byte GetByte(DbDataReader reader, string column)
+        public virtual byte GetByte(DbDataReader reader, string column)
         {
             return base.GetByte((TReader)reader, column);
         }
@@ -282,7 +282,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             return base.GetInt16((TReader)reader, column);
         }
 
-        public ushort GetUInt16(DbDataReader reader, string column)
+        public virtual ushort GetUInt16(DbDataReader reader, string column)
         {
             return base.GetUInt16((TReader)reader, column);
         }
