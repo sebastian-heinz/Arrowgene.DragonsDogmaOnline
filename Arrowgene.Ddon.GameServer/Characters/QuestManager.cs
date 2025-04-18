@@ -3391,5 +3391,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             return IsClanQuest(quest.QuestId);
         }
+
+        public static bool IsExmQuest(QuestId questId)
+        {
+            return QuestUtils.IsExmQuest(questId);
+        }
+
+        public static bool IsExmQuest(uint questScheduleId)
+        {
+            var quest = GetQuestByScheduleId(questScheduleId);
+            if (quest == null)
+            {
+                return false;
+            }
+            return IsExmQuest(quest.QuestId);
+        }
     }
 }

@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private readonly string SqlSelectJobMasterActiveOrdersProgress = $"SELECT {BuildQueryField(JobMasterActiveOrdersProgress)} FROM \"ddon_job_master_active_orders_progress\" WHERE  \"character_id\"=@character_id AND \"job_id\"=@job_id AND \"release_type\"=@release_type AND \"release_id\"=@release_id;";
         private readonly string SqlInsertJobMasterActiveOrdersProgress = $"INSERT INTO \"ddon_job_master_active_orders_progress\" ({BuildQueryField(JobMasterActiveOrdersProgress)}) VALUES ({BuildQueryInsert(JobMasterActiveOrdersProgress)});";
-        private readonly string SqlUpdateJobMasterActiveOrdersProgress = $"UPDATE \"ddon_job_master_active_orders_progress\" SET {BuildQueryUpdate(JobMasterActiveOrdersProgress)} WHERE \"character_id\"=@character_id AND \"job_id\"=@job_id AND \"release_type\"=@release_type AND \"release_id\"=@release_id;";
+        private readonly string SqlUpdateJobMasterActiveOrdersProgress = $"UPDATE \"ddon_job_master_active_orders_progress\" SET {BuildQueryUpdate(JobMasterActiveOrdersProgress)} WHERE \"character_id\"=@character_id AND \"job_id\"=@job_id AND \"release_type\"=@release_type AND \"release_id\"=@release_id AND \"target_id\"=@target_id;";
 
 
         public bool InsertJobMasterActiveOrderProgress(uint characterId, JobId jobId, JobTrainingReleaseType releaseType, uint releaseId, CDataJobOrderProgress jobOrderProgress, DbConnection? connectionIn = null)
