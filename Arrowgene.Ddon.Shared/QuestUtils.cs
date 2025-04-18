@@ -64,5 +64,10 @@ namespace Arrowgene.Ddon.Shared
         {
             return (((uint)questId) >= 30000000) && (((uint)questId) < 40000000);
         }
+
+        public static bool IsExmQuest(QuestId questId)
+        {
+            return (((uint)questId) >= 50000000) && (((uint)questId) < 60000000);
+        }
     }
 }

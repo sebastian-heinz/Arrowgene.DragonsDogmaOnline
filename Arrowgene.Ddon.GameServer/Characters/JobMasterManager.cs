@@ -2,6 +2,7 @@ using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using System;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -53,15 +54,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
             foreach (var matchingOrder in matchingOrders)
             {
                 bool updatedRecord = false;
-                foreach (var orderProgress in matchingOrder.JobOrderProgressList)
-                {
-                    if (orderProgress.CurrentNum >= orderProgress.TargetNum || enemy.Lv < orderProgress.TargetRank)
-                    {
-                        // Objective was completed, but not claimed
-                        // or the enemy level was too low
-                        continue;
-                    }
 
+                var matchingProgress = matchingOrder.JobOrderProgressList
+                    .Where(x => (x.TargetId == targetId) || (x.ConditionType == JobOrderCondType.BloodOrbEnemies && isOrbEnemy))
+                    .Where(x => x.CurrentNum < x.TargetNum)
+                    .Where(x => enemy.Lv >= x.TargetRank)
+                    .ToList();
+
+                foreach (var orderProgress in matchingProgress)
+                {
                     updatedRecord = true;
                     orderProgress.CurrentNum += 1;
 
@@ -71,7 +72,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     }
                 }
 
-                if (updatedRecord && matchingOrder.JobOrderProgressList.All(x => x.CurrentNum == x.TargetNum))
+                if (updatedRecord && matchingOrder.JobOrderProgressList.All(x => x.CurrentNum >= x.TargetNum))
                 {
                     // Alert the player that they completed their training
                     packets.Enqueue(client, new S2CJobOrderCompleteNtc()
@@ -112,7 +113,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public List<CDataReleaseElement> GetNewReleasedElements(GameClient client, JobId jobId, DbConnection? connectionIn = null)
         {
             var completedOrders = client.Character.JobMasterActiveOrders[jobId]
-                    .Where(x => x.JobOrderProgressList.All(c => c.TargetNum == c.CurrentNum)).ToList();
+                    .Where(x => x.JobOrderProgressList.All(c => c.CurrentNum >= c.TargetNum)).ToList();
 
             var newReleasedElement = new List<CDataReleaseElement>();
             foreach (var completedOrder in completedOrders)
@@ -132,6 +133,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 // Add to internal state
                 client.Character.JobMasterReleasedElements[jobId].Add(releasedElement);
 
+                // Remove tracking for completed order
+                client.Character.JobMasterActiveOrders[jobId].RemoveAll(x =>
+                    x.ReleaseType == completedOrder.ReleaseType &&
+                    x.ReleaseLv == completedOrder.ReleaseLv &&
+                    x.ReleaseId == completedOrder.ReleaseId);
+                    
                 // Update existing skill
                 if (completedOrder.ReleaseType == JobTrainingReleaseType.CustomSkill)
                 {
@@ -142,7 +149,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         .FirstOrDefault();
                     acquireableSkill.IsRelease = true;
                 }
-                else 
+                else if (completedOrder.ReleaseType == JobTrainingReleaseType.Augment)
                 {
                     var acquireableSkill = client.Character.AcquirableAbilities[jobId]
                         .Where(x => x.AbilityNo == releasedElement.ReleaseId)
@@ -151,9 +158,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         .FirstOrDefault();
                     acquireableSkill.IsRelease = true;
                 }
-
-                // Remove tracking for completed order
-                client.Character.JobMasterActiveOrders[jobId].RemoveAll(x => x.ReleaseId == completedOrder.ReleaseId);
+                else
+                {
+                    throw new Exception("Unexpected release type associated with the jt task");
+                }
             }
 
             return newReleasedElement;

@@ -68,6 +68,10 @@ public class Mixin : IExpMixin
             // TODO: Change to special BBM scheme
             scheme = EnemyExpScheme.Tool;
         }
+        else if (enemy.QuestScheduleId != 0 && QuestManager.IsExmQuest(enemy.QuestScheduleId))
+        {
+            scheme = EnemyExpScheme.Exm;
+        }
 
         switch (scheme)
         {
