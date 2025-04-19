@@ -28,13 +28,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return res;
             }
 
-            var completedQuests = client.Character.CompletedQuests.Values.Where(x => x.QuestType == QuestType.World);
             foreach (var questScheduleId in client.Party.QuestState.AreaQuests(request.DistributeId))
             {
                 var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
                 var questInfo = quest.ToCDataSetQuestInfoList();
                 questInfo.CompleteNum = (ushort)(client.Party.QuestState.IsCompletedWorldQuest(quest.QuestId) ? 1 : 0); // Completed in the current instance, hides rewards.
-                questInfo.IsDiscovery = quest.IsDiscoverable || (completedQuests.Where(y => y.QuestId == quest.QuestId).FirstOrDefault()?.ClearCount ?? 0) > 0;
+                questInfo.IsDiscovery = quest.IsDiscoverable || client.Character.CompletedQuests.ContainsKey(quest.QuestId);
                 res.SetQuestList.Add(questInfo);
             }
 

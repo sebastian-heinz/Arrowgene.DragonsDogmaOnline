@@ -93,7 +93,7 @@ public class ScriptedQuest : IQuest
             .AddResultCmdSetAnnounce(QuestAnnounceType.Caution);
 
         // Report to <NPC 2511> in <SPOT 877>
-        process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, QuestStages.TargetStage, QuestNpcs.AreaMaster, NpcText.AMReturn)
+        process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, QuestStages.AreaMasterStage, QuestNpcs.AreaMaster, NpcText.AMReturn)
             .AddResultCmdQstTalkChg(QuestNpcs.AreaMaster, NpcText.AMIdle);
 
         process0.AddProcessEndBlock(true);

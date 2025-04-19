@@ -46,16 +46,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 CompletedQuest questStats = client.Party.Leader?.Client.Character.CompletedQuests.GetValueOrDefault(quest.QuestId);
                 QuestState questState = client.Party.QuestState.GetQuestState(quest);
-
-                res.SetQuestList.Add(new CDataSetQuestList()
-                {
-                    Detail = new CDataSetQuestDetail()
-                    {
-                        IsDiscovery = (questStats == null) ? quest.IsDiscoverable : true,
-                        ClearCount = (questStats == null) ? 0 : questStats.ClearCount
-                    },
-                    Param = quest.ToCDataQuestList(questState?.Step ?? 0),
-                });
+                res.SetQuestList.Add(quest.ToCDataSetQuestList(questState?.Step ?? 0, questStats?.ClearCount ?? 0));
             }
 
             foreach (var questScheduleId in client.Party.QuestState.AreaQuests(request.DistributeId))
@@ -71,15 +62,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
 
                 CompletedQuest questStats = client.Party.Leader?.Client.Character.CompletedQuests.GetValueOrDefault(quest.QuestId);
-                res.SetQuestList.Add(new CDataSetQuestList()
-                {
-                    Detail = new CDataSetQuestDetail()
-                    {
-                        IsDiscovery = (questStats == null) ? quest.IsDiscoverable : true,
-                        ClearCount = (questStats == null) ? 0 : questStats.ClearCount
-                    },
-                    Param = quest.ToCDataQuestList(0),
-                });
+                res.SetQuestList.Add(quest.ToCDataSetQuestList(0, questStats?.ClearCount ?? 0));
                 client.Party.QuestState.AddNewQuest(quest, 0);
             }
 

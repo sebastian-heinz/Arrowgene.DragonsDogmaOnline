@@ -80,8 +80,8 @@
             "announce_type": "Update",
             "groups": [0]
         },
-        {		
-            "type": "TalkToNpc",
+        {
+            "type": "NewTalkToNpc",
             "stage_id": {
                 "id": 372,
                 "group_id": 1,
@@ -89,7 +89,7 @@
             },
             "announce_type": "Update",
             "npc_id": "12",
-            "message_id": 11842	
-    }
+            "message_id": 11842
+        }
   ]
 }
