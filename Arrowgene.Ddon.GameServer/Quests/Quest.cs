@@ -750,6 +750,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         {
             return new CDataSetQuestOrderList()
             {
+                AreaId = QuestAreaId,
                 Param = ToCDataQuestOrderList(step),
                 Detail = new CDataSetQuestDetail()
                 {

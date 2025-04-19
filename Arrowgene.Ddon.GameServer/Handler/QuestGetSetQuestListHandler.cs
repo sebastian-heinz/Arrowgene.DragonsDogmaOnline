@@ -3,6 +3,7 @@ using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System.Collections.Generic;
@@ -23,47 +24,53 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             client.Character.AreaId = request.DistributeId;
 
-            S2CQuestGetSetQuestListRes res = new S2CQuestGetSetQuestListRes();
+            S2CQuestGetSetQuestListRes res = new S2CQuestGetSetQuestListRes()
+            {
+                DistributeId = request.DistributeId
+            };
 
             // Remove all world quests which have no progress made
             client.Party.QuestState.RemoveInactiveWorldQuests();
 
-            /**
-             * World quests get added here instead of QuestGetWorldManageQuestListHandler because
-             * "World Manage Quests" are different from "World Quests". World manage quests appear
-             * to control the state of the game world (doors, paths, gates, etc.). World quests
-             * are random fetch, deliver and kill type quests.
-             */
-
-            // Populate state for all quests currently in progress by the player
-            foreach (var questScheduleId in client.Party.QuestState.GetActiveQuestScheduleIds())
+            if (QuestManager.HasWorldQuestAreaReleased(client.Character, request.DistributeId))
             {
-                Quest quest = client.Party.QuestState.GetQuest(questScheduleId);
-                if (quest is null || !QuestManager.IsWorldQuest(quest.QuestId))
+                /**
+                 * World quests get added here instead of QuestGetWorldManageQuestListHandler because
+                 * "World Manage Quests" are different from "World Quests". World manage quests appear
+                 * to control the state of the game world (doors, paths, gates, etc.). World quests
+                 * are random fetch, deliver and kill type quests.
+                 */
+
+                // Populate state for all quests currently in progress by the player
+                foreach (var questScheduleId in client.Party.QuestState.GetActiveQuestScheduleIds())
                 {
-                    continue;
+                    Quest quest = client.Party.QuestState.GetQuest(questScheduleId);
+                    if (quest is null || !QuestManager.IsWorldQuest(quest.QuestId))
+                    {
+                        continue;
+                    }
+
+                    CompletedQuest questStats = client.Party.Leader?.Client.Character.CompletedQuests.GetValueOrDefault(quest.QuestId);
+                    QuestState questState = client.Party.QuestState.GetQuestState(quest);
+                    res.SetQuestList.Add(quest.ToCDataSetQuestList(questState?.Step ?? 0, questStats?.ClearCount ?? 0));
                 }
 
-                CompletedQuest questStats = client.Party.Leader?.Client.Character.CompletedQuests.GetValueOrDefault(quest.QuestId);
-                QuestState questState = client.Party.QuestState.GetQuestState(quest);
-                res.SetQuestList.Add(quest.ToCDataSetQuestList(questState?.Step ?? 0, questStats?.ClearCount ?? 0));
-            }
-
-            foreach (var questScheduleId in client.Party.QuestState.AreaQuests(request.DistributeId))
-            {
-                Quest quest = QuestManager.GetQuestByScheduleId(questScheduleId);
-
-                if (quest is null 
-                    || client.Party.QuestState.IsQuestActive(questScheduleId) 
-                    || client.Party.QuestState.IsCompletedWorldQuest(questScheduleId))
+                foreach (var questScheduleId in client.Party.QuestState.AreaQuests(request.DistributeId))
                 {
-                    // Skip quests already populated or completed
-                    continue;
-                }
+                    Quest quest = QuestManager.GetQuestByScheduleId(questScheduleId);
 
-                CompletedQuest questStats = client.Party.Leader?.Client.Character.CompletedQuests.GetValueOrDefault(quest.QuestId);
-                res.SetQuestList.Add(quest.ToCDataSetQuestList(0, questStats?.ClearCount ?? 0));
-                client.Party.QuestState.AddNewQuest(quest, 0);
+                    if (quest is null
+                        || client.Party.QuestState.IsQuestActive(questScheduleId)
+                        || client.Party.QuestState.IsCompletedWorldQuest(questScheduleId))
+                    {
+                        // Skip quests already populated or completed
+                        continue;
+                    }
+
+                    CompletedQuest questStats = client.Party.Leader?.Client.Character.CompletedQuests.GetValueOrDefault(quest.QuestId);
+                    res.SetQuestList.Add(quest.ToCDataSetQuestList(0, questStats?.ClearCount ?? 0));
+                    client.Party.QuestState.AddNewQuest(quest, 0);
+                }
             }
 
             // Add Debug Quest

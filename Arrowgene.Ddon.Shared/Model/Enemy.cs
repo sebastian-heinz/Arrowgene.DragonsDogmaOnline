@@ -39,6 +39,8 @@ namespace Arrowgene.Ddon.Shared.Model
             DropsTable = enemy.DropsTable;
             Subgroup = enemy.Subgroup;
             PPDrop = enemy.PPDrop;
+            IsBloodOrbEnemy = enemy.IsBloodOrbEnemy;
+            IsHighOrbEnemy = enemy.IsHighOrbEnemy;
         }
 
         public uint Id { get; set; }

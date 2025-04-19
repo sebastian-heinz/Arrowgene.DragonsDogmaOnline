@@ -18,21 +18,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
-        private Dictionary<QuestAreaId,ContentsRelease> WorldQuestRequiredUnlocks = new Dictionary<QuestAreaId, ContentsRelease>()
-        {
-            // S2
-            [QuestAreaId.BloodbaneIsle] = ContentsRelease.BloodbaneIsleWorldQuests,
-            [QuestAreaId.ElanWaterGrove] = ContentsRelease.ElanWaterGroveWorldQuests,
-            [QuestAreaId.FaranaPlains] = ContentsRelease.FaranaPlainsWorldQuests,
-            [QuestAreaId.MorrowForest] = ContentsRelease.MorrowForestWorldQuests,
-            [QuestAreaId.KingalCanyon] = ContentsRelease.KingalCanyonWorldQuests,
-            // S3
-            [QuestAreaId.RathniteFoothills] = ContentsRelease.RathniteFoothillsWorldQuests,
-            [QuestAreaId.FeryanaWilderness] = ContentsRelease.FeryanaWildernessWorldQuests,
-            [QuestAreaId.MegadosysPlateau] = ContentsRelease.MegadosysPlateauWorldQuests,
-            [QuestAreaId.UrtecaMountains] = ContentsRelease.UrtecaMountainsWorldQuests,
-        };
-
         public override S2CQuestGetAdventureGuideQuestListRes Handle(GameClient client, C2SQuestGetAdventureGuideQuestListReq request)
         {
             // var pcap0 = EntitySerializer.Get<S2CQuestGetAdventureGuideQuestListRes>().Read(GameFull.Dump_196.AsBuffer());
@@ -73,11 +58,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                     var questState = QuestManager.GetQuestStateManager(client, quest).GetQuestState(quest);
 
-                    var step = (questState == null) ? 0 : questState.Step;
+                    var step = questState?.Step ?? 0;
                     if (quest.QuestType == QuestType.World)
                     {
                         // World quests are identified by lestania news
-                        // it seems when selecting world quests to bavigate to, they crash
+                        // This feature seems to make that obsolete
+                        // Defer world quests to lestania news for now
                         continue;
                     }
 

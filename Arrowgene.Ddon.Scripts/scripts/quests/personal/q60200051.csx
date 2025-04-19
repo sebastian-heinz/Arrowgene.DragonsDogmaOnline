@@ -16,8 +16,7 @@ public class ScriptedQuest : IQuest
 
     public override bool AcceptRequirementsMet(GameClient client)
     {
-        return client.Character.ActiveCharacterJobData.Job == JobId.SpiritLancer &&
-               client.Character.HasQuestCompleted(QuestId.SpiritLancerTacticsTrialASpiritLance);
+        return client.Character.ActiveCharacterJobData.Job == JobId.SpiritLancer;
     }
 
     protected override void InitializeState()
