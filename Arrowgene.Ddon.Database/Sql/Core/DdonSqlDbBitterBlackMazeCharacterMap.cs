@@ -4,7 +4,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core;
 
 public partial class DdonSqlDb : SqlDb
 {
-    /* ddon_quest_progress */
     protected static readonly string[] BitterBlackMazeCharacterMapFields =
     [
         "character_id", "bbm_character_id"

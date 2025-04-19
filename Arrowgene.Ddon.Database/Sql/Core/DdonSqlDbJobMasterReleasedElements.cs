@@ -72,7 +72,7 @@ public partial class DdonSqlDb : SqlDb
                     result = new CDataReleaseElement
                     {
                         ReleaseId = GetUInt32(reader, "release_id"),
-                        ReleaseType = (JobTrainingReleaseType)GetByte(reader, "release_type"),
+                        ReleaseType = (ReleaseType)GetByte(reader, "release_type"),
                         ReleaseLv = GetByte(reader, "release_level")
                     };
             });
@@ -95,7 +95,7 @@ public partial class DdonSqlDb : SqlDb
                     results.Add(new CDataReleaseElement
                     {
                         ReleaseId = GetUInt32(reader, "release_id"),
-                        ReleaseType = (JobTrainingReleaseType)GetByte(reader, "release_type"),
+                        ReleaseType = (ReleaseType)GetByte(reader, "release_type"),
                         ReleaseLv = GetByte(reader, "release_level")
                     });
             });

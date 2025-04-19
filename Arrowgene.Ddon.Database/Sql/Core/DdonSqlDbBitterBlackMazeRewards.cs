@@ -5,7 +5,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core;
 
 public partial class DdonSqlDb : SqlDb
 {
-    /* ddon_quest_progress */
     protected static readonly string[] BitterBlackMazeRewardsFields = new[]
     {
         "character_id", "gold_marks", "silver_marks", "red_marks"

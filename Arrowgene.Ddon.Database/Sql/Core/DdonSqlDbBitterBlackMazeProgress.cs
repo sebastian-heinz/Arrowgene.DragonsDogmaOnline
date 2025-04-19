@@ -6,7 +6,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core;
 
 public partial class DdonSqlDb : SqlDb
 {
-    /* ddon_quest_progress */
     protected static readonly string[] BitterBlackMazeProgressFields =
     [
         "character_id", "start_time", "content_id", "content_mode", "tier", "killed_death", "last_ticket_time"

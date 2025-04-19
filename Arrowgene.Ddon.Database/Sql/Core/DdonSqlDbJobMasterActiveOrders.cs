@@ -101,7 +101,7 @@ public partial class DdonSqlDb : SqlDb
                     result = new CDataActiveJobOrder
                     {
                         ReleaseId = GetUInt32(reader, "release_id"),
-                        ReleaseType = (JobTrainingReleaseType)GetByte(reader, "release_type"),
+                        ReleaseType = (ReleaseType)GetByte(reader, "release_type"),
                         ReleaseLv = GetByte(reader, "release_level"),
                         OrderAccepted = GetBoolean(reader, "order_accepted")
                     };
@@ -125,7 +125,7 @@ public partial class DdonSqlDb : SqlDb
                     results.Add(new CDataActiveJobOrder
                     {
                         ReleaseId = GetUInt32(reader, "release_id"),
-                        ReleaseType = (JobTrainingReleaseType)GetByte(reader, "release_type"),
+                        ReleaseType = (ReleaseType)GetByte(reader, "release_type"),
                         ReleaseLv = GetByte(reader, "release_level"),
                         OrderAccepted = GetBoolean(reader, "order_accepted")
                     });
