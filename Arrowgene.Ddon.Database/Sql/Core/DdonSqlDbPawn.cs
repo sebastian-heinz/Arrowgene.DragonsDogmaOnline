@@ -11,7 +11,7 @@ public partial class DdonSqlDb : SqlDb
         "DELETE FROM \"ddon_character_common\" WHERE EXISTS (SELECT 1 FROM \"ddon_pawn\" WHERE \"ddon_character_common\".\"character_common_id\"=\"ddon_pawn\".\"character_common_id\" AND \"ddon_pawn\".\"pawn_id\"=@pawn_id)";
 
     private const string SqlSelectOfficialPawns =
-        @"SELECT * FROM ddon_pawn WHERE is_official_pawn=1;";
+        @"SELECT * FROM ddon_pawn WHERE is_official_pawn=true;";
 
     private const string SqlSelectAllPlayerPawns =
         @"SELECT * FROM ddon_pawn WHERE is_official_pawn=false LIMIT @limit;";
