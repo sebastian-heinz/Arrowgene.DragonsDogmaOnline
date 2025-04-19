@@ -1,9 +1,7 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
-using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -23,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
 
             // Return a blank list for areas that you haven't seen the Area Master for.
-            if (!client.Character.AreaRanks.TryGetValue(request.DistributeId, out var rank) || rank.Rank == 0)
+            if (!QuestManager.HasWorldQuestAreaReleased(client.Character, request.DistributeId) || !client.Character.AreaRanks.TryGetValue(request.DistributeId, out var rank) || rank.Rank == 0)
             {
                 return res;
             }

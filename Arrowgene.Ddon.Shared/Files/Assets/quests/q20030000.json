@@ -83,23 +83,23 @@
       "npc_id": "WearyHarpy",
       "message_id": 10800
     },
-    
+
     {
-      "type": "DeliverItems",
-      "stage_id": {
-        "id": 1,
-        "group_id": 1,
-        "layer_no": 1
-      },
-      "npc_id": "WearyHarpy",
-      "announce_type": "Accept",
-      "items": [
-        {
-          "id": 7968,
-          "amount": 1
-        }
-      ],
-      "message_id": 10737
+        "type": "NewDeliverItems",
+        "stage_id": {
+            "id": 1,
+            "group_id": 1,
+            "layer_no": 1
+        },
+        "npc_id": "WearyHarpy",
+        "announce_type": "Accept",
+        "items": [
+            {
+                "id": 7968,
+                "amount": 1
+            }
+        ],
+        "message_id": 10737
     },
 
     {
