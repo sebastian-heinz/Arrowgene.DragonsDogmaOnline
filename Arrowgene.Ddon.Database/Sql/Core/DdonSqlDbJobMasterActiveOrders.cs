@@ -100,7 +100,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         result = new CDataActiveJobOrder()
                         {
                             ReleaseId = GetUInt32(reader, "release_id"),
-                            ReleaseType = (JobTrainingReleaseType)GetByte(reader, "release_type"),
+                            ReleaseType = (ReleaseType)GetByte(reader, "release_type"),
                             ReleaseLv = GetByte(reader, "release_level"),
                             OrderAccepted = GetBoolean(reader, "order_accepted"),
                         };
@@ -126,7 +126,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         results.Add(new CDataActiveJobOrder()
                         {
                             ReleaseId = GetUInt32(reader, "release_id"),
-                            ReleaseType = (JobTrainingReleaseType)GetByte(reader, "release_type"),
+                            ReleaseType = (ReleaseType)GetByte(reader, "release_type"),
                             ReleaseLv = GetByte(reader, "release_level"),
                             OrderAccepted = GetBoolean(reader, "order_accepted"),
                         });

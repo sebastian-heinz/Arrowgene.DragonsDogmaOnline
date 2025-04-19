@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (var jobId in ((JobId[])JobId.GetValues(typeof(JobId))))
             {
                 var matches = Server.JobMasterManager.GetReleasedElements(client, jobId)
-                    .Where(x => x.ReleaseType == JobTrainingReleaseType.CustomSkill)
+                    .Where(x => x.ReleaseType == ReleaseType.CustomSkill)
                     .Select(x => new CDataReleaseAcquirementParam()
                     {
                         AcquirementLv = x.ReleaseLv,
