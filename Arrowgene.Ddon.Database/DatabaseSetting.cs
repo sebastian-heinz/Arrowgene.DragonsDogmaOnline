@@ -18,7 +18,11 @@ namespace Arrowgene.Ddon.Database
             User = string.Empty;
             Password = string.Empty;
             WipeOnStartup = false;
+            // SQLite-only
             EnableTracing = false;
+            // PSQL-only
+            BufferSize = 32768;
+            ResetOnClose = false;
 
             string envDbType = Environment.GetEnvironmentVariable("DB_TYPE");
             if (!string.IsNullOrEmpty(envDbType))
@@ -68,10 +72,25 @@ namespace Arrowgene.Ddon.Database
                 WipeOnStartup = Convert.ToBoolean(envDbWipeOnStartup);
             }
 
+            // SQLite-only
             string envDbEnableTracing = Environment.GetEnvironmentVariable("DB_ENABLE_TRACING");
             if (!string.IsNullOrEmpty(envDbEnableTracing))
             {
                 EnableTracing = Convert.ToBoolean(envDbEnableTracing);
+            }
+            
+            // PSQL-only
+            string envDbBufferSize = Environment.GetEnvironmentVariable("DB_BUFFER_SIZE");
+            if (!string.IsNullOrEmpty(envDbBufferSize))
+            {
+                BufferSize = Convert.ToUInt32(envDbBufferSize);
+            }
+            
+            // PSQL-only
+            string envDbResetOnClose = Environment.GetEnvironmentVariable("DB_RESET_ON_CLOSE");
+            if (!string.IsNullOrEmpty(envDbResetOnClose))
+            {
+                ResetOnClose = Convert.ToBoolean(envDbResetOnClose);
             }
         }
 
@@ -85,7 +104,13 @@ namespace Arrowgene.Ddon.Database
             Password = databaseSettings.Password;
             Database = databaseSettings.Database;
             WipeOnStartup = databaseSettings.WipeOnStartup;
+            
+            // SQLite-only
             EnableTracing = databaseSettings.EnableTracing;
+            
+            // PSQL-only
+            BufferSize = databaseSettings.BufferSize;
+            ResetOnClose = databaseSettings.ResetOnClose;
         }
 
         [DataMember(Order = 0)] public string Type { get; set; }
@@ -104,6 +129,21 @@ namespace Arrowgene.Ddon.Database
 
         [DataMember(Order = 7)] public bool WipeOnStartup { get; set; }
         
+        /// <summary>
+        /// SQLite-only setting to enable increased logging.
+        /// </summary>
         [DataMember(Order = 8)] public bool EnableTracing { get; set; }
+        
+        /// <summary>
+        /// PSQL-only setting to increase read/write/socket buffers.
+        /// https://www.npgsql.org/doc/performance.html#reading-large-values
+        /// </summary>
+        [DataMember(Order = 9)] public uint BufferSize { get; set; }
+        
+        /// <summary>
+        /// PSQL-only setting to control "DISCARD ALL" usage.
+        /// https://www.npgsql.org/doc/performance.html#pooled-connection-reset
+        /// </summary>
+        [DataMember(Order = 10)] public bool ResetOnClose { get; set; }
     }
 }

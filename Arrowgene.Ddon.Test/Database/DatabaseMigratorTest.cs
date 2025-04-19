@@ -223,6 +223,8 @@ namespace Arrowgene.Ddon.Test.Database
         public bool DeleteToken(string token) { return true; }
         public bool DeleteTokenByAccountId(int accountId) { return true; }
         public bool DeleteWalletPoint(uint characterId, WalletType type) { return true; }
+        public DbConnection OpenNewConnection() { return null; }
+        public DbConnection OpenExistingConnection() { return null; }
         public void Execute(string sql) {}
         public void Execute(DbConnection conn, string sql) {}
         public List<BazaarExhibition> FetchCharacterBazaarExhibitions(uint characterId) { return new List<BazaarExhibition>(); }

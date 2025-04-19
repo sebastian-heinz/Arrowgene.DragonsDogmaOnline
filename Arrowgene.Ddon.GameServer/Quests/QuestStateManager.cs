@@ -933,14 +933,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 var questStateManager = QuestManager.GetQuestStateManager(requestingClient, quest);
                 if (questStateManager == null)
                 {
-                    Logger.Error(requestingClient, $"Unable to fetch the quest state manager for ${priorityQuestScheduleId}");
+                    Logger.Error(requestingClient, $"Unable to fetch the quest state manager for {priorityQuestScheduleId}");
                     continue;
                 }
 
                 var questState = questStateManager.GetQuestState(priorityQuestScheduleId);
                 if (questState == null)
                 {
-                    Logger.Error(requestingClient, $"Failed to find quest state for ${priorityQuestScheduleId}");
+                    Logger.Error(requestingClient, $"Failed to find quest state for {priorityQuestScheduleId}");
                     continue;
                 }
                 prioNtc.PriorityQuestList.Add(quest.ToCDataPriorityQuest(questState.Step));
