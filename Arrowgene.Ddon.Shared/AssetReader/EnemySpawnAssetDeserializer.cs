@@ -20,8 +20,8 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
         private static readonly ILogger Logger = LogProvider.Logger(typeof(EnemySpawnAssetDeserializer));
 
-        private static readonly string[] ENEMY_HEADERS = new string[]{"StageId", "LayerNo", "GroupId", "SubGroupId", "EnemyId", "NamedEnemyParamsId", "RaidBossId", "Scale", "Lv", "HmPresetNo", "StartThinkTblNo", "RepopNum", "RepopCount", "EnemyTargetTypesId", "MontageFixNo", "SetType", "InfectionType", "IsBossGauge", "IsBossBGM", "IsManualSet", "IsAreaBoss", "IsBloodOrbEnemy", "BloodOrbs", "IsHighOrbEnemy", "HighOrbs", "Experience", "DropsTableId", "SpawnTime", "PPDrop"};
-        private static readonly string[] DROPS_TABLE_HEADERS = new string[]{"ItemId", "ItemNum", "MaxItemNum", "Quality", "IsHidden", "DropChance"};
+        private static readonly string[] ENEMY_HEADERS = {"StageId", "LayerNo", "GroupId", "SubGroupId", "EnemyId", "NamedEnemyParamsId", "RaidBossId", "Scale", "Lv", "HmPresetNo", "StartThinkTblNo", "RepopNum", "RepopCount", "EnemyTargetTypesId", "MontageFixNo", "SetType", "InfectionType", "IsBossGauge", "IsBossBGM", "IsManualSet", "IsAreaBoss", "IsBloodOrbEnemy", "BloodOrbs", "IsHighOrbEnemy", "HighOrbs", "Experience", "DropsTableId", "SpawnTime", "PPDrop"};
+        private static readonly string[] DROPS_TABLE_HEADERS = {"ItemId", "ItemNum", "MaxItemNum", "Quality", "IsHidden", "DropChance"};
 
         private Dictionary<uint, NamedParam> namedParams;
 
@@ -117,24 +117,18 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     Subgroup = subGroupId,
                 };
 
+                // Fallback for old style schema
+                enemy.IsBloodOrbEnemy = enemy.BloodOrbs > 0;
                 if (enemySchemaIndexes.ContainsKey("IsBloodOrbEnemy"))
                 {
                     enemy.IsBloodOrbEnemy = row[enemySchemaIndexes["IsBloodOrbEnemy"]].GetBoolean();
                 }
-                else
-                {
-                    // Fallback for old style schema
-                    enemy.IsBloodOrbEnemy = enemy.BloodOrbs > 0;
-                }
 
+                // Fallback for old style schema
+                enemy.IsHighOrbEnemy = enemy.HighOrbs > 0;
                 if (enemySchemaIndexes.ContainsKey("IsHighOrbEnemy"))
                 {
-                    enemy.IsBloodOrbEnemy = row[enemySchemaIndexes["IsHighOrbEnemy"]].GetBoolean();
-                }
-                else
-                {
-                    // Fallback for old style schema
-                    enemy.IsHighOrbEnemy = enemy.HighOrbs > 0;
+                    enemy.IsHighOrbEnemy = row[enemySchemaIndexes["IsHighOrbEnemy"]].GetBoolean();
                 }
 
                 // checking if the file has spawntime, if yes we convert the time and pass it along to enemy.cs
