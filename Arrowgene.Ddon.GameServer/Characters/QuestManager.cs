@@ -3406,5 +3406,36 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
             return IsExmQuest(quest.QuestId);
         }
+
+        private static Dictionary<QuestAreaId, ContentsRelease> WorldQuestRequiredUnlocks = new Dictionary<QuestAreaId, ContentsRelease>()
+        {
+            // S2
+            [QuestAreaId.BloodbaneIsle] = ContentsRelease.BloodbaneIsleWorldQuests,
+            [QuestAreaId.ElanWaterGrove] = ContentsRelease.ElanWaterGroveWorldQuests,
+            [QuestAreaId.FaranaPlains] = ContentsRelease.FaranaPlainsWorldQuests,
+            [QuestAreaId.MorrowForest] = ContentsRelease.MorrowForestWorldQuests,
+            [QuestAreaId.KingalCanyon] = ContentsRelease.KingalCanyonWorldQuests,
+            // S3
+            [QuestAreaId.RathniteFoothills] = ContentsRelease.RathniteFoothillsWorldQuests,
+            [QuestAreaId.FeryanaWilderness] = ContentsRelease.FeryanaWildernessWorldQuests,
+            [QuestAreaId.MegadosysPlateau] = ContentsRelease.MegadosysPlateauWorldQuests,
+            [QuestAreaId.UrtecaMountains] = ContentsRelease.UrtecaMountainsWorldQuests,
+        };
+
+        public static bool HasWorldQuestAreaReleased(Character character, QuestAreaId questAreaId)
+        {
+            if (!character.HasContentReleased(ContentsRelease.WorldQuests))
+            {
+                return false;
+            }
+
+            if (!WorldQuestRequiredUnlocks.ContainsKey(questAreaId))
+            {
+                return true;
+            }
+
+            var releaseId = WorldQuestRequiredUnlocks[questAreaId];
+            return character.HasContentReleased(releaseId);
+        }
     }
 }
