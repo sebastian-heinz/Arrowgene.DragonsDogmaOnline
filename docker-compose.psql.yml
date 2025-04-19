@@ -28,6 +28,8 @@ services:
       - DB_PASS=root
       - DB_PORT=5432
       - DB_WIPE_ON_STARTUP=false
+      - DB_BUFFER_SIZE=32768
+      - DB_RESET_ON_CLOSE=true
     volumes:
       - ./Arrowgene.Ddon.config.psql.local_dev.json:/var/ddon/server/Files/Arrowgene.Ddon.config.json:ro
       - ./Arrowgene.Ddon.Shared/Files/Assets:/var/ddon/server/Files/Assets

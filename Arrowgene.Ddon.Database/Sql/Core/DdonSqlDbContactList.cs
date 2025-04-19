@@ -1,38 +1,41 @@
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using System.Collections.Generic;
 using System.Data.Common;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 
-namespace Arrowgene.Ddon.Database.Sql.Core
+namespace Arrowgene.Ddon.Database.Sql.Core;
+
+public partial class DdonSqlDb : SqlDb
 {
-    public abstract partial class DdonSqlDb<TCon, TCom, TReader> : SqlDb<TCon, TCom, TReader>
-        where TCon : DbConnection
-        where TCom : DbCommand
-        where TReader : DbDataReader
+    private static readonly string ContactListTableName = "ddon_contact_list";
+
+    private static readonly string[] ContactListFields = new[]
     {
-        
-        private static readonly string ContactListTableName = "ddon_contact_list";
-        
-        private static readonly string[] ContactListFields = new string[]
-        { 
-           /* id */ "requester_character_id", "requested_character_id", "status", "type", "requester_favorite", "requested_favorite"
-        };
+        /* id */ "requester_character_id", "requested_character_id", "status", "type", "requester_favorite", "requested_favorite"
+    };
 
-        private static readonly string SqlInsertContact = $"INSERT INTO \"{ContactListTableName}\" ({BuildQueryField(ContactListFields)}) VALUES ({BuildQueryInsert(ContactListFields)});";
-        private static readonly string SqlSelectContactById = $"SELECT \"id\", {BuildQueryField(ContactListFields)} FROM \"{ContactListTableName}\" WHERE \"id\"=@id;";
-        private static readonly string SqlSelectContactsByCharacterId = $"SELECT \"id\", {BuildQueryField(ContactListFields)} FROM \"{ContactListTableName}\" WHERE \"requester_character_id\"=@character_id or \"requested_character_id\"=@character_id;";
-        
-        private static readonly string SqlSelectContactsByCharacterIds = $"SELECT \"id\", {BuildQueryField(ContactListFields)} FROM \"{ContactListTableName}\" " +
-                                                               $"WHERE (\"requester_character_id\"=@character_id_1 and \"requested_character_id\"=@character_id_2) or " +
-                                                               $"(\"requester_character_id\"=@character_id_2 and \"requested_character_id\"=@character_id_1);";
-        
-        private static readonly string SqlDeleteContact = $"DELETE FROM \"{ContactListTableName}\" WHERE \"requester_character_id\"=@requester_character_id and \"requested_character_id\"=@requested_character_id;";
-        private static readonly string SqlDeleteContactById = $"DELETE FROM \"{ContactListTableName}\" WHERE \"id\"=@id;";
-        
-        
-        private static readonly string SqlUpdateContactByCharIds = $"UPDATE \"{ContactListTableName}\" SET \"status\"=@status, \"type\"=@type, \"requester_favorite\"=@requester_favorite, \"requested_favorite\"=@requested_favorite WHERE \"requester_character_id\"=@requester_character_id and \"requested_character_id\"=@requested_character_id;";
+    private static readonly string SqlInsertContact =
+        $"INSERT INTO \"{ContactListTableName}\" ({BuildQueryField(ContactListFields)}) VALUES ({BuildQueryInsert(ContactListFields)});";
 
-        private static readonly string SqlSelectFullContactsByCharacterId = @"
+    private static readonly string SqlSelectContactById = $"SELECT \"id\", {BuildQueryField(ContactListFields)} FROM \"{ContactListTableName}\" WHERE \"id\"=@id;";
+
+    private static readonly string SqlSelectContactsByCharacterId =
+        $"SELECT \"id\", {BuildQueryField(ContactListFields)} FROM \"{ContactListTableName}\" WHERE \"requester_character_id\"=@character_id or \"requested_character_id\"=@character_id;";
+
+    private static readonly string SqlSelectContactsByCharacterIds = $"SELECT \"id\", {BuildQueryField(ContactListFields)} FROM \"{ContactListTableName}\" " +
+                                                                     $"WHERE (\"requester_character_id\"=@character_id_1 and \"requested_character_id\"=@character_id_2) or " +
+                                                                     $"(\"requester_character_id\"=@character_id_2 and \"requested_character_id\"=@character_id_1);";
+
+    private static readonly string SqlDeleteContact =
+        $"DELETE FROM \"{ContactListTableName}\" WHERE \"requester_character_id\"=@requester_character_id and \"requested_character_id\"=@requested_character_id;";
+
+    private static readonly string SqlDeleteContactById = $"DELETE FROM \"{ContactListTableName}\" WHERE \"id\"=@id;";
+
+
+    private static readonly string SqlUpdateContactByCharIds =
+        $"UPDATE \"{ContactListTableName}\" SET \"status\"=@status, \"type\"=@type, \"requester_favorite\"=@requester_favorite, \"requested_favorite\"=@requested_favorite WHERE \"requester_character_id\"=@requester_character_id and \"requested_character_id\"=@requested_character_id;";
+
+    private static readonly string SqlSelectFullContactsByCharacterId = @"
             WITH ContactInfo AS (
                 SELECT 
                     cl.*,
@@ -59,134 +62,118 @@ namespace Arrowgene.Ddon.Database.Sql.Core
             LEFT JOIN ddon_clan_param cp ON cp.clan_id = cm.clan_id
             WHERE ci.requested_character_id = @character_id OR ci.requester_character_id = @character_id;";
 
-        public int InsertContact(uint requestingCharacterId, uint requestedCharacterId, ContactListStatus status, ContactListType type, bool requesterFavorite, bool requestedFavorite)
+    public override int InsertContact(uint requestingCharacterId, uint requestedCharacterId, ContactListStatus status, ContactListType type, bool requesterFavorite,
+        bool requestedFavorite)
+    {
+        int rowsAffected = ExecuteNonQuery(SqlInsertContact, command =>
         {
-            int rowsAffected = ExecuteNonQuery(SqlInsertContact, command =>
-            {
-                AddParameter(command, "@requester_character_id", requestingCharacterId);
-                AddParameter(command, "@requested_character_id", requestedCharacterId);
-                AddParameter(command, "@status", (byte) status);
-                AddParameter(command, "@type", (byte) type);
-                AddParameter(command, "@requester_favorite", requesterFavorite);
-                AddParameter(command, "@requested_favorite", requestedFavorite);
-            }, out long autoIncrement);
+            AddParameter(command, "@requester_character_id", requestingCharacterId);
+            AddParameter(command, "@requested_character_id", requestedCharacterId);
+            AddParameter(command, "@status", (byte)status);
+            AddParameter(command, "@type", (byte)type);
+            AddParameter(command, "@requester_favorite", requesterFavorite);
+            AddParameter(command, "@requested_favorite", requestedFavorite);
+        }, out long autoIncrement);
 
-            if (rowsAffected > NoRowsAffected)
-            {
-                return (int)autoIncrement;
-            }
+        if (rowsAffected > NoRowsAffected) return (int)autoIncrement;
 
-            return 0;
-        }
-        
-        public int UpdateContact(uint requestingCharacterId, uint requestedCharacterId, ContactListStatus status, ContactListType type, bool requesterFavorite, bool requestedFavorite)
+        return 0;
+    }
+
+    public override int UpdateContact(uint requestingCharacterId, uint requestedCharacterId, ContactListStatus status, ContactListType type, bool requesterFavorite,
+        bool requestedFavorite)
+    {
+        int rowsAffected = ExecuteNonQuery(SqlUpdateContactByCharIds, command =>
         {
-            int rowsAffected = ExecuteNonQuery(SqlUpdateContactByCharIds, command =>
+            AddParameter(command, "@requester_character_id", requestingCharacterId);
+            AddParameter(command, "@requested_character_id", requestedCharacterId);
+            AddParameter(command, "@status", (byte)status);
+            AddParameter(command, "@type", (byte)type);
+            AddParameter(command, "@requester_favorite", requesterFavorite);
+            AddParameter(command, "@requested_favorite", requestedFavorite);
+        });
+
+        return rowsAffected;
+    }
+
+    public override int DeleteContact(uint requestingCharacterId, uint requestedCharacterId)
+    {
+        int rowsAffected = ExecuteNonQuery(SqlDeleteContact, command =>
+        {
+            AddParameter(command, "@requester_character_id", requestingCharacterId);
+            AddParameter(command, "@requested_character_id", requestedCharacterId);
+        });
+        return rowsAffected;
+    }
+
+    public override int DeleteContactById(uint id)
+    {
+        int rowsAffected = ExecuteNonQuery(SqlDeleteContactById, command => { AddParameter(command, "@id", id); });
+        return rowsAffected;
+    }
+
+    public override List<ContactListEntity> SelectContactsByCharacterId(uint characterId)
+    {
+        List<ContactListEntity> entities = new();
+        ExecuteReader(SqlSelectContactsByCharacterId,
+            command => { AddParameter(command, "@character_id", characterId); }, reader =>
             {
-                AddParameter(command, "@requester_character_id", requestingCharacterId);
-                AddParameter(command, "@requested_character_id", requestedCharacterId);
-                AddParameter(command, "@status", (byte) status);
-                AddParameter(command, "@type", (byte) type);
-                AddParameter(command, "@requester_favorite", requesterFavorite);
-                AddParameter(command, "@requested_favorite", requestedFavorite);
+                while (reader.Read())
+                {
+                    ContactListEntity e = ReadContactListEntity(reader);
+                    entities.Add(e);
+                }
             });
 
-            return rowsAffected;
-        }
-        
-        public int DeleteContact(uint requestingCharacterId, uint requestedCharacterId)
-        {
-            int rowsAffected = ExecuteNonQuery(SqlDeleteContact, command =>
+        return entities;
+    }
+
+    public override ContactListEntity SelectContactsByCharacterId(uint characterId1, uint characterId2)
+    {
+        ContactListEntity entity = null;
+        ExecuteReader(SqlSelectContactsByCharacterIds,
+            command =>
             {
-                AddParameter(command, "@requester_character_id", requestingCharacterId);
-                AddParameter(command, "@requested_character_id", requestedCharacterId);
+                AddParameter(command, "@character_id_1", characterId1);
+                AddParameter(command, "@character_id_2", characterId2);
+            }, reader =>
+            {
+                if (reader.Read()) entity = ReadContactListEntity(reader);
             });
-            return rowsAffected;
-        }
-        
-        public int DeleteContactById(uint id)
-        {
-            int rowsAffected = ExecuteNonQuery(SqlDeleteContactById, command =>
+
+        return entity;
+    }
+
+    public override ContactListEntity SelectContactListById(uint id)
+    {
+        ContactListEntity entity = null;
+        ExecuteReader(SqlSelectContactById,
+            command => { AddParameter(command, "@id", id); }, reader =>
             {
-                AddParameter(command, "@id", id);
+                if (reader.Read()) entity = ReadContactListEntity(reader);
             });
-            return rowsAffected;
-        }
-        
-        public List<ContactListEntity> SelectContactsByCharacterId(uint characterId)
+
+        return entity;
+    }
+
+    public override List<(ContactListEntity, CDataCharacterListElement)> SelectFullContactListByCharacterId(uint characterId, DbConnection? connectionIn = null)
+    {
+        List<(ContactListEntity, CDataCharacterListElement)> list = new();
+
+        bool isTransaction = connectionIn is not null;
+        DbConnection connection = connectionIn ?? OpenNewConnection();
+        try
         {
-            List<ContactListEntity> entities = new List<ContactListEntity>();
-            ExecuteReader(SqlSelectContactsByCharacterId,
-                command => { AddParameter(command, "@character_id", characterId); }, reader =>
-                {
-                    while (reader.Read())
-                    {
-                        ContactListEntity e = ReadContactListEntity(reader);
-                        entities.Add(e);
-                    }
-                });
-
-            return entities;
-        }
-        
-        public ContactListEntity SelectContactsByCharacterId(uint characterId1, uint characterId2)
-        {
-            ContactListEntity entity = null;
-            ExecuteReader(SqlSelectContactsByCharacterIds,
-                command =>
-                {
-                    AddParameter(command, "@character_id_1", characterId1);
-                    AddParameter(command, "@character_id_2", characterId2);
-                }, reader =>
-                {
-                    if (reader.Read())
-                    {
-                        entity = ReadContactListEntity(reader);
-                    }
-                });
-
-            return entity;
-        }
-        
-        public ContactListEntity SelectContactListById(uint id)
-        {
-            ContactListEntity entity = null;
-            ExecuteReader(SqlSelectContactById,
-                command =>
-                {
-                    AddParameter(command, "@id", id);
-                }, reader =>
-                {
-                    if (reader.Read())
-                    {
-                        entity = ReadContactListEntity(reader);
-                    }
-                });
-
-            return entity;
-        }
-
-        public List<(ContactListEntity, CDataCharacterListElement)> SelectFullContactListByCharacterId(uint characterId, DbConnection? connectionIn = null)
-        {
-            List<(ContactListEntity, CDataCharacterListElement)> list = new();
-
-            bool isTransaction = connectionIn is not null;
-            TCon connection = (TCon)(connectionIn ?? OpenNewConnection());
-            try
-            {
-                ExecuteReader(
+            ExecuteReader(
                 connection,
                 SqlSelectFullContactsByCharacterId,
-                command =>
-                {
-                    AddParameter(command, "@character_id", characterId);
-                },
+                command => { AddParameter(command, "@character_id", characterId); },
                 reader =>
                 {
                     while (reader.Read())
                     {
-                        var contactListEntity = ReadContactListEntity(reader);
-                        var characterListElement = new CDataCharacterListElement();
+                        ContactListEntity contactListEntity = ReadContactListEntity(reader);
+                        CDataCharacterListElement characterListElement = new();
 
                         characterListElement.CommunityCharacterBaseInfo.CharacterId = GetUInt32(reader, "other_id");
                         characterListElement.CommunityCharacterBaseInfo.CharacterName.FirstName = GetString(reader, "first_name");
@@ -200,26 +187,25 @@ namespace Arrowgene.Ddon.Database.Sql.Core
                         list.Add((contactListEntity, characterListElement));
                     }
                 });
-            }
-            finally
-            {
-                if (!isTransaction) connection.Dispose();
-            }
-
-            return list;
         }
-
-        private ContactListEntity ReadContactListEntity(TReader reader)
+        finally
         {
-            ContactListEntity e = new ContactListEntity();
-            e.Id = GetUInt32(reader, "id");
-            e.RequesterCharacterId = GetUInt32(reader, "requester_character_id");
-            e.RequestedCharacterId = GetUInt32(reader, "requested_character_id");
-            e.Status = (ContactListStatus) GetByte(reader, "status");
-            e.Type = (ContactListType) GetByte(reader, "type");
-            e.RequesterFavorite = GetBoolean(reader, "requester_favorite");
-            e.RequestedFavorite = GetBoolean(reader, "requested_favorite");
-            return e;
+            if (!isTransaction) connection.Dispose();
         }
+
+        return list;
+    }
+
+    private ContactListEntity ReadContactListEntity(DbDataReader reader)
+    {
+        ContactListEntity e = new();
+        e.Id = GetUInt32(reader, "id");
+        e.RequesterCharacterId = GetUInt32(reader, "requester_character_id");
+        e.RequestedCharacterId = GetUInt32(reader, "requested_character_id");
+        e.Status = (ContactListStatus)GetByte(reader, "status");
+        e.Type = (ContactListType)GetByte(reader, "type");
+        e.RequesterFavorite = GetBoolean(reader, "requester_favorite");
+        e.RequestedFavorite = GetBoolean(reader, "requested_favorite");
+        return e;
     }
 }
