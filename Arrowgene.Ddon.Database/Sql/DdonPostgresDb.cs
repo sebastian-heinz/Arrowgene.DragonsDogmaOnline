@@ -72,7 +72,8 @@ public partial class DdonPostgresDb : DdonSqlDb
             NoResetOnClose = resetOnClose,
             SocketReceiveBufferSize = (int)bufferSize,
             SocketSendBufferSize = (int)bufferSize,
-            Pooling = true
+            Pooling = true,
+            IncludeErrorDetail = true
         };
         string connectionString = builder.ToString();
         Logger.Info($"Connection String: {connectionString}");
