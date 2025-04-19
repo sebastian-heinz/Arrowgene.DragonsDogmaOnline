@@ -134,16 +134,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 });
             }
 
-            if (AreaRankManager.GetAreaPointReward(this) > 0)
-            {
-                var areaRankPoints = AreaRankManager.GetAreaPointReward(this);
-                result.Add(new CDataQuestExp()
-                {
-                    Type = PointType.AreaPoints,
-                    Reward = areaRankPoints,
-                });
-            }
-
             return result;
 
         }
@@ -158,16 +148,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 {
                     Type = pointReward.Type,
                     Reward = amount.BasePoints
-                });
-            }
-
-            if (AreaRankManager.GetAreaPointReward(this) > 0)
-            {
-                var areaRankPoints = Server.ExpManager.GetAdjustedPointsForQuest(PointType.AreaPoints, AreaRankManager.GetAreaPointReward(this), this.QuestType);
-                result.Add(new CDataQuestExp()
-                {
-                    Type = PointType.AreaPoints,
-                    Reward = areaRankPoints.BasePoints,
                 });
             }
 
@@ -734,7 +714,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         {
             var result = new CDataSetQuestInfoList()
             {
-                QuestScheduleId = (uint)QuestScheduleId,
+                QuestScheduleId = QuestScheduleId,
                 QuestId = (uint)QuestId,
                 ImageId = NewsImageId, // Optional, client has its own defaults if you fail to provide one.
                 BaseLevel = BaseLevel,
@@ -743,8 +723,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 ContentJoinItemRank = (ushort)(OrderConditions.Find(x => x.Type == QuestOrderConditionType.ItemRank)?.Param01 ?? 0),
                 RandomRewardNum = RandomRewardNum(),
                 SelectRewardItemIdList = GetQuestSelectableRewards().Select(x => new CDataCommonU32((uint) x.ItemId)).ToList(),
-                //DiscoverRewardWalletPoint = WalletRewards, // These are not the same as the regular rewards?
-                //DiscoverRewardExp = ExpRewards, // These are not the same as the regular rewards?
+                // DiscoverRewardWalletPoint = ScaledWalletRewards(), // These are not the same as the regular rewards?
+                // DiscoverRewardExp = ScaledExpRewards(), // These are not the same as the regular rewards?
                 QuestLayoutFlagSetInfoList = QuestLayoutFlagSetInfo.Select(x => x.AsCDataQuestLayoutFlagSetInfo()).ToList(),
                 QuestEnemyInfoList = EnemyGroups.Values.SelectMany(group => group.Enemies.Select(enemy => new CDataQuestEnemyInfo()
                 {
@@ -766,15 +746,33 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return result;
         }
 
-        public virtual CDataSetQuestOrderList ToCDataSetQuestOrderList(uint step)
+        public virtual CDataSetQuestOrderList ToCDataSetQuestOrderList(uint step, uint clearCount)
         {
             return new CDataSetQuestOrderList()
             {
                 Param = ToCDataQuestOrderList(step),
                 Detail = new CDataSetQuestDetail()
                 {
-                    IsDiscovery = IsDiscoverable,
+                    IsDiscovery = (clearCount > 0) ? true : IsDiscoverable,
+                    BaseAreaPoint = AreaRankManager.GetAreaPointReward(this),
+                    ClearCount = clearCount
+                    // UndiscoveryWalletPointRatio = ScaledWalletRewards(),
+                    // UndiscoveryExpRatio = ScaledExpRewards(),
                     // TODO: Add other fields
+                }
+            };
+        }
+
+        public virtual CDataSetQuestList ToCDataSetQuestList(uint step, uint clearCount)
+        {
+            return new CDataSetQuestList()
+            {
+                Param = ToCDataQuestList(step),
+                Detail = new CDataSetQuestDetail()
+                {
+                    IsDiscovery = (clearCount > 0) ? true : IsDiscoverable,
+                    BaseAreaPoint = AreaRankManager.GetAreaPointReward(this),
+                    ClearCount = clearCount
                 }
             };
         }

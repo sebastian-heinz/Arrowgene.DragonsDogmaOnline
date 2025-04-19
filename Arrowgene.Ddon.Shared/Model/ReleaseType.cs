@@ -1,6 +1,6 @@
 namespace Arrowgene.Ddon.Shared.Model
 {
-    public enum JobTrainingReleaseType : byte
+    public enum ReleaseType : byte
     {
         None = 0,
         CustomSkill = 1,

@@ -13,7 +13,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
 
         public JobId JobId { get; set; }
-        public JobTrainingReleaseType RewardType { get; set; }
+        public ReleaseType RewardType { get; set; }
         public uint RewardNo { get; set; }
         public byte RewardLv { get; set; }
 
@@ -31,7 +31,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 S2CJobOrderCompleteNtc obj = new S2CJobOrderCompleteNtc();
                 obj.JobId = (JobId) ReadByte(buffer);
-                obj.RewardType = (JobTrainingReleaseType) ReadByte(buffer);
+                obj.RewardType = (ReleaseType) ReadByte(buffer);
                 obj.RewardNo = ReadUInt32(buffer);
                 obj.RewardLv = ReadByte(buffer);
                 return obj;

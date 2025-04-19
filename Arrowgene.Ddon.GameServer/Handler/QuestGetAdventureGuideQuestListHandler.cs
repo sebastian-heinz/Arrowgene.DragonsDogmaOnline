@@ -76,37 +76,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     var step = (questState == null) ? 0 : questState.Step;
                     if (quest.QuestType == QuestType.World)
                     {
-                        // Skip the debug /warp quest
-                        if ((uint)quest.QuestId == 70000001)
-                        {
-                            continue;
-                        }
-
-                        if (!client.Character.HasContentReleased(ContentsRelease.WorldQuests))
-                        {
-                            // Don't reccomend world quests until they get unlocked
-                            continue;
-                        }
-
-                        if (WorldQuestRequiredUnlocks.ContainsKey(quest.QuestAreaId) &&
-                            !client.Character.HasContentReleased(WorldQuestRequiredUnlocks[quest.QuestAreaId]))
-                        {
-                            // Don't show world quests in extended areas if they are not unlocked
-                            continue;
-                        }
-
-                        if (!IsQuestInLvRange(client, quest.BaseLevel))
-                        {
-                            continue;
-                        }
-
-                        if (step == 0 && !quest.IsDiscoverable)
-                        {
-                            // Don't show hidden quests that are not started
-                            continue;
-                        }
+                        // World quests are identified by lestania news
+                        // it seems when selecting world quests to bavigate to, they crash
+                        continue;
                     }
-                    else if (quest.AdventureGuideCategory == QuestAdventureGuideCategory.AreaTrialOrMission && 
+
+                    if (quest.AdventureGuideCategory == QuestAdventureGuideCategory.AreaTrialOrMission && 
                         !Server.AreaRankManager.PlayerCanParticipateInTrial(client, quest))
                     {
                         continue;

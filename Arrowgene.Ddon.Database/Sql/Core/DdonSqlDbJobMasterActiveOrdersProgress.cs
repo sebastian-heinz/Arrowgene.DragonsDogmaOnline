@@ -19,6 +19,7 @@ public partial class DdonSqlDb : SqlDb
     private readonly string SqlSelectJobMasterActiveOrdersProgress =
         $"SELECT {BuildQueryField(JobMasterActiveOrdersProgress)} FROM \"ddon_job_master_active_orders_progress\" WHERE  \"character_id\"=@character_id AND \"job_id\"=@job_id AND \"release_type\"=@release_type AND \"release_id\"=@release_id;";
 
+        public bool InsertJobMasterActiveOrderProgress(uint characterId, JobId jobId, ReleaseType releaseType, uint releaseId, CDataJobOrderProgress jobOrderProgress, DbConnection? connectionIn = null)
     private readonly string SqlUpdateJobMasterActiveOrdersProgress =
         $"UPDATE \"ddon_job_master_active_orders_progress\" SET {BuildQueryUpdate(JobMasterActiveOrdersProgress)} WHERE \"character_id\"=@character_id AND \"job_id\"=@job_id AND \"release_type\"=@release_type AND \"release_id\"=@release_id AND \"target_id\"=@target_id;";
 
@@ -44,7 +45,7 @@ public partial class DdonSqlDb : SqlDb
         });
     }
 
-    public override bool UpdateJobMasterActiveOrderProgress(uint characterId, JobId jobId, JobTrainingReleaseType releaseType, uint releaseId,
+    public override bool UpdateJobMasterActiveOrderProgress(uint characterId, JobId jobId, ReleaseType releaseType, uint releaseId,
         CDataJobOrderProgress jobOrderProgress,
         DbConnection? connectionIn = null)
     {
@@ -65,7 +66,7 @@ public partial class DdonSqlDb : SqlDb
         });
     }
 
-    public override bool HasJobMasterActiveOrderProgress(uint characterId, JobId jobId, JobTrainingReleaseType releaseType, uint releaseId, CDataJobOrderProgress jobOrderProgress,
+    public override bool HasJobMasterActiveOrderProgress(uint characterId, JobId jobId, ReleaseType releaseType, uint releaseId, CDataJobOrderProgress jobOrderProgress,
         DbConnection? connectionIn = null)
     {
         bool foundRecord = false;
@@ -82,7 +83,7 @@ public partial class DdonSqlDb : SqlDb
         return foundRecord;
     }
 
-    public override bool UpsertJobMasterActiveOrdersProgress(uint characterId, JobId jobId, JobTrainingReleaseType releaseType, uint releaseId,
+    public override bool UpsertJobMasterActiveOrdersProgress(uint characterId, JobId jobId, ReleaseType releaseType, uint releaseId,
         CDataJobOrderProgress jobOrderProgress,
         DbConnection? connectionIn = null)
     {
@@ -91,7 +92,7 @@ public partial class DdonSqlDb : SqlDb
             : InsertJobMasterActiveOrderProgress(characterId, jobId, releaseType, releaseId, jobOrderProgress, connectionIn);
     }
 
-    public override List<CDataJobOrderProgress> GetJobMasterActiveOrderProgress(uint characterId, JobId jobId, JobTrainingReleaseType releaseType, uint releaseId,
+    public override List<CDataJobOrderProgress> GetJobMasterActiveOrderProgress(uint characterId, JobId jobId, ReleaseType releaseType, uint releaseId,
         DbConnection? connectionIn = null)
     {
         List<CDataJobOrderProgress> results = new();
