@@ -45,7 +45,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
         public PartyGroup(uint id, PartyManager partyManager, ulong contentId)
         {
-            MaxSlots = contentId != 0 ? MaxPartyMember : partyManager.Server.GameSettings.GameServerSettings.NormalPartySize;
+            MaxSlots = (contentId != 0) ? MaxPartyMember : partyManager.Server.GameSettings.GameServerSettings.NormalPartySize;
             _lock = new object();
             _slots = new PartyMember[MaxSlots];
             _partyManager = partyManager;
