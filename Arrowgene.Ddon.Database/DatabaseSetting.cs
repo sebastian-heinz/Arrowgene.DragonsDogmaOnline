@@ -19,11 +19,12 @@ namespace Arrowgene.Ddon.Database
             Password = string.Empty;
             EnablePooling = true;
             EnableTracing = true;
+            BufferSize = 32768;
             // SQLite-only
             WipeOnStartup = false;
             // PSQL-only
-            BufferSize = 32768;
             NoResetOnClose = true;
+            // PSQL-only
             MaxAutoPrepare = 200;
 
             string envDbType = Environment.GetEnvironmentVariable("DB_TYPE");
@@ -67,7 +68,7 @@ namespace Arrowgene.Ddon.Database
             {
                 Password = envDbPass;
             }
-            
+
             string envDbEnablePooling = Environment.GetEnvironmentVariable("DB_ENABLE_POOLING");
             if (!string.IsNullOrEmpty(envDbEnablePooling))
             {
@@ -86,21 +87,21 @@ namespace Arrowgene.Ddon.Database
             {
                 EnableTracing = Convert.ToBoolean(envDbEnableTracing);
             }
-            
+
             // PSQL-only
             string envDbBufferSize = Environment.GetEnvironmentVariable("DB_BUFFER_SIZE");
             if (!string.IsNullOrEmpty(envDbBufferSize))
             {
                 BufferSize = Convert.ToUInt32(envDbBufferSize);
             }
-            
+
             // PSQL-only
             string envDbResetOnClose = Environment.GetEnvironmentVariable("DB_NO_RESET_ON_CLOSE");
             if (!string.IsNullOrEmpty(envDbResetOnClose))
             {
                 NoResetOnClose = Convert.ToBoolean(envDbResetOnClose);
-            }   
-            
+            }
+
             // PSQL-only
             string envDbMaxAutoPrepare = Environment.GetEnvironmentVariable("DB_MAX_AUTO_PREPARE");
             if (!string.IsNullOrEmpty(envDbMaxAutoPrepare))
@@ -119,14 +120,14 @@ namespace Arrowgene.Ddon.Database
             Password = databaseSettings.Password;
             Database = databaseSettings.Database;
             WipeOnStartup = databaseSettings.WipeOnStartup;
-            MaxAutoPrepare = databaseSettings.MaxAutoPrepare;
-            
+            BufferSize = databaseSettings.BufferSize;
+
             // SQLite-only
             EnableTracing = databaseSettings.EnableTracing;
-            
+
             // PSQL-only
-            BufferSize = databaseSettings.BufferSize;
             NoResetOnClose = databaseSettings.NoResetOnClose;
+            MaxAutoPrepare = databaseSettings.MaxAutoPrepare;
         }
 
         [DataMember(Order = 0)] public string Type { get; set; }
@@ -144,34 +145,44 @@ namespace Arrowgene.Ddon.Database
         [DataMember(Order = 6)] public string Database { get; set; }
 
         [DataMember(Order = 7)] public bool WipeOnStartup { get; set; }
-        
+
         /// <summary>
-        /// SQLite-only setting to enable increased logging.
+        /// Behavior differs per DB:
+        /// - SQLite: Enable increased logging via trace events.
+        /// - PSQL: Enable IncludeErrorDetail.
         /// </summary>
-        [DataMember(Order = 8)] public bool EnableTracing { get; set; }
-        
+        [DataMember(Order = 8)]
+        public bool EnableTracing { get; set; }
+
         /// <summary>
-        /// PSQL-only setting to increase read/write/socket buffers.
-        /// https://www.npgsql.org/doc/performance.html#reading-large-values
+        /// Behavior differs per DB:
+        /// - SQLite: Adjust cache size in kibibytes. See: https://sqlite.org/pragma.html#pragma_cache_size
+        /// - PSQL: Adjust read, write, socket receive and socket send buffers. See: https://www.npgsql.org/doc/performance.html#reading-large-values
         /// </summary>
-        [DataMember(Order = 9)] public uint BufferSize { get; set; }
-        
+        [DataMember(Order = 9)]
+        public uint BufferSize { get; set; }
+
         /// <summary>
         /// PSQL-only setting to control "DISCARD ALL" usage.
         /// https://www.npgsql.org/doc/performance.html#pooled-connection-reset
         /// https://www.npgsql.org/doc/compatibility.html#pgbouncer
         /// Set this to true when using PgBouncer.
         /// </summary>
-        [DataMember(Order = 10)] public bool NoResetOnClose { get; set; }
+        [DataMember(Order = 10)]
+        public bool NoResetOnClose { get; set; }
+
         /// <summary>
         /// Whether to enable built-in pooling at driver-level.
         /// For use cases where an external connection pool exists e.g. PgBouncer this should be turned off.
         /// </summary>
-        [DataMember(Order = 11)] public bool EnablePooling { get; set; }
+        [DataMember(Order = 11)]
+        public bool EnablePooling { get; set; }
+
         /// <summary>
         /// PSQL-only setting to control how many statements to prepare and keep at most.
         /// https://www.npgsql.org/doc/prepare.html#automatic-preparation
         /// </summary>
-        [DataMember(Order = 12)] public uint MaxAutoPrepare { get; set; }
+        [DataMember(Order = 12)]
+        public uint MaxAutoPrepare { get; set; }
     }
 }

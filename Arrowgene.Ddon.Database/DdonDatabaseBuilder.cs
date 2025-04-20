@@ -24,7 +24,6 @@ public static class DdonDatabaseBuilder
             DatabaseType.SQLite => BuildSqLite(settings),
             DatabaseType.SQLiteInMemory => BuildSqLite(settings, true),
             DatabaseType.PostgreSQL => BuildPostgres(settings),
-            DatabaseType.MariaDb => BuildMariaDB(settings),
             _ => throw new ArgumentOutOfRangeException($"Unknown database type '{settings.Type}' encountered!")
         };
 
@@ -50,14 +49,6 @@ public static class DdonDatabaseBuilder
         return schema;
     }
 
-    private static string AdaptSQLiteSchemaToMariaDB(string schema)
-    {
-        schema = Regex.Replace(schema, @"(\s)AUTOINCREMENT(\s|,)", "$1AUTO_INCREMENT$2", RegexOptions.IgnoreCase);
-        schema = Regex.Replace(schema, @"PRAGMA(\s*)foreign_keys=(\s*)(OFF|0)(\s*);", "SET FOREIGN_KEY_CHECKS=0;", RegexOptions.IgnoreCase);
-        schema = Regex.Replace(schema, @"PRAGMA(\s*)foreign_keys=(\s*)(ON|1)(\s*);", "SET FOREIGN_KEY_CHECKS=1;", RegexOptions.IgnoreCase);
-        return schema;
-    }
-
     private static string AdaptSQLiteSchemaTo(DatabaseType databaseType, string schema)
     {
         switch (databaseType)
@@ -66,8 +57,6 @@ public static class DdonDatabaseBuilder
                 return schema;
             case DatabaseType.PostgreSQL:
                 return AdaptSQLiteSchemaToPostgreSQL(schema);
-            case DatabaseType.MariaDb:
-                return AdaptSQLiteSchemaToMariaDB(schema);
             default:
                 throw new NotImplementedException();
         }
@@ -95,8 +84,8 @@ public static class DdonDatabaseBuilder
     {
         string sqLitePath = BuildSqLitePath(settings.DatabaseFolder);
         DdonSqLiteDb db = inMemory ?
-            new DdonSqLiteInMemoryDb(sqLitePath, settings.WipeOnStartup, settings.EnableTracing) 
-            : new DdonSqLiteDb(sqLitePath, settings.WipeOnStartup, settings.EnableTracing);
+            new DdonSqLiteInMemoryDb(sqLitePath, settings.WipeOnStartup, settings.BufferSize, settings.EnableTracing, settings.EnablePooling) 
+            : new DdonSqLiteDb(sqLitePath, settings.WipeOnStartup, settings.BufferSize, settings.EnableTracing, settings.EnablePooling);
         if (db.CreateDatabase())
         {
             string schemaFilePath = Path.Combine(settings.DatabaseFolder, DefaultSchemaFile);
@@ -119,20 +108,6 @@ public static class DdonDatabaseBuilder
             string schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
             schema = AdaptSQLiteSchemaToPostgreSQL(schema);
 
-            db.Execute(schema);
-        }
-
-        return db;
-    }
-
-    private static DdonMariaDb BuildMariaDB(DatabaseSetting settings)
-    {
-        DdonMariaDb db = new(settings.Host, settings.User, settings.Password, settings.Database, settings.WipeOnStartup);
-        if (db.CreateDatabase())
-        {
-            string schemaFilePath = Path.Combine(settings.DatabaseFolder, DefaultSchemaFile);
-            string schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
-            schema = AdaptSQLiteSchemaToMariaDB(schema);
             db.Execute(schema);
         }
 

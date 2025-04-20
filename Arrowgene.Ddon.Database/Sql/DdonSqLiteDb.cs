@@ -13,12 +13,19 @@ public class DdonSqLiteDb : DdonSqlDb
     private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonSqLiteDb));
     private readonly string _databasePath;
     protected readonly bool EnableTracing;
+    protected readonly bool EnablePooling;
+    /// <summary>
+    /// Check out https://sqlite.org/pragma.html#pragma_cache_size.
+    /// </summary>
+    protected readonly uint CacheSize;
     private string _connectionString;
 
-    public DdonSqLiteDb(string databasePath, bool wipeOnStartup, bool enableTracing = false)
+    public DdonSqLiteDb(string databasePath, bool wipeOnStartup, uint cacheSize, bool enableTracing = false, bool enablePooling = true)
     {
         _databasePath = databasePath;
         EnableTracing = enableTracing;
+        EnablePooling = enablePooling;
+        CacheSize = cacheSize;
         if (wipeOnStartup)
             try
             {
@@ -33,7 +40,7 @@ public class DdonSqLiteDb : DdonSqlDb
 
     public override bool CreateDatabase()
     {
-        _connectionString = BuildConnectionString(_databasePath);
+        _connectionString = BuildConnectionString(_databasePath, CacheSize, EnablePooling);
         if (_connectionString == null)
         {
             Logger.Error("Failed to build connection string");
@@ -63,14 +70,15 @@ public class DdonSqLiteDb : DdonSqlDb
         Logger.Info("Stopping database connection.");
     }
 
-    private string BuildConnectionString(string source)
+    private string BuildConnectionString(string source, uint cacheSize, bool enablePooling)
     {
         SQLiteConnectionStringBuilder builder = new()
         {
             DataSource = source,
             Version = 3,
             ForeignKeys = true,
-            Pooling = true,
+            Pooling = enablePooling,
+            CacheSize = -(int)cacheSize,
             // Set ADO.NET conformance flag https://system.data.sqlite.org/index.html/info/e36e05e299
             Flags = SQLiteConnectionFlags.Default | SQLiteConnectionFlags.StrictConformance
         };

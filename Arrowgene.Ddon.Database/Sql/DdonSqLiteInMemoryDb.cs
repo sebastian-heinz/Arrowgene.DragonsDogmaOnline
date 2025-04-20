@@ -27,7 +27,8 @@ public class DdonSqLiteInMemoryDb : DdonSqLiteDb
     private SQLiteConnection _keepAliveMemoryConnection;
     private string _memoryConnectionString;
 
-    public DdonSqLiteInMemoryDb(string databasePath, bool wipeOnStartup, bool enableTracing = false) : base(databasePath, wipeOnStartup, enableTracing)
+    public DdonSqLiteInMemoryDb(string databasePath, bool wipeOnStartup, uint cacheSize, bool enableTracing = false, bool enablePooling = true) : base(databasePath, wipeOnStartup,
+        cacheSize, enableTracing, enablePooling)
     {
         _fileDatabasePath = databasePath;
 
@@ -46,8 +47,8 @@ public class DdonSqLiteInMemoryDb : DdonSqLiteDb
             }
 
         // Establish file-based connection setup
-        string fileConnectionString = BuildFileConnectionString(_fileDatabasePath);
-        string backupFileConnectionString = BuildFileConnectionString(_fileDatabasePath + ".backup");
+        string fileConnectionString = BuildFileConnectionString(_fileDatabasePath, CacheSize, EnablePooling);
+        string backupFileConnectionString = BuildFileConnectionString(_fileDatabasePath + ".backup", CacheSize, EnablePooling);
         if (fileConnectionString == null)
         {
             Logger.Error($"Failed to build connection string for {_fileDatabasePath}");
@@ -58,7 +59,7 @@ public class DdonSqLiteInMemoryDb : DdonSqLiteDb
         _backupFileConnection = new SQLiteConnection(backupFileConnectionString);
 
         // Establish memory-based connection setup
-        _memoryConnectionString = BuildMemoryConnectionString();
+        _memoryConnectionString = BuildMemoryConnectionString(CacheSize, EnablePooling);
         _keepAliveMemoryConnection = new SQLiteConnection(_memoryConnectionString);
         _keepAliveMemoryConnection.Open();
         ReusableConnection = new SQLiteConnection(_memoryConnectionString);
@@ -119,14 +120,15 @@ public class DdonSqLiteInMemoryDb : DdonSqLiteDb
         ReusableConnection.Close();
     }
 
-    private static string BuildFileConnectionString(string source)
+    private static string BuildFileConnectionString(string source, uint cacheSize, bool enablePooling)
     {
         SQLiteConnectionStringBuilder builder = new()
         {
             DataSource = source,
             Version = 3,
             ForeignKeys = true,
-            Pooling = true,
+            Pooling = enablePooling,
+            CacheSize = -(int)cacheSize,
             // Set ADO.NET conformance flag https://system.data.sqlite.org/index.html/info/e36e05e299
             Flags = SQLiteConnectionFlags.Default | SQLiteConnectionFlags.StrictConformance
         };
@@ -135,14 +137,15 @@ public class DdonSqLiteInMemoryDb : DdonSqLiteDb
         return connectionString;
     }
 
-    private static string BuildMemoryConnectionString()
+    private static string BuildMemoryConnectionString(uint cacheSize, bool enablePooling)
     {
         SQLiteConnectionStringBuilder builder = new()
         {
             DataSource = "memory.db",
             Version = 3,
             ForeignKeys = true,
-            Pooling = true,
+            Pooling = enablePooling,
+            CacheSize = -(int)cacheSize,
             // Set ADO.NET conformance flag https://system.data.sqlite.org/index.html/info/e36e05e299
             Flags = SQLiteConnectionFlags.Default | SQLiteConnectionFlags.StrictConformance
         };

@@ -27,7 +27,9 @@ services:
       - DB_FOLDER=/var/ddon/server/Files/Database
       - DB_PORT=3306
       - DB_WIPE_ON_STARTUP=false
+      - DB_BUFFER_SIZE=32768
       - DB_ENABLE_TRACING=true
+      - DB_ENABLE_POOLING=true
     volumes:
       - ddon-server-sqlite-volume:/var/ddon/server/Files/Database
       - ./Arrowgene.Ddon.config.local_dev.json:/var/ddon/server/Files/Arrowgene.Ddon.config.json:ro
