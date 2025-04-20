@@ -8,8 +8,8 @@ namespace Arrowgene.Ddon.Shared.Asset
     {
         public JobMasterAsset()
         {
-            JobOrders = new Dictionary<JobId, Dictionary<JobTrainingReleaseType, Dictionary<uint, List<CDataActiveJobOrder>>>>();
+            JobOrders = new Dictionary<JobId, Dictionary<ReleaseType, Dictionary<uint, List<CDataActiveJobOrder>>>>();
         }
-        public Dictionary<JobId, Dictionary<JobTrainingReleaseType, Dictionary<uint, List<CDataActiveJobOrder>>>> JobOrders { get; set; }
+        public Dictionary<JobId, Dictionary<ReleaseType, Dictionary<uint, List<CDataActiveJobOrder>>>> JobOrders { get; set; }
     }
 }

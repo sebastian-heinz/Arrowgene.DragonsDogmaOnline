@@ -1,5 +1,5 @@
 /**
- * @brief Morrow Forest Trial: For Our Altered Kin (Farana Plains AR7)
+ * @brief Morrow Forest Trial: For Our Altered Kin (Morrow Forest AR7)
  */
 
 #load "libs.csx"
@@ -130,7 +130,7 @@ public class ScriptedQuest : IQuest
         var process0 = AddNewProcess(0);
 
         process0.AddRawBlock(QuestAnnounceType.None)
-            .AddCheckCmdCheckAreaRank(QuestAreaId.FaranaPlains, 6);
+            .AddCheckCmdCheckAreaRank(QuestAreaId.MorrowForest, 6);
 
         // 1	"Get the details of the case from the Area Master and try to solve the problem"
         process0.AddNpcTalkAndOrderBlock(QuestStages.AreaMasterStage, QuestNpcs.AreaMaster, NpcText.AMIntro);

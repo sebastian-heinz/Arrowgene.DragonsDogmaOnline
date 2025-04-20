@@ -44,75 +44,133 @@
         {
             "stage_id": {
                 "id": 416,
-                "group_id": 4
+                "group_id": 5
             },
-            "enemies": [
-                {
-                    "enemy_id": "0x015504",
-                    "level": 75,
-                    "exp": 5000
-                },
-                {
-                    "enemy_id": "0x015504",
-                    "level": 75,
-                    "exp": 5000
-                },
-                {
-                    "enemy_id": "0x015504",
-                    "level": 75,
-                    "exp": 5000
-                }
-            ]
+          "enemies": [
+            {
+              "enemy_id": "0x015504",
+              "level": 75,
+              "exp": 5000
+            },
+            {
+              "enemy_id": "0x015504",
+              "level": 75,
+              "exp": 5000
+            },
+            {
+              "enemy_id": "0x015504",
+              "level": 75,
+              "exp": 5000
+            },
+            {
+              "enemy_id": "0x010611",
+              "level": 75,
+              "exp": 5000
+            },
+            {
+              "enemy_id": "0x010611",
+              "level": 75,
+              "exp": 5000
+            },
+            {
+              "enemy_id": "0x010611",
+              "level": 75,
+              "exp": 5000
+            },
+            {
+              "enemy_id": "0x010611",
+              "level": 75,
+              "exp": 5000
+            }
+          ]
         }
     ],
-    "blocks": [
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "stage_id": {
+        "id": 372,
+        "group_id": 0,
+        "layer_no": 0
+      },
+      "npc_id": "561",
+      "message_id": 19495,
+      "flags": [
         {
-            "type": "NpcTalkAndOrder",
-            "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 4474, "comment": "Spawns Sullivan NPC"}
-            ],
-            "stage_id": {
-                "id": 372,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "npc_id": "561",
-            "message_id": 10800
-        },
-        {
-            "type": "NewTalkToNpc",
-            "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 4471, "comment": "Spawns Glenis NPC"}
-            ],
-            "stage_id": {
-                "id": 416,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Accept",
-            "npc_id": "562",
-            "message_id": 11842
-        },
-        {
-            "type": "SeekOutEnemiesAtMarkedLocation",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {
-            "type": "KillGroup",
-            "announce_type": "Update",
-            "groups": [0]
-        },
-        {
-            "type": "TalkToNpc",
-            "stage_id": {
-                "id": 372,
-                "group_id": 1,
-                "layer_no": 1
-            },
-            "announce_type": "Update",
-            "npc_id": "561",
-            "message_id": 11842
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 4474,
+          "comment": "Spawns Sullivan NPC"
         }
-    ]
+      ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "announce_type": "Accept",
+      "stage_id": {
+        "id": 416,
+        "group_id": 0,
+        "layer_no": 0
+      },
+      "npc_id": "562",
+      "message_id": 21095,
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 4471,
+          "comment": "Spawns Glenis NPC"
+        }
+      ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "groups": [ 0 ],
+      "flags": [
+        {
+          "type": "MyQst",
+          "action": "Set",
+          "value": 2094,
+          "comment": "Starts Glenis NPC FSM"
+        }
+      ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "announce_type": "Update",
+      "stage_id": {
+        "id": 416,
+        "group_id": 2,
+        "layer_no": 0
+      },
+      "npc_id": "562",
+      "message_id": 19843,
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Clear",
+          "value": 4471,
+          "comment": "Spawns Glenis NPC"
+        },
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 4476,
+          "comment": "Spawns Glenis NPC"
+        }
+      ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "announce_type": "CheckpointAndUpdate",
+      "stage_id": {
+        "id": 372,
+        "group_id": 0,
+        "layer_no": 0
+      },
+      "npc_id": "561",
+      "message_id": 19477
+    }
+  ]
 }

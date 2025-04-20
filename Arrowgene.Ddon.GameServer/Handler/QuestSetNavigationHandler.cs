@@ -40,7 +40,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         ntc.TutorialQuestOrderList.Add(quest.ToCDataTutorialQuestOrderList(0));
                         break;
                     case QuestType.World:
-                        ntc.SetQuestOrderList.Add(quest.ToCDataSetQuestOrderList(0));
+                        ntc.SetQuestOrderList.Add(quest.ToCDataSetQuestOrderList(0, 0));
                         break;
                         // case QuestType.ExpiredQuestList:
                         //    break;

@@ -140,7 +140,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     x.ReleaseId == completedOrder.ReleaseId);
                     
                 // Update existing skill
-                if (completedOrder.ReleaseType == JobTrainingReleaseType.CustomSkill)
+                if (completedOrder.ReleaseType == ReleaseType.CustomSkill)
                 {
                     var acquireableSkill = client.Character.AcquirableSkills[jobId]
                         .Where(x => x.SkillNo == releasedElement.ReleaseId)
@@ -149,7 +149,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         .FirstOrDefault();
                     acquireableSkill.IsRelease = true;
                 }
-                else if (completedOrder.ReleaseType == JobTrainingReleaseType.Augment)
+                else if (completedOrder.ReleaseType == ReleaseType.Augment)
                 {
                     var acquireableSkill = client.Character.AcquirableAbilities[jobId]
                         .Where(x => x.AbilityNo == releasedElement.ReleaseId)
@@ -174,7 +174,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return;
             }
 
-            var match = Server.AssetRepository.JobMasterAsset.JobOrders[jobId][JobTrainingReleaseType.CustomSkill]
+            var match = Server.AssetRepository.JobMasterAsset.JobOrders[jobId][ReleaseType.CustomSkill]
                 .SelectMany(x => x.Value)
                 .Where(x => x.ReleaseId == customSkill.SkillId)
                 .Where(x => x.ReleaseLv == customSkill.SkillLv + 1)
@@ -188,7 +188,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             Server.Database.InsertJobMasterActiveOrder(client.Character.CharacterId, jobId, match, connectionIn);
             foreach (var condition in match.JobOrderProgressList)
             {
-                Server.Database.InsertJobMasterActiveOrderProgress(client.Character.CharacterId, jobId, JobTrainingReleaseType.CustomSkill, match.ReleaseId, condition, connectionIn);
+                Server.Database.InsertJobMasterActiveOrderProgress(client.Character.CharacterId, jobId, ReleaseType.CustomSkill, match.ReleaseId, condition, connectionIn);
             }
 
             // Update the stored orders
@@ -202,7 +202,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return;
             }
 
-            var match = Server.AssetRepository.JobMasterAsset.JobOrders[jobId][JobTrainingReleaseType.Augment]
+            var match = Server.AssetRepository.JobMasterAsset.JobOrders[jobId][ReleaseType.Augment]
                 .SelectMany(x => x.Value)
                 .Where(x => x.ReleaseLv == ability.AbilityLv + 1 && x.ReleaseId == ability.AbilityId)
                 .FirstOrDefault();
@@ -215,7 +215,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             Server.Database.InsertJobMasterActiveOrder(client.Character.CharacterId, jobId, match, connectionIn);
             foreach (var condition in match.JobOrderProgressList)
             {
-                Server.Database.InsertJobMasterActiveOrderProgress(client.Character.CharacterId, jobId, JobTrainingReleaseType.Augment, match.ReleaseId, condition, connectionIn);
+                Server.Database.InsertJobMasterActiveOrderProgress(client.Character.CharacterId, jobId, ReleaseType.Augment, match.ReleaseId, condition, connectionIn);
             }
 
             // Update the stored orders

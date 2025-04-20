@@ -6497,40 +6497,33 @@
                     {
                         "skill_level": 7,
                         "objective": "hunt",
-                        "enemy_type": "InfectedGorecyclops",
-                        "enemy_level": 55,
-                        "enemy_count": 5
-                    },
-                    {
-                        "skill_level": 8,
-                        "objective": "hunt",
                         "enemy_type": "FrostMachina",
                         "enemy_level": 60,
                         "enemy_count": 5
                     },
                     {
-                        "skill_level": 9,
+                        "skill_level": 8,
                         "objective": "hunt",
                         "enemy_type": "InfectedGriffin",
                         "enemy_level": 60,
                         "enemy_count": 5
                     },
                     {
-                        "skill_level": 9,
+                        "skill_level": 8,
                         "objective": "hunt",
                         "enemy_type": "InfectedBehemoth",
                         "enemy_level": 60,
                         "enemy_count": 5
                     },
                     {
-                        "skill_level": 10,
+                        "skill_level": 9,
                         "objective": "hunt",
                         "enemy_type": "Scourge",
                         "enemy_level": 65,
                         "enemy_count": 5
                     },
                     {
-                        "skill_level": 11,
+                        "skill_level": 10,
                         "objective": "hunt",
                         "enemy_type": "AlteredZuhl",
                         "enemy_level": 65,

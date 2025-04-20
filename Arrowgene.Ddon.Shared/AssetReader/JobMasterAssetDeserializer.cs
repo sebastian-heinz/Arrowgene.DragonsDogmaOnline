@@ -33,12 +33,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                 if (!asset.JobOrders.ContainsKey(jobId))
                 {
-                    asset.JobOrders[jobId] = new Dictionary<JobTrainingReleaseType, Dictionary<uint, List<CDataActiveJobOrder>>>();
-                    asset.JobOrders[jobId][JobTrainingReleaseType.CustomSkill] = new Dictionary<uint, List<CDataActiveJobOrder>>();
-                    asset.JobOrders[jobId][JobTrainingReleaseType.Augment] = new Dictionary<uint, List<CDataActiveJobOrder>>();
+                    asset.JobOrders[jobId] = new Dictionary<ReleaseType, Dictionary<uint, List<CDataActiveJobOrder>>>();
+                    asset.JobOrders[jobId][ReleaseType.CustomSkill] = new Dictionary<uint, List<CDataActiveJobOrder>>();
+                    asset.JobOrders[jobId][ReleaseType.Augment] = new Dictionary<uint, List<CDataActiveJobOrder>>();
                 }
 
-                if (!Enum.TryParse(jJobMasterData.GetProperty("release_type").GetString(), true, out JobTrainingReleaseType releaseType))
+                if (!Enum.TryParse(jJobMasterData.GetProperty("release_type").GetString(), true, out ReleaseType releaseType))
                 {
                     var name = jJobMasterData.GetProperty("name").GetString();
                     Logger.Error($"Failed to parse JobTrainingReleaseType={name}. Skipping.");
@@ -48,7 +48,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 foreach (var jSkill in jJobMasterData.GetProperty("skills").EnumerateArray())
                 {
                     uint releaseId;
-                    if (releaseType == JobTrainingReleaseType.CustomSkill)
+                    if (releaseType == ReleaseType.CustomSkill)
                     {
                         if (!Enum.TryParse(jSkill.GetProperty("name").GetString(), true, out CustomSkillId customSkillId))
                         {
@@ -59,7 +59,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                         releaseId = customSkillId.ReleaseId();
                     }
-                    else if (releaseType == JobTrainingReleaseType.Augment)
+                    else if (releaseType == ReleaseType.Augment)
                     {
                         releaseId = jSkill.GetProperty("id").GetUInt32();
                     }

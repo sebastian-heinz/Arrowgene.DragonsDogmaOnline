@@ -579,23 +579,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public abstract PacketQueue DistributeQuestRewards(uint questScheduleId, DbConnection? connectionIn = null);
         public abstract PacketQueue UpdatePriorityQuestList(GameClient requestingClient, DbConnection? connectionIn = null);
 
-        private (uint BasePoints, uint BonusPoints) CalculateTotalPointAmount(DdonGameServer server, GameClient client, CDataQuestExp point, QuestType questType)
-        {
-            (uint BasePoints, uint BonusPoints) amount = (point.Reward, 0);
-            switch (point.Type)
-            {
-                case PointType.ExperiencePoints:
-                    amount = server.ExpManager.GetAdjustedPoints(client, RewardSource.Quest, client.Character, null, PointType.ExperiencePoints, point.Reward, null, questType);
-                    break;
-                case PointType.AreaPoints:
-                    amount = server.ExpManager.GetAdjustedPointsForQuest(PointType.AreaPoints, point.Reward, questType);
-                    break;
-                default:
-                    break;
-            }
-            return amount;
-        }
-
         protected PacketQueue SendWalletRewards(DdonGameServer server, GameClient client, Quest quest, DbConnection? connectionIn = null)
         {
             PacketQueue packets = new();
@@ -620,16 +603,16 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 client.Enqueue(updateCharacterItemNtc, packets);
             }
 
-            var scaledRewards = quest.BaseExpRewards();
-            foreach (var point in scaledRewards)
+            var scaledRewards = quest.ScaledExpRewards();
+            foreach (var pointReward in scaledRewards)
             {
-                var amount = CalculateTotalPointAmount(server, client, point, quest.QuestType);
-                if (amount.BasePoints == 0)
+                if (pointReward.Reward == 0)
                 {
                     continue;
                 }
 
-                switch (point.Type)
+                (uint BasePoints, uint BonusPoints) amount = (pointReward.Reward, 0);
+                switch (pointReward.Type)
                 {
                     case PointType.ExperiencePoints:
                         packets.AddRange(server.ExpManager.AddExp(client, client.Character, amount, RewardSource.Quest, quest.QuestType, connectionIn));
@@ -933,14 +916,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 var questStateManager = QuestManager.GetQuestStateManager(requestingClient, quest);
                 if (questStateManager == null)
                 {
-                    Logger.Error(requestingClient, $"Unable to fetch the quest state manager for ${priorityQuestScheduleId}");
+                    Logger.Error(requestingClient, $"Unable to fetch the quest state manager for {priorityQuestScheduleId}");
                     continue;
                 }
 
                 var questState = questStateManager.GetQuestState(priorityQuestScheduleId);
                 if (questState == null)
                 {
-                    Logger.Error(requestingClient, $"Failed to find quest state for ${priorityQuestScheduleId}");
+                    Logger.Error(requestingClient, $"Failed to find quest state for {priorityQuestScheduleId}");
                     continue;
                 }
                 prioNtc.PriorityQuestList.Add(quest.ToCDataPriorityQuest(questState.Step));

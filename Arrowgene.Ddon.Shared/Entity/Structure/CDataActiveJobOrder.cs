@@ -11,7 +11,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             JobOrderProgressList = new List<CDataJobOrderProgress>();
         }
 
-        public JobTrainingReleaseType ReleaseType { get; set; }
+        public ReleaseType ReleaseType { get; set; }
         public uint ReleaseId { get; set; }
         public byte ReleaseLv { get; set; }
         public List<CDataJobOrderProgress> JobOrderProgressList { get; set; }
@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataActiveJobOrder Read(IBuffer buffer)
             {
                 CDataActiveJobOrder obj = new CDataActiveJobOrder();
-                obj.ReleaseType = (JobTrainingReleaseType) ReadByte(buffer);
+                obj.ReleaseType = (ReleaseType) ReadByte(buffer);
                 obj.ReleaseId = ReadUInt32(buffer);
                 obj.ReleaseLv = ReadByte(buffer);
                 obj.JobOrderProgressList = ReadEntityList<CDataJobOrderProgress>(buffer);
