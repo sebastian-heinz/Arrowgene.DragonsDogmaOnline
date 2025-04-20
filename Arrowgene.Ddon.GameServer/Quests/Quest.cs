@@ -738,7 +738,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 Param = ToCDataQuestOrderList(step),
                 Detail = new CDataSetQuestDetail()
                 {
-                    IsDiscovery = (clearCount > 0) ? true : IsDiscoverable,
+                    IsDiscovery = IsDiscoverable,
                     BaseAreaPoint = AreaRankManager.GetAreaPointReward(this),
                     ClearCount = clearCount
                     // UndiscoveryWalletPointRatio = ScaledWalletRewards(),
@@ -755,7 +755,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 Param = ToCDataQuestList(step),
                 Detail = new CDataSetQuestDetail()
                 {
-                    IsDiscovery = (clearCount > 0) ? true : IsDiscoverable,
+                    IsDiscovery = IsDiscoverable,
                     BaseAreaPoint = AreaRankManager.GetAreaPointReward(this),
                     ClearCount = clearCount
                 }
@@ -767,7 +767,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return new CDataContentsPlayStartData()
             {
                 QuestId = (uint) QuestId,
-                QuestScheudleId = (uint) QuestScheduleId,
+                QuestScheudleId = QuestScheduleId,
                 BaseLevel = BaseLevel,
                 StartPos = MissionParams.StartPos,
                 QuestEnemyInfoList = EnemyGroups.Values.SelectMany(group => group.Enemies.Select(enemy => new CDataQuestEnemyInfo()

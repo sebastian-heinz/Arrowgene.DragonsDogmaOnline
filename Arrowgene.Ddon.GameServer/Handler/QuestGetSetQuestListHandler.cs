@@ -3,7 +3,6 @@ using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System.Collections.Generic;
@@ -87,6 +86,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CQuestGetSetQuestListNtc ntc = new S2CQuestGetSetQuestListNtc()
             {
+                DistributeId = request.DistributeId,
                 SelectCharacterId = client.Party.Leader.Client.Character.CharacterId,
                 SetQuestList = res.SetQuestList
             };
