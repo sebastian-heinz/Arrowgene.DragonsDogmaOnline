@@ -1098,6 +1098,67 @@
                 ]
             },
             {
+                "name": "SlidingRope",
+                "tasks": [
+                    {
+                        "skill_level": 6,
+                        "objective": "hunt",
+                        "enemy_type": "Troll",
+                        "enemy_level": 40,
+                        "enemy_count": 6
+                    },
+                    {
+                        "skill_level": 7,
+                        "objective": "hunt",
+                        "enemy_type": "CaptainOrc",
+                        "enemy_level": 40,
+                        "enemy_count": 15
+                    },
+                    {
+                        "skill_level": 8,
+                        "objective": "hunt",
+                        "enemy_type": "ArmoredCyclops",
+                        "enemy_level": 35,
+                        "enemy_count": 8
+                    },
+                    {
+                        "skill_level": 8,
+                        "objective": "hunt",
+                        "enemy_type": "Colossus",
+                        "enemy_level": 40,
+                        "enemy_count": 5
+                    },
+                    {
+                        "skill_level": 9,
+                        "objective": "hunt",
+                        "enemy_type": "WhiteChimera",
+                        "enemy_level": 40,
+                        "enemy_count": 10
+                    },
+                    {
+                        "skill_level": 9,
+                        "objective": "hunt",
+                        "enemy_type": "Direwolf",
+                        "enemy_level": 40,
+                        "enemy_count": 30
+                    },
+                    {
+                        "skill_level": 10,
+                        "objective": "hunt",
+                        "enemy_type": "ElderDragon",
+                        "enemy_level": 45,
+                        "enemy_count": 10
+                    },
+                    {
+                        "skill_level": 10,
+                        "objective": "hunt",
+                        "enemy_type": "GrandEnt",
+                        "enemy_level": 45,
+                        "enemy_count": 5
+                    }
+                ]
+            },
+            {
                 "name": "Backfire",
                 "tasks": [
                     {
