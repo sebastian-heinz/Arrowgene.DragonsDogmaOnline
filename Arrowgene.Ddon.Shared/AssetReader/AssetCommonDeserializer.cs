@@ -275,11 +275,6 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 questEnemy.SpawnTimeEnd = jSpawnTimeEnd.GetUInt32();
             }
 
-            if (enemy.TryGetProperty("experience", out JsonElement jExperience))
-            {
-                questEnemy.Experience = jExperience.GetUInt32();
-            }
-
             if (enemy.TryGetProperty("exp_scheme", out JsonElement jExpScheme))
             {
                 if (Enum.TryParse(jExpScheme.GetString(), true, out EnemyExpScheme parsedScheme))
@@ -290,6 +285,16 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 {
                     Logger.Error($"Invalid exp scheme {jExpScheme}");
                 }
+            }
+
+            if (questEnemy.ExpScheme != EnemyExpScheme.Automatic && questEnemy.ExpScheme != EnemyExpScheme.Exm)
+            {
+                if (!enemy.TryGetProperty("exp", out JsonElement jExperience))
+                {
+                    Logger.Error("Quest enemy has no exp scheme type, but no exp value was assigned.");
+                    return;
+                }
+                questEnemy.Experience = jExperience.GetUInt32();
             }
         }
 
