@@ -9,7 +9,7 @@ namespace Arrowgene.Ddon.Shared.Crypto
         private const int HashSize = 24;
         private const int Iterations = 100000;
 
-        private static readonly RNGCryptoServiceProvider Provider = new RNGCryptoServiceProvider();
+        private static readonly RandomNumberGenerator Provider = RandomNumberGenerator.Create();
 
         public static string CreateHash(string password)
         {
@@ -40,7 +40,7 @@ namespace Arrowgene.Ddon.Shared.Crypto
 
         private static byte[] HashWithSalt(string input, Span<byte> salt)
         {
-            Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(input, salt.ToArray(), Iterations);
+            Rfc2898DeriveBytes pbkdf2 = new Rfc2898DeriveBytes(input, salt.ToArray(), Iterations, HashAlgorithmName.SHA1);
             return pbkdf2.GetBytes(HashSize);
         }
     }

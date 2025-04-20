@@ -67,7 +67,7 @@ namespace Arrowgene.Ddon.Shared.Crypto
         const int ROUNDS = 16; //standard is 16, to increase the number of rounds, bf_P needs to be equal to the number of rouds. Use digits of PI.
 
         //Random number generator for creating IVs
-        RNGCryptoServiceProvider randomSource;
+        private RandomNumberGenerator randomSource;
 
         //SBLOCKS
         private uint[] bf_s0;
@@ -106,7 +106,7 @@ namespace Arrowgene.Ddon.Shared.Crypto
         /// <param name="hexKey">Cipher key as a hex string</param>
         public BlowFish(string hexKey)
         {
-            randomSource = new RNGCryptoServiceProvider();
+            randomSource = RandomNumberGenerator.Create();
             SetupKey(HexToByte(hexKey));
         }
 
@@ -116,14 +116,14 @@ namespace Arrowgene.Ddon.Shared.Crypto
         /// <param name="cipherKey">Cipher key as a byte array</param>
         public BlowFish(byte[] cipherKey)
         {
-            randomSource = new RNGCryptoServiceProvider();
+            randomSource = RandomNumberGenerator.Create();
             SetupKey(cipherKey);
         }
         
         public BlowFish(byte[] cipherKey, bool compatMethod)
         {
             CompatMode = compatMethod;
-            randomSource = new RNGCryptoServiceProvider();
+            randomSource = RandomNumberGenerator.Create();
             SetupKey(cipherKey);
         }
 

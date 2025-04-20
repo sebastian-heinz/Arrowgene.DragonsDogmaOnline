@@ -34,12 +34,10 @@ services:
       - ./Arrowgene.Ddon.Scripts/scripts:/var/ddon/server/Files/Assets/scripts
     networks:
       - ddon-network
-    # Workaround: cli expects to be able to process keyboard input
-    tty: true
     depends_on:  
       db:
         condition: service_healthy
-    command: /var/ddon/server/Arrowgene.Ddon.Cli server start
+    command: /var/ddon/server/Arrowgene.Ddon.Cli server --server start
 
   db:
     container_name: ddon-db

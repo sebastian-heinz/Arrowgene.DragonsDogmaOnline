@@ -8,6 +8,7 @@ services:
   app:
     container_name: ddon-server
     build: 
+      dockerfile: psql.Dockerfile
       context: .
       args:
         - RUNTIME=${RUNTIME:-linux-x64}
@@ -29,19 +30,20 @@ services:
       - DB_PORT=5432
       - DB_WIPE_ON_STARTUP=false
       - DB_BUFFER_SIZE=32768
-      - DB_RESET_ON_CLOSE=true
+      - DB_NO_RESET_ON_CLOSE=true
+      - DB_ENABLE_TRACING=true
+      - DB_ENABLE_POOLING=true
+      - DB_MAX_AUTO_PREPARE=200
     volumes:
       - ./Arrowgene.Ddon.config.psql.local_dev.json:/var/ddon/server/Files/Arrowgene.Ddon.config.json:ro
       - ./Arrowgene.Ddon.Shared/Files/Assets:/var/ddon/server/Files/Assets
       - ./Arrowgene.Ddon.Scripts/scripts:/var/ddon/server/Files/Assets/scripts
     networks:
       - ddon-network
-    # Workaround: cli expects to be able to process keyboard input
-    tty: true
     depends_on:  
       db:
         condition: service_healthy
-    command: /var/ddon/server/Arrowgene.Ddon.Cli server start
+    command: /var/ddon/server/Arrowgene.Ddon.Cli server --service start
 
   db:
     container_name: ddon-db

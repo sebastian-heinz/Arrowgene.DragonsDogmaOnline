@@ -21,10 +21,10 @@ public static class DdonDatabaseBuilder
         Enum.TryParse(settings.Type, true, out DatabaseType dbType);
         IDatabase database = dbType switch
         {
-            DatabaseType.SQLite => BuildSqLite(settings.DatabaseFolder, settings.WipeOnStartup, false, settings.EnableTracing),
-            DatabaseType.SQLiteInMemory => BuildSqLite(settings.DatabaseFolder, settings.WipeOnStartup, true, settings.EnableTracing),
-            DatabaseType.PostgreSQL => BuildPostgres(settings.DatabaseFolder, settings.Host, settings.User, settings.Password, settings.Database, settings.WipeOnStartup, settings.BufferSize, settings.ResetOnClose),
-            DatabaseType.MariaDb => BuildMariaDB(settings.DatabaseFolder, settings.Host, settings.User, settings.Password, settings.Database, settings.WipeOnStartup),
+            DatabaseType.SQLite => BuildSqLite(settings),
+            DatabaseType.SQLiteInMemory => BuildSqLite(settings, true),
+            DatabaseType.PostgreSQL => BuildPostgres(settings),
+            DatabaseType.MariaDb => BuildMariaDB(settings),
             _ => throw new ArgumentOutOfRangeException($"Unknown database type '{settings.Type}' encountered!")
         };
 
@@ -91,13 +91,15 @@ public static class DdonDatabaseBuilder
         return Path.Combine(databaseFolder, "db.sqlite");
     }
 
-    public static DdonSqLiteDb BuildSqLite(string databaseFolder, bool wipeOnStartup, bool inMemory = false, bool enableTracing = false)
+    public static DdonSqLiteDb BuildSqLite(DatabaseSetting settings, bool inMemory = false)
     {
-        string sqLitePath = BuildSqLitePath(databaseFolder);
-        DdonSqLiteDb db = inMemory ? new DdonSqLiteInMemoryDb(sqLitePath, wipeOnStartup, enableTracing) : new DdonSqLiteDb(sqLitePath, wipeOnStartup, enableTracing);
+        string sqLitePath = BuildSqLitePath(settings.DatabaseFolder);
+        DdonSqLiteDb db = inMemory ?
+            new DdonSqLiteInMemoryDb(sqLitePath, settings.WipeOnStartup, settings.EnableTracing) 
+            : new DdonSqLiteDb(sqLitePath, settings.WipeOnStartup, settings.EnableTracing);
         if (db.CreateDatabase())
         {
-            string schemaFilePath = Path.Combine(databaseFolder, DefaultSchemaFile);
+            string schemaFilePath = Path.Combine(settings.DatabaseFolder, DefaultSchemaFile);
             string schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
 
             db.Execute(schema);
@@ -108,12 +110,12 @@ public static class DdonDatabaseBuilder
         return db;
     }
 
-    private static DdonPostgresDb BuildPostgres(string databaseFolder, string host, string user, string password, string database, bool wipeOnStartup, uint bufferSize, bool resetOnClose)
+    private static DdonPostgresDb BuildPostgres(DatabaseSetting settings)
     {
-        DdonPostgresDb db = new(host, user, password, database, wipeOnStartup, bufferSize, resetOnClose);
+        DdonPostgresDb db = new(settings.Host, settings.User, settings.Password, settings.Database, settings.WipeOnStartup, settings.BufferSize, settings.NoResetOnClose, settings.EnablePooling, settings.EnableTracing, settings.MaxAutoPrepare);
         if (db.CreateDatabase())
         {
-            string schemaFilePath = Path.Combine(databaseFolder, DefaultSchemaFile);
+            string schemaFilePath = Path.Combine(settings.DatabaseFolder, DefaultSchemaFile);
             string schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
             schema = AdaptSQLiteSchemaToPostgreSQL(schema);
 
@@ -123,12 +125,12 @@ public static class DdonDatabaseBuilder
         return db;
     }
 
-    private static DdonMariaDb BuildMariaDB(string databaseFolder, string host, string user, string password, string database, bool wipeOnStartup)
+    private static DdonMariaDb BuildMariaDB(DatabaseSetting settings)
     {
-        DdonMariaDb db = new(host, user, password, database, wipeOnStartup);
+        DdonMariaDb db = new(settings.Host, settings.User, settings.Password, settings.Database, settings.WipeOnStartup);
         if (db.CreateDatabase())
         {
-            string schemaFilePath = Path.Combine(databaseFolder, DefaultSchemaFile);
+            string schemaFilePath = Path.Combine(settings.DatabaseFolder, DefaultSchemaFile);
             string schema = File.ReadAllText(schemaFilePath, Encoding.UTF8);
             schema = AdaptSQLiteSchemaToMariaDB(schema);
             db.Execute(schema);
