@@ -25,8 +25,8 @@ services:
       - DB_DATABASE=postgres
       - DB_FOLDER=/var/ddon/server/Files/Database
       - DB_HOST=db
-      - DB_USER=root
-      - DB_PASS=root
+      - DB_USER=postgres
+      - DB_PASS=postgres
       - DB_PORT=5432
       - DB_WIPE_ON_STARTUP=false
       - DB_BUFFER_SIZE=32768
@@ -58,8 +58,8 @@ services:
     networks:
       - ddon-network
     environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=postgres
       - POSTGRES_INITDB_ARGS=--auth=scram-sha-256 --lc-numeric=en_US.UTF-8
     command: postgres -c config_file=/etc/postgresql/postgresql.conf
