@@ -381,7 +381,7 @@ public partial class DdonSqlDb : SqlDb
             });
 
         // Quest Completion
-        foreach (QuestType questType in Enum.GetValues(typeof(QuestType)).Cast<QuestType>())
+        foreach (QuestType questType in Enum.GetValues<QuestType>())
             ExecuteReader(conn, SqlSelectCompletedQuestByType,
                 command =>
                 {
@@ -559,6 +559,14 @@ public partial class DdonSqlDb : SqlDb
         return SelectAllStoragesByCharacterId(connection, characterId);
     }
 
+    /// <summary>
+    /// TODO: Optimize connection handling here and avoid nested loops re-using a single connection which is not supported with Npgsql.
+    ///     Temporary workaround: Open a new connection for each nested read.
+    /// 
+    /// </summary>
+    /// <param name="connection"></param>
+    /// <param name="characterId"></param>
+    /// <returns></returns>
     public Storages SelectAllStoragesByCharacterId(DbConnection connection, uint characterId)
     {
         Storages storages = new(new Dictionary<StorageType, ushort>());
@@ -574,35 +582,37 @@ public partial class DdonSqlDb : SqlDb
                 }
             });
 
-        ExecuteReader(connection, SqlSelectStorageItemsByCharacter,
-            command => { AddParameter(command, "@character_id", characterId); },
-            reader =>
+        using DbConnection connection2 = OpenNewConnection();
+        ExecuteReader(connection2, SqlSelectStorageItemsByCharacter,
+            command2 => { AddParameter(command2, "@character_id", characterId); },
+            reader2 =>
             {
-                while (reader.Read())
+                while (reader2.Read())
                 {
-                    StorageType storageType = (StorageType)GetByte(reader, "storage_type");
-                    ushort slot = GetUInt16(reader, "slot_no");
-                    uint itemNum = GetUInt32(reader, "item_num");
+                    StorageType storageType = (StorageType)GetByte(reader2, "storage_type");
+                    ushort slot = GetUInt16(reader2, "slot_no");
+                    uint itemNum = GetUInt32(reader2, "item_num");
                     Item item = new();
 
-                    item.UId = GetString(reader, "item_uid");
-                    item.ItemId = GetUInt32(reader, "item_id");
-                    item.SafetySetting = GetByte(reader, "safety");
-                    item.Color = GetByte(reader, "color");
-                    item.PlusValue = GetByte(reader, "plus_value");
-                    item.EquipPoints = GetUInt32(reader, "equip_points");
+                    item.UId = GetString(reader2, "item_uid");
+                    item.ItemId = GetUInt32(reader2, "item_id");
+                    item.SafetySetting = GetByte(reader2, "safety");
+                    item.Color = GetByte(reader2, "color");
+                    item.PlusValue = GetByte(reader2, "plus_value");
+                    item.EquipPoints = GetUInt32(reader2, "equip_points");
 
-                    ExecuteReader(connection, SqlSelectAllCrestDataByUid,
-                        command2 => { AddParameter(command2, "item_uid", item.UId); }, reader2 =>
+                    using DbConnection connection3 = OpenNewConnection();
+                    ExecuteReader(connection3, SqlSelectAllCrestDataByUid,
+                        command3 => { AddParameter(command3, "item_uid", item.UId); }, reader3 =>
                         {
-                            while (reader2.Read())
+                            while (reader3.Read())
                             {
-                                Crest result = ReadCrestData(reader2);
+                                Crest result = ReadCrestData(reader3);
                                 item.EquipElementParamList.Add(result.ToCDataEquipElementParam());
                             }
                         });
 
-                    item.AddStatusParamList = GetEquipmentLimitBreakRecord(item.UId, connection);
+                    item.AddStatusParamList = GetEquipmentLimitBreakRecord(item.UId, connection3);
 
                     storages.GetStorage(storageType).SetItem(item, itemNum, slot);
                 }
