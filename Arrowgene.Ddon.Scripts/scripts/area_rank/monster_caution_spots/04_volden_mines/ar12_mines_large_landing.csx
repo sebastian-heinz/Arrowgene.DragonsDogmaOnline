@@ -6,7 +6,7 @@
 
 public class MonsterSpotInfo : IMonsterSpotInfo
 {
-    public override StageLayoutId StageLayoutId => Stage.Lestania.AsStageLayoutId(170);
+    public override StageLayoutId StageLayoutId => Stage.VoldenLargeTunnels0.AsStageLayoutId(23);
     public override QuestAreaId AreaId => QuestAreaId.VoldenMines;
     public override uint RequiredAreaRank => 12;
 
@@ -24,8 +24,6 @@ public class MonsterSpotInfo : IMonsterSpotInfo
             LibDdon.Enemy.CreateAuto(EnemyId.SkullLord, 63, 1)
                 .SetNamedEnemyParams(NamedParamId.SkeletonKnightOfTheTunnel),
             LibDdon.Enemy.CreateAuto(EnemyId.SkullLord, 63, 2)
-                .SetNamedEnemyParams(NamedParamId.SkeletonKnightOfTheTunnel),
-            LibDdon.Enemy.CreateAuto(EnemyId.SkullLord, 63, 3)
                 .SetNamedEnemyParams(NamedParamId.SkeletonKnightOfTheTunnel),
         };
 
