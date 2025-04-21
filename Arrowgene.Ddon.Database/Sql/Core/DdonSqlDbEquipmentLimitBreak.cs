@@ -31,6 +31,14 @@ public partial class DdonSqlDb : SqlDb
     protected readonly string SqlUpdateEquipmentLimitBreakRecord =
         $"UPDATE \"ddon_equipment_limit_break\" SET {BuildQueryUpdate(EquipmentLimitBreakFields)} WHERE \"character_id\"=@character_id AND \"item_uid\"=@item_uid;";
 
+    private readonly string SqlUpsertEquipmentLimitBreakRecord =
+        $"""
+         INSERT INTO "ddon_equipment_limit_break" ({BuildQueryField(EquipmentLimitBreakFields)}) 
+                        VALUES ({BuildQueryInsert(EquipmentLimitBreakFields)}) 
+                        ON CONFLICT ("character_id","item_uid") 
+                        DO UPDATE SET {BuildQueryUpdateWithPrefix("EXCLUDED.", EquipmentLimitBreakNonKeyFields)};
+         """;
+
     public override bool InsertEquipmentLimitBreakRecord(uint characterId, string itemUID, CDataAddStatusParam statusParam, DbConnection? connectionIn = null)
     {
         return ExecuteQuerySafe(connectionIn, connection =>
@@ -77,11 +85,24 @@ public partial class DdonSqlDb : SqlDb
         return foundRecord;
     }
 
+    /// <summary>
+    ///     Insert or update in one round‑trip using Postgres ON CONFLICT.
+    ///     Returns true if exactly one row was inserted or updated.
+    /// </summary>
     public override bool UpsertEquipmentLimitBreakRecord(uint characterId, string itemUID, CDataAddStatusParam statusParam, DbConnection? connectionIn = null)
     {
-        return HasEquipmentLimitBreakRecord(characterId, itemUID, connectionIn)
-            ? UpdateEquipmentLimitBreakRecord(characterId, itemUID, statusParam, connectionIn)
-            : InsertEquipmentLimitBreakRecord(characterId, itemUID, statusParam, connectionIn);
+        return ExecuteQuerySafe(connectionIn, connection =>
+        {
+            return ExecuteNonQuery(connection, SqlUpsertEquipmentLimitBreakRecord, command =>
+            {
+                AddParameter(command, "character_id", characterId);
+                AddParameter(command, "item_uid", itemUID);
+                AddParameter(command, "effect_1", statusParam.AdditionalStatus1);
+                AddParameter(command, "effect_2", statusParam.AdditionalStatus2);
+                AddParameter(command, "is_effect1_valid", statusParam.IsAddStat1);
+                AddParameter(command, "is_effect2_valid", statusParam.IsAddStat2);
+            }) == 1;
+        });
     }
 
     public override List<CDataAddStatusParam> GetEquipmentLimitBreakRecord(string itemUID, DbConnection? connectionIn = null)

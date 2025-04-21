@@ -42,6 +42,15 @@ public partial class DdonSqlDb : SqlDb
 
     private static readonly string SqlDeleteAllStorageItems = "DELETE FROM \"ddon_storage_item\" WHERE \"character_id\"=@character_id;";
 
+        
+    private static readonly string SqlUpsertStorageItem =
+        $"""
+         INSERT INTO "ddon_storage_item" ({BuildQueryField(StorageItemFields)})
+                        VALUES ({BuildQueryInsert(StorageItemFields)})
+                        ON CONFLICT ("character_id", "storage_type", "slot_no")
+                        DO UPDATE SET {BuildQueryUpdateWithPrefix("EXCLUDED.", StorageItemNonUniqueFields)};
+         """;
+    
     public override Item SelectStorageItemByUId(string uId, DbConnection? connectionIn = null)
     {
         bool isTransaction = connectionIn is not null;
@@ -88,12 +97,6 @@ public partial class DdonSqlDb : SqlDb
         }) == 1;
     }
 
-    public bool InsertIfNotExistsStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item)
-    {
-        using DbConnection connection = OpenNewConnection();
-        return InsertIfNotExistsStorageItem(connection, characterId, storageType, slotNo, itemNum, item);
-    }
-
     public override bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, DbConnection? connectionIn = null)
     {
         bool isTransaction = connectionIn is not null;
@@ -122,23 +125,22 @@ public partial class DdonSqlDb : SqlDb
 
     public override bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, DbConnection? connectionIn = null)
     {
-        bool isTransaction = connectionIn is not null;
-        DbConnection connection = connectionIn ?? OpenNewConnection();
-        try
+        return ExecuteQuerySafe(connectionIn, connection =>
         {
-            Logger.Debug("Inserting storage item.");
-            if (!InsertIfNotExistsStorageItem(connection, characterId, storageType, slotNo, itemNum, item))
+            return ExecuteNonQuery(connection, SqlUpsertStorageItem, cmd =>
             {
-                Logger.Debug("Storage item already exists, replacing.");
-                return UpdateStorageItem(characterId, storageType, slotNo, itemNum, item, connection);
-            }
-
-            return true;
-        }
-        finally
-        {
-            if (!isTransaction) connection.Dispose();
-        }
+                AddParameter(cmd, "item_uid", item.UId);
+                AddParameter(cmd, "character_id", characterId);
+                AddParameter(cmd, "storage_type", (byte)storageType);
+                AddParameter(cmd, "slot_no", slotNo);
+                AddParameter(cmd, "item_id", item.ItemId);
+                AddParameter(cmd, "item_num", itemNum);
+                AddParameter(cmd, "safety", item.SafetySetting);
+                AddParameter(cmd, "color", item.Color);
+                AddParameter(cmd, "plus_value", item.PlusValue);
+                AddParameter(cmd, "equip_points", item.EquipPoints);
+            }) == 1;
+        });
     }
 
     public override bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo, DbConnection? connectionIn = null)

@@ -33,19 +33,22 @@ public partial class DdonSqlDb : SqlDb
     protected virtual string SqlInsertIfNotExistsPawnCraftProgress { get; } =
         $"INSERT INTO \"ddon_pawn_craft_progress\" ({BuildQueryField(PawnCraftProgressFields)}) SELECT {BuildQueryInsert(PawnCraftProgressFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_pawn_craft_progress\" WHERE \"craft_character_id\" = @craft_character_id AND \"craft_lead_pawn_id\" = @craft_lead_pawn_id);";
 
+    private readonly string SqlUpsertPawnCraftProgress =
+        $"""
+         INSERT INTO "ddon_equipment_limit_break" ({BuildQueryField(PawnCraftProgressFields)}) 
+                        VALUES ({BuildQueryInsert(PawnCraftProgressFields)}) 
+                        ON CONFLICT ("craft_character_id", "craft_lead_pawn_id") 
+                        DO UPDATE SET {BuildQueryUpdateWithPrefix("EXCLUDED.", PawnCraftProgressNonKeyFields)};
+         """;
+
+    /// <summary>
+    ///     Insert or update in one round‑trip using Postgres ON CONFLICT.
+    ///     Returns true if exactly one row was inserted or updated.
+    /// </summary>
     public override bool ReplacePawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null)
     {
-        return ExecuteQuerySafe(connectionIn, connection =>
-        {
-            Logger.Debug("Inserting pawn craft progress.");
-            if (!InsertIfNotExistsPawnCraftProgress(craftProgress, connection))
-            {
-                Logger.Debug("Pawn craft progress already exists, replacing.");
-                return UpdatePawnCraftProgress(craftProgress, connection);
-            }
-
-            return true;
-        });
+        return ExecuteQuerySafe(connectionIn,
+            connection => { return ExecuteNonQuery(connection, SqlUpsertPawnCraftProgress, command => { AddAllNonKeyParameters(command, craftProgress); }) == 1; });
     }
 
     public override bool InsertPawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null)
