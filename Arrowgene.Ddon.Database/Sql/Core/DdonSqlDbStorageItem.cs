@@ -1,15 +1,23 @@
 #nullable enable
 using System.Data.Common;
+using System.Linq;
 using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Database.Sql.Core;
 
 public partial class DdonSqlDb : SqlDb
 {
-    protected static readonly string[] StorageItemFields = new[]
-    {
+    protected static readonly string[] StorageItemFields =
+    [
         "item_uid", "character_id", "storage_type", "slot_no", "item_id", "item_num", "safety", "color", "plus_value", "equip_points"
-    };
+    ];
+
+    protected static readonly string[] StorageItemUniqueFields =
+    [
+        "character_id", "storage_type", "slot_no"
+    ];
+
+    protected static readonly string[] StorageItemNonUniqueFields = StorageItemFields.Except(StorageItemUniqueFields).ToArray();
 
     private static readonly string SqlInsertStorageItem =
         $"INSERT INTO \"ddon_storage_item\" ({BuildQueryField(StorageItemFields)}) VALUES ({BuildQueryInsert(StorageItemFields)});";
@@ -21,9 +29,6 @@ public partial class DdonSqlDb : SqlDb
 
     private static readonly string SqlSelectStorageItemsByCharacter =
         $"SELECT {BuildQueryField(StorageItemFields)} FROM \"ddon_storage_item\" WHERE \"character_id\"=@character_id;";
-
-    private static readonly string SqlSelectStorageItemsByCharacterAndStorageType =
-        $"SELECT {BuildQueryField(StorageItemFields)} FROM \"ddon_storage_item\" WHERE \"character_id\"=@character_id AND \"storage_type\"=@storage_type;";
 
     private static readonly string SqlDeleteStorageItem =
         "DELETE FROM \"ddon_storage_item\" WHERE \"character_id\"=@character_id AND \"storage_type\"=@storage_type AND \"slot_no\"=@slot_no;";
@@ -37,7 +42,7 @@ public partial class DdonSqlDb : SqlDb
 
     private static readonly string SqlDeleteAllStorageItems = "DELETE FROM \"ddon_storage_item\" WHERE \"character_id\"=@character_id;";
 
-    public override Item SelectStorageItemByUId(string uId, DbConnection connectionIn = null)
+    public override Item SelectStorageItemByUId(string uId, DbConnection? connectionIn = null)
     {
         bool isTransaction = connectionIn is not null;
         DbConnection connection = connectionIn ?? OpenNewConnection();

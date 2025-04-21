@@ -195,7 +195,8 @@ public partial class DdonSqlDb : SqlDb
                 if (reader.Read())
                 {
                     pawn = ReadAllPawnData(reader);
-                    QueryPawnData(connection, pawn);
+                    using DbConnection connection2 = OpenNewConnection();
+                    QueryPawnData(connection2, pawn);
                 }
             }
         );
