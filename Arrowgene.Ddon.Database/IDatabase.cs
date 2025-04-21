@@ -247,11 +247,11 @@ public interface IDatabase
     bool DeleteShortcut(uint characterId, uint pageNo, uint buttonNo);
 
     // CommunicationShortcut
-    bool InsertCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut);
+    bool InsertCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut, DbConnection? connectionIn = null);
 
     bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut, DbConnection? connectionIn = null);
 
-    bool UpdateCommunicationShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataCommunicationShortCut updatedCommunicationShortcut);
+    bool UpdateCommunicationShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataCommunicationShortCut updatedCommunicationShortcut, DbConnection? connectionIn = null);
 
     bool DeleteCommunicationShortcut(uint characterId, uint pageNo, uint buttonNo);
 

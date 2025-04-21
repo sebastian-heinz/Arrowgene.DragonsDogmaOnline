@@ -392,9 +392,9 @@ public abstract class SqlDb : IDatabase
     public abstract bool ReplaceShortcut(uint characterId, CDataShortCut shortcut, DbConnection? connectionIn = null);
     public abstract bool UpdateShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataShortCut updatedShortcut);
     public abstract bool DeleteShortcut(uint characterId, uint pageNo, uint buttonNo);
-    public abstract bool InsertCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut);
+    public abstract bool InsertCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut, DbConnection? connectionIn = null);
     public abstract bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut, DbConnection? connectionIn = null);
-    public abstract bool UpdateCommunicationShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataCommunicationShortCut updatedCommunicationShortcut);
+    public abstract bool UpdateCommunicationShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataCommunicationShortCut updatedCommunicationShortcut, DbConnection? connectionIn = null);
     public abstract bool DeleteCommunicationShortcut(uint characterId, uint pageNo, uint buttonNo);
     public abstract bool SetToken(GameToken token);
     public abstract GameToken SelectTokenByAccountId(int accountId);

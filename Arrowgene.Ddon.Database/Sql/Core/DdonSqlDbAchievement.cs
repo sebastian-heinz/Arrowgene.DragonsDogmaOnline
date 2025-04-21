@@ -42,6 +42,12 @@ public partial class DdonSqlDb : SqlDb
     private readonly string SqlUpdateAchievementProgress =
         $"UPDATE \"ddon_achievement_progress\" SET {BuildQueryUpdate(AchievementProgressFields)} WHERE \"character_id\" = @character_id AND \"achievement_type\" = @achievement_type AND \"achievement_param\" = @achievement_param;";
 
+    private readonly string SqlUpsertAchievementProgress =
+        $"INSERT INTO \"ddon_achievement_progress\" ({BuildQueryField(AchievementProgressFields)}) " +
+        $"VALUES ({BuildQueryInsert(AchievementProgressFields)}) " +
+        "ON CONFLICT (\"character_id\", \"achievement_type\", \"achievement_param\") " +
+        "DO UPDATE SET \"progress\" = EXCLUDED.\"progress\";";
+    
     public override Dictionary<(AchievementType, uint), uint> SelectAchievementProgress(uint characterId, DbConnection? connectionIn = null)
     {
         return ExecuteQuerySafe(connectionIn, connection =>
@@ -68,9 +74,9 @@ public partial class DdonSqlDb : SqlDb
     {
         return ExecuteQuerySafe(connectionIn, connection =>
         {
-            bool check = ExecuteNonQuery(
+            int affected = ExecuteNonQuery(
                 connection,
-                SqlUpdateAchievementProgress,
+                SqlUpsertAchievementProgress,
                 command =>
                 {
                     AddParameter(command, "character_id", characterId);
@@ -78,25 +84,11 @@ public partial class DdonSqlDb : SqlDb
                     AddParameter(command, "achievement_param", achievementParam);
                     AddParameter(command, "progress", progress);
                 }
-            ) == 1;
-
-            if (!check)
-                check = ExecuteNonQuery(
-                    connection,
-                    SqlInsertAchievementProgress,
-                    command =>
-                    {
-                        AddParameter(command, "character_id", characterId);
-                        AddParameter(command, "achievement_type", (uint)achievementType);
-                        AddParameter(command, "achievement_param", achievementParam);
-                        AddParameter(command, "progress", progress);
-                    }
-                ) == 1;
-
-            return check;
+            );
+            return affected > 0;
         });
     }
-
+    
     public override Dictionary<uint, DateTimeOffset> SelectAchievementStatus(uint characterId, DbConnection? connectionIn = null)
     {
         return ExecuteQuerySafe(connectionIn, connection =>

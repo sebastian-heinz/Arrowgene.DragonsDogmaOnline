@@ -237,7 +237,7 @@ namespace Arrowgene.Ddon.Test.Database
         public List<QuestProgress> GetQuestProgressByType(uint characterCommonId, QuestType questType, DbConnection? connectionIn = null) { return new List<QuestProgress>(); }
         public ulong InsertBazaarExhibition(BazaarExhibition exhibition) { return 1; }
         public bool InsertBoxRewardItems(uint commonId, QuestBoxRewards rewards, DbConnection? connectionIn = null) { return true; }
-        public bool InsertCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut) { return true; }
+        public bool InsertCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut, DbConnection? connectionIn = null) { return true; }
         public bool InsertConnection(Connection connection) { return true; }
         public int InsertContact(uint requestingCharacterId, uint requestedCharacterId, ContactListStatus status, ContactListType type, bool requesterFavorite, bool requestedFavorite) { return 1; }
         public bool InsertEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId) { return true; }
@@ -328,7 +328,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpdateCharacterCommonBaseInfo(CharacterCommon common, DbConnection? connectionIn = null) { return true; }
         public bool UpdateCharacterJobData(uint commonId, CDataCharacterJobData updatedCharacterJobData, DbConnection? connectionIn = null) { return true; }
         public bool UpdateCharacterMatchingProfile(Character character) { return true; }
-        public bool UpdateCommunicationShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataCommunicationShortCut updatedCommunicationShortcut) { return true; }
+        public bool UpdateCommunicationShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataCommunicationShortCut updatedCommunicationShortcut, DbConnection? connectionIn = null) { return true; }
         public int UpdateContact(uint requestingCharacterId, uint requestedCharacterId, ContactListStatus status, ContactListType type, bool requesterFavorite, bool requestedFavorite) { return 1; }
         public bool UpdateEditInfo(CharacterCommon character) { return true; }
         public bool UpdateEquipItem(uint commonId, JobId job, EquipType equipType, byte equipSlot, string itemUId) { return true; }
