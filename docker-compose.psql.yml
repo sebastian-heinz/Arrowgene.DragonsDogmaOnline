@@ -8,6 +8,7 @@ services:
   app:
     container_name: ddon-server
     build: 
+      dockerfile: psql.Dockerfile
       context: .
       args:
         - RUNTIME=${RUNTIME:-linux-x64}
@@ -24,24 +25,25 @@ services:
       - DB_DATABASE=postgres
       - DB_FOLDER=/var/ddon/server/Files/Database
       - DB_HOST=db
-      - DB_USER=root
-      - DB_PASS=root
+      - DB_USER=postgres
+      - DB_PASS=postgres
       - DB_PORT=5432
       - DB_WIPE_ON_STARTUP=false
       - DB_BUFFER_SIZE=32768
-      - DB_RESET_ON_CLOSE=true
+      - DB_NO_RESET_ON_CLOSE=true
+      - DB_ENABLE_TRACING=true
+      - DB_ENABLE_POOLING=true
+      - DB_MAX_AUTO_PREPARE=200
     volumes:
       - ./Arrowgene.Ddon.config.psql.local_dev.json:/var/ddon/server/Files/Arrowgene.Ddon.config.json:ro
       - ./Arrowgene.Ddon.Shared/Files/Assets:/var/ddon/server/Files/Assets
       - ./Arrowgene.Ddon.Scripts/scripts:/var/ddon/server/Files/Assets/scripts
     networks:
       - ddon-network
-    # Workaround: cli expects to be able to process keyboard input
-    tty: true
     depends_on:  
       db:
         condition: service_healthy
-    command: /var/ddon/server/Arrowgene.Ddon.Cli server start
+    command: /var/ddon/server/Arrowgene.Ddon.Cli server --service start
 
   db:
     container_name: ddon-db
@@ -56,8 +58,8 @@ services:
     networks:
       - ddon-network
     environment:
-      - POSTGRES_USER=root
-      - POSTGRES_PASSWORD=root
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=postgres
       - POSTGRES_INITDB_ARGS=--auth=scram-sha-256 --lc-numeric=en_US.UTF-8
     command: postgres -c config_file=/etc/postgresql/postgresql.conf

@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.Shared.Crypto
  */
 
     /// <summary>
-    /// A random number generator based on the RNGCryptoServiceProvider.
+    /// A random number generator based on the RandomNumberGenerator;.
     /// Adapted from the "Tales from the CryptoRandom" article in MSDN Magazine (September 2007)
     /// but with explicit guarantee to be thread safe. Note that this implementation also includes
     /// an optional (enabled by default) random buffer which provides a significant speed boost as
@@ -52,9 +52,9 @@ namespace Arrowgene.Ddon.Shared.Crypto
     /// </summary>
     public class CryptoRandom : Random
     {
-        public static readonly CryptoRandom Instance = new CryptoRandom();
+        public static readonly CryptoRandom Instance = new();
         
-        private RNGCryptoServiceProvider _rng = new RNGCryptoServiceProvider();
+        private RandomNumberGenerator _rng = RandomNumberGenerator.Create();
 
         private byte[] _buffer;
 

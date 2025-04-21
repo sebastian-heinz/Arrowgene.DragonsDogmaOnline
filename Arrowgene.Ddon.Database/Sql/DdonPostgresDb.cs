@@ -14,11 +14,13 @@ public partial class DdonPostgresDb : DdonSqlDb
     private readonly string _connectionString;
     private NpgsqlDataSource _dataSource;
 
-    public DdonPostgresDb(string host, string user, string password, string database, bool wipeOnStartup, uint bufferSize, bool resetOnClose)
+    public DdonPostgresDb(string host, string user, string password, string database, bool wipeOnStartup, uint bufferSize, bool noResetOnClose, bool enablePooling,
+        bool enableTracing, uint maxAutoPrepare)
     {
-        _connectionString = BuildConnectionString(host, user, password, database, bufferSize, resetOnClose);
+        _connectionString = BuildConnectionString(host, user, password, database, bufferSize, noResetOnClose, enablePooling, enableTracing, maxAutoPrepare);
         if (wipeOnStartup) Logger.Info("WipeOnStartup is currently not supported.");
     }
+
 
     public override bool CreateDatabase()
     {
@@ -56,7 +58,8 @@ public partial class DdonPostgresDb : DdonSqlDb
         Logger.Info("Stopping database connection.");
     }
 
-    private string BuildConnectionString(string host, string user, string password, string database, uint bufferSize, bool resetOnClose)
+    private string BuildConnectionString(string host, string user, string password, string database, uint bufferSize, bool noResetOnClose, bool enablePooling, bool enableTracing,
+        uint maxAutoPrepare)
     {
         NpgsqlConnectionStringBuilder builder = new()
         {
@@ -64,16 +67,16 @@ public partial class DdonPostgresDb : DdonSqlDb
             Username = user,
             Password = password,
             Database = database,
-            MaxAutoPrepare = 200,
-            MinPoolSize = 1,
+            MaxAutoPrepare = (int)maxAutoPrepare,
+            MinPoolSize = enablePooling ? 1 : 0,
             ConnectionLifetime = 0,
             ReadBufferSize = (int)bufferSize,
             WriteBufferSize = (int)bufferSize,
-            NoResetOnClose = resetOnClose,
+            NoResetOnClose = noResetOnClose,
             SocketReceiveBufferSize = (int)bufferSize,
             SocketSendBufferSize = (int)bufferSize,
-            Pooling = true,
-            IncludeErrorDetail = true
+            Pooling = enablePooling,
+            IncludeErrorDetail = enableTracing
         };
         string connectionString = builder.ToString();
         Logger.Info($"Connection String: {connectionString}");

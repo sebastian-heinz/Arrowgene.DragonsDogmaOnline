@@ -17,12 +17,15 @@ namespace Arrowgene.Ddon.Database
             Database = "Ddon";
             User = string.Empty;
             Password = string.Empty;
-            WipeOnStartup = false;
-            // SQLite-only
-            EnableTracing = false;
-            // PSQL-only
+            EnablePooling = true;
+            EnableTracing = true;
             BufferSize = 32768;
-            ResetOnClose = false;
+            // SQLite-only
+            WipeOnStartup = false;
+            // PSQL-only
+            NoResetOnClose = true;
+            // PSQL-only
+            MaxAutoPrepare = 200;
 
             string envDbType = Environment.GetEnvironmentVariable("DB_TYPE");
             if (!string.IsNullOrEmpty(envDbType))
@@ -66,31 +69,44 @@ namespace Arrowgene.Ddon.Database
                 Password = envDbPass;
             }
 
+            string envDbEnablePooling = Environment.GetEnvironmentVariable("DB_ENABLE_POOLING");
+            if (!string.IsNullOrEmpty(envDbEnablePooling))
+            {
+                EnablePooling = Convert.ToBoolean(envDbEnablePooling);
+            }
+
+            // SQLite-only
             string envDbWipeOnStartup = Environment.GetEnvironmentVariable("DB_WIPE_ON_STARTUP");
             if (!string.IsNullOrEmpty(envDbWipeOnStartup))
             {
                 WipeOnStartup = Convert.ToBoolean(envDbWipeOnStartup);
             }
 
-            // SQLite-only
             string envDbEnableTracing = Environment.GetEnvironmentVariable("DB_ENABLE_TRACING");
             if (!string.IsNullOrEmpty(envDbEnableTracing))
             {
                 EnableTracing = Convert.ToBoolean(envDbEnableTracing);
             }
-            
+
             // PSQL-only
             string envDbBufferSize = Environment.GetEnvironmentVariable("DB_BUFFER_SIZE");
             if (!string.IsNullOrEmpty(envDbBufferSize))
             {
                 BufferSize = Convert.ToUInt32(envDbBufferSize);
             }
-            
+
             // PSQL-only
-            string envDbResetOnClose = Environment.GetEnvironmentVariable("DB_RESET_ON_CLOSE");
+            string envDbResetOnClose = Environment.GetEnvironmentVariable("DB_NO_RESET_ON_CLOSE");
             if (!string.IsNullOrEmpty(envDbResetOnClose))
             {
-                ResetOnClose = Convert.ToBoolean(envDbResetOnClose);
+                NoResetOnClose = Convert.ToBoolean(envDbResetOnClose);
+            }
+
+            // PSQL-only
+            string envDbMaxAutoPrepare = Environment.GetEnvironmentVariable("DB_MAX_AUTO_PREPARE");
+            if (!string.IsNullOrEmpty(envDbMaxAutoPrepare))
+            {
+                MaxAutoPrepare = Convert.ToUInt32(envDbMaxAutoPrepare);
             }
         }
 
@@ -104,13 +120,14 @@ namespace Arrowgene.Ddon.Database
             Password = databaseSettings.Password;
             Database = databaseSettings.Database;
             WipeOnStartup = databaseSettings.WipeOnStartup;
-            
+            BufferSize = databaseSettings.BufferSize;
+
             // SQLite-only
             EnableTracing = databaseSettings.EnableTracing;
-            
+
             // PSQL-only
-            BufferSize = databaseSettings.BufferSize;
-            ResetOnClose = databaseSettings.ResetOnClose;
+            NoResetOnClose = databaseSettings.NoResetOnClose;
+            MaxAutoPrepare = databaseSettings.MaxAutoPrepare;
         }
 
         [DataMember(Order = 0)] public string Type { get; set; }
@@ -128,22 +145,44 @@ namespace Arrowgene.Ddon.Database
         [DataMember(Order = 6)] public string Database { get; set; }
 
         [DataMember(Order = 7)] public bool WipeOnStartup { get; set; }
-        
+
         /// <summary>
-        /// SQLite-only setting to enable increased logging.
+        /// Behavior differs per DB:
+        /// - SQLite: Enable increased logging via trace events.
+        /// - PSQL: Enable IncludeErrorDetail.
         /// </summary>
-        [DataMember(Order = 8)] public bool EnableTracing { get; set; }
-        
+        [DataMember(Order = 8)]
+        public bool EnableTracing { get; set; }
+
         /// <summary>
-        /// PSQL-only setting to increase read/write/socket buffers.
-        /// https://www.npgsql.org/doc/performance.html#reading-large-values
+        /// Behavior differs per DB:
+        /// - SQLite: Adjust cache size in kibibytes. See: https://sqlite.org/pragma.html#pragma_cache_size
+        /// - PSQL: Adjust read, write, socket receive and socket send buffers. See: https://www.npgsql.org/doc/performance.html#reading-large-values
         /// </summary>
-        [DataMember(Order = 9)] public uint BufferSize { get; set; }
-        
+        [DataMember(Order = 9)]
+        public uint BufferSize { get; set; }
+
         /// <summary>
         /// PSQL-only setting to control "DISCARD ALL" usage.
         /// https://www.npgsql.org/doc/performance.html#pooled-connection-reset
+        /// https://www.npgsql.org/doc/compatibility.html#pgbouncer
+        /// Set this to true when using PgBouncer.
         /// </summary>
-        [DataMember(Order = 10)] public bool ResetOnClose { get; set; }
+        [DataMember(Order = 10)]
+        public bool NoResetOnClose { get; set; }
+
+        /// <summary>
+        /// Whether to enable built-in pooling at driver-level.
+        /// For use cases where an external connection pool exists e.g. PgBouncer this should be turned off.
+        /// </summary>
+        [DataMember(Order = 11)]
+        public bool EnablePooling { get; set; }
+
+        /// <summary>
+        /// PSQL-only setting to control how many statements to prepare and keep at most.
+        /// https://www.npgsql.org/doc/prepare.html#automatic-preparation
+        /// </summary>
+        [DataMember(Order = 12)]
+        public uint MaxAutoPrepare { get; set; }
     }
 }

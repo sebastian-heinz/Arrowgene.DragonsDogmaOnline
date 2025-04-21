@@ -10,7 +10,7 @@ services:
     restart: no
     volumes:
       - ddon-psql-data:/var/lib/postgresql/data
-      - ./schema_postgres.sql:/docker-entrypoint-initdb.d/schema_postgres.sql:ro
+      - ../../Arrowgene.Ddon.Database/Files/Database/Script/schema_postgres.sql:/docker-entrypoint-initdb.d/schema_postgres.sql:ro
       - ./postgresql-debug-logging.conf:/etc/postgresql/postgresql.conf:ro
     environment:
       - POSTGRES_USER=postgres

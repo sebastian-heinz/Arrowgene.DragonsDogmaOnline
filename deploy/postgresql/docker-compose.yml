@@ -1,6 +1,9 @@
 volumes:
   ddon-psql-data:
-
+    
+networks:
+  ddon-psql-net:
+    
 services:
   db:
     container_name: db
@@ -8,10 +11,12 @@ services:
     ports:
       - "5432:5432"
     restart: no
+    networks:
+      - ddon-psql-net
     volumes:
       - ddon-psql-data:/var/lib/postgresql/data
 #      - ./schema_postgres.sql:/docker-entrypoint-initdb.d/schema_postgres.sql:ro
-      - ./postgresql-debug-logging.conf:/etc/postgresql/postgresql.conf:ro
+      - ./postgresql.conf:/etc/postgresql/postgresql.conf:ro
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
@@ -23,3 +28,40 @@ services:
       interval: 10s
       timeout: 1s
       retries: 3
+      
+  db-migrate:
+    image: postgres:17-alpine
+    depends_on:
+      - db
+    networks: 
+      - ddon-psql-net
+    volumes:
+      - ./postgres-specific-migration.sql:/postgres-specific-migration.sql:ro
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >
+        until pg_isready -h db -U postgres; do
+          echo "waiting for db…";
+          sleep 2;
+        done;
+        psql -h db -U postgres -d postgres -f /postgres-specific-migration.sql;
+    environment:
+      PGPASSWORD: postgres
+    restart: "no"
+      
+  pgbouncer:
+    container_name: pgbouncer
+    image: edoburu/pgbouncer:latest
+    ports:
+      - "6432:6432"
+    restart: no
+    networks:
+      - ddon-psql-net
+    volumes:
+      - ./pgbouncer.ini:/etc/pgbouncer/pgbouncer.ini:ro
+      - ./userlist.txt:/etc/pgbouncer/userlist.txt:ro
+    environment:
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+    depends_on:
+      - db

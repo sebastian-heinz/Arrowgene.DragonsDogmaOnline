@@ -14,7 +14,7 @@ namespace Arrowgene.Ddon.Server.Network
             0x5E, 0x2D, 0x5E, 0x29
         };
 
-        private static readonly SHA1Managed Sha1 = new SHA1Managed();
+        private static readonly SHA1 Sha1 = SHA1.Create();
         private static readonly BlowFish BlowFish = new BlowFish(BlowFishKey, true);
 
         private readonly RSACryptoServiceProvider _rsa;
