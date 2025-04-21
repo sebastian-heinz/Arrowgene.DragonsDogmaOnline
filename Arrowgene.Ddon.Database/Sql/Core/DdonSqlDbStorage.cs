@@ -13,9 +13,6 @@ public partial class DdonSqlDb : SqlDb
 
     private static readonly string SqlInsertStorage = $"INSERT INTO \"ddon_storage\" ({BuildQueryField(StorageFields)}) VALUES ({BuildQueryInsert(StorageFields)});";
 
-    private static readonly string SqlInsertIfNotExistsStorage =
-        $"INSERT INTO \"ddon_storage\" ({BuildQueryField(StorageFields)}) SELECT {BuildQueryInsert(StorageFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_storage\" WHERE \"storage_type\"=@storage_type AND \"character_id\" = @character_id);";
-
     private static readonly string SqlUpdateStorage =
         $"UPDATE \"ddon_storage\" SET {BuildQueryUpdate(StorageFields)} WHERE \"storage_type\" = @storage_type AND \"character_id\" = @character_id;";
 
@@ -25,64 +22,40 @@ public partial class DdonSqlDb : SqlDb
     private static readonly string SqlSelectAllStoragesByCharacter = $"SELECT {BuildQueryField(StorageFields)} FROM \"ddon_storage\" WHERE \"character_id\" = @character_id;";
     private static readonly string SqlDeleteStorage = "DELETE FROM \"ddon_storage\" WHERE \"storage_type\"=@storage_type AND \"character_id\" = @character_id;";
 
-    public bool ReplaceStorage(uint characterId, StorageType storageType, Storage storage)
+    private static readonly string SqlUpsertStorage =
+        $@"INSERT INTO ""ddon_storage"" ({BuildQueryField(StorageFields)}) VALUES ({BuildQueryInsert(StorageFields)}) ON CONFLICT (character_id, storage_type) DO UPDATE SET slot_max   = EXCLUDED.slot_max, item_sort  = EXCLUDED.item_sort;";
+
+    public override bool ReplaceStorage(uint characterId, StorageType storageType, Storage storage, DbConnection? connectionIn = null)
     {
-        using DbConnection connection = OpenNewConnection();
-        return ReplaceStorage(connection, characterId, storageType, storage);
+        return ExecuteQuerySafe(connectionIn, conn =>
+            ExecuteNonQuery(conn, SqlUpsertStorage, cmd =>
+                AddParameter(cmd, characterId, storageType, storage)
+            ) == 1);
     }
 
-    public bool ReplaceStorage(DbConnection connection, uint characterId, StorageType storageType, Storage storage)
+    public override bool InsertStorage(uint characterId, StorageType storageType, Storage storage, DbConnection? connectionIn = null)
     {
-        Logger.Debug("Inserting storage.");
-        if (!InsertIfNotExistsStorage(connection, characterId, storageType, storage))
-        {
-            Logger.Debug("Storage already exists, replacing.");
-            return UpdateStorage(connection, characterId, storageType, storage);
-        }
-
-        return true;
+        return ExecuteQuerySafe(connectionIn,
+            connection => { return ExecuteNonQuery(connection, SqlInsertStorage, command => { AddParameter(command, characterId, storageType, storage); }) == 1; });
     }
 
-    public bool InsertIfNotExistsStorage(uint characterId, StorageType storageType, Storage storage)
+    public override bool UpdateStorage(uint characterId, StorageType storageType, Storage storage, DbConnection? connectionIn = null)
     {
-        using DbConnection connection = OpenNewConnection();
-        return InsertIfNotExistsStorage(connection, characterId, storageType, storage);
+        return ExecuteQuerySafe(connectionIn,
+            connection => { return ExecuteNonQuery(connection, SqlUpdateStorage, command => { AddParameter(command, characterId, storageType, storage); }) == 1; });
     }
 
-    public bool InsertIfNotExistsStorage(DbConnection connection, uint characterId, StorageType storageType, Storage storage)
+    public override bool DeleteStorage(uint characterId, StorageType storageType, DbConnection? connectionIn = null)
     {
-        return ExecuteNonQuery(connection, SqlInsertIfNotExistsStorage, command => { AddParameter(command, characterId, storageType, storage); }) == 1;
-    }
-
-    public override bool InsertStorage(uint characterId, StorageType storageType, Storage storage)
-    {
-        using DbConnection connection = OpenNewConnection();
-        return InsertStorage(connection, characterId, storageType, storage);
-    }
-
-    public bool InsertStorage(DbConnection connection, uint characterId, StorageType storageType, Storage storage)
-    {
-        return ExecuteNonQuery(connection, SqlInsertStorage, command => { AddParameter(command, characterId, storageType, storage); }) == 1;
-    }
-
-    public override bool UpdateStorage(uint characterId, StorageType storageType, Storage storage)
-    {
-        using DbConnection connection = OpenNewConnection();
-        return UpdateStorage(connection, characterId, storageType, storage);
-    }
-
-    public bool UpdateStorage(DbConnection connection, uint characterId, StorageType storageType, Storage storage)
-    {
-        return ExecuteNonQuery(connection, SqlUpdateStorage, command => { AddParameter(command, characterId, storageType, storage); }) == 1;
-    }
-
-    public override bool DeleteStorage(uint characterId, StorageType storageType)
-    {
-        return ExecuteNonQuery(SqlDeleteStorage, command =>
-        {
-            AddParameter(command, "character_id", characterId);
-            AddParameter(command, "storage_type", (byte)storageType);
-        }) == 1;
+        return ExecuteQuerySafe(connectionIn,
+            connection =>
+            {
+                return ExecuteNonQuery(connection, SqlDeleteStorage, command =>
+                {
+                    AddParameter(command, "character_id", characterId);
+                    AddParameter(command, "storage_type", (byte)storageType);
+                }) == 1;
+            });
     }
 
     private Tuple<StorageType, Storage> ReadStorage(DbDataReader reader)

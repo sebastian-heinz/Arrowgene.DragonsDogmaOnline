@@ -326,7 +326,6 @@ public abstract class SqlDb : IDatabase
     public abstract bool UpdatePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
     public abstract bool ReplacePawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);
     public abstract bool InsertPawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);
-    public abstract bool InsertIfNotExistsPawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);
     public abstract bool UpdatePawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);
     public abstract bool DeletePawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, DbConnection? connectionIn = null);
     public abstract CraftProgress SelectPawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, DbConnection? connectionIn = null);
@@ -346,9 +345,10 @@ public abstract class SqlDb : IDatabase
     public abstract bool UpdateReleasedWarpPoint(uint characterId, ReleasedWarpPoint updatedReleasedWarpPoint);
     public abstract bool DeleteReleasedWarpPoint(uint characterId, uint warpPointId);
     public abstract Item SelectStorageItemByUId(string uId, DbConnection? connectionIn = null);
-    public abstract bool InsertStorage(uint characterId, StorageType storageType, Storage storage);
-    public abstract bool UpdateStorage(uint characterId, StorageType storageType, Storage storage);
-    public abstract bool DeleteStorage(uint characterId, StorageType storageType);
+    public abstract bool InsertStorage(uint characterId, StorageType storageType, Storage storage, DbConnection? connectionIn);
+    public abstract bool UpdateStorage(uint characterId, StorageType storageType, Storage storage, DbConnection? connectionIn);
+    public abstract bool DeleteStorage(uint characterId, StorageType storageType, DbConnection? connectionIn = null);
+    public abstract bool ReplaceStorage(uint characterId, StorageType storageType, Storage storage, DbConnection? connectionIn = null);
     public abstract bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, DbConnection? connectionIn = null);
     public abstract bool ReplaceStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, DbConnection? connectionIn = null);
     public abstract bool DeleteStorageItem(uint characterId, StorageType storageType, ushort slotNo, DbConnection? connectionIn = null);
@@ -392,9 +392,9 @@ public abstract class SqlDb : IDatabase
     public abstract bool ReplaceShortcut(uint characterId, CDataShortCut shortcut, DbConnection? connectionIn = null);
     public abstract bool UpdateShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataShortCut updatedShortcut);
     public abstract bool DeleteShortcut(uint characterId, uint pageNo, uint buttonNo);
-    public abstract bool InsertCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut);
+    public abstract bool InsertCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut, DbConnection? connectionIn = null);
     public abstract bool ReplaceCommunicationShortcut(uint characterId, CDataCommunicationShortCut communicationShortcut, DbConnection? connectionIn = null);
-    public abstract bool UpdateCommunicationShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataCommunicationShortCut updatedCommunicationShortcut);
+    public abstract bool UpdateCommunicationShortcut(uint characterId, uint oldPageNo, uint oldButtonNo, CDataCommunicationShortCut updatedCommunicationShortcut, DbConnection? connectionIn = null);
     public abstract bool DeleteCommunicationShortcut(uint characterId, uint pageNo, uint buttonNo);
     public abstract bool SetToken(GameToken token);
     public abstract GameToken SelectTokenByAccountId(int accountId);
@@ -437,7 +437,7 @@ public abstract class SqlDb : IDatabase
     public abstract List<QuestBoxRewards> SelectBoxRewardItems(uint commonId, DbConnection? connectionIn = null);
     public abstract List<CompletedQuest> GetCompletedQuestsByType(uint characterCommonId, QuestType questType, DbConnection? connectionIn = null);
     public abstract CompletedQuest GetCompletedQuestsById(uint characterCommonId, QuestId questId, DbConnection? connectionIn = null);
-    public abstract bool InsertIfNotExistCompletedQuest(uint characterCommonId, QuestId questId, QuestType questType, DbConnection? connectionIn = null);
+    public abstract bool InsertCompletedQuest(uint characterCommonId, QuestId questId, QuestType questType, DbConnection? connectionIn = null);
     public abstract bool ReplaceCompletedQuest(uint characterCommonId, QuestId questId, QuestType questType, uint count = 1, DbConnection? connectionIn = null);
     public abstract bool InsertQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType, uint step, DbConnection? connectionIn = null);
     public abstract bool UpdateQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType, uint step, DbConnection? connectionIn = null);
@@ -588,6 +588,8 @@ public abstract class SqlDb : IDatabase
         DbConnection? connectionIn = null);
 
     public abstract bool SetMeta(DatabaseMeta meta);
+
+    public abstract bool UpdateCompletedQuest(uint characterCommonId, QuestId questId, QuestType questType, uint count = 1, DbConnection? connectionIn = null);
 
     protected virtual DbCommand Command(string query, DbConnection connection)
     {

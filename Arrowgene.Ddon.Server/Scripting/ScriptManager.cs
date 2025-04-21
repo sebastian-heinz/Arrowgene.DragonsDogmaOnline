@@ -8,7 +8,9 @@ using Microsoft.CodeAnalysis.Scripting;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Shared.Scripting
 {
@@ -164,13 +166,14 @@ namespace Arrowgene.Ddon.Shared.Scripting
 
         protected void CompileScripts()
         {
-            foreach (var module in ScriptModules.Values)
+            Dictionary<string, ScriptModule>.ValueCollection scriptModulesValues = ScriptModules.Values;
+            Parallel.ForEach(scriptModulesValues, module =>
             {
                 var path = Path.Combine(ScriptsRoot, module.ModuleRoot);
                 if (!module.IsEnabled)
                 {
                     Logger.Info($"The module '{module.ModuleRoot}' is disabled. Skipping.");
-                    continue;
+                    return;
                 }
 
                 module.Initialize();
@@ -193,7 +196,7 @@ namespace Arrowgene.Ddon.Shared.Scripting
                     module.Scripts.Add(fileToCompile);
                     CompileScript(module, fileToCompile);
                 }
-            }
+            });
         }
 
         private void SetupFileWatchers()
@@ -246,16 +249,7 @@ namespace Arrowgene.Ddon.Shared.Scripting
 
         protected ScriptModule GetModuleFromFilePath(string path)
         {
-            ScriptModule module = null;
-            foreach (var m in ScriptModules.Values)
-            {
-                if (m.Scripts.Contains(path))
-                {
-                    module = m;
-                    break;
-                }
-            }
-            return module;
+            return ScriptModules.Values.FirstOrDefault(m => m.Scripts.Contains(path));
         }
 
         protected virtual void OnChanged(object sender, FileSystemEventArgs e)

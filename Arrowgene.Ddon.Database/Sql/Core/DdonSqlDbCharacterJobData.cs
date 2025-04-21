@@ -6,68 +6,43 @@ namespace Arrowgene.Ddon.Database.Sql.Core;
 
 public partial class DdonSqlDb : SqlDb
 {
-    private const string SqlDeleteCharacterJobData = "DELETE FROM \"ddon_character_job_data\" WHERE \"character_common_id\"=@character_common_id AND \"job\" = @job;";
-
-    protected static readonly string[] CDataCharacterJobDataFields = new[]
-    {
+    protected static readonly string[] CDataCharacterJobDataFields =
+    [
         "character_common_id", "job", "exp", "job_point", "lv", "atk", "def", "m_atk", "m_def", "strength", "down_power", "shake_power",
         "stun_power", "consitution", "guts", "fire_resist", "ice_resist", "thunder_resist", "holy_resist", "dark_resist", "spread_resist",
         "freeze_resist", "shock_resist", "absorb_resist", "dark_elm_resist", "poison_resist", "slow_resist", "sleep_resist", "stun_resist",
         "wet_resist", "oil_resist", "seal_resist", "curse_resist", "soft_resist", "stone_resist", "gold_resist", "fire_reduce_resist",
         "ice_reduce_resist", "thunder_reduce_resist", "holy_reduce_resist", "dark_reduce_resist", "atk_down_resist", "def_down_resist",
         "m_atk_down_resist", "m_def_down_resist"
-    };
+    ];
 
     private static readonly string SqlUpdateCharacterJobData =
         $"UPDATE \"ddon_character_job_data\" SET {BuildQueryUpdate(CDataCharacterJobDataFields)} WHERE \"character_common_id\" = @character_common_id AND \"job\" = @job;";
 
-    private static readonly string SqlSelectCharacterJobData =
-        $"SELECT {BuildQueryField(CDataCharacterJobDataFields)} FROM \"ddon_character_job_data\" WHERE \"character_common_id\" = @character_common_id AND \"job\" = @job;";
-
     private static readonly string SqlSelectCharacterJobDataByCharacter =
         $"SELECT {BuildQueryField(CDataCharacterJobDataFields)} FROM \"ddon_character_job_data\" WHERE \"character_common_id\" = @character_common_id;";
 
-    private readonly string SqlInsertCharacterJobData =
+    private static readonly string SqlInsertCharacterJobData =
         $"INSERT INTO \"ddon_character_job_data\" ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)});";
 
-    protected virtual string SqlInsertIfNotExistsCharacterJobData { get; } =
-        $"INSERT INTO \"ddon_character_job_data\" ({BuildQueryField(CDataCharacterJobDataFields)}) SELECT {BuildQueryInsert(CDataCharacterJobDataFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_character_job_data\" WHERE \"character_common_id\" = @character_common_id AND \"job\" = @job);";
+    private static readonly string SqlUpsertCharacterJobData =
+        $@"INSERT INTO ""ddon_character_job_data"" ({BuildQueryField(CDataCharacterJobDataFields)}) VALUES ({BuildQueryInsert(CDataCharacterJobDataFields)}) ON CONFLICT (""character_common_id"", ""job"") DO UPDATE SET {BuildQueryUpdate(CDataCharacterJobDataFields)};";
 
-    public override bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData replacedCharacterJobData, DbConnection? connectionIn = null)
+    public override bool ReplaceCharacterJobData(uint commonId, CDataCharacterJobData data, DbConnection? connectionIn = null)
     {
         return ExecuteQuerySafe(connectionIn, connection =>
-        {
-            Logger.Debug("Inserting character job data.");
-            if (!InsertIfNotExistsCharacterJobData(connection, commonId, replacedCharacterJobData))
-            {
-                Logger.Debug("Character job data already exists, replacing.");
-                return UpdateCharacterJobData(commonId, replacedCharacterJobData, connection);
-            }
-
-            return true;
-        });
+            ExecuteNonQuery(
+                connection,
+                SqlUpsertCharacterJobData,
+                cmd => AddParameter(cmd, commonId, data)
+            ) == 1
+        );
     }
 
-    public bool InsertCharacterJobData(uint commonId, CDataCharacterJobData updatedCharacterJobData)
+    public bool InsertCharacterJobData(DbConnection connection, uint commonId, CDataCharacterJobData updatedCharacterJobData, DbConnection? connectionIn = null)
     {
-        using DbConnection connection = OpenNewConnection();
-        return InsertCharacterJobData(connection, commonId, updatedCharacterJobData);
-    }
-
-    public bool InsertCharacterJobData(DbConnection connection, uint commonId, CDataCharacterJobData updatedCharacterJobData)
-    {
-        return ExecuteNonQuery(connection, SqlInsertCharacterJobData, command => { AddParameter(command, commonId, updatedCharacterJobData); }) == 1;
-    }
-
-    public bool InsertIfNotExistsCharacterJobData(uint commonId, CDataCharacterJobData updatedCharacterJobData)
-    {
-        using DbConnection connection = OpenNewConnection();
-        return InsertIfNotExistsCharacterJobData(connection, commonId, updatedCharacterJobData);
-    }
-
-    public bool InsertIfNotExistsCharacterJobData(DbConnection connection, uint commonId, CDataCharacterJobData updatedCharacterJobData)
-    {
-        return ExecuteNonQuery(connection, SqlInsertIfNotExistsCharacterJobData, command => { AddParameter(command, commonId, updatedCharacterJobData); }) == 1;
+        return ExecuteQuerySafe(connectionIn,
+            connection => { return ExecuteNonQuery(connection, SqlInsertCharacterJobData, command => { AddParameter(command, commonId, updatedCharacterJobData); }) == 1; });
     }
 
     public override bool UpdateCharacterJobData(uint commonId, CDataCharacterJobData updatedCharacterJobData, DbConnection? connectionIn = null)

@@ -832,12 +832,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         QuestType = quest.QuestType,
                         ClearCount = 1,
                     });
-                    Server.Database.InsertIfNotExistCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, connectionIn);
+                    Server.Database.InsertCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, connectionIn);
                 }
                 else
                 {
                     uint clearCount = ++memberClient.Character.CompletedQuests[quest.QuestId].ClearCount;
-                    Server.Database.ReplaceCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, clearCount, connectionIn);
+                    Server.Database.UpdateCompletedQuest(memberClient.Character.CommonId, quest.QuestId, quest.QuestType, clearCount, connectionIn);
                 }
             }
 
@@ -1025,7 +1025,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     QuestType = quest.QuestType,
                     ClearCount = 1,
                 });
-                Server.Database.InsertIfNotExistCompletedQuest(Member.Client.Character.CommonId, quest.QuestId, quest.QuestType, connectionIn);
+                Server.Database.InsertCompletedQuest(Member.Client.Character.CommonId, quest.QuestId, quest.QuestType, connectionIn);
             }
             else
             {
