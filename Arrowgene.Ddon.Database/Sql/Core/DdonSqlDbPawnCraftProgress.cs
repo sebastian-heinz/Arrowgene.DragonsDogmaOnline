@@ -6,20 +6,21 @@ namespace Arrowgene.Ddon.Database.Sql.Core;
 
 public partial class DdonSqlDb : SqlDb
 {
+    private const string SqlDeletePawnCraftProgress =
+        "DELETE FROM \"ddon_pawn_craft_progress\" WHERE \"craft_character_id\" = @craft_character_id AND \"craft_lead_pawn_id\" = @craft_lead_pawn_id;";
+
     protected static readonly string[] PawnCraftProgressFields =
     [
         "craft_character_id", "craft_lead_pawn_id", "craft_support_pawn_id1", "craft_support_pawn_id2", "craft_support_pawn_id3", "recipe_id", "exp", "npc_action_id",
         "item_id", "unk0", "remain_time", "exp_bonus", "create_count", "plus_value", "great_success", "bonus_exp", "additional_quantity"
     ];
-    
+
     protected static readonly string[] PawnCraftProgressKeyFields =
     [
         "craft_character_id", "craft_lead_pawn_id"
-    ];   
+    ];
+
     protected static readonly string[] PawnCraftProgressNonKeyFields = PawnCraftProgressFields.Except(PawnCraftProgressKeyFields).ToArray();
-    
-    private const string SqlDeletePawnCraftProgress =
-        "DELETE FROM \"ddon_pawn_craft_progress\" WHERE \"craft_character_id\" = @craft_character_id AND \"craft_lead_pawn_id\" = @craft_lead_pawn_id;";
 
     private static readonly string SqlUpdatePawnCraftProgress =
         $"UPDATE \"ddon_pawn_craft_progress\" SET {BuildQueryUpdate(PawnCraftProgressFields)} WHERE \"craft_character_id\" = @craft_character_id AND \"craft_lead_pawn_id\" = @craft_lead_pawn_id;";
@@ -29,9 +30,6 @@ public partial class DdonSqlDb : SqlDb
 
     private readonly string SqlInsertPawnCraftProgress =
         $"INSERT INTO \"ddon_pawn_craft_progress\" ({BuildQueryField(PawnCraftProgressFields)}) VALUES ({BuildQueryInsert(PawnCraftProgressFields)});";
-
-    protected virtual string SqlInsertIfNotExistsPawnCraftProgress { get; } =
-        $"INSERT INTO \"ddon_pawn_craft_progress\" ({BuildQueryField(PawnCraftProgressFields)}) SELECT {BuildQueryInsert(PawnCraftProgressFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_pawn_craft_progress\" WHERE \"craft_character_id\" = @craft_character_id AND \"craft_lead_pawn_id\" = @craft_lead_pawn_id);";
 
     private readonly string SqlUpsertPawnCraftProgress =
         $"""
@@ -55,12 +53,6 @@ public partial class DdonSqlDb : SqlDb
     {
         return ExecuteQuerySafe(connectionIn,
             connection => { return ExecuteNonQuery(connection, SqlInsertPawnCraftProgress, command => { AddAllParameters(command, craftProgress); }) == 1; });
-    }
-
-    public override bool InsertIfNotExistsPawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null)
-    {
-        return ExecuteQuerySafe(connectionIn,
-            connection => { return ExecuteNonQuery(connection, SqlInsertIfNotExistsPawnCraftProgress, command => { AddAllParameters(command, craftProgress); }) == 1; });
     }
 
     public override bool UpdatePawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null)
@@ -132,6 +124,7 @@ public partial class DdonSqlDb : SqlDb
         AddParameter(command, "@craft_character_id", craftProgress.CraftCharacterId);
         AddParameter(command, "@craft_lead_pawn_id", craftProgress.CraftLeadPawnId);
     }
+
     protected void AddAllNonKeyParameters(DbCommand command, CraftProgress craftProgress)
     {
         AddParameter(command, "@craft_support_pawn_id1", craftProgress.CraftSupportPawnId1);
@@ -152,6 +145,7 @@ public partial class DdonSqlDb : SqlDb
         AddParameter(command, "@bonus_exp", craftProgress.BonusExp);
         AddParameter(command, "@additional_quantity", craftProgress.AdditionalQuantity);
     }
+
     protected void AddAllParameters(DbCommand command, CraftProgress craftProgress)
     {
         AddAllKeyParameters(command, craftProgress);

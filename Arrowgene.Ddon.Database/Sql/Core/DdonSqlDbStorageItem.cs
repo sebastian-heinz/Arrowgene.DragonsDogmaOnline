@@ -22,9 +22,6 @@ public partial class DdonSqlDb : SqlDb
     private static readonly string SqlInsertStorageItem =
         $"INSERT INTO \"ddon_storage_item\" ({BuildQueryField(StorageItemFields)}) VALUES ({BuildQueryInsert(StorageItemFields)});";
 
-    private static readonly string SqlInsertIfNotExistsStorageItem =
-        $"INSERT INTO \"ddon_storage_item\" ({BuildQueryField(StorageItemFields)}) SELECT {BuildQueryInsert(StorageItemFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_storage_item\" WHERE \"character_id\"=@character_id AND \"storage_type\"=@storage_type AND \"slot_no\"=@slot_no);";
-
     private static readonly string SqlSelectStorageItemsByUId = $"SELECT {BuildQueryField(StorageItemFields)} FROM \"ddon_storage_item\" WHERE \"item_uid\"=@item_uid;";
 
     private static readonly string SqlSelectStorageItemsByCharacter =
@@ -42,7 +39,7 @@ public partial class DdonSqlDb : SqlDb
 
     private static readonly string SqlDeleteAllStorageItems = "DELETE FROM \"ddon_storage_item\" WHERE \"character_id\"=@character_id;";
 
-        
+
     private static readonly string SqlUpsertStorageItem =
         $"""
          INSERT INTO "ddon_storage_item" ({BuildQueryField(StorageItemFields)})
@@ -50,7 +47,7 @@ public partial class DdonSqlDb : SqlDb
                         ON CONFLICT ("character_id", "storage_type", "slot_no")
                         DO UPDATE SET {BuildQueryUpdateWithPrefix("EXCLUDED.", StorageItemNonUniqueFields)};
          """;
-    
+
     public override Item SelectStorageItemByUId(string uId, DbConnection? connectionIn = null)
     {
         bool isTransaction = connectionIn is not null;
@@ -78,23 +75,6 @@ public partial class DdonSqlDb : SqlDb
         {
             if (!isTransaction) connection.Dispose();
         }
-    }
-
-    public bool InsertIfNotExistsStorageItem(DbConnection conn, uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item)
-    {
-        return ExecuteNonQuery(conn, SqlInsertIfNotExistsStorageItem, command =>
-        {
-            AddParameter(command, "item_uid", item.UId);
-            AddParameter(command, "character_id", characterId);
-            AddParameter(command, "storage_type", (byte)storageType);
-            AddParameter(command, "slot_no", slotNo);
-            AddParameter(command, "item_id", item.ItemId);
-            AddParameter(command, "item_num", itemNum);
-            AddParameter(command, "safety", item.SafetySetting);
-            AddParameter(command, "color", item.Color);
-            AddParameter(command, "plus_value", item.PlusValue);
-            AddParameter(command, "equip_points", item.EquipPoints);
-        }) == 1;
     }
 
     public override bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, DbConnection? connectionIn = null)

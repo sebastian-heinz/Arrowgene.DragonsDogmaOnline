@@ -451,7 +451,7 @@ public partial class DdonSqlDb : SqlDb
             ReplaceCommunicationShortcut(character.ContentCharacterId, communicationShortcut, conn);
 
         foreach (StorageType storageType in character.Storage.GetAllStorages().Keys)
-            ReplaceStorage(conn, character.ContentCharacterId, storageType, character.Storage.GetStorage(storageType));
+            ReplaceStorage(character.ContentCharacterId, storageType, character.Storage.GetStorage(storageType), conn);
 
         foreach (CDataWalletPoint walletPoint in character.WalletPointList) ReplaceWalletPoint(conn, character.ContentCharacterId, walletPoint);
 

@@ -15,10 +15,6 @@ public partial class DdonSqlDb : SqlDb
     private readonly string SqlInsertCompletedQuestId =
         $"INSERT INTO \"ddon_completed_quests\" ({BuildQueryField(CompletedQuestsFields)}) VALUES ({BuildQueryInsert(CompletedQuestsFields)});";
 
-    private readonly string SqlInsertIfNotExistCompletedQuestId = $"INSERT INTO \"ddon_completed_quests\" ({BuildQueryField(CompletedQuestsFields)}) SELECT " +
-                                                                  $"{BuildQueryInsert(CompletedQuestsFields)} WHERE NOT EXISTS (SELECT 1 FROM \"ddon_completed_quests\" WHERE " +
-                                                                  $"\"character_common_id\" = @character_common_id AND \"quest_id\" = @quest_id);";
-
     private readonly string SqlSelectCompletedQuestById =
         $"SELECT {BuildQueryField(CompletedQuestsFields)} FROM \"ddon_completed_quests\" WHERE \"character_common_id\" = @character_common_id AND \"quest_id\" = @quest_id;";
 
@@ -27,6 +23,13 @@ public partial class DdonSqlDb : SqlDb
 
     private readonly string SqlUpdateCompletedQuestId =
         "UPDATE \"ddon_completed_quests\" SET \"clear_count\" = @clear_count WHERE \"character_common_id\" = @character_common_id AND \"quest_id\" = @quest_id;";
+
+    private readonly string SqlUpsertCompletedQuest =
+        "INSERT INTO \"ddon_completed_quests\" " +
+        "(\"character_common_id\", \"quest_type\", \"quest_id\", \"clear_count\") " +
+        "VALUES (@character_common_id, @quest_type, @quest_id, @clear_count) " +
+        "ON CONFLICT (\"character_common_id\", \"quest_id\") " +
+        "DO UPDATE SET \"clear_count\" = EXCLUDED.\"clear_count\";";
 
     public override List<CompletedQuest> GetCompletedQuestsByType(uint characterCommonId, QuestType questType, DbConnection? connectionIn = null)
     {
@@ -76,11 +79,11 @@ public partial class DdonSqlDb : SqlDb
         });
     }
 
-    public override bool InsertIfNotExistCompletedQuest(uint characterCommonId, QuestId questId, QuestType questType, DbConnection? connectionIn = null)
+    public override bool InsertCompletedQuest(uint characterCommonId, QuestId questId, QuestType questType, DbConnection? connectionIn = null)
     {
         return ExecuteQuerySafe(connectionIn, connection =>
         {
-            return ExecuteNonQuery(connection, SqlInsertIfNotExistCompletedQuestId, command =>
+            return ExecuteNonQuery(connection, SqlInsertCompletedQuestId, command =>
             {
                 AddParameter(command, "character_common_id", characterCommonId);
                 AddParameter(command, "quest_id", (uint)questId);
@@ -92,13 +95,19 @@ public partial class DdonSqlDb : SqlDb
 
     public override bool ReplaceCompletedQuest(uint characterCommonId, QuestId questId, QuestType questType, uint count = 1, DbConnection? connectionIn = null)
     {
-        if (!InsertIfNotExistCompletedQuest(characterCommonId, questId, questType, connectionIn))
-            return UpdateCompletedQuest(characterCommonId, questId, questType, count, connectionIn);
-
-        return true;
+        return ExecuteQuerySafe(connectionIn, connection =>
+        {
+            return ExecuteNonQuery(connection, SqlUpsertCompletedQuest, cmd =>
+            {
+                AddParameter(cmd, "@character_common_id", characterCommonId);
+                AddParameter(cmd, "@quest_type", (uint)questType);
+                AddParameter(cmd, "@quest_id", (uint)questId);
+                AddParameter(cmd, "@clear_count", count);
+            }) == 1;
+        });
     }
 
-    private bool UpdateCompletedQuest(uint characterCommonId, QuestId questId, QuestType questType, uint count = 1, DbConnection? connectionIn = null)
+    public override bool UpdateCompletedQuest(uint characterCommonId, QuestId questId, QuestType questType, uint count = 1, DbConnection? connectionIn = null)
     {
         return ExecuteQuerySafe(connectionIn, connection =>
         {

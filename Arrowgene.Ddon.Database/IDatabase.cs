@@ -126,17 +126,6 @@ public interface IDatabase
     bool InsertIfNotExistsPawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
     bool UpdatePawnTrainingStatus(uint pawnId, JobId job, byte[] pawnTrainingStatus);
 
-    #region Pawn craft progress
-
-    bool ReplacePawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);
-    bool InsertPawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);
-    bool InsertIfNotExistsPawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);
-    bool UpdatePawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);
-    bool DeletePawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, DbConnection? connectionIn = null);
-    CraftProgress SelectPawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, DbConnection? connectionIn = null);
-
-    #endregion
-
     // Pawn Sp Skills
     bool InsertSpSkill(uint pawnId, JobId job, CDataSpSkill spSkill);
     bool DeleteSpSkill(uint pawnId, JobId job, byte spSkillId);
@@ -167,9 +156,10 @@ public interface IDatabase
 
     //Storage
     Item SelectStorageItemByUId(string uId, DbConnection? connectionIn = null);
-    bool InsertStorage(uint characterId, StorageType storageType, Storage storage);
-    bool UpdateStorage(uint characterId, StorageType storageType, Storage storage);
-    bool DeleteStorage(uint characterId, StorageType storageType);
+    bool InsertStorage(uint characterId, StorageType storageType, Storage storage, DbConnection? connectionIn = null);
+    bool UpdateStorage(uint characterId, StorageType storageType, Storage storage, DbConnection? connectionIn = null);
+    bool DeleteStorage(uint characterId, StorageType storageType, DbConnection? connectionIn = null);
+    bool ReplaceStorage(uint characterId, StorageType storageType, Storage storage, DbConnection? connectionIn = null);
 
     // Storage Item
     bool InsertStorageItem(uint characterId, StorageType storageType, ushort slotNo, uint itemNum, Item item, DbConnection? connectionIn = null);
@@ -323,20 +313,10 @@ public interface IDatabase
     List<CompletedQuest> GetCompletedQuestsByType(uint characterCommonId, QuestType questType, DbConnection? connectionIn = null);
     CompletedQuest GetCompletedQuestsById(uint characterCommonId, QuestId questId, DbConnection? connectionIn = null);
 
-    bool InsertIfNotExistCompletedQuest(
-        uint characterCommonId,
-        QuestId questId,
-        QuestType questType,
-        DbConnection? connectionIn = null
-    );
+    bool InsertCompletedQuest(uint characterCommonId, QuestId questId, QuestType questType, DbConnection? connectionIn = null);
 
-    bool ReplaceCompletedQuest(
-        uint characterCommonId,
-        QuestId questId,
-        QuestType questType,
-        uint count = 1,
-        DbConnection? connectionIn = null
-    );
+    bool ReplaceCompletedQuest(uint characterCommonId, QuestId questId, QuestType questType, uint count = 1, DbConnection? connectionIn = null);
+    bool UpdateCompletedQuest(uint characterCommonId, QuestId questId, QuestType questType, uint count = 1, DbConnection? connectionIn = null);
 
     // Quest Progress
     bool InsertQuestProgress(uint characterCommonId, uint questScheduleId, QuestType questType, uint step, DbConnection? connectionIn = null);
@@ -600,4 +580,14 @@ public interface IDatabase
 
     List<CDataJobOrderProgress> GetJobMasterActiveOrderProgress(uint characterId, JobId jobId, ReleaseType releaseType, uint releaseId,
         DbConnection? connectionIn = null);
+
+    #region Pawn craft progress
+
+    bool ReplacePawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);
+    bool InsertPawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);
+    bool UpdatePawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);
+    bool DeletePawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, DbConnection? connectionIn = null);
+    CraftProgress SelectPawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, DbConnection? connectionIn = null);
+
+    #endregion
 }
