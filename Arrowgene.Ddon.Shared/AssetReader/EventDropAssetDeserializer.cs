@@ -36,7 +36,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                 foreach (var jStageId in jEventItem.GetProperty("stage_ids").EnumerateArray())
                 {
-                    eventItem.QuestIds.Add(jStageId.GetUInt32());
+                    eventItem.StageIds.Add(jStageId.GetUInt32());
                 }
 
                 foreach (var jEnemyId in jEventItem.GetProperty("enemy_ids").EnumerateArray())
