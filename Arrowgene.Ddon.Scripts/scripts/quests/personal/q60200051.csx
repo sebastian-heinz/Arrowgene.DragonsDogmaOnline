@@ -11,7 +11,7 @@ public class ScriptedQuest : IQuest
     public override ushort RecommendedLevel => 18;
     public override byte MinimumItemRank => 0;
     public override bool IsDiscoverable => true;
-    public override StageInfo StageInfo => Stage.TheWhiteDragonTemple0;
+    public override StageInfo StageInfo => Stage.DanaCentrum;
     public override QuestAdventureGuideCategory? AdventureGuideCategory => QuestAdventureGuideCategory.VocationQuest;
 
     public override bool AcceptRequirementsMet(GameClient client)
