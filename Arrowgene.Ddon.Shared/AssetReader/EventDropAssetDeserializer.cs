@@ -36,18 +36,18 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                 foreach (var jStageId in jEventItem.GetProperty("stage_ids").EnumerateArray())
                 {
-                    eventItem.QuestIds.Add(jStageId.GetUInt32());
+                    eventItem.StageIds.Add(jStageId.GetUInt32());
                 }
 
                 foreach (var jEnemyId in jEventItem.GetProperty("enemy_ids").EnumerateArray())
                 {
                     if (jEnemyId.ValueKind == JsonValueKind.String)
                     {
-                        eventItem.QuestIds.Add(Convert.ToUInt32(jEnemyId.GetString(), 16));
+                        eventItem.EnemyIds.Add(Convert.ToUInt32(jEnemyId.GetString(), 16));
                     }
                     else
                     {
-                        eventItem.QuestIds.Add(jEnemyId.GetUInt32());
+                        eventItem.EnemyIds.Add(jEnemyId.GetUInt32());
                     }
                 }
 
