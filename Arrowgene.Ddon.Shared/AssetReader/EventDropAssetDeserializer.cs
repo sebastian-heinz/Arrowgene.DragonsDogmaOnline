@@ -43,11 +43,11 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 {
                     if (jEnemyId.ValueKind == JsonValueKind.String)
                     {
-                        eventItem.QuestIds.Add(Convert.ToUInt32(jEnemyId.GetString(), 16));
+                        eventItem.EnemyIds.Add(Convert.ToUInt32(jEnemyId.GetString(), 16));
                     }
                     else
                     {
-                        eventItem.QuestIds.Add(jEnemyId.GetUInt32());
+                        eventItem.EnemyIds.Add(jEnemyId.GetUInt32());
                     }
                 }
 
