@@ -9794,14 +9794,14 @@
                         "objective": "hunt",
                         "enemy_type": "SkeletonSorcerer",
                         "enemy_level": 30,
-                        "enemy_count": 5017
+                        "enemy_count": 50
                     },
                     {
                         "skill_level": 6,
                         "objective": "hunt",
                         "enemy_type": "Ent",
                         "enemy_level": 30,
-                        "enemy_count": 104
+                        "enemy_count": 10
                     }
                 ]
             },
