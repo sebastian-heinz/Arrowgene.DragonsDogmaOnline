@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server.Network;
@@ -235,6 +236,29 @@ namespace Arrowgene.Ddon.GameServer.Scripting
                     }
                 }
                 return false;
+            }
+
+            public CharacterCommon GetCharacterCommon(PartyMember member)
+            {
+                CharacterCommon result;
+                if (member is PlayerPartyMember playerMember)
+                {
+                    result = playerMember.Client.Character;
+                }
+                else if (member is PawnPartyMember pawnMember)
+                {
+                    result = pawnMember.Pawn;
+                }
+                else
+                {
+                    throw new Exception("Unknown member type");
+                }
+                return result;
+            }
+
+            public uint CalculateItemRank(CharacterCommon characterCommon)
+            {
+                return Server.EquipManager.CalculateItemRank(Server, characterCommon);
             }
         }
 

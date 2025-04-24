@@ -1,4 +1,4 @@
-#load "libs.csx"
+#load "C:\Users\Paul\Git\Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Cli\bin\Debug\net9.0\Files\Assets\scripts\libs.csx"
 
 public class PropertyGenerator : IInstanceEnemyPropertyGenerator
 {
@@ -29,7 +29,7 @@ public class PropertyGenerator : IInstanceEnemyPropertyGenerator
                 enemy.Scale = (ushort) Random.Shared.Next(110, 141);
                 enemy.Lv += (ushort) Math.Round((enemy.Scale - 110) * 0.25);
                 enemy.ExpScheme = EnemyExpScheme.Automatic;
-                enemy.BloodOrbs = CalculateBloodOrb(enemy);
+                enemy.BloodOrbs = CalculateBloodOrb(client.Party, enemy);
             }
         }
     }
@@ -47,26 +47,32 @@ public class PropertyGenerator : IInstanceEnemyPropertyGenerator
     // Level 78 High Pixue Biff = 77BO
     // Level 78 High Pixue Biff = 57BO
     // Level 95 Orc 144 BO
-    private uint CalculateBloodOrb(InstancedEnemy enemy)
+    private uint CalculateBloodOrb(PartyGroup party, InstancedEnemy enemy)
     {
-        double baseBo = enemy.Lv;
-
-        if (enemy.IsBossGauge)
+        double avgPartyIR = 0;
+        foreach (var member in party.Members)
         {
-            baseBo *= 1.5;
+            var characterCommon = LibDdon.Character.GetCharacterCommon(member);
+            avgPartyIR += LibDdon.Character.CalculateItemRank(member);
         }
+        avgPartyIR /= party.MemberCount;
+
+        var lvRatio = enemy.Lv / avgPartyIR;
 
         double variance;
-        if (enemy.Lv < 20)
+        double baseBo = enemy.Lv;
+        if (enemy.IsBossGauge)
         {
-            variance = Random.Shared.NextDouble() * (0.2 * baseBo - (-0.8 * baseBo)) + (-0.8 * baseBo); // -80% to +20%
+            baseBo *= 2.0;
+            variance = Random.Shared.Next(0, enemy.Lv * 0.5);
         }
         else
         {
-            variance = Random.Shared.NextDouble() * (0.5 * baseBo - (-0.25 * baseBo)) + (-0.25 * baseBo); // -25% to +50%
+            baseBo *= 0.5;
+            variance = Random.Shared.Next(0, enemy.Lv * 0.25);
         }
 
-        int finalBo = (int)Math.Round(baseBo + variance);
+        int finalBo = (int)Math.Round((baseBo * lvRatio) + variance);
 
         return (uint)Math.Max(1, Math.Min(200, finalBo));
     }
