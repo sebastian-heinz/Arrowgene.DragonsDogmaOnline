@@ -603,15 +603,17 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 client.Enqueue(updateCharacterItemNtc, packets);
             }
 
-            var scaledRewards = quest.ScaledExpRewards();
-            foreach (var pointReward in scaledRewards)
+            // Get regular rewards so they can be scaled in this loop and account for character details
+            // If we get sclaed rewards here, the multiplier will be applied twice to the base amount
+            foreach (var pointReward in quest.GetExpRewards())
             {
                 if (pointReward.Reward == 0)
                 {
                     continue;
                 }
 
-                (uint BasePoints, uint BonusPoints) amount = (pointReward.Reward, 0);
+                // Calculate scaled quest rewards based on the point type
+                (uint BasePoints, uint BonusPoints) amount = server.ExpManager.GetAdjustedPointsForQuest(pointReward.Type, pointReward.Reward, quest.QuestType, client.Character);
                 switch (pointReward.Type)
                 {
                     case PointType.ExperiencePoints:
@@ -622,7 +624,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             {
                                 if (member is PawnPartyMember pawnMember && client.Character.Pawns.Contains(pawnMember.Pawn))
                                 {
-                                    packets.AddRange(server.ExpManager.AddExp(client, pawnMember.Pawn, amount, RewardSource.Quest, quest.QuestType, connectionIn));
+                                    var pawnAmount = server.ExpManager.GetAdjustedPointsForQuest(pointReward.Type, pointReward.Reward, quest.QuestType, pawnMember.Pawn);
+                                    packets.AddRange(server.ExpManager.AddExp(client, pawnMember.Pawn, pawnAmount, RewardSource.Quest, quest.QuestType, connectionIn));
                                 }
                             }
                         }
@@ -653,7 +656,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
 
             // Fallback so that existing quests still get AP.
-            if (!scaledRewards.Where(x => x.Type == PointType.AreaPoints).Any() && (QuestManager.IsWorldQuest(quest) || QuestManager.IsBoardQuest(quest)))
+            if (!quest.GetExpRewards().Where(x => x.Type == PointType.AreaPoints).Any() && (QuestManager.IsWorldQuest(quest) || QuestManager.IsBoardQuest(quest)))
             {
                 var areaId = quest.QuestAreaId > 0 ? quest.QuestAreaId : (QuestAreaId)quest.LightQuestDetail.AreaId;
                 var amount = server.ExpManager.GetAdjustedPointsForQuest(PointType.AreaPoints, AreaRankManager.GetAreaPointReward(quest), quest.QuestType);
