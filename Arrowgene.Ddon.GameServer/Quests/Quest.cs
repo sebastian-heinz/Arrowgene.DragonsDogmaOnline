@@ -122,6 +122,11 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return result;
         }
 
+        public List<CDataQuestExp> GetExpRewards()
+        {
+            return ExpRewards;
+        }
+
         public List<CDataQuestExp> ScaledExpRewards()
         {
             var result = new List<CDataQuestExp>();

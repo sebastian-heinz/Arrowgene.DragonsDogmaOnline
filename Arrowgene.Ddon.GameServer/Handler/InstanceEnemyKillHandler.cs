@@ -132,12 +132,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                 }
 
-                if (packet.IsNoBattleReward)
-                {
-                    queuedPackets.Send();
-                }
-
-                if (!client.QuestState.IsQuestActive(QuestId.ResolutionsAndOmens))
+                if (!packet.IsNoBattleReward && !client.QuestState.IsQuestActive(QuestId.ResolutionsAndOmens))
                 {
                     foreach (var partyMemberClient in client.Party.Clients)
                     {

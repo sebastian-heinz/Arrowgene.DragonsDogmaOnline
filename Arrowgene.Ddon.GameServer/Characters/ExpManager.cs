@@ -767,16 +767,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return (newBase, bonus);
         }
 
-        public (uint BasePoints, uint BonusPoints) GetAdjustedPointsForQuest(PointType pointType, uint basePointAmount, QuestType questType)
+        public (uint BasePoints, uint BonusPoints) GetAdjustedPointsForQuest(PointType pointType, uint basePointAmount, QuestType questType, CharacterCommon characterCommon = null)
         {
-            double basePointMultiplier = CalculateMultipliers(null, GameMode.Normal, RewardSource.Quest, null, null, pointType, null, PointModifierType.BaseModifier, 1.0, questType);
+            double basePointMultiplier = CalculateMultipliers(null, GameMode.Normal, RewardSource.Quest, characterCommon, null, pointType, null, PointModifierType.BaseModifier, 1.0, questType);
             if (basePointMultiplier <= 0.0)
             {
                 // If the base is 0, no bonus to calculate
                 return (0, 0);
             }
 
-            double bonusPointMultiplier = CalculateMultipliers(null, GameMode.Normal, RewardSource.Quest, null, null, pointType, null, PointModifierType.BonusModifier, 0.0, questType);
+            double bonusPointMultiplier = CalculateMultipliers(null, GameMode.Normal, RewardSource.Quest, characterCommon, null, pointType, null, PointModifierType.BonusModifier, 0.0, questType);
             bonusPointMultiplier = Math.Clamp(bonusPointMultiplier, 0, double.MaxValue);
 
             uint newBase = (uint)(basePointAmount * basePointMultiplier);

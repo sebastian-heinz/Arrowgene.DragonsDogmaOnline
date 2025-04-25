@@ -50,7 +50,7 @@
             "enemies": [
                 {
                     "comment": "Scourge",
-                    "enemy_id": "0x020606",
+                    "enemy_id": "0x020601",
                     "level": 65,
                     "exp": 0,
                     "is_boss": true,
