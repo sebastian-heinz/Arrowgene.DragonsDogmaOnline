@@ -720,9 +720,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
             // and personal quests
             if (quest.ContentsRelease.Count > 0)
             {
-                // TODO: Create DB methods
-                // Server.Database.InsertContentsReleaseId(memberClient.Character.CharacterId, quest.ContentsRelease, connectionIn);
-
                 // Add released contents to the cache
                 client.Character.ContentsReleased.UnionWith(quest.ContentsRelease.Select(x => x.ReleaseId).ToHashSet());
 

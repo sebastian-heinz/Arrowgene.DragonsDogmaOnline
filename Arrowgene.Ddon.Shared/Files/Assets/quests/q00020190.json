@@ -140,12 +140,24 @@
                 {
                     "type": "IsStageNo",
                     "announce_type": "Update",
+                    "show_marker": false,
                     "checkpoint": true,
                     "stage_id": {
                         "id": 376
                     },
+                    "flags": [
+                        {
+                            "type": "MyQst",
+                            "action": "Set",
+                            "value": 1,
+                            "comment": "Spawns party gather to hack around door locked by area rank"
+                        }
+                    ],
                     "contents_release": [
-                        { "type": "None", "flag_info": "KingalCanyon.ShadoleanGreatTemple"}
+                        {
+                            "type": "None",
+                            "flag_info": "KingalCanyon.ShadoleanGreatTemple"
+                        }
                     ]
                 },
                 {
@@ -221,6 +233,12 @@
                     "message_id": 15721,
                     "flags": [
                         {
+                            "type": "MyQst",
+                            "action": "Clear",
+                            "value": 1,
+                            "comment": "Spawns party gather to hack around door locked by area rank"
+                        },
+                        {
                             "type": "QstLayout",
                             "action": "Clear",
                             "value": 3958,
@@ -243,6 +261,58 @@
                     "checkpoint": true,
                     "npc_id": "Joseph",
                     "message_id": 15722
+                }
+            ]
+        },
+        {
+            "comment": "Spawns gather point to teleport the player into the dungeon",
+            "blocks": [
+                {
+                    "type": "MyQstFlags",
+                    "check_flags": [
+                        1
+                    ]
+                },
+                {
+                    "type": "PartyGather",
+                    "stage_id": {
+                        "id": 373
+                    },
+                    "location": {
+                        "x": 54009,
+                        "y": 2241,
+                        "z": -75627
+                    }
+                },
+                {
+                    "type": "raw",
+                    "check_commands": [
+                        {
+                            "type": "StageNo",
+                            "Param1": 432
+                        }
+                    ],
+                    "result_commands": [
+                        {
+                            "type": "StageJump",
+                            "Param1": 432,
+                            "Param2": 0
+                        }
+                    ]
+                },
+                {
+                    "type": "raw",
+                    "check_commands": [
+                        {
+                            "type": "StageNoNotEq",
+                            "Param1": 432
+                        }
+                    ]
+                },
+                {
+                    "type": "ReturnCheckPoint",
+                    "process_no": 1,
+                    "block_no": 1
                 }
             ]
         },
@@ -277,7 +347,7 @@
                     "stage_id": {
                         "id": 376
                     },
-                    "process_no": 1,
+                    "process_no": 2,
                     "block_no": 1
                 }
             ]
