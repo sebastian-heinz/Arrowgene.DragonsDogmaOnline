@@ -570,6 +570,7 @@ CREATE TABLE IF NOT EXISTS "ddon_completed_quests"
     "quest_type"          INTEGER NOT NULL,
     "quest_id"            INTEGER NOT NULL,
     "clear_count"         INTEGER NOT NULL DEFAULT 0,
+    CONSTRAINT "pk_ddon_completed_quests" PRIMARY KEY ("character_common_id", "quest_id"),
     CONSTRAINT "fk_ddon_completed_quests_character_common_id" FOREIGN KEY ("character_common_id") REFERENCES "ddon_character_common" ("character_common_id") ON DELETE CASCADE
 );
 CREATE INDEX IF NOT EXISTS "idx_completed_quests_character_common_id_type" ON "ddon_completed_quests" ("character_common_id", "quest_type");

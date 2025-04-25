@@ -613,7 +613,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 }
 
                 // Calculate scaled quest rewards based on the point type
-                (uint BasePoints, uint BonusPoints) amount = server.ExpManager.GetAdjustedPointsForQuest(pointReward.Type, pointReward.Reward, quest.QuestType, client.Character);
+                (uint BasePoints, uint BonusPoints) amount = server.ExpManager.GetAdjustedPointsForQuest(pointReward.Type, pointReward.Reward, quest.QuestType, client, client.Character);
                 switch (pointReward.Type)
                 {
                     case PointType.ExperiencePoints:
@@ -624,7 +624,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             {
                                 if (member is PawnPartyMember pawnMember && client.Character.Pawns.Contains(pawnMember.Pawn))
                                 {
-                                    var pawnAmount = server.ExpManager.GetAdjustedPointsForQuest(pointReward.Type, pointReward.Reward, quest.QuestType, pawnMember.Pawn);
+                                    var pawnAmount = server.ExpManager.GetAdjustedPointsForQuest(pointReward.Type, pointReward.Reward, quest.QuestType, client, pawnMember.Pawn);
                                     packets.AddRange(server.ExpManager.AddExp(client, pawnMember.Pawn, pawnAmount, RewardSource.Quest, quest.QuestType, connectionIn));
                                 }
                             }
