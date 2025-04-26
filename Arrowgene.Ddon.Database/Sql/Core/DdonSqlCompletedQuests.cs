@@ -25,11 +25,12 @@ public partial class DdonSqlDb : SqlDb
         "UPDATE \"ddon_completed_quests\" SET \"clear_count\" = @clear_count WHERE \"character_common_id\" = @character_common_id AND \"quest_id\" = @quest_id;";
 
     private readonly string SqlUpsertCompletedQuest =
-        "INSERT INTO \"ddon_completed_quests\" " +
-        "(\"character_common_id\", \"quest_type\", \"quest_id\", \"clear_count\") " +
-        "VALUES (@character_common_id, @quest_type, @quest_id, @clear_count) " +
-        "ON CONFLICT (\"character_common_id\", \"quest_id\") " +
-        "DO UPDATE SET \"clear_count\" = EXCLUDED.\"clear_count\";";
+        $"""
+        INSERT INTO "ddon_completed_quests" ("character_common_id", "quest_type", "quest_id", "clear_count")
+            VALUES (@character_common_id, @quest_type, @quest_id, @clear_count)
+            ON CONFLICT ("character_common_id", "quest_id")
+            DO UPDATE SET "clear_count" = EXCLUDED."clear_count";
+        """;
 
     public override List<CompletedQuest> GetCompletedQuestsByType(uint characterCommonId, QuestType questType, DbConnection? connectionIn = null)
     {
@@ -39,8 +40,8 @@ public partial class DdonSqlDb : SqlDb
             ExecuteReader(connection, SqlSelectCompletedQuestByType,
                 command =>
                 {
-                    AddParameter(command, "@character_common_id", characterCommonId);
-                    AddParameter(command, "@quest_type", (uint)questType);
+                    AddParameter(command, "character_common_id", characterCommonId);
+                    AddParameter(command, "quest_type", (uint)questType);
                 }, reader =>
                 {
                     while (reader.Read())
@@ -63,8 +64,8 @@ public partial class DdonSqlDb : SqlDb
             ExecuteReader(connection, SqlSelectCompletedQuestById,
                 command =>
                 {
-                    AddParameter(command, "@character_common_id", characterCommonId);
-                    AddParameter(command, "@quest_id", (uint)questId);
+                    AddParameter(command, "character_common_id", characterCommonId);
+                    AddParameter(command, "quest_id", (uint)questId);
                 }, reader =>
                 {
                     if (reader.Read())
@@ -99,10 +100,10 @@ public partial class DdonSqlDb : SqlDb
         {
             return ExecuteNonQuery(connection, SqlUpsertCompletedQuest, cmd =>
             {
-                AddParameter(cmd, "@character_common_id", characterCommonId);
-                AddParameter(cmd, "@quest_type", (uint)questType);
-                AddParameter(cmd, "@quest_id", (uint)questId);
-                AddParameter(cmd, "@clear_count", count);
+                AddParameter(cmd, "character_common_id", characterCommonId);
+                AddParameter(cmd, "quest_type", (uint)questType);
+                AddParameter(cmd, "quest_id", (uint)questId);
+                AddParameter(cmd, "clear_count", count);
             }) == 1;
         });
     }
