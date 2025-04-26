@@ -473,6 +473,16 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             public static QuestFlagInfo OrcEncampmentNpcs { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(3283, QuestId.Q70030001, StageInfo);
         }
 
+        public static class PiremothTravelersInn
+        {
+            private static StageInfo StageInfo = Stage.PiremothTravelersInn;
+
+            /// <summary>
+            /// Spawns the area master Endale when set.
+            /// </summary>
+            public static QuestFlagInfo Endale { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(5396, QuestId.Q70030001, StageInfo);
+        }
+
         public static class NpcFunctions
         {
             /// <summary>
