@@ -270,10 +270,14 @@ public abstract class SqlDb : IDatabase
         uint currentVersion = GetMeta().DatabaseVersion;
         bool result = migrator.MigrateDatabase(this, currentVersion, toVersion);
         if (result)
+        {
             SetMeta(new DatabaseMeta
             {
                 DatabaseVersion = DdonDatabaseBuilder.Version
             });
+            ExecuteNonQuery(OpenNewConnection(),"VACUUM;", _ => {});
+            ExecuteNonQuery(OpenNewConnection(),"ANALYZE;", _ => {});
+        }
         return result;
     }
 

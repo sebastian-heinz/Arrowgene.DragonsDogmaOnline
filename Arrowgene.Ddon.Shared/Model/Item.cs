@@ -1,14 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
     public class Item
     {
-        public const int UIdLength = 8;
-
         public string UId
         {
             get
@@ -57,11 +54,7 @@ namespace Arrowgene.Ddon.Shared.Model
 
         private string UpdateUId()
         {
-            // The max value that can be represented in hex in 8 characters is 0xFFFF_FFFF which is equal to uint.MaxValue,
-            //  unfortunately there is no built-in uint support, so we force cast the random full range int -> uint instead.
-            int rnd = Random.Shared.Next(int.MinValue, int.MaxValue);
-            uint urnd = Unsafe.As<int, uint>(ref rnd);
-            _uid = urnd.ToString($"X{UIdLength}");
+            _uid = Guid.CreateVersion7(DateTimeOffset.UtcNow).ToString();
             return _uid;
         }
     }

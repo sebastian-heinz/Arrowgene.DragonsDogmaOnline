@@ -293,7 +293,7 @@ CREATE TABLE IF NOT EXISTS ddon_wallet_point
 
 CREATE TABLE IF NOT EXISTS "ddon_storage_item"
 (
-    "item_uid"     VARCHAR(8) PRIMARY KEY NOT NULL,
+    "item_uid"     TEXT PRIMARY KEY NOT NULL,
     "character_id" INTEGER                NOT NULL,
     "storage_type" SMALLINT               NOT NULL,
     "slot_no"      SMALLINT               NOT NULL,
@@ -309,7 +309,7 @@ CREATE TABLE IF NOT EXISTS "ddon_storage_item"
 
 -- CREATE TABLE IF NOT EXISTS ddon_additional_status
 -- (
---     "item_uid"          VARCHAR(8) NOT NULL,
+--     "item_uid"          TEXT NOT NULL,
 --     "character_id"      INTEGER NOT NULL,
 --     "is_add_stat1"      TINYINT NOT NULL,
 --     "is_add_stat2"      TINYINT NOT NULL,
@@ -324,7 +324,7 @@ CREATE TABLE IF NOT EXISTS "ddon_storage_item"
 
 CREATE TABLE IF NOT EXISTS "ddon_equip_item"
 (
-    "item_uid"            VARCHAR(8) NOT NULL,
+    "item_uid"            TEXT NOT NULL,
     "character_common_id" INTEGER    NOT NULL,
     "job"                 SMALLINT   NOT NULL,
     "equip_type"          SMALLINT   NOT NULL,
@@ -335,7 +335,7 @@ CREATE TABLE IF NOT EXISTS "ddon_equip_item"
 
 CREATE TABLE IF NOT EXISTS "ddon_equip_job_item"
 (
-    "item_uid"            VARCHAR(8) NOT NULL,
+    "item_uid"            TEXT NOT NULL,
     "character_common_id" INTEGER    NOT NULL,
     "job"                 SMALLINT   NOT NULL,
     "equip_slot"          SMALLINT   NOT NULL,
@@ -633,7 +633,7 @@ CREATE TABLE IF NOT EXISTS "ddon_stamp_bonus"
 CREATE TABLE IF NOT EXISTS "ddon_crests"
 (
     "character_common_id" INTEGER    NOT NULL,
-    "item_uid"            VARCHAR(8) NOT NULL,
+    "item_uid"            TEXT NOT NULL,
     "slot"                INTEGER    NOT NULL,
     "crest_id"            INTEGER    NOT NULL,
     "crest_amount"        INTEGER    NOT NULL,
@@ -938,7 +938,7 @@ VALUES (24, 0);
 CREATE TABLE IF NOT EXISTS "ddon_equipment_limit_break"
 (
     "character_id"     INTEGER    NOT NULL,
-    "item_uid"         VARCHAR(8) NOT NULL,
+    "item_uid"         TEXT NOT NULL,
     "effect_1"         INTEGER    NOT NULL,
     "effect_2"         INTEGER    NOT NULL,
     "is_effect1_valid" BOOLEAN    NOT NULL,
