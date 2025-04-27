@@ -140,7 +140,8 @@ public partial class DdonSqlDb : SqlDb
         + "LEFT JOIN \"ddon_character_common\" ON \"ddon_character_common\".\"character_common_id\" = \"ddon_pawn\".\"character_common_id\" "
         + "LEFT JOIN \"ddon_edit_info\" ON \"ddon_edit_info\".\"character_common_id\" = \"ddon_pawn\".\"character_common_id\" "
         + "LEFT JOIN \"ddon_status_info\" ON \"ddon_status_info\".\"character_common_id\" = \"ddon_pawn\".\"character_common_id\" "
-        + "WHERE \"character_id\" = @character_id";
+        + "WHERE \"character_id\" = @character_id "
+        + "ORDER BY \"pawn_id\"";
 
     public override bool CreatePawn(Pawn pawn)
     {
