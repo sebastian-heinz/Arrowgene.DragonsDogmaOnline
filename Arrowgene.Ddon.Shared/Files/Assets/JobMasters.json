@@ -6151,35 +6151,35 @@
                 "name": "RegalBarrier",
                 "tasks": [
                     {
-                        "skill_level": 6,
+                        "skill_level": 7,
                         "objective": "hunt",
                         "enemy_type": "WarReadyGorecyclops",
                         "enemy_level": 80,
                         "enemy_count": 3
                     },
                     {
-                        "skill_level": 6,
+                        "skill_level": 7,
                         "objective": "hunt",
                         "enemy_type": "WarReadyGoremanticore",
                         "enemy_level": 80,
                         "enemy_count": 3
                     },
                     {
-                        "skill_level": 7,
+                        "skill_level": 8,
                         "objective": "hunt",
                         "enemy_type": "Catoblepas",
                         "enemy_level": 80,
                         "enemy_count": 2
                     },
                     {
-                        "skill_level": 8,
+                        "skill_level": 9,
                         "objective": "hunt",
                         "enemy_type": "EvilEye",
                         "enemy_level": 80,
                         "enemy_count": 3
                     },
                     {
-                        "skill_level": 9,
+                        "skill_level": 10,
                         "objective": "hunt",
                         "enemy_type": "Ifrit",
                         "enemy_level": 90,
