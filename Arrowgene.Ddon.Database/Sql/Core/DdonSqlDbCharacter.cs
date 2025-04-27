@@ -109,7 +109,8 @@ public partial class DdonSqlDb : SqlDb
         + "LEFT JOIN \"ddon_character_matching_profile\" ON \"ddon_character_matching_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
         + "LEFT JOIN \"ddon_character_arisen_profile\" ON \"ddon_character_arisen_profile\".\"character_id\" = \"ddon_character\".\"character_id\" "
         + "LEFT JOIN \"ddon_binary_data\" ON \"ddon_binary_data\".\"character_id\" = \"ddon_character\".\"character_id\" "
-        + "WHERE \"account_id\" = @account_id AND \"game_mode\" = @game_mode;";
+        + "WHERE \"account_id\" = @account_id AND \"game_mode\" = @game_mode "
+        + "ORDER BY \"ddon_character\".\"character_id\";";
 
     private readonly string SqlUpdateCharacterBinaryData =
         $"UPDATE \"ddon_binary_data\" SET {BuildQueryUpdate(CharacterBinaryDataFields)} WHERE \"character_id\" = @character_id;";
