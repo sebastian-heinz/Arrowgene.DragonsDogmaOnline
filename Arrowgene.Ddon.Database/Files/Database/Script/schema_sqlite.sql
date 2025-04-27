@@ -979,11 +979,12 @@ CREATE TABLE IF NOT EXISTS "ddon_job_master_active_orders_progress"
     "job_id"       INTEGER NOT NULL,
     "release_type" INTEGER NOT NULL,
     "release_id"   INTEGER NOT NULL,
-    "condition"    INTEGER NOT NULL,
     "target_id"    INTEGER NOT NULL,
+    "condition"    INTEGER NOT NULL,
     "target_rank"  INTEGER NOT NULL,
     "target_num"   INTEGER NOT NULL,
     "current_num"  INTEGER NOT NULL,
+    CONSTRAINT "pk_ddon_job_master_active_orders_progress" PRIMARY KEY ("character_id", "job_id", "release_type", "release_id", "target_id"),
     CONSTRAINT "fk_ddon_job_master_active_orders_progress" FOREIGN KEY ("character_id", "job_id", "release_type", "release_id") REFERENCES "ddon_job_master_active_orders" ("character_id", "job_id", "release_type", "release_id") ON DELETE CASCADE,
     CONSTRAINT "fk_ddon_job_master_active_orders_progress_character_id" FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
