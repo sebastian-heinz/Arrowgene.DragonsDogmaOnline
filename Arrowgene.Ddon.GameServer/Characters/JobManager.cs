@@ -396,7 +396,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     lowerLevelSkill.SkillLv = skillLv;
                     database.UpdateLearnedCustomSkill(character.CommonId, lowerLevelSkill, connection);
 
-                    _Server.JobMasterManager.ScheduleCustomSkillTrainingTask(client, job, lowerLevelSkill, connection);
+                    if (character is Character)
+                    {
+                        _Server.JobMasterManager.ScheduleCustomSkillTrainingTask(client, job, lowerLevelSkill, connection);
+                    }
                 }
 
                 // EX Skills
@@ -725,7 +728,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     lowerLevelAbility.AbilityLv = abilityLv;
                     database.UpdateLearnedAbility(character.CommonId, lowerLevelAbility, connection);
 
-                    _Server.JobMasterManager.ScheduleAbilityTrainingTask(client, job, lowerLevelAbility, connection);
+                    if (character is Character)
+                    {
+                        _Server.JobMasterManager.ScheduleAbilityTrainingTask(client, job, lowerLevelAbility, connection);
+                    }
                 }
 
                 uint jpCost = abilityData.Params.Where(x => x.Lv == abilityLv).Single().RequireJobPoint;
