@@ -432,6 +432,16 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             public static QuestFlagInfo VegasaCorridorEast { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2400, QuestId.Q70023001);
         }
 
+        public static class ManunVillage
+        {
+            private static StageInfo StageInfo = Stage.ManunVillage;
+
+            /// <summary>
+            /// Unlocks the quest board in Manun Village when set.
+            /// </summary>
+            public static QuestFlagInfo QuestBoard { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2245, QuestId.Q70023001);
+        }
+
         public static class TowerOfIvanos
         {
             private static StageInfo StageInfo = Stage.TowerofIvanos;

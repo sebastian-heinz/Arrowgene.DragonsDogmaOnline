@@ -12,7 +12,8 @@
         {"type": "MainQuestCompleted", "Param1": 20200}
     ],
     "contents_release": [
-        {"flag_info": "TowerOfIvanos.QuestBoard"}
+        { "flag_info": "ManunVillage.QuestBoard" },
+        { "flag_info": "TowerOfIvanos.QuestBoard" }
     ],
     "rewards": [
         {
