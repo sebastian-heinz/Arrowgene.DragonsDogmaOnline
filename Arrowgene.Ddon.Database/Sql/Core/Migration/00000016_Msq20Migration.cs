@@ -6,6 +6,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
     {
         public uint From => 15;
         public uint To => 16;
+        public bool DisableTransaction => false;
 
         private readonly DatabaseSetting DatabaseSetting;
 

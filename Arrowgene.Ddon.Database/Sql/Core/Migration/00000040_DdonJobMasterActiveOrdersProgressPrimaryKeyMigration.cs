@@ -6,6 +6,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
     {
         public uint From => 39;
         public uint To => 40;
+        public bool DisableTransaction => false;
 
         private readonly DatabaseSetting DatabaseSetting;
 
@@ -17,8 +18,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
         public bool Migrate(IDatabase db, DbConnection conn)
         {
             string adaptedSchema = DdonDatabaseBuilder.GetAdaptedSchema(DatabaseSetting, "Script/ddon_job_master_active_orders_progress_primary_key_migration.sql");
-            db.Execute(conn, adaptedSchema);
+            db.ExecuteAndThrow(conn, adaptedSchema);
             return true;
         }
+
     }
 }

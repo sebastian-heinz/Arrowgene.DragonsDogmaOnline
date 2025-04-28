@@ -21,11 +21,13 @@ public interface IDatabase
     DbConnection OpenExistingConnection();
     void Execute(string sql);
     void Execute(DbConnection conn, string sql);
+    void ExecuteAndThrow(string sql);
+    void ExecuteAndThrow(DbConnection conn, string sql);
     bool ExecuteInTransaction(Action<DbConnection> action);
     int ExecuteNonQuery(DbConnection conn, string query, Action<DbCommand> action);
-
+    int ExecuteNonQueryAndThrow(DbConnection conn, string query, Action<DbCommand> action);
     void ExecuteReader(DbConnection conn, string sql, Action<DbCommand> commandAction, Action<DbDataReader> readAction);
-
+    void ExecuteReaderAndThrow(DbConnection conn, string sql, Action<DbCommand> commandAction, Action<DbDataReader> readAction);
     void ExecuteQuerySafe(DbConnection? connectionIn, Action<DbConnection> work);
     T ExecuteQuerySafe<T>(DbConnection? connectionIn, Func<DbConnection, T> work);
     void Stop();

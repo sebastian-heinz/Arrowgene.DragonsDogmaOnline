@@ -68,6 +68,8 @@ public class DdonSqLiteDb : DdonSqlDb
     public override void Stop()
     {
         Logger.Info("Stopping database connection.");
+        ReusableConnection.Close();
+        ReusableConnection.Dispose();
     }
 
     private string BuildConnectionString(string source, uint cacheSize, bool enablePooling)

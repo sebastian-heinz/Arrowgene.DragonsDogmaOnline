@@ -90,6 +90,21 @@ public abstract class SqlDb : IDatabase
         }
     }
 
+    public int ExecuteNonQueryAndThrow(DbConnection conn, string query, Action<DbCommand> nonQueryAction)
+    {
+        try
+        {
+            using DbCommand command = Command(query, conn);
+            nonQueryAction(command);
+            return command.ExecuteNonQuery();
+        }
+        catch (Exception ex)
+        {
+            Exception(ex, query);
+            throw;
+        }
+    }
+
     public void ExecuteReader(DbConnection conn, string query, Action<DbCommand> nonQueryAction, Action<DbDataReader> readAction)
     {
         try
@@ -104,6 +119,22 @@ public abstract class SqlDb : IDatabase
             Exception(ex, query);
         }
     }
+    
+    public void ExecuteReaderAndThrow(DbConnection conn, string query, Action<DbCommand> nonQueryAction, Action<DbDataReader> readAction)
+    {
+        try
+        {
+            using DbCommand command = Command(query, conn);
+            nonQueryAction(command);
+            using DbDataReader reader = command.ExecuteReader();
+            readAction(reader);
+        }
+        catch (Exception ex)
+        {
+            Exception(ex, query);
+            throw;
+        }
+    }
 
     public void Execute(string query)
     {
@@ -111,6 +142,19 @@ public abstract class SqlDb : IDatabase
         try
         {
             Execute(connection, query);
+        }
+        finally
+        {
+            connection.Close();
+        }
+    }
+    
+    public void ExecuteAndThrow(string query)
+    {
+        using DbConnection connection = OpenNewConnection();
+        try
+        {
+            ExecuteAndThrow(connection, query);
         }
         finally
         {
@@ -143,6 +187,20 @@ public abstract class SqlDb : IDatabase
         catch (Exception ex)
         {
             Exception(ex, query);
+        }
+    }
+
+    public void ExecuteAndThrow(DbConnection? conn, string query)
+    {
+        try
+        {
+            using DbCommand command = Command(query, conn);
+            command.ExecuteNonQuery();
+        }
+        catch (Exception ex)
+        {
+            Exception(ex, query);
+            throw;
         }
     }
 
@@ -268,17 +326,15 @@ public abstract class SqlDb : IDatabase
     public bool MigrateDatabase(DatabaseMigrator migrator, uint toVersion)
     {
         uint currentVersion = GetMeta().DatabaseVersion;
-        bool result = migrator.MigrateDatabase(this, currentVersion, toVersion);
-        if (result)
-        {
-            SetMeta(new DatabaseMeta
+            bool result = migrator.MigrateDatabase(this, currentVersion, toVersion);
+            if (result)
             {
-                DatabaseVersion = DdonDatabaseBuilder.Version
-            });
-            ExecuteNonQuery(OpenNewConnection(),"VACUUM;", _ => {});
-            ExecuteNonQuery(OpenNewConnection(),"ANALYZE;", _ => {});
-        }
-        return result;
+                SetMeta(new DatabaseMeta { DatabaseVersion = DdonDatabaseBuilder.Version });
+                ExecuteNonQueryAndThrow(OpenNewConnection(), "VACUUM;", _ => { });
+                ExecuteNonQueryAndThrow(OpenNewConnection(), "ANALYZE;", _ => { });
+            }
+            Stop();
+            return result;
     }
 
     public abstract bool CreateMeta(DatabaseMeta meta);
