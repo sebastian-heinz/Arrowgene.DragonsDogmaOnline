@@ -178,13 +178,19 @@ namespace Arrowgene.Ddon.Test.Database
 
     class MockDatabase : IDatabase
     {
+        public void ExecuteAndThrow(DbConnection conn, string sql) { }
+
         public bool ExecuteInTransaction(Action<DbConnection> action) { 
             action.Invoke(null); return true; 
         }
 
         public int ExecuteNonQuery(DbConnection conn, string command, Action<DbCommand> action) { return 1; }
+        public int ExecuteNonQueryAndThrow(DbConnection conn, string query, Action<DbCommand> action) { return 1; }
+        
         public void ExecuteReader(string command, Action<DbDataReader> action) {}
         public void ExecuteReader(DbConnection conn, string sql, Action<DbCommand> commandAction, Action<DbDataReader> readAction) {}
+        public void ExecuteReaderAndThrow(DbConnection conn, string sql, Action<DbCommand> commandAction, Action<DbDataReader> readAction) { }
+
         public void ExecuteQuerySafe(DbConnection? connectionIn, Action<DbConnection> work) {}
         T IDatabase.ExecuteQuerySafe<T>(DbConnection? connectionIn, Func<DbConnection, T> work) { throw new NotImplementedException(); }
 
@@ -227,6 +233,8 @@ namespace Arrowgene.Ddon.Test.Database
         public DbConnection OpenExistingConnection() { return null; }
         public void Execute(string sql) {}
         public void Execute(DbConnection conn, string sql) {}
+        public void ExecuteAndThrow(string sql) { }
+
         public List<BazaarExhibition> FetchCharacterBazaarExhibitions(uint characterId) { return new List<BazaarExhibition>(); }
         public CompletedQuest GetCompletedQuestsById(uint characterCommonId, QuestId questId, DbConnection? connectionIn = null) { return new CompletedQuest(); }
         public List<CompletedQuest> GetCompletedQuestsByType(uint characterCommonId, QuestType questType, DbConnection? connectionIn = null) { return new List<CompletedQuest>(); }
@@ -545,6 +553,7 @@ namespace Arrowgene.Ddon.Test.Database
         public uint From { get; set; }
 
         public uint To { get; set; }
+        public bool DisableTransaction { get; }
 
         public bool Called { get; private set; } = false;
         public uint CallOrder { get; private set; }
