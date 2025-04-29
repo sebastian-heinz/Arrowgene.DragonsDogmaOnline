@@ -178,19 +178,13 @@ namespace Arrowgene.Ddon.Test.Database
 
     class MockDatabase : IDatabase
     {
-        public void ExecuteAndThrow(DbConnection conn, string sql) { }
-
         public bool ExecuteInTransaction(Action<DbConnection> action) { 
             action.Invoke(null); return true; 
         }
 
-        public int ExecuteNonQuery(DbConnection conn, string command, Action<DbCommand> action) { return 1; }
-        public int ExecuteNonQueryAndThrow(DbConnection conn, string query, Action<DbCommand> action) { return 1; }
-        
-        public void ExecuteReader(string command, Action<DbDataReader> action) {}
-        public void ExecuteReader(DbConnection conn, string sql, Action<DbCommand> commandAction, Action<DbDataReader> readAction) {}
-        public void ExecuteReaderAndThrow(DbConnection conn, string sql, Action<DbCommand> commandAction, Action<DbDataReader> readAction) { }
-
+        public int ExecuteNonQuery(DbConnection conn, string command, Action<DbCommand> action, bool rethrowException = false) { return 1; }
+        public void ExecuteReader(string command, Action<DbDataReader> action, bool rethrowException = false) {}
+        public void ExecuteReader(DbConnection conn, string sql, Action<DbCommand> commandAction, Action<DbDataReader> readAction, bool rethrowException = false) {}
         public void ExecuteQuerySafe(DbConnection? connectionIn, Action<DbConnection> work) {}
         T IDatabase.ExecuteQuerySafe<T>(DbConnection? connectionIn, Func<DbConnection, T> work) { throw new NotImplementedException(); }
 
@@ -231,10 +225,8 @@ namespace Arrowgene.Ddon.Test.Database
         public bool DeleteWalletPoint(uint characterId, WalletType type) { return true; }
         public DbConnection OpenNewConnection() { return null; }
         public DbConnection OpenExistingConnection() { return null; }
-        public void Execute(string sql) {}
-        public void Execute(DbConnection conn, string sql) {}
-        public void ExecuteAndThrow(string sql) { }
-
+        public void Execute(string sql, bool rethrowException = false) {}
+        public void Execute(DbConnection conn, string sql, bool rethrowException = false) {}
         public List<BazaarExhibition> FetchCharacterBazaarExhibitions(uint characterId) { return new List<BazaarExhibition>(); }
         public CompletedQuest GetCompletedQuestsById(uint characterCommonId, QuestId questId, DbConnection? connectionIn = null) { return new CompletedQuest(); }
         public List<CompletedQuest> GetCompletedQuestsByType(uint characterCommonId, QuestType questType, DbConnection? connectionIn = null) { return new List<CompletedQuest>(); }
