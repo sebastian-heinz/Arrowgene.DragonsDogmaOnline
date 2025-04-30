@@ -317,6 +317,14 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return process.AddNewDeliverItemsBlock(announceType, stageInfo.AsStageLayoutId(setId, groupId), npcId, itemId, amount, msgId);
         }
 
+        public static QuestBlock AddDeliverItemsLightBlock(this QuestProcess process, QuestAnnounceType announceType, ItemId itemId, uint amount)
+        {
+            var block = CreateGenericBlock(process.QuestScheduleId, 0, 0, QuestBlockType.DeliverItemsLight, announceType)
+                .AddDeliveryRequests(itemId, amount);
+            process.AddBlock(block);
+            return block;
+        }
+
         public static QuestBlock AddCheckSayBlock(this QuestProcess process, QuestAnnounceType announceType)
         {
             var block = CreateGenericBlock(process.QuestScheduleId, 0, 0, QuestBlockType.Raw, announceType)
@@ -467,6 +475,16 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             var block = CreateGenericBlock(process.QuestScheduleId, 0, 0, QuestBlockType.Raw, announceType)
                 .AddResultCmdStartTimer(timerNo, waitTimeInSeconds)
                 .AddCheckCmdIsEndTimer(timerNo);
+            process.AddBlock(block);
+            return block;
+        }
+
+        public static QuestBlock AddKillTargetEnemiesBlock(this QuestProcess process, QuestAnnounceType announceType, uint enemyId, uint level, uint amount)
+        {
+            var block = CreateGenericBlock(process.QuestScheduleId, 0, 0, QuestBlockType.KillTargetEnemies, announceType);
+            block.TargetEnemy.EnemyId = enemyId;
+            block.TargetEnemy.Level = level;
+            block.TargetEnemy.Amount = amount;
             process.AddBlock(block);
             return block;
         }

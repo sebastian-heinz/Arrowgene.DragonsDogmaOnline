@@ -101,8 +101,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public bool Enabled { get; protected set; }
         public bool OverrideEnemySpawn { get; protected set; }
         public bool EnableCancel { get; protected set; }
-        public ulong DistributionStart { get; protected set; }
-        public ulong DistributionEnd { get; protected set; }
+        public DateTimeOffset DistributionStart { get; protected set; }
+        public DateTimeOffset DistributionEnd { get; protected set; }
 
         public bool IsPersonal { get
             {
@@ -432,7 +432,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 // Unsure if these next set of fields are correct
                 Unk5 = DistributionStart,
                 Unk6 = DistributionEnd,
-                Unk6A = 0, // Order Date?,
+                Unk6A = DateTimeOffset.FromUnixTimeSeconds(0), // Order Date?,
                 ContentsReleaseList = GetContentReleaseRewards()
             };
 

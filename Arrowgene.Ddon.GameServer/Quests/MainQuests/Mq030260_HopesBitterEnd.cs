@@ -87,8 +87,8 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
             quest.OrderNpcId = (uint) NpcId.TheWhiteDragon;
             quest.NameMsgId = 1;
             quest.DetailMsgId = 1;
-            quest.DistributionStartDate = 1537405200;
-            quest.DistributionEndDate = 2145884400;
+            quest.DistributionStartDate = DateTimeOffset.FromUnixTimeSeconds(1537405200);
+            quest.DistributionEndDate = DateTimeOffset.FromUnixTimeSeconds(2145884400);
 
             quest.BaseExp = ExpRewards;
             quest.BaseWalletPoints = WalletRewards;

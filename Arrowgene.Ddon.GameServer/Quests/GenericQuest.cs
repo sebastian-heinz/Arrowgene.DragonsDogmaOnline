@@ -53,6 +53,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
             quest.WorldManageUnlocks = questAsset.WorldManageUnlocks;
             quest.QuestProgressWork = questAsset.QuestProgressWork;
 
+            quest.DistributionStart = questAsset.DistributionStart;
+            quest.DistributionEnd = questAsset.DistributionEnd;
+
             foreach (var pointReward in questAsset.PointRewards)
             {
                 quest.ExpRewards.Add(new CDataQuestExp()
