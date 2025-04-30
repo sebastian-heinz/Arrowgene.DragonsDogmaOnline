@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Arrowgene.Buffers;
 
@@ -34,9 +35,9 @@ public class CDataQuestOrderList
     public uint NpcId { get; set;} // NpcId?
     public uint Unk3 { get; set;} // MsgId?
     public uint Unk4 { get; set;} // DetailMsgId
-    public ulong Unk5 { get; set; } // ??
-    public ulong Unk6 { get; set; } // OrderDate?
-    public ulong Unk6A { get; set; } // EndDistributionDate?
+    public DateTimeOffset Unk5 { get; set; } // ??
+    public DateTimeOffset Unk6 { get; set; } // OrderDate?
+    public DateTimeOffset DistributionEnd { get; set; } // EndDistributionDate?
     public List<CDataRewardItem> FixedRewardItem { get; set; }
     public List<CDataRewardItem> FixedRewardSelectItem { get; set; }
     public List<CDataCharacterReleaseElement> ContentsReleaseList { get; set; }
@@ -68,9 +69,9 @@ public class CDataQuestOrderList
             WriteUInt32(buffer, obj.NpcId);
             WriteUInt32(buffer, obj.Unk3);
             WriteUInt32(buffer, obj.Unk4);
-            WriteUInt64(buffer, obj.Unk5);
-            WriteUInt64(buffer, obj.Unk6);
-            WriteUInt64(buffer, obj.Unk6A);
+            WriteInt64(buffer, obj.Unk5.ToUnixTimeSeconds());
+            WriteInt64(buffer, obj.Unk6.ToUnixTimeSeconds());
+            WriteInt64(buffer, obj.DistributionEnd.ToUnixTimeSeconds());
             WriteEntityList(buffer, obj.FixedRewardItem);
             WriteEntityList(buffer, obj.FixedRewardSelectItem);
             WriteEntityList<CDataCharacterReleaseElement>(buffer, obj.ContentsReleaseList);
@@ -102,9 +103,9 @@ public class CDataQuestOrderList
             obj.NpcId = ReadUInt32(buffer);
             obj.Unk3 = ReadUInt32(buffer);
             obj.Unk4 = ReadUInt32(buffer);
-            obj.Unk5 = ReadUInt64(buffer);
-            obj.Unk6 = ReadUInt64(buffer);
-            obj.Unk6A = ReadUInt64(buffer);
+            obj.Unk5 = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
+            obj.Unk6 = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
+            obj.DistributionEnd = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
             obj.FixedRewardItem = ReadEntityList<CDataRewardItem>(buffer);
             obj.FixedRewardSelectItem = ReadEntityList<CDataRewardItem>(buffer);
             obj.ContentsReleaseList = ReadEntityList<CDataCharacterReleaseElement>(buffer);

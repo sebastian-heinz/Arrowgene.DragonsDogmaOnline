@@ -23,8 +23,7 @@ namespace Arrowgene.Ddon.Shared.Model
 
             var enemyParams = RollEnemyParams();
 
-            Id = (uint)enemyParams.EnemyId;
-            EnemyId = Id;
+            EnemyId = enemyParams.EnemyId;
             Lv = lv;
             Experience = exp;
             Index = index;
@@ -43,8 +42,7 @@ namespace Arrowgene.Ddon.Shared.Model
 
             var enemyParams = RollEnemyParams();
 
-            Id = (uint)enemyParams.EnemyId;
-            EnemyId = Id;
+            EnemyId = enemyParams.EnemyId;
             Lv = lv;
             Experience = exp;
             Index = index;
@@ -60,8 +58,7 @@ namespace Arrowgene.Ddon.Shared.Model
             var enemyParams = RollEnemyParams();
 
             var enemy = base.CreateNewInstance();
-            enemy.Id = (uint)enemyParams.EnemyId;
-            enemy.EnemyId = (uint)enemyParams.EnemyId;
+            enemy.EnemyId = enemyParams.EnemyId;
             enemy.HmPresetNo = (ushort)enemyParams.EnemyId.GetHmPresetId();
             enemy.NamedEnemyParams = enemyParams.NamedParam;
             enemy.DropsTable = DropTables[enemyParams.EnemyId];

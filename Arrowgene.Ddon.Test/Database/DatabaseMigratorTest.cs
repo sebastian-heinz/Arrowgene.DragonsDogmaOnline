@@ -522,6 +522,10 @@ namespace Arrowgene.Ddon.Test.Database
         public JobEmblem GetJobEmblemData(uint characterId, JobId jobId, DbConnection? connectionIn = null) { return new(); }
         public List<JobEmblem> GetAllJobEmblemData(uint characterId, DbConnection? connectionIn = null) { return new(); }
 
+        public bool InsertLightQuestRecord(LightQuestRecord lightQuestRecord, DbConnection? connectionIn = null) { return true; }
+        public List<LightQuestRecord> SelectLightQuestRecords(DbConnection? connectionIn = null) { return new(); }
+        public bool DeleteLightQuestRecord(uint scheduleId, DbConnection? connectionIn = null) { return true; }
+
         public bool InsertPawnFavorite(uint characterId, uint pawnId, DbConnection? connectionIn = null) { return true; }
         public bool DeletePawnFavorite(uint characterId, uint pawnId, DbConnection? connectionIn = null) { return true; }
         public HashSet<uint> GetPawnFavorites(uint characterId, DbConnection? connectionIn = null) { return new(); }

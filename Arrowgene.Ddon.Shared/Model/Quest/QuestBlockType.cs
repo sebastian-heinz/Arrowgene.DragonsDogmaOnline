@@ -37,6 +37,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         Raw,
         DummyBlock,
         DummyBlockNoProgress,
-        End
+        End,
+        GatherItemsLight
     }
 }

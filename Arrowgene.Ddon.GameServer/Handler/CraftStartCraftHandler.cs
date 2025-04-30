@@ -51,7 +51,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_CRAFT_RECIPE_NOT_FOUND, $"Duplicate recipe ID {request.RecipeID}");
             }
             
-            ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, recipe.ItemID);
+            ClientItemInfo itemInfo = Server.AssetRepository.ClientItemInfos[recipe.ItemID];
 
             ushort AddStatusID = request.AdditionalStatusId;
             CDataAddStatusParam AddStat = new CDataAddStatusParam()

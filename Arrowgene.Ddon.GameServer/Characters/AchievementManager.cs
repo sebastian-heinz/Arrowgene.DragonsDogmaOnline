@@ -234,7 +234,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 queue.AddRange(CheckGainAchievement(client, key.Item1, key.Item2, progress, connection));
 
                 // Handle specific kill groups
-                foreach (var group in EnemyIdParamLookup.GetValueOrDefault((EnemyId)enemy.EnemyId, new()))
+                foreach (var group in EnemyIdParamLookup.GetValueOrDefault(enemy.EnemyId, new()))
                 {
                     (AchievementType, uint) specificKey = (AchievementType.KillEnemyType, (uint)group);
                     uint specificProgress = client.Character.AchievementProgress.GetValueOrDefault(specificKey);

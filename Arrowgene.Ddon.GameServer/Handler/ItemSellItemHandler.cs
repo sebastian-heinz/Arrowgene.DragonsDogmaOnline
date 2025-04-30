@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     var ntcData = Server.ItemManager.ConsumeItemByUId(Server, client.Character, consumeItem.StorageType, consumeItem.ItemUId, consumeItem.Num, connection);
                     ntc.UpdateItemList.Add(ntcData);
 
-                    uint goldValue = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, ntcData.ItemList.ItemId).Price;
+                    uint goldValue = Server.AssetRepository.ClientItemInfos[ntcData.ItemList.ItemId].Price;
                     uint amountToAdd = goldValue * consumeItem.Num;
                     totalAmountToAdd += amountToAdd;
                 }

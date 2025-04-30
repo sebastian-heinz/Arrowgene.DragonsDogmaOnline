@@ -1,5 +1,6 @@
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
@@ -13,7 +14,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         /// <summary>
         /// The name of this quest is used as the display name of the board.
         /// </summary>
-        public uint QuestId { get; set; }
+        public QuestId QuestId { get; set; }
         public RankingBoardState State { get; set; }
 
         /// <summary>
@@ -38,7 +39,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override void Write(IBuffer buffer, CDataRankingBoard obj)
             {
                 WriteUInt32(buffer, obj.BoardId);
-                WriteUInt32(buffer, obj.QuestId);
+                WriteUInt32(buffer, (uint)obj.QuestId);
                 WriteByte(buffer, (byte)obj.State);
                 WriteUInt32(buffer, obj.RegisteredNum);
                 WriteUInt32(buffer, obj.IsWarMission ? 2u : 1u); 
@@ -53,7 +54,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 CDataRankingBoard obj = new CDataRankingBoard();
                 obj.BoardId = ReadUInt32(buffer);
-                obj.QuestId = ReadUInt32(buffer);
+                obj.QuestId = (QuestId)ReadUInt32(buffer);
                 obj.State = (RankingBoardState)ReadByte(buffer);
                 obj.RegisteredNum = ReadUInt32(buffer);
                 obj.IsWarMission = ReadUInt32(buffer) >= 2;

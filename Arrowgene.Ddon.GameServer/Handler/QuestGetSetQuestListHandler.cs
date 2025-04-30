@@ -73,7 +73,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             // Add Debug Quest
-            var debugQuest = QuestManager.GetQuestByScheduleId(70000001);
+            var debugQuest = QuestManager.GetQuestByQuestId((QuestId)70000001);
             res.SetQuestList.Add(new CDataSetQuestList()
             {
                 Detail = new CDataSetQuestDetail()

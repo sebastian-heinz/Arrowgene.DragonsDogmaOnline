@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -30,7 +31,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             IsHighOrbEnemy = false;
         }
 
-        public uint EnemyId { get; set; }
+        public EnemyId EnemyId { get; set; }
         public uint NamedEnemyParamsId { get; set; }
         public uint RaidBossId { get; set; }
         public ushort Scale { get; set; } // Scale as a percentage, 100(%) is normal
@@ -54,7 +55,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             public override void Write(IBuffer buffer, CDataStageLayoutEnemyPresetEnemyInfoClient obj)
             {
-                WriteUInt32(buffer, obj.EnemyId);
+                WriteUInt32(buffer, (uint)obj.EnemyId);
                 WriteUInt32(buffer, obj.NamedEnemyParamsId);
                 WriteUInt32(buffer, obj.RaidBossId);
                 WriteUInt16(buffer, obj.Scale);
@@ -78,7 +79,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override CDataStageLayoutEnemyPresetEnemyInfoClient Read(IBuffer buffer)
             {
                 CDataStageLayoutEnemyPresetEnemyInfoClient obj = new CDataStageLayoutEnemyPresetEnemyInfoClient();
-                obj.EnemyId = ReadUInt32(buffer);
+                obj.EnemyId = (EnemyId)ReadUInt32(buffer);
                 obj.NamedEnemyParamsId = ReadUInt32(buffer);
                 obj.RaidBossId = ReadUInt32(buffer);
                 obj.Scale = ReadUInt16(buffer);

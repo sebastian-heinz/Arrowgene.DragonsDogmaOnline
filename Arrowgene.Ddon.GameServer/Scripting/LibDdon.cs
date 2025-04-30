@@ -107,7 +107,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
 
             public ClientItemInfo GetClientItemInfo(ItemId itemId)
             {
-                return Server.ItemManager.LookupInfoByItemID(Server, (uint) itemId);
+                return Server.AssetRepository.ClientItemInfos[itemId];
             }
 
             public GatheringItem CreateDropItem(ItemId itemId, uint minAmount, uint maxAmount, double dropChance)
@@ -136,7 +136,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
 
             public DropsTable GetDropsTable(InstancedEnemy enemy)
             {
-                return GetDropsTable((EnemyId)enemy.EnemyId, enemy.Lv);
+                return GetDropsTable(enemy.EnemyId, enemy.Lv);
             }
 
             public InstancedEnemy Create(EnemyId enemyId, ushort lv, uint exp, byte index, bool assignDefaultDrops = true)

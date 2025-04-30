@@ -1,11 +1,11 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Context;
-using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -55,16 +55,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 bool shouldReset = true;
                 // Check to see if all player members are in a safe area.
-                foreach (var member in client.Party.Members)
+                foreach (var member in client.Party.Clients)
                 {
-                    if (member == null || member.IsPawn)
-                    {
-                        continue;
-                    }
-
                     // TODO: Is it safe to iterate over player party members this way?
                     // TODO: Can this logic be made part of the party object instead?
-                    shouldReset &= StageManager.IsSafeArea(((PlayerPartyMember)member).Client.Character.Stage);
+                    shouldReset &= StageManager.IsSafeArea(member.Character.Stage);
                     if (!shouldReset)
                     {
                         // No need to loop over rest of party members
@@ -82,6 +77,41 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Server.EpitaphRoadManager.ResetInstance(client.Party);
                     client.Party.ResetInstance();
                     client.Party.SendToAll(new S2CInstanceAreaResetNtc());
+
+                    foreach(var member in client.Party.Clients)
+                    {
+                        var activeScheduleIds = member.QuestState.GetActiveQuestScheduleIds();
+                        var droppedQuests = Server.LightQuestManager.GetDecayedQuests(activeScheduleIds);
+                        foreach(var droppedQuest in droppedQuests)
+                        {
+                            Logger.Debug($"Quest {droppedQuest} has decayed and will be cancelled.");
+
+                            var quest = QuestManager.GetQuestByScheduleId(droppedQuest);
+                            if (quest is not null)
+                            {
+                                // TODO: Is this the right notice?
+                                client.Enqueue(new S2CQuestQuestCancelSilentNtc()
+                                {
+                                    QuestScheduleId = droppedQuest
+                                }, queue);
+                            }
+                            member.QuestState.CancelQuest(droppedQuest);
+                        }
+
+                        if (droppedQuests.Any())
+                        {
+                            member.Enqueue(new S2CLobbyChatMsgNotice()
+                            {
+                                Type = LobbyChatMsgType.ManagementAlertC,
+                                Message = "A quest has been canceled because the\ndelivery time period has ended."
+                            }, queue);
+
+                            if (member.Party.IsSolo || member.Party.Leader?.Client == member)
+                            {
+                                queue.AddRange(member.Party.QuestState.UpdatePriorityQuestList(member.Party.Leader.Client));
+                            }
+                        }
+                    }
                 }
             }
 

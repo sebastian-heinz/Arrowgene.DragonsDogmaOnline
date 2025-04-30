@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
@@ -68,7 +69,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
                     return [];
                 }
             }
-            else if (client.QuestState.GetActiveQuestScheduleIds().Contains(60215006) // Special case to show a shiny early
+            else if (client.QuestState.GetActiveQuestIds().Contains((QuestId)60215006) // Special case to show a shiny early
                 && stage == Stage.FaranaPlains0 && stageId.GroupId == 50 && index == 7)
             {
                 return

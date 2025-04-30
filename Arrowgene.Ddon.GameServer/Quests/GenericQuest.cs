@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         public static GenericQuest FromAsset(DdonGameServer server, QuestAssetData questAsset, IQuest backingObject = null)
         {
-            var quest = new GenericQuest(server, questAsset.QuestId, questAsset.QuestScheduleId, questAsset.QuestType, questAsset.Discoverable);
+            var quest = new GenericQuest(server, questAsset.QuestId, questAsset.VariantIndex, questAsset.QuestType, questAsset.Discoverable);
 
             quest.QuestSource = questAsset.QuestSource;
             quest.BackingObject = backingObject;
@@ -52,6 +52,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
             quest.ContentsRelease = questAsset.ContentsReleased;
             quest.WorldManageUnlocks = questAsset.WorldManageUnlocks;
             quest.QuestProgressWork = questAsset.QuestProgressWork;
+
+            quest.DistributionStart = questAsset.DistributionStart;
+            quest.DistributionEnd = questAsset.DistributionEnd;
 
             foreach (var pointReward in questAsset.PointRewards)
             {
@@ -113,6 +116,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         case QuestBlockType.DeliverItems:
                         case QuestBlockType.NewDeliverItems:
                         case QuestBlockType.DeliverItemsLight:
+                        case QuestBlockType.GatherItemsLight:
                             foreach (var request in block.DeliveryRequests)
                             {
                                 quest.DeliveryItems.Add(new QuestDeliveryItem()
@@ -152,8 +156,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return quest;
         }
 
-        public GenericQuest(DdonGameServer server, QuestId questId, uint questScheduleId, QuestType questType, bool discoverable) : 
-            base(server, questId, questScheduleId, questType, discoverable)
+        public GenericQuest(DdonGameServer server, QuestId questId, uint variantIndex, QuestType questType, bool discoverable) : 
+            base(server, questId, variantIndex, questType, discoverable)
         {
             QuestLayoutFlagSetInfo = new List<QuestLayoutFlagSetInfo>();
         }
@@ -258,7 +262,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             foreach (var item in questBlock.HandPlayerItems)
             {
-                var result = server.ItemManager.AddItem(server, client.Character, true, item.ItemId, item.Amount);
+                var result = server.ItemManager.AddItem(server, client.Character, true, (uint)item.ItemId, item.Amount);
                 packets.Enqueue(client, new S2CItemUpdateCharacterItemNtc()
                 {
                     UpdateType = 0,
@@ -279,7 +283,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     }
                 }
 
-                var result = server.ItemManager.ConsumeItemByIdFromItemBag(server, client.Character, item.ItemId, item.Amount);
+                var result = server.ItemManager.ConsumeItemByIdFromItemBag(server, client.Character, (uint)item.ItemId, item.Amount);
                 if (result != null)
                 {
 
@@ -770,7 +774,15 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     {
                         foreach (var item in questBlock.DeliveryRequests)
                         {
-                            checkCommands.Add(QuestManager.CheckCommand.DeliverItem((int)item.ItemId, (int)item.Amount, 0, 0));
+                            checkCommands.Add(QuestManager.CheckCommand.DeliverItem((int)item.ItemId, (int)item.Amount));
+                        }
+                    }
+                    break;
+                case QuestBlockType.GatherItemsLight:
+                    {
+                        foreach (var item in questBlock.DeliveryRequests)
+                        {
+                            checkCommands.Add(QuestManager.CheckCommand.HaveItem((int)item.ItemId, (int)item.Amount));
                         }
                     }
                     break;

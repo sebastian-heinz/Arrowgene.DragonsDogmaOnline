@@ -1,9 +1,12 @@
 using Arrowgene.Ddon.GameServer;
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Rpc.Command;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Logging;
 using Arrowgene.WebServer;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
@@ -107,6 +110,22 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                             return new RpcCommandResult(this, true)
                             {
                                 Message = "AreaRankResetEnd"
+                            };
+                        }
+                    case RpcInternalCommand.BoardQuestDailyRotation:
+                        {
+                            var questRecords = gameServer.Database.SelectLightQuestRecords();
+                            var extantQuests = QuestManager.GetQuestsByType(QuestType.Light);
+
+                            var quests = questRecords
+                                .Where(x => !extantQuests.Contains(x.QuestScheduleId))
+                                .Select(x => gameServer.LightQuestManager.GenerateQuestFromRecord(x));
+
+                            QuestManager.AddQuests(gameServer, quests);
+
+                            return new RpcCommandResult(this, true)
+                            {
+                                Message = "BoardQuestDailyRotation"
                             };
                         }
                     default:

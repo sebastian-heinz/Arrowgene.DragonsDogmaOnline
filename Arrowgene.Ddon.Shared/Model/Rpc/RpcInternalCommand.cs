@@ -11,8 +11,9 @@ namespace Arrowgene.Ddon.Shared.Model.Rpc
         KickInternal, // int
 
         EpitaphRoadWeeklyReset, // null
-        AreaRankResetStart, // null
-        AreaRankResetEnd, // null
+        AreaRankResetStart, //null
+        AreaRankResetEnd, //null
+        BoardQuestDailyRotation, //null
 
         //InternalChatRoute
         SendTellMessage, // RpcChatData

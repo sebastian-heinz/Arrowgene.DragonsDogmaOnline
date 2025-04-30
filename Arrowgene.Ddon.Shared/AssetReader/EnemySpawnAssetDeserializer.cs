@@ -93,7 +93,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 List<Enemy> enemies = asset.Enemies.GetValueOrDefault(layoutId) ?? new List<Enemy>();
                 Enemy enemy = new Enemy()
                 {
-                    EnemyId = ParseHexUInt(row[enemySchemaIndexes["EnemyId"]].GetString()),
+                    EnemyId = (EnemyId)ParseHexUInt(row[enemySchemaIndexes["EnemyId"]].GetString()),
                     NamedEnemyParams = this.namedParams.GetValueOrDefault(row[enemySchemaIndexes["NamedEnemyParamsId"]].GetUInt32(), NamedParam.DEFAULT_NAMED_PARAM),
                     RaidBossId = row[enemySchemaIndexes["RaidBossId"]].GetUInt32(),
                     Scale = row[enemySchemaIndexes["Scale"]].GetUInt16(),
