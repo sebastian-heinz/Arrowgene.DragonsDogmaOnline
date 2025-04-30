@@ -226,7 +226,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public (PacketQueue queue, bool IsSpecial) HandleSpecialItem(GameClient client, S2CItemUpdateCharacterItemNtc ntc, ItemId item, uint count, DbConnection? connectionIn = null)
         {
-            var itemInfo = ClientItemInfo.GetInfoForItemId(_Server.AssetRepository.ClientItemInfos, (uint)item);
+            var itemInfo = ClientItemInfo.GetInfoForItemId(_Server.AssetRepository.ClientItemInfos, item);
             if (ItemIdWalletTypeAndQuantity.ContainsKey(item))
             {
                 var walletTypeAndQuantity = ItemIdWalletTypeAndQuantity[item];

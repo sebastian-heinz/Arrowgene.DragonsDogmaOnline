@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server;
@@ -8,6 +9,7 @@ using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Common;
 using System.Linq;
@@ -196,13 +198,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public static uint GetAreaPointReward(Quest quest)
         {
-            uint amount;
             QuestAreaId areaId = quest.QuestAreaId;
             if (QuestManager.IsBoardQuest(quest))
             {
                 areaId = (QuestAreaId)quest.LightQuestDetail.AreaId;
             }
 
+            return GetAreaPointReward(quest.BaseLevel, areaId, QuestManager.IsBoardQuest(quest));
+        }
+
+        public static uint GetAreaPointReward(uint level, QuestAreaId areaId, bool isBoardQuest)
+        {
+            uint amount;
             if (!IsValidAreaId(areaId))
             {
                 return 0;
@@ -213,11 +220,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
             else
             {
-                uint tier = quest.BaseLevel / 5;
+                uint tier = level / 5;
                 amount = 5 * tier * tier + 5 * tier + 30;
             }
 
-            if (QuestManager.IsBoardQuest(quest))
+            if (isBoardQuest)
             {
                 amount /= 2;
             }

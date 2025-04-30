@@ -115,5 +115,10 @@ namespace Arrowgene.Ddon.Shared.Model
             if (clientItemInfos.ContainsKey(itemId)) return clientItemInfos[itemId];
             throw new Exception("No item found with ID "+itemId);
         }
+
+        public static ClientItemInfo GetInfoForItemId(Dictionary<uint, ClientItemInfo> clientItemInfos, ItemId itemId)
+        {
+            return GetInfoForItemId(clientItemInfos, (uint)itemId);
+        }
     }
 }

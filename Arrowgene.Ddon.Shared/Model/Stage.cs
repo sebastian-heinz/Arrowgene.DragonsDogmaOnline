@@ -9,6 +9,7 @@ namespace Arrowgene.Ddon.Shared.Model
     {
         private static Dictionary<uint, StageInfo> StageIdToStageInfoMap = new Dictionary<uint, StageInfo>();
         private static Dictionary<uint, StageInfo> StageNoToStageInfoMap = new Dictionary<uint, StageInfo>();
+        private static Dictionary<QuestAreaId, List<StageInfo>> QuestAreaIdToStageInfoMap = new();
 
         static Stage()
         {
@@ -20,6 +21,12 @@ namespace Arrowgene.Ddon.Shared.Model
                 StageInfo value = (StageInfo)field.GetValue(null);
                 StageIdToStageInfoMap[value.StageId] = value;
                 StageNoToStageInfoMap[value.StageNo] = value;
+
+                if (!QuestAreaIdToStageInfoMap.ContainsKey(value.AreaId))
+                {
+                    QuestAreaIdToStageInfoMap[value.AreaId] = [];
+                }
+                QuestAreaIdToStageInfoMap[value.AreaId].Add(value);
             }
         }
 
@@ -599,6 +606,11 @@ namespace Arrowgene.Ddon.Shared.Model
         public static StageInfo StageInfoFromStageNo(uint stageNo)
         {
             return StageNoToStageInfoMap[stageNo];
+        }
+
+        public static List<StageInfo> StageInfoFromQuestAreaId(QuestAreaId questAreaId)
+        {
+            return QuestAreaIdToStageInfoMap.GetValueOrDefault(questAreaId, []);
         }
     }
 }
