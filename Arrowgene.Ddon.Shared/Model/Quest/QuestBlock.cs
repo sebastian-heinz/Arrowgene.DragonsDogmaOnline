@@ -491,7 +491,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         {
             DeliveryRequests.Add(new QuestItem()
             {
-                ItemId = (uint) itemId,
+                ItemId = itemId,
                 Amount = amount
             });
             return this;
@@ -513,7 +513,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         {
             HandPlayerItems.Add(new QuestItem()
             {
-                ItemId = (uint) itemId,
+                ItemId = itemId,
                 Amount = amount
             });
             return this;
@@ -585,7 +585,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         {
             return SetTargetEnemy(new QuestTargetEnemy()
             {
-                EnemyId = (uint) enemyId,
+                EnemyId = enemyId.GetUIId(),
                 Amount = amount,
                 Level = level
             });

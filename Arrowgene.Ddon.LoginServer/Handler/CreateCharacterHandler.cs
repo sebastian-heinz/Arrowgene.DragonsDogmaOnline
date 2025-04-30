@@ -608,8 +608,8 @@ namespace Arrowgene.Ddon.LoginServer.Handler
             Database.InsertIfNotExistsReleasedWarpPoint(character.CharacterId, wdtWarpPoint);
 
             // Insert the first main quest to start the chain
-            // note: We cast the QuestId to a ScheduleId because main quests have the same QuestId and QuestScheduleId
-            if (!Database.InsertQuestProgress(character.CommonId, (uint) QuestId.ResolutionsAndOmens, QuestType.Main, 0))
+            var startingQuest = Server.AssetRepository.QuestScheduleIdAsset[QuestId.ResolutionsAndOmens];
+            if (!Database.InsertQuestProgress(character.CommonId, startingQuest, QuestType.Main, 0))
             {
                 Logger.Error("Failed to seed first MSQ for player");
             }

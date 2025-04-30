@@ -31,7 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Character character = client.Character;
             var ramItem = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
             Item equipItem = ramItem.Item2.Item2;
-            ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
+            ClientItemInfo itemInfo = Server.AssetRepository.ClientItemInfos[equipItem.ItemId];
             byte itemRank = itemInfo.Rank;
             uint craftpawnid = request.CraftMainPawnID;
             string RefineMaterialUID = request.RefineUID;

@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             // Add quest for debug command
-            party.QuestState.AddNewQuest(QuestManager.GetQuestByScheduleId(70000001));
+            party.QuestState.AddNewQuest(QuestManager.GetQuestByQuestId((QuestId)70000001));
 
             S2CPartyPartyJoinNtc ntc = new S2CPartyPartyJoinNtc();
             ntc.HostCharacterId = client.Character.CharacterId;

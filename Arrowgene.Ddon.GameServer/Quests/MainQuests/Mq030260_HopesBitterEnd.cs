@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Handler;
+using Arrowgene.Ddon.GameServer.Scripting;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity;
@@ -24,7 +25,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Mq030260_HopesBitterEnd));
 
-        public Mq030260_HopesBitterEnd() : base(null, QuestId.HopesBitterEnd, (uint) QuestId.HopesBitterEnd, QuestType.Main)
+        public Mq030260_HopesBitterEnd() : base(null, QuestId.HopesBitterEnd, 0, QuestType.Main)
         {
         }
 
@@ -87,8 +88,8 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
             quest.OrderNpcId = (uint) NpcId.TheWhiteDragon;
             quest.NameMsgId = 1;
             quest.DetailMsgId = 1;
-            quest.DistributionStartDate = 1537405200;
-            quest.DistributionEndDate = 2145884400;
+            quest.DistributionStartDate = DateTimeOffset.FromUnixTimeSeconds(1537405200);
+            quest.DistributionEndDate = DateTimeOffset.FromUnixTimeSeconds(2145884400);
 
             quest.BaseExp = ExpRewards;
             quest.BaseWalletPoints = WalletRewards;
@@ -235,14 +236,14 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                 }
             };
 
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 341, Lv = 100, IsPartyRecommend = true });
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 365, Lv = 100, IsPartyRecommend = true });
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 323, Lv = 100, IsPartyRecommend = false });
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 329, Lv = 100, IsPartyRecommend = false });
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 361, Lv = 100, IsPartyRecommend = false });
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 327, Lv = 100, IsPartyRecommend = false });
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 353, Lv = 100, IsPartyRecommend = false });
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 368, Lv = 100, IsPartyRecommend = false });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = (EnemyUIId)341, Lv = 100, IsPartyRecommend = true });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = (EnemyUIId)365, Lv = 100, IsPartyRecommend = true });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = (EnemyUIId)323, Lv = 100, IsPartyRecommend = false });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = (EnemyUIId)329, Lv = 100, IsPartyRecommend = false });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = (EnemyUIId)361, Lv = 100, IsPartyRecommend = false });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = (EnemyUIId)327, Lv = 100, IsPartyRecommend = false });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = (EnemyUIId)353, Lv = 100, IsPartyRecommend = false });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = (EnemyUIId)368, Lv = 100, IsPartyRecommend = false });
 
             quest.QuestLayoutFlagSetInfoList = new List<CDataQuestLayoutFlagSetInfo>() {
                 QuestManager.LayoutFlag.Create(7866, Stage.SacredFlamePath0.StageNo, 17),
@@ -296,7 +297,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                 {
                     new S2CQuestQuestProgressWorkSaveNtc()
                     {
-                        QuestScheduleId = (uint) QuestId.HopesBitterEnd,
+                        QuestScheduleId = LibDdon.Assets.QuestScheduleIdAsset[QuestId.HopesBitterEnd],
                         ProcessNo = 0, SequenceNo = 0, BlockNo = 8,
                         WorkList = new List<CDataQuestProgressWork>
                         {
@@ -305,7 +306,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     },
                     new S2CQuestQuestProgressWorkSaveNtc()
                     {
-                        QuestScheduleId = (uint) QuestId.HopesBitterEnd,
+                        QuestScheduleId = LibDdon.Assets.QuestScheduleIdAsset[QuestId.HopesBitterEnd],
                         ProcessNo = 3, SequenceNo = 0, BlockNo = 1,
                         WorkList = new List<CDataQuestProgressWork>
                         {
@@ -317,7 +318,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                 {
                     new S2CQuestQuestProgressWorkSaveNtc()
                     {
-                        QuestScheduleId = (uint) QuestId.HopesBitterEnd,
+                        QuestScheduleId = LibDdon.Assets.QuestScheduleIdAsset[QuestId.HopesBitterEnd],
                         ProcessNo = 0, SequenceNo = 0, BlockNo = 10,
                         WorkList = new List<CDataQuestProgressWork>
                         {
@@ -326,7 +327,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     },
                     new S2CQuestQuestProgressWorkSaveNtc()
                     {
-                        QuestScheduleId = (uint) QuestId.HopesBitterEnd,
+                        QuestScheduleId = LibDdon.Assets.QuestScheduleIdAsset[QuestId.HopesBitterEnd],
                         ProcessNo = 4, SequenceNo = 0, BlockNo = 1,
                         WorkList = new List<CDataQuestProgressWork>
                         {
@@ -338,7 +339,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                 {
                     new S2CQuestQuestProgressWorkSaveNtc()
                     {
-                        QuestScheduleId = (uint) QuestId.HopesBitterEnd,
+                        QuestScheduleId = LibDdon.Assets.QuestScheduleIdAsset[QuestId.HopesBitterEnd],
                         ProcessNo = 0, SequenceNo = 0, BlockNo = 12,
                         WorkList = new List<CDataQuestProgressWork>
                         {
@@ -347,7 +348,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     },
                     new S2CQuestQuestProgressWorkSaveNtc()
                     {
-                        QuestScheduleId = (uint) QuestId.HopesBitterEnd,
+                        QuestScheduleId = LibDdon.Assets.QuestScheduleIdAsset[QuestId.HopesBitterEnd],
                         ProcessNo = 5, SequenceNo = 0, BlockNo = 1,
                         WorkList = new List<CDataQuestProgressWork>
                         {
@@ -364,7 +365,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                 {
                     new S2CQuestQuestProgressWorkSaveNtc()
                     {
-                        QuestScheduleId = (uint) QuestId.HopesBitterEnd,
+                        QuestScheduleId = LibDdon.Assets.QuestScheduleIdAsset[QuestId.HopesBitterEnd],
                         ProcessNo = 0, SequenceNo = 0, BlockNo = 19,
                         WorkList = new List<CDataQuestProgressWork>
                         {

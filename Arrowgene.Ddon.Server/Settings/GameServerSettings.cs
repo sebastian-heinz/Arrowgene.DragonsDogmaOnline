@@ -1019,6 +1019,41 @@ namespace Arrowgene.Ddon.Server.Settings
         private const uint _ReincarnationGGPrice = 5;
 
         /// <summary>
+        /// Controls the relative weight of drop items to gathering items when generating delivery board quests.
+        /// Values less than 1 encourage gathering items, values greater than 1 encourage drop items.
+        /// </summary>
+        [DefaultValue(_LightQuestGenerationDropItemWeight)]
+        public double LightQuestGenerationDropItemWeight
+        {
+            set
+            {
+                SetSetting("LightQuestGenerationDropItemWeight", value);
+            }
+            get
+            {
+                return TryGetSetting("LightQuestGenerationDropItemWeight", _LightQuestGenerationDropItemWeight);
+            }
+        }
+        private const double _LightQuestGenerationDropItemWeight = 0.5;
+
+        /// <summary>
+        /// When generating light quests, controls the amount of attempts that will be made to meet restraints on level bounds and uniqueness.
+        /// </summary>
+        [DefaultValue(_LightQuestGenerationAttemptsPerQuest)]
+        public int LightQuestGenerationAttemptsPerQuest
+        {
+            set
+            {
+                SetSetting("LightQuestGenerationAttemptsPerQuest", value);
+            }
+            get
+            {
+                return TryGetSetting("LightQuestGenerationAttemptsPerQuest", _LightQuestGenerationAttemptsPerQuest);
+            }
+        }
+        private const int _LightQuestGenerationAttemptsPerQuest = 20;
+
+        /// <summary>
         /// 
         /// </summary>
         [DefaultValue(_UrlDomain)]

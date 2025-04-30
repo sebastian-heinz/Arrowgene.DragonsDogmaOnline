@@ -29,6 +29,7 @@ using Arrowgene.Ddon.GameServer.Chat.Log;
 using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Quests.LightQuests;
 using Arrowgene.Ddon.GameServer.Scripting;
 using Arrowgene.Ddon.GameServer.Shop;
 using Arrowgene.Ddon.Server;
@@ -43,6 +44,7 @@ using Arrowgene.Logging;
 using Arrowgene.Networking.Tcp;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer
 {
@@ -90,6 +92,7 @@ namespace Arrowgene.Ddon.GameServer
             JobMasterManager = new JobMasterManager(this);
             JobOrbUnlockManager = new JobOrbUnlockManager(this);
             JobEmblemManager = new JobEmblemManager(this);
+            LightQuestManager = new LightQuestManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(this);
@@ -138,6 +141,7 @@ namespace Arrowgene.Ddon.GameServer
         public JobEmblemManager JobEmblemManager { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
+        public LightQuestManager LightQuestManager { get; }
 
         public List<CDataStageInfo> StageList { get; }
 

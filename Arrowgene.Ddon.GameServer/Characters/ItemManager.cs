@@ -227,7 +227,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public (PacketQueue queue, bool IsSpecial) HandleSpecialItem(GameClient client, S2CItemUpdateCharacterItemNtc ntc, ItemId item, uint count, DbConnection? connectionIn = null)
         {
-            var itemInfo = ClientItemInfo.GetInfoForItemId(_Server.AssetRepository.ClientItemInfos, (uint)item);
+            var itemInfo = _Server.AssetRepository.ClientItemInfos[item];
             if (ItemIdWalletTypeAndQuantity.ContainsKey(item))
             {
                 var walletTypeAndQuantity = ItemIdWalletTypeAndQuantity[item];
@@ -446,7 +446,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             Storage destinationStorage;
 
-            ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, item.ItemId);
+            ClientItemInfo clientItemInfo = server.AssetRepository.ClientItemInfos[item.ItemId];
             if (itemBag)
             {
                 destinationStorage = character.Storage.GetStorage(clientItemInfo.StorageType);
@@ -464,7 +464,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, bool itemBag, uint itemId, uint num, byte plusvalue = 0, DbConnection? connectionIn = null)
         {
-            ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, itemId);
+            ClientItemInfo clientItemInfo = server.AssetRepository.ClientItemInfos[itemId];
             if(itemBag)
             {
                 // Limit stacks when adding to the item bag.
@@ -488,7 +488,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, StorageType destinationStorage, uint itemId, uint num, byte plusvalue = 0, DbConnection? connectionIn = null)
         {
-            ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, itemId);
+            ClientItemInfo clientItemInfo = server.AssetRepository.ClientItemInfos[itemId];
             if (destinationStorage == StorageType.ItemBagConsumable || destinationStorage == StorageType.ItemBagMaterial || destinationStorage == StorageType.ItemBagJob)
             {
                 // Limit stacks when adding to the item bag.
@@ -518,7 +518,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             long itemsToAdd = num;
             Storage storage = character.Storage.GetStorage(destinationStorageType);
-            ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(_Server.AssetRepository.ClientItemInfos, itemId);
+            ClientItemInfo clientItemInfo = _Server.AssetRepository.ClientItemInfos[itemId];
             uint stackLimit = clientItemInfo.StorageType != StorageType.ItemBagEquipment && BoxStorageTypes.Contains(destinationStorageType) ? STACK_BOX_MAX : clientItemInfo.StackLimit;
 
             long existingAvailableStackSlots = storage.Items
@@ -723,7 +723,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private (ClientItemInfo, uint) DetermineStackLimit(DdonServer<GameClient> server, Item item, StorageType targetType)
         {
-            var info = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, item.ItemId);
+            var info = server.AssetRepository.ClientItemInfos[item.ItemId];
             return info.StorageType == StorageType.ItemBagEquipment
                    || ItemBagStorageTypes.Contains(targetType)
                 ? (info, info.StackLimit)
@@ -1012,6 +1012,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             return amountFound >= num;
         }
+
         public ClientItemInfo LookupInfoByUID(DdonGameServer server, string itemUID, DbConnection? connectionIn = null)
         {
             var item = server.Database.SelectStorageItemByUId(itemUID, connectionIn);
@@ -1024,16 +1025,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public ClientItemInfo LookupInfoByItem(DdonGameServer server, Item item)
         {
-            return LookupInfoByItemID(server, item.ItemId);
-        }
-
-        public ClientItemInfo LookupInfoByItemID(DdonGameServer server, uint itemID)
-        {
-            if (!server.AssetRepository.ClientItemInfos.ContainsKey(itemID))
-            {
-                throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INTERNAL_ERROR);
-            }
-            return server.AssetRepository.ClientItemInfos[itemID];
+            return server.AssetRepository.ClientItemInfos[item.ItemId];
         }
 
         public static bool SendToItemBag(uint storageType)

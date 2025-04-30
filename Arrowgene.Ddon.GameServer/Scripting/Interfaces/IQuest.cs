@@ -1,6 +1,7 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Quests;
-using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
@@ -13,9 +14,6 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
     {
         public IQuest()
         {
-            // TODO: Apply algorithm using VariantId+QuestId
-            QuestScheduleId = (uint)QuestId;
-
             Processes = new Dictionary<ushort, QuestProcess>();
             RewardItems = new List<QuestRewardItem>();
             WalletRewards = new List<QuestWalletReward>();
@@ -53,7 +51,12 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
         public abstract QuestId QuestId { get; }
         public virtual QuestId NextQuestId { get; } = QuestId.None;
         public virtual uint VariantId { get; } = 0;
-        public uint QuestScheduleId { get; }
+        public virtual uint QuestScheduleId {
+            get
+            {
+                return LibDdon.Assets.QuestScheduleIdAsset[QuestId] + VariantId;
+            }
+        }
         public virtual QuestAreaId QuestAreaId { get; } = QuestAreaId.None;
         public QuestSource QuestSource { get; } = QuestSource.Script;
         public virtual bool Enabled { get; } = true;
@@ -70,12 +73,12 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
         public virtual bool? IsImportant { get; } = null;
         public virtual QuestAdventureGuideCategory? AdventureGuideCategory { get; } = null;
 
-        private Dictionary<ushort, QuestProcess> Processes { get; set; }
-        private List<QuestRewardItem> RewardItems { get; set; }
-        private List<QuestWalletReward> WalletRewards { get; set; }
-        private List<QuestPointReward> PointRewards { get; set; }
-        private Dictionary<uint, QuestEnemyGroup> EnemyGroups { get; set; }
-        private List<QuestLayoutFlagSetInfo> QuestLayoutSetInfoSetList { get; set; }
+        protected Dictionary<ushort, QuestProcess> Processes { get; set; }
+        protected List<QuestRewardItem> RewardItems { get; set; }
+        protected List<QuestWalletReward> WalletRewards { get; set; }
+        protected List<QuestPointReward> PointRewards { get; set; }
+        protected Dictionary<uint, QuestEnemyGroup> EnemyGroups { get; set; }
+        protected List<QuestLayoutFlagSetInfo> QuestLayoutSetInfoSetList { get; set; }
         protected QuestMissionParams MissionParams { get; set; }
         protected List<QuestOrderCondition> OrderConditions { get; set; }
         protected List<QuestServerAction> ServerActions { get; set; }
@@ -316,11 +319,11 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
                 EnableCancel = EnableCancel.Value,
                 QuestAreaId = QuestAreaId,
                 QuestId = QuestId,
+                VariantIndex = VariantId,
                 QuestOrderBackgroundImage = QuestOrderBackgroundImage,
                 IsImportant = IsImportant.Value,
                 AdventureGuideCategory = AdventureGuideCategory.Value,
                 QuestSource = QuestSource,
-                QuestScheduleId = QuestScheduleId,
                 QuestType = QuestType,
                 PointRewards = PointRewards,
                 Processes = Processes.Values.ToList(),
