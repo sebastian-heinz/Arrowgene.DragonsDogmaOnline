@@ -75,7 +75,7 @@ public abstract class SqlDb : IDatabase
         }
     }
 
-    public int ExecuteNonQuery(DbConnection conn, string query, Action<DbCommand> nonQueryAction)
+    public int ExecuteNonQuery(DbConnection conn, string query, Action<DbCommand> nonQueryAction, bool rethrowException = false)
     {
         try
         {
@@ -85,12 +85,16 @@ public abstract class SqlDb : IDatabase
         }
         catch (Exception ex)
         {
+            if (rethrowException)
+            {
+                throw;
+            }
             Exception(ex, query);
             return NoRowsAffected;
         }
     }
 
-    public void ExecuteReader(DbConnection conn, string query, Action<DbCommand> nonQueryAction, Action<DbDataReader> readAction)
+    public void ExecuteReader(DbConnection conn, string query, Action<DbCommand> nonQueryAction, Action<DbDataReader> readAction, bool rethrowException = false)
     {
         try
         {
@@ -101,16 +105,20 @@ public abstract class SqlDb : IDatabase
         }
         catch (Exception ex)
         {
+            if (rethrowException)
+            {
+                throw;
+            }
             Exception(ex, query);
         }
     }
 
-    public void Execute(string query)
+    public void Execute(string query, bool rethrowException = false)
     {
         using DbConnection connection = OpenNewConnection();
         try
         {
-            Execute(connection, query);
+            Execute(connection, query, rethrowException);
         }
         finally
         {
@@ -133,7 +141,7 @@ public abstract class SqlDb : IDatabase
     }
 
 
-    public void Execute(DbConnection? conn, string query)
+    public void Execute(DbConnection? conn, string query, bool rethrowException = false)
     {
         try
         {
@@ -142,6 +150,10 @@ public abstract class SqlDb : IDatabase
         }
         catch (Exception ex)
         {
+            if (rethrowException)
+            {
+                throw;
+            }
             Exception(ex, query);
         }
     }
@@ -268,17 +280,15 @@ public abstract class SqlDb : IDatabase
     public bool MigrateDatabase(DatabaseMigrator migrator, uint toVersion)
     {
         uint currentVersion = GetMeta().DatabaseVersion;
-        bool result = migrator.MigrateDatabase(this, currentVersion, toVersion);
-        if (result)
-        {
-            SetMeta(new DatabaseMeta
+            bool result = migrator.MigrateDatabase(this, currentVersion, toVersion);
+            if (result)
             {
-                DatabaseVersion = DdonDatabaseBuilder.Version
-            });
-            ExecuteNonQuery(OpenNewConnection(),"VACUUM;", _ => {});
-            ExecuteNonQuery(OpenNewConnection(),"ANALYZE;", _ => {});
-        }
-        return result;
+                SetMeta(new DatabaseMeta { DatabaseVersion = DdonDatabaseBuilder.Version });
+                ExecuteNonQuery(OpenNewConnection(), "VACUUM;", _ => { }, out _, true);
+                ExecuteNonQuery(OpenNewConnection(), "ANALYZE;", _ => { }, out _, true);
+            }
+            Stop();
+            return result;
     }
 
     public abstract bool CreateMeta(DatabaseMeta meta);
@@ -605,12 +615,12 @@ public abstract class SqlDb : IDatabase
         throw new NotImplementedException("This is driver-dependent and must be implemented.");
     }
 
-    public int ExecuteNonQuery(string query, Action<DbCommand> nonQueryAction)
+    public int ExecuteNonQuery(string query, Action<DbCommand> nonQueryAction, bool rethrowException = false)
     {
         using DbConnection connection = OpenNewConnection();
         try
         {
-            return ExecuteNonQuery(connection, query, nonQueryAction);
+            return ExecuteNonQuery(connection, query, nonQueryAction, rethrowException);
         }
         finally
         {
@@ -618,12 +628,12 @@ public abstract class SqlDb : IDatabase
         }
     }
 
-    public int ExecuteNonQuery(string query, Action<DbCommand> nonQueryAction, out long autoIncrement)
+    public int ExecuteNonQuery(string query, Action<DbCommand> nonQueryAction, out long autoIncrement, bool rethrowException = false)
     {
         using DbConnection connection = OpenNewConnection();
         try
         {
-            return ExecuteNonQuery(connection, query, nonQueryAction, out autoIncrement);
+            return ExecuteNonQuery(connection, query, nonQueryAction, out autoIncrement, rethrowException);
         }
         finally
         {
@@ -631,7 +641,7 @@ public abstract class SqlDb : IDatabase
         }
     }
 
-    public int ExecuteNonQuery(DbConnection conn, string query, Action<DbCommand> nonQueryAction, out long autoIncrement)
+    public int ExecuteNonQuery(DbConnection conn, string query, Action<DbCommand> nonQueryAction, out long autoIncrement, bool rethrowException = false)
     {
         try
         {
@@ -643,18 +653,22 @@ public abstract class SqlDb : IDatabase
         }
         catch (Exception ex)
         {
+            if (rethrowException)
+            {
+                throw;
+            }
             Exception(ex, query);
             autoIncrement = NoAutoIncrement;
             return NoRowsAffected;
         }
     }
 
-    public void ExecuteReader(string query, Action<DbCommand> nonQueryAction, Action<DbDataReader> readAction)
+    public void ExecuteReader(string query, Action<DbCommand> nonQueryAction, Action<DbDataReader> readAction, bool rethrowException = false)
     {
         using DbConnection connection = OpenNewConnection();
         try
         {
-            ExecuteReader(connection, query, nonQueryAction, readAction);
+            ExecuteReader(connection, query, nonQueryAction, readAction, rethrowException);
         }
         finally
         {
@@ -662,12 +676,12 @@ public abstract class SqlDb : IDatabase
         }
     }
 
-    public void ExecuteReader(string query, Action<DbDataReader> readAction)
+    public void ExecuteReader(string query, Action<DbDataReader> readAction, bool rethrowException = false)
     {
         using DbConnection connection = OpenNewConnection();
         try
         {
-            ExecuteReader(connection, query, readAction);
+            ExecuteReader(connection, query, readAction, rethrowException);
         }
         finally
         {
@@ -675,7 +689,7 @@ public abstract class SqlDb : IDatabase
         }
     }
 
-    public void ExecuteReader(DbConnection conn, string query, Action<DbDataReader> readAction)
+    public void ExecuteReader(DbConnection conn, string query, Action<DbDataReader> readAction, bool rethrowException = false)
     {
         try
         {
@@ -685,6 +699,10 @@ public abstract class SqlDb : IDatabase
         }
         catch (Exception ex)
         {
+            if (rethrowException)
+            {
+                throw;
+            }
             Exception(ex, query);
         }
     }
@@ -715,10 +733,7 @@ public abstract class SqlDb : IDatabase
         }
     }
 
-    protected virtual void Exception(Exception ex, string? query = null)
-    {
-        throw ex;
-    }
+    protected abstract void Exception(Exception ex, string? query = null);
 
     protected virtual DbParameter Parameter(DbCommand command, string name, object? value, DbType type)
     {

@@ -19,13 +19,11 @@ public interface IDatabase
 {
     DbConnection OpenNewConnection();
     DbConnection OpenExistingConnection();
-    void Execute(string sql);
-    void Execute(DbConnection conn, string sql);
+    void Execute(string sql, bool rethrowException = false);
+    void Execute(DbConnection conn, string sql, bool rethrowException = false);
     bool ExecuteInTransaction(Action<DbConnection> action);
-    int ExecuteNonQuery(DbConnection conn, string query, Action<DbCommand> action);
-
-    void ExecuteReader(DbConnection conn, string sql, Action<DbCommand> commandAction, Action<DbDataReader> readAction);
-
+    int ExecuteNonQuery(DbConnection conn, string query, Action<DbCommand> action, bool rethrowException = false);
+    void ExecuteReader(DbConnection conn, string sql, Action<DbCommand> commandAction, Action<DbDataReader> readAction, bool rethrowException = false);
     void ExecuteQuerySafe(DbConnection? connectionIn, Action<DbConnection> work);
     T ExecuteQuerySafe<T>(DbConnection? connectionIn, Func<DbConnection, T> work);
     void Stop();

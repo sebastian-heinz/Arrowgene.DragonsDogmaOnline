@@ -56,6 +56,10 @@ public partial class DdonPostgresDb : DdonSqlDb
     public override void Stop()
     {
         Logger.Info("Stopping database connection.");
+        ReusableConnection.Close();
+        ReusableConnection.Dispose();
+        _dataSource.Clear();
+        _dataSource.Dispose();
     }
 
     private string BuildConnectionString(string host, string user, string password, string database, uint bufferSize, bool noResetOnClose, bool enablePooling, bool enableTracing,

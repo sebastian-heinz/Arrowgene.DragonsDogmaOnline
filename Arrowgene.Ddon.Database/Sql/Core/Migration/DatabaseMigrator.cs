@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Collections.Generic;
 using System;
+using Arrowgene.Ddon.Shared.Entity;
 
 namespace Arrowgene.Ddon.Database.Sql.Core.Migration
 {
@@ -15,7 +16,6 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
 
         public bool MigrateDatabase(IDatabase db, uint fromVersion, uint toVersion)
         {
-            return db.ExecuteInTransaction((conn) => {
                 List<IMigrationStrategy> strategies = FindStrategies(fromVersion, toVersion, out bool completesMigration);
                 if(!completesMigration)
                 {
@@ -24,9 +24,24 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
 
                 foreach (var strategy in strategies)
                 {
-                    strategy.Migrate(db, conn);
+                    try
+                    {
+                        if (strategy.DisableTransaction)
+                        {
+                            strategy.Migrate(db, db.OpenNewConnection());
+                        }
+                        else
+                        {
+                            db.ExecuteInTransaction(conn => strategy.Migrate(db, conn));
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        db.SetMeta(new DatabaseMeta { DatabaseVersion = strategy.From });
+                        throw;
+                    }
                 }
-            });
+                return true;
         }
 
         // Recursively find a list of strategies to ugprade the database from fromVersion to toVersion

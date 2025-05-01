@@ -6,6 +6,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
     {
         uint From { get; }
         uint To { get; }
+        bool DisableTransaction => false;
         bool Migrate(IDatabase db, DbConnection conn);
     }
 }

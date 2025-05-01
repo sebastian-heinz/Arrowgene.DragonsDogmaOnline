@@ -17,8 +17,9 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
         public bool Migrate(IDatabase db, DbConnection conn)
         {
             string adaptedSchema = DdonDatabaseBuilder.GetAdaptedSchema(DatabaseSetting, "Script/ddon_job_master_active_orders_progress_primary_key_migration.sql");
-            db.Execute(conn, adaptedSchema);
+            db.Execute(conn, adaptedSchema, true);
             return true;
         }
+
     }
 }
