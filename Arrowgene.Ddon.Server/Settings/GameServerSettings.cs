@@ -138,10 +138,12 @@ namespace Arrowgene.Ddon.Server.Settings
 
         /// <summary>
         /// Modifier used to skew the randomness during equipment unlimit.
-        /// Bias of 1.0 has a uniform distribution
-        /// Bias of 2.0 has a moderate bias towards lower numbers
-        /// Bias of 3.0 has a high bias towards lower numbers
-        /// Bias of 4.0 has an extreme bias towards lower numbers
+        ///
+        /// Example bias values (note that fractional amounts are also valid):
+        /// Bias of -1.0 Inverts the bias, favoring higher indices
+        /// Bias of 0.0 No bias, equal probabilty for all.
+        /// Bias of 1.0 Balanced bias towers lower indices
+        /// Bias of 2.0 strongly prefers lower indices
         /// </summary>
         [DefaultValue(_EquipmentLimitBreakBias)]
         public double EquipmentLimitBreakBias
@@ -155,7 +157,7 @@ namespace Arrowgene.Ddon.Server.Settings
                 return TryGetSetting("EquipmentLimitBreakBias", _EquipmentLimitBreakBias);
             }
         }
-        private const double _EquipmentLimitBreakBias = 3.0;
+        private const double _EquipmentLimitBreakBias = 1.5;
 
 
         /// <summary>

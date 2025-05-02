@@ -5,13 +5,27 @@ namespace Arrowgene.Ddon.GameServer.Utils
 {
     public static class ListExtension
     {
-        public static T GetWeightedRandomElement<T>(this List<T> list, double lowBias, double middleBias = 0.3)
+        public static T GetWeightedRandomElement<T>(this List<T> list, double bias)
         {
-            int maxIndex = list.Count - 1;
-            double x = Random.Shared.NextDouble();
-            double rawValue = Math.Pow(x, lowBias) * (1 - middleBias) + Math.Min(x, 1 - x) * middleBias;
-            int weightedIndex = (int)(maxIndex * rawValue);
-            return list[weightedIndex];
+            double totalWeight = 0;
+            for (int i = 0; i < list.Count; i++)
+            {
+                totalWeight += Math.Pow(list.Count - i, bias);
+            }
+
+            double x = Random.Shared.NextDouble() * totalWeight;
+
+            double cumulativeWeight = 0;
+            for (int i = 0; i < list.Count; i++)
+            {
+                cumulativeWeight += Math.Pow(list.Count - i, bias);
+                if (x < cumulativeWeight)
+                {
+                    return list[i];
+                }
+            }
+
+            return list[^1];
         }
     }
 }
