@@ -53,7 +53,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var statRolls = category.StatLottery.OrderBy(x => Random.Shared.Next()).First();
                 var statRoll = forceGreatSuccess ?
                     statRolls.Rolls[Random.Shared.Next((int) statRolls.MinGreatSuccessIndex, statRolls.Rolls.Count)] :
-                    statRolls.Rolls.GetWeightedRandomElement(Server.GameSettings.GameServerSettings.EquipmentLimitBreakBias, 0.5);
+                    statRolls.Rolls.GetWeightedRandomElement(Server.GameSettings.GameServerSettings.EquipmentLimitBreakBias);
 
                 var newAddStatusParam = new CDataAddStatusParam()
                 {
