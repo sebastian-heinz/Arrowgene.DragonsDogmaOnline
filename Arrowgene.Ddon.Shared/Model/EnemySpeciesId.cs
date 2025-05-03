@@ -28,17 +28,22 @@ namespace Arrowgene.Ddon.Shared.Model
 
     public static class EnemySpeciesId
     {
-        public static Species GetEnemySpecies(EnemyId enemyId)
+        public static Species GetSpecies(this EnemyId enemyId)
         { 
             if (!EnemySpeciesMap.ContainsKey(enemyId))
             { 
-                return (Species)Species.Unknown;
+                return Species.Unknown;
             }
 
-            return (Species)EnemySpeciesMap[enemyId];
+            return EnemySpeciesMap[enemyId];
         }
 
-        public static List<EnemyId> GetEnemiesOfSpecies(Species species)
+        public static bool IsSpecies(this EnemyId enemyId, Species species)
+        {
+            return enemyId.GetSpecies() == species;
+        }
+
+        public static List<EnemyId> GetEnemies(this Species species)
         {
             List<EnemyId> list = new List<EnemyId>();
 
