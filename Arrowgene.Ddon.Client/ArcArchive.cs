@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Linq;
 using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared;
 using Arrowgene.Ddon.Shared.Crypto;
@@ -227,11 +228,11 @@ namespace Arrowgene.Ddon.Client
         }
 
         /// <summary>
-        /// Returns the first file that matches the search criteria.
+        /// Returns the only file that matches the search criteria, raises an exception if none or more than one file is found.
         /// </summary>
         public ArcFile GetFile(FileIndexSearch search)
         {
-            return GetFiles(search)[0];
+            return GetFiles(search).Single();
         }
 
         public ArcFile PutFile(string path, byte[] fileData)
