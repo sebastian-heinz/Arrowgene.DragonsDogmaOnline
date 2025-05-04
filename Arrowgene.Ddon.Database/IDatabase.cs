@@ -65,10 +65,10 @@ public interface IDatabase
     DatabaseMeta GetMeta();
 
     // Account
-    Account CreateAccount(string name, string mail, string hash);
+    Account? CreateAccount(string name, string mail, string hash);
     Account SelectAccountById(int accountId);
-    Account SelectAccountByName(string accountName);
-    Account SelectAccountByLoginToken(string loginToken);
+    Account? SelectAccountByName(string accountName);
+    Account? SelectAccountByLoginToken(string loginToken);
     bool UpdateAccount(Account account);
     bool DeleteAccount(int accountId);
     Storages SelectAllStoragesByCharacterId(uint characterId);

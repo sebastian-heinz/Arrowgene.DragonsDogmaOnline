@@ -36,7 +36,7 @@ public partial class DdonSqlDb : SqlDb
                 for (i = 0; i < rewards.NumRandomRewards; i++) AddParameter(command, $"random_reward{i}_index", rewards.RandomRewardIndices[i]);
 
                 for (; i < MAX_RANDOM_REWARDS; i++) AddParameter(command, $"random_reward{i}_index", 0);
-            }, out long autoIncrement) == 1;
+            }) == 1;
         });
     }
 

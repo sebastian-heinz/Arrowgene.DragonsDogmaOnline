@@ -98,13 +98,26 @@ public partial class DdonPostgresDb : DdonSqlDb
     }
 
     /// <summary>
-    ///     Safe within the same connection session (transaction?), but unsafe if triggers are involved.
-    ///     https://stackoverflow.com/questions/2944297/postgresql-function-for-last-inserted-id
+    /// WARNING: Safe within the same connection session (transaction?), but unsafe if triggers are involved or if multiple different inserts are involved in the same transaction. https://stackoverflow.com/questions/2944297/postgresql-function-for-last-inserted-id
+    /// An alternative approach in the future could be to support passing in "knowledge" about the autoincrement column as a variable and to dynamically select the value in the given query/command context, e.g. for Account SELECT currval(pg_get_serial_sequence('account', 'id'));
     /// </summary>
     protected override long AutoIncrement(DbConnection connection, DbCommand command)
     {
         using NpgsqlCommand lastIdCommand = new("SELECT LASTVAL();", connection as NpgsqlConnection);
-        return (long)lastIdCommand.ExecuteScalar();
+        try
+        {
+            return (long)lastIdCommand.ExecuteScalar();
+        }
+        catch (NpgsqlException e)
+        {
+            // This occurs when no rows were changed in the current session, i.e. a pure schema change occurred or a maintenance task was executed. Sample error: "55000: lastval is not yet defined in this session"
+            if (string.Equals(e.SqlState, PostgresErrorCodes.ObjectNotInPrerequisiteState, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return NoAutoIncrement;
+            }
+
+            throw;
+        }
     }
 
     public override DateTime GetDateTime(DbDataReader reader, string column)
