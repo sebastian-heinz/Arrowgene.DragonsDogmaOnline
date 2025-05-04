@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Context;
+using Arrowgene.Ddon.GameServer.Quests.LightQuests;
 using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -379,7 +380,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     IsPartyRecommend = enemy.IsBossGauge
                 }))
                 .ToList(),
-                DistributionStartDate = DistributionStart,
+                DistributionStartDate = DateTimeOffset.Now < DistributionStart ? DistributionStart : DateTimeOffset.FromUnixTimeSeconds(0),
                 DistributionEndDate = DistributionEnd,
                 ContentsReleaseList = GetContentReleaseRewards()
             };
@@ -535,37 +536,57 @@ namespace Arrowgene.Ddon.GameServer.Quests
             };
         }
 
-        public virtual CDataLightQuestList ToCDataLightQuestList(uint step, CDataQuestProgressWork workOverride = null)
+        public virtual CDataLightQuestList ToCDataLightQuestList()
         {
-            CDataQuestList param = ToCDataQuestList(step);
+            CDataQuestList param = ToCDataQuestList(1);
 
-            CDataQuestContents contents = new CDataQuestContents();
-            CDataQuestCommand process = param.QuestProcessStateList.FirstOrDefault()?.CheckCommandList.FirstOrDefault()?.ResultCommandList.FirstOrDefault();
-            if (process is not null)
+            CDataQuestContents contents = new();
+
+            if (BackingObject is LightQuestQuest backingQuest)
             {
-                if (process.Command == (ushort)QuestCheckCommand.EmDieLight)
-                {
-                    contents.Type = 1;
-                }
-                else if (process.Command == (ushort)QuestCheckCommand.DeliverItem)
-                {
-                    contents.Type = 2;
-                }
-                contents.Param01 = process.Param01;
-                contents.Param02 = process.Param02;
-                contents.Param03 = process.Param03;
-                contents.Param04 = process.Param04;
+                var record = backingQuest.QuestRecord;
+                var recordInfo = LightQuestId.FromQuestId(QuestId);
+                contents.Type = (byte)recordInfo.Type;
+
+                // Based on pcap values?
                 contents.Unk0 = 0;
                 contents.Unk1 = 1;
-            }
 
-            if (workOverride is not null)
-            {
-                if (param.QuestProcessStateList.FirstOrDefault()?.WorkList.ElementAtOrDefault(0) != null)
+                if (recordInfo.Type == LightQuestType.Hunt)
                 {
-                    param.QuestProcessStateList.FirstOrDefault().WorkList[0] = workOverride;
+                    contents.Param01 = record.Target;
+                    contents.Param02 = record.Level;
+                    contents.Param03 = record.Count;
+                }
+                else if (recordInfo.Type == LightQuestType.Delivery)
+                {
+                    contents.Param01 = record.Target;
+                    contents.Param02 = record.Count;
                 }
             }
+            else
+            {
+                CDataQuestCommand process = param.QuestProcessStateList.FirstOrDefault()?.CheckCommandList.FirstOrDefault()?.ResultCommandList.FirstOrDefault();
+                if (process is not null)
+                {
+                    if (process.Command == (ushort)QuestCheckCommand.EmDieLight)
+                    {
+                        contents.Type = 1;
+                    }
+                    else if (process.Command == (ushort)QuestCheckCommand.DeliverItem)
+                    {
+                        contents.Type = 2;
+                    }
+                    contents.Param01 = process.Param01;
+                    contents.Param02 = process.Param02;
+                    contents.Param03 = process.Param03;
+                    contents.Param04 = process.Param04;
+                    contents.Unk0 = 0;
+                    contents.Unk1 = 1;
+                }
+            }
+
+            param.QuestProcessStateList.Clear();
 
             return new CDataLightQuestList()
             {

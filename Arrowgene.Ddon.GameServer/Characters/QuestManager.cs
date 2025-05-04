@@ -119,6 +119,22 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        public static void LoadLightQuests(DdonGameServer server)
+        {
+            uint scheduleId = 100000000;
+            foreach (var generator in server.AssetRepository.LightQuestAsset.GeneratingAssets)
+            {
+                var records = server.LightQuestManager.GenerateRecordsFromAsset(generator);
+                foreach (var record in records)
+                {
+                    record.QuestScheduleId = scheduleId++;
+                    var quest = server.LightQuestManager.GenerateQuestFromRecord(record);
+                    gQuests[quest.QuestScheduleId] = quest;
+                    AddQuestToCategory(quest);
+                }
+            }
+        }
+
         public static HashSet<uint> GetQuestsByType(QuestType type)
         {
             HashSet<uint> results = new HashSet<uint>();

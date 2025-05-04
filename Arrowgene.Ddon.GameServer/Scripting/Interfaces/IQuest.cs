@@ -70,12 +70,12 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
         public virtual bool? IsImportant { get; } = null;
         public virtual QuestAdventureGuideCategory? AdventureGuideCategory { get; } = null;
 
-        private Dictionary<ushort, QuestProcess> Processes { get; set; }
-        private List<QuestRewardItem> RewardItems { get; set; }
-        private List<QuestWalletReward> WalletRewards { get; set; }
-        private List<QuestPointReward> PointRewards { get; set; }
-        private Dictionary<uint, QuestEnemyGroup> EnemyGroups { get; set; }
-        private List<QuestLayoutFlagSetInfo> QuestLayoutSetInfoSetList { get; set; }
+        protected Dictionary<ushort, QuestProcess> Processes { get; set; }
+        protected List<QuestRewardItem> RewardItems { get; set; }
+        protected List<QuestWalletReward> WalletRewards { get; set; }
+        protected List<QuestPointReward> PointRewards { get; set; }
+        protected Dictionary<uint, QuestEnemyGroup> EnemyGroups { get; set; }
+        protected List<QuestLayoutFlagSetInfo> QuestLayoutSetInfoSetList { get; set; }
         protected QuestMissionParams MissionParams { get; set; }
         protected List<QuestOrderCondition> OrderConditions { get; set; }
         protected List<QuestServerAction> ServerActions { get; set; }

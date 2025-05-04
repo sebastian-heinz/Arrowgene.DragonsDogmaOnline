@@ -325,6 +325,14 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return block;
         }
 
+        public static QuestBlock AddGatherItemsLightBlock(this QuestProcess process, QuestAnnounceType announceType, ItemId itemId, uint amount)
+        {
+            var block = CreateGenericBlock(process.QuestScheduleId, 0, 0, QuestBlockType.GatherItemsLight, announceType)
+                .AddDeliveryRequests(itemId, amount);
+            process.AddBlock(block);
+            return block;
+        }
+
         public static QuestBlock AddCheckSayBlock(this QuestProcess process, QuestAnnounceType announceType)
         {
             var block = CreateGenericBlock(process.QuestScheduleId, 0, 0, QuestBlockType.Raw, announceType)

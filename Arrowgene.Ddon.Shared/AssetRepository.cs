@@ -65,6 +65,7 @@ namespace Arrowgene.Ddon.Shared
         public const string GatheringSpotInfoKey = "GatheringSpotInfo.json";
         public const string DefaultGatheringDropsKey = "DefaultGatheringDrops.json";
         public const string JobMastersKey = "JobMasters.json";
+        public const string LightQuestKey = "LightQuests.json";
 
         public const string QuestAssestKey = "quests";
         public const string EpitaphAssestKey = "epitaph";
@@ -132,6 +133,7 @@ namespace Arrowgene.Ddon.Shared
             GatheringSpotInfoAsset = new();
             DefaultGatheringDropsAsset = new();
             JobMasterAsset = new();
+            LightQuestAsset = new();
         }
 
         public Dictionary<ErrorCode, ClientErrorCode> ClientErrorCodes { get; private set; }
@@ -179,6 +181,7 @@ namespace Arrowgene.Ddon.Shared
         public GatheringInfoAsset GatheringSpotInfoAsset { get; private set; }
         public DefaultGatheringDropsAsset DefaultGatheringDropsAsset { get; private set; }
         public JobMasterAsset JobMasterAsset { get; private set; }
+        public LightQuestAsset LightQuestAsset { get; private set; }
 
         public void Initialize()
         {
@@ -225,6 +228,7 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => GatheringSpotInfoAsset = value, GatheringSpotInfoKey, new GatheringSpotInfoAssetDeserializer());
             RegisterAsset(value => DefaultGatheringDropsAsset = value, DefaultGatheringDropsKey, new DefaultGatheringDropsDeserializer());
             RegisterAsset(value => JobMasterAsset = value, JobMastersKey, new JobMasterAssetDeserializer());
+            RegisterAsset(value => LightQuestAsset = value, LightQuestKey, new LightQuestAssetDeserializer());
 
             // This must be set before calling QuestAssertDeserializer and EpitaphTrialAssertDeserializer
             var commonEnemyDeserializer = new AssetCommonDeserializer(this.NamedParamAsset);

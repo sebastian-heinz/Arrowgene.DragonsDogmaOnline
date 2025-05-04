@@ -116,6 +116,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         case QuestBlockType.DeliverItems:
                         case QuestBlockType.NewDeliverItems:
                         case QuestBlockType.DeliverItemsLight:
+                        case QuestBlockType.GatherItemsLight:
                             foreach (var request in block.DeliveryRequests)
                             {
                                 quest.DeliveryItems.Add(new QuestDeliveryItem()
@@ -759,7 +760,15 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     {
                         foreach (var item in questBlock.DeliveryRequests)
                         {
-                            checkCommands.Add(QuestManager.CheckCommand.DeliverItem((int)item.ItemId, (int)item.Amount, 0, 0));
+                            checkCommands.Add(QuestManager.CheckCommand.DeliverItem((int)item.ItemId, (int)item.Amount));
+                        }
+                    }
+                    break;
+                case QuestBlockType.GatherItemsLight:
+                    {
+                        foreach (var item in questBlock.DeliveryRequests)
+                        {
+                            checkCommands.Add(QuestManager.CheckCommand.HaveItem((int)item.ItemId, (int)item.Amount));
                         }
                     }
                     break;

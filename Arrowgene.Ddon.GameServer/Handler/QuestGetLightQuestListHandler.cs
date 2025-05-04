@@ -34,7 +34,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (var questScheduleId in quests)
             {
                 var lightQuest = QuestManager.GetQuestByScheduleId(questScheduleId);
-                var data = lightQuest.ToCDataLightQuestList(1); // Step 1 has the necessary info that the UI is looking for, not step 0.
+                //if (DateTimeOffset.Now < lightQuest.DistributionStart || DateTimeOffset.Now > lightQuest.DistributionEnd)
+                //{
+                //    continue;
+                //}
+
+                var data = lightQuest.ToCDataLightQuestList();
                 data.Detail.ClearNum = Server.ClanManager.ClanQuestCompletionStatistics(client.Character.CharacterId, questScheduleId);
                 if (data.Detail.BoardType == 1 && data.Detail.GetAp == 0)
                 {
