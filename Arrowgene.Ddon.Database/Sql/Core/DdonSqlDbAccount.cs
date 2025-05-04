@@ -21,7 +21,7 @@ public partial class DdonSqlDb : SqlDb
     private static readonly string SqlSelectAccountByLoginToken = $"SELECT \"id\", {BuildQueryField(AccountFields)} FROM \"account\" WHERE \"login_token\"=@login_token;";
     private static readonly string SqlUpdateAccount = $"UPDATE \"account\" SET {BuildQueryUpdate(AccountFields)} WHERE \"id\"=@id;";
 
-    public override Account CreateAccount(string name, string mail, string hash)
+    public override Account? CreateAccount(string name, string mail, string hash)
     {
         Account account = new();
         account.Name = name;
@@ -53,14 +53,18 @@ public partial class DdonSqlDb : SqlDb
             AddParameter(command, "@last_login", account.LastAuthentication);
             AddParameter(command, "@created", account.Created);
         }, out long autoIncrement);
-        if (rowsAffected <= NoRowsAffected || autoIncrement <= NoAutoIncrement) return null;
+        if (rowsAffected <= NoRowsAffected || autoIncrement <= NoAutoIncrement)
+        {
+            Logger.Error("Account could not be created because the database refused to acknowledge the change.");
+            return null;
+        }
 
         account.Id = (int)autoIncrement;
 
         return account;
     }
 
-    public override Account SelectAccountByName(string accountName)
+    public override Account? SelectAccountByName(string accountName)
     {
         accountName = accountName.ToLowerInvariant();
         Account account = null;
@@ -83,7 +87,7 @@ public partial class DdonSqlDb : SqlDb
         return account;
     }
 
-    public override Account SelectAccountByLoginToken(string loginToken)
+    public override Account? SelectAccountByLoginToken(string loginToken)
     {
         Account account = null;
         ExecuteReader(SqlSelectAccountByLoginToken,

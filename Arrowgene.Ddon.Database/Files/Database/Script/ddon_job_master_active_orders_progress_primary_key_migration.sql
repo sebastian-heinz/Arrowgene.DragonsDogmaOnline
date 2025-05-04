@@ -2,14 +2,13 @@
 -- What follows are no-warranty duplicate cleaners that delete one of the duplicate rows without applying any criteria:
 
 -- PostgreSQL
--- with marked as (select ctid, row_number() over ( partition by character_id, job_id, release_type, release_id, target_idorder by ctid ) as rn from ddon_job_master_active_orders_progress)
--- delete from ddon_job_master_active_orders_progress q using marked m
--- where q.ctid = m.ctid and m.rn > 1;
-
+--WITH marked AS (SELECT ctid, row_number() over (partition by character_id, job_id, release_type, release_id, target_id ORDER BY ctid) AS rn FROM ddon_job_master_active_orders_progress)
+--delete FROM ddon_job_master_active_orders_progress q using marked m
+--WHERE q.ctid = m.ctid and m.rn > 1;
 -- SQLite
--- WITH marked AS (SELECT rowid AS rid, ROW_NUMBER() OVER ( PARTITION BY character_id, job_id, release_type, release_id, target_idORDER BY rowid ) AS rn FROM ddon_job_master_active_orders_progress)
--- DELETE FROM ddon_job_master_active_orders_progress
--- WHERE rowid IN ( SELECT rid FROM marked WHERE rn > 1);
+--WITH marked AS (SELECT rowid AS rid, ROW_NUMBER() OVER (PARTITION BY character_id, job_id, release_type, release_id, target_id ORDER BY rowid) AS rn FROM ddon_job_master_active_orders_progress)
+--DELETE FROM ddon_job_master_active_orders_progress
+--WHERE rowid IN (SELECT rid FROM marked WHERE rn > 1);
 
 CREATE TABLE IF NOT EXISTS "ddon_job_master_active_orders_progress_new"
 (
