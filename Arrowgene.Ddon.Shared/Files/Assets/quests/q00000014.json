@@ -212,9 +212,11 @@
             "comment": "Process 0",
             "blocks": [
                 {
-                    "type": "NpcTalkAndOrder",
+                    "type": "NewNpcTalkAndOrder",
                     "stage_id": {
-                        "id": 3
+                        "id": 3,
+                        "group_id": 1,
+                        "layer_no":  1
                     },
                     "flags": [
                         {"type": "WorldManageLayout", "action": "Set", "value": 1215, "quest_id": 70000001, "comment": "Mysial"},

@@ -117,6 +117,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
                             {
                                 quest.DeliveryItems.Add(new QuestDeliveryItem()
                                 {
+                                    ProcessNo = process.ProcessNo,
+                                    BlockNo = block.BlockNo,
                                     ItemId = request.ItemId,
                                     Amount = request.Amount,
                                 });

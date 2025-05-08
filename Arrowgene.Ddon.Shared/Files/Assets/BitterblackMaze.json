@@ -1069,7 +1069,7 @@
         {
             "comment": "Rotunda 1",
             "jewelry_chance": 1.0,
-            "rare_chance": 0.1,
+            "rare_chance": 0.01,
             "stage_ids": [603, 610, 611, 612],
             "normal": {"min": 3, "max": 4},
             "sealed": {"min": 4, "max": 5},

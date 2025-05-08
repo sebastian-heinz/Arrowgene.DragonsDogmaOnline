@@ -16,6 +16,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
 {
     public class QuestDeliveryRecord
     {
+        public ushort ProcessNo { get; set; }
+        public ushort BlockNo { get; set; }
         public uint ItemId { get; set; }
         public uint AmountDelivered { get; set; }
         public uint AmountRequired { get; set; }
@@ -81,12 +83,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
         }
 
-        public void AddDeliveryRequest(uint itemId, uint amountRequired)
+        public void AddDeliveryRequest(ushort processNo, ushort blockNo, uint itemId, uint amountRequired)
         {
             lock (DeliveryRecords)
             {
                 DeliveryRecords[itemId] = new QuestDeliveryRecord()
                 {
+                    ProcessNo = processNo,
+                    BlockNo = blockNo,
                     ItemId = itemId,
                     AmountRequired = amountRequired,
                     AmountDelivered = 0
@@ -94,17 +98,24 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
         }
 
-        public bool DeliveryRequestComplete()
+        public bool DeliveryRequestComplete(ushort processNo)
         {
             lock (DeliveryRecords)
             {
-                foreach (var record in DeliveryRecords.Values)
+                var processState = GetProcessState(processNo);
+                if (processState == null)
                 {
-                    if (record.AmountDelivered != record.AmountRequired)
+                    return false;
+                }
+
+                foreach (var delivery in DeliveryRecords.Values.Where(x => x.ProcessNo == processNo && x.BlockNo == processState.BlockNo))
+                {
+                    if (delivery.AmountDelivered != delivery.AmountRequired)
                     {
                         return false;
                     }
                 }
+
                 return true;
             }
         }
@@ -147,6 +158,15 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 huntRecord.AmountHunted++;
                 return huntRecord;
             }
+        }
+
+        private QuestProcessState GetProcessState(ushort processNo)
+        {
+            if (processNo >= ProcessState.Count || ProcessState[processNo].ProcessNo != processNo)
+            {
+                return null;
+            }
+            return ProcessState[processNo];
         }
     }
 
@@ -242,7 +262,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
                 foreach (var request in quest.DeliveryItems)
                 {
-                    ActiveQuests[quest.QuestScheduleId].AddDeliveryRequest(request.ItemId, request.Amount);
+                    ActiveQuests[quest.QuestScheduleId].AddDeliveryRequest(request.ProcessNo, request.BlockNo, request.ItemId, request.Amount);
                 }
 
                 foreach (var request in quest.EnemyHunts)

@@ -44,14 +44,34 @@
         {
             "stage_id": {
                 "id": 425,
-                "group_id": 7
+                "group_id": 3
             },
+            "starting_index": 6,
             "enemies": [
                 {
+                    "comment": "Silver Roar",
                     "enemy_id": "0x015505",
                     "level": 73,
                     "exp": 87000,
                     "is_boss": true
+                },
+                {
+                    "comment": "Stymphalides",
+                    "enemy_id": "0x010611",
+                    "level": 73,
+                    "exp": 4800
+                },
+                {
+                    "comment": "Stymphalides",
+                    "enemy_id": "0x010611",
+                    "level": 73,
+                    "exp": 4800
+                },
+                {
+                    "comment": "Stymphalides",
+                    "enemy_id": "0x010611",
+                    "level": 73,
+                    "exp": 4800
                 }
             ]
         }
@@ -60,7 +80,12 @@
         {
             "type": "NewNpcTalkAndOrder",
             "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 4486, "comment": "Spawns Nora NPC"}
+                {
+                    "type": "QstLayout",
+                    "action": "Set",
+                    "value": 4486,
+                    "comment": "Spawns Nora NPC"
+                }
             ],
             "stage_id": {
                 "id": 372,
@@ -68,12 +93,17 @@
                 "layer_no": 0
             },
             "npc_id": "Nora",
-            "message_id": 10800
+            "message_id": 19519
         },
         {
             "type": "NewTalkToNpc",
             "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 4483, "comment": "Spawns Ifa NPC"}
+                {
+                    "type": "QstLayout",
+                    "action": "Set",
+                    "value": 4483,
+                    "comment": "Spawns Ifa NPC"
+                }
             ],
             "stage_id": {
                 "id": 425,
@@ -82,17 +112,26 @@
             },
             "announce_type": "Accept",
             "npc_id": "Ifa",
-            "message_id": 11842
+            "message_id": 21097
         },
         {
             "type": "SeekOutEnemiesAtMarkedLocation",
             "announce_type": "Update",
-            "groups": [0]
+            "groups": [ 0 ],
+            "flags": [
+                {
+                    "type": "MyQst",
+                    "action": "Set",
+                    "value": 2102,
+                    "comment": "Spawns Ifa FSM"
+                }
+            ]
         },
         {
             "type": "KillGroup",
             "announce_type": "Update",
-            "groups": [0]
+            "groups": [ 0 ],
+            "reset_group": false
         },
         {
             "type": "NewTalkToNpc",
@@ -103,7 +142,21 @@
             },
             "announce_type": "Update",
             "npc_id": "Nora",
-            "message_id": 11842
+            "message_id": 19517,
+            "flags": [
+                {
+                    "type": "MyQst",
+                    "action": "Clear",
+                    "value": 4483,
+                    "comment": "Despawns Ifa"
+                },
+                {
+                    "type": "MyQst",
+                    "action": "Set",
+                    "value": 4488,
+                    "comment": "Spawns Ifa after the battle"
+                }
+            ]
         }
     ]
 }

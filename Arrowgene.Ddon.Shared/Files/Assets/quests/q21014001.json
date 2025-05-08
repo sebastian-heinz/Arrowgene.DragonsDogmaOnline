@@ -57,20 +57,20 @@
         }
     ],		
     "blocks": [
-    {
-      "type": "NpcTalkAndOrder",
+        {
+            "type": "NpcTalkAndOrder",
             "flags": [
-                {"type": "QstLayout", "action": "Set", "value": 4427, "comment": "Spawns Fabio NPC"}				
-            ],	  
-      "stage_id": {
-        "id": 372,
-		"group_id": 1,
-		"layer_no": 1		
-      },
-      "npc_id": "Fabio0",
-      "message_id": 10800	  
-    },
-    {
+                {"type": "QstLayout", "action": "Set", "value": 4427, "comment": "Spawns Fabio NPC"}
+            ],
+            "stage_id": {
+                "id": 372,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "Fabio0",
+            "message_id": 10800
+        },
+        {
             "type": "SeekOutEnemiesAtMarkedLocation",
             "announce_type": "Accept",
             "groups": [0]
@@ -88,8 +88,8 @@
                 "layer_no": 1
             },
             "announce_type": "Update",
-            "npc_id": "12",
+            "npc_id": "Fabio0",
             "message_id": 11842
         }
-  ]
+    ]
 }

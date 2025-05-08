@@ -730,7 +730,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                     if (character is Character)
                     {
-                        _Server.JobMasterManager.ScheduleAbilityTrainingTask(client, job, lowerLevelAbility, connection);
+                        _Server.JobMasterManager.ScheduleAbilityTrainingTask(client, owningJob, lowerLevelAbility, connection);
                     }
                 }
 

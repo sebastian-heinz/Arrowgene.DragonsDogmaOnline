@@ -1,13 +1,7 @@
-using System.Linq;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System;
-using Arrowgene.Ddon.Shared.Model.Quest;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -31,7 +25,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var quest = QuestManager.GetQuestByScheduleId(request.QuestScheduleId);
             var questStateManager = QuestManager.GetQuestStateManager(client, quest);
             var questState = questStateManager.GetQuestState(request.QuestScheduleId);
-            if (questState.DeliveryRequestComplete())
+            if (questState.DeliveryRequestComplete(request.ProcessNo))
             {
                 S2CQuestDecideDeliveryItemNtc ntc = new S2CQuestDecideDeliveryItemNtc()
                 {
