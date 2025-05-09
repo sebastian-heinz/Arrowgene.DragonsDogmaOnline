@@ -1,7 +1,9 @@
+using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
@@ -11,6 +13,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 {
     public class JobMasterManager
     {
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(JobMasterManager));
+
         private DdonGameServer Server;
 
         public JobMasterManager(DdonGameServer server)
@@ -204,7 +208,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             var match = Server.AssetRepository.JobMasterAsset.JobOrders[jobId][ReleaseType.Augment]
                 .SelectMany(x => x.Value)
-                .Where(x => x.ReleaseLv == ability.AbilityLv + 1 && x.ReleaseId == ability.AbilityId)
+                .Where(x => x.ReleaseLv == (ability.AbilityLv + 1) && x.ReleaseId == ability.AbilityId)
                 .FirstOrDefault();
             if (match == null)
             {

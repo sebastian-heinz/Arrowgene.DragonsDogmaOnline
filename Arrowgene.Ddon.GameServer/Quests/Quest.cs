@@ -41,6 +41,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
     public class QuestDeliveryItem
     {
+        public ushort ProcessNo { get; set; }
+        public ushort BlockNo { get; set; }
         public uint ItemId { get; set; }
         public uint Amount {  get; set; }
     }
@@ -327,6 +329,22 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
 
             return result;
+        }
+
+        public virtual QuestBlock GetQuestBlock(ushort processNo, uint blockNo)
+        {
+            if (processNo >= Processes.Count)
+            {
+                return null;
+            }
+
+            var process = Processes[processNo];
+            if (!process.Blocks.ContainsKey(blockNo))
+            {
+                return null;
+            }
+
+            return process.Blocks[blockNo];
         }
 
         public virtual CDataQuestList ToCDataQuestList(uint step)
