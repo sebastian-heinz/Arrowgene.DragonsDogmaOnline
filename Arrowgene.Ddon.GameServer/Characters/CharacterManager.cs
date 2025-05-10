@@ -520,7 +520,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .Where(x => x.SkillNo == releaseId)
                 .SelectMany(x => x.Params)
                 .Where(x => x.Lv == releaseLevel)
-                .FirstOrDefault();
+                .FirstOrDefault() ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_PARAM_NOT_FOUND, $"Failed to locate the custom skill to unlock {jobId}:{releaseId}:{releaseLevel}");
             acquireableSkill.IsRelease = true;
             character.UnlockedCustomSkills[jobId].Add(releaseId);
         }
@@ -531,7 +531,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 .Where(x => x.AbilityNo == releaseId)
                 .SelectMany(x => x.Params)
                 .Where(x => x.Lv == releaseLevel)
-                .FirstOrDefault();
+                .FirstOrDefault() ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_PARAM_NOT_FOUND, $"Failed to locate the augment to unlock {jobId}:{releaseId}:{releaseLevel}");
             acquireableAbility.IsRelease = true;
             character.UnlockedAbilities[jobId].Add(releaseId);
         }

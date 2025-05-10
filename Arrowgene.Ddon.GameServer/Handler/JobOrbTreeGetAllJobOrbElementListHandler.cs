@@ -6,7 +6,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 {
     public class JobOrbTreeGetJobOrbTreeGetAllJobOrbElementListHandler : GameRequestPacketHandler<C2SJobOrbTreeGetJobOrbTreeGetAllJobOrbElementListReq, S2CJobOrbTreeGetJobOrbTreeGetAllJobOrbElementListRes>
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(BazaarCancelHandler));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(JobOrbTreeGetJobOrbTreeGetAllJobOrbElementListHandler));
 
         public JobOrbTreeGetJobOrbTreeGetAllJobOrbElementListHandler(DdonGameServer server) : base(server)
         {
