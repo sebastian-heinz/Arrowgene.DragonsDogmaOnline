@@ -987,6 +987,57 @@ namespace Arrowgene.Ddon.Server.Settings
         private const bool _EnableDefaultGatheringDrops = false;
 
         /// <summary>
+        /// The amount of golden gemstones it costs to use the beauty parlor.
+        /// </summary>
+        [DefaultValue(_BeautyParlorGGPrice)]
+        public uint BeautyParlorGGPrice
+        {
+            set
+            {
+                SetSetting("BeautyParlorGGPrice", value);
+            }
+            get
+            {
+                return TryGetSetting("BeautyParlorGGPrice", _BeautyParlorGGPrice);
+            }
+        }
+        private const uint _BeautyParlorGGPrice = 5;
+
+        /// <summary>
+        /// The amount of silver tickets it costs to use the beauty parlor.
+        /// </summary>
+        [DefaultValue(_BeautyParlorSTPrice)]
+        public uint BeautyParlorSTPrice
+        {
+            set
+            {
+                SetSetting("BeautyParlorSTPrice", value);
+            }
+            get
+            {
+                return TryGetSetting("BeautyParlorSTPrice", _BeautyParlorSTPrice);
+            }
+        }
+        private const uint _BeautyParlorSTPrice = 200;
+
+        /// <summary>
+        /// The amount of golden gemstones it costs to use the reincarnation menu.
+        /// </summary>
+        [DefaultValue(_ReincarnationGGPrice)]
+        public uint ReincarnationGGPrice
+        {
+            set
+            {
+                SetSetting("ReincarnationGGPrice", value);
+            }
+            get
+            {
+                return TryGetSetting("ReincarnationGGPrice", _ReincarnationGGPrice);
+            }
+        }
+        private const uint _ReincarnationGGPrice = 5;
+
+        /// <summary>
         /// 
         /// </summary>
         [DefaultValue(_UrlDomain)]
