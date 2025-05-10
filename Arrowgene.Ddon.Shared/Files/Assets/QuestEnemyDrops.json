@@ -3378,7 +3378,7 @@
         {
             "id": 106,
             "name": "Black Griffin (Lv1-55)",
-            "enemy_id": [ "0x070610" ],
+            "enemy_id": [ "0x070610", "0x015303" ],
             "min_level": 1,
             "max_level": 55,
             "mdlType": 0,
@@ -3454,7 +3454,7 @@
         {
             "id": 108,
             "name": "Black Griffin (Lv80+)",
-            "enemy_id": [ "0x070610" ],
+            "enemy_id": [ "0x070610", "0x015303" ],
             "min_level": 80,
             "mdlType": 0,
             "items": [
