@@ -17,6 +17,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override PacketQueue Handle(GameClient client, C2SSkillLearnPawnAbilityReq request)
         {
+            var packets = new PacketQueue();
+
             Pawn pawn = client.Character.PawnById(request.PawnId, PawnType.Main);
 
             var ability = SkillData.AllAbilities.Concat(SkillData.AllSecretAbilities)
@@ -24,7 +26,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 .SingleOrDefault()
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_INVALID_SKILL_ID);
 
-            return Server.JobManager.UnlockAbility(Server.Database, client, pawn, ability.Job, request.AbilityId, request.AbilityLv);
+            Server.Database.ExecuteInTransaction(connection =>
+            {
+                packets = Server.JobManager.UnlockAbility(client, pawn, ability.Job, request.AbilityId, request.AbilityLv, connection);
+            });
+
+            return packets;
         }
     }
 }

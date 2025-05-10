@@ -3,6 +3,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using Arrowgene.Networking.Tcp.Consumer.BlockingQueueConsumption;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,7 +31,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (request.Job != 0)
             {
                 response.AbilityParamList = (client.GameMode == GameMode.Normal) ?
-                    client.Character.AcquirableAbilities[request.Job] :
+                    client.Character.AcquirableAbilities[request.Job]
+                        .Where(x => !SkillData.IsUnlockableAbility(request.Job, x.AbilityNo, 1) || IsAbilityUnlocked(client.Character, request.Job, x.AbilityNo))
+                        .ToList():
                     SkillData.AllAbilities.Where(x => x.Job == request.Job).ToList();
             }
             else if (request.CharacterId == 0)
@@ -43,6 +46,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             return response;
+        }
+
+        private bool IsAbilityUnlocked(Character character, JobId jobId, uint abilityNo)
+        {
+            return character.UnlockedAbilities[jobId].Contains(abilityNo);
         }
     }
 }

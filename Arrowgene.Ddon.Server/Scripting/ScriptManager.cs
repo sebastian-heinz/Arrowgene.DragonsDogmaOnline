@@ -36,7 +36,7 @@ namespace Arrowgene.Ddon.Shared.Scripting
             }
         }
 
-        public void AddModule(ScriptModule module)
+        protected void AddModule(ScriptModule module)
         {
             ScriptModules[module.ModuleRoot] = module;
         }

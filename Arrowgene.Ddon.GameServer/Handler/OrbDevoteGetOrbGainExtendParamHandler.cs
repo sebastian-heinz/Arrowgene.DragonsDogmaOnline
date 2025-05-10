@@ -1,12 +1,9 @@
-using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Dump;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -14,11 +11,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(OrbDevoteGetOrbGainExtendParamHandler));
 
-        private OrbUnlockManager _OrbUnlockManager;
-
         public OrbDevoteGetOrbGainExtendParamHandler(DdonGameServer server) : base(server)
         {
-            _OrbUnlockManager = server.OrbUnlockManager;
         }
 
         public override PacketId Id => PacketId.C2S_ORB_DEVOTE_GET_ORB_GAIN_EXTEND_PARAM_REQ;
@@ -27,7 +21,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             // client.Send(InGameDump.Dump_50);
             S2COrbDevoteGetOrbGainExtendParamRes Result = new S2COrbDevoteGetOrbGainExtendParamRes();
-            Result.ExtendParam = client.Character.ExtendedParams;
+            Result.ExtendParam = new CDataOrbGainExtendParam()
+            {
+                HpMax = (ushort) client.Character.StatusInfo.GainHP,
+                StaminaMax = (ushort)client.Character.StatusInfo.GainStamina,
+                Attack = (ushort)client.Character.StatusInfo.GainAttack,
+                Defence = (ushort)client.Character.StatusInfo.GainDefense,
+                MagicAttack = (ushort)client.Character.StatusInfo.GainMagicAttack,
+                MagicDefence = (ushort)client.Character.StatusInfo.GainMagicDefense,
+                AbilityCost = client.Character.ExtendedParams.AbilityCost,
+                JewelrySlot = client.Character.ExtendedParams.JewelrySlot,
+                UseItemSlot = client.Character.ExtendedParams.UseItemSlot,
+                MaterialItemSlot = client.Character.ExtendedParams.MaterialItemSlot,
+                EquipItemSlot = client.Character.ExtendedParams.EquipItemSlot,
+                MainPawnSlot = client.Character.ExtendedParams.MainPawnSlot,
+                SupportPawnSlot = client.Character.ExtendedParams.SupportPawnSlot
+            };
             client.Send(Result);
         }
     }

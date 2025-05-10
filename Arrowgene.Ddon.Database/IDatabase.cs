@@ -579,6 +579,9 @@ public interface IDatabase
     List<CDataJobOrderProgress> GetJobMasterActiveOrderProgress(uint characterId, JobId jobId, ReleaseType releaseType, uint releaseId,
         DbConnection? connectionIn = null);
 
+    bool InsertSkillAugmentationReleasedElement(uint characterId, JobId jobId, uint releaseId, DbConnection? connectionIn = null);
+    HashSet<uint> GetSkillAugmentationReleasedElements(uint characterId, JobId jobId, DbConnection? connectionIn = null);
+
     #region Pawn craft progress
 
     bool ReplacePawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);

@@ -114,6 +114,11 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
             return Enabled;
         }
 
+        public virtual bool ShowInAdventureGuide(GameClient client)
+        {
+            return Enabled;
+        }
+
         public virtual void InitializeInstanceState(QuestState questState)
         {
         }

@@ -15,7 +15,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override PacketQueue Handle(GameClient client, C2SSkillLearnAbilityReq request)
         {
-            return Server.JobManager.UnlockAbility(Server.Database, client, client.Character, request.Job, request.AbilityId, request.AbilityLv);
+            var packets = new PacketQueue();
+
+            Server.Database.ExecuteInTransaction(connection =>
+            {
+                packets = Server.JobManager.UnlockAbility(client, client.Character, request.Job, request.AbilityId, request.AbilityLv, connection);
+            });
+
+            return packets;
         }
     }
 }

@@ -32880,5 +32880,370 @@ namespace Arrowgene.Ddon.Shared.Model
                 }
             }}
         };
+
+        public static readonly Dictionary<JobId, uint> Em4CustomSkills = new Dictionary<JobId, uint>()
+        {
+            [JobId.Fighter] = CustomSkillId.BravesRaid.ReleaseId(),
+            [JobId.Hunter] = CustomSkillId.DemonArrow.ReleaseId(),
+            [JobId.Priest] = CustomSkillId.QuickCharge.ReleaseId(),
+            [JobId.ShieldSage] = CustomSkillId.ForceAnchor.ReleaseId(),
+            [JobId.Seeker] = CustomSkillId.EasyKill.ReleaseId(),
+            [JobId.Sorcerer] = CustomSkillId.ProminentSphere.ReleaseId(),
+            [JobId.ElementArcher] = CustomSkillId.GambleDraw.ReleaseId(),
+            [JobId.Warrior] = CustomSkillId.AnnihilatorsWindSlash.ReleaseId(),
+        };
+
+        public static bool IsEm4Skill(JobId jobId, uint skillNo, uint skillLv)
+        {
+            if (!SkillData.Em4CustomSkills.ContainsKey(jobId))
+            {
+                return false;
+            }
+            return (SkillData.Em4CustomSkills[jobId] == skillNo) && (skillLv == 1);
+        }
+
+        public static readonly Dictionary<JobId, HashSet<uint>> S2BoCustomSkill = new Dictionary<JobId, HashSet<uint>>()
+        {
+            [JobId.Fighter] = new() { CustomSkillId.PierceSlash.ReleaseId(), CustomSkillId.FlowingShieldSpiral.ReleaseId() },
+            [JobId.Hunter] = new() { CustomSkillId.SkyBurstShot.ReleaseId(), CustomSkillId.CombinedPierceShot.ReleaseId() },
+            [JobId.Priest] = new() { CustomSkillId.SolaceRiser.ReleaseId(), CustomSkillId.BlastAddition.ReleaseId() },
+            [JobId.ShieldSage] = new() { CustomSkillId.StoneLight.ReleaseId(), CustomSkillId.ProtectionSwing.ReleaseId() },
+            [JobId.Seeker] = new() { CustomSkillId.ExplosiveFlameBlade.ReleaseId(), CustomSkillId.SoaringHawkSlash.ReleaseId() },
+            [JobId.Sorcerer] = new() { CustomSkillId.IciclePierce.ReleaseId(), CustomSkillId.LightningStake.ReleaseId() },
+            [JobId.ElementArcher] = new() { CustomSkillId.HealingFlash.ReleaseId(), CustomSkillId.TearingTentacleArrow.ReleaseId() },
+            [JobId.Warrior] = new() { CustomSkillId.GreatGougingFang.ReleaseId(), CustomSkillId.EarthquakeFang.ReleaseId() },
+            [JobId.Alchemist] = new() { CustomSkillId.AlchemicalBurst.ReleaseId(), CustomSkillId.DolusAeris.ReleaseId() },
+            [JobId.SpiritLancer] = new() { CustomSkillId.CureGlasta.ReleaseId(), CustomSkillId.ScriosGuard.ReleaseId() },
+            [JobId.HighScepter] = new() { CustomSkillId.EclipseBright.ReleaseId() },
+        };
+
+        public static  bool IsS2BoSkill(JobId jobId, uint skillNo, uint skillLv)
+        {
+            if (!SkillData.S2BoCustomSkill.ContainsKey(jobId))
+            {
+                return false;
+            }
+            return SkillData.S2BoCustomSkill[jobId].Contains(skillNo) && (skillLv == 1);
+        }
+
+        public static readonly Dictionary<JobId, HashSet<uint>> S2BoAugment = new Dictionary<JobId, HashSet<uint>>()
+        {
+            [JobId.Fighter] = new() {
+                (uint) AbilityId.OnslaughtSlayer,
+                (uint) AbilityId.DemolishingStrikeSlayer,
+                (uint) AbilityId.GougeEradicate,
+                (uint) AbilityId.CrushingBlow,
+                (uint) AbilityId.DireOnslaughtSlayer,
+                (uint) AbilityId.FirmShield,
+                (uint) AbilityId.OnslaughtCrusher,
+                (uint) AbilityId.DemolishingStrikeExterminator,
+                (uint) AbilityId.GougeCrusher,
+                (uint) AbilityId.Hardening,
+                (uint) AbilityId.DireOnslaughtCrusher,
+                (uint) AbilityId.PleasantThrust,
+            },
+            [JobId.Hunter] = new() {
+                (uint) AbilityId.ArcherySlayer,
+                (uint) AbilityId.ExplodingArrowFury,
+                (uint) AbilityId.ArrowheadStrikeFury,
+                (uint) AbilityId.RigidStance,
+                (uint) AbilityId.KeensightShotSlayer,
+                (uint) AbilityId.RescueAssistance,
+                (uint) AbilityId.ArcheryCrusher,
+                (uint) AbilityId.ExplodingArrowCrusher,
+                (uint) AbilityId.ArrowheadStrikeCrusher,
+                (uint) AbilityId.AugmentedSpirit,
+                (uint) AbilityId.KeensightCrusher,
+                (uint) AbilityId.ClimaxBow,
+            },
+            [JobId.Priest] = new() {
+                (uint) AbilityId.HealingChant,
+                (uint) AbilityId.BlastBitsSlayer,
+                (uint) AbilityId.SaintAuraSlayer,
+                (uint) AbilityId.AssistBoost,
+                (uint) AbilityId.ShockwaveSlayer,
+                (uint) AbilityId.Stagnation,
+                (uint) AbilityId.HealAuraEndurer,
+                (uint) AbilityId.BlastBitsCrusher,
+                (uint) AbilityId.HolyAuraSavage,
+                (uint) AbilityId.MagickalRush,
+                (uint) AbilityId.ShockwaveCrusher,
+                (uint) AbilityId.HardSpirit,
+            },
+            [JobId.ShieldSage] = new() {
+                (uint) AbilityId.ShieldbashSlayer,
+                (uint) AbilityId.WeaklightFury,
+                (uint) AbilityId.ForceBurstCrush,
+                (uint) AbilityId.ProtectedMend,
+                (uint) AbilityId.ShieldCounterSavage,
+                (uint) AbilityId.Attention,
+                (uint) AbilityId.ShieldBlowCrusher,
+                (uint) AbilityId.WeakLightCrusher,
+                (uint) AbilityId.ForceBurstSlayer,
+                (uint) AbilityId.ShieldCollapse,
+                (uint) AbilityId.ShieldSequenceCrusher,
+                (uint) AbilityId.PleasantSight,
+            },
+            [JobId.Seeker] = new() {
+                (uint) AbilityId.CarveSlayer,
+                (uint) AbilityId.ScarletKissesSlayer,
+                (uint) AbilityId.ScarletSlashesCrush,
+                (uint) AbilityId.EnduringSprint,
+                (uint) AbilityId.RoundhouseKickSlayer,
+                (uint) AbilityId.DeepAggression,
+                (uint) AbilityId.CarveCrusher,
+                (uint) AbilityId.ScarletKissesCrusher,
+                (uint) AbilityId.ScarletSlashesExterminator,
+                (uint) AbilityId.Stiffness,
+                (uint) AbilityId.RoundhouseKickCrusher,
+                (uint) AbilityId.PleasantRoll,
+            },
+            [JobId.Sorcerer] = new() {
+                (uint) AbilityId.MagickBoltSlayer,
+                (uint) AbilityId.MagickTrapCrush,
+                (uint) AbilityId.MagickCrackerSlayer,
+                (uint) AbilityId.EnduringLevitation,
+                (uint) AbilityId.MagickCrackerSmasher,
+                (uint) AbilityId.CollapsingStrength,
+                (uint) AbilityId.MagickBoltsCrusher,
+                (uint) AbilityId.MagickTrapDuration,
+                (uint) AbilityId.MagickCrackerSinger,
+                (uint) AbilityId.Reduction,
+                (uint) AbilityId.MagickTrapSinger,
+                (uint) AbilityId.PleasantDrift,
+            },
+            [JobId.ElementArcher] = new() {
+                (uint) AbilityId.SeekerSlayer,
+                (uint) AbilityId.AidArrowChant,
+                (uint) AbilityId.ForwardKickSlayer,
+                (uint) AbilityId.SteadyAdvance,
+                (uint) AbilityId.InvigoratingArrowsDuration,
+                (uint) AbilityId.DemonShield,
+                (uint) AbilityId.SeekerArrowsBlink,
+                (uint) AbilityId.AidArrowBlink,
+                (uint) AbilityId.FrontKickCrusher,
+                (uint) AbilityId.SalvationalMagick,
+                (uint) AbilityId.InvigorationArrowExpand,
+                (uint) AbilityId.CounterEye,
+            },
+            [JobId.Warrior] = new() {
+                (uint) AbilityId.HackSlayer,
+                (uint) AbilityId.InverseSlashCrusher,
+                (uint) AbilityId.SavageLashEradicate,
+                (uint) AbilityId.Brandish,
+                (uint) AbilityId.DevastateSlayer,
+                (uint) AbilityId.AttackCover,
+                (uint) AbilityId.HackCrusher,
+                (uint) AbilityId.InverseSlashExterminator,
+                (uint) AbilityId.SavageLashCrusher,
+                (uint) AbilityId.GreatGrasp,
+                (uint) AbilityId.DevastateCrusher,
+                (uint) AbilityId.ExcessGrudge,
+            },
+            [JobId.Alchemist] = new() {
+                (uint) AbilityId.AlchemicStrikeSlayer,
+                (uint) AbilityId.AlchemicEvadeSlayer,
+                (uint) AbilityId.ElixerSlayer,
+                (uint) AbilityId.EnduringVision,
+                (uint) AbilityId.AlchemicalRadiusSlayer,
+                (uint) AbilityId.Stubborn,
+                (uint) AbilityId.AlchemyCrusher,
+                (uint) AbilityId.AlchemicEvadeCrusher,
+                (uint) AbilityId.ElixirCrusher,
+                (uint) AbilityId.SkyAnnihilation,
+                (uint) AbilityId.AlchemicalRadiusCrusher,
+                (uint) AbilityId.DefenseAlchemy,
+            },
+            [JobId.SpiritLancer] = new() {
+                (uint) AbilityId.RushingSpearSlayer,
+                (uint) AbilityId.RisingSpearSlayer,
+                (uint) AbilityId.CrushingSpearSlayer,
+                (uint) AbilityId.EnhancedVitality,
+                (uint) AbilityId.SweepingSpearSlayer,
+                (uint) AbilityId.ElementalDefense,
+                (uint) AbilityId.RushingSpearDestroyer,
+                (uint) AbilityId.RisingSpearDestroyer,
+                (uint) AbilityId.CrushingSpearDestroyer,
+                (uint) AbilityId.GreatEnchantment,
+                (uint) AbilityId.SweepingSpearDestroyer,
+                (uint) AbilityId.SpiritHoard,
+            },
+            [JobId.HighScepter] = new() {
+                (uint) AbilityId.QuadrupleSlashSlayer,
+                (uint) AbilityId.ArcSlashSlayer,
+                (uint) AbilityId.SkySlashSlayer,
+                (uint) AbilityId.FallingSlashSlayer,
+                (uint) AbilityId.OrdinaryAttack,
+                (uint) AbilityId.Respiration,
+            }
+        };
+
+        public static bool IsS2BoAugment(JobId jobId, uint abilityNo, uint abilityLv)
+        {
+            if (!SkillData.S2BoAugment.ContainsKey(jobId))
+            {
+                return false;
+            }
+            return SkillData.S2BoAugment[jobId].Contains(abilityNo) && (abilityLv == 1);
+        }
+
+        public static bool IsS3HoSkill(JobId jobId, uint skillNo, uint skillLv)
+        {
+            if (!SkillData.S3HoSkill.ContainsKey(jobId))
+            {
+                return false;
+            }
+            return SkillData.S3HoSkill[jobId].Contains(skillNo) && (skillLv == 1);
+        }
+
+        public static readonly Dictionary<JobId, HashSet<uint>> S3HoSkill = new Dictionary<JobId, HashSet<uint>>()
+        {
+            [JobId.Fighter] = new()
+            {
+                CustomSkillId.TuskTossP.ReleaseId(),
+                CustomSkillId.TuskTossT.ReleaseId(),
+                CustomSkillId.CymbalAttackP.ReleaseId(),
+                CustomSkillId.CymbalAttackT.ReleaseId(),
+                CustomSkillId.SkywardLashP.ReleaseId(),
+                CustomSkillId.SkywardLashT.ReleaseId(),
+                CustomSkillId.DownthrustP.ReleaseId(),
+                CustomSkillId.DownthrustT.ReleaseId(),
+            },
+            [JobId.Hunter] = new()
+            {
+                CustomSkillId.ThreefoldArrowP.ReleaseId(),
+                CustomSkillId.ThreefoldArrowT.ReleaseId(),
+                CustomSkillId.WhirlingArrowP.ReleaseId(),
+                CustomSkillId.WhirlingArrowT.ReleaseId(),
+                CustomSkillId.FullBendP.ReleaseId(),
+                CustomSkillId.FullBendT.ReleaseId(),
+                CustomSkillId.ExplosiveArrowVolleyP.ReleaseId(),
+                CustomSkillId.ExplosiveArrowVolleyT.ReleaseId(),
+            },
+            [JobId.Priest] = new()
+            {
+                CustomSkillId.SolaceRiserP.ReleaseId(),
+                CustomSkillId.SolaceRiserT.ReleaseId(),
+                CustomSkillId.SeraphimFlapP.ReleaseId(),
+                CustomSkillId.SeraphimFlapT.ReleaseId(),
+                CustomSkillId.CuringSpotT.ReleaseId(),
+                CustomSkillId.CuringSpotP.ReleaseId(),
+                CustomSkillId.DefenseRiserP.ReleaseId(),
+                CustomSkillId.DefenseRiserT.ReleaseId(),
+            },
+            [JobId.ShieldSage] = new()
+            {
+                CustomSkillId.EarthShakeP.ReleaseId(),
+                CustomSkillId.EarthShakeT.ReleaseId(),
+                CustomSkillId.ForceShieldP.ReleaseId(),
+                CustomSkillId.ForceShieldT.ReleaseId(),
+                CustomSkillId.RampartRaidP.ReleaseId(),
+                CustomSkillId.RampartRaidT.ReleaseId(),
+                CustomSkillId.HolyWallP.ReleaseId(),
+                CustomSkillId.HolyWallT.ReleaseId(),
+            },
+            [JobId.Seeker] = new()
+            {
+                CustomSkillId.ExplosiveFlameBladeP.ReleaseId(),
+                CustomSkillId.ExplosiveFlameBladeT.ReleaseId(),
+                CustomSkillId.EasyKillP.ReleaseId(),
+                CustomSkillId.EasyKillT.ReleaseId(),
+                CustomSkillId.SteppingStoneP.ReleaseId(),
+                CustomSkillId.SteppingStoneT.ReleaseId(),
+                CustomSkillId.TossAndTriggerP.ReleaseId(),
+                CustomSkillId.TossAndTriggerT.ReleaseId(),
+            },
+            [JobId.Sorcerer] = new()
+            {
+                CustomSkillId.DarknessMistP.ReleaseId(),
+                CustomSkillId.DarknessMistT.ReleaseId(),
+                CustomSkillId.FulminationP.ReleaseId(),
+                CustomSkillId.FulminationT.ReleaseId(),
+                CustomSkillId.ComestionP.ReleaseId(),
+                CustomSkillId.ComestionT.ReleaseId(),
+                CustomSkillId.FrigorP.ReleaseId(),
+                CustomSkillId.FrigorT.ReleaseId(),
+            },
+            [JobId.ElementArcher] = new()
+            {
+                CustomSkillId.FlamingBowP.ReleaseId(),
+                CustomSkillId.FlamingBowT.ReleaseId(),
+                CustomSkillId.ExhaustingBowP.ReleaseId(),
+                CustomSkillId.ExhaustingBowT.ReleaseId(),
+                CustomSkillId.HealingFlashP.ReleaseId(),
+                CustomSkillId.HealingFlashT.ReleaseId(),
+                CustomSkillId.CripplingBowP.ReleaseId(),
+                CustomSkillId.CripplingBowT.ReleaseId(),
+            },
+            [JobId.Warrior] = new()
+            {
+                CustomSkillId.SavageLungeP.ReleaseId(),
+                CustomSkillId.SavageLungeT.ReleaseId(),
+                CustomSkillId.PommelStrikeP.ReleaseId(),
+                CustomSkillId.PommelStrikeT.ReleaseId(),
+                CustomSkillId.EscapeSlashP.ReleaseId(),
+                CustomSkillId.EscapeSlashT.ReleaseId(),
+                CustomSkillId.SparkSlashP.ReleaseId(),
+                CustomSkillId.SparkSlashT.ReleaseId(),
+            },
+            [JobId.Alchemist] = new()
+            {
+                CustomSkillId.PileBinderP.ReleaseId(),
+                CustomSkillId.PileBinderT.ReleaseId(),
+                CustomSkillId.AlmaPillarP.ReleaseId(),
+                CustomSkillId.AlmaPillarT.ReleaseId(),
+                CustomSkillId.AlmaWaveP.ReleaseId(),
+                CustomSkillId.AlmaWaveT.ReleaseId(),
+                CustomSkillId.RexElementaP.ReleaseId(),
+                CustomSkillId.RexElementaT.ReleaseId(),
+            },
+            [JobId.SpiritLancer] = new()
+            {
+                CustomSkillId.AuromFangP.ReleaseId(),
+                CustomSkillId.AuromFangT.ReleaseId(),
+                CustomSkillId.WallGlastaP.ReleaseId(),
+                CustomSkillId.WallGlastaT.ReleaseId(),
+                CustomSkillId.CorrSpikeP.ReleaseId(),
+                CustomSkillId.CorrSpikeT.ReleaseId(),
+                CustomSkillId.CureGlastaP.ReleaseId(),
+                CustomSkillId.CureGlastaT.ReleaseId(),
+            },
+            [JobId.HighScepter] = new()
+            {
+                CustomSkillId.PhantomEdge.ReleaseId()
+            }
+        };
+
+        public static bool IsS3HoAugment(JobId jobId, uint abilityNo, uint abilityLv)
+        {
+            if (!SkillData.S3HoAugment.ContainsKey(jobId))
+            {
+                return false;
+            }
+            return SkillData.S3HoAugment[jobId].Contains(abilityNo) && (abilityLv == 1);
+        }
+
+        public static readonly Dictionary<JobId, HashSet<uint>> S3HoAugment = new Dictionary<JobId, HashSet<uint>>()
+        {
+            [JobId.HighScepter] = new()
+            {
+                (uint) AbilityId.QuadrupleSlashAbsorption,
+                (uint) AbilityId.ArcSlashDestroyer,
+                (uint) AbilityId.SkySlashAbsorption,
+                (uint) AbilityId.FallingSlashAbsorption,
+                (uint) AbilityId.RushAttack,
+                (uint) AbilityId.FlowAttack,
+            }
+        };
+
+        public static bool IsUnlockableSkill(JobId jobId, uint skillNo, uint skillLv)
+        {
+            return SkillData.IsS2BoSkill(jobId, skillNo, skillLv) || SkillData.IsS3HoSkill(jobId, skillNo, skillLv);
+        }
+
+        public static bool IsUnlockableAbility(JobId jobId, uint abilityNo, uint abilityLv)
+        {
+            return SkillData.IsS2BoSkill(jobId, abilityNo, abilityLv) || SkillData.IsS3HoSkill(jobId, abilityNo, abilityLv);
+        }
     }
 }

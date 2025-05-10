@@ -27,6 +27,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var questScheduleIds = QuestManager.GetQuestsByAdventureGuideCategory(QuestAdventureGuideCategory.CollaborationOrSeasonalQuest);
             questScheduleIds.UnionWith(QuestManager.GetQuestsByAdventureGuideCategory(QuestAdventureGuideCategory.WildHunt));
             questScheduleIds.UnionWith(QuestManager.GetQuestsByAdventureGuideCategory(QuestAdventureGuideCategory.AreaTrialOrMission));
+            questScheduleIds.UnionWith(QuestManager.GetQuestsByAdventureGuideCategory(QuestAdventureGuideCategory.VocationQuest));
             questScheduleIds.UnionWith(QuestManager.GetQuestsByAdventureGuideCategory(QuestAdventureGuideCategory.QuestUsefulForAdventure));
             questScheduleIds.UnionWith(QuestManager.GetActiveQuestScheduleIds(client));
 
@@ -51,7 +52,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 foreach (var questScheduleId in matches)
                 {
                     var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
-                    if (quest == null || !quest.IsActive(client) || client.Character.CompletedQuests.ContainsKey(quest.QuestId))
+                    if (quest == null || !quest.ShowInGuide(client) || client.Character.CompletedQuests.ContainsKey(quest.QuestId))
                     {
                         continue;
                     }
@@ -77,7 +78,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             (quest.BaseLevel > client.Character.ActiveCharacterJobData.Lv) &&
                             (step == 0))
                     {
-                        // Don't reccomend quests that most likely can't be completed by the player
+                        // Don't recommend quests that most likely can't be completed by the player
                         // at their current level
                         continue;
                     }

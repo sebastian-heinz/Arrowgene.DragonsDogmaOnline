@@ -456,13 +456,13 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
 
         public static List<CDataQuestCommand> AddCheckCmdWorldManageQuestFlagOn(this List<CDataQuestCommand> checkCommands, QuestId questId, uint flagNo)
         {
-            checkCommands.Add(QuestManager.CheckCommand.QstFlagOn((int)questId, (int)flagNo));
+            checkCommands.Add(QuestManager.CheckCommand.WorldManageQuestFlagOn((int)questId, (int)flagNo));
             return checkCommands;
         }
 
         public static List<CDataQuestCommand> AddCheckCmdWorldManageQuestFlagOff(this List<CDataQuestCommand> checkCommands, QuestId questId, uint flagNo)
         {
-            checkCommands.Add(QuestManager.CheckCommand.QstFlagOn((int)questId, (int)flagNo));
+            checkCommands.Add(QuestManager.CheckCommand.WorldManageQuestFlagOff((int)questId, (int)flagNo));
             return checkCommands;
         }
 
@@ -583,6 +583,24 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
         public static List<CDataQuestCommand> AddCheckCmdIsOneOffGather(this List<CDataQuestCommand> checkCommands)
         {
             checkCommands.Add(QuestManager.CheckCommand.IsOneOffGather());
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCommandIsTutorialQuestOrder(this List<CDataQuestCommand> checkCommands, QuestId questId)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsTutorialQuestOrder((int) questId));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCommandQstFlagOn(this List<CDataQuestCommand> checkCommands, QuestId questId, int flagNo)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.QstFlagOn((int) questId, flagNo));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCommandQstFlagOff(this List<CDataQuestCommand> checkCommands, QuestId questId, int flagNo)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.QstFlagOff((int)questId, flagNo));
             return checkCommands;
         }
     }

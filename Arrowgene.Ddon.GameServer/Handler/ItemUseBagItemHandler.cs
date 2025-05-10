@@ -43,11 +43,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 UpdateType = ItemNoticeType.UseBag
             };
 
-            if (Server.ItemManager.IsSecretAbilityItem(item.ItemId))
-            {
-                Server.JobManager.UnlockSecretAbility(client, client.Character, (AbilityId)Server.ItemManager.GetAbilityId(item.ItemId));
-            }
-
             if (Server.ScriptManager.GameItemModule.HasItem(item.ItemId))
             {
                 Server.ScriptManager.GameItemModule.GetItemInterface(item.ItemId)?.OnUse(client);
@@ -99,6 +94,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             client.Enqueue(ntc, queue);
+
+            if (Server.ItemManager.IsSecretAbilityItem(item.ItemId))
+            {
+                queue.Enqueue(client, Server.JobManager.UnlockSecretAbility(client, client.Character, (AbilityId)Server.ItemManager.GetAbilityId(item.ItemId)));
+            }
 
             // Lantern start NTC
             if (item.ItemId == (uint)ItemId.LanternKindling && EquipManager.HasLantern(client.Character))

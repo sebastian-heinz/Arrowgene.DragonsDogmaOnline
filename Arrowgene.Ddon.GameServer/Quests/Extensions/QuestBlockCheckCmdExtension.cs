@@ -652,5 +652,12 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             questBlock.CheckCommands[commandListIndex].AddCheckCmdIsOneOffGather();
             return questBlock;
         }
+
+        public static QuestBlock AddCheckCommandIsTutorialQuestOrder(this QuestBlock questBlock, QuestId questId, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCommandIsTutorialQuestOrder(questId);
+            return questBlock;
+        }
     }
 }
