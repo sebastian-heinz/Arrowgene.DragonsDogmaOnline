@@ -40,5 +40,15 @@ namespace Arrowgene.Ddon.Shared.Model
                 AcquirementParamId = 0
             };
         }
+
+        public CDataSkillLevelBaseParam AsCDataSkillLevelBaseParam()
+        {
+            return new CDataSkillLevelBaseParam()
+            {
+                Job = this.Job,
+                SkillLv = this.SkillLv,
+                SkillNo = this.SkillId,
+            };
+        }
     }
 }

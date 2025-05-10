@@ -88,6 +88,7 @@ namespace Arrowgene.Ddon.GameServer
             PartnerPawnManager = new PartnerPawnManager(this);
             AchievementManager = new AchievementManager(this);
             JobMasterManager = new JobMasterManager(this);
+            JobOrbUnlockManager = new JobOrbUnlockManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(this);
@@ -132,6 +133,8 @@ namespace Arrowgene.Ddon.GameServer
         public PartnerPawnManager PartnerPawnManager { get; }
         public AchievementManager AchievementManager { get; }
         public JobMasterManager JobMasterManager { get; private set; }
+        public JobOrbUnlockManager JobOrbUnlockManager { get; }
+
         public ChatLogHandler ChatLogHandler { get; }
 
         public List<CDataStageInfo> StageList { get; }
@@ -448,6 +451,7 @@ namespace Arrowgene.Ddon.GameServer
 
             AddHandler(new JobOrbTreeGetJobOrbTreeStatusListHandler(this));
             AddHandler(new JobOrbTreeGetJobOrbTreeGetAllJobOrbElementListHandler(this));
+            AddHandler(new JobOrbTreeReleaseJobOrbElementHandler(this));
 
             AddHandler(new LoadingInfoLoadingGetInfoHandler(this));
 

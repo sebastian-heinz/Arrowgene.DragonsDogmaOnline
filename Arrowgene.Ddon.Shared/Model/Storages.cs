@@ -367,7 +367,7 @@ namespace Arrowgene.Ddon.Shared.Model
         StorageChestDrawer2 = 0x9,
         StorageChestDrawer3 = 0xA,
         Unk11 = 0xB,
-        Unk12 = 0xC,
+        Unk12 = 0xC, 
         ItemPost = 0xD,
         CharacterEquipment = 0xE,
         PawnEquipment = 0xF,

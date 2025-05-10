@@ -28,6 +28,10 @@ namespace Arrowgene.Ddon.Shared.Model
                 .ToDictionary(pair => pair.jobId, pair => pair.Item2);
             OnlineStatus = OnlineStatus.Offline;
             ExtendedParams = new CDataOrbGainExtendParam();
+            ExtendedJobParams = new Dictionary<JobId, CDataOrbGainExtendParam>();
+            ReleasedExtendedJobParams = new Dictionary<JobId, HashSet<uint>>();
+            UnlockedCustomSkills = new Dictionary<JobId, HashSet<uint>>();
+            UnlockedAbilities = new Dictionary<JobId, HashSet<uint>>();
         }
 
         public CDataCharacterJobData? ActiveCharacterJobData
@@ -53,6 +57,11 @@ namespace Arrowgene.Ddon.Shared.Model
         public Dictionary<JobId, List<Ability?>> EquippedAbilitiesDictionary { get; set; }
         public OnlineStatus OnlineStatus { get; set; }
         public CDataOrbGainExtendParam ExtendedParams { get; set; }
+        public Dictionary<JobId, CDataOrbGainExtendParam> ExtendedJobParams { get; set; }
+        public Dictionary<JobId, HashSet<uint>> ReleasedExtendedJobParams {get; set;}
+        public Dictionary<JobId, HashSet<uint>> UnlockedCustomSkills { get; set; }
+        public Dictionary<JobId, HashSet<uint>> UnlockedAbilities { get; set; }
+
         public List<CDataReleaseOrbElement> OrbRelease { get; set; }
 
         /// TODO combine into a location class ?

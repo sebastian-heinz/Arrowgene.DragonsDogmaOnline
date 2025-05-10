@@ -191,6 +191,16 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return Enabled && additionalReqs;
         }
 
+        public virtual bool ShowInGuide(GameClient client)
+        {
+            bool additionalReqs = true;
+            if (BackingObject != null)
+            {
+                additionalReqs = BackingObject.ShowInAdventureGuide(client);
+            }
+            return IsActive(client) && additionalReqs;
+        }
+
         public virtual void InitializeInstanceState(QuestState questState)
         {
             if (BackingObject != null)

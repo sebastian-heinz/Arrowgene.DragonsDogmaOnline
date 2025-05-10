@@ -780,6 +780,16 @@ namespace Arrowgene.Ddon.GameServer.Quests
         {
             PurgeWorkForQuest(quest.QuestScheduleId);
         }
+
+        public bool IsQuestAccepted(uint questScheduleId)
+        {
+            return IsQuestActive(questScheduleId) && GetQuestState(questScheduleId).Step >= 1;
+        }
+
+        public bool IsQuestAccepted(QuestId questId)
+        {
+            return IsQuestAccepted(QuestManager.GetQuestByQuestId(questId).QuestScheduleId);
+        }
     }
 
     public class SharedQuestStateManager : QuestStateManager

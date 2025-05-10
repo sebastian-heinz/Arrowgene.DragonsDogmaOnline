@@ -15,6 +15,7 @@ namespace Arrowgene.Ddon.Shared.Model
         PtMember = 0xA,
         Lost = 0xB,
         ServerMove = 0xC,
-        Num = 0xD
+        PtPawn = 0xD,
+        Num = 0xE
     }
 }

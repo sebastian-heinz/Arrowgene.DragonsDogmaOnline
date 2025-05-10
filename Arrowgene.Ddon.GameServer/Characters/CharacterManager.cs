@@ -28,11 +28,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public static readonly uint MAX_PLAYER_HP = uint.MaxValue;
         public static readonly uint MAX_PLAYER_STAMINA = uint.MaxValue;
 
-        private readonly DdonGameServer _Server;
+        private readonly DdonGameServer Server;
 
         public CharacterManager(DdonGameServer server)
         {
-            _Server = server;
+            Server = server;
         }
 
         public Character SelectCharacter(GameClient client, uint characterId, DbConnection? connectionIn = null)
@@ -46,21 +46,21 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public Character SelectCharacter(uint characterId, bool fetchPawns = true, DbConnection? connectionIn = null)
         {
-            return _Server.Database.ExecuteQuerySafe(connectionIn, connectionIn =>
+            return Server.Database.ExecuteQuerySafe(connectionIn, connectionIn =>
             {
-                Character character = _Server.Database.SelectCharacter(characterId, connectionIn);
+                Character character = Server.Database.SelectCharacter(characterId, connectionIn);
                 if (character == null)
                 {
                     return null;
                 }
 
-                character.Server = _Server.AssetRepository.ServerList.Where(server => server.Id == _Server.Id).Single().ToCDataGameServerListInfo();
+                character.Server = Server.AssetRepository.ServerList.Where(server => server.Id == Server.Id).Single().ToCDataGameServerListInfo();
                 character.Equipment = character.Storage.GetCharacterEquipment();
 
                 character.ContentsReleased = GetContentsReleased(character, connectionIn);
                 character.WorldManageUnlocks = GetWorldManageState(character, connectionIn);
 
-                character.ExtendedParams = _Server.Database.SelectOrbGainExtendParam(character.CommonId, connectionIn);
+                character.ExtendedParams = Server.Database.SelectOrbGainExtendParam(character.CommonId, connectionIn);
                 if (character.ExtendedParams == null)
                 {
                     // Old DB is in use and new table not populated with required data for character
@@ -68,17 +68,20 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     return null;
                 }
 
-                character.EpitaphRoadState.UnlockedContent = _Server.Database.GetEpitaphRoadUnlocks(character.CharacterId, connectionIn);
-                if (_Server.GameSettings.GameServerSettings.EnableEpitaphWeeklyRewards)
+                character.ReleasedExtendedJobParams = Server.JobOrbUnlockManager.GetReleasedElements(character, connectionIn);
+                Server.JobOrbUnlockManager.EvaluateJobOrbTreeUnlocks(character);
+
+                character.EpitaphRoadState.UnlockedContent = Server.Database.GetEpitaphRoadUnlocks(character.CharacterId, connectionIn);
+                if (Server.GameSettings.GameServerSettings.EnableEpitaphWeeklyRewards)
                 {
-                    character.EpitaphRoadState.WeeklyRewardsClaimed = _Server.Database.GetEpitaphClaimedWeeklyRewards(character.CharacterId, connectionIn);
+                    character.EpitaphRoadState.WeeklyRewardsClaimed = Server.Database.GetEpitaphClaimedWeeklyRewards(character.CharacterId, connectionIn);
                 }
 
                 foreach (var jobId in Enum.GetValues(typeof(JobId)).Cast<JobId>())
                 {
-                    character.JobMasterReleasedElements[jobId] = _Server.Database.GetJobMasterReleasedElements(character.CharacterId, jobId, connectionIn);
+                    character.JobMasterReleasedElements[jobId] = Server.Database.GetJobMasterReleasedElements(character.CharacterId, jobId, connectionIn);
 
-                    character.JobMasterActiveOrders[jobId] = _Server.JobMasterManager.GetJobMasterActiveOrders(character, jobId, connectionIn);
+                    character.JobMasterActiveOrders[jobId] = Server.JobMasterManager.GetJobMasterActiveOrders(character, jobId, connectionIn);
                 }
 
                 // Calculate everything upfront so we don't need to calculate it every time in vocation select/upgrade handler.
@@ -117,7 +120,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             // Find quests being resumed which have contents released mid quest
-            var allQuestsInProgress = _Server.Database.GetQuestProgressByType(character.CommonId, QuestType.All, connectionIn)
+            var allQuestsInProgress = Server.Database.GetQuestProgressByType(character.CommonId, QuestType.All, connectionIn)
                 .Where(x => x.QuestType == QuestType.Main || x.QuestType == QuestType.Tutorial);
             foreach (var progess in allQuestsInProgress)
             {
@@ -162,12 +165,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private bool HasRequiredTraining(JobId jobId, ReleaseType releaseType, uint releaseId, uint releaseLevel)
         {
-            if (!_Server.AssetRepository.JobMasterAsset.JobOrders[jobId][releaseType].ContainsKey(releaseId))
+            if (!Server.AssetRepository.JobMasterAsset.JobOrders[jobId][releaseType].ContainsKey(releaseId))
             {
                 return false;
             }
 
-            return _Server.AssetRepository.JobMasterAsset.JobOrders[jobId][releaseType][releaseId]
+            return Server.AssetRepository.JobMasterAsset.JobOrders[jobId][releaseType][releaseId]
                 .Where(x => x.ReleaseType == releaseType)
                 .Where(x => x.ReleaseLv == releaseLevel)
                 .Where(x => x.ReleaseId == releaseId)
@@ -198,14 +201,19 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     foreach (var abilityLevel in ability.Params)
                     {
                         bool isRelease;
-                        if (!HasRequiredTraining(jobId, ReleaseType.Augment, ability.AbilityNo, abilityLevel.Lv))
+                        if (!HasRequiredTraining(jobId, ReleaseType.Augment, ability.AbilityNo, abilityLevel.Lv) &&
+                            !SkillData.IsUnlockableAbility(jobId, ability.AbilityNo, abilityLevel.Lv))
                         {
                             // The skill level has no unlock requirements
                             isRelease = true;
                         }
+                        else if (SkillData.IsUnlockableAbility(ability.Job, ability.AbilityNo, abilityLevel.Lv))
+                        {
+                            isRelease = character.UnlockedAbilities[ability.Job].Contains(ability.AbilityNo);
+                        }
                         else
                         {
-                            // The skill level has an unlock requirement, so see if we unlocked it
+                            // The augment level has a job training unlock requirement, so let's see if we unlocked it
                             isRelease = character.JobMasterReleasedElements[jobId]
                                 .Where(x => x.ReleaseType == ReleaseType.Augment)
                                 .Where(x => x.ReleaseLv == abilityLevel.Lv)
@@ -258,17 +266,28 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     foreach (var skillLevel in skill.Params)
                     {
                         bool isRelease;
-                        if (!HasRequiredTraining(jobId, ReleaseType.CustomSkill, skill.SkillNo, skillLevel.Lv))
+                        if (!HasRequiredTraining(jobId, ReleaseType.CustomSkill, skill.SkillNo, skillLevel.Lv) &&
+                            !SkillData.IsEm4Skill(jobId, skill.SkillNo, skillLevel.Lv) &&
+                            !SkillData.IsUnlockableSkill(jobId, skill.SkillNo, skillLevel.Lv))
                         {
                             // The skill level has no unlock requirements
                             isRelease = true;
                         }
+                        else if (SkillData.Em4CustomSkills.ContainsKey(jobId) && SkillData.IsEm4Skill(jobId, skill.SkillNo, skillLevel.Lv))
+                        {
+                            // The skill has an unlock requirement on EM4
+                            isRelease = character.HasQuestCompleted(QuestId.TheShiningGate);
+                        }
+                        else if (SkillData.IsUnlockableSkill(skill.Job, skill.SkillNo, skillLevel.Lv))
+                        {
+                            isRelease = character.UnlockedCustomSkills[skill.Job].Contains(skill.SkillNo);
+                        }
                         else
                         {
-                            // The skill level has an unlock requirement, so see if we unlocked it
+                            // The skill level has a job training unlock requirement, so let's see if we unlocked it
                             isRelease = character.JobMasterReleasedElements[jobId]
                                 .Where(x => x.ReleaseType == ReleaseType.CustomSkill)
-                                .Where(x => x.ReleaseLv == skillLevel.Lv) 
+                                .Where(x => x.ReleaseLv == skillLevel.Lv)
                                 .Where(x => x.ReleaseId == skill.SkillNo)
                                 .Any();
                         }
@@ -296,14 +315,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private void SelectPawns(Character character, DbConnection? connectionIn = null)
         {
-            character.Pawns = _Server.Database.SelectPawnsByCharacterId(character.ContentCharacterId, connectionIn);
+            character.Pawns = Server.Database.SelectPawnsByCharacterId(character.ContentCharacterId, connectionIn);
 
             for (int i = 0; i < character.Pawns.Count; i++)
             {
                 Pawn pawn = character.Pawns[i];
                 pawn.Server = character.Server;
                 pawn.Equipment = character.Storage.GetPawnEquipment(i);
-                pawn.ExtendedParams = _Server.Database.SelectOrbGainExtendParam(pawn.CommonId, connectionIn);
+                pawn.ExtendedParams = Server.Database.SelectOrbGainExtendParam(pawn.CommonId, connectionIn);
                 if (pawn.ExtendedParams == null)
                 {
                     // Old DB is in use and new table not populated with required data for character
@@ -325,7 +344,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             });
 
             // TODO: Is there a reduced set of clients we can send this to?
-            foreach (var memberClient in _Server.ClientLookup.GetAll())
+            foreach (var memberClient in Server.ClientLookup.GetAll())
             {
                 memberClient.Send(charUpdateNtc);
             }
@@ -356,6 +375,24 @@ namespace Arrowgene.Ddon.GameServer.Characters
             character.StatusInfo.GainMagicDefense = ExtendedParams.MagicDefence;
             character.StatusInfo.GainStamina = ExtendedParams.StaminaMax;
             character.StatusInfo.GainHP = ExtendedParams.HpMax;
+
+            if (character is Character)
+            {
+                /**
+                 * For player characters, they can earn additional status from the S2 and S3 BO/HO orb trees.
+                 * The stat boosts rewarded for this mechanism rewards both stats for all jobs and stats for
+                 * a specific job only. We abuse JobId.None to store the stats for all jobs.
+                 */
+                JobId jobId = character.ActiveCharacterJobData.Job;
+                var extendedParams = character.ExtendedJobParams;
+
+                character.StatusInfo.GainAttack += (uint)(extendedParams[JobId.None].Attack + extendedParams[jobId].Attack);
+                character.StatusInfo.GainDefense += (uint)(extendedParams[JobId.None].Defence + extendedParams[jobId].Defence);
+                character.StatusInfo.GainMagicAttack += (uint)(extendedParams[JobId.None].MagicAttack + extendedParams[jobId].MagicAttack);
+                character.StatusInfo.GainMagicDefense += (uint)(extendedParams[JobId.None].MagicDefence + extendedParams[jobId].MagicDefence);
+                character.StatusInfo.GainStamina += (uint)(extendedParams[JobId.None].StaminaMax + extendedParams[jobId].StaminaMax);
+                character.StatusInfo.GainHP += (uint)(extendedParams[JobId.None].HpMax + extendedParams[jobId].HpMax);
+            }
 
             /**
              * Seems when the game first loads, the game wants MaxHP to always be 760
@@ -389,7 +426,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public void CleanupOnExit(GameClient client)
         {
             // Cancel any pending timers
-            _Server.PartnerPawnManager.HandleLeaveFromParty(client);
+            Server.PartnerPawnManager.HandleLeaveFromParty(client);
 
             // Update player health in the DB
             UpdateDatabaseOnExit(client.Character);
@@ -408,7 +445,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return;
             }
 
-            _Server.Database.UpdateStatusInfo(character);
+            Server.Database.UpdateStatusInfo(character);
 
             foreach (var pawn in character.Pawns)
             {
@@ -416,7 +453,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 pawn.GreenHp = CharacterManager.BASE_HEALTH;
                 pawn.WhiteHp = CharacterManager.BASE_HEALTH;
 
-                _Server.Database.UpdateStatusInfo(pawn);
+                Server.Database.UpdateStatusInfo(pawn);
             }
         }
 
@@ -475,6 +512,28 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return queue;
+        }
+
+        public void UnlockCustomSkill(Character character, JobId jobId, uint releaseId, uint releaseLevel)
+        {
+            var acquireableSkill = character.AcquirableSkills[jobId]
+                .Where(x => x.SkillNo == releaseId)
+                .SelectMany(x => x.Params)
+                .Where(x => x.Lv == releaseLevel)
+                .FirstOrDefault() ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_PARAM_NOT_FOUND, $"Failed to locate the custom skill to unlock {jobId}:{releaseId}:{releaseLevel}");
+            acquireableSkill.IsRelease = true;
+            character.UnlockedCustomSkills[jobId].Add(releaseId);
+        }
+
+        public void UnlockAbility(Character character, JobId jobId, uint releaseId, uint releaseLevel)
+        {
+            var acquireableAbility = character.AcquirableAbilities[jobId]
+                .Where(x => x.AbilityNo == releaseId)
+                .SelectMany(x => x.Params)
+                .Where(x => x.Lv == releaseLevel)
+                .FirstOrDefault() ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_SKILL_PARAM_NOT_FOUND, $"Failed to locate the augment to unlock {jobId}:{releaseId}:{releaseLevel}");
+            acquireableAbility.IsRelease = true;
+            character.UnlockedAbilities[jobId].Add(releaseId);
         }
     }
 }

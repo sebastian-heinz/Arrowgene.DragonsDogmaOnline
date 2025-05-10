@@ -605,6 +605,9 @@ public abstract class SqlDb : IDatabase
 
     public abstract bool UpdateCompletedQuest(uint characterCommonId, QuestId questId, QuestType questType, uint count = 1, DbConnection? connectionIn = null);
 
+    public abstract bool InsertSkillAugmentationReleasedElement(uint characterId, JobId jobId, uint releaseId, DbConnection? connectionIn = null);
+    public abstract HashSet<uint> GetSkillAugmentationReleasedElements(uint characterId, JobId jobId, DbConnection? connectionIn = null);
+
     protected virtual DbCommand Command(string query, DbConnection connection)
     {
         throw new NotImplementedException("This is driver-dependent and must be implemented.");

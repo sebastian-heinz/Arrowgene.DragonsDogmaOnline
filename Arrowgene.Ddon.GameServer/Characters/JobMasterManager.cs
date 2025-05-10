@@ -146,21 +146,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 // Update existing skill
                 if (completedOrder.ReleaseType == ReleaseType.CustomSkill)
                 {
-                    var acquireableSkill = client.Character.AcquirableSkills[jobId]
-                        .Where(x => x.SkillNo == releasedElement.ReleaseId)
-                        .SelectMany(x => x.Params)
-                        .Where(x => x.Lv == releasedElement.ReleaseLv)
-                        .FirstOrDefault();
-                    acquireableSkill.IsRelease = true;
+                    Server.CharacterManager.UnlockCustomSkill(client.Character, jobId, releasedElement.ReleaseId, releasedElement.ReleaseLv);
                 }
                 else if (completedOrder.ReleaseType == ReleaseType.Augment)
                 {
-                    var acquireableSkill = client.Character.AcquirableAbilities[jobId]
-                        .Where(x => x.AbilityNo == releasedElement.ReleaseId)
-                        .SelectMany(x => x.Params)
-                        .Where(x => x.Lv == releasedElement.ReleaseLv)
-                        .FirstOrDefault();
-                    acquireableSkill.IsRelease = true;
+                    Server.CharacterManager.UnlockAbility(client.Character, jobId, releasedElement.ReleaseId, releasedElement.ReleaseLv);
                 }
                 else
                 {

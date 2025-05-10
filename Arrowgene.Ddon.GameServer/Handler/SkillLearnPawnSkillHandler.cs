@@ -17,8 +17,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override PacketQueue Handle(GameClient client, C2SSkillLearnPawnSkillReq request)
         {
+            var packets = new PacketQueue();
+
             Pawn pawn = client.Character.PawnById(request.PawnId, PawnType.Main);
-            return Server.JobManager.UnlockSkill(Server.Database, client, pawn, request.Job, request.SkillId, request.SkillLv);
+            Server.Database.ExecuteInTransaction(connection =>
+            {
+                packets = Server.JobManager.UnlockSkill(client, pawn, request.Job, request.SkillId, request.SkillLv, connection);
+            });
+
+            return packets;
         }
     }
 }
