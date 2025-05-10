@@ -18,7 +18,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CCharacterEditUpdatePawnEditParamExRes Handle(GameClient client, C2SCharacterEditUpdatePawnEditParamExReq packet)
         {
-            CharacterEditGetShopPriceHandler.CheckPrice(packet.UpdateType, packet.EditPrice.PointType, packet.EditPrice.Value);
+            CharacterEditGetShopPriceHandler.CheckPrice(Server, packet.UpdateType, packet.EditPrice.PointType, packet.EditPrice.Value);
 
             bool walletUpdate = Server.WalletManager.RemoveFromWalletNtc(client, client.Character, packet.EditPrice.PointType, packet.EditPrice.Value);
             if (!walletUpdate)
