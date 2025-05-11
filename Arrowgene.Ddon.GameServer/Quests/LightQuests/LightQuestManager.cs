@@ -2,16 +2,13 @@ using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Asset;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
+using System.Data.Common;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
 {
@@ -20,11 +17,6 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(LightQuestManager));
 
         private readonly DdonGameServer Server;
-
-        private readonly Dictionary<QuestAreaId, LightQuestAreaHuntSummary> EnemySummaries = Enum.GetValues<QuestAreaId>().ToDictionary(x => x, x => new LightQuestAreaHuntSummary(x));
-        private readonly Dictionary<QuestAreaId, LightQuestAreaDeliverySummary> ItemSummaries = Enum.GetValues<QuestAreaId>().ToDictionary(x => x, x => new LightQuestAreaDeliverySummary(x));
-
-        private readonly HashSet<uint> DeliverableItems;
 
         /// <summary>
         /// Scales the likelihood of rolling delivery quests for materials that drop rather than are gathered.
@@ -35,6 +27,13 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
         /// Attempts to generate a quest that meets requirements on min/max levels. Will warn when exceeded.
         /// </summary>
         private static readonly int GENERATOR_ATTEMPTS_PER_QUEST = 20;
+
+        private static readonly uint MINIMUM_SCHEDULE_ID = 40000000;
+        private static readonly uint MAXIMUM_SCHEDULE_ID = 49999999;
+
+        private uint CURRENT_SCHEDULE_ID = MINIMUM_SCHEDULE_ID;
+
+        private static readonly TimeSpan BOARD_QUEST_DURATION = TimeSpan.FromMinutes(3); //TimeSpan.FromDays(1);
 
         public LightQuestManager(DdonGameServer server)
         {
@@ -51,139 +50,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
             }
         }
 
-        private static HashSet<uint> ParseGatherableItems(DdonGameServer server)
-        {
-            var craftableItems = server.AssetRepository.CraftingRecipesAsset.SelectMany(x => x.RecipeList).Select(x => x.ItemID).ToHashSet();
-            return server.AssetRepository.ClientItemInfos.Values.Where(x => DeliverableSubCategories.Contains(x.SubCategory ?? 0) && !craftableItems.Contains(x.ItemId)).Select(x => x.ItemId).ToHashSet();
-        }
-
-        public void ParseStagesByQuestAreaId()
-        {
-            foreach (var (stage, enemies) in Server.AssetRepository.EnemySpawnAsset.Enemies)
-            {
-                StageInfo stageInfo = Stage.StageInfoFromStageLayoutId(stage);
-                QuestAreaId areaId = stageInfo.AreaId;
-
-                if (areaId == QuestAreaId.None)
-                {
-                    // This skips Lestania as well as several debug stages.
-                    continue;
-                }
-                
-                if (SpecialStageIds.Contains(stage.Id))
-                {
-                    // Skips certain quest stages that really shouldn't have regular spawns anyways.
-                    continue;
-                }
-
-                var (huntSummary, deliverySummary) = GetSummary(areaId);
-
-                foreach (var enemy in enemies)
-                {
-                    HandleEnemy(enemy, huntSummary, deliverySummary);
-                }
-            }
-
-            foreach (var ((stage, group), items) in Server.AssetRepository.GatheringItems)
-            {
-                StageInfo stageInfo = Stage.StageInfoFromStageLayoutId(stage);
-                QuestAreaId areaId = stageInfo.AreaId;
-
-                if (areaId == QuestAreaId.None)
-                {
-                    // This skips Lestania as well as several debug stages.
-                    continue;
-                }
-
-                if (SpecialStageIds.Contains(stage.Id))
-                {
-                    // Skips certain quest stages that really shouldn't have regular spawns anyways.
-                    continue;
-                }
-
-                var (huntSummary, deliverySummary) = GetSummary(areaId);
-
-                foreach (var item in items)
-                {
-                    if (DeliverableItems.Contains((uint)item.ItemId))
-                    {
-                        deliverySummary.AddItem(item);
-                    }
-                }
-            }
-        }
-
-        public void ParseWorldQuestEnemies()
-        {
-            var quests = QuestManager.GetQuestsByType(QuestType.World);
-            foreach (var quest in quests)
-            {
-                var worldQuest = QuestManager.GetQuestByScheduleId(quest);
-                foreach (var enemyGroup in worldQuest.EnemyGroups.Values)
-                {
-                    // Enemies are assigned boards based on where they're located, not what area the world quest may or may not be associated with.
-                    var (huntSummary, deliverySummary) = GetSummary(enemyGroup.StageLayoutId);
-                        
-                    foreach (var enemy in enemyGroup.Enemies)
-                    {
-                        HandleEnemy(enemy, huntSummary, deliverySummary);
-                    }
-                }
-            }
-        }
-
-        public void ParseLestaniaSpots()
-        {
-            // Invert the asset mapping
-            Dictionary<uint, QuestAreaId> invertedEnemyMap = Server.AssetRepository.LightQuestAsset.LestaniaEnemyNodes
-                .SelectMany(x => x.Value.Select(y => (NodeId: y, AreaId: x.Key)))
-                .ToDictionary(k => k.NodeId, v => v.AreaId);
-
-            foreach (var (stage, enemies) in Server.AssetRepository.EnemySpawnAsset.Enemies.Where(x => x.Key.Id == Stage.Lestania.StageId))
-            {
-                QuestAreaId areaId = invertedEnemyMap.GetValueOrDefault(stage.GroupId);
-
-                if (areaId == QuestAreaId.None)
-                {
-                    Logger.Debug($"Skipping Lestania Enemy Node {stage}; not assigned a questAreaId.");
-                    continue;
-                }
-
-                var (huntSummary, deliverySummary) = GetSummary(areaId);
-
-                foreach (var enemy in enemies)
-                {
-                    HandleEnemy(enemy, huntSummary, deliverySummary);
-                }
-            }
-
-            // Invert the asset mapping
-            Dictionary<uint, QuestAreaId> invertedGatheringMap = Server.AssetRepository.LightQuestAsset.LestaniaGatheringNodes
-                .SelectMany(x => x.Value.Select(y => (NodeId: y, AreaId: x.Key)))
-                .ToDictionary(k => k.NodeId, v => v.AreaId);
-
-            foreach (var ((stage, group), items) in Server.AssetRepository.GatheringItems.Where(x => x.Key.Item1.Id == Stage.Lestania.StageId))
-            {
-                QuestAreaId areaId = invertedGatheringMap.GetValueOrDefault(stage.GroupId);
-
-                if (areaId == QuestAreaId.None)
-                {
-                    Logger.Debug($"Skipping Lestania Gathering Node {stage}; not assigned a questAreaId.");
-                    continue;
-                }
-
-                var (huntSummary, deliverySummary) = GetSummary(areaId);
-
-                foreach (var item in items)
-                {
-                    if (DeliverableItems.Contains((uint)item.ItemId))
-                    {
-                        deliverySummary.AddItem(item);
-                    }
-                }
-            }
-        }
-
+        #region Quest Generation
         public Quest GenerateQuestFromRecord(LightQuestRecord record)
         {
             LightQuestInfo info = LightQuestId.FromQuestId(record.QuestId);
@@ -241,6 +108,26 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
             return records;
         }
 
+        public void GenerateAndAddQuestsFromAsset()
+        {
+            var quests = Server.AssetRepository.LightQuestAsset.GeneratingAssets
+                .SelectMany(x => GenerateRecordsFromAsset(x))
+                .Select(x => GenerateQuestFromRecord(x));
+
+            Server.Database.ExecuteInTransaction(connection =>
+            {
+                foreach (var quest in quests)
+                {
+                    if (quest.BackingObject is LightQuestQuest lightQuest)
+                    {
+                        Server.Database.InsertLightQuestRecord(lightQuest.QuestRecord, connection);
+                    }
+                }
+            });
+
+            QuestManager.AddQuests(Server, quests);
+        }
+
         private LightQuestRecord RollHuntQuest(LightQuestInfo quest, LightQuestGeneratingAsset generatingAsset, List<LightQuestRecord> extantQuests)
         {
             if (generatingAsset.Type != LightQuestType.Hunt)
@@ -289,26 +176,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
                 if (generatingAsset.MinLevel <= chosenRoll.Item2 && chosenRoll.Item2 <= generatingAsset.MaxLevel)
                 {
                     var mixin = Server.ScriptManager.MixinModule.Get<ILightQuestRewardMixin>("light_hunt_quest_reward");
-
-                    finalRecord = new LightQuestRecord()
-                    {
-                        QuestId = quest.QuestId,
-                        Target = (int)chosenRoll.Item1,
-                        Level = chosenRoll.Item2,
-                        Count = Random.Shared.Next(generatingAsset.MinCount, generatingAsset.MaxCount + 1),
-                        DistributionStart = DateTimeOffset.UtcNow,
-                        DistributionEnd = DateTimeOffset.UtcNow.AddDays(1),
-                        DiscardDate = DateTimeOffset.UtcNow.AddDays(7)
-                    };
-
-                    var chosenRecord = summary.HuntRecords[chosenRoll.Item1];
-                    var bossFactor = (double)chosenRecord.BossCount / chosenRecord.Count;
-
-                    finalRecord.RewardG = mixin.CalculateRewardG(finalRecord);
-                    finalRecord.RewardR = mixin.CalculateRewardR(finalRecord);
-                    finalRecord.RewardXP = mixin.CalculateRewardXP(finalRecord);
-
-                    Logger.Info($"Generating {generatingAsset.Name} | \"{quest.Name}\" -> {chosenRoll.Item1} x{finalRecord.Count} (Lv. {chosenRoll.Item2})");
+                    finalRecord = FinalizeRecord(quest, generatingAsset, (int)chosenRoll.Item1, chosenRoll.Item2, mixin); 
                     break;
                 }
 
@@ -366,23 +234,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
                 if (generatingAsset.MinLevel <= chosenRoll.Item2 && chosenRoll.Item2 <= generatingAsset.MaxLevel)
                 {
                     var mixin = Server.ScriptManager.MixinModule.Get<ILightQuestRewardMixin>("light_delivery_quest_reward");
-
-                    finalRecord = new LightQuestRecord()
-                    {
-                        QuestId = quest.QuestId,
-                        Target = (int)chosenRoll.Item1,
-                        Level = chosenRoll.Item2,
-                        Count = Random.Shared.Next(generatingAsset.MinCount, generatingAsset.MaxCount + 1),
-                        DistributionStart = DateTimeOffset.UtcNow,
-                        DistributionEnd = DateTimeOffset.UtcNow.AddDays(1),
-                        DiscardDate = DateTimeOffset.UtcNow.AddDays(7)
-                    };
-
-                    finalRecord.RewardG = mixin.CalculateRewardG(finalRecord);
-                    finalRecord.RewardR = mixin.CalculateRewardR(finalRecord);
-                    finalRecord.RewardXP = mixin.CalculateRewardXP(finalRecord);
-
-                    Logger.Info($"Generating {generatingAsset.Name} | \"{quest.Name}\" -> {chosenRoll.Item1} x{finalRecord.Count} (Lv. {chosenRoll.Item2})");
+                    finalRecord = FinalizeRecord(quest, generatingAsset, (int)chosenRoll.Item1, chosenRoll.Item2, mixin);
                     break;
                 }
 
@@ -390,6 +242,275 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
             }
 
             return finalRecord;
+        }
+
+        private LightQuestRecord FinalizeRecord(LightQuestInfo quest, LightQuestGeneratingAsset generatingAsset, int target, ushort level, ILightQuestRewardMixin mixin)
+        {
+            var finalRecord = new LightQuestRecord()
+            {
+                QuestScheduleId = NextScheduleId(),
+                QuestId = quest.QuestId,
+                Target = target,
+                Level = level,
+                Count = Random.Shared.Next(generatingAsset.MinCount, generatingAsset.MaxCount + 1),
+                DistributionStart = DateTimeOffset.UtcNow,
+                DistributionEnd = DateTimeOffset.UtcNow + BOARD_QUEST_DURATION
+            };
+
+            finalRecord.RewardG = mixin.CalculateRewardG(finalRecord);
+            finalRecord.RewardR = mixin.CalculateRewardR(finalRecord);
+            finalRecord.RewardXP = mixin.CalculateRewardXP(finalRecord);
+            finalRecord.RewardAP = mixin.CalculateRewardAP(finalRecord);
+
+            string targetString = quest.Type == LightQuestType.Hunt ? ((EnemyUIId)target).ToString() : ((ItemId)target).ToString();
+
+            Logger.Info($"Generating {generatingAsset.Name} : \"{quest.Name}\" -> {targetString} x{finalRecord.Count} (Lv. {level})");
+
+            return finalRecord;
+        }
+
+        public uint NextScheduleId()
+        {
+            //var extantBoardQuests = QuestManager.GetQuestsByType(QuestType.Board).Where(x => QuestManager.GetQuestByScheduleId(x).BackingObject is LightQuestQuest);
+            //return extantBoardQuests.Any() ? extantBoardQuests.Max() + 1 : 100000000;
+
+            // Wrap around in case of overflow; highly unlikely for any reasonable situation.
+            if (CURRENT_SCHEDULE_ID + 1 > MAXIMUM_SCHEDULE_ID)
+            {
+                CURRENT_SCHEDULE_ID = MINIMUM_SCHEDULE_ID;
+                return CURRENT_SCHEDULE_ID;
+            }    
+            else
+            {
+                return ++CURRENT_SCHEDULE_ID;
+            }
+
+        }
+        #endregion
+
+        #region Quest Management
+        public List<Quest> ReadQuests(bool clean = false)
+        {
+            List<LightQuestRecord> records = new();
+            Server.Database.ExecuteInTransaction(connection =>
+            {
+                // Always read before cleanup so that you can properly increment the schedule ID.
+                // Making the schedule ID increment monotonically is more important than keeping additional quests in memory.
+                records = Server.Database.SelectLightQuestRecords(connection);
+                CURRENT_SCHEDULE_ID = records.Count != 0 ? records.Max(x => x.QuestScheduleId) : CURRENT_SCHEDULE_ID;
+
+                // Head server is the only one who is allowed to clean the DB of dead quests.
+                if (clean && ServerUtils.IsHeadServer(Server))
+                {
+                    foreach(var record in records.Where(x => x.DistributionEnd < DateTimeOffset.UtcNow))
+                    {
+                        Server.Database.DeleteLightQuestRecord(record.QuestScheduleId, connection);
+                    }
+                    records.RemoveAll(x => x.DistributionEnd < DateTimeOffset.UtcNow);
+                }
+            });
+
+            return records.Select(x => GenerateQuestFromRecord(x)).ToList() ;
+        }
+
+        public static bool IsLightQuestScheduleId(uint scheduleId)
+        {
+            return MINIMUM_SCHEDULE_ID <= scheduleId && scheduleId <= MAXIMUM_SCHEDULE_ID;
+        }
+
+        public void CheckQuestScheduleIdForDecay(Character character, uint scheduleId, DbConnection? connectionIn = null)
+        {
+            // Only attempt to manage these rotating quests.
+            // Missing scheduleIds for other quest types could be server setup error (i.e. missing files) and we don't want to interfere.
+            if (!IsLightQuestScheduleId(scheduleId))
+            {
+                return;
+            }
+
+            var quest = QuestManager.GetQuestByScheduleId(scheduleId);
+
+            // Checks for two kinds of decayed quest:
+            // If quest is null, the quest is fully decayed and the record has been deleted.
+            // If the quest exists, but is past distribution, characters logging in still need to have it wiped.
+            if (quest is null || quest.DistributionEnd < DateTimeOffset.UtcNow)
+            {
+                Server.Database.ExecuteQuerySafe(connectionIn, connection =>
+                {
+                    Server.Database.DeletePriorityQuest(character.CommonId, scheduleId, connectionIn);
+                    Server.Database.RemoveQuestProgress(character.CommonId, scheduleId, QuestType.Light, connectionIn);
+                });
+            }
+        }
+
+        public IEnumerable<uint> GetDecayedQuests(IEnumerable<uint> testIds)
+        {
+            var validQuestScheduleIds = QuestManager.GetQuestsByType(QuestType.Light)
+                .Where(x => QuestManager.GetQuestByScheduleId(x).DistributionEnd > DateTimeOffset.UtcNow);
+
+            return testIds.Except(validQuestScheduleIds);
+        }
+
+        public IEnumerable<uint> HandleQuestDecay(Character character, List<QuestProgress> questProgress, List<uint> questPriority, DbConnection? connectionIn = null)
+        {
+            var questsUnderInspection = questProgress.Select(x => x.QuestScheduleId)
+                .Union(questPriority)
+                .Where(x => IsLightQuestScheduleId(x));
+
+            var questsToDrop = GetDecayedQuests(questsUnderInspection);
+
+            Server.Database.ExecuteQuerySafe(connectionIn, connection =>
+            {
+                foreach(var scheduleId in questsToDrop)
+                {
+                    Server.Database.RemoveQuestProgress(character.CommonId, scheduleId, QuestType.Light, connection);
+                    Server.Database.DeletePriorityQuest(character.CommonId, scheduleId, connectionIn);
+                }
+            });
+
+            questProgress.RemoveAll(x => questsToDrop.Contains(x.QuestScheduleId));
+            questPriority.RemoveAll(x => questsToDrop.Contains(x));
+
+            return questsToDrop;
+        }
+
+        #endregion
+
+        #region Scraping for Quest Generation
+        private readonly Dictionary<QuestAreaId, LightQuestAreaHuntSummary> EnemySummaries = Enum.GetValues<QuestAreaId>().ToDictionary(x => x, x => new LightQuestAreaHuntSummary(x));
+        private readonly Dictionary<QuestAreaId, LightQuestAreaDeliverySummary> ItemSummaries = Enum.GetValues<QuestAreaId>().ToDictionary(x => x, x => new LightQuestAreaDeliverySummary(x));
+        private readonly HashSet<uint> DeliverableItems;
+
+        private static HashSet<uint> ParseGatherableItems(DdonGameServer server)
+        {
+            var craftableItems = server.AssetRepository.CraftingRecipesAsset.SelectMany(x => x.RecipeList).Select(x => x.ItemID).ToHashSet();
+            return server.AssetRepository.ClientItemInfos.Values.Where(x => DeliverableSubCategories.Contains(x.SubCategory ?? 0) && !craftableItems.Contains(x.ItemId)).Select(x => x.ItemId).ToHashSet();
+        }
+
+        private void ParseStagesByQuestAreaId()
+        {
+            foreach (var (stage, enemies) in Server.AssetRepository.EnemySpawnAsset.Enemies)
+            {
+                StageInfo stageInfo = Stage.StageInfoFromStageLayoutId(stage);
+                QuestAreaId areaId = stageInfo.AreaId;
+
+                if (areaId == QuestAreaId.None)
+                {
+                    // This skips Lestania as well as several debug stages.
+                    continue;
+                }
+
+                if (SpecialStageIds.Contains(stage.Id))
+                {
+                    // Skips certain quest stages that really shouldn't have regular spawns anyways.
+                    continue;
+                }
+
+                var (huntSummary, deliverySummary) = GetSummary(areaId);
+
+                foreach (var enemy in enemies)
+                {
+                    HandleEnemy(enemy, huntSummary, deliverySummary);
+                }
+            }
+
+            foreach (var ((stage, group), items) in Server.AssetRepository.GatheringItems)
+            {
+                StageInfo stageInfo = Stage.StageInfoFromStageLayoutId(stage);
+                QuestAreaId areaId = stageInfo.AreaId;
+
+                if (areaId == QuestAreaId.None)
+                {
+                    // This skips Lestania as well as several debug stages.
+                    continue;
+                }
+
+                if (SpecialStageIds.Contains(stage.Id))
+                {
+                    // Skips certain quest stages that really shouldn't have regular spawns anyways.
+                    continue;
+                }
+
+                var (huntSummary, deliverySummary) = GetSummary(areaId);
+
+                foreach (var item in items)
+                {
+                    if (DeliverableItems.Contains((uint)item.ItemId))
+                    {
+                        deliverySummary.AddItem(item);
+                    }
+                }
+            }
+        }
+
+        private void ParseWorldQuestEnemies()
+        {
+            var quests = QuestManager.GetQuestsByType(QuestType.World);
+            foreach (var quest in quests)
+            {
+                var worldQuest = QuestManager.GetQuestByScheduleId(quest);
+                foreach (var enemyGroup in worldQuest.EnemyGroups.Values)
+                {
+                    // Enemies are assigned boards based on where they're located, not what area the world quest may or may not be associated with.
+                    var (huntSummary, deliverySummary) = GetSummary(enemyGroup.StageLayoutId);
+
+                    foreach (var enemy in enemyGroup.Enemies)
+                    {
+                        HandleEnemy(enemy, huntSummary, deliverySummary);
+                    }
+                }
+            }
+        }
+
+        private void ParseLestaniaSpots()
+        {
+            // Invert the asset mapping
+            Dictionary<uint, QuestAreaId> invertedEnemyMap = Server.AssetRepository.LightQuestAsset.LestaniaEnemyNodes
+                .SelectMany(x => x.Value.Select(y => (NodeId: y, AreaId: x.Key)))
+                .ToDictionary(k => k.NodeId, v => v.AreaId);
+
+            foreach (var (stage, enemies) in Server.AssetRepository.EnemySpawnAsset.Enemies.Where(x => x.Key.Id == Stage.Lestania.StageId))
+            {
+                QuestAreaId areaId = invertedEnemyMap.GetValueOrDefault(stage.GroupId);
+
+                if (areaId == QuestAreaId.None)
+                {
+                    Logger.Debug($"Skipping Lestania Enemy Node {stage}; not assigned a questAreaId.");
+                    continue;
+                }
+
+                var (huntSummary, deliverySummary) = GetSummary(areaId);
+
+                foreach (var enemy in enemies)
+                {
+                    HandleEnemy(enemy, huntSummary, deliverySummary);
+                }
+            }
+
+            // Invert the asset mapping
+            Dictionary<uint, QuestAreaId> invertedGatheringMap = Server.AssetRepository.LightQuestAsset.LestaniaGatheringNodes
+                .SelectMany(x => x.Value.Select(y => (NodeId: y, AreaId: x.Key)))
+                .ToDictionary(k => k.NodeId, v => v.AreaId);
+
+            foreach (var ((stage, group), items) in Server.AssetRepository.GatheringItems.Where(x => x.Key.Item1.Id == Stage.Lestania.StageId))
+            {
+                QuestAreaId areaId = invertedGatheringMap.GetValueOrDefault(stage.GroupId);
+
+                if (areaId == QuestAreaId.None)
+                {
+                    Logger.Debug($"Skipping Lestania Gathering Node {stage}; not assigned a questAreaId.");
+                    continue;
+                }
+
+                var (huntSummary, deliverySummary) = GetSummary(areaId);
+
+                foreach (var item in items)
+                {
+                    if (DeliverableItems.Contains((uint)item.ItemId))
+                    {
+                        deliverySummary.AddItem(item);
+                    }
+                }
+            }
         }
 
         private (LightQuestAreaHuntSummary HuntSummary, LightQuestAreaDeliverySummary DeliverySummary) GetSummary(QuestAreaId areaId)
@@ -517,7 +638,6 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
         [
             0, 68, 69, 107, 108, 109, 110, 111, 112, 113, 114, 172, 173, 174, 217, 235, 237, 264, 266, 267, 269, 283,
         ];
-
-        
+        #endregion
     }
 }

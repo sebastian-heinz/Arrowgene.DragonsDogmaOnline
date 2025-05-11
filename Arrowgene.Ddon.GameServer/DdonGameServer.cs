@@ -153,7 +153,6 @@ namespace Arrowgene.Ddon.GameServer
             ScriptManager.Initialize();
 
             QuestManager.LoadQuests(this);
-            QuestManager.LoadLightQuests(this);
             GpCourseManager.EvaluateCourses();
 
             if (ServerUtils.IsHeadServer(this))

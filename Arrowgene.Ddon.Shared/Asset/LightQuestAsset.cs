@@ -32,8 +32,8 @@ namespace Arrowgene.Ddon.Shared.Asset
 
         public int MinQuests { get; set; } = 3;
         public int MaxQuests { get; set; } = 3;
-        public int MinCount { get; set; } = 3;
-        public int MaxCount { get; set; } = 6;
+        public int MinCount { get; set; } = 2;
+        public int MaxCount { get; set; } = 4;
         public uint MinLevel { get; set; } = 0;
         public uint MaxLevel { get; set; } = 90;
 

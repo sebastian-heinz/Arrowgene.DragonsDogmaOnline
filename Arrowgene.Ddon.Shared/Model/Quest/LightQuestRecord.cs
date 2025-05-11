@@ -21,8 +21,8 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public uint RewardR {  get; set; }
         public uint RewardG { get; set; }
         public uint RewardXP { get; set; }
+        public uint RewardAP { get; set; }
         public DateTimeOffset DistributionStart { get; set; }
         public DateTimeOffset DistributionEnd { get; set; }
-        public DateTimeOffset DiscardDate { get; set; }
     }
 }

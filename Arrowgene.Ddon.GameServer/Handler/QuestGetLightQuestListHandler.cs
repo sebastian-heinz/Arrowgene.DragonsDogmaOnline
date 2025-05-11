@@ -5,6 +5,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -34,10 +35,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (var questScheduleId in quests)
             {
                 var lightQuest = QuestManager.GetQuestByScheduleId(questScheduleId);
-                //if (DateTimeOffset.Now < lightQuest.DistributionStart || DateTimeOffset.Now > lightQuest.DistributionEnd)
-                //{
-                //    continue;
-                //}
+                if (DateTimeOffset.Now < lightQuest.DistributionStart || DateTimeOffset.Now > lightQuest.DistributionEnd)
+                {
+                    continue;
+                }
 
                 var data = lightQuest.ToCDataLightQuestList();
                 data.Detail.ClearNum = Server.ClanManager.ClanQuestCompletionStatistics(client.Character.CharacterId, questScheduleId);

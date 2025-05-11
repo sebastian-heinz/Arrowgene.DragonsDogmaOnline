@@ -1,28 +1,20 @@
 using Arrowgene.Ddon.GameServer.Quests.Extensions;
 using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Arrowgene.Ddon.Shared.Asset;
-using Arrowgene.Ddon.Shared.Model.Quest;
-using Arrowgene.Ddon.Shared.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Arrowgene.Ddon.Shared.Entity.Structure;
-using Arrowgene.Ddon.GameServer.Characters;
+using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
 {
     public abstract class LightQuestQuest : IQuest
     {
         public override QuestType QuestType => QuestType.Light;
-
         public override QuestId QuestId => QuestRecord?.QuestId ?? 0;
-
+        public override QuestAreaId QuestAreaId => QuestRecord?.QuestInfo.AreaId ?? QuestAreaId.None;
         public override ushort RecommendedLevel => QuestRecord.Level;
-
         public override byte MinimumItemRank => 0;
-
         public override bool IsDiscoverable => false;
 
         public LightQuestRecord QuestRecord { get; set; }
@@ -32,6 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
             QuestRecord = record;
 
             AddPointReward(PointType.ExperiencePoints, record.RewardXP);
+            AddPointReward(PointType.AreaPoints, record.RewardAP);
             AddWalletReward(WalletType.Gold, record.RewardG);
             AddWalletReward(WalletType.RiftPoints, record.RewardR);
         }
@@ -45,7 +38,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
             {
                 AreaId = (uint)info.AreaId,
                 BoardId = (uint)info.Board,
-                //GetAp = AreaRankManager.GetAreaPointReward(QuestRecord.Level, info.AreaId, true),
+                GetAp = QuestRecord.RewardAP,
                 BoardType = 1,
             };
 
