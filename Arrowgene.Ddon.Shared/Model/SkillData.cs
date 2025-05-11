@@ -32926,7 +32926,7 @@ namespace Arrowgene.Ddon.Shared.Model
             return SkillData.S2BoCustomSkill[jobId].Contains(skillNo) && (skillLv == 1);
         }
 
-        public static readonly Dictionary<JobId, HashSet<uint>> S2BoAugment = new Dictionary<JobId, HashSet<uint>>()
+        public static readonly Dictionary<JobId, HashSet<uint>> S2BoAbility = new Dictionary<JobId, HashSet<uint>>()
         {
             [JobId.Fighter] = new() {
                 (uint) AbilityId.OnslaughtSlayer,
@@ -33078,13 +33078,13 @@ namespace Arrowgene.Ddon.Shared.Model
             }
         };
 
-        public static bool IsS2BoAugment(JobId jobId, uint abilityNo, uint abilityLv)
+        public static bool IsS2BoAbility(JobId jobId, uint abilityNo, uint abilityLv)
         {
-            if (!SkillData.S2BoAugment.ContainsKey(jobId))
+            if (!SkillData.S2BoAbility.ContainsKey(jobId))
             {
                 return false;
             }
-            return SkillData.S2BoAugment[jobId].Contains(abilityNo) && (abilityLv == 1);
+            return SkillData.S2BoAbility[jobId].Contains(abilityNo) && (abilityLv == 1);
         }
 
         public static bool IsS3HoSkill(JobId jobId, uint skillNo, uint skillLv)
@@ -33214,16 +33214,16 @@ namespace Arrowgene.Ddon.Shared.Model
             }
         };
 
-        public static bool IsS3HoAugment(JobId jobId, uint abilityNo, uint abilityLv)
+        public static bool IsS3HoAbility(JobId jobId, uint abilityNo, uint abilityLv)
         {
-            if (!SkillData.S3HoAugment.ContainsKey(jobId))
+            if (!SkillData.S3HoAbility.ContainsKey(jobId))
             {
                 return false;
             }
-            return SkillData.S3HoAugment[jobId].Contains(abilityNo) && (abilityLv == 1);
+            return SkillData.S3HoAbility[jobId].Contains(abilityNo) && (abilityLv == 1);
         }
 
-        public static readonly Dictionary<JobId, HashSet<uint>> S3HoAugment = new Dictionary<JobId, HashSet<uint>>()
+        public static readonly Dictionary<JobId, HashSet<uint>> S3HoAbility = new Dictionary<JobId, HashSet<uint>>()
         {
             [JobId.HighScepter] = new()
             {
@@ -33243,7 +33243,7 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public static bool IsUnlockableAbility(JobId jobId, uint abilityNo, uint abilityLv)
         {
-            return SkillData.IsS2BoSkill(jobId, abilityNo, abilityLv) || SkillData.IsS3HoSkill(jobId, abilityNo, abilityLv);
+            return SkillData.IsS2BoAbility(jobId, abilityNo, abilityLv) || SkillData.IsS3HoAbility(jobId, abilityNo, abilityLv);
         }
     }
 }
