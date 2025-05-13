@@ -13,7 +13,7 @@ skillAugmentation.AddNode(1)
     .Location(4, 1)
     .BloodOrbCost(500)
     .Unlocks(OrbGainParamType.JobMagicalDefence, 1)
-    .HasQuestDependency(60200116);
+    .HasQuestDependency(QuestId.SkillAugmentationSeekerTrialI);
 
 // 2nd Tier
 skillAugmentation.AddNode(2)
@@ -171,7 +171,7 @@ skillAugmentation.AddNode(28)
     .BloodOrbCost(500)
     .Unlocks(OrbGainParamType.JobPhysicalAttack, 1)
     .HasUnlockDependency(27)
-    .HasQuestDependency(60200117);
+    .HasQuestDependency(QuestId.SkillAugmentationSeekerTrialII);
 
 // 12th Tier
 skillAugmentation.AddNode(29)
@@ -352,21 +352,21 @@ skillAugmentation.AddNode(56)
     .BloodOrbCost(1400)
     .Unlocks(OrbGainParamType.JobPhysicalAttack, 1)
     .HasUnlockDependency(55)
-    .HasQuestDependency(60200118);
+    .HasQuestDependency(QuestId.SkillAugmentationSeekerTrialIII);
 
 skillAugmentation.AddNode(57)
     .Location(4, 21)
     .BloodOrbCost(1200)
     .Unlocks(OrbGainParamType.JobHpMax, 25)
     .HasUnlockDependency(55)
-    .HasQuestDependency(60200102);
+    .HasQuestDependency(QuestId.SkillAugmentationSeekerTrialIII);
 
 skillAugmentation.AddNode(58)
     .Location(6, 21)
     .BloodOrbCost(1000)
     .Unlocks(OrbGainParamType.JobPhysicalDefence, 1)
     .HasUnlockDependency(55)
-    .HasQuestDependency(60200102);
+    .HasQuestDependency(QuestId.SkillAugmentationSeekerTrialIII);
 
 // 22nd Tier
 skillAugmentation.AddNode(59)
@@ -533,7 +533,7 @@ skillAugmentation.AddNode(86)
     .BloodOrbCost(1400)
     .Unlocks(OrbGainParamType.JobStaminaMax, 10)
     .HasUnlockDependencies(85)
-    .HasQuestDependency(60200119);
+    .HasQuestDependency(QuestId.SkillAugmentationSeekerTrialIV);
 
 // 32nd Tier
 skillAugmentation.AddNode(87)

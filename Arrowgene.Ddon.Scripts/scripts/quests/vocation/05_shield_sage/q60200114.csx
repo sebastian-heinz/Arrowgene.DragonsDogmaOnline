@@ -114,8 +114,6 @@ public class ScriptedQuest : IQuest
         process0.AddDiscoverGroupBlock(QuestAnnounceType.Update, EnemyGroupId.Encounter + 2);
         process0.AddDestroyGroupBlock(QuestAnnounceType.Update, EnemyGroupId.Encounter + 2, resetGroup: false);
         process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.LighthouseKeepersHouse, NpcId.Rudolfo, 17653);
-        process0.AddIsStageNoBlock(QuestAnnounceType.None, Stage.LighthouseKeepersHouse)
-           .AddResultCmdReleaseAnnounce(ContentsRelease.ShieldSageWarSkillAugmentation, TutorialId.InheritanceSkillsOfBattleTechniques);
         process0.AddProcessEndBlock(true);
     }
 }

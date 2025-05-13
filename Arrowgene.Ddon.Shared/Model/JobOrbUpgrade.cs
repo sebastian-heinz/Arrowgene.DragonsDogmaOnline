@@ -15,8 +15,8 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint ElementId { get; private set; }
         public uint Amount { get; private set; }
         public OrbGainParamType GainType { get; private set; }
-        public CustomSkillId CustomSkill { get; private set; }
-        public AbilityId Ability { get; private set; }
+        public CustomSkillId CustomSkillId { get; private set; }
+        public AbilityId AbilityId { get; private set; }
         public uint PosX { get; private set; }
         public uint PosY { get; private set; }
         public uint Cost { get; private set; }
@@ -75,14 +75,14 @@ namespace Arrowgene.Ddon.Shared.Model
         public JobOrbUpgrade Unlocks(CustomSkillId customSkill)
         {
             this.GainType = OrbGainParamType.JobCustomSkill;
-            this.CustomSkill = customSkill;
+            this.CustomSkillId = customSkill;
             return this;
         }
 
         public JobOrbUpgrade Unlocks(AbilityId ability)
         {
             this.GainType = OrbGainParamType.JobAbility;
-            this.Ability = ability;
+            this.AbilityId = ability;
             return this;
         }
 
@@ -165,12 +165,12 @@ namespace Arrowgene.Ddon.Shared.Model
 
             if (IsCustomSkill())
             {
-                result.ParamId = this.CustomSkill.ReleaseId();
+                result.ParamId = this.CustomSkillId.ReleaseId();
                 result.ParamValue = 0;
             }
             else if (IsAbility())
             {
-                result.ParamId = (uint)this.Ability;
+                result.ParamId = (uint)this.AbilityId;
                 result.ParamValue = 0;
             }
             else

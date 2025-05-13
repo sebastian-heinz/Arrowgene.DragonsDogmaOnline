@@ -74,7 +74,7 @@ public class ScriptedQuest : IQuest
                 .SetNamedEnemyParams(NamedParamId.SecondTest),
             LibDdon.Enemy.CreateAuto(EnemyId.OrcTrooper, 42, 1)
                 .SetNamedEnemyParams(NamedParamId.SecondTest),
-            LibDdon.Enemy.CreateAuto(EnemyId.CaptainOrc0, 43, 3)
+            LibDdon.Enemy.CreateAuto(EnemyId.CaptainOrc0, 43, 2)
                 .SetNamedEnemyParams(NamedParamId.SecondTest),
         });
 
@@ -102,8 +102,6 @@ public class ScriptedQuest : IQuest
         process0.AddDiscoverGroupBlock(QuestAnnounceType.Update, EnemyGroupId.Encounter + 2);
         process0.AddDestroyGroupBlock(QuestAnnounceType.Update, EnemyGroupId.Encounter + 2, resetGroup: false);
         process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.LighthouseKeepersHouse, NpcId.Rudolfo, 17653);
-        process0.AddIsStageNoBlock(QuestAnnounceType.None, Stage.LighthouseKeepersHouse)
-           .AddResultCmdReleaseAnnounce(ContentsRelease.ShieldSageWarSkillAugmentation, TutorialId.InheritanceSkillsOfBattleTechniques);
         process0.AddProcessEndBlock(true);
     }
 }

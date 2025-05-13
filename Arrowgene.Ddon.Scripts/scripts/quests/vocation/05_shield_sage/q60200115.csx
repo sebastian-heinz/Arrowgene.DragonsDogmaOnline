@@ -102,7 +102,7 @@ public class ScriptedQuest : IQuest
             .AddCheckCmdPlJobEq(JobId.ShieldSage)
             .AddCheckCmdIsTutorialQuestClear(QuestId.SkillAugmentationShieldSageTrialIII);
         process0.AddNpcTalkAndOrderBlock(Stage.LighthouseKeepersHouse, NpcId.Rudolfo, 18833);
-        process0.AddNewTalkToNpcBlock(QuestAnnounceType.Accept, Stage.MoltovaRuins, 1, 1, NpcId.Rudolfo, 18835)
+        process0.AddNewTalkToNpcBlock(QuestAnnounceType.Accept, Stage.CesspoolofFilth, 1, 1, NpcId.Rudolfo, 18835)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, QstLayoutFlag.Rudolfo);
         process0.AddDiscoverGroupBlock(QuestAnnounceType.Update, EnemyGroupId.Encounter + 0)
             .AddQuestFlag(QuestFlagType.MyQst, QuestFlagAction.Set, MyQstFlag.RudolfoFSM0);
@@ -112,8 +112,6 @@ public class ScriptedQuest : IQuest
         process0.AddDiscoverGroupBlock(QuestAnnounceType.Update, EnemyGroupId.Encounter + 2);
         process0.AddDestroyGroupBlock(QuestAnnounceType.Update, EnemyGroupId.Encounter + 2, resetGroup: false);
         process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.LighthouseKeepersHouse, NpcId.Rudolfo, 18837);
-        process0.AddIsStageNoBlock(QuestAnnounceType.None, Stage.LighthouseKeepersHouse)
-           .AddResultCmdReleaseAnnounce(ContentsRelease.ShieldSageWarSkillAugmentation, TutorialId.InheritanceSkillsOfBattleTechniques);
         process0.AddProcessEndBlock(true);
     }
 }

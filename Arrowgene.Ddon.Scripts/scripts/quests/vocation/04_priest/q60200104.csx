@@ -49,14 +49,14 @@ public class ScriptedQuest : IQuest
 
     private class QstLayoutFlag
     {
-        public const uint Camus = 3587;
+        public const uint Camus = 3585;
     }
 
     private class MyQstFlag
     {
-        public const uint CamusFSM0 = 1358;
-        public const uint CamusFSM1 = 1359;
-        public const uint CamusFSM2 = 1360;
+        public const uint CamusFSM0 = 1352;
+        public const uint CamusFSM1 = 1353;
+        public const uint CamusFSM2 = 1354;
     }
 
     protected override void InitializeEnemyGroups()

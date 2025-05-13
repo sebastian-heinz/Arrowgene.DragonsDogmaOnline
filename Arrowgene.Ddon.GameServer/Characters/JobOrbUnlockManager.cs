@@ -95,11 +95,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     {
                         if (element.IsAbility())
                         {
-                            character.UnlockedAbilities[jobId].Add((uint) element.Ability);
+                            character.UnlockedAbilities[jobId].Add((uint) element.AbilityId);
                         }
                         else if (element.IsCustomSkill())
                         {
-                            character.UnlockedCustomSkills[jobId].Add(element.CustomSkill.ReleaseId());
+                            character.UnlockedCustomSkills[jobId].Add(element.CustomSkillId.ReleaseId());
                         }
                         else
                         {
@@ -157,11 +157,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             if (upgrade.IsAbility())
             {
-                Server.CharacterManager.UnlockAbility(client.Character, jobId, (uint)upgrade.Ability, 1);
+                Server.CharacterManager.UnlockAbility(client.Character, jobId, (uint)upgrade.AbilityId, 1);
 
                 // Handle players who had existing abilities blocked by addition of S2 tree
-                var existing = client.Character.LearnedAbilities.Where(x => x.AbilityId == (uint) upgrade.Ability).FirstOrDefault();
-                Server.JobManager.UnlockAbility(client, client.Character, jobId, (uint)upgrade.Ability, existing?.AbilityLv ?? 1, connectionIn);
+                var existing = client.Character.LearnedAbilities.Where(x => x.AbilityId == (uint) upgrade.AbilityId).FirstOrDefault();
+                if (existing == null)
+                {
+                    Server.JobManager.UnlockAbility(client, client.Character, jobId, (uint)upgrade.AbilityId, 1, connectionIn);
+                }
 
                 packets.Enqueue(client, new S2CSkillAcquirementLearnNtc()
                 {
@@ -169,7 +172,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     {
                        new CDataAbilityLevelBaseParam()
                        {
-                           AbilityNo = (uint) upgrade.Ability,
+                           AbilityNo = (uint) upgrade.AbilityId,
                            AbilityLv = existing?.AbilityLv ?? 1,
                        }
                     }
@@ -177,11 +180,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
             else if (upgrade.IsCustomSkill())
             {
-                Server.CharacterManager.UnlockCustomSkill(client.Character, jobId, upgrade.CustomSkill.ReleaseId(), 1);
+                Server.CharacterManager.UnlockCustomSkill(client.Character, jobId, upgrade.CustomSkillId.ReleaseId(), 1);
 
                 // Handle players who had existing skills blocked by addition of S2 tree
-                var existing = client.Character.LearnedCustomSkills.Where(x => x.SkillId == upgrade.CustomSkill.ReleaseId()).FirstOrDefault();
-                Server.JobManager.UnlockSkill(client, client.Character, jobId, upgrade.CustomSkill.ReleaseId(), existing?.SkillLv ?? 1, connectionIn);
+                var existing = client.Character.LearnedCustomSkills.Where(x => x.SkillId == upgrade.CustomSkillId.ReleaseId()).FirstOrDefault();
+                if (existing == null)
+                {
+                    Server.JobManager.UnlockSkill(client, client.Character, jobId, upgrade.CustomSkillId.ReleaseId(), 1, connectionIn);
+                }
 
                 packets.Enqueue(client, new S2CSkillAcquirementLearnNtc()
                 {
@@ -190,7 +196,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                        new CDataSkillLevelBaseParam()
                        {
                            Job = jobId,
-                           SkillNo = upgrade.CustomSkill.ReleaseId(),
+                           SkillNo = upgrade.CustomSkillId.ReleaseId(),
                            SkillLv = existing?.SkillLv ?? 1,
                        }
                     }

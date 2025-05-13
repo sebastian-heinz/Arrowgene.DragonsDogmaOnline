@@ -85,7 +85,7 @@ public class ScriptedQuest : IQuest
                 .SetNamedEnemyParams(NamedParamId.SecondTest),
         });
 
-        AddEnemies(EnemyGroupId.Encounter + 2, Stage.BetlandCemetery, 4, QuestEnemyPlacementType.Manual, new()
+        AddEnemies(EnemyGroupId.Encounter + 2, Stage.BetlandCemetery, 6, QuestEnemyPlacementType.Manual, new()
         {
             LibDdon.Enemy.CreateAuto(EnemyId.CaptainOrc0, 40, 3)
                 .SetNamedEnemyParams(NamedParamId.FinalTest),
