@@ -121,7 +121,7 @@ namespace Arrowgene.Ddon.GameServer
             if (count > 0)
             {
                 index = count / COUNT_PER_TRAFFIC + 1;
-                index = (uint) Math.Min(index, TRAFFIC_LABELS.Length);
+                index = (uint) Math.Min(index, TRAFFIC_LABELS.Length - 1);
             }
             return $"{TRAFFIC_LABELS[index]} ({count})";
         }
