@@ -143,7 +143,7 @@ skillAugmentation.AddNode(25)
 skillAugmentation.AddNode(26)
     .Location(5, 10)
     .BloodOrbCost(2000)
-    .Unlocks(AbilityId.Active)
+    .Unlocks(AbilityId.EnhancedVitality)
     .HasUnlockDependencies(23);
 #endregion
 
