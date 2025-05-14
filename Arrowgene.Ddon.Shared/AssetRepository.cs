@@ -66,6 +66,7 @@ namespace Arrowgene.Ddon.Shared
         public const string DefaultGatheringDropsKey = "DefaultGatheringDrops.json";
         public const string JobMastersKey = "JobMasters.json";
         public const string LightQuestKey = "LightQuests.json";
+        public const string QuestScheduleIdKey = "QuestScheduleId.csv";
 
         public const string QuestAssestKey = "quests";
         public const string EpitaphAssestKey = "epitaph";
@@ -182,6 +183,7 @@ namespace Arrowgene.Ddon.Shared
         public DefaultGatheringDropsAsset DefaultGatheringDropsAsset { get; private set; }
         public JobMasterAsset JobMasterAsset { get; private set; }
         public LightQuestAsset LightQuestAsset { get; private set; }
+        public Dictionary<QuestId, uint> QuestScheduleIdAsset { get; private set; }
 
         public void Initialize()
         {
@@ -229,11 +231,12 @@ namespace Arrowgene.Ddon.Shared
             RegisterAsset(value => DefaultGatheringDropsAsset = value, DefaultGatheringDropsKey, new DefaultGatheringDropsDeserializer());
             RegisterAsset(value => JobMasterAsset = value, JobMastersKey, new JobMasterAssetDeserializer());
             RegisterAsset(value => LightQuestAsset = value, LightQuestKey, new LightQuestAssetDeserializer());
+            RegisterAsset(value => QuestScheduleIdAsset = value, QuestScheduleIdKey, new QuestScheduleIdCsv());
 
-            // This must be set before calling QuestAssertDeserializer and EpitaphTrialAssertDeserializer
+            // This must be set before calling QuestAssetDeserializer and EpitaphTrialAssetDeserializer
             var commonEnemyDeserializer = new AssetCommonDeserializer(this.NamedParamAsset);
 
-            var questAssetDeserializer = new QuestAssetDeserializer(commonEnemyDeserializer, QuestDropItemAsset);
+            var questAssetDeserializer = new QuestAssetDeserializer(commonEnemyDeserializer, QuestDropItemAsset, QuestScheduleIdAsset);
             questAssetDeserializer.LoadQuestsFromDirectory(Path.Combine(_directory.FullName, QuestAssestKey), QuestAssets);
 
             var epitaphTrialDeserializer = new EpitaphTrialAssetDeserializer(commonEnemyDeserializer, QuestDropItemAsset);

@@ -3,7 +3,7 @@
     "type": "World",
     "comment": "A Strange Bird Dances In the Forest (Sphinx)",
     "quest_id": 20055001,
-    "quest_schedule_id": 102030,
+    "variant_index": 0,
     "base_level": 18,
     "minimum_item_rank": 0,
     "discoverable": false,

@@ -146,12 +146,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return result;
         }
 
-        public Quest(DdonGameServer server, QuestId questId, uint questScheduleId, QuestType questType, bool isDiscoverable = false)
+        public Quest(DdonGameServer server, QuestId questId, uint variantIndex, QuestType questType, bool isDiscoverable = false)
         {
             Server = server;
             QuestId = questId;
             QuestType = questType;
-            QuestScheduleId = questScheduleId;
+            QuestScheduleId = QuestManager.GetScheduleId(server, questId, variantIndex);
             IsDiscoverable = isDiscoverable;
 
             OrderConditions = new List<QuestOrderCondition>();
@@ -410,7 +410,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             var quest = new CDataQuestOrderList()
             {
                 QuestId = (uint)QuestId,
-                QuestScheduleId = (uint)QuestScheduleId,
+                QuestScheduleId = QuestScheduleId,
                 BaseLevel = BaseLevel,
                 AreaId = (uint) QuestAreaId,
                 ContentJoinItemRank = MinimumItemRank,
@@ -821,7 +821,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return new CDataContentsPlayStartData()
             {
                 QuestId = (uint) QuestId,
-                QuestScheudleId = QuestScheduleId,
+                QuestScheduleId = QuestScheduleId,
                 BaseLevel = BaseLevel,
                 StartPos = MissionParams.StartPos,
                 QuestEnemyInfoList = EnemyGroups.Values.SelectMany(group => group.Enemies.Select(enemy => new CDataQuestEnemyInfo()

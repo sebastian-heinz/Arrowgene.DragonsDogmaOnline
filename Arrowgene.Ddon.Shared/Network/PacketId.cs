@@ -2665,7 +2665,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_QUEST_GET_PARTY_QUEST_PROGRESS_INFO_RES);
             AddPacketIdEntry(packetIds, C2S_QUEST_DEBUG_MAIN_QUEST_JUMP_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_DEBUG_MAIN_QUEST_JUMP_RES);
-            AddPacketIdEntry(packetIds, S2C_QUEST_11_73_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_QUEST_DEBUG_MAIN_QUEST_JUMP_NTC);
             AddPacketIdEntry(packetIds, C2S_QUEST_DEBUG_QUEST_RESET_REQ);
             AddPacketIdEntry(packetIds, S2C_QUEST_DEBUG_QUEST_RESET_RES);
             AddPacketIdEntry(packetIds, C2S_QUEST_DEBUG_QUEST_RESET_ALL_REQ);

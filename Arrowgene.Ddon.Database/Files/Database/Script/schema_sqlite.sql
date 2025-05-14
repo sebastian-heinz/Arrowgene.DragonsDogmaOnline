@@ -999,17 +999,18 @@ CREATE TABLE IF NOT EXISTS "ddon_skill_augmentation_released_elements" (
 
 CREATE TABLE IF NOT EXISTS "ddon_light_quests"
 (
-    "quest_schedule_id"     INTEGER NOT NULL,
-    "quest_id"              INTEGER NOT NULL,
-    "target"                INTEGER NOT NULL,
-    "level"                 INTEGER NOT NULL,
-    "count"                 INTEGER NOT NULL,
+    "variant_id"            INTEGER     NOT NULL,
+    "quest_schedule_id"     INTEGER     NOT NULL,
+    "quest_id"              INTEGER     NOT NULL,
+    "target"                INTEGER     NOT NULL,
+    "level"                 INTEGER     NOT NULL,
+    "count"                 INTEGER     NOT NULL,
     "reward_xp"             INTEGER     NOT NULL,
     "reward_g"              INTEGER     NOT NULL,
     "reward_r"              INTEGER     NOT NULL,
     "reward_ap"             INTEGER     NOT NULL,
     "distribution_end"      DATETIME    NOT NULL,
-    CONSTRAINT "pk_ddon_light_quests_quest_schedule_id" PRIMARY KEY ("quest_schedule_id")
+    CONSTRAINT "pk_ddon_light_quests_variant_id" PRIMARY KEY ("variant_id")
 );
 INSERT INTO "ddon_schedule_next"(type, timestamp)
 VALUES (6, 0);

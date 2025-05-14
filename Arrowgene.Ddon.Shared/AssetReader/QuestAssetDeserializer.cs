@@ -17,11 +17,13 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
         private QuestDropItemAsset _QuestDrops;
         private AssetCommonDeserializer _CommonEnemyDeserializer;
+        private Dictionary<QuestId, uint> _QuestScheduleIdAsset;
 
-        public QuestAssetDeserializer(AssetCommonDeserializer commonEnemyDeserializer, QuestDropItemAsset questDrops)
+        public QuestAssetDeserializer(AssetCommonDeserializer commonEnemyDeserializer, QuestDropItemAsset questDrops, Dictionary<QuestId, uint> scheduleIdAsset)
         {
             _QuestDrops = questDrops;
             _CommonEnemyDeserializer = commonEnemyDeserializer;
+            _QuestScheduleIdAsset = scheduleIdAsset;
 
             // Force this class to be invoked so we can look up flags during deserialization
             QuestFlags.InvokeTypeInitializer();
@@ -113,11 +115,24 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 assetData.NextQuestId = (QuestId)jNextQuest.GetUInt32();
             }
 
-            assetData.QuestScheduleId = (uint) assetData.QuestId;
-            if (jQuest.TryGetProperty("quest_schedule_id", out JsonElement jQuestScheduleId))
+            //assetData.QuestScheduleId = (uint) assetData.QuestId;
+            //if (jQuest.TryGetProperty("quest_schedule_id", out JsonElement jQuestScheduleId))
+            //{
+            //    assetData.QuestScheduleId = jQuestScheduleId.GetUInt32();
+            //}
+
+            assetData.VariantIndex = 0;
+            if (jQuest.TryGetProperty("variant_index", out JsonElement jVariantIndex))
             {
-                assetData.QuestScheduleId = jQuestScheduleId.GetUInt32();
+                assetData.VariantIndex = jVariantIndex.GetUInt32();
             }
+
+            if (assetData.VariantIndex > 127)
+            {
+                throw new Exception($"Invalid variant number {assetData.VariantIndex} > 127 for quest {assetData.QuestId}.");
+            }
+
+            assetData.QuestScheduleId = _QuestScheduleIdAsset[assetData.QuestId] + assetData.VariantIndex;
 
             assetData.OverrideEnemySpawn = (assetData.QuestType == QuestType.Main || assetData.QuestType == QuestType.ExtremeMission);
             if (jQuest.TryGetProperty("override_enemy_spawn", out JsonElement jOverrideEnemySpawn))

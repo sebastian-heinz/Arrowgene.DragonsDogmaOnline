@@ -482,6 +482,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
         }
 
+        public HashSet<QuestId> GetActiveQuestIds()
+        {
+            lock (ActiveQuests)
+            {
+                return ActiveQuests.Values.Select(x => x.QuestId).ToHashSet();
+            }
+        }
+
         public HashSet<uint> GetActiveQuestScheduleIds()
         {
             lock (ActiveQuests)
@@ -850,7 +858,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 Server.Database.RemoveQuestProgress(memberClient.Character.CommonId, questScheduleId, quest.QuestType, connectionIn);
                 if (quest.NextQuestId != QuestId.None)
                 {
-                    var nextQuest = GetQuest((uint)quest.NextQuestId);
+                    // TODO: This chooses a random next implementation,
+                    // but this mechanic is only used by the MSQ, which shouldn't have alternates anyways.
+                    var nextQuest = QuestManager.RollQuestForQuestId(quest.NextQuestId);
                     Server.Database.InsertQuestProgress(memberClient.Character.CommonId, nextQuest.QuestScheduleId, nextQuest.QuestType, 0, connectionIn);
                 }
 

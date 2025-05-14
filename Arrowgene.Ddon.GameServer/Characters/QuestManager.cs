@@ -45,6 +45,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             25077, 43645, 43646, 47734, 47736, 47737, 47738, 47739, 49692, 77644, 151381, 208640, 233576, 259411, 259412, 287378, 315624
         };
 
+        public static AssetRepository assetRepository; // Awful singleton stuff.
+
         private static void AddQuestToCategory(Quest quest)
         {
             if (!gVariantQuests.ContainsKey(quest.QuestId))
@@ -94,8 +96,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public static void LoadScriptedQuest(DdonGameServer server, IQuest questScript)
         {
-            gQuests[questScript.QuestScheduleId] = questScript.GenerateQuest(server);
-            var quest = gQuests[questScript.QuestScheduleId];
+            var quest = questScript.GenerateQuest(server);
+            gQuests[quest.QuestScheduleId] = quest;
             if (quest.Enabled)
             {
                 AddQuestToCategory(quest);
@@ -104,14 +106,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public static void LoadQuests(DdonGameServer server)
         {
-            var assetRepository = server.AssetRepository;
-
             // Iterate over quests generated from json
             foreach (var questAsset in assetRepository.QuestAssets.Quests)
             {
-                gQuests[questAsset.QuestScheduleId] = GenericQuest.FromAsset(server, questAsset);
+                var quest = GenericQuest.FromAsset(server, questAsset);
+                gQuests[quest.QuestScheduleId] = quest;
 
-                var quest = gQuests[questAsset.QuestScheduleId];
                 if (quest.Enabled)
                 {
                     AddQuestToCategory(quest);
@@ -212,6 +212,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return questScheduleIds.Count > 0 ? QuestManager.GetQuestByScheduleId(questScheduleIds.ToList()[0]) : null;
         }
 
+        public static HashSet<Quest> GetQuestsByQuestId(QuestId questId)
+        {
+            var questScheduleIds = GetQuestScheduleIdsForQuestId(questId);
+            return questScheduleIds.Select(x => QuestManager.GetQuestByScheduleId(x))
+                .Where(x => x is not null)
+                .ToHashSet();
+        }
+
         public static HashSet<uint> GetQuestScheduleIdsForQuestId(QuestId questId)
         {
             if (gVariantQuests.ContainsKey(questId))
@@ -310,6 +318,61 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new();
             }
             return gAreaTrialRanks[areaId];
+        }
+
+        public static uint GetScheduleId(DdonGameServer server, QuestId questId, uint variantNumber)
+        {
+            if (IsDatabaseManaged(questId, out uint baseScheduleId))
+            {
+                int bits = 27;
+                int maxVariant = 2 << bits;
+                if (variantNumber >= maxVariant)
+                {
+                    throw new Exception($"Invalid variant number {variantNumber} > {maxVariant} for quest {questId}.");
+                }
+                return baseScheduleId + variantNumber;
+            }
+            else
+            {
+                if (variantNumber >= 128)
+                {
+                    throw new Exception($"Invalid variant number {variantNumber} > 127 for quest {questId}.");
+                }
+
+                return server.AssetRepository.QuestScheduleIdAsset[questId] + variantNumber;
+            }
+        }
+
+        public static uint GetVariantIndex(DdonGameServer server, QuestId questId, uint questScheduleId)
+        {
+            if (IsDatabaseManaged(questId, out uint baseScheduleId))
+            {
+                return QuestScheduleId.GetRotatingVariant(questScheduleId);
+            }
+            else
+            {
+                return QuestScheduleId.GetVariant(questScheduleId);
+            }
+        }
+
+        /// <summary>
+        /// For quests that are managed from the database.
+        /// These quests have schedule IDs that are defined solely by type + offset, and so accept larger offsets.
+        /// </summary>
+        public static bool IsDatabaseManaged(QuestId questId, out uint baseScheduleId)
+        {
+            baseScheduleId = 0;
+
+            // Light Quests
+            if (40000000 <= (uint)questId && (uint)questId < 50000000)
+            {
+                baseScheduleId = QuestScheduleId.GenerateRotatingId(4, 0);
+                return true;
+            }
+
+            // TODO: Clan Quests, Wild Hunt
+
+            return false;
         }
 
         public static List<QuestProgressWork> CollectWorkItems(GameClient client, QuestProgressWorkType workType)

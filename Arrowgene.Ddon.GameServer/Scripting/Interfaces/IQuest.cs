@@ -1,6 +1,7 @@
+using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Quests;
-using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared;
+using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
@@ -13,9 +14,6 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
     {
         public IQuest()
         {
-            // TODO: Apply algorithm using VariantId+QuestId
-            QuestScheduleId = (uint)QuestId;
-
             Processes = new Dictionary<ushort, QuestProcess>();
             RewardItems = new List<QuestRewardItem>();
             WalletRewards = new List<QuestWalletReward>();
@@ -53,7 +51,12 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
         public abstract QuestId QuestId { get; }
         public virtual QuestId NextQuestId { get; } = QuestId.None;
         public virtual uint VariantId { get; } = 0;
-        public uint QuestScheduleId { get; }
+        public virtual uint QuestScheduleId {
+            get
+            {
+                return QuestManager.assetRepository.QuestScheduleIdAsset[QuestId] + VariantId;
+            }
+        }
         public virtual QuestAreaId QuestAreaId { get; } = QuestAreaId.None;
         public QuestSource QuestSource { get; } = QuestSource.Script;
         public virtual bool Enabled { get; } = true;
@@ -316,11 +319,11 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
                 EnableCancel = EnableCancel.Value,
                 QuestAreaId = QuestAreaId,
                 QuestId = QuestId,
+                VariantIndex = VariantId,
                 QuestOrderBackgroundImage = QuestOrderBackgroundImage,
                 IsImportant = IsImportant.Value,
                 AdventureGuideCategory = AdventureGuideCategory.Value,
                 QuestSource = QuestSource,
-                QuestScheduleId = QuestScheduleId,
                 QuestType = QuestType,
                 PointRewards = PointRewards,
                 Processes = Processes.Values.ToList(),

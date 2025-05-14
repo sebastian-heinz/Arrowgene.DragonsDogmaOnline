@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Shared.Asset;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,8 +25,8 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
             {
                 return false;
             }
-            
-            if (item.QuestIds.Count > 0 && !item.QuestIds.Any(x => QuestManager.GetQuestByScheduleId(x).IsActive(client)))
+
+            if (item.QuestIds.Count > 0 && !item.QuestIds.SelectMany(x => QuestManager.GetQuestsByQuestId((QuestId)x)).Any(x => x.IsActive(client)))
             {
                 return false;
             }

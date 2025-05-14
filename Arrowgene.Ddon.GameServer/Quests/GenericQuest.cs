@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         public static GenericQuest FromAsset(DdonGameServer server, QuestAssetData questAsset, IQuest backingObject = null)
         {
-            var quest = new GenericQuest(server, questAsset.QuestId, questAsset.QuestScheduleId, questAsset.QuestType, questAsset.Discoverable);
+            var quest = new GenericQuest(server, questAsset.QuestId, questAsset.VariantIndex, questAsset.QuestType, questAsset.Discoverable);
 
             quest.QuestSource = questAsset.QuestSource;
             quest.BackingObject = backingObject;
@@ -156,8 +156,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
             return quest;
         }
 
-        public GenericQuest(DdonGameServer server, QuestId questId, uint questScheduleId, QuestType questType, bool discoverable) : 
-            base(server, questId, questScheduleId, questType, discoverable)
+        public GenericQuest(DdonGameServer server, QuestId questId, uint variantIndex, QuestType questType, bool discoverable) : 
+            base(server, questId, variantIndex, questType, discoverable)
         {
             QuestLayoutFlagSetInfo = new List<QuestLayoutFlagSetInfo>();
         }

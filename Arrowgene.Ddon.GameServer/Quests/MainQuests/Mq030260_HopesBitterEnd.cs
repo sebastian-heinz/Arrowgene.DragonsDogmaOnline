@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(Mq030260_HopesBitterEnd));
 
-        public Mq030260_HopesBitterEnd() : base(null, QuestId.HopesBitterEnd, (uint) QuestId.HopesBitterEnd, QuestType.Main)
+        public Mq030260_HopesBitterEnd() : base(null, QuestId.HopesBitterEnd, 0, QuestType.Main)
         {
         }
 
@@ -296,7 +296,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                 {
                     new S2CQuestQuestProgressWorkSaveNtc()
                     {
-                        QuestScheduleId = (uint) QuestId.HopesBitterEnd,
+                        QuestScheduleId = QuestManager.assetRepository.QuestScheduleIdAsset[QuestId.HopesBitterEnd],
                         ProcessNo = 0, SequenceNo = 0, BlockNo = 8,
                         WorkList = new List<CDataQuestProgressWork>
                         {
@@ -305,7 +305,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     },
                     new S2CQuestQuestProgressWorkSaveNtc()
                     {
-                        QuestScheduleId = (uint) QuestId.HopesBitterEnd,
+                        QuestScheduleId = QuestManager.assetRepository.QuestScheduleIdAsset[QuestId.HopesBitterEnd],
                         ProcessNo = 3, SequenceNo = 0, BlockNo = 1,
                         WorkList = new List<CDataQuestProgressWork>
                         {
@@ -317,7 +317,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                 {
                     new S2CQuestQuestProgressWorkSaveNtc()
                     {
-                        QuestScheduleId = (uint) QuestId.HopesBitterEnd,
+                        QuestScheduleId = QuestManager.assetRepository.QuestScheduleIdAsset[QuestId.HopesBitterEnd],
                         ProcessNo = 0, SequenceNo = 0, BlockNo = 10,
                         WorkList = new List<CDataQuestProgressWork>
                         {
@@ -326,7 +326,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     },
                     new S2CQuestQuestProgressWorkSaveNtc()
                     {
-                        QuestScheduleId = (uint) QuestId.HopesBitterEnd,
+                        QuestScheduleId = QuestManager.assetRepository.QuestScheduleIdAsset[QuestId.HopesBitterEnd],
                         ProcessNo = 4, SequenceNo = 0, BlockNo = 1,
                         WorkList = new List<CDataQuestProgressWork>
                         {
@@ -338,7 +338,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                 {
                     new S2CQuestQuestProgressWorkSaveNtc()
                     {
-                        QuestScheduleId = (uint) QuestId.HopesBitterEnd,
+                        QuestScheduleId = QuestManager.assetRepository.QuestScheduleIdAsset[QuestId.HopesBitterEnd],
                         ProcessNo = 0, SequenceNo = 0, BlockNo = 12,
                         WorkList = new List<CDataQuestProgressWork>
                         {
@@ -347,7 +347,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                     },
                     new S2CQuestQuestProgressWorkSaveNtc()
                     {
-                        QuestScheduleId = (uint) QuestId.HopesBitterEnd,
+                        QuestScheduleId = QuestManager.assetRepository.QuestScheduleIdAsset[QuestId.HopesBitterEnd],
                         ProcessNo = 5, SequenceNo = 0, BlockNo = 1,
                         WorkList = new List<CDataQuestProgressWork>
                         {
@@ -364,7 +364,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                 {
                     new S2CQuestQuestProgressWorkSaveNtc()
                     {
-                        QuestScheduleId = (uint) QuestId.HopesBitterEnd,
+                        QuestScheduleId = QuestManager.assetRepository.QuestScheduleIdAsset[QuestId.HopesBitterEnd],
                         ProcessNo = 0, SequenceNo = 0, BlockNo = 19,
                         WorkList = new List<CDataQuestProgressWork>
                         {
