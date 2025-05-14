@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_CLIENT_ITEM_INFO_MISSING, $"Unable to find item information for '{request.ItemUID}'");
 
                 var recycleRewards = equipmentRecycleMixin.GetRecycleRewards(Server.AssetRepository, itemInfo, item);
-                for (var i = 0; i < recycleRewards.NumRewards; i++)
+                for (var i = 0; i < Math.Min(recycleRewards.ItemRewards.Count, recycleRewards.NumRewards); i++)
                 {
                     var rolledSlot = Random.Shared.Next(0, recycleRewards.ItemRewards.Count);
                     var item = recycleRewards.ItemRewards[rolledSlot];

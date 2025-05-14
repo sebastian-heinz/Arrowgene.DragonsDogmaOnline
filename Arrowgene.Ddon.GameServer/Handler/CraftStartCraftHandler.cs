@@ -101,7 +101,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 bool canPlusValue = !itemInfo.SubCategory.HasValue || !NoQualitySubCategories.Contains(itemInfo.SubCategory.Value);
                 if (canPlusValue && !string.IsNullOrEmpty(request.RefineMaterialUID))
                 {
-                    Item refineMaterialItem = Server.Database.SelectStorageItemByUId(request.RefineMaterialUID);
+                    Item refineMaterialItem = Server.Database.SelectStorageItemByUId(request.RefineMaterialUID, connection);
                     CraftCalculationResult craftCalculationResult = CraftManager.CalculateEquipmentQuality(refineMaterialItem, (uint)calculatedOdds);
                     plusValue = craftCalculationResult.CalculatedValue;
                     isGreatSuccessEquipmentQuality = craftCalculationResult.IsGreatSuccess;
