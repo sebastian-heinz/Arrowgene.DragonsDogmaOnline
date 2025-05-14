@@ -465,6 +465,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
+            foreach (var jobId in  Enum.GetValues(typeof(JobId)).Cast<JobId>())
+            {
+                bbmCharacter.ExtendedJobParams[jobId] = new CDataOrbGainExtendParam();
+            }
+
             Server.CharacterManager.UpdateCharacterExtendedParams(bbmCharacter, true);
 
             bbmCharacter.GreenHp = CharacterManager.BBM_BASE_HEALTH;
