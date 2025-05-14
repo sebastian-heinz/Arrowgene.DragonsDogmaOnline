@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Shared.Model.Quest
 {
@@ -14,7 +10,12 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
                 return LightQuestId.FromQuestId(QuestId);
             }
         }
-        public uint QuestScheduleId { get; set; }
+        public uint QuestScheduleId { get
+            {
+                return Quest.QuestScheduleId.GenerateRotatingId(4, VariantIndex);
+            }
+        }
+        public uint VariantIndex { get; set; }
         public int Target { get; set; }
         public int Count { get; set; }
         public ushort Level { get; set; }

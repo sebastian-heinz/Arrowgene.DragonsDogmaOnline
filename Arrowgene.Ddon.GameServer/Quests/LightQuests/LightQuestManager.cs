@@ -28,12 +28,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
         /// </summary>
         private static readonly int GENERATOR_ATTEMPTS_PER_QUEST = 20;
 
-        private static readonly uint MINIMUM_SCHEDULE_ID = 40000000;
-        private static readonly uint MAXIMUM_SCHEDULE_ID = 49999999;
+        private uint CURRENT_VARIANT_ID = 0;
 
-        private uint CURRENT_SCHEDULE_ID = MINIMUM_SCHEDULE_ID;
-
-        private static readonly TimeSpan BOARD_QUEST_DURATION = TimeSpan.FromMinutes(3); //TimeSpan.FromDays(1);
+        private static readonly TimeSpan BOARD_QUEST_DURATION = TimeSpan.FromDays(1);
 
         public LightQuestManager(DdonGameServer server)
         {
@@ -248,7 +245,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
         {
             var finalRecord = new LightQuestRecord()
             {
-                QuestScheduleId = NextScheduleId(),
+                VariantIndex = CURRENT_VARIANT_ID++,
                 QuestId = quest.QuestId,
                 Target = target,
                 Level = level,
@@ -268,24 +265,6 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
 
             return finalRecord;
         }
-
-        public uint NextScheduleId()
-        {
-            //var extantBoardQuests = QuestManager.GetQuestsByType(QuestType.Board).Where(x => QuestManager.GetQuestByScheduleId(x).BackingObject is LightQuestQuest);
-            //return extantBoardQuests.Any() ? extantBoardQuests.Max() + 1 : 100000000;
-
-            // Wrap around in case of overflow; highly unlikely for any reasonable situation.
-            if (CURRENT_SCHEDULE_ID + 1 > MAXIMUM_SCHEDULE_ID)
-            {
-                CURRENT_SCHEDULE_ID = MINIMUM_SCHEDULE_ID;
-                return CURRENT_SCHEDULE_ID;
-            }    
-            else
-            {
-                return ++CURRENT_SCHEDULE_ID;
-            }
-
-        }
         #endregion
 
         #region Quest Management
@@ -297,7 +276,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
                 // Always read before cleanup so that you can properly increment the schedule ID.
                 // Making the schedule ID increment monotonically is more important than keeping additional quests in memory.
                 records = Server.Database.SelectLightQuestRecords(connection);
-                CURRENT_SCHEDULE_ID = records.Count != 0 ? records.Max(x => x.QuestScheduleId) : CURRENT_SCHEDULE_ID;
+                CURRENT_VARIANT_ID = records.Count != 0 ? records.Max(x => x.VariantIndex) : CURRENT_VARIANT_ID;
 
                 // Head server is the only one who is allowed to clean the DB of dead quests.
                 if (clean && ServerUtils.IsHeadServer(Server))
@@ -315,7 +294,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
 
         public static bool IsLightQuestScheduleId(uint scheduleId)
         {
-            return MINIMUM_SCHEDULE_ID <= scheduleId && scheduleId <= MAXIMUM_SCHEDULE_ID;
+            return QuestScheduleId.GetType(scheduleId) == 4;
         }
 
         public void CheckQuestScheduleIdForDecay(Character character, uint scheduleId, DbConnection? connectionIn = null)

@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.GameServer.Tasks.Implementations
 
             server.LightQuestManager.GenerateAndAddQuestsFromAsset();
 
-            server.RpcManager.AnnounceAll("internal/packet", RpcInternalCommand.BoardQuestDailyRotation, null);
+            server.RpcManager.AnnounceAll("internal/command", RpcInternalCommand.BoardQuestDailyRotation, null);
         }
     }
 }

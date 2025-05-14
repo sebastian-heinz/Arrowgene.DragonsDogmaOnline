@@ -16,6 +16,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
         public override ushort RecommendedLevel => QuestRecord.Level;
         public override byte MinimumItemRank => 0;
         public override bool IsDiscoverable => false;
+        public override uint QuestScheduleId => Shared.Model.Quest.QuestScheduleId.GenerateRotatingId(4, VariantId);
 
         public LightQuestRecord QuestRecord { get; set; }
 
@@ -58,7 +59,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
                 IsImportant = IsImportant.Value,
                 AdventureGuideCategory = AdventureGuideCategory.Value,
                 QuestSource = QuestSource,
-                QuestScheduleId = QuestRecord.QuestScheduleId,
+                VariantIndex = QuestRecord.VariantIndex,
                 QuestType = QuestType,
                 PointRewards = PointRewards,
                 Processes = Processes.Values.ToList(),

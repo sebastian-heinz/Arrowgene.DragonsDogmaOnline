@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
@@ -14,6 +15,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
     {
         private static readonly string[] DdonLightQuestFields =
         [
+            "variant_id",
             "quest_schedule_id", "quest_id", "target", "level", "count", 
             "reward_xp", "reward_g", "reward_r", "reward_ap", 
             "distribution_end"
@@ -28,6 +30,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
 
         private void AddParameter(DbCommand command, LightQuestRecord record)
         {
+            AddParameter(command, "variant_id", record.VariantIndex);
             AddParameter(command, "quest_schedule_id", record.QuestScheduleId);
             AddParameter(command, "quest_id", (uint)record.QuestId);
             AddParameter(command, "target", record.Target);
@@ -43,7 +46,7 @@ namespace Arrowgene.Ddon.Database.Sql.Core
         private LightQuestRecord ReadLightQuestRecord(DbDataReader reader)
         {
             LightQuestRecord record = new();
-            record.QuestScheduleId = GetUInt32(reader, "quest_schedule_id");
+            record.VariantIndex = GetUInt32(reader, "variant_id");
             record.QuestId = (QuestId)GetUInt32(reader, "quest_id");
             record.Target = GetInt32(reader, "target");
             record.Level = GetUInt16(reader, "level");
