@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             if (client.Character.Stage.Id == 0)
             {
                 var thisServer = serverList.Find(x => x.Id == Server.Id);
-                thisServer.TrafficName = RpcManager.GetTrafficName(--thisServer.LoginNum);
+                thisServer.TrafficName = RpcManager.GetTrafficName(--thisServer.LoginNum, thisServer.MaxLoginNum);
             }
 
             return new S2CServerGetServerListRes()

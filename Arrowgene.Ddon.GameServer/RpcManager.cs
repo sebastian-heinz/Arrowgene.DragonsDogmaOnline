@@ -47,7 +47,6 @@ namespace Arrowgene.Ddon.GameServer
         private static readonly string[] TRAFFIC_LABELS = new string[] {
             "Empty", "Light", "Good", "Normal", "Busy", "Heavy"
         };
-        private static readonly uint COUNT_PER_TRAFFIC = 10;
 
         private readonly HttpClient HttpClient = new HttpClient();
 
@@ -111,17 +110,18 @@ namespace Arrowgene.Ddon.GameServer
                 info.LoginNum = (uint)CharacterTrackingMap[channelId].Count;
             }
             
-            info.TrafficName = GetTrafficName(info.LoginNum);
+            info.TrafficName = GetTrafficName(info.LoginNum, info.MaxLoginNum);
             return info;
         }
 
-        public static string GetTrafficName(uint count)
+        public static string GetTrafficName(uint count, uint maxLoginNum)
         {
             uint index = 0;
             if (count > 0)
             {
-                index = count / COUNT_PER_TRAFFIC + 1;
-                index = (uint) Math.Min(index, TRAFFIC_LABELS.Length);
+                uint countPerTraffic = (uint)(maxLoginNum / (TRAFFIC_LABELS.Length-1));
+                index = count / countPerTraffic + 1;
+                index = (uint) Math.Min(index, TRAFFIC_LABELS.Length - 1);
             }
             return $"{TRAFFIC_LABELS[index]} ({count})";
         }
