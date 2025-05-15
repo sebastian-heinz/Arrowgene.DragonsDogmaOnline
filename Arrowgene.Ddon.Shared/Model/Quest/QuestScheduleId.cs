@@ -2,6 +2,25 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 {
     public class QuestScheduleId
     {
+        public enum ScheduleIdType : byte
+        {
+            //Based on the first digits of the QuestIds
+            Main = 0,
+            Substory = 1,
+            World = 2,
+            Clan = 3,
+            Board = 4,
+            EXM = 5,
+            Tutorial = 6,
+            WorldManage = 7,
+            Pawn = 8,
+            WarMission = 9,
+            WildHunt = 15,
+
+            //Custom Types, for quests that don't exist normally.
+            CustomWorldManage = 10
+        } 
+
         private static readonly Bitfield Variant = new(6, 0, "Variant");
         private static readonly Bitfield Index = new(13, 7, "Index");
         private static readonly Bitfield Subgroup = new(20, 14, "Subgroup");
@@ -46,9 +65,9 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return (uint)RotationVariant.Value(scheduleId);
         }
 
-        public static byte GetType(uint scheduleId)
+        public static ScheduleIdType GetType(uint scheduleId)
         {
-            return (byte)(Type.Get(scheduleId));
+            return (ScheduleIdType)(Type.Get(scheduleId));
         }
     }
 }

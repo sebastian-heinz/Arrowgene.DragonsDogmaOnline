@@ -54,7 +54,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
         public virtual uint QuestScheduleId {
             get
             {
-                return QuestManager.assetRepository.QuestScheduleIdAsset[QuestId] + VariantId;
+                return LibDdon.Assets.QuestScheduleIdAsset[QuestId] + VariantId;
             }
         }
         public virtual QuestAreaId QuestAreaId { get; } = QuestAreaId.None;

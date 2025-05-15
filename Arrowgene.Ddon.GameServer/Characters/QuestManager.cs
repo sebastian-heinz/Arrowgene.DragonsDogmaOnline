@@ -45,8 +45,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
             25077, 43645, 43646, 47734, 47736, 47737, 47738, 47739, 49692, 77644, 151381, 208640, 233576, 259411, 259412, 287378, 315624
         };
 
-        public static AssetRepository assetRepository; // Awful singleton stuff.
-
         private static void AddQuestToCategory(Quest quest)
         {
             if (!gVariantQuests.ContainsKey(quest.QuestId))
@@ -107,7 +105,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public static void LoadQuests(DdonGameServer server)
         {
             // Iterate over quests generated from json
-            foreach (var questAsset in assetRepository.QuestAssets.Quests)
+            foreach (var questAsset in server.AssetRepository.QuestAssets.Quests)
             {
                 var quest = GenericQuest.FromAsset(server, questAsset);
                 gQuests[quest.QuestScheduleId] = quest;
@@ -364,7 +362,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             baseScheduleId = 0;
 
             // Light Quests
-            if (40000000 <= (uint)questId && (uint)questId < 50000000)
+            if (IsBoardQuest(questId))
             {
                 baseScheduleId = QuestScheduleId.GenerateRotatingId(4, 0);
                 return true;

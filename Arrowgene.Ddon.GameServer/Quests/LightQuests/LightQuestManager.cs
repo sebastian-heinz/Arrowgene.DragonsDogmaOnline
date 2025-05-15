@@ -294,7 +294,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
 
         public static bool IsLightQuestScheduleId(uint scheduleId)
         {
-            return QuestScheduleId.GetType(scheduleId) == 4;
+            return QuestScheduleId.GetType(scheduleId) == QuestScheduleId.ScheduleIdType.Board;
         }
 
         public void CheckQuestScheduleIdForDecay(Character character, uint scheduleId, DbConnection? connectionIn = null)

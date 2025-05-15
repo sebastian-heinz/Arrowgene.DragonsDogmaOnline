@@ -150,9 +150,6 @@ namespace Arrowgene.Ddon.GameServer
 
         public override void Start()
         {
-            // Cursed singleton workaround to make some assets available to scripts.
-            QuestManager.assetRepository = AssetRepository;
-
             ScriptManager.Initialize();
 
             QuestManager.LoadQuests(this);

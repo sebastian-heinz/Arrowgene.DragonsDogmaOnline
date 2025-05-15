@@ -16,7 +16,9 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
         public override ushort RecommendedLevel => QuestRecord.Level;
         public override byte MinimumItemRank => 0;
         public override bool IsDiscoverable => false;
-        public override uint QuestScheduleId => Shared.Model.Quest.QuestScheduleId.GenerateRotatingId(4, VariantId);
+        public override uint QuestScheduleId => Shared.Model.Quest.QuestScheduleId.GenerateRotatingId(
+            (byte)Shared.Model.Quest.QuestScheduleId.ScheduleIdType.Board, 
+            VariantId);
 
         public LightQuestRecord QuestRecord { get; set; }
 
