@@ -116,7 +116,7 @@ public class ScriptedQuest : IQuest
         var process0 = AddNewProcess(0);
         process0.AddRawBlock(QuestAnnounceType.None)
             .AddCheckCmdPlJobEq(JobId.SpiritLancer)
-            .AddCheckCmdIsTutorialQuestClear(QuestId.SkillAugmentationSpiritLancerTrialI);
+            .AddCheckCmdIsTutorialQuestClear(QuestId.SkillAugmentationSpiritLancerTrialII);
         process0.AddNpcTalkAndOrderBlock(Stage.SpiritArtsHut, NpcId.AdairDonnchadh0, 19131);
         process0.AddNewTalkToNpcBlock(QuestAnnounceType.Accept, Stage.SunlitUndergroundCave, 1, 1, NpcId.AdairDonnchadh0, 19133)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, QstLayoutFlag.AdairDonnchadh);
