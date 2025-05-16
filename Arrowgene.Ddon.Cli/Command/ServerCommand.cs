@@ -178,6 +178,7 @@ namespace Arrowgene.Ddon.Cli.Command
                 _webServer.Stop();
                 _gameServer.Stop();
                 _loginServer.Stop();
+                _database.Stop();
                 return CommandResultType.Completed;
             }
 
@@ -199,6 +200,11 @@ namespace Arrowgene.Ddon.Cli.Command
             if (_webServer != null)
             {
                 _webServer.Stop();
+            }
+
+            if (_database is not null)
+            {
+                _database.Stop();
             }
         }
     }
