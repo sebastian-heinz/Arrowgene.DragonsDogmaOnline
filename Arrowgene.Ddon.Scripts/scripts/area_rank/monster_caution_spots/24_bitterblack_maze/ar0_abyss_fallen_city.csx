@@ -22,7 +22,8 @@ public class MonsterSpotInfo : IMonsterSpotInfo
             LibDdon.Enemy.Create(EnemyId.BlackKnightPhantomClear, 50, 12000, 0, assignDefaultDrops: false)
                 .SetIsBoss(true)
                 .SetIsAreaBoss(true)
-                .SetNamedEnemyParams(NamedParamId.AccursedLord),
+                .SetNamedEnemyParams(NamedParamId.AccursedLord)
+                .SetEnemyTargetTypesId(TargetTypesId.AreaBoss),
         });
     }
 }

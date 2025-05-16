@@ -25,7 +25,8 @@ public class MonsterSpotInfo : IMonsterSpotInfo
                 .SetIsAreaBoss(true)
                 .SetNamedEnemyParams(NamedParamId.TheDevastator)
                 .AddDrop(ItemId.BitterblackDeedBox, 1, 2, DropRate.COMMON)
-                .AddDrop(ItemId.BitterblackOrb, 1, 2, DropRate.COMMON),
+                .AddDrop(ItemId.BitterblackOrb, 1, 2, DropRate.COMMON)
+                .SetEnemyTargetTypesId(TargetTypesId.AreaBoss),
             LibDdon.Enemy.Create(EnemyId.Ghost, 48, 1750, 1, assignDefaultDrops: false)
                 .SetNamedEnemyParams(NamedParamId.NetherworldFamiliar),
             LibDdon.Enemy.Create(EnemyId.Ghost, 48, 1750, 2, assignDefaultDrops: false)

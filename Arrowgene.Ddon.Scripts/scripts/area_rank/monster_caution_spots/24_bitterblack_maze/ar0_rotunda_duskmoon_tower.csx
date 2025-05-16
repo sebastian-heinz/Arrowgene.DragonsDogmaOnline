@@ -22,7 +22,8 @@ public class MonsterSpotInfo : IMonsterSpotInfo
             LibDdon.Enemy.Create(EnemyId.Scourge1, 25, 13500, 0, assignDefaultDrops: false)
                 .SetIsBoss(true)
                 .SetIsAreaBoss(true)
-                .SetNamedEnemyParams(NamedParamId.KingOfTheNetherworld),
+                .SetNamedEnemyParams(NamedParamId.KingOfTheNetherworld)
+                .SetEnemyTargetTypesId(TargetTypesId.AreaBoss)
         });
     }
 }

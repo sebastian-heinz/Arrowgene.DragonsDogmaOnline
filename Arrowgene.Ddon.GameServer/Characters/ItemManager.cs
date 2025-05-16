@@ -1,5 +1,6 @@
 #nullable enable
 using Arrowgene.Ddon.Database;
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -408,6 +409,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return ntcData;
+        }
+
+        public void EmbodyItem(DdonGameServer server, Character character, StorageType storageType, Item item, uint amount, DbConnection connectionIn)
+        {
+            Storage destinationStorage = character.Storage.GetStorage(storageType);
+
+            ushort slot = destinationStorage.AddItem(item, amount);
+            InsertItem(server, character, item, destinationStorage, slot, amount, connectionIn);
         }
 
         public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, bool itemBag, uint itemId, uint num, byte plusvalue = 0, DbConnection? connectionIn = null)

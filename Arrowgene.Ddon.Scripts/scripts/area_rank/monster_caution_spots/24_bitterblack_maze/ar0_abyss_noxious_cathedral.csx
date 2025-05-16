@@ -22,7 +22,8 @@ public class MonsterSpotInfo : IMonsterSpotInfo
             LibDdon.Enemy.Create(EnemyId.AlteredZuhl, 10, 2250, 0, assignDefaultDrops: false)
                 .SetIsBoss(true)
                 .SetIsAreaBoss(true)
-                .SetNamedEnemyParams(NamedParamId.LordOfTheFeast),
+                .SetNamedEnemyParams(NamedParamId.LordOfTheFeast)
+                .SetEnemyTargetTypesId(TargetTypesId.AreaBoss),
         });
     }
 }
