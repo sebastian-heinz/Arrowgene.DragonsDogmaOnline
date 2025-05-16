@@ -23,7 +23,8 @@ public class MonsterSpotInfo : IMonsterSpotInfo
                 .SetIsBoss(true)
                 .SetIsAreaBoss(true)
                 .SetStartThinkTblNo(1)
-                .SetNamedEnemyParams(NamedParamId.DevilInADeadCity),
+                .SetNamedEnemyParams(NamedParamId.DevilInADeadCity)
+                .SetEnemyTargetTypesId(TargetTypesId.AreaBoss),
         });
     }
 }

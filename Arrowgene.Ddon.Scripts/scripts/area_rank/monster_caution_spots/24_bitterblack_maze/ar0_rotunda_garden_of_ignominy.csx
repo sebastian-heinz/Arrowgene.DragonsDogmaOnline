@@ -22,7 +22,8 @@ public class MonsterSpotInfo : IMonsterSpotInfo
             LibDdon.Enemy.Create(EnemyId.Zuhl1, 10, 2250, 0, assignDefaultDrops: false)
                 .SetIsBoss(true)
                 .SetIsAreaBoss(true)
-                .SetNamedEnemyParams(NamedParamId.NetherworldFiend),
+                .SetNamedEnemyParams(NamedParamId.NetherworldFiend)
+                .SetEnemyTargetTypesId(TargetTypesId.AreaBoss)
         });
     }
 }

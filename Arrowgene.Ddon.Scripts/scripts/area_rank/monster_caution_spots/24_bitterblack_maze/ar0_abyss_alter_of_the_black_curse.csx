@@ -12,9 +12,9 @@ public class MonsterSpotInfo : IMonsterSpotInfo
 
     public class NamedParamId
     {
-        public const uint TheFallen0 = 2678; // The Fallen
+        public const uint TheFallen0 = 3154; // The Fallen
         public const uint TheFallen1 = 3048; // The Fallen
-        public const uint TheFallen2 = 3154; // The Fallen
+        public const uint TheFallen2 = 2678; // The Fallen
     }
 
     private InstancedEnemy CreateRandomBoss(ushort lv, uint exp, byte index)
@@ -32,7 +32,8 @@ public class MonsterSpotInfo : IMonsterSpotInfo
         {
             CreateRandomBoss(55, 15000, 0)
                 .SetIsBoss(true)
-                .SetIsAreaBoss(true),
+                .SetIsAreaBoss(true)
+                .SetEnemyTargetTypesId(TargetTypesId.AreaBoss),
         });
     }
 }

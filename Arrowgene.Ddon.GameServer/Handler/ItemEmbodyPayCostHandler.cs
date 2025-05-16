@@ -1,10 +1,8 @@
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-using Microsoft.VisualBasic;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -21,7 +19,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             var result = new S2CItemGetEmbodyPayCostRes();
 
-            var normalCharacter = Server.Database.SelectCharacter(client.Character.CharacterId);
             result.EmbodyCostList.Add(new CDataItemEmbodyCostParam()
             {
                 WalletType = WalletType.GoldenDragonMark,
