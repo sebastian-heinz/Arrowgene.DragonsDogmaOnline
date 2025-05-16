@@ -74,7 +74,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     break;
                 case OrbGainParamType.JobMagicalDefence:
                 case OrbGainParamType.AllJobsMagicalDefence:
-                    extendParams.MagicAttack += (ushort)upgrade.Amount;
+                    extendParams.MagicDefence += (ushort)upgrade.Amount;
                     break;
             }
         }
