@@ -76,7 +76,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                 }
 
-                var itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, craftProgress.ItemId);
+                var itemInfo = Server.AssetRepository.ClientItemInfos[craftProgress.ItemId];
                 queue.AddRange(Server.AchievementManager.HandleCraft(client, itemInfo, connection));
             });
 

@@ -154,7 +154,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
 
         public ushort RollLevel(DdonGameServer server)
         {
-            var itemRank = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, ItemId).Rank;
+            var itemRank = server.AssetRepository.ClientItemInfos[ItemId].Rank;
             var adjustedRank = itemRank <= 12 ? itemRank : itemRank / 5 + 10;
             if (adjustedRank <= 10)
             {

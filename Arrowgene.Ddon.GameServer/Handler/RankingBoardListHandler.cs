@@ -31,7 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 res.RankingBoardList.Add(new()
                 {
                     BoardId = quest.QuestScheduleId,
-                    QuestId = (uint)quest.QuestId,
+                    QuestId = quest.QuestId,
                     State = RankingBoardState.ReportRanks,
                     RegisteredNum = 0,
                     IsWarMission = false, // TODO: Parse this from the QuestId

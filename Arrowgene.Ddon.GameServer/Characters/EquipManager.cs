@@ -330,7 +330,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     continue;
                 }
 
-                var itemInfo = server.ItemManager.LookupInfoByItemID(server, equip.ItemId);
+                var itemInfo = server.AssetRepository.ClientItemInfos[equip.ItemId];
                 if (itemInfo.SubCategory == ItemSubCategory.EquipEnsemble)
                 {
                     return true;
@@ -386,7 +386,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             if (CharacterHasEnsembleEquipped(server, characterCommon))
             {
                 var mainHand = characterCommon.EquipmentTemplate.GetEquipItem(characterCommon.Job, EquipType.Performance, EquipSlot.WepMain);
-                itemRank = mainHand is not null ? server.ItemManager.LookupInfoByItemID(server, mainHand.ItemId).Rank : 0u;
+                itemRank = mainHand is not null ? server.AssetRepository.ClientItemInfos[mainHand.ItemId].Rank : 0u;
 
                 foreach (EquipSlot slot in EnsembleSlots)
                 {
@@ -396,7 +396,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                         continue;
                     }
 
-                    var itemInfo = server.ItemManager.LookupInfoByItemID(server, equip.ItemId);
+                    var itemInfo = server.AssetRepository.ClientItemInfos[equip.ItemId];
                     if (itemInfo.SubCategory == ItemSubCategory.EquipEnsemble)
                     {
                         itemRank += itemInfo.Rank;
@@ -413,7 +413,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     var equip = characterCommon.EquipmentTemplate.GetEquipItem(characterCommon.Job, EquipType.Performance, slot);
                     if (equip != null)
                     {
-                        var itemInfo = server.ItemManager.LookupInfoByItemID(server, equip.ItemId);
+                        var itemInfo = server.AssetRepository.ClientItemInfos[equip.ItemId];
                         itemRank += itemInfo.Rank;
                     }
                 }

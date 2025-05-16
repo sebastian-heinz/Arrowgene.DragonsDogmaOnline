@@ -92,7 +92,7 @@ namespace Arrowgene.Ddon.Shared
             _fileSystemWatchers = new Dictionary<string, FileSystemWatcher>();
 
             ClientErrorCodes = new Dictionary<ErrorCode, ClientErrorCode>();
-            ClientItemInfos = new Dictionary<uint, ClientItemInfo>();
+            ClientItemInfos = new();
             NamedParamAsset = new Dictionary<uint, NamedParam>();
             EnemySpawnAsset = new EnemySpawnAsset();
             GatheringItems = new Dictionary<(StageLayoutId, uint), List<GatheringItem>>();
@@ -138,7 +138,7 @@ namespace Arrowgene.Ddon.Shared
         }
 
         public Dictionary<ErrorCode, ClientErrorCode> ClientErrorCodes { get; private set; }
-        public Dictionary<uint, ClientItemInfo> ClientItemInfos { get; private set; } // May be incorrect, or incomplete
+        public ClientItemInfoAsset ClientItemInfos { get; private set; }
         public Dictionary<uint, NamedParam> NamedParamAsset { get; private set; }
         public EnemySpawnAsset EnemySpawnAsset { get; private set; }
         public Dictionary<(StageLayoutId, uint), List<GatheringItem>> GatheringItems { get; private set; }
@@ -188,7 +188,7 @@ namespace Arrowgene.Ddon.Shared
         public void Initialize()
         {
             RegisterAsset(value => ClientErrorCodes = value, ClientErrorCodesKey, new ClientErrorCodeAssetDeserializer());
-            RegisterAsset(value => ClientItemInfos = value.ToDictionary(key => key.ItemId, val => val), ItemListKey, new ClientItemInfoCsv());
+            RegisterAsset(value => ClientItemInfos = value, ItemListKey, new ClientItemInfoCsv());
             RegisterAsset(value => NamedParamAsset = value, NamedParamsKey, new NamedParamAssetDeserializer());
             RegisterAsset(value => EnemySpawnAsset = value, EnemySpawnsKey, new EnemySpawnAssetDeserializer(this.NamedParamAsset));
             RegisterAsset(value => GatheringItems = value, GatheringItemsKey, new GatheringItemCsv());

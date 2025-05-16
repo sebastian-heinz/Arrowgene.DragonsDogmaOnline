@@ -44,7 +44,7 @@ public class Mixin : ILightQuestRewardMixin
 
     public uint CalculateRewardGAlt(LightQuestRecord record, double difficulty = 0.0)
     {
-        var itemInfo = ClientItemInfo.GetInfoForItemId(LibDdon.Assets.ClientItemInfos, (uint)record.Target);
+        var itemInfo = LibDdon.Assets.ClientItemInfos[(uint)record.Target];
         var price = itemInfo.Price;
 
         // Small reward for doing things in bulk.

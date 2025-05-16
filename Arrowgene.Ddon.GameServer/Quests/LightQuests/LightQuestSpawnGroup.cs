@@ -82,7 +82,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
 
         public void AddItem(DdonGameServer server, GatheringItem item)
         {
-            var itemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, item.ItemId);
+            var itemInfo = server.AssetRepository.ClientItemInfos[item.ItemId];
 
             if (DeliverableSubCategories.Contains(itemInfo.SubCategory ?? 0))
             {

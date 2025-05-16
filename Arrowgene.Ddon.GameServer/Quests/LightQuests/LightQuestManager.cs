@@ -357,12 +357,18 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
         #region Scraping for Quest Generation
         private readonly Dictionary<QuestAreaId, LightQuestAreaHuntSummary> EnemySummaries = Enum.GetValues<QuestAreaId>().ToDictionary(x => x, x => new LightQuestAreaHuntSummary(x));
         private readonly Dictionary<QuestAreaId, LightQuestAreaDeliverySummary> ItemSummaries = Enum.GetValues<QuestAreaId>().ToDictionary(x => x, x => new LightQuestAreaDeliverySummary(x));
-        private readonly HashSet<uint> DeliverableItems;
+        private readonly HashSet<ItemId> DeliverableItems;
 
-        private static HashSet<uint> ParseGatherableItems(DdonGameServer server)
+        private static HashSet<ItemId> ParseGatherableItems(DdonGameServer server)
         {
-            var craftableItems = server.AssetRepository.CraftingRecipesAsset.SelectMany(x => x.RecipeList).Select(x => x.ItemID).ToHashSet();
-            return server.AssetRepository.ClientItemInfos.Values.Where(x => DeliverableSubCategories.Contains(x.SubCategory ?? 0) && !craftableItems.Contains(x.ItemId)).Select(x => x.ItemId).ToHashSet();
+            var craftableItems = server.AssetRepository.CraftingRecipesAsset
+                .SelectMany(x => x.RecipeList)
+                .Select(x => (ItemId)x.ItemID)
+                .ToHashSet();
+            return server.AssetRepository.ClientItemInfos.Values
+                .Where(x => DeliverableSubCategories.Contains(x.SubCategory ?? 0) && !craftableItems.Contains(x.ItemId))
+                .Select(x => x.ItemId)
+                .ToHashSet();
         }
 
         private void ParseStagesByQuestAreaId()
@@ -413,7 +419,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
 
                 foreach (var item in items)
                 {
-                    if (DeliverableItems.Contains((uint)item.ItemId))
+                    if (DeliverableItems.Contains(item.ItemId))
                     {
                         deliverySummary.AddItem(item);
                     }
@@ -484,7 +490,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
 
                 foreach (var item in items)
                 {
-                    if (DeliverableItems.Contains((uint)item.ItemId))
+                    if (DeliverableItems.Contains(item.ItemId))
                     {
                         deliverySummary.AddItem(item);
                     }
@@ -526,7 +532,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
             huntSummary.AddEnemy(enemy);
             foreach (var item in enemy.DropsTable.Items)
             {
-                if (DeliverableItems.Contains((uint)item.ItemId))
+                if (DeliverableItems.Contains(item.ItemId))
                 {
                     deliverySummary.AddItem(item, DROP_MATERIAL_FACTOR);
                 }

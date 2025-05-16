@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var (storageType, itemProps) = client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, request.EquipItemUId);
             var (slotNo, item, amount) = itemProps;
 
-            ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, item.ItemId);
+            ClientItemInfo clientItemInfo = Server.AssetRepository.ClientItemInfos[item.ItemId];
             var result = new S2CCraftStartAttachElementRes();
 
             ushort relativeSlotNo = slotNo;

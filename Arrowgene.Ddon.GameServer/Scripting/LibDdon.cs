@@ -107,7 +107,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
 
             public ClientItemInfo GetClientItemInfo(ItemId itemId)
             {
-                return Server.ItemManager.LookupInfoByItemID(Server, (uint) itemId);
+                return Server.AssetRepository.ClientItemInfos[itemId];
             }
 
             public GatheringItem CreateDropItem(ItemId itemId, uint minAmount, uint maxAmount, double dropChance)
