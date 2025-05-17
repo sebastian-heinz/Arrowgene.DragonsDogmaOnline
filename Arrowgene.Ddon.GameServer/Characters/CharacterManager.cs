@@ -328,7 +328,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // Old DB is in use and new table not populated with required data for character
                     Logger.Error($"Character: AccountId={character.AccountId}, CharacterId={character.ContentCharacterId}, CommonId={character.CommonId}, PawnCommonId={pawn.CommonId} is missing table entry in 'ddon_orb_gain_extend_param'.");
                 }
-                UpdateCharacterExtendedParams(pawn);
+                UpdateCharacterExtendedParams(pawn, ownerCharacter: character);
             }
         }
 
@@ -355,12 +355,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return CharacterManager.BASE_ABILITY_COST_AMOUNT + character.ExtendedParams.AbilityCost;
         }
 
-        public void UpdateCharacterExtendedParams(CharacterCommon character, bool newCharacter = false)
+        public void UpdateCharacterExtendedParams(CharacterCommon characterCommon, bool newCharacter = false, Character ownerCharacter = null)
         {
-            var ExtendedParams = character.ExtendedParams;
+            var ExtendedParams = characterCommon.ExtendedParams;
 
             // There is always an implicit + 1 ring slot plus the extended params value
-            character.JewelrySlotNum = (byte)(CharacterManager.DEFAULT_RING_COUNT + ExtendedParams.JewelrySlot);
+            characterCommon.JewelrySlotNum = (byte)(CharacterManager.DEFAULT_RING_COUNT + ExtendedParams.JewelrySlot);
 
             /**
              * There are two physical attack traits and two magic attack traits in
@@ -369,30 +369,31 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * Similar distinction made with magic. The Gain* stats are extra stats
              * on top of the iniate stats. These come from armors and BO/HO trees.
              */
-            character.StatusInfo.GainAttack = ExtendedParams.Attack;
-            character.StatusInfo.GainDefense = ExtendedParams.Defence;
-            character.StatusInfo.GainMagicAttack = ExtendedParams.MagicAttack;
-            character.StatusInfo.GainMagicDefense = ExtendedParams.MagicDefence;
-            character.StatusInfo.GainStamina = ExtendedParams.StaminaMax;
-            character.StatusInfo.GainHP = ExtendedParams.HpMax;
+            characterCommon.StatusInfo.GainAttack = ExtendedParams.Attack;
+            characterCommon.StatusInfo.GainDefense = ExtendedParams.Defence;
+            characterCommon.StatusInfo.GainMagicAttack = ExtendedParams.MagicAttack;
+            characterCommon.StatusInfo.GainMagicDefense = ExtendedParams.MagicDefence;
+            characterCommon.StatusInfo.GainStamina = ExtendedParams.StaminaMax;
+            characterCommon.StatusInfo.GainHP = ExtendedParams.HpMax;
 
-            if (character is Character)
+            /**
+             * Additional stats can be earned from the S2 and S3 BO/HO orb trees.
+             * The stat boosts rewarded for this mechanism rewards both stats for all jobs and stats for
+             * a specific job only. We abuse JobId.None to store the stats for all jobs.
+             */
+            var extendedParams = characterCommon.ExtendedJobParams;
+            JobId jobId = characterCommon.ActiveCharacterJobData.Job;
+            if (characterCommon is Pawn)
             {
-                /**
-                 * For player characters, they can earn additional status from the S2 and S3 BO/HO orb trees.
-                 * The stat boosts rewarded for this mechanism rewards both stats for all jobs and stats for
-                 * a specific job only. We abuse JobId.None to store the stats for all jobs.
-                 */
-                JobId jobId = character.ActiveCharacterJobData.Job;
-                var extendedParams = character.ExtendedJobParams;
-
-                character.StatusInfo.GainAttack += (uint)(extendedParams[JobId.None].Attack + extendedParams[jobId].Attack);
-                character.StatusInfo.GainDefense += (uint)(extendedParams[JobId.None].Defence + extendedParams[jobId].Defence);
-                character.StatusInfo.GainMagicAttack += (uint)(extendedParams[JobId.None].MagicAttack + extendedParams[jobId].MagicAttack);
-                character.StatusInfo.GainMagicDefense += (uint)(extendedParams[JobId.None].MagicDefence + extendedParams[jobId].MagicDefence);
-                character.StatusInfo.GainStamina += (uint)(extendedParams[JobId.None].StaminaMax + extendedParams[jobId].StaminaMax);
-                character.StatusInfo.GainHP += (uint)(extendedParams[JobId.None].HpMax + extendedParams[jobId].HpMax);
+                extendedParams = ownerCharacter.ExtendedJobParams;
             }
+
+            characterCommon.StatusInfo.GainAttack += (uint)(extendedParams[JobId.None].Attack + extendedParams[jobId].Attack);
+            characterCommon.StatusInfo.GainDefense += (uint)(extendedParams[JobId.None].Defence + extendedParams[jobId].Defence);
+            characterCommon.StatusInfo.GainMagicAttack += (uint)(extendedParams[JobId.None].MagicAttack + extendedParams[jobId].MagicAttack);
+            characterCommon.StatusInfo.GainMagicDefense += (uint)(extendedParams[JobId.None].MagicDefence + extendedParams[jobId].MagicDefence);
+            characterCommon.StatusInfo.GainStamina += (uint)(extendedParams[JobId.None].StaminaMax + extendedParams[jobId].StaminaMax);
+            characterCommon.StatusInfo.GainHP += (uint)(extendedParams[JobId.None].HpMax + extendedParams[jobId].HpMax);
 
             /**
              * Seems when the game first loads, the game wants MaxHP to always be 760
@@ -409,18 +410,18 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * scenarios where this may be required. The same trick also works
              * for stamina.
              */
-            if (character.StatusInfo.MaxHP != 0 || newCharacter)
+            if (characterCommon.StatusInfo.MaxHP != 0 || newCharacter)
             {
-                character.StatusInfo.HP = CharacterManager.MAX_PLAYER_HP;
-                character.StatusInfo.WhiteHP = CharacterManager.MAX_PLAYER_HP;
+                characterCommon.StatusInfo.HP = CharacterManager.MAX_PLAYER_HP;
+                characterCommon.StatusInfo.WhiteHP = CharacterManager.MAX_PLAYER_HP;
             }
-            character.StatusInfo.MaxHP = CharacterManager.BASE_HEALTH;
+            characterCommon.StatusInfo.MaxHP = CharacterManager.BASE_HEALTH;
 
-            if (character.StatusInfo.MaxStamina != 0 || newCharacter)
+            if (characterCommon.StatusInfo.MaxStamina != 0 || newCharacter)
             {
-                character.StatusInfo.Stamina = CharacterManager.MAX_PLAYER_STAMINA;
+                characterCommon.StatusInfo.Stamina = CharacterManager.MAX_PLAYER_STAMINA;
             }
-            character.StatusInfo.MaxStamina = CharacterManager.BASE_STAMINA;
+            characterCommon.StatusInfo.MaxStamina = CharacterManager.BASE_STAMINA;
         }
 
         public void CleanupOnExit(GameClient client)
@@ -459,24 +460,24 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public PacketQueue UpdateCharacterExtendedParamsNtc(GameClient client, CharacterCommon character)
         {
-            UpdateCharacterExtendedParams(character);
+            UpdateCharacterExtendedParams(character, ownerCharacter: client.Character);
             return NotifyClientOfCharacterStatus(client, character);
         }
 
-        private PacketQueue NotifyClientOfCharacterStatus(GameClient client, CharacterCommon character)
+        private PacketQueue NotifyClientOfCharacterStatus(GameClient client, CharacterCommon characterCommon)
         {
             PacketQueue queue = new();
 
-            if (character is Character)
+            if (characterCommon is Character)
             {
                 S2CContextGetLobbyPlayerContextNtc ntc1 = new S2CContextGetLobbyPlayerContextNtc();
-                GameStructure.S2CContextGetLobbyPlayerContextNtc(ntc1, (Character) character);
+                GameStructure.S2CContextGetLobbyPlayerContextNtc(ntc1, (Character) characterCommon);
 
                 S2CExtendEquipSlotNtc ntc2 = new S2CExtendEquipSlotNtc()
                 {
                     EquipSlot = EquipCategory.Jewelry,
                     AddNum = 0,
-                    TotalNum = character.JewelrySlotNum
+                    TotalNum = characterCommon.JewelrySlotNum
                 };
 
                 if (client.Party != null)
@@ -492,7 +493,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
             else
             {
-                PartyMember partyMember = client.Party.GetPartyMemberByCharacter(character);
+                PartyMember partyMember = client.Party.GetPartyMemberByCharacter(characterCommon);
                 if (partyMember == null || partyMember is not PawnPartyMember)
                 {
                     Logger.Error($"Failed to find party member in the list");

@@ -113,13 +113,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             };
             PopulateNewPawnData(client.Character, pawn, request.SlotNo - 1);
-            Server.CharacterManager.UpdateCharacterExtendedParams(pawn, true);
+            Server.CharacterManager.UpdateCharacterExtendedParams(pawn, true, client.Character);
 
             Database.CreatePawn(pawn);
             Database.InsertGainExtendParam(pawn.CommonId, pawn.ExtendedParams);
 
             pawn = Server.Database.SelectPawnsByCharacterId(client.Character.CharacterId).Find(x => x.PawnId == pawn.PawnId);
-            Server.CharacterManager.UpdateCharacterExtendedParams(pawn, true);
+            Server.CharacterManager.UpdateCharacterExtendedParams(pawn, true, client.Character);
             pawn.Server = client.Character.Server;
 
             pawn.Equipment = client.Character.Storage.GetPawnEquipment(request.SlotNo - 1);

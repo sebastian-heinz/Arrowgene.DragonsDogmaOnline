@@ -12,19 +12,17 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(PawnGetPartyPawnDataHandler));
 
-        private readonly CharacterManager _CharacterManager;
-        private readonly OrbUnlockManager _OrbUnlockManager;
+        private readonly DdonGameServer Server;
 
         public PawnGetPartyPawnDataHandler(DdonGameServer server) : base(server)
         {
-            _CharacterManager = server.CharacterManager;
-            _OrbUnlockManager = server.OrbUnlockManager;
+            Server = server;
         }
 
         public override S2CPawnGetPartyPawnDataRes Handle(GameClient client, C2SPawnGetPartyPawnDataReq packet)
         {
             // var owner = Server.CharacterManager.SelectCharacter(packet.Structure.CharacterId);
-            GameClient owner = this.Server.ClientLookup.GetClientByCharacterId(packet.CharacterId)
+            GameClient owner = Server.ClientLookup.GetClientByCharacterId(packet.CharacterId)
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CHARACTER_PARAM_NOT_FOUND);
             // TODO: Move this to a function or lookup class
             List<Pawn> pawns = owner.Character.Pawns.Concat(client.Character.RentedPawns).ToList();
@@ -41,13 +39,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: things like the CharacterManager. We should create a
             // TODO: proper mechanism for these conversions between server object and CData objects.
             GameStructure.CDataPawnInfo(res.PawnInfo, pawn);
-            res.PawnInfo.AbilityCostMax = _CharacterManager.GetMaxAugmentAllocation(pawn);
+            res.PawnInfo.AbilityCostMax = Server.CharacterManager.GetMaxAugmentAllocation(pawn);
 
             S2CPawnGetPawnOrbDevoteInfoNtc ntc = new S2CPawnGetPawnOrbDevoteInfoNtc()
             {
                 CharacterId = packet.CharacterId,
                 PawnId = pawn.PawnId,
-                OrbPageStatusList = _OrbUnlockManager.GetOrbPageStatus(pawn)
+                OrbPageStatusList = Server.OrbUnlockManager.GetOrbPageStatus(pawn),
+                JobOrbTreeStatusList = Server.JobOrbUnlockManager.GetJobOrbTreeStatus(owner.Character),
             };
             client.Send(ntc);
 
