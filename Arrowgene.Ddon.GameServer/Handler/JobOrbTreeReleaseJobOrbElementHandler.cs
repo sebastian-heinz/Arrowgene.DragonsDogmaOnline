@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -26,6 +27,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             // Notify all players of the upgrade
             packets.AddRange(Server.CharacterManager.UpdateCharacterExtendedParamsNtc(client, client.Character));
+
+            foreach (var member in client.Party.Members)
+            {
+                if (member is PawnPartyMember pawnMember && pawnMember.Pawn.CharacterId == client.Character.CharacterId)
+                {
+                    packets.AddRange(Server.CharacterManager.UpdateCharacterExtendedParamsNtc(client, pawnMember.Pawn));
+                }
+            }
 
             packets.Send();
 
