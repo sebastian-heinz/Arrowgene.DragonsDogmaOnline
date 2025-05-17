@@ -1,4 +1,4 @@
-﻿/*
+/*
  * This file is part of Arrowgene.Ddon.LoginServer
  *
  * Arrowgene.Ddon.LoginServer is a server implementation for the game "Dragons Dogma Online".
@@ -88,7 +88,6 @@ namespace Arrowgene.Ddon.Server
         {
             _server.Stop();
             _consumer.Dispose();
-            Database.Stop();
         }
 
         protected void AddHandler(IPacketHandler<TClient> packetHandler)

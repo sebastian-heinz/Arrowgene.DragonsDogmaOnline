@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
+using Arrowgene.Ddon.GameServer.Quests.LightQuests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -482,6 +483,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
         }
 
+        public HashSet<QuestId> GetActiveQuestIds()
+        {
+            lock (ActiveQuests)
+            {
+                return ActiveQuests.Values.Select(x => x.QuestId).ToHashSet();
+            }
+        }
+
         public HashSet<uint> GetActiveQuestScheduleIds()
         {
             lock (ActiveQuests)
@@ -850,7 +859,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 Server.Database.RemoveQuestProgress(memberClient.Character.CommonId, questScheduleId, quest.QuestType, connectionIn);
                 if (quest.NextQuestId != QuestId.None)
                 {
-                    var nextQuest = GetQuest((uint)quest.NextQuestId);
+                    // TODO: This chooses a random next implementation,
+                    // but this mechanic is only used by the MSQ, which shouldn't have alternates anyways.
+                    var nextQuest = QuestManager.RollQuestForQuestId(quest.NextQuestId);
                     Server.Database.InsertQuestProgress(memberClient.Character.CommonId, nextQuest.QuestScheduleId, nextQuest.QuestType, 0, connectionIn);
                 }
 
@@ -933,31 +944,44 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 CharacterId = leaderClient.Character.CharacterId
             };
 
-            var priorityQuestScheduleIds = Server.Database.GetPriorityQuestScheduleIds(leaderClient.Character.CommonId, connectionIn);
-            foreach (var priorityQuestScheduleId in priorityQuestScheduleIds)
+            Server.Database.ExecuteQuerySafe(connectionIn, connection =>
             {
-                var quest = QuestManager.GetQuestByScheduleId(priorityQuestScheduleId);
-                if (quest == null)
+                var priorityQuestScheduleIds = Server.Database.GetPriorityQuestScheduleIds(leaderClient.Character.CommonId, connection);
+                foreach (var priorityQuestScheduleId in priorityQuestScheduleIds)
                 {
-                    Logger.Error(requestingClient, $"No quest object exists for ${priorityQuestScheduleId}");
-                    continue;
-                }
+                    var quest = QuestManager.GetQuestByScheduleId(priorityQuestScheduleId);
+                    if (quest == null)
+                    {
+                        Logger.Error(requestingClient, $"No quest object exists for ${priorityQuestScheduleId}");
+                        Server.Database.DeletePriorityQuest(leaderClient.Character.CommonId, priorityQuestScheduleId, connection);
+                        continue;
+                    }
 
-                var questStateManager = QuestManager.GetQuestStateManager(requestingClient, quest);
-                if (questStateManager == null)
-                {
-                    Logger.Error(requestingClient, $"Unable to fetch the quest state manager for {priorityQuestScheduleId}");
-                    continue;
-                }
+                    var questStateManager = QuestManager.GetQuestStateManager(requestingClient, quest);
+                    if (questStateManager == null)
+                    {
+                        Logger.Error(requestingClient, $"Unable to fetch the quest state manager for {priorityQuestScheduleId}");
+                        Server.Database.DeletePriorityQuest(leaderClient.Character.CommonId, priorityQuestScheduleId, connection);
+                        continue;
+                    }
 
-                var questState = questStateManager.GetQuestState(priorityQuestScheduleId);
-                if (questState == null)
-                {
-                    Logger.Error(requestingClient, $"Failed to find quest state for {priorityQuestScheduleId}");
-                    continue;
+                    if (quest.BackingObject is LightQuestQuest)
+                    {
+                        Logger.Debug($"Cleaning up priority entry for decayed board quest {priorityQuestScheduleId}");
+                        Server.Database.DeletePriorityQuest(leaderClient.Character.CommonId, priorityQuestScheduleId, connection);
+                        continue;
+                    }
+
+                    var questState = questStateManager.GetQuestState(priorityQuestScheduleId);
+                    if (questState == null)
+                    {
+                        Logger.Error(requestingClient, $"Failed to find quest state for {priorityQuestScheduleId}");
+                        Server.Database.DeletePriorityQuest(leaderClient.Character.CommonId, priorityQuestScheduleId, connection);
+                        continue;
+                    }
+                    prioNtc.PriorityQuestList.Add(quest.ToCDataPriorityQuest(questState.Step));
                 }
-                prioNtc.PriorityQuestList.Add(quest.ToCDataPriorityQuest(questState.Step));
-            }
+            });
             Party.EnqueueToAll(prioNtc, packets);
 
             return packets;

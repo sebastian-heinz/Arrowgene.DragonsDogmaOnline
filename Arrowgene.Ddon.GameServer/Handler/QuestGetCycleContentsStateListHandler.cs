@@ -68,7 +68,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ntc.WorldManageQuestOrderList.Add(customWorldManageQuest.ToCDataWorldManageQuestOrderList(0));
             }
 
-            var allQuestsInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All);
+            List<QuestProgress> allQuestsInProgress = new();
+            List<uint> priorityQuests = new();
+            Server.Database.ExecuteInTransaction(connection =>
+            {
+                allQuestsInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All, connection);
+                priorityQuests = client.Party is not null ? Server.Database.GetPriorityQuestScheduleIds(client.Party.Leader.Client.Character.CommonId, connection) : new();
+
+                Server.LightQuestManager.HandleQuestDecay(client.Character, allQuestsInProgress, priorityQuests, connection);
+            });
+
             foreach (var questProgress in allQuestsInProgress)
             {
                 var quest = QuestManager.GetQuestByScheduleId(questProgress.QuestScheduleId);
@@ -100,7 +109,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (client.Party != null)
             {
-                var priorityQuests = Server.Database.GetPriorityQuestScheduleIds(client.Party.Leader.Client.Character.CommonId);
                 foreach (var questScheduleId in priorityQuests)
                 {
                     var quest = QuestManager.GetQuestByScheduleId(questScheduleId);

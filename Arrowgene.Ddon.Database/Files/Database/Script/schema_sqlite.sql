@@ -996,3 +996,21 @@ CREATE TABLE IF NOT EXISTS "ddon_skill_augmentation_released_elements" (
     CONSTRAINT pk_ddon_skill_augmentation_released_elements PRIMARY KEY ("character_id", "job_id", "release_id"),
     CONSTRAINT fk_ddon_skill_augmentation_released_elements_character_id FOREIGN KEY ("character_id") REFERENCES "ddon_character" ("character_id") ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS "ddon_light_quests"
+(
+    "variant_id"            INTEGER     NOT NULL,
+    "quest_schedule_id"     INTEGER     NOT NULL,
+    "quest_id"              INTEGER     NOT NULL,
+    "target"                INTEGER     NOT NULL,
+    "level"                 INTEGER     NOT NULL,
+    "count"                 INTEGER     NOT NULL,
+    "reward_xp"             INTEGER     NOT NULL,
+    "reward_g"              INTEGER     NOT NULL,
+    "reward_r"              INTEGER     NOT NULL,
+    "reward_ap"             INTEGER     NOT NULL,
+    "distribution_end"      DATETIME    NOT NULL,
+    CONSTRAINT "pk_ddon_light_quests_variant_id" PRIMARY KEY ("variant_id")
+);
+INSERT INTO "ddon_schedule_next"(type, timestamp)
+VALUES (6, 0);
