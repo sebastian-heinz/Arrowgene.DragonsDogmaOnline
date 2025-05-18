@@ -45,8 +45,7 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public InstancedEnemy(EnemyId enemyId, ushort lv, uint exp, byte index)
         {
-            Id = (uint) enemyId;
-            EnemyId = (uint) enemyId;
+            EnemyId = enemyId;
             Lv = lv;
             Experience = exp;
             Index = index;
@@ -69,10 +68,9 @@ namespace Arrowgene.Ddon.Shared.Model
             return new InstancedEnemy(this);
         }
 
-        public InstancedEnemy SetEnemyId(uint enemyId)
+        public InstancedEnemy SetEnemyId(EnemyId enemyId)
         {
             EnemyId = enemyId;
-            Id = enemyId;
             return this;
         }
 

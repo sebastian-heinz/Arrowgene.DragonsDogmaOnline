@@ -1,17 +1,9 @@
 using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Asset;
-using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
 {
@@ -39,7 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
         ];
 
         public string Name { get; set; } = string.Empty;
-        public Dictionary<uint, List<(uint, bool)>> EnemyData { get; set; } = [];
+        public Dictionary<EnemyUIId, List<(uint, bool)>> EnemyData { get; set; } = [];
         public Dictionary<ItemId, int> ItemData { get; set; } = [];
 
         public abstract void UpdateData(DdonGameServer server);
@@ -65,7 +57,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
 
         public void AddEnemy(DdonGameServer server, Enemy enemy)
         {
-            uint uiNameId = enemy.UINameId;
+            var uiNameId = enemy.UINameId;
             if (!EnemyData.TryGetValue(uiNameId, out List<(uint, bool)> value))
             {
                 value = ([]);
@@ -99,14 +91,14 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
             return Math.Pow(count, 0.7) * scalingFactor;
         }
 
-        public (uint EnemyId, uint Level) RollEnemy()
+        public (EnemyUIId EnemyId, uint Level) RollEnemy()
         {
             if (EnemyData.Count == 0)
             {
                 return (0, 0);
             }
 
-            List<uint> keys = [.. EnemyData.Keys];
+            List<EnemyUIId> keys = [.. EnemyData.Keys];
 
             double rt = 0.0;
             List<double> typeWeights = keys.Select(x => { 
@@ -119,7 +111,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
 
             double typeRoll = Random.Shared.NextDouble() * typeWeights.Last();
             int typeIndex = typeWeights.Count(x => x < typeRoll);
-            uint enemyType = keys[typeIndex];
+            var enemyType = keys[typeIndex];
 
             List<double> enemyLevels = EnemyData[enemyType].Select(x => (double)x.Item1).ToList();
             double avgLevel = enemyLevels.Average();

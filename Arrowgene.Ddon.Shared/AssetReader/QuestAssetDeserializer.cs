@@ -512,7 +512,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     {
                         questBlock.HandPlayerItems.Add(new QuestItem()
                         {
-                            ItemId = item.GetProperty("id").GetUInt32(),
+                            ItemId = (ItemId)item.GetProperty("id").GetUInt32(),
                             Amount = item.GetProperty("amount").GetUInt32()
                         });
                     }
@@ -524,7 +524,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     {
                         questBlock.ConsumePlayerItems.Add(new QuestItem()
                         {
-                            ItemId = item.GetProperty("id").GetUInt32(),
+                            ItemId = (ItemId)item.GetProperty("id").GetUInt32(),
                             Amount = item.GetProperty("amount").GetUInt32()
                         });
                     }
@@ -774,7 +774,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             {
                                 questBlock.DeliveryRequests.Add(new QuestItem()
                                 {
-                                    ItemId = item.GetProperty("id").GetUInt32(),
+                                    ItemId = (ItemId)item.GetProperty("id").GetUInt32(),
                                     Amount = item.GetProperty("amount").GetUInt32()
                                 });
                             }
@@ -818,12 +818,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             var enemyIdString = jblock.GetProperty("enemy_id").GetString();
                             if (enemyIdString.Contains('x'))
                             {
-                                var enemyId = Convert.ToUInt32(enemyIdString, 16);
-                                questBlock.TargetEnemy.EnemyId = Enemy.NameMap[enemyId];
+                                var enemyId = (EnemyId)Convert.ToUInt32(enemyIdString, 16);
+                                questBlock.TargetEnemy.EnemyId = enemyId.GetUIId();
                             }
                             else
                             {
-                                questBlock.TargetEnemy.EnemyId = Convert.ToUInt32(enemyIdString);
+                                questBlock.TargetEnemy.EnemyId = (EnemyUIId)Convert.ToUInt32(enemyIdString);
                             }
 
                             questBlock.TargetEnemy.Level = jblock.GetProperty("level").GetUInt32();
@@ -842,7 +842,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             {
                                 questBlock.DeliveryRequests.Add(new QuestItem()
                                 {
-                                    ItemId = item.GetProperty("id").GetUInt32(),
+                                    ItemId = (ItemId)item.GetProperty("id").GetUInt32(),
                                     Amount = item.GetProperty("amount").GetUInt32()
                                 });
                             }

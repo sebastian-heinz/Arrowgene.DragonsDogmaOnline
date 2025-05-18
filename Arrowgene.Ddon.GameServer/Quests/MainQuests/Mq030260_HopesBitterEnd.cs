@@ -236,14 +236,14 @@ namespace Arrowgene.Ddon.GameServer.Quests.MainQuests
                 }
             };
 
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 341, Lv = 100, IsPartyRecommend = true });
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 365, Lv = 100, IsPartyRecommend = true });
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 323, Lv = 100, IsPartyRecommend = false });
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 329, Lv = 100, IsPartyRecommend = false });
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 361, Lv = 100, IsPartyRecommend = false });
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 327, Lv = 100, IsPartyRecommend = false });
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 353, Lv = 100, IsPartyRecommend = false });
-            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = 368, Lv = 100, IsPartyRecommend = false });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = (EnemyUIId)341, Lv = 100, IsPartyRecommend = true });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = (EnemyUIId)365, Lv = 100, IsPartyRecommend = true });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = (EnemyUIId)323, Lv = 100, IsPartyRecommend = false });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = (EnemyUIId)329, Lv = 100, IsPartyRecommend = false });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = (EnemyUIId)361, Lv = 100, IsPartyRecommend = false });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = (EnemyUIId)327, Lv = 100, IsPartyRecommend = false });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = (EnemyUIId)353, Lv = 100, IsPartyRecommend = false });
+            quest.QuestEnemyInfoList.Add(new CDataQuestEnemyInfo() { GroupId = (EnemyUIId)368, Lv = 100, IsPartyRecommend = false });
 
             quest.QuestLayoutFlagSetInfoList = new List<CDataQuestLayoutFlagSetInfo>() {
                 QuestManager.LayoutFlag.Create(7866, Stage.SacredFlamePath0.StageNo, 17),

@@ -136,7 +136,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting
 
             public DropsTable GetDropsTable(InstancedEnemy enemy)
             {
-                return GetDropsTable((EnemyId)enemy.EnemyId, enemy.Lv);
+                return GetDropsTable(enemy.EnemyId, enemy.Lv);
             }
 
             public InstancedEnemy Create(EnemyId enemyId, ushort lv, uint exp, byte index, bool assignDefaultDrops = true)

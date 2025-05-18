@@ -8,7 +8,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
 {
     public class QuestItem
     {
-        public uint ItemId { get; set; }
+        public ItemId ItemId { get; set; }
         public uint Amount { get; set; }
     }
 }

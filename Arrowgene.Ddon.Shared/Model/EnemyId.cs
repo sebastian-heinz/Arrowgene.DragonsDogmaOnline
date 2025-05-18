@@ -537,6 +537,7 @@ namespace Arrowgene.Ddon.Shared.Model
 
     public enum EnemyUIId : uint
     {
+        None = 0, // Renders as Goblin.
         Goblin = 1,
         GoblinFighter = 2,
         ShieldGoblin = 3,
@@ -931,7 +932,6 @@ namespace Arrowgene.Ddon.Shared.Model
         DragonCrystalofDestruction = 424,
         Golgorran1 = 425,
         BlackSword = 426,
-        DragonCrystalofBinding = 427,
-
+        DragonCrystalofBinding = 427
     }
 }

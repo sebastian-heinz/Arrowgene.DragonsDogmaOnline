@@ -44,7 +44,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
     {
         public ushort ProcessNo { get; set; }
         public ushort BlockNo { get; set; }
-        public uint ItemId { get; set; }
+        public ItemId ItemId { get; set; }
         public uint Amount {  get; set; }
     }
 
@@ -53,7 +53,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public ushort ProcessNo { get; set; }
         public ushort SequenceNo { get; set; }
         public ushort BlockNo { get; set; }
-        public uint EnemyId { get; set; }
+        public EnemyUIId EnemyId { get; set; }
         public uint MinimumLevel { get; set; }
         public uint Amount { get; set; }
     }
@@ -431,9 +431,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 }))
                 .ToList(),
                 // Unsure if these next set of fields are correct
-                Unk5 = DistributionStart,
-                Unk6 = DistributionEnd,
-                Unk6A = DateTimeOffset.FromUnixTimeSeconds(0), // Order Date?,
+                Unk5 = DateTimeOffset.FromUnixTimeSeconds(0),
+                Unk6 = DistributionStart,
+                DistributionEnd = DistributionEnd, // Order Date?,
                 ContentsReleaseList = GetContentReleaseRewards()
             };
 

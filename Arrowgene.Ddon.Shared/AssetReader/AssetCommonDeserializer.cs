@@ -141,7 +141,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
                     var questEnemy = new InstancedEnemy()
                     {
-                        EnemyId = Convert.ToUInt32(jEnemy.GetProperty("enemy_id").GetString(), 16),
+                        EnemyId = (EnemyId)Convert.ToUInt32(jEnemy.GetProperty("enemy_id").GetString(), 16),
                         Lv = jEnemy.GetProperty("level").GetUInt16(),
                         IsBossBGM = isBoss,
                         IsBossGauge = isBoss,
@@ -161,7 +161,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     }
                     else
                     {
-                        questEnemy.DropsTable = questDrops.GetDropTable(questEnemy.EnemyId, questEnemy.Lv);
+                        questEnemy.DropsTable = questDrops.GetDropTable((uint)questEnemy.EnemyId, questEnemy.Lv);
                     }
 
                     enemyGroup.Enemies.Add(questEnemy);

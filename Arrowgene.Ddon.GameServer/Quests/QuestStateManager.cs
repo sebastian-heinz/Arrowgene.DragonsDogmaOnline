@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
     {
         public ushort ProcessNo { get; set; }
         public ushort BlockNo { get; set; }
-        public uint ItemId { get; set; }
+        public ItemId ItemId { get; set; }
         public uint AmountDelivered { get; set; }
         public uint AmountRequired { get; set; }
     }
@@ -29,7 +29,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
         public ushort ProcessNo { get; set; }
         public ushort SequenceNo { get; set; }
         public ushort BlockNo { get; set; }
-        public uint EnemyId { get; set; }
+        public EnemyUIId EnemyId { get; set; }
         public uint MinimumLevel { get; set; }
         public uint AmountHunted { get; set; }
         public uint AmountRequired { get; set; }
@@ -47,20 +47,18 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
         public Dictionary<ushort, QuestProcessState> ProcessState { get; set; }
         public Dictionary<StageLayoutId, Dictionary<uint, List<InstancedEnemy>>> QuestEnemies { get; set; }
-        public Dictionary<uint, QuestDeliveryRecord> DeliveryRecords { get; set; }
-        public Dictionary<uint, QuestEnemyHuntRecord> HuntRecords { get; set; }
+        public Dictionary<ItemId, QuestDeliveryRecord> DeliveryRecords { get; set; } = [];
+        public Dictionary<EnemyUIId, QuestEnemyHuntRecord> HuntRecords { get; set; } = [];
         public QuestInstanceVars InstanceVars { get; set; }
 
         public QuestState()
         {
             ProcessState = new Dictionary<ushort, QuestProcessState>();
             QuestEnemies = new Dictionary<StageLayoutId, Dictionary<uint, List<InstancedEnemy>>>();
-            DeliveryRecords = new Dictionary<uint, QuestDeliveryRecord>();
-            HuntRecords = new Dictionary<uint, QuestEnemyHuntRecord>();
             InstanceVars = new QuestInstanceVars();
         }
 
-        public uint UpdateDeliveryRequest(uint itemId, uint amount)
+        public uint UpdateDeliveryRequest(ItemId itemId, uint amount)
         {
             lock (DeliveryRecords)
             {
@@ -84,7 +82,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
         }
 
-        public void AddDeliveryRequest(ushort processNo, ushort blockNo, uint itemId, uint amountRequired)
+        public void AddDeliveryRequest(ushort processNo, ushort blockNo, ItemId itemId, uint amountRequired)
         {
             lock (DeliveryRecords)
             {

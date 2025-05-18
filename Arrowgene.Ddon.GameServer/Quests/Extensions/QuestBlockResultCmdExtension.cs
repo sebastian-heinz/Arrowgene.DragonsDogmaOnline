@@ -238,7 +238,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
         {
             questBlock.HandPlayerItems.Add(new QuestItem()
             {
-                ItemId = (uint) itemId,
+                ItemId = itemId,
                 Amount = amount
             });
 

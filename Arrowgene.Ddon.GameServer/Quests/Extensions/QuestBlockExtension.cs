@@ -487,7 +487,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return block;
         }
 
-        public static QuestBlock AddKillTargetEnemiesBlock(this QuestProcess process, QuestAnnounceType announceType, uint enemyId, uint level, uint amount)
+        public static QuestBlock AddKillTargetEnemiesBlock(this QuestProcess process, QuestAnnounceType announceType, EnemyUIId enemyId, uint level, uint amount)
         {
             var block = CreateGenericBlock(process.QuestScheduleId, 0, 0, QuestBlockType.KillTargetEnemies, announceType);
             block.TargetEnemy.EnemyId = enemyId;

@@ -37,7 +37,7 @@ public class CDataQuestOrderList
     public uint Unk4 { get; set;} // DetailMsgId
     public DateTimeOffset Unk5 { get; set; } // ??
     public DateTimeOffset Unk6 { get; set; } // OrderDate?
-    public DateTimeOffset Unk6A { get; set; } // EndDistributionDate?
+    public DateTimeOffset DistributionEnd { get; set; } // EndDistributionDate?
     public List<CDataRewardItem> FixedRewardItem { get; set; }
     public List<CDataRewardItem> FixedRewardSelectItem { get; set; }
     public List<CDataCharacterReleaseElement> ContentsReleaseList { get; set; }
@@ -71,7 +71,7 @@ public class CDataQuestOrderList
             WriteUInt32(buffer, obj.Unk4);
             WriteInt64(buffer, obj.Unk5.ToUnixTimeSeconds());
             WriteInt64(buffer, obj.Unk6.ToUnixTimeSeconds());
-            WriteInt64(buffer, obj.Unk6A.ToUnixTimeSeconds());
+            WriteInt64(buffer, obj.DistributionEnd.ToUnixTimeSeconds());
             WriteEntityList(buffer, obj.FixedRewardItem);
             WriteEntityList(buffer, obj.FixedRewardSelectItem);
             WriteEntityList<CDataCharacterReleaseElement>(buffer, obj.ContentsReleaseList);
@@ -105,7 +105,7 @@ public class CDataQuestOrderList
             obj.Unk4 = ReadUInt32(buffer);
             obj.Unk5 = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
             obj.Unk6 = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
-            obj.Unk6A = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
+            obj.DistributionEnd = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
             obj.FixedRewardItem = ReadEntityList<CDataRewardItem>(buffer);
             obj.FixedRewardSelectItem = ReadEntityList<CDataRewardItem>(buffer);
             obj.ContentsReleaseList = ReadEntityList<CDataCharacterReleaseElement>(buffer);

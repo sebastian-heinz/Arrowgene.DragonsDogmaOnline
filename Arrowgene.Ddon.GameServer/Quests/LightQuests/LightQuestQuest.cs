@@ -92,7 +92,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
             process0.AddRawBlock(QuestAnnounceType.Accept)
                 .AddCheckCmdIsOrderLightQuest();
 
-            process0.AddKillTargetEnemiesBlock(QuestAnnounceType.Checkpoint, (uint)QuestRecord.Target, QuestRecord.Level, (uint)QuestRecord.Count);
+            process0.AddKillTargetEnemiesBlock(QuestAnnounceType.Checkpoint, (EnemyUIId)QuestRecord.Target, QuestRecord.Level, (uint)QuestRecord.Count);
 
             process0.AddProcessEndBlock(true);
         }

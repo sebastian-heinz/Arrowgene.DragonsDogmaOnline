@@ -36,7 +36,7 @@ namespace Arrowgene.Ddon.GameServer.GatheringItems.Generators
                 return false;
             }
 
-            if (item.EnemyIds.Count > 0 && !item.EnemyIds.Contains(enemy.Id))
+            if (item.EnemyIds.Count > 0 && !item.EnemyIds.Contains((uint)enemy.EnemyId))
             {
                 return false;
             }

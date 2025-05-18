@@ -262,7 +262,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             foreach (var item in questBlock.HandPlayerItems)
             {
-                var result = server.ItemManager.AddItem(server, client.Character, true, item.ItemId, item.Amount);
+                var result = server.ItemManager.AddItem(server, client.Character, true, (uint)item.ItemId, item.Amount);
                 packets.Enqueue(client, new S2CItemUpdateCharacterItemNtc()
                 {
                     UpdateType = 0,
@@ -272,7 +272,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             foreach (var item in questBlock.ConsumePlayerItems)
             {
-                var result = server.ItemManager.ConsumeItemByIdFromItemBag(server, client.Character, item.ItemId, item.Amount);
+                var result = server.ItemManager.ConsumeItemByIdFromItemBag(server, client.Character, (uint)item.ItemId, item.Amount);
                 if (result != null)
                 {
 

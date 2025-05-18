@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
         public Dictionary<EnemyUIId, LightQuestAreaHuntSummaryRecord> HuntRecords { get; set; } = [];
         public void AddEnemy(Enemy enemy)
         {
-            EnemyUIId enemyUIId = (EnemyUIId)enemy.UINameId;
+            EnemyUIId enemyUIId = enemy.UINameId;
             if (!HuntRecords.TryGetValue(enemyUIId, out LightQuestAreaHuntSummaryRecord value))
             {
                 value = new(enemyUIId);
