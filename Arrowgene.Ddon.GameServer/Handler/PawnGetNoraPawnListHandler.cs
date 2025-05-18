@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // client.Send(GameFull.Dump_118);
             var result = new S2CPawnGetNoraPawnListRes();
 
-            List<uint> pawnIds = Server.Database.SelectAllPlayerPawns(int.MaxValue);
+            List<uint> pawnIds = Server.Database.SelectAllPlayerPawns(10000);
             result.NoraPawnList = pawnIds.OrderBy(x => Random.Shared.Next()).Take(100).Select(x => new CDataRegisterdPawnList() { PawnId = x }).ToList();
             return result;
         }
