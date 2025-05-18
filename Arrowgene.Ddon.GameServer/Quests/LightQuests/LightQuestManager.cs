@@ -7,6 +7,7 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Data.Common;
 using System.Linq;
 
@@ -18,19 +19,12 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
 
         private readonly DdonGameServer Server;
 
-        /// <summary>
-        /// Scales the likelihood of rolling delivery quests for materials that drop rather than are gathered.
-        /// </summary>
-        private static readonly double DROP_MATERIAL_FACTOR = 0.5;
-
-        /// <summary>
-        /// Attempts to generate a quest that meets requirements on min/max levels. Will warn when exceeded.
-        /// </summary>
-        private static readonly int GENERATOR_ATTEMPTS_PER_QUEST = 20;
+        private int GENERATOR_ATTEMPTS_PER_QUEST => Server.GameSettings.GameServerSettings.LightQuestGenerationAttemptsPerQuest;
 
         private uint CURRENT_VARIANT_ID = 0;
 
-        private static readonly TimeSpan BOARD_QUEST_DURATION = TimeSpan.FromDays(1);
+        // TODO: This should be configurable, but needs to be synced with the reset task or the boards act funny.
+        private static readonly TimeSpan BOARD_QUEST_DURATION = TimeSpan.FromMinutes(2); //TimeSpan.FromDays(1);
 
         public LightQuestManager(DdonGameServer server)
         {
@@ -105,7 +99,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
             return records;
         }
 
-        public void GenerateAndAddQuestsFromAsset()
+        public void InsertRecordsFromAsset()
         {
             var quests = Server.AssetRepository.LightQuestAsset.GeneratingAssets
                 .SelectMany(x => GenerateRecordsFromAsset(x))
@@ -121,8 +115,6 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
                     }
                 }
             });
-
-            QuestManager.AddQuests(Server, quests);
         }
 
         private LightQuestRecord RollHuntQuest(LightQuestInfo quest, LightQuestGeneratingAsset generatingAsset, List<LightQuestRecord> extantQuests)
@@ -335,7 +327,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
                 .Union(questPriority)
                 .Where(x => IsLightQuestScheduleId(x));
 
-            var questsToDrop = GetDecayedQuests(questsUnderInspection);
+            var questsToDrop = GetDecayedQuests(questsUnderInspection).ToImmutableHashSet();
 
             Server.Database.ExecuteQuerySafe(connectionIn, connection =>
             {
@@ -534,7 +526,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
             {
                 if (DeliverableItems.Contains(item.ItemId))
                 {
-                    deliverySummary.AddItem(item, DROP_MATERIAL_FACTOR);
+                    deliverySummary.AddItem(item, Server.GameSettings.GameServerSettings.LightQuestGenerationDropItemWeight);
                 }
             }
         }
@@ -619,9 +611,27 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
             ItemSubCategory.MaterialPlantLumber,
         ];
 
-        private static readonly HashSet<uint> InvalidEnemies =
-        [
-            0, 68, 69, 107, 108, 109, 110, 111, 112, 113, 114, 172, 173, 174, 217, 235, 237, 264, 266, 267, 269, 283,
+        private static readonly HashSet<EnemyUIId> InvalidEnemies = [
+            EnemyUIId.None,
+            EnemyUIId.Leech,
+            EnemyUIId.Worm,
+            EnemyUIId.Spider,
+            EnemyUIId.Pig,
+            EnemyUIId.Boar,
+            EnemyUIId.GiantRat,
+            EnemyUIId.Ox,
+            EnemyUIId.Doe,
+            EnemyUIId.Buck,
+            EnemyUIId.Rabbit,
+            EnemyUIId.Piglet,
+            EnemyUIId.GiantUnspeakableMeat,
+            EnemyUIId.UnspeakableMeat,
+            EnemyUIId.Moth,
+            EnemyUIId.Mandragora,
+            EnemyUIId.Chicken,
+            EnemyUIId.Goat,
+            EnemyUIId.Frog,
+            EnemyUIId.WildBoar,
         ];
         #endregion
     }

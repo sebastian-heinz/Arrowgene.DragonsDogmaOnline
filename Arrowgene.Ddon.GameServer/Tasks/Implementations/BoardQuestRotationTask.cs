@@ -31,7 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Tasks.Implementations
         {
             Logger.Info("Performing daily light quest rotation");
 
-            server.LightQuestManager.GenerateAndAddQuestsFromAsset();
+            server.LightQuestManager.InsertRecordsFromAsset();
 
             server.RpcManager.AnnounceAll("internal/command", RpcInternalCommand.BoardQuestDailyRotation, null);
         }

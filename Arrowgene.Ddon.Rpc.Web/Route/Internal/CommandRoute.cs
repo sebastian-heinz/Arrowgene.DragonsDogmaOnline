@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.GameServer;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Rpc.Command;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Logging;
 using Arrowgene.WebServer;
@@ -107,9 +108,10 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
                     case RpcInternalCommand.BoardQuestDailyRotation:
                         {
                             var questRecords = gameServer.Database.SelectLightQuestRecords();
+                            var extantQuests = QuestManager.GetQuestsByType(QuestType.Light);
 
                             var quests = questRecords
-                                .Where(x => QuestManager.GetQuestByScheduleId(x.QuestScheduleId) is null)
+                                .Where(x => !extantQuests.Contains(x.QuestScheduleId))
                                 .Select(x => gameServer.LightQuestManager.GenerateQuestFromRecord(x));
 
                             QuestManager.AddQuests(gameServer, quests);
