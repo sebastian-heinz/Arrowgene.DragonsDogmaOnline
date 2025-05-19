@@ -346,6 +346,13 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        public List<CDataClanSearchResult> SearchClans(GameClient client, CDataClanSearchParam searchParam)
+        {
+            List<CDataClanSearchResult> list = Server.Database.SearchClans(searchParam);
+
+            return list;
+        }
+
         public void SetMemberRank(uint characterId, uint clanId, uint rank, uint permission)
         {
             if (clanId == 0) return;

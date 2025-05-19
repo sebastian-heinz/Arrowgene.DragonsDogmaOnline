@@ -506,6 +506,7 @@ public abstract class SqlDb : IDatabase
     public abstract uint SelectClanMembershipByCharacterId(uint characterId, DbConnection? connectionIn = null);
     public abstract ClanName GetClanNameByClanId(uint clanId, DbConnection? connectionIn = null);
     public abstract CDataClanParam SelectClan(uint clanId, DbConnection? connectionIn = null);
+    public abstract List<CDataClanSearchResult> SearchClans(CDataClanSearchParam search, DbConnection? connectionIn = null);
     public abstract bool UpdateClan(CDataClanParam clan, DbConnection? connectionIn = null);
     public abstract bool InsertClanMember(CDataClanMemberInfo memberInfo, uint clanId, DbConnection? connectionIn = null);
     public abstract bool DeleteClanMember(uint characterId, uint clanId, DbConnection? connectionIn = null);
