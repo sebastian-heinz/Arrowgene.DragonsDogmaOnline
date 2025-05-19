@@ -243,7 +243,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataJobOrderProgress.Serializer());
             Create(new CDataJobPlayPoint.Serializer());
             Create(new CDataJobValueShopItem.Serializer());
-            Create(new CDataJobMasterUnk0.Serializer());
+            Create(new CDataJobMasterTargetData.Serializer());
             Create(new CDataJumpLocation.Serializer());
 
             Create(new CDataLayoutEnemyData.Serializer());
@@ -1372,7 +1372,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CJob_33_3_16_Ntc.Serializer());
             Create(new S2CJobOrderCompleteNtc.Serializer());
             Create(new S2CJob24_5_16_NTC.Serializer());
-            Create(new S2CJob24_6_16_NTC.Serializer());
+            Create(new S2CJobMasterMarkTargetsNtc.Serializer());
 
             Create(new S2CJobMasterReportJobOrderProgressRes.Serializer());
             Create(new S2CJobMasterGetJobMasterOrderProgressRes.Serializer());

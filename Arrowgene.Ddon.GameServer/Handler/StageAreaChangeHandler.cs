@@ -110,6 +110,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Server.PartnerPawnManager.HandleStageAreaChange(client);
             }
 
+            queue.AddRange(Server.JobMasterManager.HandleAreaChange(client));
+
             Server.EpitaphRoadManager.AreaChange(client, packet.StageId, queue);
             return queue;
         }

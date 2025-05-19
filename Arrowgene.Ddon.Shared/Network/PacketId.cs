@@ -1156,7 +1156,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_JOB_24_3_2_RES = new PacketId(24, 3, 2, "S2C_JOB_24_3_2_RES", ServerType.Game, PacketSource.Server); // S2C_DEBUG_ADD_JOB_ORDER_PROGRESS_RES?
         public static readonly PacketId S2C_JOB_ORDER_COMPLETE_NTC = new PacketId(24, 4, 16, "S2C_JOB_ORDER_COMPLETE_NTC", ServerType.Game, PacketSource.Server, "S2C_JOB_24_4_16_NTC");
         public static readonly PacketId S2C_JOB_24_5_16_NTC = new PacketId(24, 5, 16, "S2C_JOB_24_5_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_JOB_24_6_16_NTC = new PacketId(24, 6, 16, "S2C_JOB_24_6_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_JOB_MASTER_MARK_TARGETS_NTC = new PacketId(24, 6, 16, "S2C_JOB_24_6_16_NTC", ServerType.Game, PacketSource.Server, "S2C_JOB_24_6_16_NTC");
 
 // Group: 25 - (ORB)
         public static readonly PacketId C2S_ORB_DEVOTE_GET_ALL_ORB_ELEMENT_LIST_REQ = new PacketId(25, 0, 1, "C2S_ORB_DEVOTE_GET_ALL_ORB_ELEMENT_LIST_REQ", ServerType.Game, PacketSource.Client);
@@ -3087,7 +3087,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_JOB_24_3_2_RES);
             AddPacketIdEntry(packetIds, S2C_JOB_ORDER_COMPLETE_NTC);
             AddPacketIdEntry(packetIds, S2C_JOB_24_5_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_JOB_24_6_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_JOB_MASTER_MARK_TARGETS_NTC);
 
 // Group: 25 - (ORB)
             AddPacketIdEntry(packetIds, C2S_ORB_DEVOTE_GET_ALL_ORB_ELEMENT_LIST_REQ);
