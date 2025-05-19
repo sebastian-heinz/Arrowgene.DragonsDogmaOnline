@@ -45,7 +45,7 @@ public class ChatCommand : IChatCommand
         // An actual questId is needed for the client to actually accept the progress update.
         // I assume we could slip something in whenever it asks for the quest list, but this works for now.
         uint scheduleId = 70000001;
-        var baseQuest = QuestManager.GetQuestByScheduleId(scheduleId);
+        var baseQuest = QuestManager.GetQuestByQuestId((QuestId)scheduleId);
         if (baseQuest is null)
         {
             responses.Add(ChatResponse.CommandError(client, $"Missing base quest."));
@@ -61,7 +61,7 @@ public class ChatCommand : IChatCommand
         S2CQuestQuestProgressNtc progressNtc = new S2CQuestQuestProgressNtc()
         {
             ProgressCharacterId = client.Character.CharacterId,
-            QuestScheduleId = scheduleId,
+            QuestScheduleId = baseQuest.QuestScheduleId,
             QuestProcessStateList = new List<CDataQuestProcessState>()
             {
                 new CDataQuestProcessState()
@@ -79,7 +79,7 @@ public class ChatCommand : IChatCommand
         S2CQuestQuestProgressNtc resetNtc = new S2CQuestQuestProgressNtc()
         {
             ProgressCharacterId = client.Character.CharacterId,
-            QuestScheduleId = scheduleId,
+            QuestScheduleId = baseQuest.QuestScheduleId,
             QuestProcessStateList = new List<CDataQuestProcessState>()
             {
                 new CDataQuestProcessState()

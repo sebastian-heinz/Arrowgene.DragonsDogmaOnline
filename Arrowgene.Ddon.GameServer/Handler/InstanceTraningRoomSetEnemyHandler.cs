@@ -2,6 +2,7 @@ using Arrowgene.Ddon.GameServer.Context;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -52,7 +53,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                                 PositionIndex = 0,
                                 EnemyInfo = new CDataStageLayoutEnemyPresetEnemyInfoClient()
                                 {
-                                    EnemyId = 0x15800,
+                                    EnemyId = EnemyId.OrcSoldier0,
                                     NamedEnemyParamsId = 47, // Training <name>
                                     Lv = level,
                                     RepopCount = 10,
@@ -70,7 +71,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                                 PositionIndex = 1,
                                 EnemyInfo = new CDataStageLayoutEnemyPresetEnemyInfoClient()
                                 {
-                                    EnemyId = 0x15800,
+                                    EnemyId = EnemyId.OrcSoldier0,
                                     NamedEnemyParamsId = 47, // Training <name>
                                     Lv = level,
                                     RepopCount = 10,
@@ -90,7 +91,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                                 PositionIndex = 0,
                                 EnemyInfo = new CDataStageLayoutEnemyPresetEnemyInfoClient()
                                 {
-                                    EnemyId = 0x15000,
+                                    EnemyId = EnemyId.Cyclops0,
                                     NamedEnemyParamsId = 47, // Training <name>
                                     Lv = level,
                                     RepopCount = 10,
@@ -110,7 +111,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                                 PositionIndex = 0,
                                 EnemyInfo = new CDataStageLayoutEnemyPresetEnemyInfoClient()
                                 {
-                                    EnemyId = 0x15500,
+                                    EnemyId = EnemyId.Ogre,
                                     NamedEnemyParamsId = 47, // Training <name>
                                     Lv = level,
                                     RepopCount = 10,
@@ -130,7 +131,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                                 PositionIndex = 4,
                                 EnemyInfo = new CDataStageLayoutEnemyPresetEnemyInfoClient()
                                 {
-                                    EnemyId = 0x100101,
+                                    EnemyId = EnemyId.ZuhlPassive,
                                     NamedEnemyParamsId = 722, // Practice <name>, has extra HP.
                                     Lv = level,
                                     RepopCount = 10,

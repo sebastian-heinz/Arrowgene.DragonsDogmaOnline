@@ -50,7 +50,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             .Single(recipe => recipe.RecipeID == request.RecipeId)
                             .AsCData();
 
-                        ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, recipe.ItemID);
+                        ClientItemInfo itemInfo = Server.AssetRepository.ClientItemInfos[recipe.ItemID];
 
                         craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeProductionSpeed(recipe.Time, itemInfo, craftPawns));
                         craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeCostPerformance(itemInfo, craftPawns));
@@ -73,7 +73,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             .SelectMany(recipes => recipes.RecipeList)
                             .First(recipe => recipe.ItemID == request.ItemId);
 
-                        ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, recipe.ItemID);
+                        ClientItemInfo itemInfo = Server.AssetRepository.ClientItemInfos[recipe.ItemID];
 
                         craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeEquipmentEnhancement(itemInfo, craftPawns));
                         craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeCostPerformance(itemInfo, craftPawns));
@@ -93,7 +93,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 case CraftType.CraftTypeQuality:
                     {
                         // The client returns the itemID being modified in the recipeID field.
-                        ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, request.RecipeId);
+                        ClientItemInfo itemInfo = Server.AssetRepository.ClientItemInfos[request.RecipeId];
 
                         craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeEquipmentQuality(itemInfo, craftPawns));
                         craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeCostPerformance(itemInfo, craftPawns));

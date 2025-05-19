@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CShopGetShopGoodsListRes shop = client.InstanceShopManager.GetAssets(client.Character.LastEnteredShopId);
             CDataGoodsParam good = shop.GoodsParamList.Where(good => good.Index == packet.GoodsIndex).Single();
-            ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, good.ItemId);
+            ClientItemInfo clientItemInfo = Server.AssetRepository.ClientItemInfos[good.ItemId];
 
             uint boughtAmount = packet.Num;
             uint totalPrice = good.Price * boughtAmount;

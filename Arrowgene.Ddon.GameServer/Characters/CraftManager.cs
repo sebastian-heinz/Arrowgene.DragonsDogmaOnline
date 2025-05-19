@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -489,7 +490,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public List<CDataMDataCraftMaterial> GetRecipeMaterialsForItemId(ItemId itemId)
         {
-            var itemInfo = _server.ItemManager.LookupInfoByItemID(_server, (uint) itemId);
+            var itemInfo = _server.AssetRepository.ClientItemInfos[itemId];
             var recipeList = _server.AssetRepository.CraftingRecipesAsset
                 .Where(recipes => recipes.Category == itemInfo.RecipeCategory)
                 .Select(recipes => recipes.RecipeList)
@@ -500,7 +501,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public ItemId GetItemBaseItemId(ItemId itemId)
         {
-            var itemInfo = _server.ItemManager.LookupInfoByItemID(_server, (uint)itemId);
+            var itemInfo = _server.AssetRepository.ClientItemInfos[itemId];
             if (itemInfo == null || itemInfo.Quality == 0)
             {
                 return itemId;

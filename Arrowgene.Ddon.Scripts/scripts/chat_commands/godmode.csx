@@ -23,7 +23,7 @@ public class ChatCommand : IChatCommand
             client.Send(new S2CCharacterGainCharacterParamNtc()
             {
                 CharacterId = client.Character.CharacterId,
-                HpMaxGain = BoostedStat,
+                //HpMaxGain = BoostedStat,
                 StaminaMaxGain = BoostedStat,
                 AttackGain = BoostedStat,
                 DefenseGain = BoostedStat,

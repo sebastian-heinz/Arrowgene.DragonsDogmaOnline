@@ -517,6 +517,10 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertSkillAugmentationReleasedElement(uint characterId, JobId jobId, uint releaseId, DbConnection? connectionIn = null) { return true; }
         public HashSet<uint> GetSkillAugmentationReleasedElements(uint characterId, JobId jobId, DbConnection? connectionIn = null) { return new(); }
 
+        public bool InsertLightQuestRecord(LightQuestRecord lightQuestRecord, DbConnection? connectionIn = null) { return true; }
+        public List<LightQuestRecord> SelectLightQuestRecords(DbConnection? connectionIn = null) { return new(); }
+        public bool DeleteLightQuestRecord(uint scheduleId, DbConnection? connectionIn = null) { return true; }
+
         public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
         public void AddParameter(DbCommand command, string name, string value) { }
         public void AddParameter(DbCommand command, string name, Int32 value) { }

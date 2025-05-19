@@ -121,7 +121,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                                 }
                             }
 
-                            condition.TargetId = Enemy.GetNameId(enemyId);
+                            condition.TargetId = (uint)enemyId.GetUIId();
                             if (condition.TargetId == 0 && condition.ConditionType != JobOrderCondType.BloodOrbEnemies)
                             {
                                 Logger.Error($"Something went wrong with {jobId}, {releaseId}");

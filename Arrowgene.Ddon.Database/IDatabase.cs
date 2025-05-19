@@ -6,6 +6,7 @@ using System.Data.Common;
 using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Database.Sql.Core.Migration;
 using Arrowgene.Ddon.Shared.Entity;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.BattleContent;
@@ -581,6 +582,11 @@ public interface IDatabase
 
     bool InsertSkillAugmentationReleasedElement(uint characterId, JobId jobId, uint releaseId, DbConnection? connectionIn = null);
     HashSet<uint> GetSkillAugmentationReleasedElements(uint characterId, JobId jobId, DbConnection? connectionIn = null);
+
+    // Light Quest Rotation
+    bool InsertLightQuestRecord(LightQuestRecord lightQuestRecord, DbConnection? connectionIn = null);
+    List<LightQuestRecord> SelectLightQuestRecords(DbConnection? connectionIn = null);
+    bool DeleteLightQuestRecord(uint scheduleId, DbConnection? connectionIn = null);
 
     #region Pawn craft progress
 

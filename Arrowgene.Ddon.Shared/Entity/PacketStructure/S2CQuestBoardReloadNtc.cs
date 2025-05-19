@@ -5,7 +5,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CQuestBoardReloadNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.S2CQuestBoardReloadNtc;
+        public PacketId Id => PacketId.S2C_QUEST_QUEST_BOARD_RELOAD_NTC;
 
         public S2CQuestBoardReloadNtc()
         {
