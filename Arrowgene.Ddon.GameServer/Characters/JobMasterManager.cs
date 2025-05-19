@@ -225,5 +225,41 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
             return results;
         }
+
+        public PacketQueue HandleAreaChange(GameClient client)
+        {
+            var packets = new PacketQueue();
+
+            var jobId = client.Character.ActiveCharacterJobData.Job;
+            if (!client.Character.JobMasterActiveOrders.ContainsKey(jobId))
+            {
+                return new();
+            }
+
+            var ntc = new S2CJobMasterMarkTargetsNtc();
+            foreach (var order in client.Character.JobMasterActiveOrders[jobId])
+            {
+                foreach (var target in order.JobOrderProgressList)
+                {
+                    if (target.CurrentNum >= target.TargetNum)
+                    {
+                        continue;
+                    }
+
+                    ntc.TargetList.Add(new CDataJobMasterTargetData()
+                    {
+                        ReleaseType = order.ReleaseType,
+                        ReleaseLv = order.ReleaseLv,
+                        ReleaseId = order.ReleaseId,
+                        Condition = target.ConditionType,
+                        TargetId = target.TargetId,
+                        TargetRank = target.TargetRank,
+                    });
+                }
+            }
+            packets.Enqueue(client, ntc);
+
+            return packets;
+        }
     }
 }
