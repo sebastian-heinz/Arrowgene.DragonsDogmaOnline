@@ -1377,5 +1377,25 @@ namespace Arrowgene.Ddon.Server.Settings
             }
         }
         private const string _UrlCompanionImage = "http://localhost:{52099}/";
+        
+        /// <summary>
+        /// How many pawns to consider for random sampling e.g. for clan hall pawns.
+        /// Specifically this affects how many rows of the DB should be considered for randomization.
+        /// 0 disables random pawns, which might cause undefined behavior, a minimum of 100 is advised.
+        /// Avoid very large values like Integer.MAX_VALUE to not degrade performance.
+        /// </summary>
+        [DefaultValue(_RandomPawnMaxSample)]
+        public uint RandomPawnMaxSample
+        {
+            set
+            {
+                SetSetting("RandomPawnMaxSample", value);
+            }
+            get
+            {
+                return TryGetSetting("RandomPawnMaxSample", _RandomPawnMaxSample);
+            }
+        }
+        private const uint _RandomPawnMaxSample = 10000;
     }
 }

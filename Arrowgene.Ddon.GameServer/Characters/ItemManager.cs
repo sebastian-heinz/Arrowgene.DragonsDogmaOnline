@@ -668,10 +668,24 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 server.Database.UpsertEquipmentLimitBreakRecord(character.CharacterId, item.UId, addStatusParam, connectionIn);
             }
         }
+        private bool IsEquipmentStorage(StorageType type)
+            => type is StorageType.CharacterEquipment or StorageType.PawnEquipment or StorageType.ItemBagEquipment;
 
+        private bool IsEquipmentCharacter(StorageType type)
+            => type is StorageType.CharacterEquipment or StorageType.PawnEquipment;
+
+        private (ClientItemInfo, uint) DetermineStackLimit(DdonServer<GameClient> server, Item item, StorageType targetType)
+        {
+            var info = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, item.ItemId);
+            return info.StorageType == StorageType.ItemBagEquipment
+                   || ItemBagStorageTypes.Contains(targetType)
+                ? (info, info.StackLimit)
+                : (info, STACK_BOX_MAX);
+        }
+        
         public List<CDataItemUpdateResult> MoveItem(DdonServer<GameClient> server, Character character, Storage fromStorage, ushort fromSlotNo, uint num, Storage toStorage, ushort toSlotNo, DbConnection? connectionIn = null)
         {
-            List<CDataItemUpdateResult> results = new List<CDataItemUpdateResult>();
+            List<CDataItemUpdateResult> results = [];
 
             var toItem = toStorage.GetItem(toSlotNo);
             var fromItem = fromStorage.GetItem(fromSlotNo);
@@ -680,173 +694,173 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_CHARACTER_ITEM_NOT_FOUND);
             }
 
-            if (toStorage.Type == StorageType.CharacterEquipment || toStorage.Type == StorageType.PawnEquipment || toStorage.Type == StorageType.ItemBagEquipment)
+            // Num is either always 1 for single items/equipment or some stack value greater than 1, but it must always be less than the available stack number of the item
+            if (num == 0 || num > fromItem.Item2)
             {
-                if (toItem != null)
-                {
-                    // Delete the item
-                    DeleteItem(server, character, toItem.Item1, toStorage, toSlotNo, connectionIn);
-                }
-                DeleteItem(server, character, fromItem.Item1, fromStorage, fromSlotNo, connectionIn);
+                Logger.Error("Attempting to move invalid number of items.");
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_ITEM_NUM);
+            }
 
-                if (toItem != null)
-                {
-                    // Create response which swaps position with the new item being equipped
-                    results.Add(CreateItemUpdateResult(character, toItem.Item1, toStorage, toSlotNo, 0, 0));
-                    results.Add(CreateItemUpdateResult(null, toItem.Item1, fromStorage, fromSlotNo, 1, 1));
-
-                    InsertItem(server, character, toItem.Item1, fromStorage, fromSlotNo, 1, connectionIn);
-                }
-
-                if (toSlotNo == 0)
-                {
-                    // Going to some type of storage (bag or box)
-                    // Find a new slot for the item
-                    toSlotNo = toStorage.AddItem(fromItem.Item1, 0);
-
-                    // Create response which places the item in the new location
-                    if (fromStorage.Type == StorageType.CharacterEquipment || fromStorage.Type == StorageType.PawnEquipment)
-                    {
-                        results.Add(CreateItemUpdateResult(character, fromItem.Item1, fromStorage, fromSlotNo, 0, 0));
-                    }
-                    else
-                    {
-                        results.Add(CreateItemUpdateResult(null, fromItem.Item1, fromStorage, fromSlotNo, 0, 0));
-                    }
-                    results.Add(CreateItemUpdateResult(null, fromItem.Item1, toStorage, toSlotNo, 1, 1));
-                }
-                else
-                {
-                    // This handles:
-                    // - equipment_bag -> equipment
-                    // - equipment     -> equipment_bag
-                    // - equipment     -> storage
-                    // - storage       -> equipment
-
-                    if (fromStorage.Type == StorageType.CharacterEquipment || fromStorage.Type == StorageType.PawnEquipment)
-                    {
-                        results.Add(CreateItemUpdateResult(character, fromItem.Item1, fromStorage, fromSlotNo, 0, 0));
-                    }
-                    else
-                    {
-                        results.Add(CreateItemUpdateResult(null, fromItem.Item1, fromStorage, fromSlotNo, 0, 0));
-                    }
-
-                    if (toStorage.Type == StorageType.CharacterEquipment || toStorage.Type == StorageType.PawnEquipment)
-                    {
-                        results.Add(CreateItemUpdateResult(character, fromItem.Item1, toStorage, toSlotNo, 1, 1));
-                    }
-                    else
-                    {
-                        results.Add(CreateItemUpdateResult(null, fromItem.Item1, toStorage, toSlotNo, 1, 1));
-                    }
-                }
-                InsertItem(server, character, fromItem.Item1, toStorage, toSlotNo, 1, connectionIn);
+            if (IsEquipmentStorage(toStorage.Type))
+            {
+                HandleEquipmentSwap(server, character, fromStorage, fromSlotNo, toStorage, toSlotNo, connectionIn, toItem, fromItem, results);
             }
             else
             {
-                // Moving items to/from or unequipping an item
-                uint newSrcItemNum = fromItem.Item2 - num;
-                if (newSrcItemNum == 0)
-                {
-                    DeleteItem(server, character, fromItem.Item1, fromStorage, fromSlotNo, connectionIn);
-                }
-                else
-                {
-                    UpdateItem(server, character, fromItem.Item1, fromStorage, fromSlotNo, newSrcItemNum, connectionIn);
-                }
-
-                results.Add(CreateItemUpdateResult(null, fromItem.Item1, fromStorage, fromSlotNo, newSrcItemNum, num));
-
-                uint stackLimit = ItemManager.STACK_BOX_MAX;
-                ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, fromItem.Item1.ItemId);
-                if (clientItemInfo.StorageType == StorageType.ItemBagEquipment || ItemBagStorageTypes.Contains(toStorage.Type))
-                {
-                    stackLimit = clientItemInfo.StackLimit;
-                }
-
-                uint itemsToMove = num;
-                while (itemsToMove > 0)
-                {
-                    uint oldDstItemNum = 0;
-                    ushort dstSlotNo = toSlotNo;
-
-                    Item item = fromItem.Item1;
-
-                    if (toSlotNo == 0)
-                    {
-                        var itemInDstStorage = toStorage.Items
-                            .Select((item, index) => new { item, index })
-                            .Where(tuple => fromItem.Item1.ItemId == tuple.item?.Item1.ItemId && tuple.item?.Item2 < stackLimit)
-                            .FirstOrDefault();
-
-                        if (itemInDstStorage == null)
-                        {
-                            // Allocate a new slot to stick these items
-                            oldDstItemNum = 0;
-                            dstSlotNo = toStorage.AddItem(fromItem.Item1, 0);
-                        }
-                        else
-                        {
-                            // There is an existing stack, try to merge them
-                            oldDstItemNum = itemInDstStorage.item!.Item2;
-                            dstSlotNo = (ushort)(itemInDstStorage.index + 1);
-                            item = itemInDstStorage.item!.Item1;
-                        }
-                    }
-                    else
-                    {
-                        if (toItem != null)
-                        {
-                            if (toItem.Item1.ItemId != fromItem.Item1.ItemId)
-                            {
-                                // There is another item in the desired slot but they are not the same
-                                // so we need to swap them.
-                                results.AddRange(MoveItem(server, character, toStorage, toSlotNo, toItem.Item2, fromStorage, fromSlotNo, connectionIn));
-                            }
-                            else
-                            {
-                                oldDstItemNum = toItem.Item2;
-                                item = toItem.Item1;
-                            }
-                        }
-                        dstSlotNo = toSlotNo;
-                    }
-
-                    uint newDstItemNum = ((oldDstItemNum + itemsToMove) > stackLimit) ? stackLimit : (oldDstItemNum + itemsToMove);
-                    uint movedItemNum = newDstItemNum - oldDstItemNum;
-                    if (newDstItemNum == stackLimit) toSlotNo = 0; //Stack filled, so roll over into the next found stack/empty slot.
-
-                    if (movedItemNum == 0)
-                    {
-                        // if we move 0 items, this code will get stuck in an infinite loop
-                        // break out and report an error so we can investigate it.
-                        throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INTERNAL_ERROR);
-                    }
-
-                    if (clientItemInfo.StorageType != StorageType.ItemBagEquipment)
-                    {
-                        // Handles stacks being merged or new ones being created
-                        item = (oldDstItemNum == 0) ? new Item(item) : item;
-                    }
-
-                    toStorage.SetItem(item, newDstItemNum, dstSlotNo);
-                    if (oldDstItemNum == 0)
-                    {
-                        InsertItem(server, character, item, toStorage, dstSlotNo, newDstItemNum, connectionIn);
-                    }
-                    else
-                    {
-                        UpdateItem(server, character, item, toStorage, dstSlotNo, newDstItemNum, connectionIn);
-                    }
-                    results.Add(CreateItemUpdateResult(null, item, toStorage, dstSlotNo, newDstItemNum, movedItemNum));
-
-                    itemsToMove -= movedItemNum;
-                }
+                HandleStackedTransfer(server, character, fromStorage, fromSlotNo, num, toStorage, toSlotNo, connectionIn, toItem, fromItem, results);
             }
 
             return results;
         }
+        
+        private void HandleEquipmentSwap(DdonServer<GameClient> server, Character character, Storage fromStorage, ushort fromSlotNo, Storage toStorage, ushort toSlotNo, DbConnection? connectionIn,
+            Tuple<Item, uint>? toItem, Tuple<Item, uint> fromItem, List<CDataItemUpdateResult> results)
+        {
+            if (toItem != null)
+            {
+                // Delete the item
+                DeleteItem(server, character, toItem.Item1, toStorage, toSlotNo, connectionIn);
+            }
+            DeleteItem(server, character, fromItem.Item1, fromStorage, fromSlotNo, connectionIn);
+
+            if (toItem != null)
+            {
+                // Create response which swaps position with the new item being equipped
+                results.Add(CreateItemUpdateResult(character, toItem.Item1, toStorage, toSlotNo, 0, 0));
+                results.Add(CreateItemUpdateResult(null, toItem.Item1, fromStorage, fromSlotNo, 1, 1));
+
+                InsertItem(server, character, toItem.Item1, fromStorage, fromSlotNo, 1, connectionIn);
+            }
+
+            if (toSlotNo == 0)
+            {
+                // Going to some type of storage (bag or box)
+                // Find a new slot for the item
+                toSlotNo = toStorage.AddItem(fromItem.Item1, 0);
+
+                // Create response which places the item in the new location
+                results.Add(IsEquipmentCharacter(fromStorage.Type)
+                    ? CreateItemUpdateResult(character, fromItem.Item1, fromStorage, fromSlotNo, 0, 0)
+                    : CreateItemUpdateResult(null, fromItem.Item1, fromStorage, fromSlotNo, 0, 0));
+                
+                results.Add(CreateItemUpdateResult(null, fromItem.Item1, toStorage, toSlotNo, 1, 1));
+            }
+            else
+            {
+                // This handles:
+                // - equipment_bag -> equipment
+                // - equipment     -> equipment_bag
+                // - equipment     -> storage
+                // - storage       -> equipment
+
+                results.Add(IsEquipmentCharacter(fromStorage.Type)
+                    ? CreateItemUpdateResult(character, fromItem.Item1, fromStorage, fromSlotNo, 0, 0)
+                    : CreateItemUpdateResult(null, fromItem.Item1, fromStorage, fromSlotNo, 0, 0));
+
+                results.Add(IsEquipmentCharacter(toStorage.Type)
+                    ? CreateItemUpdateResult(character, fromItem.Item1, toStorage, toSlotNo, 1, 1)
+                    : CreateItemUpdateResult(null, fromItem.Item1, toStorage, toSlotNo, 1, 1));
+            }
+            InsertItem(server, character, fromItem.Item1, toStorage, toSlotNo, 1, connectionIn);
+        }
+        
+        private void HandleStackedTransfer(DdonServer<GameClient> server, Character character, Storage fromStorage, ushort fromSlotNo, uint num, Storage toStorage, ushort toSlotNo,
+            DbConnection? connectionIn, Tuple<Item, uint>? toItem, Tuple<Item, uint> fromItem, List<CDataItemUpdateResult> results)
+        {
+            // Moving items to/from or unequipping an item
+            uint newSrcItemNum = fromItem.Item2 - num;
+            if (newSrcItemNum == 0)
+            {
+                DeleteItem(server, character, fromItem.Item1, fromStorage, fromSlotNo, connectionIn);
+            }
+            else
+            {
+                UpdateItem(server, character, fromItem.Item1, fromStorage, fromSlotNo, newSrcItemNum, connectionIn);
+            }
+
+            results.Add(CreateItemUpdateResult(null, fromItem.Item1, fromStorage, fromSlotNo, newSrcItemNum, num));
+
+            (var clientItemInfo, uint stackLimit) = DetermineStackLimit(server, fromItem.Item1, toStorage.Type);
+
+            uint itemsToMove = num;
+            while (itemsToMove > 0)
+            {
+                uint oldDstItemNum = 0;
+                ushort dstSlotNo = toSlotNo;
+
+                Item item = fromItem.Item1;
+
+                if (toSlotNo == 0)
+                {
+                    var itemInDstStorage = toStorage.Items
+                        .Select((item, index) => new { item, index })
+                        .FirstOrDefault(tuple => fromItem.Item1.ItemId == tuple.item?.Item1.ItemId && tuple.item?.Item2 < stackLimit);
+
+                    if (itemInDstStorage == null)
+                    {
+                        // Allocate a new slot to stick these items
+                        oldDstItemNum = 0;
+                        dstSlotNo = toStorage.AddItem(fromItem.Item1, 0);
+                    }
+                    else
+                    {
+                        // There is an existing stack, try to merge them
+                        oldDstItemNum = itemInDstStorage.item!.Item2;
+                        dstSlotNo = (ushort)(itemInDstStorage.index + 1);
+                        item = itemInDstStorage.item!.Item1;
+                    }
+                }
+                else
+                {
+                    if (toItem != null)
+                    {
+                        if (toItem.Item1.ItemId != fromItem.Item1.ItemId)
+                        {
+                            // There is another item in the desired slot but they are not the same
+                            // so we need to swap them.
+                            results.AddRange(MoveItem(server, character, toStorage, toSlotNo, toItem.Item2, fromStorage, fromSlotNo, connectionIn));
+                        }
+                        else
+                        {
+                            oldDstItemNum = toItem.Item2;
+                            item = toItem.Item1;
+                        }
+                    }
+                    dstSlotNo = toSlotNo;
+                }
+
+                uint newDstItemNum = ((oldDstItemNum + itemsToMove) > stackLimit) ? stackLimit : (oldDstItemNum + itemsToMove);
+                uint movedItemNum = newDstItemNum - oldDstItemNum;
+                if (newDstItemNum == stackLimit) toSlotNo = 0; //Stack filled, so roll over into the next found stack/empty slot.
+
+                if (movedItemNum == 0)
+                {
+                    // if we move 0 items, this code will get stuck in an infinite loop
+                    // break out and report an error so we can investigate it.
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INTERNAL_ERROR);
+                }
+
+                if (clientItemInfo.StorageType != StorageType.ItemBagEquipment)
+                {
+                    // Handles stacks being merged or new ones being created
+                    item = (oldDstItemNum == 0) ? new Item(item) : item;
+                }
+
+                toStorage.SetItem(item, newDstItemNum, dstSlotNo);
+                if (oldDstItemNum == 0)
+                {
+                    InsertItem(server, character, item, toStorage, dstSlotNo, newDstItemNum, connectionIn);
+                }
+                else
+                {
+                    UpdateItem(server, character, item, toStorage, dstSlotNo, newDstItemNum, connectionIn);
+                }
+                results.Add(CreateItemUpdateResult(null, item, toStorage, dstSlotNo, newDstItemNum, movedItemNum));
+
+                itemsToMove -= movedItemNum;
+            }
+        }
+
 
         public CDataItemUpdateResult CreateItemUpdateResult(CharacterCommon character, Item item, StorageType storageType, ushort slotNo, uint itemNum, uint updateItemNum)
         {

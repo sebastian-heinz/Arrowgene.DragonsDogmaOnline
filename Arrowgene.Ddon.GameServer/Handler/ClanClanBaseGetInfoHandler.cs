@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             List<(byte Type, uint Id)> customizations = new();
             Server.Database.ExecuteInTransaction(connection =>
             {
-                pawnIds = Server.Database.SelectClanPawns(client.Character.ClanId, client.Character.CharacterId, uint.MaxValue, connection);
+                pawnIds = Server.Database.SelectClanPawns(client.Character.ClanId, client.Character.CharacterId, Server.GameSettings.GameServerSettings.RandomPawnMaxSample, connection);
                 baseFuncs = Server.Database.SelectClanShopPurchases(client.Character.ClanId, connection);
                 customizations = Server.Database.SelectClanBaseCustomizations(client.Character.ClanId, connection)
                     .Where(x => x.Type == 1)
