@@ -11,10 +11,10 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public S2CJob24_5_16_NTC()
         {
-            Unk0List = new List<CDataJobMasterUnk0>();
+            Unk0List = new List<CDataJobMasterTargetData>();
         }
 
-        public List<CDataJobMasterUnk0> Unk0List { get; set; }
+        public List<CDataJobMasterTargetData> Unk0List { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CJob24_5_16_NTC>
         {
@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override S2CJob24_5_16_NTC Read(IBuffer buffer)
             {
                 S2CJob24_5_16_NTC obj = new S2CJob24_5_16_NTC();
-                obj.Unk0List = ReadEntityList<CDataJobMasterUnk0>(buffer);
+                obj.Unk0List = ReadEntityList<CDataJobMasterTargetData>(buffer);
                 return obj;
             }
         }
