@@ -130,6 +130,7 @@ namespace Arrowgene.Ddon.WebServer
             }
 
             WebResponse response = new WebResponse();
+            response.StatusCode = 200;
             await response.WriteJsonAsync(res);
             return response;
         }
