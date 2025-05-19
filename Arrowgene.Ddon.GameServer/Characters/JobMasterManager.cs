@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -55,6 +56,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new();
             }
 
+            //Kill count multiplier for having a partner pawn present
+            uint killMulti = (uint)((client.Character.PartnerPawnId != 0 && client.Party.Members.Any(x => x.PawnId == client.Character.PartnerPawnId)) ? 2 : 1);
+
             foreach (var matchingOrder in matchingOrders)
             {
                 bool updatedRecord = false;
@@ -68,7 +72,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 foreach (var orderProgress in matchingProgress)
                 {
                     updatedRecord = true;
-                    orderProgress.CurrentNum += 1;
+                    orderProgress.CurrentNum += (1 * killMulti);
 
                     if (!Server.Database.UpsertJobMasterActiveOrdersProgress(client.Character.CharacterId, jobId, matchingOrder.ReleaseType, matchingOrder.ReleaseId, orderProgress, connectionIn))
                     {
