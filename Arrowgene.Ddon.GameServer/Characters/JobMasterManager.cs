@@ -58,7 +58,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             //Kill count bonus for having a partner pawn present
             uint partnerKillBonus = (uint)((client.Character.PartnerPawnId != 0 &&
-                client.Party.Members.Any(x => x.PawnId == client.Character.PartnerPawnId)) ? Server.GameSettings.GameServerSettings.JobTrainingPartnerBonus : 1);
+                client.Party.Members.Any(x => x.PawnId == client.Character.PartnerPawnId)) ? Server.GameSettings.GameServerSettings.JobTrainingPartnerBonus : 0);
 
             foreach (var matchingOrder in matchingOrders)
             {
