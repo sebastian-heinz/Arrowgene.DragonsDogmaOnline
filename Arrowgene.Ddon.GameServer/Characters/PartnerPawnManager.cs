@@ -118,6 +118,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return Server.Database.HasPartnerPawnLastAffectionIncreaseRecord(client.Character.CharacterId, client.Character.PartnerPawnId, action, connectionIn);
         }
 
+        public bool IsPartnerPawnInParty(GameClient client)
+        {
+            return client.Party.Members.Where(x => x.IsPawn).Any(x => x.PawnId == client.Character.PartnerPawnId);
+        }
+
         public uint GetLikabilityForCurrentPartnerPawn(GameClient client, DbConnection? connectionIn = null)
         {
             var partnerPawnData = GetPartnerPawnData(client, connectionIn);
