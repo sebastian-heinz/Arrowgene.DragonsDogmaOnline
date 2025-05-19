@@ -1397,5 +1397,23 @@ namespace Arrowgene.Ddon.Server.Settings
             }
         }
         private const uint _RandomPawnMaxSample = 10000;
+
+        /// <summary>
+        /// The bonus for Job Training kills with a Partner Pawn present.
+        /// Setting this to 0 effectively disables bonus kills with a Partner Pawn.
+        /// </summary>
+        [DefaultValue(_JobTrainingPartnerBonus)]
+        public uint JobTrainingPartnerBonus
+        {
+            set
+            {
+                SetSetting("JobTrainingPartnerBonus", value);
+            }
+            get
+            {
+                return TryGetSetting("JobTrainingPartnerBonus", _JobTrainingPartnerBonus);
+            }
+        }
+        private const uint _JobTrainingPartnerBonus = 1;
     }
 }

@@ -56,8 +56,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 return new();
             }
 
-            //Kill count multiplier for having a partner pawn present
-            uint killMulti = (uint)((client.Character.PartnerPawnId != 0 && client.Party.Members.Any(x => x.PawnId == client.Character.PartnerPawnId)) ? 2 : 1);
+            //Kill count bonus for having a partner pawn present
+            uint partnerKillBonus = (uint)((client.Character.PartnerPawnId != 0 &&
+                client.Party.Members.Any(x => x.PawnId == client.Character.PartnerPawnId)) ? Server.GameSettings.GameServerSettings.JobTrainingPartnerBonus : 1);
 
             foreach (var matchingOrder in matchingOrders)
             {
@@ -72,7 +73,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 foreach (var orderProgress in matchingProgress)
                 {
                     updatedRecord = true;
-                    orderProgress.CurrentNum += (1 * killMulti);
+                    orderProgress.CurrentNum += 1 + partnerKillBonus;
 
                     if (!Server.Database.UpsertJobMasterActiveOrdersProgress(client.Character.CharacterId, jobId, matchingOrder.ReleaseType, matchingOrder.ReleaseId, orderProgress, connectionIn))
                     {
