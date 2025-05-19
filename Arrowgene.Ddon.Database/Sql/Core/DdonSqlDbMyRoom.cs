@@ -12,7 +12,7 @@ public partial class DdonSqlDb : SqlDb
         "character_id", "category", "item_id"
     ];
 
-    private static readonly string[] MyRoomCustomizationFieldsKeyFields =
+    private static readonly string[] MyRoomCustomizationKeyFields =
     [
         "character_id", "layout_id"
     ];
@@ -22,7 +22,7 @@ public partial class DdonSqlDb : SqlDb
         "item_id"
     ];
 
-    private static readonly string[] MyRoomCustomizationFields = MyRoomCustomizationFieldsKeyFields.Union(MyRoomCustomizationNonKeyFields).ToArray();
+    private static readonly string[] MyRoomCustomizationFields = MyRoomCustomizationKeyFields.Union(MyRoomCustomizationNonKeyFields).ToArray();
         
     private readonly string SqlDeleteMyRoomCustomization = "DELETE FROM \"ddon_myroom_customization\" WHERE \"character_id\"=@character_id AND \"item_id\"=@item_id;";
 
@@ -35,7 +35,7 @@ public partial class DdonSqlDb : SqlDb
     private readonly string SqlSelectUnlockedItem = $"SELECT {BuildQueryField(UnlockedItemFields)} FROM \"ddon_unlocked_items\" WHERE \"character_id\" = @character_id;";
 
     private readonly string SqlUpsertMyRoomCustomization =
-        $"INSERT INTO \"ddon_myroom_customization\" ({BuildQueryField(MyRoomCustomizationFields)}) VALUES ({BuildQueryInsert(MyRoomCustomizationFields)}) ON CONFLICT ({BuildQueryField(MyRoomCustomizationFieldsKeyFields)}) DO UPDATE SET {BuildQueryUpdateWithPrefix("EXCLUDED.",MyRoomCustomizationNonKeyFields)};";
+        $"INSERT INTO \"ddon_myroom_customization\" ({BuildQueryField(MyRoomCustomizationFields)}) VALUES ({BuildQueryInsert(MyRoomCustomizationFields)}) ON CONFLICT ({BuildQueryField(MyRoomCustomizationKeyFields)}) DO UPDATE SET {BuildQueryUpdateWithPrefix("EXCLUDED.",MyRoomCustomizationNonKeyFields)};";
     
     public override HashSet<(UnlockableItemCategory Category, uint Id)> SelectUnlockedItems(uint characterId, DbConnection? connectionIn = null)
     {
