@@ -174,10 +174,7 @@ public partial class DdonSqlDb : SqlDb
 
         string query = SqlSelectClanBySearchPrefix + filter + ";";
 
-
-        bool isTransaction = connectionIn is not null;
-        DbConnection connection = connectionIn ?? OpenNewConnection();
-        try
+        ExecuteQuerySafe(connectionIn, connection =>
         {
             ExecuteReader(
                 connection,
@@ -201,11 +198,7 @@ public partial class DdonSqlDb : SqlDb
                         list.Add(result);
                     }
                 });
-        }
-        finally
-        {
-            if (!isTransaction) connection.Dispose();
-        }
+        });
 
         return list;
     }
