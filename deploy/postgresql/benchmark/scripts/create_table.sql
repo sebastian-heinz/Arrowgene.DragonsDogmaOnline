@@ -1,0 +1,27 @@
+CREATE TABLE IF NOT EXISTS ddon_clan_param
+(
+    clan_id            serial4     NOT NULL,
+    clan_level         int4        NOT NULL,
+    member_num         int4        NOT NULL,
+    master_id          int4        NOT NULL,
+    system_restriction bool        NOT NULL,
+    is_base_release    bool        NOT NULL,
+    can_base_release   bool        NOT NULL,
+    total_clan_point   int4        NOT NULL,
+    money_clan_point   int4        NOT NULL,
+    "name"             text        NOT NULL,
+    short_name         text        NOT NULL,
+    emblem_mark_type   int2        NOT NULL,
+    emblem_base_type   int2        NOT NULL,
+    emblem_main_color  int2        NOT NULL,
+    emblem_sub_color   int2        NOT NULL,
+    motto              int4        NOT NULL,
+    active_days        int4        NOT NULL,
+    active_time        int4        NOT NULL,
+    characteristic     int4        NOT NULL,
+    is_publish         bool        NOT NULL,
+    "comment"          text        NOT NULL,
+    board_message      text        NOT NULL,
+    created            timestamptz NOT NULL,
+    CONSTRAINT ddon_clan_param_pkey PRIMARY KEY (clan_id)
+);
