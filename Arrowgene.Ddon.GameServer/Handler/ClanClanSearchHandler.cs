@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CClanClanSearchRes Handle(GameClient client, C2SClanClanSearchReq request)
         {
             // TODO: what is SearchType for, and do we care?
-            List<CDataClanSearchResult> list = Server.ClanManager.SearchClans(client, request.SearchParam);
+            List<CDataClanSearchResult> list = Server.ClanManager.SearchClans(request.SearchParam);
 
             S2CClanClanSearchRes res = new S2CClanClanSearchRes()
             {

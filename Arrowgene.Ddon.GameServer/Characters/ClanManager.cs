@@ -346,7 +346,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public List<CDataClanSearchResult> SearchClans(GameClient client, CDataClanSearchParam searchParam)
+        public List<CDataClanSearchResult> SearchClans(CDataClanSearchParam searchParam)
         {
             List<CDataClanSearchResult> list = Server.Database.SearchClans(searchParam);
 
