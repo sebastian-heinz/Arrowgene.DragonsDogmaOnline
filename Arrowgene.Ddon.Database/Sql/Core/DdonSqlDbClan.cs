@@ -79,7 +79,16 @@ public partial class DdonSqlDb : SqlDb
 
     private readonly string SqlSelectClanParamById = $"SELECT \"clan_id\", {BuildQueryField(ClanParamFields)} FROM \"ddon_clan_param\" WHERE \"clan_id\"=@clan_id;";
 
-    private readonly string SqlSelectClanBySearchPrefix = $"SELECT \"clan_id\", {BuildQueryField(ClanSearchResultFields)} FROM \"ddon_clan_param\"";
+    private readonly string SqlSelectClanBySearch =
+        $"SELECT \"clan_id\", {BuildQueryField(ClanSearchResultFields)} FROM \"ddon_clan_param\" "
+        + "WHERE (@dont_filter_by_name OR name LIKE @name) "
+        + "AND (@dont_filter_by_clan_level OR clan_level >= @clan_level) "
+        + "AND (@dont_filter_by_member_num OR member_num >= @member_num) "
+        + "AND (@dont_filter_by_motto OR motto & @motto > 0) "
+        + "AND (@dont_filter_by_active_days OR active_days & @active_days > 0) "
+        + "AND (@dont_filter_by_active_time OR active_time & @active_time > 0) "
+        + "AND (@dont_filter_by_characteristic OR characteristic & @characteristic > 0) "
+        + "LIMIT 256;"; // limit imposed by client
 
     private readonly string SqlSelectClanShopPurchases = $"SELECT {BuildQueryField(ClanShopFields)} FROM \"ddon_clan_shop_purchases\" WHERE \"clan_id\" = @clan_id;";
 
@@ -153,34 +162,21 @@ public partial class DdonSqlDb : SqlDb
     {
         List<CDataClanSearchResult> list = new();
 
-        // build where clause
-        List<string> where = new();
-        if (search.Name != "")
-            where.Add("name LIKE @name");
-        if (search.Level > 0)
-            where.Add("clan_level = @clan_level");
-        if (search.MemberNum > 0)
-            where.Add("member_num = @member_num");
-        if (search.Motto > 0)
-            where.Add("motto & @motto > 0");
-        if (search.ActiveDays > 0)
-            where.Add("active_days & @active_days > 0");
-        if (search.ActiveTime > 0)
-            where.Add("active_time & @active_time > 0");
-        if (search.Characteristic > 0)
-            where.Add("characteristic & @characteristic > 0");
-
-        string filter = where.Count > 0 ? " WHERE " + string.Join(" AND ", where) : "";
-
-        string query = SqlSelectClanBySearchPrefix + filter + ";";
-
         ExecuteQuerySafe(connectionIn, connection =>
         {
             ExecuteReader(
                 connection,
-                query,
+                SqlSelectClanBySearch,
                 command =>
                 {
+                    AddParameter(command, "@dont_filter_by_name", search.Name == "");
+                    AddParameter(command, "@dont_filter_by_clan_level", search.Level == 0);
+                    AddParameter(command, "@dont_filter_by_member_num", search.MemberNum == 0);
+                    AddParameter(command, "@dont_filter_by_motto", search.Motto == 0);
+                    AddParameter(command, "@dont_filter_by_active_days", search.ActiveDays == 0);
+                    AddParameter(command, "@dont_filter_by_active_time", search.ActiveTime == 0);
+                    AddParameter(command, "@dont_filter_by_characteristic", search.Characteristic == 0);
+
                     AddParameter(command, "@name", $"%{search.Name}%");
                     AddParameter(command, "@clan_level", search.Level);
                     AddParameter(command, "@member_num", search.MemberNum);
@@ -194,7 +190,10 @@ public partial class DdonSqlDb : SqlDb
                     while (reader.Read())
                     {
                         CDataClanSearchResult result = ReadClanSearchResult(reader);
-                        // TODO: get master character name too
+                        CDataClanMemberInfo master = GetClanMember(result.MasterCharacterId);
+                        if (master is not null)
+                            result.MasterCharacterName = master.CharacterListElement.CommunityCharacterBaseInfo.CharacterName;
+
                         list.Add(result);
                     }
                 });
