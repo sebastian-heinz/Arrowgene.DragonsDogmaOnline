@@ -152,7 +152,7 @@ public static class GameStructure
             .ToList();
         // TODO: AbilityCostMax, ExtendParam
         cDataPawnInfo.AbilityCostMax = 15;
-        cDataPawnInfo.ExtendParam = pawn.ExtendedParams;
+        cDataPawnInfo.ExtendParam = pawn.CalculateFullExtendedParams(); // pawn.ExtendedParams;
         cDataPawnInfo.PawnType = pawn.PawnType;
         // TODO: ShareRange, Likability, Unk1
         cDataPawnInfo.ShareRange = 1;
