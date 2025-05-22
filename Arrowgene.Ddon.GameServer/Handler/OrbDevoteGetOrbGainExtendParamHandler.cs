@@ -20,22 +20,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override void Handle(GameClient client, IPacket packet)
         {
             // client.Send(InGameDump.Dump_50);
-            S2COrbDevoteGetOrbGainExtendParamRes Result = new S2COrbDevoteGetOrbGainExtendParamRes();
-            Result.ExtendParam = new CDataOrbGainExtendParam()
+            S2COrbDevoteGetOrbGainExtendParamRes Result = new S2COrbDevoteGetOrbGainExtendParamRes()
             {
-                HpMax = (ushort) client.Character.StatusInfo.GainHP,
-                StaminaMax = (ushort)client.Character.StatusInfo.GainStamina,
-                Attack = (ushort)client.Character.StatusInfo.GainAttack,
-                Defence = (ushort)client.Character.StatusInfo.GainDefense,
-                MagicAttack = (ushort)client.Character.StatusInfo.GainMagicAttack,
-                MagicDefence = (ushort)client.Character.StatusInfo.GainMagicDefense,
-                AbilityCost = client.Character.ExtendedParams.AbilityCost,
-                JewelrySlot = client.Character.ExtendedParams.JewelrySlot,
-                UseItemSlot = client.Character.ExtendedParams.UseItemSlot,
-                MaterialItemSlot = client.Character.ExtendedParams.MaterialItemSlot,
-                EquipItemSlot = client.Character.ExtendedParams.EquipItemSlot,
-                MainPawnSlot = client.Character.ExtendedParams.MainPawnSlot,
-                SupportPawnSlot = client.Character.ExtendedParams.SupportPawnSlot
+                ExtendParam = client.Character.CalculateFullExtendedParams()
             };
             client.Send(Result);
         }

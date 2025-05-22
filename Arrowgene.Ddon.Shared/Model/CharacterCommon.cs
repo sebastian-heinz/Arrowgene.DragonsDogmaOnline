@@ -74,5 +74,25 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public uint GreenHp {  get; set; }
         public uint WhiteHp { get; set; }
+
+        public CDataOrbGainExtendParam CalculateFullExtendedParams()
+        {
+            return new CDataOrbGainExtendParam()
+            {
+                HpMax = (ushort) StatusInfo.GainHP,
+                StaminaMax = (ushort) StatusInfo.GainStamina,
+                Attack = (ushort) StatusInfo.GainAttack,
+                Defence = (ushort) StatusInfo.GainDefense,
+                MagicAttack = (ushort) StatusInfo.GainMagicAttack,
+                MagicDefence = (ushort) StatusInfo.GainMagicDefense,
+                AbilityCost = ExtendedParams.AbilityCost,
+                JewelrySlot = ExtendedParams.JewelrySlot,
+                UseItemSlot = ExtendedParams.UseItemSlot,
+                MaterialItemSlot = ExtendedParams.MaterialItemSlot,
+                EquipItemSlot = ExtendedParams.EquipItemSlot,
+                MainPawnSlot = ExtendedParams.MainPawnSlot,
+                SupportPawnSlot = ExtendedParams.SupportPawnSlot
+            };
+        }
     }
 }
