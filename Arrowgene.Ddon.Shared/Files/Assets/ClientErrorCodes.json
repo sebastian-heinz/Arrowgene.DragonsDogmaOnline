@@ -94,5 +94,9 @@
     {
         "code": "ERROR_CODE_CLIENT_ITEM_INFO_MISSING",
         "en": "The item has no information."
+    },
+	{
+        "code": "ERROR_CODE_CONTENTS_RELEASE_NOT_PARTY_PLAY_WITH_PLAYER",
+        "en": "This or invited character has not yet unlocked playing in a party."
     }
 ]
