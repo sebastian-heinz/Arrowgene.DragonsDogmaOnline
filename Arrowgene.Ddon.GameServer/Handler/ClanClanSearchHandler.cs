@@ -24,7 +24,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ClanList = list
             };
 
-return res;
+            return res;
 
         }
     }
