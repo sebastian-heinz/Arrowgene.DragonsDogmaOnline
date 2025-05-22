@@ -506,7 +506,7 @@ public partial class DdonSqlDb : SqlDb
                     Item item = jobEquipment.Value[EquipType.Performance][i];
                     if (item != null)
                     {
-                        ushort slot = storageBoxNormal.AddItem(item, 0);
+                        ushort slot = storageBoxNormal.AddItem(item, 1);
                         InsertEquipItem(conn, character.CommonId, job, EquipType.Performance, (byte)(i + 1), item.UId);
                         InsertStorageItem(character.ContentCharacterId, StorageType.StorageBoxNormal, slot, 1, item, conn);
                     }
@@ -532,7 +532,7 @@ public partial class DdonSqlDb : SqlDb
                     Item item = equipment[i];
                     if (item != null && item.ItemId > 0)
                     {
-                        ushort slot = storageBoxNormal.AddItem(item, 0);
+                        ushort slot = storageBoxNormal.AddItem(item, 1);
                         InsertEquipItem(conn, character.CommonId, jobId, EquipType.Performance, (byte)(i + 1), item.UId);
 
                         if (jobId != character.Job) InsertStorageItem(character.ContentCharacterId, StorageType.StorageBoxNormal, slot, 1, item, conn);
