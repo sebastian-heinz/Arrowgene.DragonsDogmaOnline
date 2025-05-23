@@ -15,20 +15,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override void Handle(GameClient client, StructurePacket<C2SQuestLeaderQuestProgressRequestReq> packet)
         {
-            client.Send(new S2CQuestLeaderQuestProgressRequestRes()
-            {
-                QuestProgressResult = 0, // TODO: Proper data
-                QuestScheduleId = packet.Structure.QuestScheduleId,
-                ProcessNo = packet.Structure.ProcessNo
-            });
-
-            client.Party.SendToAll(new S2CQuestLeaderQuestProgressRequestNtc()
+            client.Party.Leader.Client.Send(new S2CQuestLeaderQuestProgressRequestNtc()
             {
                 RequestCharacterId = client.Character.CharacterId,
                 QuestScheduleId = packet.Structure.QuestScheduleId,
                 ProcessNo = packet.Structure.ProcessNo,
                 SequenceNo = packet.Structure.SequenceNo,
                 BlockNo = packet.Structure.BlockNo
+            });
+
+            client.Send(new S2CQuestLeaderQuestProgressRequestRes()
+            {
+                QuestProgressResult = 0, // TODO: Proper data
+                QuestScheduleId = packet.Structure.QuestScheduleId,
+                ProcessNo = packet.Structure.ProcessNo
             });
         }
     }
