@@ -62,12 +62,12 @@ namespace Arrowgene.Ddon.LoginServer
 
         protected override void ClientDisconnected(LoginClient client)
         {
-            LoginQueueManager.Remove(client.Account.Id);
             ClientLookup.Remove(client);
 
             Account account = client.Account;
             if (account != null)
             {
+                LoginQueueManager.Remove(client.Account.Id);
                 Database.DeleteConnection(Id, client.Account.Id);
             }
         }
