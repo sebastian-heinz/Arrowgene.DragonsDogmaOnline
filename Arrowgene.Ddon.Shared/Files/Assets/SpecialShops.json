@@ -7553,7 +7553,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cAppr\uff1e Star Trinket (Solider)",
+                            "label": "\uff1cAppr\uff1e Star Trinket (Soldier)",
                             "base_items": [
                                 {
                                     "item_id": 13479,
@@ -13875,7 +13875,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cAppr\uff1e Wind Trinket (Solider)",
+                            "label": "\uff1cAppr\uff1e Wind Trinket (Soldier)",
                             "base_items": [
                                 {
                                     "item_id": 13487,
@@ -20011,7 +20011,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cAppr\uff1e Flight Trinket (Solider)",
+                            "label": "\uff1cAppr\uff1e Flight Trinket (Soldier)",
                             "base_items": [
                                 {
                                     "item_id": 18821,
@@ -26333,7 +26333,7 @@
                             ]
                         },
                         {
-                            "label": "\uff1cAppr\uff1e Cloud Trinket (Solider)",
+                            "label": "\uff1cAppr\uff1e Cloud Trinket (Soldier)",
                             "base_items": [
                                 {
                                     "item_id": 21280,
