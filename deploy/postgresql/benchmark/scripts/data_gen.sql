@@ -1,0 +1,30 @@
+INSERT INTO ddon_clan_param
+(clan_level, member_num, master_id, system_restriction, is_base_release,
+ can_base_release, total_clan_point, money_clan_point, "name", short_name,
+ emblem_mark_type, emblem_base_type, emblem_main_color, emblem_sub_color,
+ motto, active_days, active_time, characteristic, is_publish, "comment",
+ board_message, created)
+SELECT (random() * 100)::int,
+       (random() * 500)::int,
+       (n),
+       (random() < 0.5),
+       (random() < 0.5),
+       (random() < 0.5),
+       (random() * 10000)::int,
+       (random() * 5000)::int,
+       md5(random()::text),
+       substr(md5(random()::text), 1, 5),
+       (random() * 10)::smallint,
+       (random() * 10)::smallint,
+       (random() * 50)::smallint,
+       (random() * 50)::smallint,
+       (random() * 100000)::int,
+       (random() * 365)::int,
+       (random() * 86400)::int,
+       (random() * 100)::int,
+       (random() < 0.5),
+       md5(random()::text),
+       md5(random()::text),
+       NOW() - (random() * 365 || ' days')::interval
+FROM generate_series(1, :'rows') n
+;
