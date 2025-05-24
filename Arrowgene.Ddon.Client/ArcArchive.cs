@@ -253,6 +253,7 @@ namespace Arrowgene.Ddon.Client
             }
 
             FileIndex newFileIndex = new FileIndex();
+            newFileIndex.IsCyphered = IsCypheredArc(MagicTag);
             newFileIndex.Path = path;
             string ext = Path.GetExtension(path);
             newFileIndex.ArcPath = path.Substring(0, path.Length - ext.Length);
