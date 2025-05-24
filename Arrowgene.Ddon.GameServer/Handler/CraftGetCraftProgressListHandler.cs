@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
@@ -31,7 +32,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     CraftRankLimit = pawn.CraftData.CraftRankLimit
                 });
 
-                CraftProgress craftProgress = Server.Database.SelectPawnCraftProgress(client.Character.CharacterId, pawn.PawnId);
+                CraftProgress? craftProgress = Server.Database.SelectPawnCraftProgress(client.Character.CharacterId, pawn.PawnId);
                 if (craftProgress != null)
                 {
                     CDataCraftPawnInfo leadPawn = GetPawnCraftInfo(pawn.PawnId);
@@ -78,6 +79,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         craftProgress.RemainTime = 0;
                         Server.Database.UpdatePawnCraftProgress(craftProgress);
                         client.Send(new S2CCraftFinishCraftNtc { PawnId = leadPawn.PawnId });
+                    }
+                }
+                else
+                {
+                    // Sanity check: if a pawn has no craft progress it should not be in crafting state
+                    if (pawn.PawnState == PawnState.Craft)
+                    {
+                        Logger.Debug($"Resetting pawn state of pawn ID:{pawn.PawnId} because it is stuck crafting.");
+                        // Something went wrong while cleaning up pawn state, handle it now
+                        pawn.PawnState = PawnState.None;
                     }
                 }
             }
