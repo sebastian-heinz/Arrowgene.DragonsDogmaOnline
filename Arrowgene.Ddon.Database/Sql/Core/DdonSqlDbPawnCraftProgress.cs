@@ -73,11 +73,11 @@ public partial class DdonSqlDb : SqlDb
         });
     }
 
-    public override CraftProgress SelectPawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, DbConnection? connectionIn = null)
+    public override CraftProgress? SelectPawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, DbConnection? connectionIn = null)
     {
         return ExecuteQuerySafe(connectionIn, connection =>
         {
-            CraftProgress craftProgress = null;
+            CraftProgress? craftProgress = null;
             ExecuteReader(connection, SqlSelectPawnCraftProgress,
                 command =>
                 {
