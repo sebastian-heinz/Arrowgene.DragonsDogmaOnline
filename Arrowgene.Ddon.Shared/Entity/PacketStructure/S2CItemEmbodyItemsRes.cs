@@ -12,15 +12,15 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public S2CItemEmbodyItemsRes()
         {
             Unk0 = new List<CDataStorageEmptySlotNum>();
-            Unk1 = new List<CDataRequiredItem>();
+            Unk1 = new List<CDataItemAmount>();
             WalletPoints = new List<CDataWalletPoint>();
-            Unk2 = new List<CDataRequiredItem>();
+            Unk2 = new List<CDataItemAmount>();
         }
 
         public List<CDataStorageEmptySlotNum> Unk0 { get; set; }
-        public List<CDataRequiredItem> Unk1 { get; set; } // This is not the same type but it has same size elements
+        public List<CDataItemAmount> Unk1 { get; set; } // This is not the same type but it has same size elements
         public List<CDataWalletPoint> WalletPoints { get; set; }
-        public List<CDataRequiredItem> Unk2 { get; set; }
+        public List<CDataItemAmount> Unk2 { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CItemEmbodyItemsRes>
         {
@@ -38,9 +38,9 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 S2CItemEmbodyItemsRes obj = new S2CItemEmbodyItemsRes();
                 ReadServerResponse(buffer, obj);
                 obj.Unk0 = ReadEntityList<CDataStorageEmptySlotNum>(buffer);
-                obj.Unk1 = ReadEntityList<CDataRequiredItem>(buffer);
+                obj.Unk1 = ReadEntityList<CDataItemAmount>(buffer);
                 obj.WalletPoints = ReadEntityList<CDataWalletPoint>(buffer);
-                obj.Unk2 = ReadEntityList<CDataRequiredItem>(buffer);
+                obj.Unk2 = ReadEntityList<CDataItemAmount>(buffer);
                 return obj;
             }
         }

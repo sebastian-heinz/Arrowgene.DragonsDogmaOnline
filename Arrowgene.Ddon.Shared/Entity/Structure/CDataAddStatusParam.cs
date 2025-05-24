@@ -1,4 +1,4 @@
-﻿using Arrowgene.Buffers;
+using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -30,5 +30,4 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             }
         }
     }
-
 }

@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             ContextNormalSkillList=new List<CDataContextNormalSkillData>();
             ContextSkillList=new List<CDataContextAcquirementData>();
             ContextAbilityList=new List<CDataContextAcquirementData>();
-            Unk0List=new List<CDataContextBaseUnk0>();
+            EmblemStatList=new List<CDataEquipStatParam>(); // Potentially for the job emblem
         }
 
         public int MemberIndex { get; set; }
@@ -46,7 +46,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public List<CDataContextAcquirementData> ContextAbilityList { get; set; }
         public uint AbilityCostSum { get; set; }
         public uint AbilityCostMax { get; set; }
-        public List<CDataContextBaseUnk0> Unk0List { get; set; }
+        public List<CDataEquipStatParam> EmblemStatList { get; set; }
 
         public class Serializer : EntitySerializer<CDataContextBase>
         {
@@ -78,7 +78,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteEntityList<CDataContextAcquirementData>(buffer, obj.ContextAbilityList);
                 WriteUInt32(buffer, obj.AbilityCostSum);
                 WriteUInt32(buffer, obj.AbilityCostMax);
-                WriteEntityList<CDataContextBaseUnk0>(buffer, obj.Unk0List);
+                WriteEntityList<CDataEquipStatParam>(buffer, obj.EmblemStatList);
             }
 
             public override CDataContextBase Read(IBuffer buffer)
@@ -110,7 +110,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.ContextAbilityList = ReadEntityList<CDataContextAcquirementData>(buffer);
                 obj.AbilityCostSum = ReadUInt32(buffer);
                 obj.AbilityCostMax = ReadUInt32(buffer);
-                obj.Unk0List = ReadEntityList<CDataContextBaseUnk0>(buffer);
+                obj.EmblemStatList = ReadEntityList<CDataEquipStatParam>(buffer);
                 return obj;
             }
         }

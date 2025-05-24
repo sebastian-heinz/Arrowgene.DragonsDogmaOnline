@@ -481,8 +481,8 @@ public abstract class SqlDb : IDatabase
     public abstract bool InsertCharacterStampData(uint id, CharacterStampBonus stampData);
     public abstract bool UpdateCharacterStampData(uint id, CharacterStampBonus stampData);
     public abstract bool InsertCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount, DbConnection? connectionIn = null);
-    public abstract bool UpdateCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount);
-    public abstract bool RemoveCrest(uint characterCommonId, string itemUId, uint slot);
+    public abstract bool UpdateCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount, DbConnection? ConnectionIn = null);
+    public abstract bool RemoveCrest(uint characterCommonId, string itemUId, uint slot, DbConnection? connectionIn = null);
     public abstract List<Crest> GetCrests(uint characterCommonId, string itemUId);
     public abstract bool InsertBBMCharacterId(uint characterId, uint bbmCharacterId);
     public abstract uint SelectBBMCharacterId(uint characterId, DbConnection? connectionIn = null);
@@ -608,6 +608,10 @@ public abstract class SqlDb : IDatabase
 
     public abstract bool InsertSkillAugmentationReleasedElement(uint characterId, JobId jobId, uint releaseId, DbConnection? connectionIn = null);
     public abstract HashSet<uint> GetSkillAugmentationReleasedElements(uint characterId, JobId jobId, DbConnection? connectionIn = null);
+
+    public abstract bool UpsertJobEmblemData(uint characterId, JobEmblem jobEmblem, DbConnection? connectionIn = null);
+    public abstract JobEmblem GetJobEmblemData(uint characterId, JobId jobId, DbConnection? connectionIn = null);
+    public abstract List<JobEmblem> GetAllJobEmblemData(uint characterId, DbConnection? connectionIn = null);
 
     protected virtual DbCommand Command(string query, DbConnection connection)
     {

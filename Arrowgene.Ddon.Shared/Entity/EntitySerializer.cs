@@ -183,7 +183,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataEntryRecruitJob.Serializer());
             Create(new CDataEquipElementParam.Serializer());
             Create(new CDataEquipItemInfo.Serializer());
-            Create(new CDataEquipItemInfoUnk2.Serializer());
+            Create(new CDataEquipStatParam.Serializer());
             Create(new CDataEquipJobItem.Serializer());
             Create(new CDataEquipSlot.Serializer());
             Create(new CDataEquipEnhanceUnk0.Serializer());
@@ -245,6 +245,21 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataJobValueShopItem.Serializer());
             Create(new CDataJobMasterTargetData.Serializer());
             Create(new CDataJumpLocation.Serializer());
+
+            Create(new CDataJobEmblem.Serializer());
+            Create(new CDataJobEmblemCrestInheritanceBaseChance.Serializer());
+            Create(new CDataJobEmblemInheritanceResult.Serializer());
+            Create(new CDataJobEmblemInhertianceIncreaseChanceItem.Serializer());
+            Create(new CDataJobEmblemLevelData.Serializer());
+            Create(new CDataJobEmblemPoints.Serializer());
+            Create(new CDataJobEmblemActionCostParam.Serializer());
+            Create(new CDataJobEmblemSettings.Serializer());
+            Create(new CDataJobEmblemSlotRestriction.Serializer());
+            Create(new CDataJobEmblemStatCostData.Serializer());
+            Create(new CDataJobEmblemStatUpgradeData.Serializer());
+            Create(new CDataJobEmblemUnk0.Serializer());
+            Create(new CDataJobEmblemStatParam.Serializer());
+            Create(new CDataJobEmblemPlayPoint.Serializer());
 
             Create(new CDataLayoutEnemyData.Serializer());
             Create(new CDataLayoutItemData.Serializer());
@@ -409,7 +424,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataEquipEnhanceLotteryOption.Serializer());
             Create(new CDataS2CEquipEnhancedGetPacksResUnk0Unk10.Serializer());
             Create(new CDataS2CEquipEnhancedGetPacksResUnk0Unk10Unk1.Serializer());
-            Create(new CDataRequiredItem.Serializer());
+            Create(new CDataItemAmount.Serializer());
             Create(new CDataS2CEquipEnhancedGetPacksResUnk0Unk9.Serializer());
             Create(new CDataS2CQuestJoinLobbyQuestInfoNtcUnk0Unk1.Serializer());
             Create(new CDataScreenShotCategory.Serializer());
@@ -751,6 +766,13 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SJobOrbTreeGetJobOrbTreeGetAllJobOrbElementListReq.Serializer());
             Create(new C2SJobOrbTreeReleaseJobOrbElementReq.Serializer());
             Create(new C2SJobUpdateExpModeReq.Serializer());
+
+            Create(new C2SJobEmblemAttachElementReq.Serializer());
+            Create(new C2SJobEmblemGetEmblemListReq.Serializer());
+            Create(new C2SJobEmblemDetachElementReq.Serializer());
+            Create(new C2SJobEmblemUpdateLevelReq.Serializer());
+            Create(new C2SJobEmblemUpdateParamLevelReq.Serializer());
+            Create(new C2SJobEmblemResetParamLevelReq.Serializer());
 
             Create(new C2SJobMasterReportJobOrderProgressReq.Serializer());
             Create(new C2SJobMasterGetJobMasterOrderProgressReq.Serializer());
@@ -1373,6 +1395,13 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CJobOrderCompleteNtc.Serializer());
             Create(new S2CJob24_5_16_NTC.Serializer());
             Create(new S2CJobMasterMarkTargetsNtc.Serializer());
+
+            Create(new S2CJobEmblemAttachElementRes.Serializer());
+            Create(new S2CJobEmblemDetachElementRes.Serializer());
+            Create(new S2CJobEmblemGetEmblemListRes.Serializer());
+            Create(new S2CJobEmblemUpdateLevelRes.Serializer());
+            Create(new S2CJobEmblemUpdateParamLevelRes.Serializer());
+            Create(new S2CJobEmblemResetParamLevelRes.Serializer());
 
             Create(new S2CJobMasterReportJobOrderProgressRes.Serializer());
             Create(new S2CJobMasterGetJobMasterOrderProgressRes.Serializer());
@@ -2150,6 +2179,26 @@ namespace Arrowgene.Ddon.Shared.Entity
             ushort len = buffer.ReadUInt16(Endianness.Big);
             string str = buffer.ReadString(len, Encoding.UTF8);
             return str;
+        }
+
+        protected void WriteMtStringList(IBuffer buffer, List<string> strs)
+        {
+            WriteUInt32(buffer, (uint)strs.Count);
+            for (int i = 0; i < strs.Count; i++)
+            {
+                WriteMtString(buffer, strs[i]);
+            }
+        }
+
+        protected List<string> ReadMtStringList(IBuffer buffer)
+        {
+            var strs = new List<string>();
+            uint len = ReadUInt32(buffer);
+            for (int i = 0; i < len; i++)
+            {
+                strs.Add(ReadMtString(buffer));
+            }
+            return strs;
         }
 
         protected void WriteServerResponse(IBuffer buffer, ServerResponse value)

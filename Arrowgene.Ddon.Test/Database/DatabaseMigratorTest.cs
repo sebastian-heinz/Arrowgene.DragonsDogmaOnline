@@ -377,8 +377,8 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertCharacterStampData(uint id, CharacterStampBonus stampData) { return true; }
         public bool UpdateCharacterStampData(uint id, CharacterStampBonus stampData) { return true; }
         public bool InsertCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount, DbConnection? connectionIn = null) { return true; }
-        public bool UpdateCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount) { return true; }
-        public bool RemoveCrest(uint characterCommonId, string itemUId, uint slot) { return true; }
+        public bool UpdateCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount, DbConnection? ConnectionIn = null) { return true; }
+        public bool RemoveCrest(uint characterCommonId, string itemUId, uint slot, DbConnection? connectionIn = null) { return true; }
         public List<Crest> GetCrests(uint characterCommonId, string itemUId) { return new List<Crest>(); }
         public bool ReplaceAbilityPreset(uint characterId, CDataPresetAbilityParam preset) {return true; }
         public bool UpdateAbilityPreset(uint characterId, CDataPresetAbilityParam preset) { return true; }
@@ -517,6 +517,10 @@ namespace Arrowgene.Ddon.Test.Database
 
         public bool InsertSkillAugmentationReleasedElement(uint characterId, JobId jobId, uint releaseId, DbConnection? connectionIn = null) { return true; }
         public HashSet<uint> GetSkillAugmentationReleasedElements(uint characterId, JobId jobId, DbConnection? connectionIn = null) { return new(); }
+
+        public bool UpsertJobEmblemData(uint characterId, JobEmblem jobEmblem, DbConnection? connectionIn = null) { return true; }
+        public JobEmblem GetJobEmblemData(uint characterId, JobId jobId, DbConnection? connectionIn = null) { return new(); }
+        public List<JobEmblem> GetAllJobEmblemData(uint characterId, DbConnection? connectionIn = null) { return new(); }
 
         public void AddParameter(DbCommand command, string name, object? value, DbType type) { }
         public void AddParameter(DbCommand command, string name, string value) { }

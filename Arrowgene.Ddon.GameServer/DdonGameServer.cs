@@ -89,6 +89,7 @@ namespace Arrowgene.Ddon.GameServer
             AchievementManager = new AchievementManager(this);
             JobMasterManager = new JobMasterManager(this);
             JobOrbUnlockManager = new JobOrbUnlockManager(this);
+            JobEmblemManager = new JobEmblemManager(this);
 
             // Orb Management is slightly complex and requires updating fields across multiple systems
             OrbUnlockManager = new OrbUnlockManager(this);
@@ -134,6 +135,7 @@ namespace Arrowgene.Ddon.GameServer
         public AchievementManager AchievementManager { get; }
         public JobMasterManager JobMasterManager { get; private set; }
         public JobOrbUnlockManager JobOrbUnlockManager { get; }
+        public JobEmblemManager JobEmblemManager { get; }
 
         public ChatLogHandler ChatLogHandler { get; }
 
@@ -445,6 +447,13 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new JobGetPlayPointListHandler(this));
             AddHandler(new JobJobValueShopGetLineupHandler(this));
             AddHandler(new JobJobValueShopBuyItemHandler(this));
+
+            AddHandler(new JobEmblemAttachElementHandler(this));
+            AddHandler(new JobEmblemDetachElementHandler(this));
+            AddHandler(new JobEmblemGetEmblemListHandler(this));
+            AddHandler(new JobEmblemUpdateLevelHandler(this));
+            AddHandler(new JobEmblemUpdateParamLevel(this));
+            AddHandler(new JobEmblemResetParamLevelHandler(this));
 
             AddHandler(new JobMasterReportJobOrderProgressHandler(this));
             AddHandler(new JobMasterGetJobMasterOrderProgressHandler(this));

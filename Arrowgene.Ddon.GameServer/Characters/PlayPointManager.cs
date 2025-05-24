@@ -1,4 +1,5 @@
 using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -15,16 +16,16 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private uint PP_MAX {  get
             {
-                return _Server.GameSettings.GameServerSettings.PlayPointMax;
+                return Server.GameSettings.GameServerSettings.PlayPointMax;
             }
         }
 
         public PlayPointManager(DdonGameServer server)
         {
-            _Server = server;
+            Server = server;
         }
 
-        private readonly DdonGameServer _Server;
+        private readonly DdonGameServer Server;
 
         public void AddPlayPointNtc(GameClient client, (uint BasePoints, uint BonusPoints) gainedPoints, JobId? job = null, byte type = 1, DbConnection? connectionIn = null)
         {
@@ -60,45 +61,44 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     Type = type //Type == 1 (default) is "loud" and will show the UpdatePoint amount to the user, as both a chat log and floating text.
                 };
 
-                _Server.Database.UpdateCharacterPlayPointData(client.Character.CharacterId, targetPlayPoint, connectionIn);
+                Server.Database.UpdateCharacterPlayPointData(client.Character.CharacterId, targetPlayPoint, connectionIn);
                 return ppNtc;
             }
 
             return new();
         }
 
-        public void RemovePlayPoint(GameClient client, uint removedPoints, JobId? job = null, byte type = 0)
+        public void RemovePlayPoint(GameClient client, uint removedPoints, JobId? jobId = null, byte type = 0)
         {
-            CDataJobPlayPoint? targetPlayPoint;
-            if (job is null)
+            if (jobId is null)
             {
-                targetPlayPoint = client.Character.ActiveCharacterPlayPointData;
+                jobId = client.Character.ActiveCharacterJobData.Job;
             }
-            else
+            client.Send(RemovePlayPoint2(client, jobId.Value, removedPoints, type));
+        }
+
+        public S2CJobUpdatePlayPointNtc RemovePlayPoint2(GameClient client, JobId jobId, uint amount, byte type = 0, DbConnection? connectionIn = null)
+        {
+            var targetPlayPoint = client.Character.PlayPointList.Where(x => x.Job == jobId).FirstOrDefault()
+                    ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CONTENTS_RELEASE_NOT_PLAY_POINT);
+
+            if (targetPlayPoint.PlayPoint.PlayPoint < amount)
             {
-                targetPlayPoint = client.Character.PlayPointList.Where(x => x.Job == job)
-                    .FirstOrDefault()
-                    ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_JOB_VALUE_SHOP_INVALID_JOB);
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_JOB_VALUE_SHOP_VALUE_LACK, "Player does not have enough play points for the transaction");
             }
-             
-            if (targetPlayPoint != null && targetPlayPoint.PlayPoint.PlayPoint > 0)
+
+            targetPlayPoint.PlayPoint.PlayPoint = Math.Min(targetPlayPoint.PlayPoint.PlayPoint - amount, PP_MAX);
+
+            Server.Database.UpdateCharacterPlayPointData(client.Character.CharacterId, targetPlayPoint, connectionIn);
+
+            return new()
             {
-                uint clampedNew = Math.Min(targetPlayPoint.PlayPoint.PlayPoint - removedPoints, PP_MAX);
-                targetPlayPoint.PlayPoint.PlayPoint = clampedNew;
-
-                S2CJobUpdatePlayPointNtc ppNtc = new S2CJobUpdatePlayPointNtc()
-                {
-                    JobId = targetPlayPoint.Job,
-                    UpdatePoint = 0,
-                    ExtraBonusPoint = 0,
-                    TotalPoint = targetPlayPoint.PlayPoint.PlayPoint,
-                    Type = type //Type == 0 (default) is "silent" and will not notify the player, aside from updating some UI elements.
-                };
-
-                client.Send(ppNtc);
-
-                _Server.Database.UpdateCharacterPlayPointData(client.Character.CharacterId, targetPlayPoint);
-            }
+                JobId = jobId,
+                UpdatePoint = 0,
+                ExtraBonusPoint = 0,
+                TotalPoint = targetPlayPoint.PlayPoint.PlayPoint,
+                Type = type
+            };
         }
     }
 }

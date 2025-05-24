@@ -2,22 +2,22 @@ using Arrowgene.Buffers;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public class CDataEquipItemInfoUnk2
+    public class CDataEquipStatParam
     {
         public byte EffectID; // 27 is inflict Gold, 26 is inflict petrification, etc. 
         public ushort EffectValue;
         
-        public class Serializer : EntitySerializer<CDataEquipItemInfoUnk2>
+        public class Serializer : EntitySerializer<CDataEquipStatParam>
         {
-            public override void Write(IBuffer buffer, CDataEquipItemInfoUnk2 obj)
+            public override void Write(IBuffer buffer, CDataEquipStatParam obj)
             {
                 WriteByte(buffer, obj.EffectID);
                 WriteUInt16(buffer, obj.EffectValue);
             }
 
-            public override CDataEquipItemInfoUnk2 Read(IBuffer buffer)
+            public override CDataEquipStatParam Read(IBuffer buffer)
             {
-                CDataEquipItemInfoUnk2 obj = new CDataEquipItemInfoUnk2();
+                CDataEquipStatParam obj = new CDataEquipStatParam();
                 obj.EffectID = ReadByte(buffer);
                 obj.EffectValue = ReadUInt16(buffer);
                 return obj;

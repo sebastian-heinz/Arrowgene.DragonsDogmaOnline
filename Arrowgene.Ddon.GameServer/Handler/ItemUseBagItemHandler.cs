@@ -74,7 +74,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     EquipPawnID = 0,
                     EquipElementParamList = item.EquipElementParamList,
                     AddStatusParamList = item.AddStatusParamList,
-                    Unk2List = item.Unk2List
+                    EquipStatParamList = item.EquipStatParamList
                 },
                 UpdateItemNum = -(int)request.Amount
             };

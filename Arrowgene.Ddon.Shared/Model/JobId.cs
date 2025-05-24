@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Arrowgene.Ddon.Shared.Model
 {
@@ -98,6 +99,46 @@ namespace Arrowgene.Ddon.Shared.Model
         public static ContentsRelease SkillAugmentationReleaseId(this JobId jobId)
         {
             return SkillAugmentationReleaseIds[jobId];
+        }
+
+        private static Dictionary<JobId, ContentsRelease> VocationEmblemReleaseIds = new Dictionary<JobId, ContentsRelease>()
+        {
+            [JobId.Fighter] = ContentsRelease.FighterVocationEmblem,
+            [JobId.Seeker] = ContentsRelease.SeekerVocationEmblem,
+            [JobId.Hunter] = ContentsRelease.HunterVocationEmblem,
+            [JobId.Priest] = ContentsRelease.PriestVocationEmblem,
+            [JobId.ShieldSage] = ContentsRelease.ShieldSageVocationEmblem,
+            [JobId.Sorcerer] = ContentsRelease.SorcererVocationEmblem,
+            [JobId.Warrior] = ContentsRelease.WarriorVocationEmblem,
+            [JobId.ElementArcher] = ContentsRelease.ElementArcherVocationEmblem,
+            [JobId.Alchemist] = ContentsRelease.AlchemistVocationEmblem,
+            [JobId.SpiritLancer] = ContentsRelease.SpiritLancerVocationEmblem,
+            [JobId.HighScepter] = ContentsRelease.HighScepterVocationEmblem,
+        };
+
+        public static ContentsRelease VocationEmblemReleaseId(this JobId jobId)
+        {
+            return VocationEmblemReleaseIds[jobId];
+        }
+
+        private static readonly Dictionary<JobId, ItemId> JobEmblemItemIds = new Dictionary<JobId, ItemId>()
+        {
+            [JobId.Fighter] = ItemId.EmblemStoneFighter,
+            [JobId.Seeker] = ItemId.EmblemStoneSeeker,
+            [JobId.Hunter] = ItemId.EmblemStoneHunter,
+            [JobId.Priest] = ItemId.EmblemStonePriest,
+            [JobId.ShieldSage] = ItemId.EmblemStoneShieldSage,
+            [JobId.Sorcerer] = ItemId.EmblemStoneSorcerer,
+            [JobId.Warrior] = ItemId.EmblemStoneWarrior,
+            [JobId.ElementArcher] = ItemId.EmblemStoneElementArcher,
+            [JobId.Alchemist] = ItemId.EmblemStoneAlchemist,
+            [JobId.SpiritLancer] = ItemId.EmblemStoneSpiritLancer,
+            [JobId.HighScepter] = ItemId.EmblemStoneHighScepter,
+        };
+
+        public static ItemId VocationEmblemItemId(this JobId jobId)
+        {
+            return JobEmblemItemIds[jobId];
         }
     }
 }
