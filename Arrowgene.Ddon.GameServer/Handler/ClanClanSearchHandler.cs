@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -14,8 +16,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CClanClanSearchRes Handle(GameClient client, C2SClanClanSearchReq request)
         {
-            // TODO: Implement.
-            return new S2CClanClanSearchRes();
+            // TODO: what is SearchType for, and do we care?
+            S2CClanClanSearchRes res = new S2CClanClanSearchRes();
+
+            Server.Database.ExecuteInTransaction(conn =>
+            {
+                res.ClanList = Server.Database.SearchClans(request.SearchParam, conn);
+            });
+
+            return res;
+
         }
     }
 }

@@ -17,6 +17,13 @@ public partial class DdonSqlDb : SqlDb
         "is_publish", "comment", "board_message", "created"
     };
 
+    private static readonly string[] ClanSearchResultFields = new[]
+    {
+        "name", "clan_level", "member_num", "motto", "emblem_mark_type",
+        "emblem_base_type", "emblem_main_color", "emblem_sub_color", "master_id",
+        "created"
+    };
+
     private static readonly string[] ClanMembershipFields = new[]
     {
         "character_id", "clan_id", "rank", "permission", "created"
@@ -71,6 +78,17 @@ public partial class DdonSqlDb : SqlDb
         $"SELECT {BuildQueryField(ClanMembershipFields)} FROM \"ddon_clan_membership\" WHERE \"character_id\"=@character_id;";
 
     private readonly string SqlSelectClanParamById = $"SELECT \"clan_id\", {BuildQueryField(ClanParamFields)} FROM \"ddon_clan_param\" WHERE \"clan_id\"=@clan_id;";
+
+    private readonly string SqlSelectClanBySearch =
+        $"SELECT \"clan_id\", {BuildQueryField(ClanSearchResultFields)} FROM \"ddon_clan_param\" "
+        + "WHERE (@dont_filter_by_name OR name LIKE @name) "
+        + "AND (@dont_filter_by_clan_level OR clan_level >= @clan_level) "
+        + "AND (@dont_filter_by_member_num OR member_num >= @member_num) "
+        + "AND (@dont_filter_by_motto OR motto & @motto > 0) "
+        + "AND (@dont_filter_by_active_days OR active_days & @active_days > 0) "
+        + "AND (@dont_filter_by_active_time OR active_time & @active_time > 0) "
+        + "AND (@dont_filter_by_characteristic OR characteristic & @characteristic > 0) "
+        + "LIMIT 256;"; // limit imposed by client
 
     private readonly string SqlSelectClanShopPurchases = $"SELECT {BuildQueryField(ClanShopFields)} FROM \"ddon_clan_shop_purchases\" WHERE \"clan_id\" = @clan_id;";
 
@@ -138,6 +156,50 @@ public partial class DdonSqlDb : SqlDb
         }
 
         return clanParam;
+    }
+
+    public override List<CDataClanSearchResult> SearchClans(CDataClanSearchParam search, DbConnection? connectionIn = null)
+    {
+        List<CDataClanSearchResult> list = new();
+
+        ExecuteQuerySafe(connectionIn, connection =>
+        {
+            ExecuteReader(
+                connection,
+                SqlSelectClanBySearch,
+                command =>
+                {
+                    AddParameter(command, "@dont_filter_by_name", search.Name == "");
+                    AddParameter(command, "@dont_filter_by_clan_level", search.Level == 0);
+                    AddParameter(command, "@dont_filter_by_member_num", search.MemberNum == 0);
+                    AddParameter(command, "@dont_filter_by_motto", search.Motto == 0);
+                    AddParameter(command, "@dont_filter_by_active_days", search.ActiveDays == 0);
+                    AddParameter(command, "@dont_filter_by_active_time", search.ActiveTime == 0);
+                    AddParameter(command, "@dont_filter_by_characteristic", search.Characteristic == 0);
+
+                    AddParameter(command, "@name", $"%{search.Name}%");
+                    AddParameter(command, "@clan_level", search.Level);
+                    AddParameter(command, "@member_num", search.MemberNum);
+                    AddParameter(command, "@motto", search.Motto);
+                    AddParameter(command, "@active_days", search.ActiveDays);
+                    AddParameter(command, "@active_time", search.ActiveTime);
+                    AddParameter(command, "@characteristic", search.Characteristic);
+                },
+                reader =>
+                {
+                    while (reader.Read())
+                    {
+                        CDataClanSearchResult result = ReadClanSearchResult(reader);
+                        CDataClanMemberInfo master = GetClanMember(result.MasterCharacterId);
+                        if (master is not null)
+                            result.MasterCharacterName = master.CharacterListElement.CommunityCharacterBaseInfo.CharacterName;
+
+                        list.Add(result);
+                    }
+                });
+        });
+
+        return list;
     }
 
     public override uint SelectClanMembershipByCharacterId(uint characterId, DbConnection? connectionIn = null)
@@ -539,6 +601,26 @@ public partial class DdonSqlDb : SqlDb
         };
 
         return serverParam;
+    }
+
+    private CDataClanSearchResult ReadClanSearchResult(DbDataReader reader)
+    {
+        CDataClanSearchResult searchResult = new()
+        {
+            ClanId = GetUInt32(reader, "clan_id"),
+            Name = GetString(reader, "name"),
+            Level = GetUInt16(reader, "clan_level"),
+            MemberNum = GetUInt16(reader, "member_num"),
+            Motto = GetUInt32(reader, "motto"),
+            EmblemMarkType = GetByte(reader, "emblem_mark_type"),
+            EmblemBaseType = GetByte(reader, "emblem_base_type"),
+            EmblemMainColor = GetByte(reader, "emblem_main_color"),
+            EmblemSubColor = GetByte(reader, "emblem_sub_color"),
+            MasterCharacterId = GetUInt32(reader, "master_id"),
+            Created = GetDateTime(reader, "created")
+        };
+
+        return searchResult;
     }
 
     private CDataClanMemberInfo ReadClanMemberInfo(DbDataReader reader)
