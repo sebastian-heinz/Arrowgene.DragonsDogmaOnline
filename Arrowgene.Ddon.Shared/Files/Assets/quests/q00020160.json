@@ -150,7 +150,7 @@
                     },
                     "announce_type": "Accept",
                     "npc_id": "Loeg",
-                    "message_id": 15627,
+                    "message_id": 15634,
                     "flags": [
                         {"type": "QstLayout", "action": "Set", "value": 3943, "comment": "Loeg, Cecily, Gurdolin, Lise and Elliot"}
                     ]
