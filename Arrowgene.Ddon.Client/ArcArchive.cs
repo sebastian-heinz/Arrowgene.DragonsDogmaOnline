@@ -235,29 +235,12 @@ namespace Arrowgene.Ddon.Client
             return GetFiles(search).Single();
         }
 
-        public ArcFile PutFile(string path, byte[] fileData)
+        public ArcFile PutFile(string arcPath, string ext, byte[] fileData)
         {
-            ArcFile existingFile = null;
-            foreach (ArcFile file in _files)
-            {
-                if (path == file.Index.Path)
-                {
-                    existingFile = file;
-                    break;
-                }
-            }
-
-            if (existingFile != null)
-            {
-                DeleteFile(existingFile);
-            }
-
             FileIndex newFileIndex = new FileIndex();
             newFileIndex.IsCyphered = IsCypheredArc(MagicTag);
-            newFileIndex.Path = path;
-            string ext = Path.GetExtension(path);
-            newFileIndex.ArcPath = path.Substring(0, path.Length - ext.Length);
-            ext = ext.TrimStart('.');
+
+            newFileIndex.ArcPath = arcPath;
 
             foreach (uint jamCrc in JamCrcLookup.Keys)
             {
@@ -276,6 +259,8 @@ namespace Arrowgene.Ddon.Client
                 // todo calculate jamcrc?
                 newFileIndex.Extension = $"{newFileIndex.JamCrc:X8}";
             }
+
+            newFileIndex.Path = arcPath+"."+ newFileIndex.Extension;
 
             newFileIndex.Directory = Path.GetDirectoryName(newFileIndex.ArcPath);
             if (newFileIndex.Directory == null)
