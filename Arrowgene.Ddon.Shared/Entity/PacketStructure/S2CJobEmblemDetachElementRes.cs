@@ -10,24 +10,24 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public S2CJobEmblemDetachElementRes()
         {
-            InheritenceResult = new();
+            InheritanceResult = new();
         }
 
-        public CDataJobEmblemInheritenceResult InheritenceResult { get; set; }
+        public CDataJobEmblemInheritanceResult InheritanceResult { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CJobEmblemDetachElementRes>
         {
             public override void Write(IBuffer buffer, S2CJobEmblemDetachElementRes obj)
             {
                 WriteServerResponse(buffer, obj);
-                WriteEntity(buffer, obj.InheritenceResult);
+                WriteEntity(buffer, obj.InheritanceResult);
             }
 
             public override S2CJobEmblemDetachElementRes Read(IBuffer buffer)
             {
                 S2CJobEmblemDetachElementRes obj = new S2CJobEmblemDetachElementRes();
                 ReadServerResponse(buffer, obj);
-                obj.InheritenceResult = ReadEntity<CDataJobEmblemInheritenceResult>(buffer);
+                obj.InheritanceResult = ReadEntity<CDataJobEmblemInheritanceResult>(buffer);
                 return obj;
             }
         }

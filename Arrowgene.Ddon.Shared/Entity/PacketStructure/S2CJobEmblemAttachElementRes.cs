@@ -11,12 +11,12 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public S2CJobEmblemAttachElementRes()
         {
-            InheritenceResult = new();
+            InheritanceResult = new();
             UpdateWalletPointList = new();
             ItemUpdateResultList = new();
         }
 
-        public CDataJobEmblemInheritenceResult InheritenceResult { get; set; }
+        public CDataJobEmblemInheritanceResult InheritanceResult { get; set; }
         public List<CDataUpdateWalletPoint> UpdateWalletPointList { get; set; }
         public List<CDataItemUpdateResult> ItemUpdateResultList { get; set; }
 
@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, S2CJobEmblemAttachElementRes obj)
             {
                 WriteServerResponse(buffer, obj);
-                WriteEntity(buffer, obj.InheritenceResult);
+                WriteEntity(buffer, obj.InheritanceResult);
                 WriteEntityList(buffer, obj.UpdateWalletPointList);
                 WriteEntityList(buffer, obj.ItemUpdateResultList);
             }
@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 S2CJobEmblemAttachElementRes obj = new S2CJobEmblemAttachElementRes();
                 ReadServerResponse(buffer, obj);
-                obj.InheritenceResult = ReadEntity<CDataJobEmblemInheritenceResult>(buffer);
+                obj.InheritanceResult = ReadEntity<CDataJobEmblemInheritanceResult>(buffer);
                 obj.UpdateWalletPointList = ReadEntityList<CDataUpdateWalletPoint>(buffer);
                 obj.ItemUpdateResultList = ReadEntityList<CDataItemUpdateResult>(buffer);
                 return obj;

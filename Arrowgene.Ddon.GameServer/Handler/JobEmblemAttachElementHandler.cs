@@ -34,8 +34,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var (storageType, storageInfo) = client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, request.EmblemUIDs[0]);
             var emblemItem = storageInfo.Item2;
 
-            var inheritenceChance = Server.JobEmblemManager.GetInheritenceChance(emblemItem, request.AttachChanceItems);
-            bool isSuccess = (Random.Shared.NextDouble() <= inheritenceChance);
+            var inheritanceChance = Server.JobEmblemManager.GetInheritanceChance(emblemItem, request.AttachChanceItems);
+            bool isSuccess = (Random.Shared.NextDouble() <= inheritanceChance);
             bool isItemLost = !(request.PremiumCurrencyCost.Count > 0);
             Server.Database.ExecuteInTransaction(connection =>
             {
@@ -58,7 +58,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         .ToList();
                     if (crestIds.Count == 0)
                     {
-                        throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INTERNAL_ERROR, "Failed to locate crest ids for emblem inheritence");
+                        throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INTERNAL_ERROR, "Failed to locate crest ids for emblem inheritance");
                     }
 
                     // Select a random crest to inherit if there are multiple
@@ -80,12 +80,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                         // itemUpdateNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 0, 0));
 
-                        var match = item.EquipElementParamList.Where(x => x.SlotNo == request.InheritenceSlot).FirstOrDefault();
+                        var match = item.EquipElementParamList.Where(x => x.SlotNo == request.InheritanceSlot).FirstOrDefault();
                         if (match == null)
                         {
                             item.EquipElementParamList.Add(new CDataEquipElementParam()
                             {
-                                SlotNo = request.InheritenceSlot,
+                                SlotNo = request.InheritanceSlot,
                                 CrestId = crestId,
                             });
                         }
@@ -95,7 +95,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             match.Add = 0;
                         }
 
-                        Server.Database.InsertCrest(characterCommon.CommonId, uid, request.InheritenceSlot, crestId, 0, connection);
+                        Server.Database.InsertCrest(characterCommon.CommonId, uid, request.InheritanceSlot, crestId, 0, connection);
                         itemUpdateNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 1, 1));
                     }
                 }
@@ -111,7 +111,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             client.Enqueue(new S2CJobEmblemAttachElementRes()
             {
-                InheritenceResult = new()
+                InheritanceResult = new()
                 {
                     JobId = request.JobId,
                     IsSuccess = isSuccess,

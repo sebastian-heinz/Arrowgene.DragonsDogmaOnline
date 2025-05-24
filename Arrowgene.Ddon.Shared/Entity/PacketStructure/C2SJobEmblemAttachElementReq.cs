@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
 
         public JobId JobId { get; set; }
-        public byte InheritenceSlot { get; set; }
+        public byte InheritanceSlot { get; set; }
         public List<string> EmblemUIDs { get; set; }
         public List<string> JewelryUIDs { get; set; }
         public List<CDataItemAmount> AttachChanceItems { get; set; }
@@ -30,7 +30,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             public override void Write(IBuffer buffer, C2SJobEmblemAttachElementReq obj)
             {
                 WriteByte(buffer, (byte) obj.JobId);
-                WriteByte(buffer, obj.InheritenceSlot);
+                WriteByte(buffer, obj.InheritanceSlot);
                 WriteMtStringList(buffer, obj.EmblemUIDs);
                 WriteMtStringList(buffer, obj.JewelryUIDs);
                 WriteEntityList(buffer, obj.AttachChanceItems);
@@ -41,7 +41,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 C2SJobEmblemAttachElementReq obj = new C2SJobEmblemAttachElementReq();
                 obj.JobId = (JobId) ReadByte(buffer);
-                obj.InheritenceSlot = ReadByte(buffer);
+                obj.InheritanceSlot = ReadByte(buffer);
                 obj.EmblemUIDs = ReadMtStringList(buffer);
                 obj.JewelryUIDs = ReadMtStringList(buffer);
                 obj.AttachChanceItems = ReadEntityList<CDataItemAmount>(buffer);

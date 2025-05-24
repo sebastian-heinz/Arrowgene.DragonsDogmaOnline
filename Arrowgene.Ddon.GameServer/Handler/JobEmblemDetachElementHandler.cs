@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             var response = new S2CJobEmblemDetachElementRes()
             {
-                InheritenceResult = new()
+                InheritanceResult = new()
                 {
                     JobId = request.JobId,
                     IsSuccess = true,
@@ -52,12 +52,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
 
                     updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 0, 0));
-                    item.EquipElementParamList.Where(x => x.SlotNo == request.InheritenceSlot).FirstOrDefault().CrestId = 0;
-                    Server.Database.RemoveCrest(characterCommon.CommonId, uid, request.InheritenceSlot, connection);
+                    item.EquipElementParamList.Where(x => x.SlotNo == request.InheritanceSlot).FirstOrDefault().CrestId = 0;
+                    Server.Database.RemoveCrest(characterCommon.CommonId, uid, request.InheritanceSlot, connection);
                     updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 1, 1));
 
                     // note: This might be set multiple times but should all be the same
-                    response.InheritenceResult.EquipElementParamList = item.EquipElementParamList;
+                    response.InheritanceResult.EquipElementParamList = item.EquipElementParamList;
                 }
             });
             client.Enqueue(response, packets);

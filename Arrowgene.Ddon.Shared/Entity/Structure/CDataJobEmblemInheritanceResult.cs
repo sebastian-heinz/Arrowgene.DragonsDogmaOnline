@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
-    public class CDataJobEmblemInheritenceResult
+    public class CDataJobEmblemInheritanceResult
     {
-        public CDataJobEmblemInheritenceResult()
+        public CDataJobEmblemInheritanceResult()
         {
             EquipElementParamList = new();
             Unk1List = new();
@@ -21,9 +21,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public bool IsItemLost { get; set; } // Controls GG prompt
         public List<CDataJobEmblemUnk0> Unk2List { get; set; }
 
-        public class Serializer : EntitySerializer<CDataJobEmblemInheritenceResult>
+        public class Serializer : EntitySerializer<CDataJobEmblemInheritanceResult>
         {
-            public override void Write(IBuffer buffer, CDataJobEmblemInheritenceResult obj)
+            public override void Write(IBuffer buffer, CDataJobEmblemInheritanceResult obj)
             {
                 WriteByte(buffer, (byte)obj.JobId);
                 WriteEntityList(buffer, obj.EquipElementParamList);
@@ -34,9 +34,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteEntityList(buffer, obj.Unk2List);
             }
 
-            public override CDataJobEmblemInheritenceResult Read(IBuffer buffer)
+            public override CDataJobEmblemInheritanceResult Read(IBuffer buffer)
             {
-                CDataJobEmblemInheritenceResult obj = new CDataJobEmblemInheritenceResult();
+                CDataJobEmblemInheritanceResult obj = new CDataJobEmblemInheritanceResult();
                 obj.JobId = (JobId)ReadByte(buffer);
                 obj.EquipElementParamList = ReadEntityList<CDataEquipElementParam>(buffer);
                 obj.Unk0 = ReadUInt32(buffer);

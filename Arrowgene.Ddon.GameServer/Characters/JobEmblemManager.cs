@@ -77,21 +77,21 @@ namespace Arrowgene.Ddon.GameServer.Characters
             emblemItem.EquipStatParamList = GetEquipStatParamList(character.JobEmblems[jobId]);
         }
 
-        private byte GetInheritenceBasePercentageChance(Item item)
+        private byte GetInheritanceBasePercentageChance(Item item)
         {
-            if (item.EquipElementParamList.Count >= Server.GameSettings.EmblemSettings.InheritenceUnlockLevels.Count)
+            if (item.EquipElementParamList.Count >= Server.GameSettings.EmblemSettings.InheritanceUnlockLevels.Count)
             {
-                throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INTERNAL_ERROR, $"No information for inheritence count {item.EquipElementParamList.Count}");
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INTERNAL_ERROR, $"No information for inheritance count {item.EquipElementParamList.Count}");
             }
-            return Server.GameSettings.EmblemSettings.InheritenceUnlockLevels[item.EquipElementParamList.Count].BaseChance;
+            return Server.GameSettings.EmblemSettings.InheritanceUnlockLevels[item.EquipElementParamList.Count].BaseChance;
         }
 
-        private byte GetInheritenceAdditionalPercentageChance(List<CDataItemAmount> payments)
+        private byte GetInheritanceAdditionalPercentageChance(List<CDataItemAmount> payments)
         {
             byte additionalChance = 0;
             foreach (var payment in payments)
             {
-                var match = Server.GameSettings.EmblemSettings.InheritenceChanceIncreaseItems.Where(x => x.ItemId == payment.ItemId).FirstOrDefault();
+                var match = Server.GameSettings.EmblemSettings.InheritanceChanceIncreaseItems.Where(x => x.ItemId == payment.ItemId).FirstOrDefault();
                 if (match.ItemId == 0)
                 {
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_NOT_FOUND, $"Unable to find configuration information for {payment.ItemId}");
@@ -104,12 +104,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 additionalChance = (byte)(match.PercentIncrease * (payment.Num / match.AmountConsumed));
             }
-            return Math.Min(additionalChance, Server.GameSettings.EmblemSettings.MaxInhertienceChanceIncrease);
+            return Math.Min(additionalChance, Server.GameSettings.EmblemSettings.MaxInheritanceChanceIncrease);
         }
 
-        public float GetInheritenceChance(Item item, List<CDataItemAmount> payments)
+        public float GetInheritanceChance(Item item, List<CDataItemAmount> payments)
         {
-            var chance = Math.Min(GetInheritenceBasePercentageChance(item) + GetInheritenceAdditionalPercentageChance(payments), 100);
+            var chance = Math.Min(GetInheritanceBasePercentageChance(item) + GetInheritanceAdditionalPercentageChance(payments), 100);
             return (float)chance / 100.0f;
         }
 

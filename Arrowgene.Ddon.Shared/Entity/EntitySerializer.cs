@@ -247,8 +247,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new CDataJumpLocation.Serializer());
 
             Create(new CDataJobEmblem.Serializer());
-            Create(new CDataJobEmblemCrestInheritenceBaseChance.Serializer());
-            Create(new CDataJobEmblemInheritenceResult.Serializer());
+            Create(new CDataJobEmblemCrestInheritanceBaseChance.Serializer());
+            Create(new CDataJobEmblemInheritanceResult.Serializer());
             Create(new CDataJobEmblemInhertianceIncreaseChanceItem.Serializer());
             Create(new CDataJobEmblemLevelData.Serializer());
             Create(new CDataJobEmblemPoints.Serializer());

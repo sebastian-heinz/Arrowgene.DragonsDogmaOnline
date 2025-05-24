@@ -57,36 +57,36 @@ namespace Arrowgene.Ddon.Server.Settings
         /// <summary>
         /// Defines the maximum amount you can increase your odds when attaching crests to the job emblem.
         /// </summary>
-        [DefaultValue(_MaxInhertienceChanceIncrease)]
-        public byte MaxInhertienceChanceIncrease
+        [DefaultValue(_MaxInheritanceChanceIncrease)]
+        public byte MaxInheritanceChanceIncrease
         {
             set
             {
-                SetSetting("MaxInhertienceChanceIncrease", value);
+                SetSetting("MaxInheritanceChanceIncrease", value);
             }
             get
             {
-                return TryGetSetting("MaxInhertienceChanceIncrease", _MaxInhertienceChanceIncrease);
+                return TryGetSetting("MaxInheritanceChanceIncrease", _MaxInheritanceChanceIncrease);
             }
         }
-        private const byte _MaxInhertienceChanceIncrease = 20;
+        private const byte _MaxInheritanceChanceIncrease = 20;
 
         /// <summary>
-        /// Defines the amount GG needed to prevent a piece of equipment from being lost when inheritence fails.
+        /// Defines the amount GG needed to prevent a piece of equipment from being lost when inheritance fails.
         /// </summary>
-        [DefaultValue(_EmblemInheritenceEquipLossGGCost)]
-        public uint EmblemInheritenceEquipLossGGCost
+        [DefaultValue(_EmblemInheritanceEquipLossGGCost)]
+        public uint EmblemInheritanceEquipLossGGCost
         {
             set
             {
-                SetSetting("EmblemInheritenceEquipLossGGCost", value);
+                SetSetting("EmblemInheritanceEquipLossGGCost", value);
             }
             get
             {
-                return TryGetSetting("EmblemInheritenceEquipLossGGCost", _EmblemInheritenceEquipLossGGCost);
+                return TryGetSetting("EmblemInheritanceEquipLossGGCost", _EmblemInheritanceEquipLossGGCost);
             }
         }
-        private const uint _EmblemInheritenceEquipLossGGCost = 2;
+        private const uint _EmblemInheritanceEquipLossGGCost = 2;
 
         /// <summary>
         /// Defines the amount GG needed to reset the emblem points.
@@ -132,15 +132,15 @@ namespace Arrowgene.Ddon.Server.Settings
     (ItemId.QualityDefenseUpgradeRock, 100, 1),
     (ItemId.WhiteDragonDefenseUpgradeRock, 1, 1),
 });")]
-        public List<(ItemId ItemId, ushort AmountConsumed, byte PercentIncrease)> InheritenceChanceIncreaseItems
+        public List<(ItemId ItemId, ushort AmountConsumed, byte PercentIncrease)> InheritanceChanceIncreaseItems
         {
             set
             {
-                SetSetting("InheritenceChanceIncreaseItems", value);
+                SetSetting("InheritanceChanceIncreaseItems", value);
             }
             get
             {
-                return TryGetSetting("InheritenceChanceIncreaseItems", new List<(ItemId ItemId, ushort AmountConsumed, byte PercentIncrease)>
+                return TryGetSetting("InheritanceChanceIncreaseItems", new List<(ItemId ItemId, ushort AmountConsumed, byte PercentIncrease)>
                 {
                     (ItemId.QualityDefenseUpgradeRock, 100, 1),
                     (ItemId.WhiteDragonDefenseUpgradeRock, 1, 1),
@@ -150,7 +150,7 @@ namespace Arrowgene.Ddon.Server.Settings
 
 
         /// <summary>
-        /// The levels which additional inheritence (the crest slots) unlock on the emblems.
+        /// The levels which additional inheritance (the crest slots) unlock on the emblems.
         /// Emblems always start with 1 slot unlocked.
         /// </summary>
         [DefaultValue(@"new List<(ushort UnlockLevel, byte BaseChance)>
@@ -160,15 +160,15 @@ namespace Arrowgene.Ddon.Server.Settings
     (11, 16),
     (16, 8),
 })")]
-        public List<(ushort UnlockLevel, byte BaseChance)> InheritenceUnlockLevels
+        public List<(ushort UnlockLevel, byte BaseChance)> InheritanceUnlockLevels
         {
             set
             {
-                SetSetting("InheritenceUnlockLevels", value);
+                SetSetting("InheritanceUnlockLevels", value);
             }
             get
             {
-                return TryGetSetting("InheritenceUnlockLevels", new List<(ushort UnlockLevel, byte BaseChance)>
+                return TryGetSetting("InheritanceUnlockLevels", new List<(ushort UnlockLevel, byte BaseChance)>
                 {
                     (0,  64),
                     (6,  32),

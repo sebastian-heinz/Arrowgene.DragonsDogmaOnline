@@ -59,7 +59,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             result.EmblemSettings.StatUpgradeDataList = Server.ScriptManager.JobEmblemStatModule.GetData();
 
-            result.EmblemSettings.CrestSlotRestrictionList = Server.GameSettings.EmblemSettings.InheritenceUnlockLevels
+            result.EmblemSettings.CrestSlotRestrictionList = Server.GameSettings.EmblemSettings.InheritanceUnlockLevels
                 .OrderBy(x => x.UnlockLevel)
                 .Select(x => new CDataJobEmblemSlotRestriction()
                 {
@@ -67,15 +67,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 })
                 .ToList();
 
-            result.EmblemSettings.EmblemCrestInheritenceBaseChanceList = Server.GameSettings.EmblemSettings.InheritenceUnlockLevels
-                .Select((x, index) => new CDataJobEmblemCrestInheritenceBaseChance()
+            result.EmblemSettings.EmblemCrestInheritanceBaseChanceList = Server.GameSettings.EmblemSettings.InheritanceUnlockLevels
+                .Select((x, index) => new CDataJobEmblemCrestInheritanceBaseChance()
                 {
                     Slot = (byte)index,
                     BaseChanceAmount = x.BaseChance
                 })
                 .ToList();
 
-            result.EmblemSettings.InhertianceIncreaseChanceItemList = Server.GameSettings.EmblemSettings.InheritenceChanceIncreaseItems
+            result.EmblemSettings.InheritanceIncreaseChanceItemList = Server.GameSettings.EmblemSettings.InheritanceChanceIncreaseItems
                 .Select(x => new CDataJobEmblemInhertianceIncreaseChanceItem()
                 {
                     ItemId = x.ItemId,
@@ -104,15 +104,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             };
 
-            result.EmblemSettings.InheritencePremiumCurrencyCost.Add(new CDataJobEmblemActionCostParam()
+            result.EmblemSettings.InheritancePremiumCurrencyCost.Add(new CDataJobEmblemActionCostParam()
             {
                 PointType = (byte) WalletType.GoldenGemstones,
-                Amount = Server.GameSettings.EmblemSettings.EmblemInheritenceEquipLossGGCost
+                Amount = Server.GameSettings.EmblemSettings.EmblemInheritanceEquipLossGGCost
             });
 
             result.EmblemSettings.MaxEmblemPoints = Server.GameSettings.EmblemSettings.MaxEmblemPoints;
             result.EmblemSettings.MaxEmblemLevel = Server.GameSettings.EmblemSettings.MaxEmblemLevel;
-            result.EmblemSettings.MaxInhertienceChanceIncrease = Server.GameSettings.EmblemSettings.MaxInhertienceChanceIncrease;
+            result.EmblemSettings.MaxInhertienceChanceIncrease = Server.GameSettings.EmblemSettings.MaxInheritanceChanceIncrease;
 
             result.EmblemSettings.InventoryFilter.Add(new CDataCommonU8(1)); // Common
             result.EmblemSettings.InventoryFilter.Add(new CDataCommonU8(2)); // High Grade Earrings
