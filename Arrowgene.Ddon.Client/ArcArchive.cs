@@ -540,15 +540,15 @@ namespace Arrowgene.Ddon.Client
                 {
                     if (decompressor.IsNeedingDictionary)
                     {
-                        Logger.Error("ecompressor.IsNeedingDictionary");
+                        throw new Exception("Corrupted Arc file. decompressor.IsNeedingDictionary");
                     }
                     else if (decompressor.IsNeedingInput)
                     {
-                        Logger.Error("decompressor.IsNeedingInput");
+                        throw new Exception("Corrupted Arc file. decompressor.IsNeedingInput");
                     }
                     else
                     {
-                        Logger.Error("Unknown Decompression Error");
+                        throw new Exception("Corrupted Arc file. Unknown Decompression Error");
                     }
                 }
             }
