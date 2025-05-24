@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static readonly HashSet<uint> SafeStageIds = new HashSet<StageInfo>()
             {
                 //WDT
-                Stage.TheWhiteDragonTemple0, // TODO: The other WDT stage?
+                Stage.TheWhiteDragonTemple0,
                 Stage.CraftRoom,
                 Stage.CaveHarbor,
                 Stage.ClanHall,
@@ -47,13 +47,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 Stage.RedCrystalInn,
                 Stage.SleepingWolfInn,
                 Stage.GoldenTankardInn,
-                Stage.GrittenFort0, // TODO: The others are used for EXMs and other stuff?
+                Stage.GrittenFort0,
                 Stage.PawnCathedral,
                 Stage.HobolicCave,
                 Stage.MysreeGroveShrine,
                 Stage.ZandoraWastelandsShrine,
                 Stage.MergodaResidentialArea,
                 Stage.SecretBowmakersHome,
+                Stage.KinozaMineralSprings,
 
                 //BBI
                 Stage.ExpeditionGarrison,
