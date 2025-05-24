@@ -169,7 +169,7 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public Pawn PawnBySlotNo(byte slotNo)
         {
-            if (slotNo > Pawns.Count)
+            if (slotNo == 0 || slotNo > Pawns.Count)
             {
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_INVALID_SLOT_NO,
                     $"Requesting invalid main pawn slot {slotNo} for character {CharacterId}");

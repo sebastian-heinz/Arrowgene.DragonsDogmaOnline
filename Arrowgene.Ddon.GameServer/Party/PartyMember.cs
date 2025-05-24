@@ -19,5 +19,4 @@ public abstract class PartyMember
     public byte SessionStatus { get; set; }
 
     public abstract CDataPartyMember GetCDataPartyMember();
-    public abstract Packet GetS2CContextGetParty_ContextNtc();
 }

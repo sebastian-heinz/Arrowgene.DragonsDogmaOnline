@@ -2,6 +2,8 @@ namespace Arrowgene.Ddon.Shared.Model
 {
     public enum ItemSubCategory : ushort //For serverside use only.
     {
+        None = 0,
+
         UseNone = 1,
         UseThrowing = 2,
         UseMine = 3,

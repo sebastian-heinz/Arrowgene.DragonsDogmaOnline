@@ -1,11 +1,6 @@
-using System;
-using System.Linq;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -21,8 +16,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CPawnLostPawnWalletReviveRes Handle(GameClient client, C2SPawnLostPawnWalletReviveReq request)
         {
             Pawn pawn = client.Character.PawnById(request.PawnId, PawnType.Main);
-            pawn.PawnState = PawnState.None;
-            Server.Database.UpdatePawnBaseInfo(pawn);
 
             if (request.Type != WalletType.RiftPoints)
             {
@@ -37,7 +30,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_WARP_LACK_RIM);
             }
-            uint updatedValue = Server.WalletManager.GetWalletAmount(client.Character, request.Type); 
+            uint updatedValue = Server.WalletManager.GetWalletAmount(client.Character, request.Type);
+
+            pawn.PawnState = PawnState.None;
+            Server.Database.UpdatePawnBaseInfo(pawn);
 
             return new S2CPawnLostPawnWalletReviveRes()
             {

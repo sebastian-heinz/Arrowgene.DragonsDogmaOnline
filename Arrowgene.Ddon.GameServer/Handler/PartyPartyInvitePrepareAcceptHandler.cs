@@ -55,6 +55,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
             inviteJoinMemberNtc.MemberMinimumList.Add(newMemberMinimum);
             party.Leader.Client.Enqueue(inviteJoinMemberNtc, queue);
 
+            // Clean up invitation.
+            invitation.CancelTimer();
+            Server.PartyManager.RemovePartyInvitation(client);
+
             return queue;
         }
     }

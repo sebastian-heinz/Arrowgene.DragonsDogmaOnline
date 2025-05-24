@@ -32,6 +32,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     $"The requested server {request.GameServerUniqueID} does not exist.");
             }
 
+            if (!Server.RpcManager.PingServer(request.GameServerUniqueID))
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_NET_NOT_CONNECT_GAME_SERVER,
+                    $"The requested server {request.GameServerUniqueID} did not respond when pinged.");
+            }
+
             var targetServerInfo = Server.RpcManager.ServerListInfo(request.GameServerUniqueID);
             if (targetServerInfo.LoginNum >= targetServerInfo.MaxLoginNum)
             {

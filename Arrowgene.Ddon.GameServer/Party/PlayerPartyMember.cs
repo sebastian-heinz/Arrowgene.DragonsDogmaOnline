@@ -24,7 +24,7 @@ public class PlayerPartyMember : PartyMember
         return obj;
     }
 
-    public override Packet GetS2CContextGetParty_ContextNtc()
+    public S2CContextGetPartyPlayerContextNtc GetPartyContext()
     {
         CDataPartyPlayerContext partyPlayerContext = new CDataPartyPlayerContext();
         GameStructure.CDataContextBase(partyPlayerContext.Base, Client.Character);
@@ -36,23 +36,6 @@ public class PlayerPartyMember : PartyMember
         partyPlayerContextNtc.CharacterId = Client.Character.CharacterId;
         partyPlayerContextNtc.Context = partyPlayerContext;
         partyPlayerContextNtc.Context.Base.MemberIndex = MemberIndex;
-
-        return new StructurePacket<S2CContextGetPartyPlayerContextNtc>(partyPlayerContextNtc);
-    }
-
-    public S2CContextGetPartyPlayerContextNtc GetS2CContextGetParty_ContextNtcEx()
-    {
-        CDataPartyPlayerContext partyPlayerContext = new CDataPartyPlayerContext();
-        GameStructure.CDataContextBase(partyPlayerContext.Base, Client.Character);
-        GameStructure.CDataContextPlayerInfo(partyPlayerContext.PlayerInfo, Client.Character);
-        GameStructure.CDataContextResist(partyPlayerContext.ResistInfo, Client.Character);
-        partyPlayerContext.EditInfo = Client.Character.EditInfo;
-
-        S2CContextGetPartyPlayerContextNtc partyPlayerContextNtc = new S2CContextGetPartyPlayerContextNtc();
-        partyPlayerContextNtc.CharacterId = Client.Character.CharacterId;
-        partyPlayerContextNtc.Context = partyPlayerContext;
-        partyPlayerContextNtc.Context.Base.MemberIndex = MemberIndex;
-
         return partyPlayerContextNtc;
     }
 }

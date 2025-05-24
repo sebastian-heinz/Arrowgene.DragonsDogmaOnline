@@ -29,7 +29,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Pawn pawn = pawns
                 .Find(pawn => pawn.PawnId == packet.PawnId)
-                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_NOT_FOUNDED);
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_NOT_FOUNDED,
+                $"Couldn't find pawn ID {packet.PawnId}.");
 
             var res = new S2CPawnGetPartyPawnDataRes();
             res.CharacterId = pawn.CharacterId;

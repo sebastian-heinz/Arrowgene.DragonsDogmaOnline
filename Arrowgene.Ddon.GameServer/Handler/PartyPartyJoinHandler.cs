@@ -63,7 +63,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             party.SendToAll(ntc);
 
-            S2CContextGetPartyPlayerContextNtc newMemberContext = join.GetS2CContextGetParty_ContextNtcEx();
+            S2CContextGetPartyPlayerContextNtc newMemberContext = join.GetPartyContext();
             if (partyLeader.CommonId != client.Character.CommonId)
             {
                 // Update player position when joining from a different stage
@@ -82,7 +82,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         // Skip ourselves
                         continue;
                     }
-                    client.Send(member.GetS2CContextGetParty_ContextNtc());
+
+                    if (member is PlayerPartyMember playerMember)
+                    {
+                        client.Send(playerMember.GetPartyContext());
+                    }
+                    else if (member is PawnPartyMember pawnPartyMember)
+                    {
+                        client.Send(pawnPartyMember.GetPartyContext());
+                    }
                 }
 
                 // Send new members to all existing party members

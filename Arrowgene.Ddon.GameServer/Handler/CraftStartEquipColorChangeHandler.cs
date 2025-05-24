@@ -77,7 +77,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         uint pawnId = Storages.DeterminePawnId(client.Character, storageType, slotno);
                         currentEquipInfo.EquipSlot.PawnId = pawnId;
                         characterCommon = client.Character.Pawns.SingleOrDefault(x => x.PawnId == pawnId)
-                            ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_NOT_FOUNDED);
+                            ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_NOT_FOUNDED,
+                            $"Couldn't find pawn ID {pawnId}.");
                     }
                     else if (storageType == StorageType.CharacterEquipment)
                     {

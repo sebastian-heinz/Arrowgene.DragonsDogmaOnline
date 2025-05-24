@@ -66,25 +66,6 @@ namespace Arrowgene.Ddon.Server.Settings
         private const uint _PartnerPawnAdventureDurationInSeconds = 1800;
 
         /// <summary>
-        /// Controls whether to pass lobby context packets on demand or only on entry to the server.
-        /// True = Server entry only. Lower packet load, but also causes invisible people in lobbies.
-        /// False = On-demand. May cause performance issues due to packet load.
-        /// </summary>
-        [DefaultValue(_NaiveLobbyContextHandling)]
-        public bool NaiveLobbyContextHandling
-        {
-            set
-            {
-                SetSetting("NaiveLobbyContextHandling", value);
-            }
-            get
-            {
-                return TryGetSetting("NaiveLobbyContextHandling", _NaiveLobbyContextHandling);
-            }
-        }
-        private const bool _NaiveLobbyContextHandling = true;
-
-        /// <summary>
         /// Determines the maximum amount of consumable items that can be crafted in one go with a pawn.
         /// The default is a value of 10 which is equivalent to the original game's behavior.
         /// </summary>

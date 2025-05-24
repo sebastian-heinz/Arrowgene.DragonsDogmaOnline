@@ -3,6 +3,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -33,7 +34,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
         // TODO: Figure out just how much packets/data within those packets we can do without while keeping everything functioning.
         public override S2CPartyPartyInviteCharacterRes Handle(GameClient client, C2SPartyPartyInviteCharacterReq request)
         {
-            S2CPartyPartyInviteCharacterRes res = new S2CPartyPartyInviteCharacterRes();
 
             GameClient invitedClient = Server.ClientLookup.GetClientByCharacterId(request.CharacterId)
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_INVITE_FAIL_REASON_MEMBER_NOT_FOUND,
@@ -54,21 +54,29 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             PlayerPartyMember invitedMember = party.Invite(invitedClient, client);
 
-            S2CPartyPartyInviteNtc ntc = new S2CPartyPartyInviteNtc();
-            ntc.TimeoutSec = PartyManager.InvitationTimeoutSec;
-            ntc.PartyListInfo.PartyId = party.Id;
-            ntc.PartyListInfo.ServerId = (uint) Server.Id;
-            foreach (PartyMember member in party.Members)
+            S2CPartyPartyInviteNtc ntc = new()
             {
-                ntc.PartyListInfo.MemberList.Add(member.GetCDataPartyMember());
-            }
+                TimeoutSec = PartyManager.InvitationTimeoutSec,
+                PartyListInfo = new()
+                {
+                    PartyId = party.Id,
+                    ServerId = (uint)Server.Id,
+                    MemberList = [.. party.Members.Select(x => x.GetCDataPartyMember())]
+                }
+            };
 
             invitedClient.Send(ntc);
 
-            res.TimeoutSec = PartyManager.InvitationTimeoutSec;
-            res.Info.PartyId = party.Id;
-            res.Info.ServerId = (uint) Server.Id;
-            res.Info.MemberList.Add(invitedMember.GetCDataPartyMember());
+            S2CPartyPartyInviteCharacterRes res = new S2CPartyPartyInviteCharacterRes
+            {
+                TimeoutSec = PartyManager.InvitationTimeoutSec,
+                Info = new()
+                {
+                    PartyId = party.Id,
+                    ServerId = (uint)Server.Id,
+                    MemberList = [invitedMember.GetCDataPartyMember()]
+                }
+            };
 
             Logger.Info(client, $"Invited Client:{invitedClient.Identity} to PartyId:{party.Id}");
 

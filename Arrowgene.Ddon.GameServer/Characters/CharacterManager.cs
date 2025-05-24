@@ -330,6 +330,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     // Old DB is in use and new table not populated with required data for character
                     Logger.Error($"Character: AccountId={character.AccountId}, CharacterId={character.ContentCharacterId}, CommonId={character.CommonId}, PawnCommonId={pawn.CommonId} is missing table entry in 'ddon_orb_gain_extend_param'.");
                 }
+                if (pawn.PawnType != PawnType.Main)
+                {
+                    Logger.Error($"Character: AccountId={character.AccountId}, CharacterId={character.ContentCharacterId}, CommonId={character.CommonId}, PawnCommonId={pawn.CommonId} has invalid pawn type; locally setting pawn type back to Main.");
+                    pawn.PawnType = PawnType.Main;
+                }
+
                 UpdateCharacterExtendedParams(pawn, ownerCharacter: character);
             }
         }
@@ -359,10 +365,10 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public void UpdateCharacterExtendedParams(CharacterCommon characterCommon, bool newCharacter = false, Character ownerCharacter = null)
         {
-            var ExtendedParams = characterCommon.ExtendedParams;
+            var extendedParams = characterCommon.ExtendedParams;
 
             // There is always an implicit + 1 ring slot plus the extended params value
-            characterCommon.JewelrySlotNum = (byte)(CharacterManager.DEFAULT_RING_COUNT + ExtendedParams.JewelrySlot);
+            characterCommon.JewelrySlotNum = (byte)(CharacterManager.DEFAULT_RING_COUNT + extendedParams.JewelrySlot);
 
             /**
              * There are two physical attack traits and two magic attack traits in
@@ -371,12 +377,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * Similar distinction made with magic. The Gain* stats are extra stats
              * on top of the iniate stats. These come from armors and BO/HO trees.
              */
-            characterCommon.StatusInfo.GainAttack = ExtendedParams.Attack;
-            characterCommon.StatusInfo.GainDefense = ExtendedParams.Defence;
-            characterCommon.StatusInfo.GainMagicAttack = ExtendedParams.MagicAttack;
-            characterCommon.StatusInfo.GainMagicDefense = ExtendedParams.MagicDefence;
-            characterCommon.StatusInfo.GainStamina = ExtendedParams.StaminaMax;
-            characterCommon.StatusInfo.GainHP = ExtendedParams.HpMax;
+            characterCommon.StatusInfo.GainAttack = extendedParams.Attack;
+            characterCommon.StatusInfo.GainDefense = extendedParams.Defence;
+            characterCommon.StatusInfo.GainMagicAttack = extendedParams.MagicAttack;
+            characterCommon.StatusInfo.GainMagicDefense = extendedParams.MagicDefence;
+            characterCommon.StatusInfo.GainStamina = extendedParams.StaminaMax;
+            characterCommon.StatusInfo.GainHP = extendedParams.HpMax;
 
             /**
              * Additional stats can be earned from the S2 and S3 BO/HO orb trees.
@@ -384,7 +390,14 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * a specific job only. We abuse JobId.None to store the stats for all jobs.
              */
             var extendedJobParams = characterCommon.ExtendedJobParams;
-            JobId jobId = characterCommon.ActiveCharacterJobData.Job;
+            JobId jobId = characterCommon.ActiveCharacterJobData?.Job ?? JobId.None;
+
+            if (jobId == JobId.None)
+            {
+                Logger.Error($"Character CommonId {characterCommon.CommonId} has no active job data.");
+                return;
+            }
+
             if (characterCommon is Pawn)
             {
                 extendedJobParams = ownerCharacter.ExtendedJobParams;
@@ -505,12 +518,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 PawnPartyMember pawnPartyMember = (PawnPartyMember)partyMember;
                 if (client.Party != null)
                 {
-                    client.Party.EnqueueToAll(pawnPartyMember.GetS2CContextGetParty_ContextNtc(), queue);
+                    client.Party.EnqueueToAll(pawnPartyMember.GetPartyContext(), queue);
                 }
                 else
                 {
                     // This should never be true but if it is, why?
-                    client.Enqueue(pawnPartyMember.GetS2CContextGetParty_ContextNtc(), queue);
+                    client.Enqueue(pawnPartyMember.GetPartyContext(), queue);
                 }
             }
 
