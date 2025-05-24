@@ -594,7 +594,7 @@ public interface IDatabase
     bool InsertPawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);
     bool UpdatePawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);
     bool DeletePawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, DbConnection? connectionIn = null);
-    CraftProgress SelectPawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, DbConnection? connectionIn = null);
+    CraftProgress? SelectPawnCraftProgress(uint craftCharacterId, uint craftLeadPawnId, DbConnection? connectionIn = null);
 
     #endregion
 }
