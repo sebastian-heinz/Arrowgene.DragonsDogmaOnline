@@ -38,7 +38,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         PlusValue = item.PlusValue,
                         SlotNo = match.Item1,
                         StorageType = storage.Key,
-                        Unk2List = item.Unk2List,
+                        EquipStatParamList = item.EquipStatParamList,
                         SafetySetting = item.SafetySetting,
                     });
                 }

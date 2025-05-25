@@ -2061,8 +2061,8 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_JOB_EMBLEM_RESET_PARAM_LEVEL_RES = new PacketId(66, 4, 2, "S2C_JOB_EMBLEM_RESET_PARAM_LEVEL_RES", ServerType.Game, PacketSource.Server); // ジョブの証パラメータリセット
         public static readonly PacketId C2S_JOB_EMBLEM_ATTACH_ELEMENT_REQ = new PacketId(66, 5, 1, "C2S_JOB_EMBLEM_ATTACH_ELEMENT_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_JOB_EMBLEM_ATTACH_ELEMENT_RES = new PacketId(66, 5, 2, "S2C_JOB_EMBLEM_ATTACH_ELEMENT_RES", ServerType.Game, PacketSource.Server); // ジョブの証クレスト継承
-        public static readonly PacketId C2S_JOB_EMBLEM_DETTACH_ELEMENT_REQ = new PacketId(66, 6, 1, "C2S_JOB_EMBLEM_DETTACH_ELEMENT_REQ", ServerType.Game, PacketSource.Client);
-        public static readonly PacketId S2C_JOB_EMBLEM_DETTACH_ELEMENT_RES = new PacketId(66, 6, 2, "S2C_JOB_EMBLEM_DETTACH_ELEMENT_RES", ServerType.Game, PacketSource.Server); // ジョブの証クレスト破棄
+        public static readonly PacketId C2S_JOB_EMBLEM_DETACH_ELEMENT_REQ = new PacketId(66, 6, 1, "C2S_JOB_EMBLEM_DETACH_ELEMENT_REQ", ServerType.Game, PacketSource.Client);
+        public static readonly PacketId S2C_JOB_EMBLEM_DETACH_ELEMENT_RES = new PacketId(66, 6, 2, "S2C_JOB_EMBLEM_DETACH_ELEMENT_RES", ServerType.Game, PacketSource.Server); // ジョブの証クレスト破棄
         public static readonly PacketId S2C_JOB_66_7_16_NTC = new PacketId(66, 7, 16, "S2C_JOB_66_7_16_NTC", ServerType.Game, PacketSource.Server);
 
 // Group: 67 - (RECYCLE)
@@ -3992,8 +3992,8 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, S2C_JOB_EMBLEM_RESET_PARAM_LEVEL_RES);
             AddPacketIdEntry(packetIds, C2S_JOB_EMBLEM_ATTACH_ELEMENT_REQ);
             AddPacketIdEntry(packetIds, S2C_JOB_EMBLEM_ATTACH_ELEMENT_RES);
-            AddPacketIdEntry(packetIds, C2S_JOB_EMBLEM_DETTACH_ELEMENT_REQ);
-            AddPacketIdEntry(packetIds, S2C_JOB_EMBLEM_DETTACH_ELEMENT_RES);
+            AddPacketIdEntry(packetIds, C2S_JOB_EMBLEM_DETACH_ELEMENT_REQ);
+            AddPacketIdEntry(packetIds, S2C_JOB_EMBLEM_DETACH_ELEMENT_RES);
             AddPacketIdEntry(packetIds, S2C_JOB_66_7_16_NTC);
 
 // Group: 67 - (RECYCLE)

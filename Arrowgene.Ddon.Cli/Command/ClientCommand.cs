@@ -144,7 +144,9 @@ namespace Arrowgene.Ddon.Cli.Command
             {
                 try
                 {
-                    GmdActions.Pack(parameter.ArgumentMap["gmdCsv"], parameter.ArgumentMap["romDir"], parameter.ArgumentMap["romLang"]);
+                    GmdCsv gmdCsvReader = new GmdCsv();
+                    List<GmdCsv.Entry> gmdCsvEntries = gmdCsvReader.ReadPath(parameter.ArgumentMap["gmdCsv"]);
+                    GmdActions.Pack(gmdCsvEntries, parameter.ArgumentMap["romDir"], parameter.ArgumentMap["romLang"]);
                 } 
                 catch (Exception ex)
                 {

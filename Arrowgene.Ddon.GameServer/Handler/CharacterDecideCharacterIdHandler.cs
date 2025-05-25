@@ -31,7 +31,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CCharacterContentsReleaseElementNtc contentsReleaseElementNotice = new S2CCharacterContentsReleaseElementNtc()
             {
                 CharacterReleaseElements = client.Character.GetReleasedContent()
-                // CharacterReleaseElements = gContentsReleaseIds
             };
             client.Enqueue(contentsReleaseElementNotice, packetQueue);
 

@@ -26,8 +26,8 @@ namespace Arrowgene.Ddon.Shared.Model
         public byte PlusValue { get; set; } // This is Equipment Quality, +0/1/2/3/
         public uint EquipPoints { get; set; }
         public List<CDataEquipElementParam> EquipElementParamList { get; set; }
-        public List<CDataAddStatusParam> AddStatusParamList { get; set; } // Actually LimitBreak/Bonus from Craig I guess.
-        public List<CDataEquipItemInfoUnk2> Unk2List { get; set; } // Am thinking this might be addstatus but struggling to get this to work ingame.
+        public List<CDataAddStatusParam> AddStatusParamList { get; set; } // Used for Limit Break and Extreme Synthesis
+        public List<CDataEquipStatParam> EquipStatParamList { get; set; } // used for emblem, vocation stones, etc.
 
         private string _uid;
 
@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.Shared.Model
         {
             EquipElementParamList = new List<CDataEquipElementParam>();
             AddStatusParamList = new List<CDataAddStatusParam>();
-            Unk2List = new List<CDataEquipItemInfoUnk2>();
+            EquipStatParamList = new List<CDataEquipStatParam>();
         }
 
         public Item(Item obj)
@@ -49,7 +49,7 @@ namespace Arrowgene.Ddon.Shared.Model
             // TODO: Make a copy constructor for these
             this.EquipElementParamList = obj.EquipElementParamList;
             this.AddStatusParamList = obj.AddStatusParamList;
-            this.Unk2List = obj.Unk2List;
+            this.EquipStatParamList = obj.EquipStatParamList;
         }
 
         private string UpdateUId()

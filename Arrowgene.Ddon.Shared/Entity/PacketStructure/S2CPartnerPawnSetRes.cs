@@ -12,6 +12,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public S2CPartnerPawnSetRes()
         {
+            PartnerInfo = new();
         }
 
         public class Serializer : PacketEntitySerializer<S2CPartnerPawnSetRes>

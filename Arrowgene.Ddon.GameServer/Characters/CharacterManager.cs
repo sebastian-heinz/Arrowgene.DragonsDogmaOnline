@@ -55,6 +55,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
 
                 character.Server = Server.AssetRepository.ServerList.Where(server => server.Id == Server.Id).Single().ToCDataGameServerListInfo();
+                
+                // Apply Emblem stats before setting up character equipment
+                character.JobEmblems = Server.JobEmblemManager.InitializeEmblemData(character, connectionIn);
                 character.Equipment = character.Storage.GetCharacterEquipment();
 
                 character.ContentsReleased = GetContentsReleased(character, connectionIn);
@@ -80,7 +83,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 foreach (var jobId in Enum.GetValues(typeof(JobId)).Cast<JobId>())
                 {
                     character.JobMasterReleasedElements[jobId] = Server.Database.GetJobMasterReleasedElements(character.CharacterId, jobId, connectionIn);
-
                     character.JobMasterActiveOrders[jobId] = Server.JobMasterManager.GetJobMasterActiveOrders(character, jobId, connectionIn);
                 }
 
@@ -381,19 +383,19 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * The stat boosts rewarded for this mechanism rewards both stats for all jobs and stats for
              * a specific job only. We abuse JobId.None to store the stats for all jobs.
              */
-            var extendedParams = characterCommon.ExtendedJobParams;
+            var extendedJobParams = characterCommon.ExtendedJobParams;
             JobId jobId = characterCommon.ActiveCharacterJobData.Job;
             if (characterCommon is Pawn)
             {
-                extendedParams = ownerCharacter.ExtendedJobParams;
+                extendedJobParams = ownerCharacter.ExtendedJobParams;
             }
 
-            characterCommon.StatusInfo.GainAttack += (uint)(extendedParams[JobId.None].Attack + extendedParams[jobId].Attack);
-            characterCommon.StatusInfo.GainDefense += (uint)(extendedParams[JobId.None].Defence + extendedParams[jobId].Defence);
-            characterCommon.StatusInfo.GainMagicAttack += (uint)(extendedParams[JobId.None].MagicAttack + extendedParams[jobId].MagicAttack);
-            characterCommon.StatusInfo.GainMagicDefense += (uint)(extendedParams[JobId.None].MagicDefence + extendedParams[jobId].MagicDefence);
-            characterCommon.StatusInfo.GainStamina += (uint)(extendedParams[JobId.None].StaminaMax + extendedParams[jobId].StaminaMax);
-            characterCommon.StatusInfo.GainHP += (uint)(extendedParams[JobId.None].HpMax + extendedParams[jobId].HpMax);
+            characterCommon.StatusInfo.GainAttack += (uint)(extendedJobParams[JobId.None].Attack + extendedJobParams[jobId].Attack);
+            characterCommon.StatusInfo.GainDefense += (uint)(extendedJobParams[JobId.None].Defence + extendedJobParams[jobId].Defence);
+            characterCommon.StatusInfo.GainMagicAttack += (uint)(extendedJobParams[JobId.None].MagicAttack + extendedJobParams[jobId].MagicAttack);
+            characterCommon.StatusInfo.GainMagicDefense += (uint)(extendedJobParams[JobId.None].MagicDefence + extendedJobParams[jobId].MagicDefence);
+            characterCommon.StatusInfo.GainStamina += (uint)(extendedJobParams[JobId.None].StaminaMax + extendedJobParams[jobId].StaminaMax);
+            characterCommon.StatusInfo.GainHP += (uint)(extendedJobParams[JobId.None].HpMax + extendedJobParams[jobId].HpMax);
 
             /**
              * Seems when the game first loads, the game wants MaxHP to always be 760
@@ -471,7 +473,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             if (characterCommon is Character)
             {
                 S2CContextGetLobbyPlayerContextNtc ntc1 = new S2CContextGetLobbyPlayerContextNtc();
-                GameStructure.S2CContextGetLobbyPlayerContextNtc(ntc1, (Character) characterCommon);
+                GameStructure.S2CContextGetLobbyPlayerContextNtc(Server, ntc1, (Character) characterCommon);
 
                 S2CExtendEquipSlotNtc ntc2 = new S2CExtendEquipSlotNtc()
                 {

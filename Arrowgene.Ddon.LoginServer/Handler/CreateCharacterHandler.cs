@@ -65,7 +65,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                                 PlusValue = info.PlusValue,
                                                 EquipElementParamList = info.EquipElementParamList,
                                                 AddStatusParamList = info.AddStatusParamList,
-                                                Unk2List = info.Unk2List
+                                                EquipStatParamList = info.EquipStatParamList
                                             };
                                         }
                                     })
@@ -87,7 +87,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                                 PlusValue = info.PlusValue,
                                                 EquipElementParamList = info.EquipElementParamList,
                                                 AddStatusParamList = info.AddStatusParamList,
-                                                Unk2List = info.Unk2List
+                                                EquipStatParamList = info.EquipStatParamList
                                             };
                                         }
                                     })

@@ -1,5 +1,7 @@
 using Arrowgene.Ddon.GameServer.Scripting.Interfaces;
 using Microsoft.CodeAnalysis.Scripting;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Arrowgene.Ddon.GameServer.Scripting
 {
@@ -10,6 +12,12 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         public override bool ScanSubdirectories => true;
         public override bool EnableHotLoad => true;
 
+        // Contains a list of scripts which are interfaces or abstract classes
+        // and doesn't attempt to compile them as a quest object
+        private HashSet<string> IgnoredScripts = [
+            "EmblemTrial.csx"
+        ];
+
         public QuestModule()
         {
         }
@@ -19,6 +27,11 @@ namespace Arrowgene.Ddon.GameServer.Scripting
             if (result == null)
             {
                 return false;
+            }
+
+            if (IgnoredScripts.Contains(Path.GetFileName(path)))
+            {
+                return true;
             }
 
             IQuest quest = (IQuest)result.ReturnValue;

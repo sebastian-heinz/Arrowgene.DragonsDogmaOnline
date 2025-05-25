@@ -82,7 +82,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     updateCharacterItemNtc.UpdateItemList.AddRange(Server.ItemManager.ConsumeItemByUIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, element.ItemUId, 1, connection));
                 }
 
-
                 Pawn leadPawn = Server.CraftManager.FindPawn(client, request.CraftMainPawnId);
                 List<CraftPawn> craftPawns = new()
                 {

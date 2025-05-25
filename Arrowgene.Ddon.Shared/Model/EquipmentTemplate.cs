@@ -98,7 +98,7 @@ namespace Arrowgene.Ddon.Shared.Model
                     PlusValue = tuple.item?.PlusValue ?? 0,
                     EquipElementParamList = tuple.item?.EquipElementParamList ?? new List<CDataEquipElementParam>(),
                     AddStatusParamList = tuple.item?.AddStatusParamList ?? new List<CDataAddStatusParam>(),
-                    Unk2List = tuple.item?.Unk2List ?? new List<CDataEquipItemInfoUnk2>()
+                    EquipStatParamList = tuple.item?.EquipStatParamList ?? new List<CDataEquipStatParam>()
                 })
                 .ToList();
         }

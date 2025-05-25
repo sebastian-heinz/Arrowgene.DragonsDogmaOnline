@@ -11,7 +11,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             ItemUId = string.Empty;
             EquipElementParamList = new List<CDataEquipElementParam>();
             AddStatusParamList = new List<CDataAddStatusParam>();
-            Unk2List = new List<CDataEquipItemInfoUnk2>();
+            EquipStatParamList = new List<CDataEquipStatParam>();
         }
 
         public string ItemUId { get; set; }
@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint EquipPawnID { get; set; }
         public List<CDataEquipElementParam> EquipElementParamList { get; set; }
         public List<CDataAddStatusParam> AddStatusParamList { get; set; }
-        public List<CDataEquipItemInfoUnk2> Unk2List { get; set; }
+        public List<CDataEquipStatParam> EquipStatParamList { get; set; }
         
         public class Serializer : EntitySerializer<CDataItemList>
         {
@@ -48,7 +48,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.EquipPawnID);
                 WriteEntityList<CDataEquipElementParam>(buffer, obj.EquipElementParamList);
                 WriteEntityList<CDataAddStatusParam>(buffer, obj.AddStatusParamList);
-                WriteEntityList<CDataEquipItemInfoUnk2>(buffer, obj.Unk2List);
+                WriteEntityList<CDataEquipStatParam>(buffer, obj.EquipStatParamList);
             }
 
             public override CDataItemList Read(IBuffer buffer)
@@ -68,7 +68,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.EquipPawnID = ReadUInt32(buffer);
                 obj.EquipElementParamList = ReadEntityList<CDataEquipElementParam>(buffer);
                 obj.AddStatusParamList = ReadEntityList<CDataAddStatusParam>(buffer);
-                obj.Unk2List = ReadEntityList<CDataEquipItemInfoUnk2>(buffer);
+                obj.EquipStatParamList = ReadEntityList<CDataEquipStatParam>(buffer);
                 return obj;
             }
         }
