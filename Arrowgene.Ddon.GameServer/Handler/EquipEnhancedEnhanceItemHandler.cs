@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 foreach (var itemCost in request.UpgradeItemCostList)
                 {
-                    updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.ConsumeItemByIdFromItemBag(Server, client.Character, (uint) itemCost.ItemId, itemCost.Amount, connection));
+                    updateCharacterItemNtc.UpdateItemList.AddRange(Server.ItemManager.ConsumeItemByIdFromMultipleStorages(Server, client.Character, ItemManager.AllItemStorages, (uint) itemCost.ItemId, itemCost.Amount, connection));
                 }
 
                 bool forceGreatSuccess = false;

@@ -75,27 +75,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                     else
                     {
-                        List<CDataItemUpdateResult> itemUpdateResults = Server.ItemManager.AddItem(Server, client.Character, toBag, purchase.ItemId, purchase.ItemNum, connectionIn: connection);
-                        if (itemUpdateResults.Count != 1)
-                        {
-                            throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INTERNAL_ERROR);
-                        }
-
-                        var newItem = client.Character.Storage.FindItemByUIdInStorage(ItemManager.BothStorageTypes, itemUpdateResults[0].ItemList.ItemUId).Item2.Item2;
-                        if (purchase.EquipElementParamList.Count > 0)
-                        {
-                            foreach (var elementParam in purchase.EquipElementParamList)
-                            {
-                                Server.Database.InsertCrest(client.Character.CommonId, itemUpdateResults[0].ItemList.ItemUId, elementParam.SlotNo, elementParam.CrestId, elementParam.Add, connection);
-                                newItem.EquipElementParamList.Add(elementParam);
-                            }
-
-                            itemUpdateResults[0].ItemList.EquipElementParamList = purchase.EquipElementParamList;
-                        }
-
-                        updateCharacterItemNtc.UpdateItemList.AddRange(itemUpdateResults);
+                        updateCharacterItemNtc.UpdateItemList.AddRange(Server.ItemManager.AddNewItem(Server, client.Character, toBag, purchase.ToItem(), purchase.ItemNum, connection));
                     }
-
 
                     client.Enqueue(updateCharacterItemNtc, queue);
                     res.DispelItemResultList.Add(purchase);

@@ -41,7 +41,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 foreach (var item in request.AttachChanceItems)
                 {
-                    itemUpdateNtc.UpdateItemList.Add(Server.ItemManager.ConsumeItemByIdFromMultipleStorages(Server, client.Character, ItemManager.ItemBagStorageTypes, (uint) item.ItemId, item.Num, connection));
+                    itemUpdateNtc.UpdateItemList.AddRange(Server.ItemManager.ConsumeItemByIdFromMultipleStorages(Server, client.Character, ItemManager.BothStorageTypes, (uint) item.ItemId, item.Num, connection));
                 }
 
                 foreach (var currency in request.PremiumCurrencyCost)
@@ -51,18 +51,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 if (isSuccess)
                 {
-                    var crestIds = request.JewelryUIDs.Select(x => client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, x).Item2.Item2.EquipElementParamList)
+                    var crests = request.JewelryUIDs.Select(x => client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, x).Item2.Item2.EquipElementParamList)
                         .SelectMany(x => x)
-                        .Select(x => x.CrestId)
-                        .ToHashSet()
                         .ToList();
-                    if (crestIds.Count == 0)
+                    if (crests.Count == 0)
                     {
                         throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INTERNAL_ERROR, "Failed to locate crest ids for emblem inheritance");
                     }
 
                     // Select a random crest to inherit if there are multiple
-                    var crestId = crestIds[Random.Shared.Next(0, crestIds.Count)];
+                    var crest = crests[Random.Shared.Next(0, crests.Count)];
                     foreach (var uid in request.EmblemUIDs)
                     {
                         var (storageType, storageInfo) = client.Character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, uid);
@@ -78,24 +76,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
                             relativeSlotNo = EquipManager.DeterminePawnEquipSlot(relativeSlotNo);
                         }
 
-                        // itemUpdateNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 0, 0));
-
                         var match = item.EquipElementParamList.Where(x => x.SlotNo == request.InheritanceSlot).FirstOrDefault();
                         if (match == null)
                         {
                             item.EquipElementParamList.Add(new CDataEquipElementParam()
                             {
                                 SlotNo = request.InheritanceSlot,
-                                CrestId = crestId,
+                                CrestId = crest.CrestId,
+                                Add = crest.Add
                             });
                         }
                         else
                         {
-                            match.CrestId = crestId;
-                            match.Add = 0;
+                            match.CrestId = crest.CrestId;
+                            match.Add = crest.Add;
                         }
 
-                        Server.Database.InsertCrest(characterCommon.CommonId, uid, request.InheritanceSlot, crestId, 0, connection);
+                        Server.Database.InsertCrest(characterCommon.CommonId, uid, request.InheritanceSlot, crest.CrestId, crest.Add, connection);
                         itemUpdateNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 1, 1));
                     }
                 }

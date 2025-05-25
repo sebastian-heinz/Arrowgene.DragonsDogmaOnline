@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
@@ -13,11 +14,11 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint ItemId { get; set; }
         public uint ItemNum { get; set; }
         public byte Color {  get; set; }
-        public byte Plus {  get; set; }
+        public byte Plus {  get; set; } // +0, +1, +2, +3
         public List<CDataEquipElementParam> EquipElementParamList { get; set; }
-        public byte Unk0 { get; set; }
-        public uint Unk1 { get; set; }
-        public uint Unk2 { get; set; }
+        public byte Unk0 { get; set; } // Safety Setting?
+        public uint Unk1 { get; set; } // Equip Points?
+        public uint Unk2 { get; set; } // Equip Points?
 
         public class Serializer : EntitySerializer<CDataDispelResultInfo>
         {
@@ -46,6 +47,17 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.Unk2 = ReadUInt32(buffer);
                 return obj;
             }
+        }
+
+        public Item ToItem()
+        {
+            return new Item()
+            {
+                ItemId = ItemId,
+                Color = Color,
+                PlusValue = Plus,
+                EquipElementParamList = EquipElementParamList,
+            };
         }
     }
 }
