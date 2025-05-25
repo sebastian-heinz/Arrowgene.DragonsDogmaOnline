@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public byte EmblemSubColor { get; set; }
         public uint MasterCharacterId { get; set; }
         public CDataCharacterName MasterCharacterName { get; set; }
-        public long Created { get; set; }
+        public DateTimeOffset Created { get; set; }
 
         public class Serializer : EntitySerializer<CDataClanSearchResult>
         {
@@ -43,7 +43,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteByte(buffer, obj.EmblemSubColor);
                 WriteUInt32(buffer, obj.MasterCharacterId);
                 WriteEntity<CDataCharacterName>(buffer, obj.MasterCharacterName);
-                WriteInt64(buffer, obj.Created);
+                WriteInt64(buffer, obj.Created.ToUnixTimeSeconds());
             }
 
             public override CDataClanSearchResult Read(IBuffer buffer)
@@ -60,7 +60,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.EmblemSubColor = ReadByte(buffer);
                 obj.MasterCharacterId = ReadUInt32(buffer);
                 obj.MasterCharacterName = ReadEntity<CDataCharacterName>(buffer);
-                obj.Created = ReadInt64(buffer);
+                obj.Created = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
                 return obj;
             }
         }

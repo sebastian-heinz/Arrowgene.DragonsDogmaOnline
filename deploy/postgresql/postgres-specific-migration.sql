@@ -5,6 +5,7 @@
 create extension if not exists pg_stat_statements;
 create extension if not exists pg_buffercache;
 create extension if not exists pg_trgm;
+create extension if not exists pg_prewarm;
 
 -- PSQL-specific indexes
 
@@ -15,6 +16,10 @@ CREATE index concurrently IF NOT EXISTS "idx_ddon_pawn_lower_name_trgm" ON "ddon
 --- Custom statistics width
 
 ALTER TABLE "ddon_storage_item" ALTER COLUMN "character_id" SET STATISTICS 1000;
+
+--- Clustering
+
+CLUSTER "ddon_character_job_data" USING "pk_ddon_character_job_data";
 
 -- Vacuum
 

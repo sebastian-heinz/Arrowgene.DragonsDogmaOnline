@@ -346,6 +346,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+
         public void SetMemberRank(uint characterId, uint clanId, uint rank, uint permission)
         {
             if (clanId == 0) return;

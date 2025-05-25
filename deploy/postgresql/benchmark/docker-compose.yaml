@@ -1,0 +1,49 @@
+networks:
+  ddon-psql-bench-net:
+
+services:
+  db:
+    image: postgres:17
+    ports:
+      - "5432:5432"
+    restart: no
+    networks:
+      - ddon-psql-bench-net
+    volumes:
+      - ./postgresql.conf:/etc/postgresql/postgresql.conf:ro
+    environment:
+      - POSTGRES_USER=bench
+      - POSTGRES_PASSWORD=bench
+      - POSTGRES_DB=benchmark
+      - POSTGRES_INITDB_ARGS=--auth=scram-sha-256 --lc-numeric=en_US.UTF-8
+    command: postgres -c config_file=/etc/postgresql/postgresql.conf
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready", "-U", "bench", "-d", "benchmark"]
+      interval: 10s
+      timeout: 1s
+      retries: 3
+      
+  pgbench:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    user: root
+    depends_on:
+      - db
+    restart: no
+    networks:
+      - ddon-psql-bench-net
+    volumes:
+      - ./scripts:/scripts
+    environment:
+      PGPASSWORD: bench
+    entrypoint: ["/bin/bash", "-c"]
+    command:
+      - >
+        until pg_isready -h db -U bench -d benchmark; do
+          echo "waiting for db…";
+          sleep 2;
+        done;
+        bash /scripts/benchmark.sh
+        echo "Benchmark is finished!"
+        exit 0

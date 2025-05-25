@@ -1,6 +1,6 @@
 LOAD DATABASE
         FROM sqlite:///db.sqlite
             INTO postgresql://postgres:postgres@db:5432/postgres
-    WITH include no drop, no truncate, create no tables, create indexes, drop indexes, reset no sequences, data only,
+    WITH include no drop, no truncate, create no tables, create indexes, drop indexes, reset sequences, data only,
         prefetch rows = 10000
     ;
