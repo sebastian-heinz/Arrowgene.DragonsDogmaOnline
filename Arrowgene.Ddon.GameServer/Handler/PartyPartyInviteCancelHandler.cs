@@ -27,11 +27,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             S2CPartyPartyInviteCancelNtc ntc = new S2CPartyPartyInviteCancelNtc()
             {
-                ErrorCode = ErrorCode.ERROR_CODE_PARTY_INVITE_CANCEL_REASON_CANCEL
+                ErrorCode = ErrorCode.ERROR_CODE_PARTY_INVITE_HOST_CANCEL
             };
             party.SendToAll(ntc);
 
-            //party.CancelInvite();
+            Server.PartyManager.CancelPartyInvitation(party);
 
             Logger.Info(client, $"cancel invite for PartyId:{party.Id}");
             return res;

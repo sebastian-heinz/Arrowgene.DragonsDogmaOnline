@@ -24,6 +24,13 @@ namespace Arrowgene.Ddon.Rpc.Web.Route.Internal
             {
                 switch (_entry.Command)
                 {
+                    case RpcInternalCommand.Ping:
+                        {
+                            return new RpcCommandResult(this, true)
+                            {
+                                Message = $"Ping {_entry.Origin}"
+                            };
+                        }
                     case RpcInternalCommand.NotifyPlayerList:
                         {
                             List<RpcCharacterData> data = _entry.GetData<List<RpcCharacterData>>();

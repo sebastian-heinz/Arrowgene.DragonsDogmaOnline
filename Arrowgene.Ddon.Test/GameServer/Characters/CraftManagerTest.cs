@@ -49,8 +49,10 @@ public class CraftManagerTest
             {WalletType.RedDragonMark, 99999},
         });
 
+        var assets = new AssetRepository("Files/Assets");
+        assets.Initialize();
         var gameLogicSetting = new GameSettings(_scriptableSettings);
-        _mockServer = new DdonGameServer(settings, gameLogicSetting, new MockDatabase(), new AssetRepository("TestFiles"));
+        _mockServer = new DdonGameServer(settings, gameLogicSetting, new MockDatabase(), assets);
         _craftManager = new CraftManager(_mockServer);
     }
 

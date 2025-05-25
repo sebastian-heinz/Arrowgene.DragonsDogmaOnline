@@ -59,7 +59,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         {
                             craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeConsumableQuantity(itemInfo, craftPawns));
                         }
-                        else if (!CraftStartCraftHandler.NoQualitySubCategories.Contains((ItemSubCategory)itemInfo.SubCategory))
+                        else if (!CraftStartCraftHandler.NoQualitySubCategories.Contains(itemInfo.SubCategory))
                         {
                             craftSkillAnalyzeRes.AnalyzeResultList.Add(AnalyzeEquipmentQuality(itemInfo, craftPawns));
                         }

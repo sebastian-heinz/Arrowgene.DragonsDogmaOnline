@@ -475,7 +475,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId S2C_PAWN_GET_LEGEND_PAWN_LIST_RES = new PacketId(8, 18, 2, "S2C_PAWN_GET_LEGEND_PAWN_LIST_RES", ServerType.Game, PacketSource.Server); // レジェンドポーンリスト取得に
         public static readonly PacketId C2S_PAWN_PAWN_LOST_REQ = new PacketId(8, 19, 1, "C2S_PAWN_PAWN_LOST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_PAWN_PAWN_LOST_RES = new PacketId(8, 19, 2, "S2C_PAWN_PAWN_LOST_RES", ServerType.Game, PacketSource.Server); // ポーンロストに
-        public static readonly PacketId S2C_PAWN_PAWN_LOST_NTC = new PacketId(8, 19, 16, "S2C_PAWN_PAWN_LOST_RES", ServerType.Game, PacketSource.Server, "S2C_PAWN_8_19_16_NTC");
+        public static readonly PacketId S2C_PAWN_PAWN_LOST_NTC = new PacketId(8, 19, 16, "S2C_PAWN_PAWN_LOST_NTC", ServerType.Game, PacketSource.Server, "S2C_PAWN_8_19_16_NTC");
         public static readonly PacketId C2S_PAWN_GET_LOST_PAWN_LIST_REQ = new PacketId(8, 20, 1, "C2S_PAWN_GET_LOST_PAWN_LIST_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_PAWN_GET_LOST_PAWN_LIST_RES = new PacketId(8, 20, 2, "S2C_PAWN_GET_LOST_PAWN_LIST_RES", ServerType.Game, PacketSource.Server); // ロストポーンポーンリスト取得に
         public static readonly PacketId C2S_PAWN_LOST_PAWN_REVIVE_REQ = new PacketId(8, 21, 1, "C2S_PAWN_LOST_PAWN_REVIVE_REQ", ServerType.Game, PacketSource.Client);

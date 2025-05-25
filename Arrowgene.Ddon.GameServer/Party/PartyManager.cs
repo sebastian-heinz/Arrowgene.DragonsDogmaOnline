@@ -1,16 +1,11 @@
+using Arrowgene.Ddon.Server;
+using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Logging;
 using System;
 using System.Collections.Concurrent;
-using Arrowgene.Ddon.Server;
-using Arrowgene.Logging;
 using System.Collections.Generic;
-using Arrowgene.Ddon.Shared;
-using Arrowgene.Ddon.Shared.Entity.PacketStructure;
-using System.Threading;
-using Arrowgene.Ddon.Shared.Network;
-using Arrowgene.Ddon.Server.Network;
-using Arrowgene.Ddon.Shared.Entity;
-using Arrowgene.Buffers;
-using Arrowgene.Ddon.Shared.Model;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Party;
 
@@ -44,11 +39,6 @@ public class PartyManager
 
     public bool InviteParty(GameClient invitee, GameClient host, PartyGroup party)
     {
-        if (_invites.TryRemove(invitee, out PartyInvitation existingInvite))
-        {
-            existingInvite.CancelTimer();
-        }
-
         PartyInvitation invitation = new PartyInvitation
         {
             Invitee = invitee,
@@ -71,11 +61,16 @@ public class PartyManager
     {
         if (_invites.ContainsKey(invitation.Invitee) && _invites.TryRemove(invitation.Invitee, out _))
         {
-            var ntc = new S2CPartyPartyInviteCancelNtc
+            var ntc = new S2CPartyPartyInviteFailNtc
             {
-                ErrorCode = ErrorCode.ERROR_CODE_PARTY_INVITE_CANCEL_REASON_TIMEOUT
+                ErrorCode = ErrorCode.ERROR_CODE_PARTY_INVITE_FAIL_REASON_TIMEOUT,
+                ServerId = (ushort)Server.Id,
+                PartyId = invitation.Party.Id
             };
+
             invitation.Invitee.Send(ntc);
+            invitation.Host.Send(ntc);
+            invitation.Party.Leave(invitation.Invitee);
 
             Logger.Info(invitation.Invitee, "Invitation removed due to timeout.");
         }
@@ -101,6 +96,30 @@ public class PartyManager
         }
 
         return partyInvitation;
+    }
+
+    public bool CancelPartyInvitation(PartyGroup party)
+    {
+        PartyInvitation invitation = _invites.Values.Where(x => x.Party == party).FirstOrDefault()
+            ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_INVITE_FAIL_REASON_WRONG_PARTY,
+            $"Can't find invitation to cancel for party {party.Id}");
+
+        RemovePartyInvitation(invitation.Invitee);
+
+        var ntc = new S2CPartyPartyInviteFailNtc
+        {
+            ErrorCode = ErrorCode.ERROR_CODE_PARTY_INVITE_HOST_CANCEL,
+            ServerId = (ushort)Server.Id,
+            PartyId = invitation.Party.Id
+        };
+
+        invitation.CancelTimer();
+        invitation.Invitee.Send(ntc);
+        invitation.Host.Send(ntc);
+        invitation.Party.Leave(invitation.Invitee);
+
+        Logger.Info(invitation.Invitee, "Invitation removed due to cancellation.");
+        return true;
     }
 
     public PartyGroup GetParty(uint partyId)

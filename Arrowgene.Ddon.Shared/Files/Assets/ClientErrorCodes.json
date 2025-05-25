@@ -64,6 +64,18 @@
         "en": "The party invitation has timed out."
     },
     {
+        "code": "ERROR_CODE_PARTY_INVITE_HOST_CANCEL",
+        "en": "The party invitation has been cancelled."
+    },
+    {
+        "code": "ERROR_CODE_PARTY_INVITE_TARGET_REFUSE",
+        "en": "The party invitation has been refused."
+    },
+    {
+        "code": "ERROR_CODE_PARTY_ALREADY_INVITE",
+        "en": "This player already has an invitation pending."
+    },
+    {
         "code": "ERROR_CODE_PARTY_JOIN_NUM_OVER",
         "en": "Unable to join; the party does not have room for you and your Main Pawns."
     },
@@ -85,17 +97,17 @@
     },
     {
         "code": "ERROR_CODE_SERVER_CONFIG_ERROR",
-        "en":  "The server is configured incorrectly."
+        "en": "The server is configured incorrectly."
     },
     {
         "code": "ERROR_CODE_REQUIRED_SERVER_SCRIPT_MISSING",
-        "en":  "A required script is missing."
+        "en": "A required script is missing."
     },
     {
         "code": "ERROR_CODE_CLIENT_ITEM_INFO_MISSING",
         "en": "The item has no information."
     },
-	{
+    {
         "code": "ERROR_CODE_CONTENTS_RELEASE_NOT_PARTY_PLAY_WITH_PLAYER",
         "en": "This or invited character has not yet unlocked playing in a party."
     }

@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.Shared.Csv
                 StackLimit = stackLimit,
                 Rank = rank,
                 Name = name,
-                SubCategory = subcategory != null ? (ItemSubCategory)subcategory : null,
+                SubCategory = subcategory != null ? (ItemSubCategory)subcategory : ItemSubCategory.None,
                 Level = level,
                 JobGroup = jobs != null ? (EquipJobList)jobs : null,
                 CrestSlots = crestSlots,

@@ -98,7 +98,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 double calculatedOdds = CraftManager.CalculateEquipmentQualityIncreaseRate(craftPawns);
                 uint plusValue = 0;
                 bool isGreatSuccessEquipmentQuality = false;
-                bool canPlusValue = !itemInfo.SubCategory.HasValue || !NoQualitySubCategories.Contains(itemInfo.SubCategory.Value);
+                bool canPlusValue = !NoQualitySubCategories.Contains(itemInfo.SubCategory);
                 if (canPlusValue && !string.IsNullOrEmpty(request.RefineMaterialUID))
                 {
                     Item refineMaterialItem = Server.Database.SelectStorageItemByUId(request.RefineMaterialUID, connection);

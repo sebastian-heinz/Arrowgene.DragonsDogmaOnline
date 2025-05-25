@@ -1466,6 +1466,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPartyPartyChangeLeaderNtc.Serializer());
             Create(new S2CPartyPartyChangeLeaderRes.Serializer());
             Create(new S2CPartyPartyCreateRes.Serializer());
+            Create(new S2CPartyPartyInviteFailNtc.Serializer());
             Create(new S2CPartyPartyInviteAcceptNtc.Serializer());
             Create(new S2CPartyPartyInviteCancelNtc.Serializer());
             Create(new S2CPartyPartyInviteCancelRes.Serializer());
@@ -1487,6 +1488,7 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPartyPartyMemberSessionStatusNtc.Serializer());
             Create(new S2CPartyPartyMemberSetValueNtc.Serializer());
             Create(new S2CPartyPartyMemberSetValueRes.Serializer());
+            Create(new S2CPartyPartyMemberLostNtc.Serializer());
             Create(new S2CPartyPartyQuestProgressNtc.Serializer());
             Create(new S2CPartyRecvBinaryMsgAllNtc.Serializer());
             Create(new S2CPartyRecvBinaryMsgNtc.Serializer());

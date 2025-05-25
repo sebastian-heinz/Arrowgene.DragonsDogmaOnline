@@ -174,6 +174,8 @@ namespace Arrowgene.Ddon.GameServer
                     = new ClientConnectionChangeArgs(ClientConnectionChangeArgs.EventType.CONNECT, client);
                 connectionChangeEvent(this, connectionChangeEventArgs);
             }
+
+            Logger.Info($"ClientLookup, Connection: {ClientLookup.GetAll().Count}");
         }
 
         protected override void ClientDisconnected(GameClient client)
@@ -195,6 +197,8 @@ namespace Arrowgene.Ddon.GameServer
                     = new ClientConnectionChangeArgs(ClientConnectionChangeArgs.EventType.DISCONNECT, client);
                 connectionChangeEvent(this, connectionChangeEventArgs);
             }
+
+            Logger.Info($"ClientLookup, Disconnect: {ClientLookup.GetAll().Count}");
         }
 
         public override GameClient NewClient(ITcpSocket socket)

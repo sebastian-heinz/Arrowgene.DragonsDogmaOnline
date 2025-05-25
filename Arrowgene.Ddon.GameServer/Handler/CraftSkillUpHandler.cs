@@ -25,7 +25,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
 
             Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == request.PawnID)
-                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_NOT_FOUNDED);
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_NOT_FOUNDED,
+                $"Couldn't find pawn ID {request.PawnID}.");
 
             CDataPawnCraftSkill pawnCraftSkill = pawn.CraftData.PawnCraftSkillList.Find(skill => skill.Type == request.SkillType)
                 ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_CRAFT_INVALID_CRAFT_SKILL_TYPE);

@@ -179,6 +179,15 @@ namespace Arrowgene.Ddon.GameServer.Party
                 PlayerPartyMember partyMember = GetPlayerPartyMember(client)
                     ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_INVITE_CANCEL_REASON_LOBBY_NUM_OVER,
                     $"[PartyId:{Id}][RefuseInvite] has no slot");
+
+                invitation.CancelTimer();
+
+                Leader.Client.Send(new S2CPartyPartyInviteFailNtc
+                {
+                    ErrorCode = ErrorCode.ERROR_CODE_PARTY_INVITE_TARGET_REFUSE,
+                    ServerId = Leader.Client.Character.Server.Id,
+                    PartyId = invitation.Party.Id
+                });
                 
                 FreeSlot(partyMember.MemberIndex);
                 Logger.Info(client, $"[PartyId:{Id}][RefuseInvite] refused invite");
@@ -314,7 +323,7 @@ namespace Arrowgene.Ddon.GameServer.Party
 
             lock (_lock)
             {
-                if (client.Party != this)
+                if (!Clients.Contains(client))
                 {
                     Logger.Error(client, $"[PartyId:{Id}][Leave(GameClient)] not part of this party");
                     return;
@@ -672,18 +681,16 @@ namespace Arrowgene.Ddon.GameServer.Party
                             continue;
                         }
 
-                        if (member is PawnPartyMember pawnMember && characterCommon is Pawn)
+                        if (member is PawnPartyMember pawnMember && characterCommon is Pawn pawnCharacter)
                         {
-                            Pawn pawn = (Pawn)characterCommon;
-                            if (pawnMember.PawnId == pawn.PawnId)
+                            if (pawnMember.PawnId == pawnCharacter.PawnId)
                             {
                                 return member;
                             }
                         }
-                        else if (member is PlayerPartyMember playerMember && characterCommon is Character)
+                        else if (member is PlayerPartyMember playerMember && characterCommon is Character characterCharacter)
                         {
-                            Character character = (Character)characterCommon;
-                            if (playerMember.Client.Character.CharacterId == character.CharacterId)
+                            if (playerMember.Client.Character.CharacterId == characterCharacter.CharacterId)
                             {
                                 return member;
                             }

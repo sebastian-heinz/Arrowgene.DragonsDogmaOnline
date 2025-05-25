@@ -12,7 +12,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public byte StackLimit;
         public byte Rank;
         public string Name;
-        public ItemSubCategory? SubCategory;
+        public ItemSubCategory SubCategory;
 
         public byte? Level;
         public EquipJobList? JobGroup;
@@ -70,7 +70,7 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public EquipSlot? EquipSlot { get
             {
-                if (SubCategory is null) return null;
+                if (SubCategory is ItemSubCategory.None) return null;
                 else if (SubCategory > ItemSubCategory.JewelrySubCategoryOffset) return Model.EquipSlot.Jewelry1; //All Jewelry
                 else if (SubCategory == ItemSubCategory.EquipEnsemble) return (Model.EquipSlot.ArmorBody); //Ensembles
                 else if (SubCategory == ItemSubCategory.EquipLantern) return (Model.EquipSlot.Lantern); //Lanterns

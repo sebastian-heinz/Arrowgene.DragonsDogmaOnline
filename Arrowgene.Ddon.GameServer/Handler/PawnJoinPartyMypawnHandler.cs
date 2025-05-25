@@ -1,10 +1,8 @@
-using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-using System;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -22,8 +20,16 @@ namespace Arrowgene.Ddon.GameServer.Handler
             PawnPartyMember partyMember = client.Party.Join(pawn);
 
             pawn.PawnState = PawnState.Party;
-            client.Party.SendToAll(new S2CPawnJoinPartyPawnNtc() { PartyMember = partyMember.GetCDataPartyMember() });
-            client.Party.SendToAll(partyMember.GetS2CContextGetParty_ContextNtc());
+
+            var joinNtc = new S2CPawnJoinPartyPawnNtc()
+            {
+                PartyMember = partyMember.GetCDataPartyMember()
+            };
+
+            var contextNtc = partyMember.GetPartyContext();
+
+            client.Party.SendToAll(joinNtc);
+            client.Party.SendToAll(contextNtc);
 
             if (pawn.PawnId == client.Character.PartnerPawnId)
             {
