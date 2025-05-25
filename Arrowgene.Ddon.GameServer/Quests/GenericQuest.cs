@@ -275,7 +275,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     packets.Enqueue(client, new S2CItemUpdateCharacterItemNtc()
                     {
                         UpdateType = 0,
-                        UpdateItemList = new List<CDataItemUpdateResult>() { result }
+                        UpdateItemList = result
                     });
                 }
             }

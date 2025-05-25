@@ -72,10 +72,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 client.Send(new S2CItemUpdateCharacterItemNtc()
                 {
                     UpdateType = ItemNoticeType.CreatePawn,
-                    UpdateItemList = new()
-                        {
-                            result
-                        }
+                    UpdateItemList = result
                 });
             }           
             

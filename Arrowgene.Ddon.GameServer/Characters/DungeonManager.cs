@@ -173,7 +173,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 var itemUpdateList = new List<CDataItemUpdateResult>();
                 foreach (var item in dungeonInfo.EntryCostList)
                 {
-                    itemUpdateList.Add(server.ItemManager.ConsumeItemByIdFromMultipleStorages(server, memberClient.Character, ItemManager.BothStorageTypes, item.ItemId, item.Num));
+                    itemUpdateList.AddRange(server.ItemManager.ConsumeItemByIdFromMultipleStorages(server, memberClient.Character, ItemManager.BothStorageTypes, item.ItemId, item.Num));
                 }
 
                 memberClient.Send(new S2CItemUpdateCharacterItemNtc()

@@ -331,8 +331,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return results.Count > 0 ? results[0] : null;
         }
 
-        public CDataItemUpdateResult? ConsumeItemByIdFromMultipleStorages(DdonServer<GameClient> server, Character character, List<StorageType> storages, uint itemId, uint consumeNum, DbConnection? connectionIn = null)
+        public List<CDataItemUpdateResult> ConsumeItemByIdFromMultipleStorages(DdonServer<GameClient> server, Character character, List<StorageType> storages, uint itemId, uint consumeNum, DbConnection? connectionIn = null)
         {
+            uint amountToConsume = consumeNum;
+            var results = new List<CDataItemUpdateResult>();
+
+            var stacks = new List<(StorageType StorageType, string UID, uint amount)>();
             foreach (StorageType storageType in storages)
             {
                 var items = character.Storage.GetStorage(storageType).FindItemsById(itemId);
@@ -343,19 +347,38 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 foreach (var item in items)
                 {
-                    if (item.Item3 < consumeNum)
-                    {
-                        continue;
-                    }
+                    var amount = Math.Min(item.Item3, amountToConsume);
+                    stacks.Add((storageType, item.Item2.UId, amount));
 
-                    return ConsumeItemByUId(server, character, storageType, item.Item2.UId, consumeNum, connectionIn);
+                    amountToConsume -= amount;
+                    if (amountToConsume == 0)
+                    {
+                        break;
+                    }
+                }
+
+                if (amountToConsume == 0)
+                {
+                    break;
                 }
             }
 
-            return null;
+            if (amountToConsume > 0)
+            {
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_CHARACTER_ITEM_NOT_FOUND, $"Unable to locate {(ItemId)itemId} x{consumeNum} in the player inventories");
+            }
+
+            foreach (var stack in stacks)
+            {
+                var result = ConsumeItemByUId(server, character, stack.StorageType, stack.UID, stack.amount, connectionIn) ??
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_CHARACTER_ITEM_NOT_FOUND, $"Failed to comsume {stack.amount} from {stack.UID}");
+                results.Add(result);
+            }
+
+            return results;
         }
 
-        public CDataItemUpdateResult? ConsumeItemByIdFromItemBag(DdonServer<GameClient> server, Character character, uint itemId, uint consumeNum, DbConnection? connectionIn = null)
+        public List<CDataItemUpdateResult> ConsumeItemByIdFromItemBag(DdonServer<GameClient> server, Character character, uint itemId, uint consumeNum, DbConnection? connectionIn = null)
         {
             return ConsumeItemByIdFromMultipleStorages(server, character, ItemBagStorageTypes, itemId, consumeNum, connectionIn);
         }
@@ -417,6 +440,26 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             ushort slot = destinationStorage.AddItem(item, amount);
             InsertItem(server, character, item, destinationStorage, slot, amount, connectionIn);
+        }
+
+        public CDataItemUpdateResult AddNewItem(DdonGameServer server, Character character, bool itemBag, Item item, uint amount, DbConnection connectionIn)
+        {
+            Storage destinationStorage;
+
+            ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, item.ItemId);
+            if (itemBag)
+            {
+                destinationStorage = character.Storage.GetStorage(clientItemInfo.StorageType);
+            }
+            else
+            {
+                destinationStorage = character.Storage.GetStorage(StorageType.StorageBoxNormal);
+            }
+
+            ushort slotNo = destinationStorage.AddItem(item, amount);
+            InsertItem(server, character, item, destinationStorage, slotNo, amount, connectionIn);
+
+            return CreateItemUpdateResult(character, item, destinationStorage, slotNo, amount, amount);
         }
 
         public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, bool itemBag, uint itemId, uint num, byte plusvalue = 0, DbConnection? connectionIn = null)

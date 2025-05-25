@@ -6,7 +6,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
     {
         public CDataItemUpdateResult()
         {
-            ItemList=new CDataItemList();
+            ItemList = new CDataItemList();
             UpdateItemNum=0;
         }
 
@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         {
             public override void Write(IBuffer buffer, CDataItemUpdateResult obj)
             {
-                WriteEntity<CDataItemList>(buffer, obj.ItemList);
+                WriteEntity(buffer, obj.ItemList);
                 WriteInt32(buffer, obj.UpdateItemNum);
             }
 
