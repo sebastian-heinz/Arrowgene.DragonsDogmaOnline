@@ -28,6 +28,7 @@ namespace Arrowgene.Ddon.Client
                 throw new Exception($"Provided romDir:{romDirArg} does not exist");
             }
 
+            int totalGmdEntries = 0;
             GmdCsv gmdCsvReader = new GmdCsv();
             List<GmdCsv.Entry> csvEntries = gmdCsvReader.ReadPath(gmdCsvFile.FullName);
             Dictionary<string, Dictionary<string, List<GmdCsv.Entry>>> csvArcLookup =
@@ -59,12 +60,12 @@ namespace Arrowgene.Ddon.Client
                 }
 
                 gmdEntries.Add(csvEntry);
+                totalGmdEntries++;
             }
 
-            int current = 0;
+            int processedGmdEntries = 0;
             foreach (string arcPath in csvArcLookup.Keys)
             {
-                current++;
                 string fullPath = Path.Combine(romDir.FullName, Util.UnrootPath(arcPath));
                 Dictionary<string, List<GmdCsv.Entry>> gmdCsvLookup = csvArcLookup[arcPath];
                 ArcArchive archive = new ArcArchive();
@@ -84,6 +85,17 @@ namespace Arrowgene.Ddon.Client
                     gmd.Open(gmdFile.Data);
                     foreach (GuiMessage.Entry entry in gmd.Entries)
                     {
+                        Logger.Info($"Writing {processedGmdEntries}/{totalGmdEntries} {fullPath}");
+                        if (progress != null)
+                        {
+                            progress.Report(new PackProgressReport()
+                            {
+                                Current = processedGmdEntries++,
+                                Total = totalGmdEntries,
+                                Path = fullPath
+                            });
+                        }
+
                         GmdCsv.Entry matchCsvEntry = null;
                         List<GmdCsv.Entry> keyMatches = new();
                         List<GmdCsv.Entry> indexMatches = new();
@@ -144,16 +156,6 @@ namespace Arrowgene.Ddon.Client
 
                 byte[] savedArc = archive.Save();
                 File.WriteAllBytes(fullPath, savedArc);
-                Logger.Info($"Writing {current}/{csvArcLookup.Keys.Count} {fullPath}");
-                if(progress != null)
-                {
-                    progress.Report(new PackProgressReport()
-                    {
-                        Current = current,
-                        Total = csvArcLookup.Keys.Count,
-                        Path = fullPath
-                    });
-                }
             }
         }
 
