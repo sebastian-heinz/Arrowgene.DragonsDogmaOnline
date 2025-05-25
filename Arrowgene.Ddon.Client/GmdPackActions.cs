@@ -14,23 +14,20 @@ namespace Arrowgene.Ddon.Client
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(GmdActions));
 
         // pack gmd.csv into all .arc files of rom
-        public static void Pack(string gmdCsvArg, string romDirArg, string romLangArg, IProgress<PackProgressReport> progress = null) {
-        
+        public static void Pack(List<GmdCsv.Entry> csvEntries, string romDirArg, string romLangArg, IProgress<PackProgressReport> progress = null)
+        {
             if (!Enum.TryParse<GuiMessage.Language>(romLangArg, out GuiMessage.Language romLanguage))
             {
                 throw new Exception($"Provided romLang:{romLangArg} is invalid");
             }
 
             DirectoryInfo romDir = new DirectoryInfo(romDirArg);
-            FileInfo gmdCsvFile = new FileInfo(gmdCsvArg);
             if (!romDir.Exists)
             {
                 throw new Exception($"Provided romDir:{romDirArg} does not exist");
             }
 
             int totalGmdEntries = 0;
-            GmdCsv gmdCsvReader = new GmdCsv();
-            List<GmdCsv.Entry> csvEntries = gmdCsvReader.ReadPath(gmdCsvFile.FullName);
             Dictionary<string, Dictionary<string, List<GmdCsv.Entry>>> csvArcLookup =
                 new Dictionary<string, Dictionary<string, List<GmdCsv.Entry>>>();
             foreach (GmdCsv.Entry csvEntry in csvEntries)
