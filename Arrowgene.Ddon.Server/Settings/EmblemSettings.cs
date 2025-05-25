@@ -131,7 +131,7 @@ namespace Arrowgene.Ddon.Server.Settings
     // ItemId, AmountConsumed, Percent Increase
     (ItemId.QualityDefenseUpgradeRock, 100, 1),
     (ItemId.WhiteDragonDefenseUpgradeRock, 1, 1),
-});")]
+};")]
         public List<(ItemId ItemId, ushort AmountConsumed, byte PercentIncrease)> InheritanceChanceIncreaseItems
         {
             set
@@ -159,7 +159,7 @@ namespace Arrowgene.Ddon.Server.Settings
     (6,  32),
     (11, 16),
     (16, 8),
-})")]
+}")]
         public List<(ushort UnlockLevel, byte BaseChance)> InheritanceUnlockLevels
         {
             set
@@ -199,7 +199,7 @@ namespace Arrowgene.Ddon.Server.Settings
     (14, 30),
     (15, 50),
     (16, 0),
-})")]
+}")]
         public List<(byte Level, uint EPAmount)> StatUpgradeCost
         {
             set
@@ -355,7 +355,7 @@ namespace Arrowgene.Ddon.Server.Settings
     (118,  2000,  2),
     (119,  2000,  2),
     (120,  2000, 10),
-})")]
+}")]
         public List<(ushort Level, uint PPCost, byte EP)> LevelingData
         {
             set
