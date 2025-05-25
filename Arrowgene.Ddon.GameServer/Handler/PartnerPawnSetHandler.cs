@@ -3,6 +3,7 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -18,7 +19,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             S2CPartnerPawnSetRes res = new S2CPartnerPawnSetRes();
 
-            Pawn pawn = client.Character.Pawns.Find(p => p.PawnId == request.PawnId);
+            Pawn pawn = client.Character.Pawns.Where(p => p.PawnId == request.PawnId).FirstOrDefault() ??
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_NOT_FOUNDED, $"A pawn with the ID {request.PawnId} doesn't exist");
 
             client.Character.PartnerPawnId = pawn.PawnId;
             Server.Database.ExecuteInTransaction(connection =>

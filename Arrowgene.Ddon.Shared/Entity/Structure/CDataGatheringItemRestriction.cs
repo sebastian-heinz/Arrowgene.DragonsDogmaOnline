@@ -13,7 +13,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 
         public uint RestrictionId { get; set; }
         public List<CDataWalletPoint> Unk1 { get; set; }
-        public List<CDataRequiredItem> RequiredItems { get; set; }
+        public List<CDataItemAmount> RequiredItems { get; set; }
 
         public class Serializer : EntitySerializer<CDataGatheringItemRestriction>
         {
@@ -29,7 +29,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 CDataGatheringItemRestriction obj = new CDataGatheringItemRestriction();
                 obj.RestrictionId = ReadUInt32(buffer);
                 obj.Unk1 = ReadEntityList<CDataWalletPoint>(buffer);
-                obj.RequiredItems = ReadEntityList<CDataRequiredItem>(buffer);
+                obj.RequiredItems = ReadEntityList<CDataItemAmount>(buffer);
                 return obj;
             }
         }

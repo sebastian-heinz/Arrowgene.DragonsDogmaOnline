@@ -19,8 +19,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(QuestGetRewardBoxItemHandler));
 
-
-
         public QuestGetRewardBoxItemHandler(DdonGameServer server) : base(server)
         {
         }

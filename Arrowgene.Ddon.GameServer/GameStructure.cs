@@ -236,7 +236,7 @@ public static class GameStructure
             .Select((x, index) => x?.AsCDataContextAcquirementData((byte)(index+1)))
             .Where(x => x != null)
             .ToList();
-        contextBase.Unk0List = new List<CDataContextBaseUnk0>(); // TODO: Figure this one out
+        contextBase.EmblemStatList = new List<CDataEquipStatParam>(); // Emblem stats for current job
     }
 
     public static void CDataContextPlayerInfo(CDataContextPlayerInfo contextPlayerInfo, CharacterCommon character)
@@ -323,9 +323,10 @@ public static class GameStructure
         contextResist.MDefDownResist = characterJobData.MDefDownResist;
     }
 
-    public static void S2CContextGetLobbyPlayerContextNtc(S2CContextGetLobbyPlayerContextNtc ntc, Character character)
+    public static void S2CContextGetLobbyPlayerContextNtc(DdonGameServer server, S2CContextGetLobbyPlayerContextNtc ntc, Character character)
     {
         ntc.CharacterId = character.CharacterId;
         GameStructure.CDataLobbyContextPlayer(ntc.Context, character);
+        ntc.Context.Base.EmblemStatList = server.JobEmblemManager.GetEmblemStatsForCurrentJob(character);
     }
 }

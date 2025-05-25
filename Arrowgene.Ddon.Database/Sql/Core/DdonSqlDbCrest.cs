@@ -49,39 +49,32 @@ public partial class DdonSqlDb : SqlDb
         }
     }
 
-    public override bool UpdateCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount)
+    public override bool UpdateCrest(uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount, DbConnection? connectionIn = null)
     {
-        using DbConnection connection = OpenNewConnection();
-        return UpdateCrest(connection, characterCommonId, itemUId, slot, crestId, crestAmount);
-    }
-
-    public bool UpdateCrest(DbConnection connection, uint characterCommonId, string itemUId, uint slot, uint crestId, uint crestAmount)
-    {
-        return ExecuteNonQuery(connection, SqlUpdateCrestData, command =>
+        return ExecuteQuerySafe(connectionIn, connection =>
         {
-            AddParameter(command, "character_common_id", characterCommonId);
-            AddParameter(command, "item_uid", itemUId);
-            AddParameter(command, "slot", slot);
-            AddParameter(command, "crest_id", crestId);
-            AddParameter(command, "crest_amount", crestAmount);
-        }) == 1;
-        ;
+            return ExecuteNonQuery(connection, SqlUpdateCrestData, command =>
+            {
+                AddParameter(command, "character_common_id", characterCommonId);
+                AddParameter(command, "item_uid", itemUId);
+                AddParameter(command, "slot", slot);
+                AddParameter(command, "crest_id", crestId);
+                AddParameter(command, "crest_amount", crestAmount);
+            }) == 1;
+        });
     }
 
-    public override bool RemoveCrest(uint characterCommonId, string itemUId, uint slot)
+    public override bool RemoveCrest(uint characterCommonId, string itemUId, uint slot, DbConnection? connectionIn = null)
     {
-        using DbConnection connection = OpenNewConnection();
-        return RemoveCrest(connection, characterCommonId, itemUId, slot);
-    }
-
-    public bool RemoveCrest(DbConnection connection, uint characterCommonId, string itemUId, uint slot)
-    {
-        return ExecuteNonQuery(connection, SqlDeleteCrestData, command =>
+        return ExecuteQuerySafe(connectionIn, connection =>
         {
-            AddParameter(command, "character_common_id", characterCommonId);
-            AddParameter(command, "item_uid", itemUId);
-            AddParameter(command, "slot", slot);
-        }) == 1;
+            return ExecuteNonQuery(connection, SqlDeleteCrestData, command =>
+            {
+                AddParameter(command, "character_common_id", characterCommonId);
+                AddParameter(command, "item_uid", itemUId);
+                AddParameter(command, "slot", slot);
+            }) == 1;
+        });
     }
 
     public override List<Crest> GetCrests(uint characterCommonId, string itemUId)

@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             PlusValue = 0;
             EquipElementParamList = new List<CDataEquipElementParam>();
             AddStatusParamList = new List<CDataAddStatusParam>();
-            Unk2List = new List<CDataEquipItemInfoUnk2>();
+            EquipStatParamList = new List<CDataEquipStatParam>();
         }
 
         public uint ItemId { get; set; }
@@ -28,7 +28,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public byte PlusValue { get; set; }
         public List<CDataEquipElementParam> EquipElementParamList { get; set; } // Used for storing crest properties
         public List<CDataAddStatusParam> AddStatusParamList { get; set; }
-        public List<CDataEquipItemInfoUnk2> Unk2List { get; set; }
+        public List<CDataEquipStatParam> EquipStatParamList { get; set; }
         
         public class Serializer : EntitySerializer<CDataEquipItemInfo>
         {
@@ -42,7 +42,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteByte(buffer, obj.PlusValue);
                 WriteEntityList(buffer, obj.EquipElementParamList);
                 WriteEntityList(buffer, obj.AddStatusParamList);
-                WriteEntityList(buffer, obj.Unk2List);
+                WriteEntityList(buffer, obj.EquipStatParamList);
             }
 
             public override CDataEquipItemInfo Read(IBuffer buffer)
@@ -56,7 +56,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.PlusValue = ReadByte(buffer);
                 obj.EquipElementParamList = ReadEntityList<CDataEquipElementParam>(buffer);
                 obj.AddStatusParamList = ReadEntityList<CDataAddStatusParam>(buffer);
-                obj.Unk2List = ReadEntityList<CDataEquipItemInfoUnk2>(buffer);
+                obj.EquipStatParamList = ReadEntityList<CDataEquipStatParam>(buffer);
                 return obj;
             }
         }

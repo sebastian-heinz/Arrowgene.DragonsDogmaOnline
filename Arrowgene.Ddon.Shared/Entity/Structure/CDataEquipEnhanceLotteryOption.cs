@@ -8,9 +8,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public CDataEquipEnhanceLotteryOption() {
             RowTitle = string.Empty;
             WalletPointCost = new List<CDataWalletPoint>();
-            ItemCost = new List<CDataRequiredItem>();
+            ItemCost = new List<CDataItemAmount>();
             Unk7 = new List<CDataWalletPoint>();
-            Unk8 = new List<CDataRequiredItem>();
+            Unk8 = new List<CDataItemAmount>();
             ShopTypeListings = new List<CDataCommonU8>();
             MainSuccessExample = new List<CDataS2CEquipEnhancedGetPacksResUnk0Unk10>();
         }
@@ -21,9 +21,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public ushort RetryLimited { get; set; } // Prints "Retry Limited"  @ Craig when set to 1
         public ushort AttemptModifier { get; set; } // In Limit break reports "first time only" @ Craig when set to 1
         public List<CDataWalletPoint> WalletPointCost { get; set; } // Currency Required for option
-        public List<CDataRequiredItem> ItemCost { get; set; } // Trade In required
+        public List<CDataItemAmount> ItemCost { get; set; } // Trade In required
         public List<CDataWalletPoint> Unk7 { get; set; }
-        public List<CDataRequiredItem> Unk8 { get; set; }
+        public List<CDataItemAmount> Unk8 { get; set; }
         public List<CDataCommonU8> ShopTypeListings { get; set; } // 1 = Weapon, 5 = Armor
         public List<CDataS2CEquipEnhancedGetPacksResUnk0Unk10> MainSuccessExample { get; set; } // Main Success Example?
     
@@ -37,9 +37,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt16(buffer, obj.RetryLimited);
                 WriteUInt16(buffer, obj.AttemptModifier);
                 WriteEntityList<CDataWalletPoint>(buffer, obj.WalletPointCost);
-                WriteEntityList<CDataRequiredItem>(buffer, obj.ItemCost);
+                WriteEntityList<CDataItemAmount>(buffer, obj.ItemCost);
                 WriteEntityList<CDataWalletPoint>(buffer, obj.Unk7);
-                WriteEntityList<CDataRequiredItem>(buffer, obj.Unk8);
+                WriteEntityList<CDataItemAmount>(buffer, obj.Unk8);
                 WriteEntityList<CDataCommonU8>(buffer, obj.ShopTypeListings);
                 WriteEntityList<CDataS2CEquipEnhancedGetPacksResUnk0Unk10>(buffer, obj.MainSuccessExample);
             }
@@ -53,9 +53,9 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.RetryLimited = ReadUInt16(buffer);
                 obj.AttemptModifier = ReadUInt16(buffer);
                 obj.WalletPointCost = ReadEntityList<CDataWalletPoint>(buffer);
-                obj.ItemCost = ReadEntityList<CDataRequiredItem>(buffer);
+                obj.ItemCost = ReadEntityList<CDataItemAmount>(buffer);
                 obj.Unk7 = ReadEntityList<CDataWalletPoint>(buffer);
-                obj.Unk8 = ReadEntityList<CDataRequiredItem>(buffer);
+                obj.Unk8 = ReadEntityList<CDataItemAmount>(buffer);
                 obj.ShopTypeListings = ReadEntityList<CDataCommonU8>(buffer);
                 obj.MainSuccessExample = ReadEntityList<CDataS2CEquipEnhancedGetPacksResUnk0Unk10>(buffer);
                 return obj;

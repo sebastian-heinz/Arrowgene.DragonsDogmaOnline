@@ -14,22 +14,20 @@ namespace Arrowgene.Ddon.Client
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(GmdActions));
 
         // pack gmd.csv into all .arc files of rom
-        public static void Pack(string gmdCsvArg, string romDirArg, string romLangArg, IProgress<PackProgressReport> progress = null) {
-        
+        public static void Pack(List<GmdCsv.Entry> csvEntries, string romDirArg, string romLangArg, IProgress<PackProgressReport> progress = null)
+        {
             if (!Enum.TryParse<GuiMessage.Language>(romLangArg, out GuiMessage.Language romLanguage))
             {
                 throw new Exception($"Provided romLang:{romLangArg} is invalid");
             }
 
             DirectoryInfo romDir = new DirectoryInfo(romDirArg);
-            FileInfo gmdCsvFile = new FileInfo(gmdCsvArg);
             if (!romDir.Exists)
             {
                 throw new Exception($"Provided romDir:{romDirArg} does not exist");
             }
 
-            GmdCsv gmdCsvReader = new GmdCsv();
-            List<GmdCsv.Entry> csvEntries = gmdCsvReader.ReadPath(gmdCsvFile.FullName);
+            int totalGmdEntries = 0;
             Dictionary<string, Dictionary<string, List<GmdCsv.Entry>>> csvArcLookup =
                 new Dictionary<string, Dictionary<string, List<GmdCsv.Entry>>>();
             foreach (GmdCsv.Entry csvEntry in csvEntries)
@@ -59,12 +57,12 @@ namespace Arrowgene.Ddon.Client
                 }
 
                 gmdEntries.Add(csvEntry);
+                totalGmdEntries++;
             }
 
-            int current = 0;
+            int processedGmdEntries = 0;
             foreach (string arcPath in csvArcLookup.Keys)
             {
-                current++;
                 string fullPath = Path.Combine(romDir.FullName, Util.UnrootPath(arcPath));
                 Dictionary<string, List<GmdCsv.Entry>> gmdCsvLookup = csvArcLookup[arcPath];
                 ArcArchive archive = new ArcArchive();
@@ -84,6 +82,17 @@ namespace Arrowgene.Ddon.Client
                     gmd.Open(gmdFile.Data);
                     foreach (GuiMessage.Entry entry in gmd.Entries)
                     {
+                        Logger.Info($"Writing {processedGmdEntries}/{totalGmdEntries} {fullPath}");
+                        if (progress != null)
+                        {
+                            progress.Report(new PackProgressReport()
+                            {
+                                Current = processedGmdEntries++,
+                                Total = totalGmdEntries,
+                                Path = fullPath
+                            });
+                        }
+
                         GmdCsv.Entry matchCsvEntry = null;
                         List<GmdCsv.Entry> keyMatches = new();
                         List<GmdCsv.Entry> indexMatches = new();
@@ -144,16 +153,6 @@ namespace Arrowgene.Ddon.Client
 
                 byte[] savedArc = archive.Save();
                 File.WriteAllBytes(fullPath, savedArc);
-                Logger.Info($"Writing {current}/{csvArcLookup.Keys.Count} {fullPath}");
-                if(progress != null)
-                {
-                    progress.Report(new PackProgressReport()
-                    {
-                        Current = current,
-                        Total = csvArcLookup.Keys.Count,
-                        Path = fullPath
-                    });
-                }
             }
         }
 
