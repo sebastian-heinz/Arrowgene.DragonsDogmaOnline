@@ -79,11 +79,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         private byte GetInheritanceBasePercentageChance(Item item)
         {
-            if (item.EquipElementParamList.Count >= Server.GameSettings.EmblemSettings.InheritanceUnlockLevels.Count)
+            var count = item.EquipElementParamList.Where(x => x.CrestId != 0).Sum(x => 1);
+            if (count >= Server.GameSettings.EmblemSettings.InheritanceUnlockLevels.Count)
             {
-                throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INTERNAL_ERROR, $"No information for inheritance count {item.EquipElementParamList.Count}");
+                throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INTERNAL_ERROR, $"No information for inheritance count {count}");
             }
-            return Server.GameSettings.EmblemSettings.InheritanceUnlockLevels[item.EquipElementParamList.Count].BaseChance;
+            return Server.GameSettings.EmblemSettings.InheritanceUnlockLevels[count].BaseChance;
         }
 
         private byte GetInheritanceAdditionalPercentageChance(List<CDataItemAmount> payments)
