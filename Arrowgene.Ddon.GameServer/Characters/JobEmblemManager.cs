@@ -114,19 +114,19 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return (float)chance / 100.0f;
         }
 
-        public ushort MaxEmblemPoints(ushort emblemLevel)
+        public ushort MaxEmblemPointsForLevel(JobEmblem jobEmblem)
         {
-            return (ushort) Server.GameSettings.EmblemSettings.LevelingData.Where(x => x.Level <= emblemLevel).Sum(x => x.EP);
-        }
-
-        public ushort MaxEmblemPoints(JobEmblem jobEmblem)
-        {
-            return MaxEmblemPoints(jobEmblem.EmblemLevel);
+            return (ushort)Server.GameSettings.EmblemSettings.LevelingData.Where(x => x.Level <= jobEmblem.EmblemLevel).Sum(x => x.EP);
         }
 
         public ushort GetAvailableEmblemPoints(JobEmblem jobEmblem)
         {
-            return (ushort)(MaxEmblemPoints(jobEmblem) - jobEmblem.EmblemPointsUsed);
+            return (ushort)(MaxEmblemPointsForLevel(jobEmblem) - jobEmblem.EmblemPointsUsed);
+        }
+
+        public ushort GetMaxTotalEmblemPoints()
+        {
+            return (ushort) Server.GameSettings.EmblemSettings.LevelingData.Where(x => x.Level <= Server.GameSettings.EmblemSettings.MaxEmblemLevel).Sum(x => x.EP);
         }
 
         public uint LevelUpPPCost(byte emblemLevel)
