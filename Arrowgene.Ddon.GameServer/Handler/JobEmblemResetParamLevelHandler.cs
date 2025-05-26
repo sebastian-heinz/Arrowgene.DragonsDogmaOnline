@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             var updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
             {
-                UpdateType = ItemNoticeType.GatherEquipItem,
+                UpdateType = ItemNoticeType.EmblemStatUpdate,
             };
 
             var emblemData = client.Character.JobEmblems[request.JobId];
@@ -60,14 +60,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             client.Enqueue(updateCharacterItemNtc, packets);
 
-            S2CEquipChangeCharacterEquipNtc changeCharacterEquipNtc = new S2CEquipChangeCharacterEquipNtc()
-            {
-                CharacterId = client.Character.CharacterId,
-                EquipItemList = client.Character.Equipment.AsCDataEquipItemInfo(EquipType.Performance),
-                VisualEquipItemList = client.Character.Equipment.AsCDataEquipItemInfo(EquipType.Visual)
-            };
-            Server.ClientLookup.EnqueueToAll(changeCharacterEquipNtc, packets);
-
             client.Enqueue(new S2CJobEmblemResetParamLevelRes()
             {
                 JobId = request.JobId,
@@ -75,7 +67,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 EmblemStatParamList = emblemData.GetEmblemStatParamList(),
                 EmblemPoints = new CDataJobEmblemPoints()
                 {
-                    JobId = JobId.Fighter,
+                    JobId = request.JobId,
                     Amount = Server.JobEmblemManager.GetAvailableEmblemPoints(emblemData),
                     MaxAmount = Server.JobEmblemManager.MaxEmblemPointsForLevel(emblemData)
                 }

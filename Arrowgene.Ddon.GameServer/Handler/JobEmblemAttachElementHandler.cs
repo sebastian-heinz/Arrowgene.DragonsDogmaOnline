@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var packets = new PacketQueue();
             var itemUpdateNtc = new S2CItemUpdateCharacterItemNtc()
             {
-                UpdateType = ItemNoticeType.GatherEquipItem
+                UpdateType = ItemNoticeType.EmblemStartAttach
             };
 
             if (request.EmblemUIDs.Count == 0)

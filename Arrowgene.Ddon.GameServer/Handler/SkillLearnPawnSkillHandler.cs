@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Pawn pawn = client.Character.PawnById(request.PawnId, PawnType.Main);
             Server.Database.ExecuteInTransaction(connection =>
             {
-                packets = Server.JobManager.UnlockSkill(client, pawn, request.Job, request.SkillId, request.SkillLv, connection);
+                packets = Server.JobManager.UnlockCustomSkill(client, pawn, request.Job, request.SkillId, request.SkillLv, connection);
             });
 
             return packets;

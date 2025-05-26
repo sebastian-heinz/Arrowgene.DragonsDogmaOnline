@@ -456,7 +456,7 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new JobEmblemDetachElementHandler(this));
             AddHandler(new JobEmblemGetEmblemListHandler(this));
             AddHandler(new JobEmblemUpdateLevelHandler(this));
-            AddHandler(new JobEmblemUpdateParamLevel(this));
+            AddHandler(new JobEmblemUpdateParamLevelHandler(this));
             AddHandler(new JobEmblemResetParamLevelHandler(this));
 
             AddHandler(new JobMasterReportJobOrderProgressHandler(this));

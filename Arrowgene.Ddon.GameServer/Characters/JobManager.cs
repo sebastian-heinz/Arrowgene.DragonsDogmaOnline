@@ -372,7 +372,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return neededSlots <= availableSlots;
         }
 
-        public PacketQueue UnlockSkill(GameClient client, CharacterCommon character, JobId job, uint skillId, byte skillLv, DbConnection? connectionIn = null)
+        public PacketQueue UnlockCustomSkill(GameClient client, CharacterCommon character, JobId job, uint skillId, byte skillLv, DbConnection? connectionIn = null)
         {
             PacketQueue queue = new();
 

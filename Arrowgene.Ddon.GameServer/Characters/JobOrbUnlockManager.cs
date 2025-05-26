@@ -186,7 +186,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 var existing = client.Character.LearnedCustomSkills.Where(x => x.SkillId == upgrade.CustomSkillId.ReleaseId()).FirstOrDefault();
                 if (existing == null)
                 {
-                    Server.JobManager.UnlockSkill(client, client.Character, jobId, upgrade.CustomSkillId.ReleaseId(), 1, connectionIn);
+                    Server.JobManager.UnlockCustomSkill(client, client.Character, jobId, upgrade.CustomSkillId.ReleaseId(), 1, connectionIn);
                 }
 
                 packets.Enqueue(client, new S2CSkillAcquirementLearnNtc()
