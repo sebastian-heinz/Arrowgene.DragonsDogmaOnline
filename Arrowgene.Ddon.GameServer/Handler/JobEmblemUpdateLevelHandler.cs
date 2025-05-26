@@ -36,7 +36,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     JobId = request.JobId,
                     Amount = Server.JobEmblemManager.GetAvailableEmblemPoints(emblemData),
-                    MaxAmount = Server.JobEmblemManager.MaxEmblemPoints(emblemData)
+                    MaxAmount = Server.JobEmblemManager.MaxEmblemPointsForLevel(emblemData)
                 },
             }, packets);
 

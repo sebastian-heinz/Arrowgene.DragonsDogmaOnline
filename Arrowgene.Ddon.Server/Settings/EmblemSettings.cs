@@ -36,23 +36,6 @@ namespace Arrowgene.Ddon.Server.Settings
         }
         private const byte _MaxEmblemLevel = 120;
 
-        /// <summary>
-        /// Defines the maximum number of emblem points that can be distributed at one time.
-        /// </summary>
-        [DefaultValue(_MaxEmblemPoints)]
-        public ushort MaxEmblemPoints
-        {
-            set
-            {
-                SetSetting("MaxEmblemPoints", value);
-            }
-            get
-            {
-                return TryGetSetting("MaxEmblemPoints", _MaxEmblemPoints);
-            }
-        }
-        private const ushort _MaxEmblemPoints = 350;
-
 
         /// <summary>
         /// Defines the maximum amount you can increase your odds when attaching crests to the job emblem.

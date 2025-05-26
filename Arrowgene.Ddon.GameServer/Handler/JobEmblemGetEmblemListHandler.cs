@@ -37,7 +37,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         JobId = jobId,
                         Amount = Server.JobEmblemManager.GetAvailableEmblemPoints(emblemData),
-                        MaxAmount = Server.JobEmblemManager.MaxEmblemPoints(emblemData),
+                        MaxAmount = Server.JobEmblemManager.MaxEmblemPointsForLevel(emblemData),
                     });
                 }
             }
@@ -110,7 +110,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Amount = Server.GameSettings.EmblemSettings.EmblemInheritanceEquipLossGGCost
             });
 
-            result.EmblemSettings.MaxEmblemPoints = Server.GameSettings.EmblemSettings.MaxEmblemPoints;
+            result.EmblemSettings.MaxEmblemPoints = Server.JobEmblemManager.GetMaxTotalEmblemPoints();
             result.EmblemSettings.MaxEmblemLevel = Server.GameSettings.EmblemSettings.MaxEmblemLevel;
             result.EmblemSettings.MaxInhertienceChanceIncrease = Server.GameSettings.EmblemSettings.MaxInheritanceChanceIncrease;
 
