@@ -513,6 +513,13 @@ public abstract class SqlDb : IDatabase
     public abstract List<CDataClanMemberInfo> GetClanMemberList(uint clanId, DbConnection? connectionIn = null);
     public abstract CDataClanMemberInfo GetClanMember(uint characterId, DbConnection? connectionIn = null);
     public abstract bool UpdateClanMember(CDataClanMemberInfo memberInfo, uint clanId, DbConnection? connectionIn = null);
+    public abstract bool InsertClanRequest(uint clanId, uint characterId, DbConnection? connectionIn = null);
+    public abstract List<CDataClanJoinRequest> GetClanRequestsByCharacter(uint characterId, DbConnection? connectionIn = null);
+    public abstract List<CDataClanJoinRequest> GetApprovedClanRequestsByCharacter(uint characterId, DbConnection? connectionIn = null);
+    public abstract List<CDataClanJoinRequest> GetClanRequestsByClan(uint clanId, DbConnection? connectionIn = null);
+    public abstract bool SetClanRequestApproved(uint characterId, DbConnection? connectionIn = null);
+    public abstract bool DeleteClanRequestByCharacter(uint characterId, DbConnection? connectionIn = null);
+    public abstract bool DeleteOldClanRequests(uint minDays = 30, DbConnection? connectionIn = null);
     public abstract List<uint> SelectClanShopPurchases(uint clanId, DbConnection? connectionIn = null);
     public abstract bool InsertClanShopPurchase(uint clanId, uint lineupId, DbConnection? connectionIn = null);
     public abstract List<(byte Type, uint Id)> SelectClanBaseCustomizations(uint clanId, DbConnection? connectionIn = null);

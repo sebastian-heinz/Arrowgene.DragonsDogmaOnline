@@ -476,6 +476,13 @@ public interface IDatabase
     bool InsertOrUpdateClanBaseCustomization(uint clanId, byte type, uint furnitureId, DbConnection? connectionIn = null);
     bool DeleteClanBaseCustomization(uint clanId, byte type, DbConnection? connectionIn = null);
     List<CDataClanSearchResult> SearchClans(CDataClanSearchParam param, DbConnection? connectionIn = null);
+    bool InsertClanRequest(uint clanId, uint characterId, DbConnection? connectionIn = null);
+    List<CDataClanJoinRequest> GetClanRequestsByCharacter(uint characterId, DbConnection? connectionIn = null);
+    List<CDataClanJoinRequest> GetApprovedClanRequestsByCharacter(uint characterId, DbConnection? connectionIn = null);
+    List<CDataClanJoinRequest> GetClanRequestsByClan(uint clanId, DbConnection? connectionIn = null);
+    bool SetClanRequestApproved(uint characterId, DbConnection? connectionIn = null);
+    bool DeleteClanRequestByCharacter(uint characterId, DbConnection? connectionIn = null);
+    bool DeleteOldClanRequests(uint minDays = 30, DbConnection? connectionIn = null);
 
     // Epitaph Road
     bool InsertEpitaphRoadUnlock(uint characterId, uint epitaphId, DbConnection? connectionIn = null);

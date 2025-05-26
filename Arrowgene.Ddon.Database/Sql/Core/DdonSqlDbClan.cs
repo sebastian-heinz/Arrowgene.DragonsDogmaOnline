@@ -88,6 +88,7 @@ public partial class DdonSqlDb : SqlDb
         + "AND (@dont_filter_by_active_days OR active_days & @active_days > 0) "
         + "AND (@dont_filter_by_active_time OR active_time & @active_time > 0) "
         + "AND (@dont_filter_by_characteristic OR characteristic & @characteristic > 0) "
+        + "AND is_publish = 1 "
         + "LIMIT 256;"; // limit imposed by client
 
     private readonly string SqlSelectClanShopPurchases = $"SELECT {BuildQueryField(ClanShopFields)} FROM \"ddon_clan_shop_purchases\" WHERE \"clan_id\" = @clan_id;";

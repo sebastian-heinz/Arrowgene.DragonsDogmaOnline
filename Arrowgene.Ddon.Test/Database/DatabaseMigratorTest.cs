@@ -427,6 +427,13 @@ namespace Arrowgene.Ddon.Test.Database
         public bool InsertOrUpdateClanBaseCustomization(uint clanId, byte type, uint furnitureId, DbConnection? connectionIn = null) { return true; }
         public bool DeleteClanBaseCustomization(uint clanId, byte type, DbConnection? connectionIn = null) { return true; }
         public List<CDataClanSearchResult> SearchClans(CDataClanSearchParam param, DbConnection? connectionIn = null) { return new(); }
+        public bool InsertClanRequest(uint clanId, uint characterId, DbConnection? connectionIn = null) { return true; }
+        public List<CDataClanJoinRequest> GetClanRequestsByCharacter(uint characterId, DbConnection? connectionIn = null) { return new(); }
+        public List<CDataClanJoinRequest> GetApprovedClanRequestsByCharacter(uint characterId, DbConnection? connectionIn = null) { return new(); }
+        public List<CDataClanJoinRequest> GetClanRequestsByClan(uint clanId, DbConnection? connectionIn = null) { return new(); }
+        public bool SetClanRequestApproved(uint characterId, DbConnection? connectionIn = null) { return true; }
+        public bool DeleteClanRequestByCharacter(uint characterId, DbConnection? connectionIn = null) { return true; }
+        public bool DeleteOldClanRequests(uint minDays = 30, DbConnection? connectionIn = null) { return true; }
 
         public bool InsertEpitaphRoadUnlock(uint characterId, uint epitaphId, DbConnection? connectionIn = null) { return true; }
         public HashSet<uint> GetEpitaphRoadUnlocks(uint characterId, DbConnection? connectionIn = null) { return new(); }

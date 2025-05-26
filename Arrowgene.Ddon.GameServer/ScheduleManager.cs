@@ -35,6 +35,7 @@ namespace Arrowgene.Ddon.GameServer
                 new RankingBoardResetTask(DayOfWeek.Monday, 5, 0),
                 new PawnLikabilityIncreaseResetTask(5, 0),
                 new EquipmentRecycleResetTask(5, 0),
+                new ClanRequestCleanupTask(DayOfWeek.Monday, 5, 0),
             };
         }
 
