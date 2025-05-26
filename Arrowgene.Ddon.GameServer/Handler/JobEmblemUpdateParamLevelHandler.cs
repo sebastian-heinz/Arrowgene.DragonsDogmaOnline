@@ -55,7 +55,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 EmblemStatParamList = emblemData.GetEmblemStatParamList(),
                 EmblemPoints = new CDataJobEmblemPoints()
                 {
-                    JobId = JobId.Fighter,
+                    JobId = request.JobId,
                     Amount = Server.JobEmblemManager.GetAvailableEmblemPoints(emblemData),
                     MaxAmount = Server.JobEmblemManager.MaxEmblemPointsForLevel(emblemData)
                 }
