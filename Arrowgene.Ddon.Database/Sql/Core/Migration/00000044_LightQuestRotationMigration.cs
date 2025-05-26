@@ -47,13 +47,26 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
                 }
             );
 
+            // Drop existing light quests.
+            db.ExecuteNonQuery(conn, "DELETE FROM ddon_quest_progress WHERE quest_schedule_id > 40000000 AND quest_schedule_id < 49999999;", command => { });
+
             foreach(var progress in values)
             {
                 uint questId = progress.QuestScheduleId;
 
                 if (!QuestMapping.TryGetValue(questId, out var newSchedule))
                 {
-                    Logger.Error($"Failing to migrate quest progress {questId}, step {progress.Step} for commonID {progress.CharacterCommonId}");
+                    Logger.Error($"Failed to migrate quest progress {questId}, step {progress.Step} for commonID {progress.CharacterCommonId}");
+                    db.ExecuteNonQuery(conn,
+                        """
+                            DELETE FROM "ddon_quest_progress" WHERE "character_common_id"=@character_common_id AND "quest_schedule_id"=@quest_schedule_id;
+                        """,
+                        command =>
+                        {
+                            db.AddParameter(command, "character_common_id", progress.CharacterCommonId);
+                            db.AddParameter(command, "quest_schedule_id", progress.QuestScheduleId);
+                        }
+                    );
                     continue;
                 }
 
