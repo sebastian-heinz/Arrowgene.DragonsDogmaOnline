@@ -1,17 +1,16 @@
-using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Rpc;
 using Arrowgene.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading;
-using System.Threading.Channels;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -25,12 +24,13 @@ namespace Arrowgene.Ddon.LoginServer.Manager
 
         // We need to occasionally pop from the middle to handle leavers, so this can't actually be a queue.
         private readonly List<int> LoginQueue = new();
-        private readonly HttpClient _httpClient = new();
+        private readonly HttpClient _httpClient = new() { Timeout = TimeSpan.FromSeconds(5) };
         private bool _httpReady = false;
         private ServerInfo _serverInfo;
 
         private static readonly double QUEUE_CHECK_TIME = 10000; // msec
         private static readonly int MAXLOGIN_ADJUSTMENT = 0;
+        private static readonly double PING_TIMEOUT = 3000; // msec.
 
         public LoginQueueManager(DdonLoginServer server) : base(QUEUE_CHECK_TIME)
         {
@@ -149,10 +149,11 @@ namespace Arrowgene.Ddon.LoginServer.Manager
                     Command = RpcInternalCommand.Ping,
                 };
                 var json = JsonSerializer.Serialize(wrappedObject);
-                var response = await _httpClient.PostAsync(route, new StringContent(json));
+                var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(PING_TIMEOUT));
+                var response = await _httpClient.PostAsync(route, new StringContent(json), cts.Token);
                 return response.IsSuccessStatusCode;
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex) when (ex is OperationCanceledException || ex is HttpRequestException)
             {
                 Logger.Error($"Ping on server {targetServer.Id} failed; {ex.Message}");
                 return false;

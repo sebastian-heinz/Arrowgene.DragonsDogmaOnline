@@ -14,6 +14,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.GameServer
@@ -52,7 +53,8 @@ namespace Arrowgene.Ddon.GameServer
             "Empty", "Light", "Good", "Normal", "Busy", "Heavy"
         };
 
-        private readonly HttpClient HttpClient = new HttpClient();
+        private readonly HttpClient HttpClient = new HttpClient() { Timeout = TimeSpan.FromSeconds(5) };
+        private static readonly double PING_TIMEOUT = 3000; // msec.
 
         private readonly DdonGameServer Server;
         private ConcurrentDictionary<ushort, RpcTrackingMap> CharacterTrackingMap { get; set; }
@@ -228,10 +230,12 @@ namespace Arrowgene.Ddon.GameServer
                     Command = RpcInternalCommand.Ping,
                 };
                 var json = JsonSerializer.Serialize(wrappedObject);
-                var response = await HttpClient.PostAsync(route, new StringContent(json));
+                var cts = new CancellationTokenSource(TimeSpan.FromMilliseconds(PING_TIMEOUT));
+                var response = await HttpClient.PostAsync(route, new StringContent(json), cts.Token);
+
                 return response.IsSuccessStatusCode;
             }
-            catch (HttpRequestException ex)
+            catch (Exception ex) when (ex is OperationCanceledException || ex is HttpRequestException)
             {
                 Logger.Error($"Ping on server {targetServer.Id} failed; {ex.Message}");
                 return false;
