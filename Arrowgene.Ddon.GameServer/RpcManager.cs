@@ -104,19 +104,21 @@ namespace Arrowgene.Ddon.GameServer
             }
             else
             {
-                var foo = CharacterTrackingMap.GetValueOrDefault(cdata.Id);
-                int bar = foo?.Count ?? 0;
                 cdata.LoginNum = (uint)(CharacterTrackingMap.GetValueOrDefault(cdata.Id)?.Count ?? 0);
             }
 
-            cdata.TrafficName = GetTrafficName(info.LoginNum, info.MaxLoginNum);
+            cdata.TrafficName = GetTrafficName(cdata.LoginNum, cdata.MaxLoginNum);
             return cdata;
         }
 
         public static string GetTrafficName(uint count, uint maxLoginNum)
         {
             uint index = 0;
-            if (count > 0)
+            if (count >= maxLoginNum)
+            {
+                return $"Full ({count})";
+            }
+            else if (count > 0)
             {
                 uint countPerTraffic = (uint)(maxLoginNum / (TRAFFIC_LABELS.Length-1));
                 index = count / countPerTraffic + 1;

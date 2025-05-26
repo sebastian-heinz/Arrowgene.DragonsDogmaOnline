@@ -21,8 +21,8 @@ namespace Arrowgene.Ddon.GameServer.Tests
         [InlineData(80, 100, "Heavy (80)")]
         [InlineData(90, 100, "Heavy (90)")]
         [InlineData(99, 100, "Heavy (99)")]
-        [InlineData(100, 100, "Heavy (100)")]
-        [InlineData(110, 100, "Heavy (110)")]
+        [InlineData(100, 100, "Full (100)")]
+        [InlineData(110, 100, "Full (110)")]
         public void GetTrafficName_ShouldReturnCorrectTrafficLabel(uint count, uint maxLoginNum, string expected)
         {
             // Act

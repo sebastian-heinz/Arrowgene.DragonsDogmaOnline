@@ -846,7 +846,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {AchievementEnemyParam.Golem, new() { EnemyId.Golem } },
             {AchievementEnemyParam.Gorechimera, new() { EnemyId.Gorechimera0, EnemyId.Gorechimera1 } },
             {AchievementEnemyParam.Gorecyclops, new() { EnemyId.Gorecyclops0, EnemyId.Gorecyclops1, EnemyId.Gorecyclops2} },
-            {AchievementEnemyParam.GrandEnt, new() { EnemyId.GrandEnt0, EnemyId.GrandEnt1 } },
+            {AchievementEnemyParam.GrandEnt, new() { EnemyId.GrandEnt0, EnemyId.GrandEnt1, EnemyId.GrandEnt2 } },
             {AchievementEnemyParam.GreenGuardian, new() { EnemyId.GreenGuardian } },
             {AchievementEnemyParam.Griffin, new() { EnemyId.Griffin0, EnemyId.Griffin1 } },
             {AchievementEnemyParam.Grigori, new() { EnemyId.Grigori, EnemyId.BeardedGrigori, EnemyId.ShadowGrigori} },
