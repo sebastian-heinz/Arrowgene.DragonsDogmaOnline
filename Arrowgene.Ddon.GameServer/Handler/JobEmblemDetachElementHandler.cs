@@ -32,7 +32,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             var updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
             {
-                UpdateType = ItemNoticeType.GatherEquipItem
+                UpdateType = ItemNoticeType.EmblemStartDetach
             };
             Server.Database.ExecuteInTransaction(connection =>
             {

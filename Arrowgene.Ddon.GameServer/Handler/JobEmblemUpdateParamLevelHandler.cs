@@ -9,11 +9,11 @@ using System;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
-    public class JobEmblemUpdateParamLevel : GameRequestPacketQueueHandler<C2SJobEmblemUpdateParamLevelReq, S2CJobEmblemUpdateParamLevelRes>
+    public class JobEmblemUpdateParamLevelHandler : GameRequestPacketQueueHandler<C2SJobEmblemUpdateParamLevelReq, S2CJobEmblemUpdateParamLevelRes>
     {
-        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(JobEmblemUpdateParamLevel));
+        private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(JobEmblemUpdateParamLevelHandler));
 
-        public JobEmblemUpdateParamLevel(DdonGameServer server) : base(server)
+        public JobEmblemUpdateParamLevelHandler(DdonGameServer server) : base(server)
         {
         }
 
@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var packets = new PacketQueue();
             var updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
             {
-                UpdateType = ItemNoticeType.GatherEquipItem,
+                UpdateType = ItemNoticeType.EmblemStatUpdate,
             };
 
             var emblemData = client.Character.JobEmblems[request.JobId];
@@ -47,14 +47,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(client.Character, item, storageType, slotNo, 1, 1));
             }
             client.Enqueue(updateCharacterItemNtc, packets);
-
-            S2CEquipChangeCharacterEquipNtc changeCharacterEquipNtc = new S2CEquipChangeCharacterEquipNtc()
-            {
-                CharacterId = client.Character.CharacterId,
-                EquipItemList = client.Character.Equipment.AsCDataEquipItemInfo(EquipType.Performance),
-                VisualEquipItemList = client.Character.Equipment.AsCDataEquipItemInfo(EquipType.Visual)
-            };
-            Server.ClientLookup.EnqueueToAll(changeCharacterEquipNtc, packets);
 
             client.Enqueue(new S2CJobEmblemUpdateParamLevelRes()
             {

@@ -2,7 +2,6 @@ using Arrowgene.Ddon.Server.Scripting.utils;
 using Arrowgene.Ddon.Shared.Model;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Threading;
 
 namespace Arrowgene.Ddon.Server.Settings
 {
@@ -11,7 +10,6 @@ namespace Arrowgene.Ddon.Server.Settings
         public EmblemSettings(ScriptableSettings settingsData) : base(settingsData, typeof(EmblemSettings).Name)
         {
         }
-
 
         /// <summary>
         /// Sets the maximum level the emblem can be upgraded to.

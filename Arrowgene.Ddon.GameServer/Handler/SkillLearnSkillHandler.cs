@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             Server.Database.ExecuteInTransaction(connection =>
             {
-                packets = Server.JobManager.UnlockSkill(client, client.Character, request.Job, request.SkillId, request.SkillLv, connection);
+                packets = Server.JobManager.UnlockCustomSkill(client, client.Character, request.Job, request.SkillId, request.SkillLv, connection);
             });
 
             return packets;

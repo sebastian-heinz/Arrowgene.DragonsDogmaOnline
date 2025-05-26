@@ -118,6 +118,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
             }
 
+            if (previousStageId == 0)
+            {
+                targetClients.Add(client);
+            }
+
             if (targetClients.Any())
             {
                 SendContext(client, targetClients);
