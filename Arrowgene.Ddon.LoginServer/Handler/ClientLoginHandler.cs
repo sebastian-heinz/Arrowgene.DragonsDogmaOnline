@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
         private readonly object _tokensInFlightLock;
         private readonly HashSet<string> _tokensInFlight;
 
-        private readonly HttpClient _httpClient = new HttpClient();
+        private readonly HttpClient _httpClient = new HttpClient() { Timeout = TimeSpan.FromSeconds(5) };
         private bool _httpReady = false;
 
         public ClientLoginHandler(DdonLoginServer server) : base(server)
