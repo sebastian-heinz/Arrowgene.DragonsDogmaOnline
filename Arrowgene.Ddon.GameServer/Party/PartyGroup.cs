@@ -140,7 +140,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             }
         }
 
-        public PlayerPartyMember Invite(GameClient invitee, GameClient host)
+        public PlayerPartyMember Invite(GameClient invitee, GameClient host, bool createTimeout = true)
         {
             if (invitee == null)
             {
@@ -155,7 +155,7 @@ namespace Arrowgene.Ddon.GameServer.Party
             PlayerPartyMember partyMember = CreatePartyMember(invitee);
             lock (_lock)
             {
-                _partyManager.InviteParty(invitee, host, this);
+                _partyManager.InviteParty(invitee, host, this, createTimeout);
                 int slotIndex = TakeSlot(partyMember);
                 Logger.Info(host, $"[PartyId:{Id}][Invite] invited {invitee.Identity}");
                 partyMember.JoinState = JoinState.Prepare;

@@ -65,8 +65,10 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     var memberClient = Server.ClientLookup.GetClientByCharacterId(characterId);
                     try
                     {
-                        var invitedMember = party.Invite(memberClient, hostClient);
-                        var partyMember = party.Accept(memberClient);
+                        var invitedMember = party.Invite(memberClient, hostClient, false) ??
+                            throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_INTERNAL_ERROR, $"Failed to invite member to EXM party ({characterId}:{party.Id}:{data.EntryItem.Id})");
+                        var partyMember = party.Accept(memberClient) ??
+                            throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_INTERNAL_ERROR, $"Failed to accept EXM party invite ({characterId}:{party.Id}:{data.EntryItem.Id})");
 
                         inviteAcceptNtc.MemberIndex = i;
                         memberClient.Enqueue(inviteAcceptNtc, packetQueue);
