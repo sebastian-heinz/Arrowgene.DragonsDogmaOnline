@@ -37,7 +37,7 @@ public class PartyManager
         _invites = new ConcurrentDictionary<GameClient, PartyInvitation>();
     }
 
-    public bool InviteParty(GameClient invitee, GameClient host, PartyGroup party)
+    public bool InviteParty(GameClient invitee, GameClient host, PartyGroup party, bool createTimeout)
     {
         PartyInvitation invitation = new PartyInvitation
         {
@@ -52,7 +52,10 @@ public class PartyManager
             throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_ALREADY_INVITE, $"[PartyId:{party.Id}][Invite] could not be invited; already has pending invite");
         }
 
-        invitation.StartTimer(RemoveExpiredInvite, InvitationTimeoutSec + 2);
+        if (createTimeout)
+        {
+            invitation.StartTimer(RemoveExpiredInvite, InvitationTimeoutSec + 2);
+        }
 
         return true;
     }

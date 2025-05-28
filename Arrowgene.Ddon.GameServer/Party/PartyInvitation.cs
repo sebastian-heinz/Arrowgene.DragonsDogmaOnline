@@ -12,6 +12,7 @@ public class PartyInvitation
     private Timer _timer;
     public bool IsTimerDisposed =>
      _timer == null || !_timer.Change(Timeout.Infinite, Timeout.Infinite);
+
     public void StartTimer(Action<PartyInvitation> onTimeout, int timeoutSec)
     {
         _timer = new Timer(state =>
