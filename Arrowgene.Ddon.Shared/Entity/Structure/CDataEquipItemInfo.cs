@@ -10,7 +10,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public CDataEquipItemInfo()
         {
             ItemId = 0;
-            Unk0 = 0;
+            SafetySetting = 0;
             EquipType = 0;
             EquipSlot = 0;
             Color = 0;
@@ -21,7 +21,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         }
 
         public uint ItemId { get; set; }
-        public byte Unk0 { get; set; } // Not stored in DB cause i dont know what its for
+        public byte SafetySetting { get; set; } // Not stored in DB cause i dont know what its for
         public EquipType EquipType { get; set; } // 1 = Equipment, 2 = Visual
         public ushort EquipSlot { get; set; }
         public byte Color { get; set; }
@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override void Write(IBuffer buffer, CDataEquipItemInfo obj)
             {
                 WriteUInt32(buffer, obj.ItemId);
-                WriteByte(buffer, obj.Unk0);
+                WriteByte(buffer, obj.SafetySetting);
                 WriteByte(buffer, (byte) obj.EquipType);
                 WriteUInt16(buffer, obj.EquipSlot);
                 WriteByte(buffer, obj.Color);
@@ -49,7 +49,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 CDataEquipItemInfo obj = new CDataEquipItemInfo();
                 obj.ItemId = ReadUInt32(buffer);
-                obj.Unk0 = ReadByte(buffer);
+                obj.SafetySetting = ReadByte(buffer);
                 obj.EquipType = (EquipType) ReadByte(buffer);
                 obj.EquipSlot = ReadUInt16(buffer);
                 obj.Color = ReadByte(buffer);

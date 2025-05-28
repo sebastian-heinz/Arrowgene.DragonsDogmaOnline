@@ -60,7 +60,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                             return new Item()
                                             {
                                                 ItemId = info.ItemId,
-                                                SafetySetting = info.Unk0,
+                                                SafetySetting = info.SafetySetting,
                                                 Color = info.Color,
                                                 PlusValue = info.PlusValue,
                                                 EquipElementParamList = info.EquipElementParamList,
@@ -82,7 +82,7 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                                             return new Item()
                                             {
                                                 ItemId = info.ItemId,
-                                                SafetySetting = info.Unk0,
+                                                SafetySetting = info.SafetySetting,
                                                 Color = info.Color,
                                                 PlusValue = info.PlusValue,
                                                 EquipElementParamList = info.EquipElementParamList,

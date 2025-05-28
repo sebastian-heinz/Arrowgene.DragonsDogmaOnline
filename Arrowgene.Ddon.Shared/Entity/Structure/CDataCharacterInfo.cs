@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             }};
             CharacterEquipJobItemList = character.EquipmentTemplate.JobItemsAsCDataEquipJobItem(character.Job);
             JewelrySlotNum = character.JewelrySlotNum;
-            CharacterEquipItemInfoUnk2 = character.CharacterEquipItemInfoUnk2;
+            EmblemStatList = character.EmblemStatList;
             CharacterItemSlotInfoList = character.Storage.GetAllStoragesAsCDataCharacterItemSlotInfoList();
             WalletPointList = character.WalletPointList;
             MyPawnSlotNum = character.MyPawnSlotNum;
@@ -63,7 +63,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public List<CDataCharacterEquipData> CharacterEquipViewDataList { get; set; } = new();
         public List<CDataEquipJobItem> CharacterEquipJobItemList { get; set; } = new();
         public byte JewelrySlotNum { get; set; }
-        public List<CDataEquipStatParam> CharacterEquipItemInfoUnk2 { get; set; } = new();//from Ghidra
+        public List<CDataEquipStatParam> EmblemStatList { get; set; } = new();//from Ghidra
         public List<CDataCharacterItemSlotInfo> CharacterItemSlotInfoList { get; set; } = new();
         public List<CDataWalletPoint> WalletPointList { get; set; } = new();
         public byte MyPawnSlotNum { get; set; }
@@ -99,7 +99,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteEntityList(buffer, obj.CharacterEquipViewDataList);
                 WriteEntityList(buffer, obj.CharacterEquipJobItemList);
                 WriteByte(buffer, obj.JewelrySlotNum);
-                WriteEntityList(buffer, obj.CharacterEquipItemInfoUnk2);
+                WriteEntityList(buffer, obj.EmblemStatList);
                 WriteEntityList(buffer, obj.CharacterItemSlotInfoList);
                 WriteEntityList(buffer, obj.WalletPointList);
                 WriteByte(buffer, obj.MyPawnSlotNum);
@@ -135,7 +135,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.CharacterEquipViewDataList = ReadEntityList<CDataCharacterEquipData>(buffer);
                 obj.CharacterEquipJobItemList = ReadEntityList<CDataEquipJobItem>(buffer);
                 obj.JewelrySlotNum = ReadByte(buffer);
-                obj.CharacterEquipItemInfoUnk2 = ReadEntityList<CDataEquipStatParam>(buffer);
+                obj.EmblemStatList = ReadEntityList<CDataEquipStatParam>(buffer);
                 obj.CharacterItemSlotInfoList = ReadEntityList<CDataCharacterItemSlotInfo>(buffer);
                 obj.WalletPointList = ReadEntityList<CDataWalletPoint>(buffer);
                 obj.MyPawnSlotNum = ReadByte(buffer);

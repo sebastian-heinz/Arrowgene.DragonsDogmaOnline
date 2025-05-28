@@ -60,6 +60,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 character.JobEmblems = Server.JobEmblemManager.InitializeEmblemData(character, connectionIn);
                 character.Equipment = character.Storage.GetCharacterEquipment();
 
+                character.EmblemStatList = Server.JobEmblemManager.GetEmblemStatsForCurrentJob(character);
+
                 character.ContentsReleased = GetContentsReleased(character, connectionIn);
                 character.WorldManageUnlocks = GetWorldManageState(character, connectionIn);
 

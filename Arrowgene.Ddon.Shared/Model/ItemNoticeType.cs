@@ -55,29 +55,33 @@ namespace Arrowgene.Ddon.Shared.Model
         ReleaseTreeElement = 0x32,
         PawnExpeditionDrop = 0x33,
         StorePostItemBoxGacha = 0x34,
-        // 0x35
-        // 0x36
+        // 0x35 // Item obtained
+        // 0x36 // Item obtained
         // 0x37
         SoulOrdealReward = 0x38,
-        // 0x39
-        // 0x3a
-        // 0x3b
+        // 0x39 // Item obtained
+        // 0x3a // Item consumed
+        ReceivedItemFromCrafting = 0x3b,
         // 0x3c
         // 0x3d
         // 0x3e
         // 0x3f
         // 0x40
-        // 0x41
-        // 0x42
+        // 0x41 // Item obtained
+        // 0x42 // Item used and obtained
         // 0x43
-        // 0x44
-        // 0x45
+        // 0x44 // Item consumed
+        ItemSafetySetting = 0x45,
         EmblemStartAttach = 0x46,
         EmblemStartDetach = 0x47,
         // 0x48
-        // 0x49
+        // 0x49 // Item obtained
         EmblemStatUpdate = 0x4a,
         GatherEquipItem = 0x4b,
+        // 0x4c Item Obtained
+        // 0x4d Item Obtained
+        // 0x4e Item Obtained
+        // 0x4f Item Obtained
         Debug = 0x64,
         DebugAdd = 0x64,
         DebugSub = 0x65,
