@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     client.Character.AcquirableAbilities[request.Job]
                         .Where(x => !SkillData.IsUnlockableAbility(request.Job, x.AbilityNo, 1) || IsAbilityUnlocked(client.Character, request.Job, x.AbilityNo))
                         .ToList() :
-                    SkillData.AllAbilities.Where(x => x.Job == request.Job).ToList();
+                    new();
             }
             else if (request.CharacterId == 0)
             {

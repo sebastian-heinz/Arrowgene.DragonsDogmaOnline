@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     client.Character.AcquirableSkills[request.Job]
                         .Where(x => !SkillData.IsUnlockableSkill(request.Job, x.SkillNo, 1) || IsSkillUnlocked(client.Character, request.Job, x.SkillNo))
                         .ToList() :
-                    SkillData.AllSkills.Where(x => x.Job == request.Job).ToList()
+                    new()
             };
         }
 
