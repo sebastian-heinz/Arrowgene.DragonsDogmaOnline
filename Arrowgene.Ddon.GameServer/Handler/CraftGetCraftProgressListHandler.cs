@@ -103,7 +103,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // Hopefully this is not super slow or pushes up against the packet limit.
             foreach (var item in client.Character.AchievementUniqueCrafts.Values.SelectMany(x => x))
             {
-                var itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, (uint)item);
+                var itemInfo = Server.AssetRepository.ClientItemInfos[item];
                 createdRecipes.UnionWith(Server.AssetRepository.CraftingRecipesAsset
                     .Where(x => x.Category == itemInfo?.RecipeCategory)
                     .SelectMany(x => x.RecipeList)

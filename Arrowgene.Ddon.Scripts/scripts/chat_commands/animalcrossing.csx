@@ -9,8 +9,8 @@ public class ChatCommand : IChatCommand
 
     public override void Execute(DdonGameServer server, string[] command, GameClient client, ChatMessage message, List<ChatResponse> responses)
     {
-        var furnitureIds = server.AssetRepository.ClientItemInfos.Values.Where(x => x.Category == 6).Select(x => x.ItemId);
-        var recipeIds = server.AssetRepository.ClientItemInfos.Values.Where(x => x.Category == 7).Select(x => x.ItemId);
+        var furnitureIds = server.AssetRepository.ClientItemInfos.Values.Where(x => x.Category == 6).Select(x => (uint)x.ItemId);
+        var recipeIds = server.AssetRepository.ClientItemInfos.Values.Where(x => x.Category == 7).Select(x => (uint)x.ItemId);
 
         server.Database.ExecuteInTransaction(connection =>
         {

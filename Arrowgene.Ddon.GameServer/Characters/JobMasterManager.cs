@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
         {
             PacketQueue packets = new();
 
-            var targetId = Enemy.GetNameId((EnemyId)enemy.EnemyId);
+            var targetId = (uint)enemy.EnemyId.GetUIId();
             if (targetId == 0)
             {
                 // TODO: Should we log a message?

@@ -39,7 +39,7 @@ public class AchievementRewardReceiveHandler : GameRequestPacketHandler<C2SAchie
                 sourceAchievement = Server.AssetRepository.AchievementAsset.SelectMany(x => x.Value).Where(x => x.Id == requestReward.RewardId).FirstOrDefault();
                 if (sourceAchievement != null)
                 {
-                    var itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, sourceAchievement.RewardId);
+                    var itemInfo = Server.AssetRepository.ClientItemInfos[sourceAchievement.RewardId];
 
                     if (itemInfo?.Category == 6)
                     {
