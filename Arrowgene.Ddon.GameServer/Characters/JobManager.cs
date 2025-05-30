@@ -45,15 +45,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
             JobId oldJobId = common.Job;
             common.Job = jobId;
 
-            if (common is Character)
-            {
-                common.EmblemStatList = Server.JobEmblemManager.GetEmblemStatsForCurrentJob((Character)common);
-            }
-            else if (common is Pawn)
-            {
-                common.EmblemStatList = Server.JobEmblemManager.GetEmblemStatsForCurrentJob(client.Character, common.Job);
-            }
-
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, oldJobId, jobId, EquipType.Performance, connectionIn));
             updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, oldJobId, jobId, EquipType.Visual, connectionIn));
@@ -113,6 +104,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 common.CharacterJobDataList.Add(activeCharacterJobData);
                 Server.Database.ReplaceCharacterJobData(common.CommonId, activeCharacterJobData, connectionIn);
             }
+
+            common.EmblemStatList = Server.JobEmblemManager.GetEmblemStatsForCurrentJob(client.Character, jobId);
 
             // TODO: Figure out if CDataEquipItemInfo should be the equipment templates or just the currently equipped items
             List<CDataEquipItemInfo> equipItemInfos = common.Equipment.AsCDataEquipItemInfo(EquipType.Performance)
@@ -213,6 +206,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     otherClient.Enqueue(changeJobNotice, queue);
                 }
+
+                queue.AddRange(Server.CharacterManager.UpdateCharacterExtendedParamsNtc(client, common));
 
                 return queue;
             }

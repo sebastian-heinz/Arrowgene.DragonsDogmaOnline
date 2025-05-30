@@ -393,8 +393,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
              * a specific job only. We abuse JobId.None to store the stats for all jobs.
              */
             var extendedJobParams = characterCommon.ExtendedJobParams;
-            JobId jobId = characterCommon.ActiveCharacterJobData?.Job ?? JobId.None;
 
+            JobId jobId = characterCommon.ActiveCharacterJobData?.Job ?? JobId.None;
             if (jobId == JobId.None)
             {
                 Logger.Error($"Character CommonId {characterCommon.CommonId} has no active job data.");
