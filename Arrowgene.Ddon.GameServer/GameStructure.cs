@@ -236,7 +236,7 @@ public static class GameStructure
             .Select((x, index) => x?.AsCDataContextAcquirementData((byte)(index+1)))
             .Where(x => x != null)
             .ToList();
-        contextBase.EmblemStatList = new List<CDataEquipStatParam>(); // Emblem stats for current job
+        contextBase.EmblemStatList = character.EmblemStatList;
     }
 
     public static void CDataContextPlayerInfo(CDataContextPlayerInfo contextPlayerInfo, CharacterCommon character)
@@ -327,6 +327,5 @@ public static class GameStructure
     {
         ntc.CharacterId = character.CharacterId;
         GameStructure.CDataLobbyContextPlayer(ntc.Context, character);
-        ntc.Context.Base.EmblemStatList = server.JobEmblemManager.GetEmblemStatsForCurrentJob(character);
     }
 }

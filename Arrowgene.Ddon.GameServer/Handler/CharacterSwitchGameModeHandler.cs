@@ -1,19 +1,11 @@
-using Arrowgene.Buffers;
 using Arrowgene.Ddon.GameServer.Characters;
-using Arrowgene.Ddon.GameServer.Dump;
-using Arrowgene.Ddon.GameServer.Quests;
 using Arrowgene.Ddon.Server;
-using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
-using Arrowgene.Ddon.Shared.Network;
 using Arrowgene.Logging;
-using Arrowgene.Networking.Tcp.Consumer.BlockingQueueConsumption;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -34,7 +26,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             bool createCharacter = false;
             uint originalCharacterId = client.Character.CharacterId;
-            var storagesA = client.Character.Storage;
+            var previousStorage = client.Character.Storage;
             var bbmProgress = client.Character.BbmProgress;
             var walletPointList = client.Character.WalletPointList;
             var warpPointList = client.Character.ReleasedWarpPoints;
@@ -82,68 +74,26 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Character.AchievementProgress = achievements.Item2;
             client.Character.AchievementUniqueCrafts = achievements.Item3;
 
-            S2CCharacterSwitchGameModeNtc ntc = new S2CCharacterSwitchGameModeNtc()
+            client.Send(new S2CCharacterSwitchGameModeNtc()
             {
-                Unk0 = (uint)packet.GameMode, // Probably not right? int vs uint
+                GameMode = packet.GameMode, // Probably not right? int vs uint
                 CreateCharacter = createCharacter,
-                CharacterInfo = new CDataCharacterInfo()
-                {
-                    CharacterId = client.Character.CharacterId,
-                    UserId = client.Character.UserId,
-                    Version = client.Character.Version,
-                    FirstName = client.Character.FirstName,
-                    LastName = client.Character.LastName,
-                    EditInfo = client.Character.EditInfo,
-                    StatusInfo = client.Character.StatusInfo,
-                    Job = client.Character.Job,
-                    CharacterJobDataList = client.Character.CharacterJobDataList,
-                    PlayPointList = client.Character.PlayPointList,
-                    CharacterEquipDataList = new List<CDataCharacterEquipData>() { new CDataCharacterEquipData() {
-                            Equips = client.Character.Equipment.AsCDataEquipItemInfo(EquipType.Performance)
-                        }},
-                    CharacterEquipViewDataList = new List<CDataCharacterEquipData>() { new CDataCharacterEquipData() {
-                            Equips = client.Character.Equipment.AsCDataEquipItemInfo(EquipType.Visual)
-                        }},
-                    CharacterEquipJobItemList = client.Character.EquipmentTemplate.JobItemsAsCDataEquipJobItem(client.Character.Job),
-                    JewelrySlotNum = client.Character.JewelrySlotNum,
-                    // Unk0 = 
-                    CharacterItemSlotInfoList = client.Character.Storage.GetAllStoragesAsCDataCharacterItemSlotInfoList(),
-                    WalletPointList = client.Character.WalletPointList,
-                    MyPawnSlotNum = client.Character.MyPawnSlotNum,
-                    RentalPawnSlotNum = client.Character.RentalPawnSlotNum,
-                    OrbStatusList = client.Character.OrbStatusList,
-                    MsgSetList = client.Character.MsgSetList,
-                    ShortCutList = client.Character.ShortCutList,
-                    CommunicationShortCutList = client.Character.CommunicationShortCutList,
-                    MatchingProfile = client.Character.MatchingProfile,
-                    ArisenProfile = client.Character.ArisenProfile,
-                    HideEquipHead = client.Character.HideEquipHead,
-                    HideEquipLantern = client.Character.HideEquipLantern,
-                    HideEquipHeadPawn = client.Character.HideEquipHeadPawn,
-                    HideEquipLanternPawn = client.Character.HideEquipLanternPawn,
-                    ArisenProfileShareRange = client.Character.ArisenProfileShareRange,
-                    OnlineStatus = client.Character.OnlineStatus
-                }
-            };
+                CharacterInfo = new CDataCharacterInfo(client.Character),
+            });
 
-            client.Send(ntc);
+            client.Send(new S2CItemUpdateCharacterItemNtc()
+            {
+                UpdateType = ItemNoticeType.SwitchingStorage,
+                UpdateItemList = SwapCharacterInventories(client.Character, previousStorage, ItemManager.ItemBagStorageTypes)
+            });
 
-            S2CEquipChangeCharacterEquipLobbyNtc characterEquipLobbyNtc = new S2CEquipChangeCharacterEquipLobbyNtc()
+            client.Send(new S2CEquipChangeCharacterEquipLobbyNtc()
             {
                 CharacterId = client.Character.CharacterId,
                 Job = client.Character.Job,
                 EquipItemList = client.Character.Equipment.AsCDataEquipItemInfo(EquipType.Performance),
                 VisualEquipItemList = client.Character.Equipment.AsCDataEquipItemInfo(EquipType.Visual),
-            };
-            client.Send(characterEquipLobbyNtc);
-
-            var itemStorages = ItemManager.ItemBagStorageTypes.Concat(new List<StorageType>() { StorageType.CharacterEquipment}).ToList();
-            S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc()
-            {
-                UpdateType = ItemNoticeType.SwitchingStorage,
-                UpdateItemList = SwapCharacterInventories(client.Character, storagesA, client.Character.Storage, itemStorages)
-            };
-            client.Send(updateCharacterItemNtc);
+            });
 
             return new S2CCharacterSwitchGameModeRes()
             {
@@ -412,7 +362,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
          * This swap is a visual swap in the client UI -- by this we mean the server will use different inventory storage which shows up in
          * the players storage in the client UI. It doesn't impact the actual storage during normal gameplay.
          */
-        private List<CDataItemUpdateResult> SwapCharacterInventories(Character character, Storages storageA, Storages storageB, List<StorageType> storageTypes)
+        private List<CDataItemUpdateResult> SwapCharacterInventories(Character character, Storages previousStorage, List<StorageType> storageTypes)
         {
             var results = new List<CDataItemUpdateResult>();
             foreach (var storageType in storageTypes)
@@ -421,25 +371,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     ushort slotNo = (ushort)(i + 1);
 
-                    var storageItemA = storageA.GetStorage(storageType).GetItem(slotNo);
-                    if (storageItemA != null)
+                    var previousItem = previousStorage.GetStorage(storageType).GetItem(slotNo);
+                    if (previousItem != null)
                     {
-                        results.Add(Server.ItemManager.CreateItemUpdateResult(null, storageItemA.Item1, storageType, slotNo, 0, 0));
+                        results.Add(Server.ItemManager.CreateItemUpdateResult(character, previousItem.Item1, storageType, slotNo, 0, 0));
                     }
 
-                    var storageItemB = storageB.GetStorage(storageType).GetItem(slotNo);
-                    if (storageItemB != null)
+                    var currentItem = character.Storage.GetStorage(storageType).GetItem(slotNo);
+                    if (currentItem != null)
                     {
-                        results.Add(Server.ItemManager.CreateItemUpdateResult(null, storageItemB.Item1, storageType, slotNo, storageItemB.Item2, storageItemB.Item2));
+                        results.Add(Server.ItemManager.CreateItemUpdateResult(null, currentItem.Item1, storageType, slotNo, currentItem.Item2, currentItem.Item2));
                     }
-                    else if (storageItemA != null)
+                    else if (previousItem != null)
                     {
-                        Item item = new Item()
-                        {
-                            ItemId = 0,
-                            UId = ""
-                        };
-                        results.Add(Server.ItemManager.CreateItemUpdateResult(null, item, storageType, slotNo, storageItemA.Item2, storageItemA.Item2));
+                        results.Add(Server.ItemManager.CreateItemUpdateResult(null, new Item() { ItemId = 0, UId = ""}, storageType, slotNo, previousItem.Item2, previousItem.Item2));
                     }
                 }
             }

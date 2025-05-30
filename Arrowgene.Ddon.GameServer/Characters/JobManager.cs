@@ -45,6 +45,15 @@ namespace Arrowgene.Ddon.GameServer.Characters
             JobId oldJobId = common.Job;
             common.Job = jobId;
 
+            if (common is Character)
+            {
+                common.EmblemStatList = Server.JobEmblemManager.GetEmblemStatsForCurrentJob((Character)common);
+            }
+            else if (common is Pawn)
+            {
+                common.EmblemStatList = Server.JobEmblemManager.GetEmblemStatsForCurrentJob(client.Character, common.Job);
+            }
+
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();
             updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, oldJobId, jobId, EquipType.Performance, connectionIn));
             updateCharacterItemNtc.UpdateItemList.AddRange(SwapEquipmentAndStorage(client, common, oldJobId, jobId, EquipType.Visual, connectionIn));

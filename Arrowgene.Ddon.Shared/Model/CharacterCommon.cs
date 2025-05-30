@@ -61,6 +61,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public Dictionary<JobId, HashSet<uint>> ReleasedExtendedJobParams {get; set;}
         public Dictionary<JobId, HashSet<uint>> UnlockedCustomSkills { get; set; }
         public Dictionary<JobId, HashSet<uint>> UnlockedAbilities { get; set; }
+        public List<CDataEquipStatParam> EmblemStatList { get; set; } = new List<CDataEquipStatParam>();
 
         public List<CDataReleaseOrbElement> OrbRelease { get; set; }
 

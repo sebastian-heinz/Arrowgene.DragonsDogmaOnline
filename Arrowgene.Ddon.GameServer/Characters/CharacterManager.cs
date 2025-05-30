@@ -60,6 +60,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 character.JobEmblems = Server.JobEmblemManager.InitializeEmblemData(character, connectionIn);
                 character.Equipment = character.Storage.GetCharacterEquipment();
 
+                character.EmblemStatList = Server.JobEmblemManager.GetEmblemStatsForCurrentJob(character);
+
                 character.ContentsReleased = GetContentsReleased(character, connectionIn);
                 character.WorldManageUnlocks = GetWorldManageState(character, connectionIn);
 
@@ -325,6 +327,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 pawn.Server = character.Server;
                 pawn.Equipment = character.Storage.GetPawnEquipment(i);
                 pawn.ExtendedParams = Server.Database.SelectOrbGainExtendParam(pawn.CommonId, connectionIn);
+                pawn.EmblemStatList = Server.JobEmblemManager.GetEmblemStatsForCurrentJob(character, pawn.Job);
                 if (pawn.ExtendedParams == null)
                 {
                     // Old DB is in use and new table not populated with required data for character

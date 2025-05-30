@@ -65,8 +65,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 item.AddStatusParamList.Clear();
                 item.AddStatusParamList.Add(newAddStatusParam);
-                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(client.Character, item, storageType, slotNo, 1, 1));
+
+                ushort relativeSlotNo = slotNo;
+                CharacterCommon characterCommon = client.Character;
+                if (storageType == StorageType.PawnEquipment)
+                {
+                    uint pawnId = Storages.DeterminePawnId(client.Character, storageType, relativeSlotNo);
+                    characterCommon = client.Character.Pawns.Where(x => x.PawnId == pawnId).SingleOrDefault()
+                        ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_PAWN_NOT_FOUNDED, "Unable to locate the pawn that has this emblem item equipped");
+                    relativeSlotNo = EquipManager.DeterminePawnEquipSlot(relativeSlotNo);
+                }
+
+                updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.CreateItemUpdateResult(characterCommon, item, storageType, relativeSlotNo, 1, 1));
                 updateCharacterItemNtc.UpdateType = ItemNoticeType.GatherEquipItem;
+                
                 packets.Enqueue(client, updateCharacterItemNtc);
 
                 packets.Enqueue(client, new S2CEquipEnhancedEnhanceItemRes()
