@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Dump;
+using Arrowgene.Ddon.GameServer.Quests.LightQuests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -62,14 +63,28 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             List<QuestProgress> allQuestsInProgress = new();
             List<uint> priorityQuests = new();
-            bool decayedQuests = false;
+            List<uint> decayedQuests = new();
             Server.Database.ExecuteInTransaction(connection =>
             {
                 allQuestsInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All, connection);
                 priorityQuests = client.Party is not null ? Server.Database.GetPriorityQuestScheduleIds(client.Party.Leader.Client.Character.CommonId, connection) : new();
 
-                decayedQuests = Server.LightQuestManager.HandleQuestDecay(client.Character, allQuestsInProgress, priorityQuests, connection).Any();
+                decayedQuests = Server.LightQuestManager.HandleQuestDecay(client.Character, allQuestsInProgress, priorityQuests, connection).ToList();
             });
+
+            foreach(var decayedScheduleId in decayedQuests)
+            {
+                var quest = QuestManager.GetQuestByScheduleId(decayedScheduleId);
+                if (quest is null)
+                {
+                    continue;
+                }
+                ntc.ExpiredQuestList.Add(new()
+                {
+                    QuestId = quest.QuestId,
+                    QuestScheduleId = quest.QuestScheduleId,
+                });
+            }
 
             foreach (var questProgress in allQuestsInProgress)
             {
@@ -118,9 +133,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            client.Send(ntc);
-
-            if (decayedQuests)
+            if (decayedQuests.Count > 0)
             {
                 client.Send(new S2CLobbyChatMsgNotice()
                 {
@@ -128,6 +141,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     Message = "A quest has been canceled because the\ndelivery time period has ended."
                 });
             }
+
+            client.Send(ntc);
 
             return new();
         }

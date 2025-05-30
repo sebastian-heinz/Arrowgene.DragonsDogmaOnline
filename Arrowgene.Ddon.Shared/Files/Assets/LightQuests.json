@@ -667,8 +667,8 @@
     "type": "Hunt",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5,
+    "min_quests": 9,
+    "max_quests": 9,
 	"bias_rerolls": 2
   },
   {
@@ -677,8 +677,8 @@
     "type": "Delivery",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5,
+    "min_quests": 9,
+    "max_quests": 9,
 	"bias_rerolls": 2
   },
   {
@@ -711,8 +711,8 @@
     "type": "Hunt",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "GrittenFortDelivery",
@@ -720,8 +720,8 @@
     "type": "Delivery",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "GrittenFortHuntOrder",
@@ -753,8 +753,8 @@
     "type": "Hunt",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5,
+    "min_quests": 9,
+    "max_quests": 9,
 	"bias_rerolls": 1
   },
   {
@@ -763,8 +763,8 @@
     "type": "Delivery",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5,
+    "min_quests": 9,
+    "max_quests": 9,
 	"bias_rerolls": 1
   },
   {
@@ -797,8 +797,8 @@
     "type": "Hunt",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5,
+    "min_quests": 9,
+    "max_quests": 9,
 	"bias_rerolls": 1
   },
   {
@@ -807,8 +807,8 @@
     "type": "Delivery",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5,
+    "min_quests": 9,
+    "max_quests": 9,
 	"bias_rerolls": 1
   },
   {
@@ -841,8 +841,8 @@
     "type": "Hunt",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5,
+    "min_quests": 9,
+    "max_quests": 9,
 	"bias_lower": false,
 	"bias_rerolls": 1
   },
@@ -852,8 +852,8 @@
     "type": "Delivery",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5,
+    "min_quests": 9,
+    "max_quests": 9,
 	"bias_lower": false,
 	"bias_rerolls": 1
   },
@@ -889,8 +889,8 @@
     "type": "Hunt",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "JingenDelivery",
@@ -898,8 +898,8 @@
     "type": "Delivery",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "JingenHuntOrder",
@@ -931,8 +931,8 @@
     "type": "Hunt",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5,
+    "min_quests": 9,
+    "max_quests": 9,
 	"bias_rerolls": 1
   },
   {
@@ -941,8 +941,8 @@
     "type": "Delivery",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5,
+    "min_quests": 9,
+    "max_quests": 9,
 	"bias_rerolls": 1
   },
   {
@@ -975,8 +975,8 @@
     "type": "Hunt",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "HobolicCaveDelivery",
@@ -984,8 +984,8 @@
     "type": "Delivery",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "HobolicCaveHuntOrder",
@@ -1017,8 +1017,8 @@
     "type": "Hunt",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "DrawanDelivery",
@@ -1026,8 +1026,8 @@
     "type": "Delivery",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "DrawanHuntOrder",
@@ -1059,8 +1059,8 @@
     "type": "Hunt",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "ZomaDelivery",
@@ -1068,8 +1068,8 @@
     "type": "Delivery",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "ZomaHuntOrder",
@@ -1101,8 +1101,8 @@
     "type": "Hunt",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "MysreeGroveShrineDelivery",
@@ -1110,8 +1110,8 @@
     "type": "Delivery",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "MysreeGroveShrineHuntOrder",
@@ -1143,8 +1143,8 @@
     "type": "Hunt",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "PawnCathedralDelivery",
@@ -1152,8 +1152,8 @@
     "type": "Delivery",
     "allow_normal_quests": true,
     "allow_area_orders": false,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "PawnCathedralHuntOrder",
@@ -1187,8 +1187,8 @@
     "allow_area_orders": false,
 	"min_level": 30,
 	"max_level": 70,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "MergodaDelivery",
@@ -1198,8 +1198,8 @@
     "allow_area_orders": false,
 	"min_level": 30,
 	"max_level": 70,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "MergodaHuntOrder",
@@ -1237,8 +1237,8 @@
     "allow_area_orders": false,
 	"min_level": 30,
 	"max_level": 70,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "DeenanWoodsDelivery",
@@ -1248,8 +1248,8 @@
     "allow_area_orders": false,
 	"min_level": 30,
 	"max_level": 70,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "DeenanWoodsHuntOrder",
@@ -1287,8 +1287,8 @@
     "allow_area_orders": false,
 	"min_level": 30,
 	"max_level": 70,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "ZandoraWastelandShrineDelivery",
@@ -1298,8 +1298,8 @@
     "allow_area_orders": false,
 	"min_level": 30,
 	"max_level": 70,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "ZandoraWastelandShrineHuntOrder",
@@ -1336,8 +1336,8 @@
     "allow_normal_quests": true,
     "allow_area_orders": false,
 	"min_level": 60,
-    "min_quests": 2,
-    "max_quests": 5,
+    "min_quests": 9,
+    "max_quests": 9,
 	"bias_rerolls": 1
   },
   {
@@ -1347,8 +1347,8 @@
     "allow_normal_quests": true,
     "allow_area_orders": false,
 	"min_level": 60,
-    "min_quests": 2,
-    "max_quests": 5,
+    "min_quests": 9,
+    "max_quests": 9,
 	"bias_rerolls": 1
   },
   {
@@ -1384,8 +1384,8 @@
     "allow_normal_quests": true,
     "allow_area_orders": false,
 	"min_level": 65,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "BloodbaneExpeditionNorthDelivery",
@@ -1394,8 +1394,8 @@
     "allow_normal_quests": true,
     "allow_area_orders": false,
 	"min_level": 65,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "BloodbaneExpeditionNorthHuntOrder",
@@ -1430,8 +1430,8 @@
     "allow_normal_quests": true,
     "allow_area_orders": false,
 	"min_level": 60,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "ElanWaterGroveDelivery",
@@ -1440,8 +1440,8 @@
     "allow_normal_quests": true,
     "allow_area_orders": false,
 	"min_level": 60,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "ElanWaterGroveHuntOrder",
@@ -1476,8 +1476,8 @@
     "allow_normal_quests": true,
     "allow_area_orders": false,
 	"min_level": 60,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "DanaDelivery",
@@ -1486,8 +1486,8 @@
     "allow_normal_quests": true,
     "allow_area_orders": false,
 	"min_level": 60,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "DanaHuntOrder",
@@ -1522,8 +1522,8 @@
     "allow_normal_quests": true,
     "allow_area_orders": false,
 	"min_level": 60,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "MorfaulDelivery",
@@ -1532,8 +1532,8 @@
     "allow_normal_quests": true,
     "allow_area_orders": false,
 	"min_level": 60,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "MorfaulHuntOrder",
@@ -1568,8 +1568,8 @@
     "allow_normal_quests": true,
     "allow_area_orders": false,
 	"min_level": 60,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "GlyndwrDelivery",
@@ -1578,8 +1578,8 @@
     "allow_normal_quests": true,
     "allow_area_orders": false,
 	"min_level": 60,
-    "min_quests": 2,
-    "max_quests": 5
+    "min_quests": 9,
+    "max_quests": 9
   },
   {
     "name": "GlyndwrHuntOrder",
@@ -1614,8 +1614,8 @@
     "allow_normal_quests": true,
     "allow_area_orders": false,
 	"min_level": 70,
-    "min_quests": 2,
-    "max_quests": 5,
+    "min_quests": 9,
+    "max_quests": 9,
 	"bias_lower": false,
 	"bias_rerolls": 1
   },
@@ -1626,8 +1626,8 @@
     "allow_normal_quests": true,
     "allow_area_orders": false,
 	"min_level": 70,
-    "min_quests": 2,
-    "max_quests": 5,
+    "min_quests": 9,
+    "max_quests": 9,
 	"bias_lower": false,
 	"bias_rerolls": 1
   },
@@ -1666,8 +1666,8 @@
     "allow_normal_quests": true,
     "allow_area_orders": false,
 	"min_level": 70,
-    "min_quests": 2,
-    "max_quests": 5,
+    "min_quests": 9,
+    "max_quests": 9,
 	"bias_lower": false,
 	"bias_rerolls": 1
   },
@@ -1678,8 +1678,8 @@
     "allow_normal_quests": true,
     "allow_area_orders": false,
 	"min_level": 70,
-    "min_quests": 2,
-    "max_quests": 5,
+    "min_quests": 9,
+    "max_quests": 9,
 	"bias_lower": false,
 	"bias_rerolls": 1
   },

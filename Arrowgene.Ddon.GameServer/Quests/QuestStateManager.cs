@@ -1034,6 +1034,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
             var questState = GetQuestState(questScheduleId);
             var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
 
+            // Hunt board quests have an alternative updating scheme.
+            if (quest.SaveWorkAsStep)
+            {
+                return false;
+            }
+
             var result = Server.Database.GetQuestProgressByScheduleId(Member.Client.Character.CommonId, questState.QuestScheduleId, connectionIn);
             if (result == null)
             {
@@ -1174,6 +1180,52 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
                         Member.Client.Enqueue(ntc, packets);
                     }
+                }
+            }
+            return packets;
+        }
+
+        public PacketQueue ResendQuestWork()
+        {
+            PacketQueue packets = new();
+
+            if (Member.Client.Character.GameMode != GameMode.Normal)
+            {
+                return packets;
+            }
+
+            lock (ActiveQuests)
+            {
+                foreach ((uint questScheduleId, QuestState questState) in ActiveQuests)
+                {
+                    Quest questObject = QuestManager.GetQuestByScheduleId(questScheduleId);
+
+                    if (questObject is null || Member.Client.Party.ExmInProgress && questObject?.QuestType == QuestType.Light)
+                    {
+                        // The UI indicates that light quests cannot progress during EXMs.
+                        continue;
+                    }
+
+                    foreach (var huntRecord in questState.HuntRecords.Values)
+                    {
+                        S2CQuestQuestProgressWorkSaveNtc ntc = new()
+                        {
+                            QuestScheduleId = questScheduleId,
+                            ProcessNo = huntRecord.ProcessNo,
+                            SequenceNo = huntRecord.SequenceNo,
+                            BlockNo = huntRecord.BlockNo
+                        };
+                        ntc.WorkList.Add(new CDataQuestProgressWork()
+                        {
+                            CommandNo = (uint)QuestNotifyCommand.KilledEnemyLight,
+                            Work01 = 0,
+                            Work02 = 0,
+                            Work03 = (int)huntRecord.AmountHunted
+                        });
+
+                        Member.Client.Enqueue(ntc, packets);
+                    }
+
                 }
             }
             return packets;

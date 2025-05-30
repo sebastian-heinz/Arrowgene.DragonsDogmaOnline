@@ -1,5 +1,7 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Dump;
+using Arrowgene.Ddon.GameServer.Quests;
+using Arrowgene.Ddon.GameServer.Quests.LightQuests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -8,6 +10,7 @@ using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -58,9 +61,20 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
                 var questStateManager = QuestManager.GetQuestStateManager(client, quest);
                 var questState = questStateManager.GetQuestState(questScheduleId);
-                pcap.QuestOrderList.Add(quest.ToCDataQuestOrderList(questState.Step));
+
+                var questOrder = quest.ToCDataQuestOrderList(questState.Step);
+
+                //if (quest.BackingObject is LightQuestHuntQuest lightBackingObject 
+                //    && questOrder.QuestProcessStateList.FirstOrDefault()?.WorkList.ElementAtOrDefault(0) != null)
+                //{
+                //    var huntRecord = questState.HuntRecords.Values.FirstOrDefault();
+                //    questOrder.QuestProcessStateList.FirstOrDefault().WorkList[0] = lightBackingObject.StepAsWork((huntRecord?.AmountHunted ?? 0) + 1);
+                //}
+
+                pcap.QuestOrderList.Add(questOrder);
             }
 
+            ((SoloQuestStateManager)client.QuestState).ResendQuestWork().Send();
 #if false
             EntitySerializer<S2CQuestGetPartyQuestProgressInfoRes> serializer = EntitySerializer.Get<S2CQuestGetPartyQuestProgressInfoRes>();
             S2CQuestGetPartyQuestProgressInfoRes pcap = serializer.Read(early_stream);

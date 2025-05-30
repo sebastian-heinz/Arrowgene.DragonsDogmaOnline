@@ -1,13 +1,8 @@
-using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
-using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Arrowgene.Ddon.Database.Sql.Core.Migration
 {
@@ -15,8 +10,8 @@ namespace Arrowgene.Ddon.Database.Sql.Core.Migration
     {
         private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(LightQuestRotationMigration));
 
-        public uint From => 43;
-        public uint To => 44;
+        public uint From => 44;
+        public uint To => 45;
 
         private readonly DatabaseSetting DatabaseSetting;
 

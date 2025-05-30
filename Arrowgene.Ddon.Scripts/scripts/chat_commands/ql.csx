@@ -73,12 +73,16 @@ public class ChatCommand : IChatCommand
                 responses.Add(ChatResponse.ServerChat(client, $"{command[0]}=>"));
                 foreach (var match in matches)
                 {
-                    responses.Add(
-                        ChatResponse.ServerChat(
-                            client,
-                            $"\t{match.QuestScheduleId} : ({match.QuestId}/{(uint)match.QuestId})"
-                        )
-                    );
+                    QuestId matchEnum = Enum.Parse<QuestId>(match);
+                    foreach (var scheduleId in QuestManager.GetQuestsByQuestId(matchEnum))
+                    {
+                        responses.Add(
+                            ChatResponse.ServerChat(
+                                client,
+                                $"\t{scheduleId} : ({matchEnum}/{(uint)matchEnum})"
+                            )
+                        );
+                    }
                 }
             }
         }

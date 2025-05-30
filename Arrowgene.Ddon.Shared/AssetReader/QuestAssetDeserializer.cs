@@ -123,12 +123,21 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
             if (assetData.VariantIndex > 127)
             {
-                throw new Exception($"Invalid variant number {assetData.VariantIndex} > 127 for quest {assetData.QuestId}.");
+                Logger.Error($"Invalid variant number {assetData.VariantIndex} > 127 for quest {assetData.QuestId}.");
+                return false;
             }
 
-            assetData.QuestScheduleId = _QuestScheduleIdAsset[assetData.QuestId] + assetData.VariantIndex;
+            if (_QuestScheduleIdAsset.TryGetValue(assetData.QuestId, out var baseScheduleId))
+            {
+                assetData.QuestScheduleId = baseScheduleId + assetData.VariantIndex;
+            }
+            else
+            {
+                Logger.Error($"Missing base scheduleId in asset for quest {assetData.QuestId}.");
+                return false;
+            }
 
-            assetData.OverrideEnemySpawn = (assetData.QuestType == QuestType.Main || assetData.QuestType == QuestType.ExtremeMission);
+                assetData.OverrideEnemySpawn = (assetData.QuestType == QuestType.Main || assetData.QuestType == QuestType.ExtremeMission);
             if (jQuest.TryGetProperty("override_enemy_spawn", out JsonElement jOverrideEnemySpawn))
             {
                 assetData.OverrideEnemySpawn = jOverrideEnemySpawn.GetBoolean();

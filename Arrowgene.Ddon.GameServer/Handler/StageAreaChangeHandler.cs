@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Context;
+using Arrowgene.Ddon.GameServer.Quests.LightQuests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
@@ -78,40 +79,44 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     client.Party.ResetInstance();
                     client.Party.SendToAll(new S2CInstanceAreaResetNtc());
 
-                    foreach(var member in client.Party.Clients)
+                    Server.Database.ExecuteInTransaction(connection =>
                     {
-                        var activeScheduleIds = member.QuestState.GetActiveQuestScheduleIds();
-                        var droppedQuests = Server.LightQuestManager.GetDecayedQuests(activeScheduleIds);
-                        foreach(var droppedQuest in droppedQuests)
+                        foreach (var member in client.Party.Clients)
                         {
-                            Logger.Debug($"Quest {droppedQuest} has decayed and will be cancelled.");
-
-                            var quest = QuestManager.GetQuestByScheduleId(droppedQuest);
-                            if (quest is not null)
+                            var activeScheduleIds = member.QuestState.GetActiveQuestScheduleIds().Where(x => LightQuestManager.IsLightQuestScheduleId(x));
+                            var droppedQuests = Server.LightQuestManager.GetDecayedQuests(activeScheduleIds);
+                            foreach (var droppedQuest in droppedQuests)
                             {
-                                // TODO: Is this the right notice?
-                                client.Enqueue(new S2CQuestQuestCancelSilentNtc()
+                                Logger.Debug($"Quest {droppedQuest} has decayed and will be cancelled.");
+
+                                var quest = QuestManager.GetQuestByScheduleId(droppedQuest);
+                                if (quest is not null)
                                 {
-                                    QuestScheduleId = droppedQuest
+                                    // TODO: Is this the right notice?
+                                    client.Enqueue(new S2CQuestQuestCancelSilentNtc()
+                                    {
+                                        QuestScheduleId = droppedQuest
+                                    }, queue);
+                                }
+                                member.QuestState.CancelQuest(droppedQuest);
+                                Server.Database.RemoveQuestProgress(member.Character.CommonId, droppedQuest, quest.QuestType, connection);
+                            }
+
+                            if (droppedQuests.Any())
+                            {
+                                member.Enqueue(new S2CLobbyChatMsgNotice()
+                                {
+                                    Type = LobbyChatMsgType.ManagementAlertC,
+                                    Message = "A quest has been canceled because the\ndelivery time period has ended."
                                 }, queue);
-                            }
-                            member.QuestState.CancelQuest(droppedQuest);
-                        }
 
-                        if (droppedQuests.Any())
-                        {
-                            member.Enqueue(new S2CLobbyChatMsgNotice()
-                            {
-                                Type = LobbyChatMsgType.ManagementAlertC,
-                                Message = "A quest has been canceled because the\ndelivery time period has ended."
-                            }, queue);
-
-                            if (member.Party.IsSolo || member.Party.Leader?.Client == member)
-                            {
-                                queue.AddRange(member.Party.QuestState.UpdatePriorityQuestList(member.Party.Leader.Client));
+                                if (member.Party.IsSolo || member.Party.Leader?.Client == member)
+                                {
+                                    queue.AddRange(member.Party.QuestState.UpdatePriorityQuestList(member.Party.Leader.Client, connection));
+                                }
                             }
                         }
-                    }
+                    });
                 }
             }
 

@@ -615,14 +615,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         foreach (var item in questBlock.DeliveryRequests)
                         {
                             checkCommands.Add(QuestManager.CheckCommand.DeliverItem((int)item.ItemId, (int)item.Amount, questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
-                            workCommands.Add(new CDataQuestProgressWork()
-                            {
-                                CommandNo = (uint)QuestNotifyCommand.FulfillDeliverItem,
-                                Work01 = 0,
-                                Work02 = 1,
-                                Work03 = 2,
-                                Work04 = 3,
-                            });
                         }
                         resultCommands.Add(QuestManager.ResultCommand.SetDeliverInfo(StageManager.ConvertIdToStageNo(questBlock.StageLayoutId), questBlock.NpcOrderDetails[0].NpcId, questBlock.NpcOrderDetails[0].MsgId));
                     }
@@ -759,15 +751,15 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     {
                         // Handles kill x amount of monster type quests
                         checkCommands.Add(QuestManager.CheckCommand.EmDieLight((int)questBlock.TargetEnemy.EnemyId, (int)questBlock.TargetEnemy.Level, (int)questBlock.TargetEnemy.Amount));
-                        workCommands.Add(
-                            new CDataQuestProgressWork()
-                            {
-                                CommandNo = (uint)QuestNotifyCommand.KilledEnemyLight,
-                                Work01 = (int)questBlock.TargetEnemy.EnemyId,
-                                Work02 = (int)questBlock.TargetEnemy.Level,
-                                Work03 = 0,
-                                Work04 = 0,
-                            });
+                        //workCommands.Add(
+                        //    new CDataQuestProgressWork()
+                        //    {
+                        //        CommandNo = (uint)QuestNotifyCommand.KilledEnemyLight,
+                        //        Work01 = (int)questBlock.TargetEnemy.EnemyId,
+                        //        Work02 = (int)questBlock.TargetEnemy.Level,
+                        //        Work03 = 0,
+                        //        Work04 = 0,
+                        //    });
                     }
                     break;
                 case QuestBlockType.DeliverItemsLight:

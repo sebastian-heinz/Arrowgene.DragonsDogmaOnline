@@ -81,6 +81,8 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
 
             return GenericQuest.FromAsset(server, assetData, this);
         }
+
+        public abstract CDataQuestProgressWork StepAsWork(uint step);
     }
 
     public class LightQuestHuntQuest(LightQuestRecord record) : LightQuestQuest(record)
@@ -95,6 +97,18 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
             process0.AddKillTargetEnemiesBlock(QuestAnnounceType.Checkpoint, (EnemyUIId)QuestRecord.Target, QuestRecord.Level, (uint)QuestRecord.Count);
 
             process0.AddProcessEndBlock(true);
+        }
+
+        public override CDataQuestProgressWork StepAsWork(uint step)
+        {
+            return new CDataQuestProgressWork()
+            {
+                CommandNo = (uint)QuestNotifyCommand.KilledEnemyLight,
+                Work01 = QuestRecord.Target,
+                Work02 = QuestRecord.Level,
+                Work03 = (int)(step - 1),
+                Work04 = 0,
+            };
         }
     }
 
@@ -112,6 +126,11 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
             process0.AddDeliverItemsLightBlock(QuestAnnounceType.CheckpointAndUpdate, (ItemId)QuestRecord.Target, (uint)QuestRecord.Count);
 
             process0.AddProcessEndBlock(true);
+        }
+
+        public override CDataQuestProgressWork StepAsWork(uint step)
+        {
+            return null;
         }
     }
 }
