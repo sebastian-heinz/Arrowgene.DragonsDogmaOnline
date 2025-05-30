@@ -160,6 +160,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
         public List<CDataEquipStatParam> GetEmblemStatsForCurrentJob(Character character, JobId jobId)
         {
+            if (jobId == JobId.None)
+            {
+                Logger.Error($"The character {character.CharacterId} attempted to calculate emblem stats for JobId.None");
+                return new();
+            }
+
             var emblemData = character.JobEmblems[jobId];
             if (emblemData.UIDs.Count == 0)
             {
