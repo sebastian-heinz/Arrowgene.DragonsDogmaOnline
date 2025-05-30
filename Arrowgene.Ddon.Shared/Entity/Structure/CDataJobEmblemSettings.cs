@@ -28,8 +28,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public List<CDataJobEmblemActionCostParam> EmblemPointResetGGCostList { get; set; }
         public List<CDataJobEmblemActionCostParam> EmblemPointResetPPCostList { get; set; }
         public List<CDataJobEmblemActionCostParam> InheritancePremiumCurrencyCost { get; set; }
-        public ushort MaxEmblemPoints { get; set; }
-        public byte MaxEmblemLevel { get; set; }
+        public ushort MaxEmblemLevel { get; set; }
+        public byte MaxEmblemStatUpgrades { get; set; }
         public byte MaxInhertienceChanceIncrease { get; set; }
         public List<CDataCommonU8> InventoryFilter { get; set; } // Controls the inventories that can be used (represents jewelry)
 
@@ -46,8 +46,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteEntityList(buffer, obj.EmblemPointResetGGCostList);
                 WriteEntityList(buffer, obj.EmblemPointResetPPCostList);
                 WriteEntityList(buffer, obj.InheritancePremiumCurrencyCost);
-                WriteUInt16(buffer, obj.MaxEmblemPoints);
-                WriteByte(buffer, obj.MaxEmblemLevel);
+                WriteUInt16(buffer, obj.MaxEmblemLevel);
+                WriteByte(buffer, obj.MaxEmblemStatUpgrades);
                 WriteByte(buffer, obj.MaxInhertienceChanceIncrease);
                 WriteEntityList(buffer, obj.InventoryFilter);
             }
@@ -64,8 +64,8 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.EmblemPointResetGGCostList = ReadEntityList<CDataJobEmblemActionCostParam>(buffer);
                 obj.EmblemPointResetPPCostList = ReadEntityList<CDataJobEmblemActionCostParam>(buffer);
                 obj.InheritancePremiumCurrencyCost = ReadEntityList<CDataJobEmblemActionCostParam>(buffer);
-                obj.MaxEmblemPoints = ReadUInt16(buffer);
-                obj.MaxEmblemLevel = ReadByte(buffer);
+                obj.MaxEmblemLevel = ReadUInt16(buffer);
+                obj.MaxEmblemStatUpgrades = ReadByte(buffer);
                 obj.MaxInhertienceChanceIncrease = ReadByte(buffer);
                 obj.InventoryFilter = ReadEntityList<CDataCommonU8>(buffer);
                 return obj;

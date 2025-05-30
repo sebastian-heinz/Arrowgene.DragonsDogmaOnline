@@ -110,8 +110,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 Amount = Server.GameSettings.EmblemSettings.EmblemInheritanceEquipLossGGCost
             });
 
-            result.EmblemSettings.MaxEmblemPoints = Server.JobEmblemManager.GetMaxTotalEmblemPoints();
             result.EmblemSettings.MaxEmblemLevel = Server.GameSettings.EmblemSettings.MaxEmblemLevel;
+            result.EmblemSettings.MaxEmblemStatUpgrades = Server.GameSettings.EmblemSettings.MaxEmblemStatUpgrades;
             result.EmblemSettings.MaxInhertienceChanceIncrease = Server.GameSettings.EmblemSettings.MaxInheritanceChanceIncrease;
 
             result.EmblemSettings.InventoryFilter.Add(new CDataCommonU8(1)); // Common
