@@ -87,15 +87,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 UpdateItemList = SwapCharacterInventories(client.Character, previousStorage, ItemManager.ItemBagStorageTypes)
             });
 
-#if false
-            client.Send(new S2CItemUpdateCharacterItemNtc()
-            {
-                UpdateType = ItemNoticeType.ChangeEquip,
-                UpdateItemList = SwapCharacterInventories(client.Character, previousStorage, [StorageType.CharacterEquipment])
-            });
-#endif
-
-
             client.Send(new S2CEquipChangeCharacterEquipLobbyNtc()
             {
                 CharacterId = client.Character.CharacterId,

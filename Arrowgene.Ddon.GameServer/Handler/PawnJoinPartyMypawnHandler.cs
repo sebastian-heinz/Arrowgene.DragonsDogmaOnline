@@ -27,6 +27,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             };
 
             var contextNtc = partyMember.GetPartyContext();
+            contextNtc.Context.Base.EmblemStatList = Server.JobEmblemManager.GetEmblemStatsForCurrentJob(client.Character, pawn.Job);
 
             client.Party.SendToAll(joinNtc);
             client.Party.SendToAll(contextNtc);

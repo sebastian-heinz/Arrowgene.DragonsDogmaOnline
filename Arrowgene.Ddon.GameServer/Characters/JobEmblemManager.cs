@@ -1,4 +1,3 @@
-using Arrowgene.Ddon.GameServer.Handler;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
@@ -159,9 +158,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return pointsUsed;
         }
 
-        public List<CDataEquipStatParam> GetEmblemStatsForCurrentJob(Character character)
+        public List<CDataEquipStatParam> GetEmblemStatsForCurrentJob(Character character, JobId jobId)
         {
-            var jobId = character.ActiveCharacterJobData.Job;
             var emblemData = character.JobEmblems[jobId];
             if (emblemData.UIDs.Count == 0)
             {
@@ -169,6 +167,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return GetEquipStatParamList(emblemData);
+        }
+
+        public List<CDataEquipStatParam> GetEmblemStatsForCurrentJob(Character character)
+        {
+            return GetEmblemStatsForCurrentJob(character, character.ActiveCharacterJobData.Job);
         }
 
         public bool IsEmblemItem(ItemId itemId)

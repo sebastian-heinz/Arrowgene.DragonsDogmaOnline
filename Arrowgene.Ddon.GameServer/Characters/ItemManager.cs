@@ -1088,7 +1088,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
             var ntc = new S2CItemUpdateCharacterItemNtc()
             {
-                UpdateType = ItemNoticeType.Default // TODO: Investigate.
+                UpdateType = ItemNoticeType.ItemSafetySetting
             };
 
             uint updateItemNum = 0;
