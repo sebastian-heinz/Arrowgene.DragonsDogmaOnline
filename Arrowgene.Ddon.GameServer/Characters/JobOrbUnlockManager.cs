@@ -183,7 +183,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 Server.CharacterManager.UnlockCustomSkill(client.Character, jobId, upgrade.CustomSkillId.ReleaseId(), 1);
 
                 // Handle players who had existing skills blocked by addition of S2 tree
-                var existing = client.Character.LearnedCustomSkills.Where(x => x.SkillId == upgrade.CustomSkillId.ReleaseId()).FirstOrDefault();
+                var existing = client.Character.LearnedCustomSkills.Where(x => x.SkillId == upgrade.CustomSkillId.ReleaseId() && x.Job == jobId).FirstOrDefault();
                 if (existing == null)
                 {
                     Server.JobManager.UnlockCustomSkill(client, client.Character, jobId, upgrade.CustomSkillId.ReleaseId(), 1, connectionIn);
