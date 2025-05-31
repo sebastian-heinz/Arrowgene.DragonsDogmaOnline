@@ -60,35 +60,46 @@
                 "id": 144,
                 "group_id": 0
             },
+            "placement_type": "Manual",
             "enemies": [
                 {
                     "comment" : "Orc Soldier",
                     "enemy_id": "0x085000",
+                    "named_enemy_params_id": 169,
                     "level": 48,
+                    "index":6,
                     "exp": 5734
                 },
                 {
                     "comment" : "Orc Soldier",
                     "enemy_id": "0x085001",
+                    "named_enemy_params_id": 169,
                     "level": 48,
+                    "index":7,
                     "exp": 5734
                 },
                 {
                     "comment" : "Orc Soldier",
                     "enemy_id": "0x085002",
+                    "named_enemy_params_id": 169,
                     "level": 48,
+                    "index":8,
                     "exp": 5734
                 },
                 {
                     "comment" : "Orc Soldier",
                     "enemy_id": "0x085003",
+                    "named_enemy_params_id": 169,
                     "level": 48,
+                    "index":9,
                     "exp": 5734
                 },
                 {
-                    "comment" : "Captain Orc",
-                    "enemy_id": "0x085004",
+                    "comment" : "Orc Soldier",
+                    "enemy_id": "0x085003",
+                    "named_enemy_params_id": 169,
                     "level": 48,
+                    "index":10,
                     "exp": 5734
                 }
             ]
@@ -196,7 +207,11 @@
                     ],
                     "stage_id": {
                         "id": 144
+                    }, 
+                    "jump_stage_id": {
+                        "id": 144
                     },
+                    "start_pos_no": 2,
                     "event_id": 10
                 },
                 {
@@ -215,7 +230,7 @@
                     "jump_stage_id": {
                         "id": 144
                     },
-                    "start_pos_no": 1,
+                    "start_pos_no": 2,
                     "event_id": 15
                 },
                 {
@@ -228,7 +243,7 @@
                     "jump_stage_id": {
                         "id": 144
                     },
-                    "start_pos_no": 1,
+                    "start_pos_no": 2,
                     "event_id": 16
                 },
                 {
@@ -253,8 +268,11 @@
                     "jump_stage_id": {
                         "id": 144
                     },
-                    "start_pos_no": 1,
-                    "event_id": 20
+                    "start_pos_no": 2,
+                    "event_id": 20,
+                    "hand_items": [
+                        {"id": 1051, "amount": 1}
+                    ]
                 },
                 {
                     "type": "PartyGather",
