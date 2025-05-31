@@ -55,6 +55,7 @@
                 {
                     "comment" : "Damned Golem",
                     "enemy_id": "0x015103",
+                    "named_enemy_params_id": 166,
                     "level": 46,
                     "exp": 5446,
                     "is_boss": true
@@ -72,6 +73,7 @@
                 {
                     "comment" : "Alchemized Skeleton",
                     "enemy_id": "0x010312",
+                    "named_enemy_params_id": 167,
                     "level": 45,
                     "exp": 5446,
                     "enemy_target_types_id": 1
@@ -79,6 +81,23 @@
                 {
                     "comment" : "Alchemized Skeleton",
                     "enemy_id": "0x010312",
+                    "named_enemy_params_id": 167,
+                    "level": 45,
+                    "exp": 5446,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "comment" : "Alchemized Skeleton",
+                    "enemy_id": "0x010312",
+                    "named_enemy_params_id": 167,
+                    "level": 45,
+                    "exp": 5446,
+                    "enemy_target_types_id": 1
+                },
+                {
+                    "comment" : "Alchemized Skeleton",
+                    "enemy_id": "0x010312",
+                    "named_enemy_params_id": 167,
                     "level": 45,
                     "exp": 5446,
                     "enemy_target_types_id": 1
@@ -151,6 +170,10 @@
                     "stage_id": {
                         "id": 144
                     },
+                    "jump_stage_id": {
+                        "id": 144
+                    },
+                    "start_pos_no": 2,
                     "event_id": 0
                 },
                 {
@@ -167,6 +190,10 @@
                     "stage_id": {
                         "id": 144
                     },
+                    "jump_stage_id": {
+                        "id": 144
+                    },
+                    "start_pos_no": 2,
                     "event_id": 5
                 },
                 {
