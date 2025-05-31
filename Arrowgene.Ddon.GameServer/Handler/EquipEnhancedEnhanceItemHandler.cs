@@ -44,10 +44,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 foreach (var walletCost in request.UpgradeWalletCost)
                 {
                     updateCharacterItemNtc.UpdateWalletList.Add(Server.WalletManager.RemoveFromWallet(client.Character, walletCost.Type, walletCost.Value, connection));
-                    if (walletCost.Type == WalletType.GoldenGemstones || walletCost.Type == WalletType.CustomMadeServiceTickets)
-                    {
-                        forceGreatSuccess = true;
-                    }
+
+                    forceGreatSuccess |= category.PremiumCurrencies.Contains(walletCost.Type);
                 }
 
                 var statRolls = category.StatLottery.OrderBy(x => Random.Shared.Next()).First();
