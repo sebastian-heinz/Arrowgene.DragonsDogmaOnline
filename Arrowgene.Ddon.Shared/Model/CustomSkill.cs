@@ -34,7 +34,7 @@ namespace Arrowgene.Ddon.Shared.Model
             return new CDataLearnedSetAcquirementParam()
             {
                 Job = this.Job,
-                Type = 0,
+                Type = (byte)ReleaseType.CustomSkill,
                 AcquirementNo = this.SkillId,
                 AcquirementLv = this.SkillLv,
                 AcquirementParamId = 0
