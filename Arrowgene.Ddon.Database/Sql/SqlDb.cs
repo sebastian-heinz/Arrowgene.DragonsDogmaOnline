@@ -613,6 +613,10 @@ public abstract class SqlDb : IDatabase
     public abstract JobEmblem GetJobEmblemData(uint characterId, JobId jobId, DbConnection? connectionIn = null);
     public abstract List<JobEmblem> GetAllJobEmblemData(uint characterId, DbConnection? connectionIn = null);
 
+    public abstract bool InsertPawnFavorite(uint characterId, uint pawnId, DbConnection? connectionIn = null);
+    public abstract bool DeletePawnFavorite(uint characterId, uint pawnId, DbConnection? connectionIn = null);
+    public abstract HashSet<uint> GetPawnFavorites(uint characterId, DbConnection? connectionIn = null);
+
     protected virtual DbCommand Command(string query, DbConnection connection)
     {
         throw new NotImplementedException("This is driver-dependent and must be implemented.");
