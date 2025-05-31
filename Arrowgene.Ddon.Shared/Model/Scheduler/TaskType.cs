@@ -32,5 +32,6 @@ namespace Arrowgene.Ddon.Shared.Model.Scheduler
         SeasonalEventSchedule = 22,
         RankingBoardReset = 23,
         EquipmentRecycleReset = 24,
+        ClanRequestCleanup = 25,
     }
 }

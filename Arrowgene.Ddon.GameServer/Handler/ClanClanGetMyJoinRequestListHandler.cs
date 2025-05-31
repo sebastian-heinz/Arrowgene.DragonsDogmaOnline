@@ -14,8 +14,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CClanClanGetMyJoinRequestListRes Handle(GameClient client, C2SClanClanGetMyJoinRequestListReq request)
         {
-            // TODO: Implement.
-            return new S2CClanClanGetMyJoinRequestListRes();
+            S2CClanClanGetMyJoinRequestListRes res = new S2CClanClanGetMyJoinRequestListRes();
+            Server.Database.ExecuteInTransaction(conn =>
+            {
+                res.JoinInfo = Server.Database.GetClanRequestsByCharacter(client.Character.CharacterId, conn);
+            });
+            return res;
         }
     }
 }

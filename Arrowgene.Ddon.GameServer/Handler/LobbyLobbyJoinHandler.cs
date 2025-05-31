@@ -73,6 +73,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
 
             Server.BazaarManager.NotifySoldExhibitions(client);
+            Server.ClanManager.NotifyClanJoins(client);
 
             var allUsers = newUserNtc.UserList.Concat(alreadyPresentUsersNtc.UserList).ToList();
             return new S2CLobbyJoinRes()

@@ -276,10 +276,10 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new CharacterPawnGoldenReviveHandler(this));
             AddHandler(new CharacterPawnPointReviveHandler(this));
             AddHandler(new CharacterSetOnlineStatusHandler(this));
-			AddHandler(new CharacterEditGetShopPriceHandler(this));
-			AddHandler(new CharacterEditUpdateCharacterEditParamHandler(this));
+            AddHandler(new CharacterEditGetShopPriceHandler(this));
+            AddHandler(new CharacterEditUpdateCharacterEditParamHandler(this));
             AddHandler(new CharacterEditUpdateCharacterEditParamExHandler(this));
-			AddHandler(new CharacterEditUpdatePawnEditParamHandler(this));
+            AddHandler(new CharacterEditUpdatePawnEditParamHandler(this));
             AddHandler(new CharacterEditUpdatePawnEditParamExHandler(this));
             AddHandler(new CharacterCharacterDeadHandler(this));
             AddHandler(new CharacterCharacterDownCancelHandler(this));
@@ -311,6 +311,9 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new ClanClanInviteAcceptHandler(this));
             AddHandler(new ClanClanScoutEntrySearchHandler(this));
             AddHandler(new ClanClanSearchHandler(this));
+            AddHandler(new ClanClanJoinRequestHandler(this));
+            AddHandler(new ClanClanCancelJoinRequestHandler(this));
+            AddHandler(new ClanClanApproveJoinRequestHandler(this));
             AddHandler(new ClanClanScoutEntryGetInviteListHandler(this));
             AddHandler(new ClanClanLeaveMemberHandler(this));
             AddHandler(new ClanClanGetMemberListHandler(this));
@@ -584,9 +587,9 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new QuestGetAdventureGuideQuestNoticeHandler(this));
             AddHandler(new QuestGetAreaBonusListHandler(this));
             AddHandler(new QuestGetAreaInfoListHandler(this));
-			AddHandler(new QuestGetCycleContentsNewsListHandler(this));
+            AddHandler(new QuestGetCycleContentsNewsListHandler(this));
             AddHandler(new QuestGetCycleContentsStateListHandler(this));
-			AddHandler(new QuestGetEndContentsGroupHandler(this));
+            AddHandler(new QuestGetEndContentsGroupHandler(this));
             AddHandler(new QuestGetEndContentsRecruitListHandler(this));
             AddHandler(new QuestGetLevelBonusListHandler(this));
             AddHandler(new QuestGetLightQuestList(this));
@@ -627,10 +630,10 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new RankingRankListHandler(this));
             AddHandler(new RankingRankListByCharacterIdHandler(this));
 
-			AddHandler(new EntryBoardEntryBoardListHandler(this));
-			AddHandler(new EntryBoardEntryBoardItemCreateHandler(this));
-			AddHandler(new EntryBoardEntryBoardItemForceStartHandler(this));
-			AddHandler(new EntryBoardEntryBoardItemInfoMyselfHandler(this));
+            AddHandler(new EntryBoardEntryBoardListHandler(this));
+            AddHandler(new EntryBoardEntryBoardItemCreateHandler(this));
+            AddHandler(new EntryBoardEntryBoardItemForceStartHandler(this));
+            AddHandler(new EntryBoardEntryBoardItemInfoMyselfHandler(this));
             AddHandler(new EntryBoardEntryBoardItemReadyHandler(this));
             AddHandler(new EntryBoardEntryBoardItemLeaveHandler(this));
             AddHandler(new EntryBoardEntryItemInfoChangeHandler(this));
@@ -730,8 +733,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new StageGetSpAreaChangeInfoHandler(this));
 
             AddHandler(new StampBonusCheckHandler(this));
-			AddHandler(new StampBonusGetListHandler(this));
-			AddHandler(new StampBonusReceiveDailyHandler(this));
+            AddHandler(new StampBonusGetListHandler(this));
+            AddHandler(new StampBonusReceiveDailyHandler(this));
             AddHandler(new StampBonusReceiveTotalHandler(this));
 
             AddHandler(new WarpAreaWarpHandler(this));

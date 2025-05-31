@@ -244,16 +244,31 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public void JoinClan(uint characterId, uint clanId)
+        public void JoinClan(uint characterId, uint clanId, DbConnection? connectionIn = null)
         {
+            Character character;
             var client = Server.ClientLookup.GetClientByCharacterId(characterId);
-            var character = client.Character;
+
+            if (client == null)
+            {
+                character = Server.CharacterManager.SelectCharacter(characterId, false, connectionIn);
+                if (character == null)
+                {
+                    Logger.Error("Tried to add offline character to clan but select character query failed.");
+                    return;
+                }
+            }
+            else
+            {
+                character = client.Character;
+            }
+
             var clan = GetClan(clanId);
 
             clan.ClanServerParam.MemberNum++;
 
             var memberInfo = NewMember(character);
-            Server.Database.InsertClanMember(memberInfo, clanId);
+            Server.Database.InsertClanMember(memberInfo, clanId, connectionIn);
 
             character.ClanId = clanId;
             character.ClanName.Name = clan.ClanUserParam.Name;
@@ -278,12 +293,40 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 MemberInfo = memberInfo,
             };
 
-            client.Send(selfntc);
+            if (client != null)
+            {
+                client.Send(selfntc);
+            }
             foreach (var otherClient in Server.ClientLookup.GetAll())
             {
                 otherClient.Send(joinNtc);
             }
             SendToClan(clanId, memberNtc);
+        }
+
+        public void NotifyClanJoins(GameClient client)
+        {
+            List<CDataClanJoinRequest> approvedRequests = Server.Database.GetApprovedClanRequestsByCharacter(client.Character.CharacterId);
+            bool deleteRequest = false;
+
+            foreach (CDataClanJoinRequest request in approvedRequests)
+            {
+                var clan = GetClan(request.ClanId);
+
+                client.Send(new S2CClanClanJoinSelfNtc()
+                {
+                    ClanParam = clan,
+                    SelfInfo = Server.Database.GetClanMember(client.Character.CharacterId),
+                    MemberList = MemberList(request.ClanId)
+                });
+
+                deleteRequest = true;
+            }
+
+            if (deleteRequest)
+            {
+                Server.Database.DeleteClanRequestByCharacter(client.Character.CharacterId);
+            }
         }
 
         public void LeaveClan(uint characterId, uint clanId)
@@ -735,6 +778,30 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
 
             return ret;
+        }
+
+        public bool CheckPermission(uint characterId, ClanPermission perm)
+        {
+            var (clanId, member) = ClanMembership(characterId);
+            var splitPerms = IntToEnums<ClanPermission>((int)member.Permission);
+            if (splitPerms.Contains(perm))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool CheckAnyPermissions(uint characterId, ClanPermission[] perms)
+        {
+            foreach(var perm in perms)
+            {
+                if(CheckPermission(characterId, perm))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         // Will likely need this later for clan searching.

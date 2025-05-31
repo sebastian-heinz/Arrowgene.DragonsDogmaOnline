@@ -1,5 +1,7 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model.Clan;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -14,9 +16,22 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CClanClanGetJoinRequestedListRes Handle(GameClient client, C2SClanClanGetJoinRequestedListReq request)
         {
-            // TODO: Implement.
-            // client.Send(InGameDump.Dump_69);
-            return new();
+            S2CClanClanGetJoinRequestedListRes res = new S2CClanClanGetJoinRequestedListRes();
+
+            if (Server.ClanManager.CheckAnyPermissions(client.Character.CharacterId,
+                [
+                    ClanPermission.GuildMaster,
+                    ClanPermission.JoinRequestApprove,
+                    ClanPermission.JoinRequestDeny
+                ]))
+            {
+                Server.Database.ExecuteInTransaction(conn =>
+                {
+                    res.JoinReqList = Server.Database.GetClanRequestsByClan(client.Character.ClanId, conn);
+                });
+            }
+
+            return res;
         }
     }
 }
