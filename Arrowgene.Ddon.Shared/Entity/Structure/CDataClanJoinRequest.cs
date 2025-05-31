@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using System;
 
 namespace Arrowgene.Ddon.Shared.Entity.Structure
 {
@@ -13,7 +14,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         public uint ClanId { get; set; }
         public string ClanName { get; set; }
         public CDataCommunityCharacterBaseInfo BaseInfo { get; set; }
-        public long CreateTime { get; set; }
+        public DateTimeOffset CreateTime { get; set; }
 
         public class Serializer : EntitySerializer<CDataClanJoinRequest>
         {
@@ -22,7 +23,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 WriteUInt32(buffer, obj.ClanId);
                 WriteMtString(buffer, obj.ClanName);
                 WriteEntity<CDataCommunityCharacterBaseInfo>(buffer, obj.BaseInfo);
-                WriteInt64(buffer, obj.CreateTime);
+                WriteInt64(buffer, obj.CreateTime.ToUnixTimeSeconds());
             }
 
             public override CDataClanJoinRequest Read(IBuffer buffer)
@@ -31,7 +32,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 obj.ClanId = ReadUInt32(buffer);
                 obj.ClanName = ReadMtString(buffer);
                 obj.BaseInfo = ReadEntity<CDataCommunityCharacterBaseInfo>(buffer);
-                obj.CreateTime = ReadInt64(buffer);
+                obj.CreateTime = DateTimeOffset.FromUnixTimeSeconds(ReadInt64(buffer));
                 return obj;
             }
         }

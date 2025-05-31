@@ -618,6 +618,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SClanClanScoutEntryGetMyReq.Serializer());
             Create(new C2SClanClanScoutEntrySearchReq.Serializer());
             Create(new C2SClanClanSearchReq.Serializer());
+            Create(new C2SClanClanJoinRequest.Serializer());
+            Create(new C2SClanClanCancelJoinReq.Serializer());
+            Create(new C2SClanClanApproveJoinReq.Serializer());
             Create(new C2SClanClanSetMemberRankReq.Serializer());
             Create(new C2SClanClanSettingUpdateReq.Serializer());
             Create(new C2SClanClanShopBuyBuffItemReq.Serializer());
@@ -1179,6 +1182,9 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CClanClanScoutEntryGetMyRes.Serializer());
             Create(new S2CClanClanScoutEntrySearchRes.Serializer());
             Create(new S2CClanClanSearchRes.Serializer());
+            Create(new S2CClanClanJoinRes.Serializer());
+            Create(new S2CClanClanCancelJoinRes.Serializer());
+            Create(new S2CClanClanApproveJoinRes.Serializer());
             Create(new S2CClanClanSetMemberRankNtc.Serializer());
             Create(new S2CClanClanSetMemberRankRes.Serializer());
             Create(new S2CClanClanSettingUpdateRes.Serializer());
