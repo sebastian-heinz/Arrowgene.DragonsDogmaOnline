@@ -37,6 +37,7 @@ namespace Arrowgene.Ddon.Shared.Asset
         public ushort Key { get; set; }
         public byte Index { get; set; }
         public List<byte> ShopListings { get; set; }
+        public HashSet<WalletType> PremiumCurrencies { get; set; } = new();
         public List<(WalletType WalletType, string Label, uint Cost)> PaymentOptions { get; set; }
         public List<LimitStatLottery> StatLottery { get; set; }
     }

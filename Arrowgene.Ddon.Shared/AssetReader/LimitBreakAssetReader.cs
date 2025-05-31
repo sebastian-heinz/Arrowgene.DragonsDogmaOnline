@@ -37,6 +37,15 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     lotteryCategory.ShopListings.Add(jListing.GetByte());
                 }
 
+                foreach (var jPremiumCurrency in jLotteryCategory.GetProperty("premium_payments").EnumerateArray())
+                {
+                    if (!Enum.TryParse(jPremiumCurrency.GetString(), true, out WalletType walletType))
+                    {
+                        continue;
+                    }
+                    lotteryCategory.PremiumCurrencies.Add(walletType);
+                }
+
                 foreach (var jPaymentOption in jLotteryCategory.GetProperty("payment_options").EnumerateArray())
                 {
                     if (!Enum.TryParse(jPaymentOption.GetProperty("type").GetString(), true, out WalletType walletType))
