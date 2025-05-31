@@ -840,11 +840,13 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPartySendBinaryMsgNtc.Serializer());
 
             Create(new C2SPawnCreatePawnReq.Serializer());
+            Create(new C2SPawnDeleteFavoritePawnReq.Serializer());
             Create(new C2SPawnDeleteMyPawnReq.Serializer());
             Create(new C2SPawnExpeditionGetSallyInfoReq.Serializer());
+            Create(new C2SPawnGetFavoritePawnListReq.Serializer());
             Create(new C2SPawnGetLostPawnListReq.Serializer());
-            Create(new C2SPawnGetMyPawnListReq.Serializer());
             Create(new C2SPawnGetMyPawnDataReq.Serializer());
+            Create(new C2SPawnGetMyPawnListReq.Serializer());
             Create(new C2SPawnGetNoraPawnListReq.Serializer());
             Create(new C2SPawnGetOfficialPawnListReq.Serializer());
             Create(new C2SPawnGetPartyPawnDataReq.Serializer());
@@ -860,9 +862,10 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SPawnLostPawnReviveReq.Serializer());
             Create(new C2SPawnLostPawnWalletReviveReq.Serializer());
             Create(new C2SPawnPawnLostReq.Serializer());
-            Create(new C2SPawnRentRegisteredPawnReq.Serializer());
             Create(new C2SPawnRentalPawnLostReq.Serializer());
+            Create(new C2SPawnRentRegisteredPawnReq.Serializer());
             Create(new C2SPawnReturnRentedPawnReq.Serializer());
+            Create(new C2SPawnSetFavoritePawnReq.Serializer());
             Create(new C2SPawnSpSkillDeleteStockSkillReq.Serializer());
             Create(new C2SPawnSpSkillGetActiveSkillReq.Serializer());
             Create(new C2SPawnSpSkillGetStockSkillReq.Serializer());
@@ -1494,10 +1497,12 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPartyRecvBinaryMsgNtc.Serializer());
 
             Create(new S2CPawnCreatePawnRes.Serializer());
+            Create(new S2CPawnDeleteFavoritePawnRes.Serializer());
             Create(new S2CPawnDeleteMyPawnRes.Serializer());
             Create(new S2CPawnExpeditionGetSallyInfoRes.Serializer());
             Create(new S2CPawnExtendMainPawnSlotNtc.Serializer());
             Create(new S2CPawnExtendSupportPawnSlotNtc.Serializer());
+            Create(new S2CPawnGetFavoritePawnListRes.Serializer());
             Create(new S2CPawnGetLostPawnListRes.Serializer());
             Create(new S2CPawnGetMyPawnDataRes.Serializer());
             Create(new S2CPawnGetMyPawnListRes.Serializer());
@@ -1523,10 +1528,11 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CPawnLostPawnWalletReviveRes.Serializer());
             Create(new S2CPawnPawnLostNtc.Serializer());
             Create(new S2CPawnPawnLostRes.Serializer());
-            Create(new S2CPawnRentRegisteredPawnRes.Serializer());
             Create(new S2CPawnRentalPawnLostNtc.Serializer());
             Create(new S2CPawnRentalPawnLostRes.Serializer());
+            Create(new S2CPawnRentRegisteredPawnRes.Serializer());
             Create(new S2CPawnReturnRentedPawnRes.Serializer());
+            Create(new S2CPawnSetFavoritePawnRes.Serializer());
             Create(new S2CPawnSpSkillDeleteStockSkillRes.Serializer());
             Create(new S2CPawnSpSkillGetActiveSkillRes.Serializer());
             Create(new S2CPawnSpSkillGetStockSkillRes.Serializer());

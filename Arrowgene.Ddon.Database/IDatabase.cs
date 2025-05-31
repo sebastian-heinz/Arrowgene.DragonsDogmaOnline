@@ -588,6 +588,10 @@ public interface IDatabase
     public JobEmblem GetJobEmblemData(uint characterId, JobId jobId, DbConnection? connectionIn = null);
     public List<JobEmblem> GetAllJobEmblemData(uint characterId, DbConnection? connectionIn = null);
 
+    bool InsertPawnFavorite(uint characterId, uint pawnId, DbConnection? connectionIn = null);
+    bool DeletePawnFavorite(uint characterId, uint pawnId, DbConnection? connectionIn = null);
+    HashSet<uint> GetPawnFavorites(uint characterId, DbConnection? connectionIn = null);
+
     #region Pawn craft progress
 
     bool ReplacePawnCraftProgress(CraftProgress craftProgress, DbConnection? connectionIn = null);

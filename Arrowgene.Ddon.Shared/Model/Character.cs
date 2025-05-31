@@ -130,6 +130,7 @@ namespace Arrowgene.Ddon.Shared.Model
         public object PartnerTimerLockObj { get; set; }
         public List<Pawn> Pawns { get; set; }
         public List<Pawn> RentedPawns {  get; set; }
+        public HashSet<uint> FavoritedPawnIds { get; set; } = new();
         public uint FavWarpSlotNum { get; set; }
         public List<ReleasedWarpPoint> ReleasedWarpPoints { get; set; }
         public BitterblackMazeProgress BbmProgress;

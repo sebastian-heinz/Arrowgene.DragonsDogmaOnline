@@ -65,6 +65,8 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 character.ContentsReleased = GetContentsReleased(character, connectionIn);
                 character.WorldManageUnlocks = GetWorldManageState(character, connectionIn);
 
+                character.FavoritedPawnIds = Server.Database.GetPawnFavorites(character.CharacterId, connectionIn);
+
                 character.ExtendedParams = Server.Database.SelectOrbGainExtendParam(character.CommonId, connectionIn);
                 if (character.ExtendedParams == null)
                 {
