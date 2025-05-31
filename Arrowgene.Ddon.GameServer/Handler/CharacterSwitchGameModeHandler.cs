@@ -33,6 +33,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             var clanId = client.Character.ClanId;
             var clanName = client.Character.ClanName;
             var achievements = (client.Character.AchievementStatus, client.Character.AchievementProgress, client.Character.AchievementUniqueCrafts);
+            var acquirableSkills = client.Character.AcquirableSkills;
+            var acquirableAbilities = client.Character.AcquirableAbilities;
 
             var serverInfo = client.Character.Server;
             if (client.GameMode == GameMode.Normal)
@@ -70,9 +72,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
             client.Character.OnlineStatus = OnlineStatus.Online;
             client.Character.ClanId = clanId;
             client.Character.ClanName = clanName;
-            client.Character.AchievementStatus = achievements.Item1;
-            client.Character.AchievementProgress = achievements.Item2;
-            client.Character.AchievementUniqueCrafts = achievements.Item3;
+            client.Character.AchievementStatus = achievements.AchievementStatus;
+            client.Character.AchievementProgress = achievements.AchievementProgress;
+            client.Character.AchievementUniqueCrafts = achievements.AchievementUniqueCrafts;
+            client.Character.AcquirableSkills = acquirableSkills;
+            client.Character.AcquirableAbilities = acquirableAbilities;
 
             client.Send(new S2CCharacterSwitchGameModeNtc()
             {

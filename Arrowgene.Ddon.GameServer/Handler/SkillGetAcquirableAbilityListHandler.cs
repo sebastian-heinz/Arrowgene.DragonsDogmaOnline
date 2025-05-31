@@ -3,7 +3,6 @@ using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
-using Arrowgene.Networking.Tcp.Consumer.BlockingQueueConsumption;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -30,11 +29,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
             S2CSkillGetAcquirableAbilityListRes response = new S2CSkillGetAcquirableAbilityListRes();
             if (request.Job != 0)
             {
-                response.AbilityParamList = (client.GameMode == GameMode.Normal) ?
-                    client.Character.AcquirableAbilities[request.Job]
+                response.AbilityParamList = client.Character.AcquirableAbilities[request.Job]
                         .Where(x => !SkillData.IsUnlockableAbility(request.Job, x.AbilityNo, 1) || IsAbilityUnlocked(client.Character, request.Job, x.AbilityNo))
-                        .ToList() :
-                    new();
+                        .ToList();
             }
             else if (request.CharacterId == 0)
             {

@@ -406,44 +406,6 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 }
             }
 
-            // EX Skills
-            if (skillLv == 9)
-            {
-                // EX T Skill
-                uint exSkillTId = skillId + 100;
-                CDataSkillParam? exSkillT = SkillData.AllSkills.Where(skill => skill.Job == job && skill.SkillNo == exSkillTId).SingleOrDefault();
-                if (exSkillT != null)
-                {
-                    // Add new skill
-                    CustomSkill newExSkillT = new CustomSkill()
-                    {
-                        Job = job,
-                        SkillId = exSkillTId,
-                        SkillLv = 1
-                    };
-                    character.LearnedCustomSkills.Add(newExSkillT);
-                    Server.Database.InsertLearnedCustomSkill(character.CommonId, newExSkillT, connectionIn);
-                }
-            }
-            else if (skillLv == 10)
-            {
-                // EX P Skill
-                uint exSkillPId = skillId + 200;
-                CDataSkillParam? exSkillP = SkillData.AllSkills.Where(skill => skill.Job == job && skill.SkillNo == exSkillPId).SingleOrDefault();
-                if (exSkillP != null)
-                {
-                    // Add new skill
-                    CustomSkill newExSkillP = new CustomSkill()
-                    {
-                        Job = job,
-                        SkillId = exSkillPId,
-                        SkillLv = 1
-                    };
-                    character.LearnedCustomSkills.Add(newExSkillP);
-                    Server.Database.InsertLearnedCustomSkill(character.CommonId, newExSkillP, connectionIn);
-                }
-            }
-
             uint jpCost = SkillData.AllSkills
                 .Where(skill => skill.Job == job && skill.SkillNo == skillId)
                 .SelectMany(skill => skill.Params)
