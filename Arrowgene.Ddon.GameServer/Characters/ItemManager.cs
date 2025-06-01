@@ -459,7 +459,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             ushort slotNo = destinationStorage.AddItem(item, amount);
             InsertItem(server, character, item, destinationStorage, slotNo, amount, connectionIn);
 
-            return CreateItemUpdateResult(character, item, destinationStorage, slotNo, amount, amount);
+            return CreateItemUpdateResult(null, item, destinationStorage, slotNo, amount, amount);
         }
 
         public List<CDataItemUpdateResult> AddItem(DdonServer<GameClient> server, Character character, bool itemBag, uint itemId, uint num, byte plusvalue = 0, DbConnection? connectionIn = null)
