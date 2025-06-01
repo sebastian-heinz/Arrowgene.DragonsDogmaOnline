@@ -16,7 +16,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CPawnSpSkillDeleteStockSkillRes Handle(GameClient client, C2SPawnSpSkillDeleteStockSkillReq request)
         {
             // TODO: Implement
-            throw new ResponseErrorException(ErrorCode.ERROR_CODE_NOT_IMPLEMENTED);
+            return new();
         }
     }
 }
