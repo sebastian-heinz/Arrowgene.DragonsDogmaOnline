@@ -12,13 +12,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
     {
         private static readonly ServerLogger Logger = LogProvider.Logger<ServerLogger>(typeof(SkillGetAcquirableAbilityListHandler));
 
-
         public static CDataAbilityParam GetAbilityFromId(uint abilityId)
         {
             var abilities = SkillData.AllAbilities.Concat(SkillData.AllSecretAbilities);
             return abilities.Where(x => x.AbilityNo == abilityId).FirstOrDefault();
         }
-
 
         public SkillGetAcquirableAbilityListHandler(DdonGameServer server) : base(server)
         {
@@ -26,6 +24,9 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CSkillGetAcquirableAbilityListRes Handle(GameClient client, C2SSkillGetAcquirableAbilityListReq request)
         {
+            // This list probably shouldn't be filtered because of caching,
+            // but its fine to return the normal gamemode result no matter what because the BBM character can't interact with abilities/augments.
+
             S2CSkillGetAcquirableAbilityListRes response = new S2CSkillGetAcquirableAbilityListRes();
             if (request.Job != 0)
             {

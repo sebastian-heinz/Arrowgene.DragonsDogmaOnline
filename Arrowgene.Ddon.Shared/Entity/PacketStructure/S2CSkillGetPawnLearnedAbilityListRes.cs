@@ -11,11 +11,11 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 
         public S2CSkillGetPawnLearnedAbilityListRes()
         {
-            SetAcquierementParam=new List<CDataLearnedSetAcquirementParam>();
+            SetAcquirementParam=new List<CDataLearnedSetAcquirementParam>();
         }
 
         public uint PawnId { get; set; }
-        public List<CDataLearnedSetAcquirementParam> SetAcquierementParam { get; set; }
+        public List<CDataLearnedSetAcquirementParam> SetAcquirementParam { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CSkillGetPawnLearnedAbilityListRes>
         {
@@ -23,7 +23,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 WriteServerResponse(buffer, obj);
                 WriteUInt32(buffer, obj.PawnId);
-                WriteEntityList<CDataLearnedSetAcquirementParam>(buffer, obj.SetAcquierementParam);
+                WriteEntityList<CDataLearnedSetAcquirementParam>(buffer, obj.SetAcquirementParam);
             }
 
             public override S2CSkillGetPawnLearnedAbilityListRes Read(IBuffer buffer)
@@ -31,7 +31,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 S2CSkillGetPawnLearnedAbilityListRes obj = new S2CSkillGetPawnLearnedAbilityListRes();
                 ReadServerResponse(buffer, obj);
                 obj.PawnId = ReadUInt32(buffer);
-                obj.SetAcquierementParam = ReadEntityList<CDataLearnedSetAcquirementParam>(buffer);
+                obj.SetAcquirementParam = ReadEntityList<CDataLearnedSetAcquirementParam>(buffer);
                 return obj;
             }
         }

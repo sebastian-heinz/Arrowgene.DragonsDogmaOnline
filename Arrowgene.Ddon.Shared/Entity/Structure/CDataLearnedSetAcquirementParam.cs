@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         }
 
         public JobId Job { get; set; }
-        public byte Type { get; set; }
+        public ReleaseType Type { get; set; }
         public uint AcquirementNo { get; set; }
         public byte AcquirementLv { get; set; }
         public uint AcquirementParamId { get; set; }
@@ -25,7 +25,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override void Write(IBuffer buffer, CDataLearnedSetAcquirementParam obj)
             {
                 WriteByte(buffer, (byte) obj.Job);
-                WriteByte(buffer, obj.Type);
+                WriteByte(buffer, (byte) obj.Type);
                 WriteUInt32(buffer, obj.AcquirementNo);
                 WriteByte(buffer, obj.AcquirementLv);
                 WriteUInt32(buffer, obj.AcquirementParamId);
@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 CDataLearnedSetAcquirementParam obj = new CDataLearnedSetAcquirementParam();
                 obj.Job = (JobId) ReadByte(buffer);
-                obj.Type = ReadByte(buffer);
+                obj.Type = (ReleaseType) ReadByte(buffer);
                 obj.AcquirementNo = ReadUInt32(buffer);
                 obj.AcquirementLv = ReadByte(buffer);
                 obj.AcquirementParamId = ReadUInt32(buffer);
