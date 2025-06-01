@@ -75,7 +75,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     }
                     else
                     {
-                        updateCharacterItemNtc.UpdateItemList.AddRange(Server.ItemManager.AddNewItem(Server, client.Character, toBag, purchase.ToItem(), purchase.ItemNum, connection));
+                        updateCharacterItemNtc.UpdateItemList.Add(Server.ItemManager.AddNewItem(Server, client.Character, toBag, purchase.ToItem(), purchase.ItemNum, connection));
                     }
 
                     client.Enqueue(updateCharacterItemNtc, queue);
