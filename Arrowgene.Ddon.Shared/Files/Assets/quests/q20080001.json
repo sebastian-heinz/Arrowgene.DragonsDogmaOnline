@@ -6,7 +6,7 @@
     "base_level": 48,
     "minimum_item_rank": 0,
     "discoverable": true,
-  "area_id": "EasternZandora",		
+    "area_id": "EasternZandora",		
     "rewards": [
         {
             "type": "exp",
@@ -78,7 +78,8 @@
         {
             "type": "KillGroup",
             "announce_type": "Update",
-            "groups": [0]
+            "reset_group": false,
+            "groups": [ 0 ]
         },
         {			
             "type": "CollectItem",

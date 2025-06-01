@@ -103,7 +103,8 @@
         {
             "type": "KillGroup",
             "announce_type": "Update",
-            "groups": [0]
+            "reset_group": false,
+            "groups": [ 0 ]
         },
         {
             "type": "TalkToNpc",
