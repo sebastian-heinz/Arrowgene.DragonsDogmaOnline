@@ -179,7 +179,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                     );
 
                     //Check for ensemble requirements
-                    ClientItemInfo itemInfo = server.ItemManager.LookupInfoByUID(server, itemUId);
+                    ClientItemInfo itemInfo = server.ItemManager.LookupInfoByItem(server, result.Item2.Item2);
                     if (itemInfo.SubCategory == ItemSubCategory.EquipEnsemble)
                     {
                         foreach (EquipSlot slot in EnsembleSlots)
