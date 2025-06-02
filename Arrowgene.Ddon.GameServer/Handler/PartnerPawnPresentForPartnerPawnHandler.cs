@@ -6,6 +6,7 @@ using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -27,7 +28,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 foreach (var item in request.ItemUIDList)
                 {
-                    uint itemId = Server.ItemManager.LookupItemByUID(Server, item.ItemUID);
+                    uint itemId = client.Character.Storage.FindItemByUIdInStorage(ItemManager.AllItemStorages, item.ItemUID)?.Item2.Item2.ItemId
+                        ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_NOT_FOUND, $"Could not find item {item.ItemUID}.");
                     var searchResult = client.Character.Storage.FindItemByUIdInStorage(ItemManager.BothStorageTypes, item.ItemUID);
                     var itemUpdate = Server.ItemManager.ConsumeItemByUId(Server, client.Character, searchResult.Item1, item.ItemUID, item.Num, connectionIn: connection)
                         ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_QUEST_DONT_HAVE_DELIVERY_ITEM);

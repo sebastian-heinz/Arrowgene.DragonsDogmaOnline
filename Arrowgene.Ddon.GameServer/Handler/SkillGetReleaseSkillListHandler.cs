@@ -19,7 +19,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
         public override S2CSkillGetReleaseSkillListRes Handle(GameClient client, C2SSkillGetReleaseSkillListReq request)
         {
             List<CDataReleaseAcquirementParam> releaseParamList = new();
-            foreach (var jobId in ((JobId[])JobId.GetValues(typeof(JobId))))
+            foreach (var jobId in System.Enum.GetValues<JobId>())
             {
                 var matches = Server.JobMasterManager.GetReleasedElements(client, jobId)
                     .Where(x => x.ReleaseType == ReleaseType.CustomSkill)

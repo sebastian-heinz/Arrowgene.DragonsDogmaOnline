@@ -66,7 +66,9 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public Storage GetStorage(StorageType storageType)
         {
-            return storages[storageType];
+            return storages.GetValueOrDefault(storageType)
+                ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_INVALID_STORAGE_TYPE, 
+                $"Invalid storage type {storageType}");
         }
 
         public bool HasStorage(StorageType storageType)

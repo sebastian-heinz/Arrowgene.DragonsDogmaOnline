@@ -63,7 +63,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
             {
                 foreach (var element in request.CraftElementList)
                 {
-                    uint crestId = Server.ItemManager.LookupItemByUID(Server, element.ItemUId);
+                    var crestId = client.Character.Storage.FindItemByUIdInStorage(ItemManager.AllItemStorages, element.ItemUId)?.Item2.Item2.ItemId
+                        ?? throw new ResponseErrorException(ErrorCode.ERROR_CODE_ITEM_NOT_FOUND, $"Could not find item {element.ItemUId}.");
 
                     Server.Database.InsertCrest(client.Character.CommonId, request.EquipItemUId, element.SlotNo, crestId, 0, connection);
                     result.EquipElementParamList.Add(new CDataEquipElementParam()

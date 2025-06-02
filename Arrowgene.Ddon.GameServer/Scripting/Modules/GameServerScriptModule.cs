@@ -4,6 +4,7 @@ using Arrowgene.Ddon.Shared;
 using Arrowgene.Logging;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Scripting;
+using System.Data.Common;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -22,10 +23,13 @@ namespace Arrowgene.Ddon.GameServer.Scripting
                 .AddReferences(MetadataReference.CreateFromFile(typeof(LibDdon).Assembly.Location))
                 .AddReferences(MetadataReference.CreateFromFile(typeof(LibUtils).Assembly.Location))
                 .AddReferences(MetadataReference.CreateFromFile(typeof(LogProvider).Assembly.Location))
+                .AddReferences(MetadataReference.CreateFromFile(typeof(DbConnection).Assembly.Location))
                 .AddImports("System", "System.Linq")
                 .AddImports("System.Collections")
                 .AddImports("System.Collections.Generic")
                 .AddImports("System.Collections.ObjectModel")
+                .AddImports("System.Data")
+                .AddImports("System.Data.Common")
                 .AddImports("System.Runtime.CompilerServices")
                 .AddImports("Arrowgene.Logging")
                 .AddImports("Arrowgene.Ddon.Database")

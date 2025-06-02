@@ -223,6 +223,12 @@ namespace Arrowgene.Ddon.GameServer.Party
                         $"[PartyId:{Id}][Accept] invitation expired");
                 }
 
+                if (Leader is null)
+                {
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_INVITE_FAIL_REASON_NO_LEADER,
+                        $"[PartyId:{Id}][Accept] has no leader");
+                }
+
                 PlayerPartyMember partyMember = GetPlayerPartyMember(client);
                 if (partyMember == null)
                 {

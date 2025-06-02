@@ -15,17 +15,11 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CSkillGetAcquirableSkillListRes Handle(GameClient client, C2SSkillGetAcquirableSkillListReq request)
         {
-            var skillList = client.Character.AcquirableSkills[request.Job];
-
+            // This list can't be filtered based on progress because it's cached between BBM and normal gameplay.
             return new S2CSkillGetAcquirableSkillListRes()
             {
-                SkillParamList = skillList
+                SkillParamList = client.Character.AcquirableSkills[request.Job]
             };
-        }
-
-        private bool IsSkillUnlocked(Character character, JobId jobId, uint skillNo)
-        {
-            return character.UnlockedCustomSkills[jobId].Contains(skillNo);
         }
     }
 }
