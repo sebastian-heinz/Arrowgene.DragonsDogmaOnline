@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Arrowgene.Ddon.Shared.Model
 {
     public enum ItemId : uint
@@ -21507,5 +21509,35 @@ namespace Arrowgene.Ddon.Shared.Model
         _1207JpObtain10 = 13357,
         _1207JpObtained06 = 13353,
         _1207JpObtained07 = 13354,
+    }
+
+    public static class ItemIdExtension
+    {
+        private static List<ItemId> KeyItems = new List<ItemId>()
+        {
+            ItemId.AlchemyResearchBuildingKey,
+            ItemId.AncientDeenanKey,
+            ItemId.BrokenKeyOfTheSealedPalace,
+            ItemId.DreedChapelKey,
+            ItemId.DiamantesVesselOfLife,
+            ItemId.FullyBlockedDoorKey,
+            ItemId.KeyToGardnoxFortressFrontGate,
+            ItemId.KieshildtsVesselOfLife,
+            ItemId.LeadersRoomKey,
+            ItemId.LakeCeraDetachedPavillionKey,
+            ItemId.MysteriousAncientTexts,
+            ItemId.RiftstoneOre,
+            ItemId.SpecialResearchAreaGoldKey,
+            ItemId.SuppliesForTheFort,
+            ItemId.VesselOfLife0,
+            ItemId.VesselOfLife1,
+            ItemId.WaterFlowControlRoomKey,
+            ItemId.ZuhlsVesselOfLife,
+        };
+
+        public static bool IsKeyItem(this ItemId itemId)
+        {
+            return KeyItems.Contains(itemId);
+        }
     }
 }

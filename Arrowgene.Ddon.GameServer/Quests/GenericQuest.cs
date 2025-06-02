@@ -268,6 +268,17 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             foreach (var item in questBlock.ConsumePlayerItems)
             {
+                ItemId itemId = (ItemId) item.ItemId;
+                if (itemId.IsKeyItem())
+                {
+                    var items = client.Character.Storage.GetStorage(StorageType.KeyItems).FindItemsById(item.ItemId);
+                    if (items.Count == 0)
+                    {
+                        Logger.Error(client, $"The quest {QuestId} was expecting the key item '{itemId}' to be present, but it doesn't exist in the players inventory. Skipping.");
+                        continue;
+                    }
+                }
+
                 var result = server.ItemManager.ConsumeItemByIdFromItemBag(server, client.Character, item.ItemId, item.Amount);
                 if (result != null)
                 {

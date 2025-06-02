@@ -909,10 +909,12 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     Server.RewardManager.AddQuestRewards(memberClient, quest, connectionIn);
                 }
 
+#if false
                 if (quest.QuestId == QuestId.TheShiningGate && !memberClient.Character.HasQuestCompleted(QuestId.TheShiningGate))
                 {
                     packets.AddRange(Server.RewardManager.UnlockEM4Skills(memberClient, connectionIn));
                 }
+#endif
 
                 // Check for Exp, Rift and Gold Rewards
                 var ntcs = SendWalletRewards(Server, memberClient, quest, connectionIn);
