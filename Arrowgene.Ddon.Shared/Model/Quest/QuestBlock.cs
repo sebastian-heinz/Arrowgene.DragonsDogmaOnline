@@ -73,7 +73,6 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         public List<QuestProgressWork> QuestProgressWork { get; set; }
         
         public QuestTargetEnemy TargetEnemy { get; set; }
-
         public CDataQuestProcessState QuestProcessState { get; set; }
 
         public List<string> Annotations { get; set; } // Meta variable used to document quests

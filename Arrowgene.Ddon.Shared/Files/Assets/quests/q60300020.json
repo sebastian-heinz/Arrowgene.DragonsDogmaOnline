@@ -9,6 +9,8 @@
     "discoverable": true,
     "stage_id": {"id": 467},
     "order_conditions": [
+        {"type": "MinimumLevel", "Param1": 84},
+        {"type": "MainQuestCompleted", "Param1": 30070}
     ],
     "rewards": [
         {
@@ -47,7 +49,12 @@
             "type": "IsStageNo",
             "stage_id": {
                 "id": 549
-            }
+            },
+            "contents_release": [
+              {
+                "flag_info": "FortThines.EpitaphRoadRathniteFoothills"
+              }
+            ]
         },
         {
             "type": "TalkToNpc",

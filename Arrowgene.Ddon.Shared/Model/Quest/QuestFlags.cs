@@ -110,6 +110,11 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             /// @note This one may be used for unlocking the arisens room as it has a movement FSM.
             /// </summary>
             public static QuestFlagInfo Julia1 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(4037, QuestId.Q70020001, StageInfo);
+
+            /// <summary>
+            /// Enables the warp crystal in the shopping district to warp to Hidden Village Piremoth and Mergoda Golden Palace
+            /// </summary>
+            public static QuestFlagInfo Season3Warp { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(3239, QuestId.Q70030001);
         }
 
         public static class AudienceChamber
@@ -478,9 +483,76 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             private static StageInfo StageInfo = Stage.RathniteFoothills;
 
             /// <summary>
-            /// Enables NPCs and Shops in rathnite foothills Orc encampmet
+            /// Spawns Debris and Barries for the 2nd MSQ in 3.0.
             /// </summary>
-            public static QuestFlagInfo OrcEncampmentNpcs { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(3283, QuestId.Q70030001, StageInfo);
+            public static QuestFlagInfo OrcEncampmentDebrisMSQ { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(5615, QuestId.Q70030001, StageInfo);
+
+            /// <summary>
+            /// Opens the gate in the back of the fortress used in the 2nd MSW in 3.0
+            /// </summary>
+            public static QuestFlagInfo OrcEncampmentInnerGate { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(3483, QuestId.Q70030001);
+
+            /// <summary>
+            /// Enables the building for the orc encampment.
+            /// </summary>
+            public static QuestFlagInfo OrcCampSettlementBuildings { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(5708, QuestId.Q70030001, StageInfo);
+
+            /// <summary>
+            /// NPCs which populate the shop in the orc encampment.
+            /// </summary>
+            public static QuestFlagInfo OrcCampSettlementNPCs { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(6196, QuestId.Q70030001, StageInfo);
+
+            /// <summary>
+            /// Fixes the wall which is used to breach the fortress in the 2nd MSQ in 3.0
+            /// </summary>
+            public static QuestFlagInfo OrcCampSettlementFixWall { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(5614, QuestId.Q70030001, StageInfo);
+
+            /// <summary>
+            /// Spawns the flags of the kingdom inside the orc settlement.
+            /// </summary>
+            public static QuestFlagInfo OrcCampSettlementFlags { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(5706, QuestId.Q70030001, StageInfo);
+            
+            /// <summary>
+            /// Toggles the gate for Orc Encampment after being populated with shops.
+            /// </summary>
+            public static QuestFlagInfo OrcEncampmentGate { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2914, QuestId.Q70030001);
+
+
+            /// <summary>
+            /// Spawns Debris and Barries for the 4th MSQ in 3.0.
+            /// </summary>
+            public static QuestFlagInfo FortThinesDebrisMSQ { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(5633, QuestId.Q70030001, StageInfo);
+
+            /// <summary>
+            /// Spawns the NPCs in the area outside Fort Thines.
+            /// </summary>
+            public static QuestFlagInfo FortThinesNpcs { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(6197, QuestId.Q70030001, StageInfo);
+            
+            /// <summary>
+            /// Spawns the buildings for the NPCs outside Fort Thines
+            /// </summary>
+            public static QuestFlagInfo FortThinesBuildings { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(5635, QuestId.Q70030001, StageInfo);
+
+            /// <summary>
+            /// Fixes the wall in the camp outside Fort Thines
+            /// </summary>
+            public static QuestFlagInfo FortThinesFixWall { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(5632, QuestId.Q70030001, StageInfo);
+
+            /// <summary>
+            /// Opens the gate in fortress in front of Fort Thines.
+            /// </summary>
+            public static QuestFlagInfo FortThinesGate { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2915, QuestId.Q70030001);
+
+            /// <summary>
+            /// Opens the gate to Fort Thines (440)
+            /// </summary>
+            public static QuestFlagInfo FortThines0 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(5581, QuestId.Q70030001, StageInfo);
+
+            /// <summary>
+            /// Opens the gate to Fort Thines (443)
+            /// </summary>
+            public static QuestFlagInfo FortThines1 { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(5407, QuestId.Q70030001, StageInfo);
+            
         }
 
         public static class PiremothTravelersInn
@@ -491,6 +563,51 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             /// Spawns the area master Endale when set.
             /// </summary>
             public static QuestFlagInfo Endale { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(5396, QuestId.Q70030001, StageInfo);
+        }
+
+        public static class FortThines
+        {
+            private static StageInfo StageInfo = Stage.FortThines1;
+
+            /// <summary>
+            /// Spawns the area master Endale when set.
+            /// </summary>
+            public static QuestFlagInfo Endale { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(5397, QuestId.Q70030001, StageInfo);
+
+            /// <summary>
+            /// Opens the door to Epitaph Road: Rathnite Foothills
+            /// </summary>
+            public static QuestFlagInfo EpitaphRoadRathniteFoothills { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(3518, QuestId.Q70030001);
+        }
+
+        public static class RathniteFoothillsLakeside
+        {
+            private static StageInfo StageInfo = Stage.RathniteFoothillsLakeside0;
+
+            /// <summary>
+            /// Opens the front gate to Rothgill.
+            /// </summary>
+            public static QuestFlagInfo RothgillFrontGate { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2816, QuestId.Q70030001);
+
+            /// <summary>
+            /// Closes the hole in the wall when set.
+            /// </summary>
+            public static QuestFlagInfo FortDacriumWallBreach { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(5589, QuestId.Q70030001, StageInfo);
+
+            /// <summary>
+            /// Enables the Dacrium Fortress Entrance which teleports the player to st0443.
+            /// </summary>
+            public static QuestFlagInfo DacriumFortressEntrance { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(6291, QuestId.Q70030001, StageInfo);
+        }
+
+        public static class LakesideGrotto
+        {
+            private static StageInfo StageInfo = Stage.LakesideGrotto;
+
+            /// <summary>
+            /// Opens the front gate to Bertha's Bandit Group Hideout
+            /// </summary>
+            public static QuestFlagInfo GateToBandGroupHide { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2814, QuestId.Q70030001);
         }
 
         public static class NpcFunctions
@@ -506,6 +623,11 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             /// Found in npc.nll.json
             /// </summary>
             public static QuestFlagInfo DragonForceAugmentation { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(658, QuestId.Q70000001);
+
+            /// <summary>
+            /// Opens up the menu to start the S3 BO/HO tree at the White Dragon.
+            /// </summary>
+            public static QuestFlagInfo SpecialSkillAugmentation { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(3301, QuestId.Q70030001);
 
             /// <summary>
             /// Adds "Party Creation" to various NCPCs.
@@ -608,6 +730,11 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             /// Unlocks the NPC option "Area Information" for the NPC Ciaran in Kingal Canyon (Glyndwr Centrum)
             /// </summary>
             public static QuestFlagInfo KingalCanyonAreaInfo { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(1712, QuestId.Q70022001);
+
+            /// <summary>
+            /// Unlocks the NPC option "Area Information" for the NPC Endale in Rathnite Foothills
+            /// </summary>
+            public static QuestFlagInfo RathniteFoothillsAreaInfo { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(3240, QuestId.Q70030001);
 
             /// <summary>
             /// Adds the NPC option "Extreme Mission" for the NPC Seneka
