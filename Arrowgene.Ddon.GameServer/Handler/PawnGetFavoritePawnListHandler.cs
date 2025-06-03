@@ -30,14 +30,14 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         result.FavoritePawnList.Add(new CDataRegisterdPawnList()
                         {
                             Name = pawn.Name,
-                            RentalCost = client.Character.ActiveCharacterJobData.Lv * 10,
+                            RentalCost = pawn.ActiveCharacterJobData.Lv * 10,
                             Sex = pawn.EditInfo.Sex,
                             Updated = (ulong)DateTimeOffset.UtcNow.ToUnixTimeSeconds(),
                             PawnId = pawn.PawnId,
                             PawnListData = new CDataPawnListData()
                             {
                                 Job = pawn.Job,
-                                Level = client.Character.ActiveCharacterJobData.Lv,
+                                Level = pawn.ActiveCharacterJobData.Lv,
                                 PawnCraftSkillList = pawn.CraftData.PawnCraftSkillList,
                             }
                         });
