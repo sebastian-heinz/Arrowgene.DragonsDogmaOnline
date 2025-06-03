@@ -73,6 +73,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 PartyLeaderCharacterId = leaderCharacterId,
             };
             data.EntryItem.Param = createParam;
+            data.EntryItem.Param.PasswordOn = password.Length > 0;
             data.EntryItem.Id = _EntryItemIdPool.GenerateId();
 
             // TODO: Quest Manager look up min/max
