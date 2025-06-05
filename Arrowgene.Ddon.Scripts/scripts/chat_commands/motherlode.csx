@@ -30,9 +30,14 @@ public class ChatCommand : IChatCommand
                 {
                     walletTypes.Add(parsedWalletType);
                 }
+                else if (arg == "PP")
+                {
+                    (uint BasePoints, uint BonusPoints) gain = (amount, 0);
+                    server.PPManager.AddPlayPointNtc(client, gain);
+                }
                 else
                 {
-                    responses.Add(ChatResponse.CommandError(client, $"Invalid wallet type \"{arg}\". It must be one of the following: {string.Join(", ", WalletTypeNames.Keys)}"));
+                    responses.Add(ChatResponse.CommandError(client, $"Invalid wallet type \"{arg}\". It must be one of the following: {string.Join(", ", WalletTypeNames.Keys)} or PP"));
                     return;
                 }
             }
@@ -56,6 +61,9 @@ public class ChatCommand : IChatCommand
         {"GG", WalletType.GoldenGemstones},
         {"RC", WalletType.ResetCraftSkills},
         {"ST", WalletType.SilverTickets},
+        {"GM", WalletType.GoldenDragonMark},
+        {"SM", WalletType.SilverDragonMark},
+        {"RM", WalletType.RedDragonMark},
     };
 
     private static readonly uint DefaultAmount = 10000;
