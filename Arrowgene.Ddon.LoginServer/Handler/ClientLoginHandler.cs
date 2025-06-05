@@ -77,6 +77,13 @@ namespace Arrowgene.Ddon.LoginServer.Handler
                     }
                 }
 
+                if (account.State == AccountStateType.Banned)
+                {
+                    L2CEjectionNtc message = new L2CEjectionNtc { Message = "This account has been banned" };
+                    client.Send(message);
+                    throw new ResponseErrorException(ErrorCode.ERROR_CODE_AUTH_LOGIN_FAILED, "This account is banned");
+                }
+
                 if (!account.LoginTokenCreated.HasValue)
                 {
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_AUTH_LOGIN_FAILED, "No login token exists");
