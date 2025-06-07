@@ -8,7 +8,7 @@
  *   /giveitem 8708
  */
 
-#load "C:\Users\Paul\Git\Arrowgene.DragonsDogmaOnline\Arrowgene.Ddon.Cli\bin\Debug\net9.0\Files\Assets\scripts\libs.csx"
+#load "libs.csx"
 
 public class ScriptedQuest : IQuest
 {
