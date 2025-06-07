@@ -603,5 +603,17 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             checkCommands.Add(QuestManager.CheckCommand.QstFlagOff((int)questId, flagNo));
             return checkCommands;
         }
+
+        public static List<CDataQuestCommand> AddCheckCommandIsEquip(this List<CDataQuestCommand> checkCommands, ItemId itemId)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsEquip((int)itemId));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCommandIsTakePicturesNpc(this List<CDataQuestCommand> checkCommands, StageInfo stageInfo, NpcId npcId0, NpcId npcId1, NpcId npcId2)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsTakePicturesNpc(stageInfo.StageNo, (int)npcId0, (int)npcId1, (int)npcId2));
+            return checkCommands;
+        }
     }
 }

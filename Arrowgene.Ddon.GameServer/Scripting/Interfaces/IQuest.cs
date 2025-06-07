@@ -67,7 +67,7 @@ namespace Arrowgene.Ddon.GameServer.Scripting.Interfaces
         public abstract byte MinimumItemRank { get; }
         public abstract bool IsDiscoverable { get; }
         public virtual bool? OverrideEnemySpawn { get; } = null;
-        public virtual bool? EnableCancel { get; } = null;
+        public virtual bool? EnableCancel { get; protected set; } = null;
         public virtual bool ResetPlayerAfterQuest { get; } = false;
 
         public virtual bool? IsImportant { get; } = null;
