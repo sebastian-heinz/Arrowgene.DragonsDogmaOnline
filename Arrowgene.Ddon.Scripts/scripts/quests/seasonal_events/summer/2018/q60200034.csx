@@ -39,12 +39,12 @@ public class ScriptedQuest : IQuest
         var process0 = AddNewProcess(0);
         process0.AddRawBlock(QuestAnnounceType.None)
             .AddCheckCmdIsTutorialQuestClear(QuestId.SummerBeachFestival1);
-        process0.AddNewNpcTalkAndOrderBlock(Stage.TheWhiteDragonTemple0, 0, 1, NpcId.Samantha, 25557, QuestId.SummerBeachFestivalDecorations);
+        process0.AddNewNpcTalkAndOrderBlock(Stage.TheWhiteDragonTemple0, 0, 3, NpcId.Samantha, 25557, QuestId.SummerBeachFestivalDecorations);
         process0.AddRawBlock(QuestAnnounceType.Accept)
             .AddCheckCmdHaveItemAllBag(ItemId.GoldenPalmFiber, 1);
-        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, QuestId.SummerBeachFestivalDecorations, Stage.TheWhiteDragonTemple0, 0, 1, NpcId.Samantha, 25559);
+        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, QuestId.SummerBeachFestivalDecorations, Stage.TheWhiteDragonTemple0, 0, 3, NpcId.Samantha, 25559);
         process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.TheWhiteDragonTemple0, NpcId.Gregory0, 25561);
-        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, QuestId.SummerBeachFestivalDecorations, Stage.TheWhiteDragonTemple0, 0, 1, NpcId.Samantha, 25562);
+        process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, QuestId.SummerBeachFestivalDecorations, Stage.TheWhiteDragonTemple0, 0, 3, NpcId.Samantha, 25562);
         process0.AddProcessEndBlock(true);
     }
 }
