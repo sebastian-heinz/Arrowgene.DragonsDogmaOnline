@@ -111,6 +111,14 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     || QuestType == QuestType.Tutorial;
             } 
         }
+
+        public bool IsDistributionTimed
+        {
+            get
+            {
+                return DistributionEnd.UtcTicks != 0;
+            }
+        }
         public List<CDataWalletPoint> ScaledWalletRewards()
         {
             var result = new List<CDataWalletPoint>();
