@@ -223,8 +223,9 @@ namespace Arrowgene.Ddon.GameServer.Party
                         $"[PartyId:{Id}][Accept] invitation expired");
                 }
 
-                if (Leader is null)
+                if (ContentId == 0 && Leader is null)
                 {
+                    // Leaderless check only applies for regular parties.
                     throw new ResponseErrorException(ErrorCode.ERROR_CODE_PARTY_INVITE_FAIL_REASON_NO_LEADER,
                         $"[PartyId:{Id}][Accept] has no leader");
                 }
