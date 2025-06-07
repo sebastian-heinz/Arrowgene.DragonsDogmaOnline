@@ -765,7 +765,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     {
                         foreach (var item in questBlock.DeliveryRequests)
                         {
-                            checkCommands.Add(QuestManager.CheckCommand.HaveItem((int)item.ItemId, (int)item.Amount));
+                            checkCommands.Add(QuestManager.CheckCommand.HaveItemAllBag((int)item.ItemId, (int)item.Amount));
                         }
                     }
                     break;
