@@ -35,7 +35,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             foreach (var questScheduleId in quests)
             {
                 var lightQuest = QuestManager.GetQuestByScheduleId(questScheduleId);
-                if (DateTimeOffset.Now < lightQuest.DistributionStart || DateTimeOffset.Now > lightQuest.DistributionEnd)
+                if (lightQuest.IsDistributionTimed && (DateTimeOffset.Now < lightQuest.DistributionStart || DateTimeOffset.Now > lightQuest.DistributionEnd))
                 {
                     continue;
                 }
