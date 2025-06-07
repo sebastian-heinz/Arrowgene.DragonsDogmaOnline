@@ -3,6 +3,7 @@ using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,7 +61,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     .ToHashSet();
 
                     // Special case to show a shiny early
-                    if (client.QuestState.GetActiveQuestScheduleIds().Contains(60215006) 
+                    if (client.QuestState.GetActiveQuestIds().Contains((QuestId)60215006) 
                         && stage == Stage.FaranaPlains0
                         && request.LayoutId.GroupId == 50
                     )

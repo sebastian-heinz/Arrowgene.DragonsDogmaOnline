@@ -31,7 +31,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             string equipItemUID = request.EquipItemUID;
             var ramItem = character.Storage.FindItemByUIdInStorage(ItemManager.EquipmentStorages, equipItemUID);
             var equipItem = ramItem.Item2.Item2;
-            ClientItemInfo clientItemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
+            ClientItemInfo clientItemInfo = Server.AssetRepository.ClientItemInfos[equipItem.ItemId];
             byte color = request.Color;
             uint craftPawnId = request.CraftMainPawnID;
             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();

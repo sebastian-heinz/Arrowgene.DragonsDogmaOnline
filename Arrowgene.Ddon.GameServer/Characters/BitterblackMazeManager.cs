@@ -514,7 +514,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 itemId = items[Random.Shared.Next(items.Count)];
 
-                var itemRank = ClientItemInfo.GetInfoForItemId(server.AssetRepository.ClientItemInfos, itemId).Rank;
+                var itemRank = server.AssetRepository.ClientItemInfos[itemId].Rank;
                 if (itemRank >= itemRankRange.Min && itemRank <= itemRankRange.Max)
                 {
                     break;

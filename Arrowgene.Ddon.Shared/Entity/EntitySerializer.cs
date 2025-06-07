@@ -1609,6 +1609,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CQuestPlayTimeupNtc.Serializer());
             Create(new S2CQuestQuestCancelNtc.Serializer());
             Create(new S2CQuestQuestCancelRes.Serializer());
+            Create(new S2CQuestQuestCancelForceNtc.Serializer());
+            Create(new S2CQuestQuestCancelSilentNtc.Serializer());
             Create(new S2CQuestQuestCompleteFlagClearRes.Serializer());
             Create(new S2CQuestQuestEnableNtc.Serializer());
             Create(new S2CQuestQuestLogInfoRes.Serializer());

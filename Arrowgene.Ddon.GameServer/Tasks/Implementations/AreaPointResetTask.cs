@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.GameServer.Tasks.Implementations
         {
             Logger.Info("Performing weekly area point reset");
 
-            server.RpcManager.AnnounceAll("internal/packet", RpcInternalCommand.AreaRankResetStart, null);
+            server.RpcManager.AnnounceAll("internal/command", RpcInternalCommand.AreaRankResetStart, null);
 
             List<CDataRewardItemInfo> rewards = new();
             server.Database.ExecuteInTransaction(connection =>
@@ -46,7 +46,7 @@ namespace Arrowgene.Ddon.GameServer.Tasks.Implementations
                 }
             });
 
-            server.RpcManager.AnnounceAll("internal/packet", RpcInternalCommand.AreaRankResetEnd, null);
+            server.RpcManager.AnnounceAll("internal/command", RpcInternalCommand.AreaRankResetEnd, null);
         }
     }
 }

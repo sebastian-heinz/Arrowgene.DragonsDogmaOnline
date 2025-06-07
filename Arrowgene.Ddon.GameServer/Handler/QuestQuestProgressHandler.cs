@@ -208,7 +208,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 long totalScore = (long)(timeScore * playerMult);
                 foreach (var player in client.Party.Clients.Select(x => x.Character.CharacterId).OrderBy(x => Random.Shared.Next()))
                 {
-                    Server.Database.InsertRankRecord(player, (uint)quest.QuestId, totalScore, connectionIn);
+                    Server.Database.InsertRankRecord(player, quest.QuestScheduleId, totalScore, connectionIn);
                 }
             }
 

@@ -58,7 +58,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 foreach (var deliveredItem in deliveredItems.Values)
                 {
                     // Do this check in the transaction so the DB rolls back if something goes wrong.
-                    deliveredItem.NeedNum = (ushort)questState.UpdateDeliveryRequest(deliveredItem.ItemId, deliveredItem.ItemNum);
+                    deliveredItem.NeedNum = (ushort)questState.UpdateDeliveryRequest((ItemId)deliveredItem.ItemId, deliveredItem.ItemNum);
                 }
             });
 

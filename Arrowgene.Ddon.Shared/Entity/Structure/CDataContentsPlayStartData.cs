@@ -15,7 +15,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
         }
 
         public uint KeyId { get; set; }
-        public uint QuestScheudleId {  get; set; }
+        public uint QuestScheduleId {  get; set; }
         public uint QuestId { get; set; }
         public uint BaseLevel { get; set; }
         public byte StartPos {  get; set; }
@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             public override void Write(IBuffer buffer, CDataContentsPlayStartData obj)
             {
                 WriteUInt32(buffer, obj.KeyId);
-                WriteUInt32(buffer, obj.QuestScheudleId);
+                WriteUInt32(buffer, obj.QuestScheduleId);
                 WriteUInt32(buffer, obj.QuestId);
                 WriteUInt32(buffer, obj.BaseLevel);
                 WriteByte(buffer, obj.StartPos);
@@ -51,7 +51,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 CDataContentsPlayStartData obj = new CDataContentsPlayStartData();
                 obj.KeyId = ReadUInt32(buffer);
-                obj.QuestScheudleId = ReadUInt32(buffer);
+                obj.QuestScheduleId = ReadUInt32(buffer);
                 obj.QuestId = ReadUInt32(buffer);
                 obj.BaseLevel = ReadUInt32(buffer);
                 obj.StartPos = ReadByte(buffer);

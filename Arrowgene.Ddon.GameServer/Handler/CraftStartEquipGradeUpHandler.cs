@@ -38,7 +38,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             Item equipItem = ramItem.Item2.Item2;
             uint charid = client.Character.CharacterId;
             uint craftpawnid = request.CraftMainPawnID;
-            ClientItemInfo itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
+            ClientItemInfo itemInfo = Server.AssetRepository.ClientItemInfos[equipItem.ItemId];
 
             // Fetch the crafting recipe data for the item
             CDataMDataCraftGradeupRecipe recipeData = Server.AssetRepository.CraftingGradeUpRecipesAsset
@@ -201,7 +201,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     res = CreateUpgradeResponse(equipItemUID, gearUpgradeID, gradeupList, addEquipPoint, currentTotalEquipPoint, (uint)upgradableStatus, goldRequired, isGreatSuccess,
                         currentEquipInfo, equipItem.ItemId, canContinue, dummydata);
 
-                    var newItem = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, equipItem.ItemId);
+                    var newItem = Server.AssetRepository.ClientItemInfos[equipItem.ItemId];
                     queue.AddRange(Server.AchievementManager.HandleEnhanceItem(client, newItem, connection));
                 }
                 else

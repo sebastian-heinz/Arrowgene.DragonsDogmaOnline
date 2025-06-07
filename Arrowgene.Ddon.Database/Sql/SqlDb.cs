@@ -602,6 +602,10 @@ public abstract class SqlDb : IDatabase
     public abstract List<CDataJobOrderProgress> GetJobMasterActiveOrderProgress(uint characterId, JobId jobId, ReleaseType releaseType, uint releaseId,
         DbConnection? connectionIn = null);
 
+    public abstract bool InsertLightQuestRecord(LightQuestRecord lightQuestRecord, DbConnection? connectionIn = null);
+    public abstract List<LightQuestRecord> SelectLightQuestRecords(DbConnection? connectionIn = null);
+    public abstract bool DeleteLightQuestRecord(uint scheduleId, DbConnection? connectionIn = null);
+
     public abstract bool SetMeta(DatabaseMeta meta);
 
     public abstract bool UpdateCompletedQuest(uint characterCommonId, QuestId questId, QuestType questType, uint count = 1, DbConnection? connectionIn = null);

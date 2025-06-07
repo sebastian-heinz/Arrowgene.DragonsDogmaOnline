@@ -1,6 +1,7 @@
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
+using System;
 using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Asset
@@ -46,6 +47,7 @@ namespace Arrowgene.Ddon.Shared.Asset
         public QuestId QuestId { get; set; }
         public QuestId NextQuestId { get; set; }
         public uint QuestScheduleId { get; set; }
+        public uint VariantIndex { get; set; }
         public QuestAreaId QuestAreaId { get; set; }
         public uint QuestOrderBackgroundImage { get; set; }
         public bool IsImportant { get; set; }
@@ -76,6 +78,9 @@ namespace Arrowgene.Ddon.Shared.Asset
         public HashSet<QuestUnlock> ContentsReleased { get; set; }
         public Dictionary<QuestId, List<QuestFlagInfo>> WorldManageUnlocks { get; set; }
         public List<QuestProgressWork> QuestProgressWork { get; set; }
+
+        public DateTimeOffset DistributionStart { get; set; }
+        public DateTimeOffset DistributionEnd { get; set; }
 
         public QuestAssetData()
         {

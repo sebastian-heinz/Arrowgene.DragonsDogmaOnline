@@ -1,9 +1,11 @@
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.GameServer.Dump;
+using Arrowgene.Ddon.GameServer.Quests.LightQuests;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
 using Arrowgene.Ddon.Shared.Entity.Structure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
 using System.Collections.Generic;
@@ -21,15 +23,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
         public override S2CQuestGetCycleContentsStateListRes Handle(GameClient client, C2SQuestGetCycleContentsStateListReq request)
         {
-#if false
-            /*
-             * @note If something goes wrong, we can always change this preprocessor directive to
-             * true and get back the original functionality before we started to play with this function.
-             */
-            EntitySerializer<S2CQuestJoinLobbyQuestInfoNtc> serializer = EntitySerializer.Get<S2CQuestJoinLobbyQuestInfoNtc>();
-            S2CQuestJoinLobbyQuestInfoNtc pcap = serializer.Read(InGameDump.data_Dump_20A);
-            client.Send(pcap);
-#else
             S2CQuestJoinLobbyQuestInfoNtc pcap = EntitySerializer.Get<S2CQuestJoinLobbyQuestInfoNtc>().Read(InGameDump.data_Dump_20B);
             S2CQuestJoinLobbyQuestInfoNtc ntc = new S2CQuestJoinLobbyQuestInfoNtc();
 
@@ -68,7 +61,31 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 ntc.WorldManageQuestOrderList.Add(customWorldManageQuest.ToCDataWorldManageQuestOrderList(0));
             }
 
-            var allQuestsInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All);
+            List<QuestProgress> allQuestsInProgress = new();
+            List<uint> priorityQuests = new();
+            List<uint> decayedQuests = new();
+            Server.Database.ExecuteInTransaction(connection =>
+            {
+                allQuestsInProgress = Server.Database.GetQuestProgressByType(client.Character.CommonId, QuestType.All, connection);
+                priorityQuests = client.Party is not null ? Server.Database.GetPriorityQuestScheduleIds(client.Party.Leader.Client.Character.CommonId, connection) : new();
+
+                decayedQuests = Server.LightQuestManager.HandleQuestDecay(client.Character, allQuestsInProgress, priorityQuests, connection).ToList();
+            });
+
+            foreach(var decayedScheduleId in decayedQuests)
+            {
+                var quest = QuestManager.GetQuestByScheduleId(decayedScheduleId);
+                if (quest is null)
+                {
+                    continue;
+                }
+                ntc.ExpiredQuestList.Add(new()
+                {
+                    QuestId = quest.QuestId,
+                    QuestScheduleId = quest.QuestScheduleId,
+                });
+            }
+
             foreach (var questProgress in allQuestsInProgress)
             {
                 var quest = QuestManager.GetQuestByScheduleId(questProgress.QuestScheduleId);
@@ -100,7 +117,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (client.Party != null)
             {
-                var priorityQuests = Server.Database.GetPriorityQuestScheduleIds(client.Party.Leader.Client.Character.CommonId);
                 foreach (var questScheduleId in priorityQuests)
                 {
                     var quest = QuestManager.GetQuestByScheduleId(questScheduleId);
@@ -117,11 +133,18 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 }
             }
 
-            client.Send(ntc);
-#endif
-            return new();
+            if (decayedQuests.Count > 0)
+            {
+                client.Send(new S2CLobbyChatMsgNotice()
+                {
+                    Type = LobbyChatMsgType.ManagementAlertC,
+                    Message = "A quest has been canceled because the\ndelivery time period has ended."
+                });
+            }
 
-            // client.Send(InGameDump.Dump_24);
+            client.Send(ntc);
+
+            return new();
         }
     }
 }

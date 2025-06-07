@@ -61,7 +61,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
             if (request.EquipToCharacter == 1)
             {
-                var itemInfo = ClientItemInfo.GetInfoForItemId(Server.AssetRepository.ClientItemInfos, ntc.UpdateItemList[0].ItemList.ItemId);
+                var itemInfo = Server.AssetRepository.ClientItemInfos[ntc.UpdateItemList[0].ItemList.ItemId];
                 var equipInfo = new CDataCharacterEquipInfo()
                 {
                     EquipItemUId = ntc.UpdateItemList[0].ItemList.ItemUId,

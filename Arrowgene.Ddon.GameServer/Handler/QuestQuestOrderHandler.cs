@@ -1,7 +1,10 @@
+using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
+using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
 {
@@ -25,12 +28,23 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return res;
             }
 
-            questStateManager.AddNewQuest(quest, 0);
-            res.QuestProcessStateList.AddRange(quest.ToCDataQuestList(0).QuestProcessStateList);
+            var process = quest.ToCDataQuestList(0).QuestProcessStateList;
+
+            if (QuestManager.IsBoardQuest(quest.QuestId))
+            {
+                // Force an accept announce on the first step to make the UI happy.
+                process.First().ResultCommandList.Add(QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Accept, 1));
+                Server.Database.InsertQuestProgress(client.Character.CommonId, quest.QuestScheduleId, quest.QuestType, 1);
+                questStateManager.AddNewQuest(quest, 1);
+            }
+            else
+            {
+                questStateManager.AddNewQuest(quest, 0);
+            }
+
+            res.QuestProcessStateList.AddRange(process);
 
             return res;
-
-            // TODO: Investigate why the quest board UI fails to update promptly.
         }
     }
 }

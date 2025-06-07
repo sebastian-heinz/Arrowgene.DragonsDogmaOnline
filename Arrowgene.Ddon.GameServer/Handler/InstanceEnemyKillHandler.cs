@@ -266,7 +266,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             // TODO: EnemyId and KillNum
             return new S2CInstanceEnemyKillRes()
             {
-                EnemyId = packet.IsNoBattleReward ? 0u : enemyKilled.Id,
+                EnemyId = packet.IsNoBattleReward ? 0u : enemyKilled.EnemyId,
                 KillNum = packet.IsNoBattleReward ? 0u : 1u
             };
 

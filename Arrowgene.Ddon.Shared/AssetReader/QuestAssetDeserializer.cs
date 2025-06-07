@@ -17,11 +17,13 @@ namespace Arrowgene.Ddon.Shared.AssetReader
 
         private QuestDropItemAsset _QuestDrops;
         private AssetCommonDeserializer _CommonEnemyDeserializer;
+        private Dictionary<QuestId, uint> _QuestScheduleIdAsset;
 
-        public QuestAssetDeserializer(AssetCommonDeserializer commonEnemyDeserializer, QuestDropItemAsset questDrops)
+        public QuestAssetDeserializer(AssetCommonDeserializer commonEnemyDeserializer, QuestDropItemAsset questDrops, Dictionary<QuestId, uint> scheduleIdAsset)
         {
             _QuestDrops = questDrops;
             _CommonEnemyDeserializer = commonEnemyDeserializer;
+            _QuestScheduleIdAsset = scheduleIdAsset;
 
             // Force this class to be invoked so we can look up flags during deserialization
             QuestFlags.InvokeTypeInitializer();
@@ -113,13 +115,29 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 assetData.NextQuestId = (QuestId)jNextQuest.GetUInt32();
             }
 
-            assetData.QuestScheduleId = (uint) assetData.QuestId;
-            if (jQuest.TryGetProperty("quest_schedule_id", out JsonElement jQuestScheduleId))
+            assetData.VariantIndex = 0;
+            if (jQuest.TryGetProperty("variant_index", out JsonElement jVariantIndex))
             {
-                assetData.QuestScheduleId = jQuestScheduleId.GetUInt32();
+                assetData.VariantIndex = jVariantIndex.GetUInt32();
             }
 
-            assetData.OverrideEnemySpawn = (assetData.QuestType == QuestType.Main || assetData.QuestType == QuestType.ExtremeMission);
+            if (assetData.VariantIndex > 127)
+            {
+                Logger.Error($"Invalid variant number {assetData.VariantIndex} > 127 for quest {assetData.QuestId}.");
+                return false;
+            }
+
+            if (_QuestScheduleIdAsset.TryGetValue(assetData.QuestId, out var baseScheduleId))
+            {
+                assetData.QuestScheduleId = baseScheduleId + assetData.VariantIndex;
+            }
+            else
+            {
+                Logger.Error($"Missing base scheduleId in asset for quest {assetData.QuestId}.");
+                return false;
+            }
+
+                assetData.OverrideEnemySpawn = (assetData.QuestType == QuestType.Main || assetData.QuestType == QuestType.ExtremeMission);
             if (jQuest.TryGetProperty("override_enemy_spawn", out JsonElement jOverrideEnemySpawn))
             {
                 assetData.OverrideEnemySpawn = jOverrideEnemySpawn.GetBoolean();
@@ -497,7 +515,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     {
                         questBlock.HandPlayerItems.Add(new QuestItem()
                         {
-                            ItemId = item.GetProperty("id").GetUInt32(),
+                            ItemId = (ItemId)item.GetProperty("id").GetUInt32(),
                             Amount = item.GetProperty("amount").GetUInt32()
                         });
                     }
@@ -509,7 +527,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                     {
                         questBlock.ConsumePlayerItems.Add(new QuestItem()
                         {
-                            ItemId = item.GetProperty("id").GetUInt32(),
+                            ItemId = (ItemId)item.GetProperty("id").GetUInt32(),
                             Amount = item.GetProperty("amount").GetUInt32()
                         });
                     }
@@ -759,7 +777,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             {
                                 questBlock.DeliveryRequests.Add(new QuestItem()
                                 {
-                                    ItemId = item.GetProperty("id").GetUInt32(),
+                                    ItemId = (ItemId)item.GetProperty("id").GetUInt32(),
                                     Amount = item.GetProperty("amount").GetUInt32()
                                 });
                             }
@@ -803,12 +821,12 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             var enemyIdString = jblock.GetProperty("enemy_id").GetString();
                             if (enemyIdString.Contains('x'))
                             {
-                                var enemyId = Convert.ToUInt32(enemyIdString, 16);
-                                questBlock.TargetEnemy.EnemyId = Enemy.NameMap[enemyId];
+                                var enemyId = (EnemyId)Convert.ToUInt32(enemyIdString, 16);
+                                questBlock.TargetEnemy.EnemyId = enemyId.GetUIId();
                             }
                             else
                             {
-                                questBlock.TargetEnemy.EnemyId = Convert.ToUInt32(enemyIdString);
+                                questBlock.TargetEnemy.EnemyId = (EnemyUIId)Convert.ToUInt32(enemyIdString);
                             }
 
                             questBlock.TargetEnemy.Level = jblock.GetProperty("level").GetUInt32();
@@ -827,7 +845,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                             {
                                 questBlock.DeliveryRequests.Add(new QuestItem()
                                 {
-                                    ItemId = item.GetProperty("id").GetUInt32(),
+                                    ItemId = (ItemId)item.GetProperty("id").GetUInt32(),
                                     Amount = item.GetProperty("amount").GetUInt32()
                                 });
                             }
