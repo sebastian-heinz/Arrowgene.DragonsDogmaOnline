@@ -203,5 +203,62 @@ namespace Arrowgene.Ddon.Server.Settings
             }
         }
         private const uint _ValentinesEventYear = 2017;
+
+        /// <summary>
+        /// Used to determine if the Summer Seasonal event is enabled or not.
+        /// </summary>
+        [DefaultValue(_EnableSummerEvent)]
+        public bool EnableSummerEvent
+        {
+            set
+            {
+                SetSetting("EnableSummerEvent", value);
+            }
+            get
+            {
+                return TryGetSetting("EnableSummerEvent", _EnableSummerEvent);
+            }
+        }
+        private const bool _EnableSummerEvent = true;
+
+        /// <summary>
+        /// The daterange that the Summer event should be available
+        /// if EnableSummerEvent is set to true. The format is in MM/DD.
+        /// </summary>
+        [DefaultValue("LibUtils.EventTimespan(\"7/1\", \"8/31\")")]
+        public (DateTime StartDate, DateTime EndDate) SummerEventValidPeriod
+        {
+            set
+            {
+                SetSetting("SummerEventValidPeriod", value);
+            }
+            get
+            {
+                return TryGetSetting("SummerEventValidPeriod", LibUtils.EventTimespan("7/1", "8/31"));
+            }
+        }
+
+        /// <summary>
+        /// This option configures which version will be used when
+        /// the setting EnableSummerEvent is set to true.
+        /// 
+        /// 2018
+        /// - Summer! Beach Festival (1)
+        /// - Summer! Beach Festival (2)
+        /// 
+        /// </summary>
+        [DefaultValue(_SummerEventYear)]
+        public uint SummerEventYear
+        {
+            set
+            {
+                SetSetting("SummerEventYear", value);
+            }
+            get
+            {
+                return TryGetSetting("SummerEventYear", _SummerEventYear);
+            }
+        }
+        private const uint _SummerEventYear = 2018;
     }
 }

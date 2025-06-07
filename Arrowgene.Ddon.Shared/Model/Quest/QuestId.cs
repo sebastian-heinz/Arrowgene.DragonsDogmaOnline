@@ -219,6 +219,10 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         ArmsWithThePowerOfTheDragon1 = 61000001,
         ArmsWithThePowerOfTheDragon2 = 61000002,
 
+        SummerBeachFestival1 = 60200033,
+        SummerBeachFestival2 = 60200034,
+        SummerBeachFestivalDecorations = 60200035,
+
         // World Manage Quests
         /// Season 1?
         Q70000001 = 70000001,

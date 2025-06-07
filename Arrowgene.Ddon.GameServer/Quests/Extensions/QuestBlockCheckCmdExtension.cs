@@ -659,5 +659,19 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             questBlock.CheckCommands[commandListIndex].AddCheckCommandIsTutorialQuestOrder(questId);
             return questBlock;
         }
+
+        public static QuestBlock AddCheckCmdIsEquip(this QuestBlock questBlock, ItemId itemId, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCommandIsEquip(itemId);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdIsTakePicturesNpc(this QuestBlock questBlock, StageInfo stageInfo, NpcId npcId0, NpcId npcId1 = NpcId.None, NpcId npcId2 = NpcId.None, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCommandIsTakePicturesNpc(stageInfo, npcId0, npcId1, npcId2);
+            return questBlock;
+        }
     }
 }
