@@ -64,13 +64,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
 
                 var questOrder = quest.ToCDataQuestOrderList(questState.Step);
 
-                //if (quest.BackingObject is LightQuestHuntQuest lightBackingObject 
-                //    && questOrder.QuestProcessStateList.FirstOrDefault()?.WorkList.ElementAtOrDefault(0) != null)
-                //{
-                //    var huntRecord = questState.HuntRecords.Values.FirstOrDefault();
-                //    questOrder.QuestProcessStateList.FirstOrDefault().WorkList[0] = lightBackingObject.StepAsWork((huntRecord?.AmountHunted ?? 0) + 1);
-                //}
-
                 pcap.QuestOrderList.Add(questOrder);
             }
 

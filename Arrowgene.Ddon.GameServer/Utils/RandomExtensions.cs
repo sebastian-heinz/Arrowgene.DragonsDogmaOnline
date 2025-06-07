@@ -70,6 +70,25 @@ namespace Arrowgene.Ddon.GameServer.Utils
         }
 
         /// <summary>
+        /// Random geometric variates.
+        /// </summary>
+        /// <param name="rnd"></param>
+        /// <param name="p"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public static int NextGeometric(this Random rnd, double p)
+        {
+            if (p <= 0 || p > 1)
+            {
+                throw new ArgumentException("Invalid probability for geometric distribution. (0 < p <= 1)");
+            }
+            double u = rnd.NextDouble();
+            double lnu = Math.Log(u);
+            double lnp = Math.Log(1 - p);
+            return (int)Math.Floor(lnu / lnp);
+        }
+
+        /// <summary>
         /// Choose from a list of objects according to their weights.
         /// </summary>
         /// <typeparam name="T"></typeparam>

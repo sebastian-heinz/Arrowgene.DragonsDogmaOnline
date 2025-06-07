@@ -33,7 +33,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
             }
         }
 
-        public (EnemyUIId EnemyId, ushort Level) Roll(HashSet<EnemyUIId> exceptions = null)
+        public LightQuestAreaHuntSummaryRecord Roll(HashSet<EnemyUIId> exceptions = null)
         {
             var enemies = HuntRecords.Values.Where(x => exceptions is null || !exceptions.Contains(x.EnemyUIId)).ToList();
             var weights = enemies.Select(x => x.Weight).ToList();
@@ -41,13 +41,13 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
             if (enemies.Count == 0)
             {
                 // Failure; no valid enemies.
-                return (0, 0);
+                return null;
             }
 
             var chosenRecord = Random.Shared.ChooseWeighted(enemies, weights);
             var chosenLevel = chosenRecord.RollLevel();
 
-            return (chosenRecord.EnemyUIId, chosenLevel);
+            return chosenRecord;
         }
 
     }
@@ -62,6 +62,8 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
         public HashSet<ushort> ExtantLevels { get; set; }
         public double MeanLevel { get; set; }
         public double StdLevel { get; set; }
+
+        public double Difficulty { get { return ((double)BossCount) / Count; } }
 
         private List<(ushort Level, bool IsBoss)> EnemyData { get; set; } = [];
 
@@ -95,8 +97,11 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
 
         public ushort RollLevel()
         {
-            double randNormal = Random.Shared.NextNormal(MeanLevel, StdLevel);
-            ushort chosenLevel = (ushort)Math.Round(Math.Clamp(randNormal, ExtantLevels.Min(), ExtantLevels.Max()));
+            uint minLevel = ExtantLevels.Min();
+            double p = 1.0 / (1 + MeanLevel - minLevel);
+            long randGeo = Random.Shared.NextGeometric(p) + minLevel;
+            //double randNormal = Random.Shared.NextNormal(MeanLevel, StdLevel);
+            ushort chosenLevel = (ushort)Math.Clamp(randGeo, ExtantLevels.Min(), ExtantLevels.Max());
             if (!ExtantLevels.Contains(chosenLevel))
             {
                 // Round down to the next lowest extant level

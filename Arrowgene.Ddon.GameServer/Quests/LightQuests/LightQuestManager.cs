@@ -132,16 +132,16 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
             int attempt = 0;
             while (attempt < GENERATOR_ATTEMPTS_PER_QUEST)
             {
-                List<(EnemyUIId, ushort)> biasRolls = [];
+                List<(LightQuestAreaHuntSummaryRecord Record, ushort Level)> biasRolls = [];
                 for (int biasRoll = 0; biasRoll <= generatingAsset.BiasRerolls; biasRoll++)
                 {
-                    var (rollEnemy, rollLevel) = summary.Roll(rolledEnemyIds);
-                    if (rollEnemy == 0)
+                    var rollRecord = summary.Roll(rolledEnemyIds);
+                    if (rollRecord is null)
                     {
                         Logger.Error($"Error in generator {generatingAsset.Name}; no valid enemies for region.");
                         break;
                     }
-                    biasRolls.Add((rollEnemy, rollLevel));
+                    biasRolls.Add((rollRecord, rollRecord.RollLevel()));
                 }
 
                 if (biasRolls.Count == 0)
@@ -153,19 +153,23 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
 
                 if (generatingAsset.BiasLower)
                 {
-                    biasRolls = biasRolls.OrderBy(x => x.Item2).ToList();
+                    biasRolls = [.. biasRolls.OrderBy(x => x.Level)];
                 }
                 else
                 {
-                    biasRolls = biasRolls.OrderByDescending(x => x.Item2).ToList();
+                    biasRolls = [.. biasRolls.OrderByDescending(x => x.Level)];
                 }
 
-                var chosenRoll = biasRolls.First();
+                var (chosenRecord, chosenLevel) = biasRolls.First();
 
-                if (generatingAsset.MinLevel <= chosenRoll.Item2 && chosenRoll.Item2 <= generatingAsset.MaxLevel)
+                if (generatingAsset.MinLevel <= chosenLevel && chosenLevel <= generatingAsset.MaxLevel)
                 {
                     var mixin = Server.ScriptManager.MixinModule.Get<ILightQuestRewardMixin>("light_hunt_quest_reward");
-                    finalRecord = FinalizeRecord(quest, generatingAsset, (int)chosenRoll.Item1, chosenRoll.Item2, mixin); 
+                    finalRecord = FinalizeRecord(quest, generatingAsset, (int)chosenRecord.EnemyUIId, chosenLevel, mixin, chosenRecord.Difficulty);
+
+                    // Adjustment of count for boss hunts; applies after the rewards are counted.
+                    finalRecord.Count = (int)Math.Pow(finalRecord.Count, 1.0 / (1 + chosenRecord.Difficulty));
+
                     break;
                 }
 
@@ -233,7 +237,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
             return finalRecord;
         }
 
-        private LightQuestRecord FinalizeRecord(LightQuestInfo quest, LightQuestGeneratingAsset generatingAsset, int target, ushort level, ILightQuestRewardMixin mixin)
+        private LightQuestRecord FinalizeRecord(LightQuestInfo quest, LightQuestGeneratingAsset generatingAsset, int target, ushort level, ILightQuestRewardMixin mixin, double difficulty = 0.0)
         {
             var finalRecord = new LightQuestRecord()
             {
@@ -246,10 +250,10 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
                 DistributionEnd = DateTimeOffset.UtcNow + BOARD_QUEST_DURATION
             };
 
-            finalRecord.RewardG = mixin.CalculateRewardG(finalRecord);
-            finalRecord.RewardR = mixin.CalculateRewardR(finalRecord);
-            finalRecord.RewardXP = mixin.CalculateRewardXP(finalRecord);
-            finalRecord.RewardAP = mixin.CalculateRewardAP(finalRecord);
+            finalRecord.RewardG = mixin.CalculateRewardG(finalRecord, difficulty);
+            finalRecord.RewardR = mixin.CalculateRewardR(finalRecord, difficulty);
+            finalRecord.RewardXP = mixin.CalculateRewardXP(finalRecord, difficulty);
+            finalRecord.RewardAP = mixin.CalculateRewardAP(finalRecord, difficulty);
 
             string targetString = quest.Type == LightQuestType.Hunt ? ((EnemyUIId)target).ToString() : ((ItemId)target).ToString();
 
@@ -587,7 +591,8 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
             Stage.GardnoxWastewaterTunnel,
             Stage.PitofScreams,
             Stage.MysteriousMausoleum,
-            Stage.SecretProvingGround
+            Stage.SecretProvingGround,
+            Stage.HidellCatacombs1
         }.Select(x => x.StageId).ToHashSet();
 
         private static readonly HashSet<ItemSubCategory> DeliverableSubCategories =

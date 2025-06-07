@@ -15,7 +15,7 @@ public class Mixin : ILightQuestRewardMixin
         // More generous at most levels, less generous at the jumps.
         double baseXP = 1.150 * Math.Pow(level, 2.0) + 100;
 
-        double difficultyFactor = difficulty * 7.0 + 1.0;
+        double difficultyFactor = difficulty * 9.0 + 1.0;
 
         return (uint)(baseXP * adjustedCount * difficultyFactor);
     }

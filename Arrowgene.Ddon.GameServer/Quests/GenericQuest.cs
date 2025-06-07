@@ -272,10 +272,10 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             foreach (var item in questBlock.ConsumePlayerItems)
             {
-                ItemId itemId = (ItemId) item.ItemId;
+                ItemId itemId = item.ItemId;
                 if (itemId.IsKeyItem())
                 {
-                    var items = client.Character.Storage.GetStorage(StorageType.KeyItems).FindItemsById(item.ItemId);
+                    var items = client.Character.Storage.GetStorage(StorageType.KeyItems).FindItemsById((uint)item.ItemId);
                     if (items.Count == 0)
                     {
                         Logger.Error(client, $"The quest {QuestId} was expecting the key item '{itemId}' to be present, but it doesn't exist in the players inventory. Skipping.");
@@ -751,15 +751,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     {
                         // Handles kill x amount of monster type quests
                         checkCommands.Add(QuestManager.CheckCommand.EmDieLight((int)questBlock.TargetEnemy.EnemyId, (int)questBlock.TargetEnemy.Level, (int)questBlock.TargetEnemy.Amount));
-                        //workCommands.Add(
-                        //    new CDataQuestProgressWork()
-                        //    {
-                        //        CommandNo = (uint)QuestNotifyCommand.KilledEnemyLight,
-                        //        Work01 = (int)questBlock.TargetEnemy.EnemyId,
-                        //        Work02 = (int)questBlock.TargetEnemy.Level,
-                        //        Work03 = 0,
-                        //        Work04 = 0,
-                        //    });
                     }
                     break;
                 case QuestBlockType.DeliverItemsLight:
