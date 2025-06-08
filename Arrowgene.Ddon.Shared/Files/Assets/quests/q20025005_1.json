@@ -1,0 +1,114 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Huge Armored Creature Appears!",
+  "quest_id": 20025005,
+  "base_level": 41,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "BetlandPlains",
+  "news_image": 521,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1120
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 200
+    },
+    {
+      "type": "exp",
+      "amount": 1430
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 9288,
+          "num": 1
+        },
+        {
+          "item_id": 9389,
+          "num": 1
+        },
+        {
+          "item_id": 9416,
+          "num": 2
+        }
+      ]
+    },
+    {
+      "type": "random",
+      "loot_pool": [
+        {
+          "item_id": 8007,
+          "num": 2,
+          "chance": 0.6
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 120,
+        "group_id": 3
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "enemy_id": "0x015002",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 56,
+          "level": 41,
+          "exp": 6590,
+          "is_boss": true,
+          "index": 10
+        },
+        {
+          "enemy_id": "0x010309",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 54,
+          "level": 41,
+          "exp": 4200,
+          "is_boss": false,
+          "index": 8
+        },
+        {
+          "enemy_id": "0x010309",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 54,
+          "level": 41,
+          "exp": 4200,
+          "is_boss": false,
+          "index": 9
+        },
+        {
+          "enemy_id": "0x010309",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 54,
+          "level": 41,
+          "exp": 4200,
+          "is_boss": false,
+          "index": 7
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

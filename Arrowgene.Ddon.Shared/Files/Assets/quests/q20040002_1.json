@@ -1,0 +1,99 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Territorial Dispute",
+  "quest_id": 20040002,
+  "base_level": 30,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "VoldenMines",
+  "news_image": 81,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1780
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 190
+    },
+    {
+      "type": "exp",
+      "amount": 2490
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 9429,
+          "num": 3
+        },
+        {
+          "item_id": 9374,
+          "num": 3
+        },
+        {
+          "item_id": 9413,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 185
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          "enemy_id": "0x015100",
+          "start_think_tbl_no": 2,
+		      "named_enemy_params_id": 470,
+          "level": 30,
+          "exp": 5446,
+          "is_boss": true,
+          "index": 0
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 95,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Gilstan",
+      "message_id": 11830
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 95,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Gilstan",
+      "message_id": 11835
+    }
+  ]
+}

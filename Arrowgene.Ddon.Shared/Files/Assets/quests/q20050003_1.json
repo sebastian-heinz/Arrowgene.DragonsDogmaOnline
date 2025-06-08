@@ -1,0 +1,171 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Defending Lynwood",
+  "quest_id": 20050003,
+  "base_level": 20,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "MysreeForest",
+  "news_image": 102,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 550
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 100
+    },
+    {
+      "type": "exp",
+      "amount": 790
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 77,
+          "num": 1
+        },
+        {
+          "item_id": 176,
+          "num": 1
+        },
+        {
+          "item_id": 277,
+          "num": 1
+        },
+        {
+          "item_id": 9371,
+          "num": 3
+        },
+        {
+          "item_id": 45,
+          "num": 2
+        }
+      ]
+    },
+    {
+      "type": "random",
+      "loot_pool": [
+        {
+          "item_id": 34,
+          "num": 2,
+          "chance": 1.0
+        },
+        {
+          "item_id": 41,
+          "num": 2,
+          "chance": 1.0
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 60
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x010401",
+          "named_enemy_params_id": 53,
+          "level": 17,
+          "exp": 346,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010401",
+          "named_enemy_params_id": 53,
+          "level": 17,
+          "exp": 346,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010401",
+          "named_enemy_params_id": 53,
+          "level": 17,
+          "exp": 346,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010401",
+          "named_enemy_params_id": 53,
+          "level": 17,
+          "exp": 346,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x010401",
+          "named_enemy_params_id": 53,
+          "level": 17,
+          "exp": 346,
+          "is_boss": false
+        }
+      ]
+    },
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 72
+      },
+      "enemies": [
+        {
+          "comment": "troll",
+          "enemy_id": "0x015040",
+          "named_enemy_params_id": 54,
+          "level": 20,
+          "exp": 1336,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 1,
+        "group_id": 0
+      },
+      "npc_id": "Gash",
+      "message_id": 11830
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Update",
+      "groups": [ 1 ]
+    },
+    {
+      "type": "KillGroup",
+      "reset_group": false,
+      "groups": [ 1 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 1,
+        "group_id": 0
+      },
+      "announce_type": "Update",
+      "npc_id": "Gash",
+      "message_id": 11835
+    }
+  ]
+}

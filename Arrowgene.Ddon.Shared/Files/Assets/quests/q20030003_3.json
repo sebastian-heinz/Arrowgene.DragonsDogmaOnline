@@ -1,0 +1,104 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Timeless Castle",
+  "quest_id": 20030003,
+  "base_level": 58,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "DoweValley",
+  "news_image": 71,
+  "variant_index": 3,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 3340
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1910
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 380
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Crest of Incineration",
+          "item_id": 7763,
+          "num": 1
+        },
+        {
+          "comment": "Exquisite Fried Meat",
+          "item_id": 7929,
+          "num": 1
+        },
+        {
+          "comment": "Three-Herb Salad",
+          "item_id": 7799,
+          "num": 1
+        }
+      ]
+  
+  }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 69,
+        "group_id": 19
+      },
+      "placement_type": "manual",
+      "enemies": [
+        
+        {
+          "enemy_id": "0x015709",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 57,
+          "level": 58,
+          "exp": 26700,
+          "is_boss": true,
+          "index": 2
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 42,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Urda",
+      "message_id": 11372
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 42,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Urda",
+      "message_id": 11842
+    }
+  ]
+}

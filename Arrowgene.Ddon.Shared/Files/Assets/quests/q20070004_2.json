@@ -1,0 +1,106 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Perfect Warrior",
+  "quest_id": 20070004,
+  "base_level": 56,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "NorthernBetlandPlains",
+  "news_image": 151,
+  "variant_index": 2,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 2210
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1540
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 390
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 9438,
+          "num": 1
+        },
+        {
+          "item_id": 7740,
+          "num": 1
+        },
+        {
+          "item_id": 7924,
+          "num": 3
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 68,
+        "group_id": 9
+      },
+      "enemies": [
+        
+        {
+          "enemy_id": "0x015002",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 56,
+          "level": 56,
+          "exp": 21700,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 1066,
+          "comment": "Spawns Lent NPC"
+        }
+      ],
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Lent",
+      "message_id": 11372
+    },
+    {
+      "type": "SeekOutEnemiesAtMarkedLocation",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Lent",
+      "message_id": 11842
+    }
+  ]
+}
