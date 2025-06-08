@@ -101,7 +101,7 @@
     3239
     3240
     3241
-    3301
+    3301 // Special Skill Augmentation
     3403
     3414
     3483

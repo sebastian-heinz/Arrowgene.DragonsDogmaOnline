@@ -532,6 +532,12 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return checkCommands;
         }
 
+        public static List<CDataQuestCommand> AddCheckCmdIsReleaseWarpPointAnyone(this List<CDataQuestCommand> checkCommands, int warpPointId)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.IsReleaseWarpPointAnyone(warpPointId));
+            return checkCommands;
+        }
+
         public static List<CDataQuestCommand> AddCheckCmdOrderDecide(this List<CDataQuestCommand> checkCommands, NpcId npcId)
         {
             checkCommands.Add(QuestManager.CheckCommand.OrderDecide(npcId));
@@ -613,6 +619,18 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
         public static List<CDataQuestCommand> AddCheckCommandIsTakePicturesNpc(this List<CDataQuestCommand> checkCommands, StageInfo stageInfo, NpcId npcId0, NpcId npcId1, NpcId npcId2)
         {
             checkCommands.Add(QuestManager.CheckCommand.IsTakePicturesNpc(stageInfo.StageNo, (int)npcId0, (int)npcId1, (int)npcId2));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdNewTalkNpc(this List<CDataQuestCommand> checkCommands, StageInfo stageInfo, int groupNo, int setNo, QuestId questId)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.NewTalkNpc(stageInfo.StageNo, groupNo, setNo, (int) questId));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdNewTalkNpcWithoutMarker(this List<CDataQuestCommand> checkCommands, StageInfo stageInfo, int groupNo, int setNo, QuestId questId)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.NewTalkNpcWithoutMarker(stageInfo.StageNo, groupNo, setNo, (int)questId));
             return checkCommands;
         }
     }
