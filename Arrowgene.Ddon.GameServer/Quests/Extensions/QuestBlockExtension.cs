@@ -497,6 +497,20 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return block;
         }
 
+        public static QuestBlock AddRemoveGroupBlock(this QuestProcess process, QuestAnnounceType announceType, List<uint> groupIds)
+        {
+            var block = CreateGenericBlock(process.QuestScheduleId, 0, 0, QuestBlockType.DestroyGroup, announceType)
+                .SetResetGroup(true)
+                .AddEnemyGroupIds(groupIds);
+            process.AddBlock(block);
+            return block;
+        }
+
+        public static QuestBlock AddRemoveGroupBlock(this QuestProcess process, QuestAnnounceType announceType, uint groupId)
+        {
+            return AddRemoveGroupBlock(process, announceType, [groupId]);
+        }
+
         // QuestBlock PseudoCommand Functions
         public static QuestBlock AddCallback(this QuestBlock questBlock, Action<QuestCallbackParam> callback)
         {

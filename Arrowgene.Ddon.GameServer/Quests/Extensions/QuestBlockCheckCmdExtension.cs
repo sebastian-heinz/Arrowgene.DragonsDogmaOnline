@@ -673,5 +673,26 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             questBlock.CheckCommands[commandListIndex].AddCheckCommandIsTakePicturesNpc(stageInfo, npcId0, npcId1, npcId2);
             return questBlock;
         }
+
+        public static QuestBlock AddCheckCmdIsReleaseWarpPointAnyone(this QuestBlock questBlock, int warpPointId, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdIsReleaseWarpPointAnyone(warpPointId);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCommandNewTalkNpc(this QuestBlock questBlock, StageInfo stageInfo, int groupNo, int setNo, QuestId questId = QuestId.None, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdNewTalkNpc(stageInfo, groupNo, setNo, questId);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdNewTalkNpcWithoutMarker(this QuestBlock questBlock, StageInfo stageInfo, int groupNo, int setNo, QuestId questId = QuestId.None, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdNewTalkNpcWithoutMarker(stageInfo, groupNo, setNo, questId);
+            return questBlock;
+        }
     }
 }

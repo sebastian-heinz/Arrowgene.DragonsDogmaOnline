@@ -110,12 +110,6 @@ namespace Arrowgene.Ddon.Shared.Model
             return this;
         }
 
-        public InstancedEnemy SetRepopWaitSecond(uint repopWaitSecond)
-        {
-            RepopWaitSecond = repopWaitSecond;
-            return this;
-        }
-
         public InstancedEnemy SetNamedEnemyParams(NamedParam namedParam)
         {
             NamedEnemyParams = namedParam;
@@ -159,9 +153,31 @@ namespace Arrowgene.Ddon.Shared.Model
             return this;
         }
 
-        public InstancedEnemy SetRepoCount(byte repopCount)
+        public InstancedEnemy SetRepopCount(byte repopCount)
         {
             RepopCount = repopCount;
+            return this;
+        }
+
+        public InstancedEnemy SetRepopWaitSecond(uint repopWaitSecond)
+        {
+            RepopWaitSecond = repopWaitSecond;
+            return this;
+        }
+
+        public InstancedEnemy SetRepopConditions(byte repopCount, uint waitTimeInSections)
+        {
+            RepopNum = 0;
+            RepopCount = repopCount;
+            RepopWaitSecond = waitTimeInSections;
+            return this;
+        }
+
+        public InstancedEnemy SetRespawnConditions(byte repopCount, uint repopWaitSeconds)
+        {
+            SetRepopWaitSecond(repopWaitSeconds);
+            SetRepopCount(repopCount);
+            SetRepopNum(0);
             return this;
         }
 
