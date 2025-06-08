@@ -57,7 +57,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 // Handle players who had existing skills before they were locked
                 var existing = client.Character.LearnedCustomSkills.Where(x => x.SkillId == releaseId && x.Job == jobId).FirstOrDefault();
-                if (existing == null)
+                if (existing == null && client.Character.CharacterJobDataList.Any(x => x.Job == jobId))
                 {
                     Server.JobManager.UnlockCustomSkill(client, client.Character, jobId, releaseId, 1, connectionIn);
                 }
