@@ -1,0 +1,150 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "A Petition to Rid of Demons in Ruins",
+  "quest_id": 20000004,
+  "base_level": 16,
+  "minimum_item_rank": 0,
+  "area_id": "HidellPlains",
+  "news_image": 13,
+  "discoverable": true,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 870
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 520
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 70
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Dull Iron Ingot",
+          "item_id": 7872,
+          "num": 3
+        },
+        {
+          "comment": "Recovery Decoction",
+          "item_id": 9373,
+          "num": 2
+        },
+        {
+          "item_id": 55,
+          "num": 2
+      }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 88,
+        "group_id": 5
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x010300",
+          "start_think_tbl_no": 2,
+          "named_enemy_params_id": 54,
+          "level": 16,
+          "exp": 310
+        },
+        {
+          "enemy_id": "0x010300",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 54,
+          "level": 16,
+          "exp": 310
+        },
+        {
+          "enemy_id": "0x010300",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 54,
+          "level": 16,
+          "exp": 310
+        },
+        {
+          "enemy_id": "0x010300",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 54,
+          "level": 16,
+          "exp": 310
+        },
+        {
+          "enemy_id": "0x010300",
+          "start_think_tbl_no": 2,
+          "named_enemy_params_id": 54,
+          "level": 16,
+          "exp": 310
+        },
+        {
+          "enemy_id": "0x010300",
+          "start_think_tbl_no": 2,
+          "named_enemy_params_id": 54,
+          "level": 16,
+          "exp": 310
+        },
+        {
+          "enemy_id": "0x010300",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 54,
+          "level": 16,
+          "exp": 310
+        },
+        {
+          "enemy_id": "0x010300",
+          "start_think_tbl_no": 2,
+          "named_enemy_params_id": 54,
+          "level": 16,
+          "exp": 310
+        },
+        {
+          "enemy_id": "0x010300",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 54,
+          "level": 16,
+          "exp": 310
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NpcTalkAndOrder",
+      "stage_id": {
+        "id": 3
+      },
+      "npc_id": "Joseph",
+      "message_id": 10714
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "TalkToNpc",
+      "stage_id": {
+        "id": 3
+      },
+      "announce_type": "Update",
+      "npc_id": "Joseph",
+      "message_id": 10718
+    }
+  ]
+}

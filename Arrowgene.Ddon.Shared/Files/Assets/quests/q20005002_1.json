@@ -1,0 +1,111 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Ambush In The Wells Depths",
+  "quest_id": 20005002,
+  "base_level": 11,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "HidellPlains",
+  "news_image": 501,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 520
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 30
+    },
+    {
+      "type": "exp",
+      "amount": 660
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 489,
+          "num": 1
+        },
+        {
+          "item_id": 9368,
+          "num": 2
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 134,
+        "group_id": 0
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015800",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 458,
+          "level": 12,
+          "exp": 186,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015800",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 458,
+          "level": 12,
+          "exp": 186,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015800",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 458,
+          "level": 12,
+          "exp": 186,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015800",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 458,
+          "level": 12,
+          "exp": 186,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015800",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 458,
+          "level": 12,
+          "exp": 186,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015800",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 458,
+          "level": 12,
+          "exp": 186,
+          "is_boss": false
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

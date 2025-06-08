@@ -1,0 +1,139 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Evil Lurking in the Tombs",
+  "quest_id": 20000006,
+  "base_level": 58,
+  "minimum_item_rank": 0,
+  "discoverable": true,
+  "area_id": "HidellPlains",
+  "news_image": 541,
+  "variant_index": 2,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 2100
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1910
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 1340
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "spirit crys",
+          "item_id": 7909,
+          "num": 1
+        },
+        {
+          "comment": "ancient emblem",
+          "item_id": 8021,
+          "num": 1
+        },
+        {
+          "comment": "sinister cloth",
+          "item_id": 7947,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 238,
+        "group_id": 9
+      },
+      "enemies": [
+        {
+          "comment": "DK",
+          "enemy_id": "0x010310",
+          "named_enemy_params_id": 551,
+          "level": 58,
+          "start_think_tbl_no": 1,
+          "is_boss": true,
+          "is_manual_set": false,
+          "exp": 26700
+        },
+        {
+          "comment": "livin rmor",
+          "enemy_id": "0x010306",
+          "named_enemy_params_id": 551,
+          "level": 57,
+          "start_think_tbl_no": 1,
+          "is_boss": false,
+          "is_manual_set": false,
+          "exp": 6706
+        },
+        {
+          "comment": "livin rmor",
+          "enemy_id": "0x010306",
+          "named_enemy_params_id": 551,
+          "level": 57,
+          "start_think_tbl_no": 1,
+          "is_boss": false,
+          "is_manual_set": false,
+          "exp": 6706
+        },
+        {
+          "comment": "livin rmor",
+          "enemy_id": "0x010306",
+          "named_enemy_params_id": 551,
+          "level": 57,
+          "start_think_tbl_no": 1,
+          "is_boss": false,
+          "is_manual_set": false,
+          "exp": 6706
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "NewNpcTalkAndOrder",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "npc_id": "Christoph",
+      "message_id": 11011,
+      "flags": [
+        {
+          "type": "QstLayout",
+          "action": "Set",
+          "value": 988
+        }
+      ]
+    },
+    {
+      "type": "DiscoverEnemy",
+      "announce_type": "Accept",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Update",
+      "reset_group": false,
+      "groups": [ 0 ]
+    },
+    {
+      "type": "NewTalkToNpc",
+      "stage_id": {
+        "id": 1,
+        "group_id": 1,
+        "layer_no": 1
+      },
+      "announce_type": "Update",
+      "npc_id": "Christoph",
+      "message_id": 11014
+    }
+  ]
+}

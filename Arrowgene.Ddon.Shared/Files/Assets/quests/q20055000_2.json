@@ -1,0 +1,121 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "Scaled Soldiers",
+  "quest_id": 20055000,
+  "base_level": 24,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "MysreeForest",
+  "news_image": 105,
+  "variant_index": 2,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 660
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 120
+    },
+    {
+      "type": "exp",
+      "amount": 790
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 7916,
+          "num": 3
+        },
+        {
+          "item_id": 9383,
+          "num": 2
+        },
+        {
+          "item_id": 9409,
+          "num": 1
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 47
+      },
+      "enemies": [
+        {
+          "comment": "Giant Saurian",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 56,
+		      "enemy_id": "0x010401",
+          "level": 24,
+          "exp": 654,
+          "is_boss": false
+        },
+        {
+          "comment": "Giant Saurian",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 56,
+		      "enemy_id": "0x010401",
+          "level": 24,
+          "exp": 654,
+          "is_boss": false
+        },
+        {
+          "comment": "Giant Saurian",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 56,
+		      "enemy_id": "0x010401",
+          "level": 24,
+          "exp": 654,
+          "is_boss": false
+        },
+        {
+          "comment": "Giant Saurian",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 56,
+		      "enemy_id": "0x010401",
+          "level": 24,
+          "exp": 654,
+          "is_boss": false
+        },
+        {
+          "comment": "Giant Saurian",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 56,
+		      "enemy_id": "0x010401",
+          "level": 24,
+          "exp": 654,
+          "is_boss": false
+        },
+        {
+          "comment": "Giant Saurian",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 56,
+		      "enemy_id": "0x010401",
+          "level": 24,
+          "exp": 654,
+          "is_boss": false
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

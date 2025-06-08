@@ -1,0 +1,118 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Evil in the Dark Night",
+  "quest_id": 20075006,
+  "base_level": 44,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "NorthernBetlandPlains",
+  "news_image": 142,
+  "variant_index": 2,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1450
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 290
+    },
+    {
+      "type": "exp",
+      "amount": 1740
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 8728,
+          "num": 1
+        },
+        {
+          "item_id": 9410,
+          "num": 2
+        },
+        {
+          "item_id": 9363,
+          "num": 3
+        }
+      ]
+    },
+    {
+          "type": "random",
+          "loot_pool": [
+            {
+              "item_id": 9412,
+              "num": 2,
+              "chance": 1.0
+            },
+            {
+              "item_id": 9378,
+              "num": 1,
+              "chance": 1.0
+            }
+          ]
+        }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 315
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015810",
+          "start_think_tbl_no": 1,
+          "level": 42,
+          "exp": 4706,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015810",
+          "start_think_tbl_no": 1,
+          "level": 42,
+          "exp": 4706,
+          "is_boss": false
+        },
+        {
+          "enemy_id": "0x015503",
+          "start_think_tbl_no": 1,
+		      "named_enemy_params_id": 54,
+          "is_manual_set": false,
+          "level": 44,
+          "exp": 6824,
+          "is_boss": true
+        },
+        {
+          "enemy_id": "0x015503",
+          "start_think_tbl_no": 2,
+		      "named_enemy_params_id": 54,
+          "is_manual_set": false,
+          "level": 44,
+          "exp": 6824,
+          "is_boss": true
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "spawn_time_start": "18 * 3600000 + 0 * 60000",
+      "spawn_time_end": "6 * 3600000 + 59 * 60000",
+      "groups": [ 0 ]
+    },
+    { "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}
+
+ 
+

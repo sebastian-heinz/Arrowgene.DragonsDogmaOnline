@@ -1,0 +1,91 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "An Unexpected Encounter",
+  "quest_id": 20015003,
+  "base_level": 36,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "BreyaCoast",
+  "news_image": 23,
+  "variant_index": 1,
+  "rewards": [
+    {
+      "type": "exp",
+      "amount": 2070
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1180
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 290
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "comment": "Nostalgia Waistguard",
+          "item_id": 7940,
+          "num": 1
+        },
+        {
+          "comment": "Absorbent Cloth",
+          "item_id": 9362,
+          "num": 3
+        },
+        {
+          "comment": "Superior Healing Potion",
+          "item_id": 9419,
+          "num": 1
+        }
+      ]
+    },
+    {
+      "type": "random",
+      "loot_pool": [
+        {
+          "item_id": 10812,
+          "num": 1,
+          "chance": 0.4
+        }
+      ]
+    }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 105
+      },
+      "placement_type": "manual",
+      "enemies": [
+        {
+          
+          "enemy_id": "0x015707",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 53,
+          "level": 36,
+          "exp": 6040,
+          "is_boss": true,
+          "index": 3
+        }
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

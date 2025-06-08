@@ -1,0 +1,107 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "Seeking Vengeance",
+    "quest_id": 20070000,
+    "base_level": 56,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "NorthernBetlandPlains",
+    "news_image": 141,
+	"variant_index": 1,
+    "rewards": [
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 3760
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 370
+        },
+        {
+            "type": "exp",
+            "amount": 4510
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 7555,
+                    "num": 2
+                },
+                {
+                    "item_id": 9364,
+                    "num": 2
+                },
+                {
+                    "item_id": 41,
+                    "num": 1
+                }
+            ]
+        },
+        {
+            "type": "random",
+            "loot_pool": [
+                {
+                    "item_id": 9242,
+                    "num": 1,
+                    "chance": 1.0
+                }
+            ]
+        }
+    ],
+    "enemy_groups": [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 299
+            },
+            "enemies": [
+                {
+                    "enemy_id": "0x015200",
+                    "start_think_tbl_no": 1,
+                    "named_enemy_params_id": 468,
+                    "level": 56,
+                    "exp": 21700,
+                    "is_boss": true
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 53,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "Johann",
+            "message_id": 11830
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "groups": [ 0 ]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [ 0 ]
+        },
+        {
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 53,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Johann",
+            "message_id": 11835
+        }
+    ]
+}

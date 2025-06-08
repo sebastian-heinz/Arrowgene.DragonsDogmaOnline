@@ -1,0 +1,85 @@
+{
+  "state_machine": "GenericStateMachine",
+  "type": "World",
+  "comment": "The Apes of Mayhem",
+  "quest_id": 20035005,
+  "base_level": 39,
+  "minimum_item_rank": 0,
+  "discoverable": false,
+  "area_id": "DoweValley",
+  "news_image": 63,
+  "variant_index": 2,
+  "rewards": [
+    {
+      "type": "wallet",
+      "wallet_type": "Gold",
+      "amount": 1280
+    },
+    {
+      "type": "wallet",
+      "wallet_type": "RiftPoints",
+      "amount": 250
+    },
+    {
+      "type": "exp",
+      "amount": 1800
+    },
+    {
+      "type": "select",
+      "loot_pool": [
+        {
+          "item_id": 9007,
+          "num": 1
+        },
+        {
+          "item_id": 9403,
+          "num": 3
+        },
+        {
+          "item_id": 7553,
+          "num": 3
+       
+        }
+      ]
+  }
+  ],
+  "enemy_groups": [
+    {
+      "stage_id": {
+        "id": 1,
+        "group_id": 214
+      },
+      "enemies": [
+        {
+          "enemy_id": "0x015502",
+          "start_think_tbl_no": 0,
+          "named_enemy_params_id": 54,
+          "level": 39,
+          "exp": 6364,
+          "is_boss": true
+        },
+        {
+          "enemy_id": "0x015502",
+          "start_think_tbl_no": 1,
+          "named_enemy_params_id": 54,
+          "level": 39,
+          "exp": 6364,
+          "is_boss": true
+        }
+        
+      ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "DiscoverEnemy",
+      "groups": [ 0 ]
+    },
+    {
+      "type": "KillGroup",
+      "announce_type": "Accept",
+      "reset_group": false,
+      "groups": [ 0 ]
+    }
+  ]
+}

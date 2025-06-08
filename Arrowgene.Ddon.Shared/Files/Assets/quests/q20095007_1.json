@@ -1,0 +1,168 @@
+{
+    "state_machine": "GenericStateMachine",
+    "type": "World",
+    "comment": "The Accursed Wanderer",
+    "quest_id": 20095007,
+    "base_level": 55,
+    "minimum_item_rank": 0,
+    "discoverable": true,
+    "area_id": "ZandoraWastelands",	
+    "news_image": 183,
+	"variant_index": 1,
+    "rewards": [
+        {
+            "type": "exp",
+            "amount": 5590
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "Gold",
+            "amount": 3750
+        },
+        {
+            "type": "wallet",
+            "wallet_type": "RiftPoints",
+            "amount": 330
+        },
+        {
+            "type": "select",
+            "loot_pool": [
+                {
+                    "item_id": 7959,
+                    "num": 1
+                },
+                {
+                    "item_id": 7745,
+                    "num": 1
+                },
+                {
+                    "item_id": 7744,
+                    "num": 1					
+                }
+            ]
+          },
+                {
+                    "type": "random",
+                    "loot_pool": [
+                      {
+                        "item_id": 7554,
+                        "num": 1,
+                        "chance": 0.6
+                      },
+                      {
+                        "item_id": 41,
+                        "num": 1,
+                        "chance": 0.6
+                      }
+                    ]
+                  }
+                ],
+    "enemy_groups" : [
+        {
+            "stage_id": {
+                "id": 1,
+                "group_id": 391
+            },
+            "placement_type": "manual",
+            "enemies": [
+                {
+                    "enemy_id": "0x010607",
+                    "start_think_tbl_no": 2,
+                    "named_enemy_params_id": 56,
+                    "level": 55,
+                    "exp": 6476,
+                    "is_boss": false,
+                    "index": 3                    
+        },
+        {
+            "enemy_id": "0x010607",
+            "start_think_tbl_no": 2,
+            "named_enemy_params_id": 56,
+            "level": 55,
+            "exp": 6476,
+            "is_boss": false,
+            "index": 6                    
+},
+{
+    "enemy_id": "0x010607",
+    "start_think_tbl_no": 2,
+    "named_enemy_params_id": 56,
+    "level": 55,
+    "exp": 6476,
+    "is_boss": false,
+    "index": 4                    
+},
+{
+    "enemy_id": "0x010607",
+    "start_think_tbl_no": 2,
+    "named_enemy_params_id": 56,
+    "level": 55,
+    "exp": 6476,
+    "is_boss": false,
+    "index": 5                    
+},
+        {
+                    "enemy_id": "0x070200",
+                    "start_think_tbl_no": 1,
+                    "named_enemy_params_id": 524,
+                    "level": 55,
+                    "exp": 19700,
+                    "is_boss": true,
+                    "index": 0
+        },
+        {
+                    "enemy_id": "0x070200",
+                    "start_think_tbl_no": 1,
+                    "named_enemy_params_id": 524,
+                    "level": 55,
+                    "exp": 19700,
+                    "is_boss": true,
+                    "index": 1					
+                },
+                {
+                    "enemy_id": "0x015301",
+                    "start_think_tbl_no": 1,
+                    "named_enemy_params_id": 522,
+                    "level": 55,
+                    "exp": 19700,
+                    "is_boss": true,
+                    "index": 2
+        }
+            ]
+        }
+    ],	
+    "blocks": [
+        {
+            "type": "NpcTalkAndOrder",
+            "stage_id": {
+                "id": 55,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "npc_id": "Bayard",
+            "message_id": 11372
+        },
+        {
+            "type": "SeekOutEnemiesAtMarkedLocation",
+            "announce_type": "Accept",
+            "groups": [0]
+        },
+        {
+            "type": "KillGroup",
+            "announce_type": "Update",
+            "reset_group": false,
+            "groups": [0]
+        },
+        {		
+            "type": "TalkToNpc",
+            "stage_id": {
+                "id": 55,
+                "group_id": 1,
+                "layer_no": 1
+            },
+            "announce_type": "Update",
+            "npc_id": "Bayard",
+            "message_id": 11842
+        }
+    ]
+}
