@@ -1,9 +1,10 @@
-using Arrowgene.Ddon.Database.Model;
 using Arrowgene.Ddon.GameServer.Characters;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model.Quest;
 using Arrowgene.Logging;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -28,10 +29,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 return res;
             }
 
-            var process = quest.ToCDataQuestList(0).QuestProcessStateList;
+            List<CDataQuestProcessState> process;
 
-            if (QuestManager.IsBoardQuest(quest.QuestId))
+            if (QuestManager.IsBoardQuest(quest.QuestId) || QuestManager.IsClanQuest(quest.QuestId))
             {
+                // TODO: Untangle this mess.
+                process = quest.ToCDataQuestList(1).QuestProcessStateList;
+
                 // Force an accept announce on the first step to make the UI happy.
                 process.First().ResultCommandList.Add(QuestManager.ResultCommand.SetAnnounce(QuestAnnounceType.Accept, 1));
                 Server.Database.InsertQuestProgress(client.Character.CommonId, quest.QuestScheduleId, quest.QuestType, 1);
@@ -39,6 +43,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             }
             else
             {
+                process = quest.ToCDataQuestList(0).QuestProcessStateList;
                 questStateManager.AddNewQuest(quest, 0);
             }
 
