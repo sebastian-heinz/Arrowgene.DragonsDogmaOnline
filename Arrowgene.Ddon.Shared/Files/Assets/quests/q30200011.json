@@ -28,24 +28,25 @@
       "amount": 1190
     }
   ],
-  "blocks": [
-    {
-      "type": "Raw",
-      "check_commands": [
+    "blocks": [
         {
-          "type": "EmDieLight"
-        }
-      ]
-    },
-    {
-      "type": "DeliverItemsLight",
-      "announce_type": "Accept",
-      "items": [
+            "type": "Raw",
+            "announce_type": "Accept",
+            "check_commands": [
+                {
+                    "type": "IsOrderLightQuest"
+                }
+            ]
+        },
         {
-          "id": 9456,
-          "amount": 2
+            "type": "DeliverItemsLight",
+            "announce_type": "Checkpoint",
+            "items": [
+                {
+                    "id": 9456,
+                    "amount": 2
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }

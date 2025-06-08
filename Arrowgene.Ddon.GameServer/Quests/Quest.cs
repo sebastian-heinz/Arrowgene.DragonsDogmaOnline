@@ -225,7 +225,7 @@ namespace Arrowgene.Ddon.GameServer.Quests
 
             // Handle SaveWorkAsStage (Hunt Board) quests.
             CDataQuestProgressWork workOverride = null;
-            if (step > 1 && SaveWorkAsStep)
+            if (step >= 1 && SaveWorkAsStep)
             {
                 workOverride = new CDataQuestProgressWork()
                 {
@@ -235,7 +235,8 @@ namespace Arrowgene.Ddon.GameServer.Quests
                     Work03 = (int)(step - 1)
                 };
 
-                step = 1;
+                // New mechanism has an IsOrderLightQuest THEN the actual EmDieLight.
+                step = 2;
             }
 
             int i = 0;

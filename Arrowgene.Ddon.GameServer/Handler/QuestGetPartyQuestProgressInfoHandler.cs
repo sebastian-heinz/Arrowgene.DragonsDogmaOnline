@@ -67,7 +67,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 pcap.QuestOrderList.Add(questOrder);
             }
 
-            ((SoloQuestStateManager)client.QuestState).ResendQuestWork().Send();
 #if false
             EntitySerializer<S2CQuestGetPartyQuestProgressInfoRes> serializer = EntitySerializer.Get<S2CQuestGetPartyQuestProgressInfoRes>();
             S2CQuestGetPartyQuestProgressInfoRes pcap = serializer.Read(early_stream);
