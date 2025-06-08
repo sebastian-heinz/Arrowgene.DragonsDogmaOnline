@@ -28,21 +28,22 @@
       "amount": 2504
     }
   ],
-  "blocks": [
-    {
-      "type": "Raw",
-      "check_commands": [
+    "blocks": [
         {
-          "type": "EmDieLight"
+            "type": "Raw",
+            "announce_type": "Accept",
+            "check_commands": [
+                {
+                    "type": "IsOrderLightQuest"
+                }
+            ]
+        },
+        {
+            "type": "KillTargetEnemies",
+            "announce_type": "Checkpoint",
+            "enemy_id": "254",
+            "level": 70,
+            "amount": 1
         }
-      ]
-    },
-    {
-      "type": "KillTargetEnemies",
-      "announce_type": "Accept",
-      "enemy_id": "254",
-      "level": 70,
-      "amount": 1
-    }
-  ]
+    ]
 }

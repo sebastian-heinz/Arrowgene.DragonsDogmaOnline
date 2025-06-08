@@ -272,7 +272,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
                 // Always read before cleanup so that you can properly increment the schedule ID.
                 // Making the schedule ID increment monotonically is more important than keeping additional quests in memory.
                 records = Server.Database.SelectLightQuestRecords(connection);
-                CURRENT_VARIANT_ID = records.Count != 0 ? records.Max(x => x.VariantIndex) : CURRENT_VARIANT_ID;
+                CURRENT_VARIANT_ID = records.Count != 0 ? records.Max(x => x.VariantIndex)+1 : CURRENT_VARIANT_ID;
 
                 // Head server is the only one who is allowed to clean the DB of dead quests.
                 if (clean && ServerUtils.IsHeadServer(Server))
