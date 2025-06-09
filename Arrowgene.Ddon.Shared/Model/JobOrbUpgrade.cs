@@ -10,6 +10,7 @@ namespace Arrowgene.Ddon.Shared.Model
         {
             QuestDependencies = new List<CDataCommonU32>();
             UnlockDependencies = new List<CDataCommonU32>();
+            SpecialConditionDependencies = new List<CDataCommonU32>();
         }
 
         public uint ElementId { get; private set; }
@@ -21,9 +22,12 @@ namespace Arrowgene.Ddon.Shared.Model
         public uint PosY { get; private set; }
         public uint Cost { get; private set; }
         public JobId JobId { get; private set; }
+        public OrbTreeType OrbTreeType { get; private set; }
+        public WalletType WalletType { get; private set; }
 
         public List<CDataCommonU32> QuestDependencies { get; private set; }
         public List<CDataCommonU32> UnlockDependencies { get; private set; }
+        public List<CDataCommonU32> SpecialConditionDependencies { get; private set; }
 
         public bool IsCustomSkill()
         {
@@ -37,24 +41,38 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public static JobId GetJobIdFromReleaseId(uint releaseId)
         {
-            return (JobId)(releaseId >> 28);
+            return (JobId)((releaseId >> 28) & 0xf);
         }
 
-        private uint JobUniqueId(uint elementId, JobId jobId)
+        public static OrbTreeType GetOrbTreeTypeFromReleaseId(uint releaseId)
         {
-            return elementId | ((uint)jobId << 28);
+            return (OrbTreeType)((releaseId >> 24) & 0xf);
         }
 
-        public JobOrbUpgrade Id(uint elementId, JobId jobId)
+        private uint JobUniqueId(uint elementId, OrbTreeType orbTreeType, JobId jobId)
         {
-            this.ElementId = JobUniqueId(elementId, jobId);
+            return elementId | ((uint)jobId << 28) | ((uint)orbTreeType << 24);
+        }
+
+        public JobOrbUpgrade Id(uint elementId, OrbTreeType orbTreeType, JobId jobId)
+        {
+            this.ElementId = JobUniqueId(elementId, orbTreeType, jobId);
             this.JobId = jobId;
+            this.OrbTreeType = orbTreeType;
             return this;
         }
 
         public JobOrbUpgrade BloodOrbCost(uint amount)
         {
             this.Cost = amount;
+            this.WalletType = WalletType.BloodOrbs;
+            return this;
+        }
+
+        public JobOrbUpgrade HighOrbCost(uint amount)
+        {
+            this.Cost = amount;
+            this.WalletType = WalletType.HighOrbs;
             return this;
         }
 
@@ -88,7 +106,7 @@ namespace Arrowgene.Ddon.Shared.Model
 
         public JobOrbUpgrade HasUnlockDependency(uint elementId)
         {
-            this.UnlockDependencies.Add(new CDataCommonU32() { Value = JobUniqueId(elementId, JobId) });
+            this.UnlockDependencies.Add(new CDataCommonU32() { Value = JobUniqueId(elementId, OrbTreeType, JobId) });
             return this;
         }
 
@@ -148,6 +166,21 @@ namespace Arrowgene.Ddon.Shared.Model
             return this;
         }
 
+        public JobOrbUpgrade HasSpecialConditionDependency(uint specialConditionId)
+        {
+            this.SpecialConditionDependencies.Add(new CDataCommonU32() { Value = specialConditionId });
+            return this;
+        }
+
+        public JobOrbUpgrade HasSpecialConditionDependencies(params uint[] specialConditionIds)
+        {
+            foreach (var specialConditionId in specialConditionIds)
+            {
+                HasSpecialConditionDependency(specialConditionId);
+            }
+            return this;
+        }
+
         public CDataJobOrbDevoteElement ToCDataJobOrbDevoteElement(bool isReleased)
         {
             var result = new CDataJobOrbDevoteElement()
@@ -158,9 +191,11 @@ namespace Arrowgene.Ddon.Shared.Model
                 OrbParamType = this.GainType,
                 PosX = this.PosX,
                 PosY = this.PosY,
-                IsReleased = isReleased, // TODO: Query from DB
+                IsReleased = isReleased,
                 RequiredElementIDList = this.UnlockDependencies,
                 RequiredQuestList = this.QuestDependencies,
+                WalletType = this.WalletType,
+                SpecialConditionIdList = this.SpecialConditionDependencies,
             };
 
             if (IsCustomSkill())

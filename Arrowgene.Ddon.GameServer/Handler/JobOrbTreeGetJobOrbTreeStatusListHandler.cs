@@ -29,7 +29,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 {
                     JobId = jobId,
                     IsReleased = client.Character.HasContentReleased(jobId.SkillAugmentationReleaseId()),
-                    Rate = Server.JobOrbUnlockManager.CalculatePercentCompleted(client.Character, jobId)
+                    Rate = Server.JobOrbUnlockManager.CalculatePercentCompleted(client.Character, request.OrbTreeType, jobId)
                 });
             }
 

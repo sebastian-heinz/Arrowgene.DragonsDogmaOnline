@@ -22,7 +22,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
             JobId jobId = JobOrbUpgrade.GetJobIdFromReleaseId(request.ElementId);
             Server.Database.ExecuteInTransaction(connection =>
             {
-                packets.AddRange(Server.JobOrbUnlockManager.ReleaseElement(client, jobId, request.ElementId, connection));
+                packets.AddRange(Server.JobOrbUnlockManager.ReleaseElement(client, request.OrbTreeType, jobId, request.ElementId, connection));
             });
 
             // Notify all players of the upgrade
@@ -41,12 +41,13 @@ namespace Arrowgene.Ddon.GameServer.Handler
             return new()
             {
                 JobId = jobId,
-                RestOrb = Server.WalletManager.GetWalletAmount(client.Character, WalletType.BloodOrbs),
+                RestBloodOrb = Server.WalletManager.GetWalletAmount(client.Character, WalletType.BloodOrbs),
+                RestHighOrb = Server.WalletManager.GetWalletAmount(client.Character, WalletType.HighOrbs),
                 TreeStatus = new()
                 {
                     IsReleased = true,
                     JobId = jobId,
-                    Rate = Server.JobOrbUnlockManager.CalculatePercentCompleted(client.Character, jobId)
+                    Rate = Server.JobOrbUnlockManager.CalculatePercentCompleted(client.Character, request.OrbTreeType, jobId)
                 }
             };
         }

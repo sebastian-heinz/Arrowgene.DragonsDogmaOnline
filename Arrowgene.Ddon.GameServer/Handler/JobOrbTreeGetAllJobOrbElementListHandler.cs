@@ -16,7 +16,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
             return new()
             {
-                ElementList = Server.JobOrbUnlockManager.GetUpgradeList(client, request.JobId)
+                ElementList = Server.JobOrbUnlockManager.GetUpgradeList(client, request.OrbTreeType, request.JobId),
+                SpecialConditionList = Server.ScriptManager.JobOrbSpecialConditionModule.GetSpecialConditions(client),
             };
         }
     }

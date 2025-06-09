@@ -32,6 +32,13 @@ namespace Arrowgene.Ddon.GameServer.Scripting
                 return Server.AssetRepository;
             }
         }
+        public static EpitaphRoadManager EpitaphRoadMgr
+        {
+            get
+            {
+                return Server.EpitaphRoadManager;
+            }
+        }
 
         public static void SetServer(DdonGameServer server)
         {

@@ -27,7 +27,9 @@ namespace Arrowgene.Ddon.GameServer.Scripting
         public AddendumModule AddendumModule { get; private set; } = new AddendumModule();
         public MonsterCautionSpotModule MonsterCautionSpotModule { get; private set; } = new MonsterCautionSpotModule();
         public InstanceEnemyPropertyGeneratorModule InstanceEnemyPropertyGeneratorModule { get; private set; } = new InstanceEnemyPropertyGeneratorModule();
-        public SkillAugmentationModule SkillAugmentationModule { get; private set; } = new SkillAugmentationModule();
+        public JobOrbTreeModule SkillAugmentationModule { get; private set; } = new JobOrbTreeModule("job_orb_tree/skill_augmentation");
+        public JobOrbTreeModule SpecialSkillAugmentationModule { get; private set; } = new JobOrbTreeModule("job_orb_tree/special_skill_augmentation");
+        public JobOrbTreeSpecialConditionModule JobOrbSpecialConditionModule { get; private set; } = new();
 
         public JobEmblemStatModule JobEmblemStatModule { get; private set; } = new JobEmblemStatModule();
 
@@ -49,6 +51,8 @@ namespace Arrowgene.Ddon.GameServer.Scripting
             AddModule(InstanceEnemyPropertyGeneratorModule);
             AddModule(SkillAugmentationModule);
             AddModule(JobEmblemStatModule);
+            AddModule(SpecialSkillAugmentationModule);
+            AddModule(JobOrbSpecialConditionModule);
 
             // World Manage Quests have some dependency on Caution Spots, so load caution spots first
             // to prevent unecssary quest relod on server load

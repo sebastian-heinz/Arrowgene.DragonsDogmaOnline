@@ -1,5 +1,6 @@
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Shared.Entity.PacketStructure;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Logging;
 
 namespace Arrowgene.Ddon.GameServer.Handler
@@ -19,7 +20,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 HistoryElementList = Server.AchievementManager.GetArisenAchievementHistory(client),
                 AchieveCategoryStatusList = Server.AchievementManager.GetCategoryStatus(client),
                 OrbStatusList = Server.OrbUnlockManager.GetOrbPageStatus(client.Character),
-                JobOrbTreeStatusList = Server.JobOrbUnlockManager.GetJobOrbTreeStatus(client.Character),
+                JobOrbTreeStatusList = Server.JobOrbUnlockManager.GetJobOrbTreeStatus(client.Character, OrbTreeType.Season2),
+                JobOrbHiBOStatusList = Server.JobOrbUnlockManager.GetJobOrbTreeStatus(client.Character, OrbTreeType.Season3),
                 AbilityCostMax = Server.CharacterManager.GetMaxAugmentAllocation(client.Character)
             };
         }

@@ -3,6 +3,7 @@
 public class SkillAugmentation : ISkillAugmentation
 {
     public override JobId JobId => JobId.Hunter;
+    public override OrbTreeType OrbTreeType => OrbTreeType.Season2;
 }
 
 var skillAugmentation = new SkillAugmentation();

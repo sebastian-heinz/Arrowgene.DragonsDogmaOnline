@@ -50,7 +50,8 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 CharacterId = client.Character.CharacterId,
                 PawnId = pawn.PawnId,
                 OrbPageStatusList = _OrbUnlockManager.GetOrbPageStatus(pawn),
-                JobOrbTreeStatusList = Server.JobOrbUnlockManager.GetJobOrbTreeStatus(client.Character)
+                JobOrbTreeStatusList = Server.JobOrbUnlockManager.GetJobOrbTreeStatus(client.Character, OrbTreeType.Season2),
+                JobOrbHiBOStatusList = Server.JobOrbUnlockManager.GetJobOrbTreeStatus(client.Character, OrbTreeType.Season3),
             };
             client.Send(orbNtc);
 
