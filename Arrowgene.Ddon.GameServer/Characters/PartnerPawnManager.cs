@@ -294,11 +294,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
         private static readonly Dictionary<uint,CDataPartnerPawnReward> gLikabilityRewards = new Dictionary<uint, CDataPartnerPawnReward>()
         {
             [1] = PartnerReward.CreateEmoteReward(EmoteId.ImHerePose1),
-            // [2], TODO: Recipe: Achievement/Recipe: Dinner Set
+            // [2], Recipe: Achievement/Recipe: Dinner Set
             [3] = PartnerReward.CreateAbilityReward(AbilityId.CompanionHealth),
             [4] = PartnerReward.CreateAbilityReward(AbilityId.CompanionAttack),
             [5] = PartnerReward.CreateEmoteReward(EmoteId.ImHerePose2),
-            // [6], TODO: Achievement/Recipe: Lestanian Puppet - Giant Cyclops
+            // [6], Achievement/Recipe: Lestanian Puppet - Giant Cyclops
             [7] = PartnerReward.CreateCommunicationReward(2),
             [8] = PartnerReward.CreateHairstyleReward(HairStyleId.Ex1Men, 2),
             [9] = PartnerReward.CreateAbilityReward(AbilityId.CompanionDefense),
@@ -312,11 +312,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             [17] = PartnerReward.CreateAbilityReward(AbilityId.CompanionMagick),
             [18] = PartnerReward.CreateAbilityReward(AbilityId.CompanionMagickDefense),
             [19] = PartnerReward.CreateEmoteReward(EmoteId.ImHerePose4),
-            // [20] = TODO: Achievement 愛を叫んだ覚者
+            // [20] = Achievement 愛を叫んだ覚者
             [21] = PartnerReward.CreateHairstyleReward(HairStyleId.Ex4Women, 2),
-            // [22], TODO: Recipe: Achievement/Recipe: Servant's Sleepwear (Type 1)
+            // [22], Recipe: Achievement/Recipe: Servant's Sleepwear (Type 1)
             [23] = PartnerReward.CreateCommunicationReward(5),
-            // [24], TODO: Recipe: Achievement/Recipe: Servant's Sleepwear (Type 2)
+            // [24], Recipe: Achievement/Recipe: Servant's Sleepwear (Type 2)
             [25] = PartnerReward.CreateCommunicationReward(6),
         };
     }
