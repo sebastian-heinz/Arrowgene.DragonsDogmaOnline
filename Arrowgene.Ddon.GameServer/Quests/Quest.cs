@@ -557,10 +557,6 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 var recordInfo = LightQuestId.FromQuestId(QuestId);
                 contents.Type = (byte)recordInfo.Type;
 
-                // Based on pcap values?
-                contents.Unk0 = 0;
-                contents.Unk1 = 1;
-
                 if (recordInfo.Type == LightQuestType.Hunt)
                 {
                     contents.Param01 = record.Target;
@@ -575,25 +571,35 @@ namespace Arrowgene.Ddon.GameServer.Quests
             }
             else
             {
-                CDataQuestCommand process = param.QuestProcessStateList.FirstOrDefault()?.CheckCommandList.FirstOrDefault()?.ResultCommandList.FirstOrDefault();
-                if (process is not null)
+                // Should only be handling Clan Quests at the moment.
+                // For some reason hunt quests have their machinery on the first step, and delivery quests on the second?
+                // Either way, this is a temporary fix until clan quests moving onto a rotating BackingObject scheme like regular board quests.
+                CDataQuestCommand process = GetProcessState(1, out uint _).FirstOrDefault()?.CheckCommandList.FirstOrDefault()?.ResultCommandList.FirstOrDefault();
+                if (process is not null && process.Command == (ushort)QuestCheckCommand.EmDieLight)
                 {
-                    if (process.Command == (ushort)QuestCheckCommand.EmDieLight)
-                    {
-                        contents.Type = 1;
-                    }
-                    else if (process.Command == (ushort)QuestCheckCommand.DeliverItem)
-                    {
-                        contents.Type = 2;
-                    }
+                    contents.Type = 1;
                     contents.Param01 = process.Param01;
                     contents.Param02 = process.Param02;
                     contents.Param03 = process.Param03;
                     contents.Param04 = process.Param04;
-                    contents.Unk0 = 0;
-                    contents.Unk1 = 1;
+                }
+                else
+                {
+                    var process2 = GetProcessState(2, out uint _).FirstOrDefault()?.CheckCommandList.FirstOrDefault()?.ResultCommandList.FirstOrDefault();
+                    if (process2 is not null && process2.Command == (ushort)QuestCheckCommand.DeliverItem)
+                    {
+                        contents.Type = 2;
+                        contents.Param01 = process2.Param01;
+                        contents.Param02 = process2.Param02;
+                        contents.Param03 = process2.Param03;
+                        contents.Param04 = process2.Param04;
+                    }
                 }
             }
+
+            // Based on pcap values?
+            contents.Unk0 = 0;
+            contents.Unk1 = 1;
 
             param.QuestProcessStateList.Clear();
 
