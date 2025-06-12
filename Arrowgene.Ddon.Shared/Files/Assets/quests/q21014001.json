@@ -58,14 +58,14 @@
     ],		
     "blocks": [
         {
-            "type": "NpcTalkAndOrder",
+            "type": "NewNpcTalkAndOrder",
             "flags": [
                 {"type": "QstLayout", "action": "Set", "value": 4427, "comment": "Spawns Fabio NPC"}
             ],
             "stage_id": {
                 "id": 372,
-                "group_id": 1,
-                "layer_no": 1
+                "group_id": 0,
+                "layer_no": 0
             },
             "npc_id": "Fabio0",
             "message_id": 10800
@@ -85,8 +85,8 @@
             "type": "NewTalkToNpc",
             "stage_id": {
                 "id": 372,
-                "group_id": 1,
-                "layer_no": 1
+                "group_id": 0,
+                "layer_no": 0
             },
             "announce_type": "Update",
             "npc_id": "Fabio0",

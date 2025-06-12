@@ -83,7 +83,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                     {
                         foreach (var member in client.Party.Clients)
                         {
-                            var activeScheduleIds = member.QuestState.GetActiveQuestScheduleIds().Where(x => LightQuestManager.IsLightQuestScheduleId(x));
+                            var activeScheduleIds = member.QuestState?.GetActiveQuestScheduleIds().Where(x => LightQuestManager.IsLightQuestScheduleId(x)) ?? [];
                             var droppedQuests = Server.LightQuestManager.GetDecayedQuests(activeScheduleIds);
                             foreach (var droppedQuest in droppedQuests)
                             {

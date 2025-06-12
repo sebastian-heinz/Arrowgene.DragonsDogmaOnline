@@ -63,14 +63,14 @@ public class ScriptedQuest : IQuest
             .AddQuestFlag(QuestFlagAction.Clear, QuestFlags.AudienceChamber.TheCrewEndSeason34);
         process0.AddRawBlock(QuestAnnounceType.Accept)
             .AddCheckCmdTouchActToNpc(Stage.TheWhiteDragonTemple0, NpcId.Seneka0);
-        //  AddPlayEventBlock(this QuestProcess process, QuestAnnounceType announceType, StageInfo stageInfo, uint eventId, uint startPos, QuestJumpType jumpType, StageInfo eventStageInfo)
         process0.AddPlayEventBlock(QuestAnnounceType.None, Stage.TheWhiteDragonTemple0, 20, 55, QuestJumpType.After, Stage.AudienceChamber);
         process0.AddPlayEventBlock(QuestAnnounceType.None, Stage.AudienceChamber.AsStageLayoutId(0), 195, 0, QuestJumpType.After, Stage.RathniteFoothills.AsStageLayoutId(13));
         process0.AddPlayEventBlock(QuestAnnounceType.None, Stage.RathniteFoothills, 0, 0);
         process0.AddDestroyGroupBlock(QuestAnnounceType.Update, EnemyGroupId.Encounter + 0)
             .AddResultCmdReleaseAnnounce(ContentsRelease.None, flagInfo: QuestFlags.TheWhiteDragonTemple0.Season3Warp)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, 5362); // "Spawn Lise, Elliot and Gurdolin"
-        process0.AddPlayEventBlock(QuestAnnounceType.None, Stage.RathniteFoothills, 5, 0);
+        process0.AddPlayEventBlock(QuestAnnounceType.None, Stage.RathniteFoothills, 5, 0)
+            .AddResultCmdBgmStop();
         process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.RathniteFoothills, 1, 0, NpcId.Gurdolin3, 21215)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Clear, 5362)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, 5361); // "Spawn Lise, Elliot and Gurdolin"
@@ -86,8 +86,7 @@ public class ScriptedQuest : IQuest
         process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.RathniteFoothills, 3, 2, NpcId.Elliot0, 21245)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, 5369); // Spawn Elliot, Lise, Gurdolin
         process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.AudienceChamber, NpcId.TheWhiteDragon, 21246);
-        process0.AddProcessEndBlock(true)
-            .AddResultCmdBgmStop();
+        process0.AddProcessEndBlock(true);
     }
 }
 
