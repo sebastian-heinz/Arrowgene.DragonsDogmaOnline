@@ -1431,5 +1431,39 @@ namespace Arrowgene.Ddon.Server.Settings
             }
         }
         private const uint _JobTrainingPartnerBonus = 1;
+
+        /// <summary>
+        /// Configures the amount BO that that 1 HO will convert to.
+        /// </summary>
+        [DefaultValue(_HighOrbConversionRate)]
+        public uint HighOrbConversionRate
+        {
+            set
+            {
+                SetSetting("HighOrbConversionRate", value);
+            }
+            get
+            {
+                return TryGetSetting("HighOrbConversionRate", _HighOrbConversionRate);
+            }
+        }
+        private const uint _HighOrbConversionRate = 100;
+
+        /// <summary>
+        /// Configures if the HO exchange is enabled or not.
+        /// </summary>
+        [DefaultValue(_EnableHighOrbConversion)]
+        public bool EnableHighOrbConversion
+        {
+            set
+            {
+                SetSetting("EnableHighOrbConversion", value);
+            }
+            get
+            {
+                return TryGetSetting("EnableHighOrbConversion", _EnableHighOrbConversion);
+            }
+        }
+        private const bool _EnableHighOrbConversion = true;
     }
 }

@@ -17,7 +17,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             AchieveCategoryStatusList = new List<CDataAchieveCategoryStatus>();
             OrbStatusList = new List<CDataOrbPageStatus>();
             JobOrbTreeStatusList = new List<CDataJobOrbTreeStatus>();
-            Unk0 = new List<CDataJobOrbTreeStatus>();
+            JobOrbHiBOStatusList = new List<CDataJobOrbTreeStatus>();
         }
 
         public List<CDataHistoryElement> HistoryElementList { get; set; }
@@ -26,7 +26,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public List<CDataAchieveCategoryStatus> AchieveCategoryStatusList { get; set; }
         public List<CDataOrbPageStatus> OrbStatusList { get; set; } // Dragon Force Augmentation (Jobs/Dragon Force)
         public List<CDataJobOrbTreeStatus> JobOrbTreeStatusList { get; set; } // Skill Augmentation (Jobs/Dragon Force)
-        public List<CDataJobOrbTreeStatus> Unk0 { get; set; } // Special Skill Augmentation (Jobs/Dragon Force)
+        public List<CDataJobOrbTreeStatus> JobOrbHiBOStatusList { get; set; } // Special Skill Augmentation (Jobs/Dragon Force)
 
 
         public class Serializer : PacketEntitySerializer<S2CProfileGetMyCharacterProfileRes>
@@ -40,7 +40,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 WriteEntityList<CDataAchieveCategoryStatus>(buffer, obj.AchieveCategoryStatusList);
                 WriteEntityList<CDataOrbPageStatus>(buffer, obj.OrbStatusList);
                 WriteEntityList<CDataJobOrbTreeStatus>(buffer, obj.JobOrbTreeStatusList);
-                WriteEntityList<CDataJobOrbTreeStatus>(buffer, obj.Unk0);
+                WriteEntityList<CDataJobOrbTreeStatus>(buffer, obj.JobOrbHiBOStatusList);
             }
 
             public override S2CProfileGetMyCharacterProfileRes Read(IBuffer buffer)
@@ -53,7 +53,7 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 obj.AchieveCategoryStatusList = ReadEntityList<CDataAchieveCategoryStatus>(buffer);
                 obj.OrbStatusList = ReadEntityList<CDataOrbPageStatus>(buffer);
                 obj.JobOrbTreeStatusList = ReadEntityList<CDataJobOrbTreeStatus>(buffer);
-                obj.Unk0 = ReadEntityList<CDataJobOrbTreeStatus>(buffer);
+                obj.JobOrbHiBOStatusList = ReadEntityList<CDataJobOrbTreeStatus>(buffer);
                 return obj;
             }
         }

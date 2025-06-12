@@ -1,4 +1,5 @@
 using Arrowgene.Buffers;
+using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
@@ -10,19 +11,19 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         }
         public PacketId Id => PacketId.C2S_JOB_ORB_TREE_GET_JOB_ORB_TREE_STATUS_LIST_REQ;
 
-        public uint Unk0 { get; set; }
+        public OrbTreeType OrbTreeType { get; set; }
 
         public class Serializer : PacketEntitySerializer<C2SJobOrbTreeGetJobOrbTreeStatusListReq>
         {
             public override void Write(IBuffer buffer, C2SJobOrbTreeGetJobOrbTreeStatusListReq obj)
             {
-                WriteUInt32(buffer, obj.Unk0);
+                WriteUInt32(buffer, (uint) obj.OrbTreeType);
             }
 
             public override C2SJobOrbTreeGetJobOrbTreeStatusListReq Read(IBuffer buffer)
             {
                 C2SJobOrbTreeGetJobOrbTreeStatusListReq obj = new C2SJobOrbTreeGetJobOrbTreeStatusListReq();
-                obj.Unk0 = ReadUInt32(buffer);
+                obj.OrbTreeType = (OrbTreeType) ReadUInt32(buffer);
                 return obj;
             }
         }

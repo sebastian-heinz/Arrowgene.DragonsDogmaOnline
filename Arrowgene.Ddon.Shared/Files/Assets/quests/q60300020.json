@@ -7,11 +7,18 @@
     "base_level": 80,
     "minimum_item_rank": 82,
     "discoverable": true,
-    "stage_id": {"id": 467},
+    "stage_id": { "id": 467 },
     "order_conditions": [
-        {"type": "MinimumLevel", "Param1": 84},
-        {"type": "MainQuestCompleted", "Param1": 30070}
+        {
+            "type": "MinimumLevel",
+            "Param1": 84
+        },
+        {
+            "type": "MainQuestCompleted",
+            "Param1": 30070
+        }
     ],
+    "adventure_guide_category": "QuestUsefulForAdventure",
     "rewards": [
         {
             "type": "wallet",
@@ -30,8 +37,14 @@
         {
             "type": "fixed",
             "loot_pool": [
-                {"item_id": 18815, "num": 3},
-                {"item_id": 17891, "num": 1}
+                {
+                    "item_id": 18815,
+                    "num": 3
+                },
+                {
+                    "item_id": 17891,
+                    "num": 1
+                }
             ]
         }
     ],
@@ -51,9 +64,9 @@
                 "id": 549
             },
             "contents_release": [
-              {
-                "flag_info": "FortThines.EpitaphRoadRathniteFoothills"
-              }
+                {
+                    "flag_info": "FortThines.EpitaphRoadRathniteFoothills"
+                }
             ]
         },
         {
@@ -97,6 +110,19 @@
             "checkpoint": true,
             "npc_id": "TheWhiteDragon",
             "message_id": 26211
+        },
+        {
+            "type": "IsStageNo",
+            "stage_id": {
+                "id": 3
+            },
+            "contents_release": [
+                {
+                    "contents_release": "SpecialSkillAugmentation",
+                    "tutorial_id": "SkillInheritanceOfUltimateSkills",
+                    "flag_info": "NpcFunctions.SpecialSkillAugmentation"
+                }
+            ]
         }
     ]
 }

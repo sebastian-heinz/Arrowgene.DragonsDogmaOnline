@@ -1041,6 +1041,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             return client.Character.EpitaphRoadState.UnlockedContent.Contains(statue.EpitaphId);
         }
 
+        public bool IsStatueUnlocked(GameClient client, StageInfo stageInfo, uint groupId, uint posId)
+        {
+            return IsStatueUnlocked(client, stageInfo.AsStageLayoutId(groupId), posId);
+        }
+
         public void HandleStatueUnlock(GameClient client, StageLayoutId stageId, uint posId)
         {
             Logger.Info($"EpitaphStatueOm: StageId={stageId}, PosId={posId}");

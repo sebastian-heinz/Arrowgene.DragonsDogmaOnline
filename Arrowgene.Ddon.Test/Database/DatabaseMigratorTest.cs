@@ -515,7 +515,7 @@ namespace Arrowgene.Ddon.Test.Database
         public bool UpsertJobMasterActiveOrdersProgress(uint characterId, JobId jobId, ReleaseType releaseType, uint releaseId, CDataJobOrderProgress jobOrderProgress, DbConnection? connectionIn = null) { return true; }
         public List<CDataJobOrderProgress> GetJobMasterActiveOrderProgress(uint characterId, JobId jobId, ReleaseType releaseType, uint releaseId, DbConnection? connectionIn = null) { return new(); }
 
-        public bool InsertSkillAugmentationReleasedElement(uint characterId, JobId jobId, uint releaseId, DbConnection? connectionIn = null) { return true; }
+        public bool InsertSkillAugmentationReleasedElement(uint characterId, OrbTreeType orbTreeType, JobId jobId, uint releaseId, DbConnection? connectionIn = null) { return true; }
         public HashSet<uint> GetSkillAugmentationReleasedElements(uint characterId, JobId jobId, DbConnection? connectionIn = null) { return new(); }
 
         public bool UpsertJobEmblemData(uint characterId, JobEmblem jobEmblem, DbConnection? connectionIn = null) { return true; }

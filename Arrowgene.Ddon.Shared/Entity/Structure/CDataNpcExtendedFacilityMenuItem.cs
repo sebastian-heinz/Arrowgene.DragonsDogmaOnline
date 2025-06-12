@@ -13,7 +13,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
 
         public NpcFunction FunctionClass { get; set; }
         public NpcFunction FunctionSelect { get; set; } // FUNC_SELECT_NAME_
-        public uint Unk2 { get; set; }
+        public uint WorldManageQuestFlag { get; set; } // Used in epitaph road in packet capture
         public uint Unk3 { get; set; }
         public uint ShopId { get; set; } // Shows up as ShopId in S2CShopGetGoodsListRes
         public uint Unk5 { get; set; }
@@ -27,7 +27,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
             {
                 WriteUInt32(buffer, (uint) obj.FunctionClass);
                 WriteUInt32(buffer, (uint) obj.FunctionSelect);
-                WriteUInt32(buffer, obj.Unk2);
+                WriteUInt32(buffer, obj.WorldManageQuestFlag);
                 WriteUInt32(buffer, obj.Unk3);
                 WriteUInt32(buffer, obj.ShopId);
                 WriteUInt32(buffer, obj.Unk5);
@@ -41,7 +41,7 @@ namespace Arrowgene.Ddon.Shared.Entity.Structure
                 CDataNpcExtendedFacilityMenuItem obj = new CDataNpcExtendedFacilityMenuItem();
                 obj.FunctionClass = (NpcFunction) ReadUInt32(buffer);
                 obj.FunctionSelect = (NpcFunction) ReadUInt32(buffer);
-                obj.Unk2 = ReadUInt32(buffer);
+                obj.WorldManageQuestFlag = ReadUInt32(buffer);
                 obj.Unk3 = ReadUInt32(buffer);
                 obj.ShopId = ReadUInt32(buffer);
                 obj.Unk5 = ReadUInt32(buffer);

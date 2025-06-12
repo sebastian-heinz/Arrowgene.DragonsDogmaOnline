@@ -9,7 +9,7 @@ public partial class DdonSqlDb : SqlDb
     /* ddon_skill_augmentation_released_elements */
     protected static readonly string[] SkillAugmentationReleasedElementsFields = new[]
     {
-        "character_id", "job_id", "release_id"
+        "character_id", "orb_tree_type", "job_id", "release_id"
     };
 
     private readonly string SqlInsertSkillAugmentationReleasedElements =
@@ -18,13 +18,14 @@ public partial class DdonSqlDb : SqlDb
     private readonly string SqlSelectSkillAugmentationReleasedElements =
         $"SELECT {BuildQueryField(SkillAugmentationReleasedElementsFields)} FROM \"ddon_skill_augmentation_released_elements\" WHERE \"character_id\"=@character_id AND \"job_id\"=@job_id;";
 
-    public override bool InsertSkillAugmentationReleasedElement(uint characterId, JobId jobId, uint releaseId, DbConnection? connectionIn = null)
+    public override bool InsertSkillAugmentationReleasedElement(uint characterId, OrbTreeType orbTreeType, JobId jobId, uint releaseId, DbConnection? connectionIn = null)
     {
         return ExecuteQuerySafe(connectionIn, connection =>
         {
             return ExecuteNonQuery(connection, SqlInsertSkillAugmentationReleasedElements, command =>
             {
                 AddParameter(command, "character_id", characterId);
+                AddParameter(command, "orb_tree_type", (byte)orbTreeType);
                 AddParameter(command, "job_id", (byte)jobId);
                 AddParameter(command, "release_id", releaseId);
             }) == 1;

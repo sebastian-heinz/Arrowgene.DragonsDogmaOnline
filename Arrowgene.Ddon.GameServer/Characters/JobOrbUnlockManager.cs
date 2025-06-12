@@ -17,9 +17,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
             Server = server;
         }
 
-        public List<CDataJobOrbDevoteElement> GetUpgradeList(GameClient client, JobId jobId)
+        public List<CDataJobOrbDevoteElement> GetUpgradeList(GameClient client, OrbTreeType orbTreeType, JobId jobId)
         {
-            var jobOrbUpgrades = Server.ScriptManager.SkillAugmentationModule.SkillAugmentations;
+            var jobOrbUpgrades = (orbTreeType == OrbTreeType.Season2) ? 
+                Server.ScriptManager.SkillAugmentationModule.SkillAugmentations :
+                Server.ScriptManager.SpecialSkillAugmentationModule.SkillAugmentations;
             if (!jobOrbUpgrades.ContainsKey(jobId))
             {
                 return new List<CDataJobOrbDevoteElement>();
@@ -110,17 +112,19 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
-        public float CalculatePercentCompleted(Character character, JobId jobId)
+        public float CalculatePercentCompleted(Character character, OrbTreeType orbTreeType, JobId jobId)
         {
-            var jobOrbUpgrades = Server.ScriptManager.SkillAugmentationModule.SkillAugmentations;
+            var jobOrbUpgrades = (orbTreeType == OrbTreeType.Season2) ? 
+                Server.ScriptManager.SkillAugmentationModule.SkillAugmentations :
+                Server.ScriptManager.SpecialSkillAugmentationModule.SkillAugmentations;
             if (!jobOrbUpgrades.ContainsKey(jobId))
             {
                 return 0;
             }
-            return (float)character.ReleasedExtendedJobParams[jobId].Count / (float)jobOrbUpgrades[jobId].Count;
+            return (float)character.ReleasedExtendedJobParams[jobId].Where(x => JobOrbUpgrade.GetOrbTreeTypeFromReleaseId(x) == orbTreeType).ToList().Count / (float)jobOrbUpgrades[jobId].Count;
         }
 
-        public List<CDataJobOrbTreeStatus> GetJobOrbTreeStatus(Character character)
+        public List<CDataJobOrbTreeStatus> GetJobOrbTreeStatus(Character character, OrbTreeType orbTreeType)
         {
             var results = new List<CDataJobOrbTreeStatus>();
             foreach (var jobId in character.ReleasedExtendedJobParams.Keys)
@@ -129,17 +133,19 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 {
                     JobId = jobId,
                     IsReleased = character.HasContentReleased(jobId.SkillAugmentationReleaseId()),
-                    Rate = Server.JobOrbUnlockManager.CalculatePercentCompleted(character, jobId)
+                    Rate = Server.JobOrbUnlockManager.CalculatePercentCompleted(character, orbTreeType, jobId)
                 });
             }
             return results;
         }
 
-        public PacketQueue ReleaseElement(GameClient client, JobId jobId, uint elementId, DbConnection? connectionIn = null)
+        public PacketQueue ReleaseElement(GameClient client, OrbTreeType orbTreeType, JobId jobId, uint elementId, DbConnection? connectionIn = null)
         {
             var packets = new PacketQueue();
 
-            var jobOrbUpgrades = Server.ScriptManager.SkillAugmentationModule.SkillAugmentations;
+            var jobOrbUpgrades = (orbTreeType == OrbTreeType.Season2) ?
+                Server.ScriptManager.SkillAugmentationModule.SkillAugmentations :
+                Server.ScriptManager.SpecialSkillAugmentationModule.SkillAugmentations;
 
             var upgrade = jobOrbUpgrades[jobId].Where(x => x.ElementId == elementId).FirstOrDefault() ??
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_CONTENTS_RELEASE_NOT_JOB_ORB_TREE, $"An element with the ID {elementId} doesn't exist for {jobId}");
@@ -150,9 +156,9 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 throw new ResponseErrorException(ErrorCode.ERROR_CODE_TREE_RELEASE_COST_LACK);
             }
 
-            packets.Enqueue(client, Server.WalletManager.RemoveFromWalletNtc2(client.Character, WalletType.BloodOrbs, upgrade.Cost, connectionIn));
+            packets.Enqueue(client, Server.WalletManager.RemoveFromWalletNtc2(client.Character, upgrade.WalletType, upgrade.Cost, connectionIn));
 
-            Server.Database.InsertSkillAugmentationReleasedElement(client.Character.CharacterId, jobId, elementId, connectionIn);
+            Server.Database.InsertSkillAugmentationReleasedElement(client.Character.CharacterId, orbTreeType, jobId, elementId, connectionIn);
             client.Character.ReleasedExtendedJobParams[jobId].Add(elementId);
 
             if (upgrade.IsAbility())
@@ -182,7 +188,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             {
                 Server.CharacterManager.UnlockCustomSkill(client.Character, jobId, upgrade.CustomSkillId.ReleaseId(), 1);
 
-                // Handle players who had existing skills blocked by addition of S2 tree
+                // Handle players who had existing skills blocked by addition of S2/S3 tree
                 var existing = client.Character.LearnedCustomSkills.Where(x => x.SkillId == upgrade.CustomSkillId.ReleaseId() && x.Job == jobId).FirstOrDefault();
                 if (existing == null)
                 {

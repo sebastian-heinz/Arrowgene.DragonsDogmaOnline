@@ -2,7 +2,6 @@ using Arrowgene.Buffers;
 using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Model;
 using Arrowgene.Ddon.Shared.Network;
-using System.Collections.Generic;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
@@ -16,8 +15,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
         public override PacketId Id => PacketId.S2C_JOB_ORB_TREE_RELEASE_JOB_ORB_ELEMENT_RES;
 
         public JobId JobId { get; set; }
-        public uint RestOrb { get; set; }
-        public uint Unk0 { get; set; }
+        public uint RestBloodOrb { get; set; }
+        public uint RestHighOrb { get; set; }
         public CDataJobOrbTreeStatus TreeStatus { get; set; }
 
         public class Serializer : PacketEntitySerializer<S2CJobOrbTreeReleaseJobOrbElementRes>
@@ -26,8 +25,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
             {
                 WriteServerResponse(buffer, obj);
                 WriteByte(buffer, (byte) obj.JobId);
-                WriteUInt32(buffer, obj.RestOrb);
-                WriteUInt32(buffer, obj.Unk0);
+                WriteUInt32(buffer, obj.RestBloodOrb);
+                WriteUInt32(buffer, obj.RestHighOrb);
                 WriteEntity(buffer, obj.TreeStatus);
             }
 
@@ -36,8 +35,8 @@ namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
                 S2CJobOrbTreeReleaseJobOrbElementRes obj = new S2CJobOrbTreeReleaseJobOrbElementRes();
                 ReadServerResponse(buffer, obj);
                 obj.JobId = (JobId) ReadByte(buffer);
-                obj.RestOrb = ReadUInt32(buffer);
-                obj.Unk0 = ReadUInt32(buffer);
+                obj.RestBloodOrb = ReadUInt32(buffer);
+                obj.RestHighOrb = ReadUInt32(buffer);
                 obj.TreeStatus = ReadEntity<CDataJobOrbTreeStatus>(buffer);
                 return obj;
             }

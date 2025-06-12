@@ -469,6 +469,8 @@ namespace Arrowgene.Ddon.GameServer
             AddHandler(new JobOrbTreeGetJobOrbTreeStatusListHandler(this));
             AddHandler(new JobOrbTreeGetJobOrbTreeGetAllJobOrbElementListHandler(this));
             AddHandler(new JobOrbTreeReleaseJobOrbElementHandler(this));
+            AddHandler(new JobOrbTreeGetCurrencyExchangeHandler(this));
+            AddHandler(new JobOrbTreeExchangeCurrencyHandler(this));
 
             AddHandler(new LoadingInfoLoadingGetInfoHandler(this));
 

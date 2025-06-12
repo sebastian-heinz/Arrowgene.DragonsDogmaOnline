@@ -237,8 +237,9 @@ namespace Arrowgene.Ddon.Shared.Entity
 
             Create(new CDataJobExpMode.Serializer());
             Create(new CDataJobOrbDevoteElement.Serializer());
-            Create(new CDataJobOrbDevoteElementUnk0.Serializer());
+            Create(new CDataJobOrbDevoteElementSpecialCondition.Serializer());
             Create(new CDataJobOrbTreeStatus.Serializer());
+            Create(new CDataJobOrbCurrencyExchange.Serializer());
             Create(new CDataActiveJobOrder.Serializer());
             Create(new CDataJobOrderProgress.Serializer());
             Create(new CDataJobPlayPoint.Serializer());
@@ -762,10 +763,13 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new C2SJobGetPlayPointListReq.Serializer());
             Create(new C2SJobJobValueShopBuyItemReq.Serializer());
             Create(new C2SJobJobValueShopGetLineupReq.Serializer());
+            Create(new C2SJobUpdateExpModeReq.Serializer());
+
             Create(new C2SJobOrbTreeGetJobOrbTreeStatusListReq.Serializer());
             Create(new C2SJobOrbTreeGetJobOrbTreeGetAllJobOrbElementListReq.Serializer());
             Create(new C2SJobOrbTreeReleaseJobOrbElementReq.Serializer());
-            Create(new C2SJobUpdateExpModeReq.Serializer());
+            Create(new C2SJobOrbTreeGetCurrencyExchangeReq.Serializer());
+            Create(new C2SJobOrbTreeExchangeCurrencyReq.Serializer());
 
             Create(new C2SJobEmblemAttachElementReq.Serializer());
             Create(new C2SJobEmblemGetEmblemListReq.Serializer());
@@ -1388,6 +1392,8 @@ namespace Arrowgene.Ddon.Shared.Entity
             Create(new S2CJobOrbTreeGetJobOrbTreeGetAllJobOrbElementListRes.Serializer());
             Create(new S2CJobOrbTreeGetJobOrbTreeStatusListRes.Serializer());
             Create(new S2CJobOrbTreeReleaseJobOrbElementRes.Serializer());
+            Create(new S2CJobOrbTreeGetCurrencyExchangeRes.Serializer());
+            Create(new S2CJobOrbTreeExchangeCurrencyRes.Serializer());
             Create(new S2CJobPawnJobExpUpNtc.Serializer());
             Create(new S2CJobPawnJobLevelUpMemberNtc.Serializer());
             Create(new S2CJobPawnJobLevelUpNtc.Serializer());

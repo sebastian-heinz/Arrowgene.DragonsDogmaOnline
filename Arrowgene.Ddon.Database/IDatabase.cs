@@ -582,7 +582,7 @@ public interface IDatabase
     List<CDataJobOrderProgress> GetJobMasterActiveOrderProgress(uint characterId, JobId jobId, ReleaseType releaseType, uint releaseId,
         DbConnection? connectionIn = null);
 
-    bool InsertSkillAugmentationReleasedElement(uint characterId, JobId jobId, uint releaseId, DbConnection? connectionIn = null);
+    bool InsertSkillAugmentationReleasedElement(uint characterId, OrbTreeType orbTreeType, JobId jobId, uint releaseId, DbConnection? connectionIn = null);
     HashSet<uint> GetSkillAugmentationReleasedElements(uint characterId, JobId jobId, DbConnection? connectionIn = null);
 
     public bool UpsertJobEmblemData(uint characterId, JobEmblem jobEmblem, DbConnection? connectionIn = null);

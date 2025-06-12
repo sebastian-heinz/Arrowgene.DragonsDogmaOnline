@@ -183,7 +183,6 @@ public class ScriptedQuest : IQuest
             .AddQuestFlag(QuestFlagAction.Clear, QuestFlags.RathniteFoothillsLakeside.DacriumFortressEntrance);
         process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.AudienceChamber, NpcId.TheWhiteDragon, 21568); // Return to Lestania and report to the White Dragon
         process0.AddIsStageNoBlock(QuestAnnounceType.None, Stage.AudienceChamber)
-            .AddResultCmdReleaseAnnounce(ContentsRelease.SpecialSkillAugmentation, TutorialId.SkillInheritanceOfUltimateSkills, flagInfo: QuestFlags.NpcFunctions.SpecialSkillAugmentation)
             .AddResultCmdTutorialDialog(TutorialId.TheLandofDespairPrologue);
         process0.AddProcessEndBlock(true);
 
