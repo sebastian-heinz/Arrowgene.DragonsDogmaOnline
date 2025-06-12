@@ -266,7 +266,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
             questScheduleIds.UnionWith(client.Party.QuestState.StageQuests(stageId));
             if (client.Party.Leader is not null)
             {
-                questScheduleIds.UnionWith(client.Party.Leader.QuestState.StageQuests(stageId));
+                questScheduleIds.UnionWith(client.Party.Leader.Client.QuestState.StageQuests(stageId));
             }
 
             return questScheduleIds;
