@@ -39,6 +39,7 @@ namespace Arrowgene.Ddon.Server.Scripting.modules
             // that defaults need to be assigned for
             DefaultSettings = new List<IGameSettings>()
             {
+                GameSettings.DebugSettings,
                 GameSettings.GameServerSettings,
                 GameSettings.ChatCommandsSettings,
                 GameSettings.SeasonalEventsSettings,
