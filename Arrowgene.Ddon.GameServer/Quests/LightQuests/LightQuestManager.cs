@@ -168,7 +168,7 @@ namespace Arrowgene.Ddon.GameServer.Quests.LightQuests
                     finalRecord = FinalizeRecord(quest, generatingAsset, (int)chosenRecord.EnemyUIId, chosenLevel, mixin, chosenRecord.Difficulty);
 
                     // Adjustment of count for boss hunts; applies after the rewards are counted.
-                    finalRecord.Count = (int)Math.Pow(finalRecord.Count, 1.0 / (1 + chosenRecord.Difficulty));
+                    finalRecord.Count = (int)(finalRecord.Count / (1 + chosenRecord.Difficulty));
 
                     break;
                 }
