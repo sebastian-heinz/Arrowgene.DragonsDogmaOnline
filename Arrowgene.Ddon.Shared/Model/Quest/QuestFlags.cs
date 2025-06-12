@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reflection;
 
 namespace Arrowgene.Ddon.Shared.Model.Quest
@@ -468,6 +467,16 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             /// Unlocks "Valtable Hall" in Stage.HollowofBeginnings0 when set
             /// </summary>
             public static QuestFlagInfo ValtableHall { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(2183, QuestId.Q70023001);
+
+            /// <summary>
+            /// Spawns Spirit Dragon in Hallow of Beginnings
+            /// </summary>
+            public static QuestFlagInfo SpiritDragon { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(4515, QuestId.Q70023001, Stage.HollowofBeginnings1);
+
+            /// <summary>
+            /// Spawns Mordred in Hallow of Beginnings
+            /// </summary>
+            public static QuestFlagInfo Mordred { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(4973, QuestId.Q70023001, Stage.HollowofBeginnings1);
         }
 
         public static class ValtableHall
@@ -578,6 +587,12 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             /// Opens the door to Epitaph Road: Rathnite Foothills
             /// </summary>
             public static QuestFlagInfo EpitaphRoadRathniteFoothills { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(3518, QuestId.Q70030001);
+
+            /// <summary>
+            /// Spawns Quintus in Fort Thines infront of the seat where Nedo sits.
+            /// @note Only appears to be set when the party is first created and doesn't change afterwards.
+            /// </summary>
+            public static QuestFlagInfo Quintus { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(8166, QuestId.Q70033001, StageInfo);
         }
 
         public static class RathniteFoothillsLakeside
