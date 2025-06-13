@@ -51,7 +51,7 @@ skillAugmentation.AddNode(8)
     .HasUnlockDependencies(4, 5, 6);
 skillAugmentation.AddNode(9)
     .Location(6, 3)
-    .BloodOrbCost(200)
+    .HighOrbCost(200)
     .HasUnlockDependencies(6)
     .HasSpecialConditionDependencies(1)
     .Unlocks(OrbGainParamType.JobMagicalAttack, 1);
