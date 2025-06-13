@@ -161,11 +161,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         }
                     }
 
-                    // TODO: This will be revisited so we can properly handle EXP assigned by tool and
-                    // TODO: EXP determined by the mixin. For now, the default behavior of the mixin
-                    // TODO: is the same as the original server behavior.
                     var enemyExpMixin = Server.ScriptManager.MixinModule.Get<IExpMixin>("enemy_exp");
-
                     foreach (PartyMember member in client.Party.Members)
                     {
                         if (member.JoinState != JoinState.On) continue; // Only fully joined members get rewards.
@@ -191,7 +187,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                                 gainedExp = (0, 0);
                             }
 
-                            var huntPackets = playerMember.QuestState.HandleEnemyHuntRequests(enemyKilled, connectionIn);
+                            var huntPackets = playerMember.Client.QuestState.HandleEnemyHuntRequests(enemyKilled, connectionIn);
                             queuedPackets.AddRange(huntPackets);
 
                             S2CItemUpdateCharacterItemNtc updateCharacterItemNtc = new S2CItemUpdateCharacterItemNtc();

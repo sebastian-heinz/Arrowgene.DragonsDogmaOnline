@@ -49,7 +49,7 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 var quest = QuestManager.GetQuestByScheduleId(questProgress.QuestScheduleId);
                 if (quest != null && quest.IsPersonal)
                 { 
-                    join.QuestState.AddNewQuest(questProgress.QuestScheduleId, questProgress.Step);
+                    client.QuestState.AddNewQuest(questProgress.QuestScheduleId, questProgress.Step);
                 }
             }
 
