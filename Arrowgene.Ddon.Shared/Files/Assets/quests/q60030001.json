@@ -12,6 +12,7 @@
     },
     "area_id": "MysreeForest",
     "adventure_guide_category": "AreaTrialOrMission",
+    "override_enemy_spawn": true,
     "order_conditions": [],
     "rewards": [
         {
