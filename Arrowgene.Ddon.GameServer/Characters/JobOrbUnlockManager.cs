@@ -81,10 +81,21 @@ namespace Arrowgene.Ddon.GameServer.Characters
             }
         }
 
+        private Dictionary<JobId, List<JobOrbUpgrade>> GetAllUpgrades()
+        {
+            return Server.ScriptManager.SkillAugmentationModule.SkillAugmentations
+                .ToDictionary(
+                    x => x.Key,
+                    x => x.Value
+                    .Concat(Server.ScriptManager.SpecialSkillAugmentationModule.SkillAugmentations[x.Key])
+                    .ToList()
+                );
+        }
+
         public void EvaluateJobOrbTreeUnlocks(Character character)
         {
-            var jobOrbUpgrades = Server.ScriptManager.SkillAugmentationModule.SkillAugmentations;
 
+            var jobOrbUpgrades = GetAllUpgrades();
             character.ExtendedJobParams[JobId.None] = new CDataOrbGainExtendParam();
             foreach (var jobId in jobOrbUpgrades.Keys)
             {
