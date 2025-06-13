@@ -216,10 +216,17 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return questBlock;
         }
 
-        public static QuestBlock AddCheckCmdNpcTouchAndOrderUi(this QuestBlock questBlock, StageInfo stageInfo, NpcId npcId, int noOrderGroupSerial, int commandListIndex = 0)
+        public static QuestBlock AddCheckCmdNpcTouchAndOrderUi(this QuestBlock questBlock, StageInfo stageInfo, NpcId npcId, uint noOrderGroupSerial, int commandListIndex = 0)
         {
             ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
             questBlock.CheckCommands[commandListIndex].AddCheckCmdNpcTouchAndOrderUi(stageInfo, npcId, noOrderGroupSerial);
+            return questBlock;
+        }
+
+        public static QuestBlock AddCheckCmdQuestNpcTouchAndOrderUi(this QuestBlock questBlock, StageInfo stageInfo, uint groupNo, uint setNo, QuestId questId, int commandListIndex = 0)
+        {
+            ValidateIndexAndUpdateCommandList(questBlock.CheckCommands, commandListIndex);
+            questBlock.CheckCommands[commandListIndex].AddCheckCmdQuestNpcTouchAndOrderUi(stageInfo, groupNo, setNo, questId);
             return questBlock;
         }
 

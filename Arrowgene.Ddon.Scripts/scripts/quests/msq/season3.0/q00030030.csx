@@ -76,6 +76,7 @@ public class ScriptedQuest : IQuest
     {
         var process0 = AddNewProcess(0);
         process0.AddNpcTalkAndOrderBlock(Stage.AudienceChamber, NpcId.Joseph, 21292)
+            .AddQuestFlag(QuestFlagAction.Set, QuestFlags.PiremothTravelersInn.Endale)
             .AddQuestFlag(QuestFlagAction.Clear, QuestFlags.AudienceChamber.TheCrewEndSeason34)
             .AddQuestFlag(QuestFlagAction.Set, QuestFlags.RathniteFoothills.OrcCampSettlementBuildings)
             .AddQuestFlag(QuestFlagAction.Set, QuestFlags.RathniteFoothills.OrcCampSettlementNPCs)

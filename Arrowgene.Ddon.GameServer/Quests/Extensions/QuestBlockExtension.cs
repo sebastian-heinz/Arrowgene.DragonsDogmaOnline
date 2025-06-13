@@ -38,6 +38,14 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return process.AddNpcTalkAndOrderBlock(stageInfo.AsStageLayoutId(0, 0), npcId, msgId);
         }
 
+        public static QuestBlock AddNpcTouchAndOrderBlock(this QuestProcess process, StageInfo stageInfo, NpcId npcId, uint msgId)
+        {
+            var block = CreateGenericBlock(process.QuestScheduleId, 0, 0, QuestBlockType.Raw, QuestAnnounceType.None)
+                .AddCheckCmdNpcTouchAndOrderUi(stageInfo, npcId, msgId);
+            process.AddBlock(block);
+            return block;
+        }
+
         public static QuestBlock AddNewNpcTalkAndOrderBlock(this QuestProcess process, StageLayoutId stageId, NpcId npcId, uint msgId, QuestId questId = QuestId.None)
         {
             var block = CreateGenericBlock(process.QuestScheduleId, 0, 0, QuestBlockType.NewNpcTalkAndOrder, QuestAnnounceType.None)
@@ -62,6 +70,19 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
         public static QuestBlock AddQuestNpcTalkAndOrderBlock(this QuestProcess process, QuestId questId, StageInfo stageInfo, uint groupId, byte setId, NpcId npcId, uint msgId)
         {
             return process.AddQuestNpcTalkAndOrderBlock(questId, stageInfo.AsStageLayoutId(setId, groupId), npcId, msgId);
+        }
+
+        public static QuestBlock AddNewNpcTouchAndOrderBlock(this QuestProcess process, QuestId questId, StageInfo stageInfo, uint groupId, byte setId)
+        {
+            var block = CreateGenericBlock(process.QuestScheduleId, 0, 0, QuestBlockType.Raw, QuestAnnounceType.None)
+                .AddCheckCmdQuestNpcTouchAndOrderUi(stageInfo, groupId, setId, questId);
+            process.AddBlock(block);
+            return block;
+        }
+
+        public static QuestBlock AddNewNpcTouchAndOrderBlock(this QuestProcess process, StageInfo stageInfo, uint groupId, byte setId)
+        {
+            return AddNewNpcTouchAndOrderBlock(process, QuestId.None, stageInfo, groupId, setId);
         }
 
         public static QuestBlock AddIsStageNoBlock(this QuestProcess process, QuestAnnounceType announceType, StageInfo stageInfo, bool showMarker = true)
@@ -354,6 +375,21 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return process.AddIsQuestClearBlock(announceType, questType, (QuestId)questId);
         }
 
+        public static QuestBlock AddPlayEventBlock(this QuestProcess process, QuestAnnounceType announceType, StageInfo eventStageInfo, uint eventId, uint startPos, QuestJumpType jumpType, StageInfo jumpStageInfo)
+        {
+            var block = CreateGenericBlock(process.QuestScheduleId, 0, 0, QuestBlockType.PlayEvent, announceType)
+                .SetStageId(eventStageInfo.AsStageLayoutId(0))
+                .SetQuestEvent(eventStageInfo, eventId, startPos, jumpType, jumpStageInfo);
+            process.AddBlock(block);
+            return block;
+        }
+
+        public static QuestBlock AddPlayEventBlock(this QuestProcess process, QuestAnnounceType announceType, StageInfo eventStageInfo, uint eventId, uint startPos)
+        {
+            return AddPlayEventBlock(process, announceType, eventStageInfo, eventId, startPos, QuestJumpType.After, eventStageInfo);
+        }
+
+#if false
         public static QuestBlock AddPlayEventBlock(this QuestProcess process, QuestAnnounceType announceType, StageLayoutId stageId, uint eventId, uint startPos)
         {
             var block = CreateGenericBlock(process.QuestScheduleId, 0, 0, QuestBlockType.PlayEvent, announceType)
@@ -381,10 +417,11 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
         {
             return process.AddPlayEventBlock(announceType, stageInfo.AsStageLayoutId(0, 0), eventId, startPos, jumpType, eventStageInfo.AsStageLayoutId(0, 0));
         }
+#endif
 
         public static QuestBlock AddEventExecBlock(this QuestProcess process, QuestAnnounceType announceType, StageInfo stageInfo, uint eventNo, StageInfo destStage, uint jumpPos)
         {
-            var block = CreateGenericBlock(process.QuestScheduleId, 0, 0, QuestBlockType.PlayEvent, announceType)
+            var block = CreateGenericBlock(process.QuestScheduleId, 0, 0, QuestBlockType.Raw, announceType)
                 .AddResultCmdEventExec(stageInfo, eventNo, destStage, jumpPos)
                 .AddCheckCmdEventEnd(stageInfo, eventNo);
             process.AddBlock(block);

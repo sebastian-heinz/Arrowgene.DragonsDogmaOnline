@@ -64,7 +64,7 @@ public class ScriptedQuest : IQuest
         process0.AddRawBlock(QuestAnnounceType.Accept)
             .AddCheckCmdTouchActToNpc(Stage.TheWhiteDragonTemple0, NpcId.Seneka0);
         process0.AddPlayEventBlock(QuestAnnounceType.None, Stage.TheWhiteDragonTemple0, 20, 55, QuestJumpType.After, Stage.AudienceChamber);
-        process0.AddPlayEventBlock(QuestAnnounceType.None, Stage.AudienceChamber.AsStageLayoutId(0), 195, 0, QuestJumpType.After, Stage.RathniteFoothills.AsStageLayoutId(13));
+        process0.AddPlayEventBlock(QuestAnnounceType.None, Stage.AudienceChamber, 195, 13, QuestJumpType.After, Stage.RathniteFoothills);
         process0.AddPlayEventBlock(QuestAnnounceType.None, Stage.RathniteFoothills, 0, 0);
         process0.AddDestroyGroupBlock(QuestAnnounceType.Update, EnemyGroupId.Encounter + 0)
             .AddResultCmdReleaseAnnounce(ContentsRelease.None, flagInfo: QuestFlags.TheWhiteDragonTemple0.Season3Warp)

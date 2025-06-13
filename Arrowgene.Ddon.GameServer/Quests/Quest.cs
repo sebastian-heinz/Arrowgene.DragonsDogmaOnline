@@ -619,6 +619,9 @@ namespace Arrowgene.Ddon.GameServer.Quests
                 Param = ToCDataQuestOrderList(step)
             };
             result.Param.CanProgress = false;
+            result.Param.Unk5 = DateTimeOffset.FromUnixTimeSeconds(0);
+            result.Param.Unk6 = DateTimeOffset.FromUnixTimeSeconds(0);
+            result.Param.DistributionEnd = DateTimeOffset.FromUnixTimeSeconds(0);
 
             return result;
         }

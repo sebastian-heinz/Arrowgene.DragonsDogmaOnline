@@ -106,6 +106,7 @@ public class ScriptedQuest : IQuest
     {
         var process0 = AddNewProcess(0);
         process0.AddNpcTalkAndOrderBlock(Stage.AudienceChamber, NpcId.Joseph, 21247)
+            .AddQuestFlag(QuestFlagAction.Set, QuestFlags.PiremothTravelersInn.Endale)
             .AddQuestFlag(QuestFlagAction.Clear, QuestFlags.AudienceChamber.TheCrewEndSeason34)
             .AddQuestFlag(QuestFlagAction.Clear, QuestFlags.RathniteFoothills.OrcCampSettlementNPCs)
             .AddQuestFlag(QuestFlagAction.Clear, QuestFlags.RathniteFoothills.OrcCampSettlementBuildings)
@@ -124,8 +125,7 @@ public class ScriptedQuest : IQuest
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Set, QstLayoutFlag.Gillian);
         process0.AddTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.PiremothTravelersInn, NpcId.Endale, 24159)
             .AddCheckCmdNewTalkNpcWithoutMarker(Stage.PiremothTravelersInn, 1, 0, QuestId.Q70030001)
-            .AddQuestFlag(QuestFlagAction.Clear, QuestFlags.FortThines.Endale)
-            .AddQuestFlag(QuestFlagAction.Set, QuestFlags.PiremothTravelersInn.Endale);
+            .AddQuestFlag(QuestFlagAction.Clear, QuestFlags.FortThines.Endale);
         process0.AddNewTalkToNpcBlock(QuestAnnounceType.CheckpointAndUpdate, Stage.RathniteFoothills, 3, 0, NpcId.Gillian0, 24161)
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Clear, 5379) // Spawn Gurdolin, Lise and Elliot
             .AddQuestFlag(QuestFlagType.QstLayout, QuestFlagAction.Clear, QstLayoutFlag.Gillian)

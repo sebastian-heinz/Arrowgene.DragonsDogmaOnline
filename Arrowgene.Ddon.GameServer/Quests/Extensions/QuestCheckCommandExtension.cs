@@ -230,9 +230,15 @@ namespace Arrowgene.Ddon.GameServer.Quests.Extensions
             return checkCommands;
         }
 
-        public static List<CDataQuestCommand> AddCheckCmdNpcTouchAndOrderUi(this List<CDataQuestCommand> checkCommands, StageInfo stageInfo, NpcId npcId, int noOrderGroupSerial)
+        public static List<CDataQuestCommand> AddCheckCmdNpcTouchAndOrderUi(this List<CDataQuestCommand> checkCommands, StageInfo stageInfo, NpcId npcId, uint noOrderGroupSerial)
         {
-            checkCommands.Add(QuestManager.CheckCommand.NpcTouchAndOrderUi(stageInfo.StageNo, npcId, noOrderGroupSerial));
+            checkCommands.Add(QuestManager.CheckCommand.NpcTouchAndOrderUi(stageInfo.StageNo, npcId, (int) noOrderGroupSerial));
+            return checkCommands;
+        }
+
+        public static List<CDataQuestCommand> AddCheckCmdQuestNpcTouchAndOrderUi(this List<CDataQuestCommand> checkCommands, StageInfo stageInfo, uint groupNo, uint setNo, QuestId questId)
+        {
+            checkCommands.Add(QuestManager.CheckCommand.QuestNpcTouchAndOrderUi(stageInfo.StageNo, (int) groupNo, (int) setNo, (int)questId));
             return checkCommands;
         }
 

@@ -161,6 +161,7 @@ public class ScriptedQuest : IQuest
 
         var process0 = AddNewProcess(processNo++);
         process0.AddNpcTalkAndOrderBlock(Stage.AudienceChamber, NpcId.Joseph, 21413)
+            .AddQuestFlag(QuestFlagAction.Set, QuestFlags.PiremothTravelersInn.Endale)
             .AddQuestFlag(QuestFlagAction.Clear, QuestFlags.RathniteFoothills.FortThinesFixWall)
             .AddQuestFlag(QuestFlagAction.Clear, QuestFlags.RathniteFoothills.FortThinesNpcs)
             .AddQuestFlag(QuestFlagAction.Clear, QuestFlags.RathniteFoothills.FortThinesBuildings)
