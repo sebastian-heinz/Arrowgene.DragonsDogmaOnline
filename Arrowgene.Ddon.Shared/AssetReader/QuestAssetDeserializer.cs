@@ -137,7 +137,7 @@ namespace Arrowgene.Ddon.Shared.AssetReader
                 return false;
             }
 
-                assetData.OverrideEnemySpawn = (assetData.QuestType == QuestType.Main || assetData.QuestType == QuestType.ExtremeMission);
+            assetData.OverrideEnemySpawn = (assetData.QuestType == QuestType.Main || assetData.QuestType == QuestType.ExtremeMission);
             if (jQuest.TryGetProperty("override_enemy_spawn", out JsonElement jOverrideEnemySpawn))
             {
                 assetData.OverrideEnemySpawn = jOverrideEnemySpawn.GetBoolean();
