@@ -1970,7 +1970,7 @@ namespace Arrowgene.Ddon.Shared.Network
         public static readonly PacketId C2S_SEASON_DUNGEON_SOUL_ORDEAL_CANCEL_READY_REQ = new PacketId(62, 21, 1, "C2S_SEASON_DUNGEON_SOUL_ORDEAL_CANCEL_READY_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_SEASON_DUNGEON_SOUL_ORDEAL_CANCEL_READY_RES = new PacketId(62, 21, 2, "S2C_SEASON_DUNGEON_SOUL_ORDEAL_CANCEL_READY_RES", ServerType.Game, PacketSource.Server); // 英霊の試練準備キャンセルに
         public static readonly PacketId S2C_SEASON_62_22_16_NTC = new PacketId(62, 22, 16, "S2C_SEASON_62_22_16_NTC", ServerType.Game, PacketSource.Server);
-        public static readonly PacketId S2C_SEASON_62_23_16_NTC = new PacketId(62, 23, 16, "S2C_SEASON_62_23_16_NTC", ServerType.Game, PacketSource.Server);
+        public static readonly PacketId S2C_SEASON_DUNGEON_GROUP_READY_NTC = new PacketId(62, 23, 16, "S2C_SEASON_DUNGEON_GROUP_READY_NTC", ServerType.Game, PacketSource.Server, "S2C_SEASON_62_23_16_NTC");
         public static readonly PacketId C2S_SEASON_DUNGEON_EXECUTE_SOUL_ORDEAL_REQ = new PacketId(62, 24, 1, "C2S_SEASON_DUNGEON_EXECUTE_SOUL_ORDEAL_REQ", ServerType.Game, PacketSource.Client);
         public static readonly PacketId S2C_SEASON_DUNGEON_EXECUTE_SOUL_ORDEAL_RES = new PacketId(62, 24, 2, "S2C_SEASON_DUNGEON_EXECUTE_SOUL_ORDEAL_RES", ServerType.Game, PacketSource.Server); // 英霊の試練起動に
         public static readonly PacketId C2S_SEASON_DUNGEON_INTERRUPT_SOUL_ORDEAL_REQ = new PacketId(62, 25, 1, "C2S_SEASON_DUNGEON_INTERRUPT_SOUL_ORDEAL_REQ", ServerType.Game, PacketSource.Client);
@@ -3901,7 +3901,7 @@ namespace Arrowgene.Ddon.Shared.Network
             AddPacketIdEntry(packetIds, C2S_SEASON_DUNGEON_SOUL_ORDEAL_CANCEL_READY_REQ);
             AddPacketIdEntry(packetIds, S2C_SEASON_DUNGEON_SOUL_ORDEAL_CANCEL_READY_RES);
             AddPacketIdEntry(packetIds, S2C_SEASON_62_22_16_NTC);
-            AddPacketIdEntry(packetIds, S2C_SEASON_62_23_16_NTC);
+            AddPacketIdEntry(packetIds, S2C_SEASON_DUNGEON_GROUP_READY_NTC);
             AddPacketIdEntry(packetIds, C2S_SEASON_DUNGEON_EXECUTE_SOUL_ORDEAL_REQ);
             AddPacketIdEntry(packetIds, S2C_SEASON_DUNGEON_EXECUTE_SOUL_ORDEAL_RES);
             AddPacketIdEntry(packetIds, C2S_SEASON_DUNGEON_INTERRUPT_SOUL_ORDEAL_REQ);

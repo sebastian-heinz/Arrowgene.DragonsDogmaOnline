@@ -1,3 +1,4 @@
+using Arrowgene.Ddon.GameServer.Context;
 using Arrowgene.Ddon.GameServer.Party;
 using Arrowgene.Ddon.Server;
 using Arrowgene.Ddon.Server.Network;
@@ -139,6 +140,11 @@ namespace Arrowgene.Ddon.GameServer.Characters
 
                 foreach (var enemyGroup in trial.EnemyGroups.Values)
                 {
+                    foreach (var enemy in enemyGroup.Enemies)
+                    {
+                        var uid = ContextManager.CreateEnemyUID(enemy.Index, enemyGroup.StageLayoutId.ToCDataStageLayoutId());
+                        ContextManager.RemoveContext(party, uid);
+                    }
                     party.InstanceEnemyManager.ResetEnemyNode(enemyGroup.StageLayoutId);
                     party.SendToAll(new S2CInstanceEnemyGroupResetNtc() { LayoutId = enemyGroup.StageLayoutId.ToCDataStageLayoutId() });
                 }
