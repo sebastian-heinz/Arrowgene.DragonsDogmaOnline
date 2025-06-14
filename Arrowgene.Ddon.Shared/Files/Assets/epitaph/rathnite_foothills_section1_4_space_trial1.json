@@ -35,8 +35,8 @@
                             "named_enemy_params_id": 2286
                         },
                         {
-                            "comment" : "Shadow Chimera",
-                            "enemy_id": "0x010520",
+                            "comment": "Shadow Chimera",
+                            "enemy_id": "0x015203",
                             "level": 83,
                             "exp": 84000,
                             "named_enemy_params_id": 2287,
@@ -79,7 +79,7 @@
                 {
                     "stage_id": {
                         "id": 550,
-                        "group_id": 30
+                        "group_id": 40
                     },
                     "enemies": [
                         {

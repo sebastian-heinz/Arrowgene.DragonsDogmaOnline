@@ -1,13 +1,11 @@
-using System.Collections.Generic;
 using Arrowgene.Buffers;
-using Arrowgene.Ddon.Shared.Entity.Structure;
 using Arrowgene.Ddon.Shared.Network;
 
 namespace Arrowgene.Ddon.Shared.Entity.PacketStructure
 {
     public class S2CSeasonDungeonGroupReadyNtc : IPacketStructure
     {
-        public PacketId Id => PacketId.S2C_SEASON_62_23_16_NTC;
+        public PacketId Id => PacketId.S2C_SEASON_DUNGEON_GROUP_READY_NTC;
 
         public S2CSeasonDungeonGroupReadyNtc()
         {
