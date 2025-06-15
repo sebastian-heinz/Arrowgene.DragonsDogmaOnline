@@ -13,7 +13,7 @@ public static class DdonDatabaseBuilder
 {
     private const string DefaultSchemaFile = "Script/schema_sqlite.sql";
 
-    public const uint Version = 47;
+    public const uint Version = 48;
     private static readonly ILogger Logger = LogProvider.Logger<Logger>(typeof(DdonDatabaseBuilder));
 
     public static IDatabase Build(DatabaseSetting settings)

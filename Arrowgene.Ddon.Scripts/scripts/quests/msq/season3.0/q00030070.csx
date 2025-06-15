@@ -14,7 +14,7 @@ public class ScriptedQuest : IQuest
     public override byte MinimumItemRank => 0;
     public override bool IsDiscoverable => true;
     public override StageInfo StageInfo => Stage.AudienceChamber;
-    public override QuestId NextQuestId => QuestId.None;
+    public override QuestId NextQuestId => QuestId.TheRoyalFamilySacrament;
 
     private class EnemyGroupId
     {

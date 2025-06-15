@@ -5,6 +5,6 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
         None = 0,
         Before = 1,
         After = 2,
-        Continue = 3
+        Continue = 3,
     }
 }

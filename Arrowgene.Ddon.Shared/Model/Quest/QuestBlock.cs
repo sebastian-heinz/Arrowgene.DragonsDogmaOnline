@@ -334,6 +334,7 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             return this;
         }
 
+/*
         public QuestBlock SetQuestEvent(StageLayoutId stageId, uint eventId, uint startPos, QuestJumpType jumpType = QuestJumpType.After)
         {
             QuestEvent = new QuestEvent()
@@ -342,6 +343,19 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
                 JumpStageId = stageId,
                 JumpType = jumpType,
                 StartPosNo = (int) startPos
+            };
+            return this;
+        }
+*/
+
+        public QuestBlock SetQuestEvent(StageInfo eventStageInfo, uint eventId, uint startPos, QuestJumpType jumpType, StageInfo jumpStageInfo)
+        {
+            QuestEvent = new QuestEvent()
+            {
+                EventId = (int)eventId,
+                JumpStageId = jumpStageInfo.AsStageLayoutId(0),
+                JumpType = jumpType,
+                StartPosNo = (int)startPos
             };
             return this;
         }

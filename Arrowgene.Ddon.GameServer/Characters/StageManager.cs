@@ -76,7 +76,7 @@ namespace Arrowgene.Ddon.GameServer.Characters
                 Stage.FortressCityMegadoResidentialLevel3,
                 Stage.FortThines1, // TODO: The other ones?
                 Stage.FortThinesGreatDiningHall,
-                Stage.LookoutCastle0, // TODO: The other ones?
+                Stage.LookoutCastle1, // TODO: The other ones?
                 Stage.BerthasBanditGroupHideout,
                 Stage.PiremothTravelersInn,
                 Stage.RothgillTravelersInn,
@@ -107,8 +107,12 @@ namespace Arrowgene.Ddon.GameServer.Characters
         public static readonly HashSet<uint> HubStageIds = new HashSet<StageInfo>(){
             Stage.TheWhiteDragonTemple0,
             Stage.BreyaCoast, // (Summer Event Hub Area)
-            Stage.DanaCentrum, 
+            Stage.DanaCentrum,
+            Stage.MorfaulCentrum,
+            Stage.GlyndwrCentrum,
             Stage.ClanHall, //  (has special handling)
+            Stage.FortThines1,
+            Stage.LookoutCastle1,
             Stage.FortressCityMegadoResidentialLevel0, 
             Stage.FortressCityMegadoResidentialLevel1, 
             Stage.FortressCityMegadoResidentialLevel2, 

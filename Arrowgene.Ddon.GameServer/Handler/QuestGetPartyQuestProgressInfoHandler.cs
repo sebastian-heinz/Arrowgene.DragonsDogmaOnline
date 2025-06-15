@@ -24,6 +24,12 @@ namespace Arrowgene.Ddon.GameServer.Handler
         {
         }
 
+        private readonly HashSet<QuestId> WorldManageQuestToIgnore = new()
+        {
+            QuestId.Q70033001,
+            QuestId.Q70034001,
+        };
+
         public override S2CQuestGetPartyQuestProgressInfoRes Handle(GameClient client, C2SQuestGetPartyQuestProgressInfoReq request)
         {
             // S2CQuestGetPartyQuestProgressInfoRes res = new S2CQuestGetPartyQuestProgressInfoRes();
@@ -45,10 +51,15 @@ namespace Arrowgene.Ddon.GameServer.Handler
                 quest.QuestFlagList = leaderClient.Character.GetWorldManageQuestUnlocks((QuestId)quest.QuestId);
                 // TODO: This will probably break everything currently if cleared as all doors in the world will be closed
                 // TODO: Need to go track down all quests
+                // quest.QuestLayoutFlagList = leaderClient.Character.GetWorldManageLayoutUnlocks((QuestId)quest.QuestId);
 
-                // TODO: Don't add these flags since they mess up with the cutscene state
+                // TODO: Don't add these flags since they obfuscate certain cutscenes or other world state
                 // TODO: in some S2 and S3 cutscenes. Add them back properly when the story requires it.
-                if ((QuestId)quest.QuestId == QuestId.Q70033001)
+                // if ((QuestId)quest.QuestId == Server.GameSettings.DebugSettings.QuestId)
+                // {
+                //     quest.QuestLayoutFlagList = Server.GameSettings.DebugSettings.UintList.Select(x => new Shared.Entity.Structure.CDataQuestLayoutFlag() { FlagId = x }).ToList();
+                // }
+                if (WorldManageQuestToIgnore.Contains((QuestId)quest.QuestId))
                 {
                     quest.QuestLayoutFlagList = new();
                 }
@@ -58,12 +69,6 @@ namespace Arrowgene.Ddon.GameServer.Handler
                         x.FlagId != QuestFlags.HollowOfBeginnings.Mordred.Value &&
                         x.FlagId != QuestFlags.HollowOfBeginnings.SpiritDragon.Value).ToList();
                 }
-
-                // if ((QuestId)quest.QuestId == Server.GameSettings.DebugSettings.QuestId)
-                // {
-                //     quest.QuestLayoutFlagList = Server.GameSettings.DebugSettings.UintList.Select(x => new Shared.Entity.Structure.CDataQuestLayoutFlag() { FlagId = x }).ToList();
-                // }
-                // quest.QuestLayoutFlagList = leaderClient.Character.GetWorldManageLayoutUnlocks((QuestId)quest.QuestId);
             }
 
             // TODO: Do we need to check personal quests here?

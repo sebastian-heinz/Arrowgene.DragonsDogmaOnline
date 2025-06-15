@@ -123,6 +123,18 @@ namespace Arrowgene.Ddon.Shared.Model
             return this;
         }
 
+        public InstancedEnemy SetIsBossBGM(bool isBossBgm)
+        {
+            IsBossBGM = isBossBgm;
+            return this;
+        }
+
+        public InstancedEnemy SetIsBossGauge(bool isBossGauge)
+        {
+            IsBossGauge = IsBossGauge;
+            return this;
+        }
+
         public InstancedEnemy SetRaidBossId(uint raidBossId)
         {
             RaidBossId = raidBossId;

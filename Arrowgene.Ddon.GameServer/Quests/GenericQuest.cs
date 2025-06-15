@@ -718,6 +718,10 @@ namespace Arrowgene.Ddon.GameServer.Quests
                         switch (questBlock.QuestEvent.JumpType)
                         {
                             case QuestJumpType.None:
+                                resultCommands.Add(QuestManager.ResultCommand.EventExec(
+                                    StageManager.ConvertIdToStageNo(questBlock.StageLayoutId), questBlock.QuestEvent.EventId, 0, 0)
+                                );
+                                break;
                             case QuestJumpType.After:
                                 resultCommands.Add(QuestManager.ResultCommand.EventExec(
                                                         StageManager.ConvertIdToStageNo(questBlock.StageLayoutId),
