@@ -33,7 +33,9 @@ Due to these differences, in the main `EpitaphRoad.json` file, there will be fie
 | Mysterious Doors   | om522554 | Doors with Green light that can be unlocked
 | Mysterious Powers  | om522552 | Green light pillars spawned when touching door (gathering points)
 | Brown Chest        | om513051 | Dungeon trash (souls)
+| Treasure Chest     | om513052 | Chests behind the gate of mysterious doors
 | Bronze Chest       | om513053 | Weekly reward
+| Silver Chest       | om513054 |
 | Gold Chest         | om513055 | Weekly reward
 
 ### Pattern for Mysterious doors

@@ -708,6 +708,11 @@ namespace Arrowgene.Ddon.Shared.Model.Quest
             /// Spawns Nedos Table, chair and seats
             /// </summary>
             public static QuestFlagInfo NedosFurniture { get; private set; } = QuestFlagInfo.WorldManageLayoutFlag(6377, QuestId.Q70031001, StageInfo);
+
+            /// <summary>
+            /// Opens the gate to Epitaph Road: Feryana Wilderness
+            /// </summary>
+            public static QuestFlagInfo EpitaphRoadFeryanaWilderness { get; private set; } = QuestFlagInfo.WorldManageQuestFlag(3520, QuestId.Q70031001);
         }
 
         public static class NpcFunctions

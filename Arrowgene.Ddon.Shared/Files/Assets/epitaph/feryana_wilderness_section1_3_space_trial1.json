@@ -1,0 +1,181 @@
+{
+    "comment": "Section 1: Space 3 Trial",
+    "stage_id": {
+        "id": 552,
+        "group_id": 107
+    },
+    "pos_id": 0,
+    "unlock_cost": [],
+    "unlocks": [],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {
+                    "type": "EliminateTheEnemy",
+                    "priority": "Primary"
+                },
+                {
+                    "type": "CompleteConditionsWithinTimeLimit",
+                    "priority": "Secondary",
+                    "Param1": 180
+                },
+                {
+                    "type": "CannotBeAffectedByAbnormalStatus",
+                    "priority": "Secondary",
+                    "Param1": 3
+                }
+            ],
+            "cost": [],
+            "item_rewards": [
+                {
+                    "item_id": 18658,
+                    "amount": 5
+                },
+                {
+                    "item_id": 18742,
+                    "amount": 40
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 552,
+                        "group_id": 26
+                    },
+                    "placement_type": "Manual",
+                    "enemies": [
+                        {
+                            "comment": "Wight",
+                            "enemy_id": "0x015600",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2287,
+                            "index": 4,
+                            "is_boss": true
+                        },
+                        {
+                            "comment": "Frost Skeleton Brute",
+                            "enemy_id": "0x010321",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "index": 0
+                        },
+                        {
+                            "comment": "Frost Skeleton Brute",
+                            "enemy_id": "0x010321",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "index": 1
+                        },
+                        {
+                            "comment": "Frost Skeleton Brute",
+                            "enemy_id": "0x010321",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "index": 2
+                        },
+                        {
+                            "comment": "Frost Skeleton Brute",
+                            "enemy_id": "0x010321",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "index": 3
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "trial_name": "Trial of the Souls",
+            "constraints": [
+                {
+                    "type": "EliminateTheEnemy",
+                    "priority": "Primary"
+                },
+                {
+                    "type": "CannotBeAffectedByAbnormalStatus",
+                    "priority": "Secondary",
+                    "Param1": 1
+                }
+            ],
+            "cost": [
+                {
+                    "item_id": 18658,
+                    "amount": 10
+                }
+            ],
+            "item_rewards": [
+                {"item_id": 18742, "amount": 80},
+                {
+                    "type": "pool", "rolls": 1,
+                    "items": [
+                        {"type": "Random", "item_id": 9261, "amount": 1},
+                        {"type": "Random", "item_id": 9262, "amount": 1},
+                        {"type": "Random", "item_id": 13655, "amount": 1},
+                        {"type": "Random", "item_id": 9305, "amount": 1},
+                        {"type": "Random", "item_id": 9306, "amount": 1},
+                        {"type": "Random", "item_id": 11746, "amount": 1},
+                        {"type": "Random", "item_id": 13681, "amount": 1}
+                    ]
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 552,
+                        "group_id": 26
+                    },
+                    "placement_type": "Manual",
+                    "enemies": [
+                        {
+                            "comment": "Skeleton Cyclops",
+                            "enemy_id": "0x015050",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2287,
+                            "index": 4,
+                            "is_boss": true
+                        },
+                        {
+                            "comment": "Skeleton Mage",
+                            "enemy_id": "0x010308",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "index": 0
+                        },
+                        {
+                            "comment": "Skeleton Mage",
+                            "enemy_id": "0x010308",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "index": 1
+                        },
+                        {
+                            "comment": "Skeleton Mage",
+                            "enemy_id": "0x010308",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "index": 2
+                        },
+                        {
+                            "comment": "Skeleton Mage",
+                            "enemy_id": "0x010308",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "index": 3
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

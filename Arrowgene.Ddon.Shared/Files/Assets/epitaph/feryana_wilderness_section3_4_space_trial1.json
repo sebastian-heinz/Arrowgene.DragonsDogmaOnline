@@ -1,0 +1,174 @@
+{
+    "comment": "4th Space: Trial 1",
+    "stage_id": {
+        "id": 555,
+        "group_id": 108
+    },
+    "pos_id": 0,
+    "unlock_cost": [],
+    "unlocks": [
+    ],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {
+                    "type": "EliminateTheEnemy",
+                    "priority": "Primary"
+                },
+                {
+                    "type": "CannotDieMoreThanOnce",
+                    "priority": "Secondary"
+                },
+                {
+                    "type": "InflictAbnormalStatusCount",
+                    "priority": "Secondary",
+                    "Param1":  3
+                }
+            ],
+            "cost": [],
+            "item_rewards": [
+                {
+                    "item_id": 18658,
+                    "amount": 40
+                },
+                {
+                    "type": "pool",
+                    "rolls": 1,
+                    "items": [
+                        {
+                            "item_id": 18742,
+                            "amount": 40
+                        },
+                        {
+                            "type": "fixed",
+                            "item_id": 21379,
+                            "amount": 3,
+                            "comment": "Relic Steel (Feryana District)"
+                        }
+                    ]
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 555,
+                        "group_id": 31
+                    },
+                    "placement_type": "Manual",
+                    "enemies": [
+                        {
+                            "comment": "Drake",
+                            "enemy_id": "0x015700",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true,
+                            "index": 0
+                        },
+                        {
+                            "comment": "Angules",
+                            "enemy_id": "0x015708",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true,
+                            "index": 2
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "trial_name": "Trial of the Souls",
+            "constraints": [
+                {
+                    "type": "EliminateTheEnemy",
+                    "priority": "Primary"
+                },
+                {
+                    "type": "CannotDieMoreThanOnce",
+                    "priority": "Secondary"
+                },
+                {
+                    "type": "InflictAbnormalStatusCount",
+                    "priority": "Secondary",
+                    "Param1": 3
+                }
+            ],
+            "cost": [
+                {
+                    "item_id": 18658,
+                    "amount": 30
+                }
+            ],
+            "item_rewards": [
+                {
+                    "item_id": 18742,
+                    "amount": 80,
+                    "comment": "High Orb"
+                },
+                {
+                    "type": "pool",
+                    "rolls": 1,
+                    "items": [
+                        {
+                            "type": "Fixed",
+                            "item_id": 9241,
+                            "amount": 1
+                        },
+                        {
+                            "type": "Fixed",
+                            "item_id": 9331,
+                            "amount": 1
+                        },
+                        {
+                            "type": "Fixed",
+                            "item_id": 9332,
+                            "amount": 1
+                        },
+                        {
+                            "type": "Fixed",
+                            "item_id": 13690,
+                            "amount": 1
+                        },
+                        {
+                            "item_id": 21379,
+                            "amount": 3,
+                            "comment": "Relic Steel (Feryana District)"
+                        }
+                    ]
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 555,
+                        "group_id": 31
+                    },
+                    "placement_type": "Manual",
+                    "enemies": [
+                        {
+                            "comment": "Manticore",
+                            "enemy_id": "0x015210",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true,
+                            "index": 1
+                        },
+                        {
+                            "comment": "Goremanticore",
+                            "enemy_id": "0x015211",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true,
+                            "index": 3
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

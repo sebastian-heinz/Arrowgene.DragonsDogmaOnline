@@ -1,0 +1,308 @@
+{
+    "comment": "3rd Space: Trial 1",
+    "stage_id": {
+        "id": 556,
+        "group_id": 107
+    },
+    "pos_id": 0,
+    "unlock_cost": [],
+    "unlocks": [],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {
+                    "type": "DefeatEnemyCount",
+                    "priority": "Primary",
+                    "Param1": 15
+                },
+                {
+                    "type": "CompleteConditionsWithinTimeLimit",
+                    "priority": "Secondary",
+                    "Param1": 90
+                },
+                {
+                    "type": "CannotBeAffectedByAbnormalStatus",
+                    "priority": "Secondary",
+                    "Param1": 1
+                }
+            ],
+            "cost": [],
+            "item_rewards": [
+                {
+                    "item_id": 18658,
+                    "amount": 40
+                },
+                {
+                    "type": "pool",
+                    "rolls": 1,
+                    "items": [
+                        {
+                            "item_id": 18742,
+                            "amount": 40
+                        },
+                        {
+                            "type": "fixed",
+                            "item_id": 21379,
+                            "amount": 3,
+                            "comment": "Relic Steel (Feryana District)"
+                        }
+                    ]
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 556,
+                        "group_id": 20
+                    },
+                    "enemies": [
+                        {
+                            "comment": "Shadow Sling Goblin",
+                            "enemy_id": "0x011132",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30
+                        },
+                        {
+                            "comment": "Shadow Sling Goblin",
+                            "enemy_id": "0x011132",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30
+                        },
+                        {
+                            "comment": "Shadow Sling Goblin",
+                            "enemy_id": "0x011132",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30
+                        },
+                        {
+                            "comment": "Shadow Sling Goblin",
+                            "enemy_id": "0x011132",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30
+                        },
+                        {
+                            "comment": "Shadow Sling Goblin",
+                            "enemy_id": "0x011132",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30
+                        },
+                        {
+                            "comment": "Shadow Sling Goblin",
+                            "enemy_id": "0x011132",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30
+                        },
+                        {
+                            "comment": "Shadow Sling Goblin",
+                            "enemy_id": "0x011132",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30
+                        },
+                        {
+                            "comment": "Shadow Sling Goblin",
+                            "enemy_id": "0x011132",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30
+                        },
+                        {
+                            "comment": "Shadow Goblin Leader",
+                            "enemy_id": "0x011160",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "trial_name": "Trial of the Souls",
+            "constraints": [
+                {
+                    "type": "DefeatEnemyCount",
+                    "priority": "Primary",
+                    "Param1": 15
+                },
+                {
+                    "type": "CompleteConditionsWithinTimeLimit",
+                    "priority": "Secondary",
+                    "Param1": 90
+                },
+                {
+                    "type": "CannotBeAffectedByAbnormalStatus",
+                    "priority": "Secondary",
+                    "Param1": 3
+                }
+            ],
+            "cost": [
+                {
+                    "item_id": 18658,
+                    "amount": 40
+                }
+            ],
+            "item_rewards": [
+                {
+                    "item_id": 18742,
+                    "amount": 80
+                },
+                {
+                    "type": "pool",
+                    "rolls": 1,
+                    "items": [
+                        {"type": "fixed", "item_id": 9281,"amount": 1},
+                        {"type": "fixed", "item_id": 9282,"amount": 1},
+                        {"type": "fixed", "item_id": 11724,"amount": 1},
+                        {"type": "fixed", "item_id": 13676,"amount": 1},
+                        {"type": "fixed", "item_id": 13706,"amount": 1},
+                        {
+                            "type": "fixed",
+                            "item_id": 21379,
+                            "amount": 3,
+                            "comment": "Relic Steel (Feryana District)"
+                        }
+                    ]
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 556,
+                        "group_id": 20
+                    },
+                    "placement_type": "Manual",
+                    "enemies": [
+                        {
+                            "comment": "Shadow Sling Goblin",
+                            "enemy_id": "0x011132",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30,
+                            "index": 0
+                        },
+                        {
+                            "comment": "Shadow Sling Goblin",
+                            "enemy_id": "0x011132",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30,
+                            "index": 1
+                        },
+                        {
+                            "comment": "Shadow Sling Goblin",
+                            "enemy_id": "0x011132",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30,
+                            "index": 2
+                        },
+                        {
+                            "comment": "Shadow Sling Goblin",
+                            "enemy_id": "0x011132",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30,
+                            "index": 3
+                        },
+                        {
+                            "comment": "Shadow Sling Goblin",
+                            "enemy_id": "0x011132",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30,
+                            "index": 4
+                        },
+                        {
+                            "comment": "Shadow Sling Goblin",
+                            "enemy_id": "0x011132",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30,
+                            "index": 5
+                        },
+                        {
+                            "comment": "Shadow Sling Goblin",
+                            "enemy_id": "0x011132",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30,
+                            "index": 6
+                        },
+                        {
+                            "comment": "Shadow Sling Goblin",
+                            "enemy_id": "0x011132",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "repop_count": 50,
+                            "repop_wait_second": 30,
+                            "index": 7
+                        },
+                        {
+                            "comment": "Death Knight",
+                            "enemy_id": "0x010310",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2287,
+                            "repop_count": 50,
+                            "repop_wait_second": 30,
+                            "is_boss": true,
+                            "index": 9
+                        },
+                        {
+                            "comment": "Shadow Chimera",
+                            "enemy_id": "0x015203",
+                            "level": 90,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2287,
+                            "repop_count": 50,
+                            "repop_wait_second": 30,
+                            "is_boss": true,
+                            "index": 10
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

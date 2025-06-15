@@ -1,0 +1,95 @@
+{
+    "comment": "Tomb: Trial 1",
+    "stage_id": {
+        "id": 555,
+        "group_id": 102
+    },
+    "pos_id": 0,
+    "unlock_cost": [],
+    "unlocks": [
+    ],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {
+                    "type": "EliminateTheEnemy",
+                    "priority": "Primary"
+                },
+                {
+                    "type": "CannotBeAffectedByAbnormalStatus",
+                    "priority": "Secondary",
+                    "Param1": 3
+                }
+            ],
+            "cost": [],
+            "item_rewards": [
+                {
+                    "item_id": 18658,
+                    "amount": 20
+                },
+                {
+                    "type": "pool",
+                    "rolls": 1,
+                    "items": [
+                        {
+                            "item_id": 18742,
+                            "amount": 20
+                        },
+                        {
+                            "type": "fixed",
+                            "item_id": 21379,
+                            "amount": 3,
+                            "comment": "Relic Steel (Feryana District)"
+                        }
+                    ]
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 555,
+                        "group_id": 5
+                    },
+                    "enemies": [
+                        {
+                            "comment": "Living Armor",
+                            "enemy_id": "0x010306",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment": "Living Armor",
+                            "enemy_id": "0x010306",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment": "Living Armor",
+                            "enemy_id": "0x010306",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment": "Skull Lord",
+                            "enemy_id": "0x010313",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment": "Skull Lord",
+                            "enemy_id": "0x010313",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,92 @@
+{
+    "comment": "Well: Trial 1",
+    "stage_id": {
+        "id": 554,
+        "group_id": 102
+    },
+    "pos_id": 0,
+    "unlock_cost": [],
+    "unlocks": [
+    ],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {
+                    "type": "EliminateTheEnemy",
+                    "priority": "Primary"
+                },
+                {
+                    "type": "CompleteConditionsWithinTimeLimit",
+                    "priority": "Secondary",
+                    "Param1": 120
+                }
+            ],
+            "cost": [],
+            "item_rewards": [
+                {
+                    "item_id": 18658,
+                    "amount": 10
+                },
+                {
+                    "item_id": 18742,
+                    "amount": 40
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 554,
+                        "group_id": 1
+                    },
+                    "enemies": [
+                        {
+                            "comment": "Ranged Soldier Dwarf Orc",
+                            "enemy_id": "0x015824",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment": "Little Crag",
+                            "enemy_id": "0x015509",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment": "Little Crag",
+                            "enemy_id": "0x015509",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment": "Ranged Soldier Dwarf Orc",
+                            "enemy_id": "0x015824",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment": "War-Ready Grimwarg (Light Armor)",
+                            "enemy_id": "0x010230",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "infection_type": 1,
+                            "named_enemy_params_id": 2286
+                        },
+                        {
+                            "comment": "War-Ready Grimwarg (Light Armor)",
+                            "enemy_id": "0x010230",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "infection_type": 1,
+                            "named_enemy_params_id": 2286
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

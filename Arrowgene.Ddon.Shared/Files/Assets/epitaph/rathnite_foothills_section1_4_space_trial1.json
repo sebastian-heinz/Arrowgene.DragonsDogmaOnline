@@ -56,9 +56,9 @@
         {
             "trial_name": "Trial of the Souls",
             "constraints": [
-                {"type": "DefeatEnemyCount", "priority": "Primary", "Param1": 20},
-                {"type": "ItemNoteUsedMoreThanOnce", "priority": "Secondary"},
-                {"type": "CompleteConditionsWithinTimeLimit", "priority": "Secondary", "Param1": 360}
+                {"type": "EliminateTheEnemy", "priority": "Primary"},
+                {"type": "CannotDieMoreThanOnce", "priority": "Secondary"},
+                {"type": "CannotBeAffectedByAbnormalStatus", "priority": "Secondary", "Param1": 3}
             ],
             "cost": [
                 {"item_id": 18656, "amount": 10}

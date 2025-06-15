@@ -1,0 +1,85 @@
+{
+    "comment": "Feryana Wilderness - Section 1: Main Road Trial 1",
+    "stage_id": {
+        "id": 552,
+        "group_id": 103
+    },
+    "pos_id": 0,
+    "unlock_cost": [],
+    "unlocks": [],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {
+                    "type": "EliminateTheEnemy",
+                    "priority": "Primary"
+                },
+                {
+                    "type": "CompleteConditionsWithinTimeLimit",
+                    "priority": "Secondary",
+                    "Param1": 90
+                },
+                {
+                    "type": "CannotDieMoreThanOnce",
+                    "priority": "Secondary",
+                    "Param1": 1
+                }
+            ],
+            "cost": [],
+            "item_rewards": [
+                {
+                    "item_id": 18658,
+                    "amount": 5
+                },
+                {
+                    "item_id": 18742,
+                    "amount": 40
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 552,
+                        "group_id": 6
+                    },
+                    "placement_type": "Manual",
+                    "enemies": [
+                        {
+                            "comment": "Eliminator",
+                            "enemy_id": "0x010508",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "index": 2
+                        },
+                        {
+                            "comment": "Eliminator",
+                            "enemy_id": "0x010508",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "index": 4
+                        },
+                        {
+                            "comment": "Grigori",
+                            "enemy_id": "0x015900",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "index": 1
+                        },
+                        {
+                            "comment": "Bearded Grigori",
+                            "enemy_id": "0x015920",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "index": 3
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

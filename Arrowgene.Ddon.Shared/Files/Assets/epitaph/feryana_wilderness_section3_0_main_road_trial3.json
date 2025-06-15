@@ -1,0 +1,88 @@
+{
+    "comment": "Tomb: Trial 3",
+    "stage_id": {
+        "id": 555,
+        "group_id": 104
+    },
+    "pos_id": 0,
+    "unlock_cost": [],
+    "unlocks": [
+        {"stage_id": 555, "group_id": 109, "pos_id": 0}
+    ],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {
+                    "type": "EliminateTheEnemy",
+                    "priority": "Primary"
+                },
+                {
+                    "type": "CannotDieMoreThanOnce",
+                    "priority": "Secondary"
+                },
+                {
+                    "type": "ItemNoteUsedMoreThanOnce",
+                    "priority": "Secondary"
+                }
+            ],
+            "cost": [],
+            "item_rewards": [
+                {
+                    "item_id": 18658,
+                    "amount": 20
+                },
+                {
+                    "type": "pool",
+                    "rolls": 1,
+                    "items": [
+                        {
+                            "item_id": 18742,
+                            "amount": 20
+                        },
+                        {
+                            "type": "fixed",
+                            "item_id": 21379,
+                            "amount": 3,
+                            "comment": "Relic Steel (Feryana District)"
+                        }
+                    ]
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 555,
+                        "group_id": 15
+                    },
+                    "enemies": [
+                        {
+                            "comment": "Skeleton Cyclops",
+                            "enemy_id": "0x015050",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true
+                        },
+                        {
+                            "comment": "War-ready Ogre (Light)",
+                            "enemy_id": "0x015510",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true
+                        },
+                        {
+                            "comment": "War-ready Ogre (Light)",
+                            "enemy_id": "0x015510",
+                            "level": 89,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2287,
+                            "is_boss": true
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

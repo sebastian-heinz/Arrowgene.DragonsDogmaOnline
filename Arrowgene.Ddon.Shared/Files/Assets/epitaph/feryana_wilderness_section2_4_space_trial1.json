@@ -1,0 +1,228 @@
+{
+    "comment": "Space 4: Trial 1",
+    "stage_id": {
+        "id": 554,
+        "group_id": 107
+    },
+    "pos_id": 0,
+    "unlock_cost": [],
+    "unlocks": [
+    ],
+    "options": [
+        {
+            "trial_name": "Trial of the Heroes",
+            "constraints": [
+                {
+                    "type": "EliminateTheEnemy",
+                    "priority": "Primary"
+                },
+                {
+                    "type": "CompleteConditionsWithinTimeLimit",
+                    "priority": "Secondary",
+                    "Param1": 180
+                },
+                {
+                    "type": "CannotDieMoreThanOnce",
+                    "priority": "Secondary",
+                    "Param1": 1
+                }
+            ],
+            "cost": [],
+            "item_rewards": [
+                {
+                    "item_id": 18658,
+                    "amount": 15
+                },
+                {
+                    "item_id": 18742,
+                    "amount": 40
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 554,
+                        "group_id": 20
+                    },
+                    "placement_type": "Manual",
+                    "enemies": [
+                        {
+                            "comment": "War-Ready Giant Saurian",
+                            "enemy_id": "0x010471",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "infection_type": 1,
+                            "index": 0
+                        },
+                        {
+                            "comment": "War-Ready Saurian",
+                            "enemy_id": "0x010470",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "infection_type": 1,
+                            "index": 1
+                        },
+                        {
+                            "comment": "War-Ready Saurian",
+                            "enemy_id": "0x010470",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "infection_type": 1,
+                            "index": 2
+                        },
+                        {
+                            "comment": "War-Ready Saurian",
+                            "enemy_id": "0x010470",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "infection_type": 1,
+                            "index": 3
+                        },
+                        {
+                            "comment": "War-Ready Saurian",
+                            "enemy_id": "0x010470",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "infection_type": 1,
+                            "index": 4
+                        },
+                        {
+                            "comment": "War-Ready Grimwarg",
+                            "enemy_id": "0x010230",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "infection_type": 1,
+                            "index": 5
+                        },
+                        {
+                            "comment": "War-Ready Grimwarg",
+                            "enemy_id": "0x010230",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "infection_type": 1,
+                            "index": 6
+                        },
+                        {
+                            "comment": "War-Ready Grimwarg",
+                            "enemy_id": "0x010230",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "infection_type": 1,
+                            "index": 7
+                        },
+                        {
+                            "comment": "War-Ready Grimwarg",
+                            "enemy_id": "0x010230",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2286,
+                            "infection_type": 1,
+                            "index": 8
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "trial_name": "Trial of the Souls",
+            "constraints": [
+                {
+                    "type": "EliminateTheEnemy",
+                    "priority": "Primary"
+                },
+                {
+                    "type": "CompleteConditionsWithinTimeLimit",
+                    "priority": "Secondary",
+                    "Param1": 360
+                },
+                {
+                    "type": "CannotDieMoreThanOnce",
+                    "priority": "Secondary",
+                    "Param1": 1
+                }
+            ],
+            "cost": [
+                {
+                    "item_id": 18658,
+                    "amount": 20
+                }
+            ],
+            "item_rewards": [
+                {
+                    "item_id": 18742,
+                    "amount": 80
+                },
+                {
+                    "type": "pool",
+                    "rolls": 1,
+                    "items": [
+                        {
+                            "type": "Fixed",
+                            "item_id": 9271,
+                            "amount": 1
+                        },
+                        {
+                            "type": "Fixed",
+                            "item_id": 9272,
+                            "amount": 1
+                        },
+                        {
+                            "type": "Fixed",
+                            "item_id": 9320,
+                            "amount": 1
+                        },
+                        {
+                            "type": "Fixed",
+                            "item_id": 9321,
+                            "amount": 1
+                        },
+                        {
+                            "type": "Fixed",
+                            "item_id": 9322,
+                            "amount": 1
+                        },
+                        {
+                            "type": "Fixed",
+                            "item_id": 13686,
+                            "amount": 1
+                        },
+                        {
+                            "type": "Fixed",
+                            "item_id": 13702,
+                            "amount": 1
+                        }
+                    ]
+                }
+            ],
+            "enemy_groups": [
+                {
+                    "stage_id": {
+                        "id": 554,
+                        "group_id": 20
+                    },
+                    "placement_type": "Manual",
+                    "enemies": [
+                        {
+                            "comment": "War-Ready Goremanticore",
+                            "enemy_id": "0x015060",
+                            "level": 88,
+                            "exp_scheme": "Automatic",
+                            "named_enemy_params_id": 2287,
+                            "infection_type": 3,
+                            "is_boss": true,
+                            "index": 0
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
